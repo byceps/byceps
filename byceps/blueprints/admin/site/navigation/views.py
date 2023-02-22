@@ -190,9 +190,9 @@ def item_create(menu_id):
     if not form.validate():
         return item_create_form(menu.id, form)
 
+    label = form.label.data.strip()
     target_type = NavItemTargetType[form.target_type.data]
     target = form.target.data.strip()
-    label = form.label.data.strip()
     current_page_id = form.current_page_id.data.strip()
     hidden = form.hidden.data
 
@@ -241,9 +241,9 @@ def item_update(item_id):
     if not form.validate():
         return item_update_form(item.id, form)
 
+    label = form.label.data.strip()
     target_type = NavItemTargetType[form.target_type.data]
     target = form.target.data.strip()
-    label = form.label.data.strip()
     current_page_id = form.current_page_id.data.strip()
     hidden = form.hidden.data
 

@@ -1080,6 +1080,7 @@ msgid "Create category"
 msgstr "Kategorie erstellen"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:33
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:53
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:28
 msgid "Position"
 msgstr "Position"
@@ -1091,7 +1092,7 @@ msgstr "Position"
 #: byceps/blueprints/admin/site/navigation/forms.py:48
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:38
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:13
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:70
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:72
 #: byceps/blueprints/site/board/templates/macros/board.html:5
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:35
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:38
@@ -1111,7 +1112,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:41
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:15
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:20
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:78
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:80
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:31
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:52
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:26
@@ -1123,13 +1124,13 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:61
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:79
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:81
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:44
 msgid "Move up"
 msgstr "Nach oben verschieben"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:62
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:80
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:82
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:45
 msgid "Move down"
 msgstr "Nach unten verschieben"
@@ -1153,7 +1154,7 @@ msgstr "Verstecken"
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:69
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:59
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:22
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:81
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:83
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:33
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:27
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:22
@@ -4624,43 +4625,43 @@ msgstr ""
 "Newskanal \"%(news_channel_id)s\" has been removed from site "
 "\"%(site_title)s\"."
 
-#: byceps/blueprints/admin/site/navigation/forms.py:34
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:53
-msgid "Target type"
-msgstr "Zielart"
-
-#: byceps/blueprints/admin/site/navigation/forms.py:37
-msgid "choose"
-msgstr "auswählen"
-
-#: byceps/blueprints/admin/site/navigation/forms.py:38
-msgid "endpoint"
-msgstr "Endpunkt"
-
-#: byceps/blueprints/admin/site/navigation/forms.py:39
-msgid "page"
-msgstr "Seite"
-
-#: byceps/blueprints/admin/site/navigation/forms.py:40
-#: byceps/blueprints/admin/webhook/forms.py:26
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:48
-msgid "URL"
-msgstr "URL"
-
-#: byceps/blueprints/admin/site/navigation/forms.py:43
+#: byceps/blueprints/admin/site/navigation/forms.py:33
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:54
-msgid "Target"
-msgstr "Ziel"
-
-#: byceps/blueprints/admin/site/navigation/forms.py:44
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:55
 #: byceps/blueprints/admin/user_badge/forms.py:36
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:30
 msgid "Label"
 msgstr "Bezeichnung"
 
-#: byceps/blueprints/admin/site/navigation/forms.py:46
+#: byceps/blueprints/admin/site/navigation/forms.py:35
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:55
+msgid "Target type"
+msgstr "Zielart"
+
+#: byceps/blueprints/admin/site/navigation/forms.py:38
+msgid "choose"
+msgstr "auswählen"
+
+#: byceps/blueprints/admin/site/navigation/forms.py:39
+msgid "endpoint"
+msgstr "Endpunkt"
+
+#: byceps/blueprints/admin/site/navigation/forms.py:40
+msgid "page"
+msgstr "Seite"
+
+#: byceps/blueprints/admin/site/navigation/forms.py:41
+#: byceps/blueprints/admin/webhook/forms.py:26
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:48
+msgid "URL"
+msgstr "URL"
+
+#: byceps/blueprints/admin/site/navigation/forms.py:44
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:56
+msgid "Target"
+msgstr "Ziel"
+
+#: byceps/blueprints/admin/site/navigation/forms.py:46
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:57
 msgid "Current page ID"
 msgstr "ID der aktuellen Seite"
 
@@ -4720,7 +4721,7 @@ msgid "Create menu"
 msgstr "Menü erstellen"
 
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:46
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:91
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:93
 msgid "No menus exist."
 msgstr "Es sind keine Menüs vorhanden."
 
@@ -4748,7 +4749,7 @@ msgstr "Menü bearbeiten"
 msgid "Items"
 msgstr "Elemente"
 
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:103
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:105
 msgid "Delete menu item?"
 msgstr "Menüeintrag löschen?"
 
@@ -4889,7 +4890,7 @@ msgid "Code for ticket %(ticket_code)s has been updated."
 msgstr "Der Code von Ticket %(ticket_code)s wurde geändert."
 
 #: byceps/blueprints/admin/ticketing/views.py:233
-#: byceps/blueprints/site/ticketing/views.py:176
+#: byceps/blueprints/site/ticketing/views.py:190
 #, python-format
 msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
 msgstr ""
@@ -7107,12 +7108,12 @@ msgstr ""
 msgid "Hello %(screen_name)s,"
 msgstr "Hallo %(screen_name)s,"
 
-#: byceps/blueprints/site/ticketing/views.py:215
+#: byceps/blueprints/site/ticketing/views.py:229
 #, python-format
 msgid "You have been assigned as user of ticket %(ticket_code)s."
 msgstr "Du wurdest als Nutzer/in von Ticket %(ticket_code)s eingetragen."
 
-#: byceps/blueprints/site/ticketing/views.py:280
+#: byceps/blueprints/site/ticketing/views.py:294
 #, python-format
 msgid ""
 "%(screen_name)s has been assigned as user manager of ticket "
@@ -7121,12 +7122,12 @@ msgstr ""
 "%(screen_name)s wurde als Nutzer-Verwalter/in von Ticket %(ticket_code)s "
 "eingetragen."
 
-#: byceps/blueprints/site/ticketing/views.py:313
+#: byceps/blueprints/site/ticketing/views.py:327
 #, python-format
 msgid "User manager of ticket %(ticket_code)s has been removed."
 msgstr "Der Nutzer-Verwalter von Ticket %(ticket_code)s wurde entfernt."
 
-#: byceps/blueprints/site/ticketing/views.py:371
+#: byceps/blueprints/site/ticketing/views.py:385
 #, python-format
 msgid ""
 "%(screen_name)s has been assigned as seat manager of ticket "
@@ -7135,16 +7136,16 @@ msgstr ""
 "%(screen_name)s wurde als Sitzplatz-Verwalter/in von Ticket "
 "%(ticket_code)s eingetragen."
 
-#: byceps/blueprints/site/ticketing/views.py:402
+#: byceps/blueprints/site/ticketing/views.py:416
 #, python-format
 msgid "Seat manager of ticket %(ticket_code)s has been removed."
 msgstr "Der Sitzplatz-Verwalter von Ticket %(ticket_code)s wurde entfernt."
 
-#: byceps/blueprints/site/ticketing/views.py:416
+#: byceps/blueprints/site/ticketing/views.py:430
 msgid "Tickets cannot be updated at this time."
 msgstr "Tickets können derzeit nicht verändert werden."
 
-#: byceps/blueprints/site/ticketing/views.py:443
+#: byceps/blueprints/site/ticketing/views.py:457
 msgid "Somebody has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
 

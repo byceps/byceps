@@ -13,9 +13,9 @@
 
   <form action="{{ url_for('.item_create', menu_id=menu.id) }}" method="post">
     <div class="box">
-      {{ form_field(form.target_type, autofocus='autofocus') }}
+      {{ form_field(form.label, autofocus='autofocus') }}
+      {{ form_field(form.target_type) }}
       {{ form_field(form.target) }}
-      {{ form_field(form.label) }}
       {{ form_field(form.current_page_id) }}
       {{ form_field_check(form.hidden) }}
     </div>

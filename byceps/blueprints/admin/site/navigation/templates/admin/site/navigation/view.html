@@ -51,9 +51,9 @@
       <thead>
         <tr>
           <th>{{ _('Position') }}</th>
+          <th>{{ _('Label') }}</th>
           <th>{{ _('Target type') }}</th>
           <th>{{ _('Target') }}</th>
-          <th>{{ _('Label') }}</th>
           <th>{{ _('Current page ID') }}</th>
           <th></th>
           <th></th>
@@ -63,9 +63,9 @@
         {%- for item in menu.items|sort(attribute='position') %}
         <tr>
           <td>{{ item.position }}</td>
+          <td>{{ item.label }}</td>
           <td>{{ item.target_type.name }}</td>
           <td>{{ item.target }}</td>
-          <td>{{ item.label }}</td>
           <td>{{ item.current_page_id }}</td>
           <td>
             {%- if item.hidden -%}
