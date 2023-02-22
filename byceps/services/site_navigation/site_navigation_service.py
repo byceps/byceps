@@ -216,7 +216,7 @@ def get_items_for_menu_id(menu_id: NavMenuID) -> list[NavItem]:
         .filter(DbNavMenu.hidden == False)  # noqa: E712
     )
 
-    return [_db_entity_to_item(db_item) for db_item in db_items]
+    return _db_entities_to_items(db_items)
 
 
 def get_items_for_menu(
@@ -236,7 +236,7 @@ def get_items_for_menu(
         .filter(DbNavMenu.hidden == False)  # noqa: E712
     )
 
-    return [_db_entity_to_item(db_item) for db_item in db_items]
+    return _db_entities_to_items(db_items)
 
 
 def move_item_up(item_id: NavItemID) -> NavItem:
@@ -296,11 +296,15 @@ def _db_entity_to_item(db_item: DbNavItem) -> NavItem:
     )
 
 
+def _db_entities_to_items(db_items: Iterable[DbNavItem]) -> list[NavItem]:
+    return [_db_entity_to_item(db_item) for db_item in db_items]
+
+
 def _db_entity_to_menu_aggregate(
     db_menu: DbNavMenu, db_items: Iterable[DbNavItem]
 ) -> NavMenuAggregate:
     menu = _db_entity_to_menu(db_menu)
-    items = [_db_entity_to_item(db_item) for db_item in db_items]
+    items = _db_entities_to_items(db_items)
 
     return NavMenuAggregate(
         id=menu.id,
