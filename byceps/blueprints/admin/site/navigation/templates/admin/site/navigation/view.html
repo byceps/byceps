@@ -50,6 +50,7 @@
     <table class="index index--wide">
       <thead>
         <tr>
+          <th>{{ _('Position') }}</th>
           <th>{{ _('Target type') }}</th>
           <th>{{ _('Target') }}</th>
           <th>{{ _('Label') }}</th>
@@ -61,6 +62,7 @@
       <tbody>
         {%- for item in menu.items|sort(attribute='position') %}
         <tr>
+          <td>{{ item.position }}</td>
           <td>{{ item.target_type.name }}</td>
           <td>{{ item.target }}</td>
           <td>{{ item.label }}</td>
