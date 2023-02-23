@@ -68,7 +68,7 @@ Supported Configuration Values
 
     Filesystem path for static files (including uploads).
 
-    Default: ``./data`` (relative to the BYCEPS root path)
+    Default: ``'./data'`` (relative to the BYCEPS root path)
 
 .. py:data:: PROPAGATE_EXCEPTIONS
 
@@ -132,7 +132,7 @@ Supported Configuration Values
 
     The timezone used for shop order exports.
 
-    Default: ``Europe/Berlin``
+    Default: ``'Europe/Berlin'``
 
 .. py:data:: SQLALCHEMY_DATABASE_URI
 
