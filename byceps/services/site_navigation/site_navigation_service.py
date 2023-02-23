@@ -214,6 +214,7 @@ def get_items_for_menu_id(menu_id: NavMenuID) -> list[NavItem]:
         .join(DbNavMenu)
         .filter(DbNavMenu.id == menu_id)
         .filter(DbNavMenu.hidden == False)  # noqa: E712
+        .filter(DbNavItem.hidden == False)  # noqa: E712
     )
 
     return _db_entities_to_items(db_items)
@@ -234,6 +235,7 @@ def get_items_for_menu(
         .filter(DbNavMenu.name == name)
         .filter(DbNavMenu.language_code == language_code)
         .filter(DbNavMenu.hidden == False)  # noqa: E712
+        .filter(DbNavItem.hidden == False)  # noqa: E712
     )
 
     return _db_entities_to_items(db_items)
