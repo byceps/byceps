@@ -8,7 +8,7 @@ byceps.services.email.email_service
 
 from email.message import EmailMessage
 from email.utils import parseaddr
-from smtplib import SMTP
+from smtplib import SMTP, SMTP_SSL
 
 from flask import current_app
 
@@ -83,14 +83,22 @@ def _send_via_smtp(message: EmailMessage) -> None:
     host = config.get('MAIL_HOST', 'localhost')
     port = config.get('MAIL_PORT', 25)
     starttls = config.get('MAIL_STARTTLS', False)
+    use_ssl = config.get('MAIL_USE_SSL', False)
     username = config.get('MAIL_USERNAME', None)
     password = config.get('MAIL_PASSWORD', None)
 
-    with SMTP(host, port) as smtp:
-        if starttls:
-            smtp.starttls()
+    if use_ssl:
+        with SMTP_SSL(host, port) as smtp:
+            if username and password:
+                smtp.login(username, password)
 
-        if username and password:
-            smtp.login(username, password)
+            smtp.send_message(message)
+    else:
+        with SMTP(host, port) as smtp:
+            if starttls:
+                smtp.starttls()
 
-        smtp.send_message(message)
+            if username and password:
+                smtp.login(username, password)
+
+            smtp.send_message(message)

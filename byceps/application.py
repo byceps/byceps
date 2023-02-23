@@ -120,6 +120,7 @@ def _get_config_from_environment() -> Iterator[tuple[str, str]]:
         'MAIL_PORT',
         'MAIL_STARTTLS',
         'MAIL_SUPPRESS_SEND',
+        'MAIL_USE_SSL',
         'MAIL_USERNAME',
         'METRICS_ENABLED',
         'REDIS_URL',
