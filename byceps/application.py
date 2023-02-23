@@ -115,6 +115,13 @@ def _get_config_from_environment() -> Iterator[tuple[str, str]]:
     """Obtain selected config values from environment variables."""
     for key in (
         'APP_MODE',
+        'MAIL_HOST',
+        'MAIL_PASSWORD',
+        'MAIL_PORT',
+        'MAIL_STARTTLS',
+        'MAIL_SUPPRESS_SEND',
+        'MAIL_USERNAME',
+        'METRICS_ENABLED',
         'REDIS_URL',
         'SECRET_KEY',
         'SITE_ID',
