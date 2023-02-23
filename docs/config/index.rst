@@ -50,11 +50,35 @@ Supported Configuration Values
     Default: ``de`` (This will likely be changed to ``en`` at some point
     in the future.)
 
+.. py:data:: MAIL_HOST
+
+    The host of the SMTP server.
+
+    Default: ``'localhost'``
+
+.. py:data:: MAIL_PASSWORD
+
+    The password to authenticate with against the SMTP server.
+
+    Default: ``None``
+
+.. py:data:: MAIL_PORT
+
+    The port of the SMTP server.
+
+    Default: ``25``
+
 .. py:data:: MAIL_SUPPRESS_SEND
 
     Suppress sending sending of emails.
 
     Default: ``False``
+
+.. py:data:: MAIL_USERNAME
+
+    The username to authenticate with against the SMTP server.
+
+    Default: ``None``
 
 .. py:data:: METRICS_ENABLED
 
