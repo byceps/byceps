@@ -82,10 +82,14 @@ def _send_via_smtp(message: EmailMessage) -> None:
 
     host = config.get('MAIL_HOST', 'localhost')
     port = config.get('MAIL_PORT', 25)
+    starttls = config.get('MAIL_STARTTLS', False)
     username = config.get('MAIL_USERNAME', None)
     password = config.get('MAIL_PASSWORD', None)
 
     with SMTP(host, port) as smtp:
+        if starttls:
+            smtp.starttls()
+
         if username and password:
             smtp.login(username, password)
 

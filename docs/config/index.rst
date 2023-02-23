@@ -68,6 +68,12 @@ Supported Configuration Values
 
     Default: ``25``
 
+.. py:data:: MAIL_STARTTLS
+
+    Put the SMTP connection in TLS (Transport Layer Security) mode.
+
+    Default: ``False``
+
 .. py:data:: MAIL_SUPPRESS_SEND
 
     Suppress sending sending of emails.
