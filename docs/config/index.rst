@@ -80,6 +80,12 @@ Supported Configuration Values
 
     Default: ``False``
 
+.. py:data:: MAIL_USE_SSL
+
+    Use SSL for the connection to the SMTP server.
+
+    Default: ``False``
+
 .. py:data:: MAIL_USERNAME
 
     The username to authenticate with against the SMTP server.
