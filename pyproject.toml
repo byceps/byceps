@@ -1,3 +1,39 @@
+[project]
+name = "BYCEPS"
+version = "0.0"
+description = "LAN party web platform"
+readme = "README.rst"
+requires-python = ">=3.9"
+license = { text = "Revised BSD License" }
+authors = [ { name = "Jochen \"Y0Gi\" Kupperschmidt", email = "homework@nwsnet.de" } ]
+keywords = [ "lanparty" ]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Flask",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Other Audience",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: German",
+    "Programming Language :: JavaScript",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Communications",
+    "Topic :: Games/Entertainment",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Content Management System",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Message Boards",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
+]
+
+[project.scripts]
+byceps = "byceps.cli.cli:cli"
+
+[project.urls]
+Website = "https://byceps.nwsnet.de/"
+Documentation = "https://byceps.readthedocs.io/"
+"Source Code" = "https://github.com/byceps/byceps"
+
 [build-system]
 requires = [ "setuptools" ]
 build-backend = "setuptools.build_meta"
@@ -21,3 +57,6 @@ testpaths = [ "tests/unit", "tests/integration" ]
 ignore = [
     "E501",  # Line too long
 ]
+
+[tool.setuptools]
+packages = [ "byceps" ]
