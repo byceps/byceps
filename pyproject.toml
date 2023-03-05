@@ -22,5 +22,5 @@ testpaths = ["tests/unit", "tests/integration"]
 
 [tool.ruff]
 ignore = [
-  "E501",  # Line too long
+    "E501",  # Line too long
 ]
