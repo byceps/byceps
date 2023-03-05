@@ -76,7 +76,7 @@ Supported Configuration Values
 
 .. py:data:: MAIL_SUPPRESS_SEND
 
-    Suppress sending sending of emails.
+    Suppress sending of emails.
 
     Default: ``False``
 
