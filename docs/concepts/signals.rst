@@ -39,7 +39,7 @@ the command line, e.g. for development and debugging).
 
     @topic_created.connect
     def celebrate_created_topic(sender, *, event: BoardTopicCreated = None) -> None:
-        print(f'A topic titled has been created: {event.url}')
+        print(f'A topic titled "{event.topic_title}" has been created: {event.url}')
 
 More useful reactions include:
 
