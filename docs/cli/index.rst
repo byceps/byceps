@@ -31,6 +31,8 @@ BYCEPS comes with a command-line tool for some tasks.
      - :ref:`Import users <Import Users>`
    * - ``byceps initialize-database``
      - :ref:`Initialize database <Initialize Database>`
+   * - ``byceps shell``
+     - :ref:`Run interactive shell <Run Interactive Shell>`
 
 
 Create Database Tables
@@ -259,3 +261,21 @@ the database.
 
 
 .. _JSON Lines: https://jsonlines.org/
+
+
+Run Interactive Shell
+=====================
+
+The BYCEPS shell is an interactive Python command line prompt that
+provides access to BYCEPS' functionality as well as the persisted data.
+
+This can be helpful to inspect and manipulate the application's data by
+using primarily the various services (from ``byceps.services``) without
+directly accessing the database (hopefully limiting the amount of
+accidental damage).
+
+.. code:: sh
+
+    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps shell
+    Welcome to the interactive BYCEPS shell on Python 3.11.2!
+    >>>
