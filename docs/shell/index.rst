@@ -15,11 +15,4 @@ accidental damage).
 
 .. code:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml flask shell
-
-Installation of an extra package makes the shell easier to use due to features
-like command history and auto-completion:
-
-.. code:: sh
-
-    (venv)$ pip install flask-shell-ipython
+    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps shell

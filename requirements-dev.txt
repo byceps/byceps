@@ -2,7 +2,6 @@
 -r requirements-test.txt
 black==23.1.0
 Flask-DebugToolbar==0.13.1
-flask-shell-ipython==0.4.1
 mypy==1.0.0
 ruff>=0.0.247
 types-freezegun==1.1.10
