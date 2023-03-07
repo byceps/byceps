@@ -84,7 +84,12 @@ def log_in():
     try:
         user = authn_service.authenticate(username, password)
     except AuthenticationFailed as e:
-        log.info('User authentication failed', username=username, error=e)
+        log.info(
+            'User authentication failed',
+            scope='site',
+            username=username,
+            error=e,
+        )
         abort(401)
 
     if _is_consent_required(user.id):
@@ -106,7 +111,10 @@ def log_in():
     user_session.start(user.id, auth_token, permanent=permanent)
 
     log.info(
-        'User logged in', user_id=str(user.id), screen_name=user.screen_name
+        'User logged in',
+        scope='site',
+        user_id=str(user.id),
+        screen_name=user.screen_name,
     )
 
     flash_success(
@@ -146,6 +154,7 @@ def log_out():
 
     log.info(
         'User logged out',
+        scope='site',
         user_id=str(g.user.id),
         screen_name=g.user.screen_name,
     )
