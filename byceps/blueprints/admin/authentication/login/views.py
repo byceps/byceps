@@ -10,7 +10,6 @@ from flask import abort, g, redirect, request
 from flask_babel import gettext
 import structlog
 
-from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import authn_service
 from .....services.authentication.session import authn_session_service
 from .....services.user.models.user import User
@@ -64,16 +63,17 @@ def log_in():
     if not all([username, password]):
         abort(401)
 
-    try:
-        user = authn_service.authenticate(username, password)
-    except AuthenticationFailed as e:
+    authn_result = authn_service.authenticate(username, password)
+    if authn_result.is_err():
         log.info(
             'User authentication failed',
             scope='admin',
             username=username,
-            error=e,
+            error=authn_result.unwrap_err(),
         )
         abort(401)
+
+    user = authn_result.unwrap()
 
     _require_admin_access_permission(user)
 

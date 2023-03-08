@@ -8,23 +8,21 @@ byceps.services.authentication.authn_service
 
 from typing import Optional
 
+from result import Err, Ok, Result
+
 from ..user.models.user import User
 from ..user import user_service
 
-from .exceptions import (
-    AccountDeleted,
-    AccountNotInitialized,
-    AccountSuspended,
-    UsernameUnknown,
-    WrongPassword,
-)
+from .errors import AuthenticationFailed
 from .password import authn_password_service
 
 
-def authenticate(screen_name_or_email_address: str, password: str) -> User:
+def authenticate(
+    screen_name_or_email_address: str, password: str
+) -> Result[User, AuthenticationFailed]:
     """Try to authenticate the user.
 
-    Return the user object on success, or raise an exception on failure.
+    Return the user object on success and an error on failure.
     """
     # Look up user by screen name or email address.
     user = _find_user_by_screen_name_or_email_address(
@@ -32,25 +30,25 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
     )
     if user is None:
         # Screen name/email address is unknown.
-        raise UsernameUnknown()
+        return Err(AuthenticationFailed.UsernameUnknown)
 
     db_user = user_service.get_db_user(user.id)
     if not db_user.initialized:
-        raise AccountNotInitialized()
+        return Err(AuthenticationFailed.AccountNotInitialized)
 
     if user.suspended:
-        raise AccountSuspended()
+        return Err(AuthenticationFailed.AccountSuspended)
 
     if user.deleted:
-        raise AccountDeleted()
+        return Err(AuthenticationFailed.AccountDeleted)
 
     # Verify credentials.
     if not authn_password_service.is_password_valid_for_user(user.id, password):
-        raise WrongPassword()
+        return Err(AuthenticationFailed.WrongPassword)
 
     authn_password_service.migrate_password_hash_if_outdated(user.id, password)
 
-    return user
+    return Ok(user)
 
 
 def _find_user_by_screen_name_or_email_address(
