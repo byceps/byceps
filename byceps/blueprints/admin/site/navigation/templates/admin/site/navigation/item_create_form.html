@@ -14,8 +14,12 @@
   <form action="{{ url_for('.item_create', menu_id=menu.id) }}" method="post">
     <div class="box">
       {{ form_field(form.label, autofocus='autofocus') }}
-      {{ form_field(form.target_type) }}
-      {{ form_field(form.target) }}
+
+      <div class="row">
+        <div>{{ form_field(form.target_type) }}</div>
+        <div class="column--grow">{{ form_field(form.target) }}</div>
+      </div>
+
       {{ form_field(form.current_page_id) }}
       {{ form_field_check(form.hidden) }}
     </div>
