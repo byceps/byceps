@@ -308,6 +308,21 @@ def get_url_paths_by_page_name_for_site(site_id: SiteID) -> dict[str, str]:
     return {name: url_path for name, url_path in rows}
 
 
+def get_page_ids_and_names(
+    site_id: SiteID, language_code
+) -> Sequence[tuple[PageID, str]]:
+    """Return the IDs and names of all pages for that site and locale."""
+    return (
+        db.session.execute(
+            select(DbPage.id, DbPage.name)
+            .filter_by(site_id=site_id)
+            .filter_by(language_code=language_code)
+        )
+        .tuples()
+        .all()
+    )
+
+
 def find_page_aggregate(version_id: PageVersionID) -> Optional[PageAggregate]:
     """Return an aggregated page for that version."""
     version = get_version(version_id)

@@ -11,12 +11,9 @@
 
   <h1>{{ page_title }}</h1>
 
-  <form action="{{ url_for('.item_create', menu_id=menu.id) }}" method="post">
+  <form action="{{ url_for('.item_create', menu_id=menu.id, target_type_name=target_type_name) }}" method="post">
     <div class="box">
-      <div class="row">
-        <div>{{ form_field(form.target_type, autofocus='autofocus') }}</div>
-        <div class="column--grow">{{ form_field(form.target) }}</div>
-      </div>
+{% block additional_fields %}{% endblock %}
 
       {{ form_field(form.label) }}
       {{ form_field(form.current_page_id) }}

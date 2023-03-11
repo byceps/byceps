@@ -12,6 +12,7 @@ from flask import abort, request
 from flask_babel import gettext
 
 from .....services.brand import brand_service
+from .....services.page import page_service
 from .....services.site.models import Site, SiteID
 from .....services.site import site_service
 from .....services.site_navigation.models import (
@@ -29,7 +30,9 @@ from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import (
-    ItemCreateForm,
+    ItemCreateEndpointForm,
+    ItemCreatePageForm,
+    ItemCreateUrlForm,
     ItemUpdateForm,
     MenuCreateForm,
     MenuUpdateForm,
@@ -160,39 +163,108 @@ def menu_update(menu_id):
     return redirect_to('.view', menu_id=menu.id)
 
 
-@blueprint.get('/for_menu/<menu_id>/create')
+@blueprint.get('/for_menu/<menu_id>/create/for_endpoint')
 @permission_required('site_navigation.administrate')
 @templated
-def item_create_form(menu_id, erroneous_form=None):
-    """Show form to create a menu item."""
+def item_create_endpoint_form(menu_id, erroneous_form=None):
+    """Show form to create a menu item referencing an endpoint."""
     menu = _get_menu_or_404(menu_id)
 
     site = site_service.get_site(menu.site_id)
     brand = brand_service.get_brand(site.brand_id)
 
-    form = erroneous_form if erroneous_form else ItemCreateForm()
+    form = erroneous_form if erroneous_form else ItemCreateEndpointForm()
 
     return {
         'menu': menu,
         'site': site,
         'brand': brand,
         'form': form,
+        'target_type_name': NavItemTargetType.endpoint.name,
     }
 
 
-@blueprint.post('/for_menu/<menu_id>/create')
+@blueprint.get('/for_menu/<menu_id>/create/for_page')
 @permission_required('site_navigation.administrate')
-def item_create(menu_id):
+@templated
+def item_create_page_form(menu_id, erroneous_form=None):
+    """Show form to create a menu item referencing a page."""
+    menu = _get_menu_or_404(menu_id)
+
+    site = site_service.get_site(menu.site_id)
+    brand = brand_service.get_brand(site.brand_id)
+
+    form = erroneous_form if erroneous_form else ItemCreatePageForm()
+    form.set_page_choices(site.id, menu.language_code)
+
+    return {
+        'menu': menu,
+        'site': site,
+        'brand': brand,
+        'form': form,
+        'target_type_name': NavItemTargetType.page.name,
+    }
+
+
+@blueprint.get('/for_menu/<menu_id>/create/for_url')
+@permission_required('site_navigation.administrate')
+@templated
+def item_create_url_form(menu_id, erroneous_form=None):
+    """Show form to create a menu item referencing a URL."""
+    menu = _get_menu_or_404(menu_id)
+
+    site = site_service.get_site(menu.site_id)
+    brand = brand_service.get_brand(site.brand_id)
+
+    form = erroneous_form if erroneous_form else ItemCreateUrlForm()
+
+    return {
+        'menu': menu,
+        'site': site,
+        'brand': brand,
+        'form': form,
+        'target_type_name': NavItemTargetType.url.name,
+    }
+
+
+@blueprint.post('/for_menu/<menu_id>/<target_type_name>')
+@permission_required('site_navigation.administrate')
+def item_create(menu_id, target_type_name):
     """Create a menu item."""
     menu = _get_menu_or_404(menu_id)
 
-    form = ItemCreateForm(request.form)
+    try:
+        target_type = NavItemTargetType[target_type_name]
+    except KeyError:
+        abort(400, f'Unknown target type "{target_type_name}"')
+
+    if target_type == NavItemTargetType.endpoint:
+        form = ItemCreateEndpointForm(request.form)
+    elif target_type == NavItemTargetType.page:
+        form = ItemCreatePageForm(request.form)
+        form.set_page_choices(menu.site_id, menu.language_code)
+    elif target_type == NavItemTargetType.url:
+        form = ItemCreateUrlForm(request.form)
+
     if not form.validate():
-        return item_create_form(menu.id, form)
+        if target_type == NavItemTargetType.endpoint:
+            form_view = item_create_endpoint_form
+        elif target_type == NavItemTargetType.page:
+            form_view = item_create_page_form
+        elif target_type == NavItemTargetType.url:
+            form_view = item_create_url_form
+
+        return form_view(menu.id, form)
+
+    if target_type == NavItemTargetType.endpoint:
+        target = form.target_endpoint.data.strip()
+    elif target_type == NavItemTargetType.page:
+        page = page_service.get_page(form.target_page_id.data)
+        target = page.name
+    elif target_type == NavItemTargetType.url:
+        target = form.target_url.data.strip()
 
     label = form.label.data.strip()
-    target_type = NavItemTargetType[form.target_type.data]
-    target = form.target.data.strip()
     current_page_id = form.current_page_id.data.strip()
     hidden = form.hidden.data
 

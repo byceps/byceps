@@ -37,7 +37,14 @@
     {%- if has_current_user_permission('site_navigation.administrate') %}
     <div class="column--align-bottom">
       <div class="button-row button-row--right">
-        <a class="button button--compact" href="{{ url_for('.item_create_form', menu_id=menu.id) }}">{{ render_icon('add') }} <span>{{ _('Create menu item') }}</span></a>
+        <div class="dropdown">
+          <button class="dropdown-toggle button button--compact">{{ render_icon('add') }} <span>{{ _('Create menu item') }}</span> {{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" href="{{ url_for('.item_create_page_form', menu_id=menu.id) }}">{{ _('Page') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.item_create_endpoint_form', menu_id=menu.id) }}">{{ _('Endpoint') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.item_create_url_form', menu_id=menu.id) }}">{{ _('URL') }}</a></li>
+          </ol>
+        </div>
       </div>
     </div>
     {%- endif %}

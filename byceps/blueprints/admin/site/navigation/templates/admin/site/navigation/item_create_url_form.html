@@ -1,0 +1,5 @@
+{% extends 'admin/site/navigation/_item_create_form_base.html' %}
+
+{% block additional_fields %}
+      {{ form_field(form.target_url, autofocus='autofocus') }}
+{%- endblock %}
