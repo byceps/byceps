@@ -210,12 +210,13 @@ def get_assigned_roles_for_permissions() -> dict[PermissionID, set[RoleID]]:
 
 def get_all_role_ids() -> set[RoleID]:
     """Return all role IDs."""
-    return db.session.scalars(select(DbRole.id)).all()
+    role_ids = db.session.scalars(select(DbRole.id)).all()
+    return set(role_ids)
 
 
-def get_all_roles_with_permissions_and_users() -> list[
-    tuple[Role, set[PermissionID], set[User]]
-]:
+def get_all_roles_with_permissions_and_users() -> (
+    list[tuple[Role, set[PermissionID], set[User]]]
+):
     """Return all roles with titles, permission IDs, and assigned users."""
     db_roles = (
         db.session.scalars(

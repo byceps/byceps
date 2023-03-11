@@ -349,12 +349,18 @@ def get_email_address_data(user_id: UserID) -> UserEmailAddress:
 
 def get_email_addresses(user_ids: set[UserID]) -> set[tuple[UserID, str]]:
     """Return the users' e-mail addresses."""
-    return db.session.execute(
-        select(
-            DbUser.id,
-            DbUser.email_address,
-        ).filter(DbUser.id.in_(user_ids))
-    ).all()
+    rows = (
+        db.session.execute(
+            select(
+                DbUser.id,
+                DbUser.email_address,
+            ).filter(DbUser.id.in_(user_ids))
+        )
+        .tuples()
+        .all()
+    )
+
+    return set(rows)
 
 
 def get_detail(user_id: UserID) -> UserDetail:
