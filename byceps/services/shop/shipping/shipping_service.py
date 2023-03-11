@@ -73,7 +73,7 @@ def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
         .all()
     )
 
-    db_line_items = definitive_line_items + potential_line_items
+    db_line_items = list(definitive_line_items) + list(potential_line_items)
 
     for db_line_item in db_line_items:
         yield LineItemQuantity(

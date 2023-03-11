@@ -100,7 +100,7 @@ def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
         )
     ).all()
 
-    return set(ticket_user_ids + archived_attendance_user_ids)
+    return set(list(ticket_user_ids) + list(archived_attendance_user_ids))
 
 
 def get_top_attendees_for_brand(brand_id: BrandID) -> list[tuple[UserID, int]]:
