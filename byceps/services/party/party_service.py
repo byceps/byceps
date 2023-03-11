@@ -9,7 +9,7 @@ byceps.services.party.party_service
 from __future__ import annotations
 import dataclasses
 from datetime import date, datetime, timedelta
-from typing import Optional
+from typing import Callable, Optional
 
 from sqlalchemy import delete, select
 
@@ -169,6 +169,7 @@ def get_active_parties(
         .all()
     )
 
+    transform: Callable[[DbParty], Party | PartyWithBrand]
     if include_brands:
         transform = _db_entity_to_party_with_brand
     else:
