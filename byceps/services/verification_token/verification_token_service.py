@@ -138,12 +138,16 @@ def _db_entity_to_token(token: DbVerificationToken) -> VerificationToken:
 
 def count_tokens_by_purpose() -> dict[Purpose, int]:
     """Count verification tokens, grouped by purpose."""
-    rows = db.session.execute(
-        select(
-            DbVerificationToken._purpose,
-            db.func.count(DbVerificationToken.token),
-        ).group_by(DbVerificationToken._purpose)
-    ).all()
+    rows = (
+        db.session.execute(
+            select(
+                DbVerificationToken._purpose,
+                db.func.count(DbVerificationToken.token),
+            ).group_by(DbVerificationToken._purpose)
+        )
+        .tuples()
+        .all()
+    )
 
     counts_by_name = dict(rows)
 

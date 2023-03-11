@@ -56,11 +56,15 @@ def delete_team(team_id: OrgaTeamID) -> None:
 
 def count_teams_for_parties(party_ids: set[PartyID]) -> dict[PartyID, int]:
     """Count orga teams for each party."""
-    party_ids_and_team_counts = db.session.execute(
-        select(DbOrgaTeam.party_id, db.func.count(DbOrgaTeam.id))
-        .filter(DbOrgaTeam.party_id.in_(party_ids))
-        .group_by(DbOrgaTeam.party_id)
-    ).all()
+    party_ids_and_team_counts = (
+        db.session.execute(
+            select(DbOrgaTeam.party_id, db.func.count(DbOrgaTeam.id))
+            .filter(DbOrgaTeam.party_id.in_(party_ids))
+            .group_by(DbOrgaTeam.party_id)
+        )
+        .tuples()
+        .all()
+    )
 
     return dict(party_ids_and_team_counts)
 

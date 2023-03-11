@@ -678,6 +678,7 @@ def get_order_count_by_shop_id() -> dict[ShopID, int]:
             .group_by(DbShop.id)
         )
         .unique()
+        .tuples()
         .all()
     )
 

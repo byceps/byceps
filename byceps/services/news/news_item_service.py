@@ -411,11 +411,15 @@ def get_item_count_by_channel_id() -> dict[NewsChannelID, int]:
     """Return news item count (including 0) per channel, indexed by
     channel ID.
     """
-    channel_ids_and_item_counts = db.session.execute(
-        select(DbNewsChannel.id, db.func.count(DbNewsItem.id))
-        .outerjoin(DbNewsItem)
-        .group_by(DbNewsChannel.id)
-    ).all()
+    channel_ids_and_item_counts = (
+        db.session.execute(
+            select(DbNewsChannel.id, db.func.count(DbNewsItem.id))
+            .outerjoin(DbNewsItem)
+            .group_by(DbNewsChannel.id)
+        )
+        .tuples()
+        .all()
+    )
 
     return dict(channel_ids_and_item_counts)
 

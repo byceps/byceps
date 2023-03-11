@@ -255,9 +255,13 @@ def get_permission_ids_by_role() -> dict[Role, frozenset[PermissionID]]:
         .all()
     )
 
-    role_ids_and_permission_ids = db.session.execute(
-        select(DbRolePermission.role_id, DbRolePermission.permission_id)
-    ).all()
+    role_ids_and_permission_ids = (
+        db.session.execute(
+            select(DbRolePermission.role_id, DbRolePermission.permission_id)
+        )
+        .tuples()
+        .all()
+    )
 
     return _index_permission_ids_by_role(role_ids_and_permission_ids, db_roles)
 
@@ -281,12 +285,16 @@ def get_permission_ids_by_role_for_user(
         .all()
     )
 
-    role_ids_and_permission_ids = db.session.execute(
-        select(DbRolePermission.role_id, DbRolePermission.permission_id)
-        .join(DbRole)
-        .join(DbUserRole)
-        .filter(DbUserRole.user_id == user_id)
-    ).all()
+    role_ids_and_permission_ids = (
+        db.session.execute(
+            select(DbRolePermission.role_id, DbRolePermission.permission_id)
+            .join(DbRole)
+            .join(DbUserRole)
+            .filter(DbUserRole.user_id == user_id)
+        )
+        .tuples()
+        .all()
+    )
 
     return _index_permission_ids_by_role(role_ids_and_permission_ids, db_roles)
 

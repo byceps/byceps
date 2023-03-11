@@ -22,11 +22,15 @@ from .dbmodels import DbOrgaFlag
 
 def get_person_count_by_brand_id() -> dict[BrandID, int]:
     """Return organizer count (including 0) per brand, indexed by brand ID."""
-    brand_ids_and_orga_flag_counts = db.session.execute(
-        select(DbBrand.id, db.func.count(DbOrgaFlag.brand_id))
-        .outerjoin(DbOrgaFlag)
-        .group_by(DbBrand.id)
-    ).all()
+    brand_ids_and_orga_flag_counts = (
+        db.session.execute(
+            select(DbBrand.id, db.func.count(DbOrgaFlag.brand_id))
+            .outerjoin(DbOrgaFlag)
+            .group_by(DbBrand.id)
+        )
+        .tuples()
+        .all()
+    )
 
     return dict(brand_ids_and_orga_flag_counts)
 

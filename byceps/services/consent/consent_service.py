@@ -41,11 +41,15 @@ def consent_to_subjects(
 
 def count_consents_by_subject() -> dict[str, int]:
     """Return the number of given consents per subject."""
-    subject_names_and_consent_counts = db.session.execute(
-        select(DbSubject.name, db.func.count(DbConsent.user_id))
-        .outerjoin(DbConsent)
-        .group_by(DbSubject.name)
-    ).all()
+    subject_names_and_consent_counts = (
+        db.session.execute(
+            select(DbSubject.name, db.func.count(DbConsent.user_id))
+            .outerjoin(DbConsent)
+            .group_by(DbSubject.name)
+        )
+        .tuples()
+        .all()
+    )
 
     return dict(subject_names_and_consent_counts)
 

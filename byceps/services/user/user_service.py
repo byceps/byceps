@@ -112,11 +112,15 @@ def get_users(
     if not user_ids:
         return set()
 
-    rows = db.session.execute(
-        _get_user_stmt(include_avatars).filter(
-            DbUser.id.in_(frozenset(user_ids))
+    rows = (
+        db.session.execute(
+            _get_user_stmt(include_avatars).filter(
+                DbUser.id.in_(frozenset(user_ids))
+            )
         )
-    ).all()
+        .tuples()
+        .all()
+    )
 
     return {_user_row_to_dto(row) for row in rows}
 
