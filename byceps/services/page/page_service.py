@@ -7,7 +7,7 @@ byceps.services.page.page_service
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Sequence
 
 from sqlalchemy import delete, select
 
@@ -229,7 +229,7 @@ def get_version(version_id: PageVersionID) -> Optional[PageVersion]:
     return version
 
 
-def get_versions(page_id: PageID) -> list[DbPageVersion]:
+def get_versions(page_id: PageID) -> Sequence[DbPageVersion]:
     """Return all versions of the page, sorted from most recent to oldest."""
     return db.session.scalars(
         select(DbPageVersion)
@@ -238,7 +238,7 @@ def get_versions(page_id: PageID) -> list[DbPageVersion]:
     ).all()
 
 
-def _get_db_versions(page_id: PageID) -> list[DbPageVersion]:
+def _get_db_versions(page_id: PageID) -> Sequence[DbPageVersion]:
     """Return all versions of that page, sorted from most recent to
     oldest.
     """
@@ -330,7 +330,9 @@ def find_page_aggregate(version_id: PageVersionID) -> Optional[PageAggregate]:
     )
 
 
-def get_pages_for_site_with_current_versions(site_id: SiteID) -> list[DbPage]:
+def get_pages_for_site_with_current_versions(
+    site_id: SiteID,
+) -> Sequence[DbPage]:
     """Return all pages with their current versions for that site."""
     return (
         db.session.scalars(

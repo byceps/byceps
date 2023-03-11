@@ -6,7 +6,7 @@ byceps.services.ticketing.ticket_bundle_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from typing import Optional, Sequence
 
 from sqlalchemy import delete, select
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
@@ -119,7 +119,7 @@ def get_bundle(bundle_id: TicketBundleID) -> DbTicketBundle:
     return db_bundle
 
 
-def get_tickets_for_bundle(bundle_id: TicketBundleID) -> list[DbTicket]:
+def get_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
     """Return all tickets included in this bundle."""
     return db.session.scalars(
         select(DbTicket).filter(DbTicket.bundle_id == bundle_id)

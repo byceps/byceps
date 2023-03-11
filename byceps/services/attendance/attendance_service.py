@@ -7,7 +7,7 @@ byceps.services.attendance.attendance_service
 """
 
 from collections import defaultdict
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Sequence
 
 from sqlalchemy import select
 
@@ -79,7 +79,7 @@ def _get_users_paginated(
 
 def _get_tickets_for_users(
     party_id: PartyID, user_ids: set[UserID]
-) -> list[DbTicket]:
+) -> Sequence[DbTicket]:
     return (
         db.session.scalars(
             select(DbTicket)

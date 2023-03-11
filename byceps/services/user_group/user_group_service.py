@@ -6,7 +6,7 @@ byceps.services.user_group.user_group_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from typing import Optional, Sequence
 
 from sqlalchemy import select
 
@@ -31,6 +31,6 @@ def create_group(
     return group
 
 
-def get_all_groups() -> list[DbUserGroup]:
+def get_all_groups() -> Sequence[DbUserGroup]:
     """Return all groups."""
     return db.session.scalars(select(DbUserGroup)).all()

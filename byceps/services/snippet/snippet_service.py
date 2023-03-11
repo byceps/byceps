@@ -7,7 +7,7 @@ byceps.services.snippet.snippet_service
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Sequence
 
 from sqlalchemy import delete, select
 
@@ -149,7 +149,7 @@ def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
     return db.session.get(DbSnippet, snippet_id)
 
 
-def get_snippets(snippet_ids: set[SnippetID]) -> list[DbSnippet]:
+def get_snippets(snippet_ids: set[SnippetID]) -> Sequence[DbSnippet]:
     """Return these snippets."""
     return db.session.scalars(
         select(DbSnippet).filter(DbSnippet.id.in_(snippet_ids))
@@ -158,7 +158,7 @@ def get_snippets(snippet_ids: set[SnippetID]) -> list[DbSnippet]:
 
 def get_snippets_for_scope_with_current_versions(
     scope: Scope,
-) -> list[DbSnippet]:
+) -> Sequence[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
     return (
         db.session.scalars(
@@ -199,7 +199,7 @@ def find_current_version_of_snippet_with_name(
     ).one_or_none()
 
 
-def get_versions(snippet_id: SnippetID) -> list[DbSnippetVersion]:
+def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
     """Return all versions of that snippet, sorted from most recent to
     oldest.
     """
@@ -212,7 +212,7 @@ def get_versions(snippet_id: SnippetID) -> list[DbSnippetVersion]:
 
 def search_snippets(
     search_term: str, scope: Optional[Scope]
-) -> list[DbSnippetVersion]:
+) -> Sequence[DbSnippetVersion]:
     """Search in (the latest versions of) snippets."""
     stmt = (
         select(DbSnippetVersion)

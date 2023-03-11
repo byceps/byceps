@@ -10,7 +10,7 @@ from __future__ import annotations
 import dataclasses
 from datetime import datetime
 from functools import partial
-from typing import Optional
+from typing import Optional, Sequence
 
 from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
@@ -374,7 +374,7 @@ def _get_items_stmt(channel_ids: set[NewsChannelID]) -> Select:
     )
 
 
-def get_item_versions(item_id: NewsItemID) -> list[DbNewsItemVersion]:
+def get_item_versions(item_id: NewsItemID) -> Sequence[DbNewsItemVersion]:
     """Return all item versions, sorted from most recent to oldest."""
     return db.session.scalars(
         select(DbNewsItemVersion)

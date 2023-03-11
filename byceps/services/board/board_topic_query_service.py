@@ -7,7 +7,7 @@ byceps.services.board.board_topic_query_service
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Sequence
 
 from sqlalchemy import select
 from sqlalchemy.sql import Select
@@ -66,7 +66,7 @@ def find_topic_visible_for_user(
 
 def get_recent_topics(
     board_id: BoardID, include_hidden: bool, limit: int
-) -> list[DbTopic]:
+) -> Sequence[DbTopic]:
     """Return recent topics in that board."""
     return (
         db.session.scalars(
