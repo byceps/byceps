@@ -8,7 +8,7 @@ byceps.services.authentication.authn_service
 
 from typing import Optional
 
-from result import Err, Ok, Result
+from ...util.result import Err, Ok, Result
 
 from ..user.models.user import User
 from ..user import user_service

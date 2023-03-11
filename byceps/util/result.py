@@ -34,6 +34,9 @@ class Ok(Generic[T]):
     def unwrap(self) -> T:
         return self._value
 
+    def unwrap_err(self) -> NoReturn:
+        raise UnwrapError(self, '`unwrap_err()` called on `Ok` value')
+
     def unwrap_or(self, default: T) -> T:
         return self._value
 
@@ -59,6 +62,9 @@ class Err(Generic[E]):
 
     def unwrap(self) -> NoReturn:
         raise UnwrapError(self)
+
+    def unwrap_err(self) -> E:
+        return self._error
 
     def unwrap_or(self, default: T) -> T:
         return default

@@ -3,10 +3,9 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from result import Err, Ok
-
 from byceps.services.authentication import authn_service
 from byceps.services.authentication.errors import AuthenticationFailed
+from byceps.util.result import Err, Ok
 
 
 CORRECT_PASSWORD = 'opensesame'
