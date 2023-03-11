@@ -326,7 +326,7 @@ def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
 
 
 def _get_public_orga_users_by_id(
-    db_memberships: DbMembership,
+    db_memberships: Iterable[DbMembership],
 ) -> dict[UserID, User]:
     user_ids = {db_ms.user_id for db_ms in db_memberships}
     users = user_service.get_users(user_ids, include_avatars=True)

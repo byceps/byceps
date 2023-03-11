@@ -390,7 +390,9 @@ def get_current_item_version(item_id: NewsItemID) -> DbNewsItemVersion:
     return db_item.current_version
 
 
-def find_item_version(version_id: NewsItemVersionID) -> DbNewsItemVersion:
+def find_item_version(
+    version_id: NewsItemVersionID,
+) -> Optional[DbNewsItemVersion]:
     """Return the item version with that ID, or `None` if not found."""
     return db.session.get(DbNewsItemVersion, version_id)
 
