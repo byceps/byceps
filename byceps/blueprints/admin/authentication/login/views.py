@@ -69,7 +69,7 @@ def log_in():
             'User authentication failed',
             scope='admin',
             username=username,
-            error=authn_result.unwrap_err(),
+            error=str(authn_result.unwrap_err()),
         )
         abort(401)
 
