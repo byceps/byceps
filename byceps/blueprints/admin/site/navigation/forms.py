@@ -30,18 +30,18 @@ class MenuUpdateForm(_MenuBaseForm):
 
 
 class _ItemBaseForm(LocalizedForm):
-    label = StringField(lazy_gettext('Label'), validators=[InputRequired()])
     target_type = SelectField(
         lazy_gettext('Target type'),
         [InputRequired()],
         choices=[
             ('', '<' + lazy_gettext('choose') + '>'),
-            ('endpoint', lazy_gettext('endpoint')),
             ('page', lazy_gettext('page')),
+            ('endpoint', lazy_gettext('endpoint')),
             ('url', lazy_gettext('URL')),
         ],
     )
     target = StringField(lazy_gettext('Target'), validators=[InputRequired()])
+    label = StringField(lazy_gettext('Label'), validators=[InputRequired()])
     current_page_id = StringField(
         lazy_gettext('Current page ID'), validators=[InputRequired()]
     )
