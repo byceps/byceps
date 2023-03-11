@@ -33,17 +33,24 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
     with data_file.open() as f:
         lines = seat_import_service.parse_lines(f)
         for line_number, line in enumerate(lines, start=1):
-            try:
-                seat_to_import = seat_import_service.parse_seat_json(line)
-                seat = seat_import_service.import_seat(
-                    seat_to_import, area_ids_by_title, category_ids_by_title
-                )
+            import_result = seat_import_service.parse_seat_json(line)
+
+            if import_result.is_err():
+                error_str = import_result.unwrap_err()
                 click.secho(
-                    f'[line {line_number}] Imported seat '
-                    f'(area="{seat_to_import.area_title}", x={seat.coord_x}, y={seat.coord_y}, category="{seat_to_import.category_title}").',
-                    fg='green',
+                    f'[line {line_number}] Could not import seat: {error_str}',
+                    fg='red',
                 )
-            except Exception as e:
-                click.secho(
-                    f'[line {line_number}] Could not import seat: {e}', fg='red'
-                )
+                continue
+
+            seat_to_import = import_result.unwrap()
+
+            seat = seat_import_service.import_seat(
+                seat_to_import, area_ids_by_title, category_ids_by_title
+            )
+
+            click.secho(
+                f'[line {line_number}] Imported seat '
+                f'(area="{seat_to_import.area_title}", x={seat.coord_x}, y={seat.coord_y}, category="{seat_to_import.category_title}").',
+                fg='green',
+            )

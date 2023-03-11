@@ -12,6 +12,8 @@ from typing import Iterator, Optional
 
 from pydantic import BaseModel, ValidationError
 
+from ...util.result import Err, Ok, Result
+
 from ..ticketing.models.ticket import TicketCategoryID
 
 from .models import Seat, SeatingAreaID
@@ -33,13 +35,14 @@ def parse_lines(lines: TextIOBase) -> Iterator[str]:
         yield line.strip()
 
 
-def parse_seat_json(json_data: str) -> SeatToImport:
+def parse_seat_json(json_data: str) -> Result[SeatToImport, str]:
     data_dict = json.loads(json_data)
 
     try:
-        return SeatToImport.parse_obj(data_dict)
+        seat_to_import = SeatToImport.parse_obj(data_dict)
+        return Ok(seat_to_import)
     except ValidationError as e:
-        raise Exception(str(e))
+        return Err(str(e))
 
 
 def import_seat(
