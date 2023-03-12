@@ -4,14 +4,16 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections import defaultdict
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Iterator, Optional
 
 import click
 from flask.cli import with_appcontext
 
+from ...services.seating.models import Seat
 from ...services.seating.seat_import_service import SeatToImport
-from ...services.seating import seat_import_service
+from ...services.seating import seat_group_service, seat_import_service
 from ...typing import PartyID
 from ...util.result import Err, Ok, Result
 
@@ -39,7 +41,10 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
         return
 
     line_numbers_and_seats_to_import = parse_result.unwrap()
-    _import_seats(line_numbers_and_seats_to_import)
+    imported_seats_and_group_titles = list(
+        _import_seats(line_numbers_and_seats_to_import)
+    )
+    _import_seat_groups(party_id, imported_seats_and_group_titles)
 
 
 def _parse_seats(
@@ -72,7 +77,7 @@ def _parse_seats(
 
 def _import_seats(
     line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]]
-) -> None:
+) -> Iterator[tuple[Seat, Optional[str]]]:
     """Import seats into database."""
     for line_number, seat_to_import in line_numbers_and_seats_to_import:
         import_result = seat_import_service.import_seat(seat_to_import)
@@ -89,5 +94,28 @@ def _import_seats(
         click.secho(
             f'[line {line_number}] Imported seat '
             f'(area_id="{imported_seat.area_id}", x={imported_seat.coord_x}, y={imported_seat.coord_y}, category_id="{imported_seat.category_id}").',
+            fg='green',
+        )
+
+        yield imported_seat, seat_to_import.group_title
+
+
+def _import_seat_groups(
+    party_id: PartyID, seats_and_group_titles: list[tuple[Seat, Optional[str]]]
+) -> None:
+    """Import seat groups into database."""
+    seats_by_group_title = defaultdict(list)
+
+    for seat, group_title in seats_and_group_titles:
+        if group_title is not None:
+            seats_by_group_title[group_title].append(seat)
+
+    for group_title, seats in seats_by_group_title.items():
+        db_group = seat_group_service.create_seat_group(
+            party_id, seats[0].category_id, group_title, seats
+        )
+
+        click.secho(
+            f'Imported seat group "{db_group.title}" with {db_group.seat_quantity} seats (category_id="{db_group.ticket_category_id}")',
             fg='green',
         )
