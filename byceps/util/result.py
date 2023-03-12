@@ -43,6 +43,9 @@ class Ok(Generic[T]):
     def unwrap_or_else(self, default: Callable[[], T]) -> T:
         return self._value
 
+    def and_then(self, f: Callable[[T], Result[U, E]]) -> Result[U, E]:
+        return f(self._value)
+
     def __repr__(self) -> str:
         return f'Ok({self._value})'
 
@@ -71,6 +74,9 @@ class Err(Generic[E]):
 
     def unwrap_or_else(self, default: Callable[[], T]) -> T:
         return default()
+
+    def and_then(self, f: Callable[[T], Result[U, E]]) -> Result[U, E]:
+        return self
 
     def __repr__(self) -> str:
         return f'Err({self._error})'
