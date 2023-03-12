@@ -5,6 +5,7 @@
 """
 
 from pathlib import Path
+from typing import Iterable
 
 import click
 from flask.cli import with_appcontext
@@ -12,6 +13,7 @@ from flask.cli import with_appcontext
 from ...services.seating.seat_import_service import SeatToImport
 from ...services.seating import seat_import_service
 from ...typing import PartyID
+from ...util.result import Err, Ok, Result
 
 
 @click.command()
@@ -22,29 +24,12 @@ from ...typing import PartyID
 @with_appcontext
 def import_seats(party_id: PartyID, data_file: Path) -> None:
     """Import seats."""
-    seats_import_parser = seat_import_service.create_parser(party_id)
-
-    line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
-    erroneous_line_numbers = set()
-
     with data_file.open() as f:
         lines = seat_import_service.parse_lines(f)
-        for line_number, parse_result in seats_import_parser.parse_lines(lines):
-            if parse_result.is_err():
-                erroneous_line_numbers.add(line_number)
+        parse_result = _parse_seats(party_id, lines)
 
-                error_str = parse_result.unwrap_err()
-                click.secho(f'[line {line_number}] {error_str}', fg='red')
-
-                continue
-
-            seat_to_import = parse_result.unwrap()
-
-            line_numbers_and_seats_to_import.append(
-                (line_number, seat_to_import)
-            )
-
-    if erroneous_line_numbers:
+    if parse_result.is_err():
+        erroneous_line_numbers = parse_result.unwrap_err()
         line_numbers_str = ', '.join(map(str, sorted(erroneous_line_numbers)))
         click.secho(
             '\nNot attempting actual importing of seats due to parsing errors '
@@ -53,6 +38,41 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
         )
         return
 
+    line_numbers_and_seats_to_import = parse_result.unwrap()
+    _import_seats(line_numbers_and_seats_to_import)
+
+
+def _parse_seats(
+    party_id: PartyID, lines: Iterable[str]
+) -> Result[list[tuple[int, SeatToImport]], set[int]]:
+    seats_import_parser = seat_import_service.create_parser(party_id)
+
+    line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
+    erroneous_line_numbers = set()
+
+    for line_number, parse_result in seats_import_parser.parse_lines(lines):
+        if parse_result.is_err():
+            erroneous_line_numbers.add(line_number)
+
+            error_str = parse_result.unwrap_err()
+            click.secho(f'[line {line_number}] {error_str}', fg='red')
+
+            continue
+
+        seat_to_import = parse_result.unwrap()
+
+        line_numbers_and_seats_to_import.append((line_number, seat_to_import))
+
+    if erroneous_line_numbers:
+        return Err(erroneous_line_numbers)
+
+    return Ok(line_numbers_and_seats_to_import)
+
+
+def _import_seats(
+    line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]]
+) -> None:
+    """Import seats into database."""
     for line_number, seat_to_import in line_numbers_and_seats_to_import:
         import_result = seat_import_service.import_seat(seat_to_import)
 
