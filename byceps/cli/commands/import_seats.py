@@ -16,7 +16,7 @@ from ...services.seating import seat_import_service, seating_area_service
 from ...services.ticketing.models.ticket import TicketCategoryID
 from ...services.ticketing import ticket_category_service
 from ...typing import PartyID
-from ...util.result import Result
+from ...util.result import Err, Ok, Result
 
 
 @click.command()
@@ -30,18 +30,19 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
     area_ids_by_title = get_area_ids_by_title(party_id)
     category_ids_by_title = get_category_ids_by_title(party_id)
 
-    line_numbers_and_parse_results = parse_seats_json(data_file)
-    for line_number, parse_result in line_numbers_and_parse_results:
-        if parse_result.is_err():
-            error_str = parse_result.unwrap_err()
-            click.secho(
-                f'[line {line_number}] Could not parse seat: {error_str}',
-                fg='red',
-            )
-            continue
+    seats_to_import_result = get_seats_to_import(data_file)
 
-        seat_to_import = parse_result.unwrap()
+    if seats_to_import_result.is_err():
+        erroneous_line_numbers = seats_to_import_result.unwrap_err()
+        line_numbers_str = ', '.join(map(str, sorted(erroneous_line_numbers)))
+        click.secho(
+            '\nNot attempting actual importing of seats due to parsing errors '
+            f'in these lines: {line_numbers_str}',
+            fg='red',
+        )
+        return
 
+    for line_number, seat_to_import in seats_to_import_result.unwrap():
         seat = seat_import_service.import_seat(
             seat_to_import, area_ids_by_title, category_ids_by_title
         )
@@ -63,6 +64,34 @@ def get_category_ids_by_title(party_id: PartyID) -> dict[str, TicketCategoryID]:
     """Get the party's ticket categories as a mapping from title to ID."""
     categories = ticket_category_service.get_categories_for_party(party_id)
     return {category.title: category.id for category in categories}
+
+
+def get_seats_to_import(
+    data_file: Path,
+) -> Result[list[tuple[int, SeatToImport]], set[int]]:
+    """Obtain the seats to import."""
+    line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
+    erroneous_line_numbers = set()
+
+    for line_number, parse_result in parse_seats_json(data_file):
+        if parse_result.is_err():
+            erroneous_line_numbers.add(line_number)
+
+            error_str = parse_result.unwrap_err()
+            click.secho(
+                f'[line {line_number}] Could not parse seat: {error_str}',
+                fg='red',
+            )
+
+            continue
+
+        seat_to_import = parse_result.unwrap()
+        line_numbers_and_seats_to_import.append((line_number, seat_to_import))
+
+    if erroneous_line_numbers:
+        return Err(erroneous_line_numbers)
+
+    return Ok(line_numbers_and_seats_to_import)
 
 
 def parse_seats_json(
