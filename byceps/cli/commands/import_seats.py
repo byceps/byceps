@@ -92,10 +92,7 @@ def get_seats_to_import(
                 erroneous_line_numbers.add(line_number)
 
                 error_str = parse_result.unwrap_err()
-                click.secho(
-                    f'[line {line_number}] Could not parse seat: {error_str}',
-                    fg='red',
-                )
+                click.secho(f'[line {line_number}] {error_str}', fg='red')
 
                 continue
 
@@ -109,10 +106,7 @@ def get_seats_to_import(
                 erroneous_line_numbers.add(line_number)
 
                 error_str = assembly_result.unwrap_err()
-                click.secho(
-                    f'[line {line_number}] Could not assemble seat: {error_str}',
-                    fg='red',
-                )
+                click.secho(f'[line {line_number}] {error_str}', fg='red')
 
                 continue
 

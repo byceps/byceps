@@ -53,7 +53,7 @@ def parse_seat_json(json_data: str) -> Result[ParsedSeatToImport, str]:
     try:
         data_dict = json.loads(json_data)
     except json.decoder.JSONDecodeError as e:
-        return Err(str(e))
+        return Err(f'Could not parse JSON: {e}')
 
     try:
         seat_to_import = ParsedSeatToImport.parse_obj(data_dict)
