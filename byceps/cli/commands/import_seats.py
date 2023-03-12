@@ -5,13 +5,16 @@
 """
 
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Iterator
 
 import click
 from flask.cli import with_appcontext
 
 from ...services.seating.models import SeatingAreaID
-from ...services.seating.seat_import_service import SeatToImport
+from ...services.seating.seat_import_service import (
+    ParsedSeatToImport,
+    SeatToImport,
+)
 from ...services.seating import seat_import_service, seating_area_service
 from ...services.ticketing.models.ticket import TicketCategoryID
 from ...services.ticketing import ticket_category_service
@@ -97,9 +100,7 @@ class SeatsImportParser:
         line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
         erroneous_line_numbers = set()
 
-        for line_number, line in enumerate(lines, start=1):
-            parse_result = seat_import_service.parse_seat_json(line)
-
+        for line_number, parse_result in self._parse_lines(lines):
             if parse_result.is_err():
                 erroneous_line_numbers.add(line_number)
 
@@ -108,23 +109,7 @@ class SeatsImportParser:
 
                 continue
 
-            parsed_seat = parse_result.unwrap()
-
-            assembly_result = seat_import_service.assemble_seat_to_import(
-                parsed_seat,
-                self._area_ids_by_title,
-                self._category_ids_by_title,
-            )
-
-            if assembly_result.is_err():
-                erroneous_line_numbers.add(line_number)
-
-                error_str = assembly_result.unwrap_err()
-                click.secho(f'[line {line_number}] {error_str}', fg='red')
-
-                continue
-
-            seat_to_import = assembly_result.unwrap()
+            seat_to_import = parse_result.unwrap()
 
             line_numbers_and_seats_to_import.append(
                 (line_number, seat_to_import)
@@ -134,3 +119,23 @@ class SeatsImportParser:
             return Err(erroneous_line_numbers)
 
         return Ok(line_numbers_and_seats_to_import)
+
+    def _parse_lines(
+        self, lines: Iterable[str]
+    ) -> Iterator[tuple[int, Result[SeatToImport, str]]]:
+        """Parse JSON lines into importable seat objects."""
+        for line_number, line in enumerate(lines, start=1):
+            parse_result = self._parse_line(line)
+            yield line_number, parse_result
+
+    def _parse_line(self, line: str) -> Result[SeatToImport, str]:
+        """Parse a JSON line into an importable seat object."""
+        parse_result = seat_import_service.parse_seat_json(line)
+        return parse_result.and_then(self._assemble_seat_to_import)
+
+    def _assemble_seat_to_import(
+        self, parsed_seat: ParsedSeatToImport
+    ) -> Result[SeatToImport, str]:
+        return seat_import_service.assemble_seat_to_import(
+            parsed_seat, self._area_ids_by_title, self._category_ids_by_title
+        )
