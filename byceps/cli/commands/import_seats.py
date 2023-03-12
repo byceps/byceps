@@ -9,14 +9,8 @@ from pathlib import Path
 import click
 from flask.cli import with_appcontext
 
-from ...services.seating.models import SeatingAreaID
-from ...services.seating.seat_import_service import (
-    SeatsImportParser,
-    SeatToImport,
-)
-from ...services.seating import seat_import_service, seating_area_service
-from ...services.ticketing.models.ticket import TicketCategoryID
-from ...services.ticketing import ticket_category_service
+from ...services.seating.seat_import_service import SeatToImport
+from ...services.seating import seat_import_service
 from ...typing import PartyID
 
 
@@ -28,12 +22,7 @@ from ...typing import PartyID
 @with_appcontext
 def import_seats(party_id: PartyID, data_file: Path) -> None:
     """Import seats."""
-    area_ids_by_title = get_area_ids_by_title(party_id)
-    category_ids_by_title = get_category_ids_by_title(party_id)
-
-    seats_import_parser = SeatsImportParser(
-        area_ids_by_title, category_ids_by_title
-    )
+    seats_import_parser = seat_import_service.create_parser(party_id)
 
     line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
     erroneous_line_numbers = set()
@@ -81,15 +70,3 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
             f'(area_id="{imported_seat.area_id}", x={imported_seat.coord_x}, y={imported_seat.coord_y}, category_id="{imported_seat.category_id}").',
             fg='green',
         )
-
-
-def get_area_ids_by_title(party_id: PartyID) -> dict[str, SeatingAreaID]:
-    """Get the party's seating areas as a mapping from title to ID."""
-    areas = seating_area_service.get_areas_for_party(party_id)
-    return {area.title: area.id for area in areas}
-
-
-def get_category_ids_by_title(party_id: PartyID) -> dict[str, TicketCategoryID]:
-    """Get the party's ticket categories as a mapping from title to ID."""
-    categories = ticket_category_service.get_categories_for_party(party_id)
-    return {category.title: category.id for category in categories}

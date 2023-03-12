@@ -6,6 +6,7 @@ byceps.services.seating.seat_import_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 import json
 from io import TextIOBase
@@ -13,12 +14,14 @@ from typing import Iterable, Iterator, Optional
 
 from pydantic import BaseModel, ValidationError
 
+from ...typing import PartyID
 from ...util.result import Err, Ok, Result
 
 from ..ticketing.models.ticket import TicketCategoryID
+from ..ticketing import ticket_category_service
 
 from .models import Seat, SeatingAreaID
-from . import seat_service
+from . import seating_area_service, seat_service
 
 
 class ParsedSeatToImport(BaseModel):
@@ -46,6 +49,28 @@ def parse_lines(lines: TextIOBase) -> Iterator[str]:
     """Read text line by line, removing trailing whitespace."""
     for line in lines:
         yield line.rstrip()
+
+
+def create_parser(party_id: PartyID) -> SeatsImportParser:
+    """Create a parser, populated with party-specific data."""
+    area_ids_by_title = _get_area_ids_by_title(party_id)
+    category_ids_by_title = _get_category_ids_by_title(party_id)
+
+    return SeatsImportParser(area_ids_by_title, category_ids_by_title)
+
+
+def _get_area_ids_by_title(party_id: PartyID) -> dict[str, SeatingAreaID]:
+    """Get the party's seating areas as a mapping from title to ID."""
+    areas = seating_area_service.get_areas_for_party(party_id)
+    return {area.title: area.id for area in areas}
+
+
+def _get_category_ids_by_title(
+    party_id: PartyID,
+) -> dict[str, TicketCategoryID]:
+    """Get the party's ticket categories as a mapping from title to ID."""
+    categories = ticket_category_service.get_categories_for_party(party_id)
+    return {category.title: category.id for category in categories}
 
 
 class SeatsImportParser:
