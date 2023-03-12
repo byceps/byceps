@@ -11,7 +11,10 @@ import click
 from flask.cli import with_appcontext
 
 from ...services.seating.models import SeatingAreaID
-from ...services.seating.seat_import_service import SeatToImport
+from ...services.seating.seat_import_service import (
+    ParsedSeatToImport,
+    SeatToImport,
+)
 from ...services.seating import seat_import_service, seating_area_service
 from ...services.ticketing.models.ticket import TicketCategoryID
 from ...services.ticketing import ticket_category_service
@@ -30,7 +33,9 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
     area_ids_by_title = get_area_ids_by_title(party_id)
     category_ids_by_title = get_category_ids_by_title(party_id)
 
-    seats_to_import_result = get_seats_to_import(data_file)
+    seats_to_import_result = get_seats_to_import(
+        data_file, area_ids_by_title, category_ids_by_title
+    )
 
     if seats_to_import_result.is_err():
         erroneous_line_numbers = seats_to_import_result.unwrap_err()
@@ -43,9 +48,7 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
         return
 
     for line_number, seat_to_import in seats_to_import_result.unwrap():
-        import_result = seat_import_service.import_seat(
-            seat_to_import, area_ids_by_title, category_ids_by_title
-        )
+        import_result = seat_import_service.import_seat(seat_to_import)
 
         if import_result.is_err():
             error_str = import_result.unwrap_err()
@@ -58,7 +61,7 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
         imported_seat = import_result.unwrap()
         click.secho(
             f'[line {line_number}] Imported seat '
-            f'(area="{seat_to_import.area_title}", x={imported_seat.coord_x}, y={imported_seat.coord_y}, category="{seat_to_import.category_title}").',
+            f'(area_id="{imported_seat.area_id}", x={imported_seat.coord_x}, y={imported_seat.coord_y}, category_id="{imported_seat.category_id}").',
             fg='green',
         )
 
@@ -77,6 +80,8 @@ def get_category_ids_by_title(party_id: PartyID) -> dict[str, TicketCategoryID]:
 
 def get_seats_to_import(
     data_file: Path,
+    area_ids_by_title: dict[str, SeatingAreaID],
+    category_ids_by_title: dict[str, TicketCategoryID],
 ) -> Result[list[tuple[int, SeatToImport]], set[int]]:
     """Obtain the seats to import."""
     line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
@@ -94,7 +99,25 @@ def get_seats_to_import(
 
             continue
 
-        seat_to_import = parse_result.unwrap()
+        parsed_seat = parse_result.unwrap()
+
+        assembly_result = seat_import_service.assemble_seat_to_import(
+            parsed_seat, area_ids_by_title, category_ids_by_title
+        )
+
+        if assembly_result.is_err():
+            erroneous_line_numbers.add(line_number)
+
+            error_str = assembly_result.unwrap_err()
+            click.secho(
+                f'[line {line_number}] Could not assemble seat: {error_str}',
+                fg='red',
+            )
+
+            continue
+
+        seat_to_import = assembly_result.unwrap()
+
         line_numbers_and_seats_to_import.append((line_number, seat_to_import))
 
     if erroneous_line_numbers:
@@ -105,7 +128,7 @@ def get_seats_to_import(
 
 def parse_seats_json(
     data_file: Path,
-) -> Iterator[tuple[int, Result[SeatToImport, str]]]:
+) -> Iterator[tuple[int, Result[ParsedSeatToImport, str]]]:
     """Parse one seat per line."""
     with data_file.open() as f:
         lines = seat_import_service.parse_lines(f)
