@@ -20,7 +20,7 @@ from ..ticketing.models.ticket import TicketCategoryID
 from ..ticketing import ticket_category_service
 
 from .models import Seat, SeatingAreaID
-from . import seating_area_service, seat_service
+from . import seating_area_service, seat_group_service, seat_service
 
 
 class ParsedSeatToImport(BaseModel):
@@ -57,8 +57,11 @@ def _create_parser(party_id: PartyID) -> _SeatsImportParser:
     """Create a parser, populated with party-specific data."""
     area_ids_by_title = _get_area_ids_by_title(party_id)
     category_ids_by_title = _get_category_ids_by_title(party_id)
+    seat_group_titles = _get_seat_group_titles(party_id)
 
-    return _SeatsImportParser(area_ids_by_title, category_ids_by_title)
+    return _SeatsImportParser(
+        area_ids_by_title, category_ids_by_title, seat_group_titles
+    )
 
 
 def _get_area_ids_by_title(party_id: PartyID) -> dict[str, SeatingAreaID]:
@@ -75,6 +78,12 @@ def _get_category_ids_by_title(
     return {category.title: category.id for category in categories}
 
 
+def _get_seat_group_titles(party_id: PartyID) -> set[str]:
+    """Get the party's seat groups' titles."""
+    groups = seat_group_service.get_all_seat_groups_for_party(party_id)
+    return {group.title for group in groups}
+
+
 class _SeatsImportParser:
     """Parse JSON Lines records into importable seat objects."""
 
@@ -82,9 +91,11 @@ class _SeatsImportParser:
         self,
         area_ids_by_title: dict[str, SeatingAreaID],
         category_ids_by_title: dict[str, TicketCategoryID],
+        seat_group_titles: set[str],
     ) -> None:
         self._area_ids_by_title = area_ids_by_title
         self._category_ids_by_title = category_ids_by_title
+        self._seat_group_titles = seat_group_titles
 
     def parse_lines(
         self, lines: Iterable[str]
@@ -113,6 +124,10 @@ class _SeatsImportParser:
         category_id = self._category_ids_by_title.get(category_title)
         if category_id is None:
             return Err(f'Unknown category title "{category_title}"')
+
+        group_title = parsed_seat.group_title
+        if group_title in self._seat_group_titles:
+            return Err(f'Seat group with title "{group_title}" already exists')
 
         assembled_seat = SeatToImport(
             area_id=area_id,
