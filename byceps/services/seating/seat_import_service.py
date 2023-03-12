@@ -36,7 +36,10 @@ def parse_lines(lines: TextIOBase) -> Iterator[str]:
 
 
 def parse_seat_json(json_data: str) -> Result[SeatToImport, str]:
-    data_dict = json.loads(json_data)
+    try:
+        data_dict = json.loads(json_data)
+    except json.decoder.JSONDecodeError as e:
+        return Err(str(e))
 
     try:
         seat_to_import = SeatToImport.parse_obj(data_dict)
