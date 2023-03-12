@@ -43,13 +43,22 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
         return
 
     for line_number, seat_to_import in seats_to_import_result.unwrap():
-        seat = seat_import_service.import_seat(
+        import_result = seat_import_service.import_seat(
             seat_to_import, area_ids_by_title, category_ids_by_title
         )
 
+        if import_result.is_err():
+            error_str = import_result.unwrap_err()
+            click.secho(
+                f'[line {line_number}] Import of seat failed: {error_str}',
+                fg='red',
+            )
+            continue
+
+        imported_seat = import_result.unwrap()
         click.secho(
             f'[line {line_number}] Imported seat '
-            f'(area="{seat_to_import.area_title}", x={seat.coord_x}, y={seat.coord_y}, category="{seat_to_import.category_title}").',
+            f'(area="{seat_to_import.area_title}", x={imported_seat.coord_x}, y={imported_seat.coord_y}, category="{seat_to_import.category_title}").',
             fg='green',
         )
 

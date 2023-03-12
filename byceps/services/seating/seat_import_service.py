@@ -54,12 +54,19 @@ def import_seat(
     seat_to_import: SeatToImport,
     area_ids_by_title: dict[str, SeatingAreaID],
     category_ids_by_title: dict[str, TicketCategoryID],
-) -> Seat:
+) -> Result[Seat, str]:
     """Import a seat."""
-    area_id = area_ids_by_title[seat_to_import.area_title]
-    category_id = category_ids_by_title[seat_to_import.category_title]
+    area_title = seat_to_import.area_title
+    area_id = area_ids_by_title.get(area_title)
+    if area_id is None:
+        return Err(f'Unknown area title "{area_title}"')
 
-    return seat_service.create_seat(
+    category_title = seat_to_import.category_title
+    category_id = category_ids_by_title.get(category_title)
+    if category_id is None:
+        return Err(f'Unknown category title "{category_title}"')
+
+    seat = seat_service.create_seat(
         area_id,
         seat_to_import.coord_x,
         seat_to_import.coord_y,
@@ -68,3 +75,4 @@ def import_seat(
         label=seat_to_import.label,
         type_=seat_to_import.type_,
     )
+    return Ok(seat)
