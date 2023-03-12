@@ -5,6 +5,7 @@
 """
 
 from pathlib import Path
+from typing import Iterable
 
 import click
 from flask.cli import with_appcontext
@@ -29,9 +30,13 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
     area_ids_by_title = get_area_ids_by_title(party_id)
     category_ids_by_title = get_category_ids_by_title(party_id)
 
-    seats_to_import_result = get_seats_to_import(
-        data_file, area_ids_by_title, category_ids_by_title
+    seats_import_parser = SeatsImportParser(
+        area_ids_by_title, category_ids_by_title
     )
+
+    with data_file.open() as f:
+        lines = seat_import_service.parse_lines(f)
+        seats_to_import_result = seats_import_parser.get_seats_to_import(lines)
 
     if seats_to_import_result.is_err():
         erroneous_line_numbers = seats_to_import_result.unwrap_err()
@@ -74,17 +79,24 @@ def get_category_ids_by_title(party_id: PartyID) -> dict[str, TicketCategoryID]:
     return {category.title: category.id for category in categories}
 
 
-def get_seats_to_import(
-    data_file: Path,
-    area_ids_by_title: dict[str, SeatingAreaID],
-    category_ids_by_title: dict[str, TicketCategoryID],
-) -> Result[list[tuple[int, SeatToImport]], set[int]]:
-    """Obtain the seats to import."""
-    line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
-    erroneous_line_numbers = set()
+class SeatsImportParser:
+    """Parse JSON Lines records into importable seat objects."""
 
-    with data_file.open() as f:
-        lines = seat_import_service.parse_lines(f)
+    def __init__(
+        self,
+        area_ids_by_title: dict[str, SeatingAreaID],
+        category_ids_by_title: dict[str, TicketCategoryID],
+    ) -> None:
+        self._area_ids_by_title = area_ids_by_title
+        self._category_ids_by_title = category_ids_by_title
+
+    def get_seats_to_import(
+        self, lines: Iterable[str]
+    ) -> Result[list[tuple[int, SeatToImport]], set[int]]:
+        """Obtain the seats to import."""
+        line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
+        erroneous_line_numbers = set()
+
         for line_number, line in enumerate(lines, start=1):
             parse_result = seat_import_service.parse_seat_json(line)
 
@@ -99,7 +111,9 @@ def get_seats_to_import(
             parsed_seat = parse_result.unwrap()
 
             assembly_result = seat_import_service.assemble_seat_to_import(
-                parsed_seat, area_ids_by_title, category_ids_by_title
+                parsed_seat,
+                self._area_ids_by_title,
+                self._category_ids_by_title,
             )
 
             if assembly_result.is_err():
