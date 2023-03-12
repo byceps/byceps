@@ -37,12 +37,27 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
         area_ids_by_title, category_ids_by_title
     )
 
+    line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
+    erroneous_line_numbers = set()
+
     with data_file.open() as f:
         lines = seat_import_service.parse_lines(f)
-        seats_to_import_result = seats_import_parser.get_seats_to_import(lines)
+        for line_number, parse_result in seats_import_parser.parse_lines(lines):
+            if parse_result.is_err():
+                erroneous_line_numbers.add(line_number)
 
-    if seats_to_import_result.is_err():
-        erroneous_line_numbers = seats_to_import_result.unwrap_err()
+                error_str = parse_result.unwrap_err()
+                click.secho(f'[line {line_number}] {error_str}', fg='red')
+
+                continue
+
+            seat_to_import = parse_result.unwrap()
+
+            line_numbers_and_seats_to_import.append(
+                (line_number, seat_to_import)
+            )
+
+    if erroneous_line_numbers:
         line_numbers_str = ', '.join(map(str, sorted(erroneous_line_numbers)))
         click.secho(
             '\nNot attempting actual importing of seats due to parsing errors '
@@ -51,7 +66,7 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
         )
         return
 
-    for line_number, seat_to_import in seats_to_import_result.unwrap():
+    for line_number, seat_to_import in line_numbers_and_seats_to_import:
         import_result = seat_import_service.import_seat(seat_to_import)
 
         if import_result.is_err():
@@ -93,34 +108,7 @@ class SeatsImportParser:
         self._area_ids_by_title = area_ids_by_title
         self._category_ids_by_title = category_ids_by_title
 
-    def get_seats_to_import(
-        self, lines: Iterable[str]
-    ) -> Result[list[tuple[int, SeatToImport]], set[int]]:
-        """Obtain the seats to import."""
-        line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
-        erroneous_line_numbers = set()
-
-        for line_number, parse_result in self._parse_lines(lines):
-            if parse_result.is_err():
-                erroneous_line_numbers.add(line_number)
-
-                error_str = parse_result.unwrap_err()
-                click.secho(f'[line {line_number}] {error_str}', fg='red')
-
-                continue
-
-            seat_to_import = parse_result.unwrap()
-
-            line_numbers_and_seats_to_import.append(
-                (line_number, seat_to_import)
-            )
-
-        if erroneous_line_numbers:
-            return Err(erroneous_line_numbers)
-
-        return Ok(line_numbers_and_seats_to_import)
-
-    def _parse_lines(
+    def parse_lines(
         self, lines: Iterable[str]
     ) -> Iterator[tuple[int, Result[SeatToImport, str]]]:
         """Parse JSON lines into importable seat objects."""
