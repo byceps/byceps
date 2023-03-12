@@ -9,7 +9,7 @@ byceps.services.seating.seat_import_service
 from dataclasses import dataclass
 import json
 from io import TextIOBase
-from typing import Iterator, Optional
+from typing import Iterable, Iterator, Optional
 
 from pydantic import BaseModel, ValidationError
 
@@ -48,7 +48,57 @@ def parse_lines(lines: TextIOBase) -> Iterator[str]:
         yield line.rstrip()
 
 
-def parse_seat_json(json_data: str) -> Result[ParsedSeatToImport, str]:
+class SeatsImportParser:
+    """Parse JSON Lines records into importable seat objects."""
+
+    def __init__(
+        self,
+        area_ids_by_title: dict[str, SeatingAreaID],
+        category_ids_by_title: dict[str, TicketCategoryID],
+    ) -> None:
+        self._area_ids_by_title = area_ids_by_title
+        self._category_ids_by_title = category_ids_by_title
+
+    def parse_lines(
+        self, lines: Iterable[str]
+    ) -> Iterator[tuple[int, Result[SeatToImport, str]]]:
+        """Parse JSON lines into importable seat objects."""
+        for line_number, line in enumerate(lines, start=1):
+            parse_result = self._parse_line(line)
+            yield line_number, parse_result
+
+    def _parse_line(self, line: str) -> Result[SeatToImport, str]:
+        """Parse a JSON line into an importable seat object."""
+        parse_result = _parse_seat_json(line)
+        return parse_result.and_then(self._assemble_seat_to_import)
+
+    def _assemble_seat_to_import(
+        self, parsed_seat: ParsedSeatToImport
+    ) -> Result[SeatToImport, str]:
+        """Build seat object to import by setting area and category IDs."""
+        area_title = parsed_seat.area_title
+        area_id = self._area_ids_by_title.get(area_title)
+        if area_id is None:
+            return Err(f'Unknown area title "{area_title}"')
+
+        category_title = parsed_seat.category_title
+        category_id = self._category_ids_by_title.get(category_title)
+        if category_id is None:
+            return Err(f'Unknown category title "{category_title}"')
+
+        assembled_seat = SeatToImport(
+            area_id=area_id,
+            coord_x=parsed_seat.coord_x,
+            coord_y=parsed_seat.coord_y,
+            category_id=category_id,
+            rotation=parsed_seat.rotation,
+            label=parsed_seat.label,
+            type_=parsed_seat.type_,
+        )
+        return Ok(assembled_seat)
+
+
+def _parse_seat_json(json_data: str) -> Result[ParsedSeatToImport, str]:
     """Parse a JSON object into a seat import object."""
     try:
         data_dict = json.loads(json_data)
@@ -60,34 +110,6 @@ def parse_seat_json(json_data: str) -> Result[ParsedSeatToImport, str]:
         return Ok(seat_to_import)
     except ValidationError as e:
         return Err(str(e))
-
-
-def assemble_seat_to_import(
-    parsed_seat: ParsedSeatToImport,
-    area_ids_by_title: dict[str, SeatingAreaID],
-    category_ids_by_title: dict[str, TicketCategoryID],
-) -> Result[SeatToImport, str]:
-    """Build seat object to import by setting area and category IDs."""
-    area_title = parsed_seat.area_title
-    area_id = area_ids_by_title.get(area_title)
-    if area_id is None:
-        return Err(f'Unknown area title "{area_title}"')
-
-    category_title = parsed_seat.category_title
-    category_id = category_ids_by_title.get(category_title)
-    if category_id is None:
-        return Err(f'Unknown category title "{category_title}"')
-
-    assembled_seat = SeatToImport(
-        area_id=area_id,
-        coord_x=parsed_seat.coord_x,
-        coord_y=parsed_seat.coord_y,
-        category_id=category_id,
-        rotation=parsed_seat.rotation,
-        label=parsed_seat.label,
-        type_=parsed_seat.type_,
-    )
-    return Ok(assembled_seat)
 
 
 def import_seat(seat_to_import: SeatToImport) -> Result[Seat, str]:
