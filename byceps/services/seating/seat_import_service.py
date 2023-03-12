@@ -31,6 +31,7 @@ class ParsedSeatToImport(BaseModel):
     rotation: Optional[int] = None
     label: Optional[str] = None
     type_: Optional[str] = None
+    group_title: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -42,6 +43,7 @@ class SeatToImport:
     rotation: Optional[int] = None
     label: Optional[str] = None
     type_: Optional[str] = None
+    group_title: Optional[str] = None
 
 
 def load_seats_from_json_lines(
@@ -120,6 +122,7 @@ class _SeatsImportParser:
             rotation=parsed_seat.rotation,
             label=parsed_seat.label,
             type_=parsed_seat.type_,
+            group_title=parsed_seat.group_title,
         )
         return Ok(assembled_seat)
 
