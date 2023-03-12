@@ -25,7 +25,7 @@ from ...util.result import Err, Ok, Result
 def import_seats(party_id: PartyID, data_file: Path) -> None:
     """Import seats."""
     with data_file.open() as f:
-        lines = seat_import_service.parse_lines(iter(f))
+        lines = iter(f)
         parse_result = _parse_seats(party_id, lines)
 
     if parse_result.is_err():

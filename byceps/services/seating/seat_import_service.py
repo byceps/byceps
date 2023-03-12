@@ -44,12 +44,6 @@ class SeatToImport:
     type_: Optional[str] = None
 
 
-def parse_lines(lines: Iterable[str]) -> Iterator[str]:
-    """Read text line by line, removing trailing whitespace."""
-    for line in lines:
-        yield line.rstrip()
-
-
 def create_parser(party_id: PartyID) -> SeatsImportParser:
     """Create a parser, populated with party-specific data."""
     area_ids_by_title = _get_area_ids_by_title(party_id)
@@ -88,6 +82,7 @@ class SeatsImportParser:
     ) -> Iterator[tuple[int, Result[SeatToImport, str]]]:
         """Parse JSON lines into importable seat objects."""
         for line_number, line in enumerate(lines, start=1):
+            line = line.rstrip()
             parse_result = self._parse_line(line)
             yield line_number, parse_result
 
