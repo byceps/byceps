@@ -32,7 +32,7 @@ class SeatToImport(BaseModel):
 
 def parse_lines(lines: TextIOBase) -> Iterator[str]:
     for line in lines:
-        yield line.strip()
+        yield line.rstrip()
 
 
 def parse_seat_json(json_data: str) -> Result[SeatToImport, str]:
