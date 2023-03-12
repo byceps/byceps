@@ -5,16 +5,12 @@
 """
 
 from pathlib import Path
-from typing import Iterator
 
 import click
 from flask.cli import with_appcontext
 
 from ...services.seating.models import SeatingAreaID
-from ...services.seating.seat_import_service import (
-    ParsedSeatToImport,
-    SeatToImport,
-)
+from ...services.seating.seat_import_service import SeatToImport
 from ...services.seating import seat_import_service, seating_area_service
 from ...services.ticketing.models.ticket import TicketCategoryID
 from ...services.ticketing import ticket_category_service
@@ -87,51 +83,46 @@ def get_seats_to_import(
     line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
     erroneous_line_numbers = set()
 
-    for line_number, parse_result in parse_seats_json(data_file):
-        if parse_result.is_err():
-            erroneous_line_numbers.add(line_number)
-
-            error_str = parse_result.unwrap_err()
-            click.secho(
-                f'[line {line_number}] Could not parse seat: {error_str}',
-                fg='red',
-            )
-
-            continue
-
-        parsed_seat = parse_result.unwrap()
-
-        assembly_result = seat_import_service.assemble_seat_to_import(
-            parsed_seat, area_ids_by_title, category_ids_by_title
-        )
-
-        if assembly_result.is_err():
-            erroneous_line_numbers.add(line_number)
-
-            error_str = assembly_result.unwrap_err()
-            click.secho(
-                f'[line {line_number}] Could not assemble seat: {error_str}',
-                fg='red',
-            )
-
-            continue
-
-        seat_to_import = assembly_result.unwrap()
-
-        line_numbers_and_seats_to_import.append((line_number, seat_to_import))
-
-    if erroneous_line_numbers:
-        return Err(erroneous_line_numbers)
-
-    return Ok(line_numbers_and_seats_to_import)
-
-
-def parse_seats_json(
-    data_file: Path,
-) -> Iterator[tuple[int, Result[ParsedSeatToImport, str]]]:
-    """Parse one seat per line."""
     with data_file.open() as f:
         lines = seat_import_service.parse_lines(f)
         for line_number, line in enumerate(lines, start=1):
             parse_result = seat_import_service.parse_seat_json(line)
-            yield line_number, parse_result
+
+            if parse_result.is_err():
+                erroneous_line_numbers.add(line_number)
+
+                error_str = parse_result.unwrap_err()
+                click.secho(
+                    f'[line {line_number}] Could not parse seat: {error_str}',
+                    fg='red',
+                )
+
+                continue
+
+            parsed_seat = parse_result.unwrap()
+
+            assembly_result = seat_import_service.assemble_seat_to_import(
+                parsed_seat, area_ids_by_title, category_ids_by_title
+            )
+
+            if assembly_result.is_err():
+                erroneous_line_numbers.add(line_number)
+
+                error_str = assembly_result.unwrap_err()
+                click.secho(
+                    f'[line {line_number}] Could not assemble seat: {error_str}',
+                    fg='red',
+                )
+
+                continue
+
+            seat_to_import = assembly_result.unwrap()
+
+            line_numbers_and_seats_to_import.append(
+                (line_number, seat_to_import)
+            )
+
+        if erroneous_line_numbers:
+            return Err(erroneous_line_numbers)
+
+        return Ok(line_numbers_and_seats_to_import)
