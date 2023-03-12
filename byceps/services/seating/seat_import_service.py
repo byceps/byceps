@@ -31,11 +31,13 @@ class SeatToImport(BaseModel):
 
 
 def parse_lines(lines: TextIOBase) -> Iterator[str]:
+    """Read text line by line, removing trailing whitespace."""
     for line in lines:
         yield line.rstrip()
 
 
 def parse_seat_json(json_data: str) -> Result[SeatToImport, str]:
+    """Parse a JSON object into a seat import object."""
     try:
         data_dict = json.loads(json_data)
     except json.decoder.JSONDecodeError as e:
@@ -53,6 +55,7 @@ def import_seat(
     area_ids_by_title: dict[str, SeatingAreaID],
     category_ids_by_title: dict[str, TicketCategoryID],
 ) -> Seat:
+    """Import a seat."""
     area_id = area_ids_by_title[seat_to_import.area_title]
     category_id = category_ids_by_title[seat_to_import.category_title]
 
