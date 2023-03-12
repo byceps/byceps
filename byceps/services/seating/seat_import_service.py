@@ -9,7 +9,6 @@ byceps.services.seating.seat_import_service
 from __future__ import annotations
 from dataclasses import dataclass
 import json
-from io import TextIOBase
 from typing import Iterable, Iterator, Optional
 
 from pydantic import BaseModel, ValidationError
@@ -45,7 +44,7 @@ class SeatToImport:
     type_: Optional[str] = None
 
 
-def parse_lines(lines: TextIOBase) -> Iterator[str]:
+def parse_lines(lines: Iterable[str]) -> Iterator[str]:
     """Read text line by line, removing trailing whitespace."""
     for line in lines:
         yield line.rstrip()
