@@ -44,12 +44,19 @@ class SeatToImport:
     type_: Optional[str] = None
 
 
-def create_parser(party_id: PartyID) -> SeatsImportParser:
+def load_seats_from_json_lines(
+    party_id: PartyID, lines: Iterable[str]
+) -> Iterator[tuple[int, Result[SeatToImport, str]]]:
+    parser = _create_parser(party_id)
+    return parser.parse_lines(lines)
+
+
+def _create_parser(party_id: PartyID) -> _SeatsImportParser:
     """Create a parser, populated with party-specific data."""
     area_ids_by_title = _get_area_ids_by_title(party_id)
     category_ids_by_title = _get_category_ids_by_title(party_id)
 
-    return SeatsImportParser(area_ids_by_title, category_ids_by_title)
+    return _SeatsImportParser(area_ids_by_title, category_ids_by_title)
 
 
 def _get_area_ids_by_title(party_id: PartyID) -> dict[str, SeatingAreaID]:
@@ -66,7 +73,7 @@ def _get_category_ids_by_title(
     return {category.title: category.id for category in categories}
 
 
-class SeatsImportParser:
+class _SeatsImportParser:
     """Parse JSON Lines records into importable seat objects."""
 
     def __init__(

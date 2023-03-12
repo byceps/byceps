@@ -45,12 +45,13 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
 def _parse_seats(
     party_id: PartyID, lines: Iterable[str]
 ) -> Result[list[tuple[int, SeatToImport]], set[int]]:
-    seats_import_parser = seat_import_service.create_parser(party_id)
-
     line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]] = []
     erroneous_line_numbers = set()
 
-    for line_number, parse_result in seats_import_parser.parse_lines(lines):
+    loaded_seats = seat_import_service.load_seats_from_json_lines(
+        party_id, lines
+    )
+    for line_number, parse_result in loaded_seats:
         if parse_result.is_err():
             erroneous_line_numbers.add(line_number)
 
