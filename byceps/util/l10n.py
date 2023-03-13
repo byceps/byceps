@@ -42,13 +42,18 @@ def force_user_locale(user: User) -> Iterator[None]:
         yield
 
 
+def get_default_locale() -> str:
+    """Return the application's default locale."""
+    return current_app.config['LOCALE']
+
+
 def get_user_locale(user: User) -> str:
     """Return the user's preferred locale.
 
     If no preference is set for the user, return the app's default
     locale.
     """
-    return user.locale or current_app.config['LOCALE']
+    return user.locale or get_default_locale()
 
 
 BASE_LOCALE = Locale('en')

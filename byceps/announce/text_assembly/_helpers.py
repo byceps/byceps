@@ -9,8 +9,9 @@ byceps.announce.text_assembly._helpers
 from functools import wraps
 from typing import Optional
 
-from flask import current_app
 from flask_babel import force_locale, gettext
+
+from ...util.l10n import get_default_locale
 
 
 def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
@@ -21,7 +22,7 @@ def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
 def with_locale(handler):
     @wraps(handler)
     def wrapper(*args, **kwargs):
-        locale = current_app.config['LOCALE']
+        locale = get_default_locale()
         with force_locale(locale):
             return handler(*args, **kwargs)
 
