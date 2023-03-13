@@ -81,7 +81,6 @@ class ItemUpdateForm(_ItemBaseForm):
         lazy_gettext('Target type'),
         [InputRequired()],
         choices=[
-            ('', '<' + lazy_gettext('choose') + '>'),
             ('page', lazy_gettext('Page')),
             ('endpoint', lazy_gettext('Endpoint')),
             ('url', lazy_gettext('URL')),
