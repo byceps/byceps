@@ -38,7 +38,9 @@
     {{ form_buttons(_('Log in')) }}
   </form>
 
-  <p>{{ _('Forgot password?') }} <a href="{{ url_for('authentication_password.request_reset_form') }}">{{ _('Set new password') }}</a></p>
+  <div style="margin-top: 3rem;">
+    <p>{{ _('Forgot password?') }} <a href="{{ url_for('authentication_password.request_reset_form') }}">{{ _('Set new password') }}</a></p>
+  </div>
 
 {%- endblock %}
 

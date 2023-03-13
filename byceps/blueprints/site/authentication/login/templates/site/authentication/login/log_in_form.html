@@ -38,11 +38,13 @@
     {{ form_buttons(_('Log in')) }}
   </form>
 
+  <div style="margin-top: 3rem;">
     {% if user_account_creation_enabled %}
-  <p>{{ _('Not registered yet?') }} <a href="{{ url_for('user_creation.create_form') }}">{{ _('Create an account.') }}</a></p>
-  <p>{{ _('Confirmation email not received yet?') }} <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">{{ _('Request it again.') }}</a></p>
+    <p>{{ _('Not registered yet?') }} <a href="{{ url_for('user_creation.create_form') }}">{{ _('Create an account.') }}</a></p>
+    <p>{{ _('Confirmation email not received yet?') }} <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">{{ _('Request it again.') }}</a></p>
     {%- endif %}
-  <p>{{ _('Forgot your password?') }} <a href="{{ url_for('authentication_password.request_reset_form') }}">{{ _('Set new password.') }}</a></p>
+    <p>{{ _('Forgot your password?') }} <a href="{{ url_for('authentication_password.request_reset_form') }}">{{ _('Set new password.') }}</a></p>
+  </div>
   {%- else %}
 {{ render_notification(_('Login is disabled.'), category='warning', icon='warning') }}
   {%- endif %}
