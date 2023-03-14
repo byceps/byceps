@@ -31,7 +31,7 @@ class DbPage(db.Model):
 
     __tablename__ = 'pages'
     __table_args__ = (
-        db.UniqueConstraint('site_id', 'name'),
+        db.UniqueConstraint('site_id', 'name', 'language_code'),
         db.UniqueConstraint('site_id', 'language_code', 'url_path'),
     )
 
