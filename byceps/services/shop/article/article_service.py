@@ -12,6 +12,7 @@ from typing import Iterable, Optional
 
 from moneyed import Money
 from sqlalchemy import delete, select, update
+from sqlalchemy.sql import Select
 
 from ....database import db, paginate, Pagination
 
@@ -368,15 +369,25 @@ def get_articles_for_shop_paginated(
     )
 
     if search_term:
-        ilike_pattern = f'%{search_term}%'
-        stmt = stmt.filter(
-            db.or_(
-                DbArticle.item_number.ilike(ilike_pattern),
-                DbArticle.description.ilike(ilike_pattern),
-            )
-        )
+        stmt = _filter_by_search_term(stmt, search_term)
 
     return paginate(stmt, page, per_page)
+
+
+def _filter_by_search_term(stmt: Select, search_term: str) -> Select:
+    terms = search_term.split(' ')
+    clauses = map(_generate_search_clauses_for_term, terms)
+
+    return stmt.filter(db.and_(*clauses))
+
+
+def _generate_search_clauses_for_term(search_term: str) -> Select:
+    ilike_pattern = f'%{search_term}%'
+
+    return db.or_(
+        DbArticle.item_number.ilike(ilike_pattern),
+        DbArticle.description.ilike(ilike_pattern),
+    )
 
 
 def get_article_compilation_for_orderable_articles(

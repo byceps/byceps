@@ -42,6 +42,10 @@ def article3(shop, make_article):
         ('2023', {'TICKET-2023', 'SHIRT-2023'}),
         ('shirt', {'SHIRT-2023'}),
         ('ticket', {'TICKET-2022', 'TICKET-2023'}),
+        # match two terms (AND)
+        ('shirt 2022', set()),
+        ('shirt 2023', {'SHIRT-2023'}),
+        ('ticket 2023', {'TICKET-2023'}),
     ],
 )
 def test_search_multiple_terms(
