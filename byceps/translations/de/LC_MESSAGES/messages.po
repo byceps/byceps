@@ -3259,7 +3259,11 @@ msgstr "URL-Pfad"
 msgid "Header"
 msgstr "Seitenkopf"
 
-#: byceps/blueprints/admin/page/forms.py:42
+#: byceps/blueprints/admin/page/forms.py:40
+msgid "URL path must begin with a forward slash."
+msgstr "Der URL-Pfad muss mit einem Schrägstrich beginnen."
+
+#: byceps/blueprints/admin/page/forms.py:53
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:31
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:41
 msgid "Navigation menu"
