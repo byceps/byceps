@@ -16,7 +16,7 @@ from ....services.site_navigation import site_navigation_service
 from ....util.l10n import LocalizedForm
 
 
-class CreateForm(LocalizedForm):
+class _PageBaseForm(LocalizedForm):
     name = StringField(lazy_gettext('Name'), [InputRequired()])
     language_code = SelectField(
         lazy_gettext('Language code'), [InputRequired()]
@@ -34,7 +34,11 @@ class CreateForm(LocalizedForm):
         self.language_code.choices = choices
 
 
-class UpdateForm(CreateForm):
+class CreateForm(_PageBaseForm):
+    pass
+
+
+class UpdateForm(_PageBaseForm):
     pass
 
 
