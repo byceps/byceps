@@ -20,9 +20,14 @@ from _validators import validate_site
 @click.pass_context
 @click.argument('source_site', callback=validate_site)
 @click.argument('target_site', callback=validate_site)
+@click.argument('language_code')
 @click.argument('page_names', nargs=-1, required=True)
-def execute(ctx, source_site, target_site, page_names) -> None:
-    versions = [get_version(source_site.id, name) for name in page_names]
+def execute(
+    ctx, source_site, target_site, language_code: str, page_names
+) -> None:
+    versions = [
+        get_version(source_site.id, name, language_code) for name in page_names
+    ]
 
     for version in versions:
         copy_page(target_site.id, version, ctx)
@@ -30,8 +35,12 @@ def execute(ctx, source_site, target_site, page_names) -> None:
     click.secho('Done.', fg='green')
 
 
-def get_version(site_id: SiteID, name: str) -> DbPageVersion:
-    version = page_service.find_current_version_for_name(site_id, name)
+def get_version(
+    site_id: SiteID, name: str, language_code: str
+) -> DbPageVersion:
+    version = page_service.find_current_version_for_name(
+        site_id, name, language_code
+    )
 
     if version is None:
         raise click.BadParameter(

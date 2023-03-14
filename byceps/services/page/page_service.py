@@ -270,10 +270,10 @@ def is_current_version(page_id: PageID, version_id: PageVersionID) -> bool:
 
 
 def find_current_version_for_name(
-    site_id: SiteID, name: str
+    site_id: SiteID, name: str, language_code: str
 ) -> Optional[DbPageVersion]:
-    """Return the current version of the page with that name for that
-    site.
+    """Return the current version of the page with that name and
+    language code for that site.
     """
     return db.session.execute(
         select(DbPageVersion)
@@ -281,6 +281,7 @@ def find_current_version_for_name(
         .join(DbPage)
         .filter(DbPage.site_id == site_id)
         .filter(DbPage.name == name)
+        .filter(DbPage.language_code == language_code)
     ).scalar_one_or_none()
 
 
@@ -309,7 +310,7 @@ def get_url_paths_by_page_name_for_site(site_id: SiteID) -> dict[str, str]:
 
 
 def get_page_ids_and_names(
-    site_id: SiteID, language_code
+    site_id: SiteID, language_code: str
 ) -> Sequence[tuple[PageID, str]]:
     """Return the IDs and names of all pages for that site and locale."""
     return (
