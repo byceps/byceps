@@ -286,16 +286,17 @@ def find_current_version_for_name(
 
 
 def find_current_version_for_url_path(
-    site_id: SiteID, url_path: str
+    site_id: SiteID, url_path: str, language_code: str
 ) -> Optional[DbPageVersion]:
-    """Return the current version of the page with that URL path for
-    that site.
+    """Return the current version of the page with that URL path and
+    language code for that site.
     """
     return db.session.execute(
         select(DbPageVersion)
         .join(DbCurrentPageVersionAssociation)
         .join(DbPage)
         .filter(DbPage.site_id == site_id)
+        .filter(DbPage.language_code == language_code)
         .filter(DbPage.url_path == url_path)
     ).scalar_one_or_none()
 

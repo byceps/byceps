@@ -10,6 +10,7 @@ from flask import abort, g
 
 from ....services.page import page_service
 from ....util.framework.blueprint import create_blueprint
+from ....util.l10n import get_user_locale
 
 from .templating import render_page, url_for_page
 
@@ -25,9 +26,10 @@ def view(url_path):
     current site at the given URL path.
     """
     url_path = '/' + url_path
+    language_code = get_user_locale(g.user)
 
     version = page_service.find_current_version_for_url_path(
-        g.site_id, url_path
+        g.site_id, url_path, language_code
     )
 
     if version is None:
