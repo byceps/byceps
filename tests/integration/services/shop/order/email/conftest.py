@@ -6,7 +6,6 @@
 import pytest
 
 from byceps.services.shop.shop.models import Shop
-from byceps.services.snippet.models import SnippetID
 from byceps.services.user.models.user import User
 
 from tests.helpers.shop import create_shop_snippet
@@ -21,10 +20,8 @@ def order_admin(make_user):
 
 
 @pytest.fixture
-def email_payment_instructions_snippet_id(
-    shop: Shop, order_admin: User
-) -> SnippetID:
-    return create_shop_snippet(
+def email_payment_instructions_snippets(shop: Shop, order_admin: User) -> None:
+    create_shop_snippet(
         shop.id,
         order_admin.id,
         'email_payment_instructions',

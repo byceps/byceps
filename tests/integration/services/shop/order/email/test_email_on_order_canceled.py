@@ -46,7 +46,7 @@ def storefront(
 
 
 @pytest.fixture
-def order(storefront: Storefront, orderer: Orderer, email_footer_snippet_id):
+def order(storefront: Storefront, orderer: Orderer, email_footer_snippets):
     created_at = datetime(2014, 11, 5, 23, 32, 9)
 
     return place_order_with_items(storefront.id, orderer, created_at, [])

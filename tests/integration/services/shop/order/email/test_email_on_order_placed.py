@@ -15,7 +15,6 @@ from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
-from byceps.services.snippet.models import SnippetID
 from byceps.services.user.models.user import User
 
 from tests.helpers import current_user_set
@@ -74,8 +73,8 @@ def order(
     article1: Article,
     article2: Article,
     orderer: Orderer,
-    email_payment_instructions_snippet_id: SnippetID,
-    email_footer_snippet_id: SnippetID,
+    email_payment_instructions_snippets,
+    email_footer_snippets,
 ):
     created_at = datetime(2014, 8, 15, 20, 7, 43)
 

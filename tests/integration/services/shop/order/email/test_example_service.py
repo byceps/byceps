@@ -104,8 +104,8 @@ def test_example_placed_order_message_text(
     admin_app,
     order_admin,
     shop,
-    email_payment_instructions_snippet_id,
-    email_footer_snippet_id,
+    email_payment_instructions_snippets,
+    email_footer_snippets,
     locale,
     expected,
 ):
@@ -182,8 +182,8 @@ def test_example_paid_order_message_text(
     admin_app,
     order_admin,
     shop,
-    email_payment_instructions_snippet_id,
-    email_footer_snippet_id,
+    email_payment_instructions_snippets,
+    email_footer_snippets,
     locale,
     expected,
 ):
@@ -260,8 +260,8 @@ def test_example_canceled_order_message_text(
     admin_app,
     order_admin,
     shop,
-    email_payment_instructions_snippet_id,
-    email_footer_snippet_id,
+    email_payment_instructions_snippets,
+    email_footer_snippets,
     locale,
     expected,
 ):

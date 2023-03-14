@@ -10,7 +10,7 @@ from byceps.services.brand.models import Brand
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
-from byceps.services.snippet.models import Scope, SnippetID
+from byceps.services.snippet.models import Scope
 from byceps.services.snippet import snippet_service
 from byceps.services.user.models.user import User
 
@@ -24,10 +24,10 @@ def shop_brand(make_brand, make_email_config) -> Brand:
 
 
 @pytest.fixture
-def email_footer_snippet_id(shop_brand: Brand, admin_user: User) -> SnippetID:
+def email_footer_snippets(shop_brand: Brand, admin_user: User) -> None:
     scope = Scope.for_brand(shop_brand.id)
 
-    version, _ = snippet_service.create_snippet(
+    snippet_service.create_snippet(
         scope,
         'email_footer',
         'de',
@@ -44,8 +44,6 @@ Acme Entertainment Convention
 E-Mail: noreply@acmecon.test
 ''',
     )
-
-    return version.snippet_id
 
 
 @pytest.fixture
