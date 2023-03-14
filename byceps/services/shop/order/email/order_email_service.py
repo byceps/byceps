@@ -252,7 +252,7 @@ def _get_snippet_body(scope: Scope, name: str, language_code: str) -> str:
     )
 
     if not version:
-        raise snippet_service.SnippetNotFound(scope, name)
+        raise snippet_service.SnippetNotFound(scope, name, language_code)
 
     return version.body.strip()
 

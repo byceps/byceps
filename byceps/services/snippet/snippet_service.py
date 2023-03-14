@@ -232,6 +232,7 @@ def search_snippets(
 
 
 class SnippetNotFound(Exception):
-    def __init__(self, scope: Scope, name: str) -> None:
+    def __init__(self, scope: Scope, name: str, language_code: str) -> None:
         self.scope = scope
         self.name = name
+        self.language_code = language_code
