@@ -7,12 +7,20 @@
 
 {% block head %}
 <style>
+.box.email-example {
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.email-example pre {
+  margin: 0;
+}
+
 .email-example code {
-  background-color: #eeeeee;
   display: block;
   font-size: 0.75rem;
   max-width: 46rem;
-  overflow-x: scroll;
+  overflow-x: auto;
   padding: 1rem;
 }
 </style>
@@ -24,24 +32,20 @@
 
   <h2>{{ _('Examples') }}</h2>
 
-  <div class="box">
-
     <details class="email-example">
-      <summary>{{ _('Order confirmation') }}</summary>
-      {{ render_message_text(placed_order_message_text) }}
+      <summary class="mb">{{ _('Order confirmation') }}</summary>
+{{ render_message_text(placed_order_message_text) }}
     </details>
 
     <details class="email-example">
-      <summary>{{ _('Payment receipt') }}</summary>
-      {{ render_message_text(paid_order_message_text) }}
+      <summary class="mb">{{ _('Payment receipt') }}</summary>
+{{ render_message_text(paid_order_message_text) }}
     </details>
 
     <details class="email-example">
-      <summary>{{ _('Cancelation') }}</summary>
-      {{ render_message_text(canceled_order_message_text) }}
+      <summary class="mb">{{ _('Cancelation') }}</summary>
+{{ render_message_text(canceled_order_message_text) }}
     </details>
-
-  </div>
 
   <h2>{{ _('Configuration') }}</h2>
   <div class="box">
@@ -70,8 +74,12 @@
 
 {% macro render_message_text(message_text) -%}
   {%- if message_text -%}
-    <pre><code>{{ message_text }}</code></pre>
+      <div class="box email-example">
+        <pre><code>{{ message_text }}</code></pre>
+      </div>
   {%- else -%}
-    {{ render_notification('Could not assemble example email. Are all necessary templates defined?', category='danger') }}
+      <div class="mb">
+{{ render_notification('Could not assemble example email. Are all necessary templates defined?', category='danger') }}
+      </div>
   {%- endif -%}
 {%- endmacro %}
