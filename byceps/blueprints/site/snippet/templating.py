@@ -14,6 +14,7 @@ from jinja2 import Template
 from ....services.snippet.dbmodels import DbSnippetVersion
 from ....services.snippet.models import Scope
 from ....services.snippet import snippet_service
+from ....util.l10n import get_user_locale
 from ....util.templating import load_template
 
 
@@ -37,10 +38,14 @@ def render_snippet_as_partial_from_template(
 
     This function is meant to be made available in templates.
     """
+    language_code = get_user_locale(g.user)
     scope_obj = _parse_scope_string(scope) if (scope is not None) else None
 
     return render_snippet_as_partial(
-        name, scope=scope_obj, ignore_if_unknown=ignore_if_unknown
+        name,
+        language_code,
+        scope=scope_obj,
+        ignore_if_unknown=ignore_if_unknown,
     )
 
 
@@ -52,6 +57,7 @@ def _parse_scope_string(value: str) -> Scope:
 
 def render_snippet_as_partial(
     name: str,
+    language_code: str,
     *,
     scope: Optional[Scope] = None,
     ignore_if_unknown: bool = False,
@@ -64,7 +70,7 @@ def render_snippet_as_partial(
         scope = Scope.for_site(g.site_id)
 
     current_version = snippet_service.find_current_version_of_snippet_with_name(
-        scope, name
+        scope, name, language_code
     )
 
     if current_version is None:

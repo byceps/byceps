@@ -15,13 +15,14 @@ CONTENT_TYPE_JSON = 'application/json'
 def test_get_snippet_by_name(
     scope, admin_user, api_client, api_client_authz_header
 ):
+    language_code = 'en'
     snippet_version, _ = snippet_service.create_snippet(
-        scope, 'infos', 'en', admin_user.id, 'TBD'
+        scope, 'infos', language_code, admin_user.id, 'TBD'
     )
     snippet_name = snippet_version.snippet.name
 
     response = send_request(
-        api_client, api_client_authz_header, scope, snippet_name
+        api_client, api_client_authz_header, scope, snippet_name, language_code
     )
 
     assert response.status_code == 200
@@ -39,9 +40,10 @@ def test_get_unknown_snippet_by_name(
     scope, api_client, api_client_authz_header
 ):
     snippet_name = 'unknown-af'
+    language_code = 'en'
 
     response = send_request(
-        api_client, api_client_authz_header, scope, snippet_name
+        api_client, api_client_authz_header, scope, snippet_name, language_code
     )
 
     assert response.status_code == 404
@@ -58,8 +60,10 @@ def scope(site):
 # helpers
 
 
-def send_request(api_client, api_client_authz_header, scope, snippet_name):
-    url = f'/api/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}'
+def send_request(
+    api_client, api_client_authz_header, scope, snippet_name, language_code
+):
+    url = f'/api/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}/{language_code}'
     headers = [api_client_authz_header]
 
     return api_client.get(url, headers=headers)

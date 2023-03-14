@@ -75,27 +75,22 @@ You have ordered these items:
 
   Total amount: €42.95
 
-Bitte überweise den Gesamtbetrag auf folgendes Konto:
+Please transfer the total amount to this bank account:
 
-  Zahlungsempfänger: <Name>
+  Recipient: <name>
   IBAN: <IBAN>
   BIC: <BIC>
-  Bank: <Kreditinstitut>
-  Verwendungszweck: AWSM-ORDR-9247
+  Bank: <bank>
+  Purpose: AWSM-ORDR-9247
 
-Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
+We will let you know once we have received your payment.
 
-Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
+You can view your orders here: https://www.acmecon.test/shop/orders
 
-Für Fragen stehen wir gerne zur Verfügung.
+We are happy to answer your questions.
 
-Viele Grüße,
-das Team der Acme Entertainment Convention
-
--- 
-Acme Entertainment Convention
-
-E-Mail: noreply@acmecon.test
+Have a nice day,
+the team of Acme Entertainment Convention
 ''',
         ),
     ],
@@ -165,15 +160,10 @@ thank you for your order AWSM-ORDR-9247 on Oct 12, 2021 through our website.
 
 We have received your payment and have marked your order as paid.
 
-Für Fragen stehen wir gerne zur Verfügung.
+We are happy to answer your questions.
 
-Viele Grüße,
-das Team der Acme Entertainment Convention
-
--- 
-Acme Entertainment Convention
-
-E-Mail: noreply@acmecon.test
+Have a nice day,
+the team of Acme Entertainment Convention
 ''',
         ),
     ],
@@ -243,15 +233,10 @@ your order AWSM-ORDR-9247 on Oct 12, 2021 has been canceled by us for this reaso
 
 Kein fristgerechter Geldeingang feststellbar.
 
-Für Fragen stehen wir gerne zur Verfügung.
+We are happy to answer your questions.
 
-Viele Grüße,
-das Team der Acme Entertainment Convention
-
--- 
-Acme Entertainment Convention
-
-E-Mail: noreply@acmecon.test
+Have a nice day,
+the team of Acme Entertainment Convention
 ''',
         ),
     ],

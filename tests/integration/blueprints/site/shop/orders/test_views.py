@@ -129,7 +129,7 @@ def test_view_matching_user_but_different_site_and_shop(
 def create_payment_instructions_snippet(shop_id, admin_id):
     body = 'Please pay {{ total_amount }} for order {{ order_number }}!'
     return create_shop_snippet(
-        shop_id, admin_id, 'payment_instructions', 'en', body
+        shop_id, admin_id, 'payment_instructions', 'de', body
     )
 
 

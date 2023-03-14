@@ -40,3 +40,23 @@ Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
 ''',
     )
+
+    create_shop_snippet(
+        shop.id,
+        order_admin.id,
+        'email_payment_instructions',
+        'en',
+        '''
+Please transfer the total amount to this bank account:
+
+  Recipient: <name>
+  IBAN: <IBAN>
+  BIC: <BIC>
+  Bank: <bank>
+  Purpose: {{ order_number }}
+
+We will let you know once we have received your payment.
+
+You can view your orders here: https://www.acmecon.test/shop/orders
+''',
+    )

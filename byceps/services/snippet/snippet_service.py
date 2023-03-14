@@ -184,10 +184,10 @@ def find_snippet_version(
 
 
 def find_current_version_of_snippet_with_name(
-    scope: Scope, name: str
+    scope: Scope, name: str, language_code: str
 ) -> Optional[DbSnippetVersion]:
-    """Return the current version of the snippet with that name in that
-    scope, or `None` if not found.
+    """Return the current version of the snippet with that name and
+    language code in that scope, or `None` if not found.
     """
     return db.session.scalars(
         select(DbSnippetVersion)
@@ -196,6 +196,7 @@ def find_current_version_of_snippet_with_name(
         .filter(DbSnippet.scope_type == scope.type_)
         .filter(DbSnippet.scope_name == scope.name)
         .filter(DbSnippet.name == name)
+        .filter(DbSnippet.language_code == language_code)
     ).one_or_none()
 
 

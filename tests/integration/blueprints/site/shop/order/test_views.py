@@ -49,7 +49,7 @@ def shop(make_brand, make_shop, admin_user: User):
         shop.id,
         admin_user.id,
         'payment_instructions',
-        'en',
+        'de',
         'Send all ur moneyz!',
     )
 

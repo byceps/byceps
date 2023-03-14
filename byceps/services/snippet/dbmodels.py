@@ -34,7 +34,9 @@ class DbSnippet(db.Model):
     __tablename__ = 'snippets'
     __table_args__ = (
         db.Index('ix_snippets_scope', 'scope_type', 'scope_name'),
-        db.UniqueConstraint('scope_type', 'scope_name', 'name'),
+        db.UniqueConstraint(
+            'scope_type', 'scope_name', 'name', 'language_code'
+        ),
     )
 
     id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)

@@ -185,6 +185,7 @@ def _build_email_data(
         brand_id=brand_id,
         orderer=orderer,
         orderer_email_address='orderer@example.com',
+        language_code=locale,
     )
 
 

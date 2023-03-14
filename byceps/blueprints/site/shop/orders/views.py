@@ -19,6 +19,7 @@ from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
+from .....util.l10n import get_user_locale
 from .....util.views import login_required, redirect_to
 
 from ....site.snippet.templating import render_snippet_as_partial
@@ -92,6 +93,7 @@ def _find_order_payment_method_label(payment_method):
 
 
 def _get_payment_instructions(order):
+    language_code = get_user_locale(g.user)
     scope = Scope('shop', str(order.shop_id))
 
     context = {
@@ -102,7 +104,7 @@ def _get_payment_instructions(order):
     }
 
     return render_snippet_as_partial(
-        'payment_instructions', scope=scope, context=context
+        'payment_instructions', language_code, scope=scope, context=context
     )
 
 

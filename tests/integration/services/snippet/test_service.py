@@ -30,7 +30,7 @@ def test_current_party_is_considered(party1, party2, make_user):
     snippet_info2015_version = create_snippet(scope_site2015, name, creator.id)
 
     actual = snippet_service.find_current_version_of_snippet_with_name(
-        scope_site2014, name
+        scope_site2014, name, 'en'
     )
 
     assert actual == snippet_info2014_version
@@ -43,7 +43,7 @@ def test_unknown_name(party1):
     scope = Scope.for_site(party1.id)
 
     actual = snippet_service.find_current_version_of_snippet_with_name(
-        scope, 'totally-unknown-snippet-name'
+        scope, 'totally-unknown-snippet-name', 'en'
     )
 
     assert actual is None

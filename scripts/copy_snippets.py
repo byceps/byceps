@@ -20,12 +20,17 @@ from _validators import validate_site
 @click.pass_context
 @click.argument('source_site', callback=validate_site)
 @click.argument('target_site', callback=validate_site)
+@click.argument('language_code')
 @click.argument('snippet_names', nargs=-1, required=True)
-def execute(ctx, source_site, target_site, snippet_names) -> None:
+def execute(
+    ctx, source_site, target_site, language_code: str, snippet_names
+) -> None:
     source_scope = Scope.for_site(source_site.id)
     target_scope = Scope.for_site(target_site.id)
 
-    versions = [get_version(source_scope, name) for name in snippet_names]
+    versions = [
+        get_version(source_scope, name, language_code) for name in snippet_names
+    ]
 
     for version in versions:
         copy_snippet(target_scope, version, ctx)
@@ -33,15 +38,17 @@ def execute(ctx, source_site, target_site, snippet_names) -> None:
     click.secho('Done.', fg='green')
 
 
-def get_version(source_scope: Scope, snippet_name: str) -> DbSnippetVersion:
+def get_version(
+    source_scope: Scope, snippet_name: str, language_code: str
+) -> DbSnippetVersion:
     version = snippet_service.find_current_version_of_snippet_with_name(
-        source_scope, snippet_name
+        source_scope, snippet_name, language_code
     )
 
     if version is None:
         raise click.BadParameter(
-            f'Snippet "{snippet_name}" not found '
-            f'in scope "{scope_as_string(source_scope)}".'
+            f'Snippet "{snippet_name}" with language code "{language_code}" '
+            f'not found in scope "{scope_as_string(source_scope)}".'
         )
 
     return version

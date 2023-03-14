@@ -45,6 +45,19 @@ E-Mail: noreply@acmecon.test
 ''',
     )
 
+    snippet_service.create_snippet(
+        scope,
+        'email_footer',
+        'en',
+        admin_user.id,
+        '''
+We are happy to answer your questions.
+
+Have a nice day,
+the team of Acme Entertainment Convention
+''',
+    )
+
 
 @pytest.fixture
 def shop(shop_brand: Brand, make_email_config, make_shop) -> Shop:

@@ -22,7 +22,7 @@ from .....services.snippet import snippet_service
 from .....services.user.models.user import User
 from .....services.user import user_service
 from .....typing import BrandID
-from .....util.l10n import force_user_locale
+from .....util.l10n import force_user_locale, get_user_locale
 from .....util.templating import load_template
 
 
@@ -32,6 +32,7 @@ class OrderEmailData:
     brand_id: BrandID
     orderer: User
     orderer_email_address: str
+    language_code: str
 
 
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
@@ -104,7 +105,9 @@ def _assemble_email_for_incoming_order_to_orderer(
                 order.total_amount.amount, order.total_amount.currency.code
             )
         )
-        payment_instructions = _get_payment_instructions(order)
+        payment_instructions = _get_payment_instructions(
+            order, data.language_code
+        )
         paragraphs = [
             gettext(
                 'thank you for your order %(order_number)s on %(order_date)s through our website.',
@@ -125,9 +128,11 @@ def _assemble_email_for_incoming_order_to_orderer(
     )
 
 
-def _get_payment_instructions(order: Order) -> str:
+def _get_payment_instructions(order: Order, language_code: str) -> str:
     scope = Scope('shop', str(order.shop_id))
-    snippet_content = _get_snippet_body(scope, 'email_payment_instructions')
+    snippet_content = _get_snippet_body(
+        scope, 'email_payment_instructions', language_code
+    )
 
     template = load_template(snippet_content)
     return template.render(
@@ -205,12 +210,14 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     orderer_id = order.placed_by_id
     orderer = user_service.get_user(orderer_id)
     email_address = user_service.get_email_address(orderer_id)
+    language_code = get_user_locale(orderer)
 
     return OrderEmailData(
         order=order,
         brand_id=shop.brand_id,
         orderer=orderer,
         orderer_email_address=email_address,
+        language_code=language_code,
     )
 
 
@@ -220,7 +227,7 @@ def _assemble_body(data: OrderEmailData, paragraphs: list[str]) -> str:
     salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
 
     scope = Scope.for_brand(data.brand_id)
-    footer = _get_snippet_body(scope, 'email_footer')
+    footer = _get_snippet_body(scope, 'email_footer', data.language_code)
 
     return '\n\n'.join([salutation] + paragraphs + [footer])
 
@@ -239,9 +246,9 @@ def _assemble_email_to_orderer(
     return Message(sender, recipients, subject, body)
 
 
-def _get_snippet_body(scope: Scope, name: str) -> str:
+def _get_snippet_body(scope: Scope, name: str, language_code: str) -> str:
     version = snippet_service.find_current_version_of_snippet_with_name(
-        scope, name
+        scope, name, language_code
     )
 
     if not version:
