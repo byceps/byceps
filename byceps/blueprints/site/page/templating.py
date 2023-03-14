@@ -27,11 +27,13 @@ Context = dict[str, Any]
 
 def render_page(page: Page, version: PageVersion) -> str | tuple[str, int]:
     """Render the page, or an error page if that fails."""
+    current_page_id = 'page_' + page.name
+
     try:
         context = build_template_context(
             version.title, version.head, version.body
         )
-        context['current_page'] = page.name
+        context['current_page'] = current_page_id
 
         if page.nav_menu_id:
             nav_items = site_navigation_service.get_items_for_menu_id(
