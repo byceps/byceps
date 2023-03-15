@@ -33,6 +33,10 @@ class Page:
     published: bool
     nav_menu_id: NavMenuID
 
+    @property
+    def current_page_id(self) -> str:
+        return 'page_' + self.name
+
 
 @dataclass(frozen=True)
 class PageVersion:
