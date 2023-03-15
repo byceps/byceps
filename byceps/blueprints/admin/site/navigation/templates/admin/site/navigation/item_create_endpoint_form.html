@@ -2,4 +2,6 @@
 
 {% block additional_fields %}
       {{ form_field(form.target_endpoint, autofocus='autofocus') }}
+      {{ form_field(form.label) }}
+      {{ form_field(form.current_page_id) }}
 {%- endblock %}

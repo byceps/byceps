@@ -33,9 +33,6 @@ class MenuUpdateForm(_MenuBaseForm):
 
 class _ItemBaseForm(LocalizedForm):
     label = StringField(lazy_gettext('Label'), validators=[InputRequired()])
-    current_page_id = StringField(
-        lazy_gettext('Current page ID'), validators=[InputRequired()]
-    )
     hidden = BooleanField(lazy_gettext('hidden'))
 
 
@@ -53,11 +50,17 @@ class ItemCreateEndpointForm(_ItemBaseForm):
         ],
         validators=[InputRequired()],
     )
+    current_page_id = StringField(
+        lazy_gettext('Current page ID'), validators=[InputRequired()]
+    )
 
 
 class ItemCreatePageForm(_ItemBaseForm):
     target_page_id = SelectField(
         lazy_gettext('Page'), validators=[InputRequired()]
+    )
+    current_page_id = StringField(
+        lazy_gettext('Current page ID'), validators=[InputRequired()]
     )
 
     def set_page_choices(self, site_id: SiteID, language_code: str):
@@ -74,6 +77,9 @@ class ItemCreatePageForm(_ItemBaseForm):
 
 class ItemCreateUrlForm(_ItemBaseForm):
     target_url = StringField(lazy_gettext('URL'), validators=[InputRequired()])
+    current_page_id = StringField(
+        lazy_gettext('Current page ID'), validators=[InputRequired()]
+    )
 
 
 class ItemUpdateForm(_ItemBaseForm):
@@ -87,3 +93,6 @@ class ItemUpdateForm(_ItemBaseForm):
         ],
     )
     target = StringField(lazy_gettext('Target'), validators=[InputRequired()])
+    current_page_id = StringField(
+        lazy_gettext('Current page ID'), validators=[InputRequired()]
+    )

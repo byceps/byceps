@@ -258,14 +258,16 @@ def item_create(menu_id, target_type_name):
 
     if target_type == NavItemTargetType.endpoint:
         target = form.target_endpoint.data.strip()
+        current_page_id = form.current_page_id.data.strip()
     elif target_type == NavItemTargetType.page:
         page = page_service.get_page(form.target_page_id.data)
         target = page.name
+        current_page_id = form.current_page_id.data.strip()
     elif target_type == NavItemTargetType.url:
         target = form.target_url.data.strip()
+        current_page_id = form.current_page_id.data.strip()
 
     label = form.label.data.strip()
-    current_page_id = form.current_page_id.data.strip()
     hidden = form.hidden.data
 
     item = site_navigation_service.create_item(
