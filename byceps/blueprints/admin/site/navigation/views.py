@@ -262,7 +262,7 @@ def item_create(menu_id, target_type_name):
     elif target_type == NavItemTargetType.page:
         page = page_service.get_page(form.target_page_id.data)
         target = page.name
-        current_page_id = form.current_page_id.data.strip()
+        current_page_id = page.current_page_id
     elif target_type == NavItemTargetType.url:
         target = form.target_url.data.strip()
         current_page_id = form.current_page_id.data.strip()

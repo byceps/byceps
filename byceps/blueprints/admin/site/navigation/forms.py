@@ -59,9 +59,6 @@ class ItemCreatePageForm(_ItemBaseForm):
     target_page_id = SelectField(
         lazy_gettext('Page'), validators=[InputRequired()]
     )
-    current_page_id = StringField(
-        lazy_gettext('Current page ID'), validators=[InputRequired()]
-    )
 
     def set_page_choices(self, site_id: SiteID, language_code: str):
         page_ids_and_names = page_service.get_page_ids_and_names(
