@@ -72,7 +72,19 @@
         <tr>
           <td>{{ item.position }}</td>
           <td>{{ item.label }}</td>
-          <td>{{ item.target_type.name }}</td>
+          <td>
+            {%- if item.target_type.name == 'endpoint' -%}
+            {{- _('Endpoint') -}}
+            {%- elif item.target_type.name == 'page' -%}
+            {{- _('Page') -}}
+            {%- elif item.target_type.name == 'url' -%}
+            {{- _('URL') -}}
+            {%- elif item.target_type.name == 'view' -%}
+            {{- _('View') -}}
+            {%- else -%}
+            {{- '?' -}}
+            {%- endif -%}
+          </td>
           <td>{{ item.target }}</td>
           <td>{{ item.current_page_id }}</td>
           <td>
