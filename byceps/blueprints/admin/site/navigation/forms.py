@@ -12,6 +12,7 @@ from wtforms.validators import InputRequired
 
 from .....services.page import page_service
 from .....services.site.models import SiteID
+from .....services.site_navigation import site_navigation_service
 from .....util.l10n import LocalizedForm
 
 
@@ -79,6 +80,22 @@ class ItemCreateUrlForm(_ItemBaseForm):
     )
 
 
+class ItemCreateViewForm(_ItemBaseForm):
+    target_view_type = SelectField(
+        lazy_gettext('View'), validators=[InputRequired()]
+    )
+
+    def set_view_type_choices(self):
+        choices = [
+            (view_type.name, view_type.label)
+            for view_type in site_navigation_service.get_view_types()
+        ]
+        choices.sort(key=lambda choice: choice[1])
+        choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
+
+        self.target_view_type.choices = choices
+
+
 class ItemUpdateForm(_ItemBaseForm):
     target_type = SelectField(
         lazy_gettext('Target type'),
@@ -86,6 +103,7 @@ class ItemUpdateForm(_ItemBaseForm):
         choices=[
             ('page', lazy_gettext('Page')),
             ('endpoint', lazy_gettext('Endpoint')),
+            ('view', lazy_gettext('View')),
             ('url', lazy_gettext('URL')),
         ],
     )

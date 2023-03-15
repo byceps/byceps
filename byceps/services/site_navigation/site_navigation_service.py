@@ -11,7 +11,9 @@ from typing import Iterable, Optional
 from sqlalchemy import delete, select
 
 from ...database import db
-from ...services.site.models import SiteID
+from ...util.iterables import find
+
+from ..site.models import SiteID
 
 from .dbmodels import DbNavItem, DbNavMenu
 from .models import (
@@ -21,6 +23,8 @@ from .models import (
     NavMenu,
     NavMenuAggregate,
     NavMenuID,
+    ViewType,
+    _VIEW_TYPES,
 )
 
 
@@ -318,3 +322,13 @@ def _db_entity_to_menu_aggregate(
         hidden=menu.hidden,
         items=items,
     )
+
+
+def get_view_types() -> list[ViewType]:
+    """Return the available view types."""
+    return list(_VIEW_TYPES)
+
+
+def find_view_type_by_name(name: str) -> Optional[ViewType]:
+    """Return the view type with that name, or `None` if not found."""
+    return find(_VIEW_TYPES, lambda view_type: view_type.name == name)

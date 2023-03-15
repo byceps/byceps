@@ -11,6 +11,7 @@ from flask import g, url_for
 from ..page.templating import url_for_site_page
 
 from ....services.site_navigation.models import (
+    NavItem,
     NavItemForRendering,
     NavItemTargetType,
 )
@@ -35,8 +36,8 @@ def get_nav_menu_items(menu_name: str) -> list[NavItemForRendering]:
     return [_to_item_for_rendering(g.site_id, item) for item in items]
 
 
-def _to_item_for_rendering(site_id: str, item) -> NavItemForRendering:
-    target = _assemble_target(site_id, item.target_type, item.target)
+def _to_item_for_rendering(site_id: str, item: NavItem) -> NavItemForRendering:
+    target = _assemble_target(site_id, item)
 
     return NavItemForRendering(
         target=target,
@@ -46,14 +47,19 @@ def _to_item_for_rendering(site_id: str, item) -> NavItemForRendering:
     )
 
 
-def _assemble_target(
-    site_id: str, target_type: NavItemTargetType, target: str
-) -> str:
+def _assemble_target(site_id: str, item: NavItem) -> str:
+    target_type = item.target_type
     if target_type == NavItemTargetType.endpoint:
-        return url_for(target)
+        return url_for(item.target)
     elif target_type == NavItemTargetType.page:
-        return url_for_site_page(site_id, target)
+        return url_for_site_page(site_id, item.target)
     elif target_type == NavItemTargetType.url:
-        return target
+        return item.target
+    elif target_type == NavItemTargetType.view:
+        view_type = site_navigation_service.find_view_type_by_name(item.target)
+        if not view_type:
+            raise ValueError('Unknown view type')
+
+        return url_for(view_type.endpoint)
     else:
         raise ValueError('Unknown target type')

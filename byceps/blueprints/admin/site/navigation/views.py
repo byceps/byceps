@@ -33,6 +33,7 @@ from .forms import (
     ItemCreateEndpointForm,
     ItemCreatePageForm,
     ItemCreateUrlForm,
+    ItemCreateViewForm,
     ItemUpdateForm,
     MenuCreateForm,
     MenuUpdateForm,
@@ -227,6 +228,28 @@ def item_create_url_form(menu_id, erroneous_form=None):
     }
 
 
+@blueprint.get('/for_menu/<menu_id>/create/for_view')
+@permission_required('site_navigation.administrate')
+@templated
+def item_create_view_form(menu_id, erroneous_form=None):
+    """Show form to create a menu item referencing a view."""
+    menu = _get_menu_or_404(menu_id)
+
+    site = site_service.get_site(menu.site_id)
+    brand = brand_service.get_brand(site.brand_id)
+
+    form = erroneous_form if erroneous_form else ItemCreateViewForm()
+    form.set_view_type_choices()
+
+    return {
+        'menu': menu,
+        'site': site,
+        'brand': brand,
+        'form': form,
+        'target_type_name': NavItemTargetType.view.name,
+    }
+
+
 @blueprint.post('/for_menu/<menu_id>/<target_type_name>')
 @permission_required('site_navigation.administrate')
 def item_create(menu_id, target_type_name):
@@ -245,6 +268,9 @@ def item_create(menu_id, target_type_name):
         form.set_page_choices(menu.site_id, menu.language_code)
     elif target_type == NavItemTargetType.url:
         form = ItemCreateUrlForm(request.form)
+    elif target_type == NavItemTargetType.view:
+        form = ItemCreateViewForm(request.form)
+        form.set_view_type_choices()
 
     if not form.validate():
         if target_type == NavItemTargetType.endpoint:
@@ -253,6 +279,8 @@ def item_create(menu_id, target_type_name):
             form_view = item_create_page_form
         elif target_type == NavItemTargetType.url:
             form_view = item_create_url_form
+        elif target_type == NavItemTargetType.view:
+            form_view = item_create_view_form
 
         return form_view(menu.id, form)
 
@@ -266,6 +294,16 @@ def item_create(menu_id, target_type_name):
     elif target_type == NavItemTargetType.url:
         target = form.target_url.data.strip()
         current_page_id = form.current_page_id.data.strip()
+    elif target_type == NavItemTargetType.view:
+        view_type_name = form.target_view_type.data
+        view_type = site_navigation_service.find_view_type_by_name(
+            view_type_name
+        )
+        if not view_type:
+            abort(400, f'Unknown view type "{view_type_name}"')
+
+        target = view_type.name
+        current_page_id = view_type.current_page_id
 
     label = form.label.data.strip()
     hidden = form.hidden.data
