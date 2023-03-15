@@ -37,25 +37,6 @@ class _ItemBaseForm(LocalizedForm):
     hidden = BooleanField(lazy_gettext('hidden'))
 
 
-class ItemCreateEndpointForm(_ItemBaseForm):
-    target_endpoint = SelectField(
-        lazy_gettext('Endpoint'),
-        choices=[
-            ('', '<' + lazy_gettext('choose') + '>'),
-            ('news.index', lazy_gettext('News')),
-            ('seating.index', lazy_gettext('Seating plan')),
-            ('attendance.attendees', lazy_gettext('Attendees')),
-            ('shop_order.order_form', lazy_gettext('Shop')),
-            ('board.category_index', lazy_gettext('Board')),
-            ('orga_team.index', lazy_gettext('Orga team')),
-        ],
-        validators=[InputRequired()],
-    )
-    current_page_id = StringField(
-        lazy_gettext('Current page ID'), validators=[InputRequired()]
-    )
-
-
 class ItemCreatePageForm(_ItemBaseForm):
     target_page_id = SelectField(
         lazy_gettext('Page'), validators=[InputRequired()]

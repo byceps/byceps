@@ -30,7 +30,6 @@ from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import (
-    ItemCreateEndpointForm,
     ItemCreatePageForm,
     ItemCreateUrlForm,
     ItemCreateViewForm,
@@ -164,27 +163,6 @@ def menu_update(menu_id):
     return redirect_to('.view', menu_id=menu.id)
 
 
-@blueprint.get('/for_menu/<menu_id>/create/for_endpoint')
-@permission_required('site_navigation.administrate')
-@templated
-def item_create_endpoint_form(menu_id, erroneous_form=None):
-    """Show form to create a menu item referencing an endpoint."""
-    menu = _get_menu_or_404(menu_id)
-
-    site = site_service.get_site(menu.site_id)
-    brand = brand_service.get_brand(site.brand_id)
-
-    form = erroneous_form if erroneous_form else ItemCreateEndpointForm()
-
-    return {
-        'menu': menu,
-        'site': site,
-        'brand': brand,
-        'form': form,
-        'target_type_name': NavItemTargetType.endpoint.name,
-    }
-
-
 @blueprint.get('/for_menu/<menu_id>/create/for_page')
 @permission_required('site_navigation.administrate')
 @templated
@@ -261,9 +239,7 @@ def item_create(menu_id, target_type_name):
     except KeyError:
         abort(400, f'Unknown target type "{target_type_name}"')
 
-    if target_type == NavItemTargetType.endpoint:
-        form = ItemCreateEndpointForm(request.form)
-    elif target_type == NavItemTargetType.page:
+    if target_type == NavItemTargetType.page:
         form = ItemCreatePageForm(request.form)
         form.set_page_choices(menu.site_id, menu.language_code)
     elif target_type == NavItemTargetType.url:
@@ -273,9 +249,7 @@ def item_create(menu_id, target_type_name):
         form.set_view_type_choices()
 
     if not form.validate():
-        if target_type == NavItemTargetType.endpoint:
-            form_view = item_create_endpoint_form
-        elif target_type == NavItemTargetType.page:
+        if target_type == NavItemTargetType.page:
             form_view = item_create_page_form
         elif target_type == NavItemTargetType.url:
             form_view = item_create_url_form
@@ -284,10 +258,7 @@ def item_create(menu_id, target_type_name):
 
         return form_view(menu.id, form)
 
-    if target_type == NavItemTargetType.endpoint:
-        target = form.target_endpoint.data.strip()
-        current_page_id = form.current_page_id.data.strip()
-    elif target_type == NavItemTargetType.page:
+    if target_type == NavItemTargetType.page:
         page = page_service.get_page(form.target_page_id.data)
         target = page.name
         current_page_id = page.current_page_id
