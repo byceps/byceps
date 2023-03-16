@@ -11,7 +11,7 @@ from typing import Iterable, Optional
 from sqlalchemy import delete, select
 
 from ...database import db
-from ...util.iterables import find
+from ...util.iterables import find, index_of
 
 from ..site.models import SiteID
 
@@ -254,7 +254,8 @@ def move_item_up(item_id: NavItemID) -> NavItem:
     if item.position == 1:
         raise ValueError('Item is already at the top.')
 
-    popped_item = item_list.pop(item.position - 1)
+    item_index = index_of(item_list, lambda x: x.id == item.id)
+    popped_item = item_list.pop(item_index)
     item_list.insert(popped_item.position - 2, popped_item)
 
     db.session.commit()
@@ -271,7 +272,8 @@ def move_item_down(item_id: NavItemID) -> NavItem:
     if item.position == len(item_list):
         raise ValueError('Item is already at the bottom.')
 
-    popped_item = item_list.pop(item.position - 1)
+    item_index = index_of(item_list, lambda x: x.id == item.id)
+    popped_item = item_list.pop(item_index)
     item_list.insert(popped_item.position, popped_item)
 
     db.session.commit()
