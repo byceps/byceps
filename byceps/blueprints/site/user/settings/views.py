@@ -157,11 +157,17 @@ def change_screen_name():
 def update_locale():
     """Update the current user's locale."""
     locale_str = request.args.get('locale')
-    locale = Locale.parse(locale_str)
+    if locale_str:
+        locale = Locale.parse(locale_str)
+    else:
+        locale = None
 
     user_command_service.update_locale(g.user.id, locale)
 
-    with force_locale(locale):
+    if locale:
+        with force_locale(locale):
+            flash_success(gettext('Your language preference has been updated.'))
+    else:
         flash_success(gettext('Your language preference has been updated.'))
 
 
