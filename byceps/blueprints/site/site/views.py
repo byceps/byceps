@@ -14,6 +14,7 @@ from ....services.site_navigation.models import (
     NavItem,
     NavItemForRendering,
     NavItemTargetType,
+    NavMenuID,
 )
 from ....services.site_navigation import site_navigation_service
 from ....util.framework.blueprint import create_blueprint
@@ -33,7 +34,22 @@ def get_nav_menu_items(menu_name: str) -> list[NavItemForRendering]:
     items = site_navigation_service.get_items_for_menu(
         g.site_id, menu_name, locale_str
     )
-    return [_to_item_for_rendering(g.site_id, item) for item in items]
+    return _to_items_for_rendering(g.site_id, items)
+
+
+@blueprint.app_template_global()
+def get_nav_menu_items_for_menu_id(
+    menu_id: NavMenuID,
+) -> list[NavItemForRendering]:
+    """Make navigation menus accessible to templates."""
+    items = site_navigation_service.get_items_for_menu_id(menu_id)
+    return _to_items_for_rendering(g.site_id, items)
+
+
+def _to_items_for_rendering(
+    site_id: str, items: list[NavItem]
+) -> list[NavItemForRendering]:
+    return [_to_item_for_rendering(site_id, item) for item in items]
 
 
 def _to_item_for_rendering(site_id: str, item: NavItem) -> NavItemForRendering:
