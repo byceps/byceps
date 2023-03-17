@@ -23,7 +23,7 @@ from .models import Seat, SeatingAreaID
 from . import seating_area_service, seat_group_service, seat_service
 
 
-class ParsedSeatToImport(BaseModel):
+class SerializableSeatToImport(BaseModel):
     area_title: str
     coord_x: int
     coord_y: int
@@ -112,7 +112,7 @@ class _SeatsImportParser:
         return parse_result.and_then(self._assemble_seat_to_import)
 
     def _assemble_seat_to_import(
-        self, parsed_seat: ParsedSeatToImport
+        self, parsed_seat: SerializableSeatToImport
     ) -> Result[SeatToImport, str]:
         """Build seat object to import by setting area and category IDs."""
         area_title = parsed_seat.area_title
@@ -142,7 +142,7 @@ class _SeatsImportParser:
         return Ok(assembled_seat)
 
 
-def _parse_seat_json(json_data: str) -> Result[ParsedSeatToImport, str]:
+def _parse_seat_json(json_data: str) -> Result[SerializableSeatToImport, str]:
     """Parse a JSON object into a seat import object."""
     try:
         data_dict = json.loads(json_data)
@@ -150,7 +150,7 @@ def _parse_seat_json(json_data: str) -> Result[ParsedSeatToImport, str]:
         return Err(f'Could not parse JSON: {e}')
 
     try:
-        seat_to_import = ParsedSeatToImport.parse_obj(data_dict)
+        seat_to_import = SerializableSeatToImport.parse_obj(data_dict)
         return Ok(seat_to_import)
     except ValidationError as e:
         return Err(str(e))
