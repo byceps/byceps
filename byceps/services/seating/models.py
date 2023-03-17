@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from typing import NewType, Optional
 from uuid import UUID
 
+from pydantic import BaseModel
+
 from ...typing import PartyID
 
 from ..ticketing.models.ticket import TicketCategoryID
@@ -51,3 +53,26 @@ SeatGroupID = NewType('SeatGroupID', UUID)
 class SeatUtilization:
     occupied: int
     total: int
+
+
+class SerializableSeatToImport(BaseModel):
+    area_title: str
+    coord_x: int
+    coord_y: int
+    category_title: str
+    rotation: Optional[int] = None
+    label: Optional[str] = None
+    type_: Optional[str] = None
+    group_title: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class SeatToImport:
+    area_id: SeatingAreaID
+    coord_x: int
+    coord_y: int
+    category_id: TicketCategoryID
+    rotation: Optional[int] = None
+    label: Optional[str] = None
+    type_: Optional[str] = None
+    group_title: Optional[str] = None

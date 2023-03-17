@@ -7,11 +7,10 @@ byceps.services.seating.seat_import_service
 """
 
 from __future__ import annotations
-from dataclasses import dataclass
 import json
-from typing import Iterable, Iterator, Optional
+from typing import Iterable, Iterator
 
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from ...typing import PartyID
 from ...util.result import Err, Ok, Result
@@ -19,31 +18,8 @@ from ...util.result import Err, Ok, Result
 from ..ticketing.models.ticket import TicketCategoryID
 from ..ticketing import ticket_category_service
 
-from .models import Seat, SeatingAreaID
+from .models import Seat, SeatingAreaID, SeatToImport, SerializableSeatToImport
 from . import seating_area_service, seat_group_service, seat_service
-
-
-class SerializableSeatToImport(BaseModel):
-    area_title: str
-    coord_x: int
-    coord_y: int
-    category_title: str
-    rotation: Optional[int] = None
-    label: Optional[str] = None
-    type_: Optional[str] = None
-    group_title: Optional[str] = None
-
-
-@dataclass(frozen=True)
-class SeatToImport:
-    area_id: SeatingAreaID
-    coord_x: int
-    coord_y: int
-    category_id: TicketCategoryID
-    rotation: Optional[int] = None
-    label: Optional[str] = None
-    type_: Optional[str] = None
-    group_title: Optional[str] = None
 
 
 def load_seats_from_json_lines(
