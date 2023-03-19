@@ -21,7 +21,7 @@ from ...util.instances import ReprBuilder
 from ..user.dbmodels.user import DbUser
 from ..language.dbmodels import DbLanguage
 
-from .models import Scope
+from .models import SnippetScope
 
 
 class DbSnippet(db.Model):
@@ -54,15 +54,17 @@ class DbSnippet(db.Model):
         'current_version_association', 'version'
     )
 
-    def __init__(self, scope: Scope, name: str, language_code: str) -> None:
+    def __init__(
+        self, scope: SnippetScope, name: str, language_code: str
+    ) -> None:
         self.scope_type = scope.type_
         self.scope_name = scope.name
         self.name = name
         self.language_code = language_code
 
     @property
-    def scope(self) -> Scope:
-        return Scope(self.scope_type, self.scope_name)
+    def scope(self) -> SnippetScope:
+        return SnippetScope(self.scope_type, self.scope_name)
 
     def __repr__(self) -> str:
         return (

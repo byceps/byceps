@@ -14,7 +14,7 @@ from .....services.shop.order import order_service
 from .....services.shop.order.models.order import PaymentState
 from .....services.shop.storefront import storefront_service
 from .....services.site import site_service
-from .....services.snippet.models import Scope
+from .....services.snippet.models import SnippetScope
 from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
@@ -94,7 +94,7 @@ def _find_order_payment_method_label(payment_method):
 
 def _get_payment_instructions(order):
     language_code = get_user_locale(g.user)
-    scope = Scope('shop', str(order.shop_id))
+    scope = SnippetScope('shop', str(order.shop_id))
 
     context = {
         'order_number': order.order_number,

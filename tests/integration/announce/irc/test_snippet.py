@@ -6,7 +6,7 @@
 import pytest
 
 import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
-from byceps.services.snippet.models import Scope
+from byceps.services.snippet.models import SnippetScope
 from byceps.services.snippet import snippet_service
 from byceps.signals import snippet as snippet_signals
 
@@ -41,7 +41,7 @@ def test_announce_snippet_updated(app, updated_version_and_event):
     assert_submitted_text(mock, expected_text)
 
 
-def test_announce_snippet_deleted(app, scope, editor):
+def test_announce_snippet_deleted(app, scope: SnippetScope, editor):
     expected_text = (
         'Dr.Schnipsel hat das Snippet "outdated_info" '
         'im Scope "site/acme-2019-website" gelöscht.'
@@ -67,8 +67,8 @@ def test_announce_snippet_deleted(app, scope, editor):
 
 
 @pytest.fixture(scope='module')
-def scope():
-    return Scope.for_site('acme-2019-website')
+def scope() -> SnippetScope:
+    return SnippetScope.for_site('acme-2019-website')
 
 
 @pytest.fixture(scope='module')
@@ -77,7 +77,7 @@ def editor(make_user):
 
 
 @pytest.fixture(scope='module')
-def created_version_and_event(scope, editor):
+def created_version_and_event(scope: SnippetScope, editor):
     name = 'team_intro'
     body = 'some body'
 

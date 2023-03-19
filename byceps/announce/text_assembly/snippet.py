@@ -11,7 +11,7 @@ Announce snippet events.
 from flask_babel import gettext
 
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
-from ...services.snippet.models import Scope
+from ...services.snippet.models import SnippetScope
 
 from ._helpers import get_screen_name_or_fallback, with_locale
 
@@ -58,5 +58,5 @@ def assemble_text_for_snippet_deleted(event: SnippetDeleted) -> str:
     )
 
 
-def _get_scope_label(scope: Scope) -> str:
+def _get_scope_label(scope: SnippetScope) -> str:
     return scope.type_ + '/' + scope.name

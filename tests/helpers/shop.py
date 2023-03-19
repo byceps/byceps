@@ -21,7 +21,7 @@ from byceps.services.shop.article.models import (
 from byceps.services.shop.article import article_service
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.shop.models import ShopID
-from byceps.services.snippet.models import Scope, SnippetID
+from byceps.services.snippet.models import SnippetID, SnippetScope
 from byceps.services.snippet import snippet_service
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
@@ -37,7 +37,7 @@ def create_shop_snippet(
     language_code: str,
     body: str,
 ) -> SnippetID:
-    scope = Scope('shop', shop_id)
+    scope = SnippetScope('shop', shop_id)
 
     version, _ = snippet_service.create_snippet(
         scope, name, language_code, creator_id, body

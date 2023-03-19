@@ -10,7 +10,7 @@ from typing import Optional
 
 import click
 
-from byceps.services.snippet.models import Scope
+from byceps.services.snippet.models import SnippetScope
 from byceps.services.snippet import snippet_service
 from byceps.services.site.models import Site
 
@@ -33,7 +33,7 @@ def validate_site_if_given(ctx, param, site_id_value: str) -> Site:
 def execute(ctx, search_term, site, verbose) -> None:
     scope = None
     if site is not None:
-        scope = Scope.for_site(site.id)
+        scope = SnippetScope.for_site(site.id)
 
     scope_label = get_scope_label(verbose, scope)
 
@@ -60,7 +60,7 @@ def execute(ctx, search_term, site, verbose) -> None:
         )
 
 
-def get_scope_label(verbose: bool, scope: Optional[Scope]) -> str:
+def get_scope_label(verbose: bool, scope: Optional[SnippetScope]) -> str:
     if not verbose:
         return '<unknown>'
 
@@ -70,7 +70,7 @@ def get_scope_label(verbose: bool, scope: Optional[Scope]) -> str:
     return f'scope "{format_scope(scope)}"'
 
 
-def format_scope(scope: Scope) -> str:
+def format_scope(scope: SnippetScope) -> str:
     return f'{scope.type_}/{scope.name}'
 
 

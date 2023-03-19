@@ -9,7 +9,7 @@
 import click
 
 from byceps.services.snippet.dbmodels import DbSnippetVersion
-from byceps.services.snippet.models import Scope
+from byceps.services.snippet.models import SnippetScope
 from byceps.services.snippet import snippet_service
 
 from _util import call_with_app_context
@@ -25,8 +25,8 @@ from _validators import validate_site
 def execute(
     ctx, source_site, target_site, language_code: str, snippet_names
 ) -> None:
-    source_scope = Scope.for_site(source_site.id)
-    target_scope = Scope.for_site(target_site.id)
+    source_scope = SnippetScope.for_site(source_site.id)
+    target_scope = SnippetScope.for_site(target_site.id)
 
     versions = [
         get_version(source_scope, name, language_code) for name in snippet_names
@@ -39,7 +39,7 @@ def execute(
 
 
 def get_version(
-    source_scope: Scope, snippet_name: str, language_code: str
+    source_scope: SnippetScope, snippet_name: str, language_code: str
 ) -> DbSnippetVersion:
     version = snippet_service.find_current_version_of_snippet_with_name(
         source_scope, snippet_name, language_code
@@ -54,7 +54,9 @@ def get_version(
     return version
 
 
-def copy_snippet(target_scope: Scope, version: DbSnippetVersion, ctx) -> None:
+def copy_snippet(
+    target_scope: SnippetScope, version: DbSnippetVersion, ctx
+) -> None:
     snippet_service.create_snippet(
         target_scope,
         version.snippet.name,
@@ -70,7 +72,7 @@ def copy_snippet(target_scope: Scope, version: DbSnippetVersion, ctx) -> None:
     )
 
 
-def scope_as_string(scope: Scope) -> str:
+def scope_as_string(scope: SnippetScope) -> str:
     return f'{scope.type_}/{scope.name}'
 
 

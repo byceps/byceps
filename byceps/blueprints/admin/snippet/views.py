@@ -11,7 +11,7 @@ from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
 from ....services.snippet.dbmodels import DbSnippetVersion
-from ....services.snippet.models import Scope
+from ....services.snippet.models import SnippetScope
 from ....services.snippet import snippet_service
 from ....services.text_diff import text_diff_service
 from ....services.user import user_service
@@ -45,7 +45,7 @@ blueprint = create_blueprint('snippet_admin', __name__)
 @templated
 def index_for_scope(scope_type, scope_name):
     """List snippets for that scope."""
-    scope = Scope(scope_type, scope_name)
+    scope = SnippetScope(scope_type, scope_name)
 
     snippets = snippet_service.get_snippets_for_scope_with_current_versions(
         scope
@@ -155,7 +155,7 @@ def history(snippet_id):
 @templated
 def create_form(scope_type, scope_name, erroneous_form=None):
     """Show form to create a snippet."""
-    scope = Scope(scope_type, scope_name)
+    scope = SnippetScope(scope_type, scope_name)
 
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_language_code_choices()
@@ -175,7 +175,7 @@ def create_form(scope_type, scope_name, erroneous_form=None):
 @permission_required('snippet.create')
 def create(scope_type, scope_name):
     """Create a snippet."""
-    scope = Scope(scope_type, scope_name)
+    scope = SnippetScope(scope_type, scope_name)
 
     form = CreateForm(request.form)
     form.set_language_code_choices()

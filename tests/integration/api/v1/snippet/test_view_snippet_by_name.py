@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.snippet.models import Scope
+from byceps.services.snippet.models import SnippetScope
 from byceps.services.snippet import snippet_service
 
 
@@ -13,7 +13,7 @@ CONTENT_TYPE_JSON = 'application/json'
 
 
 def test_get_snippet_by_name(
-    scope, admin_user, api_client, api_client_authz_header
+    scope: SnippetScope, admin_user, api_client, api_client_authz_header
 ):
     language_code = 'en'
     snippet_version, _ = snippet_service.create_snippet(
@@ -37,7 +37,7 @@ def test_get_snippet_by_name(
 
 
 def test_get_unknown_snippet_by_name(
-    scope, api_client, api_client_authz_header
+    scope: SnippetScope, api_client, api_client_authz_header
 ):
     snippet_name = 'unknown-af'
     language_code = 'en'
@@ -53,15 +53,19 @@ def test_get_unknown_snippet_by_name(
 
 
 @pytest.fixture(scope='module')
-def scope(site):
-    return Scope.for_site(site.id)
+def scope(site) -> SnippetScope:
+    return SnippetScope.for_site(site.id)
 
 
 # helpers
 
 
 def send_request(
-    api_client, api_client_authz_header, scope, snippet_name, language_code
+    api_client,
+    api_client_authz_header,
+    scope: SnippetScope,
+    snippet_name,
+    language_code,
 ):
     url = f'/api/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}/{language_code}'
     headers = [api_client_authz_header]

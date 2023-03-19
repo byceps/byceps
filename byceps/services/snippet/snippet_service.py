@@ -22,11 +22,15 @@ from .dbmodels import (
     DbSnippet,
     DbSnippetVersion,
 )
-from .models import Scope, SnippetID, SnippetVersionID
+from .models import SnippetID, SnippetScope, SnippetVersionID
 
 
 def create_snippet(
-    scope: Scope, name: str, language_code: str, creator_id: UserID, body: str
+    scope: SnippetScope,
+    name: str,
+    language_code: str,
+    creator_id: UserID,
+    body: str,
 ) -> tuple[DbSnippetVersion, SnippetCreated]:
     """Create a snippet and its initial version, and return that version."""
     creator = user_service.get_user(creator_id)
@@ -157,7 +161,7 @@ def get_snippets(snippet_ids: set[SnippetID]) -> Sequence[DbSnippet]:
 
 
 def get_snippets_for_scope_with_current_versions(
-    scope: Scope,
+    scope: SnippetScope,
 ) -> Sequence[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
     return (
@@ -184,7 +188,7 @@ def find_snippet_version(
 
 
 def find_current_version_of_snippet_with_name(
-    scope: Scope, name: str, language_code: str
+    scope: SnippetScope, name: str, language_code: str
 ) -> Optional[DbSnippetVersion]:
     """Return the current version of the snippet with that name and
     language code in that scope, or `None` if not found.
@@ -212,7 +216,7 @@ def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
 
 
 def search_snippets(
-    search_term: str, scope: Optional[Scope]
+    search_term: str, scope: Optional[SnippetScope]
 ) -> Sequence[DbSnippetVersion]:
     """Search in (the latest versions of) snippets."""
     stmt = (
@@ -232,7 +236,9 @@ def search_snippets(
 
 
 class SnippetNotFound(Exception):
-    def __init__(self, scope: Scope, name: str, language_code: str) -> None:
+    def __init__(
+        self, scope: SnippetScope, name: str, language_code: str
+    ) -> None:
         self.scope = scope
         self.name = name
         self.language_code = language_code

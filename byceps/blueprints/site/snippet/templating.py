@@ -12,7 +12,7 @@ from flask import g
 from jinja2 import Template
 
 from ....services.snippet.dbmodels import DbSnippetVersion
-from ....services.snippet.models import Scope
+from ....services.snippet.models import SnippetScope
 from ....services.snippet import snippet_service
 from ....util.l10n import get_user_locale
 from ....util.templating import load_template
@@ -49,17 +49,17 @@ def render_snippet_as_partial_from_template(
     )
 
 
-def _parse_scope_string(value: str) -> Scope:
+def _parse_scope_string(value: str) -> SnippetScope:
     """Parse a slash-separated string into a scope object."""
     type_, name = value.partition('/')[::2]
-    return Scope(type_, name)
+    return SnippetScope(type_, name)
 
 
 def render_snippet_as_partial(
     name: str,
     language_code: str,
     *,
-    scope: Optional[Scope] = None,
+    scope: Optional[SnippetScope] = None,
     ignore_if_unknown: bool = False,
     context: Optional[Context] = None,
 ) -> str:
@@ -67,7 +67,7 @@ def render_snippet_as_partial(
     return the result.
     """
     if scope is None:
-        scope = Scope.for_site(g.site_id)
+        scope = SnippetScope.for_site(g.site_id)
 
     current_version = snippet_service.find_current_version_of_snippet_with_name(
         scope, name, language_code

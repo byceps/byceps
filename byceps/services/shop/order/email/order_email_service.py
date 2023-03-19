@@ -17,7 +17,7 @@ from .....services.email.models import Message
 from .....services.shop.order.models.order import Order, OrderID
 from .....services.shop.order import order_service
 from .....services.shop.shop import shop_service
-from .....services.snippet.models import Scope
+from .....services.snippet.models import SnippetScope
 from .....services.snippet import snippet_service
 from .....services.user.models.user import User
 from .....services.user import user_service
@@ -129,7 +129,7 @@ def _assemble_email_for_incoming_order_to_orderer(
 
 
 def _get_payment_instructions(order: Order, language_code: str) -> str:
-    scope = Scope('shop', str(order.shop_id))
+    scope = SnippetScope('shop', str(order.shop_id))
     snippet_content = _get_snippet_body(
         scope, 'email_payment_instructions', language_code
     )
@@ -226,7 +226,7 @@ def _assemble_body(data: OrderEmailData, paragraphs: list[str]) -> str:
     screen_name = data.orderer.screen_name or 'UnknownUser'
     salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
 
-    scope = Scope.for_brand(data.brand_id)
+    scope = SnippetScope.for_brand(data.brand_id)
     footer = _get_snippet_body(scope, 'email_footer', data.language_code)
 
     return '\n\n'.join([salutation] + paragraphs + [footer])
@@ -246,7 +246,9 @@ def _assemble_email_to_orderer(
     return Message(sender, recipients, subject, body)
 
 
-def _get_snippet_body(scope: Scope, name: str, language_code: str) -> str:
+def _get_snippet_body(
+    scope: SnippetScope, name: str, language_code: str
+) -> str:
     version = snippet_service.find_current_version_of_snippet_with_name(
         scope, name, language_code
     )

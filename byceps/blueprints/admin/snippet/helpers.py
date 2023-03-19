@@ -14,19 +14,23 @@ from ....services.brand.models import Brand
 from ....services.site.models import Site, SiteID
 from ....services.site import site_service
 from ....services.snippet.dbmodels import DbSnippet, DbSnippetVersion
-from ....services.snippet.models import Scope, SnippetID, SnippetVersionID
+from ....services.snippet.models import (
+    SnippetID,
+    SnippetScope,
+    SnippetVersionID,
+)
 from ....services.snippet import snippet_service
 from ....typing import BrandID
 
 
-def find_brand_for_scope(scope: Scope) -> Optional[Brand]:
+def find_brand_for_scope(scope: SnippetScope) -> Optional[Brand]:
     if scope.type_ != 'brand':
         return None
 
     return brand_service.find_brand(BrandID(scope.name))
 
 
-def find_site_for_scope(scope: Scope) -> Optional[Site]:
+def find_site_for_scope(scope: SnippetScope) -> Optional[Site]:
     if scope.type_ != 'site':
         return None
 

@@ -17,16 +17,16 @@ from ...typing import BrandID
 
 
 @dataclass(frozen=True)
-class Scope:
+class SnippetScope:
     type_: str
     name: str
 
     @classmethod
-    def for_brand(cls, brand_id: BrandID) -> Scope:
+    def for_brand(cls, brand_id: BrandID) -> SnippetScope:
         return cls('brand', str(brand_id))
 
     @classmethod
-    def for_site(cls, site_id: SiteID) -> Scope:
+    def for_site(cls, site_id: SiteID) -> SnippetScope:
         return cls('site', str(site_id))
 
 

@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.snippet.models import Scope
+from byceps.services.snippet.models import SnippetScope
 from byceps.services.snippet import snippet_service
 
 
@@ -20,8 +20,8 @@ def party2(make_party, brand):
 
 
 def test_current_party_is_considered(party1, party2, make_user):
-    scope_site2014 = Scope.for_site(party1.id)
-    scope_site2015 = Scope.for_site(party2.id)
+    scope_site2014 = SnippetScope.for_site(party1.id)
+    scope_site2015 = SnippetScope.for_site(party2.id)
 
     name = 'info'
     creator = make_user()
@@ -40,7 +40,7 @@ def test_current_party_is_considered(party1, party2, make_user):
 
 
 def test_unknown_name(party1):
-    scope = Scope.for_site(party1.id)
+    scope = SnippetScope.for_site(party1.id)
 
     actual = snippet_service.find_current_version_of_snippet_with_name(
         scope, 'totally-unknown-snippet-name', 'en'
@@ -52,7 +52,7 @@ def test_unknown_name(party1):
 # helpers
 
 
-def create_snippet(scope, name, creator_id):
+def create_snippet(scope: SnippetScope, name, creator_id):
     body = ''
     version, _ = snippet_service.create_snippet(
         scope, name, 'en', creator_id, body

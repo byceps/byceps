@@ -8,7 +8,7 @@ byceps.blueprints.api.v1.snippet.views
 
 from flask import jsonify
 
-from .....services.snippet.models import Scope
+from .....services.snippet.models import SnippetScope
 from .....services.snippet import snippet_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import create_empty_json_response
@@ -29,7 +29,7 @@ def get_snippet_by_name(scope_type, scope_name, snippet_name, language_code):
     """Return the current version of the snippet with that name in that
     scope.
     """
-    scope = Scope(scope_type, scope_name)
+    scope = SnippetScope(scope_type, scope_name)
     version = snippet_service.find_current_version_of_snippet_with_name(
         scope, snippet_name, language_code
     )

@@ -9,7 +9,7 @@ import pytest
 
 from byceps.events.snippet import SnippetCreated
 from byceps.services.snippet.dbmodels import DbSnippetVersion
-from byceps.services.snippet.models import Scope
+from byceps.services.snippet.models import SnippetScope
 from byceps.services.snippet import snippet_service
 from byceps.services.user.models.user import User
 
@@ -37,12 +37,12 @@ def snippet_admin_client(make_client, admin_app, snippet_admin):
 
 
 @pytest.fixture(scope='package')
-def global_scope():
-    return Scope('global', 'global')
+def global_scope() -> SnippetScope:
+    return SnippetScope('global', 'global')
 
 
 @pytest.fixture
-def make_snippet(global_scope: Scope, snippet_admin: User):
+def make_snippet(global_scope: SnippetScope, snippet_admin: User):
     def _wrapper(
         name: Optional[str] = None,
         language_code: str = 'en',
