@@ -7,22 +7,19 @@ byceps.blueprints.site.shop.orders.views
 """
 
 from flask import abort, g, request
-from flask_babel import format_currency, gettext
+from flask_babel import gettext
 
 from .....services.shop.order.email import order_email_service
-from .....services.shop.order import order_service
+from .....services.shop.order import order_payment_service, order_service
 from .....services.shop.order.models.order import PaymentState
 from .....services.shop.storefront import storefront_service
 from .....services.site import site_service
-from .....services.snippet.models import SnippetScope
 from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.l10n import get_user_locale
 from .....util.views import login_required, redirect_to
-
-from ....site.snippet.templating import render_snippet_as_partial
 
 from .forms import CancelForm
 
@@ -94,17 +91,9 @@ def _find_order_payment_method_label(payment_method):
 
 def _get_payment_instructions(order):
     language_code = get_user_locale(g.user)
-    scope = SnippetScope('shop', str(order.shop_id))
 
-    context = {
-        'order_number': order.order_number,
-        'total_amount': format_currency(
-            order.total_amount.amount, order.total_amount.currency.code
-        ),
-    }
-
-    return render_snippet_as_partial(
-        'payment_instructions', language_code, scope=scope, context=context
+    return order_payment_service.get_html_payment_instructions(
+        order, language_code
     )
 
 

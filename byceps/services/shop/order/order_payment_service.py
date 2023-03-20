@@ -9,6 +9,7 @@ byceps.services.shop.order.order_payment_service
 from copy import deepcopy
 from datetime import datetime
 
+from flask_babel import format_currency
 from moneyed import Money
 from sqlalchemy import delete, select
 
@@ -96,4 +97,23 @@ def get_email_payment_instructions(order: Order, language_code: str) -> str:
     return template.render(
         order_id=order.id,
         order_number=order.order_number,
+    )
+
+
+def get_html_payment_instructions(order: Order, language_code: str) -> str:
+    """Return the HTML payment instructions for that order and language.
+
+    Raise error if not found.
+    """
+    scope = SnippetScope('shop', str(order.shop_id))
+    snippet_content = snippet_service.get_snippet_body(
+        scope, 'payment_instructions', language_code
+    )
+
+    template = load_template(snippet_content)
+    return template.render(
+        order_number=order.order_number,
+        total_amount=format_currency(
+            order.total_amount.amount, order.total_amount.currency.code
+        ),
     )
