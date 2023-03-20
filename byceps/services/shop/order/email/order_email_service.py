@@ -130,7 +130,7 @@ def _assemble_email_for_incoming_order_to_orderer(
 
 def _get_payment_instructions(order: Order, language_code: str) -> str:
     scope = SnippetScope('shop', str(order.shop_id))
-    snippet_content = _get_snippet_body(
+    snippet_content = snippet_service.get_snippet_body(
         scope, 'email_payment_instructions', language_code
     )
 
@@ -227,7 +227,9 @@ def _assemble_body(data: OrderEmailData, paragraphs: list[str]) -> str:
     salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
 
     scope = SnippetScope.for_brand(data.brand_id)
-    footer = _get_snippet_body(scope, 'email_footer', data.language_code)
+    footer = snippet_service.get_snippet_body(
+        scope, 'email_footer', data.language_code
+    )
 
     return '\n\n'.join([salutation] + paragraphs + [footer])
 
@@ -244,19 +246,6 @@ def _assemble_email_to_orderer(
     recipients = [recipient_address]
 
     return Message(sender, recipients, subject, body)
-
-
-def _get_snippet_body(
-    scope: SnippetScope, name: str, language_code: str
-) -> str:
-    version = snippet_service.find_current_version_of_snippet_with_name(
-        scope, name, language_code
-    )
-
-    if not version:
-        raise snippet_service.SnippetNotFound(scope, name, language_code)
-
-    return version.body.strip()
 
 
 def _send_email(message: Message) -> None:

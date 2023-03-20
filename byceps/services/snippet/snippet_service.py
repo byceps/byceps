@@ -215,6 +215,22 @@ def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
     ).all()
 
 
+def get_snippet_body(scope: SnippetScope, name: str, language_code: str) -> str:
+    """Return the body of the current version of the snippet in that
+    scope with that name and language.
+
+    Raise an exception if not found.
+    """
+    version = find_current_version_of_snippet_with_name(
+        scope, name, language_code
+    )
+
+    if not version:
+        raise SnippetNotFound(scope, name, language_code)
+
+    return version.body.strip()
+
+
 def search_snippets(
     search_term: str, scope: Optional[SnippetScope]
 ) -> Sequence[DbSnippetVersion]:
