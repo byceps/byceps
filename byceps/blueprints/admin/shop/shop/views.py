@@ -6,14 +6,18 @@ byceps.blueprints.admin.shop.shop.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, url_for
+from flask import abort, g, url_for
 from flask_babel import gettext
 from moneyed import EUR
 
 from .....services.brand import brand_service
 from .....services.shop.order.models.log import OrderLogEntryData
 from .....services.shop.order.models.order import PaymentState
-from .....services.shop.order import order_log_service, order_service
+from .....services.shop.order import (
+    order_log_service,
+    order_payment_service,
+    order_service,
+)
 from .....services.shop.shop.models import ShopID
 from .....services.shop.shop import shop_service
 from .....util.framework.blueprint import create_blueprint
@@ -129,6 +133,9 @@ def create(brand_id):
     title = brand.title
 
     shop = shop_service.create_shop(shop_id, brand.id, title, EUR)
+
+    order_payment_service.create_email_payment_instructions(shop.id, g.user.id)
+    order_payment_service.create_html_payment_instructions(shop.id, g.user.id)
 
     flash_success(gettext('Shop has been created.'))
     return url_for('.view', shop_id=shop.id)

@@ -85,6 +85,55 @@ def _db_entity_to_payment(db_payment: DbPayment) -> Payment:
     )
 
 
+def create_email_payment_instructions(
+    shop_id: ShopID, creator_id: UserID
+) -> None:
+    """Create email payment instructions snippets for that shop in the
+    supported languages.
+    """
+    scope = _build_shop_snippet_scope(shop_id)
+
+    language_codes_and_bodies = [
+        (
+            'en',
+            '''
+Please transfer the total amount to this bank account:
+
+  Recipient: <name>
+  IBAN: <IBAN>
+  BIC: <BIC>
+  Bank: <bank>
+  Purpose: {{ order_number }}
+
+We will let you know once we have received your payment.
+
+You can view your orders here: https://www.yourparty.example/shop/orders
+        '''.strip(),
+        ),
+        (
+            'de',
+            '''
+Bitte überweise den Gesamtbetrag auf dieses Konto:
+
+  Zahlungsempfänger: <Name>
+  IBAN: <IBAN>
+  BIC: <BIC>
+  Bank: <Kreditinstitut>
+  Verwendungszweck: {{ order_number }}
+
+Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
+
+Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/orders
+        '''.strip(),
+        ),
+    ]
+
+    for language_code, body in language_codes_and_bodies:
+        snippet_service.create_snippet(
+            scope, 'email_payment_instructions', language_code, creator_id, body
+        )
+
+
 def get_email_payment_instructions(order: Order, language_code: str) -> str:
     """Return the email payment instructions for that order and language.
 
@@ -100,6 +149,89 @@ def get_email_payment_instructions(order: Order, language_code: str) -> str:
         order_id=order.id,
         order_number=order.order_number,
     )
+
+
+def create_html_payment_instructions(
+    shop_id: ShopID, creator_id: UserID
+) -> None:
+    """Create HTML payment instructions snippets for that shop in the
+    supported languages.
+    """
+    scope = _build_shop_snippet_scope(shop_id)
+
+    language_codes_and_bodies = [
+        (
+            'en',
+            '''
+<p>Please transfer the total amount to this bank account:</p>
+
+<table class="index" style="margin: 0 auto;">
+  <tr>
+    <th>Recipient</th>
+    <td>&lt;name&gt;</td>
+  </tr>
+  <tr>
+    <th>IBAN</th>
+    <td>&lt;IBAN&gt;</td>
+  </tr>
+  <tr>
+    <th>BIC</th>
+    <td>&lt;BIC&gt;</td>
+  </tr>
+  <tr>
+    <th>Bank</th>
+    <td>&lt;bank&gt;</td>
+  </tr>
+  <tr>
+    <th>Amount</th>
+    <td>{{ total_amount }}</td>
+  </tr>
+  <tr>
+    <th>Purpose</th>
+    <td>{{ order_number }}</td>
+  </tr>
+</table>
+        '''.strip(),
+        ),
+        (
+            'de',
+            '''
+<p>Bitte überweise den Gesamtbetrag auf dieses Konto:</p>
+
+<table class="index" style="margin: 0 auto;">
+  <tr>
+    <th>Zahlungsempfänger</th>
+    <td>&lt;Name&gt;</td>
+  </tr>
+  <tr>
+    <th>IBAN</th>
+    <td>&lt;IBAN&gt;</td>
+  </tr>
+  <tr>
+    <th>BIC</th>
+    <td>&lt;BIC&gt;</td>
+  </tr>
+  <tr>
+    <th>Bank</th>
+    <td>&lt;Bank&gt;</td>
+  </tr>
+  <tr>
+    <th>Betrag</th>
+    <td>{{ total_amount }}</td>
+  </tr>
+  <tr>
+    <th>Verwendungszweck</th>
+    <td>{{ order_number }}</td>
+  </tr>
+</table>
+        '''.strip(),
+        ),
+    ]
+
+    for language_code, body in language_codes_and_bodies:
+        snippet_service.create_snippet(
+            scope, 'payment_instructions', language_code, creator_id, body
+        )
 
 
 def get_html_payment_instructions(order: Order, language_code: str) -> str:
