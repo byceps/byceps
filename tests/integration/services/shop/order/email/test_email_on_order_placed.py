@@ -10,6 +10,7 @@ from flask import Flask
 from moneyed import EUR, Money
 import pytest
 
+from byceps.services.brand.models import Brand
 from byceps.services.shop.article.models import Article, ArticleNumber
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import Order, Orderer
@@ -90,7 +91,11 @@ def order(
 
 @patch('byceps.services.email.email_service.send')
 def test_email_on_order_placed(
-    send_email_mock, site_app: Flask, customer: User, order: Order
+    send_email_mock,
+    site_app: Flask,
+    customer: User,
+    shop_brand: Brand,
+    order: Order,
 ):
     app = site_app
 
@@ -133,13 +138,15 @@ Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
 Für Fragen stehen wir gerne zur Verfügung.
 
 Viele Grüße,
-das Team der Acme Entertainment Convention
+das Team der {brand_title}
 
 -- 
-Acme Entertainment Convention
+{brand_title}
 
-E-Mail: noreply@acmecon.test
-    '''.strip()
+E-Mail: info@acmecon.test
+    '''.strip().format(
+        brand_title=shop_brand.title
+    )
 
     assert_email(
         send_email_mock,

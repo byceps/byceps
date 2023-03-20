@@ -7,11 +7,10 @@ from moneyed import EUR
 import pytest
 
 from byceps.services.brand.models import Brand
+from byceps.services.email import email_footer_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
-from byceps.services.snippet.models import SnippetScope
-from byceps.services.snippet import snippet_service
 from byceps.services.user.models.user import User
 
 
@@ -25,37 +24,8 @@ def shop_brand(make_brand, make_email_config) -> Brand:
 
 @pytest.fixture
 def email_footer_snippets(shop_brand: Brand, admin_user: User) -> None:
-    scope = SnippetScope.for_brand(shop_brand.id)
-
-    snippet_service.create_snippet(
-        scope,
-        'email_footer',
-        'de',
-        admin_user.id,
-        '''
-Für Fragen stehen wir gerne zur Verfügung.
-
-Viele Grüße,
-das Team der Acme Entertainment Convention
-
--- 
-Acme Entertainment Convention
-
-E-Mail: noreply@acmecon.test
-''',
-    )
-
-    snippet_service.create_snippet(
-        scope,
-        'email_footer',
-        'en',
-        admin_user.id,
-        '''
-We are happy to answer your questions.
-
-Have a nice day,
-the team of Acme Entertainment Convention
-''',
+    email_footer_service.create_footers(
+        shop_brand.id, admin_user.id, 'info@acmecon.test'
     )
 
 

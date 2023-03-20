@@ -18,7 +18,7 @@ ORDER_PLACED_AT = '2021-10-12 12:34:56'
 
 @freeze_time(ORDER_PLACED_AT)
 @pytest.mark.parametrize(
-    'locale, expected',
+    'locale, expected_template',
     [
         (
             'de',
@@ -51,12 +51,12 @@ Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
 Für Fragen stehen wir gerne zur Verfügung.
 
 Viele Grüße,
-das Team der Acme Entertainment Convention
+das Team der {brand_title}
 
 -- 
-Acme Entertainment Convention
+{brand_title}
 
-E-Mail: noreply@acmecon.test
+E-Mail: info@acmecon.test
 ''',
         ),
         (
@@ -90,7 +90,12 @@ You can view your orders here: https://www.acmecon.test/shop/orders
 We are happy to answer your questions.
 
 Have a nice day,
-the team of Acme Entertainment Convention
+the team of {brand_title}
+
+-- 
+{brand_title}
+
+Email: info@acmecon.test
 ''',
         ),
     ],
@@ -98,11 +103,12 @@ the team of Acme Entertainment Convention
 def test_example_placed_order_message_text(
     admin_app,
     order_admin,
+    shop_brand,
     shop,
     email_payment_instructions_snippets,
     email_footer_snippets,
     locale,
-    expected,
+    expected_template,
 ):
     app = admin_app
     current_user = get_current_user_for_user(order_admin, locale)
@@ -114,12 +120,12 @@ def test_example_placed_order_message_text(
             )
         )
 
-    assert actual == expected
+    assert actual == expected_template.format(brand_title=shop_brand.title)
 
 
 @freeze_time(ORDER_PLACED_AT)
 @pytest.mark.parametrize(
-    'locale, expected',
+    'locale, expected_template',
     [
         (
             'de',
@@ -138,12 +144,12 @@ Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt markiert.
 Für Fragen stehen wir gerne zur Verfügung.
 
 Viele Grüße,
-das Team der Acme Entertainment Convention
+das Team der {brand_title}
 
 -- 
-Acme Entertainment Convention
+{brand_title}
 
-E-Mail: noreply@acmecon.test
+E-Mail: info@acmecon.test
 ''',
         ),
         (
@@ -163,7 +169,12 @@ We have received your payment and have marked your order as paid.
 We are happy to answer your questions.
 
 Have a nice day,
-the team of Acme Entertainment Convention
+the team of {brand_title}
+
+-- 
+{brand_title}
+
+Email: info@acmecon.test
 ''',
         ),
     ],
@@ -171,11 +182,12 @@ the team of Acme Entertainment Convention
 def test_example_paid_order_message_text(
     admin_app,
     order_admin,
+    shop_brand,
     shop,
     email_payment_instructions_snippets,
     email_footer_snippets,
     locale,
-    expected,
+    expected_template,
 ):
     app = admin_app
     current_user = get_current_user_for_user(order_admin, locale)
@@ -187,12 +199,12 @@ def test_example_paid_order_message_text(
             )
         )
 
-    assert actual == expected
+    assert actual == expected_template.format(brand_title=shop_brand.title)
 
 
 @freeze_time(ORDER_PLACED_AT)
 @pytest.mark.parametrize(
-    'locale, expected',
+    'locale, expected_template',
     [
         (
             'de',
@@ -211,12 +223,12 @@ Kein fristgerechter Geldeingang feststellbar.
 Für Fragen stehen wir gerne zur Verfügung.
 
 Viele Grüße,
-das Team der Acme Entertainment Convention
+das Team der {brand_title}
 
 -- 
-Acme Entertainment Convention
+{brand_title}
 
-E-Mail: noreply@acmecon.test
+E-Mail: info@acmecon.test
 ''',
         ),
         (
@@ -236,7 +248,12 @@ Kein fristgerechter Geldeingang feststellbar.
 We are happy to answer your questions.
 
 Have a nice day,
-the team of Acme Entertainment Convention
+the team of {brand_title}
+
+-- 
+{brand_title}
+
+Email: info@acmecon.test
 ''',
         ),
     ],
@@ -244,11 +261,12 @@ the team of Acme Entertainment Convention
 def test_example_canceled_order_message_text(
     admin_app,
     order_admin,
+    shop_brand,
     shop,
     email_payment_instructions_snippets,
     email_footer_snippets,
     locale,
-    expected,
+    expected_template,
 ):
     app = admin_app
     current_user = get_current_user_for_user(order_admin, locale)
@@ -258,4 +276,4 @@ def test_example_canceled_order_message_text(
             shop.id, locale
         )
 
-    assert actual == expected
+    assert actual == expected_template.format(brand_title=shop_brand.title)

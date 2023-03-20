@@ -8,8 +8,9 @@ from unittest.mock import patch
 
 import pytest
 
+from byceps.services.brand.models import Brand
 from byceps.services.shop.order.email import order_email_service
-from byceps.services.shop.order.models.order import Orderer
+from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.order import order_service
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
@@ -54,7 +55,12 @@ def order(storefront: Storefront, orderer: Orderer, email_footer_snippets):
 
 @patch('byceps.services.email.email_service.send')
 def test_email_on_order_paid(
-    send_email_mock, site_app, customer: User, order_admin, order
+    send_email_mock,
+    site_app,
+    customer: User,
+    order_admin,
+    shop_brand: Brand,
+    order: Order,
 ):
     app = site_app
 
@@ -79,13 +85,15 @@ Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt markiert.
 Für Fragen stehen wir gerne zur Verfügung.
 
 Viele Grüße,
-das Team der Acme Entertainment Convention
+das Team der {brand_title}
 
 -- 
-Acme Entertainment Convention
+{brand_title}
 
-E-Mail: noreply@acmecon.test
-    '''.strip()
+E-Mail: info@acmecon.test
+    '''.strip().format(
+        brand_title=shop_brand.title
+    )
 
     assert_email(
         send_email_mock,
