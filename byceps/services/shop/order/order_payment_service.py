@@ -9,12 +9,12 @@ byceps.services.shop.order.order_payment_service
 from copy import deepcopy
 from datetime import datetime
 
-from flask_babel import format_currency
 from moneyed import Money
 from sqlalchemy import delete, select
 
 from ....database import db
 from ....typing import UserID
+from ....util.l10n import format_money
 from ....util.templating import load_template
 
 from ...snippet.models import SnippetScope
@@ -113,7 +113,5 @@ def get_html_payment_instructions(order: Order, language_code: str) -> str:
     template = load_template(snippet_content)
     return template.render(
         order_number=order.order_number,
-        total_amount=format_currency(
-            order.total_amount.amount, order.total_amount.currency.code
-        ),
+        total_amount=format_money(order.total_amount),
     )
