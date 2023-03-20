@@ -6,11 +6,11 @@ byceps.blueprints.admin.brand.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, request
+from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.brand import brand_service, brand_setting_service
-from ....services.email import email_config_service
+from ....services.email import email_config_service, email_footer_service
 from ....services.orga import orga_service
 from ....services.party import party_service
 from ....util.framework.blueprint import create_blueprint
@@ -85,11 +85,16 @@ def create():
 
     brand = brand_service.create_brand(brand_id, title)
 
+    sender_address = f'noreply@{brand.id}.example'
+    contact_address = f'info@{brand.id}.example'
+
+    email_footer_service.create_footers(brand.id, g.user.id, contact_address)
+
     email_config_service.create_config(
         brand.id,
-        sender_address=f'noreply@{brand.id}.example',
+        sender_address=sender_address,
         sender_name=brand.title,
-        contact_address=f'info@{brand.id}.example',
+        contact_address=contact_address,
     )
 
     flash_success(
