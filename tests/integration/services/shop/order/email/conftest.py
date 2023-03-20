@@ -5,10 +5,9 @@
 
 import pytest
 
+from byceps.services.shop.order import order_payment_service
 from byceps.services.shop.shop.models import Shop
 from byceps.services.user.models.user import User
-
-from tests.helpers.shop import create_shop_snippet
 
 
 pytest.register_assert_rewrite(f'{__package__}.helpers')
@@ -21,42 +20,10 @@ def order_admin(make_user):
 
 @pytest.fixture
 def email_payment_instructions_snippets(shop: Shop, order_admin: User) -> None:
-    create_shop_snippet(
-        shop.id,
-        order_admin.id,
-        'email_payment_instructions',
-        'de',
-        '''
-Bitte überweise den Gesamtbetrag auf folgendes Konto:
-
-  Zahlungsempfänger: <Name>
-  IBAN: <IBAN>
-  BIC: <BIC>
-  Bank: <Kreditinstitut>
-  Verwendungszweck: {{ order_number }}
-
-Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
-
-Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
-''',
+    order_payment_service.create_email_payment_instructions(
+        shop.id, order_admin.id
     )
 
-    create_shop_snippet(
-        shop.id,
-        order_admin.id,
-        'email_payment_instructions',
-        'en',
-        '''
-Please transfer the total amount to this bank account:
-
-  Recipient: <name>
-  IBAN: <IBAN>
-  BIC: <BIC>
-  Bank: <bank>
-  Purpose: {{ order_number }}
-
-We will let you know once we have received your payment.
-
-You can view your orders here: https://www.acmecon.test/shop/orders
-''',
+    order_payment_service.create_html_payment_instructions(
+        shop.id, order_admin.id
     )

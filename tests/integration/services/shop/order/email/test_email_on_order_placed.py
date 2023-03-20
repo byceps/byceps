@@ -123,7 +123,7 @@ Folgende Artikel hast du bestellt:
 
   Gesamtbetrag: 524,90\xa0€
 
-Bitte überweise den Gesamtbetrag auf folgendes Konto:
+Bitte überweise den Gesamtbetrag auf dieses Konto:
 
   Zahlungsempfänger: <Name>
   IBAN: <IBAN>
@@ -133,7 +133,7 @@ Bitte überweise den Gesamtbetrag auf folgendes Konto:
 
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
-Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
+Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/orders
 
 Für Fragen stehen wir gerne zur Verfügung.
 

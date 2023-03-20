@@ -36,7 +36,7 @@ Folgende Artikel hast du bestellt:
 
   Gesamtbetrag: 42,95\xa0€
 
-Bitte überweise den Gesamtbetrag auf folgendes Konto:
+Bitte überweise den Gesamtbetrag auf dieses Konto:
 
   Zahlungsempfänger: <Name>
   IBAN: <IBAN>
@@ -46,7 +46,7 @@ Bitte überweise den Gesamtbetrag auf folgendes Konto:
 
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
-Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
+Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/orders
 
 Für Fragen stehen wir gerne zur Verfügung.
 
@@ -85,7 +85,7 @@ Please transfer the total amount to this bank account:
 
 We will let you know once we have received your payment.
 
-You can view your orders here: https://www.acmecon.test/shop/orders
+You can view your orders here: https://www.yourparty.example/shop/orders
 
 We are happy to answer your questions.
 
