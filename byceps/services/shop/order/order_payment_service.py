@@ -14,12 +14,15 @@ from sqlalchemy import delete, select
 
 from ....database import db
 from ....typing import UserID
+from ....util.templating import load_template
 
+from ...snippet.models import SnippetScope
+from ...snippet import snippet_service
 from ...user import user_service
 
 from .dbmodels.payment import DbPayment
 from .models.payment import AdditionalPaymentData, Payment
-from .models.order import OrderID
+from .models.order import Order, OrderID
 from . import order_log_service
 
 
@@ -76,4 +79,21 @@ def _db_entity_to_payment(db_payment: DbPayment) -> Payment:
         method=db_payment.method,
         amount=Money(db_payment.amount, db_payment.currency),
         additional_data=deepcopy(db_payment.additional_data),
+    )
+
+
+def get_email_payment_instructions(order: Order, language_code: str) -> str:
+    """Return the email payment instructions for that order and language.
+
+    Raise error if not found.
+    """
+    scope = SnippetScope('shop', str(order.shop_id))
+    snippet_content = snippet_service.get_snippet_body(
+        scope, 'email_payment_instructions', language_code
+    )
+
+    template = load_template(snippet_content)
+    return template.render(
+        order_id=order.id,
+        order_number=order.order_number,
     )

@@ -21,13 +21,12 @@ from .....services.email.models import Message
 from .....services.shop.order.models.order import Order, OrderID
 from .....services.shop.order import order_service
 from .....services.shop.shop import shop_service
-from .....services.snippet.models import SnippetScope
-from .....services.snippet import snippet_service
 from .....services.user.models.user import User
 from .....services.user import user_service
 from .....typing import BrandID
 from .....util.l10n import force_user_locale, get_user_locale
-from .....util.templating import load_template
+
+from .. import order_payment_service
 
 
 @dataclass(frozen=True)
@@ -109,8 +108,10 @@ def _assemble_email_for_incoming_order_to_orderer(
                 order.total_amount.amount, order.total_amount.currency.code
             )
         )
-        payment_instructions = _get_payment_instructions(
-            order, data.language_code
+        payment_instructions = (
+            order_payment_service.get_email_payment_instructions(
+                order, data.language_code
+            )
         )
         paragraphs = [
             gettext(
@@ -129,19 +130,6 @@ def _assemble_email_for_incoming_order_to_orderer(
 
     return _assemble_email_to_orderer(
         subject, body, data.brand_id, recipient_address
-    )
-
-
-def _get_payment_instructions(order: Order, language_code: str) -> str:
-    scope = SnippetScope('shop', str(order.shop_id))
-    snippet_content = snippet_service.get_snippet_body(
-        scope, 'email_payment_instructions', language_code
-    )
-
-    template = load_template(snippet_content)
-    return template.render(
-        order_id=order.id,
-        order_number=order.order_number,
     )
 
 
