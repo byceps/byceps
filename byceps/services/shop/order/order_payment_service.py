@@ -21,6 +21,8 @@ from ...snippet.models import SnippetScope
 from ...snippet import snippet_service
 from ...user import user_service
 
+from ..shop.models import ShopID
+
 from .dbmodels.payment import DbPayment
 from .models.payment import AdditionalPaymentData, Payment
 from .models.order import Order, OrderID
@@ -88,7 +90,7 @@ def get_email_payment_instructions(order: Order, language_code: str) -> str:
 
     Raise error if not found.
     """
-    scope = SnippetScope('shop', str(order.shop_id))
+    scope = _build_shop_snippet_scope(order.shop_id)
     snippet_content = snippet_service.get_snippet_body(
         scope, 'email_payment_instructions', language_code
     )
@@ -105,7 +107,7 @@ def get_html_payment_instructions(order: Order, language_code: str) -> str:
 
     Raise error if not found.
     """
-    scope = SnippetScope('shop', str(order.shop_id))
+    scope = _build_shop_snippet_scope(order.shop_id)
     snippet_content = snippet_service.get_snippet_body(
         scope, 'payment_instructions', language_code
     )
@@ -115,3 +117,7 @@ def get_html_payment_instructions(order: Order, language_code: str) -> str:
         order_number=order.order_number,
         total_amount=format_money(order.total_amount),
     )
+
+
+def _build_shop_snippet_scope(shop_id: ShopID) -> SnippetScope:
+    return SnippetScope('shop', str(shop_id))
