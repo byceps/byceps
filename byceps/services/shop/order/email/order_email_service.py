@@ -12,7 +12,11 @@ from dataclasses import dataclass
 
 from flask_babel import format_currency, format_date, gettext
 
-from .....services.email import email_config_service, email_service
+from .....services.email import (
+    email_config_service,
+    email_footer_service,
+    email_service,
+)
 from .....services.email.models import Message
 from .....services.shop.order.models.order import Order, OrderID
 from .....services.shop.order import order_service
@@ -225,11 +229,7 @@ def _assemble_body(data: OrderEmailData, paragraphs: list[str]) -> str:
     """Assemble the plain text part of the email."""
     screen_name = data.orderer.screen_name or 'UnknownUser'
     salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
-
-    scope = SnippetScope.for_brand(data.brand_id)
-    footer = snippet_service.get_snippet_body(
-        scope, 'email_footer', data.language_code
-    )
+    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
 
     return '\n\n'.join([salutation] + paragraphs + [footer])
 
