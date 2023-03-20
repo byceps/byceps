@@ -13,7 +13,8 @@ from typing import Iterator, Optional
 
 from babel import Locale
 from flask import current_app, g, request
-from flask_babel import force_locale, get_locale
+from flask_babel import force_locale, format_currency, get_locale
+from moneyed import Money
 from wtforms import Form
 
 from ..services.user.models.user import User
@@ -85,3 +86,8 @@ class LocalizedForm(Form):
         locales = current_app.config['LOCALES_FORMS']
         kwargs['meta'] = {'locales': locales}
         super().__init__(*args, **kwargs)
+
+
+def format_money(money: Money) -> str:
+    """Format monetary value with amount and currency."""
+    return format_currency(money.amount, money.currency.code)
