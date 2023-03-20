@@ -77,6 +77,22 @@ def get_category(category_id: TicketCategoryID) -> TicketCategory:
     return category
 
 
+def find_category_by_title(
+    party_id: PartyID, title: str
+) -> Optional[TicketCategory]:
+    """Return the category with that title, or `None` if not found."""
+    db_category = db.session.scalar(
+        select(DbTicketCategory)
+        .filter_by(party_id=party_id)
+        .filter_by(title=title)
+    )
+
+    if db_category is None:
+        return None
+
+    return _db_entity_to_category(db_category)
+
+
 def get_categories_for_party(party_id: PartyID) -> list[TicketCategory]:
     """Return all categories for that party."""
     db_categories = db.session.scalars(
