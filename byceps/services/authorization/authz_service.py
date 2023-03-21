@@ -74,11 +74,11 @@ def find_role_ids_for_user(user_id: UserID) -> set[RoleID]:
 
 def find_user_ids_for_role(role_id: RoleID) -> set[UserID]:
     """Return the IDs of the users that have this role assigned."""
-    rows = db.session.scalars(
+    user_id_rows = db.session.scalars(
         select(DbUserRole.user_id).filter(DbUserRole.role_id == role_id)
     ).all()
 
-    return {row[0] for row in rows}
+    return set(user_id_rows)
 
 
 def assign_permission_to_role(
