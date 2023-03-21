@@ -28,7 +28,10 @@
         <tr>
           <th>{{ _('Role') }}</th>
           <th>{{ _('Permissions') }}</th>
+          {%- if has_current_user_permission('role.assign') %}
           <th></th>
+          <th></th>
+          {%- endif %}
         </tr>
       </thead>
       <tbody>
@@ -50,15 +53,18 @@
             <p class="dimmed">{{ _('none') }}</p>
             {%- endif %}
           </td>
+          {%- if has_current_user_permission('role.assign') %}
           <td>
-            {%- if has_current_user_permission('role.assign') %}
-              {%- if user_has_role %}
-            <a class="button button--compact color-danger" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="{{ _('Unassign role') }}">{{ render_icon('remove') }}</a>
-              {%- else %}
+            {%- if not user_has_role %}
             <a class="button button--compact color-success" data-action="role-assign" href="{{ url_for('.role_assign', user_id=user.id, role_id=role.id) }}" title="{{ _('Assign role') }}">{{ render_icon('add') }}</a>
-              {%- endif %}
             {%- endif %}
           </td>
+          <td>
+            {%- if user_has_role %}
+            <a class="button button--compact color-danger" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="{{ _('Unassign role') }}">{{ render_icon('remove') }}</a>
+            {%- endif %}
+          </td>
+          {%- endif %}
         </tr>
           {%- endwith %}
         {%- endfor %}
