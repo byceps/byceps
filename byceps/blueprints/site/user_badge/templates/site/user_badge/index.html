@@ -5,26 +5,38 @@
 
 {% block head %}
   <style>
+    .badges {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
     .badges li {
       align-items: center;
       display: flex;
     }
+
     .badges li + li {
       margin-top: 1.5rem;
     }
+
     .badges .badge {
       flex: 0 0 auto;
     }
+
     .badges .badge a.user-badge {
       display: block;
     }
+
     .badges .description {
       margin-left: 1rem;
     }
+
     .badges .description p {
       margin: 0;
       padding: 0;
     }
+
     .badges .description p + p {
       margin-top: 0.5rem;
     }

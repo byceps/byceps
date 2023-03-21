@@ -6,7 +6,7 @@
   {%- if current_party_tickets %}
   <h2>{{ ngettext('Seat', 'Seats', current_party_tickets|length) }}</h2>
 
-  <ol>
+  <ol class="bare">
     {%- for ticket in current_party_tickets %}
     <li>{{ render_seating_area_link(ticket.occupied_seat.area, ticket.occupied_seat.label) if ticket.occupied_seat else _('not chosen')|dim }}{% if ticket.user_checked_in %} {{ render_tag(_('checked in')) }}{% endif %}</li>
     {%- endfor %}

@@ -24,7 +24,7 @@
           </td>
           <td>
           {%- if role_ids %}
-            <ol>
+            <ol class="bare">
             {%- for role_id in role_ids|sort %}
               <li class="monospace"><a href="{{ url_for('.role_view', role_id=role_id) }}">{{ role_id }}</a></li>
             {%- endfor %}

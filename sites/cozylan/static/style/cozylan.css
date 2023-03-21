@@ -180,6 +180,12 @@ body {
   border-radius: 3px;
 }
 
+.nav-main ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .nav-main-item {
   border-bottom: var(--border-color) solid 1px;
   color: currentColor;

@@ -15,7 +15,7 @@
   <div class="row row--space-between">
     <div class="column--grow">
       <div class="ticket-selector button">
-        <ol id="ticket-selection">
+        <ol id="ticket-selection" class="bare">
           {%- for ticket, occupies_seat, seat_label in managed_tickets|sort(attribute='0.code') %}
           <li class="ticket" data-id="{{ ticket.id }}" data-code="{{ ticket.code }}"{% if occupies_seat and seat_label %} data-seat-label="{{ seat_label }}"{% endif %}>
             <span class="managed-ticket-code">{{ ticket.code }}</span>

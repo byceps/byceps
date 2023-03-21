@@ -73,12 +73,6 @@ table {
   border-spacing: 0;
 }
 
-ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
 figure {
   margin: 0;
   padding: 0;
@@ -232,7 +226,9 @@ span[title] .icon {
   border-style: solid;
   border-width: 0 0 1px 0;
   display: flex;
-  margin-bottom: 2rem;
+  list-style: none;
+  margin: 0 0 2rem 0;
+  padding: 0;
 }
 
 .tabs--centered {
@@ -274,6 +270,12 @@ span.tabs-tab--current {
 nav.breadcrumbs {
   font-size: 0.8125rem; /* 13px / 16px */
   margin-top: 1rem;
+}
+
+nav.breadcrumbs ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 nav.breadcrumbs li {
@@ -485,6 +487,12 @@ form .invalid.mb {
   margin-bottom: 1rem;
 }
 
+.form-errors {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .form-errors li {
   font-size: 0.6875rem; /* 11px / 16px */
 }
@@ -647,6 +655,7 @@ button.button[disabled],
   font-weight: normal;
   left: 0;
   list-style: none;
+  margin: 0;
   padding: 0.4rem 0;
   position: absolute;
   text-align: left;
@@ -705,6 +714,9 @@ nav.pagination.centered {
 
 nav.pagination ol {
   display: inline-block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 nav.pagination li {
@@ -984,6 +996,12 @@ table.user-badges-list td {
 
 img {
   max-width: 100%;
+}
+
+ol.bare {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .mb {

@@ -154,7 +154,7 @@
       <div class="data-label">{{ _('Attached to articles') }}</div>
       <div class="data-value">
         {%- if article.articles_attached_to %}
-        <ol>
+        <ol class="bare">
         {%- for attached_article in article.articles_attached_to|sort(attribute='attached_to_article.item_number') %}
         <li>{{ render_article_link(attached_article.attached_to_article) }} ({{ attached_article.quantity }} {{ _('pieces') }})</li>
         {%- endfor %}

@@ -41,7 +41,7 @@
   <h2>{{ _('Users with this role') }} {{ render_extra_in_heading(users|length) }}</h2>
   <div class="box">
     {%- if users %}
-    <ol>
+    <ol class="bare">
       {%- for user in users|sort(attribute='screen_name') %}
       <li>{{ render_user_avatar_and_admin_link(user, size=16) }}</li>
       {%- endfor %}
