@@ -110,6 +110,7 @@ assigned_permissions = [
 id = 'newsletter_admin'
 title = 'Newsletter-Abonnements verwalten'
 assigned_permissions = [
+    'newsletter.administrate',
     'newsletter.export_subscribers',
     'newsletter.view_subscriptions',
 ]

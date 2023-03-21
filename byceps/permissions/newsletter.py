@@ -14,6 +14,7 @@ from ..util.authorization import register_permissions
 register_permissions(
     'newsletter',
     [
+        ('administrate', lazy_gettext('Administrate newsletter subscription lists')),
         ('export_subscribers', lazy_gettext('Export newsletter subscribers')),
         ('view_subscriptions', lazy_gettext('View newsletter subscriptions')),
     ],

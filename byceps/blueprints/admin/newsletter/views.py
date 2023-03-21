@@ -8,15 +8,28 @@ byceps.blueprints.admin.newsletter.views
 
 from dataclasses import dataclass
 from operator import attrgetter
+from typing import Optional
 
 from flask import abort
+from flask_babel import gettext
 
-from ....services.newsletter.models import List
-from ....services.newsletter import newsletter_service
+from ....services.brand.models import Brand, BrandID
+from ....services.brand import brand_service
+from ....services.newsletter.models import List, ListID
+from ....services.newsletter import (
+    newsletter_command_service,
+    newsletter_service,
+)
 from ....services.user import user_stats_service
 from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
-from ....util.views import jsonified, permission_required, textified
+from ....util.views import (
+    jsonified,
+    permission_required,
+    redirect_to,
+    textified,
+)
 
 
 blueprint = create_blueprint('newsletter_admin', __name__)
@@ -47,12 +60,43 @@ def _add_subscriber_count(list_):
     return ListWithStats(list_.id, list_.title, subscriber_count)
 
 
+@blueprint.get('/for_brand/<brand_id>/create')
+@permission_required('newsletter.administrate')
+@templated
+def create_brand_list_form(brand_id):
+    """Show form to create a list for that brand."""
+    brand = _get_brand_or_404(brand_id)
+
+    return {
+        'brand': brand,
+    }
+
+
+@blueprint.post('/for_brand/<brand_id>')
+@permission_required('newsletter.administrate')
+def create_brand_list(brand_id):
+    """Create a list for that brand."""
+    brand = _get_brand_or_404(brand_id)
+
+    list_ = newsletter_command_service.create_list(brand.id, brand.title)
+
+    flash_success(gettext('Subscription list has been created.'))
+
+    return redirect_to('.view_subscriptions', list_id=list_.id)
+
+
 @blueprint.get('/lists/<list_id>/subscriptions')
 @permission_required('newsletter.view_subscriptions')
 @templated
 def view_subscriptions(list_id):
     """Show user subscription states for that list."""
-    list_ = _get_list_or_404(list_id)
+    list_ = _find_list(list_id)
+    if list_ is None:
+        brand = _find_brand(list_id)
+        if brand is not None:
+            return redirect_to('.create_brand_list_form', brand_id=brand.id)
+        else:
+            abort(404)
 
     subscription_count = newsletter_service.count_subscribers_for_list(list_.id)
     user_count = user_stats_service.count_users()
@@ -101,10 +145,27 @@ def export_subscriber_email_addresses(list_id):
     return '\n'.join(email_addresses)
 
 
-def _get_list_or_404(list_id):
-    list_ = newsletter_service.find_list(list_id)
+def _get_brand_or_404(brand_id: BrandID) -> Brand:
+    brand = _find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    return brand
+
+
+def _find_brand(brand_id: BrandID) -> Optional[Brand]:
+    return brand_service.find_brand(brand_id)
+
+
+def _get_list_or_404(list_id) -> List:
+    list_ = _find_list(list_id)
 
     if list_ is None:
         abort(404)
 
     return list_
+
+
+def _find_list(list_id: ListID) -> Optional[List]:
+    return newsletter_service.find_list(list_id)
