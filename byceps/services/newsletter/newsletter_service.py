@@ -6,7 +6,7 @@ byceps.services.newsletter.newsletter_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable, Iterator, Optional, Sequence
+from typing import Iterator, Optional, Sequence
 
 from sqlalchemy import select
 
@@ -45,33 +45,28 @@ def count_subscribers_for_list(list_id: ListID) -> int:
     )
 
 
-def get_subscribers(list_id: ListID) -> Iterable[Subscriber]:
-    """Yield screen name and email address of the initialized users that
-    are currently subscribed to the list.
+def get_subscribers(list_id: ListID) -> Iterator[Subscriber]:
+    """Yield screen name and email address of the users that are
+    currently subscribed to the list.
+
+    This excludes user accounts that are
+    - not initialized,
+    - have no or an unverified email address,
+    - are suspended, or
+    - have been deleted.
     """
-    subscriber_ids = db.session.scalars(
-        select(DbSubscription.user_id).filter_by(list_id=list_id)
-    ).all()
-
-    return _get_subscriber_details(set(subscriber_ids))
-
-
-def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
-    """Yield screen name and email address of each eligible user."""
-    if not user_ids:
-        return []
-
     rows = db.session.execute(
         select(
             DbUser.screen_name,
             DbUser.email_address,
         )
-        .filter(DbUser.id.in_(user_ids))
+        .join(DbSubscription)
+        .filter(DbSubscription.list_id == list_id)
         .filter(DbUser.email_address.is_not(None))
-        .filter_by(initialized=True)
-        .filter_by(email_address_verified=True)
-        .filter_by(suspended=False)
-        .filter_by(deleted=False)
+        .filter(DbUser.initialized == True)  # noqa: E712
+        .filter(DbUser.email_address_verified == True)  # noqa: E712
+        .filter(DbUser.suspended == False)  # noqa: E712
+        .filter(DbUser.deleted == False)  # noqa: E712
     ).all()
 
     for row in rows:
