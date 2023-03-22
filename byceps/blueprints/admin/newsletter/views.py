@@ -54,7 +54,7 @@ def index():
     }
 
 
-def _add_subscriber_count(list_):
+def _add_subscriber_count(list_: List) -> ListWithStats:
     subscriber_count = newsletter_service.count_subscribers_for_list(list_.id)
 
     return ListWithStats(list_.id, list_.title, subscriber_count)
@@ -158,7 +158,7 @@ def _find_brand(brand_id: BrandID) -> Optional[Brand]:
     return brand_service.find_brand(brand_id)
 
 
-def _get_list_or_404(list_id) -> List:
+def _get_list_or_404(list_id: ListID) -> List:
     list_ = _find_list(list_id)
 
     if list_ is None:
