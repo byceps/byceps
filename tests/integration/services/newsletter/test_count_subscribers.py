@@ -1,0 +1,87 @@
+"""
+:Copyright: 2014-2023 Jochen Kupperschmidt
+:License: Revised BSD (see `LICENSE` file for details)
+"""
+
+from datetime import datetime
+
+import pytest
+
+from byceps.services.newsletter import (
+    newsletter_command_service,
+    newsletter_service,
+)
+from byceps.services.newsletter.types import SubscriptionState
+
+from tests.helpers import generate_token
+
+
+def test_count_subscribers(newsletter_list, subscribers):
+    # Included users:
+    # - #1
+    # - #3 (not initialized)
+    # - #4 (unverified email address)
+    # - #5 (eventually requested subscription)
+    # - #7
+    # - #8 (suspended)
+    # - #9 (deleted)
+    # Excluded users:
+    # - #2 (declined subscription)
+    # - #6 (eventually declined subscription)
+    expected = 7
+
+    actual = newsletter_service.count_subscribers(newsletter_list.id)
+
+    assert actual == expected
+
+
+@pytest.fixture(scope='module')
+def newsletter_list(admin_app):
+    list_id = generate_token()
+    return newsletter_command_service.create_list(list_id, list_id)
+
+
+@pytest.fixture(scope='module')
+def subscribers(make_user, newsletter_list):
+    for (
+        number,
+        initialized,
+        email_address_verified,
+        suspended,
+        deleted,
+        states,
+    ) in [
+        ( 1, True , True , False, False, [SubscriptionState.requested                             ]),
+        ( 2, True , True , False, False, [SubscriptionState.declined                              ]),
+        ( 3, False, True , False, False, [SubscriptionState.requested                             ]),
+        ( 4, True , False, False, False, [SubscriptionState.requested                             ]),
+        ( 5, True , True , False, False, [SubscriptionState.declined,  SubscriptionState.requested]),
+        ( 6, True , True , False, False, [SubscriptionState.requested, SubscriptionState.declined ]),
+        ( 7, True , True , False, False, [SubscriptionState.requested                             ]),
+        ( 8, True , True , True , False, [SubscriptionState.requested                             ]),
+        ( 9, True , True , False, True , [SubscriptionState.requested                             ]),
+    ]:
+        user = make_user(
+            screen_name=f'User-{number:d}',
+            email_address=f'user{number:03d}@users.test',
+            email_address_verified=email_address_verified,
+            initialized=initialized,
+            suspended=suspended,
+            deleted=deleted,
+        )
+
+        list_id = newsletter_list.id
+
+        for state in states:
+            # Timestamp must not be identical for multiple
+            # `(user_id, list_id)` pairs.
+            expressed_at = datetime.utcnow()
+
+            if state == SubscriptionState.requested:
+                newsletter_command_service.subscribe(
+                    user.id, list_id, expressed_at
+                )
+            elif state == SubscriptionState.declined:
+                newsletter_command_service.unsubscribe(
+                    user.id, list_id, expressed_at
+                )
