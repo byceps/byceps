@@ -121,8 +121,8 @@ def view_brand(brand_id):
     newsletter_list = None
     if newsletter_list_id:
         newsletter_list = newsletter_service.find_list(newsletter_list_id)
-        newsletter_subscriber_count = (
-            newsletter_service.count_subscribers_for_list(newsletter_list.id)
+        newsletter_subscriber_count = newsletter_service.count_subscribers(
+            newsletter_list.id
         )
     else:
         newsletter_subscriber_count = None

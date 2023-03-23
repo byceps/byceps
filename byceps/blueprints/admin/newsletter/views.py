@@ -55,7 +55,7 @@ def index():
 
 
 def _add_subscriber_count(list_: List) -> ListWithStats:
-    subscriber_count = newsletter_service.count_subscribers_for_list(list_.id)
+    subscriber_count = newsletter_service.count_subscribers(list_.id)
 
     return ListWithStats(list_.id, list_.title, subscriber_count)
 
@@ -98,7 +98,7 @@ def view_subscriptions(list_id):
         else:
             abort(404)
 
-    subscription_count = newsletter_service.count_subscribers_for_list(list_.id)
+    subscription_count = newsletter_service.count_subscribers(list_.id)
     user_count = user_stats_service.count_users()
 
     return {
