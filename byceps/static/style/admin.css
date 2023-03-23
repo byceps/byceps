@@ -158,14 +158,6 @@ a.box:hover {
   flex: 1 0 auto;
 }
 
-#header-content .brand-icon {
-  display: inline-block;
-  fill: #e4c444;
-  margin-right: -0.5rem;
-  margin-top: 0.5rem;
-  width: 0.75rem;
-}
-
 #header-content .brand-text {
   color: #eeeeee;
   font-size: 1.75rem; /* 28px / 16px */
