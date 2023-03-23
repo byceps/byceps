@@ -43,27 +43,18 @@ def newsletter_list(admin_app):
 
 @pytest.fixture(scope='module')
 def subscribers(make_user, newsletter_list):
-    for (
-        number,
-        initialized,
-        email_address_verified,
-        suspended,
-        deleted,
-        states,
-    ) in [
-        ( 1, True , True , False, False, [SubscriptionState.requested                             ]),
-        ( 2, True , True , False, False, [SubscriptionState.declined                              ]),
-        ( 3, False, True , False, False, [SubscriptionState.requested                             ]),
-        ( 4, True , False, False, False, [SubscriptionState.requested                             ]),
-        ( 5, True , True , False, False, [SubscriptionState.declined,  SubscriptionState.requested]),
-        ( 6, True , True , False, False, [SubscriptionState.requested, SubscriptionState.declined ]),
-        ( 7, True , True , False, False, [SubscriptionState.requested                             ]),
-        ( 8, True , True , True , False, [SubscriptionState.requested                             ]),
-        ( 9, True , True , False, True , [SubscriptionState.requested                             ]),
+    for initialized, email_address_verified, suspended, deleted, states in [
+        (True , True , False, False, [SubscriptionState.requested                             ]),  # 1
+        (True , True , False, False, [SubscriptionState.declined                              ]),  # 2
+        (False, True , False, False, [SubscriptionState.requested                             ]),  # 3
+        (True , False, False, False, [SubscriptionState.requested                             ]),  # 4
+        (True , True , False, False, [SubscriptionState.declined,  SubscriptionState.requested]),  # 5
+        (True , True , False, False, [SubscriptionState.requested, SubscriptionState.declined ]),  # 6
+        (True , True , False, False, [SubscriptionState.requested                             ]),  # 7
+        (True , True , True , False, [SubscriptionState.requested                             ]),  # 8
+        (True , True , False, True , [SubscriptionState.requested                             ]),  # 9
     ]:
         user = make_user(
-            screen_name=f'User-{number:d}',
-            email_address=f'user{number:03d}@users.test',
             email_address_verified=email_address_verified,
             initialized=initialized,
             suspended=suspended,
