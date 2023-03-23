@@ -27,7 +27,7 @@ def test_export_subscribers(newsletter_list, subscribers, client):
             # User #3 is not initialized, and thus should be excluded.
 
             # User #4 was initialized, but has its email address marked
-            # as unverified later on, so it should be included.
+            # as unverified later on, so it should be excluded.
 
             # User #5 has initially declined, but later requested a
             # subscription, so it should be included.
