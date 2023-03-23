@@ -19,16 +19,16 @@ from tests.helpers import generate_token
 def test_count_subscribers(newsletter_list, subscribers):
     # Included users:
     # - #1
-    # - #3 (not initialized)
-    # - #4 (unverified email address)
     # - #5 (eventually requested subscription)
     # - #7
-    # - #8 (suspended)
-    # - #9 (deleted)
     # Excluded users:
     # - #2 (declined subscription)
+    # - #3 (not initialized)
+    # - #4 (unverified email address)
     # - #6 (eventually declined subscription)
-    expected = 7
+    # - #8 (suspended)
+    # - #9 (deleted)
+    expected = 3
 
     actual = newsletter_service.count_subscribers(newsletter_list.id)
 

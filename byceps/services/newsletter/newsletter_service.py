@@ -40,8 +40,14 @@ def count_subscribers(list_id: ListID) -> int:
     """Return the number of users that are currently subscribed to that list."""
     return db.session.scalar(
         select(db.func.count())
-        .select_from(DbSubscription)
-        .filter_by(list_id=list_id)
+        .select_from(DbUser)
+        .join(DbSubscription)
+        .filter(DbSubscription.list_id == list_id)
+        .filter(DbUser.email_address.is_not(None))
+        .filter(DbUser.initialized == True)  # noqa: E712
+        .filter(DbUser.email_address_verified == True)  # noqa: E712
+        .filter(DbUser.suspended == False)  # noqa: E712
+        .filter(DbUser.deleted == False)  # noqa: E712
     )
 
 
