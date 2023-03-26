@@ -42,14 +42,24 @@ class DbNavMenu(db.Model):
     )
     language = db.relationship(DbLanguage)
     hidden = db.Column(db.Boolean, nullable=False)
+    parent_menu_id = db.Column(
+        db.Uuid, db.ForeignKey('site_nav_menus.id'), nullable=True
+    )
 
     def __init__(
-        self, site_id: SiteID, name: str, language_code: str, hidden: bool
+        self,
+        site_id: SiteID,
+        name: str,
+        language_code: str,
+        hidden: bool,
+        *,
+        parent_menu_id: Optional[NavMenuID] = None,
     ) -> None:
         self.site_id = site_id
         self.name = name
         self.language_code = language_code
         self.hidden = hidden
+        self.parent_menu_id = parent_menu_id
 
 
 class DbNavItem(db.Model):

@@ -34,9 +34,12 @@ def create_menu(
     language_code: str,
     *,
     hidden: bool = False,
+    parent_menu_id: Optional[NavMenuID] = None,
 ) -> NavMenu:
     """Create a menu."""
-    db_menu = DbNavMenu(site_id, name, language_code, hidden)
+    db_menu = DbNavMenu(
+        site_id, name, language_code, hidden, parent_menu_id=parent_menu_id
+    )
     db.session.add(db_menu)
     db.session.commit()
 
@@ -288,6 +291,7 @@ def _db_entity_to_menu(db_menu: DbNavMenu) -> NavMenu:
         name=db_menu.name,
         language_code=db_menu.language_code,
         hidden=db_menu.hidden,
+        parent_menu_id=db_menu.parent_menu_id,
     )
 
 
@@ -322,6 +326,7 @@ def _db_entity_to_menu_aggregate(
         name=menu.name,
         language_code=menu.language_code,
         hidden=menu.hidden,
+        parent_menu_id=menu.parent_menu_id,
         items=items,
     )
 
