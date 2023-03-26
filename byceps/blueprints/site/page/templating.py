@@ -33,7 +33,7 @@ def render_page(page: Page, version: PageVersion) -> str | tuple[str, int]:
         context['current_page'] = page.current_page_id
 
         if page.nav_menu_id:
-            context['page_nav_menu_id'] = page.nav_menu_id
+            context['subnav_menu_id'] = page.nav_menu_id
 
         return render_template('site/page/view.html', **context)
     except TemplateNotFound:

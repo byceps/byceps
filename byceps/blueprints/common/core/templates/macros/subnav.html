@@ -1,6 +1,19 @@
 {% from 'macros/icons.html' import render_icon %}
 
 
+{% macro render_subnav_for_menu_id(menu_id, current_page) -%}
+  {%- with nav_items = get_nav_menu_items_for_menu_id(menu_id) %}
+    {%- if nav_items %}
+{%- call render_subnav() %}
+      {%- for item in nav_items %}
+        {{ render_subnav_item(item.target, item.label, item.current_page_id, current_page) }}
+      {%- endfor %}
+{%- endcall %}
+    {%- endif %}
+  {%- endwith %}
+{%- endmacro %}
+
+
 {% macro render_subnav() -%}
   <nav class="subnav">
     <ol class="tabs tabs--centered">
