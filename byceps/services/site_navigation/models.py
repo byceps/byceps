@@ -87,3 +87,9 @@ _VIEW_TYPES = [
         ('orga_team', 'orga_team.index', lazy_gettext('Orga team')),
     ]
 ]
+
+
+@dataclass(frozen=True)
+class NavMenuTree:
+    menu: NavMenu
+    submenus: list[NavMenu]

@@ -23,6 +23,7 @@ from .models import (
     NavMenu,
     NavMenuAggregate,
     NavMenuID,
+    NavMenuTree,
     ViewType,
     _VIEW_TYPES,
 )
@@ -180,6 +181,25 @@ def get_menus(site_id: SiteID) -> list[NavMenu]:
     )
 
     return [_db_entity_to_menu(db_menu) for db_menu in db_menus]
+
+
+def get_menu_trees(site_id: SiteID) -> list[NavMenuTree]:
+    """Return the menu trees for this site."""
+    menus = get_menus(site_id)
+
+    trees = []
+
+    root_menus = [menu for menu in menus if not menu.parent_menu_id]
+    all_submenus = [menu for menu in menus if menu.parent_menu_id]
+
+    for root_menu in root_menus:
+        submenus = [
+            menu for menu in all_submenus if menu.parent_menu_id == root_menu.id
+        ]
+        tree = NavMenuTree(menu=root_menu, submenus=submenus)
+        trees.append(tree)
+
+    return trees
 
 
 def find_item(item_id: NavItemID) -> Optional[NavItem]:
