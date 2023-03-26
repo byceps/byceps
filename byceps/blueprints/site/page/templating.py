@@ -16,6 +16,9 @@ from jinja2 import TemplateNotFound
 
 from ....services.page.models import Page, PageVersion
 from ....services.page import page_service
+from ....services.site_navigation.models import NavMenuID
+from ....services.site_navigation import site_navigation_service
+from ....util.l10n import get_default_locale, get_locale_str
 from ....util.templating import load_template
 
 from ..snippet.templating import render_snippet_as_partial_from_template
@@ -32,8 +35,9 @@ def render_page(page: Page, version: PageVersion) -> str | tuple[str, int]:
         )
         context['current_page'] = page.current_page_id
 
-        if page.nav_menu_id:
-            context['subnav_menu_id'] = page.nav_menu_id
+        subnav_menu_id = _find_subnav_menu_id(page)
+        if subnav_menu_id:
+            context['subnav_menu_id'] = subnav_menu_id
 
         return render_template('site/page/view.html', **context)
     except TemplateNotFound:
@@ -43,6 +47,16 @@ def render_page(page: Page, version: PageVersion) -> str | tuple[str, int]:
         traceback.print_exc()
         context = {'message': str(e)}
         return render_template('site/page/error.html', **context), 500
+
+
+def _find_subnav_menu_id(page: Page) -> Optional[NavMenuID]:
+    if page.nav_menu_id:
+        return page.nav_menu_id
+
+    language_code = get_locale_str() or get_default_locale()
+    return site_navigation_service.find_submenu_id_for_page(
+        g.site_id, language_code, page.name
+    )
 
 
 def build_template_context(

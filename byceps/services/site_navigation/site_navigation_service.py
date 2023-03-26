@@ -123,6 +123,28 @@ def delete_item(item_id: NavItemID) -> None:
     db.session.commit()
 
 
+def find_submenu_id_for_page(
+    site_id: SiteID, language_code: str, page_name: str
+) -> Optional[NavMenuID]:
+    """Return the ID of the submenu this page is referenced by.
+
+    If the page is referenced from multiple submenus, the one whose name
+    comes first in alphabetical order is chosen.
+    """
+    return db.session.scalars(
+        select(DbNavItem.menu_id)
+        .join(DbNavMenu)
+        .filter(DbNavMenu.site_id == site_id)
+        .filter(DbNavMenu.language_code == language_code)
+        .filter(DbNavMenu.hidden == False)  # noqa: E712
+        .filter(DbNavMenu.parent_menu_id.is_not(None))  # submenus only
+        .filter(DbNavItem._target_type == NavItemTargetType.page.name)
+        .filter(DbNavItem.target == page_name)
+        .filter(DbNavItem.hidden == False)  # noqa: E712
+        .order_by(DbNavMenu.name)
+    ).first()
+
+
 def find_menu(menu_id: NavMenuID) -> Optional[NavMenu]:
     """Return the menu, or `None` if not found."""
     db_menu = _find_db_menu(menu_id)
