@@ -36,6 +36,7 @@ from .forms import (
     ItemUpdateForm,
     MenuCreateForm,
     MenuUpdateForm,
+    SubMenuCreateForm,
 )
 
 
@@ -116,6 +117,56 @@ def menu_create(site_id):
 
     menu = site_navigation_service.create_menu(
         site.id, name, language_code, hidden=hidden
+    )
+
+    flash_success(gettext('Menu "%(name)s" has been created.', name=menu.name))
+
+    return redirect_to('.view', menu_id=menu.id)
+
+
+@blueprint.get('/for_site/<site_id>/create/below/<parent_menu_id>')
+@permission_required('site_navigation.administrate')
+@templated
+def submenu_create_form(site_id, parent_menu_id, erroneous_form=None):
+    """Show form to create a submenu."""
+    site = _get_site_or_404(site_id)
+
+    brand = brand_service.get_brand(site.brand_id)
+
+    parent_menu = site_navigation_service.get_menu(parent_menu_id)
+
+    form = erroneous_form if erroneous_form else SubMenuCreateForm()
+
+    return {
+        'site': site,
+        'brand': brand,
+        'form': form,
+        'parent_menu': parent_menu,
+    }
+
+
+@blueprint.post('/for_site/<site_id>/below/<parent_menu_id>')
+@permission_required('site_navigation.administrate')
+def submenu_create(site_id, parent_menu_id):
+    """Create a submenu."""
+    site = _get_site_or_404(site_id)
+
+    parent_menu = site_navigation_service.get_menu(parent_menu_id)
+
+    form = SubMenuCreateForm(request.form)
+
+    if not form.validate():
+        return submenu_create_form(site_id, parent_menu_id, form)
+
+    name = form.name.data.strip()
+    hidden = form.hidden.data
+
+    menu = site_navigation_service.create_menu(
+        site.id,
+        name,
+        parent_menu.language_code,
+        hidden=hidden,
+        parent_menu_id=parent_menu_id,
     )
 
     flash_success(gettext('Menu "%(name)s" has been created.', name=menu.name))

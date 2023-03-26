@@ -18,18 +18,23 @@ from .....util.l10n import LocalizedForm
 
 class _MenuBaseForm(LocalizedForm):
     name = StringField(lazy_gettext('Name'), validators=[InputRequired()])
-    language_code = StringField(
-        lazy_gettext('Language code'), validators=[InputRequired()]
-    )
     hidden = BooleanField(lazy_gettext('hidden'))
 
 
 class MenuCreateForm(_MenuBaseForm):
+    language_code = StringField(
+        lazy_gettext('Language code'), validators=[InputRequired()]
+    )
+
+
+class SubMenuCreateForm(_MenuBaseForm):
     pass
 
 
 class MenuUpdateForm(_MenuBaseForm):
-    pass
+    language_code = StringField(
+        lazy_gettext('Language code'), validators=[InputRequired()]
+    )
 
 
 class _ItemBaseForm(LocalizedForm):

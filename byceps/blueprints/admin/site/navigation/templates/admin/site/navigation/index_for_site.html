@@ -26,6 +26,7 @@
           <th>{{ _('Name') }}</th>
           <th>{{ _('Language') }}</th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -54,6 +55,11 @@
           <td>
             {%- if menu.hidden -%}
             {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+            {%- endif -%}
+          </td>
+          <td style="text-align: right;">
+            {%- if not menu.parent_menu_id and has_current_user_permission('site_navigation.administrate') %}
+            <a class="button button--compact" href="{{ url_for('.submenu_create_form', site_id=site.id, parent_menu_id=menu.id) }}">{{ render_icon('add') }} <span>{{ _('Create submenu') }}</span></a>
             {%- endif -%}
           </td>
         </tr>

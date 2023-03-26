@@ -1,0 +1,29 @@
+{% extends 'layout/admin/site/navigation.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_check %}
+{% set page_title = _('Create submenu') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index_for_site', site_id=site.id), _('Menus')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.submenu_create', site_id=site.id, parent_menu_id=parent_menu.id) }}" method="post">
+    <div class="box">
+
+      <div class="mb">
+        <label class="form-label">{{ _('Parent menu') }}</label>
+        <div>{{ parent_menu.name }} ({{ parent_menu.language_code }})</div>
+      </div>
+
+      {{ form_field(form.name, maxlength=40, autofocus='autofocus') }}
+      {{ form_field_check(form.hidden) }}
+    </div>
+
+    {{ form_buttons(_('Create')) }}
+  </form>
+
+{%- endblock %}
