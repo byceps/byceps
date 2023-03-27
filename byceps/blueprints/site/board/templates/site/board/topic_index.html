@@ -2,9 +2,16 @@
 {% from 'macros/board.html' import render_flag_new %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% from 'macros/user.html' import render_user_avatar_and_name %}
 {% set current_page = 'board' %}
 {% set page_title = _('Board') %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
 
 {% block head %}
   <style>

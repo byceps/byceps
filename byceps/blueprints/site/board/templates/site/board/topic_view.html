@@ -3,8 +3,15 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% set current_page = 'board' %}
 {% set page_title = [_('Board'), topic.title] %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
 
 {% block body %}
 

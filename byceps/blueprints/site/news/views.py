@@ -19,6 +19,8 @@ from ....util.authorization import has_current_user_permission
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
+from ..site.navigation import subnavigation_for_view
+
 
 blueprint = create_blueprint('news', __name__)
 
@@ -30,6 +32,7 @@ DEFAULT_HEADLINES_PER_PAGE = 25
 @blueprint.get('/', defaults={'page': 1})
 @blueprint.get('/pages/<int:page>')
 @templated
+@subnavigation_for_view('news')
 def index(page):
     """Show a page of news items."""
     channel_ids = _get_channel_ids()
@@ -50,6 +53,7 @@ def index(page):
 @blueprint.get('/archive', defaults={'page': 1})
 @blueprint.get('/archive/pages/<int:page>')
 @templated
+@subnavigation_for_view('news')
 def archive(page):
     """Show a page of news items."""
     channel_ids = _get_channel_ids()
@@ -69,6 +73,7 @@ def archive(page):
 
 @blueprint.get('/<slug>')
 @templated
+@subnavigation_for_view('news')
 def view(slug):
     """Show a single news item."""
     channel_ids = _get_channel_ids()

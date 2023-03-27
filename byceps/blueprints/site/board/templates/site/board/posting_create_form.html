@@ -1,8 +1,15 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% set current_page = 'board' %}
 {% set page_title = _('Create post') %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
 
 {% block body %}
 

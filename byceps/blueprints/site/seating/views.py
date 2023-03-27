@@ -29,12 +29,15 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import login_required, redirect_to, respond_no_content
 
+from ..site.navigation import subnavigation_for_view
+
 
 blueprint = create_blueprint('seating', __name__)
 
 
 @blueprint.get('/')
 @templated
+@subnavigation_for_view('seating_plan')
 def index():
     """List areas."""
     if g.party_id is None:
@@ -60,6 +63,7 @@ def index():
 
 @blueprint.get('/areas/<slug>')
 @templated
+@subnavigation_for_view('seating_plan')
 def view_area(slug):
     """View area."""
     if g.party_id is None:
@@ -94,6 +98,7 @@ def view_area(slug):
 @blueprint.get('/areas/<slug>/manage_seats')
 @login_required
 @templated('site/seating/view_area')
+@subnavigation_for_view('seating_plan')
 def manage_seats_in_area(slug):
     """Manage seats for assigned tickets in area."""
     if not _is_seat_management_enabled():

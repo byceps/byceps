@@ -24,6 +24,8 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, respond_no_content_with_location
 
+from ..site.navigation import subnavigation_for_view
+
 from .blueprint import blueprint
 from .forms import PostingCreateForm, PostingUpdateForm
 from . import _helpers as h, service
@@ -46,6 +48,7 @@ def posting_view(posting_id):
 @blueprint.get('/topics/<uuid:topic_id>/create')
 @permission_required('board_posting.create')
 @templated
+@subnavigation_for_view('board')
 def posting_create_form(topic_id, erroneous_form=None):
     """Show a form to create a post to the topic."""
     topic = h.get_topic_or_404(topic_id)
@@ -132,6 +135,7 @@ def posting_create(topic_id):
 @blueprint.get('/postings/<uuid:posting_id>/update')
 @permission_required('board_posting.update')
 @templated
+@subnavigation_for_view('board')
 def posting_update_form(posting_id, erroneous_form=None):
     """Show form to update a post."""
     posting = h.get_posting_or_404(posting_id)
@@ -216,6 +220,7 @@ def posting_update(posting_id):
 @blueprint.get('/postings/<uuid:posting_id>/moderate')
 @permission_required('board.hide')
 @templated
+@subnavigation_for_view('board')
 def posting_moderate_form(posting_id):
     """Show a form to moderate the post."""
     posting = h.get_posting_or_404(posting_id)

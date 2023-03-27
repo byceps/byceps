@@ -1,6 +1,13 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% set current_page = 'news' %}
 {% set page_title = [item.title, _('News')] %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
 
 {% block body %}
 

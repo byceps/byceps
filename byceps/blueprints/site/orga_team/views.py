@@ -17,6 +17,8 @@ from ....services.user import user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
+from ..site.navigation import subnavigation_for_view
+
 
 blueprint = create_blueprint('orga_team', __name__)
 
@@ -26,6 +28,7 @@ GROUP_BY_TEAM = False
 
 @blueprint.get('/')
 @templated
+@subnavigation_for_view('orga_team')
 def index():
     """List all organizers for the current party."""
     if g.party_id is None:

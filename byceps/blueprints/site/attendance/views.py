@@ -13,6 +13,8 @@ from ....services.orga_team import orga_team_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
+from ..site.navigation import subnavigation_for_view
+
 
 blueprint = create_blueprint('attendance', __name__)
 
@@ -20,6 +22,7 @@ blueprint = create_blueprint('attendance', __name__)
 @blueprint.get('/attendees', defaults={'page': 1})
 @blueprint.get('/attendees/pages/<int:page>')
 @templated
+@subnavigation_for_view('attendees')
 def attendees(page):
     """List all attendees of the current party."""
     per_page = request.args.get('per_page', type=int, default=30)

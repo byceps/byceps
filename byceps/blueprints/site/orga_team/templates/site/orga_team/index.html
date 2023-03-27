@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% from 'macros/user.html' import render_user_avatar, render_user_screen_name %}
 {% set current_page = 'orga_team' %}
 {% set page_title = _('Team') %}
@@ -54,6 +55,12 @@
     }
   </style>
 {%- endblock %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
 
 {% block body %}
 

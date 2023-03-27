@@ -28,6 +28,8 @@ from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util.views import login_required, redirect_to
 
+from ...site.navigation import subnavigation_for_view
+
 from .forms import assemble_articles_order_form, OrderForm
 
 
@@ -44,6 +46,7 @@ def tax_rate_as_percentage(tax_rate) -> str:
 
 @blueprint.get('/order')
 @templated
+@subnavigation_for_view('shop')
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
     storefront = _get_storefront_or_404()
@@ -83,6 +86,7 @@ def order_form(erroneous_form=None):
 
 # No route registered. Intended to be called from another view function.
 @templated
+@subnavigation_for_view('shop')
 def list_articles(article_compilation):
     """List articles for anonymous users to view."""
     return {
@@ -137,6 +141,7 @@ def order():
 @blueprint.get('/order_single/<uuid:article_id>')
 @login_required
 @templated
+@subnavigation_for_view('shop')
 def order_single_form(article_id, erroneous_form=None):
     """Show a form to order a single article."""
     article = _get_article_or_404(article_id)

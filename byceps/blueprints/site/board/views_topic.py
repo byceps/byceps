@@ -30,6 +30,7 @@ from ....util.framework.templating import templated
 from ....util.views import permission_required, respond_no_content_with_location
 
 from ..orga_team.service import is_orga_for_current_party
+from ..site.navigation import subnavigation_for_view
 
 from .blueprint import blueprint
 from .forms import PostingCreateForm, TopicCreateForm, TopicUpdateForm
@@ -39,6 +40,7 @@ from . import _helpers as h, service
 @blueprint.get('/topics', defaults={'page': 1})
 @blueprint.get('/topics/pages/<int:page>')
 @templated
+@subnavigation_for_view('board')
 def topic_index(page):
     """List latest topics in all categories."""
     board_id = h.get_board_id()
@@ -64,6 +66,7 @@ def topic_index(page):
 @blueprint.get('/topics/<uuid:topic_id>', defaults={'page': 0})
 @blueprint.get('/topics/<uuid:topic_id>/pages/<int:page>')
 @templated
+@subnavigation_for_view('board')
 def topic_view(topic_id, page):
     """List postings for the topic."""
     user = g.user
@@ -172,6 +175,7 @@ def _find_posting_url_to_redirect_to(
 @blueprint.get('/categories/<category_id>/create')
 @permission_required('board_topic.create')
 @templated
+@subnavigation_for_view('board')
 def topic_create_form(category_id, erroneous_form=None):
     """Show a form to create a topic in the category."""
     category = h.get_category_or_404(category_id)
@@ -217,6 +221,7 @@ def topic_create(category_id):
 @blueprint.get('/topics/<uuid:topic_id>/update')
 @permission_required('board_topic.update')
 @templated
+@subnavigation_for_view('board')
 def topic_update_form(topic_id, erroneous_form=None):
     """Show form to update a topic."""
     topic = h.get_topic_or_404(topic_id)
@@ -291,6 +296,7 @@ def topic_update(topic_id):
 @blueprint.get('/topics/<uuid:topic_id>/moderate')
 @permission_required('board.hide')
 @templated
+@subnavigation_for_view('board')
 def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
     board_id = h.get_board_id()

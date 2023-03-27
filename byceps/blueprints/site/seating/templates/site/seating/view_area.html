@@ -2,12 +2,19 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_progress_bar %}
 {% from 'macros/seating.html' import render_area %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% set current_page = 'seating' %}
 {% set page_title = [_('Seat management') if manage_mode else _('Seating plan'), area.title] %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style/seating.css') }}">
 {%- endblock %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
 
 {% block body %}
 

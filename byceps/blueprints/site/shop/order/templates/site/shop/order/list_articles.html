@@ -1,7 +1,14 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/misc.html' import render_notification %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% set current_page = 'shop_order' %}
 {% set page_title = 'Bestellen' %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
 
 {% block body %}
 

@@ -18,12 +18,15 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import respond_no_content_with_location
 
+from ..site.navigation import subnavigation_for_view
+
 from .blueprint import blueprint
 from . import _helpers as h, service
 
 
 @blueprint.get('/')
 @templated
+@subnavigation_for_view('board')
 def category_index():
     """List categories."""
     board_id = h.get_board_id()
@@ -47,6 +50,7 @@ def category_index():
 @blueprint.get('/categories/<slug>', defaults={'page': 1})
 @blueprint.get('/categories/<slug>/pages/<int:page>')
 @templated
+@subnavigation_for_view('board')
 def category_view(slug, page):
     """List latest topics in the category."""
     board_id = h.get_board_id()

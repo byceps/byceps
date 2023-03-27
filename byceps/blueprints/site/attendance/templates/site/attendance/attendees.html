@@ -3,6 +3,7 @@
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/seating.html' import render_seat_link %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% from 'macros/user.html' import render_user_avatar, render_user_link %}
 {% set current_page = 'attendees' %}
 {% set page_title = _('Attendees') %}
@@ -27,6 +28,12 @@
       }
     </style>
 {%- endblock %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
 
 {% block body %}
 
