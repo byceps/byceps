@@ -1004,6 +1004,10 @@ ol.bare {
   padding: 0;
 }
 
+ol.bare.bare--spaced li + li {
+  margin-top: 0.5rem;
+}
+
 .mb {
   margin-bottom: 1rem;
 }

@@ -2,7 +2,7 @@
   <h2>{{ _('Attended parties') }}</h2>
 
   {%- if attended_parties %}
-  <ol class="user-profile-attended-parties">
+  <ol class="bare bare--spaced">
     {%- for party in attended_parties %}
     <li>{{ party.title }}</li>
     {%- endfor %}

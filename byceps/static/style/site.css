@@ -493,16 +493,6 @@ form.board-posting-create-form-inline .label {
   margin: 0 0 1rem 0;
 }
 
-.user-profile-attended-parties {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.user-profile-attended-parties li + li {
-  margin-top: 0.5rem;
-}
-
 
 /* tickets */
 
