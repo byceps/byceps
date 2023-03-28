@@ -1,7 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_progress_bar %}
-{% from 'macros/seating.html' import render_seating_area_link %}
 {% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% set current_page = 'seating' %}
 {% set page_title = _('Seating plan') %}
@@ -34,7 +33,7 @@
     <tbody>
     {%- for area, utilization in areas_with_utilization|sort(attribute='0.title') %}
       <tr>
-        <td>{{ render_seating_area_link(area) }}</td>
+        <td><a href="{{ url_for('.view_area', slug=area.slug) }}">{{ area.title }}</a></td>
         <td>
           <div class="progress">
             {{ render_progress_bar(utilization.occupied, utilization.total) }}

@@ -1,8 +1,3 @@
-{% macro render_seating_area_link(area, label=None) -%}
-  <a href="{{ url_for('seating.view_area', slug=area.slug) }}">{{ label if (label is not none) else area.title }}</a>
-{%- endmacro %}
-
-
 {% macro render_seat_link(area, seat) -%}
   <a href="{{ url_for('seating.view_area', slug=area.slug, _anchor='seat-%s'|format(seat.id)) }}">{{ seat.label }}</a>
 {%- endmacro %}
