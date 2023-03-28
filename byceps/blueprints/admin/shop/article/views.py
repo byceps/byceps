@@ -7,9 +7,9 @@ byceps.blueprints.admin.shop.article.views
 """
 
 import dataclasses
-from datetime import datetime
+from datetime import date, datetime, time
 from decimal import Decimal
-from typing import Iterable
+from typing import Iterable, Optional
 
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
@@ -399,23 +399,12 @@ def create(shop_id, type):
     description = form.description.data.strip()
     price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
-
-    if form.available_from_date.data and form.available_from_time.data:
-        available_from_local = datetime.combine(
-            form.available_from_date.data, form.available_from_time.data
-        )
-        available_from_utc = to_utc(available_from_local)
-    else:
-        available_from_utc = None
-
-    if form.available_until_date.data and form.available_until_time.data:
-        available_until_local = datetime.combine(
-            form.available_until_date.data, form.available_until_time.data
-        )
-        available_until_utc = to_utc(available_until_local)
-    else:
-        available_until_utc = None
-
+    available_from_utc = _assemble_datetime_utc(
+        form.available_from_date.data, form.available_from_time.data
+    )
+    available_until_utc = _assemble_datetime_utc(
+        form.available_until_date.data, form.available_until_time.data
+    )
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
@@ -532,23 +521,12 @@ def update(article_id):
     description = form.description.data.strip()
     price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
-
-    if form.available_from_date.data and form.available_from_time.data:
-        available_from_local = datetime.combine(
-            form.available_from_date.data, form.available_from_time.data
-        )
-        available_from_utc = to_utc(available_from_local)
-    else:
-        available_from_utc = None
-
-    if form.available_until_date.data and form.available_until_time.data:
-        available_until_local = datetime.combine(
-            form.available_until_date.data, form.available_until_time.data
-        )
-        available_until_utc = to_utc(available_until_local)
-    else:
-        available_until_utc = None
-
+    available_from_utc = _assemble_datetime_utc(
+        form.available_from_date.data, form.available_from_time.data
+    )
+    available_until_utc = _assemble_datetime_utc(
+        form.available_until_date.data, form.available_until_time.data
+    )
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
@@ -923,3 +901,11 @@ def _get_article_type_or_400(value: str) -> ArticleType:
         return ArticleType[value]
     except KeyError:
         abort(400, 'Unknown article type')
+
+
+def _assemble_datetime_utc(d: date, t: time) -> Optional[datetime]:
+    if not d or not t:
+        return None
+
+    local_dt = datetime.combine(d, t)
+    return to_utc(local_dt)
