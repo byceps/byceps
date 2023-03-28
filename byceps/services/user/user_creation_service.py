@@ -107,17 +107,13 @@ def create_user(
     user = user_service._db_entity_to_user(db_user)
 
     # Create log entry in separate step as user ID is not available earlier.
-    log_entry_data = {}
-    if creation_method:
-        log_entry_data['creation_method'] = creation_method
-    if creator is not None:
-        log_entry_data['initiator_id'] = str(creator.id)
-    if site_id:
-        log_entry_data['site_id'] = site_id
-    if ip_address:
-        log_entry_data['ip_address'] = ip_address
-    user_log_service.create_entry(
-        'user-created', user.id, log_entry_data, occurred_at=created_at
+    _create_user_created_log_entry(
+        user.id,
+        db_user.created_at,
+        creation_method,
+        creator,
+        site_id,
+        ip_address,
     )
 
     event = UserAccountCreated(
@@ -133,6 +129,33 @@ def create_user(
     authn_password_service.create_password_hash(user.id, password)
 
     return user, event
+
+
+def _create_user_created_log_entry(
+    user_id: UserID,
+    created_at: datetime,
+    creation_method: Optional[str],
+    creator: Optional[User],
+    site_id: Optional[SiteID],
+    ip_address: Optional[str],
+) -> None:
+    log_entry_data = {}
+
+    if creation_method:
+        log_entry_data['creation_method'] = creation_method
+
+    if creator is not None:
+        log_entry_data['initiator_id'] = str(creator.id)
+
+    if site_id:
+        log_entry_data['site_id'] = site_id
+
+    if ip_address:
+        log_entry_data['ip_address'] = ip_address
+
+    user_log_service.create_entry(
+        'user-created', user_id, log_entry_data, occurred_at=created_at
+    )
 
 
 def request_email_address_confirmation(
