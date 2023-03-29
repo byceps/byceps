@@ -1,7 +1,14 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% from 'macros/user.html' import render_user_avatar_and_link %}
 {% set current_page = 'party_history' %}
 {% set page_title = party.title %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
 
 {% block head %}
   <style>

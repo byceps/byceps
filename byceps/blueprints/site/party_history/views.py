@@ -14,12 +14,15 @@ from ....services.user import user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
+from ..site.navigation import subnavigation_for_view
 
-blueprint = create_blueprint('party_archive', __name__)
+
+blueprint = create_blueprint('party_history', __name__)
 
 
 @blueprint.get('')
 @templated
+@subnavigation_for_view('party_history')
 def index():
     """List archived parties."""
     parties = party_service.get_archived_parties_for_brand(g.brand_id)
@@ -32,6 +35,7 @@ def index():
 
 @blueprint.get('/<party_id>')
 @templated
+@subnavigation_for_view('party_history')
 def view(party_id):
     """Show archived party."""
     party = party_service.find_party(party_id)

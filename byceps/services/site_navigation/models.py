@@ -85,6 +85,7 @@ _VIEW_TYPES = [
         ('shop', 'shop_order.order_form', lazy_gettext('Shop'), 'shop_order'),
         ('board', 'board.category_index', lazy_gettext('Board'), 'board'),
         ('orga_team', 'orga_team.index', lazy_gettext('Orga team'), 'orga_team'),
+        ('party_history', 'party_history.index', lazy_gettext('Party history'), 'party_history'),
     ]
 ]
 
