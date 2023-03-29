@@ -6,11 +6,13 @@ byceps.blueprints.site.seating.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Any
+
 from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.party import party_service
-from ....services.seating.models import Seat, SeatID
+from ....services.seating.models import Seat, SeatID, SeatingArea
 from ....services.seating import (
     seat_service,
     seating_area_service,
@@ -44,6 +46,10 @@ def index():
         # No party is configured for the current site.
         abort(404)
 
+    areas = seating_area_service.get_areas_for_party(g.party_id)
+    if len(areas) == 1:
+        return _render_view_area(areas[0])
+
     areas_with_utilization = (
         seating_area_service.get_areas_with_seat_utilization(g.party_id)
     )
@@ -62,8 +68,6 @@ def index():
 
 
 @blueprint.get('/areas/<slug>')
-@templated
-@subnavigation_for_view('seating_plan')
 def view_area(slug):
     """View area."""
     if g.party_id is None:
@@ -74,6 +78,12 @@ def view_area(slug):
     if area is None:
         abort(404)
 
+    return _render_view_area(area)
+
+
+@templated('site/seating/view_area')
+@subnavigation_for_view('seating_plan')
+def _render_view_area(area: SeatingArea) -> dict[str, Any]:
     seat_management_enabled = _is_seat_management_enabled()
 
     seats_with_tickets = seat_service.get_seats_with_tickets_for_area(area.id)
