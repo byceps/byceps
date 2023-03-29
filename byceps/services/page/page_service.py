@@ -310,19 +310,13 @@ def get_url_paths_by_page_name_for_site(site_id: SiteID) -> dict[str, str]:
     return {name: url_path for name, url_path in rows}
 
 
-def get_page_ids_and_names(
-    site_id: SiteID, language_code: str
-) -> Sequence[tuple[PageID, str]]:
+def get_pages_for_site(site_id: SiteID) -> Sequence[Page]:
     """Return the IDs and names of all pages for that site and locale."""
-    return (
-        db.session.execute(
-            select(DbPage.id, DbPage.name)
-            .filter_by(site_id=site_id)
-            .filter_by(language_code=language_code)
-        )
-        .tuples()
-        .all()
-    )
+    db_pages = db.session.scalars(
+        select(DbPage).filter_by(site_id=site_id)
+    ).all()
+
+    return [_db_entity_to_page(db_page) for db_page in db_pages]
 
 
 def find_page_aggregate(version_id: PageVersionID) -> Optional[PageAggregate]:

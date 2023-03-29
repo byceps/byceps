@@ -228,7 +228,7 @@ def item_create_page_form(menu_id, erroneous_form=None):
     brand = brand_service.get_brand(site.brand_id)
 
     form = erroneous_form if erroneous_form else ItemCreatePageForm()
-    form.set_page_choices(site.id, menu.language_code)
+    form.set_page_choices(site.id)
 
     return {
         'menu': menu,
@@ -295,7 +295,7 @@ def item_create(menu_id, target_type_name):
 
     if target_type == NavItemTargetType.page:
         form = ItemCreatePageForm(request.form)
-        form.set_page_choices(menu.site_id, menu.language_code)
+        form.set_page_choices(menu.site_id)
     elif target_type == NavItemTargetType.url:
         form = ItemCreateUrlForm(request.form)
     elif target_type == NavItemTargetType.view:

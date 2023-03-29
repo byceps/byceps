@@ -47,12 +47,13 @@ class ItemCreatePageForm(_ItemBaseForm):
         lazy_gettext('Page'), validators=[InputRequired()]
     )
 
-    def set_page_choices(self, site_id: SiteID, language_code: str):
-        page_ids_and_names = page_service.get_page_ids_and_names(
-            site_id, language_code
-        )
+    def set_page_choices(self, site_id: SiteID):
+        pages = page_service.get_pages_for_site(site_id)
 
-        choices = [(str(page_id), name) for page_id, name in page_ids_and_names]
+        choices = [
+            (str(page.id), f'{page.name} ({page.language_code})')
+            for page in pages
+        ]
         choices.sort(key=lambda choice: choice[1])
         choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
 
