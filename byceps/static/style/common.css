@@ -341,8 +341,8 @@ table.index > tbody > tr > td {
 
 table.index.index--higher th,
 table.index.index--higher td {
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
+  padding-bottom: 0.75rem;
+  padding-top: 0.75rem;
 }
 
 table.index.index--v-centered th,
