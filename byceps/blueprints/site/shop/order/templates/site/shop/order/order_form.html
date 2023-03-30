@@ -2,7 +2,7 @@
 {% from 'macros/forms.html' import form_buttons %}
 {% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% set current_page = 'shop_order' %}
-{% set page_title = 'Bestellen' %}
+{% set page_title = pgettext('verb', 'Order') %}
 
 {% block subnav %}
   {%- if subnav_menu_id|default %}
@@ -25,7 +25,7 @@
     {{ form_buttons(_('Place binding order now')) }}
   </form>
   {%- else %}
-  <p>Es sind derzeit keine Artikel verfügbar.</p>
+  <p>{{ _('No articles are available at this time.') }}</p>
   {%- endif %}
 
 {%- endblock %}

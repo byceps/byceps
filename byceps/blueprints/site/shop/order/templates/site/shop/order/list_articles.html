@@ -2,7 +2,7 @@
 {% from 'macros/misc.html' import render_notification %}
 {% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% set current_page = 'shop_order' %}
-{% set page_title = 'Bestellen' %}
+{% set page_title = pgettext('verb', 'Order') %}
 
 {% block subnav %}
   {%- if subnav_menu_id|default %}
@@ -14,7 +14,7 @@
 
   <h1>{{ page_title }}</h1>
 
-{{ render_notification('<a href="%s">Melde dich an</a>, um bestellen zu können.'|format(url_for('authentication_login.log_in_form'))|safe, category='info', icon='info') }}
+{{ render_notification(_('You have to be <a href="%(url)s">logged in</a> to order something.', url=url_for('authentication_login.log_in_form')), category='info', icon='info') }}
 
 {{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}
 
