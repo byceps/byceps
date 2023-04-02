@@ -1,6 +1,6 @@
 -r requirements-docs.txt
 -r requirements-test.txt
-black==23.1.0
+black==23.3.0
 Flask-DebugToolbar==0.13.1
 mypy==1.1.1
 ruff>=0.0.247
