@@ -23,7 +23,7 @@ rq-dashboard==0.6.1
 rtoml==0.9.0
 sqlalchemy==2.0.8
 structlog==22.3.0
-tenacity==8.2.1
+tenacity==8.2.2
 uuid6==2022.10.25
 werkzeug==2.2.3
 wtforms==3.0.1
