@@ -230,11 +230,11 @@ def _create_pages(site_id: SiteID, creator_id: UserID) -> None:
 
     site_navigation_service.create_item(
         nav_main_en.id, NavItemTargetType.page, 'imprint', 'Imprint', 'imprint'
-    )
+    ).unwrap()
     site_navigation_service.create_item(
         nav_main_de.id,
         NavItemTargetType.page,
         'imprint',
         'Impressum',
         'imprint',
-    )
+    ).unwrap()

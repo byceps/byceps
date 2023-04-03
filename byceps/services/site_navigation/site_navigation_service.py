@@ -53,17 +53,19 @@ def update_menu(
     name: str,
     language_code: str,
     hidden: bool,
-) -> NavMenu:
+) -> Result[NavMenu, str]:
     """Update a menu."""
-    db_menu = _get_db_menu(menu_id)
 
-    db_menu.name = name
-    db_menu.language_code = language_code
-    db_menu.hidden = hidden
+    def _update_menu(db_menu: DbNavMenu) -> DbNavMenu:
+        db_menu.name = name
+        db_menu.language_code = language_code
+        db_menu.hidden = hidden
 
-    db.session.commit()
+        db.session.commit()
 
-    return _db_entity_to_menu(db_menu)
+        return db_menu
+
+    return _get_db_menu(menu_id).map(_update_menu).map(_db_entity_to_menu)
 
 
 def create_item(
@@ -75,23 +77,25 @@ def create_item(
     *,
     parent_item_id: Optional[NavItemID] = None,
     hidden: bool = False,
-) -> NavItem:
+) -> Result[NavItem, str]:
     """Create a menu item."""
-    db_menu = _get_db_menu(menu_id)
 
-    db_item = DbNavItem(
-        db_menu.id,
-        parent_item_id,
-        target_type,
-        target,
-        label,
-        current_page_id,
-        hidden,
-    )
-    db_menu.items.append(db_item)
-    db.session.commit()
+    def _create_item(db_menu: DbNavMenu) -> DbNavMenu:
+        db_item = DbNavItem(
+            db_menu.id,
+            parent_item_id,
+            target_type,
+            target,
+            label,
+            current_page_id,
+            hidden,
+        )
+        db_menu.items.append(db_item)
+        db.session.commit()
 
-    return _db_entity_to_item(db_item)
+        return db_item
+
+    return _get_db_menu(menu_id).map(_create_item).map(_db_entity_to_item)
 
 
 def update_item(
@@ -101,27 +105,31 @@ def update_item(
     label: str,
     current_page_id: str,
     hidden: bool,
-) -> NavItem:
+) -> Result[NavItem, str]:
     """Update a menu item."""
-    db_item = _get_db_item(item_id)
 
-    db_item.target_type = target_type
-    db_item.target = target
-    db_item.label = label
-    db_item.current_page_id = current_page_id
-    db_item.hidden = hidden
+    def _update_item(db_item: DbNavItem) -> DbNavItem:
+        db_item.target_type = target_type
+        db_item.target = target
+        db_item.label = label
+        db_item.current_page_id = current_page_id
+        db_item.hidden = hidden
 
-    db.session.commit()
+        db.session.commit()
 
-    return _db_entity_to_item(db_item)
+        return db_item
+
+    return _get_db_item(item_id).map(_update_item).map(_db_entity_to_item)
 
 
-def delete_item(item_id: NavItemID) -> None:
+def delete_item(item_id: NavItemID) -> Result[None, str]:
     """Delete a menu item."""
-    db_item = _get_db_item(item_id)
 
-    db.session.execute(delete(DbNavItem).where(DbNavItem.id == db_item.id))
-    db.session.commit()
+    def _delete_item(db_item: DbNavItem) -> None:
+        db.session.execute(delete(DbNavItem).where(DbNavItem.id == db_item.id))
+        db.session.commit()
+
+    return _get_db_item(item_id).map(_delete_item)
 
 
 def find_submenu_id_for_page(
@@ -178,14 +186,12 @@ def find_menu(menu_id: NavMenuID) -> Optional[NavMenu]:
     return _db_entity_to_menu(db_menu)
 
 
-def get_menu(menu_id: NavMenuID) -> NavMenu:
+def get_menu(menu_id: NavMenuID) -> Result[NavMenu, str]:
     """Return the menu.
 
-    Raise error if not found.
+    Return error if not found.
     """
-    db_menu = _get_db_menu(menu_id)
-
-    return _db_entity_to_menu(db_menu)
+    return _get_db_menu(menu_id).map(_db_entity_to_menu)
 
 
 def _find_db_menu(menu_id: NavMenuID) -> Optional[DbNavMenu]:
@@ -193,17 +199,17 @@ def _find_db_menu(menu_id: NavMenuID) -> Optional[DbNavMenu]:
     return db.session.get(DbNavMenu, menu_id)
 
 
-def _get_db_menu(menu_id: NavMenuID) -> DbNavMenu:
+def _get_db_menu(menu_id: NavMenuID) -> Result[DbNavMenu, str]:
     """Return the menu.
 
-    Raise error if not found.
+    Return error if not found.
     """
     db_menu = _find_db_menu(menu_id)
 
     if db_menu is None:
-        raise ValueError('Unknown menu ID')
+        return Err('Unknown menu ID')
 
-    return db_menu
+    return Ok(db_menu)
 
 
 def find_menu_aggregate(menu_id: NavMenuID) -> Optional[NavMenuAggregate]:
@@ -262,17 +268,17 @@ def _find_db_item(item_id: NavItemID) -> Optional[DbNavItem]:
     return db.session.get(DbNavItem, item_id)
 
 
-def _get_db_item(item_id: NavItemID) -> DbNavItem:
+def _get_db_item(item_id: NavItemID) -> Result[DbNavItem, str]:
     """Return the menu item.
 
-    Raise error if not found.
+    Return error if not found.
     """
     db_item = _find_db_item(item_id)
 
     if db_item is None:
-        raise ValueError('Unknown item ID')
+        return Err('Unknown item ID')
 
-    return db_item
+    return Ok(db_item)
 
 
 def get_items_for_menu_id(menu_id: NavMenuID) -> list[NavItem]:
@@ -315,38 +321,43 @@ def get_items_for_menu(
 
 def move_item_up(item_id: NavItemID) -> Result[NavItem, str]:
     """Move a menu item upwards by one position."""
-    db_item = _get_db_item(item_id)
 
-    item_list = db_item.menu.items
+    def _move_item_up(db_item: DbNavItem) -> Result[DbNavItem, str]:
+        if db_item.position == 1:
+            return Err('Item is already at the top.')
 
-    if db_item.position == 1:
-        return Err('Item is already at the top.')
+        item_list = db_item.menu.items
+        item_index = index_of(item_list, lambda x: x.id == db_item.id)
+        popped_item = item_list.pop(item_index)
+        item_list.insert(popped_item.position - 2, popped_item)
 
-    item_index = index_of(item_list, lambda x: x.id == db_item.id)
-    popped_item = item_list.pop(item_index)
-    item_list.insert(popped_item.position - 2, popped_item)
+        db.session.commit()
 
-    db.session.commit()
+        return Ok(db_item)
 
-    return Ok(_db_entity_to_item(db_item))
+    return _get_db_item(item_id).and_then(_move_item_up).map(_db_entity_to_item)
 
 
 def move_item_down(item_id: NavItemID) -> Result[NavItem, str]:
     """Move a menu item downwards by one position."""
-    db_item = _get_db_item(item_id)
 
-    item_list = db_item.menu.items
+    def _move_item_down(db_item: DbNavItem) -> Result[DbNavItem, str]:
+        item_list = db_item.menu.items
 
-    if db_item.position == len(item_list):
-        return Err('Item is already at the bottom.')
+        if db_item.position == len(item_list):
+            return Err('Item is already at the bottom.')
 
-    item_index = index_of(item_list, lambda x: x.id == db_item.id)
-    popped_item = item_list.pop(item_index)
-    item_list.insert(popped_item.position, popped_item)
+        item_index = index_of(item_list, lambda x: x.id == db_item.id)
+        popped_item = item_list.pop(item_index)
+        item_list.insert(popped_item.position, popped_item)
 
-    db.session.commit()
+        db.session.commit()
 
-    return Ok(_db_entity_to_item(db_item))
+        return Ok(db_item)
+
+    return (
+        _get_db_item(item_id).and_then(_move_item_down).map(_db_entity_to_item)
+    )
 
 
 def _db_entity_to_menu(db_menu: DbNavMenu) -> NavMenu:

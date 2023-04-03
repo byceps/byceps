@@ -133,7 +133,7 @@ def submenu_create_form(site_id, parent_menu_id, erroneous_form=None):
 
     brand = brand_service.get_brand(site.brand_id)
 
-    parent_menu = site_navigation_service.get_menu(parent_menu_id)
+    parent_menu = site_navigation_service.get_menu(parent_menu_id).unwrap()
 
     form = erroneous_form if erroneous_form else SubMenuCreateForm()
 
@@ -151,7 +151,7 @@ def submenu_create(site_id, parent_menu_id):
     """Create a submenu."""
     site = _get_site_or_404(site_id)
 
-    parent_menu = site_navigation_service.get_menu(parent_menu_id)
+    parent_menu = site_navigation_service.get_menu(parent_menu_id).unwrap()
 
     form = SubMenuCreateForm(request.form)
 
@@ -210,7 +210,7 @@ def menu_update(menu_id):
 
     menu = site_navigation_service.update_menu(
         menu.id, name, language_code, hidden
-    )
+    ).unwrap()
 
     flash_success(gettext('Menu "%(name)s" has been updated.', name=menu.name))
 
@@ -335,7 +335,7 @@ def item_create(menu_id, target_type_name):
 
     item = site_navigation_service.create_item(
         menu.id, target_type, target, label, current_page_id, hidden=hidden
-    )
+    ).unwrap()
 
     flash_success(
         gettext('Menu item "%(label)s" has been created.', label=item.label)
@@ -351,7 +351,7 @@ def item_update_form(item_id, erroneous_form=None):
     """Show form to update the menu item."""
     item = _get_item_or_404(item_id)
 
-    menu = site_navigation_service.get_menu(item.menu_id)
+    menu = site_navigation_service.get_menu(item.menu_id).unwrap()
     site = site_service.get_site(menu.site_id)
     brand = brand_service.get_brand(site.brand_id)
 
@@ -386,7 +386,7 @@ def item_update(item_id):
 
     item = site_navigation_service.update_item(
         item.id, target_type, target, label, current_page_id, hidden
-    )
+    ).unwrap()
 
     flash_success(
         gettext('Menu item "%(label)s" has been updated.', label=item.label)
@@ -452,7 +452,7 @@ def item_delete(item_id):
 
     label = item.label
 
-    site_navigation_service.delete_item(item.id)
+    site_navigation_service.delete_item(item.id).unwrap()
 
     flash_success(gettext('Item "%(label)s" has been deleted.', label=label))
 

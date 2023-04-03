@@ -81,7 +81,7 @@ def view_version(version_id):
     is_current_version = page_service.is_current_version(page.id, version.id)
 
     if page.nav_menu_id:
-        nav_menu = site_navigation_service.get_menu(page.nav_menu_id)
+        nav_menu = site_navigation_service.get_menu(page.nav_menu_id).unwrap()
     else:
         nav_menu = None
 
