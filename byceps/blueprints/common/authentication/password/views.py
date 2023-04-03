@@ -156,7 +156,12 @@ def _get_sender() -> NameAndAddress:
         )
         if not address_str:
             address_str = 'BYCEPS <noreply@byceps.example>'
-        return email_service.parse_address(address_str)
+
+        parse_result = email_service.parse_address(address_str)
+        if parse_result.is_err():
+            abort(500, 'Could not parse admin email sender address')
+
+        return parse_result.unwrap()
     else:
         abort(500, 'Unexpected app mode, cannot obtain email sender')
 

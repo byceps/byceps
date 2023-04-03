@@ -13,18 +13,19 @@ from smtplib import SMTP, SMTP_SSL
 from flask import current_app
 
 from ...util.jobqueue import enqueue
+from ...util.result import Err, Ok, Result
 
 from .models import Message, NameAndAddress
 
 
-def parse_address(address_str: str) -> NameAndAddress:
+def parse_address(address_str: str) -> Result[NameAndAddress, str]:
     """Parse a string into name and address parts."""
     name, address = parseaddr(address_str)
 
     if not name and not address:
-        raise ValueError(f'Could not parse name and address value: "{address}"')
+        return Err(f'Could not parse name and address value: "{address}"')
 
-    return NameAndAddress(name, address)
+    return Ok(NameAndAddress(name, address))
 
 
 def enqueue_message(message: Message) -> None:
