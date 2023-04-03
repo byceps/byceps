@@ -314,38 +314,38 @@ def get_items_for_menu(
 
 def move_item_up(item_id: NavItemID) -> NavItem:
     """Move a menu item upwards by one position."""
-    item = _get_db_item(item_id)
+    db_item = _get_db_item(item_id)
 
-    item_list = item.menu.items
+    item_list = db_item.menu.items
 
-    if item.position == 1:
+    if db_item.position == 1:
         raise ValueError('Item is already at the top.')
 
-    item_index = index_of(item_list, lambda x: x.id == item.id)
+    item_index = index_of(item_list, lambda x: x.id == db_item.id)
     popped_item = item_list.pop(item_index)
     item_list.insert(popped_item.position - 2, popped_item)
 
     db.session.commit()
 
-    return _db_entity_to_item(item)
+    return _db_entity_to_item(db_item)
 
 
 def move_item_down(item_id: NavItemID) -> NavItem:
     """Move a menu item downwards by one position."""
-    item = _get_db_item(item_id)
+    db_item = _get_db_item(item_id)
 
-    item_list = item.menu.items
+    item_list = db_item.menu.items
 
-    if item.position == len(item_list):
+    if db_item.position == len(item_list):
         raise ValueError('Item is already at the bottom.')
 
-    item_index = index_of(item_list, lambda x: x.id == item.id)
+    item_index = index_of(item_list, lambda x: x.id == db_item.id)
     popped_item = item_list.pop(item_index)
     item_list.insert(popped_item.position, popped_item)
 
     db.session.commit()
 
-    return _db_entity_to_item(item)
+    return _db_entity_to_item(db_item)
 
 
 def _db_entity_to_menu(db_menu: DbNavMenu) -> NavMenu:
