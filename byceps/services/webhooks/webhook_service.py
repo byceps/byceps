@@ -11,6 +11,7 @@ from typing import Any, Optional
 from sqlalchemy import delete, select
 
 from ...database import db
+from ...util.result import Err, Ok, Result
 
 from .dbmodels import DbOutgoingWebhook
 from .models import EventFilters, OutgoingWebhook, WebhookID
@@ -55,11 +56,11 @@ def update_outgoing_webhook(
     url: str,
     description: Optional[str],
     enabled: bool,
-) -> OutgoingWebhook:
+) -> Result[OutgoingWebhook, str]:
     """Update an outgoing webhook."""
     webhook = _find_db_webhook(webhook_id)
     if webhook is None:
-        raise ValueError(f'Unknown webhook ID "{webhook_id}"')
+        return Err(f'Unknown webhook ID "{webhook_id}"')
 
     webhook.event_types = event_types
     webhook.event_filters = event_filters
@@ -72,7 +73,7 @@ def update_outgoing_webhook(
 
     db.session.commit()
 
-    return _db_entity_to_outgoing_webhook(webhook)
+    return Ok(_db_entity_to_outgoing_webhook(webhook))
 
 
 def delete_outgoing_webhook(webhook_id: WebhookID) -> None:

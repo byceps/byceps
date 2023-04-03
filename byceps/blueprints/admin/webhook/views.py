@@ -135,7 +135,7 @@ def update(webhook_id):
         url,
         description,
         enabled,
-    )
+    ).unwrap()
 
     flash_success(gettext('Webhook has been updated.'))
 
