@@ -12,6 +12,7 @@ from sqlalchemy import delete, select
 
 from ...database import db
 from ...util.iterables import find, index_of
+from ...util.result import Err, Ok, Result
 
 from ..site.models import SiteID
 
@@ -312,14 +313,14 @@ def get_items_for_menu(
     return _db_entities_to_items(db_items)
 
 
-def move_item_up(item_id: NavItemID) -> NavItem:
+def move_item_up(item_id: NavItemID) -> Result[NavItem, str]:
     """Move a menu item upwards by one position."""
     db_item = _get_db_item(item_id)
 
     item_list = db_item.menu.items
 
     if db_item.position == 1:
-        raise ValueError('Item is already at the top.')
+        return Err('Item is already at the top.')
 
     item_index = index_of(item_list, lambda x: x.id == db_item.id)
     popped_item = item_list.pop(item_index)
@@ -327,17 +328,17 @@ def move_item_up(item_id: NavItemID) -> NavItem:
 
     db.session.commit()
 
-    return _db_entity_to_item(db_item)
+    return Ok(_db_entity_to_item(db_item))
 
 
-def move_item_down(item_id: NavItemID) -> NavItem:
+def move_item_down(item_id: NavItemID) -> Result[NavItem, str]:
     """Move a menu item downwards by one position."""
     db_item = _get_db_item(item_id)
 
     item_list = db_item.menu.items
 
     if db_item.position == len(item_list):
-        raise ValueError('Item is already at the bottom.')
+        return Err('Item is already at the bottom.')
 
     item_index = index_of(item_list, lambda x: x.id == db_item.id)
     popped_item = item_list.pop(item_index)
@@ -345,7 +346,7 @@ def move_item_down(item_id: NavItemID) -> NavItem:
 
     db.session.commit()
 
-    return _db_entity_to_item(db_item)
+    return Ok(_db_entity_to_item(db_item))
 
 
 def _db_entity_to_menu(db_menu: DbNavMenu) -> NavMenu:

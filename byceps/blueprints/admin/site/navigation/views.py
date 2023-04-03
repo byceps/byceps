@@ -402,9 +402,8 @@ def item_move_up(item_id):
     """Move the menu item upwards by one position."""
     item = _get_item_or_404(item_id)
 
-    try:
-        site_navigation_service.move_item_up(item.id)
-    except ValueError:
+    move_result = site_navigation_service.move_item_up(item.id)
+    if move_result.is_err():
         flash_error(
             gettext(
                 'Item "%(label)s" is already at the top.',
@@ -427,9 +426,8 @@ def item_move_down(item_id):
     """Move the menu item downwards by one position."""
     item = _get_item_or_404(item_id)
 
-    try:
-        site_navigation_service.move_item_down(item.id)
-    except ValueError:
+    move_result = site_navigation_service.move_item_down(item.id)
+    if move_result.is_err():
         flash_error(
             gettext(
                 'Item "%(label)s" is already at the bottom.',
