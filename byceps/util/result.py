@@ -31,6 +31,9 @@ class Ok(Generic[T]):
     def map(self, f: Callable[[T], U]) -> Ok[U]:
         return Ok(f(self._value))
 
+    def map_or_else(self, default: Callable[[T], U], f: Callable[[T], U]) -> U:
+        return f(self._value)
+
     def unwrap(self) -> T:
         return self._value
 
@@ -62,6 +65,9 @@ class Err(Generic[E]):
 
     def map(self, f: Callable[[T], U]) -> Err[E]:
         return self
+
+    def map_or_else(self, default: Callable[[E], U], f: Callable[[T], U]) -> U:
+        return default(self._error)
 
     def unwrap(self) -> NoReturn:
         raise UnwrapError(self)
