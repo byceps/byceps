@@ -72,8 +72,8 @@ class Err(Generic[E]):
     def unwrap_or(self, default: T) -> T:
         return default
 
-    def unwrap_or_else(self, default: Callable[[], T]) -> T:
-        return default()
+    def unwrap_or_else(self, default: Callable[[E], T]) -> T:
+        return default(self._error)
 
     def and_then(self, f: Callable[[T], Result[U, E]]) -> Result[U, E]:
         return self
