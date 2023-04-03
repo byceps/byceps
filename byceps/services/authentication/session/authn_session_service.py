@@ -84,16 +84,15 @@ def is_session_valid(user_id: UserID, auth_token: str) -> bool:
         # Authentication token must not be empty.
         return False
 
-    if not _is_token_valid_for_user(auth_token, user_id):
-        # Session token is unknown or the user ID provided by the
-        # client does not match the one stored on the server.
-        return False
-
-    return True
+    return _is_token_valid_for_user(auth_token, user_id)
 
 
 def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
-    """Return `True` if a session token with that ID exists for that user."""
+    """Return `True` if a session token with that ID exists for that user.
+
+    Return `False` if the session token is unknown or the user ID
+    provided by the client does not match the one stored on the server.
+    """
     return db.session.scalar(
         select(
             db.exists()
