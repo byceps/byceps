@@ -76,7 +76,7 @@ def find_session_token_for_user(user_id: UserID) -> Optional[DbSessionToken]:
 
 def is_session_valid(user_id: UserID, auth_token: str) -> bool:
     """Return `True` if the client session is valid, `False` if not."""
-    if user_id is None:
+    if not user_id:
         # User ID must not be empty.
         return False
 
@@ -94,9 +94,6 @@ def is_session_valid(user_id: UserID, auth_token: str) -> bool:
 
 def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     """Return `True` if a session token with that ID exists for that user."""
-    if not user_id:
-        raise ValueError('User ID is invalid.')
-
     return db.session.scalar(
         select(
             db.exists()
