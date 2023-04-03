@@ -806,7 +806,7 @@ def role_deassign(user_id, role_id):
 
     authz_service.deassign_role_from_user(
         role.id, user.id, initiator_id=initiator_id
-    )
+    ).unwrap()
 
     flash_success(
         gettext(
