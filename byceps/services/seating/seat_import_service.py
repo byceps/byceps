@@ -40,8 +40,14 @@ def serialize_seat_to_import(
         category_title=category_title,
     )
 
+    if rotation is not None:
+        model.rotation = rotation
+
     if label is not None:
         model.label = label
+
+    if type_ is not None:
+        model.type_ = type_
 
     if group_title is not None:
         model.group_title = group_title
