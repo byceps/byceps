@@ -38,9 +38,13 @@ def serialize_seat_to_import(
         coord_x=coord_x,
         coord_y=coord_y,
         category_title=category_title,
-        label=label,
-        group_title=group_title,
     )
+
+    if label is not None:
+        model.label = label
+
+    if group_title is not None:
+        model.group_title = group_title
 
     return model.json(exclude_unset=True)
 
