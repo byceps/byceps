@@ -11,7 +11,7 @@ from sqlalchemy import delete
 from ...database import db
 from ...typing import BrandID
 
-from .dbmodels.brand_requirement import DbBrandRequirement
+from .dbmodels import DbBrandRequirement
 from .models import SubjectID
 
 

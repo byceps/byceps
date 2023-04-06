@@ -13,9 +13,7 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import BrandID
 
-from .dbmodels.brand_requirement import DbBrandRequirement
-from .dbmodels.consent import DbConsent
-from .dbmodels.subject import DbSubject
+from .dbmodels import DbBrandRequirement, DbConsent, DbSubject
 from .models import Subject, SubjectID
 
 

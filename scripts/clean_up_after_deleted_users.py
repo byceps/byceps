@@ -26,7 +26,7 @@ from byceps.services.board.dbmodels.last_category_view import (
 from byceps.services.board.dbmodels.last_topic_view import (
     DbLastTopicView as DbBoardLastTopicView,
 )
-from byceps.services.consent.dbmodels.consent import DbConsent
+from byceps.services.consent.dbmodels import DbConsent
 from byceps.services.newsletter.dbmodels import (
     DbSubscription as DbNewsletterSubscription,
     DbSubscriptionUpdate as DbNewsletterSubscriptionUpdate,

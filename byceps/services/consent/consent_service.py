@@ -14,8 +14,7 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels.consent import DbConsent
-from .dbmodels.subject import DbSubject
+from .dbmodels import DbConsent, DbSubject
 from .models import Consent, SubjectID
 
 
