@@ -18,7 +18,7 @@ from ..user.dbmodels.user import DbUser
 from .models import SubjectID
 
 
-class DbSubject(db.Model):
+class DbConsentSubject(db.Model):
     """A subject that requires users' consent."""
 
     __tablename__ = 'consent_subjects'
@@ -78,7 +78,7 @@ class DbConsent(db.Model):
     subject_id = db.Column(
         db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True
     )
-    subject = db.relationship(DbSubject)
+    subject = db.relationship(DbConsentSubject)
     expressed_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(

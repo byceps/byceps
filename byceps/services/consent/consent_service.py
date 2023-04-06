@@ -14,7 +14,7 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels import DbConsent, DbSubject
+from .dbmodels import DbConsent, DbConsentSubject
 from .models import Consent, SubjectID
 
 
@@ -42,9 +42,9 @@ def count_consents_by_subject() -> dict[str, int]:
     """Return the number of given consents per subject."""
     subject_names_and_consent_counts = (
         db.session.execute(
-            select(DbSubject.name, db.func.count(DbConsent.user_id))
+            select(DbConsentSubject.name, db.func.count(DbConsent.user_id))
             .outerjoin(DbConsent)
-            .group_by(DbSubject.name)
+            .group_by(DbConsentSubject.name)
         )
         .tuples()
         .all()

@@ -13,7 +13,7 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import BrandID
 
-from .dbmodels import DbBrandRequirement, DbConsent, DbSubject
+from .dbmodels import DbBrandRequirement, DbConsent, DbConsentSubject
 from .models import Subject, SubjectID
 
 
@@ -28,7 +28,9 @@ def create_subject(
     checkbox_link_target: Optional[str],
 ) -> Subject:
     """Create a new subject."""
-    db_subject = DbSubject(name, title, checkbox_label, checkbox_link_target)
+    db_subject = DbConsentSubject(
+        name, title, checkbox_label, checkbox_link_target
+    )
 
     db.session.add(db_subject)
     db.session.commit()
@@ -39,7 +41,7 @@ def create_subject(
 def get_subjects(subject_ids: set[SubjectID]) -> set[Subject]:
     """Return the subjects."""
     db_subjects = db.session.scalars(
-        select(DbSubject).filter(DbSubject.id.in_(subject_ids))
+        select(DbConsentSubject).filter(DbConsentSubject.id.in_(subject_ids))
     ).all()
 
     subjects = {_db_entity_to_subject(db_subject) for db_subject in db_subjects}
@@ -66,14 +68,14 @@ def get_subjects_with_consent_counts(
     *, limit_to_subject_ids: Optional[set[SubjectID]] = None
 ) -> dict[Subject, int]:
     """Return subjects and their consent counts."""
-    stmt = select(DbSubject, db.func.count(DbConsent.user_id)).outerjoin(
+    stmt = select(DbConsentSubject, db.func.count(DbConsent.user_id)).outerjoin(
         DbConsent
     )
 
     if limit_to_subject_ids is not None:
-        stmt = stmt.filter(DbSubject.id.in_(limit_to_subject_ids))
+        stmt = stmt.filter(DbConsentSubject.id.in_(limit_to_subject_ids))
 
-    stmt = stmt.group_by(DbSubject.id)
+    stmt = stmt.group_by(DbConsentSubject.id)
 
     db_subjects_and_consent_counts = db.session.execute(stmt).all()
 
@@ -86,7 +88,7 @@ def get_subjects_with_consent_counts(
 def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
     """Return the IDs of the subjects required for the brand."""
     subject_ids = db.session.scalars(
-        select(DbSubject.id)
+        select(DbConsentSubject.id)
         .join(DbBrandRequirement)
         .filter(DbBrandRequirement.brand_id == brand_id)
     ).all()
@@ -97,15 +99,15 @@ def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
 def get_subjects_required_for_brand(brand_id: BrandID) -> set[Subject]:
     """Return the subjects required for the brand."""
     db_subjects = db.session.scalars(
-        select(DbSubject)
+        select(DbConsentSubject)
         .join(DbBrandRequirement)
         .filter(DbBrandRequirement.brand_id == brand_id)
-    ) .all()
+    ).all()
 
     return {_db_entity_to_subject(db_subject) for db_subject in db_subjects}
 
 
-def _db_entity_to_subject(db_subject: DbSubject) -> Subject:
+def _db_entity_to_subject(db_subject: DbConsentSubject) -> Subject:
     return Subject(
         id=db_subject.id,
         name=db_subject.name,
