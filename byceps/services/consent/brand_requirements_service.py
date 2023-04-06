@@ -12,10 +12,12 @@ from ...database import db
 from ...typing import BrandID
 
 from .dbmodels import DbConsentBrandRequirement
-from .models import SubjectID
+from .models import ConsentSubjectID
 
 
-def create_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
+def create_brand_requirement(
+    brand_id: BrandID, subject_id: ConsentSubjectID
+) -> None:
     """Create a brand requirement."""
     db_brand_requirement = DbConsentBrandRequirement(brand_id, subject_id)
 
@@ -23,7 +25,9 @@ def create_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
     db.session.commit()
 
 
-def delete_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
+def delete_brand_requirement(
+    brand_id: BrandID, subject_id: ConsentSubjectID
+) -> None:
     """Delete a brand requirement."""
     db.session.execute(
         delete(DbConsentBrandRequirement)

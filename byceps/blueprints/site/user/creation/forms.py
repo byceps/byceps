@@ -12,7 +12,7 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
-from .....services.consent.models import Subject, SubjectID
+from .....services.consent.models import ConsentSubject, ConsentSubjectID
 from .....services.user import screen_name_validator, user_service
 from .....util.l10n import LocalizedForm
 
@@ -64,14 +64,14 @@ class UserCreateForm(LocalizedForm):
         if field.data:
             raise ValidationError(lazy_gettext('Bots are not permitted.'))
 
-    def get_field_for_consent_subject_id(self, subject_id: SubjectID):
+    def get_field_for_consent_subject_id(self, subject_id: ConsentSubjectID):
         name = _generate_consent_subject_field_name(subject_id)
         return getattr(self, name)
 
 
 def assemble_user_create_form(
     real_name_required: bool,
-    required_consent_subjects: set[Subject],
+    required_consent_subjects: set[ConsentSubject],
     newsletter_offered: bool,
 ):
     extra_fields = {}
@@ -102,5 +102,5 @@ def assemble_user_create_form(
     return type(subclass_name, subclass_bases, extra_fields)
 
 
-def _generate_consent_subject_field_name(subject_id: SubjectID) -> str:
+def _generate_consent_subject_field_name(subject_id: ConsentSubjectID) -> str:
     return f'consent_to_subject_{subject_id.hex}'

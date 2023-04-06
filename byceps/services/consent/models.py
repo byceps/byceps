@@ -14,12 +14,12 @@ from uuid import UUID
 from ...typing import UserID
 
 
-SubjectID = NewType('SubjectID', UUID)
+ConsentSubjectID = NewType('ConsentSubjectID', UUID)
 
 
 @dataclass(frozen=True)
-class Subject:
-    id: SubjectID
+class ConsentSubject:
+    id: ConsentSubjectID
     name: str
     title: str
     checkbox_label: str
@@ -29,5 +29,5 @@ class Subject:
 @dataclass(frozen=True)
 class Consent:
     user_id: UserID
-    subject_id: SubjectID
+    subject_id: ConsentSubjectID
     expressed_at: datetime

@@ -15,7 +15,7 @@ from ...util.instances import ReprBuilder
 
 from ..user.dbmodels.user import DbUser
 
-from .models import SubjectID
+from .models import ConsentSubjectID
 
 
 class DbConsentSubject(db.Model):
@@ -63,7 +63,7 @@ class DbConsentBrandRequirement(db.Model):
         db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True
     )
 
-    def __init__(self, brand_id: BrandID, subject_id: SubjectID) -> None:
+    def __init__(self, brand_id: BrandID, subject_id: ConsentSubjectID) -> None:
         self.brand_id = brand_id
         self.subject_id = subject_id
 
@@ -82,7 +82,10 @@ class DbConsent(db.Model):
     expressed_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(
-        self, user_id: UserID, subject_id: SubjectID, expressed_at: datetime
+        self,
+        user_id: UserID,
+        subject_id: ConsentSubjectID,
+        expressed_at: datetime,
     ) -> None:
         self.user_id = user_id
         self.subject_id = subject_id

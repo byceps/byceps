@@ -14,7 +14,7 @@ from flask_babel import gettext
 
 from .....services.brand import brand_setting_service
 from .....services.consent import consent_service, consent_subject_service
-from .....services.consent.models import Subject
+from .....services.consent.models import ConsentSubject
 from .....services.newsletter.models import ListID as NewsletterListID
 from .....services.newsletter import newsletter_command_service
 from .....services.site import site_service, site_setting_service
@@ -158,7 +158,7 @@ def _is_real_name_required() -> bool:
     return value != 'false'
 
 
-def _get_required_consent_subjects() -> set[Subject]:
+def _get_required_consent_subjects() -> set[ConsentSubject]:
     """Return the consent subjects required for this brand."""
     return consent_subject_service.get_subjects_required_for_brand(g.brand_id)
 

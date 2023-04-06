@@ -15,11 +15,11 @@ from ...database import db
 from ...typing import UserID
 
 from .dbmodels import DbConsent, DbConsentSubject
-from .models import Consent, SubjectID
+from .models import Consent, ConsentSubjectID
 
 
 def consent_to_subject(
-    user_id: UserID, subject_id: SubjectID, expressed_at: datetime
+    user_id: UserID, subject_id: ConsentSubjectID, expressed_at: datetime
 ) -> None:
     """Store the user's consent to that subject."""
     consent_to_subjects(user_id, [subject_id], expressed_at)
@@ -27,7 +27,7 @@ def consent_to_subject(
 
 def consent_to_subjects(
     user_id: UserID,
-    subject_ids: Iterable[SubjectID],
+    subject_ids: Iterable[ConsentSubjectID],
     expressed_at: datetime,
 ) -> None:
     """Store the user's consent to these subjects."""
@@ -71,8 +71,8 @@ def _db_entity_to_consent(db_consent: DbConsent) -> Consent:
 
 
 def get_unconsented_subject_ids(
-    user_id: UserID, required_subject_ids: set[SubjectID]
-) -> set[SubjectID]:
+    user_id: UserID, required_subject_ids: set[ConsentSubjectID]
+) -> set[ConsentSubjectID]:
     """Return the IDs of the subjects the user has not consented to."""
     return {
         subject_id
@@ -82,7 +82,7 @@ def get_unconsented_subject_ids(
 
 
 def has_user_consented_to_all_subjects(
-    user_id: UserID, subject_ids: set[SubjectID]
+    user_id: UserID, subject_ids: set[ConsentSubjectID]
 ) -> bool:
     """Return `True` if the user has consented to all given subjects."""
     return all(
@@ -92,7 +92,7 @@ def has_user_consented_to_all_subjects(
 
 
 def has_user_consented_to_subject(
-    user_id: UserID, subject_id: SubjectID
+    user_id: UserID, subject_id: ConsentSubjectID
 ) -> bool:
     """Determine if the user has consented to the subject."""
     return db.session.scalar(

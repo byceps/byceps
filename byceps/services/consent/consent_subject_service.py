@@ -14,7 +14,7 @@ from ...database import db
 from ...typing import BrandID
 
 from .dbmodels import DbConsent, DbConsentBrandRequirement, DbConsentSubject
-from .models import Subject, SubjectID
+from .models import ConsentSubject, ConsentSubjectID
 
 
 class UnknownSubjectId(ValueError):
@@ -26,7 +26,7 @@ def create_subject(
     title: str,
     checkbox_label: str,
     checkbox_link_target: Optional[str],
-) -> Subject:
+) -> ConsentSubject:
     """Create a new subject."""
     db_subject = DbConsentSubject(
         name, title, checkbox_label, checkbox_link_target
@@ -38,7 +38,7 @@ def create_subject(
     return _db_entity_to_subject(db_subject)
 
 
-def get_subjects(subject_ids: set[SubjectID]) -> set[Subject]:
+def get_subjects(subject_ids: set[ConsentSubjectID]) -> set[ConsentSubject]:
     """Return the subjects."""
     db_subjects = db.session.scalars(
         select(DbConsentSubject).filter(DbConsentSubject.id.in_(subject_ids))
@@ -52,7 +52,7 @@ def get_subjects(subject_ids: set[SubjectID]) -> set[Subject]:
 
 
 def _check_for_unknown_subject_ids(
-    subject_ids: set[SubjectID], subjects: set[Subject]
+    subject_ids: set[ConsentSubjectID], subjects: set[ConsentSubject]
 ) -> None:
     """Raise exception on unknown IDs."""
     found_subject_ids = {subject.id for subject in subjects}
@@ -65,8 +65,8 @@ def _check_for_unknown_subject_ids(
 
 
 def get_subjects_with_consent_counts(
-    *, limit_to_subject_ids: Optional[set[SubjectID]] = None
-) -> dict[Subject, int]:
+    *, limit_to_subject_ids: Optional[set[ConsentSubjectID]] = None
+) -> dict[ConsentSubject, int]:
     """Return subjects and their consent counts."""
     stmt = select(DbConsentSubject, db.func.count(DbConsent.user_id)).outerjoin(
         DbConsent
@@ -85,7 +85,9 @@ def get_subjects_with_consent_counts(
     }
 
 
-def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
+def get_subject_ids_required_for_brand(
+    brand_id: BrandID,
+) -> set[ConsentSubjectID]:
     """Return the IDs of the subjects required for the brand."""
     subject_ids = db.session.scalars(
         select(DbConsentSubject.id)
@@ -96,7 +98,7 @@ def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
     return set(subject_ids)
 
 
-def get_subjects_required_for_brand(brand_id: BrandID) -> set[Subject]:
+def get_subjects_required_for_brand(brand_id: BrandID) -> set[ConsentSubject]:
     """Return the subjects required for the brand."""
     db_subjects = db.session.scalars(
         select(DbConsentSubject)
@@ -107,8 +109,8 @@ def get_subjects_required_for_brand(brand_id: BrandID) -> set[Subject]:
     return {_db_entity_to_subject(db_subject) for db_subject in db_subjects}
 
 
-def _db_entity_to_subject(db_subject: DbConsentSubject) -> Subject:
-    return Subject(
+def _db_entity_to_subject(db_subject: DbConsentSubject) -> ConsentSubject:
+    return ConsentSubject(
         id=db_subject.id,
         name=db_subject.name,
         title=db_subject.title,
