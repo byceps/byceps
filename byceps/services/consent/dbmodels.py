@@ -51,7 +51,7 @@ class DbConsentSubject(db.Model):
         )
 
 
-class DbBrandRequirement(db.Model):
+class DbConsentBrandRequirement(db.Model):
     """A consent requirement for a brand."""
 
     __tablename__ = 'consent_brand_requirements'

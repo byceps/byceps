@@ -11,13 +11,13 @@ from sqlalchemy import delete
 from ...database import db
 from ...typing import BrandID
 
-from .dbmodels import DbBrandRequirement
+from .dbmodels import DbConsentBrandRequirement
 from .models import SubjectID
 
 
 def create_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
     """Create a brand requirement."""
-    db_brand_requirement = DbBrandRequirement(brand_id, subject_id)
+    db_brand_requirement = DbConsentBrandRequirement(brand_id, subject_id)
 
     db.session.add(db_brand_requirement)
     db.session.commit()
@@ -26,7 +26,7 @@ def create_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
 def delete_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
     """Delete a brand requirement."""
     db.session.execute(
-        delete(DbBrandRequirement)
+        delete(DbConsentBrandRequirement)
         .filter_by(brand_id=brand_id)
         .filter_by(subject_id=subject_id)
     )

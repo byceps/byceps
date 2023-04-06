@@ -13,7 +13,7 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import BrandID
 
-from .dbmodels import DbBrandRequirement, DbConsent, DbConsentSubject
+from .dbmodels import DbConsent, DbConsentBrandRequirement, DbConsentSubject
 from .models import Subject, SubjectID
 
 
@@ -89,8 +89,8 @@ def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
     """Return the IDs of the subjects required for the brand."""
     subject_ids = db.session.scalars(
         select(DbConsentSubject.id)
-        .join(DbBrandRequirement)
-        .filter(DbBrandRequirement.brand_id == brand_id)
+        .join(DbConsentBrandRequirement)
+        .filter(DbConsentBrandRequirement.brand_id == brand_id)
     ).all()
 
     return set(subject_ids)
@@ -100,8 +100,8 @@ def get_subjects_required_for_brand(brand_id: BrandID) -> set[Subject]:
     """Return the subjects required for the brand."""
     db_subjects = db.session.scalars(
         select(DbConsentSubject)
-        .join(DbBrandRequirement)
-        .filter(DbBrandRequirement.brand_id == brand_id)
+        .join(DbConsentBrandRequirement)
+        .filter(DbConsentBrandRequirement.brand_id == brand_id)
     ).all()
 
     return {_db_entity_to_subject(db_subject) for db_subject in db_subjects}
