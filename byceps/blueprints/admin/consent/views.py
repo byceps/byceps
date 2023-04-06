@@ -24,7 +24,7 @@ blueprint = create_blueprint('consent_admin', __name__)
 @blueprint.get('/')
 @permission_required('consent.administrate')
 @templated
-def index():
+def subject_index():
     """List consent subjects."""
     subjects_with_consent_counts = (
         consent_subject_service.get_subjects_with_consent_counts()
@@ -72,4 +72,4 @@ def subject_create():
         )
     )
 
-    return redirect_to('.index')
+    return redirect_to('.subject_index')
