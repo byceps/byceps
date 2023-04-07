@@ -24,7 +24,7 @@
     {%- if newsletter_list %}
     {{ render_bigstats_cell(newsletter_subscriber_count|numberformat, ngettext('subscriber to newsletter "%(title)s"', 'subscribers to newsletter "%(title)s"', newsletter_subscriber_count, title=newsletter_list.title), href=url_for('newsletter_admin.view_subscriptions', list_id=newsletter_list.id), icon_name='email', color='#008800') }}
     {%- endif %}
-    {%- call render_cell('legal', 'cell--wider') %}
+    {%- call render_cell('legal', 'cell--wider', href=url_for('consent_admin.requirement_index', brand_id=brand.id)) %}
     <div class="cell-label hyphenate">{{ _('Required Consents') }}</div>
       <p class="centered">
         {%- if consent_subjects_with_consent_counts -%}

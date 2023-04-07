@@ -6,9 +6,10 @@ byceps.blueprints.admin.consent.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import request
+from flask import abort, request
 from flask_babel import gettext
 
+from ....services.brand import brand_service
 from ....services.consent import consent_subject_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -19,6 +20,10 @@ from .forms import SubjectCreateForm
 
 
 blueprint = create_blueprint('consent_admin', __name__)
+
+
+# -------------------------------------------------------------------- #
+# subjects
 
 
 @blueprint.get('/subjects')
@@ -73,3 +78,36 @@ def subject_create():
     )
 
     return redirect_to('.subject_index')
+
+
+# -------------------------------------------------------------------- #
+# brand requirements
+
+
+@blueprint.get('/requirements/for_brand/<brand_id>')
+@permission_required('consent.administrate')
+@templated
+def requirement_index(brand_id):
+    """List consent requirements for the brand."""
+    brand = brand_service.find_brand(brand_id)
+    if brand is None:
+        abort(404)
+
+    subject_ids = consent_subject_service.get_subject_ids_required_for_brand(
+        brand.id
+    )
+
+    subjects_to_consent_counts = (
+        consent_subject_service.get_subjects_with_consent_counts(
+            limit_to_subject_ids=subject_ids
+        )
+    )
+
+    subjects_with_consent_counts = sorted(
+        subjects_to_consent_counts.items(), key=lambda x: x[0].title
+    )
+
+    return {
+        'brand': brand,
+        'subjects_with_consent_counts': subjects_with_consent_counts,
+    }

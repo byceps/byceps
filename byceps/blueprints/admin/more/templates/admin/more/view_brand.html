@@ -17,6 +17,7 @@
     (_('Discussion Boards'), 'board', url_for('board_admin.board_index_for_brand', brand_id=brand.id), 'board_category.view'),
     (_('Most Frequent Attendees'), 'users', url_for('attendance_admin.view_for_brand', brand_id=brand.id), 'admin.access'),
     (_('Brand Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id), 'snippet.view'),
+    (_('Required Consents'), 'consent', url_for('consent_admin.requirement_index', brand_id=brand.id), 'consent.administrate'),
   ] %}
     {%- for label, icon, url, required_permission in items|sort(attribute='0') %}
       {%- if has_current_user_permission(required_permission) %}

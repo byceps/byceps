@@ -893,7 +893,8 @@ msgstr "Slug"
 #: byceps/blueprints/admin/board/forms.py:25
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:34
 #: byceps/blueprints/admin/brand/forms.py:18
-#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:27
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:16
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:27
 #: byceps/blueprints/admin/news/forms.py:89
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:63
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:15
@@ -1310,7 +1311,8 @@ msgstr "Marke erstellen"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:29
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:42
-#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:27
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:16
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:27
 #: byceps/blueprints/admin/page/forms.py:20
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:28
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:94
@@ -1408,26 +1410,34 @@ msgstr "Checkbox-Beschriftung"
 msgid "Checkbox label link target"
 msgstr "Linkziel der Checkbox-Beschriftung"
 
-#: byceps/blueprints/admin/consent/views.py:70
+#: byceps/blueprints/admin/consent/views.py:75
 #, python-format
 msgid "Consent subject \"%(title)s\" has been created."
 msgstr "Das Zustimmungsthema \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:5
-#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:28
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:5
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:28
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:20
+msgid "Required Consents"
+msgstr "Erforderliche Zustimmungen"
+
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:17
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:8
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:5
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:28
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:18
 msgid "Consents"
 msgstr "Zustimmungen"
 
-#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:16
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:30
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:41
+msgid "None defined"
+msgstr "Keine festgelegt"
+
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:5
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:16
 msgid "Create consent subject"
 msgstr "Zustimmungsthema erstellen"
-
-#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:41
-msgid "No subjects available."
-msgstr "Es sind keine Zustimmungsthemen vorhanden."
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:14
 #: byceps/blueprints/site/core/templates/layout/_current_user.html:15
@@ -1793,10 +1803,6 @@ msgid "subscriber to newsletter \"%(title)s\""
 msgid_plural "subscribers to newsletter \"%(title)s\""
 msgstr[0] "Abonnent von Newsletter \"%(title)s\""
 msgstr[1] "Abonnenten von Newsletter \"%(title)s\""
-
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:28
-msgid "Required Consents"
-msgstr "Erforderliche Zustimmungen"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:40
 msgid "None required"
@@ -4724,27 +4730,27 @@ msgstr "Der Menüeintrag \"%(label)s\" wurde angelegt."
 msgid "Menu item \"%(label)s\" has been updated."
 msgstr "Der Menüeintrag \"%(label)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/site/navigation/views.py:409
+#: byceps/blueprints/admin/site/navigation/views.py:408
 #, python-format
 msgid "Item \"%(label)s\" is already at the top."
 msgstr "Der Menüeintrag \"%(label)s\" befindet sich bereits ganz oben."
 
-#: byceps/blueprints/admin/site/navigation/views.py:416
+#: byceps/blueprints/admin/site/navigation/views.py:415
 #, python-format
 msgid "Item \"%(label)s\" has been moved upwards by one position."
 msgstr "Der Menüeintrag \"%(label)s\" wurde eine Position nach oben verschoben."
 
-#: byceps/blueprints/admin/site/navigation/views.py:434
+#: byceps/blueprints/admin/site/navigation/views.py:432
 #, python-format
 msgid "Item \"%(label)s\" is already at the bottom."
 msgstr "Der Menüeintrag \"%(label)s\" befindet sich bereits ganz unten."
 
-#: byceps/blueprints/admin/site/navigation/views.py:441
+#: byceps/blueprints/admin/site/navigation/views.py:439
 #, python-format
 msgid "Item \"%(label)s\" has been moved downwards by one position."
 msgstr "Der Menüeintrag \"%(label)s\" wurde eine Position nach unten verschoben."
 
-#: byceps/blueprints/admin/site/navigation/views.py:459
+#: byceps/blueprints/admin/site/navigation/views.py:457
 #, python-format
 msgid "Item \"%(label)s\" has been deleted."
 msgstr "Der Menüeintrag \"%(label)s\" wurde gelöscht."
@@ -6186,18 +6192,18 @@ msgstr ""
 "Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "
 "\"%(screen_name)s\" wurde an die hinterlegte E-Mail-Adresse versendet."
 
-#: byceps/blueprints/common/authentication/password/views.py:191
+#: byceps/blueprints/common/authentication/password/views.py:196
 msgid "Password has been updated."
 msgstr "Das Passwort wurde geändert."
 
-#: byceps/blueprints/common/authentication/password/views.py:205
+#: byceps/blueprints/common/authentication/password/views.py:210
 #, python-format
 msgid "Invalid token. A token expires after %(hours)s hours."
 msgstr ""
 "Es wurde kein gültiges Token angegeben. Ein Token ist nur %(hours)s "
 "Stunden lang gültig."
 
-#: byceps/blueprints/common/authentication/password/views.py:214
+#: byceps/blueprints/common/authentication/password/views.py:219
 #: byceps/blueprints/site/user/email_address/views.py:122
 #: byceps/blueprints/site/user/email_address/views.py:162
 msgid "No valid token specified."
@@ -7009,7 +7015,9 @@ msgstr "Bestellen"
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:17
 #, python-format
 msgid "You have to be <a href=\"%(url)s\">logged in</a> to order something."
-msgstr "Du musst <a href=\"%(url)s\">angemeldet</a> sein, um etwas bestellen zu können."
+msgstr ""
+"Du musst <a href=\"%(url)s\">angemeldet</a> sein, um etwas bestellen zu "
+"können."
 
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/order_form.html:25
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/order_single_form.html:23

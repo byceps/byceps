@@ -1,0 +1,34 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% set current_page = 'consent_admin' %}
+{% set current_page_brand = brand %}
+{% set page_title = _('Required Consents') %}
+
+{% block body %}
+
+<h1>{{ page_title }} {{ render_extra_in_heading(subjects_with_consent_counts|length) }}</h1>
+
+<div class="box">
+  {%- if subjects_with_consent_counts -%}
+  <table class="index index--v-centered index--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Title') }}<br>{{ _('Name') }}</th>
+        <th class="number">{{ _('Consents') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for subject, count in subjects_with_consent_counts -%}
+      <tr>
+        <td><strong>{{ subject.title }}</strong><br>{{ subject.name|dim }}</td>
+        <td class="bignumber number">{{ count|numberformat }}</td>
+      </tr>
+      {%- endfor -%}
+    </tbody>
+  </table>
+  {%- else -%}
+  <div class="dimmed-box centered">{{ _('None defined') }}</div>
+  {%- endif -%}
+</div>
+
+{%- endblock %}
