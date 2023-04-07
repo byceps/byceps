@@ -71,7 +71,7 @@ class ImageUpdateForm(_ImageFormBase):
     pass
 
 
-class ItemCreateForm(LocalizedForm):
+class _ItemBaseForm(LocalizedForm):
     slug = StringField(
         lazy_gettext('Slug'),
         [
@@ -103,7 +103,11 @@ class ItemCreateForm(LocalizedForm):
     )
 
 
-class ItemUpdateForm(ItemCreateForm):
+class ItemCreateForm(_ItemBaseForm):
+    pass
+
+
+class ItemUpdateForm(_ItemBaseForm):
     pass
 
 
