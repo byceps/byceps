@@ -537,6 +537,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/_create_form_base.html:60
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:20
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:19
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/create_form.html:21
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:27
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/_item_create_form_base.html:21
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_create_form.html:21
@@ -1546,6 +1547,7 @@ msgstr "Site"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav.html:63
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:31
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:4
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/create_form.html:9
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:7
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:7
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view_for_brand.html:5
@@ -4528,9 +4530,25 @@ msgstr ""
 "Derzeit sind keine Artikel bestellt oder bezahlt, die versendet werden "
 "müssen."
 
-#: byceps/blueprints/admin/shop/shop/views.py:140
+#: byceps/blueprints/admin/shop/shop/forms.py:18
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:21
+msgid "Currency"
+msgstr "Währung"
+
+#: byceps/blueprints/admin/shop/shop/forms.py:31
+#: byceps/blueprints/admin/site/navigation/forms.py:58
+#: byceps/blueprints/admin/site/navigation/forms.py:81
+msgid "choose"
+msgstr "auswählen"
+
+#: byceps/blueprints/admin/shop/shop/views.py:161
 msgid "Shop has been created."
 msgstr "Der Shop wurde angelegt."
+
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/create_form.html:6
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view_for_brand.html:18
+msgid "Create shop"
+msgstr "Shop erstellen"
 
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:16
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:17
@@ -4538,10 +4556,6 @@ msgid "order"
 msgid_plural "orders"
 msgstr[0] "Bestellung"
 msgstr[1] "Bestellungen"
-
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:21
-msgid "Currency"
-msgstr "Währung"
 
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:32
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:34
@@ -4552,14 +4566,6 @@ msgstr "aktiv"
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view_for_brand.html:13
 msgid "No shop exists for this brand."
 msgstr "Für diese Marke ist kein Shop vorhanden."
-
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view_for_brand.html:17
-msgid "Create shop"
-msgstr "Shop erstellen"
-
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view_for_brand.html:28
-msgid "Create shop?"
-msgstr "Shop erstellen?"
 
 #: byceps/blueprints/admin/shop/storefront/forms.py:19
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:36
@@ -4694,11 +4700,6 @@ msgstr "Bezeichnung"
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:78
 msgid "Page"
 msgstr "Seite"
-
-#: byceps/blueprints/admin/site/navigation/forms.py:58
-#: byceps/blueprints/admin/site/navigation/forms.py:81
-msgid "choose"
-msgstr "auswählen"
 
 #: byceps/blueprints/admin/site/navigation/forms.py:64
 #: byceps/blueprints/admin/site/navigation/forms.py:94

@@ -11,21 +11,13 @@
   <div class="box">
     <div class="dimmed-box centered">
       <p>{{ _('No shop exists for this brand.') }}</p>
-
-      {%- if has_current_user_permission('shop.create') %}
-      <div class="button-row button-row--center">
-        <a class="button" data-action="create-shop" href="{{ url_for('.create', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create shop') }}</span></a>
-      </div>
-      {%- endif %}
     </div>
+
+    {%- if has_current_user_permission('shop.create') %}
+    <div class="button-row button-row--center button-row--compact mt">
+      <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create shop') }}</span></a>
+    </div>
+    {%- endif %}
   </div>
 
 {%- endblock %}
-
-{% block scripts %}
-<script>
-  onDomReady(() => {
-    confirmed_post_on_click('[data-action="create-shop"]', '{{ _('Create shop?') }}');
-  });
-</script>
-{% endblock %}

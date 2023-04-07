@@ -6,9 +6,9 @@ byceps.blueprints.admin.shop.shop.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, url_for
+from flask import abort, g, request
 from flask_babel import gettext
-from moneyed import EUR
+from moneyed import get_currency
 
 from .....services.brand import brand_service
 from .....services.shop.order.models.log import OrderLogEntryData
@@ -23,13 +23,12 @@ from .....services.shop.shop import shop_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
-from .....util.views import (
-    permission_required,
-    redirect_to,
-    respond_no_content_with_location,
-)
+from .....util.l10n import get_default_locale, get_locale_str
+from .....util.views import permission_required, redirect_to
 
 from ..order.service import enrich_log_entry_data
+
+from .forms import CreateForm
 
 
 blueprint = create_blueprint('shop_shop_admin', __name__)
@@ -118,23 +117,50 @@ def view_for_brand(brand_id):
     }
 
 
+@blueprint.get('/for_brand/<brand_id>/create')
+@permission_required('shop.create')
+@templated
+def create_form(brand_id, erroneous_form=None):
+    """Show form to create a shop."""
+    brand = _get_brand_or_404(brand_id)
+
+    locale = get_locale_str() or get_default_locale()
+
+    form = erroneous_form if erroneous_form else CreateForm()
+    form.set_currency_choices(locale)
+
+    return {
+        'brand': brand,
+        'form': form,
+    }
+
+
 @blueprint.post('/for_brand/<brand_id>')
 @permission_required('shop.create')
-@respond_no_content_with_location
 def create(brand_id):
     """Create a shop."""
     brand = _get_brand_or_404(brand_id)
 
+    locale = get_default_locale()
+
+    form = CreateForm(request.form)
+    form.set_currency_choices(locale)
+
+    if not form.validate():
+        return create_form(brand.id, form)
+
     shop_id = brand.id
     title = brand.title
+    currency = get_currency(form.currency.data)
 
-    shop = shop_service.create_shop(shop_id, brand.id, title, EUR)
+    shop = shop_service.create_shop(shop_id, brand.id, title, currency)
 
     order_payment_service.create_email_payment_instructions(shop.id, g.user.id)
     order_payment_service.create_html_payment_instructions(shop.id, g.user.id)
 
     flash_success(gettext('Shop has been created.'))
-    return url_for('.view', shop_id=shop.id)
+
+    return redirect_to('.view', shop_id=shop.id)
 
 
 def _get_brand_or_404(brand_id):
