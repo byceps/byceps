@@ -100,7 +100,7 @@ def create():
     flash_success(
         gettext('Brand "%(title)s" has been created.', title=brand.title)
     )
-    return redirect_to('.index')
+    return redirect_to('.view', brand_id=brand.id)
 
 
 @blueprint.get('/brands/<brand_id>/update')
@@ -139,7 +139,7 @@ def update(brand_id):
     flash_success(
         gettext('Brand "%(title)s" has been updated.', title=brand.title)
     )
-    return redirect_to('.view', brand_id=brand_id)
+    return redirect_to('.view', brand_id=brand.id)
 
 
 # -------------------------------------------------------------------- #
