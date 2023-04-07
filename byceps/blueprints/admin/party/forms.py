@@ -18,6 +18,7 @@ from wtforms import (
 )
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
+from ....services.party import party_service
 from ....util.l10n import LocalizedForm
 
 
@@ -54,6 +55,12 @@ class CreateForm(_BaseForm):
     id = StringField(
         lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=40)]
     )
+
+    @staticmethod
+    def validate_id(form, field):
+        party_id = field.data
+        if party_service.find_party(party_id) is not None:
+            raise ValidationError(lazy_gettext('The value is already in use.'))
 
 
 class UpdateForm(_BaseForm):

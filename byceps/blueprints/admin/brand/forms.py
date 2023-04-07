@@ -8,8 +8,9 @@ byceps.blueprints.admin.brand.forms
 
 from flask_babel import lazy_gettext
 from wtforms import BooleanField, StringField
-from wtforms.validators import InputRequired, Length, Optional
+from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
+from ....services.brand import brand_service
 from ....util.l10n import LocalizedForm
 
 
@@ -24,6 +25,12 @@ class CreateForm(_BaseForm):
     id = StringField(
         lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=20)]
     )
+
+    @staticmethod
+    def validate_id(form, field):
+        brand_id = field.data
+        if brand_service.find_brand(brand_id) is not None:
+            raise ValidationError(lazy_gettext('The value is already in use.'))
 
 
 class UpdateForm(_BaseForm):
