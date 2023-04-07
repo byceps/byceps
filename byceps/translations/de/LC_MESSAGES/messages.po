@@ -525,6 +525,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:24
 #: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:23
 #: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:21
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_create_form.html:21
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:23
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:39
 #: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:25
@@ -893,7 +894,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/board/forms.py:25
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:34
 #: byceps/blueprints/admin/brand/forms.py:18
-#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:16
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:28
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:27
 #: byceps/blueprints/admin/news/forms.py:89
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:63
@@ -1311,7 +1312,7 @@ msgstr "Marke erstellen"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:29
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:42
-#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:16
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:28
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:27
 #: byceps/blueprints/admin/page/forms.py:20
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:28
@@ -1394,34 +1395,46 @@ msgstr "E-Mail-Konfiguration"
 msgid "Not configured"
 msgstr "Nicht konfiguriert"
 
-#: byceps/blueprints/admin/consent/forms.py:18
+#: byceps/blueprints/admin/consent/forms.py:20
 msgid "Internal name"
 msgstr "Interner Name"
 
-#: byceps/blueprints/admin/consent/forms.py:21
+#: byceps/blueprints/admin/consent/forms.py:23
 msgid "Internal title"
 msgstr "Interner Titel"
 
-#: byceps/blueprints/admin/consent/forms.py:24
+#: byceps/blueprints/admin/consent/forms.py:26
 msgid "Checkbox label"
 msgstr "Checkbox-Beschriftung"
 
-#: byceps/blueprints/admin/consent/forms.py:27
+#: byceps/blueprints/admin/consent/forms.py:29
 msgid "Checkbox label link target"
 msgstr "Linkziel der Checkbox-Beschriftung"
 
-#: byceps/blueprints/admin/consent/views.py:75
+#: byceps/blueprints/admin/consent/forms.py:35
+msgid "Consent subject"
+msgstr "Zustimmungsthema"
+
+#: byceps/blueprints/admin/consent/forms.py:62
+msgid "Invalid choice"
+msgstr "Ungültige Auswahl"
+
+#: byceps/blueprints/admin/consent/views.py:78
 #, python-format
 msgid "Consent subject \"%(title)s\" has been created."
 msgstr "Das Zustimmungsthema \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:5
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:28
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:20
-msgid "Required Consents"
-msgstr "Erforderliche Zustimmungen"
+#: byceps/blueprints/admin/consent/views.py:149
+msgid "The requirement has been created."
+msgstr "Die Anforderung wurde erstellt."
 
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_create_form.html:6
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:17
+msgid "Create consent requirement"
+msgstr "Zustimmungsthema erstellen"
+
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_create_form.html:9
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:29
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:8
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:5
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:28
@@ -1429,7 +1442,13 @@ msgstr "Erforderliche Zustimmungen"
 msgid "Consents"
 msgstr "Zustimmungen"
 
-#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:30
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:6
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:28
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:20
+msgid "Required Consents"
+msgstr "Erforderliche Zustimmungen"
+
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:42
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:41
 msgid "None defined"
 msgstr "Keine festgelegt"

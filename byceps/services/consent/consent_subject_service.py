@@ -38,6 +38,16 @@ def create_subject(
     return _db_entity_to_subject(db_subject)
 
 
+def find_subject(subject_id: ConsentSubjectID) -> Optional[ConsentSubject]:
+    """Return the subject with that id, or `None` if not found."""
+    db_subject = db.session.get(DbConsentSubject, subject_id)
+
+    if db_subject is None:
+        return None
+
+    return _db_entity_to_subject(db_subject)
+
+
 def get_subjects(subject_ids: set[ConsentSubjectID]) -> set[ConsentSubject]:
     """Return the subjects."""
     db_subjects = db.session.scalars(
@@ -105,6 +115,13 @@ def get_subjects_required_for_brand(brand_id: BrandID) -> set[ConsentSubject]:
         .join(DbConsentBrandRequirement)
         .filter(DbConsentBrandRequirement.brand_id == brand_id)
     ).all()
+
+    return {_db_entity_to_subject(db_subject) for db_subject in db_subjects}
+
+
+def get_all_subjects() -> set[ConsentSubject]:
+    """Return all subjects."""
+    db_subjects = db.session.scalars(select(DbConsentSubject)).all()
 
     return {_db_entity_to_subject(db_subject) for db_subject in db_subjects}
 
