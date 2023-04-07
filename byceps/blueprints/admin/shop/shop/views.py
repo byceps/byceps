@@ -107,9 +107,7 @@ def view(shop_id):
 @permission_required('shop.view')
 @templated
 def view_for_brand(brand_id):
-    brand = brand_service.find_brand(brand_id)
-    if brand is None:
-        abort(404)
+    brand = _get_brand_or_404(brand_id)
 
     shop = shop_service.find_shop_for_brand(brand.id)
     if shop is not None:
@@ -125,9 +123,7 @@ def view_for_brand(brand_id):
 @respond_no_content_with_location
 def create(brand_id):
     """Create a shop."""
-    brand = brand_service.find_brand(brand_id)
-    if brand is None:
-        abort(404)
+    brand = _get_brand_or_404(brand_id)
 
     shop_id = brand.id
     title = brand.title
@@ -139,6 +135,15 @@ def create(brand_id):
 
     flash_success(gettext('Shop has been created.'))
     return url_for('.view', shop_id=shop.id)
+
+
+def _get_brand_or_404(brand_id):
+    brand = brand_service.find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    return brand
 
 
 def _get_shop_or_404(shop_id):
