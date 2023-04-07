@@ -21,7 +21,7 @@ from .forms import SubjectCreateForm
 blueprint = create_blueprint('consent_admin', __name__)
 
 
-@blueprint.get('/')
+@blueprint.get('/subjects')
 @permission_required('consent.administrate')
 @templated
 def subject_index():
@@ -37,7 +37,7 @@ def subject_index():
     }
 
 
-@blueprint.get('/consents/create')
+@blueprint.get('/subjects/create')
 @permission_required('consent.administrate')
 @templated
 def subject_create_form(erroneous_form=None):
@@ -49,7 +49,7 @@ def subject_create_form(erroneous_form=None):
     }
 
 
-@blueprint.post('/consents')
+@blueprint.post('/subjects')
 @permission_required('consent.administrate')
 def subject_create():
     """Create a consent subject."""

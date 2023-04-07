@@ -5,6 +5,6 @@
 
 
 def test_index(consent_admin_client):
-    url = '/admin/consent/'
+    url = '/admin/consent/subjects'
     response = consent_admin_client.get(url)
     assert response.status_code == 200
