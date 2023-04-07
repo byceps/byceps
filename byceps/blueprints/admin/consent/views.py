@@ -17,7 +17,7 @@ from ....services.consent import (
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to
+from ....util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import RequirementCreateForm, SubjectCreateForm
 
@@ -151,6 +151,19 @@ def requirement_create(brand_id):
     return redirect_to('.requirement_index', brand_id=brand.id)
 
 
+@blueprint.delete('/requirements/<brand_id>/<subject_id>')
+@permission_required('consent.administrate')
+@respond_no_content
+def requirement_delete(brand_id, subject_id):
+    """Delete a consent requirement for a brand."""
+    brand = _get_brand_or_404(brand_id)
+    subject = _get_subject_or_404(subject_id)
+
+    brand_requirements_service.delete_brand_requirement(brand.id, subject.id)
+
+    flash_success(gettext('The requirement has been deleted.'))
+
+
 # -------------------------------------------------------------------- #
 
 
@@ -161,3 +174,12 @@ def _get_brand_or_404(brand_id):
         abort(404)
 
     return brand
+
+
+def _get_subject_or_404(subject_id):
+    subject = consent_subject_service.find_subject(subject_id)
+
+    if subject is None:
+        abort(404)
+
+    return subject

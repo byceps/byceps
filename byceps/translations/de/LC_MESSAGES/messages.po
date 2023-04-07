@@ -1157,6 +1157,7 @@ msgid "Hide"
 msgstr "Verstecken"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:69
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:41
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:59
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:22
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:102
@@ -1428,6 +1429,10 @@ msgstr "Das Zustimmungsthema \"%(title)s\" wurde angelegt."
 msgid "The requirement has been created."
 msgstr "Die Anforderung wurde erstellt."
 
+#: byceps/blueprints/admin/consent/views.py:164
+msgid "The requirement has been deleted."
+msgstr "Die Anforderung wurde gelöscht."
+
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_create_form.html:6
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:17
 msgid "Create consent requirement"
@@ -1448,10 +1453,14 @@ msgstr "Zustimmungen"
 msgid "Required Consents"
 msgstr "Erforderliche Zustimmungen"
 
-#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:42
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:50
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:41
 msgid "None defined"
 msgstr "Keine festgelegt"
+
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:59
+msgid "Delete consent requirement?"
+msgstr "Zustimmungsthema löschen?"
 
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:5
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:16
