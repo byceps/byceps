@@ -94,7 +94,7 @@ class LineItem:
     unit_price: Money
     tax_rate: Decimal
     quantity: int
-    line_amount: Decimal
+    line_amount: Money
     processing_result: dict[str, str]
 
 

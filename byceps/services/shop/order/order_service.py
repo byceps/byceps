@@ -900,7 +900,7 @@ def _line_item_to_transfer_object(
         unit_price=Money(db_line_item.unit_price, currency),
         tax_rate=db_line_item.tax_rate,
         quantity=db_line_item.quantity,
-        line_amount=db_line_item.line_amount,
+        line_amount=Money(db_line_item.line_amount, currency),
         processing_result=db_line_item.processing_result or {},
     )
 
