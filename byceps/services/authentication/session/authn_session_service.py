@@ -103,7 +103,10 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
 
 
 def log_in_user(
-    user_id: UserID, ip_address: str, *, site_id: Optional[SiteID] = None
+    user_id: UserID,
+    ip_address: Optional[str],
+    *,
+    site_id: Optional[SiteID] = None,
 ) -> tuple[str, UserLoggedIn]:
     """Create a session token and record the log in."""
     session_token = get_session_token(user_id)
@@ -127,14 +130,19 @@ def log_in_user(
 def _create_login_log_entry(
     user_id: UserID,
     occurred_at: datetime,
-    ip_address: str,
+    ip_address: Optional[str],
     *,
     site_id: Optional[SiteID] = None,
 ) -> None:
     """Create a log entry that represents a user login."""
-    data = {'ip_address': ip_address}
+    data = {}
+
+    if ip_address:
+        data['ip_address'] = ip_address
+
     if site_id:
         data['site_id'] = site_id
+
     user_log_service.create_entry(
         'user-logged-in', user_id, data, occurred_at=occurred_at
     )
