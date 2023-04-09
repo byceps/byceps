@@ -85,10 +85,12 @@
                 <td>{{ payment.created_at|datetimeformat }}</td>
                 <td>{{ render_order_payment_method(payment.method) }}</td>
                 <td class="number">{{ payment.amount|moneyformat }}</td>
-                <td class="monospace">
-                  {%- for key, value in payment.additional_data|dictsort %}
-                  {{ key }} = {{ value }}{% if not loop.last %}<br>{% endif %}
-                  {%- endfor %}
+                <td>
+                  <div class="monospace nowrap" style="overflow-x: auto; width: 20rem;">
+                    {%- for key, value in payment.additional_data|dictsort %}
+                    {{ key }} = {{ value }}{% if not loop.last %}<br>{% endif %}
+                    {%- endfor %}
+                  </div>
                 </td>
               </tr>
               {%- endfor %}
