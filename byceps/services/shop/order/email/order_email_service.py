@@ -10,7 +10,7 @@ Notification e-mails about shop orders
 
 from dataclasses import dataclass
 
-from flask_babel import format_currency, format_date, gettext
+from flask_babel import format_date, gettext
 
 from .....services.email import (
     email_config_service,
@@ -24,7 +24,7 @@ from .....services.shop.shop import shop_service
 from .....services.user.models.user import User
 from .....services.user import user_service
 from .....typing import BrandID
-from .....util.l10n import force_user_locale, get_user_locale
+from .....util.l10n import force_user_locale, format_money, get_user_locale
 
 from .. import order_payment_service
 
@@ -90,10 +90,7 @@ def _assemble_email_for_incoming_order_to_orderer(
                     indentation
                     + gettext('Unit price')
                     + ': '
-                    + format_currency(
-                        line_item.unit_price.amount,
-                        line_item.unit_price.currency.code,
-                    ),
+                    + format_money(line_item.unit_price),
                 ]
             )
             for line_item in sorted(
@@ -104,9 +101,7 @@ def _assemble_email_for_incoming_order_to_orderer(
             indentation
             + gettext('Total amount')
             + ': '
-            + format_currency(
-                order.total_amount.amount, order.total_amount.currency.code
-            )
+            + format_money(order.total_amount)
         )
         payment_instructions = (
             order_payment_service.get_email_payment_instructions(
