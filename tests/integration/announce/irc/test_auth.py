@@ -15,7 +15,7 @@ from .helpers import assert_submitted_text, mocked_irc_bot
 def test_user_logged_in_into_admin_app_announced(app, user):
     expected_text = 'Logvogel hat sich eingeloggt.'
 
-    _, event = authn_session_service.log_in_user(user.id, '10.10.23.42')
+    _, event = authn_session_service.log_in_user(user.id)
 
     with mocked_irc_bot() as mock:
         auth_signals.user_logged_in.send(None, event=event)
@@ -28,9 +28,7 @@ def test_user_logged_in_into_site_app_announced(app, site, user):
         'Logvogel hat sich auf Site "ACMECon 2014 website" eingeloggt.'
     )
 
-    _, event = authn_session_service.log_in_user(
-        user.id, '10.10.23.42', site_id=site.id
-    )
+    _, event = authn_session_service.log_in_user(user.id, site_id=site.id)
 
     with mocked_irc_bot() as mock:
         auth_signals.user_logged_in.send(None, event=event)

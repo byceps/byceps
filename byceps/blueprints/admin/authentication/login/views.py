@@ -80,7 +80,7 @@ def log_in():
     # Authorization succeeded.
 
     auth_token, event = authn_session_service.log_in_user(
-        user.id, request.remote_addr
+        user.id, ip_address=request.remote_addr
     )
     user_session.start(user.id, auth_token, permanent=permanent)
 

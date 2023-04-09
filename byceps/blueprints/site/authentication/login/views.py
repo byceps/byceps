@@ -106,7 +106,7 @@ def log_in():
     # Authorization succeeded.
 
     auth_token, event = authn_session_service.log_in_user(
-        user.id, request.remote_addr, site_id=g.site_id
+        user.id, ip_address=request.remote_addr, site_id=g.site_id
     )
     user_session.start(user.id, auth_token, permanent=permanent)
 
