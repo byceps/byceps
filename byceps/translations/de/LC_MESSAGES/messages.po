@@ -1862,7 +1862,7 @@ msgstr[0] "noch nicht aktivierter Benutzer"
 msgstr[1] "noch nicht aktivierte Benutzer"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:17
-#: byceps/blueprints/admin/news/forms.py:111
+#: byceps/blueprints/admin/news/forms.py:115
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:28
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:28
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
@@ -2478,7 +2478,7 @@ msgstr "Textformat"
 msgid "Image URL path"
 msgstr "Bild-URL-Pfad"
 
-#: byceps/blueprints/admin/news/forms.py:112
+#: byceps/blueprints/admin/news/forms.py:116
 msgid "Time"
 msgstr "Uhrzeit"
 
@@ -3538,8 +3538,11 @@ msgstr "Auslastung"
 
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:63
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:65
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:8
 #: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:18
 #: byceps/blueprints/site/seating/templates/site/seating/index.html:49
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:45
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_articles.html:7
 msgid "Total"
 msgstr "Gesamt"
 
@@ -4206,13 +4209,6 @@ msgstr "Als <strong>nicht</strong> versendet markieren"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:38
 msgid "Mark as shipped"
 msgstr "Als versendet markieren"
-
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:22
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:45
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_articles.html:20
-#: byceps/services/shop/order/email/order_email_service.py:105
-msgid "Total amount"
-msgstr "Gesamtbetrag"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:9
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:237
@@ -7209,7 +7205,7 @@ msgstr ""
 
 #: byceps/blueprints/site/ticketing/notification_service.py:164
 #: byceps/services/authentication/password/authn_password_reset_service.py:47
-#: byceps/services/shop/order/email/order_email_service.py:219
+#: byceps/services/shop/order/email/order_email_service.py:218
 #: byceps/services/user/user_email_address_service.py:74
 #: byceps/services/user/user_email_address_service.py:222
 #: byceps/services/user_message/user_message_service.py:106
@@ -7904,8 +7900,16 @@ msgstr "Kein fristgerechter Geldeingang feststellbar."
 msgid "Your order (%(order_number)s) has been received."
 msgstr "Deine Bestellung (%(order_number)s) ist eingegangen."
 
-#: byceps/services/shop/order/email/order_email_service.py:117
-#: byceps/services/shop/order/email/order_email_service.py:179
+#: byceps/services/shop/order/email/order_email_service.py:95
+msgid "Line price"
+msgstr "Zeilenpreis"
+
+#: byceps/services/shop/order/email/order_email_service.py:106
+msgid "Total amount"
+msgstr "Gesamtbetrag"
+
+#: byceps/services/shop/order/email/order_email_service.py:116
+#: byceps/services/shop/order/email/order_email_service.py:178
 #, python-format
 msgid ""
 "thank you for your order %(order_number)s on %(order_date)s through our "
@@ -7914,16 +7918,16 @@ msgstr ""
 "vielen Dank für deine Bestellung mit der Nummer %(order_number)s am "
 "%(order_date)s über unsere Website."
 
-#: byceps/services/shop/order/email/order_email_service.py:122
+#: byceps/services/shop/order/email/order_email_service.py:121
 msgid "You have ordered these items:"
 msgstr "Folgende Artikel hast du bestellt:"
 
-#: byceps/services/shop/order/email/order_email_service.py:143
+#: byceps/services/shop/order/email/order_email_service.py:142
 #, python-format
 msgid "Your order (%(order_number)s) has been canceled."
 msgstr "Deine Bestellung (%(order_number)s) ist storniert worden."
 
-#: byceps/services/shop/order/email/order_email_service.py:151
+#: byceps/services/shop/order/email/order_email_service.py:150
 #, python-format
 msgid ""
 "your order %(order_number)s on %(order_date)s has been canceled by us for"
@@ -7932,12 +7936,12 @@ msgstr ""
 "deine Bestellung mit der Nummer %(order_number)s vom %(order_date)s wurde"
 " von uns aus folgendem Grund storniert:"
 
-#: byceps/services/shop/order/email/order_email_service.py:172
+#: byceps/services/shop/order/email/order_email_service.py:171
 #, python-format
 msgid "Your order (%(order_number)s) has been paid."
 msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."
 
-#: byceps/services/shop/order/email/order_email_service.py:184
+#: byceps/services/shop/order/email/order_email_service.py:183
 msgid "We have received your payment and have marked your order as paid."
 msgstr ""
 "Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt "

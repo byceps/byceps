@@ -116,10 +116,12 @@ Folgende Artikel hast du bestellt:
   Beschreibung: Einzelticket, Kategorie Loge
   Anzahl: 5
   Stückpreis: 99,00\xa0€
+  Zeilenpreis: 495,00\xa0€
 
   Beschreibung: T-Shirt, Größe L
   Anzahl: 2
   Stückpreis: 14,95\xa0€
+  Zeilenpreis: 29,90\xa0€
 
   Gesamtbetrag: 524,90\xa0€
 

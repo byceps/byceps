@@ -91,6 +91,10 @@ def _assemble_email_for_incoming_order_to_orderer(
                     + gettext('Unit price')
                     + ': '
                     + format_money(line_item.unit_price),
+                    indentation
+                    + gettext('Line price')
+                    + ': '
+                    + format_money(line_item.line_amount),
                 ]
             )
             for line_item in sorted(
