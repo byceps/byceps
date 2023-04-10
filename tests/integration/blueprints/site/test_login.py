@@ -81,6 +81,9 @@ def test_login_fails_with_invalid_credentials(client):
     response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 403
 
+    cookies = list(client.cookie_jar)
+    assert len(cookies) == 0
+
 
 def test_login_fails_lacking_consent(client, brand, make_user):
     subject_name = generate_token()
@@ -103,3 +106,6 @@ def test_login_fails_lacking_consent(client, brand, make_user):
     assert response.location.startswith('/consent/consent/')
 
     brand_requirements_service.delete_brand_requirement(brand.id, subject.id)
+
+    cookies = list(client.cookie_jar)
+    assert len(cookies) == 0

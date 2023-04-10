@@ -71,6 +71,9 @@ def test_login_fails_with_invalid_credentials(client):
     response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 403
 
+    cookies = list(client.cookie_jar)
+    assert len(cookies) == 0
+
 
 def test_login_fails_lacking_access_permission(client, make_user):
     password = 'correct horse battery staple'
@@ -86,3 +89,6 @@ def test_login_fails_lacking_access_permission(client, make_user):
 
     response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 403
+
+    cookies = list(client.cookie_jar)
+    assert len(cookies) == 0
