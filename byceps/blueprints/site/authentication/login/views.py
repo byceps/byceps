@@ -6,21 +6,30 @@ byceps.blueprints.site.authentication.login.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+from dataclasses import dataclass
+
 from flask import abort, g, redirect, request, url_for
 from flask_babel import gettext
 import structlog
 
 from .....services.authentication import authn_service
+from .....services.authentication.errors import AuthenticationFailed
 from .....services.authentication.session import authn_session_service
+from .....services.authentication.session.authn_session_service import (
+    UserLoggedIn,
+)
 from .....services.consent import consent_service, consent_subject_service
 from .....services.site.models import Site
 from .....services.site import site_service
+from .....services.user.models.user import User
 from .....services.verification_token import verification_token_service
 from .....signals import auth as auth_signals
 from .....typing import UserID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
 from .....util.framework.templating import templated
+from .....util.result import Err, Ok, Result
 from .....util import user_session
 from .....util.views import redirect_to, respond_no_content
 
@@ -31,6 +40,11 @@ log = structlog.get_logger()
 
 
 blueprint = create_blueprint('authentication_login', __name__)
+
+
+@dataclass(frozen=True)
+class ConsentRequired:
+    verification_token: str
 
 
 @blueprint.get('/log_in')
@@ -80,6 +94,34 @@ def log_in():
     if not all([username, password]):
         abort(401)
 
+    log_in_result = _log_in_user(username, password, permanent)
+    if log_in_result.is_err():
+        err = log_in_result.unwrap_err()
+        if isinstance(err, ConsentRequired):
+            consent_form_url = url_for(
+                'consent.consent_form', token=err.verification_token
+            )
+            return [('Location', consent_form_url)]
+        else:
+            abort(403)
+
+    user, logged_in_event = log_in_result.unwrap()
+
+    flash_success(
+        gettext(
+            'Successfully logged in as %(screen_name)s.',
+            screen_name=user.screen_name,
+        )
+    )
+
+    auth_signals.user_logged_in.send(None, event=logged_in_event)
+
+    return [('Location', url_for('dashboard.index'))]
+
+
+def _log_in_user(
+    username: str, password: str, permanent: bool
+) -> Result[tuple[User, UserLoggedIn], AuthenticationFailed | ConsentRequired]:
     authn_result = authn_service.authenticate(username, password)
     if authn_result.is_err():
         log.info(
@@ -88,24 +130,19 @@ def log_in():
             username=username,
             error=str(authn_result.unwrap_err()),
         )
-        abort(403)
+        return Err(authn_result.unwrap_err())
 
     user = authn_result.unwrap()
+
+    # Authentication succeeded.
 
     if _is_consent_required(user.id):
         verification_token = verification_token_service.create_for_consent(
             user.id
         )
+        return Err(ConsentRequired(verification_token.token))
 
-        consent_form_url = url_for(
-            'consent.consent_form', token=verification_token.token
-        )
-
-        return [('Location', consent_form_url)]
-
-    # Authorization succeeded.
-
-    auth_token, event = authn_session_service.log_in_user(
+    auth_token, logged_in_event = authn_session_service.log_in_user(
         user.id, ip_address=request.remote_addr, site_id=g.site_id
     )
     user_session.start(user.id, auth_token, permanent=permanent)
@@ -117,16 +154,7 @@ def log_in():
         screen_name=user.screen_name,
     )
 
-    flash_success(
-        gettext(
-            'Successfully logged in as %(screen_name)s.',
-            screen_name=user.screen_name,
-        )
-    )
-
-    auth_signals.user_logged_in.send(None, event=event)
-
-    return [('Location', url_for('dashboard.index'))]
+    return Ok((user, logged_in_event))
 
 
 def _is_consent_required(user_id: UserID) -> bool:
