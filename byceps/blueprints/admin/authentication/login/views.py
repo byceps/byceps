@@ -6,7 +6,7 @@ byceps.blueprints.admin.authentication.login.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import g, redirect, request
+from flask import g, request
 from flask_babel import gettext
 
 from .....signals import auth as auth_signals
@@ -37,7 +37,7 @@ def log_in_form(erroneous_form=None):
                 screen_name=g.user.screen_name,
             )
         )
-        return redirect('/')
+        return redirect_to('core_admin.homepage')
 
     form = erroneous_form if erroneous_form else LogInForm()
 
@@ -76,7 +76,7 @@ def log_in():
 
     auth_signals.user_logged_in.send(None, event=logged_in_event)
 
-    return redirect('/')
+    return redirect_to('core_admin.homepage')
 
 
 @blueprint.get('/log_out')
@@ -84,7 +84,7 @@ def log_in():
 def log_out_form():
     """Show form to log out."""
     if not g.user.authenticated:
-        return redirect('/')
+        return redirect_to('core_admin.homepage')
 
 
 @blueprint.post('/log_out')
