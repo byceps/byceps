@@ -1,0 +1,44 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'board_admin' %}
+{% set current_page_brand = brand %}
+{% set page_title = _('Copy category') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.board_view', board_id=board.id), _('Board') ~ ' "%s"'|format(board.id)) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <div class="box">
+    {%- if categories %}
+    <table class="index index--v-centered">
+      <thead>
+        <tr>
+          <th>{{ _('Title') }}<br>{{ _('Slug') }}</th>
+          <th>{{ _('Description') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for category in categories|sort(attribute='position') %}
+        <tr>
+          <td>
+            <strong>{{ category.title }}</strong><br>
+            {{ category.slug|dim }}
+          </td>
+          <td>{{ category.description }}</td>
+          <td style="text-align: right;"><a class="button button--compact" href="{{ url_for('.category_create_form', board_id=board.id, source_category_id=category.id) }}"><span>{{ _('choose') }}</span> {{ render_icon('chevron-right') }}</a></td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('None defined') }}</div>
+    {%- endif %}
+  </div>
+
+{%- endblock %}

@@ -7,6 +7,7 @@ byceps.blueprints.admin.board.views
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 from flask import abort, request
 from flask_babel import gettext
@@ -129,6 +130,26 @@ def board_create(brand_id):
 # categories
 
 
+@blueprint.get('/categories/for_board/<board_id>/copy_from/<source_board_id>')
+@permission_required('board_category.create')
+@templated
+def category_copy_from_form(board_id, source_board_id, erroneous_form=None):
+    """Show form to copy an existing category to this board."""
+    board = _get_board_or_404(board_id)
+
+    brand = brand_service.find_brand(board.brand_id)
+
+    source_board = _get_board_or_404(source_board_id)
+
+    categories = board_category_query_service.get_categories(source_board.id)
+
+    return {
+        'board': board,
+        'brand': brand,
+        'categories': categories,
+    }
+
+
 @blueprint.get('/categories/for_board/<board_id>/create')
 @permission_required('board_category.create')
 @templated
@@ -138,13 +159,30 @@ def category_create_form(board_id, erroneous_form=None):
 
     brand = brand_service.find_brand(board.brand_id)
 
-    form = erroneous_form if erroneous_form else CategoryCreateForm()
+    brand_boards = board_service.get_boards_for_brand(brand.id)
+
+    source_category = _get_source_category()
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else CategoryCreateForm(obj=source_category)
+    )
 
     return {
         'board': board,
         'brand': brand,
+        'brand_boards': brand_boards,
         'form': form,
     }
+
+
+def _get_source_category() -> Optional[BoardCategory]:
+    source_category_id = request.args.get('source_category_id')
+    if not source_category_id:
+        return None
+
+    return board_category_query_service.find_category_by_id(source_category_id)
 
 
 @blueprint.post('/categories/for_board/<board_id>')

@@ -477,6 +477,7 @@ msgstr "Berechtigungen"
 #: byceps/blueprints/admin/api/forms.py:33
 #: byceps/blueprints/admin/api/templates/admin/api/index.html:57
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:35
+#: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:22
 #: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:17
 #: byceps/blueprints/admin/shop/article/forms.py:39
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:61
@@ -523,7 +524,7 @@ msgstr "API-Tokens"
 
 #: byceps/blueprints/admin/api/templates/admin/api/create_api_token_form.html:21
 #: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:24
-#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:23
+#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:40
 #: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:21
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_create_form.html:21
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:23
@@ -718,25 +719,30 @@ msgstr "Benutzername"
 msgid "Password"
 msgstr "Passwort"
 
-#: byceps/blueprints/admin/authentication/login/views.py:39
-#: byceps/blueprints/site/authentication/login/views.py:42
+#: byceps/blueprints/admin/authentication/login/views.py:35
+#: byceps/blueprints/site/authentication/login/views.py:34
 #, python-format
 msgid "You are already logged in as \"%(screen_name)s\"."
 msgstr "Du bist bereits als Benutzer \"%(screen_name)s\" angemeldet."
 
-#: byceps/blueprints/admin/authentication/login/views.py:95
-#: byceps/blueprints/site/authentication/login/views.py:121
+#: byceps/blueprints/admin/authentication/login/views.py:65
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:35
+msgid "Login failed."
+msgstr "Die Anmeldung ist fehlgeschlagen."
+
+#: byceps/blueprints/admin/authentication/login/views.py:71
+#: byceps/blueprints/site/authentication/login/views.py:96
 #, python-format
 msgid "Successfully logged in as %(screen_name)s."
 msgstr "Erfolgreich eingeloggt als %(screen_name)s."
 
-#: byceps/blueprints/admin/authentication/login/views.py:137
-#: byceps/blueprints/site/authentication/login/views.py:162
+#: byceps/blueprints/admin/authentication/login/views.py:95
+#: byceps/blueprints/site/authentication/login/views.py:120
 msgid "Successfully logged out."
 msgstr "Erfolgreich ausgeloggt."
 
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:5
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:38
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:4
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:19
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:26
 #: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:5
 #: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:38
@@ -744,21 +750,16 @@ msgstr "Erfolgreich ausgeloggt."
 msgid "Log in"
 msgstr "Anmelden"
 
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:31
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:16
 #: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:32
 msgid "permanently stay logged in"
 msgstr "dauerhaft eingeloggt bleiben"
 
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:34
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:35
-msgid "Login failed."
-msgstr "Die Anmeldung ist fehlgeschlagen."
-
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:42
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:23
 msgid "Forgot password?"
 msgstr "Passwort vergessen?"
 
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:42
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:23
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:9
 #: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:5
 #: byceps/blueprints/common/authentication/password/templates/common/authentication/password/reset_form.html:5
@@ -802,8 +803,8 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:163
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:186
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:50
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:98
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:112
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:100
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:114
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:66
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_user_list.html:30
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:45
@@ -881,6 +882,7 @@ msgstr "ID"
 
 #: byceps/blueprints/admin/board/forms.py:23
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:34
+#: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:21
 #: byceps/blueprints/admin/news/forms.py:76
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:64
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:69
@@ -894,6 +896,7 @@ msgstr "Slug"
 
 #: byceps/blueprints/admin/board/forms.py:25
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:34
+#: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:21
 #: byceps/blueprints/admin/brand/forms.py:19
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:28
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:27
@@ -933,65 +936,65 @@ msgstr "Titel"
 msgid "Text"
 msgstr "Text"
 
-#: byceps/blueprints/admin/board/views.py:120
+#: byceps/blueprints/admin/board/views.py:121
 #, python-format
 msgid "Board with ID \"%(board_id)s\" has been created."
 msgstr "Das Forum mit der ID \"%(board_id)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/board/views.py:169
+#: byceps/blueprints/admin/board/views.py:207
 #: byceps/blueprints/admin/ticketing/category/views.py:74
 #: byceps/blueprints/admin/tourney/category/views.py:70
 #, python-format
 msgid "Category \"%(title)s\" has been created."
 msgstr "Die Kategorie \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/board/views.py:214
+#: byceps/blueprints/admin/board/views.py:252
 #: byceps/blueprints/admin/ticketing/category/views.py:115
 #: byceps/blueprints/admin/tourney/category/views.py:108
 #, python-format
 msgid "Category \"%(title)s\" has been updated."
 msgstr "Die Kategorie \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/board/views.py:229
+#: byceps/blueprints/admin/board/views.py:267
 #, python-format
 msgid "Category \"%(title)s\" has been hidden."
 msgstr "Die Kategorie \"%(title)s\" wurde versteckt."
 
-#: byceps/blueprints/admin/board/views.py:243
+#: byceps/blueprints/admin/board/views.py:281
 #, python-format
 msgid "Category \"%(title)s\" has been made visible."
 msgstr "Die Kategorie \"%(title)s\" wurde sichtbar gemacht."
 
-#: byceps/blueprints/admin/board/views.py:260
+#: byceps/blueprints/admin/board/views.py:298
 #: byceps/blueprints/admin/tourney/category/views.py:124
 #, python-format
 msgid "Category \"%(title)s\" is already at the top."
 msgstr "Die Kategorie \"%(title)s\" befindet sich bereits ganz oben."
 
-#: byceps/blueprints/admin/board/views.py:267
+#: byceps/blueprints/admin/board/views.py:305
 #: byceps/blueprints/admin/tourney/category/views.py:131
 #, python-format
 msgid "Category \"%(title)s\" has been moved upwards by one position."
 msgstr "Die Kategorie \"%(title)s\" wurde eine Position nach oben verschoben."
 
-#: byceps/blueprints/admin/board/views.py:285
+#: byceps/blueprints/admin/board/views.py:323
 #: byceps/blueprints/admin/tourney/category/views.py:149
 #, python-format
 msgid "Category \"%(title)s\" is already at the bottom."
 msgstr "Die Kategorie \"%(title)s\" befindet sich bereits ganz unten."
 
-#: byceps/blueprints/admin/board/views.py:292
+#: byceps/blueprints/admin/board/views.py:330
 #: byceps/blueprints/admin/tourney/category/views.py:156
 #, python-format
 msgid "Category \"%(title)s\" has been moved downwards by one position."
 msgstr "Die Kategorie \"%(title)s\" wurde eine Position nach unten verschoben."
 
-#: byceps/blueprints/admin/board/views.py:310
+#: byceps/blueprints/admin/board/views.py:348
 #, python-format
 msgid "Category \"%(title)s\" could not be deleted."
 msgstr "Die Kategorie \"%(title)s\" konnte nicht gelöscht werden."
 
-#: byceps/blueprints/admin/board/views.py:317
+#: byceps/blueprints/admin/board/views.py:355
 #, python-format
 msgid "Category \"%(title)s\" has been deleted."
 msgstr "Die Kategorie \"%(title)s\" wurde gelöscht."
@@ -1054,7 +1057,8 @@ msgid "No boards exist for this brand."
 msgstr "Für diese Marke sind keine Foren vorhanden."
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:6
-#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:9
+#: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:9
+#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:10
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:51
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:64
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:82
@@ -1078,7 +1082,7 @@ msgid "Board"
 msgstr "Forum"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:22
-#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:6
+#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:7
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:17
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:6
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:17
@@ -1176,6 +1180,24 @@ msgstr "Das Forum enthält keine Kategorien."
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:93
 msgid "Delete category?"
 msgstr "Kategorie löschen?"
+
+#: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:6
+#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:22
+msgid "Copy category"
+msgstr "Kategorie kopieren"
+
+#: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:34
+#: byceps/blueprints/admin/shop/shop/forms.py:31
+#: byceps/blueprints/admin/site/navigation/forms.py:58
+#: byceps/blueprints/admin/site/navigation/forms.py:81
+msgid "choose"
+msgstr "auswählen"
+
+#: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:40
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:50
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:41
+msgid "None defined"
+msgstr "Keine festgelegt"
 
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:6
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/update_form.html:6
@@ -1459,11 +1481,6 @@ msgstr "Zustimmungen"
 msgid "Required Consents"
 msgstr "Erforderliche Zustimmungen"
 
-#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:50
-#: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:41
-msgid "None defined"
-msgstr "Keine festgelegt"
-
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:59
 msgid "Delete consent requirement?"
 msgstr "Zustimmungsthema löschen?"
@@ -1631,7 +1648,7 @@ msgid "Users"
 msgstr "Benutzer"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:19
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:135
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:137
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:29
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:29
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:44
@@ -1677,7 +1694,7 @@ msgstr "Kataloge"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/_create_form_base.html:7
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:8
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:7
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:125
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:127
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:3
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:21
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:76
@@ -4447,41 +4464,41 @@ msgstr "Zahlungsart"
 msgid "Additional fields"
 msgstr "Zusätzliche Felder"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:102
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:104
 msgid "Invoice"
 msgid_plural "Invoices"
 msgstr[0] "Rechnung"
 msgstr[1] "Rechnungen"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:117
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:119
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:38
 msgid "Reason for cancelation"
 msgstr "Grund für Stornierung"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:130
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:132
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:8
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:14
 #: byceps/blueprints/admin/user/templates/layout/admin/user.html:59
 msgid "Events"
 msgstr "Ereignisse"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:145
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:147
 msgid "Mark as invoice sent?"
 msgstr "Als Rechnung versendet markieren?"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:146
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:148
 msgid "Mark as invoice not sent?"
 msgstr "Als Rechnung nicht versendet markieren?"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:148
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:150
 msgid "Resend confirmation email?"
 msgstr "E-Mail-Bestätigung erneut senden?"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:150
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:152
 msgid "Mark as shipped?"
 msgstr "Als versendet markieren?"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:151
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:153
 msgid "Mark as not shipped?"
 msgstr "Als nicht versendet markieren?"
 
@@ -4535,12 +4552,6 @@ msgstr ""
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:21
 msgid "Currency"
 msgstr "Währung"
-
-#: byceps/blueprints/admin/shop/shop/forms.py:31
-#: byceps/blueprints/admin/site/navigation/forms.py:58
-#: byceps/blueprints/admin/site/navigation/forms.py:81
-msgid "choose"
-msgstr "auswählen"
 
 #: byceps/blueprints/admin/shop/shop/views.py:161
 msgid "Shop has been created."
