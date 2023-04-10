@@ -6,7 +6,13 @@
 import pytest
 
 from byceps.services.authentication.session import authn_session_service
+from byceps.services.consent import (
+    brand_requirements_service,
+    consent_subject_service,
+)
 from byceps.services.user import user_log_service
+
+from tests.helpers import generate_token
 
 
 @pytest.fixture
@@ -74,3 +80,26 @@ def test_login_fails_with_invalid_credentials(client):
 
     response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 403
+
+
+def test_login_fails_lacking_consent(client, brand, make_user):
+    subject_name = generate_token()
+    subject = consent_subject_service.create_subject(
+        subject_name, subject_name, 'agree', None
+    )
+    brand_requirements_service.create_brand_requirement(brand.id, subject.id)
+
+    password = 'the password is not the problem'
+
+    user = make_user(password=password)
+
+    form_data = {
+        'username': user.screen_name,
+        'password': password,
+    }
+
+    response = client.post('/authentication/log_in', data=form_data)
+    assert response.status_code == 204
+    assert response.location.startswith('/consent/consent/')
+
+    brand_requirements_service.delete_brand_requirement(brand.id, subject.id)
