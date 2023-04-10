@@ -41,8 +41,8 @@ def test_login_succeeds(client, make_admin):
     }
 
     response = client.post('/authentication/log_in', data=form_data)
-    assert response.status_code == 204
-    assert response.location is None
+    assert response.status_code == 302
+    assert response.location == '/'
 
     login_log_entries_after = user_log_service.get_entries_of_type_for_user(
         user.id, 'user-logged-in'
@@ -69,7 +69,7 @@ def test_login_fails_with_invalid_credentials(client):
     }
 
     response = client.post('/authentication/log_in', data=form_data)
-    assert response.status_code == 403
+    assert response.status_code == 200
 
     cookies = list(client.cookie_jar)
     assert len(cookies) == 0
@@ -88,7 +88,7 @@ def test_login_fails_lacking_access_permission(client, make_user):
     }
 
     response = client.post('/authentication/log_in', data=form_data)
-    assert response.status_code == 403
+    assert response.status_code == 200
 
     cookies = list(client.cookie_jar)
     assert len(cookies) == 0

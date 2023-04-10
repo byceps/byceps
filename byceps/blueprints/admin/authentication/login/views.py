@@ -6,14 +6,14 @@ byceps.blueprints.admin.authentication.login.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, redirect, request
+from flask import g, redirect, request
 from flask_babel import gettext
 
 from .....signals import auth as auth_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
 from .....util.framework.templating import templated
-from .....util.views import redirect_to, respond_no_content
+from .....util.views import redirect_to
 
 from .forms import LogInForm
 from . import service
@@ -28,7 +28,7 @@ class AuthorizationFailed:
 
 @blueprint.get('/log_in')
 @templated
-def log_in_form():
+def log_in_form(erroneous_form=None):
     """Show form to log in."""
     if g.user.authenticated:
         flash_notice(
@@ -39,31 +39,31 @@ def log_in_form():
         )
         return redirect('/')
 
-    form = LogInForm()
+    form = erroneous_form if erroneous_form else LogInForm()
 
     return {'form': form}
 
 
 @blueprint.post('/log_in')
-@respond_no_content
 def log_in():
     """Allow the user to authenticate with e-mail address and password."""
     if g.user.authenticated:
         return
 
     form = LogInForm(request.form)
+    if not form.validate():
+        return log_in_form(form)
 
     username = form.username.data.strip()
     password = form.password.data
     permanent = form.permanent.data
-    if not all([username, password]):
-        abort(401)
 
     log_in_result = service.log_in_user(
         username, password, permanent, ip_address=request.remote_addr
     )
     if log_in_result.is_err():
-        abort(403)
+        form.form_errors.append(gettext('Login failed.'))
+        return log_in_form(form)
 
     user, logged_in_event = log_in_result.unwrap()
 
@@ -75,6 +75,8 @@ def log_in():
     )
 
     auth_signals.user_logged_in.send(None, event=logged_in_event)
+
+    return redirect('/')
 
 
 @blueprint.get('/log_out')
