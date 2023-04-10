@@ -71,7 +71,7 @@ def log_in():
             username=username,
             error=str(authn_result.unwrap_err()),
         )
-        abort(401)
+        abort(403)
 
     user = authn_result.unwrap()
 
