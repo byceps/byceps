@@ -65,6 +65,16 @@ def test_login_succeeds(client, make_admin):
     assert cookie.secure
 
 
+def test_login_fails_with_invalid_credentials(client):
+    form_data = {
+        'username': 'TotallyUnknownAdmin',
+        'password': 'TotallyWrongPassword',
+    }
+
+    response = client.post('/authentication/log_in', data=form_data)
+    assert response.status_code == 403
+
+
 def test_login_fails_lacking_access_permission(client, make_admin):
     screen_name = 'AdminWithoutAccess'
     password = 'correct horse battery staple'
@@ -77,16 +87,6 @@ def test_login_fails_lacking_access_permission(client, make_admin):
     form_data = {
         'username': screen_name,
         'password': password,
-    }
-
-    response = client.post('/authentication/log_in', data=form_data)
-    assert response.status_code == 403
-
-
-def test_login_fails(client):
-    form_data = {
-        'username': 'TotallyUnknownAdmin',
-        'password': 'TotallyWrongPassword',
     }
 
     response = client.post('/authentication/log_in', data=form_data)

@@ -67,7 +67,7 @@ def test_login_succeeds(site, client, make_user):
     assert cookie.secure
 
 
-def test_login_fails(client):
+def test_login_fails_with_invalid_credentials(client):
     form_data = {
         'username': 'TotallyUnknownUser',
         'password': 'TotallyWrongPassword',
