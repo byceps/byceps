@@ -21,13 +21,10 @@ def test_login_form(client):
 
 
 def test_login_succeeds(client, make_admin):
-    screen_name = 'AdminLoginTester'
     password = 'correct horse battery staple'
     permission_ids = {'admin.access'}
 
-    user = make_admin(
-        permission_ids, screen_name=screen_name, password=password
-    )
+    user = make_admin(permission_ids, password=password)
 
     login_log_entries_before = user_log_service.get_entries_of_type_for_user(
         user.id, 'user-logged-in'
@@ -39,7 +36,7 @@ def test_login_succeeds(client, make_admin):
     assert not list(client.cookie_jar)
 
     form_data = {
-        'username': screen_name,
+        'username': user.screen_name,
         'password': password,
     }
 
@@ -76,15 +73,14 @@ def test_login_fails_with_invalid_credentials(client):
 
 
 def test_login_fails_lacking_access_permission(client, make_user):
-    screen_name = 'AdminWithoutAccess'
     password = 'correct horse battery staple'
 
-    make_user(screen_name=screen_name, password=password)
+    user = make_user(password=password)
 
     assert not list(client.cookie_jar)
 
     form_data = {
-        'username': screen_name,
+        'username': user.screen_name,
         'password': password,
     }
 

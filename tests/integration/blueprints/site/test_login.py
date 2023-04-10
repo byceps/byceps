@@ -21,10 +21,9 @@ def test_login_form(client):
 
 
 def test_login_succeeds(site, client, make_user):
-    screen_name = 'SiteLoginTester'
     password = 'correct horse battery staple'
 
-    user = make_user(screen_name, password=password)
+    user = make_user(password=password)
 
     login_log_entries_before = user_log_service.get_entries_of_type_for_user(
         user.id, 'user-logged-in'
@@ -36,7 +35,7 @@ def test_login_succeeds(site, client, make_user):
     assert not list(client.cookie_jar)
 
     form_data = {
-        'username': screen_name,
+        'username': user.screen_name,
         'password': password,
     }
 
