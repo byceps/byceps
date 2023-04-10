@@ -75,12 +75,11 @@ def test_login_fails_with_invalid_credentials(client):
     assert response.status_code == 403
 
 
-def test_login_fails_lacking_access_permission(client, make_admin):
+def test_login_fails_lacking_access_permission(client, make_user):
     screen_name = 'AdminWithoutAccess'
     password = 'correct horse battery staple'
-    permission_ids = set()
 
-    make_admin(permission_ids, screen_name=screen_name, password=password)
+    make_user(screen_name=screen_name, password=password)
 
     assert not list(client.cookie_jar)
 
