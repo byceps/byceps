@@ -6,9 +6,9 @@
   {%- if state_name == 'not_applicable' -%}
     {{ render_tag(_('not applicable'), class='tag--outlined') }}
   {%- elif state_name == 'pending' -%}
-    {{ render_tag(_('pending'), icon='pending', class='color-warning') }}
+    {{ render_tag(_('pending'), icon='pending', class='color-warning nowrap') }}
   {%- elif state_name == 'complete' -%}
-    {{ render_tag(_('complete'), icon='success', class='color-success') }}
+    {{ render_tag(_('complete'), icon='success', class='color-success nowrap') }}
   {%- endif -%}
 {%- endmacro %}
 

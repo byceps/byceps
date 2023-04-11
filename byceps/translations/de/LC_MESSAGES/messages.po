@@ -4510,7 +4510,7 @@ msgstr "Als nicht versendet markieren?"
 
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:7
 msgid "not applicable"
-msgstr "nicht zutreffend"
+msgstr "unzutreffend"
 
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:11
 msgid "complete"
