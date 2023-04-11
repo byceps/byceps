@@ -9,7 +9,7 @@
 
 {% call render_example() %}
 <p>
-  {%- for color in ('info', 'success', 'warning', 'danger') %}
+  {%- for color in ('info', 'success', 'warning', 'danger', 'disabled') %}
   {{ render_tag(color, class='color-{}'.format(color)) }}
   {%- endfor %}
 </p>
