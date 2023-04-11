@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'brand_admin' %}
@@ -27,10 +28,16 @@
   </div>
 
   <div class="box">
-
-    <div class="data-label">{{ _('ID') }}</div>
-    <div class="data-value">{{ brand.id }}</div>
-
+    <div class="row">
+      <div>
+        <div class="data-label">{{ _('Avatar') }}</div>
+        <div class="data-value">{{ render_brand_avatar(brand, '64') }}</div>
+      </div>
+      <div>
+        <div class="data-label">{{ _('ID') }}</div>
+        <div class="data-value">{{ brand.id }}</div>
+      </div>
+    </div>
   </div>
 
   <h2>{{ _('Settings') }} {{ render_extra_in_heading(settings|length) }}</h2>

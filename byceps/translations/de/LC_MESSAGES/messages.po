@@ -857,7 +857,7 @@ msgstr "mehr als"
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:29
 #: byceps/blueprints/admin/brand/forms.py:26
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:29
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:31
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:37
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:26
 #: byceps/blueprints/admin/news/forms.py:52
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:29
@@ -1270,7 +1270,7 @@ msgstr "Bild-Dateiname"
 
 #: byceps/blueprints/admin/brand/forms.py:40
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:46
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:16
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:17
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:19
 #: byceps/blueprints/admin/news/forms.py:57
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:42
@@ -1289,19 +1289,19 @@ msgid "archived"
 msgstr "archiviert"
 
 #: byceps/blueprints/admin/brand/forms.py:45
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:77
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:84
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:56
 msgid "Sender address"
 msgstr "Absender-Adresse"
 
 #: byceps/blueprints/admin/brand/forms.py:48
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:83
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:90
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:62
 msgid "Sender name"
 msgstr "Absender-Name"
 
 #: byceps/blueprints/admin/brand/forms.py:51
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:89
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:96
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:68
 msgid "Contact address"
 msgstr "Kontaktadresse"
@@ -1340,7 +1340,7 @@ msgid "Create brand"
 msgstr "Marke erstellen"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:29
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:42
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:49
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:28
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:27
 #: byceps/blueprints/admin/page/forms.py:20
@@ -1382,13 +1382,19 @@ msgstr "Es sind keine Marken vorhanden."
 msgid "Update Brand"
 msgstr "Marke bearbeiten"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:23
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:67
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:24
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:74
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_view.html:44
 msgid "Update"
 msgstr "Bearbeiten"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:36
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:33
+#: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:50
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:8
+msgid "Avatar"
+msgstr "Avatar"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:43
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:43
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:37
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:49
@@ -1402,25 +1408,25 @@ msgstr "Bearbeiten"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:43
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:50
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:95
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:47
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:126
 msgid "Value"
 msgstr "Wert"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:56
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:63
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:108
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:60
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:139
 msgid "No settings defined."
 msgstr "Es sind keine Einstellungen vorhanden."
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:62
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:69
 msgid "Email Configuration"
 msgstr "E-Mail-Konfiguration"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:92
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:99
 msgid "Not configured"
 msgstr "Nicht konfiguriert"
 
@@ -1505,16 +1511,16 @@ msgstr "Profil"
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header.html:17
+#: byceps/blueprints/admin/core/templates/layout/admin/_header.html:16
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:59
 msgid "username, first name, last name, email address"
 msgstr "Benutzer-, Vor-, Nachname, E-Mail-Adresse"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header.html:17
+#: byceps/blueprints/admin/core/templates/layout/admin/_header.html:16
 msgid "Search user:"
 msgstr "Benutzer suchen:"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header.html:18
+#: byceps/blueprints/admin/core/templates/layout/admin/_header.html:17
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:51
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:27
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:20
@@ -1602,7 +1608,7 @@ msgstr "Dashboard"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_global.html:25
 #: byceps/blueprints/admin/site/templates/admin/site/create_form.html:9
 #: byceps/blueprints/admin/site/templates/admin/site/index.html:6
-#: byceps/blueprints/admin/site/templates/admin/site/index_for_brand.html:7
+#: byceps/blueprints/admin/site/templates/admin/site/index_for_brand.html:6
 msgid "Sites"
 msgstr "Sites"
 
@@ -3059,11 +3065,6 @@ msgstr "Telefonnummer"
 #: byceps/blueprints/admin/orga/templates/admin/orga/birthdays.html:6
 msgid "Upcoming birthdays"
 msgstr "Die nächsten Geburtstage"
-
-#: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:50
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:8
-msgid "Avatar"
-msgstr "Avatar"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:52
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:8
@@ -4868,7 +4869,7 @@ msgstr "Newskanal hinzufügen"
 
 #: byceps/blueprints/admin/site/templates/admin/site/create_form.html:6
 #: byceps/blueprints/admin/site/templates/admin/site/index.html:18
-#: byceps/blueprints/admin/site/templates/admin/site/index_for_brand.html:18
+#: byceps/blueprints/admin/site/templates/admin/site/index_for_brand.html:17
 msgid "Create site"
 msgstr "Site erstellen"
 
