@@ -1,6 +1,18 @@
 {% from 'macros/misc.html' import render_tag %}
 
 
+{% macro render_line_item_processing_state(state) %}
+  {%- set state_name = state.name %}
+  {%- if state_name == 'not_applicable' -%}
+    {{ render_tag(_('not applicable'), class='tag--outlined') }}
+  {%- elif state_name == 'pending' -%}
+    {{ render_tag(_('pending'), icon='pending', class='color-warning') }}
+  {%- elif state_name == 'complete' -%}
+    {{ render_tag(_('complete'), icon='success', class='color-success') }}
+  {%- endif -%}
+{%- endmacro %}
+
+
 {% macro render_order_link(order) -%}
   <a href="{{ url_for('shop_order_admin.view', order_id=order.id) }}">{{ order.order_number }}</a>
 {%- endmacro %}

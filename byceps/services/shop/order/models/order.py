@@ -27,6 +27,16 @@ from .number import OrderNumber
 LineItemID = NewType('LineItemID', UUID)
 
 
+LineItemProcessingState = Enum(
+    'LineItemProcessingState',
+    [
+        'not_applicable',
+        'pending',
+        'complete',
+    ],
+)
+
+
 OrderID = NewType('OrderID', UUID)
 
 
@@ -98,6 +108,7 @@ class LineItem:
     processing_required: bool
     processing_result: dict[str, str]
     processed_at: Optional[datetime]
+    processing_state: LineItemProcessingState
 
 
 @dataclass(frozen=True)

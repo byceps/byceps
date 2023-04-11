@@ -45,6 +45,7 @@ from .models.order import (
     Order,
     OrderID,
     LineItem,
+    LineItemProcessingState,
     Orderer,
     OrderState,
     PaymentState,
@@ -905,7 +906,20 @@ def _line_item_to_transfer_object(
         processing_required=db_line_item.processing_required,
         processing_result=db_line_item.processing_result or {},
         processed_at=db_line_item.processed_at,
+        processing_state=_get_line_item_processing_state(db_line_item),
     )
+
+
+def _get_line_item_processing_state(
+    db_line_item: DbLineItem,
+) -> LineItemProcessingState:
+    if not db_line_item.processing_required:
+        return LineItemProcessingState.not_applicable
+
+    if db_line_item.processed_at is not None:
+        return LineItemProcessingState.complete
+    else:
+        return LineItemProcessingState.pending
 
 
 def _get_order_state(db_order: DbOrder) -> OrderState:

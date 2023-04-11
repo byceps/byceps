@@ -1,9 +1,13 @@
+{%- from 'macros/admin/shop/order.html' import render_line_item_processing_state %}
+
+
   <table class="index index--higher index--wide">
     <thead>
       <tr>
         <th class="number">{{ _('Quantity') }}</th>
         <th>{{ _('Item number') }}</th>
         <th>{{ _('Description') }}</th>
+        <th class="centered">{{ _('Processing') }}</th>
         <th class="number">{{ _('Unit price') }}</th>
         <th class="number">{{ _('Total') }}</th>
       </tr>
@@ -14,6 +18,7 @@
         <td class="number">{{ line_item.quantity }}</td>
         <td class="nowrap"><a href="{{ url_for('shop_article_admin.view', article_id=line_item.article_id) }}" title="{{ line_item.description }}">{{ line_item.article_number }}</a></td>
         <td>{{ line_item.description }}</td>
+        <td class="centered">{{ render_line_item_processing_state(line_item.processing_state) }}</td>
         <td class="number">{{ line_item.unit_price|moneyformat }}</td>
         <td class="number">{{ line_item.line_amount|moneyformat }}</td>
       </tr>
@@ -21,7 +26,7 @@
     </tbody>
     <tfoot>
       <tr>
-        <th colspan="4"></th>
+        <td colspan="5"></td>
         <td class="bignumber number">{{ order.total_amount|moneyformat }}</td>
       </tr>
     </tfoot>

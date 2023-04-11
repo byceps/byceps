@@ -482,7 +482,7 @@ msgstr "Berechtigungen"
 #: byceps/blueprints/admin/shop/article/forms.py:39
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:61
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:50
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:6
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:9
 #: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:15
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:18
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:36
@@ -1998,6 +1998,7 @@ msgstr "genehmigt"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:97
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:40
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:31
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:9
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:13
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:60
 msgid "pending"
@@ -3556,7 +3557,7 @@ msgstr "Auslastung"
 
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:63
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:65
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:8
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:12
 #: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:18
 #: byceps/blueprints/site/seating/templates/site/seating/index.html:49
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:45
@@ -3623,7 +3624,7 @@ msgstr "Gruppen"
 #: byceps/blueprints/admin/shop/article/forms.py:42
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:63
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:65
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:7
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:11
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:10
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:27
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_articles.html:6
@@ -3710,7 +3711,7 @@ msgstr "Artikel"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:64
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:31
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:30
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:4
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:7
 #: byceps/blueprints/site/shop/order/forms.py:75
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:7
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_articles.html:4
@@ -3855,7 +3856,7 @@ msgid "Remove search term constraint"
 msgstr "Einschränkung auf Suchbegriff aufheben"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:60
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:5
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:8
 msgid "Item number"
 msgstr "Artikelnummer"
 
@@ -3883,7 +3884,7 @@ msgstr "bestellt"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:126
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_status_flags.html:19
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:12
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:24
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:7
 msgid "paid"
 msgstr "bezahlt"
@@ -4228,6 +4229,10 @@ msgstr "Als <strong>nicht</strong> versendet markieren"
 msgid "Mark as shipped"
 msgstr "Als versendet markieren"
 
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:10
+msgid "Processing"
+msgstr "Verarbeitung"
+
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:9
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:237
 #, python-format
@@ -4433,7 +4438,7 @@ msgid "Create order number sequence"
 msgstr "Bestellnummer-Sequenz erstellen"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:47
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:36
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:48
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:18
 msgid "overdue"
 msgstr "überfällig"
@@ -4503,35 +4508,43 @@ msgstr "Als versendet markieren?"
 msgid "Mark as not shipped?"
 msgstr "Als nicht versendet markieren?"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:14
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:7
+msgid "not applicable"
+msgstr "nicht zutreffend"
+
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:11
+msgid "complete"
+msgstr "abgeschlossen"
+
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:26
 msgid "canceled (b. p.)"
 msgstr "storniert (v. B.)"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:14
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:26
 msgid "canceled before payment"
 msgstr "storniert vor Bezahlung"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:16
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:28
 msgid "canceled (a. p.)"
 msgstr "storniert (n. B.)"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:16
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:28
 msgid "canceled after payment"
 msgstr "storniert nach Bezahlung"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:18
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:30
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:11
 msgctxt "order"
 msgid "open"
 msgstr "offen"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:25
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:37
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:35
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:41
 msgid "all"
 msgstr "alle"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:27
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:39
 msgid "waiting for shipping"
 msgstr "auf Versand wartend"
 
@@ -7887,19 +7900,19 @@ msgstr "physikalisch"
 msgid "other"
 msgstr "sonstiges"
 
-#: byceps/services/shop/order/order_service.py:809
+#: byceps/services/shop/order/order_service.py:811
 msgid "bank transfer"
 msgstr "Überweisung"
 
-#: byceps/services/shop/order/order_service.py:810
+#: byceps/services/shop/order/order_service.py:812
 msgid "cash"
 msgstr "Barzahlung"
 
-#: byceps/services/shop/order/order_service.py:811
+#: byceps/services/shop/order/order_service.py:813
 msgid "direct debit"
 msgstr "Lastschrift"
 
-#: byceps/services/shop/order/order_service.py:812
+#: byceps/services/shop/order/order_service.py:814
 msgid "free"
 msgstr "kostenlos"
 
