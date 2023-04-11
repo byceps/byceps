@@ -3884,7 +3884,7 @@ msgstr "bestellt"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:126
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_status_flags.html:19
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:24
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:26
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:7
 msgid "paid"
 msgstr "bezahlt"
@@ -4438,7 +4438,7 @@ msgid "Create order number sequence"
 msgstr "Bestellnummer-Sequenz erstellen"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:47
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:48
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:50
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:18
 msgid "overdue"
 msgstr "überfällig"
@@ -4513,38 +4513,43 @@ msgid "not applicable"
 msgstr "unzutreffend"
 
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:11
+msgctxt "processing"
+msgid "canceled"
+msgstr "abgebrochen"
+
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:13
 msgid "complete"
 msgstr "abgeschlossen"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:26
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:28
 msgid "canceled (b. p.)"
 msgstr "storniert (v. B.)"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:26
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:28
 msgid "canceled before payment"
 msgstr "storniert vor Bezahlung"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:28
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:30
 msgid "canceled (a. p.)"
 msgstr "storniert (n. B.)"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:28
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:30
 msgid "canceled after payment"
 msgstr "storniert nach Bezahlung"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:30
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:32
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:11
 msgctxt "order"
 msgid "open"
 msgstr "offen"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:37
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:39
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:35
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:41
 msgid "all"
 msgstr "alle"
 
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:39
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:41
 msgid "waiting for shipping"
 msgstr "auf Versand wartend"
 

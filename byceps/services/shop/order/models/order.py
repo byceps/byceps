@@ -32,6 +32,7 @@ LineItemProcessingState = Enum(
     [
         'not_applicable',
         'pending',
+        'canceled',
         'complete',
     ],
 )

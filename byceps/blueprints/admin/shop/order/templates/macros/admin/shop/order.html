@@ -7,6 +7,8 @@
     {{ render_tag(_('not applicable'), class='tag--outlined') }}
   {%- elif state_name == 'pending' -%}
     {{ render_tag(_('pending'), icon='pending', class='color-warning nowrap') }}
+  {%- elif state_name == 'canceled' -%}
+    {{ render_tag(pgettext('processing', 'canceled'), icon='disabled', class='color-disabled nowrap') }}
   {%- elif state_name == 'complete' -%}
     {{ render_tag(_('complete'), icon='success', class='color-success nowrap') }}
   {%- endif -%}

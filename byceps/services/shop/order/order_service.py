@@ -838,12 +838,6 @@ def _order_to_transfer_object(db_order: DbOrder) -> Order:
         street=db_order.street,
     )
 
-    line_items = [
-        _line_item_to_transfer_object(db_line_item, db_order.currency)
-        for db_line_item in db_order.line_items
-    ]
-    line_items.sort(key=lambda li: li.article_id)
-
     state = _get_order_state(db_order)
     is_open = db_order.payment_state == PaymentState.open
     is_canceled = _is_canceled(db_order)
@@ -852,6 +846,14 @@ def _order_to_transfer_object(db_order: DbOrder) -> Order:
     is_overdue = _is_overdue(db_order)
     is_processing_required = db_order.processing_required
     is_processed = db_order.processed_at is not None
+
+    line_items = [
+        _line_item_to_transfer_object(
+            db_line_item, db_order.currency, is_canceled
+        )
+        for db_line_item in db_order.line_items
+    ]
+    line_items.sort(key=lambda li: li.article_id)
 
     return Order(
         id=db_order.id,
@@ -889,7 +891,7 @@ def _is_overdue(db_order: DbOrder) -> bool:
 
 
 def _line_item_to_transfer_object(
-    db_line_item: DbLineItem, currency: Currency
+    db_line_item: DbLineItem, currency: Currency, is_order_canceled: bool
 ) -> LineItem:
     """Create transfer object from line item database entity."""
     return LineItem(
@@ -906,15 +908,20 @@ def _line_item_to_transfer_object(
         processing_required=db_line_item.processing_required,
         processing_result=db_line_item.processing_result or {},
         processed_at=db_line_item.processed_at,
-        processing_state=_get_line_item_processing_state(db_line_item),
+        processing_state=_get_line_item_processing_state(
+            db_line_item, is_order_canceled
+        ),
     )
 
 
 def _get_line_item_processing_state(
-    db_line_item: DbLineItem,
+    db_line_item: DbLineItem, is_order_canceled: bool
 ) -> LineItemProcessingState:
     if not db_line_item.processing_required:
         return LineItemProcessingState.not_applicable
+
+    if is_order_canceled:
+        return LineItemProcessingState.canceled
 
     if db_line_item.processed_at is not None:
         return LineItemProcessingState.complete
