@@ -55,6 +55,7 @@ class DbLineItem(db.Model):
     line_amount = db.Column(db.Numeric(7, 2), nullable=False)
     processing_required = db.Column(db.Boolean, nullable=False)
     processing_result = db.Column(db.JSONB, nullable=True)
+    processed_at = db.Column(db.DateTime, nullable=True)
 
     def __init__(
         self,

@@ -518,6 +518,7 @@ def update_line_item_processing_result(
         raise ValueError(f'Unknown line item ID "{line_item_id}"')
 
     db_line_item.processing_result = data
+    db_line_item.processed_at = datetime.utcnow()
     db.session.commit()
 
 
@@ -901,7 +902,9 @@ def _line_item_to_transfer_object(
         tax_rate=db_line_item.tax_rate,
         quantity=db_line_item.quantity,
         line_amount=Money(db_line_item.line_amount, currency),
+        processing_required=db_line_item.processing_required,
         processing_result=db_line_item.processing_result or {},
+        processed_at=db_line_item.processed_at,
     )
 
 

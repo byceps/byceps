@@ -95,7 +95,9 @@ class LineItem:
     tax_rate: Decimal
     quantity: int
     line_amount: Money
+    processing_required: bool
     processing_result: dict[str, str]
+    processed_at: Optional[datetime]
 
 
 @dataclass(frozen=True)
