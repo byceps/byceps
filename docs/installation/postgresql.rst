@@ -41,9 +41,3 @@ created:
 
     postgres@host$ createuser --echo --pwprompt byceps_test
     postgres@host$ createdb --encoding=UTF8 --template=template0 --owner byceps_test byceps_test
-
-Connect to the database:
-
-.. code-block:: sh
-
-    $ psql
