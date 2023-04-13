@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.12.1\n"
 
-#: byceps/announce/text_assembly/_helpers.py:19
+#: byceps/announce/helpers.py:29
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:146
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:162
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:71
@@ -30,17 +30,17 @@ msgstr ""
 msgid "Someone"
 msgstr "Jemand"
 
-#: byceps/announce/text_assembly/auth.py:28
+#: byceps/announce/handlers/auth.py:34
 #, python-format
 msgid "%(screen_name)s has logged in on site \"%(site_title)s\"."
 msgstr "%(screen_name)s hat sich auf Site \"%(site_title)s\" eingeloggt."
 
-#: byceps/announce/text_assembly/auth.py:34
+#: byceps/announce/handlers/auth.py:40
 #, python-format
 msgid "%(screen_name)s has logged in."
 msgstr "%(screen_name)s hat sich eingeloggt."
 
-#: byceps/announce/text_assembly/board.py:46
+#: byceps/announce/handlers/board.py:71
 #, python-format
 msgid ""
 "%(topic_creator_screen_name)s has created topic "
@@ -49,7 +49,7 @@ msgstr ""
 "%(topic_creator_screen_name)s hat%(board_label_segment)s das Thema "
 "\"%(topic_title)s\" erstellt: %(url)s"
 
-#: byceps/announce/text_assembly/board.py:71
+#: byceps/announce/handlers/board.py:99
 #, python-format
 msgid ""
 "%(moderator_screen_name)s has hidden topic \"%(topic_title)s\" by "
@@ -58,7 +58,7 @@ msgstr ""
 "%(moderator_screen_name)s hat%(board_label_segment)s das Thema "
 "\"%(topic_title)s\" von %(topic_creator_screen_name)s versteckt: %(url)s"
 
-#: byceps/announce/text_assembly/board.py:97
+#: byceps/announce/handlers/board.py:128
 #, python-format
 msgid ""
 "%(moderator_screen_name)s has unhidden topic \"%(topic_title)s\" by "
@@ -68,7 +68,7 @@ msgstr ""
 "\"%(topic_title)s\" von %(topic_creator_screen_name)s wieder sichtbar "
 "gemacht: %(url)s"
 
-#: byceps/announce/text_assembly/board.py:123
+#: byceps/announce/handlers/board.py:157
 #, python-format
 msgid ""
 "%(moderator_screen_name)s has closed topic \"%(topic_title)s\" by "
@@ -78,7 +78,7 @@ msgstr ""
 "\"%(topic_title)s\" von %(topic_creator_screen_name)s geschlossen: "
 "%(url)s"
 
-#: byceps/announce/text_assembly/board.py:149
+#: byceps/announce/handlers/board.py:186
 #, python-format
 msgid ""
 "%(moderator_screen_name)s has reopened topic \"%(topic_title)s\" by "
@@ -88,7 +88,7 @@ msgstr ""
 "\"%(topic_title)s\" von %(topic_creator_screen_name)s wieder geöffnet: "
 "%(url)s"
 
-#: byceps/announce/text_assembly/board.py:175
+#: byceps/announce/handlers/board.py:215
 #, python-format
 msgid ""
 "%(moderator_screen_name)s has pinned topic \"%(topic_title)s\" by "
@@ -97,7 +97,7 @@ msgstr ""
 "%(moderator_screen_name)s hat%(board_label_segment)s das Thema "
 "\"%(topic_title)s\" von %(topic_creator_screen_name)s angepinnt: %(url)s"
 
-#: byceps/announce/text_assembly/board.py:201
+#: byceps/announce/handlers/board.py:244
 #, python-format
 msgid ""
 "%(moderator_screen_name)s has unpinned topic \"%(topic_title)s\" by "
@@ -107,7 +107,7 @@ msgstr ""
 "\"%(topic_title)s\" von %(topic_creator_screen_name)s wieder gelöst: "
 "%(url)s"
 
-#: byceps/announce/text_assembly/board.py:227
+#: byceps/announce/handlers/board.py:273
 #, python-format
 msgid ""
 "%(moderator_screen_name)s has moved topic \"%(topic_title)s\" by "
@@ -119,7 +119,7 @@ msgstr ""
 "\"%(old_category_title)s\" in \"%(new_category_title)s\" verschoben: "
 "%(url)s"
 
-#: byceps/announce/text_assembly/board.py:252
+#: byceps/announce/handlers/board.py:304
 #, python-format
 msgid ""
 "%(posting_creator_screen_name)s replied in topic "
@@ -128,7 +128,7 @@ msgstr ""
 "%(posting_creator_screen_name)s hat%(board_label_segment)s auf das Thema "
 "\"%(topic_title)s\" geantwortet: %(url)s"
 
-#: byceps/announce/text_assembly/board.py:277
+#: byceps/announce/handlers/board.py:332
 #, python-format
 msgid ""
 "%(moderator_screen_name)s has hidden a reply by "
@@ -139,7 +139,7 @@ msgstr ""
 "%(posting_creator_screen_name)s im Thema \"%(topic_title)s\" versteckt: "
 "%(url)s"
 
-#: byceps/announce/text_assembly/board.py:303
+#: byceps/announce/handlers/board.py:361
 #, python-format
 msgid ""
 "%(moderator_screen_name)s has unhidden a reply by "
@@ -150,17 +150,17 @@ msgstr ""
 "%(posting_creator_screen_name)s im Thema \"%(topic_title)s\" wieder "
 "sichtbar gemacht: %(url)s"
 
-#: byceps/announce/text_assembly/board.py:320
+#: byceps/announce/handlers/board.py:380
 #, python-format
 msgid "\"%(brand_title)s\" board"
 msgstr "\"%(brand_title)s\"-Forum"
 
-#: byceps/announce/text_assembly/board.py:328
+#: byceps/announce/handlers/board.py:388
 #, python-format
 msgid " in %(board_label)s"
 msgstr " im %(board_label)s"
 
-#: byceps/announce/text_assembly/guest_server.py:29
+#: byceps/announce/handlers/guest_server.py:33
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has registered a guest server owned by "
@@ -169,12 +169,12 @@ msgstr ""
 "%(initiator_screen_name)s hat einen Gastserver von %(owner_screen_name)s "
 "für die Party \"%(party_title)s\" registriert."
 
-#: byceps/announce/text_assembly/news.py:20
+#: byceps/announce/handlers/news.py:42
 #, python-format
 msgid "The news \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
-#: byceps/announce/text_assembly/page.py:24
+#: byceps/announce/handlers/page.py:30
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has created page \"%(page_name)s\" in site "
@@ -183,7 +183,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die Seite \"%(page_name)s\" in Site "
 "\"%(site_id)s\" angelegt."
 
-#: byceps/announce/text_assembly/page.py:38
+#: byceps/announce/handlers/page.py:49
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has updated page \"%(page_name)s\" in site "
@@ -192,7 +192,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die Seite \"%(page_name)s\" in Site "
 "\"%(site_id)s\" aktualisiert."
 
-#: byceps/announce/text_assembly/page.py:52
+#: byceps/announce/handlers/page.py:68
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has deleted page \"%(page_name)s\" in site "
@@ -201,12 +201,12 @@ msgstr ""
 "%(initiator_screen_name)s hat die Seite \"%(page_name)s\" in Site "
 "\"%(site_id)s\" gelöscht."
 
-#: byceps/announce/text_assembly/shop_order.py:23
+#: byceps/announce/handlers/shop_order.py:29
 #, python-format
 msgid "%(orderer_screen_name)s has placed order %(order_number)s."
 msgstr "%(orderer_screen_name)s hat Bestellung %(order_number)s aufgegeben."
 
-#: byceps/announce/text_assembly/shop_order.py:40
+#: byceps/announce/handlers/shop_order.py:51
 #, python-format
 msgid ""
 "%(initiator_screen_name)s marked order %(order_number)s by "
@@ -216,7 +216,7 @@ msgstr ""
 "%(orderer_screen_name)s als per %(payment_method_label)s bezahlt "
 "markiert."
 
-#: byceps/announce/text_assembly/shop_order.py:56
+#: byceps/announce/handlers/shop_order.py:72
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has canceled order %(order_number)s by "
@@ -225,7 +225,7 @@ msgstr ""
 "%(initiator_screen_name)s hat Bestellung %(order_number)s von "
 "%(orderer_screen_name)s storniert."
 
-#: byceps/announce/text_assembly/snippet.py:29
+#: byceps/announce/handlers/snippet.py:35
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has created snippet \"%(snippet_name)s\" in "
@@ -234,7 +234,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" im Scope "
 "\"%(scope)s\" angelegt."
 
-#: byceps/announce/text_assembly/snippet.py:43
+#: byceps/announce/handlers/snippet.py:54
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has updated snippet \"%(snippet_name)s\" in "
@@ -243,7 +243,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" im Scope "
 "\"%(scope)s\" aktualisiert."
 
-#: byceps/announce/text_assembly/snippet.py:57
+#: byceps/announce/handlers/snippet.py:73
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has deleted snippet \"%(snippet_name)s\" in "
@@ -252,7 +252,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" im Scope "
 "\"%(scope)s\" gelöscht."
 
-#: byceps/announce/text_assembly/ticketing.py:26
+#: byceps/announce/handlers/ticketing.py:32
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has checked in ticket \"%(ticket_code)s\", used"
@@ -261,53 +261,53 @@ msgstr ""
 "%(initiator_screen_name)s hat Ticket \"%(ticket_code)s\", genutzt von "
 "%(user_screen_name)s, eingecheckt."
 
-#: byceps/announce/text_assembly/ticketing.py:40
+#: byceps/announce/handlers/ticketing.py:51
 #, python-format
 msgid "%(owner_screen_name)s has paid %(quantity)s ticket."
 msgid_plural "%(owner_screen_name)s has paid %(quantity)s tickets."
 msgstr[0] "%(owner_screen_name)s hat %(quantity)s Ticket bezahlt."
 msgstr[1] "%(owner_screen_name)s hat %(quantity)s Tickets bezahlt."
 
-#: byceps/announce/text_assembly/ticketing.py:48
+#: byceps/announce/handlers/ticketing.py:59
 #, python-format
 msgid "Currently %(tickets_sold)s of %(tickets_max)s tickets have been paid."
 msgstr "Aktuell sind %(tickets_sold)s von %(tickets_max)s Tickets bezahlt."
 
-#: byceps/announce/text_assembly/tourney.py:40
+#: byceps/announce/handlers/tourney.py:43
 #, python-format
 msgid "Tourney %(tourney_title)s has been started."
 msgstr "Das Turnier %(tourney_title)s wurde gestartet."
 
-#: byceps/announce/text_assembly/tourney.py:48
+#: byceps/announce/handlers/tourney.py:55
 #, python-format
 msgid "Tourney %(tourney_title)s has been paused."
 msgstr "Das Turnier %(tourney_title)s wurde unterbrochen."
 
-#: byceps/announce/text_assembly/tourney.py:56
+#: byceps/announce/handlers/tourney.py:67
 #, python-format
 msgid "Tourney %(tourney_title)s has been canceled."
 msgstr "Das Turnier %(tourney_title)s wurde abgesagt."
 
-#: byceps/announce/text_assembly/tourney.py:64
+#: byceps/announce/handlers/tourney.py:79
 #, python-format
 msgid "Tourney %(tourney_title)s has been finished."
 msgstr "Das Turnier %(tourney_title)s wurde beendet."
 
-#: byceps/announce/text_assembly/tourney.py:78
+#: byceps/announce/handlers/tourney.py:101
 #, python-format
 msgid "Match %(match_label)s in tourney %(tourney_title)s is ready to be played."
 msgstr ""
 "Das Match %(match_label)s im Turnier %(tourney_title)s kann gespielt "
 "werden."
 
-#: byceps/announce/text_assembly/tourney.py:87
+#: byceps/announce/handlers/tourney.py:114
 #, python-format
 msgid "Match %(match_label)s in tourney %(tourney_title)s has been reset."
 msgstr ""
 "Das Match %(match_label)s im Turnier %(tourney_title)s wurde "
 "zurückgesetzt."
 
-#: byceps/announce/text_assembly/tourney.py:98
+#: byceps/announce/handlers/tourney.py:127
 #, python-format
 msgid ""
 "A result has been entered for match %(match_label)s in tourney "
@@ -316,7 +316,7 @@ msgstr ""
 "Für das Match %(match_label)s im Turnier %(tourney_title)s wurde ein "
 "Ergebnis eingetragen."
 
-#: byceps/announce/text_assembly/tourney.py:109
+#: byceps/announce/handlers/tourney.py:140
 #, python-format
 msgid ""
 "The result for match %(match_label)s in tourney %(tourney_title)s has "
@@ -325,7 +325,7 @@ msgstr ""
 "Für das Match %(match_label)s im Turnier %(tourney_title)s wurde das "
 "eingetragene Ergebnis bestätigt."
 
-#: byceps/announce/text_assembly/tourney.py:120
+#: byceps/announce/handlers/tourney.py:153
 #, python-format
 msgid ""
 "A random result has been entered for match %(match_label)s in tourney "
@@ -334,12 +334,12 @@ msgstr ""
 "Für das Match %(match_label)s im Turnier %(tourney_title)s wurde ein "
 "zufälliges Ergebnis eingetragen."
 
-#: byceps/announce/text_assembly/tourney.py:131
+#: byceps/announce/handlers/tourney.py:168
 #, python-format
 msgid "\"%(participant_name)s\" in tourney %(tourney_title)s is ready to play."
 msgstr "\"%(participant_name)s\" im Turnier %(tourney_title)s ist spielbereit."
 
-#: byceps/announce/text_assembly/tourney.py:142
+#: byceps/announce/handlers/tourney.py:181
 #, python-format
 msgid ""
 "\"%(participant_name)s\" has been eliminated from tourney "
@@ -348,12 +348,12 @@ msgstr ""
 "\"%(participant_name)s\" ist aus dem Turnier %(tourney_title)s "
 "ausgeschieden."
 
-#: byceps/announce/text_assembly/tourney.py:156
+#: byceps/announce/handlers/tourney.py:197
 #, python-format
 msgid "\"%(participant_name)s\" in tourney %(tourney_title)s has been warned."
 msgstr "\"%(participant_name)s\" im Turnier %(tourney_title)s wurde verwarnt."
 
-#: byceps/announce/text_assembly/tourney.py:172
+#: byceps/announce/handlers/tourney.py:215
 #, python-format
 msgid ""
 "\"%(participant_name)s\" in tourney %(tourney_title)s has been "
@@ -362,16 +362,16 @@ msgstr ""
 "\"%(participant_name)s\" im Turnier %(tourney_title)s wurde "
 "disqualifiziert."
 
-#: byceps/announce/text_assembly/tourney.py:193
+#: byceps/announce/handlers/tourney.py:238
 #, python-format
 msgid "\"%(participant1_label)s\" vs. \"%(participant2_label)s\""
 msgstr "\"%(participant1_label)s\" vs. \"%(participant2_label)s\""
 
-#: byceps/announce/text_assembly/tourney.py:204
+#: byceps/announce/handlers/tourney.py:249
 msgid "bye"
 msgstr "Freilos"
 
-#: byceps/announce/text_assembly/user.py:40
+#: byceps/announce/handlers/user.py:46
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has created user account "
@@ -380,7 +380,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "auf Site \"%(site_title)s\" angelegt."
 
-#: byceps/announce/text_assembly/user.py:47
+#: byceps/announce/handlers/user.py:53
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has created user account "
@@ -389,7 +389,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "angelegt."
 
-#: byceps/announce/text_assembly/user.py:65
+#: byceps/announce/handlers/user.py:74
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has renamed user account "
@@ -398,7 +398,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(old_screen_name)s\" "
 "in \"%(new_screen_name)s\" umbenannt."
 
-#: byceps/announce/text_assembly/user.py:82
+#: byceps/announce/handlers/user.py:94
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has changed the email address of user account "
@@ -407,7 +407,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die E-Mail-Adresse des Benutzerkontos "
 "\"%(user_screen_name)s\" geändert."
 
-#: byceps/announce/text_assembly/user.py:98
+#: byceps/announce/handlers/user.py:113
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has invalidated the email address of user "
@@ -416,7 +416,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die E-Mail-Adresse des Benutzerkontos "
 "\"%(user_screen_name)s\" invalidiert."
 
-#: byceps/announce/text_assembly/user.py:112
+#: byceps/announce/handlers/user.py:132
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has changed personal data of user account "
@@ -425,7 +425,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die persönlichen Daten des Benutzerkontos "
 "\"%(user_screen_name)s\" geändert."
 
-#: byceps/announce/text_assembly/user.py:128
+#: byceps/announce/handlers/user.py:151
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has suspended user account "
@@ -434,7 +434,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "gesperrt."
 
-#: byceps/announce/text_assembly/user.py:144
+#: byceps/announce/handlers/user.py:170
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has unsuspended user account "
@@ -443,7 +443,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "entsperrt."
 
-#: byceps/announce/text_assembly/user.py:158
+#: byceps/announce/handlers/user.py:189
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has deleted user account "
@@ -452,7 +452,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "(ID \"%(user_id)s\") gelöscht."
 
-#: byceps/announce/text_assembly/user_badge.py:25
+#: byceps/announce/handlers/user_badge.py:31
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has awarded badge \"%(badge_label)s\" to "
@@ -2147,7 +2147,7 @@ msgid "Provide at least an IP address or a hostname."
 msgstr "Mindestens eine IP-Adresse oder ein Hostname muss angegeben werden."
 
 #: byceps/blueprints/admin/guest_server/views.py:141
-#: byceps/blueprints/site/guest_server/views.py:114
+#: byceps/blueprints/site/guest_server/views.py:112
 msgid "The server has been registered."
 msgstr "Der Server wurde registriert."
 
@@ -6867,13 +6867,13 @@ msgstr "Du nutzt noch kein Ticket."
 msgid "Notes"
 msgstr "Anmerkungen"
 
-#: byceps/blueprints/site/guest_server/views.py:64
-#: byceps/blueprints/site/guest_server/views.py:92
+#: byceps/blueprints/site/guest_server/views.py:62
+#: byceps/blueprints/site/guest_server/views.py:90
 msgid "Using a ticket for this party is required."
 msgstr "Die Nutzung eines Tickets für diese Party ist erforderlich."
 
-#: byceps/blueprints/site/guest_server/views.py:69
-#: byceps/blueprints/site/guest_server/views.py:97
+#: byceps/blueprints/site/guest_server/views.py:67
+#: byceps/blueprints/site/guest_server/views.py:95
 msgid "You have already registered the maximum number of servers allowed."
 msgstr "Du hast bereits die maximal erlaubte Anzahl an Gastservern registriert."
 
