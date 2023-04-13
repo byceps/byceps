@@ -45,6 +45,12 @@ class Announcement:
     announce_at: Optional[datetime] = None
 
 
+@dataclass(frozen=True)
+class AnnouncementRequest:
+    data: dict[str, Any]
+    announce_at: Optional[datetime] = None
+
+
 class WebhookError(Exception):
     pass
 

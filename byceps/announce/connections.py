@@ -87,6 +87,7 @@ from .handlers import (
 )
 from .helpers import (
     Announcement,
+    AnnouncementRequest,
     assemble_request_data,
     call_webhook,
     get_webhooks,
@@ -145,25 +146,31 @@ EVENT_TYPES_TO_HANDLERS = {
 
 
 def handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:
-    announcement = build_announcement(event, webhook)
-    if announcement is None:
+    announcement_request = build_announcement_request(event, webhook)
+    if announcement_request is None:
         return
 
-    request_data = assemble_request_data(webhook, announcement.text)
+    announce(
+        webhook, announcement_request.data, announcement_request.announce_at
+    )
 
-    announce(webhook, request_data, announcement.announce_at)
 
-
-def build_announcement(
+def build_announcement_request(
     event: _BaseEvent, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Optional[AnnouncementRequest]:
     event_type = type(event)
 
     handler = EVENT_TYPES_TO_HANDLERS.get(event_type)
     if handler is None:
         return None
 
-    return handler(event, webhook)
+    announcement = handler(event, webhook)
+    if announcement is None:
+        return None
+
+    request_data = assemble_request_data(webhook, announcement.text)
+
+    return AnnouncementRequest(request_data, announcement.announce_at)
 
 
 def announce(
