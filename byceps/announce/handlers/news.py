@@ -11,11 +11,12 @@ Announce news events.
 from functools import wraps
 from typing import Optional
 
+from flask_babel import gettext
+
 from ...events.news import NewsItemPublished
 from ...services.webhooks.models import OutgoingWebhook
 
-from ..helpers import Announcement, matches_selectors
-from ..text_assembly import news
+from ..helpers import Announcement, matches_selectors, with_locale
 
 
 def apply_selectors(handler):
@@ -33,11 +34,17 @@ def apply_selectors(handler):
 
 
 @apply_selectors
+@with_locale
 def announce_news_item_published(
     event: NewsItemPublished, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that a news item has been published."""
-    text = news.assemble_text_for_news_item_published(event)
+    text = gettext(
+        'The news "%(title)s" has been published.', title=event.title
+    )
+
+    if event.external_url is not None:
+        text += f' {event.external_url}'
 
     if event.published_at > event.occurred_at:
         # Announce later.

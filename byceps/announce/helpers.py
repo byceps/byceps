@@ -8,17 +8,35 @@ byceps.announce.helpers
 
 from dataclasses import dataclass
 from datetime import datetime
+from functools import wraps
 from http import HTTPStatus
 from typing import Any, Optional
 
 from flask import current_app
+from flask_babel import force_locale, gettext
 import requests
 
 from ..events.base import _BaseEvent
 from ..services.webhooks.models import OutgoingWebhook
 from ..services.webhooks import webhook_service
+from ..util.l10n import get_default_locale
 
 from .events import get_name_for_event
+
+
+def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
+    """Return the screen name or a fallback value."""
+    return screen_name if screen_name else gettext('Someone')
+
+
+def with_locale(handler):
+    @wraps(handler)
+    def wrapper(*args, **kwargs):
+        locale = get_default_locale()
+        with force_locale(locale):
+            return handler(*args, **kwargs)
+
+    return wrapper
 
 
 @dataclass(frozen=True)

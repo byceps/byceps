@@ -10,32 +10,66 @@ Announce page events.
 
 from typing import Optional
 
+from flask_babel import gettext
+
 from ...events.page import PageCreated, PageDeleted, PageUpdated
 from ...services.webhooks.models import OutgoingWebhook
 
-from ..helpers import Announcement
-from ..text_assembly import page
+from ..helpers import Announcement, get_screen_name_or_fallback, with_locale
 
 
+@with_locale
 def announce_page_created(
     event: PageCreated, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that a page has been created."""
-    text = page.assemble_text_for_page_created(event)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+
+    text = gettext(
+        '%(initiator_screen_name)s has created page "%(page_name)s" in site "%(site_id)s".',
+        initiator_screen_name=initiator_screen_name,
+        page_name=event.page_name,
+        site_id=event.site_id,
+    )
+
     return Announcement(text)
 
 
+@with_locale
 def announce_page_updated(
     event: PageUpdated, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that a page has been updated."""
-    text = page.assemble_text_for_page_updated(event)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+
+    text = gettext(
+        '%(initiator_screen_name)s has updated page "%(page_name)s" in site "%(site_id)s".',
+        initiator_screen_name=initiator_screen_name,
+        page_name=event.page_name,
+        site_id=event.site_id,
+    )
+
     return Announcement(text)
 
 
+@with_locale
 def announce_page_deleted(
     event: PageDeleted, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that a page has been deleted."""
-    text = page.assemble_text_for_page_deleted(event)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+
+    text = gettext(
+        '%(initiator_screen_name)s has deleted page "%(page_name)s" in site "%(site_id)s".',
+        initiator_screen_name=initiator_screen_name,
+        page_name=event.page_name,
+        site_id=event.site_id,
+    )
+
     return Announcement(text)

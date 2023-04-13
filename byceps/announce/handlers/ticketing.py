@@ -10,24 +10,57 @@ Announce ticketing events.
 
 from typing import Optional
 
+from flask_babel import gettext, ngettext
+
 from ...events.ticketing import TicketCheckedIn, TicketsSold
+from ...services.ticketing import ticket_service
 from ...services.webhooks.models import OutgoingWebhook
 
-from ..helpers import Announcement
-from ..text_assembly import ticketing
+from ..helpers import Announcement, get_screen_name_or_fallback, with_locale
 
 
+@with_locale
 def announce_ticket_checked_in(
     event: TicketCheckedIn, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that a ticket has been checked in."""
-    text = ticketing.assemble_text_for_ticket_checked_in(event)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+
+    text = gettext(
+        '%(initiator_screen_name)s has checked in ticket "%(ticket_code)s", used by %(user_screen_name)s.',
+        initiator_screen_name=initiator_screen_name,
+        ticket_code=event.ticket_code,
+        user_screen_name=user_screen_name,
+    )
+
     return Announcement(text)
 
 
+@with_locale
 def announce_tickets_sold(
     event: TicketsSold, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that tickets have been sold."""
-    text = ticketing.assemble_text_for_tickets_sold(event)
+    owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
+    sale_stats = ticket_service.get_ticket_sale_stats(event.party_id)
+
+    text = (
+        ngettext(
+            '%(owner_screen_name)s has paid %(quantity)s ticket.',
+            '%(owner_screen_name)s has paid %(quantity)s tickets.',
+            event.quantity,
+            owner_screen_name=owner_screen_name,
+            quantity=event.quantity,
+        )
+        + ' '
+        + gettext(
+            'Currently %(tickets_sold)s of %(tickets_max)s tickets have been paid.',
+            tickets_sold=sale_stats.tickets_sold,
+            tickets_max=sale_stats.tickets_max,
+        )
+    )
+
     return Announcement(text)

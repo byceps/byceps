@@ -10,16 +10,32 @@ Announce guest server events.
 
 from typing import Optional
 
+from flask_babel import gettext
+
 from ...events.guest_server import GuestServerRegistered
+from ...services.party import party_service
 from ...services.webhooks.models import OutgoingWebhook
 
-from ..helpers import Announcement
-from ..text_assembly import guest_server
+from ..helpers import Announcement, get_screen_name_or_fallback, with_locale
 
 
+@with_locale
 def announce_guest_server_registered(
     event: GuestServerRegistered, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that a guest server has been registered."""
-    text = guest_server.assemble_text_for_guest_server_registered(event)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+    owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
+    party = party_service.get_party(event.party_id)
+
+    text = gettext(
+        '%(initiator_screen_name)s has registered a guest server '
+        'owned by "%(owner_screen_name)s for party "%(party_title)s".',
+        initiator_screen_name=initiator_screen_name,
+        owner_screen_name=owner_screen_name,
+        party_title=party.title,
+    )
+
     return Announcement(text)

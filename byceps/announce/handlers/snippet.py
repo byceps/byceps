@@ -10,32 +10,71 @@ Announce snippet events.
 
 from typing import Optional
 
+from flask_babel import gettext
+
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
+from ...services.snippet.models import SnippetScope
 from ...services.webhooks.models import OutgoingWebhook
 
-from ..helpers import Announcement
-from ..text_assembly import snippet
+from ..helpers import Announcement, get_screen_name_or_fallback, with_locale
 
 
+@with_locale
 def announce_snippet_created(
     event: SnippetCreated, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that a snippet has been created."""
-    text = snippet.assemble_text_for_snippet_created(event)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+
+    text = gettext(
+        '%(initiator_screen_name)s has created snippet "%(snippet_name)s" in scope "%(scope)s".',
+        initiator_screen_name=initiator_screen_name,
+        snippet_name=event.snippet_name,
+        scope=_get_scope_label(event.scope),
+    )
+
     return Announcement(text)
 
 
+@with_locale
 def announce_snippet_updated(
     event: SnippetUpdated, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that a snippet has been updated."""
-    text = snippet.assemble_text_for_snippet_updated(event)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+
+    text = gettext(
+        '%(initiator_screen_name)s has updated snippet "%(snippet_name)s" in scope "%(scope)s".',
+        initiator_screen_name=initiator_screen_name,
+        snippet_name=event.snippet_name,
+        scope=_get_scope_label(event.scope),
+    )
+
     return Announcement(text)
 
 
+@with_locale
 def announce_snippet_deleted(
     event: SnippetDeleted, webhook: OutgoingWebhook
 ) -> Optional[Announcement]:
     """Announce that a snippet has been deleted."""
-    text = snippet.assemble_text_for_snippet_deleted(event)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+
+    text = gettext(
+        '%(initiator_screen_name)s has deleted snippet "%(snippet_name)s" in scope "%(scope)s".',
+        initiator_screen_name=initiator_screen_name,
+        snippet_name=event.snippet_name,
+        scope=_get_scope_label(event.scope),
+    )
+
     return Announcement(text)
+
+
+def _get_scope_label(scope: SnippetScope) -> str:
+    return scope.type_ + '/' + scope.name
