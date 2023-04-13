@@ -9,23 +9,25 @@ Announce news events.
 """
 
 from functools import wraps
+from typing import Optional
 
 from ...events.news import NewsItemPublished
 from ...services.webhooks.models import OutgoingWebhook
-from ...util.jobqueue import enqueue_at
 
-from ..helpers import call_webhook, matches_selectors
+from ..helpers import Announcement, matches_selectors
 from ..text_assembly import news
 
 
 def apply_selectors(handler):
     @wraps(handler)
-    def wrapper(event: NewsItemPublished, webhook: OutgoingWebhook):
+    def wrapper(
+        event: NewsItemPublished, webhook: OutgoingWebhook
+    ) -> Optional[Announcement]:
         channel_id = str(event.channel_id)
         if not matches_selectors(event, webhook, 'channel_id', channel_id):
-            return
+            return None
 
-        handler(event, webhook)
+        return handler(event, webhook)
 
     return wrapper
 
@@ -33,13 +35,13 @@ def apply_selectors(handler):
 @apply_selectors
 def announce_news_item_published(
     event: NewsItemPublished, webhook: OutgoingWebhook
-) -> None:
+) -> Optional[Announcement]:
     """Announce that a news item has been published."""
     text = news.assemble_text_for_news_item_published(event)
 
     if event.published_at > event.occurred_at:
-        # Schedule job to announce later.
-        enqueue_at(event.published_at, call_webhook, webhook, text)
+        # Announce later.
+        return Announcement(text, announce_at=event.published_at)
     else:
         # Announce now.
-        call_webhook(webhook, text)
+        return Announcement(text)

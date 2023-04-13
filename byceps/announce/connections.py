@@ -57,6 +57,7 @@ from ..events.user import (
     UserScreenNameChanged,
 )
 from ..events.user_badge import UserBadgeAwarded
+from ..services.webhooks.models import OutgoingWebhook
 from ..signals import auth as auth_signals
 from ..signals import board as board_signals
 from ..signals import guest_server as guest_server_signals
@@ -68,7 +69,7 @@ from ..signals import ticketing as ticketing_signals
 from ..signals import tourney as tourney_signals
 from ..signals import user as user_signals
 from ..signals import user_badge as user_badge_signals
-from ..util.jobqueue import enqueue
+from ..util.jobqueue import enqueue, enqueue_at
 
 from .handlers import (
     auth as auth_handlers,
@@ -83,7 +84,7 @@ from .handlers import (
     user as user_handlers,
     user_badge as user_badge_handlers,
 )
-from .helpers import get_webhooks
+from .helpers import call_webhook, get_webhooks
 
 
 EVENT_TYPES_TO_HANDLERS = {
@@ -137,6 +138,21 @@ EVENT_TYPES_TO_HANDLERS = {
 }
 
 
+def handle_event(handler, event: _BaseEvent, webhook: OutgoingWebhook) -> None:
+    announcement = handler(event, webhook)
+    if announcement is None:
+        return
+
+    if announcement.announce_at is not None:
+        # Schedule job to announce later.
+        enqueue_at(
+            announcement.announce_at, call_webhook, webhook, announcement.text
+        )
+    else:
+        # Announce now.
+        call_webhook(webhook, announcement.text)
+
+
 def receive_signal(sender, *, event: Optional[_BaseEvent] = None) -> None:
     if event is None:
         return None
@@ -149,7 +165,7 @@ def receive_signal(sender, *, event: Optional[_BaseEvent] = None) -> None:
 
     webhooks = get_webhooks(event)
     for webhook in webhooks:
-        enqueue(handler, event, webhook)
+        enqueue(handle_event, handler, event, webhook)
 
 
 SIGNALS = [

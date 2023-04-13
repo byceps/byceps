@@ -8,33 +8,34 @@ Announce shop order events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
+
 from ...events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ...services.webhooks.models import OutgoingWebhook
 
-from ..helpers import call_webhook
+from ..helpers import Announcement
 from ..text_assembly import shop_order
 
 
 def announce_order_placed(
     event: ShopOrderPlaced, webhook: OutgoingWebhook
-) -> None:
+) -> Optional[Announcement]:
     """Announce that an order has been placed."""
     text = shop_order.assemble_text_for_order_placed(event)
+    return Announcement(text)
 
-    call_webhook(webhook, text)
 
-
-def announce_order_paid(event: ShopOrderPaid, webhook: OutgoingWebhook) -> None:
+def announce_order_paid(
+    event: ShopOrderPaid, webhook: OutgoingWebhook
+) -> Optional[Announcement]:
     """Announce that an order has been paid."""
     text = shop_order.assemble_text_for_order_paid(event)
-
-    call_webhook(webhook, text)
+    return Announcement(text)
 
 
 def announce_order_canceled(
     event: ShopOrderCanceled, webhook: OutgoingWebhook
-) -> None:
+) -> Optional[Announcement]:
     """Announce that an order has been canceled."""
     text = shop_order.assemble_text_for_order_canceled(event)
-
-    call_webhook(webhook, text)
+    return Announcement(text)

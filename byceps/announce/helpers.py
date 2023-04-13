@@ -6,8 +6,10 @@ byceps.announce.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
+from datetime import datetime
 from http import HTTPStatus
-from typing import Any
+from typing import Any, Optional
 
 from flask import current_app
 import requests
@@ -17,6 +19,12 @@ from ..services.webhooks.models import OutgoingWebhook
 from ..services.webhooks import webhook_service
 
 from .events import get_name_for_event
+
+
+@dataclass(frozen=True)
+class Announcement:
+    text: str
+    announce_at: Optional[datetime] = None
 
 
 class WebhookError(Exception):
