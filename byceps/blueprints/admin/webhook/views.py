@@ -12,7 +12,7 @@ import json
 from flask import abort, request
 from flask_babel import gettext
 
-from ....announce.helpers import call_webhook
+from ....announce.helpers import assemble_request_data, call_webhook
 from ....services.webhooks.models import OutgoingWebhook, WebhookID
 from ....services.webhooks import webhook_service
 from ....util.framework.blueprint import create_blueprint
@@ -163,7 +163,9 @@ def test(webhook_id):
 
     text = 'Test, test … is this thing on?!'
     try:
-        call_webhook(webhook, text)
+        request_data = assemble_request_data(webhook, text)
+        call_webhook(webhook, request_data)
+
         flash_success(
             gettext('Webhook call has been successful.'), icon='success'
         )

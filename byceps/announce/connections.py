@@ -8,7 +8,8 @@ Connect event signals to announcement handlers.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from datetime import datetime
+from typing import Any, Optional
 
 from ..events.auth import UserLoggedIn
 from ..events.base import _BaseEvent
@@ -84,7 +85,12 @@ from .handlers import (
     user as user_handlers,
     user_badge as user_badge_handlers,
 )
-from .helpers import Announcement, call_webhook, get_webhooks
+from .helpers import (
+    Announcement,
+    assemble_request_data,
+    call_webhook,
+    get_webhooks,
+)
 
 
 EVENT_TYPES_TO_HANDLERS = {
@@ -143,7 +149,9 @@ def handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:
     if announcement is None:
         return
 
-    announce(announcement, webhook)
+    request_data = assemble_request_data(webhook, announcement.text)
+
+    announce(webhook, request_data, announcement.announce_at)
 
 
 def build_announcement(
@@ -158,15 +166,17 @@ def build_announcement(
     return handler(event, webhook)
 
 
-def announce(announcement: Announcement, webhook: OutgoingWebhook) -> None:
-    if announcement.announce_at is not None:
+def announce(
+    webhook: OutgoingWebhook,
+    request_data: dict[str, Any],
+    announce_at: Optional[datetime],
+) -> None:
+    if announce_at is not None:
         # Schedule job to announce later.
-        enqueue_at(
-            announcement.announce_at, call_webhook, webhook, announcement.text
-        )
+        enqueue_at(announce_at, call_webhook, webhook, request_data)
     else:
         # Announce now.
-        call_webhook(webhook, announcement.text)
+        call_webhook(webhook, request_data)
 
 
 def receive_signal(sender, *, event: Optional[_BaseEvent] = None) -> None:

@@ -80,22 +80,22 @@ def matches_selectors(
     return (allowed_values is None) or (actual_value in allowed_values)
 
 
-def call_webhook(webhook: OutgoingWebhook, text: str) -> None:
+def call_webhook(
+    webhook: OutgoingWebhook, request_data: dict[str, Any]
+) -> None:
     """Send HTTP request to the webhook."""
-    text_prefix = webhook.text_prefix
-    if text_prefix:
-        text = text_prefix + text
-
-    data = _assemble_request_data(webhook, text)
-
-    response = requests.post(webhook.url, json=data)
+    response = requests.post(webhook.url, json=request_data)
 
     _check_response_status_code(webhook, response.status_code)
 
 
-def _assemble_request_data(
+def assemble_request_data(
     webhook: OutgoingWebhook, text: str
 ) -> dict[str, Any]:
+    text_prefix = webhook.text_prefix
+    if text_prefix:
+        text = text_prefix + text
+
     if webhook.format == 'discord':
         return {'content': text}
 
