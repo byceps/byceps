@@ -84,7 +84,7 @@ from .handlers import (
     user as user_handlers,
     user_badge as user_badge_handlers,
 )
-from .helpers import call_webhook, get_webhooks
+from .helpers import Announcement, call_webhook, get_webhooks
 
 
 EVENT_TYPES_TO_HANDLERS = {
@@ -138,11 +138,27 @@ EVENT_TYPES_TO_HANDLERS = {
 }
 
 
-def handle_event(handler, event: _BaseEvent, webhook: OutgoingWebhook) -> None:
-    announcement = handler(event, webhook)
+def handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:
+    announcement = build_announcement(event, webhook)
     if announcement is None:
         return
 
+    announce(announcement, webhook)
+
+
+def build_announcement(
+    event: _BaseEvent, webhook: OutgoingWebhook
+) -> Optional[Announcement]:
+    event_type = type(event)
+
+    handler = EVENT_TYPES_TO_HANDLERS.get(event_type)
+    if handler is None:
+        return None
+
+    return handler(event, webhook)
+
+
+def announce(announcement: Announcement, webhook: OutgoingWebhook) -> None:
     if announcement.announce_at is not None:
         # Schedule job to announce later.
         enqueue_at(
@@ -157,15 +173,9 @@ def receive_signal(sender, *, event: Optional[_BaseEvent] = None) -> None:
     if event is None:
         return None
 
-    event_type = type(event)
-
-    handler = EVENT_TYPES_TO_HANDLERS.get(event_type)
-    if handler is None:
-        return None
-
     webhooks = get_webhooks(event)
     for webhook in webhooks:
-        enqueue(handle_event, handler, event, webhook)
+        enqueue(handle_event, event, webhook)
 
 
 SIGNALS = [
