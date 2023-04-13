@@ -12,8 +12,10 @@ from datetime import date, datetime
 from pathlib import Path
 from secrets import token_hex
 from typing import Any, Iterable, Optional
+from uuid import UUID
 
 from flask import appcontext_pushed, Flask, g
+from uuid6 import uuid7
 
 from byceps.application import create_app
 from byceps.database import db
@@ -68,6 +70,10 @@ def create_site_app(
 
 def generate_token(n: int = 4) -> str:
     return token_hex(n)
+
+
+def generate_uuid() -> UUID:
+    return uuid7()
 
 
 @contextmanager
