@@ -5,50 +5,50 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.services.page import page_service
-from byceps.signals import page as page_signals
 
-from .helpers import assert_submitted_text, mocked_irc_bot
+from .helpers import build_announcement_request_for_irc
 
 
 LANGUAGE_CODE = 'en'
 URL_PATH = '/page'
 
 
-def test_announce_page_created(app, created_version_and_event):
+def test_announce_page_created(
+    admin_app, created_version_and_event, webhook_for_irc
+):
     expected_text = (
         'PageEditor hat die Seite "overview" '
         'in Site "acmecon-2014-website" angelegt.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     _, event = created_version_and_event
 
-    with mocked_irc_bot() as mock:
-        page_signals.page_created.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_page_updated(app, updated_version_and_event):
+def test_announce_page_updated(
+    admin_app, updated_version_and_event, webhook_for_irc
+):
     expected_text = (
         'PageEditor hat die Seite "overview" '
         'in Site "acmecon-2014-website" aktualisiert.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     _, event = updated_version_and_event
 
-    with mocked_irc_bot() as mock:
-        page_signals.page_updated.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_page_deleted(app, site, editor):
+def test_announce_page_deleted(admin_app, site, editor, webhook_for_irc):
     expected_text = (
         'PageEditor hat die Seite "old_page" '
         'in Site "acmecon-2014-website" gelöscht.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     version, _ = page_service.create_page(
         site.id,
@@ -65,11 +65,7 @@ def test_announce_page_deleted(app, site, editor):
     )
 
     assert success
-
-    with mocked_irc_bot() as mock:
-        page_signals.page_deleted.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 # helpers

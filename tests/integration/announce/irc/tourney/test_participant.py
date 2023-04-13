@@ -5,22 +5,24 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
     TourneyParticipantReady,
     TourneyParticipantEliminated,
     TourneyParticipantWarned,
     TourneyParticipantDisqualified,
 )
-from byceps.signals import tourney as tourney_signals
 
-from ..helpers import assert_submitted_text, mocked_irc_bot, now
+from ..helpers import build_announcement_request_for_irc, now
 
 
-def test_announce_participant_ready(app, tourney, match, participant):
+def test_announce_participant_ready(
+    admin_app, tourney, match, participant, webhook_for_irc
+):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) ist spielbereit.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyParticipantReady(
         occurred_at=now(),
@@ -33,14 +35,14 @@ def test_announce_participant_ready(app, tourney, match, participant):
         participant_name=participant.name,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.participant_ready.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_participant_eliminated(app, tourney, match, participant):
+def test_announce_participant_eliminated(
+    admin_app, tourney, match, participant, webhook_for_irc
+):
     expected_text = '"Le Supern00bs" ist aus dem Turnier Burrito Blaster (3on3) ausgeschieden.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyParticipantEliminated(
         occurred_at=now(),
@@ -53,17 +55,17 @@ def test_announce_participant_eliminated(app, tourney, match, participant):
         participant_name=participant.name,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.participant_eliminated.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_participant_warned(app, tourney, match, participant):
+def test_announce_participant_warned(
+    admin_app, tourney, match, participant, webhook_for_irc
+):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
         'wurde verwarnt. \x038,8 \x03'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyParticipantWarned(
         occurred_at=now(),
@@ -76,17 +78,17 @@ def test_announce_participant_warned(app, tourney, match, participant):
         participant_name=participant.name,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.participant_warned.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_participant_disqualified(app, tourney, match, participant):
+def test_announce_participant_disqualified(
+    admin_app, tourney, match, participant, webhook_for_irc
+):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
         'wurde disqualifiziert. \x034,4 \x03'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyParticipantDisqualified(
         occurred_at=now(),
@@ -99,10 +101,7 @@ def test_announce_participant_disqualified(app, tourney, match, participant):
         participant_name=participant.name,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.participant_disqualified.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 # helpers

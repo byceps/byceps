@@ -5,47 +5,49 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.services.snippet.models import SnippetScope
 from byceps.services.snippet import snippet_service
-from byceps.signals import snippet as snippet_signals
 
-from .helpers import assert_submitted_text, mocked_irc_bot
+from .helpers import build_announcement_request_for_irc
 
 
-def test_announce_snippet_created(app, created_version_and_event):
+def test_announce_snippet_created(
+    admin_app, created_version_and_event, webhook_for_irc
+):
     expected_text = (
         'Dr.Schnipsel hat das Snippet "team_intro" '
         'im Scope "site/acme-2019-website" angelegt.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     _, event = created_version_and_event
 
-    with mocked_irc_bot() as mock:
-        snippet_signals.snippet_created.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_snippet_updated(app, updated_version_and_event):
+def test_announce_snippet_updated(
+    admin_app, updated_version_and_event, webhook_for_irc
+):
     expected_text = (
         'Dr.Schnipsel hat das Snippet "team_intro" '
         'im Scope "site/acme-2019-website" aktualisiert.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     _, event = updated_version_and_event
 
-    with mocked_irc_bot() as mock:
-        snippet_signals.snippet_updated.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_snippet_deleted(app, scope: SnippetScope, editor):
+def test_announce_snippet_deleted(
+    admin_app, scope: SnippetScope, editor, webhook_for_irc
+):
     expected_text = (
         'Dr.Schnipsel hat das Snippet "outdated_info" '
         'im Scope "site/acme-2019-website" gelöscht.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     version, _ = snippet_service.create_snippet(
         scope, 'outdated_info', 'en', editor.id, 'This is old news. :('
@@ -56,11 +58,7 @@ def test_announce_snippet_deleted(app, scope: SnippetScope, editor):
     )
 
     assert success
-
-    with mocked_irc_bot() as mock:
-        snippet_signals.snippet_deleted.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 # helpers

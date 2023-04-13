@@ -6,45 +6,40 @@
 from flask import Flask
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.services.brand.models import Brand
 from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 from byceps.services.news import news_item_service
 from byceps.services.site.models import Site
-from byceps.signals import news as news_signals
 
-from .helpers import assert_submitted_text, mocked_irc_bot
+from .helpers import build_announcement_request_for_irc
 
 
 def test_published_news_item_announced_with_url(
-    app: Flask, item_with_url: NewsItem
+    admin_app: Flask, item_with_url: NewsItem, webhook_for_irc
 ) -> None:
     expected_text = (
         'Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
         + 'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = news_item_service.publish_item(item_with_url.id)
 
-    with mocked_irc_bot() as mock:
-        news_signals.item_published.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 def test_published_news_item_announced_without_url(
-    app: Flask, item_without_url: NewsItem
+    admin_app: Flask, item_without_url: NewsItem, webhook_for_irc
 ) -> None:
     expected_text = (
         'Die News "Zieh dir auch das mal rein!" wurde veröffentlicht.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = news_item_service.publish_item(item_without_url.id)
 
-    with mocked_irc_bot() as mock:
-        news_signals.item_published.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 # helpers

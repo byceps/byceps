@@ -5,18 +5,18 @@
 
 from unittest.mock import patch
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.events.ticketing import TicketCheckedIn, TicketsSold
 from byceps.services.ticketing.models.ticket import TicketSaleStats
-from byceps.signals import ticketing as ticketing_signals
 
-from .helpers import assert_submitted_text, mocked_irc_bot, now
+from .helpers import build_announcement_request_for_irc, now
 
 
-def test_ticket_checked_in(app, make_user, admin_user):
+def test_ticket_checked_in(admin_app, make_user, admin_user, webhook_for_irc):
     expected_text = (
         'Admin hat Ticket "GTFIN", genutzt von Einchecker, eingecheckt.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     user = make_user('Einchecker')
 
@@ -31,20 +31,22 @@ def test_ticket_checked_in(app, make_user, admin_user):
         user_screen_name=user.screen_name,
     )
 
-    with mocked_irc_bot() as mock:
-        ticketing_signals.ticket_checked_in.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
 def test_single_ticket_sold(
-    get_ticket_sale_stats_mock, app, make_user, admin_user
+    get_ticket_sale_stats_mock,
+    admin_app,
+    make_user,
+    admin_user,
+    webhook_for_irc,
 ):
     expected_text = (
         'Neuling hat 1 Ticket bezahlt. '
         'Aktuell sind 772 von 1001 Tickets bezahlt.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     get_ticket_sale_stats_mock.return_value = TicketSaleStats(
         tickets_max=1001,
@@ -63,20 +65,22 @@ def test_single_ticket_sold(
         quantity=1,
     )
 
-    with mocked_irc_bot() as mock:
-        ticketing_signals.tickets_sold.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
 def test_multiple_tickets_sold(
-    get_ticket_sale_stats_mock, app, make_user, admin_user
+    get_ticket_sale_stats_mock,
+    admin_app,
+    make_user,
+    admin_user,
+    webhook_for_irc,
 ):
     expected_text = (
         'TreuerKäufer hat 3 Tickets bezahlt. '
         'Aktuell sind 775 von 1001 Tickets bezahlt.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     get_ticket_sale_stats_mock.return_value = TicketSaleStats(
         tickets_max=1001,
@@ -95,7 +99,4 @@ def test_multiple_tickets_sold(
         quantity=3,
     )
 
-    with mocked_irc_bot() as mock:
-        ticketing_signals.tickets_sold.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected

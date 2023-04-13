@@ -6,18 +6,20 @@
 from moneyed import EUR
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_service
 from byceps.services.shop.storefront.models import Storefront
-from byceps.signals import shop as shop_signals
 
-from .helpers import assert_submitted_text, mocked_irc_bot, now
+from .helpers import build_announcement_request_for_irc, now
 
 
-def test_shop_order_placed_announced(app, placed_order, orderer_user):
+def test_shop_order_placed_announced(
+    admin_app, placed_order, orderer_user, webhook_for_irc
+):
     expected_text = 'Ken_von_Kaufkraft hat Bestellung ORDER-00001 aufgegeben.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     order = placed_order
     event = ShopOrderPlaced(
@@ -30,19 +32,17 @@ def test_shop_order_placed_announced(app, placed_order, orderer_user):
         orderer_screen_name=orderer_user.screen_name,
     )
 
-    with mocked_irc_bot() as mock:
-        shop_signals.order_placed.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 def test_shop_order_canceled_announced(
-    app, canceled_order, orderer_user, shop_admin
+    admin_app, canceled_order, orderer_user, shop_admin, webhook_for_irc
 ):
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00002 von Ken_von_Kaufkraft '
         'storniert.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     order = canceled_order
     event = ShopOrderCanceled(
@@ -55,17 +55,17 @@ def test_shop_order_canceled_announced(
         orderer_screen_name=orderer_user.screen_name,
     )
 
-    with mocked_irc_bot() as mock:
-        shop_signals.order_canceled.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
+def test_shop_order_paid_announced(
+    admin_app, paid_order, orderer_user, shop_admin, webhook_for_irc
+):
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00003 von Ken_von_Kaufkraft '
         'als per Überweisung bezahlt markiert.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     order = paid_order
     event = ShopOrderPaid(
@@ -79,10 +79,7 @@ def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
         payment_method='bank_transfer',
     )
 
-    with mocked_irc_bot() as mock:
-        shop_signals.order_paid.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 # helpers
@@ -104,7 +101,7 @@ def shop_admin(make_user):
 
 
 @pytest.fixture(scope='module')
-def shop(app, make_brand, make_shop):
+def shop(admin_app, make_brand, make_shop):
     brand = make_brand()
 
     return make_shop(brand.id)

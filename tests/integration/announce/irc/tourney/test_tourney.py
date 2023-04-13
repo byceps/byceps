@@ -5,20 +5,20 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
     TourneyCanceled,
     TourneyFinished,
     TourneyPaused,
     TourneyStarted,
 )
-from byceps.signals import tourney as tourney_signals
 
-from ..helpers import assert_submitted_text, mocked_irc_bot, now
+from ..helpers import build_announcement_request_for_irc, now
 
 
-def test_announce_tourney_started(app, tourney):
+def test_announce_tourney_started(admin_app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde gestartet.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyStarted(
         occurred_at=now(),
@@ -28,14 +28,12 @@ def test_announce_tourney_started(app, tourney):
         tourney_title=tourney.title,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.tourney_started.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_tourney_paused(app, tourney):
+def test_announce_tourney_paused(admin_app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde unterbrochen.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyPaused(
         occurred_at=now(),
@@ -45,14 +43,12 @@ def test_announce_tourney_paused(app, tourney):
         tourney_title=tourney.title,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.tourney_paused.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_tourney_canceled(app, tourney):
+def test_announce_tourney_canceled(admin_app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde abgesagt.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyCanceled(
         occurred_at=now(),
@@ -62,14 +58,12 @@ def test_announce_tourney_canceled(app, tourney):
         tourney_title=tourney.title,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.tourney_canceled.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_tourney_finished(app, tourney):
+def test_announce_tourney_finished(admin_app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde beendet.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyFinished(
         occurred_at=now(),
@@ -79,10 +73,7 @@ def test_announce_tourney_finished(app, tourney):
         tourney_title=tourney.title,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.tourney_finished.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 # helpers

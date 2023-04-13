@@ -3,20 +3,22 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.services.user_badge import (
     user_badge_awarding_service,
     user_badge_service,
 )
-from byceps.signals import user_badge as user_badge_signals
 
-from .helpers import assert_submitted_text, mocked_irc_bot
+from .helpers import build_announcement_request_for_irc
 
 
-def test_user_badge_awarding_announced_without_initiator(app, make_user):
+def test_user_badge_awarding_announced_without_initiator(
+    admin_app, make_user, webhook_for_irc
+):
     expected_text = (
         'Jemand hat das Abzeichen "First Post!" an Erster verliehen.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     badge = user_badge_service.create_badge(
         'first-post', 'First Post!', 'first-post.svg'
@@ -28,18 +30,16 @@ def test_user_badge_awarding_announced_without_initiator(app, make_user):
         badge.id, user.id
     )
 
-    with mocked_irc_bot() as mock:
-        user_badge_signals.user_badge_awarded.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 def test_user_badge_awarding_announced_with_initiator(
-    app, make_user, admin_user
+    admin_app, make_user, admin_user, webhook_for_irc
 ):
     expected_text = (
         'Admin hat das Abzeichen "Glanzleistung" an PathFinder verliehen.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     badge = user_badge_service.create_badge(
         'glnzlstng', 'Glanzleistung', 'glanz.svg'
@@ -51,7 +51,4 @@ def test_user_badge_awarding_announced_with_initiator(
         badge.id, user.id, initiator_id=admin_user.id
     )
 
-    with mocked_irc_bot() as mock:
-        user_badge_signals.user_badge_awarded.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected

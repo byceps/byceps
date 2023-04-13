@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.events.user import (
     UserAccountCreated,
     UserAccountSuspended,
@@ -14,13 +14,13 @@ from byceps.events.user import (
     UserScreenNameChanged,
 )
 from byceps.services.user import user_deletion_service
-from byceps.signals import user as user_signals
 
-from .helpers import assert_submitted_text, mocked_irc_bot, now
+from .helpers import build_announcement_request_for_irc, now
 
 
-def test_account_created_announced(app, make_user):
+def test_account_created_announced(admin_app, make_user, webhook_for_irc):
     expected_text = 'Jemand hat das Benutzerkonto "JaneDoe" angelegt.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     user = make_user('JaneDoe')
 
@@ -33,17 +33,17 @@ def test_account_created_announced(app, make_user):
         site_id=None,
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.account_created.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_account_created_announced_on_site(app, make_user, site):
+def test_account_created_announced_on_site(
+    admin_app, make_user, site, webhook_for_irc
+):
     expected_text = (
         'Jemand hat das Benutzerkonto "JaneDoeOnSite" '
         'auf Site "ACMECon 2014 website" angelegt.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     user = make_user('JaneDoeOnSite')
 
@@ -56,14 +56,14 @@ def test_account_created_announced_on_site(app, make_user, site):
         site_id=site.id,
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.account_created.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_account_created_by_admin_announced(app, make_user):
+def test_account_created_by_admin_announced(
+    admin_app, make_user, webhook_for_irc
+):
     expected_text = 'EinAdmin hat das Benutzerkonto "EinUser" angelegt.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     admin = make_user('EinAdmin')
     user = make_user('EinUser')
@@ -77,16 +77,14 @@ def test_account_created_by_admin_announced(app, make_user):
         site_id=None,
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.account_created.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_screen_name_change_announced(app, make_user):
+def test_screen_name_change_announced(admin_app, make_user, webhook_for_irc):
     expected_text = (
         'ElAdmin hat das Benutzerkonto "DrJekyll" in "MrHyde" umbenannt.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     admin = make_user('ElAdmin')
     user = make_user('DrJekyll')
@@ -100,17 +98,15 @@ def test_screen_name_change_announced(app, make_user):
         new_screen_name='MrHyde',
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.screen_name_changed.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_email_address_changed_announced(app, make_user):
+def test_email_address_changed_announced(admin_app, make_user, webhook_for_irc):
     expected_text = (
         'UserSupporter hat die E-Mail-Adresse '
         'des Benutzerkontos "MailboxHopper" geändert.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     admin = make_user('UserSupporter')
     user = make_user('MailboxHopper')
@@ -123,17 +119,17 @@ def test_email_address_changed_announced(app, make_user):
         user_screen_name=user.screen_name,
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.email_address_changed.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_email_address_invalidated_announced(app, make_user):
+def test_email_address_invalidated_announced(
+    admin_app, make_user, webhook_for_irc
+):
     expected_text = (
         'BounceWatchman hat die E-Mail-Adresse '
         'des Benutzerkontos "Faker" invalidiert.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     admin = make_user('BounceWatchman')
     user = make_user('Faker')
@@ -146,17 +142,15 @@ def test_email_address_invalidated_announced(app, make_user):
         user_screen_name=user.screen_name,
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.email_address_invalidated.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_user_details_updated_announced(app, make_user):
+def test_user_details_updated_announced(admin_app, make_user, webhook_for_irc):
     expected_text = (
         'Chameleon hat die persönlichen Daten '
         'des Benutzerkontos "Chameleon" geändert.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     user = make_user('Chameleon')
 
@@ -168,14 +162,12 @@ def test_user_details_updated_announced(app, make_user):
         user_screen_name=user.screen_name,
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.details_updated.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_suspended_account_announced(app, make_user):
+def test_suspended_account_announced(admin_app, make_user, webhook_for_irc):
     expected_text = 'She-Ra hat das Benutzerkonto "Skeletor" gesperrt.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     admin = make_user('She-Ra')
     user = make_user('Skeletor')
@@ -188,14 +180,12 @@ def test_suspended_account_announced(app, make_user):
         user_screen_name=user.screen_name,
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.account_suspended.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_unsuspended_account_announced(app, make_user):
+def test_unsuspended_account_announced(admin_app, make_user, webhook_for_irc):
     expected_text = 'TheBoss hat das Benutzerkonto "RambaZamba" entsperrt.'
+    expected = build_announcement_request_for_irc(expected_text)
 
     admin = make_user('TheBoss')
     user = make_user('RambaZamba')
@@ -208,25 +198,20 @@ def test_unsuspended_account_announced(app, make_user):
         user_screen_name=user.screen_name,
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.account_unsuspended.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_deleted_account_announced(app, make_user):
+def test_deleted_account_announced(admin_app, make_user, webhook_for_irc):
     admin = make_user('UberDude')
     user = make_user('Snake')
 
     expected_text = (
         f'UberDude hat das Benutzerkonto "Snake" (ID "{user.id}") gelöscht.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = user_deletion_service.delete_account(
         user.id, admin.id, 'specious reason'
     )
 
-    with mocked_irc_bot() as mock:
-        user_signals.account_deleted.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected

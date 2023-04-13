@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
     TourneyMatchReady,
     TourneyMatchReset,
@@ -13,17 +13,17 @@ from byceps.events.tourney import (
     TourneyMatchScoreConfirmed,
     TourneyMatchScoreRandomized,
 )
-from byceps.signals import tourney as tourney_signals
 
-from ..helpers import assert_submitted_text, mocked_irc_bot, now
+from ..helpers import build_announcement_request_for_irc, now
 
 
-def test_announce_match_ready(app, tourney, match):
+def test_announce_match_ready(admin_app, tourney, match, webhook_for_irc):
     expected_text = (
         'Das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '
         'kann gespielt werden.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyMatchReady(
         occurred_at=now(),
@@ -38,18 +38,16 @@ def test_announce_match_ready(app, tourney, match):
         participant2_name=match.participant2_name,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.match_ready.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_match_reset(app, tourney, match):
+def test_announce_match_reset(admin_app, tourney, match, webhook_for_irc):
     expected_text = (
         'Das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '
         'wurde zurückgesetzt.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyMatchReset(
         occurred_at=now(),
@@ -64,18 +62,18 @@ def test_announce_match_reset(app, tourney, match):
         participant2_name=match.participant2_name,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.match_reset.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_match_score_submitted(app, tourney, match):
+def test_announce_match_score_submitted(
+    admin_app, tourney, match, webhook_for_irc
+):
     expected_text = (
         'Für das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '
         'wurde ein Ergebnis eingetragen.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyMatchScoreSubmitted(
         occurred_at=now(),
@@ -90,18 +88,18 @@ def test_announce_match_score_submitted(app, tourney, match):
         participant2_name=match.participant2_name,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.match_score_submitted.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_match_score_confirmed(app, tourney, match):
+def test_announce_match_score_confirmed(
+    admin_app, tourney, match, webhook_for_irc
+):
     expected_text = (
         'Für das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '
         'wurde das eingetragene Ergebnis bestätigt.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyMatchScoreConfirmed(
         occurred_at=now(),
@@ -116,18 +114,18 @@ def test_announce_match_score_confirmed(app, tourney, match):
         participant2_name=match.participant2_name,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.match_score_confirmed.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_match_score_randomized(app, tourney, match):
+def test_announce_match_score_randomized(
+    admin_app, tourney, match, webhook_for_irc
+):
     expected_text = (
         'Für das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '
         'wurde ein zufälliges Ergebnis eingetragen.'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyMatchScoreRandomized(
         occurred_at=now(),
@@ -142,10 +140,7 @@ def test_announce_match_score_randomized(app, tourney, match):
         participant2_name=match.participant2_name,
     )
 
-    with mocked_irc_bot() as mock:
-        tourney_signals.match_score_randomized.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 # helpers

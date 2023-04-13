@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
@@ -24,17 +24,19 @@ from byceps.services.board import (
     board_posting_command_service,
     board_topic_command_service,
 )
-from byceps.signals import board as board_signals
 
-from .helpers import assert_submitted_text, mocked_irc_bot, now
+from .helpers import build_announcement_request_for_irc, now
 
 
-def test_announce_topic_created(app, board, topic, creator):
+def test_announce_topic_created(
+    admin_app, board, topic, creator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
         f'das Thema "Brötchen zum Frühstück" erstellt: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicCreated(
         occurred_at=topic.created_at,
@@ -48,19 +50,19 @@ def test_announce_topic_created(app, board, topic, creator):
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.topic_created.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_hidden(app, board, topic, creator, moderator):
+def test_announce_topic_hidden(
+    admin_app, board, topic, creator, moderator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum das Thema '
         '"Brötchen zum Frühstück" von TheShadow999 '
         f'versteckt: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicHidden(
         occurred_at=now(),
@@ -76,19 +78,19 @@ def test_announce_topic_hidden(app, board, topic, creator, moderator):
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.topic_hidden.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_unhidden(app, board, topic, creator, moderator):
+def test_announce_topic_unhidden(
+    admin_app, board, topic, creator, moderator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum das Thema '
         '"Brötchen zum Frühstück" von TheShadow999 '
         f'wieder sichtbar gemacht: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicUnhidden(
         occurred_at=now(),
@@ -103,20 +105,21 @@ def test_announce_topic_unhidden(app, board, topic, creator, moderator):
         moderator_screen_name=moderator.screen_name,
         url=expected_link,
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
-    with mocked_irc_bot() as mock:
-        board_signals.topic_unhidden.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_locked(app, board, topic, creator, moderator):
+def test_announce_topic_locked(
+    admin_app, board, topic, creator, moderator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum das Thema '
         '"Brötchen zum Frühstück" von TheShadow999 '
         f'geschlossen: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicLocked(
         occurred_at=now(),
@@ -132,19 +135,19 @@ def test_announce_topic_locked(app, board, topic, creator, moderator):
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.topic_locked.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_unlocked(app, board, topic, creator, moderator):
+def test_announce_topic_unlocked(
+    admin_app, board, topic, creator, moderator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
         'das Thema "Brötchen zum Frühstück" von TheShadow999 '
         f'wieder geöffnet: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicUnlocked(
         occurred_at=now(),
@@ -160,19 +163,19 @@ def test_announce_topic_unlocked(app, board, topic, creator, moderator):
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.topic_unlocked.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_pinned(app, board, topic, creator, moderator):
+def test_announce_topic_pinned(
+    admin_app, board, topic, creator, moderator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
         'das Thema "Brötchen zum Frühstück" von TheShadow999 '
         f'angepinnt: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicPinned(
         occurred_at=now(),
@@ -188,19 +191,19 @@ def test_announce_topic_pinned(app, board, topic, creator, moderator):
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.topic_pinned.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_unpinned(app, board, topic, creator, moderator):
+def test_announce_topic_unpinned(
+    admin_app, board, topic, creator, moderator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
         'das Thema "Brötchen zum Frühstück" von TheShadow999 '
         f'wieder gelöst: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicUnpinned(
         occurred_at=now(),
@@ -216,14 +219,18 @@ def test_announce_topic_unpinned(app, board, topic, creator, moderator):
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.topic_unpinned.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 def test_announce_topic_moved(
-    app, board, category, another_category, topic, creator, moderator
+    admin_app,
+    board,
+    category,
+    another_category,
+    topic,
+    creator,
+    moderator,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -231,6 +238,7 @@ def test_announce_topic_moved(
         'das Thema "Brötchen zum Frühstück" von TheShadow999 '
         f'aus "Kategorie 1" in "Kategorie 2" verschoben: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicMoved(
         occurred_at=now(),
@@ -250,19 +258,19 @@ def test_announce_topic_moved(
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.topic_moved.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_posting_created(app, board, posting, creator):
+def test_announce_posting_created(
+    admin_app, board, posting, creator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
         'auf das Thema "Brötchen zum Frühstück" '
         f'geantwortet: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardPostingCreated(
         occurred_at=posting.created_at,
@@ -278,14 +286,14 @@ def test_announce_posting_created(app, board, posting, creator):
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.posting_created.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_posting_created_on_muted_topic(app, board, posting, creator):
-    expected_link = f'http://example.com/board/postings/{posting.id}'
+def test_announce_posting_created_on_muted_topic(
+    admin_app, board, posting, creator, webhook_for_irc
+):
+    link = f'http://example.com/board/postings/{posting.id}'
+    expected = None
 
     event = BoardPostingCreated(
         occurred_at=posting.created_at,
@@ -298,16 +306,15 @@ def test_announce_posting_created_on_muted_topic(app, board, posting, creator):
         topic_id=posting.topic.id,
         topic_title=posting.topic.title,
         topic_muted=True,
-        url=expected_link,
+        url=link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.posting_created.send(None, event=event)
-
-    assert not mock.called
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_posting_hidden(app, board, posting, creator, moderator):
+def test_announce_posting_hidden(
+    admin_app, board, posting, creator, moderator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -315,6 +322,7 @@ def test_announce_posting_hidden(app, board, posting, creator, moderator):
         'im Thema "Brötchen zum Frühstück" '
         f'versteckt: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardPostingHidden(
         occurred_at=now(),
@@ -331,13 +339,12 @@ def test_announce_posting_hidden(app, board, posting, creator, moderator):
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.posting_hidden.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_posting_unhidden(app, board, posting, creator, moderator):
+def test_announce_posting_unhidden(
+    admin_app, board, posting, creator, moderator, webhook_for_irc
+):
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -345,6 +352,7 @@ def test_announce_posting_unhidden(app, board, posting, creator, moderator):
         'im Thema "Brötchen zum Frühstück" '
         f'wieder sichtbar gemacht: {expected_link}'
     )
+    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardPostingUnhidden(
         occurred_at=now(),
@@ -361,10 +369,7 @@ def test_announce_posting_unhidden(app, board, posting, creator, moderator):
         url=expected_link,
     )
 
-    with mocked_irc_bot() as mock:
-        board_signals.posting_unhidden.send(None, event=event)
-
-    assert_submitted_text(mock, expected_text)
+    assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 # helpers
