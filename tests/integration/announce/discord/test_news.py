@@ -6,18 +6,14 @@
 from flask import Flask
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.services.brand.models import Brand
 from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 from byceps.services.news import news_item_service
 from byceps.services.site.models import Site
-from byceps.services.webhooks import webhook_service
-from byceps.signals import news as news_signals
+from byceps.services.webhooks.models import OutgoingWebhook
 
-from .helpers import assert_request, mocked_webhook_receiver
-
-
-WEBHOOK_URL = 'https://webhoooks.test/news'
+from .helpers import build_announcement_request_for_discord, build_webhook
 
 
 def test_published_news_item_announced_with_url(
@@ -27,15 +23,13 @@ def test_published_news_item_announced_with_url(
         '[News] Die News "Zieh dir das rein!" wurde veröffentlicht. '
         + 'https://www.acmecon.test/news/zieh-dir-das-rein'
     )
-
-    create_webhooks(item_with_url.channel)
+    expected = build_announcement_request_for_discord(expected_content)
 
     event = news_item_service.publish_item(item_with_url.id)
 
-    with mocked_webhook_receiver(WEBHOOK_URL) as mock:
-        news_signals.item_published.send(None, event=event)
+    webhook = build_news_webhook(item_with_url.channel)
 
-    assert_request(mock, expected_content)
+    assert build_announcement_request(event, webhook) == expected
 
 
 def test_published_news_item_announced_without_url(
@@ -44,18 +38,27 @@ def test_published_news_item_announced_without_url(
     expected_content = (
         '[News] Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
     )
-
-    create_webhooks(item_without_url.channel)
+    expected = build_announcement_request_for_discord(expected_content)
 
     event = news_item_service.publish_item(item_without_url.id)
 
-    with mocked_webhook_receiver(WEBHOOK_URL) as mock:
-        news_signals.item_published.send(None, event=event)
+    webhook = build_news_webhook(item_without_url.channel)
 
-    assert_request(mock, expected_content)
+    assert build_announcement_request(event, webhook) == expected
 
 
 # helpers
+
+
+def build_news_webhook(channel: NewsChannel) -> OutgoingWebhook:
+    return build_webhook(
+        event_types={'news-item-published'},
+        event_filters={
+            'news-item-published': {'channel_id': [str(channel.id)]}
+        },
+        text_prefix='[News] ',
+        url='https://webhoooks.test/news',
+    )
 
 
 @pytest.fixture
@@ -68,26 +71,6 @@ def channel_with_site(
 @pytest.fixture
 def channel_without_site(brand: Brand, make_news_channel) -> NewsChannel:
     return make_news_channel(brand.id)
-
-
-def create_webhooks(channel: NewsChannel) -> None:
-    news_channel_ids = [str(channel.id), 'totally-different-id']
-    format = 'discord'
-    text_prefix = '[News] '
-    url = WEBHOOK_URL
-    enabled = True
-
-    for news_channel_id in news_channel_ids:
-        webhook_service.create_outgoing_webhook(
-            # event_types
-            {'news-item-published'},
-            # event_filters
-            {'news-item-published': {'channel_id': [news_channel_id]}},
-            format,
-            url,
-            enabled,
-            text_prefix=text_prefix,
-        )
 
 
 @pytest.fixture

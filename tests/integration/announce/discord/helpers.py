@@ -3,30 +3,33 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from contextlib import contextmanager
 from datetime import datetime
-from http import HTTPStatus
 
-from requests_mock import Mocker
+from byceps.announce.helpers import AnnouncementRequest
+from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
+
+from tests.helpers import generate_uuid
 
 
 def now() -> datetime:
     return datetime.utcnow()
 
 
-@contextmanager
-def mocked_webhook_receiver(url: str):
-    with Mocker() as mock:
-        mock.post(url, status_code=HTTPStatus.NO_CONTENT)
-        yield mock
+def build_announcement_request_for_discord(content: str) -> AnnouncementRequest:
+    return AnnouncementRequest({'content': content})
 
 
-def assert_request(mock, expected_content: str) -> None:
-    assert mock.called
-
-    history = mock.request_history
-    assert len(history) == 1
-
-    actual = mock.last_request.json()
-
-    assert actual == {'content': expected_content}
+def build_webhook(
+    event_types, event_filters, text_prefix: str, url: str
+) -> OutgoingWebhook:
+    return OutgoingWebhook(
+        id=WebhookID(generate_uuid()),
+        event_types=event_types,
+        event_filters=event_filters,
+        format='discord',
+        text_prefix=text_prefix,
+        extra_fields={},
+        url=url,
+        description='',
+        enabled=True,
+    )

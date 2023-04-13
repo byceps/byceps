@@ -5,31 +5,27 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.announce.connections import build_announcement_request
 from byceps.events.board import BoardPostingCreated, BoardTopicCreated
+from byceps.services.board.models import BoardID
 from byceps.services.board import (
     board_category_command_service,
     board_posting_command_service,
     board_topic_command_service,
 )
-from byceps.services.webhooks import webhook_service
-from byceps.signals import board as board_signals
+from byceps.services.webhooks.models import OutgoingWebhook
 
-from .helpers import assert_request, mocked_webhook_receiver
-
-
-WEBHOOK_URL = 'https://webhoooks.test/board'
+from .helpers import build_announcement_request_for_discord, build_webhook
 
 
-def test_announce_topic_created(
-    webhook_settings, admin_app, board, topic, creator
-):
+def test_announce_topic_created(admin_app, board, topic, creator):
     expected_url = f'https://website.test/board/topics/{topic.id}'
     expected_content = (
         '[Forum] RocketRandy hat das Thema '
         '"Cannot connect to the party network :(" erstellt: '
         f'<{expected_url}>'
     )
+    expected = build_announcement_request_for_discord(expected_content)
 
     event = BoardTopicCreated(
         occurred_at=topic.created_at,
@@ -43,21 +39,19 @@ def test_announce_topic_created(
         url=expected_url,
     )
 
-    with mocked_webhook_receiver(WEBHOOK_URL) as mock:
-        board_signals.topic_created.send(None, event=event)
+    webhook = build_board_webhook(board.id)
 
-    assert_request(mock, expected_content)
+    assert build_announcement_request(event, webhook) == expected
 
 
-def test_announce_posting_created(
-    webhook_settings, admin_app, board, posting, creator
-):
+def test_announce_posting_created(admin_app, board, posting, creator):
     expected_url = f'https://website.test/board/postings/{posting.id}'
     expected_content = (
         '[Forum] RocketRandy hat auf das Thema '
         '"Cannot connect to the party network :(" geantwortet: '
         f'<{expected_url}>'
     )
+    expected = build_announcement_request_for_discord(expected_content)
 
     event = BoardPostingCreated(
         occurred_at=posting.created_at,
@@ -73,47 +67,27 @@ def test_announce_posting_created(
         url=expected_url,
     )
 
-    with mocked_webhook_receiver(WEBHOOK_URL) as mock:
-        board_signals.posting_created.send(None, event=event)
+    webhook = build_board_webhook(board.id)
 
-    assert_request(mock, expected_content)
+    assert build_announcement_request(event, webhook) == expected
 
 
 # helpers
 
 
-@pytest.fixture(scope='module')
-def webhook_settings(board):
-    board_ids = [str(board.id), 'totally-different-id']
-    format = 'discord'
-    text_prefix = '[Forum] '
-    url = WEBHOOK_URL
-    enabled = True
-
-    webhooks = [
-        webhook_service.create_outgoing_webhook(
-            # event_types
-            {
-                'board-posting-created',
-                'board-topic-created',
-            },
-            # event_filters
-            {
-                'board-posting-created': {'board_id': [board_id]},
-                'board-topic-created': {'board_id': [board_id]},
-            },
-            format,
-            url,
-            enabled,
-            text_prefix=text_prefix,
-        )
-        for board_id in board_ids
-    ]
-
-    yield
-
-    for webhook in webhooks:
-        webhook_service.delete_outgoing_webhook(webhook.id)
+def build_board_webhook(board_id: BoardID) -> OutgoingWebhook:
+    return build_webhook(
+        event_types={
+            'board-posting-created',
+            'board-topic-created',
+        },
+        event_filters={
+            'board-posting-created': {'board_id': [str(board_id)]},
+            'board-topic-created': {'board_id': [str(board_id)]},
+        },
+        text_prefix='[Forum] ',
+        url='https://webhoooks.test/board',
+    )
 
 
 @pytest.fixture(scope='module')
