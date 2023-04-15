@@ -4,7 +4,7 @@
 {% macro render_line_item_processing_state(state) %}
   {%- set state_name = state.name %}
   {%- if state_name == 'not_applicable' -%}
-    {{ render_tag(_('not applicable'), class='tag--outlined') }}
+    {{ render_tag(_('not applicable'), class='tag--outlined nowrap') }}
   {%- elif state_name == 'pending' -%}
     {{ render_tag(_('pending'), icon='pending', class='color-warning nowrap') }}
   {%- elif state_name == 'canceled' -%}
