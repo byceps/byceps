@@ -80,17 +80,16 @@ class Article:
     processing_required: bool
 
 
+@dataclass(frozen=True)
 class ArticleCompilationItem:
-    def __init__(
-        self, article: Article, *, fixed_quantity: Optional[int] = None
-    ) -> None:
-        if (fixed_quantity is not None) and fixed_quantity < 1:
+    article: Article
+    fixed_quantity: Optional[int] = None
+
+    def __post_init__(self) -> None:
+        if (self.fixed_quantity is not None) and (self.fixed_quantity < 1):
             raise ValueError(
                 'Fixed quantity, if given, must be a positive number.'
             )
-
-        self.article = article
-        self.fixed_quantity = fixed_quantity
 
     def has_fixed_quantity(self) -> bool:
         return self.fixed_quantity is not None
