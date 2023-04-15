@@ -6,6 +6,8 @@ byceps.services.shop.article.article_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+from collections import defaultdict
 from datetime import datetime
 from decimal import Decimal
 from typing import Iterable, Optional
@@ -18,6 +20,7 @@ from ....database import db, paginate, Pagination
 
 from ...ticketing.models.ticket import TicketCategoryID
 
+from ..cart.models import Cart
 from ..order.dbmodels.line_item import DbLineItem
 from ..order.dbmodels.order import DbOrder
 from ..order.models.order import PaymentState
@@ -319,6 +322,28 @@ def find_attached_article(
     return db.session.get(DbAttachedArticle, attached_article_id)
 
 
+def get_attached_articles_for_articles(
+    article_ids: set[ArticleID],
+) -> dict[ArticleID, list[DbAttachedArticle]]:
+    """Return the attached article with that ID, or `None` if not found."""
+    if not article_ids:
+        return {}
+
+    rows = db.session.execute(
+        select(DbAttachedArticle.attached_to_article_id, DbAttachedArticle)
+        .filter(DbAttachedArticle.attached_to_article_id.in_(article_ids))
+        .options(db.joinedload(DbAttachedArticle.article))
+    ).all()
+
+    attached_articles_by_attached_to_article_id = defaultdict(list)
+    for attached_to_article_id, db_attached_article in rows:
+        attached_articles_by_attached_to_article_id[
+            attached_to_article_id
+        ].append(db_attached_article)
+
+    return attached_articles_by_attached_to_article_id
+
+
 def get_article_by_number(article_number: ArticleNumber) -> Article:
     """Return the article with that item number."""
     db_article = db.session.execute(
@@ -454,6 +479,42 @@ def get_article_compilation_for_single_article(
     return compilation
 
 
+def get_article_compilations_for_single_articles(
+    article_ids: set[ArticleID],
+) -> dict[ArticleID, ArticleCompilation]:
+    """Return a compilation of the articles (with a quantity of one)
+    plus the articles attached to it (if any).
+    """
+    if not article_ids:
+        return {}
+
+    compilations_by_article_id: dict[ArticleID, ArticleCompilation] = {}
+
+    db_articles = db.session.scalars(
+        select(DbArticle).filter(DbArticle.id.in_(article_ids))
+    ).all()
+
+    attached_articles_by_attached_to_article_id = (
+        get_attached_articles_for_articles(article_ids)
+    )
+
+    for db_article in db_articles:
+        article = _db_entity_to_article(db_article)
+
+        compilation = ArticleCompilation()
+
+        compilation.append(ArticleCompilationItem(article, fixed_quantity=1))
+
+        db_attached_articles = attached_articles_by_attached_to_article_id[
+            db_article.id
+        ]
+        _add_attached_articles(compilation, db_attached_articles)
+
+        compilations_by_article_id[article.id] = compilation
+
+    return compilations_by_article_id
+
+
 def _add_attached_articles(
     compilation: ArticleCompilation,
     attached_articles: Iterable[DbAttachedArticle],
@@ -500,6 +561,29 @@ def is_article_available_now(article: Article) -> bool:
     now = datetime.utcnow()
 
     return (start is None or start <= now) and (end is None or now < end)
+
+
+def calculate_article_compilation_total_amount(
+    compilation: ArticleCompilation,
+) -> Money:
+    """Calculate total amount of articles and their attached articles in
+    the compilation.
+    """
+    cart = Cart(compilation._items[0].article.price.currency)
+    _copy_article_compilation_to_cart(compilation, cart)
+    return cart.calculate_total_amount()
+
+
+def _copy_article_compilation_to_cart(
+    compilation: ArticleCompilation, cart: Cart
+) -> None:
+    for compilation_item in compilation:
+        if compilation_item.fixed_quantity is None:
+            raise ValueError(
+                'Für einige Artikel ist keine Stückzahl vorgegeben.'
+            )
+
+        cart.add_item(compilation_item.article, compilation_item.fixed_quantity)
 
 
 def sum_ordered_articles_by_payment_state(
