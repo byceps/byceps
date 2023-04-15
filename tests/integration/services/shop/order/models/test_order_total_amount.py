@@ -125,6 +125,8 @@ def place_order(
     for article, quantity in articles:
         cart.add_item(article, quantity)
 
-    order, _ = order_checkout_service.place_order(storefront_id, orderer, cart)
+    order, _ = order_checkout_service.place_order(
+        storefront_id, orderer, cart
+    ).unwrap()
 
     return order

@@ -17,6 +17,7 @@ from .....services.shop.article import article_service
 from .....services.shop.article.models import ArticleCompilation
 from .....services.shop.cart.models import Cart
 from .....services.shop.order.email import order_email_service
+from .....services.shop.order.models.order import Order
 from .....services.shop.order import order_checkout_service, order_service
 from .....services.shop.shop import shop_service
 from .....services.shop.storefront import storefront_service
@@ -26,6 +27,7 @@ from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated
+from .....util.result import Err, Ok, Result
 from .....util.views import login_required, redirect_to
 
 from ...site.navigation import subnavigation_for_view
@@ -127,11 +129,12 @@ def order():
 
     orderer = form.get_orderer(g.user.id)
 
-    try:
-        order = _place_order(storefront.id, orderer, cart)
-    except order_checkout_service.OrderFailed:
+    placement_result = _place_order(storefront.id, orderer, cart)
+    if placement_result.is_err():
         flash_error(gettext('Placing the order has failed.'))
         return order_form(form)
+
+    order = placement_result.unwrap()
 
     _flash_order_success(order)
 
@@ -241,11 +244,12 @@ def order_single(article_id):
         shop.currency, article_compilation
     )
 
-    try:
-        order = _place_order(storefront.id, orderer, cart)
-    except order_checkout_service.OrderFailed:
+    placement_result = _place_order(storefront.id, orderer, cart)
+    if placement_result.is_err():
         flash_error(gettext('Placing the order has failed.'))
         return order_form(form)
+
+    order = placement_result.unwrap()
 
     _flash_order_success(order)
 
@@ -282,16 +286,20 @@ def _create_cart_from_article_compilation(
     return cart
 
 
-def _place_order(storefront_id, orderer, cart):
-    order, event = order_checkout_service.place_order(
+def _place_order(storefront_id, orderer, cart) -> Result[Order, None]:
+    placement_result = order_checkout_service.place_order(
         storefront_id, orderer, cart
     )
+    if placement_result.is_err():
+        return Err(None)
+
+    order, event = placement_result.unwrap()
 
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
     shop_signals.order_placed.send(None, event=event)
 
-    return order
+    return Ok(order)
 
 
 def _flash_order_success(order):

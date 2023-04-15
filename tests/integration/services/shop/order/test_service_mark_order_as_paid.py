@@ -25,7 +25,7 @@ def orderer(make_user, make_orderer):
 def order(admin_app, storefront, orderer, empty_cart):
     order, _ = order_checkout_service.place_order(
         storefront.id, orderer, empty_cart
-    )
+    ).unwrap()
     return order
 
 

@@ -29,7 +29,7 @@ def place_order_with_items(
 
     order, _ = order_checkout_service.place_order(
         storefront_id, orderer, cart, created_at=created_at
-    )
+    ).unwrap()
 
     return order
 

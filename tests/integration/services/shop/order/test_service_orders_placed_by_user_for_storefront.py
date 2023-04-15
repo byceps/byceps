@@ -83,7 +83,9 @@ def test_get_orders_placed_by_user(
 def place_order(storefront_id: StorefrontID, orderer: Orderer) -> Order:
     cart = Cart(EUR)
 
-    order, _ = order_checkout_service.place_order(storefront_id, orderer, cart)
+    order, _ = order_checkout_service.place_order(
+        storefront_id, orderer, cart
+    ).unwrap()
 
     return order
 

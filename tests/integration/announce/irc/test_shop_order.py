@@ -117,7 +117,9 @@ def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
 @pytest.fixture
 def placed_order(storefront, orderer):
     cart = Cart(EUR)
-    order, _ = order_checkout_service.place_order(storefront.id, orderer, cart)
+    order, _ = order_checkout_service.place_order(
+        storefront.id, orderer, cart
+    ).unwrap()
 
     return order
 

@@ -15,6 +15,7 @@ import structlog
 
 from ....database import db
 from ....events.shop import ShopOrderPlaced
+from ....util.result import Err, Ok, Result
 
 from ...user import user_service
 
@@ -42,17 +43,13 @@ from . import (
 log = structlog.get_logger()
 
 
-class OrderFailed(Exception):
-    pass
-
-
 def place_order(
     storefront_id: StorefrontID,
     orderer: Orderer,
     cart: Cart,
     *,
     created_at: Optional[datetime] = None,
-) -> tuple[Order, ShopOrderPlaced]:
+) -> Result[tuple[Order, ShopOrderPlaced], None]:
     """Place an order for one or more articles."""
     storefront = storefront_service.get_storefront(storefront_id)
     shop = shop_service.get_shop(storefront.shop_id)
@@ -90,7 +87,7 @@ def place_order(
     except IntegrityError as e:
         log.error('Order placement failed', order_number=order_number, exc=e)
         db.session.rollback()
-        raise OrderFailed()
+        return Err(None)
 
     order = order_service._order_to_transfer_object(db_order)
 
@@ -110,7 +107,7 @@ def place_order(
 
     log.info('Order placed', shop_order_placed_event=event)
 
-    return order, event
+    return Ok((order, event))
 
 
 def _build_order(

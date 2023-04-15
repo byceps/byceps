@@ -109,7 +109,7 @@ def order(storefront: Storefront, cart: Cart, orderer: Orderer):
 
     order, _ = order_checkout_service.place_order(
         storefront.id, orderer, cart, created_at=created_at
-    )
+    ).unwrap()
 
     return order
 

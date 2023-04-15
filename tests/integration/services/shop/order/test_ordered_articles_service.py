@@ -79,7 +79,9 @@ def place_order(
     cart = Cart(EUR)
     cart.add_item(article, article_quantity)
 
-    order, _ = order_checkout_service.place_order(storefront_id, orderer, cart)
+    order, _ = order_checkout_service.place_order(
+        storefront_id, orderer, cart
+    ).unwrap()
 
     return order
 
