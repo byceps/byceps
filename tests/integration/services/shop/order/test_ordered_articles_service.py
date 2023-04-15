@@ -14,7 +14,10 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import Order, Orderer, PaymentState
-from byceps.services.shop.order import ordered_articles_service, order_service
+from byceps.services.shop.order import (
+    ordered_articles_service,
+    order_checkout_service,
+)
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
 
@@ -76,7 +79,7 @@ def place_order(
     cart = Cart(EUR)
     cart.add_item(article, article_quantity)
 
-    order, _ = order_service.place_order(storefront_id, orderer, cart)
+    order, _ = order_checkout_service.place_order(storefront_id, orderer, cart)
 
     return order
 

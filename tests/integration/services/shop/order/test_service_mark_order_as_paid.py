@@ -7,6 +7,7 @@ import pytest
 
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.order import (
+    order_checkout_service,
     order_log_service,
     order_payment_service,
     order_service,
@@ -22,7 +23,9 @@ def orderer(make_user, make_orderer):
 
 @pytest.fixture
 def order(admin_app, storefront, orderer, empty_cart):
-    order, _ = order_service.place_order(storefront.id, orderer, empty_cart)
+    order, _ = order_checkout_service.place_order(
+        storefront.id, orderer, empty_cart
+    )
     return order
 
 

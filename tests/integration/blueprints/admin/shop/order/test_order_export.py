@@ -14,7 +14,7 @@ import pytest
 from byceps.services.shop.article.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order, Orderer
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_checkout_service
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.user.models.user import User
@@ -107,7 +107,7 @@ def storefront(
 def order(storefront: Storefront, cart: Cart, orderer: Orderer):
     created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 
-    order, _ = order_service.place_order(
+    order, _ = order_checkout_service.place_order(
         storefront.id, orderer, cart, created_at=created_at
     )
 

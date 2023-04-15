@@ -9,7 +9,7 @@ import pytest
 from byceps.announce.connections import build_announcement_request
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.storefront.models import Storefront
 
 from .helpers import build_announcement_request_for_irc, now
@@ -117,7 +117,7 @@ def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
 @pytest.fixture
 def placed_order(storefront, orderer):
     cart = Cart(EUR)
-    order, _ = order_service.place_order(storefront.id, orderer, cart)
+    order, _ = order_checkout_service.place_order(storefront.id, orderer, cart)
 
     return order
 

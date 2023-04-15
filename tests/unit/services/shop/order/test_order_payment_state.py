@@ -14,7 +14,7 @@ from byceps.services.shop.order.models.order import (
     Orderer,
     PaymentState,
 )
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.typing import UserID
@@ -74,7 +74,7 @@ def create_order_with_payment_state(payment_state: PaymentState) -> Order:
     orderer = create_orderer()
     created_at = datetime.utcnow()
 
-    db_order = order_service._build_order(
+    db_order = order_checkout_service._build_order(
         created_at, shop_id, storefront_id, order_number, orderer, EUR
     )
     db_order.payment_state = payment_state

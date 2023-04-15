@@ -17,7 +17,7 @@ from .....services.shop.article import article_service
 from .....services.shop.article.models import ArticleCompilation
 from .....services.shop.cart.models import Cart
 from .....services.shop.order.email import order_email_service
-from .....services.shop.order import order_service
+from .....services.shop.order import order_checkout_service, order_service
 from .....services.shop.shop import shop_service
 from .....services.shop.storefront import storefront_service
 from .....services.site import site_service
@@ -129,7 +129,7 @@ def order():
 
     try:
         order = _place_order(storefront.id, orderer, cart)
-    except order_service.OrderFailed:
+    except order_checkout_service.OrderFailed:
         flash_error(gettext('Placing the order has failed.'))
         return order_form(form)
 
@@ -243,7 +243,7 @@ def order_single(article_id):
 
     try:
         order = _place_order(storefront.id, orderer, cart)
-    except order_service.OrderFailed:
+    except order_checkout_service.OrderFailed:
         flash_error(gettext('Placing the order has failed.'))
         return order_form(form)
 
@@ -283,7 +283,9 @@ def _create_cart_from_article_compilation(
 
 
 def _place_order(storefront_id, orderer, cart):
-    order, event = order_service.place_order(storefront_id, orderer, cart)
+    order, event = order_checkout_service.place_order(
+        storefront_id, orderer, cart
+    )
 
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 

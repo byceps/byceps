@@ -12,7 +12,7 @@ import pytest
 from byceps.services.shop.article.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order, Orderer
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_checkout_service
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
 
@@ -125,6 +125,6 @@ def place_order(
     for article, quantity in articles:
         cart.add_item(article, quantity)
 
-    order, _ = order_service.place_order(storefront_id, orderer, cart)
+    order, _ = order_checkout_service.place_order(storefront_id, orderer, cart)
 
     return order

@@ -8,7 +8,7 @@ from moneyed import EUR
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authentication.session.models import CurrentUser
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_checkout_service
 from byceps.services.user.models.user import User
 
 
@@ -27,7 +27,7 @@ def place_order_with_items(
         for article, quantity in items_with_quantity:
             cart.add_item(article, quantity)
 
-    order, _ = order_service.place_order(
+    order, _ = order_checkout_service.place_order(
         storefront_id, orderer, cart, created_at=created_at
     )
 

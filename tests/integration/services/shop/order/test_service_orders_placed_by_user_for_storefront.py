@@ -8,7 +8,7 @@ import pytest
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order, Orderer
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
 
@@ -83,7 +83,7 @@ def test_get_orders_placed_by_user(
 def place_order(storefront_id: StorefrontID, orderer: Orderer) -> Order:
     cart = Cart(EUR)
 
-    order, _ = order_service.place_order(storefront_id, orderer, cart)
+    order, _ = order_checkout_service.place_order(storefront_id, orderer, cart)
 
     return order
 

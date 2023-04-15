@@ -26,7 +26,7 @@ from byceps.services.shop.order.models.order import (
     OrderID,
     PaymentState,
 )
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_checkout_service
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
 from byceps.services.user.models.user import User
@@ -324,7 +324,7 @@ def place_order(
     for article, quantity_to_order in quantified_articles:
         cart.add_item(article, quantity_to_order)
 
-    order, _ = order_service.place_order(storefront_id, orderer, cart)
+    order, _ = order_checkout_service.place_order(storefront_id, orderer, cart)
 
     return order
 

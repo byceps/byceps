@@ -7,7 +7,7 @@ from moneyed import EUR
 import pytest
 
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_checkout_service
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site import site_service
 from byceps.services.snippet import snippet_service
@@ -96,7 +96,7 @@ def order(make_orderer, storefront1, user1):
     orderer = make_orderer(user1.id)
     cart = Cart(EUR)
 
-    order, _ = order_service.place_order(storefront1.id, orderer, cart)
+    order, _ = order_checkout_service.place_order(storefront1.id, orderer, cart)
 
     return order
 
