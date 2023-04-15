@@ -8,7 +8,9 @@ byceps.blueprints.admin.shop.order.service
 
 from dataclasses import dataclass
 from typing import Iterable, Iterator
+from uuid import UUID
 
+from .....services.shop.cancelation_request import cancelation_request_service
 from .....services.shop.order.models.log import OrderLogEntry, OrderLogEntryData
 from .....services.shop.order.models.order import Order, OrderID
 from .....services.shop.order import order_log_service, order_service
@@ -64,7 +66,35 @@ def get_enriched_log_entry_data_for_order(
     order_id: OrderID,
 ) -> list[OrderLogEntryData]:
     log_entries = order_log_service.get_entries_for_order(order_id)
+    log_entries.extend(_fake_cancelation_request_log_entries(order_id))
     return list(enrich_log_entry_data(log_entries))
+
+
+def _fake_cancelation_request_log_entries(
+    order_id: OrderID,
+) -> Iterator[OrderLogEntry]:
+    """Yield cancelation requests for the order as volatile log entries."""
+    order = order_service.get_order(order_id)
+
+    cancelation_request = (
+        cancelation_request_service.get_request_for_order_number(
+            order.order_number
+        )
+    )
+    if cancelation_request is None:
+        return
+
+    data = {
+        'initiator_id': str(order.placed_by_id),
+    }
+
+    yield OrderLogEntry(
+        id=UUID('00000000-0000-0000-0000-000000000001'),
+        occurred_at=cancelation_request.created_at,
+        event_type='order-cancelation-requested',
+        order_id=order.id,
+        data=data,
+    )
 
 
 def enrich_log_entry_data(

@@ -126,6 +126,7 @@ def _get_blueprints_admin() -> Iterator[BlueprintReg]:
         ('admin.shop.catalog',              '/admin/shop/catalogs'          ),
         ('admin.shop.email',                '/admin/shop/email'             ),
         ('admin.shop.order',                '/admin/shop/orders'            ),
+        ('admin.shop.cancelation_request',  '/admin/shop/cancelation_requests'  ),
         ('admin.shop.shipping',             '/admin/shop/shipping'          ),
         ('admin.shop.shop',                 '/admin/shop/shop'              ),
         ('admin.shop.storefront',           '/admin/shop/storefronts'       ),

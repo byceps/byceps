@@ -11,6 +11,7 @@ from flask_babel import gettext
 from moneyed import get_currency
 
 from .....services.brand import brand_service
+from .....services.shop.cancelation_request import cancelation_request_service
 from .....services.shop.order.models.log import OrderLogEntryData
 from .....services.shop.order.models.order import PaymentState
 from .....services.shop.order import (
@@ -47,12 +48,17 @@ def dashboard(shop_id):
         order_service.count_orders_per_payment_state(shop.id)
     )
 
+    cancelation_request_quantities_by_state = (
+        cancelation_request_service.get_request_quantities_by_state(shop.id)
+    )
+
     log_entries = _get_latest_log_entries(shop.id)
 
     return {
         'shop': shop,
         'brand': brand,
         'order_counts_by_payment_state': order_counts_by_payment_state,
+        'cancelation_request_quantities_by_state': cancelation_request_quantities_by_state,
         'PaymentState': PaymentState,
         'log_entries': log_entries,
         'render_order_payment_method': order_service.find_payment_method_label,

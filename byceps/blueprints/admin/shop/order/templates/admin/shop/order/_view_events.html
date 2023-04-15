@@ -49,6 +49,10 @@
           ) }}
           {{ render_log_reason(log_entry.data.reason) }}
         {%- endcall %}
+      {%- elif log_entry.event_type == 'order-cancelation-requested' %}
+        {%- call render_log_entry('disabled', log_entry.occurred_at) %}
+          {{ '%(initiator)s has requested cancelation of the order.'|format(initiator=render_log_user(log_entry.initiator))|safe }}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'order-invoice-created' %}
         {%- call render_log_entry('invoice', log_entry.occurred_at) %}
           {{ _(

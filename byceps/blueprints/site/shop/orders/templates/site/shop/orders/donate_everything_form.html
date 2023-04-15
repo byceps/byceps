@@ -1,0 +1,30 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_field %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'shop_orders' %}
+{% set page_title = ['Tickets zurückgeben', order.order_number] %}
+
+{% block body %}
+
+{% include 'site/shop/orders/_request_cancelation_head.html' %}
+
+  <p>Du möchtest <strong>den vollen Betrag spenden</strong> und nichts erstattet bekommen. Das finden wir total super, vielen Dank dafür! ❤️</p>
+
+{% include 'site/shop/orders/_articles.html' %}
+
+  <p>Deine Bestellung wird im Anschluss automatisch storniert.</p>
+
+  <form action="{{ url_for('.donate_everything', order_id=order.id) }}" method="post">
+
+    <div class="row row--space-between mt">
+      <div>
+        <a class="button button--clear button--compact" href="{{ url_for('.request_cancelation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>Zurück zur Auswahl</span></a>
+      </div>
+      <div>
+        <button type="submit" class="button color-primary">Tickets zurückgeben</button>
+      </div>
+    </div>
+
+  </form>
+
+{%- endblock %}

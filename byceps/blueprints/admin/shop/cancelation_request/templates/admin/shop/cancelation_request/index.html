@@ -1,0 +1,187 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
+{% from 'macros/misc.html' import render_distribution_bar, render_tag %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
+{% set current_page = 'shop_cancelation_request_admin' %}
+{% set current_page_brand = brand %}
+{% set current_page_shop = shop %}
+{% set page_title = 'Stornierungsanfragen' %}
+
+{% block head %}
+<style>
+.grid .box + .box {
+  margin-top: 0;
+}
+
+.progress {
+  height: 0.25rem;
+}
+</style>
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }} {{ render_extra_in_heading(requests.total) }}</h1>
+
+  {%- if requests.items %}
+
+  <div class="grid mb" style="--column-min-width: 250px;">
+    <div class="box">
+
+      <div class="row row--equal-sized-centered-columns">
+        <div><strong style="font-size: 1.5rem;">{{ request_quantities_by_state.open }}</strong><div>{{ render_tag(_('open'), class='color-info') }}</div></div>
+        <div><strong style="font-size: 1.5rem;">{{ request_quantities_by_state.accepted }}</strong><div>{{ render_tag(_('accepted'), class='color-success') }}</div></div>
+      </div>
+
+      <div class="mt">
+{{ render_distribution_bar(
+  [
+    (request_quantities_by_state.open, 'color-info'),
+    (request_quantities_by_state.accepted, 'color-success'),
+  ],
+  request_quantities_by_state.total,
+) }}
+      </div>
+
+    </div>
+    <div class="box" style="align-items: center; display: flex; gap: var(--inner-gutter); justify-content: center;">
+
+      <div style="font-size: 2.5rem;">❤️</div>
+
+      <div style="text-align: center;">
+        <strong style="font-size: 1.5rem;">{{ donations_total|currencyformat('EUR') }}</strong><div>gespendet</div>
+      </div>
+
+    </div>
+    <div class="box">
+
+      <div class="row row--equal-sized-centered-columns">
+        <div><strong style="font-size: 1.5rem;">{{ donation_extent_totals.everything }}</strong><div class="nowrap">❤️ alles</div></div>
+        <div><strong style="font-size: 1.5rem;">{{ donation_extent_totals.part }}</strong><div class="nowrap">👍 anteilig</div></div>
+        <div><strong style="font-size: 1.5rem;">{{ donation_extent_totals.nothing }}</strong><div class="nowrap">💸 nichts</div></div>
+      </div>
+
+      <div class="mt">
+{{ render_distribution_bar(
+  [
+    (donation_extent_totals.everything, 'color-danger'),
+    (donation_extent_totals.part, 'color-warning'),
+    (donation_extent_totals.nothing, 'color-success'),
+  ],
+  requests.total,
+) }}
+      </div>
+
+    </div>
+  </div>
+
+    {%- for request in requests.items|sort(attribute='created_at', reverse=True) %}
+  <div class="box" style="border-left: {% if request.state.name == 'accepted' %}#55cc00{% elif request.state.name == 'open' %}#1199ff{% endif %} solid 0.25rem;">
+
+    <div style="display: grid; grid-gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(313px, 1fr));">
+      <div>
+
+        <div class="row mb">
+          <div>
+
+            <div class="data-label">{{ _('Status') }}</div>
+            <div class="data-value">
+              {%- if request.state.name == 'accepted' %}
+              {{ render_tag(_('accepted'), class='color-success') }}
+              {%- elif request.state.name == 'open' %}
+              {{ render_tag(_('open'), class='color-info') }}
+              {%- endif %}
+            </div>
+
+          </div>
+          <div>
+
+            <div class="data-label">{{ _('Created') }}</div>
+            <div class="data-value">{{ request.created_at|datetimeformat }}</div>
+
+          </div>
+        </div>
+
+        {%- with order = orders_by_order_number[request.order_number] %}
+        <div class="row">
+          <div>
+
+            <div class="data-label">{{ _('Order number') }}</div>
+            <div class="data-value"><a href="{{ url_for('shop_order_admin.view', order_id=order.id) }}">{{ request.order_number }}</a></div>
+
+          </div>
+          <div>
+
+            <div class="data-label">{{ _('Orderer') }}</div>
+            <div class="data-value">{{ render_user_avatar_and_admin_link(orderers_by_id[order.placed_by_id], size=20) }}</div>
+
+          </div>
+        </div>
+        {%- endwith %}
+
+      </div>
+      <div>
+
+        <div class="data-label">Spendenumfang</div>
+        <div class="data-value mb">
+          {%- if request.donation_extent.name == 'everything' %}
+          ❤️ alles
+          {%- elif request.donation_extent.name == 'nothing' %}
+          💸 nichts
+          {%- elif request.donation_extent.name == 'part' %}
+          👍 anteilig
+          {%- else %}
+          ?
+          {%- endif %}
+        </div>
+
+        <div class="row">
+
+          {%- if request.donation_extent.name in ('part', 'nothing') %}
+          <div>
+            <div class="data-label">Rückforderung</div>
+            <div class="data-value">{{ request.amount_refund|currencyformat('EUR') }}</div>
+          </div>
+          {%- endif %}
+
+          {%- if request.donation_extent.name in ('everything', 'part') %}
+          <div>
+            <div class="data-label">Spende</div>
+            <div class="data-value">{{ request.amount_donation|currencyformat('EUR') }}</div>
+          </div>
+          {%- endif %}
+
+        </div>
+
+      </div>
+
+      {%- if request.donation_extent.name in ('part', 'nothing') %}
+      <div>
+
+        <div class="data-label">Empfängername</div>
+        <div class="data-value">{{ request.recipient_name|fallback(_('none')) }}</div>
+
+        <div class="data-label">Empfänger-IBAN</div>
+        <div class="data-value">{{ request.recipient_iban|fallback(_('none')) }}</div>
+
+      </div>
+      {%- endif %}
+
+    </div>
+
+  </div>
+    {%- endfor %}
+  <div class="mt">
+{{ render_pagination_nav(requests, '.index', {
+  'shop_id': shop.id,
+  'per_page': per_page,
+}, centered=True) }}
+  </div>
+  {%- else %}
+  <div class="box">
+    <div class="dimmed-box centered">Keine</div>
+  </div>
+  {%- endif %}
+
+{%- endblock %}

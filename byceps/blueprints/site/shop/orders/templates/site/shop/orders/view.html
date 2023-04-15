@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_notification %}
 {% from 'macros/shop/orders.html' import render_order_payment_state, render_order_overdue_tag %}
 {% set current_page = 'shop_orders' %}
 {% set page_title = ['Bestellung', order.order_number] %}
@@ -12,6 +13,12 @@
     </ol>
   </nav>
   <h1>{{ order.order_number }}</h1>
+
+  {%- if cancelation_request and cancelation_request.state.name != 'accepted' %}
+  <div class="mb">
+{{ render_notification('Zu dieser Bestellung wurde am %s, %s Uhr eine Stornierung angefordert.'|format(cancelation_request.created_at|dateformat, cancelation_request.created_at|timeformat('short')), category='info') }}
+  </div>
+  {%- endif %}
 
   <div class="row row--space-between">
     <div>
@@ -75,5 +82,10 @@
 
   <h2>{{ _('Articles') }}</h2>
 {% include 'site/shop/orders/_articles.html' %}
+
+  {%- if order.is_paid and not cancelation_request %}
+  <h2>{{ _('Cancelation') }}</h2>
+  <div><a class="button" href="{{ url_for('.request_cancelation_choices', order_id=order.id) }}"><span>Tickets zurückgeben</span> {{ render_icon('chevron-right') }}</a></div>
+  {%- endif %}
 
 {%- endblock %}
