@@ -6,6 +6,7 @@ byceps.services.shop.article.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
@@ -96,11 +97,16 @@ class ArticleCompilationItem:
 
 
 class ArticleCompilation:
-    def __init__(self) -> None:
+    def __init__(
+        self, items: Optional[list[ArticleCompilationItem]] = None
+    ) -> None:
         self._items: list[ArticleCompilationItem] = []
 
-    def append(self, item: ArticleCompilationItem) -> None:
-        self._items.append(item)
+        if items is not None:
+            self._items.extend(items)
+
+    def append(self, item: ArticleCompilationItem) -> ArticleCompilation:
+        return ArticleCompilation(self._items + [item])
 
     def __iter__(self) -> Iterator[ArticleCompilationItem]:
         return iter(self._items)
