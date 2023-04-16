@@ -744,19 +744,6 @@ def get_payment_date(order_id: OrderID) -> Optional[datetime]:
 
 def _order_to_transfer_object(db_order: DbOrder) -> Order:
     """Create transfer object from order database entity."""
-    address = _get_address(db_order)
-
-    state = _get_order_state(db_order)
-    is_open = _is_open(db_order)
-    is_canceled = _is_canceled(db_order)
-    is_paid = _is_paid(db_order)
-    is_invoiced = _is_invoiced(db_order)
-    is_overdue = _is_overdue(db_order)
-    is_processing_required = db_order.processing_required
-    is_processed = _is_processed(db_order)
-
-    line_items = _get_line_items(db_order)
-
     return Order(
         id=db_order.id,
         created_at=db_order.created_at,
@@ -767,19 +754,19 @@ def _order_to_transfer_object(db_order: DbOrder) -> Order:
         company=db_order.company,
         first_name=db_order.first_name,
         last_name=db_order.last_name,
-        address=address,
+        address=_get_address(db_order),
         total_amount=db_order.total_amount,
-        line_items=line_items,
+        line_items=_get_line_items(db_order),
         payment_method=db_order.payment_method,
         payment_state=db_order.payment_state,
-        state=state,
-        is_open=is_open,
-        is_canceled=is_canceled,
-        is_paid=is_paid,
-        is_invoiced=is_invoiced,
-        is_overdue=is_overdue,
-        is_processing_required=is_processing_required,
-        is_processed=is_processed,
+        state=_get_order_state(db_order),
+        is_open=_is_open(db_order),
+        is_canceled=_is_canceled(db_order),
+        is_paid=_is_paid(db_order),
+        is_invoiced=_is_invoiced(db_order),
+        is_overdue=_is_overdue(db_order),
+        is_processing_required=db_order.processing_required,
+        is_processed=_is_processed(db_order),
         cancelation_reason=db_order.cancelation_reason,
     )
 
