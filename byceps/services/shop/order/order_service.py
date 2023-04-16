@@ -156,7 +156,7 @@ class OrderAlreadyCanceledError:
     pass
 
 
-class OrderAlreadyMarkedAsPaid(Exception):
+class OrderAlreadyMarkedAsPaidError:
     pass
 
 
@@ -239,12 +239,12 @@ def mark_order_as_paid(
     initiator_id: UserID,
     *,
     additional_payment_data: Optional[AdditionalPaymentData] = None,
-) -> ShopOrderPaid:
+) -> Result[ShopOrderPaid, OrderAlreadyMarkedAsPaidError]:
     """Mark the order as paid."""
     db_order = _get_order_entity(order_id)
 
     if _is_paid(db_order):
-        raise OrderAlreadyMarkedAsPaid()
+        return Err(OrderAlreadyMarkedAsPaidError())
 
     initiator = user_service.get_user(initiator_id)
     orderer_user = user_service.get_user(db_order.placed_by_id)
@@ -303,7 +303,7 @@ def mark_order_as_paid(
 
     log.info('Order paid', shop_order_paid_event=event)
 
-    return event
+    return Ok(event)
 
 
 def _update_payment_state(

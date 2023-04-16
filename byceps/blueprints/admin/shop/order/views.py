@@ -399,13 +399,18 @@ def mark_as_paid(order_id):
     payment_method = form.payment_method.data
     updated_by_id = g.user.id
 
-    try:
-        event = order_service.mark_order_as_paid(
-            order.id, payment_method, updated_by_id
-        )
-    except order_service.OrderAlreadyMarkedAsPaid:
-        flash_error(gettext('Order is already marked as paid.'))
+    mark_as_paid_result = order_service.mark_order_as_paid(
+        order.id, payment_method, updated_by_id
+    )
+    if mark_as_paid_result.is_err():
+        err = mark_as_paid_result.unwrap_err()
+        if isinstance(err, order_service.OrderAlreadyMarkedAsPaidError):
+            flash_error(gettext('Order is already marked as paid.'))
+        else:
+            flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
+
+    event = mark_as_paid_result.unwrap()
 
     flash_success(gettext('Order has been marked as paid.'))
 

@@ -137,6 +137,6 @@ def canceled_order(placed_order, shop_admin):
 def paid_order(placed_order, shop_admin):
     order_service.mark_order_as_paid(
         placed_order.id, 'bank_transfer', shop_admin.id
-    )
+    ).unwrap()
 
     return placed_order

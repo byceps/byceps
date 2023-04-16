@@ -64,7 +64,9 @@ def test_email_on_order_paid(
 ):
     app = site_app
 
-    order_service.mark_order_as_paid(order.id, 'bank_transfer', order_admin.id)
+    order_service.mark_order_as_paid(
+        order.id, 'bank_transfer', order_admin.id
+    ).unwrap()
 
     current_user = get_current_user_for_user(customer, 'de')
     with current_user_set(app, current_user), app.app_context():
