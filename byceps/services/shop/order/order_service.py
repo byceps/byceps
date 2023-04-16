@@ -79,44 +79,6 @@ def add_note(order_id: OrderID, author_id: UserID, text: str) -> None:
     order_log_service.create_entry(event_type, order.id, data)
 
 
-def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
-    """Record that the invoice for that order has been (externally) created."""
-    db_order = _get_order_entity(order_id)
-    initiator = user_service.get_user(initiator_id)
-
-    now = datetime.utcnow()
-    event_type = 'order-invoiced'
-    data = {
-        'initiator_id': str(initiator.id),
-    }
-
-    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
-    db.session.add(log_entry)
-
-    db_order.invoice_created_at = now
-
-    db.session.commit()
-
-
-def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
-    """Withdraw record of the invoice for that order having been created."""
-    db_order = _get_order_entity(order_id)
-    initiator = user_service.get_user(initiator_id)
-
-    now = datetime.utcnow()
-    event_type = 'order-invoiced-withdrawn'
-    data = {
-        'initiator_id': str(initiator.id),
-    }
-
-    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
-    db.session.add(log_entry)
-
-    db_order.invoice_created_at = None
-
-    db.session.commit()
-
-
 def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as shipped."""
     db_order = _get_order_entity(order_id)

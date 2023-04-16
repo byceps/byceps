@@ -144,9 +144,6 @@
 {% block scripts %}
     <script>
       onDomReady(() => {
-        confirmed_post_on_click_then_reload('[data-action="order-flag-invoiced"]', '{{ _('Mark as invoice sent?') }}');
-        confirmed_delete_on_click_then_reload('[data-action="order-unflag-invoiced"]', '{{ _('Mark as invoice not sent?') }}');
-
         confirmed_post_on_click_then_reload('[data-action="order-resend-incoming-notification"]', '{{ _('Resend confirmation email?') }}');
 
         confirmed_post_on_click_then_reload('[data-action="order-flag-shipped"]', '{{ _('Mark as shipped?') }}');

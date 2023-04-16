@@ -190,42 +190,6 @@ def add_note(order_id):
 # flags
 
 
-@blueprint.post('/<uuid:order_id>/flags/invoiced')
-@permission_required('shop_order.update')
-@respond_no_content
-def set_invoiced_flag(order_id):
-    """Mark the order as invoiced."""
-    order = _get_order_or_404(order_id)
-    initiator_id = g.user.id
-
-    order_service.set_invoiced_flag(order.id, initiator_id)
-
-    flash_success(
-        gettext(
-            'Order %(order_number)s has been marked as invoiced.',
-            order_number=order.order_number,
-        )
-    )
-
-
-@blueprint.delete('/<uuid:order_id>/flags/invoiced')
-@permission_required('shop_order.update')
-@respond_no_content
-def unset_invoiced_flag(order_id):
-    """Mark the order as not invoiced."""
-    order = _get_order_or_404(order_id)
-    initiator_id = g.user.id
-
-    order_service.unset_invoiced_flag(order.id, initiator_id)
-
-    flash_success(
-        gettext(
-            'Order %(order_number)s has been marked as not invoiced.',
-            order_number=order.order_number,
-        )
-    )
-
-
 @blueprint.post('/<uuid:order_id>/flags/shipped')
 @permission_required('shop_order.update')
 @respond_no_content
