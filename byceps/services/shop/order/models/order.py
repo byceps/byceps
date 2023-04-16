@@ -150,6 +150,7 @@ class AdminOrderListItem(BaseOrder):
     placed_by: User
     first_name: str
     last_name: str
+    is_invoiced: bool
     is_processing_required: bool
     is_processed: bool
 

@@ -45,6 +45,13 @@
 {%- endmacro %}
 
 
+{% macro render_order_invoiced_tag(order) %}
+  {%- if order.is_invoiced %}
+    {{- render_tag(ngettext('Invoice', 'Invoices', 1), icon='invoice', class='color-info') }}
+  {%- endif -%}
+{%- endmacro %}
+
+
 {% macro render_order_overdue_tag(order) %}
   {%- if order.is_overdue %}
     {{- render_tag(_('overdue'), icon='warning', class='color-danger') }}

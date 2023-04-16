@@ -687,6 +687,7 @@ def get_orders_for_shop_paginated(
             is_open=_is_open(db_order),
             is_canceled=_is_canceled(db_order),
             is_paid=_is_paid(db_order),
+            is_invoiced=_is_invoiced(db_order),
             is_overdue=_is_overdue(db_order),
             is_processing_required=db_order.processing_required,
             is_processed=_is_processed(db_order),

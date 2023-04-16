@@ -1,4 +1,4 @@
-{%- from 'macros/admin/shop/order.html' import render_order_link, render_order_payment_state, render_order_overdue_tag %}
+{%- from 'macros/admin/shop/order.html' import render_order_invoiced_tag, render_order_link, render_order_payment_state, render_order_overdue_tag %}
 {%- from 'macros/admin/user.html' import render_user_microcard %}
 {%- from 'macros/icons.html' import render_icon %}
 
@@ -34,6 +34,7 @@
       </td>
       <td class="nowrap">
         {{ render_order_payment_state(order.payment_state) }}
+        {{ render_order_invoiced_tag(order) }}
         {{ render_order_overdue_tag(order) }}
       </td>
       <td>
