@@ -18,6 +18,7 @@ import structlog
 from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid
 from ....typing import UserID
+from ....util.result import Err, Ok, Result
 
 from ...ticketing.models.ticket import TicketCategoryID
 from ...user import user_service
@@ -151,7 +152,7 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-class OrderAlreadyCanceled(Exception):
+class OrderAlreadyCanceledError:
     pass
 
 
@@ -161,7 +162,7 @@ class OrderAlreadyMarkedAsPaid(Exception):
 
 def cancel_order(
     order_id: OrderID, initiator_id: UserID, reason: str
-) -> ShopOrderCanceled:
+) -> Result[ShopOrderCanceled, OrderAlreadyCanceledError]:
     """Cancel the order.
 
     Reserved quantities of articles from that order are made available
@@ -170,7 +171,7 @@ def cancel_order(
     db_order = _get_order_entity(order_id)
 
     if _is_canceled(db_order):
-        raise OrderAlreadyCanceled()
+        return Err(OrderAlreadyCanceledError())
 
     initiator = user_service.get_user(initiator_id)
     orderer_user = user_service.get_user(db_order.placed_by_id)
@@ -229,7 +230,7 @@ def cancel_order(
 
     log.info('Order canceled', shop_order_canceled_event=event)
 
-    return event
+    return Ok(event)
 
 
 def mark_order_as_paid(

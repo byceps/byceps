@@ -166,15 +166,20 @@ def cancel(order_id):
 
     reason = form.reason.data.strip()
 
-    try:
-        event = order_service.cancel_order(order.id, g.user.id, reason)
-    except order_service.OrderAlreadyCanceled:
-        flash_error(
-            gettext(
-                'The order has already been canceled. The payment state cannot be changed anymore.'
+    cancelation_result = order_service.cancel_order(order.id, g.user.id, reason)
+    if cancelation_result.is_err():
+        err = cancelation_result.unwrap_err()
+        if isinstance(err, order_service.OrderAlreadyCanceledError):
+            flash_error(
+                gettext(
+                    'The order has already been canceled. The payment state cannot be changed anymore.'
+                )
             )
-        )
+        else:
+            flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
+
+    event = cancelation_result.unwrap()
 
     flash_success(gettext('Order has been canceled.'))
 
@@ -278,15 +283,20 @@ def donate_everything(order_id):
 
     reason = 'Ticketrückgabe und Spende des Bestellbetrags in voller Höhe wie angefordert'
 
-    try:
-        event = order_service.cancel_order(order.id, g.user.id, reason)
-    except order_service.OrderAlreadyCanceled:
-        flash_error(
-            gettext(
-                'The order has already been canceled. The payment state cannot be changed anymore.'
+    cancelation_result = order_service.cancel_order(order.id, g.user.id, reason)
+    if cancelation_result.is_err():
+        err = cancelation_result.unwrap_err()
+        if isinstance(err, order_service.OrderAlreadyCanceledError):
+            flash_error(
+                gettext(
+                    'The order has already been canceled. The payment state cannot be changed anymore.'
+                )
             )
-        )
+        else:
+            flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
+
+    event = cancelation_result.unwrap()
 
     cancelation_request_service.accept_request(cancelation_request.id)
 

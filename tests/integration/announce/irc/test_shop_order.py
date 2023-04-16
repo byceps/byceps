@@ -126,7 +126,9 @@ def placed_order(storefront, orderer):
 
 @pytest.fixture
 def canceled_order(placed_order, shop_admin):
-    order_service.cancel_order(placed_order.id, shop_admin.id, 'Kein Geld!')
+    order_service.cancel_order(
+        placed_order.id, shop_admin.id, 'Kein Geld!'
+    ).unwrap()
 
     return placed_order
 

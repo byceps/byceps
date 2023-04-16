@@ -65,7 +65,7 @@ def test_email_on_order_canceled(
     app = site_app
 
     reason = 'Du hast nicht rechtzeitig bezahlt.'
-    order_service.cancel_order(order.id, order_admin.id, reason)
+    order_service.cancel_order(order.id, order_admin.id, reason).unwrap()
 
     current_user = get_current_user_for_user(customer, 'de')
     with current_user_set(app, current_user), app.app_context():
