@@ -16,7 +16,8 @@ from flask import current_app
 from .....services.user import user_service
 from .....util.templating import load_template
 
-from ..models.order import DetailedOrder, OrderID
+from ..models.detailed_order import DetailedOrder
+from ..models.order import OrderID
 from .. import order_service
 
 

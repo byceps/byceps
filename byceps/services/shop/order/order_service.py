@@ -35,13 +35,12 @@ from .actions import ticket_bundle as ticket_bundle_actions
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
+from .models.detailed_order import AdminDetailedOrder, DetailedOrder
 from .models.log import OrderLogEntryData
 from .models.number import OrderNumber
 from .models.order import (
     Address,
-    AdminDetailedOrder,
     AdminOrderListItem,
-    DetailedOrder,
     LineItemID,
     Order,
     OrderID,
