@@ -3,7 +3,7 @@
 
 
 <div class="data-label">{{ _('User') }}</div>
-<div class="data-value">{{ render_user_avatar_and_admin_link(placed_by, size=20) }}</div>
+<div class="data-value">{{ render_user_avatar_and_admin_link(order.placed_by, size=20) }}</div>
 
 <div class="data-label">{{ _('Company') }}</div>
 <div class="data-value">{{ order.company|fallback }}</div>

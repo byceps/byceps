@@ -22,7 +22,6 @@ from .....services.shop.order.export import order_export_service
 from .....services.shop.order.models.order import PaymentState
 from .....services.shop.shop import shop_service
 from .....services.ticketing import ticket_service
-from .....services.user import user_service
 from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success
@@ -104,11 +103,9 @@ def index_for_shop(shop_id, page):
 @templated
 def view(order_id):
     """Show a single order."""
-    order = order_service.find_order_with_details(order_id)
+    order = order_service.find_order_with_details_for_admin(order_id)
     if order is None:
         abort(404)
-
-    placed_by = user_service.get_user(order.placed_by_id, include_avatar=True)
 
     shop = shop_service.get_shop(order.shop_id)
 
@@ -125,7 +122,6 @@ def view(order_id):
         'shop': shop,
         'brand': brand,
         'order': order,
-        'placed_by': placed_by,
         'payments': payments,
         'invoices': invoices,
         'log_entries': log_entries,

@@ -162,6 +162,11 @@ class DetailedOrder(BaseOrder):
 
 
 @dataclass(frozen=True)
+class AdminDetailedOrder(DetailedOrder):
+    placed_by: User
+
+
+@dataclass(frozen=True)
 class AdminOrderListItem(BaseOrder):
     placed_by: User
     first_name: str

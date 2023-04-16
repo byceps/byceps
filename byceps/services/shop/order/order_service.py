@@ -39,6 +39,7 @@ from .models.log import OrderLogEntryData
 from .models.number import OrderNumber
 from .models.order import (
     Address,
+    AdminDetailedOrder,
     AdminOrderListItem,
     DetailedOrder,
     LineItemID,
@@ -507,6 +508,25 @@ def find_order_with_details(order_id: OrderID) -> Optional[DetailedOrder]:
         is_processing_required=db_order.processing_required,
         is_processed=_is_processed(db_order),
         cancelation_reason=db_order.cancelation_reason,
+    )
+
+
+def find_order_with_details_for_admin(
+    order_id: OrderID,
+) -> Optional[AdminDetailedOrder]:
+    """Return the order with that id, or `None` if not found."""
+    detailed_order = find_order_with_details(order_id)
+
+    if detailed_order is None:
+        return None
+
+    placed_by = user_service.get_user(
+        detailed_order.placed_by_id, include_avatar=True
+    )
+
+    return AdminDetailedOrder(
+        placed_by=placed_by,
+        **dataclasses.asdict(detailed_order),
     )
 
 
