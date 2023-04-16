@@ -636,7 +636,7 @@ def get_orders_for_shop_paginated(
             is_paid=_is_paid(db_order),
             is_overdue=_is_overdue(db_order),
             is_processing_required=db_order.processing_required,
-            is_processed=db_order.processed_at is not None,
+            is_processed=_is_processed(db_order),
         )
 
     paginated_orders = paginate(
@@ -744,29 +744,18 @@ def get_payment_date(order_id: OrderID) -> Optional[datetime]:
 
 def _order_to_transfer_object(db_order: DbOrder) -> Order:
     """Create transfer object from order database entity."""
-    address = Address(
-        country=db_order.country,
-        zip_code=db_order.zip_code,
-        city=db_order.city,
-        street=db_order.street,
-    )
+    address = _get_address(db_order)
 
     state = _get_order_state(db_order)
     is_open = _is_open(db_order)
     is_canceled = _is_canceled(db_order)
     is_paid = _is_paid(db_order)
-    is_invoiced = db_order.invoice_created_at is not None
+    is_invoiced = _is_invoiced(db_order)
     is_overdue = _is_overdue(db_order)
     is_processing_required = db_order.processing_required
-    is_processed = db_order.processed_at is not None
+    is_processed = _is_processed(db_order)
 
-    line_items = [
-        _line_item_to_transfer_object(
-            db_line_item, db_order.currency, is_canceled
-        )
-        for db_line_item in db_order.line_items
-    ]
-    line_items.sort(key=lambda li: li.article_id)
+    line_items = _get_line_items(db_order)
 
     return Order(
         id=db_order.id,
@@ -793,6 +782,30 @@ def _order_to_transfer_object(db_order: DbOrder) -> Order:
         is_processed=is_processed,
         cancelation_reason=db_order.cancelation_reason,
     )
+
+
+def _get_address(db_order: DbOrder) -> Address:
+    return Address(
+        country=db_order.country,
+        zip_code=db_order.zip_code,
+        city=db_order.city,
+        street=db_order.street,
+    )
+
+
+def _get_line_items(db_order: DbOrder) -> list[LineItem]:
+    is_order_canceled = _is_canceled(db_order)
+
+    line_items = [
+        _line_item_to_transfer_object(
+            db_line_item, db_order.currency, is_order_canceled
+        )
+        for db_line_item in db_order.line_items
+    ]
+
+    line_items.sort(key=lambda li: li.article_id)
+
+    return line_items
 
 
 def _is_overdue(db_order: DbOrder) -> bool:
@@ -846,7 +859,7 @@ def _get_order_state(db_order: DbOrder) -> OrderState:
     is_canceled = _is_canceled(db_order)
     is_paid = _is_paid(db_order)
     is_processing_required = db_order.processing_required
-    is_processed = db_order.processed_at is not None
+    is_processed = _is_processed(db_order)
 
     if is_canceled:
         return OrderState.canceled
@@ -871,3 +884,11 @@ def _is_canceled(db_order: DbOrder) -> bool:
 
 def _is_paid(db_order: DbOrder) -> bool:
     return db_order.payment_state == PaymentState.paid
+
+
+def _is_invoiced(db_order: DbOrder) -> bool:
+    return db_order.invoice_created_at is not None
+
+
+def _is_processed(db_order: DbOrder) -> bool:
+    return db_order.processed_at is not None
