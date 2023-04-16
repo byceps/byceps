@@ -7,6 +7,7 @@ byceps.services.shop.order.order_service
 """
 
 from datetime import datetime, timedelta
+import dataclasses
 from typing import Any, Optional
 from uuid import UUID
 
@@ -638,7 +639,20 @@ def get_orders_for_shop_paginated(
             is_processed=db_order.processed_at is not None,
         )
 
-    return paginate(stmt, page, per_page, item_mapper=to_admin_order_list_item)
+    paginated_orders = paginate(
+        stmt, page, per_page, item_mapper=to_admin_order_list_item
+    )
+
+    orderer_ids = {order.placed_by_id for order in paginated_orders.items}
+    orderers = user_service.get_users(orderer_ids, include_avatars=True)
+    orderers_by_id = user_service.index_users_by_id(orderers)
+
+    paginated_orders.items = [
+        dataclasses.replace(order, placed_by=orderers_by_id[order.placed_by_id])
+        for order in paginated_orders.items
+    ]
+
+    return paginated_orders
 
 
 def get_orders_placed_by_user(user_id: UserID) -> list[Order]:

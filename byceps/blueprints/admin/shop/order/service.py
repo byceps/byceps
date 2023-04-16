@@ -6,31 +6,17 @@ byceps.blueprints.admin.shop.order.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import dataclasses
 from typing import Iterable, Iterator
 from uuid import UUID
 
 from .....services.shop.cancelation_request import cancelation_request_service
 from .....services.shop.order.models.log import OrderLogEntry, OrderLogEntryData
-from .....services.shop.order.models.order import AdminOrderListItem, OrderID
+from .....services.shop.order.models.order import OrderID
 from .....services.shop.order import order_log_service, order_service
 from .....services.ticketing import ticket_category_service
 from .....services.user.models.user import User
 from .....services.user import user_service
 from .....services.user_badge import user_badge_service
-
-
-def extend_orders_with_orderers(
-    orders: Iterable[AdminOrderListItem],
-) -> Iterator[AdminOrderListItem]:
-    orderer_ids = {order.placed_by_id for order in orders}
-    orderers = user_service.get_users(orderer_ids, include_avatars=True)
-    orderers_by_id = user_service.index_users_by_id(orderers)
-
-    for order in orders:
-        yield dataclasses.replace(
-            order, placed_by=orderers_by_id[order.placed_by_id]
-        )
 
 
 def get_enriched_log_entry_data_for_order(

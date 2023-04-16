@@ -33,8 +33,6 @@ from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, respond_no_content
 
-from ...shop.order import service as order_blueprint_service
-
 
 blueprint = create_blueprint('ticketing_checkin_admin', __name__)
 
@@ -110,13 +108,7 @@ def _search_orders(
         shop.id, page, per_page, search_term=search_term
     )
 
-    orders = list(
-        order_blueprint_service.extend_orders_with_orderers(
-            orders_pagination.items
-        )
-    )
-
-    return orders
+    return orders_pagination.items
 
 
 def _search_users(search_term: str, limit: int) -> list[User]:

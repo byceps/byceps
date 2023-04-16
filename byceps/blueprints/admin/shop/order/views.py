@@ -84,8 +84,6 @@ def index_for_shop(shop_id, page):
         only_processed=only_processed,
     )
 
-    orders.items = list(service.extend_orders_with_orderers(orders.items))
-
     return {
         'shop': shop,
         'brand': brand,
