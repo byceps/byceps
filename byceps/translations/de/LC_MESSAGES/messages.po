@@ -19,8 +19,8 @@ msgstr ""
 "Generated-By: Babel 2.12.1\n"
 
 #: byceps/announce/helpers.py:29
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:146
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:162
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:150
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:166
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:71
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:50
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:69
@@ -566,6 +566,7 @@ msgstr "API"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:39
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:30
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:30
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:88
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:14
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:41
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:27
@@ -802,7 +803,9 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/page/forms.py:62
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:163
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:186
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:50
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:163
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:166
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:51
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:100
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:114
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:66
@@ -1576,14 +1579,15 @@ msgstr "Site"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:31
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:4
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/create_form.html:9
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:7
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:8
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:7
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view_for_brand.html:5
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:23
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:12
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_request_cancelation_head.html:3
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:10
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:9
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:10
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:11
 #: byceps/services/site_navigation/models.py:85
 msgid "Shop"
 msgstr "Shop"
@@ -1597,7 +1601,7 @@ msgstr "Shop"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:4
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:6
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:6
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:7
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:8
 #: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:4
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:2
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:37
@@ -1703,7 +1707,7 @@ msgstr "Kataloge"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:127
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:3
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:21
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:76
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:83
 msgid "Articles"
 msgstr "Artikel"
 
@@ -1770,7 +1774,7 @@ msgstr "Keine Unterschiede"
 #: byceps/blueprints/admin/user/forms.py:130
 #: byceps/blueprints/admin/user/forms.py:141
 #: byceps/blueprints/admin/user/forms.py:148
-#: byceps/blueprints/site/shop/orders/forms.py:18
+#: byceps/blueprints/site/shop/orders/forms.py:28
 msgid "Reason"
 msgstr "Begründung"
 
@@ -1891,7 +1895,7 @@ msgstr[1] "noch nicht aktivierte Benutzer"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:11
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:21
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:20
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:27
 msgid "Date"
 msgstr "Datum"
 
@@ -2023,6 +2027,9 @@ msgstr "Benutzerregistrierung"
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:81
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:56
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:60
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:33
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:93
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:19
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:49
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:42
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:50
@@ -2860,6 +2867,7 @@ msgstr "Aktuelle Version ansehen"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:87
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:67
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:100
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:56
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:19
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:18
@@ -3069,7 +3077,7 @@ msgstr "Die nächsten Geburtstage"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:52
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:8
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:66
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:73
 msgid "Full name"
 msgstr "Voller Name"
 
@@ -3976,7 +3984,7 @@ msgstr ""
 "Artikel aufgeführten Zustände geändert wird."
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:221
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:26
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:33
 msgid "Payment state"
 msgstr "Bezahlstatus"
 
@@ -4020,6 +4028,7 @@ msgstr "Stand"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:28
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:28
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:110
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:26
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:13
@@ -4030,6 +4039,7 @@ msgstr "Bestellnummer"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:29
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:29
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:116
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:11
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:54
 msgid "Orderer"
@@ -4057,6 +4067,12 @@ msgstr "Dieser Artikel wurde noch nicht gekauft."
 msgid "unlimited"
 msgstr "unbegrenzt"
 
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:34
+#: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:91
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:20
+msgid "accepted"
+msgstr "akzeptiert"
+
 #: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/index_for_shop.html:26
 msgid "No catalogs exist."
 msgstr "Es sind keine Kataloge vorhanden."
@@ -4080,6 +4096,7 @@ msgid "Payment receipt"
 msgstr "Zahlungseingang"
 
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:46
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:87
 msgid "Cancelation"
 msgstr "Stornierung"
 
@@ -4095,33 +4112,34 @@ msgstr "Auftraggeber/in aktiv per E-Mail über Stornierung informieren"
 msgid "Payment type"
 msgstr "Zahlungsart"
 
-#: byceps/blueprints/admin/shop/order/views.py:197
+#: byceps/blueprints/admin/shop/order/views.py:184
 msgid "Note has been added."
 msgstr "Die Notiz wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/order/views.py:217
+#: byceps/blueprints/admin/shop/order/views.py:204
 #, python-format
 msgid "Order %(order_number)s has been marked as invoiced."
 msgstr "Bestellung %(order_number)s wurde als in Rechnung gestellt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:235
+#: byceps/blueprints/admin/shop/order/views.py:222
 #, python-format
 msgid "Order %(order_number)s has been marked as not invoiced."
 msgstr "Bestellung %(order_number)s wurde als nicht in Rechnung gestellt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:253
+#: byceps/blueprints/admin/shop/order/views.py:240
 #, python-format
 msgid "Order %(order_number)s has been marked as shipped."
 msgstr "Bestellung %(order_number)s wurde als verschickt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:271
+#: byceps/blueprints/admin/shop/order/views.py:258
 #, python-format
 msgid "Order %(order_number)s has been marked as not shipped."
 msgstr "Bestellung %(order_number)s wurde als nicht verschickt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:291
-#: byceps/blueprints/admin/shop/order/views.py:331
-#: byceps/blueprints/site/shop/orders/views.py:157
+#: byceps/blueprints/admin/shop/order/views.py:278
+#: byceps/blueprints/admin/shop/order/views.py:319
+#: byceps/blueprints/site/shop/orders/views.py:174
+#: byceps/blueprints/site/shop/orders/views.py:291
 msgid ""
 "The order has already been canceled. The payment state cannot be changed "
 "anymore."
@@ -4129,7 +4147,14 @@ msgstr ""
 "Die Bestellung ist bereits storniert worden; der Bezahlstatus kann nicht "
 "mehr geändert werden."
 
-#: byceps/blueprints/admin/shop/order/views.py:339
+#: byceps/blueprints/admin/shop/order/views.py:325
+#: byceps/blueprints/admin/shop/order/views.py:397
+#: byceps/blueprints/site/shop/orders/views.py:179
+#: byceps/blueprints/site/shop/orders/views.py:296
+msgid "An unexpected error occurred."
+msgstr "Ein unvorhergesehener Fehler ist aufgetreten."
+
+#: byceps/blueprints/admin/shop/order/views.py:331
 msgid ""
 "The order has been canceled and the corresponding articles have been made"
 " available again."
@@ -4137,24 +4162,24 @@ msgstr ""
 "Die Bestellung wurde als storniert markiert und die betroffenen Artikel "
 "in den entsprechenden Stückzahlen wieder zur Bestellung freigegeben."
 
-#: byceps/blueprints/admin/shop/order/views.py:348
+#: byceps/blueprints/admin/shop/order/views.py:340
 msgid "No email has been sent to the orderer."
 msgstr "Es wurde keine E-Mail an den/die Auftraggeber/in versendet."
 
-#: byceps/blueprints/admin/shop/order/views.py:367
-#: byceps/blueprints/admin/shop/order/views.py:402
+#: byceps/blueprints/admin/shop/order/views.py:359
+#: byceps/blueprints/admin/shop/order/views.py:395
 msgid "Order is already marked as paid."
 msgstr "Die Bestellung ist bereits als bezahlt markiert worden."
 
-#: byceps/blueprints/admin/shop/order/views.py:405
+#: byceps/blueprints/admin/shop/order/views.py:402
 msgid "Order has been marked as paid."
 msgstr "Die Bestellung wurde als bezahlt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:438
+#: byceps/blueprints/admin/shop/order/views.py:435
 msgid "Email confirmation for placed order has been sent again."
 msgstr "Die E-Mail-Eingangsbestätigung wurde erneut versendet."
 
-#: byceps/blueprints/admin/shop/order/views.py:480
+#: byceps/blueprints/admin/shop/order/views.py:477
 #, python-format
 msgid ""
 "Order number sequence could not be created. Is the prefix \"%(prefix)s\" "
@@ -4163,7 +4188,7 @@ msgstr ""
 "Die Bestellnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/order/views.py:489
+#: byceps/blueprints/admin/shop/order/views.py:486
 #, python-format
 msgid "Order number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -4184,7 +4209,7 @@ msgstr "versendet"
 msgid "shipping required"
 msgstr "Versand erforderlich"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:41
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:42
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:24
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/mark_as_paid_form.html:4
 msgid "Mark order as paid"
@@ -4217,7 +4242,7 @@ msgstr "E-Mail-Bestätigung erneut senden"
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:4
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:15
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:20
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:47
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:54
 msgid "Cancel order"
 msgstr "Bestellung stornieren"
 
@@ -4266,7 +4291,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> als %(new_payment_state)s via"
 " %(payment_method)s markiert (vorher %(former_payment_state)s)."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:54
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:58
 #, python-format
 msgid ""
 "Invoice %(invoice_number)s was created for order <a "
@@ -4275,7 +4300,7 @@ msgstr ""
 "Rechnung %(invoice_number)s für Bestellung <a "
 "href=\"%(order_url)s\">%(order_number)s</a> wurde erstellt."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:63
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:67
 #, python-format
 msgid ""
 "%(initiator)s has marked order <a "
@@ -4285,7 +4310,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> als "
 "<strong>versendet</strong> markiert."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:72
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:76
 #, python-format
 msgid ""
 "%(initiator)s has marked order <a "
@@ -4296,7 +4321,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> als <strong>nicht "
 "versendet</strong> markiert."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:81
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:85
 #, python-format
 msgid ""
 "%(author)s has added a <strong>note</strong> to order <a "
@@ -4306,7 +4331,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> eine <strong>Notiz "
 "hinzugefügt</strong>:"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:91
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:95
 #, python-format
 msgid ""
 "%(initiator)s has <strong>added a payment</strong> for order <a "
@@ -4316,7 +4341,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> eine <strong>Zahlung "
 "hinzugefügt</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:100
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:104
 #, python-format
 msgid ""
 "%(initiator)s has marked order <a "
@@ -4326,7 +4351,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> als "
 "<strong>versendet</strong> markiert."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:109
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:113
 #, python-format
 msgid ""
 "%(initiator)s has marked order <a "
@@ -4337,7 +4362,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> als <strong>nicht "
 "versendet</strong> markiert."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:118
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:122
 #, python-format
 msgid ""
 "%(initiator)s has <strong>re-triggered sending</strong> of the "
@@ -4348,12 +4373,12 @@ msgstr ""
 "Bestellung <a href=\"%(order_url)s\">%(order_number)s</a> <strong>erneut "
 "ausgelöst</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:127
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:131
 #, python-format
 msgid "Badge \"%(badge)s\" has been <strong>awarded</strong> to %(user)s."
 msgstr "Das Abzeichen \"%(badge)s\" wurde an %(user)s <strong>verliehen</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:135
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:139
 #, python-format
 msgid ""
 "A <a href=\"%(url)s\">ticket bundle</a> with %(ticket_quantity)s tickets "
@@ -4362,7 +4387,7 @@ msgstr ""
 "Ein <a href=\"%(url)s\">Ticketpaket</a> mit %(ticket_quantity)s Tickets "
 "der Kategorie \"%(ticket_category)s\" wurde erstellt."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:144
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:148
 #, python-format
 msgid ""
 "%(initiator)s has <strong>revoked</strong> the <a href=\"%(url)s\">ticket"
@@ -4371,12 +4396,12 @@ msgstr ""
 "%(initiator)s hat das <a href=\"%(url)s\">Ticketpaket</a> "
 "<strong>widerrufen</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:152
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:156
 #, python-format
 msgid "<a href=\"%(url)s\">Ticket %(code)s</a> has been <strong>created</strong>."
 msgstr "<a href=\"%(url)s\">Ticket %(code)s</a> wurde <strong>angelegt</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:160
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:164
 #, python-format
 msgid ""
 "%(initiator)s has <strong>revoked</strong> <a href=\"%(url)s\">ticket "
@@ -4385,7 +4410,7 @@ msgstr ""
 "%(initiator)s hat <a href=\"%(url)s\">Ticket %(code)s</a> "
 "<strong>widerrufen</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:169
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:173
 #, python-format
 msgid ""
 "%(initiator)s has initiated <strong>unknown event</strong> "
@@ -4396,13 +4421,13 @@ msgstr ""
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/blueprints/site/shop/order/forms.py:20
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:62
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:69
 msgid "Company"
 msgstr "Firma"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:14
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:26
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:69
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:76
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:29
 msgid "Address"
 msgstr "Adresse"
@@ -4438,7 +4463,7 @@ msgid "Create order number sequence"
 msgstr "Bestellnummer-Sequenz erstellen"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:47
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:50
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:57
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:18
 msgid "overdue"
 msgstr "überfällig"
@@ -4460,7 +4485,7 @@ msgstr[0] "Zahlung"
 msgstr[1] "Zahlungen"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:77
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:31
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:38
 msgid "Payment method"
 msgstr "Zahlungsart"
 
@@ -4471,13 +4496,14 @@ msgid "Additional fields"
 msgstr "Zusätzliche Felder"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:104
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:50
 msgid "Invoice"
 msgid_plural "Invoices"
 msgstr[0] "Rechnung"
 msgstr[1] "Rechnungen"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:119
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:38
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:45
 msgid "Reason for cancelation"
 msgstr "Grund für Stornierung"
 
@@ -4572,7 +4598,7 @@ msgstr ""
 msgid "Currency"
 msgstr "Währung"
 
-#: byceps/blueprints/admin/shop/shop/views.py:161
+#: byceps/blueprints/admin/shop/shop/views.py:167
 msgid "Shop has been created."
 msgstr "Der Shop wurde angelegt."
 
@@ -4581,12 +4607,16 @@ msgstr "Der Shop wurde angelegt."
 msgid "Create shop"
 msgstr "Shop erstellen"
 
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:16
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:17
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:18
 msgid "order"
 msgid_plural "orders"
 msgstr[0] "Bestellung"
 msgstr[1] "Bestellungen"
+
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:23
+msgid "Recent Events"
+msgstr "Letzte Ereignisse"
 
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:32
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:34
@@ -5035,7 +5065,7 @@ msgstr "Für diese Party sind keine Ticket-Kategorien vorhanden."
 msgid "Edit ticket category"
 msgstr "Ticket-Kategorie bearbeiten"
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:163
+#: byceps/blueprints/admin/ticketing/checkin/views.py:155
 msgid ""
 "The user account assigned to this ticket has been deleted. Check-in "
 "denied."
@@ -5043,7 +5073,7 @@ msgstr ""
 "Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. Der Check-"
 "In ist nicht erlaubt."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:170
+#: byceps/blueprints/admin/ticketing/checkin/views.py:162
 msgid ""
 "The user account assigned to this ticket has been suspended. Check-in "
 "denied."
@@ -5051,7 +5081,7 @@ msgstr ""
 "Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. Der Check-In ist "
 "nicht erlaubt."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:181
+#: byceps/blueprints/admin/ticketing/checkin/views.py:173
 #, python-format
 msgid ""
 "User <em>%(screen_name)s</em> has been checked in with ticket <a "
@@ -5060,7 +5090,7 @@ msgstr ""
 "Benutzer <em>%(screen_name)s</em> wurde mit Ticket <a "
 "href=\"%(ticket_url)s\">%(ticket_code)s</a> eingecheckt."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:193
+#: byceps/blueprints/admin/ticketing/checkin/views.py:185
 #, python-format
 msgid ""
 "Ticket <a href=\"%(ticket_url)s\">%(ticket_code)s</a> does not occupy a "
@@ -5069,7 +5099,7 @@ msgstr ""
 "Ticket <a href=\"%(ticket_url)s\">%(ticket_code)s</a> belegt noch keinen "
 "Sitzplatz."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:214
+#: byceps/blueprints/admin/ticketing/checkin/views.py:206
 msgid "Check-in has been reverted."
 msgstr "Der Check-In wurde rückgängig gemacht."
 
@@ -5275,7 +5305,7 @@ msgstr "<strong>Unbekanntes Ereignis</strong> \"%(event_type)s\" ist eingetreten
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/appoint_user_form.html:6
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:8
-#: byceps/services/shop/article/models.py:46
+#: byceps/services/shop/article/models.py:47
 msgid "Ticket"
 msgstr "Ticket"
 
@@ -5335,7 +5365,7 @@ msgid "Change"
 msgstr "Ändern"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:7
-#: byceps/services/shop/article/models.py:47
+#: byceps/services/shop/article/models.py:48
 msgid "Ticket bundle"
 msgstr "Ticketpaket"
 
@@ -6129,11 +6159,11 @@ msgstr "Der Webhook wurde aktualisiert."
 msgid "Webhook has been removed."
 msgstr "Der Webhook wurde gelöscht."
 
-#: byceps/blueprints/admin/webhook/views.py:168
+#: byceps/blueprints/admin/webhook/views.py:170
 msgid "Webhook call has been successful."
 msgstr "Der Webhook-Aufruf war erfolgreich."
 
-#: byceps/blueprints/admin/webhook/views.py:172
+#: byceps/blueprints/admin/webhook/views.py:174
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
 
@@ -7008,43 +7038,43 @@ msgstr "Sitzplan"
 msgid "Manage seats"
 msgstr "Sitzplätze verwalten"
 
-#: byceps/blueprints/site/shop/order/views.py:56
-#: byceps/blueprints/site/shop/order/views.py:105
-#: byceps/blueprints/site/shop/order/views.py:158
-#: byceps/blueprints/site/shop/order/views.py:211
+#: byceps/blueprints/site/shop/order/views.py:58
+#: byceps/blueprints/site/shop/order/views.py:107
+#: byceps/blueprints/site/shop/order/views.py:161
+#: byceps/blueprints/site/shop/order/views.py:214
 msgid "The shop is closed."
 msgstr "Der Shop ist derzeit geschlossen."
 
-#: byceps/blueprints/site/shop/order/views.py:64
-#: byceps/blueprints/site/shop/order/views.py:113
+#: byceps/blueprints/site/shop/order/views.py:66
+#: byceps/blueprints/site/shop/order/views.py:115
 msgid "No articles are available."
 msgstr "Es sind keine Artikel verfügbar."
 
-#: byceps/blueprints/site/shop/order/views.py:125
+#: byceps/blueprints/site/shop/order/views.py:127
 msgid "No articles have been selected."
 msgstr "Es wurden keine Artikel ausgewählt."
 
-#: byceps/blueprints/site/shop/order/views.py:133
-#: byceps/blueprints/site/shop/order/views.py:247
+#: byceps/blueprints/site/shop/order/views.py:134
+#: byceps/blueprints/site/shop/order/views.py:249
 msgid "Placing the order has failed."
 msgstr "Die Bestellung ist fehlgeschlagen."
 
-#: byceps/blueprints/site/shop/order/views.py:171
-#: byceps/blueprints/site/shop/order/views.py:215
+#: byceps/blueprints/site/shop/order/views.py:174
+#: byceps/blueprints/site/shop/order/views.py:218
 msgid "The article cannot be ordered directly."
 msgstr "Der Artikel kann nicht direkt bestellt werden."
 
-#: byceps/blueprints/site/shop/order/views.py:178
-#: byceps/blueprints/site/shop/order/views.py:225
+#: byceps/blueprints/site/shop/order/views.py:181
+#: byceps/blueprints/site/shop/order/views.py:228
 msgid "You cannot place another order."
 msgstr "Du kannst keine weitere Bestellung aufgeben."
 
-#: byceps/blueprints/site/shop/order/views.py:187
-#: byceps/blueprints/site/shop/order/views.py:231
+#: byceps/blueprints/site/shop/order/views.py:190
+#: byceps/blueprints/site/shop/order/views.py:234
 msgid "The article is not available."
 msgstr "Der Artikel ist nicht verfügbar."
 
-#: byceps/blueprints/site/shop/order/views.py:297
+#: byceps/blueprints/site/shop/order/views.py:307
 #, python-format
 msgid "Your order <strong>%(order_number)s</strong> has been placed. Thank you!"
 msgstr ""
@@ -7057,7 +7087,7 @@ msgid "currently not available"
 msgstr "derzeit nicht verfügbar"
 
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_orderer.html:3
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:59
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:66
 msgid "Billing and shipping address"
 msgstr "Rechnungs- und Lieferadresse"
 
@@ -7088,19 +7118,27 @@ msgstr "Jetzt kostenpflichtig bestellen"
 msgid "No articles are available at this time."
 msgstr "Es sind derzeit keine Artikel verfügbar."
 
-#: byceps/blueprints/site/shop/orders/views.py:108
-#: byceps/blueprints/site/shop/orders/views.py:136
+#: byceps/blueprints/site/shop/orders/views.py:124
+#: byceps/blueprints/site/shop/orders/views.py:152
+#: byceps/blueprints/site/shop/orders/views.py:201
+#: byceps/blueprints/site/shop/orders/views.py:230
+#: byceps/blueprints/site/shop/orders/views.py:258
+#: byceps/blueprints/site/shop/orders/views.py:320
+#: byceps/blueprints/site/shop/orders/views.py:351
+#: byceps/blueprints/site/shop/orders/views.py:400
+#: byceps/blueprints/site/shop/orders/views.py:431
 msgid "The order has already been canceled."
 msgstr "Die Bestellung ist bereits storniert worden."
 
-#: byceps/blueprints/site/shop/orders/views.py:113
-#: byceps/blueprints/site/shop/orders/views.py:141
+#: byceps/blueprints/site/shop/orders/views.py:129
+#: byceps/blueprints/site/shop/orders/views.py:157
 msgid "The order has already been paid. You cannot cancel it yourself anymore."
 msgstr ""
 "Die Bestellung ist bereits bezahlt worden. Du kannst sie nicht mehr "
 "selbst stornieren."
 
-#: byceps/blueprints/site/shop/orders/views.py:163
+#: byceps/blueprints/site/shop/orders/views.py:184
+#: byceps/blueprints/site/shop/orders/views.py:303
 msgid "Order has been canceled."
 msgstr "Die Bestellung wurde storniert."
 
@@ -7109,13 +7147,14 @@ msgctxt "order"
 msgid "canceled"
 msgstr "storniert"
 
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_request_cancelation_head.html:4
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:11
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:4
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:11
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:12
 msgid "Your orders"
 msgstr "Deine Bestellungen"
 
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:55
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:62
 msgid "Payment notes"
 msgstr "Zahlungshinweis"
 
@@ -7897,27 +7936,27 @@ msgstr "hier kannst du ein neues Passwort festlegen: %(url)s"
 msgid "Image credit"
 msgstr "Bild"
 
-#: byceps/services/shop/article/models.py:45
+#: byceps/services/shop/article/models.py:46
 msgid "physical"
 msgstr "physikalisch"
 
-#: byceps/services/shop/article/models.py:48
+#: byceps/services/shop/article/models.py:49
 msgid "other"
 msgstr "sonstiges"
 
-#: byceps/services/shop/order/order_service.py:811
+#: byceps/services/shop/order/order_service.py:778
 msgid "bank transfer"
 msgstr "Überweisung"
 
-#: byceps/services/shop/order/order_service.py:812
+#: byceps/services/shop/order/order_service.py:779
 msgid "cash"
 msgstr "Barzahlung"
 
-#: byceps/services/shop/order/order_service.py:813
+#: byceps/services/shop/order/order_service.py:780
 msgid "direct debit"
 msgstr "Lastschrift"
 
-#: byceps/services/shop/order/order_service.py:814
+#: byceps/services/shop/order/order_service.py:781
 msgid "free"
 msgstr "kostenlos"
 
