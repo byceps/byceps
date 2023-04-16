@@ -14,6 +14,7 @@ from ....user.models.user import User
 from ...shop.models import ShopID
 from ...storefront.models import StorefrontID
 
+from .invoice import Invoice
 from .order import Address, BaseOrder, LineItem
 from .payment import Payment
 
@@ -37,4 +38,5 @@ class DetailedOrder(BaseOrder):
 @dataclass(frozen=True)
 class AdminDetailedOrder(DetailedOrder):
     placed_by: User
+    invoices: list[Invoice]
     payments: list[Payment]

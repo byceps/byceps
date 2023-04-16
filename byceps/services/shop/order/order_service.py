@@ -51,7 +51,12 @@ from .models.order import (
     SiteOrderListItem,
 )
 from .models.payment import AdditionalPaymentData
-from . import order_action_service, order_log_service, order_payment_service
+from . import (
+    order_action_service,
+    order_invoice_service,
+    order_log_service,
+    order_payment_service,
+)
 
 
 OVERDUE_THRESHOLD = timedelta(days=14)
@@ -522,11 +527,12 @@ def find_order_with_details_for_admin(
     placed_by = user_service.get_user(
         detailed_order.placed_by_id, include_avatar=True
     )
-
+    invoices = order_invoice_service.get_invoices_for_order(detailed_order.id)
     payments = order_payment_service.get_payments_for_order(detailed_order.id)
 
     return AdminDetailedOrder(
         placed_by=placed_by,
+        invoices=invoices,
         payments=payments,
         **dataclasses.asdict(detailed_order),
     )

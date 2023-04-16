@@ -101,10 +101,10 @@
         {%- endif %}
         </div>
 
-        <div class="data-label">{{ ngettext('Invoice', 'Invoices', invoices|length) }}</div>
+        <div class="data-label">{{ ngettext('Invoice', 'Invoices', order.invoices|length) }}</div>
         <div class="data-value">
-        {%- if invoices %}
-          {%- for invoice in invoices|sort(attribute='number') %}
+        {%- if order.invoices %}
+          {%- for invoice in order.invoices|sort(attribute='number') %}
             {%- if invoice.url %}<a href="{{ invoice.url }}">{% endif %}
             {{- invoice.number }}
             {%- if invoice.url %}</a>{% endif %}

@@ -11,7 +11,6 @@ from flask_babel import gettext
 
 from .....services.brand import brand_service
 from .....services.shop.order import (
-    order_invoice_service,
     order_log_service,
     order_sequence_service,
     order_service,
@@ -110,8 +109,6 @@ def view(order_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    invoices = order_invoice_service.get_invoices_for_order(order.id)
-
     log_entries = service.get_enriched_log_entry_data_for_order(order.id)
 
     tickets = ticket_service.get_tickets_created_by_order(order.order_number)
@@ -120,7 +117,6 @@ def view(order_id):
         'shop': shop,
         'brand': brand,
         'order': order,
-        'invoices': invoices,
         'log_entries': log_entries,
         'PaymentState': PaymentState,
         'tickets': tickets,
