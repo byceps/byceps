@@ -40,6 +40,7 @@ from .models.number import OrderNumber
 from .models.order import (
     Address,
     AdminOrderListItem,
+    DetailedOrder,
     LineItemID,
     Order,
     OrderID,
@@ -465,7 +466,7 @@ def get_order(order_id: OrderID) -> Order:
     return _order_to_transfer_object(db_order)
 
 
-def find_order_with_details(order_id: OrderID) -> Optional[Order]:
+def find_order_with_details(order_id: OrderID) -> Optional[DetailedOrder]:
     """Return the order with that id, or `None` if not found."""
     db_order = (
         db.session.scalars(
@@ -482,7 +483,31 @@ def find_order_with_details(order_id: OrderID) -> Optional[Order]:
     if db_order is None:
         return None
 
-    return _order_to_transfer_object(db_order)
+    return DetailedOrder(
+        id=db_order.id,
+        created_at=db_order.created_at,
+        shop_id=db_order.shop_id,
+        storefront_id=db_order.storefront_id,
+        order_number=db_order.order_number,
+        placed_by_id=db_order.placed_by_id,
+        company=db_order.company,
+        first_name=db_order.first_name,
+        last_name=db_order.last_name,
+        address=_get_address(db_order),
+        total_amount=db_order.total_amount,
+        line_items=_get_line_items(db_order),
+        payment_method=db_order.payment_method,
+        payment_state=db_order.payment_state,
+        state=_get_order_state(db_order),
+        is_open=_is_open(db_order),
+        is_canceled=_is_canceled(db_order),
+        is_paid=_is_paid(db_order),
+        is_invoiced=_is_invoiced(db_order),
+        is_overdue=_is_overdue(db_order),
+        is_processing_required=db_order.processing_required,
+        is_processed=_is_processed(db_order),
+        cancelation_reason=db_order.cancelation_reason,
+    )
 
 
 def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:

@@ -146,6 +146,22 @@ class Order(BaseOrder):
 
 
 @dataclass(frozen=True)
+class DetailedOrder(BaseOrder):
+    shop_id: ShopID
+    storefront_id: StorefrontID
+    company: Optional[str]
+    first_name: str
+    last_name: str
+    address: Address
+    line_items: list[LineItem]
+    payment_method: Optional[str]
+    is_invoiced: bool
+    is_processing_required: bool
+    is_processed: bool
+    cancelation_reason: Optional[str]
+
+
+@dataclass(frozen=True)
 class AdminOrderListItem(BaseOrder):
     placed_by: User
     first_name: str

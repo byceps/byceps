@@ -16,7 +16,7 @@ from flask import current_app
 from .....services.user import user_service
 from .....util.templating import load_template
 
-from ..models.order import Order, OrderID
+from ..models.order import DetailedOrder, OrderID
 from .. import order_service
 
 
@@ -36,7 +36,7 @@ def export_order_as_xml(order_id: OrderID) -> Optional[dict[str, str]]:
     }
 
 
-def _assemble_context(order: Order) -> dict[str, Any]:
+def _assemble_context(order: DetailedOrder) -> dict[str, Any]:
     """Assemble template context."""
     placed_by = user_service.get_user(order.placed_by_id)
     email_address = user_service.get_email_address(placed_by.id)
