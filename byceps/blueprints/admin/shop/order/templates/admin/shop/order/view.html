@@ -67,9 +67,9 @@
         <div class="data-label">{{ _('Date of creation') }}</div>
         <div class="data-value">{{ order.created_at|datetimeformat }}</div>
 
-        <div class="data-label">{{ ngettext('Payment', 'Payments', payments|length) }}</div>
+        <div class="data-label">{{ ngettext('Payment', 'Payments', order.payments|length) }}</div>
         <div class="data-value">
-        {%- if payments %}
+        {%- if order.payments %}
           <table class="index index--v-centered index--wide">
             <thead>
               <tr>
@@ -80,7 +80,7 @@
               </tr>
             </thead>
             <tbody>
-              {%- for payment in payments|sort(attribute='created_at') %}
+              {%- for payment in order.payments|sort(attribute='created_at') %}
               <tr>
                 <td>{{ payment.created_at|datetimeformat }}</td>
                 <td>{{ render_order_payment_method(payment.method) }}</td>

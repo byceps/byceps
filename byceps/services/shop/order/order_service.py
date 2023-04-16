@@ -523,8 +523,11 @@ def find_order_with_details_for_admin(
         detailed_order.placed_by_id, include_avatar=True
     )
 
+    payments = order_payment_service.get_payments_for_order(detailed_order.id)
+
     return AdminDetailedOrder(
         placed_by=placed_by,
+        payments=payments,
         **dataclasses.asdict(detailed_order),
     )
 
