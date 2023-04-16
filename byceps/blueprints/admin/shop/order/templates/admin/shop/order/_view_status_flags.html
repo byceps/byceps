@@ -2,16 +2,6 @@
 
 
         <ol class="order-status-bar mb">
-          <li class="order-status-flag {{ 'set' if order.is_paid else '' }}">
-            <div class="order-status-flag-icon">{{ render_icon('payment') }}</div>
-            <div class="order-status-flag-label">
-              {%- if order.is_paid -%}
-              {{ _('paid') }}
-              {%- else -%}
-              {{ _('not paid yet') }}
-              {%- endif -%}
-            </div>
-          </li>
           {%- if order.is_processing_required %}
           <li class="order-status-flag {{ 'set' if order.is_processed else '' }}">
             <div class="order-status-flag-icon">{{ render_icon('shipping') }}</div>

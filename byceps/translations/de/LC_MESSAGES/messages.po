@@ -3891,7 +3891,6 @@ msgid "ordered"
 msgstr "bestellt"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:126
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_status_flags.html:9
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:26
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:7
 msgid "paid"
@@ -4191,7 +4190,7 @@ msgid "Amount"
 msgstr "Betrag"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:27
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_status_flags.html:20
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_status_flags.html:10
 msgid "shipped"
 msgstr "versendet"
 
@@ -4393,11 +4392,7 @@ msgstr "Firma"
 msgid "Address"
 msgstr "Adresse"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_status_flags.html:11
-msgid "not paid yet"
-msgstr "noch nicht bezahlt"
-
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_status_flags.html:22
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_status_flags.html:12
 msgid "not shipped yet"
 msgstr "noch nicht versendet"
 
