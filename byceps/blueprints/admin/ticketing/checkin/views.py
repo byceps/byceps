@@ -14,6 +14,7 @@ from flask_babel import gettext
 
 from .....services.party.models import Party
 from .....services.party import party_service
+from .....services.shop.order.models.order import AdminOrderListItem
 from .....services.shop.order import order_service
 from .....services.shop.shop import shop_service
 from .....services.ticketing.dbmodels.ticket import DbTicket
@@ -33,7 +34,6 @@ from .....util.framework.templating import templated
 from .....util.views import permission_required, respond_no_content
 
 from ...shop.order import service as order_blueprint_service
-from ...shop.order.service import OrderWithOrderer
 
 
 blueprint = create_blueprint('ticketing_checkin_admin', __name__)
@@ -98,7 +98,7 @@ def _search_tickets(
 
 def _search_orders(
     brand_id: BrandID, search_term: str, limit: int
-) -> list[OrderWithOrderer]:
+) -> list[AdminOrderListItem]:
     shop = shop_service.find_shop_for_brand(brand_id)
     if shop is None:
         return []

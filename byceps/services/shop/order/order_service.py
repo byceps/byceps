@@ -38,6 +38,7 @@ from .models.log import OrderLogEntryData
 from .models.number import OrderNumber
 from .models.order import (
     Address,
+    AdminOrderListItem,
     LineItemID,
     Order,
     OrderID,
@@ -617,7 +618,27 @@ def get_orders_for_shop_paginated(
         else:
             stmt = stmt.filter(DbOrder.processed_at.is_(None))
 
-    return paginate(stmt, page, per_page, item_mapper=_order_to_transfer_object)
+    def to_admin_order_list_item(db_order: DbOrder) -> AdminOrderListItem:
+        return AdminOrderListItem(
+            id=db_order.id,
+            created_at=db_order.created_at,
+            order_number=db_order.order_number,
+            placed_by_id=db_order.placed_by_id,
+            placed_by=None,
+            first_name=db_order.first_name,
+            last_name=db_order.last_name,
+            total_amount=db_order.total_amount,
+            payment_state=db_order.payment_state,
+            state=_get_order_state(db_order),
+            is_open=_is_open(db_order),
+            is_canceled=_is_canceled(db_order),
+            is_paid=_is_paid(db_order),
+            is_overdue=_is_overdue(db_order),
+            is_processing_required=db_order.processing_required,
+            is_processed=db_order.processed_at is not None,
+        )
+
+    return paginate(stmt, page, per_page, item_mapper=to_admin_order_list_item)
 
 
 def get_orders_placed_by_user(user_id: UserID) -> list[Order]:

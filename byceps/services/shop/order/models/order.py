@@ -17,6 +17,8 @@ from moneyed import Money
 
 from .....typing import UserID
 
+from ....user.models.user import User
+
 from ...article.models import ArticleID, ArticleNumber, ArticleType
 from ...shop.models import ShopID
 from ...storefront.models import StorefrontID
@@ -141,6 +143,15 @@ class Order(BaseOrder):
     is_processing_required: bool
     is_processed: bool
     cancelation_reason: Optional[str]
+
+
+@dataclass(frozen=True)
+class AdminOrderListItem(BaseOrder):
+    placed_by: User
+    first_name: str
+    last_name: str
+    is_processing_required: bool
+    is_processed: bool
 
 
 @dataclass(frozen=True)
