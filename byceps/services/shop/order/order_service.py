@@ -45,6 +45,7 @@ from .models.order import (
     LineItemProcessingState,
     OrderState,
     PaymentState,
+    SiteOrderListItem,
 )
 from .models.payment import AdditionalPaymentData
 from . import order_action_service, order_log_service, order_payment_service
@@ -639,7 +640,7 @@ def get_orders_placed_by_user(user_id: UserID) -> list[Order]:
 
 def get_orders_placed_by_user_for_storefront(
     user_id: UserID, storefront_id: StorefrontID
-) -> list[Order]:
+) -> list[SiteOrderListItem]:
     """Return orders placed by the user through that storefront."""
     db_orders = (
         db.session.scalars(
@@ -655,7 +656,22 @@ def get_orders_placed_by_user_for_storefront(
         .all()
     )
 
-    return list(map(_order_to_transfer_object, db_orders))
+    def to_site_order_list_item(db_order: DbOrder) -> SiteOrderListItem:
+        return SiteOrderListItem(
+            id=db_order.id,
+            created_at=db_order.created_at,
+            order_number=db_order.order_number,
+            placed_by_id=db_order.placed_by_id,
+            total_amount=db_order.total_amount,
+            payment_state=db_order.payment_state,
+            state=_get_order_state(db_order),
+            is_open=_is_open(db_order),
+            is_canceled=_is_canceled(db_order),
+            is_paid=_is_paid(db_order),
+            is_overdue=_is_overdue(db_order),
+        )
+
+    return list(map(to_site_order_list_item, db_orders))
 
 
 def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
@@ -701,7 +717,7 @@ def _order_to_transfer_object(db_order: DbOrder) -> Order:
     )
 
     state = _get_order_state(db_order)
-    is_open = db_order.payment_state == PaymentState.open
+    is_open = _is_open(db_order)
     is_canceled = _is_canceled(db_order)
     is_paid = _is_paid(db_order)
     is_invoiced = db_order.invoice_created_at is not None
@@ -805,6 +821,10 @@ def _get_order_state(db_order: DbOrder) -> OrderState:
             return OrderState.complete
 
     return OrderState.open
+
+
+def _is_open(db_order: DbOrder) -> bool:
+    return db_order.payment_state == PaymentState.open
 
 
 def _is_canceled(db_order: DbOrder) -> bool:

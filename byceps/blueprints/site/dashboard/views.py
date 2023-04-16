@@ -19,7 +19,7 @@ from ....services.board import (
 from ....services.guest_server import guest_server_service
 from ....services.news.models import NewsHeadline
 from ....services.news import news_item_service
-from ....services.shop.order.models.order import Order
+from ....services.shop.order.models.order import SiteOrderListItem
 from ....services.shop.order import order_service
 from ....services.shop.storefront import storefront_service
 from ....services.site.models import Site
@@ -68,7 +68,7 @@ def index():
     }
 
 
-def _get_open_orders(site: Site, user_id: UserID) -> list[Order]:
+def _get_open_orders(site: Site, user_id: UserID) -> list[SiteOrderListItem]:
     storefront_id = site.storefront_id
     if storefront_id is None:
         return []

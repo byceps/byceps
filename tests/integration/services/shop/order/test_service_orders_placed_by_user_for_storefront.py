@@ -7,7 +7,7 @@ from moneyed import EUR
 import pytest
 
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order.models.order import Order, Orderer
+from byceps.services.shop.order.models.order import Order, Orderer, OrderID
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
@@ -67,14 +67,13 @@ def test_get_orders_placed_by_user(
     order4 = place_order(storefront1.id, orderer1)
     order5 = place_order(storefront2.id, orderer1)  # different storefront
 
-    orders_orderer1_storefront1 = get_orders_by_user(orderer1, storefront1.id)
-    assert orders_orderer1_storefront1 == [order4, order3, order1]
-
-    orders_orderer2_storefront1 = get_orders_by_user(orderer2, storefront1.id)
-    assert orders_orderer2_storefront1 == [order2]
-
-    orders_orderer1_storefront2 = get_orders_by_user(orderer1, storefront2.id)
-    assert orders_orderer1_storefront2 == [order5]
+    assert get_order_ids_by_user(orderer1, storefront1.id) == {
+        order4.id,
+        order3.id,
+        order1.id,
+    }
+    assert get_order_ids_by_user(orderer2, storefront1.id) == {order2.id}
+    assert get_order_ids_by_user(orderer1, storefront2.id) == {order5.id}
 
 
 # helpers
@@ -90,9 +89,10 @@ def place_order(storefront_id: StorefrontID, orderer: Orderer) -> Order:
     return order
 
 
-def get_orders_by_user(
+def get_order_ids_by_user(
     orderer: Orderer, storefront_id: StorefrontID
-) -> list[Order]:
-    return order_service.get_orders_placed_by_user_for_storefront(
+) -> set[OrderID]:
+    orders = order_service.get_orders_placed_by_user_for_storefront(
         orderer.user_id, storefront_id
     )
+    return {order.id for order in orders}

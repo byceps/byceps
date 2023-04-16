@@ -113,27 +113,36 @@ class LineItem:
 
 
 @dataclass(frozen=True)
-class Order:
+class BaseOrder:
     id: OrderID
     created_at: datetime
-    shop_id: ShopID
-    storefront_id: StorefrontID
     order_number: OrderNumber
     placed_by_id: UserID
-    company: Optional[str]
-    first_name: str
-    last_name: str
-    address: Address
     total_amount: Money
-    line_items: list[LineItem]
-    payment_method: Optional[str]
     payment_state: PaymentState
     state: OrderState
     is_open: bool
     is_canceled: bool
     is_paid: bool
-    is_invoiced: bool
     is_overdue: bool
+
+
+@dataclass(frozen=True)
+class Order(BaseOrder):
+    shop_id: ShopID
+    storefront_id: StorefrontID
+    company: Optional[str]
+    first_name: str
+    last_name: str
+    address: Address
+    line_items: list[LineItem]
+    payment_method: Optional[str]
+    is_invoiced: bool
     is_processing_required: bool
     is_processed: bool
     cancelation_reason: Optional[str]
+
+
+@dataclass(frozen=True)
+class SiteOrderListItem(BaseOrder):
+    pass
