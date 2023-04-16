@@ -18,11 +18,11 @@
     {{ render_bigstats_cell(order_counts_by_payment_state[PaymentState.paid]|numberformat, ngettext('order', 'orders', order_counts_by_payment_state[PaymentState.paid]) ~ '<br>'|safe ~ render_order_payment_state(PaymentState.paid), icon_name='success', href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='paid'), additional_classes='cell--fitted') }}
     {{ render_bigstats_cell(cancelation_request_quantities_by_state.open|numberformat, 'Stornierungsanfrage(n)<br>'|safe ~ render_tag(_('open'), class='color-info'), icon_name='pending', href=url_for('shop_cancelation_request_admin.index', shop_id=shop.id), additional_classes='cell--fitted') }}
     {{ render_bigstats_cell(cancelation_request_quantities_by_state.accepted|numberformat, 'Stornierungsanfrage(n)<br>'|safe ~ render_tag(_('accepted'), class='color-success'), icon_name='success', href=url_for('shop_cancelation_request_admin.index', shop_id=shop.id), additional_classes='cell--fitted') }}
-    <div class="cell cell--wider">
-      <div class="box">
+  </div>
+
+  <h2>{{ _('Recent Events') }}</h2>
+  <div class="box">
 {% include 'admin/shop/order/_view_events.html' %}
-      </div>
-    </div>
   </div>
 
 {%- endblock %}
