@@ -9,7 +9,7 @@ byceps.services.ticketing.ticket_attendance_service
 from collections import Counter
 from datetime import datetime
 from itertools import chain
-from typing import Sequence
+from typing import Optional, Sequence
 
 from sqlalchemy import delete, select
 
@@ -47,10 +47,16 @@ def delete_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
     db.session.commit()
 
 
-def get_attended_parties(user_id: UserID) -> list[Party]:
+def get_attended_parties(
+    user_id: UserID, limit_to_brand_id: Optional[BrandID] = None
+) -> list[Party]:
     """Return the parties the user has attended in the past."""
-    ticket_attendance_party_ids = _get_attended_party_ids(user_id)
-    archived_attendance_party_ids = _get_archived_attendance_party_ids(user_id)
+    ticket_attendance_party_ids = _get_attended_party_ids(
+        user_id, limit_to_brand_id
+    )
+    archived_attendance_party_ids = _get_archived_attendance_party_ids(
+        user_id, limit_to_brand_id
+    )
 
     party_ids = set(
         chain(ticket_attendance_party_ids, archived_attendance_party_ids)
@@ -59,9 +65,11 @@ def get_attended_parties(user_id: UserID) -> list[Party]:
     return party_service.get_parties(party_ids)
 
 
-def _get_attended_party_ids(user_id: UserID) -> set[PartyID]:
+def _get_attended_party_ids(
+    user_id: UserID, limit_to_brand_id: Optional[BrandID] = None
+) -> set[PartyID]:
     """Return the IDs of the non-legacy parties the user has attended."""
-    party_ids = db.session.scalars(
+    stmt = (
         select(DbParty.id)
         .filter(DbParty.ends_at < datetime.utcnow())
         .filter(DbParty.canceled == False)  # noqa: E712
@@ -69,18 +77,28 @@ def _get_attended_party_ids(user_id: UserID) -> set[PartyID]:
         .join(DbTicket)
         .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(DbTicket.used_by_id == user_id)
-    ).all()
+    )
+
+    if limit_to_brand_id is not None:
+        stmt = stmt.filter(DbParty.brand_id == limit_to_brand_id)
+
+    party_ids = db.session.scalars(stmt).all()
 
     return set(party_ids)
 
 
-def _get_archived_attendance_party_ids(user_id: UserID) -> set[PartyID]:
+def _get_archived_attendance_party_ids(
+    user_id: UserID, limit_to_brand_id: Optional[BrandID] = None
+) -> set[PartyID]:
     """Return the IDs of the legacy parties the user has attended."""
-    party_ids = db.session.scalars(
-        select(DbArchivedAttendance.party_id).filter(
-            DbArchivedAttendance.user_id == user_id
-        )
-    ).all()
+    stmt = select(DbArchivedAttendance.party_id).filter(
+        DbArchivedAttendance.user_id == user_id
+    )
+
+    if limit_to_brand_id is not None:
+        stmt = stmt.join(DbParty).filter(DbParty.brand_id == limit_to_brand_id)
+
+    party_ids = db.session.scalars(stmt).all()
 
     return set(party_ids)
 
