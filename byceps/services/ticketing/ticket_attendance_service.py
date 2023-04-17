@@ -9,6 +9,7 @@ byceps.services.ticketing.ticket_attendance_service
 from collections import Counter
 from datetime import datetime
 from itertools import chain
+from typing import Sequence
 
 from sqlalchemy import delete, select
 
@@ -132,7 +133,7 @@ def get_top_attendees_for_brand(brand_id: BrandID) -> list[tuple[UserID, int]]:
 
 def _get_top_ticket_attendees_for_parties(
     brand_id: BrandID,
-) -> list[tuple[UserID, int]]:
+) -> Sequence[tuple[UserID, int]]:
     user_id_column = db.aliased(DbTicket).used_by_id
 
     attendance_count = (
@@ -147,38 +148,46 @@ def _get_top_ticket_attendees_for_parties(
         .scalar_subquery()
     )
 
-    return db.session.execute(
-        select(
-            user_id_column.distinct(),
-            attendance_count,
+    return (
+        db.session.execute(
+            select(
+                user_id_column.distinct(),
+                attendance_count,
+            )
+            .filter(user_id_column.is_not(None))
+            .filter(attendance_count > 0)
+            .order_by(attendance_count.desc())
         )
-        .filter(user_id_column.is_not(None))
-        .filter(attendance_count > 0)
-        .order_by(attendance_count.desc())
-    ).all()
+        .tuples()
+        .all()
+    )
 
 
 def _get_top_archived_attendees_for_parties(
     brand_id: BrandID,
-) -> list[tuple[UserID, int]]:
+) -> Sequence[tuple[UserID, int]]:
     attendance_count_column = db.func.count(DbArchivedAttendance.user_id).label(
         'attendance_count'
     )
 
-    return db.session.execute(
-        select(
-            DbArchivedAttendance.user_id,
-            attendance_count_column,
+    return (
+        db.session.execute(
+            select(
+                DbArchivedAttendance.user_id,
+                attendance_count_column,
+            )
+            .join(DbParty)
+            .filter(DbParty.brand_id == brand_id)
+            .group_by(DbArchivedAttendance.user_id)
+            .order_by(attendance_count_column.desc())
         )
-        .join(DbParty)
-        .filter(DbParty.brand_id == brand_id)
-        .group_by(DbArchivedAttendance.user_id)
-        .order_by(attendance_count_column.desc())
-    ).all()
+        .tuples()
+        .all()
+    )
 
 
 def _merge_top_attendance_counts(
-    xs: list[list[tuple[UserID, int]]]
+    xs: list[Sequence[tuple[UserID, int]]]
 ) -> Counter[UserID]:
     counter: Counter = Counter()
 
