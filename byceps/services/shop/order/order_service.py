@@ -492,11 +492,16 @@ def find_order_with_details_for_admin(
     invoices = order_invoice_service.get_invoices_for_order(detailed_order.id)
     payments = order_payment_service.get_payments_for_order(detailed_order.id)
 
+    detailed_order_attributes = dataclasses.asdict(detailed_order)
+    # Replace `dict`s with original type after applying `dataclasses.asdict()`.
+    detailed_order_attributes['address'] = detailed_order.address
+    detailed_order_attributes['line_items'] = detailed_order.line_items
+
     return AdminDetailedOrder(
         placed_by=placed_by,
         invoices=invoices,
         payments=payments,
-        **dataclasses.asdict(detailed_order),
+        **detailed_order_attributes,
     )
 
 
