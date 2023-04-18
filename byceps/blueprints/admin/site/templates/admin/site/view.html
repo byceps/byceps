@@ -12,15 +12,13 @@
     <div>
 
       <h1>
-        {{- site.title }}
-        {%- if not site.enabled or site.archived -%}
-          {%- if not site.enabled %}
+        {{ site.title }}
+        {%- if not site.enabled %}
         {{ render_tag(_('disabled'), class='color-disabled', icon='disabled') }}
-          {%- endif %}
-          {%- if site.archived %}
+        {%- endif %}
+        {%- if site.archived %}
         {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
-          {%- endif %}
-        {%- endif -%}
+        {%- endif %}
       </h1>
 
     </div>
