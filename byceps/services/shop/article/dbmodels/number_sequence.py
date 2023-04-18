@@ -25,6 +25,7 @@ class DbArticleNumberSequence(db.Model):
     )
     prefix = db.Column(db.UnicodeText, unique=True, nullable=False)
     value = db.Column(db.Integer, default=0, nullable=False)
+    archived = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(
         self,

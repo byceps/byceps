@@ -35,6 +35,7 @@ class ArticleNumberSequence:
     shop_id: ShopID
     prefix: str
     value: int
+    archived: bool
 
 
 ArticleType = Enum(
