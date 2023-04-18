@@ -28,7 +28,7 @@
 
         <p><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></p>
 
-        <div>
+        <div class="row" style="gap: 0.5rem;">
           {%- if site.enabled %}
           {{ render_icon_tag('success', _('Site') ~ ' ' ~ _('enabled'), 'color-success') }}
           {%- else %}
