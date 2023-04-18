@@ -11,7 +11,6 @@ from flask_babel import gettext
 
 from ....services.email import email_config_service, email_service
 from ....services.party import party_service
-from ....services.site import site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.user.models.user import User
 from ....services.user import user_service
@@ -152,8 +151,7 @@ def _get_party_title():
 
 
 def _enqueue_email(recipient: User, subject: str, body: str) -> None:
-    site = site_service.get_site(g.site_id)
-    email_config = email_config_service.get_config(site.brand_id)
+    email_config = email_config_service.get_config(g.brand_id)
     sender = email_config.sender
 
     recipient_address = user_service.get_email_address(recipient.id)

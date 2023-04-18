@@ -95,12 +95,11 @@ def view(slug):
 
 
 def _get_channel_ids() -> frozenset[NewsChannelID] | set[NewsChannelID]:
-    site = site_service.get_site(g.site_id)
-
-    if not site.news_channel_ids:
+    channel_ids = g.site.news_channel_ids
+    if not channel_ids:
         abort(404)
 
-    return site.news_channel_ids
+    return channel_ids
 
 
 def _get_items_per_page_value() -> int:

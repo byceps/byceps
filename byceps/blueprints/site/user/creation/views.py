@@ -17,7 +17,7 @@ from .....services.consent import consent_service, consent_subject_service
 from .....services.consent.models import ConsentSubject
 from .....services.newsletter.models import ListID as NewsletterListID
 from .....services.newsletter import newsletter_command_service
-from .....services.site import site_service, site_setting_service
+from .....services.site import site_setting_service
 from .....services.user import user_creation_service
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
@@ -141,8 +141,7 @@ def create():
 
 
 def _abort_if_user_account_creation_disabled():
-    site = site_service.get_site(g.site_id)
-    if not site.user_account_creation_enabled:
+    if not g.site.user_account_creation_enabled:
         flash_error(gettext('User account creation is disabled.'))
         abort(403)
 

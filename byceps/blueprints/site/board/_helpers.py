@@ -14,13 +14,10 @@ from ....services.board import (
     board_posting_query_service,
     board_topic_query_service,
 )
-from ....services.site import site_service
 
 
 def get_board_id():
-    site = site_service.get_site(g.site_id)
-
-    board_id = site.board_id
+    board_id = g.site.board_id
     if board_id is None:
         abort(404)
 

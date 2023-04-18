@@ -22,8 +22,6 @@ from ....services.news import news_item_service
 from ....services.shop.order.models.order import SiteOrderListItem
 from ....services.shop.order import order_service
 from ....services.shop.storefront import storefront_service
-from ....services.site.models import Site
-from ....services.site import site_service
 from ....services.ticketing import ticket_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.user import user_service
@@ -48,12 +46,10 @@ def index():
     if user is None:
         abort(404)
 
-    site = site_service.get_site(g.site_id)
-
-    open_orders = _get_open_orders(site, user.id)
+    open_orders = _get_open_orders(user.id)
     tickets = _get_tickets(user.id)
-    news_headlines = _get_news_headlines(site)
-    board_topics = _get_board_topics(site, g.user)
+    news_headlines = _get_news_headlines()
+    board_topics = _get_board_topics(g.user)
     guest_servers = guest_server_service.get_servers_for_owner_and_party(
         g.user.id, g.party_id
     )
@@ -68,8 +64,8 @@ def index():
     }
 
 
-def _get_open_orders(site: Site, user_id: UserID) -> list[SiteOrderListItem]:
-    storefront_id = site.storefront_id
+def _get_open_orders(user_id: UserID) -> list[SiteOrderListItem]:
+    storefront_id = g.site.storefront_id
     if storefront_id is None:
         return []
 
@@ -91,16 +87,16 @@ def _get_tickets(user_id: UserID) -> list[DbTicket]:
     return ticket_service.get_tickets_used_by_user(user_id, g.party_id)
 
 
-def _get_news_headlines(site: Site) -> list[NewsHeadline]:
-    channel_ids = site.news_channel_ids
+def _get_news_headlines() -> list[NewsHeadline]:
+    channel_ids = g.site.news_channel_ids
     if not channel_ids:
         return []
 
     return news_item_service.get_recent_headlines(channel_ids, limit=4)
 
 
-def _get_board_topics(site: Site, current_user: CurrentUser) -> list[DbTopic]:
-    board_id = site.board_id
+def _get_board_topics(current_user: CurrentUser) -> list[DbTopic]:
+    board_id = g.site.board_id
     if board_id is None:
         return []
 

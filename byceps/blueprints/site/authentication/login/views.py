@@ -9,8 +9,6 @@ byceps.blueprints.site.authentication.login.views
 from flask import abort, g, redirect, request, url_for
 from flask_babel import gettext
 
-from .....services.site.models import Site
-from .....services.site import site_service
 from .....signals import auth as auth_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
@@ -38,19 +36,16 @@ def log_in_form():
         )
         return redirect_to('dashboard.index')
 
-    if not _is_site_login_enabled():
+    if not g.site.login_enabled:
         return {
             'login_enabled': False,
         }
 
     form = LogInForm()
 
-    site = _get_site()
-
     return {
         'login_enabled': True,
         'form': form,
-        'user_account_creation_enabled': site.user_account_creation_enabled,
     }
 
 
@@ -61,7 +56,7 @@ def log_in():
     if g.user.authenticated:
         return
 
-    if not _is_site_login_enabled():
+    if not g.site.login_enabled:
         abort(403, 'Log in to this site is generally disabled.')
 
     form = LogInForm(request.form)
@@ -119,15 +114,3 @@ def log_out():
 
     flash_success(gettext('Successfully logged out.'))
     return redirect('/')
-
-
-# helpers
-
-
-def _is_site_login_enabled() -> bool:
-    site = _get_site()
-    return site.login_enabled
-
-
-def _get_site() -> Site:
-    return site_service.get_site(g.site_id)

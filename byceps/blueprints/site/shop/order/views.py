@@ -21,7 +21,6 @@ from .....services.shop.order.models.order import Order
 from .....services.shop.order import order_checkout_service, order_service
 from .....services.shop.shop import shop_service
 from .....services.shop.storefront import storefront_service
-from .....services.site import site_service
 from .....services.user import user_service
 from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
@@ -257,8 +256,7 @@ def order_single(article_id):
 
 
 def _get_storefront_or_404():
-    site = site_service.get_site(g.site_id)
-    storefront_id = site.storefront_id
+    storefront_id = g.site.storefront_id
     if storefront_id is None:
         abort(404)
 

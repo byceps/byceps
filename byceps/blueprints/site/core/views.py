@@ -40,6 +40,7 @@ def url_for_site_file(filename, **kwargs) -> Optional[str]:
 def prepare_request_globals() -> None:
     site_id = config.get_current_site_id()
     site = site_service.get_site(site_id)
+    g.site = site
     g.site_id = site.id
 
     g.brand_id = site.brand_id

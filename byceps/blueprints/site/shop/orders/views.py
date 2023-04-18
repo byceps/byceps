@@ -21,7 +21,6 @@ from .....services.shop.order.email import order_email_service
 from .....services.shop.order import order_payment_service, order_service
 from .....services.shop.order.models.order import PaymentState
 from .....services.shop.storefront import storefront_service
-from .....services.site import site_service
 from .....services.user import user_service
 from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
@@ -43,9 +42,7 @@ def index():
     """List orders placed by the current user in the storefront assigned
     to the current site.
     """
-    site = site_service.get_site(g.site_id)
-
-    storefront_id = site.storefront_id
+    storefront_id = g.site.storefront_id
     if storefront_id is not None:
         storefront = storefront_service.get_storefront(storefront_id)
         orders = order_service.get_orders_placed_by_user_for_storefront(
@@ -75,8 +72,7 @@ def view(order_id):
     if not _is_order_placed_by_current_user(order):
         abort(404)
 
-    site = site_service.get_site(g.site_id)
-    storefront = storefront_service.get_storefront(site.storefront_id)
+    storefront = storefront_service.get_storefront(g.site.storefront_id)
     if order.storefront_id != storefront.id:
         # Order does not belong to the current site's storefront.
         abort(404)
