@@ -20,6 +20,7 @@ from .....services.party import party_service
 from .....services.shop.article import article_sequence_service, article_service
 from .....services.shop.article.models import (
     Article,
+    ArticleNumberSequence,
     ArticleType,
     get_article_type_label,
 )
@@ -29,6 +30,7 @@ from .....services.shop.order import (
     ordered_articles_service,
 )
 from .....services.shop.order.models.order import Order, PaymentState
+from .....services.shop.shop.models import ShopID
 from .....services.shop.shop import shop_service
 from .....services.ticketing import ticket_category_service
 from .....services.user.models.user import User
@@ -251,8 +253,8 @@ def create_form(shop_id, type, erroneous_form=None):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    article_number_sequences = (
-        article_sequence_service.get_article_number_sequences_for_shop(shop.id)
+    article_number_sequences = _get_active_article_number_sequences_for_shop(
+        shop.id
     )
     article_number_sequence_available = bool(article_number_sequences)
 
@@ -285,8 +287,8 @@ def create_ticket_form(shop_id, erroneous_form=None):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    article_number_sequences = (
-        article_sequence_service.get_article_number_sequences_for_shop(shop.id)
+    article_number_sequences = _get_active_article_number_sequences_for_shop(
+        shop.id
     )
     article_number_sequence_available = bool(article_number_sequences)
 
@@ -320,8 +322,8 @@ def create_ticket_bundle_form(shop_id, erroneous_form=None):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    article_number_sequences = (
-        article_sequence_service.get_article_number_sequences_for_shop(shop.id)
+    article_number_sequences = _get_active_article_number_sequences_for_shop(
+        shop.id
     )
     article_number_sequence_available = bool(article_number_sequences)
 
@@ -359,8 +361,8 @@ def create(shop_id, type):
     else:
         form = ArticleCreateForm(request.form)
 
-    article_number_sequences = (
-        article_sequence_service.get_article_number_sequences_for_shop(shop.id)
+    article_number_sequences = _get_active_article_number_sequences_for_shop(
+        shop.id
     )
     if not article_number_sequences:
         flash_error(
@@ -901,6 +903,15 @@ def _get_article_type_or_400(value: str) -> ArticleType:
         return ArticleType[value]
     except KeyError:
         abort(400, 'Unknown article type')
+
+
+def _get_active_article_number_sequences_for_shop(
+    shop_id: ShopID,
+) -> list[ArticleNumberSequence]:
+    sequences = article_sequence_service.get_article_number_sequences_for_shop(
+        shop_id
+    )
+    return [sequence for sequence in sequences if not sequence.archived]
 
 
 def _assemble_datetime_utc(d: date, t: time) -> Optional[datetime]:
