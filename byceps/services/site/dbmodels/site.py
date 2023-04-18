@@ -61,6 +61,7 @@ class DbSite(db.Model):
         index=True,
         nullable=True,
     )
+    is_intranet = db.Column(db.Boolean, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
     news_channels = db.relationship(
@@ -83,6 +84,7 @@ class DbSite(db.Model):
         party_id: Optional[PartyID] = None,
         board_id: Optional[BoardID] = None,
         storefront_id: Optional[StorefrontID] = None,
+        is_intranet: bool = False,
     ) -> None:
         self.id = site_id
         self.title = title
@@ -94,6 +96,7 @@ class DbSite(db.Model):
         self.login_enabled = login_enabled
         self.board_id = board_id
         self.storefront_id = storefront_id
+        self.is_intranet = is_intranet
 
     def __repr__(self) -> str:
         return ReprBuilder(self).add_with_lookup('id').build()

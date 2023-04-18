@@ -33,6 +33,7 @@ class Site:
     news_channel_ids: frozenset[NewsChannelID]
     board_id: Optional[BoardID]
     storefront_id: Optional[StorefrontID]
+    is_intranet: bool
     archived: bool
 
 

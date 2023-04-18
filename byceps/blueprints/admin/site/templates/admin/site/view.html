@@ -77,6 +77,15 @@
       {%- endif %}
     </div>
 
+    <div class="data-label">{{ _('Mode') }}</div>
+    <div class="data-value">
+      {%- if site.is_intranet %}
+      {{ render_tag(_('Intranet'), class='color-info') }}
+      {%- else %}
+      {{ render_tag(_('normal'), class='tag--outlined') }}
+      {%- endif %}
+    </div>
+
   </div>
 
   <div class="row row--space-between">

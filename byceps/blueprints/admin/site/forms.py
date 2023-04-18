@@ -37,6 +37,7 @@ class _BaseForm(LocalizedForm):
     storefront_id = SelectField(
         lazy_gettext('Storefront ID'), validators=[Optional()]
     )
+    is_intranet = BooleanField(lazy_gettext('Use as intranet'))
 
     def set_party_choices(self, brand_id):
         parties = party_service.get_parties_for_brand(brand_id)

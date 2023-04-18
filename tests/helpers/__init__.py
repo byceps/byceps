@@ -208,6 +208,7 @@ def create_site(
     party_id: Optional[PartyID] = None,
     board_id: Optional[BoardID] = None,
     storefront_id: Optional[StorefrontID] = None,
+    is_intranet: bool = False,
 ):
     if title is None:
         title = site_id
@@ -226,6 +227,7 @@ def create_site(
         party_id=party_id,
         board_id=board_id,
         storefront_id=storefront_id,
+        is_intranet=is_intranet,
     )
 
 
