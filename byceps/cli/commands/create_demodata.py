@@ -205,7 +205,7 @@ def _create_site(
 
 
 def _create_pages(site_id: SiteID, creator_id: UserID) -> None:
-    page_imprint_en = page_service.create_page(
+    page_service.create_page(
         site_id,
         'imprint',
         'en',
@@ -215,7 +215,7 @@ def _create_pages(site_id: SiteID, creator_id: UserID) -> None:
         'Legal stuff goes here.',
     )
 
-    page_imprint_de = page_service.create_page(
+    page_service.create_page(
         site_id,
         'impressum',
         'de',
