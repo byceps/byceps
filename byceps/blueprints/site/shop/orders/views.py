@@ -482,16 +482,13 @@ def _send_refund_request_confirmation_email(
     recipients = [email_address.address]
     subject = 'Eingang deiner Anfrage zur Rückerstattung von Tickets'
     body = (
-        (
-            f'Hallo {screen_name},\n\n'
-            'wir haben deine Anfrage zur Rückerstattung deiner Bestellung '
-            f'{order_number} in Höhe von {amount_refund} € erhalten.\n\n'
-            'Bitte beachte, dass die Abwicklung der Rückzahlung einige Zeit '
-            'in Anspruch nehmen kann. Danke für dein Verständnis.'
-        )
-        + '\n\n'
-        + footer
-    )
+        f'Hallo {screen_name},\n\n'
+        'wir haben deine Anfrage zur Rückerstattung deiner Bestellung '
+        f'{order_number} in Höhe von {amount_refund} € erhalten.\n\n'
+        'Bitte beachte, dass die Abwicklung der Rückzahlung einige Zeit '
+        'in Anspruch nehmen kann. Danke für dein Verständnis.'
+        '\n\n'
+    ) + footer
 
     email_service.enqueue_email(sender, recipients, subject, body)
 

@@ -20,7 +20,7 @@ def test_published_news_item_announced_with_url(
 ) -> None:
     expected_text = (
         'Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
-        + 'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
+        'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
     )
     expected = build_announcement_request_for_irc(expected_text)
 

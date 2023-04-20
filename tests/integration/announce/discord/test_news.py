@@ -21,7 +21,7 @@ def test_published_news_item_announced_with_url(
 ) -> None:
     expected_content = (
         '[News] Die News "Zieh dir das rein!" wurde veröffentlicht. '
-        + 'https://www.acmecon.test/news/zieh-dir-das-rein'
+        'https://www.acmecon.test/news/zieh-dir-das-rein'
     )
     expected = build_announcement_request_for_discord(expected_content)
 
