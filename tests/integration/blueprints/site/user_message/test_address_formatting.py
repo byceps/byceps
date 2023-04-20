@@ -26,4 +26,4 @@ def test_recipient_formatting(make_user, site, params):
     ('-=]YOLO[=-', 'yolo@users.test', '"-=]YOLO[=-" <yolo@users.test>'),
 ])
 def params(request):
-    yield request.param
+    return request.param

@@ -32,7 +32,7 @@ def shop2(admin_app, make_brand, make_shop):
     brand = make_brand()
     shop = make_shop(brand.id)
 
-    yield shop
+    return shop
 
 
 @pytest.fixture()

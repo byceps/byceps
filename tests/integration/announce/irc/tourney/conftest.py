@@ -35,7 +35,7 @@ def make_tourney():
     def _wrapper(tourney_id: str, title: str) -> Tourney:
         return Tourney(tourney_id, title)
 
-    yield _wrapper
+    return _wrapper
 
 
 @pytest.fixture(scope='package')

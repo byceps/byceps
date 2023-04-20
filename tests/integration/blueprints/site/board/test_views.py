@@ -12,7 +12,7 @@ from tests.helpers import log_in_user
 def board_user(make_user):
     user = make_user()
     log_in_user(user.id)
-    yield user
+    return user
 
 
 @pytest.fixture(scope='module')
