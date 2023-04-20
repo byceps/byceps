@@ -6,7 +6,9 @@ byceps.services.news.news_image_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import BinaryIO, Optional
+from __future__ import annotations
+
+from typing import BinaryIO
 
 from flask import current_app
 from sqlalchemy import select
@@ -42,9 +44,9 @@ def create_image(
     item_id: NewsItemID,
     stream: BinaryIO,
     *,
-    alt_text: Optional[str] = None,
-    caption: Optional[str] = None,
-    attribution: Optional[str] = None,
+    alt_text: str | None = None,
+    caption: str | None = None,
+    attribution: str | None = None,
 ) -> NewsImage:
     """Create an image for a news item."""
     creator = user_service.find_active_user(creator_id)
@@ -104,7 +106,7 @@ def _check_image_dimensions(image_dimensions: Dimensions) -> None:
         )
 
 
-def _find_highest_number(item_id: NewsItemID) -> Optional[int]:
+def _find_highest_number(item_id: NewsItemID) -> int | None:
     """Return the highest image number for that item, or `None` if the
     item has no images.
     """
@@ -126,9 +128,9 @@ def _get_next_available_number(item_id: NewsItemID) -> int:
 def update_image(
     image_id: NewsImageID,
     *,
-    alt_text: Optional[str] = None,
-    caption: Optional[str] = None,
-    attribution: Optional[str] = None,
+    alt_text: str | None = None,
+    caption: str | None = None,
+    attribution: str | None = None,
 ) -> NewsImage:
     """Update a news image."""
     db_image = _find_db_image(image_id)
@@ -145,7 +147,7 @@ def update_image(
     return _db_entity_to_image(db_image, db_image.item.channel_id)
 
 
-def find_image(image_id: NewsImageID) -> Optional[NewsImage]:
+def find_image(image_id: NewsImageID) -> NewsImage | None:
     """Return the image with that id, or `None` if not found."""
     db_image = _find_db_image(image_id)
 
@@ -155,7 +157,7 @@ def find_image(image_id: NewsImageID) -> Optional[NewsImage]:
     return _db_entity_to_image(db_image, db_image.item.channel_id)
 
 
-def _find_db_image(image_id: NewsImageID) -> Optional[DbNewsImage]:
+def _find_db_image(image_id: NewsImageID) -> DbNewsImage | None:
     """Return the image with that id, or `None` if not found."""
     return db.session.scalars(
         select(DbNewsImage)

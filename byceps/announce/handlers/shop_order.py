@@ -8,7 +8,7 @@ Announce shop order events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
 
 from flask_babel import gettext
 
@@ -21,7 +21,7 @@ from byceps.services.webhooks.models import OutgoingWebhook
 @with_locale
 def announce_order_placed(
     event: ShopOrderPlaced, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that an order has been placed."""
     orderer_screen_name = get_screen_name_or_fallback(event.orderer_screen_name)
 
@@ -37,7 +37,7 @@ def announce_order_placed(
 @with_locale
 def announce_order_paid(
     event: ShopOrderPaid, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that an order has been paid."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -61,7 +61,7 @@ def announce_order_paid(
 @with_locale
 def announce_order_canceled(
     event: ShopOrderCanceled, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that an order has been canceled."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
