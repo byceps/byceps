@@ -25,7 +25,7 @@ def test_dim():
 
 
 @pytest.mark.parametrize(
-    'source, context, expected',
+    ('source', 'context', 'expected'),
     [
         (
             # Escape value.
@@ -73,7 +73,7 @@ def test_fallback(source: str, context: dict[str, Any], expected: str):
 
 
 @pytest.mark.parametrize(
-    'value, locale, expected',
+    ('value', 'locale', 'expected'),
     [
         (
             Money('49.95', 'EUR'),

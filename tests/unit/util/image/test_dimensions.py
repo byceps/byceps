@@ -9,7 +9,7 @@ from byceps.util.image.models import Dimensions
 
 
 @pytest.mark.parametrize(
-    'width, height, expected',
+    ('width', 'height', 'expected'),
     [
         ( 1,  1, True ),
         (12, 16, False),

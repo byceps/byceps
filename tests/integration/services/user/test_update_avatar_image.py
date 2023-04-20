@@ -12,7 +12,7 @@ from byceps.util.image.models import ImageType
 
 
 @pytest.mark.parametrize(
-    'image_extension, image_type',
+    ('image_extension', 'image_type'),
     [
         ('jpeg', ImageType.jpeg),
         ('png', ImageType.png),

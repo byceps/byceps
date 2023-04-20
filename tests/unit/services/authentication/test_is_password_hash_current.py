@@ -9,7 +9,7 @@ from byceps.services.authentication.password import authn_password_service
 
 
 @pytest.mark.parametrize(
-    'password_hash, expected',
+    ('password_hash', 'expected'),
     [
         (
             # matches neither configured algorithm nor iteration count

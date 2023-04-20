@@ -16,7 +16,7 @@ IMAGES_PATH = Path('tests/fixtures/images')
 
 
 @pytest.mark.parametrize(
-    'filename, expected',
+    ('filename', 'expected'),
     [
         ('image.bmp',                           None          ),
         ('image.gif',                           ImageType.gif ),
@@ -35,7 +35,7 @@ def test_guess_type(filename, expected):
 
 
 @pytest.mark.parametrize(
-    'filename_suffix, expected_width, expected_height',
+    ('filename_suffix', 'expected_width', 'expected_height'),
     [
         ('bmp',   7, 11),
         ('gif',  17,  4),

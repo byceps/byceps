@@ -11,7 +11,7 @@ from byceps.util.datetime.monthday import MonthDay
 
 
 @pytest.mark.parametrize(
-    'date, expected_month, expected_day',
+    ('date', 'expected_month', 'expected_day'),
     [
         (date(1994,  3, 18),  3, 18),
         (date(2012,  9, 27),  9, 27),
@@ -27,7 +27,7 @@ def test_of(date, expected_month, expected_day):
 
 
 @pytest.mark.parametrize(
-    'month, day, date, expected',
+    ('month', 'day', 'date', 'expected'),
     [
         ( 3, 17, date(2005,  2, 17), False),
         ( 3, 17, date(2005,  3, 16), False),

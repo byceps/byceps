@@ -9,7 +9,7 @@ from byceps.util.checkdigit import calculate_check_digit
 
 
 @pytest.mark.parametrize(
-    'chars, expected',
+    ('chars', 'expected'),
     [
         ('12',         5),
         ('123',        0),

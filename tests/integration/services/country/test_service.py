@@ -9,7 +9,7 @@ from byceps.services.country import country_service
 
 
 @pytest.mark.parametrize(
-    'name, alpha2, alpha3',
+    ('name', 'alpha2', 'alpha3'),
     [
         ('Deutschland', 'DE', 'DEU'),
         ('Österreich' , 'AT', 'AUT'),

@@ -20,7 +20,7 @@ from byceps.typing import UserID
 
 
 @pytest.mark.parametrize(
-    'created_at, payment_state, expected',
+    ('created_at', 'payment_state', 'expected'),
     [
         (datetime(2021, 6, 12, 12, 0, 0), PaymentState.open,                 True),
         (datetime(2021, 6, 12, 12, 0, 0), PaymentState.canceled_before_paid, True),

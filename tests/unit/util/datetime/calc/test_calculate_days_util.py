@@ -14,7 +14,7 @@ SOME_DATE = date(1994, 3, 18)
 
 
 @pytest.mark.parametrize(
-    'today, expected',
+    ('today', 'expected'),
     [
         (date(2014, 3, 16), 2),
         (date(2014, 3, 17), 1),

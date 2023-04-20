@@ -69,7 +69,7 @@ def test_quote_with_author(site_app):
 
 
 @pytest.mark.parametrize(
-    'text, expected',
+    ('text', 'expected'),
     [
         (
             '[quote author="foo]bar"]blah[/quote]',

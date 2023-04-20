@@ -13,7 +13,7 @@ from byceps.typing import BrandID, PartyID
 
 
 @pytest.mark.parametrize(
-    'now, expected',
+    ('now', 'expected'),
     [
         (datetime(2020,  3,  21, 14, 59, 59), False),
         (datetime(2020,  3,  21, 15,  0,  0), False),

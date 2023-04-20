@@ -21,7 +21,7 @@ from byceps.services.shop.shop.models import ShopID
 
 
 @pytest.mark.parametrize(
-    'quantity, expected_line_amount',
+    ('quantity', 'expected_line_amount'),
     [
         (1, Money('1.99', EUR)),
         (2, Money('3.98', EUR)),

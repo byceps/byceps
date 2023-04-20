@@ -11,7 +11,7 @@ from byceps.util.datetime.range import DateTimeRange
 
 
 @pytest.mark.parametrize(
-    'starts_at, ends_at, tested_datetime, expected',
+    ('starts_at', 'ends_at', 'tested_datetime', 'expected'),
     [
         (
             datetime(2014,  8, 15, 12,  0,  0),

@@ -9,7 +9,7 @@ from byceps.util.iterables import index_of
 
 
 @pytest.mark.parametrize(
-    'iterable, predicate, expected',
+    ('iterable', 'predicate', 'expected'),
     [
         (
             [],

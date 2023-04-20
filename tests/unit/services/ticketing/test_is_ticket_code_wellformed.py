@@ -9,7 +9,7 @@ from byceps.services.ticketing import ticket_code_service
 
 
 @pytest.mark.parametrize(
-    'code, expected',
+    ('code', 'expected'),
     [
         ('ZWXL'  , False),  # denied: too short
         ('zwxln' , False),  # denied: not all-uppercase

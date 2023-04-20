@@ -9,7 +9,7 @@ from byceps.services.user import screen_name_validator
 
 
 @pytest.mark.parametrize(
-    'screen_name, expected',
+    ('screen_name', 'expected'),
     [
         (''                         , False),  # denied: empty string
         ('      '                   , False),  # denied: only whitespace

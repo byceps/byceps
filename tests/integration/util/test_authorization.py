@@ -30,7 +30,7 @@ class CurrentUserMock:
 
 
 @pytest.mark.parametrize(
-    'permissions_assigned, permission_requested, expected',
+    ('permissions_assigned', 'permission_requested', 'expected'),
     [
         (
             {},
@@ -73,7 +73,7 @@ def test_has_current_user_permission(
 
 
 @pytest.mark.parametrize(
-    'permissions_assigned, permissions_requested, expected',
+    ('permissions_assigned', 'permissions_requested', 'expected'),
     [
         (
             {},

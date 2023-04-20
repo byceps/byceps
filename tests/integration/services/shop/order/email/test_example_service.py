@@ -18,7 +18,7 @@ ORDER_PLACED_AT = '2021-10-12 12:34:56'
 
 @freeze_time(ORDER_PLACED_AT)
 @pytest.mark.parametrize(
-    'locale, expected_template',
+    ('locale', 'expected_template'),
     [
         (
             'de',
@@ -125,7 +125,7 @@ def test_example_placed_order_message_text(
 
 @freeze_time(ORDER_PLACED_AT)
 @pytest.mark.parametrize(
-    'locale, expected_template',
+    ('locale', 'expected_template'),
     [
         (
             'de',
@@ -204,7 +204,7 @@ def test_example_paid_order_message_text(
 
 @freeze_time(ORDER_PLACED_AT)
 @pytest.mark.parametrize(
-    'locale, expected_template',
+    ('locale', 'expected_template'),
     [
         (
             'de',

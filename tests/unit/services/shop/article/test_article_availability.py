@@ -24,7 +24,7 @@ from byceps.services.shop.shop.models import ShopID
 
 
 @pytest.mark.parametrize(
-    'now, expected',
+    ('now', 'expected'),
     [
         (datetime(2014,  4,  8, 12,  0,  0), False),
         (datetime(2014,  9, 15, 17, 59, 59), False),
@@ -46,7 +46,7 @@ def test_is_available_with_start_and_end(now, expected):
 
 
 @pytest.mark.parametrize(
-    'now, expected',
+    ('now', 'expected'),
     [
         (datetime(2014,  4,  8, 12,  0,  0), False),
         (datetime(2014,  9, 15, 17, 59, 59), False),
@@ -68,7 +68,7 @@ def test_is_available_with_start_and_without_end(now, expected):
 
 
 @pytest.mark.parametrize(
-    'now, expected',
+    ('now', 'expected'),
     [
         (datetime(2014,  4,  8, 12,  0,  0), True ),
         (datetime(2014,  9, 15, 17, 59, 59), True ),
@@ -90,7 +90,7 @@ def test_is_available_without_start_and_with_end(now, expected):
 
 
 @pytest.mark.parametrize(
-    'now, expected',
+    ('now', 'expected'),
     [
         (datetime(2014,  4,  8, 12,  0,  0), True ),
         (datetime(2014,  9, 15, 17, 59, 59), True ),

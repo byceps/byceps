@@ -27,7 +27,7 @@ PROCESSED = True
 
 
 @pytest.mark.parametrize(
-    'payment_state, processing_required, processed, expected',
+    ('payment_state', 'processing_required', 'processed', 'expected'),
     [
         (PaymentState.open,                 not PROCESSING_REQUIRED,  not PROCESSED, OrderState.open    ),
         (PaymentState.open,                     PROCESSING_REQUIRED,  not PROCESSED, OrderState.open    ),

@@ -9,7 +9,7 @@ from byceps.services.email.models import NameAndAddress
 
 
 @pytest.mark.parametrize(
-    'name, address, expected',
+    ('name', 'address', 'expected'),
     [
         (None, 'unnamed@users.test', 'unnamed@users.test'),
         ('Simple', 'simple@users.test', 'Simple <simple@users.test>'),

@@ -14,7 +14,7 @@ from byceps.services.verification_token.models import Purpose, VerificationToken
 
 
 @pytest.mark.parametrize(
-    'purpose, now, expected',
+    ('purpose', 'now', 'expected'),
     [
         (
             Purpose.email_address_confirmation,

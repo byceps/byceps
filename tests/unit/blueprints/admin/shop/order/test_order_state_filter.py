@@ -10,7 +10,7 @@ from byceps.services.shop.order.models.order import PaymentState
 
 
 @pytest.mark.parametrize(
-    'only_payment_state, only_overdue, only_processed, expected',
+    ('only_payment_state', 'only_overdue', 'only_processed', 'expected'),
     [
         (None,                              None,  None,  OrderStateFilter.none),
         (PaymentState.open,                 False, None,  OrderStateFilter.payment_state_open),

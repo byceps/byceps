@@ -18,7 +18,7 @@ user_id2 = UUID('cd9685fe-b503-41ce-a6e5-5a4762c29cbc')
 
 
 @pytest.mark.parametrize(
-    'bundle_id, expected',
+    ('bundle_id', 'expected'),
     [
         (ANY_BUNDLE_ID, True ),
         (None,          False),
@@ -31,7 +31,7 @@ def test_belongs_to_bundle(bundle_id, expected):
 
 
 @pytest.mark.parametrize(
-    'owned_by_id, seat_managed_by_id, user_managed_by_id, user_id, expected',
+    ('owned_by_id', 'seat_managed_by_id', 'user_managed_by_id', 'user_id', 'expected'),
     [
         (user_id1, None    , None    , user_id1, True ),
         (user_id1, user_id1, None    , user_id1, True ),
@@ -61,7 +61,7 @@ def test_is_managed_by(
 
 
 @pytest.mark.parametrize(
-    'owned_by_id, seat_managed_by_id, user_id, expected',
+    ('owned_by_id', 'seat_managed_by_id', 'user_id', 'expected'),
     [
         (user_id1, None    , user_id1, True ),
         (user_id1, user_id1, user_id1, True ),
@@ -80,7 +80,7 @@ def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
 
 
 @pytest.mark.parametrize(
-    'owned_by_id, user_managed_by_id, user_id, expected',
+    ('owned_by_id', 'user_managed_by_id', 'user_id', 'expected'),
     [
         (user_id1, None    , user_id1, True ),
         (user_id1, user_id1, user_id1, True ),

@@ -36,7 +36,7 @@ def article3(shop, make_article):
 
 
 @pytest.mark.parametrize(
-    'search_term, expected_article_numbers',
+    ('search_term', 'expected_article_numbers'),
     [
         ('2022', {'TICKET-2022'}),
         ('2023', {'TICKET-2023', 'SHIRT-2023'}),
