@@ -58,6 +58,10 @@ ignore = [
     "E501",  # Line too long
 ]
 
+[tool.ruff.flake8-quotes]
+inline-quotes = "single"
+multiline-quotes = "single"
+
 [tool.ruff.isort]
 lines-after-imports = 2
 

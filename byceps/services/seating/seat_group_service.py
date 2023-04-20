@@ -34,7 +34,7 @@ def create_seat_group(
     """Create a seat group and assign the given seats."""
     seat_quantity = len(seats)
     if seat_quantity == 0:
-        raise ValueError("No seats specified.")
+        raise ValueError('No seats specified.')
 
     ticket_category_ids = {seat.category_id for seat in seats}
     if len(ticket_category_ids) != 1 or (
