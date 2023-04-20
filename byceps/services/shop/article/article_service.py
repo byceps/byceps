@@ -355,7 +355,7 @@ def get_article_by_number(article_number: ArticleNumber) -> Article:
 def get_articles(article_ids: set[ArticleID]) -> list[Article]:
     """Return the articles with those IDs."""
     if not article_ids:
-        return list()
+        return []
 
     db_articles = db.session.scalars(
         select(DbArticle).filter(DbArticle.id.in_(article_ids))

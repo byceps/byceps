@@ -53,14 +53,12 @@ OrderState = Enum(
 )
 
 
-PAYMENT_METHODS = set(
-    [
-        'bank_transfer',
-        'cash',
-        'direct_debit',
-        'free',
-    ],
-)
+PAYMENT_METHODS = {
+    'bank_transfer',
+    'cash',
+    'direct_debit',
+    'free',
+}
 
 
 PaymentState = Enum(
