@@ -6,8 +6,9 @@ byceps.services.brand.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from byceps.typing import BrandID
 
@@ -16,8 +17,8 @@ from byceps.typing import BrandID
 class Brand:
     id: BrandID
     title: str
-    image_filename: Optional[str]
-    image_url_path: Optional[str]
+    image_filename: str | None
+    image_url_path: str | None
     archived: bool
 
 

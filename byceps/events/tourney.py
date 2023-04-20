@@ -6,8 +6,9 @@ byceps.events.tourney
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from .base import _BaseEvent
 
@@ -49,10 +50,10 @@ class _TourneyMatchEvent(_BaseEvent):
     tourney_id: str
     tourney_title: str
     match_id: str
-    participant1_id: Optional[str]
-    participant1_name: Optional[str]
-    participant2_id: Optional[str]
-    participant2_name: Optional[str]
+    participant1_id: str | None
+    participant1_name: str | None
+    participant2_id: str | None
+    participant2_name: str | None
 
 
 @dataclass(frozen=True)

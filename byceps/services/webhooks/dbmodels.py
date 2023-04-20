@@ -6,7 +6,9 @@ byceps.services.webhooks.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Optional, TYPE_CHECKING
+from __future__ import annotations
+
+from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -44,9 +46,9 @@ class DbOutgoingWebhook(db.Model):
         url: str,
         enabled: bool,
         *,
-        text_prefix: Optional[str] = None,
-        extra_fields: Optional[dict[str, Any]] = None,
-        description: Optional[str] = None,
+        text_prefix: str | None = None,
+        extra_fields: dict[str, Any] | None = None,
+        description: str | None = None,
     ) -> None:
         self.event_types = event_types
         self.event_filters = event_filters

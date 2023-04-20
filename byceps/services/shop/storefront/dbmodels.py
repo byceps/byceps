@@ -6,7 +6,8 @@ byceps.services.shop.storefront.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db
 # Make shop catalog tables available for database creation.
@@ -46,7 +47,7 @@ class DbStorefront(db.Model):
         order_number_sequence_id: OrderNumberSequenceID,
         closed: bool,
         *,
-        catalog_id: Optional[CatalogID] = None,
+        catalog_id: CatalogID | None = None,
     ) -> None:
         self.id = storefront_id
         self.shop_id = shop_id

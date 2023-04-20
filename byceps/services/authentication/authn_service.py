@@ -6,7 +6,8 @@ byceps.services.authentication.authn_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
@@ -52,7 +53,7 @@ def authenticate(
 
 def _find_user_by_screen_name_or_email_address(
     screen_name_or_email_address: str,
-) -> Optional[User]:
+) -> User | None:
     if '@' in screen_name_or_email_address:
         return user_service.find_user_by_email_address(
             screen_name_or_email_address

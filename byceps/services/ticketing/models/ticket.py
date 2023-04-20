@@ -6,8 +6,10 @@ byceps.services.ticketing.models.ticket
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from byceps.typing import PartyID
@@ -34,5 +36,5 @@ TicketBundleID = NewType('TicketBundleID', UUID)
 
 @dataclass(frozen=True)
 class TicketSaleStats:
-    tickets_max: Optional[int]
+    tickets_max: int | None
     tickets_sold: int

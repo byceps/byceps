@@ -6,8 +6,9 @@ byceps.events.board
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from byceps.services.board.models import (
     BoardCategoryID,
@@ -32,7 +33,7 @@ class _BoardEvent(_BaseEvent):
 class _BoardTopicEvent(_BoardEvent):
     topic_id: TopicID
     topic_creator_id: UserID
-    topic_creator_screen_name: Optional[str]
+    topic_creator_screen_name: str | None
     topic_title: str
     url: str
 
@@ -40,7 +41,7 @@ class _BoardTopicEvent(_BoardEvent):
 @dataclass(frozen=True)
 class _BoardTopicModerationEvent(_BoardTopicEvent):
     moderator_id: UserID
-    moderator_screen_name: Optional[str]
+    moderator_screen_name: str | None
 
 
 @dataclass(frozen=True)
@@ -51,7 +52,7 @@ class BoardTopicCreated(_BoardTopicEvent):
 @dataclass(frozen=True)
 class BoardTopicUpdated(_BoardTopicEvent):
     editor_id: UserID
-    editor_screen_name: Optional[str]
+    editor_screen_name: str | None
 
 
 @dataclass(frozen=True)
@@ -99,7 +100,7 @@ class BoardTopicMoved(_BoardTopicModerationEvent):
 class _BoardPostingEvent(_BoardEvent):
     posting_id: PostingID
     posting_creator_id: UserID
-    posting_creator_screen_name: Optional[str]
+    posting_creator_screen_name: str | None
     topic_id: TopicID
     topic_title: str
     url: str
@@ -108,7 +109,7 @@ class _BoardPostingEvent(_BoardEvent):
 @dataclass(frozen=True)
 class _BoardPostingModerationEvent(_BoardPostingEvent):
     moderator_id: UserID
-    moderator_screen_name: Optional[str]
+    moderator_screen_name: str | None
 
 
 @dataclass(frozen=True)
@@ -119,7 +120,7 @@ class BoardPostingCreated(_BoardPostingEvent):
 @dataclass(frozen=True)
 class BoardPostingUpdated(_BoardPostingEvent):
     editor_id: UserID
-    editor_screen_name: Optional[str]
+    editor_screen_name: str | None
 
 
 @dataclass(frozen=True)

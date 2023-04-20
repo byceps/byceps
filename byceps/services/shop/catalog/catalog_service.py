@@ -6,7 +6,8 @@ byceps.services.shop.catalog.catalog_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -51,7 +52,7 @@ def update_catalog(catalog_id: CatalogID, title: str) -> Catalog:
     return _db_entity_to_catalog(db_catalog)
 
 
-def find_catalog(catalog_id: CatalogID) -> Optional[Catalog]:
+def find_catalog(catalog_id: CatalogID) -> Catalog | None:
     """Return the catalog with that ID, or `None` if not found."""
     db_catalog = _find_db_catalog(catalog_id)
 
@@ -71,7 +72,7 @@ def get_catalog(catalog_id: CatalogID) -> Catalog:
     return catalog
 
 
-def _find_db_catalog(catalog_id: CatalogID) -> Optional[DbCatalog]:
+def _find_db_catalog(catalog_id: CatalogID) -> DbCatalog | None:
     """Return the catalog database entity with that ID, or `None` if not
     found.
     """
@@ -134,7 +135,7 @@ def delete_collection(collection_id: CollectionID) -> None:
     db.session.commit()
 
 
-def find_collection(collection_id: CollectionID) -> Optional[Collection]:
+def find_collection(collection_id: CollectionID) -> Collection | None:
     """Return the collection with that ID, or `None` if not found."""
     db_collection = _find_db_collection(collection_id)
 
@@ -144,7 +145,7 @@ def find_collection(collection_id: CollectionID) -> Optional[Collection]:
     return _db_entity_to_collection(db_collection)
 
 
-def _find_db_collection(collection_id: CollectionID) -> Optional[DbCollection]:
+def _find_db_collection(collection_id: CollectionID) -> DbCollection | None:
     """Return the collection database entity with that ID, or `None` if
     not found.
     """

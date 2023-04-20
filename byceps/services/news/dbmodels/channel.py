@@ -6,7 +6,8 @@ byceps.services.news.dbmodels.channel
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db
 from byceps.services.news.models import NewsChannelID
@@ -34,7 +35,7 @@ class DbNewsChannel(db.Model):
         channel_id: NewsChannelID,
         brand_id: BrandID,
         *,
-        announcement_site_id: Optional[SiteID] = None,
+        announcement_site_id: SiteID | None = None,
     ) -> None:
         self.id = channel_id
         self.brand_id = brand_id

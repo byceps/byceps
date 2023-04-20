@@ -6,7 +6,8 @@ byceps.services.tourney.tourney_participant_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -41,7 +42,7 @@ def delete_participant(participant_id: ParticipantID) -> None:
     db.session.commit()
 
 
-def find_participant(participant_id: ParticipantID) -> Optional[Participant]:
+def find_participant(participant_id: ParticipantID) -> Participant | None:
     """Return the participant with that id, or `None` if not found."""
     db_participant = db.session.get(DbParticipant, participant_id)
 

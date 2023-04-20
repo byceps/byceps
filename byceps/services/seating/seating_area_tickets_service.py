@@ -6,10 +6,11 @@ byceps.services.seating.seating_area_tickets_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from itertools import chain
-from typing import Optional
 
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
@@ -25,7 +26,7 @@ class SeatTicket:
     id: TicketID
     code: TicketCode
     category_label: str
-    user: Optional[User]
+    user: User | None
 
 
 def get_users(
@@ -62,7 +63,7 @@ def _get_ticket_user_ids(tickets: Iterable[DbTicket]) -> Iterator[UserID]:
 def get_seats_and_tickets(
     seats_with_tickets: Iterable[tuple[Seat, DbTicket]],
     users_by_id: dict[UserID, User],
-) -> Iterator[tuple[Seat, Optional[SeatTicket]]]:
+) -> Iterator[tuple[Seat, SeatTicket | None]]:
     for seat, ticket in seats_with_tickets:
         if ticket is not None:
             seat_ticket = _build_seat_ticket(ticket, users_by_id)
@@ -74,7 +75,7 @@ def get_seats_and_tickets(
 
 def get_managed_tickets(
     tickets: Iterable[DbTicket], users_by_id: dict[UserID, User]
-) -> Iterator[tuple[SeatTicket, bool, Optional[str]]]:
+) -> Iterator[tuple[SeatTicket, bool, str | None]]:
     for ticket in tickets:
         managed_ticket = _build_seat_ticket(ticket, users_by_id)
         occupies_seat = ticket.occupied_seat_id is not None
@@ -86,7 +87,7 @@ def get_managed_tickets(
 def _build_seat_ticket(
     ticket: DbTicket, users_by_id: dict[UserID, User]
 ) -> SeatTicket:
-    user: Optional[User]
+    user: User | None
     if ticket.used_by_id is not None:
         user = users_by_id[ticket.used_by_id]
     else:

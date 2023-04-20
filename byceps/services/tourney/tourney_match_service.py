@@ -6,7 +6,8 @@ byceps.services.tourney.tourney_match_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete
 
@@ -36,7 +37,7 @@ def delete_match(match_id: MatchID) -> None:
     db.session.commit()
 
 
-def find_match(match_id: MatchID) -> Optional[Match]:
+def find_match(match_id: MatchID) -> Match | None:
     """Return the match with that id, or `None` if not found."""
     db_match = db.session.get(DbMatch, match_id)
 

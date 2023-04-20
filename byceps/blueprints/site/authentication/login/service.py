@@ -9,7 +9,6 @@ byceps.blueprints.site.authentication.login.service
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 import structlog
 
@@ -42,8 +41,8 @@ def log_in_user(
     permanent: bool,
     brand_id: BrandID,
     *,
-    ip_address: Optional[str] = None,
-    site_id: Optional[SiteID] = None,
+    ip_address: str | None = None,
+    site_id: SiteID | None = None,
 ) -> Result[tuple[User, UserLoggedIn], AuthenticationFailed | ConsentRequired]:
     authn_result = authn_service.authenticate(username, password)
     if authn_result.is_err():

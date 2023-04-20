@@ -6,8 +6,9 @@ byceps.services.shop.order.models.invoice
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 from uuid import UUID
 
 from .order import OrderID
@@ -18,4 +19,4 @@ class Invoice:
     id: UUID
     order_id: OrderID
     number: str
-    url: Optional[str]
+    url: str | None

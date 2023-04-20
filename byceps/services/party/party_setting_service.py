@@ -6,7 +6,8 @@ byceps.services.party.party_setting_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -60,7 +61,7 @@ def remove_setting(party_id: PartyID, name: str) -> None:
     db.session.commit()
 
 
-def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
+def find_setting(party_id: PartyID, name: str) -> PartySetting | None:
     """Return the setting for that party and with that name, or `None`
     if not found.
     """
@@ -72,7 +73,7 @@ def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
     return _db_entity_to_party_setting(db_setting)
 
 
-def find_setting_value(party_id: PartyID, name: str) -> Optional[str]:
+def find_setting_value(party_id: PartyID, name: str) -> str | None:
     """Return the value of the setting for that party and with that
     name, or `None` if not found.
     """

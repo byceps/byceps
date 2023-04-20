@@ -8,8 +8,10 @@ Connect event signals to announcement handlers.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 
 from byceps.events.auth import UserLoggedIn
 from byceps.events.base import _BaseEvent
@@ -156,7 +158,7 @@ def handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:
 
 def build_announcement_request(
     event: _BaseEvent, webhook: OutgoingWebhook
-) -> Optional[AnnouncementRequest]:
+) -> AnnouncementRequest | None:
     event_type = type(event)
 
     handler = EVENT_TYPES_TO_HANDLERS.get(event_type)
@@ -175,7 +177,7 @@ def build_announcement_request(
 def announce(
     webhook: OutgoingWebhook,
     request_data: dict[str, Any],
-    announce_at: Optional[datetime],
+    announce_at: datetime | None,
 ) -> None:
     if announce_at is not None:
         # Schedule job to announce later.
@@ -185,7 +187,7 @@ def announce(
         call_webhook(webhook, request_data)
 
 
-def receive_signal(sender, *, event: Optional[_BaseEvent] = None) -> None:
+def receive_signal(sender, *, event: _BaseEvent | None = None) -> None:
     if event is None:
         return None
 

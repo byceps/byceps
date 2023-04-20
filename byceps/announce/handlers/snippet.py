@@ -8,7 +8,8 @@ Announce snippet events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask_babel import gettext
 
@@ -21,7 +22,7 @@ from byceps.services.webhooks.models import OutgoingWebhook
 @with_locale
 def announce_snippet_created(
     event: SnippetCreated, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a snippet has been created."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -40,7 +41,7 @@ def announce_snippet_created(
 @with_locale
 def announce_snippet_updated(
     event: SnippetUpdated, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a snippet has been updated."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -59,7 +60,7 @@ def announce_snippet_updated(
 @with_locale
 def announce_snippet_deleted(
     event: SnippetDeleted, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a snippet has been deleted."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name

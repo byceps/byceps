@@ -6,8 +6,9 @@ byceps.services.user.dbmodels.user
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from byceps.database import db, generate_uuid4
 from byceps.util.instances import ReprBuilder
@@ -40,11 +41,11 @@ class DbUser(db.Model):
     def __init__(
         self,
         created_at: datetime,
-        screen_name: Optional[str],
-        email_address: Optional[str],
+        screen_name: str | None,
+        email_address: str | None,
         *,
-        locale: Optional[str] = None,
-        legacy_id: Optional[str] = None,
+        locale: str | None = None,
+        legacy_id: str | None = None,
     ) -> None:
         self.created_at = created_at
         self.screen_name = screen_name
@@ -53,7 +54,7 @@ class DbUser(db.Model):
         self.legacy_id = legacy_id
 
     @property
-    def avatar_url(self) -> Optional[str]:
+    def avatar_url(self) -> str | None:
         avatar = self.avatar
         return avatar.url if (avatar is not None) else None
 

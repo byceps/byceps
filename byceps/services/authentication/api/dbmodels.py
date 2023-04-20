@@ -6,8 +6,9 @@ byceps.services.authentication.api.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy.ext.mutable import MutableList
 
@@ -35,7 +36,7 @@ class DbApiToken(db.Model):
         token: str,
         permissions: set[PermissionID],
         *,
-        description: Optional[str],
+        description: str | None,
     ) -> None:
         self.creator_id = creator_id
         self.token = token

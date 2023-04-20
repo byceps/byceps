@@ -6,7 +6,8 @@ byceps.services.shop.order.dbmodels.number_sequence
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db, generate_uuid4
 from byceps.services.shop.shop.models import ShopID
@@ -30,7 +31,7 @@ class DbOrderNumberSequence(db.Model):
         shop_id: ShopID,
         prefix: str,
         *,
-        value: Optional[int] = 0,
+        value: int | None = 0,
     ) -> None:
         if value is None:
             value = 0

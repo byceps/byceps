@@ -6,8 +6,10 @@ byceps.services.orga_team.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from byceps.services.party.models import Party
@@ -33,7 +35,7 @@ class Membership:
     id: MembershipID
     orga_team_id: OrgaTeamID
     user_id: UserID
-    duties: Optional[str]
+    duties: str | None
 
 
 @dataclass(frozen=True)
@@ -45,7 +47,7 @@ class Member:
 @dataclass(frozen=True)
 class TeamAndDuties:
     team_title: str
-    duties: Optional[str]
+    duties: str | None
 
 
 @dataclass(frozen=True)
@@ -60,4 +62,4 @@ class PublicOrga:
     user: User
     full_name: str
     team_name: str
-    duties: Optional[str]
+    duties: str | None

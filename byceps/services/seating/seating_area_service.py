@@ -6,7 +6,8 @@ byceps.services.seating.seating_area_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -24,9 +25,9 @@ def create_area(
     slug: str,
     title: str,
     *,
-    image_filename: Optional[str] = None,
-    image_width: Optional[int] = None,
-    image_height: Optional[int] = None,
+    image_filename: str | None = None,
+    image_width: int | None = None,
+    image_height: int | None = None,
 ) -> SeatingArea:
     """Create an area."""
     db_area = DbSeatingArea(
@@ -48,9 +49,9 @@ def update_area(
     area_id: SeatingAreaID,
     slug: str,
     title: str,
-    image_filename: Optional[str],
-    image_width: Optional[int],
-    image_height: Optional[int],
+    image_filename: str | None,
+    image_width: int | None,
+    image_height: int | None,
 ) -> SeatingArea:
     """Update an area."""
     db_area = _find_db_area(area_id)
@@ -82,7 +83,7 @@ def count_areas_for_party(party_id: PartyID) -> int:
     )
 
 
-def find_area(area_id: SeatingAreaID) -> Optional[SeatingArea]:
+def find_area(area_id: SeatingAreaID) -> SeatingArea | None:
     """Return the area, or `None` if not found."""
     db_area = _find_db_area(area_id)
 
@@ -92,13 +93,13 @@ def find_area(area_id: SeatingAreaID) -> Optional[SeatingArea]:
     return _db_entity_to_area(db_area)
 
 
-def _find_db_area(area_id: SeatingAreaID) -> Optional[DbSeatingArea]:
+def _find_db_area(area_id: SeatingAreaID) -> DbSeatingArea | None:
     return db.session.get(DbSeatingArea, area_id)
 
 
 def find_area_for_party_by_slug(
     party_id: PartyID, slug: str
-) -> Optional[SeatingArea]:
+) -> SeatingArea | None:
     """Return the area for that party with that slug, or `None` if not found."""
     db_area = db.session.scalars(
         select(DbSeatingArea).filter_by(party_id=party_id).filter_by(slug=slug)

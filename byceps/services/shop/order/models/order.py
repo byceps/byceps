@@ -6,11 +6,13 @@ byceps.services.shop.order.models.order
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from moneyed import Money
@@ -85,7 +87,7 @@ class Orderer:
     """Someone who orders articles."""
 
     user_id: UserID
-    company: Optional[str]
+    company: str | None
     first_name: str
     last_name: str
     country: str
@@ -108,7 +110,7 @@ class LineItem:
     line_amount: Money
     processing_required: bool
     processing_result: dict[str, str]
-    processed_at: Optional[datetime]
+    processed_at: datetime | None
     processing_state: LineItemProcessingState
 
 
@@ -131,16 +133,16 @@ class BaseOrder:
 class Order(BaseOrder):
     shop_id: ShopID
     storefront_id: StorefrontID
-    company: Optional[str]
+    company: str | None
     first_name: str
     last_name: str
     address: Address
     line_items: list[LineItem]
-    payment_method: Optional[str]
+    payment_method: str | None
     is_invoiced: bool
     is_processing_required: bool
     is_processed: bool
-    cancelation_reason: Optional[str]
+    cancelation_reason: str | None
 
 
 @dataclass(frozen=True)

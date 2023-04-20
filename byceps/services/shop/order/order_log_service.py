@@ -6,9 +6,10 @@ byceps.services.shop.order.order_log_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import select
 
@@ -27,7 +28,7 @@ def create_entry(
     order_id: OrderID,
     data: OrderLogEntryData,
     *,
-    occurred_at: Optional[datetime] = None,
+    occurred_at: datetime | None = None,
 ) -> None:
     """Create an order log entry."""
     db_entry = build_entry(event_type, order_id, data, occurred_at=occurred_at)
@@ -51,7 +52,7 @@ def build_entry(
     order_id: OrderID,
     data: OrderLogEntryData,
     *,
-    occurred_at: Optional[datetime] = None,
+    occurred_at: datetime | None = None,
 ) -> DbOrderLogEntry:
     """Assemble, but not persist, an order log entry."""
     if occurred_at is None:

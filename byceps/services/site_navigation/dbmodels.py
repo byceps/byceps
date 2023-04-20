@@ -6,7 +6,9 @@ byceps.services.site_navigation.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, TYPE_CHECKING
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
@@ -53,7 +55,7 @@ class DbNavMenu(db.Model):
         language_code: str,
         hidden: bool,
         *,
-        parent_menu_id: Optional[NavMenuID] = None,
+        parent_menu_id: NavMenuID | None = None,
     ) -> None:
         self.site_id = site_id
         self.name = name
@@ -98,7 +100,7 @@ class DbNavItem(db.Model):
     def __init__(
         self,
         menu_id: NavMenuID,
-        parent_item_id: Optional[NavItemID],
+        parent_item_id: NavItemID | None,
         target_type: NavItemTargetType,
         target: str,
         label: str,

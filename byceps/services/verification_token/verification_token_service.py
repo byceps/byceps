@@ -6,8 +6,9 @@ byceps.services.verification_token.verification_token_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime, timedelta
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -41,7 +42,7 @@ def create_for_consent(user_id: UserID) -> VerificationToken:
 
 
 def _create_token(
-    user_id: UserID, purpose: Purpose, *, data: Optional[dict[str, str]] = None
+    user_id: UserID, purpose: Purpose, *, data: dict[str, str] | None = None
 ) -> VerificationToken:
     token = DbVerificationToken(user_id, purpose, data=data)
 
@@ -87,33 +88,33 @@ def delete_old_tokens(created_before: datetime) -> int:
 
 def find_for_email_address_change_by_token(
     token_value: str,
-) -> Optional[VerificationToken]:
+) -> VerificationToken | None:
     purpose = Purpose.email_address_change
     return _find_for_purpose_by_token(token_value, purpose)
 
 
 def find_for_email_address_confirmation_by_token(
     token_value: str,
-) -> Optional[VerificationToken]:
+) -> VerificationToken | None:
     purpose = Purpose.email_address_confirmation
     return _find_for_purpose_by_token(token_value, purpose)
 
 
 def find_for_password_reset_by_token(
     token_value: str,
-) -> Optional[VerificationToken]:
+) -> VerificationToken | None:
     purpose = Purpose.password_reset
     return _find_for_purpose_by_token(token_value, purpose)
 
 
-def find_for_consent_by_token(token_value: str) -> Optional[VerificationToken]:
+def find_for_consent_by_token(token_value: str) -> VerificationToken | None:
     purpose = Purpose.consent
     return _find_for_purpose_by_token(token_value, purpose)
 
 
 def _find_for_purpose_by_token(
     token_value: str, purpose: Purpose
-) -> Optional[VerificationToken]:
+) -> VerificationToken | None:
     token = db.session.scalars(
         select(DbVerificationToken)
         .filter_by(token=token_value)

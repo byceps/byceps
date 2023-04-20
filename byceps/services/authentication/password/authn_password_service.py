@@ -6,8 +6,9 @@ byceps.services.authentication.password.authn_password_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import delete
 from werkzeug.security import (
@@ -109,7 +110,7 @@ def is_password_hash_current(password_hash: str) -> bool:
     return password_hash.startswith(PASSWORD_HASH_METHOD + '$')
 
 
-def _find_credential_for_user(user_id: UserID) -> Optional[DbCredential]:
+def _find_credential_for_user(user_id: UserID) -> DbCredential | None:
     """Return the credential for the user, if found."""
     return db.session.get(DbCredential, user_id)
 

@@ -6,7 +6,8 @@ byceps.blueprints.admin.shop.email.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask import abort, current_app, g
 
@@ -53,7 +54,7 @@ def view_for_shop(shop_id):
     }
 
 
-def _get_example_placed_order_message_text(shop_id) -> Optional[str]:
+def _get_example_placed_order_message_text(shop_id) -> str | None:
     try:
         return (
             order_email_example_service.build_example_placed_order_message_text(
@@ -67,7 +68,7 @@ def _get_example_placed_order_message_text(shop_id) -> Optional[str]:
         return None
 
 
-def _get_example_paid_order_message_text(shop_id) -> Optional[str]:
+def _get_example_paid_order_message_text(shop_id) -> str | None:
     try:
         return (
             order_email_example_service.build_example_paid_order_message_text(
@@ -81,7 +82,7 @@ def _get_example_paid_order_message_text(shop_id) -> Optional[str]:
         return None
 
 
-def _get_example_canceled_order_message_text(shop_id) -> Optional[str]:
+def _get_example_canceled_order_message_text(shop_id) -> str | None:
     try:
         return order_email_example_service.build_example_canceled_order_message_text(
             shop_id, g.user.locale

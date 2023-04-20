@@ -6,9 +6,10 @@ byceps.services.authorization.authz_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections import defaultdict
 from collections.abc import Iterable
-from typing import Optional
 
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
@@ -47,7 +48,7 @@ def delete_role(role_id: RoleID) -> None:
     db.session.commit()
 
 
-def find_role(role_id: RoleID) -> Optional[Role]:
+def find_role(role_id: RoleID) -> Role | None:
     """Return the role with that id, or `None` if not found."""
     db_role = db.session.get(DbRole, role_id)
 
@@ -109,7 +110,7 @@ def deassign_permission_from_role(
 
 
 def assign_role_to_user(
-    role_id: RoleID, user_id: UserID, *, initiator_id: Optional[UserID] = None
+    role_id: RoleID, user_id: UserID, *, initiator_id: UserID | None = None
 ) -> None:
     """Assign the role to the user."""
     if _is_role_assigned_to_user(role_id, user_id):
@@ -131,7 +132,7 @@ def assign_role_to_user(
 
 
 def deassign_role_from_user(
-    role_id: RoleID, user_id: UserID, initiator_id: Optional[UserID] = None
+    role_id: RoleID, user_id: UserID, initiator_id: UserID | None = None
 ) -> Result[None, str]:
     """Deassign the role from the user."""
     db_user_role = db.session.get(DbUserRole, (user_id, role_id))
@@ -155,7 +156,7 @@ def deassign_role_from_user(
 
 
 def deassign_all_roles_from_user(
-    user_id: UserID, initiator_id: Optional[UserID] = None, commit: bool = True
+    user_id: UserID, initiator_id: UserID | None = None, commit: bool = True
 ) -> None:
     """Deassign all roles from the user."""
     db.session.execute(delete(DbUserRole).where(DbUserRole.user_id == user_id))

@@ -11,7 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from ipaddress import IPv4Address, IPv6Address
-from typing import NewType, Optional, Union
+from typing import NewType, Union
 from uuid import UUID
 
 from byceps.typing import PartyID, UserID
@@ -29,11 +29,11 @@ AddressID = NewType('AddressID', UUID)
 @dataclass(frozen=True)
 class Setting:
     party_id: PartyID
-    netmask: Optional[IPAddress]
-    gateway: Optional[IPAddress]
-    dns_server1: Optional[IPAddress]
-    dns_server2: Optional[IPAddress]
-    domain: Optional[str]
+    netmask: IPAddress | None
+    gateway: IPAddress | None
+    dns_server1: IPAddress | None
+    dns_server2: IPAddress | None
+    domain: str | None
 
 
 @dataclass(frozen=True)
@@ -43,8 +43,8 @@ class Server:
     created_at: datetime
     creator_id: UserID
     owner_id: UserID
-    notes_owner: Optional[str]
-    notes_admin: Optional[str]
+    notes_owner: str | None
+    notes_admin: str | None
     approved: bool
     addresses: set[Address]
 
@@ -53,7 +53,7 @@ class Server:
 class Address:
     id: AddressID
     server_id: ServerID
-    ip_address: Optional[IPAddress]
-    hostname: Optional[str]
-    netmask: Optional[IPAddress]
-    gateway: Optional[IPAddress]
+    ip_address: IPAddress | None
+    hostname: str | None
+    netmask: IPAddress | None
+    gateway: IPAddress | None

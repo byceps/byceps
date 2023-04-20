@@ -6,7 +6,9 @@ byceps.blueprints.site.snippet.templating
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Optional
+from __future__ import annotations
+
+from typing import Any
 
 from flask import g
 from jinja2 import Template
@@ -30,7 +32,7 @@ def get_rendered_snippet_body(version: DbSnippetVersion) -> str:
 def render_snippet_as_partial_from_template(
     name: str,
     *,
-    scope: Optional[str] = None,
+    scope: str | None = None,
     ignore_if_unknown: bool = False,
 ) -> str:
     """Render the latest version of the snippet with the given name and
@@ -59,9 +61,9 @@ def render_snippet_as_partial(
     name: str,
     language_code: str,
     *,
-    scope: Optional[SnippetScope] = None,
+    scope: SnippetScope | None = None,
     ignore_if_unknown: bool = False,
-    context: Optional[Context] = None,
+    context: Context | None = None,
 ) -> str:
     """Render the latest version of the snippet with the given name and
     return the result.
@@ -85,7 +87,7 @@ def render_snippet_as_partial(
     return _render_template(current_version.body, context=context)
 
 
-def _render_template(source, *, context: Optional[Context] = None) -> str:
+def _render_template(source, *, context: Context | None = None) -> str:
     template = _load_template_with_globals(source)
 
     if context is None:

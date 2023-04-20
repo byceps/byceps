@@ -8,8 +8,10 @@ Templating utilities
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from functools import wraps
-from typing import Callable, Optional
+from typing import Callable
 
 from flask import render_template
 
@@ -41,7 +43,7 @@ def templated(arg) -> Callable:
     return wrapper
 
 
-def _decorate(f: Callable, template_name: Optional[str] = None) -> Callable:
+def _decorate(f: Callable, template_name: str | None = None) -> Callable:
     @wraps(f)
     def decorated(*args, **kwargs):
         name = _get_template_name(f, template_name)
@@ -59,7 +61,7 @@ def _decorate(f: Callable, template_name: Optional[str] = None) -> Callable:
 
 
 def _get_template_name(
-    view_function: Callable, template_name: Optional[str]
+    view_function: Callable, template_name: str | None
 ) -> str:
     if template_name is None:
         name = _derive_template_name(view_function)

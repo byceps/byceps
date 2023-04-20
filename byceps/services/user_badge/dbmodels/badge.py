@@ -6,7 +6,8 @@ byceps.services.user_badge.dbmodels.badge
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db, generate_uuid4
 from byceps.typing import BrandID
@@ -34,8 +35,8 @@ class DbBadge(db.Model):
         label: str,
         image_filename: str,
         *,
-        description: Optional[str] = None,
-        brand_id: Optional[BrandID] = None,
+        description: str | None = None,
+        brand_id: BrandID | None = None,
         featured: bool = False,
     ) -> None:
         self.slug = slug

@@ -17,8 +17,9 @@ messages, but not `flask.flash` directly.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from flask import flash
 
@@ -27,26 +28,26 @@ from flask import flash
 class FlashMessage:
     text: str
     text_is_safe: bool
-    category: Optional[str]
-    icon: Optional[str]
+    category: str | None
+    icon: str | None
 
 
 def flash_error(
-    message: str, icon: Optional[str] = None, text_is_safe: bool = False
+    message: str, icon: str | None = None, text_is_safe: bool = False
 ) -> None:
     """Flash a message indicating an error."""
     _flash(message, category='danger', icon=icon, text_is_safe=text_is_safe)
 
 
 def flash_notice(
-    message: str, icon: Optional[str] = None, text_is_safe: bool = False
+    message: str, icon: str | None = None, text_is_safe: bool = False
 ) -> None:
     """Flash a generally informational message."""
     _flash(message, category='info', icon=icon, text_is_safe=text_is_safe)
 
 
 def flash_success(
-    message: str, icon: Optional[str] = None, text_is_safe: bool = False
+    message: str, icon: str | None = None, text_is_safe: bool = False
 ) -> None:
     """Flash a message describing a successful action."""
     _flash(message, category='success', icon=icon, text_is_safe=text_is_safe)
@@ -54,8 +55,8 @@ def flash_success(
 
 def _flash(
     message: str,
-    category: Optional[str] = None,
-    icon: Optional[str] = None,
+    category: str | None = None,
+    icon: str | None = None,
     text_is_safe: bool = False,
 ) -> None:
     flash_message = FlashMessage(message, text_is_safe, category, icon)

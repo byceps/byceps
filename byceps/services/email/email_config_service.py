@@ -6,7 +6,8 @@ byceps.services.email.email_config_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
@@ -26,8 +27,8 @@ def create_config(
     brand_id: BrandID,
     sender_address: str,
     *,
-    sender_name: Optional[str] = None,
-    contact_address: Optional[str] = None,
+    sender_name: str | None = None,
+    contact_address: str | None = None,
 ) -> EmailConfig:
     """Create a configuration."""
     config = DbEmailConfig(
@@ -46,8 +47,8 @@ def create_config(
 def update_config(
     brand_id: BrandID,
     sender_address: str,
-    sender_name: Optional[str],
-    contact_address: Optional[str],
+    sender_name: str | None,
+    contact_address: str | None,
 ) -> EmailConfig:
     """Update a configuration."""
     config = _find_db_config(brand_id)
@@ -89,7 +90,7 @@ def delete_config(brand_id: BrandID) -> bool:
     return True
 
 
-def _find_db_config(brand_id: BrandID) -> Optional[DbEmailConfig]:
+def _find_db_config(brand_id: BrandID) -> DbEmailConfig | None:
     return db.session.scalars(
         select(DbEmailConfig).filter_by(brand_id=brand_id)
     ).one_or_none()
@@ -113,8 +114,8 @@ def set_config(
     brand_id: BrandID,
     sender_address: str,
     *,
-    sender_name: Optional[str] = None,
-    contact_address: Optional[str] = None,
+    sender_name: str | None = None,
+    contact_address: str | None = None,
 ) -> None:
     """Add or update configuration for that ID."""
     table = DbEmailConfig.__table__

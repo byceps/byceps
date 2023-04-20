@@ -12,7 +12,7 @@ from collections.abc import Iterator
 from importlib import import_module
 import os
 from pathlib import Path
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 from flask import abort, current_app, Flask, g
 from flask_babel import Babel
@@ -35,8 +35,8 @@ log = structlog.get_logger()
 
 def create_app(
     *,
-    config_filename: Optional[Path | str] = None,
-    config_overrides: Optional[dict[str, Any]] = None,
+    config_filename: Path | str | None = None,
+    config_overrides: dict[str, Any] | None = None,
 ) -> Flask:
     """Create the actual Flask application."""
     app = Flask('byceps')
@@ -83,8 +83,8 @@ def create_app(
 
 def _configure(
     app: Flask,
-    config_filename: Optional[Path | str] = None,
-    config_overrides: Optional[dict[str, Any]] = None,
+    config_filename: Path | str | None = None,
+    config_overrides: dict[str, Any] | None = None,
 ) -> None:
     """Configure application from file, environment variables, and defaults."""
     app.config.from_object(config_defaults)
@@ -194,7 +194,7 @@ def _get_site_template_context() -> dict[str, Any]:
 
 def _find_site_template_context_processor_cached(
     site_id: str,
-) -> Optional[Callable[[], dict[str, Any]]]:
+) -> Callable[[], dict[str, Any]] | None:
     """Return the template context processor for the site.
 
     A processor will be cached after it has been obtained for the first
@@ -213,7 +213,7 @@ def _find_site_template_context_processor_cached(
 
 def _find_site_template_context_processor(
     site_id: str,
-) -> Optional[Callable[[], dict[str, Any]]]:
+) -> Callable[[], dict[str, Any]] | None:
     """Import a template context processor from the site's package.
 
     If a site package contains a module named `extension` and that

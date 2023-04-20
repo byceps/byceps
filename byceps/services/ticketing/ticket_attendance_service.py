@@ -6,11 +6,12 @@ byceps.services.ticketing.ticket_attendance_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections import Counter
 from collections.abc import Sequence
 from datetime import datetime
 from itertools import chain
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -48,7 +49,7 @@ def delete_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
 
 
 def get_attended_parties(
-    user_id: UserID, limit_to_brand_id: Optional[BrandID] = None
+    user_id: UserID, limit_to_brand_id: BrandID | None = None
 ) -> list[Party]:
     """Return the parties the user has attended in the past."""
     ticket_attendance_party_ids = _get_attended_party_ids(
@@ -66,7 +67,7 @@ def get_attended_parties(
 
 
 def _get_attended_party_ids(
-    user_id: UserID, limit_to_brand_id: Optional[BrandID] = None
+    user_id: UserID, limit_to_brand_id: BrandID | None = None
 ) -> set[PartyID]:
     """Return the IDs of the non-legacy parties the user has attended."""
     stmt = (
@@ -88,7 +89,7 @@ def _get_attended_party_ids(
 
 
 def _get_archived_attendance_party_ids(
-    user_id: UserID, limit_to_brand_id: Optional[BrandID] = None
+    user_id: UserID, limit_to_brand_id: BrandID | None = None
 ) -> set[PartyID]:
     """Return the IDs of the legacy parties the user has attended."""
     stmt = select(DbArchivedAttendance.party_id).filter(

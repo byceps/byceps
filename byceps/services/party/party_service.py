@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import dataclasses
 from datetime import date, datetime, timedelta
-from typing import Callable, Optional
+from typing import Callable
 
 from sqlalchemy import delete, select
 
@@ -35,7 +35,7 @@ def create_party(
     starts_at: datetime,
     ends_at: datetime,
     *,
-    max_ticket_quantity: Optional[int] = None,
+    max_ticket_quantity: int | None = None,
     ticket_management_enabled: bool = False,
     seat_management_enabled: bool = False,
 ) -> Party:
@@ -62,7 +62,7 @@ def update_party(
     title: str,
     starts_at: datetime,
     ends_at: datetime,
-    max_ticket_quantity: Optional[int],
+    max_ticket_quantity: int | None,
     ticket_management_enabled: bool,
     seat_management_enabled: bool,
     canceled: bool,
@@ -107,7 +107,7 @@ def count_parties_for_brand(brand_id: BrandID) -> int:
     )
 
 
-def find_party(party_id: PartyID) -> Optional[Party]:
+def find_party(party_id: PartyID) -> Party | None:
     """Return the party with that id, or `None` if not found."""
     db_party = db.session.get(DbParty, party_id)
 
@@ -148,7 +148,7 @@ def get_all_parties_with_brands() -> list[PartyWithBrand]:
 
 
 def get_active_parties(
-    brand_id: Optional[BrandID] = None, *, include_brands: bool = False
+    brand_id: BrandID | None = None, *, include_brands: bool = False
 ) -> list[Party | PartyWithBrand]:
     """Return active (i.e. non-canceled, non-archived) parties."""
     stmt = select(DbParty)

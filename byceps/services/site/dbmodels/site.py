@@ -6,7 +6,8 @@ byceps.services.site.dbmodels.site
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db
 from byceps.services.board.models import BoardID
@@ -79,9 +80,9 @@ class DbSite(db.Model):
         user_account_creation_enabled: bool,
         login_enabled: bool,
         *,
-        party_id: Optional[PartyID] = None,
-        board_id: Optional[BoardID] = None,
-        storefront_id: Optional[StorefrontID] = None,
+        party_id: PartyID | None = None,
+        board_id: BoardID | None = None,
+        storefront_id: StorefrontID | None = None,
         is_intranet: bool = False,
     ) -> None:
         self.id = site_id

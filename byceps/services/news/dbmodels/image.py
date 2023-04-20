@@ -6,8 +6,9 @@ byceps.services.news.dbmodels.image
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from byceps.database import db
 from byceps.services.news.models import NewsImageID, NewsItemID
@@ -46,9 +47,9 @@ class DbNewsImage(db.Model):
         number: int,
         filename: str,
         *,
-        alt_text: Optional[str] = None,
-        caption: Optional[str] = None,
-        attribution: Optional[str] = None,
+        alt_text: str | None = None,
+        caption: str | None = None,
+        attribution: str | None = None,
     ) -> None:
         self.id = image_id
         self.creator_id = creator_id

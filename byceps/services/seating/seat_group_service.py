@@ -6,8 +6,9 @@ byceps.services.seating.seat_group_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
-from typing import Optional
 
 from sqlalchemy import select
 
@@ -176,14 +177,14 @@ def count_seat_groups_for_party(party_id: PartyID) -> int:
     )
 
 
-def find_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeatGroup]:
+def find_seat_group(seat_group_id: SeatGroupID) -> DbSeatGroup | None:
     """Return the seat group with that id, or `None` if not found."""
     return db.session.get(DbSeatGroup, seat_group_id)
 
 
 def find_seat_group_occupied_by_ticket_bundle(
     ticket_bundle_id: TicketBundleID,
-) -> Optional[SeatGroupID]:
+) -> SeatGroupID | None:
     """Return the ID of the seat group occupied by that ticket bundle,
     or `None` if not found.
     """
@@ -196,7 +197,7 @@ def find_seat_group_occupied_by_ticket_bundle(
 
 def find_occupancy_for_seat_group(
     seat_group_id: SeatGroupID,
-) -> Optional[DbSeatGroupOccupancy]:
+) -> DbSeatGroupOccupancy | None:
     """Return the occupancy for that seat group, or `None` if not found."""
     return db.session.execute(
         select(DbSeatGroupOccupancy).filter_by(seat_group_id=seat_group_id)

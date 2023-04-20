@@ -6,8 +6,10 @@ byceps.config
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from flask import current_app, Flask
 
@@ -49,7 +51,7 @@ def init_app(app: Flask) -> None:
         _set_extension_value(KEY_SITE_ID, site_id, app)
 
 
-def _get_extension_value(key: str, app: Optional[Flask] = None) -> Any:
+def _get_extension_value(key: str, app: Flask | None = None) -> Any:
     """Return the value for the key in this application's own extension
     namespace.
 
@@ -86,7 +88,7 @@ def _determine_app_mode(app: Flask) -> AppMode:
         raise ConfigurationError(f'Invalid app mode "{value}" configured.')
 
 
-def get_app_mode(app: Optional[Flask] = None) -> AppMode:
+def get_app_mode(app: Flask | None = None) -> AppMode:
     """Return the mode the site should run in."""
     return _get_extension_value(KEY_APP_MODE, app)
 
@@ -103,6 +105,6 @@ def _determine_site_id(app: Flask) -> SiteID:
     return site_id
 
 
-def get_current_site_id(app: Optional[Flask] = None) -> SiteID:
+def get_current_site_id(app: Flask | None = None) -> SiteID:
     """Return the id of the current site."""
     return _get_extension_value(KEY_SITE_ID, app)

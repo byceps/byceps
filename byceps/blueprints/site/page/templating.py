@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import sys
 import traceback
-from typing import Any, Optional
+from typing import Any
 
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
@@ -49,7 +49,7 @@ def render_page(page: Page, version: PageVersion) -> str | tuple[str, int]:
         return render_template('site/page/error.html', **context), 500
 
 
-def _find_subnav_menu_id(page: Page) -> Optional[NavMenuID]:
+def _find_subnav_menu_id(page: Page) -> NavMenuID | None:
     if page.nav_menu_id:
         return page.nav_menu_id
 
@@ -60,7 +60,7 @@ def _find_subnav_menu_id(page: Page) -> Optional[NavMenuID]:
 
 
 def build_template_context(
-    title: str, raw_head: Optional[str], raw_body: str
+    title: str, raw_head: str | None, raw_body: str
 ) -> Context:
     """Build the page context to insert into the outer template."""
     head = _render_template(raw_head) if raw_head else None
@@ -83,7 +83,7 @@ def _render_template(source: str) -> str:
     return template.render()
 
 
-def url_for_page(name: str, **kwargs) -> Optional[str]:
+def url_for_page(name: str, **kwargs) -> str | None:
     """Render an URL pointing to the page's URL path."""
     site_id = getattr(g, 'site_id', None)
     if site_id is None:

@@ -6,8 +6,9 @@ byceps.services.tourney.tourney_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -29,8 +30,8 @@ def create_tourney(
     max_participant_count: int,
     starts_at: datetime,
     *,
-    subtitle: Optional[str] = None,
-    logo_url: Optional[str] = None,
+    subtitle: str | None = None,
+    logo_url: str | None = None,
 ) -> Tourney:
     """Create a tourney."""
     party = party_service.get_party(party_id)
@@ -55,8 +56,8 @@ def create_tourney(
 def update_tourney(
     tourney_id: TourneyID,
     title: str,
-    subtitle: Optional[str],
-    logo_url: Optional[str],
+    subtitle: str | None,
+    logo_url: str | None,
     category_id: TourneyCategoryID,
     max_participant_count: int,
     starts_at: datetime,
@@ -84,7 +85,7 @@ def delete_tourney(tourney_id: TourneyID) -> None:
     db.session.commit()
 
 
-def find_tourney(tourney_id: TourneyID) -> Optional[Tourney]:
+def find_tourney(tourney_id: TourneyID) -> Tourney | None:
     """Return the tourney with that id, or `None` if not found."""
     db_tourney = _find_db_tourney(tourney_id)
 
@@ -94,7 +95,7 @@ def find_tourney(tourney_id: TourneyID) -> Optional[Tourney]:
     return _db_entity_to_tourney(db_tourney)
 
 
-def _find_db_tourney(tourney_id: TourneyID) -> Optional[DbTourney]:
+def _find_db_tourney(tourney_id: TourneyID) -> DbTourney | None:
     return db.session.get(DbTourney, tourney_id)
 
 

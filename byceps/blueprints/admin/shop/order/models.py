@@ -9,7 +9,6 @@ byceps.blueprints.admin.shop.order.models
 from __future__ import annotations
 
 from enum import Enum
-from typing import Optional
 
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.util import iterables
@@ -33,9 +32,9 @@ class OrderStateFilter(Enum):
 
     def __init__(
         self,
-        payment_state: Optional[PaymentState],
-        overdue: Optional[bool],
-        processed: Optional[bool],
+        payment_state: PaymentState | None,
+        overdue: bool | None,
+        processed: bool | None,
     ) -> None:
         self.payment_state = payment_state
         self.overdue = overdue
@@ -44,9 +43,9 @@ class OrderStateFilter(Enum):
     @classmethod
     def find(
         cls,
-        only_payment_state: Optional[PaymentState],
-        only_overdue: Optional[bool],
-        only_processed: Optional[bool],
+        only_payment_state: PaymentState | None,
+        only_overdue: bool | None,
+        only_processed: bool | None,
     ) -> OrderStateFilter:
         if (only_payment_state == PaymentState.open) and (
             only_overdue is not None
@@ -70,7 +69,7 @@ class OrderStateFilter(Enum):
     @classmethod
     def find_for_payment_state(
         cls, payment_state: PaymentState
-    ) -> Optional[OrderStateFilter]:
+    ) -> OrderStateFilter | None:
         def match(order_state_filter):
             return (
                 order_state_filter.payment_state == payment_state

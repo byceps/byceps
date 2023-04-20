@@ -6,6 +6,8 @@ byceps.services.webhooks.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any, NewType, Optional
 from uuid import UUID
@@ -23,7 +25,7 @@ class OutgoingWebhook:
     event_types: set[str]
     event_filters: EventFilters
     format: str
-    text_prefix: Optional[str]
+    text_prefix: str | None
     extra_fields: dict[str, Any]
     url: str
     description: str

@@ -6,8 +6,9 @@ byceps.services.ticketing.dbmodels.ticket_bundle
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from byceps.database import db, generate_uuid7
 from byceps.services.ticketing.models.ticket import TicketCategoryID
@@ -63,7 +64,7 @@ class DbTicketBundle(db.Model):
         ticket_quantity: int,
         owned_by_id: UserID,
         *,
-        label: Optional[str] = None,
+        label: str | None = None,
     ) -> None:
         self.party_id = party_id
         self.ticket_category_id = ticket_category_id

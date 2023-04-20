@@ -6,9 +6,10 @@ byceps.services.orga.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional
 
 from byceps.util.datetime.calc import calculate_age, calculate_days_until
 from byceps.util.datetime.monthday import MonthDay
@@ -19,17 +20,17 @@ class Birthday:
     date_of_birth: date
 
     @property
-    def age(self) -> Optional[int]:
+    def age(self) -> int | None:
         """Return the current age."""
         return calculate_age(self.date_of_birth, today())
 
     @property
-    def days_until_next_birthday(self) -> Optional[int]:
+    def days_until_next_birthday(self) -> int | None:
         """Return the number of days until the next birthday."""
         return calculate_days_until(self.date_of_birth, today())
 
     @property
-    def is_today(self) -> Optional[bool]:
+    def is_today(self) -> bool | None:
         """Return `True` if the birthday is today."""
         return MonthDay.of(self.date_of_birth).matches(today())
 

@@ -6,7 +6,8 @@ byceps.services.shop.storefront.storefront_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -29,7 +30,7 @@ def create_storefront(
     order_number_sequence_id: OrderNumberSequenceID,
     closed: bool,
     *,
-    catalog_id: Optional[CatalogID] = None,
+    catalog_id: CatalogID | None = None,
 ) -> Storefront:
     """Create a storefront."""
     db_storefront = DbStorefront(
@@ -72,7 +73,7 @@ def delete_storefront(storefront_id: StorefrontID) -> None:
     db.session.commit()
 
 
-def find_storefront(storefront_id: StorefrontID) -> Optional[Storefront]:
+def find_storefront(storefront_id: StorefrontID) -> Storefront | None:
     """Return the storefront with that id, or `None` if not found."""
     db_storefront = _find_db_storefront(storefront_id)
 
@@ -82,7 +83,7 @@ def find_storefront(storefront_id: StorefrontID) -> Optional[Storefront]:
     return _db_entity_to_storefront(db_storefront)
 
 
-def _find_db_storefront(storefront_id: StorefrontID) -> Optional[DbStorefront]:
+def _find_db_storefront(storefront_id: StorefrontID) -> DbStorefront | None:
     """Return the database entity for the storefront with that id, or `None`
     if not found.
     """

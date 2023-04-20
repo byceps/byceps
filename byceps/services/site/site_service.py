@@ -9,7 +9,7 @@ byceps.services.site.site_service
 from __future__ import annotations
 
 import dataclasses
-from typing import Callable, Optional
+from typing import Callable
 
 from sqlalchemy import delete, select
 
@@ -39,9 +39,9 @@ def create_site(
     enabled: bool = False,
     user_account_creation_enabled: bool = False,
     login_enabled: bool = False,
-    party_id: Optional[PartyID] = None,
-    board_id: Optional[BoardID] = None,
-    storefront_id: Optional[StorefrontID] = None,
+    party_id: PartyID | None = None,
+    board_id: BoardID | None = None,
+    storefront_id: StorefrontID | None = None,
     is_intranet: bool = False,
 ) -> Site:
     """Create a site for that party."""
@@ -70,12 +70,12 @@ def update_site(
     title: str,
     server_name: str,
     brand_id: BrandID,
-    party_id: Optional[PartyID],
+    party_id: PartyID | None,
     enabled: bool,
     user_account_creation_enabled: bool,
     login_enabled: bool,
-    board_id: Optional[BoardID],
-    storefront_id: Optional[StorefrontID],
+    board_id: BoardID | None,
+    storefront_id: StorefrontID | None,
     is_intranet: bool,
     archived: bool,
 ) -> Site:
@@ -106,7 +106,7 @@ def delete_site(site_id: SiteID) -> None:
     db.session.commit()
 
 
-def _find_db_site(site_id: SiteID) -> Optional[DbSite]:
+def _find_db_site(site_id: SiteID) -> DbSite | None:
     return db.session.get(DbSite, site_id)
 
 
@@ -119,7 +119,7 @@ def _get_db_site(site_id: SiteID) -> DbSite:
     return db_site
 
 
-def find_site(site_id: SiteID) -> Optional[Site]:
+def find_site(site_id: SiteID) -> Site | None:
     """Return the site with that ID, or `None` if not found."""
     db_site = _find_db_site(site_id)
 
@@ -164,7 +164,7 @@ def get_sites_for_brand(brand_id: BrandID) -> set[Site]:
 
 
 def get_current_sites(
-    brand_id: Optional[BrandID] = None, *, include_brands: bool = False
+    brand_id: BrandID | None = None, *, include_brands: bool = False
 ) -> set[Site | SiteWithBrand]:
     """Return all "current" (i.e. enabled and not archived) sites."""
     stmt = select(DbSite)

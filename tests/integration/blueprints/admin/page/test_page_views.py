@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
 
 import pytest
 
@@ -39,9 +39,9 @@ def page_admin_client(make_client, admin_app, page_admin):
 @pytest.fixture
 def make_page(site: Site, page_admin: User):
     def _wrapper(
-        name: Optional[str] = None,
+        name: str | None = None,
         language_code: str = 'en',
-        url_path: Optional[str] = None,
+        url_path: str | None = None,
         title: str = 'Title',
         body: str = 'Body',
     ) -> tuple[PageVersion, PageCreated]:

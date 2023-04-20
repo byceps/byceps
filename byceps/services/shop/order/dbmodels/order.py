@@ -6,8 +6,10 @@ byceps.services.shop.order.dbmodels.order
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
 
@@ -79,7 +81,7 @@ class DbOrder(db.Model):
         storefront_id: StorefrontID,
         order_number: OrderNumber,
         placed_by_id: UserID,
-        company: Optional[str],
+        company: str | None,
         first_name: str,
         last_name: str,
         country: str,

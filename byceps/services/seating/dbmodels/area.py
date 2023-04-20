@@ -6,7 +6,8 @@ byceps.services.seating.dbmodels.area
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db, generate_uuid4
 from byceps.typing import PartyID
@@ -42,9 +43,9 @@ class DbSeatingArea(db.Model):
         slug: str,
         title: str,
         *,
-        image_filename: Optional[str] = None,
-        image_width: Optional[int] = None,
-        image_height: Optional[int] = None,
+        image_filename: str | None = None,
+        image_width: int | None = None,
+        image_height: int | None = None,
     ) -> None:
         self.party_id = party_id
         self.slug = slug

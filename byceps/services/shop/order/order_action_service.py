@@ -6,7 +6,9 @@ byceps.services.shop.order.order_action_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Callable, Optional
+from __future__ import annotations
+
+from typing import Callable
 from uuid import UUID
 
 from sqlalchemy import delete, select
@@ -69,7 +71,7 @@ def delete_actions_for_article(article_id: ArticleID) -> None:
     db.session.commit()
 
 
-def find_action(action_id: UUID) -> Optional[Action]:
+def find_action(action_id: UUID) -> Action | None:
     """Return the action with that ID, if found."""
     db_action = db.session.get(DbOrderAction, action_id)
 

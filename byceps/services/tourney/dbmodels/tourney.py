@@ -6,8 +6,9 @@ byceps.services.tourney.dbmodels.tourney
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from byceps.database import db, generate_uuid7
 from byceps.services.tourney.models import TourneyCategoryID
@@ -50,8 +51,8 @@ class DbTourney(db.Model):
         max_participant_count: int,
         starts_at: datetime,
         *,
-        subtitle: Optional[str] = None,
-        logo_url: Optional[str] = None,
+        subtitle: str | None = None,
+        logo_url: str | None = None,
     ) -> None:
         self.party_id = party_id
         self.title = title

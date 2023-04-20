@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
 import json
-from typing import Optional
 
 from pydantic import ValidationError
 
@@ -28,10 +27,10 @@ def serialize_seat_to_import(
     coord_x: int,
     coord_y: int,
     category_title: str,
-    rotation: Optional[int] = None,
-    label: Optional[str] = None,
-    type_: Optional[str] = None,
-    group_title: Optional[str] = None,
+    rotation: int | None = None,
+    label: str | None = None,
+    type_: str | None = None,
+    group_title: str | None = None,
 ) -> str:
     """Serialize a seat to JSON so it can be imported."""
     model = SerializableSeatToImport(

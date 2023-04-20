@@ -6,9 +6,10 @@ byceps.blueprints.site.board.views_topic
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 import dataclasses
 from datetime import datetime
-from typing import Optional
 
 from flask import abort, g, redirect, request
 from flask_babel import gettext
@@ -148,8 +149,8 @@ def _find_posting_url_to_redirect_to(
     topic_id: TopicID,
     user: CurrentUser,
     include_hidden: bool,
-    last_viewed_at: Optional[datetime],
-) -> Optional[str]:
+    last_viewed_at: datetime | None,
+) -> str | None:
     if not user.authenticated:
         # All postings are potentially new to a guest, so start on
         # the first page.

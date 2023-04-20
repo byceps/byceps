@@ -6,8 +6,10 @@ byceps.blueprints.admin.ticketing.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable, Iterator
-from typing import Any, Optional
+from typing import Any
 from uuid import UUID
 
 from byceps.services.seating import seat_service
@@ -188,7 +190,7 @@ def _look_up_user_for_id(
     users_by_id: dict[str, User],
     user_id_key: str,
     user_key: str,
-) -> tuple[str, Optional[User]]:
+) -> tuple[str, User | None]:
     user_id = log_entry.data[user_id_key]
     user = users_by_id.get(user_id)
     return user_key, user

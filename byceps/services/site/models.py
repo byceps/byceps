@@ -6,8 +6,10 @@ byceps.services.site.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import NewType, Optional
+from typing import NewType
 
 from byceps.services.board.models import BoardID
 from byceps.services.brand.models import Brand
@@ -30,8 +32,8 @@ class Site:
     user_account_creation_enabled: bool
     login_enabled: bool
     news_channel_ids: frozenset[NewsChannelID]
-    board_id: Optional[BoardID]
-    storefront_id: Optional[StorefrontID]
+    board_id: BoardID | None
+    storefront_id: StorefrontID | None
     is_intranet: bool
     archived: bool
 

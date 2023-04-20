@@ -6,8 +6,9 @@ byceps.services.user.user_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime, timedelta
-from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.sql import Select
@@ -45,7 +46,7 @@ def find_active_user(
     user_id: UserID,
     *,
     include_avatar: bool = False,
-) -> Optional[User]:
+) -> User | None:
     """Return the user with that ID if the account is "active", or
     `None` if:
     - the ID is unknown.
@@ -72,7 +73,7 @@ def find_user(
     user_id: UserID,
     *,
     include_avatar: bool = False,
-) -> Optional[User]:
+) -> User | None:
     """Return the user with that ID, or `None` if not found.
 
     Include avatar URL if requested.
@@ -142,7 +143,7 @@ def _get_user_stmt(include_avatar: bool) -> Select:
 
 
 def _user_row_to_dto(
-    row: tuple[UserID, str, bool, bool, Optional[str], Optional[DbUserAvatar]]
+    row: tuple[UserID, str, bool, bool, str | None, DbUserAvatar | None]
 ) -> User:
     user_id, screen_name, suspended, deleted, locale, avatar = row
     avatar_url = avatar.url if (avatar is not None) else None
@@ -157,7 +158,7 @@ def _user_row_to_dto(
     )
 
 
-def find_user_by_email_address(email_address: str) -> Optional[User]:
+def find_user_by_email_address(email_address: str) -> User | None:
     """Return the user with that email address, or `None` if not found."""
     user = db.session.scalars(
         select(DbUser).filter(
@@ -173,7 +174,7 @@ def find_user_by_email_address(email_address: str) -> Optional[User]:
 
 def find_user_by_screen_name(
     screen_name: str, *, case_insensitive=False
-) -> Optional[User]:
+) -> User | None:
     """Return the user with that screen name, or `None` if not found."""
     user = find_db_user_by_screen_name(
         screen_name, case_insensitive=case_insensitive
@@ -187,7 +188,7 @@ def find_user_by_screen_name(
 
 def find_db_user_by_screen_name(
     screen_name: str, *, case_insensitive=False
-) -> Optional[DbUser]:
+) -> DbUser | None:
     """Return the user with that screen name, or `None` if not found."""
     stmt = select(DbUser)
 
@@ -201,7 +202,7 @@ def find_db_user_by_screen_name(
     return db.session.scalars(stmt).one_or_none()
 
 
-def find_user_with_details(user_id: UserID) -> Optional[DbUser]:
+def find_user_with_details(user_id: UserID) -> DbUser | None:
     """Return the user and its details."""
     return db.session.scalars(
         select(DbUser)
@@ -220,7 +221,7 @@ def get_db_user(user_id: UserID) -> DbUser:
     return user
 
 
-def find_user_for_admin(user_id: UserID) -> Optional[UserForAdmin]:
+def find_user_for_admin(user_id: UserID) -> UserForAdmin | None:
     """Return the user with that ID, or `None` if not found."""
     user = db.session.scalars(
         select(DbUser)
@@ -300,7 +301,7 @@ def _db_entity_to_user_for_admin(user: DbUser) -> UserForAdmin:
     )
 
 
-def find_screen_name(user_id: UserID) -> Optional[str]:
+def find_screen_name(user_id: UserID) -> str | None:
     """Return the user's screen name, if available."""
     screen_name = db.session.scalar(
         select(DbUser.screen_name).filter_by(id=user_id)
@@ -312,7 +313,7 @@ def find_screen_name(user_id: UserID) -> Optional[str]:
     return screen_name
 
 
-def find_email_address(user_id: UserID) -> Optional[str]:
+def find_email_address(user_id: UserID) -> str | None:
     """Return the user's e-mail address, if set."""
     return db.session.scalar(select(DbUser.email_address).filter_by(id=user_id))
 
@@ -428,7 +429,7 @@ def _do_users_matching_filter_exist(
 
 
 def get_users_created_since(
-    delta: timedelta, limit: Optional[int] = None
+    delta: timedelta, limit: int | None = None
 ) -> list[UserForAdmin]:
     """Return the user accounts created since `delta` ago."""
     filter_starts_at = datetime.utcnow() - delta
@@ -457,8 +458,8 @@ def get_users_paginated(
     page: int,
     per_page: int,
     *,
-    search_term: Optional[str] = None,
-    state_filter: Optional[UserStateFilter] = None,
+    search_term: str | None = None,
+    state_filter: UserStateFilter | None = None,
 ) -> Pagination:
     """Return the users to show on the specified page, optionally
     filtered by search term or flags.
@@ -485,7 +486,7 @@ def get_users_paginated(
 
 
 def _filter_by_state(
-    stmt: Select, state_filter: Optional[UserStateFilter] = None
+    stmt: Select, state_filter: UserStateFilter | None = None
 ) -> Select:
     if state_filter == UserStateFilter.active:
         return (

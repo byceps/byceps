@@ -6,11 +6,12 @@ byceps.services.shop.cancelation_request.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Optional
 from uuid import UUID
 
 from byceps.services.shop.order.models.number import OrderNumber
@@ -46,8 +47,8 @@ class CancelationRequest:
     donation_extent: DonationExtent
     amount_refund: Decimal
     amount_donation: Decimal
-    recipient_name: Optional[str]
-    recipient_iban: Optional[str]
+    recipient_name: str | None
+    recipient_iban: str | None
     state: CancelationRequestState
 
 

@@ -6,8 +6,9 @@ byceps.util.navigation
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from .authorization import has_current_user_permission
 
@@ -16,9 +17,9 @@ from .authorization import has_current_user_permission
 class NavigationItem:
     endpoint: str
     label: str
-    id: Optional[str]
-    required_permission: Optional[str]
-    icon: Optional[str]
+    id: str | None
+    required_permission: str | None
+    icon: str | None
 
 
 class Navigation:
@@ -36,10 +37,10 @@ class Navigation:
         endpoint: str,
         label: str,
         *,
-        id: Optional[str] = None,
-        required_permission: Optional[str] = None,
+        id: str | None = None,
+        required_permission: str | None = None,
         precondition: bool = True,
-        icon: Optional[str] = None,
+        icon: str | None = None,
     ) -> object:
         """Add an item to the navigation."""
         if not precondition:

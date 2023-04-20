@@ -6,8 +6,9 @@ byceps.services.seating.seat_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable, Iterator
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -28,9 +29,9 @@ def create_seat(
     coord_y: int,
     category_id: TicketCategoryID,
     *,
-    rotation: Optional[int] = None,
-    label: Optional[str] = None,
-    type_: Optional[str] = None,
+    rotation: int | None = None,
+    label: str | None = None,
+    type_: str | None = None,
 ) -> Seat:
     """Create a seat."""
     db_seat = DbSeat(
@@ -145,7 +146,7 @@ def aggregate_seat_utilizations(
     )
 
 
-def find_seat(seat_id: SeatID) -> Optional[Seat]:
+def find_seat(seat_id: SeatID) -> Seat | None:
     """Return the seat with that id, or `None` if not found."""
     db_seat = db.session.get(DbSeat, seat_id)
 
@@ -179,7 +180,7 @@ def find_seats(seat_ids: set[SeatID]) -> set[Seat]:
 
 def get_seats_with_tickets_for_area(
     area_id: SeatingAreaID,
-) -> list[tuple[Seat, Optional[DbTicket]]]:
+) -> list[tuple[Seat, DbTicket | None]]:
     """Return the seats and their associated tickets (if available) for
     that area.
     """

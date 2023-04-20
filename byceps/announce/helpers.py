@@ -6,11 +6,13 @@ byceps.announce.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from functools import wraps
 from http import HTTPStatus
-from typing import Any, Optional
+from typing import Any
 
 from flask import current_app
 from flask_babel import force_locale, gettext
@@ -24,7 +26,7 @@ from byceps.util.l10n import get_default_locale
 from .events import get_name_for_event
 
 
-def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
+def get_screen_name_or_fallback(screen_name: str | None) -> str:
     """Return the screen name or a fallback value."""
     return screen_name if screen_name else gettext('Someone')
 
@@ -42,13 +44,13 @@ def with_locale(handler):
 @dataclass(frozen=True)
 class Announcement:
     text: str
-    announce_at: Optional[datetime] = None
+    announce_at: datetime | None = None
 
 
 @dataclass(frozen=True)
 class AnnouncementRequest:
     data: dict[str, Any]
-    announce_at: Optional[datetime] = None
+    announce_at: datetime | None = None
 
 
 class WebhookError(Exception):

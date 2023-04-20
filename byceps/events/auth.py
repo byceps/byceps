@@ -6,8 +6,9 @@ byceps.events.auth
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from byceps.services.site.models import SiteID
 
@@ -16,4 +17,4 @@ from .base import _BaseEvent
 
 @dataclass(frozen=True)
 class UserLoggedIn(_BaseEvent):
-    site_id: Optional[SiteID]
+    site_id: SiteID | None

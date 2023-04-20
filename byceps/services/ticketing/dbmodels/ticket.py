@@ -6,8 +6,9 @@ byceps.services.ticketing.dbmodels.ticket
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from byceps.database import db, generate_uuid7
 from byceps.services.seating.dbmodels.seat import DbSeat
@@ -95,9 +96,9 @@ class DbTicket(db.Model):
         category_id: TicketCategoryID,
         owned_by_id: UserID,
         *,
-        bundle: Optional[DbTicketBundle] = None,
-        order_number: Optional[OrderNumber] = None,
-        used_by_id: Optional[UserID] = None,
+        bundle: DbTicketBundle | None = None,
+        order_number: OrderNumber | None = None,
+        used_by_id: UserID | None = None,
     ) -> None:
         self.party_id = party_id
         self.code = code
@@ -147,10 +148,10 @@ class DbTicket(db.Model):
         ) or (self.user_managed_by_id == user_id)
 
     def __repr__(self) -> str:
-        def user(user: DbUser) -> Optional[str]:
+        def user(user: DbUser) -> str | None:
             return user.screen_name if (user is not None) else None
 
-        def occupied_seat() -> Optional[str]:
+        def occupied_seat() -> str | None:
             seat = self.occupied_seat
 
             if seat is None:

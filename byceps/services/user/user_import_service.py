@@ -6,12 +6,13 @@ byceps.services.user.user_import_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterator
 from datetime import date
 import json
 from io import TextIOBase
 import secrets
-from typing import Optional
 
 from pydantic import BaseModel, ValidationError
 
@@ -21,17 +22,17 @@ from .models.user import User
 
 class UserToImport(BaseModel):
     screen_name: str
-    email_address: Optional[str] = None
-    legacy_id: Optional[str] = None
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    date_of_birth: Optional[date] = None
-    country: Optional[str] = None
-    zip_code: Optional[str] = None
-    city: Optional[str] = None
-    street: Optional[str] = None
-    phone_number: Optional[str] = None
-    internal_comment: Optional[str] = None
+    email_address: str | None = None
+    legacy_id: str | None = None
+    first_name: str | None = None
+    last_name: str | None = None
+    date_of_birth: date | None = None
+    country: str | None = None
+    zip_code: str | None = None
+    city: str | None = None
+    street: str | None = None
+    phone_number: str | None = None
+    internal_comment: str | None = None
 
 
 def parse_lines(lines: TextIOBase) -> Iterator[str]:

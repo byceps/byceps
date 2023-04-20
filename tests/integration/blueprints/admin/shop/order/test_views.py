@@ -3,8 +3,9 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
-from typing import Optional
 from unittest.mock import patch
 
 from flask import Flask
@@ -341,7 +342,7 @@ def assert_payment_is_open(order: DbOrder) -> None:
 
 def assert_payment(
     order: DbOrder,
-    method: Optional[str],
+    method: str | None,
     state: PaymentState,
     updated_by_id: UserID,
 ) -> None:

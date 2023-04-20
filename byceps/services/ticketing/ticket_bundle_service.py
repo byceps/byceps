@@ -6,8 +6,9 @@ byceps.services.ticketing.ticket_bundle_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
-from typing import Optional
 
 from sqlalchemy import delete, select
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
@@ -36,9 +37,9 @@ def create_bundle(
     ticket_quantity: int,
     owned_by_id: UserID,
     *,
-    label: Optional[str] = None,
-    order_number: Optional[OrderNumber] = None,
-    used_by_id: Optional[UserID] = None,
+    label: str | None = None,
+    order_number: OrderNumber | None = None,
+    used_by_id: UserID | None = None,
 ) -> DbTicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
@@ -71,7 +72,7 @@ def revoke_bundle(
     bundle_id: TicketBundleID,
     initiator_id: UserID,
     *,
-    reason: Optional[str] = None,
+    reason: str | None = None,
 ) -> None:
     """Revoke the tickets included in this bundle."""
     db_bundle = get_bundle(bundle_id)
@@ -104,7 +105,7 @@ def delete_bundle(bundle_id: TicketBundleID) -> None:
     db.session.commit()
 
 
-def find_bundle(bundle_id: TicketBundleID) -> Optional[DbTicketBundle]:
+def find_bundle(bundle_id: TicketBundleID) -> DbTicketBundle | None:
     """Return the ticket bundle with that id, or `None` if not found."""
     return db.session.get(DbTicketBundle, bundle_id)
 

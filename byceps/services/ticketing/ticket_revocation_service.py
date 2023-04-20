@@ -6,7 +6,8 @@ byceps.services.ticketing.ticket_revocation_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db
 from byceps.typing import UserID
@@ -17,7 +18,7 @@ from .models.ticket import TicketID
 
 
 def revoke_ticket(
-    ticket_id: TicketID, initiator_id: UserID, *, reason: Optional[str] = None
+    ticket_id: TicketID, initiator_id: UserID, *, reason: str | None = None
 ) -> None:
     """Revoke the ticket."""
     db_ticket = ticket_service.get_ticket(ticket_id)
@@ -40,7 +41,7 @@ def revoke_tickets(
     ticket_ids: set[TicketID],
     initiator_id: UserID,
     *,
-    reason: Optional[str] = None,
+    reason: str | None = None,
 ) -> None:
     """Revoke the tickets."""
     db_tickets = ticket_service.get_tickets(ticket_ids)
@@ -64,7 +65,7 @@ def revoke_tickets(
 
 
 def build_ticket_revoked_log_entry(
-    ticket_id: TicketID, initiator_id: UserID, reason: Optional[str] = None
+    ticket_id: TicketID, initiator_id: UserID, reason: str | None = None
 ) -> DbTicketLogEntry:
     data = {
         'initiator_id': str(initiator_id),

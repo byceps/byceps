@@ -6,9 +6,11 @@ byceps.services.shop.article.dbmodels.article
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
 
@@ -72,9 +74,9 @@ class DbArticle(db.Model):
         max_quantity_per_order: int,
         processing_required: bool,
         *,
-        type_params: Optional[ArticleTypeParams] = None,
-        available_from: Optional[datetime] = None,
-        available_until: Optional[datetime] = None,
+        type_params: ArticleTypeParams | None = None,
+        available_from: datetime | None = None,
+        available_until: datetime | None = None,
         not_directly_orderable: bool = False,
         separate_order_required: bool = False,
     ) -> None:

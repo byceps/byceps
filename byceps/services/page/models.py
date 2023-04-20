@@ -6,9 +6,11 @@ byceps.services.page.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from byceps.services.site.models import SiteID
@@ -44,12 +46,12 @@ class PageVersion:
     created_at: datetime
     creator_id: UserID
     title: str
-    head: Optional[str]
+    head: str | None
     body: str
 
 
 @dataclass(frozen=True)
 class PageAggregate(Page):
     title: str
-    head: Optional[str]
+    head: str | None
     body: str

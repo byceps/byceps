@@ -6,7 +6,8 @@ byceps.services.consent.consent_subject_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import select
 
@@ -25,7 +26,7 @@ def create_subject(
     name: str,
     title: str,
     checkbox_label: str,
-    checkbox_link_target: Optional[str],
+    checkbox_link_target: str | None,
 ) -> ConsentSubject:
     """Create a new subject."""
     db_subject = DbConsentSubject(
@@ -38,7 +39,7 @@ def create_subject(
     return _db_entity_to_subject(db_subject)
 
 
-def find_subject(subject_id: ConsentSubjectID) -> Optional[ConsentSubject]:
+def find_subject(subject_id: ConsentSubjectID) -> ConsentSubject | None:
     """Return the subject with that id, or `None` if not found."""
     db_subject = db.session.get(DbConsentSubject, subject_id)
 
@@ -75,7 +76,7 @@ def _check_for_unknown_subject_ids(
 
 
 def get_subjects_with_consent_counts(
-    *, limit_to_subject_ids: Optional[set[ConsentSubjectID]] = None
+    *, limit_to_subject_ids: set[ConsentSubjectID] | None = None
 ) -> dict[ConsentSubject, int]:
     """Return subjects and their consent counts."""
     stmt = select(DbConsentSubject, db.func.count(DbConsent.user_id)).outerjoin(

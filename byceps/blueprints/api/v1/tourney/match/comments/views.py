@@ -6,10 +6,12 @@ byceps.blueprints.api.v1.tourney.match.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterator
 from datetime import datetime
 from itertools import chain
-from typing import Any, Optional
+from typing import Any
 
 from flask import abort, jsonify, request, url_for
 from pydantic import BaseModel, ValidationError
@@ -125,13 +127,13 @@ def _comment_to_json(
     }
 
 
-def _potential_datetime_to_json(dt: Optional[datetime]) -> Optional[str]:
+def _potential_datetime_to_json(dt: datetime | None) -> str | None:
     return dt.isoformat() if (dt is not None) else None
 
 
 def _potential_user_to_json(
-    user: Optional[User], orga_ids: set[UserID]
-) -> Optional[dict[str, Any]]:
+    user: User | None, orga_ids: set[UserID]
+) -> dict[str, Any] | None:
     return _user_to_json(user, orga_ids) if (user is not None) else None
 
 

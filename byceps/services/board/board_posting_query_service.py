@@ -6,7 +6,8 @@ byceps.services.board.board_posting_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import select
 
@@ -33,7 +34,7 @@ def count_postings_for_board(board_id: BoardID) -> int:
     )
 
 
-def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
+def find_posting_by_id(posting_id: PostingID) -> DbPosting | None:
     """Return the posting with that id, or `None` if not found."""
     return db.session.get(DbPosting, posting_id)
 

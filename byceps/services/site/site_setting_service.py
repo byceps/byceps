@@ -6,7 +6,8 @@ byceps.services.site.site_setting_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -59,7 +60,7 @@ def remove_setting(site_id: SiteID, name: str) -> None:
     db.session.commit()
 
 
-def find_setting(site_id: SiteID, name: str) -> Optional[SiteSetting]:
+def find_setting(site_id: SiteID, name: str) -> SiteSetting | None:
     """Return the setting for that site and with that name, or `None`
     if not found.
     """
@@ -71,7 +72,7 @@ def find_setting(site_id: SiteID, name: str) -> Optional[SiteSetting]:
     return _db_entity_to_site_setting(db_setting)
 
 
-def find_setting_value(site_id: SiteID, name: str) -> Optional[str]:
+def find_setting_value(site_id: SiteID, name: str) -> str | None:
     """Return the value of the setting for that site and with that
     name, or `None` if not found.
     """

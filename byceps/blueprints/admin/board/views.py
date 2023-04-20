@@ -6,8 +6,9 @@ byceps.blueprints.admin.board.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from flask import abort, request
 from flask_babel import gettext
@@ -177,7 +178,7 @@ def category_create_form(board_id, erroneous_form=None):
     }
 
 
-def _get_source_category() -> Optional[BoardCategory]:
+def _get_source_category() -> BoardCategory | None:
     source_category_id = request.args.get('source_category_id')
     if not source_category_id:
         return None

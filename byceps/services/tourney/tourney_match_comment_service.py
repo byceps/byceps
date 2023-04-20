@@ -6,8 +6,9 @@ byceps.services.tourney.tourney_match_comment_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import select
 
@@ -21,7 +22,7 @@ from .dbmodels.match_comment import DbMatchComment
 from .models import MatchComment, MatchCommentID, MatchID
 
 
-def find_comment(comment_id: MatchCommentID) -> Optional[MatchComment]:
+def find_comment(comment_id: MatchCommentID) -> MatchComment | None:
     """Return the comment, or `None` if not found."""
     db_comment = db.session.get(DbMatchComment, comment_id)
 
@@ -187,8 +188,8 @@ def _db_entity_to_comment(
     db_comment: DbMatchComment,
     creator: User,
     *,
-    last_editor: Optional[User],
-    moderator: Optional[User],
+    last_editor: User | None,
+    moderator: User | None,
 ) -> MatchComment:
     body_html = text_markup_service.render_html(db_comment.body)
 

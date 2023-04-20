@@ -8,8 +8,9 @@ Announce board events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from functools import wraps
-from typing import Optional
 
 from flask_babel import gettext
 
@@ -43,7 +44,7 @@ def apply_selectors(handler):
     @wraps(handler)
     def wrapper(
         event: _BoardEvent, webhook: OutgoingWebhook
-    ) -> Optional[Announcement]:
+    ) -> Announcement | None:
         board_id = str(event.board_id)
         if not matches_selectors(event, webhook, 'board_id', board_id):
             return None
@@ -57,7 +58,7 @@ def apply_selectors(handler):
 @with_locale
 def announce_board_topic_created(
     event: BoardTopicCreated, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that someone has created a board topic."""
     topic_creator_screen_name = get_screen_name_or_fallback(
         event.topic_creator_screen_name
@@ -82,7 +83,7 @@ def announce_board_topic_created(
 @with_locale
 def announce_board_topic_hidden(
     event: BoardTopicHidden, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a moderator has hidden a board topic."""
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
@@ -111,7 +112,7 @@ def announce_board_topic_hidden(
 @with_locale
 def announce_board_topic_unhidden(
     event: BoardTopicUnhidden, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a moderator has made a board topic visible again."""
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
@@ -140,7 +141,7 @@ def announce_board_topic_unhidden(
 @with_locale
 def announce_board_topic_locked(
     event: BoardTopicLocked, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a moderator has locked a board topic."""
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
@@ -169,7 +170,7 @@ def announce_board_topic_locked(
 @with_locale
 def announce_board_topic_unlocked(
     event: BoardTopicUnlocked, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a moderator has unlocked a board topic."""
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
@@ -198,7 +199,7 @@ def announce_board_topic_unlocked(
 @with_locale
 def announce_board_topic_pinned(
     event: BoardTopicPinned, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a moderator has pinned a board topic."""
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
@@ -227,7 +228,7 @@ def announce_board_topic_pinned(
 @with_locale
 def announce_board_topic_unpinned(
     event: BoardTopicUnpinned, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a moderator has unpinned a board topic."""
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
@@ -256,7 +257,7 @@ def announce_board_topic_unpinned(
 @with_locale
 def announce_board_topic_moved(
     event: BoardTopicMoved, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a moderator has moved a board topic to another category."""
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
@@ -287,7 +288,7 @@ def announce_board_topic_moved(
 @with_locale
 def announce_board_posting_created(
     event: BoardPostingCreated, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that someone has created a board posting."""
     if event.topic_muted:
         return None
@@ -315,7 +316,7 @@ def announce_board_posting_created(
 @with_locale
 def announce_board_posting_hidden(
     event: BoardPostingHidden, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a moderator has hidden a board posting."""
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
@@ -344,7 +345,7 @@ def announce_board_posting_hidden(
 @with_locale
 def announce_board_posting_unhidden(
     event: BoardPostingUnhidden, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a moderator has made a board posting visible again."""
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name

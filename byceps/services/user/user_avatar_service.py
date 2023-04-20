@@ -6,7 +6,9 @@ byceps.services.user.user_avatar_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import BinaryIO, Optional
+from __future__ import annotations
+
+from typing import BinaryIO
 
 from sqlalchemy import select
 
@@ -113,7 +115,7 @@ def get_db_avatar(avatar_id: UserAvatarID) -> DbUserAvatar:
     ).scalar_one()
 
 
-def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:
+def get_avatar_url_for_user(user_id: UserID) -> str | None:
     """Return the URL of the user's current avatar, or `None` if not set."""
     avatar_urls_by_user_id = get_avatar_urls_for_users({user_id})
     return avatar_urls_by_user_id.get(user_id)
@@ -121,7 +123,7 @@ def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:
 
 def get_avatar_urls_for_users(
     user_ids: set[UserID],
-) -> dict[UserID, Optional[str]]:
+) -> dict[UserID, str | None]:
     """Return the URLs of those users' current avatars."""
     if not user_ids:
         return {}
@@ -143,7 +145,7 @@ def get_avatar_urls_for_users(
     return {user_id: urls_by_user_id.get(user_id) for user_id in user_ids}
 
 
-def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> Optional[str]:
+def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> str | None:
     """Return the URL of the current avatar of the user with that hashed
     email address, or `None` if not set.
     """

@@ -6,8 +6,9 @@ byceps.services.party.dbmodels.party
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from byceps.database import db
 from byceps.services.brand.dbmodels.brand import DbBrand
@@ -42,7 +43,7 @@ class DbParty(db.Model):
         starts_at: datetime,
         ends_at: datetime,
         *,
-        max_ticket_quantity: Optional[int] = None,
+        max_ticket_quantity: int | None = None,
         ticket_management_enabled: bool = False,
         seat_management_enabled: bool = False,
     ) -> None:

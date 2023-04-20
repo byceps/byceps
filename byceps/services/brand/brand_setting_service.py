@@ -6,7 +6,8 @@ byceps.services.brand.brand_setting_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -60,7 +61,7 @@ def remove_setting(brand_id: BrandID, name: str) -> None:
     db.session.commit()
 
 
-def find_setting(brand_id: BrandID, name: str) -> Optional[BrandSetting]:
+def find_setting(brand_id: BrandID, name: str) -> BrandSetting | None:
     """Return the setting for that brand and with that name, or `None`
     if not found.
     """
@@ -72,7 +73,7 @@ def find_setting(brand_id: BrandID, name: str) -> Optional[BrandSetting]:
     return _db_entity_to_brand_setting(db_setting)
 
 
-def find_setting_value(brand_id: BrandID, name: str) -> Optional[str]:
+def find_setting_value(brand_id: BrandID, name: str) -> str | None:
     """Return the value of the setting for that brand and with that
     name, or `None` if not found.
     """

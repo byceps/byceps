@@ -6,8 +6,10 @@ byceps.services.user.user_command_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import date
-from typing import Any, Optional
+from typing import Any
 from warnings import warn
 
 from babel import Locale
@@ -35,7 +37,7 @@ from .models.user import User
 def initialize_account(
     user_id: UserID,
     *,
-    initiator_id: Optional[UserID] = None,
+    initiator_id: UserID | None = None,
     assign_roles: bool = True,
 ) -> None:
     """Initialize the user account.
@@ -44,7 +46,7 @@ def initialize_account(
     """
     db_user = _get_db_user(user_id)
 
-    initiator: Optional[User]
+    initiator: User | None
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:
@@ -70,7 +72,7 @@ def initialize_account(
 
 
 def _assign_roles(
-    user_id: UserID, *, initiator_id: Optional[UserID] = None
+    user_id: UserID, *, initiator_id: UserID | None = None
 ) -> None:
     board_user_role_name = 'board_user'
     board_user_role = authz_service.find_role(RoleID(board_user_role_name))
@@ -151,7 +153,7 @@ def change_screen_name(
     new_screen_name: str,
     initiator_id: UserID,
     *,
-    reason: Optional[str] = None,
+    reason: str | None = None,
 ) -> UserScreenNameChanged:
     """Change the user's screen name."""
     db_user = _get_db_user(user_id)
@@ -188,11 +190,11 @@ def change_screen_name(
 
 def change_email_address(
     user_id: UserID,
-    new_email_address: Optional[str],
+    new_email_address: str | None,
     verified: bool,
     initiator_id: UserID,
     *,
-    reason: Optional[str] = None,
+    reason: str | None = None,
 ) -> UserEmailAddressChanged:
     """Change the user's e-mail address."""
     db_user = _get_db_user(user_id)
@@ -227,7 +229,7 @@ def change_email_address(
     )
 
 
-def update_locale(user_id: UserID, locale: Optional[Locale]) -> None:
+def update_locale(user_id: UserID, locale: Locale | None) -> None:
     """Change the user's locale."""
     db_user = _get_db_user(user_id)
 
@@ -312,7 +314,7 @@ def _add_if_different(
         log_entry_data[f'new_{base_key_name}'] = _to_str_if_not_none(new_value)
 
 
-def _to_str_if_not_none(value: Any) -> Optional[str]:
+def _to_str_if_not_none(value: Any) -> str | None:
     return str(value) if (value is not None) else None
 
 

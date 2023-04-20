@@ -6,8 +6,9 @@ byceps.services.authentication.api.authn_api_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from secrets import token_urlsafe
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import delete, select
@@ -24,7 +25,7 @@ def create_api_token(
     creator_id: UserID,
     permissions: set[PermissionID],
     *,
-    description: Optional[str] = None,
+    description: str | None = None,
 ) -> ApiToken:
     """Create an API token."""
     num_bytes = 40
@@ -39,7 +40,7 @@ def create_api_token(
     return _db_entity_to_api_token(db_api_token)
 
 
-def find_api_token_by_token(token: str) -> Optional[ApiToken]:
+def find_api_token_by_token(token: str) -> ApiToken | None:
     """Return the API token for that token, or nothing if not found."""
     db_api_token = db.session.execute(
         select(DbApiToken).filter_by(token=token)

@@ -6,9 +6,11 @@ byceps.services.shop.cancelation_request.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
@@ -61,8 +63,8 @@ class DbCancelationRequest(db.Model):
         donation_extent: DonationExtent,
         amount_refund: Decimal,
         amount_donation: Decimal,
-        recipient_name: Optional[str],
-        recipient_iban: Optional[str],
+        recipient_name: str | None,
+        recipient_iban: str | None,
     ) -> None:
         self.created_at = created_at
         self.shop_id = shop_id

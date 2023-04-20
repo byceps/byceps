@@ -6,9 +6,10 @@ tests.helpers.shop
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 
 from moneyed import EUR, Money
 
@@ -49,14 +50,14 @@ def create_shop_snippet(
 def create_article(
     shop_id: ShopID,
     *,
-    item_number: Optional[ArticleNumber] = None,
+    item_number: ArticleNumber | None = None,
     type_: ArticleType = ArticleType.other,
-    type_params: Optional[ArticleTypeParams] = None,
-    description: Optional[str] = None,
-    price: Optional[Money] = None,
-    tax_rate: Optional[Decimal] = None,
-    available_from: Optional[datetime] = None,
-    available_until: Optional[datetime] = None,
+    type_params: ArticleTypeParams | None = None,
+    description: str | None = None,
+    price: Money | None = None,
+    tax_rate: Decimal | None = None,
+    available_from: datetime | None = None,
+    available_until: datetime | None = None,
     total_quantity: int = 999,
     max_quantity_per_order: int = 10,
     processing_required: bool = False,
@@ -93,12 +94,12 @@ def create_ticket_article(
     shop_id: ShopID,
     ticket_category_id: TicketCategoryID,
     *,
-    item_number: Optional[ArticleNumber] = None,
-    description: Optional[str] = None,
-    price: Optional[Money] = None,
-    tax_rate: Optional[Decimal] = None,
-    available_from: Optional[datetime] = None,
-    available_until: Optional[datetime] = None,
+    item_number: ArticleNumber | None = None,
+    description: str | None = None,
+    price: Money | None = None,
+    tax_rate: Decimal | None = None,
+    available_from: datetime | None = None,
+    available_until: datetime | None = None,
     total_quantity: int = 999,
     max_quantity_per_order: int = 10,
 ) -> Article:
@@ -133,12 +134,12 @@ def create_ticket_bundle_article(
     ticket_category_id: TicketCategoryID,
     ticket_quantity: int,
     *,
-    item_number: Optional[ArticleNumber] = None,
-    description: Optional[str] = None,
-    price: Optional[Money] = None,
-    tax_rate: Optional[Decimal] = None,
-    available_from: Optional[datetime] = None,
-    available_until: Optional[datetime] = None,
+    item_number: ArticleNumber | None = None,
+    description: str | None = None,
+    price: Money | None = None,
+    tax_rate: Decimal | None = None,
+    available_from: datetime | None = None,
+    available_until: datetime | None = None,
     total_quantity: int = 999,
     max_quantity_per_order: int = 10,
 ) -> Article:

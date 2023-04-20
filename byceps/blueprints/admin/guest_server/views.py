@@ -6,9 +6,10 @@ byceps.blueprints.admin.guest_server.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
 import ipaddress
-from typing import Optional
 
 from flask import abort, g, request, url_for
 from flask_babel import gettext
@@ -457,7 +458,7 @@ def _get_address_or_404(address_id):
     return address
 
 
-def _to_ip_address(value: str) -> Optional[IPAddress]:
+def _to_ip_address(value: str) -> IPAddress | None:
     return ipaddress.ip_address(value) if value else None
 
 

@@ -6,9 +6,10 @@ byceps.services.party.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 from byceps.services.brand.models import Brand
 from byceps.typing import BrandID, PartyID
@@ -21,7 +22,7 @@ class Party:
     title: str
     starts_at: datetime
     ends_at: datetime
-    max_ticket_quantity: Optional[int]
+    max_ticket_quantity: int | None
     ticket_management_enabled: bool
     seat_management_enabled: bool
     canceled: bool

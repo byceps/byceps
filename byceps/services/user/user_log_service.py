@@ -6,8 +6,9 @@ byceps.services.user.user_log_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -23,7 +24,7 @@ def create_entry(
     user_id: UserID,
     data: UserLogEntryData,
     *,
-    occurred_at: Optional[datetime] = None,
+    occurred_at: datetime | None = None,
 ) -> None:
     """Create a user log entry."""
     db_entry = build_entry(event_type, user_id, data, occurred_at=occurred_at)
@@ -37,7 +38,7 @@ def build_entry(
     user_id: UserID,
     data: UserLogEntryData,
     *,
-    occurred_at: Optional[datetime] = None,
+    occurred_at: datetime | None = None,
 ) -> DbUserLogEntry:
     """Assemble, but not persist, a user log entry."""
     if occurred_at is None:

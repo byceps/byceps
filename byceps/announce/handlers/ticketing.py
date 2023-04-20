@@ -8,7 +8,8 @@ Announce ticketing events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask_babel import gettext, ngettext
 
@@ -21,7 +22,7 @@ from byceps.services.webhooks.models import OutgoingWebhook
 @with_locale
 def announce_ticket_checked_in(
     event: TicketCheckedIn, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a ticket has been checked in."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -41,7 +42,7 @@ def announce_ticket_checked_in(
 @with_locale
 def announce_tickets_sold(
     event: TicketsSold, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that tickets have been sold."""
     owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
     sale_stats = ticket_service.get_ticket_sale_stats(event.party_id)

@@ -6,8 +6,9 @@ byceps.services.shop.order.ordered_articles_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections import Counter
-from typing import Optional
 
 from sqlalchemy import select
 
@@ -49,7 +50,7 @@ def count_ordered_articles(article_id: ArticleID) -> dict[PaymentState, int]:
 
 
 def get_orders_including_article(
-    article_id: ArticleID, *, only_payment_state: Optional[PaymentState] = None
+    article_id: ArticleID, *, only_payment_state: PaymentState | None = None
 ) -> list[Order]:
     """Return all orders that contain the article.
 

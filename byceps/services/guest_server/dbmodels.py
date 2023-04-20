@@ -6,9 +6,11 @@ byceps.services.guest_server.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 import ipaddress
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from sqlalchemy.dialects import postgresql
 
@@ -43,47 +45,47 @@ class DbSetting(db.Model):
         self.party_id = party_id
 
     @hybrid_property
-    def netmask(self) -> Optional[IPAddress]:
+    def netmask(self) -> IPAddress | None:
         if not self._netmask:
             return None
 
         return ipaddress.ip_address(self._netmask)
 
     @netmask.setter
-    def netmask(self, netmask: Optional[IPAddress]) -> None:
+    def netmask(self, netmask: IPAddress | None) -> None:
         self._netmask = str(netmask) if netmask else None
 
     @hybrid_property
-    def gateway(self) -> Optional[IPAddress]:
+    def gateway(self) -> IPAddress | None:
         if not self._gateway:
             return None
 
         return ipaddress.ip_address(self._gateway)
 
     @gateway.setter
-    def gateway(self, ip_address: Optional[IPAddress]) -> None:
+    def gateway(self, ip_address: IPAddress | None) -> None:
         self._gateway = str(ip_address) if ip_address else None
 
     @hybrid_property
-    def dns_server1(self) -> Optional[IPAddress]:
+    def dns_server1(self) -> IPAddress | None:
         if not self._dns_server1:
             return None
 
         return ipaddress.ip_address(self._dns_server1)
 
     @dns_server1.setter
-    def dns_server1(self, ip_address: Optional[IPAddress]) -> None:
+    def dns_server1(self, ip_address: IPAddress | None) -> None:
         self._dns_server1 = str(ip_address) if ip_address else None
 
     @hybrid_property
-    def dns_server2(self) -> Optional[IPAddress]:
+    def dns_server2(self) -> IPAddress | None:
         if not self._dns_server2:
             return None
 
         return ipaddress.ip_address(self._dns_server2)
 
     @dns_server2.setter
-    def dns_server2(self, ip_address: Optional[IPAddress]) -> None:
+    def dns_server2(self, ip_address: IPAddress | None) -> None:
         self._dns_server2 = str(ip_address) if ip_address else None
 
     def __repr__(self) -> str:
@@ -112,8 +114,8 @@ class DbServer(db.Model):
         creator_id: UserID,
         owner_id: UserID,
         *,
-        notes_owner: Optional[str] = None,
-        notes_admin: Optional[str] = None,
+        notes_owner: str | None = None,
+        notes_admin: str | None = None,
         approved: bool = False,
     ) -> None:
         self.party_id = party_id
@@ -147,10 +149,10 @@ class DbAddress(db.Model):
         self,
         server: DbServer,
         *,
-        ip_address: Optional[IPAddress] = None,
-        hostname: Optional[str] = None,
-        netmask: Optional[IPAddress] = None,
-        gateway: Optional[IPAddress] = None,
+        ip_address: IPAddress | None = None,
+        hostname: str | None = None,
+        netmask: IPAddress | None = None,
+        gateway: IPAddress | None = None,
     ) -> None:
         self.server = server
         self.ip_address = ip_address
@@ -159,36 +161,36 @@ class DbAddress(db.Model):
         self.gateway = gateway
 
     @hybrid_property
-    def ip_address(self) -> Optional[IPAddress]:
+    def ip_address(self) -> IPAddress | None:
         if not self._ip_address:
             return None
 
         return ipaddress.ip_address(self._ip_address)
 
     @ip_address.setter
-    def ip_address(self, ip_address: Optional[IPAddress]) -> None:
+    def ip_address(self, ip_address: IPAddress | None) -> None:
         self._ip_address = str(ip_address) if ip_address else None
 
     @hybrid_property
-    def netmask(self) -> Optional[IPAddress]:
+    def netmask(self) -> IPAddress | None:
         if not self._netmask:
             return None
 
         return ipaddress.ip_address(self._netmask)
 
     @netmask.setter
-    def netmask(self, netmask: Optional[IPAddress]) -> None:
+    def netmask(self, netmask: IPAddress | None) -> None:
         self._netmask = str(netmask) if netmask else None
 
     @hybrid_property
-    def gateway(self) -> Optional[IPAddress]:
+    def gateway(self) -> IPAddress | None:
         if not self._gateway:
             return None
 
         return ipaddress.ip_address(self._gateway)
 
     @gateway.setter
-    def gateway(self, ip_address: Optional[IPAddress]) -> None:
+    def gateway(self, ip_address: IPAddress | None) -> None:
         self._gateway = str(ip_address) if ip_address else None
 
     def __repr__(self) -> str:

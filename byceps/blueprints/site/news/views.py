@@ -8,7 +8,6 @@ byceps.blueprints.site.news.views
 
 from __future__ import annotations
 
-from typing import Optional
 
 from flask import abort, g
 
@@ -117,7 +116,7 @@ def _may_current_user_view_drafts() -> bool:
     return has_current_user_permission('news_item.view_draft')
 
 
-def _get_external_url(item: NewsItem) -> Optional[str]:
+def _get_external_url(item: NewsItem) -> str | None:
     announcement_site_id = item.channel.announcement_site_id
     if announcement_site_id is None:
         return None

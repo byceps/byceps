@@ -6,7 +6,8 @@ byceps.blueprints.site.user.settings.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from babel import Locale
 from flask import abort, g, request
@@ -226,7 +227,7 @@ def details_update():
     return redirect_to('.view')
 
 
-def _find_newsletter_list_for_brand() -> Optional[NewsletterListID]:
+def _find_newsletter_list_for_brand() -> NewsletterListID | None:
     """Return the newsletter list configured for this brand, or `None`
     if none is configured.
     """

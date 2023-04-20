@@ -6,7 +6,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
 
 import click
 
@@ -60,7 +60,7 @@ def execute(ctx, search_term, site, verbose) -> None:
         )
 
 
-def get_scope_label(verbose: bool, scope: Optional[SnippetScope]) -> str:
+def get_scope_label(verbose: bool, scope: SnippetScope | None) -> str:
     if not verbose:
         return '<unknown>'
 

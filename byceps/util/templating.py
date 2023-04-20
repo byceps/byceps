@@ -8,8 +8,10 @@ Templating utilities
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
 from flask import g
 from jinja2 import (
@@ -27,7 +29,7 @@ SITES_PATH = Path('sites')
 
 
 def load_template(
-    source: str, *, template_globals: Optional[dict[str, Any]] = None
+    source: str, *, template_globals: dict[str, Any] | None = None
 ) -> Template:
     """Load a template from source, using the sandboxed environment."""
     env = create_sandboxed_environment()
@@ -39,7 +41,7 @@ def load_template(
 
 
 def create_sandboxed_environment(
-    *, loader: Optional[BaseLoader] = None, autoescape: bool = True
+    *, loader: BaseLoader | None = None, autoescape: bool = True
 ) -> Environment:
     """Create a sandboxed environment."""
     if loader is None:
@@ -57,7 +59,7 @@ class SiteTemplateOverridesLoader(BaseLoader):
 
     def get_source(
         self, environment: Environment, template: str
-    ) -> tuple[str, Optional[str], Optional[Callable[[], bool]]]:
+    ) -> tuple[str, str | None, Callable[[], bool] | None]:
         site_id = getattr(g, 'site_id', None)
         if site_id is None:
             # Site could not be determined. Thus, no site-specific

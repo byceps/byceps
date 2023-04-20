@@ -6,9 +6,10 @@ byceps.services.shop.order.order_checkout_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterator
 from datetime import datetime
-from typing import Optional
 
 from moneyed import Currency
 from sqlalchemy.exc import IntegrityError
@@ -47,7 +48,7 @@ def place_order(
     orderer: Orderer,
     cart: Cart,
     *,
-    created_at: Optional[datetime] = None,
+    created_at: datetime | None = None,
 ) -> Result[tuple[Order, ShopOrderPlaced], None]:
     """Place an order for one or more articles."""
     storefront = storefront_service.get_storefront(storefront_id)

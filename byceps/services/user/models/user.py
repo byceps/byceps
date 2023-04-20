@@ -11,7 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime
 from enum import Enum
-from typing import Any, NewType, Optional
+from typing import Any, NewType
 from uuid import UUID
 
 from byceps.typing import UserID
@@ -23,34 +23,34 @@ UserAvatarID = NewType('UserAvatarID', UUID)
 @dataclass(frozen=True)
 class User:
     id: UserID
-    screen_name: Optional[str]
+    screen_name: str | None
     suspended: bool
     deleted: bool
-    locale: Optional[str]
-    avatar_url: Optional[str]
+    locale: str | None
+    avatar_url: str | None
 
 
 @dataclass(frozen=True)
 class UserEmailAddress:
-    address: Optional[str]
+    address: str | None
     verified: bool
 
 
 @dataclass(frozen=True)
 class UserDetail:
-    first_name: Optional[str]
-    last_name: Optional[str]
-    date_of_birth: Optional[date]
-    country: Optional[str]
-    zip_code: Optional[str]
-    city: Optional[str]
-    street: Optional[str]
-    phone_number: Optional[str]
-    internal_comment: Optional[str]
+    first_name: str | None
+    last_name: str | None
+    date_of_birth: date | None
+    country: str | None
+    zip_code: str | None
+    city: str | None
+    street: str | None
+    phone_number: str | None
+    internal_comment: str | None
     extras: dict[str, Any]
 
     @property
-    def full_name(self) -> Optional[str]:
+    def full_name(self) -> str | None:
         names = [self.first_name, self.last_name]
         return ' '.join(filter(None, names)) or None
 
@@ -64,7 +64,7 @@ class UserForAdmin(User):
 
 @dataclass(frozen=True)
 class UserForAdminDetail:
-    full_name: Optional[str]
+    full_name: str | None
 
 
 UserStateFilter = Enum(

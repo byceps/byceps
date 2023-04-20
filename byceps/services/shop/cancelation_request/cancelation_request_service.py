@@ -6,9 +6,10 @@ byceps.services.shop.cancelation_request.cancelation_request_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import select
@@ -95,8 +96,8 @@ def _create_request(
     donation_extent: DonationExtent,
     amount_refund: Decimal,
     amount_donation: Decimal,
-    recipient_name: Optional[str],
-    recipient_iban: Optional[str],
+    recipient_name: str | None,
+    recipient_iban: str | None,
 ) -> CancelationRequest:
     """Create a cancelation request for an order."""
     now = datetime.utcnow()
@@ -130,7 +131,7 @@ def accept_request(request_id: UUID) -> None:
     db.session.commit()
 
 
-def get_request(request_id: UUID) -> Optional[CancelationRequest]:
+def get_request(request_id: UUID) -> CancelationRequest | None:
     """Return the cancelation request with that ID."""
     db_request = db.session.get(DbCancelationRequest, request_id)
 
@@ -142,7 +143,7 @@ def get_request(request_id: UUID) -> Optional[CancelationRequest]:
 
 def get_request_for_order_number(
     order_number: OrderNumber,
-) -> Optional[CancelationRequest]:
+) -> CancelationRequest | None:
     """Return the cancelation request for that order number."""
     db_request = (
         db.session.execute(

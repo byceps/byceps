@@ -6,8 +6,9 @@ byceps.services.ticketing.ticket_creation_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterator
-from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
@@ -37,8 +38,8 @@ def create_ticket(
     category_id: TicketCategoryID,
     owned_by_id: UserID,
     *,
-    order_number: Optional[OrderNumber] = None,
-    used_by_id: Optional[UserID] = None,
+    order_number: OrderNumber | None = None,
+    used_by_id: UserID | None = None,
 ) -> DbTicket:
     """Create a single ticket."""
     quantity = 1
@@ -66,8 +67,8 @@ def create_tickets(
     owned_by_id: UserID,
     quantity: int,
     *,
-    order_number: Optional[OrderNumber] = None,
-    used_by_id: Optional[UserID] = None,
+    order_number: OrderNumber | None = None,
+    used_by_id: UserID | None = None,
 ) -> list[DbTicket]:
     """Create a number of tickets of the same category for a single owner."""
     db_tickets = list(
@@ -98,9 +99,9 @@ def build_tickets(
     owned_by_id: UserID,
     quantity: int,
     *,
-    bundle: Optional[DbTicketBundle] = None,
-    order_number: Optional[OrderNumber] = None,
-    used_by_id: Optional[UserID] = None,
+    bundle: DbTicketBundle | None = None,
+    order_number: OrderNumber | None = None,
+    used_by_id: UserID | None = None,
 ) -> Iterator[DbTicket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')

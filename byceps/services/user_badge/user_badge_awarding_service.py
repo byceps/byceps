@@ -6,9 +6,10 @@ byceps.services.user_badge.user_badge_awarding_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections import defaultdict
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import select
 
@@ -30,14 +31,14 @@ from .user_badge_service import _db_entity_to_badge, get_badge, get_badges
 
 
 def award_badge_to_user(
-    badge_id: BadgeID, user_id: UserID, *, initiator_id: Optional[UserID] = None
+    badge_id: BadgeID, user_id: UserID, *, initiator_id: UserID | None = None
 ) -> tuple[BadgeAwarding, UserBadgeAwarded]:
     """Award the badge to the user."""
     badge = get_badge(badge_id)
     user = user_service.get_user(user_id)
     awarded_at = datetime.utcnow()
 
-    initiator: Optional[User]
+    initiator: User | None
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:

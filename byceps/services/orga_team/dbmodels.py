@@ -6,7 +6,8 @@ byceps.services.orga_team.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db, generate_uuid7
 from byceps.services.party.dbmodels.party import DbParty
@@ -74,7 +75,7 @@ class DbMembership(db.Model):
         orga_team_id: OrgaTeamID,
         user_id: UserID,
         *,
-        duties: Optional[str] = None,
+        duties: str | None = None,
     ) -> None:
         self.orga_team_id = orga_team_id
         self.user_id = user_id

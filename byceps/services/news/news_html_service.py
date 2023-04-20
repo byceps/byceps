@@ -8,8 +8,10 @@ Render HTML fragments from news items and images.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from functools import partial
-from typing import Any, Optional
+from typing import Any
 
 from flask import current_app
 from flask_babel import gettext
@@ -47,8 +49,8 @@ def _render_image_by_number(
     images: list[NewsImage],
     number: int,
     *,
-    width: Optional[int] = None,
-    height: Optional[int] = None,
+    width: int | None = None,
+    height: int | None = None,
 ) -> Markup:
     """Render HTML for image."""
     image = _get_image_by_number(images, number)
@@ -69,8 +71,8 @@ def _get_image_by_number(images: list[NewsImage], number: int) -> NewsImage:
 def _render_image(
     image: NewsImage,
     *,
-    width: Optional[int] = None,
-    height: Optional[int] = None,
+    width: int | None = None,
+    height: int | None = None,
 ) -> str:
     """Render HTML for image."""
     template_path = 'services/news/templates/_image.html'

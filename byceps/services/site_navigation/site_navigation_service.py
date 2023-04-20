@@ -6,8 +6,9 @@ byceps.services.site_navigation.site_navigation_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -36,7 +37,7 @@ def create_menu(
     language_code: str,
     *,
     hidden: bool = False,
-    parent_menu_id: Optional[NavMenuID] = None,
+    parent_menu_id: NavMenuID | None = None,
 ) -> NavMenu:
     """Create a menu."""
     db_menu = DbNavMenu(
@@ -75,7 +76,7 @@ def create_item(
     label: str,
     current_page_id: str,
     *,
-    parent_item_id: Optional[NavItemID] = None,
+    parent_item_id: NavItemID | None = None,
     hidden: bool = False,
 ) -> Result[NavItem, str]:
     """Create a menu item."""
@@ -134,7 +135,7 @@ def delete_item(item_id: NavItemID) -> Result[None, str]:
 
 def find_submenu_id_for_page(
     site_id: SiteID, language_code: str, page_name: str
-) -> Optional[NavMenuID]:
+) -> NavMenuID | None:
     """Return the ID of the submenu this page is referenced by.
 
     If the page is referenced from multiple submenus, the one whose name
@@ -156,7 +157,7 @@ def find_submenu_id_for_page(
 
 def find_submenu_id_for_view(
     site_id: SiteID, language_code: str, view_name: str
-) -> Optional[NavMenuID]:
+) -> NavMenuID | None:
     """Return the ID of the submenu this view is referenced by.
 
     If the view is referenced from multiple submenus, the one whose name
@@ -176,7 +177,7 @@ def find_submenu_id_for_view(
     ).first()
 
 
-def find_menu(menu_id: NavMenuID) -> Optional[NavMenu]:
+def find_menu(menu_id: NavMenuID) -> NavMenu | None:
     """Return the menu, or `None` if not found."""
     db_menu = _find_db_menu(menu_id)
 
@@ -194,7 +195,7 @@ def get_menu(menu_id: NavMenuID) -> Result[NavMenu, str]:
     return _get_db_menu(menu_id).map(_db_entity_to_menu)
 
 
-def _find_db_menu(menu_id: NavMenuID) -> Optional[DbNavMenu]:
+def _find_db_menu(menu_id: NavMenuID) -> DbNavMenu | None:
     """Return the menu, or `None` if not found."""
     return db.session.get(DbNavMenu, menu_id)
 
@@ -212,7 +213,7 @@ def _get_db_menu(menu_id: NavMenuID) -> Result[DbNavMenu, str]:
     return Ok(db_menu)
 
 
-def find_menu_aggregate(menu_id: NavMenuID) -> Optional[NavMenuAggregate]:
+def find_menu_aggregate(menu_id: NavMenuID) -> NavMenuAggregate | None:
     """Return the menu aggregate, or `None` if not found."""
     db_menu = _find_db_menu(menu_id)
     if db_menu is None:
@@ -253,7 +254,7 @@ def get_menu_trees(site_id: SiteID) -> list[NavMenuTree]:
     return trees
 
 
-def find_item(item_id: NavItemID) -> Optional[NavItem]:
+def find_item(item_id: NavItemID) -> NavItem | None:
     """Return the menu item, or `None` if not found."""
     db_item = _find_db_item(item_id)
 
@@ -263,7 +264,7 @@ def find_item(item_id: NavItemID) -> Optional[NavItem]:
     return _db_entity_to_item(db_item)
 
 
-def _find_db_item(item_id: NavItemID) -> Optional[DbNavItem]:
+def _find_db_item(item_id: NavItemID) -> DbNavItem | None:
     """Return the menu item, or `None` if not found."""
     return db.session.get(DbNavItem, item_id)
 
@@ -412,6 +413,6 @@ def get_view_types() -> list[ViewType]:
     return list(_VIEW_TYPES)
 
 
-def find_view_type_by_name(name: str) -> Optional[ViewType]:
+def find_view_type_by_name(name: str) -> ViewType | None:
     """Return the view type with that name, or `None` if not found."""
     return find(_VIEW_TYPES, lambda view_type: view_type.name == name)

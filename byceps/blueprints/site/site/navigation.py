@@ -6,8 +6,9 @@ byceps.blueprints.site.site.navigation
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from functools import wraps
-from typing import Optional
 
 from flask import g
 
@@ -16,7 +17,7 @@ from byceps.services.site_navigation.models import NavMenuID
 from byceps.util.l10n import get_default_locale, get_locale_str
 
 
-def find_subnav_menu_id(view_name: str) -> Optional[NavMenuID]:
+def find_subnav_menu_id(view_name: str) -> NavMenuID | None:
     """Return the ID of the navigation submenu for the view."""
     language_code = get_locale_str() or get_default_locale()
     return site_navigation_service.find_submenu_id_for_view(

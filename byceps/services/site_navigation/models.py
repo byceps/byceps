@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from flask_babel import lazy_gettext
@@ -36,7 +36,7 @@ class NavMenu:
     name: str
     language_code: str
     hidden: bool
-    parent_menu_id: Optional[NavMenuID]
+    parent_menu_id: NavMenuID | None
 
 
 @dataclass(frozen=True)

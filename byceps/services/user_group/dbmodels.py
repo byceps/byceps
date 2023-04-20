@@ -6,8 +6,9 @@ byceps.services.user_group.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -44,7 +45,7 @@ class DbUserGroup(db.Model):
         party_id: PartyID,
         creator_id: UserID,
         title: str,
-        description: Optional[str] = None,
+        description: str | None = None,
     ) -> None:
         self.party_id = party_id
         self.creator_id = creator_id

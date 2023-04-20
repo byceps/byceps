@@ -8,9 +8,10 @@ Localization.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Optional
 
 from babel import Locale
 from flask import current_app, g, request
@@ -21,7 +22,7 @@ from wtforms import Form
 from byceps.services.user.models.user import User
 
 
-def get_current_user_locale() -> Optional[str]:
+def get_current_user_locale() -> str | None:
     """Return the locale for the current user, if available."""
     # Look for a locale on the current user object.
     user = getattr(g, 'user')
@@ -66,7 +67,7 @@ def get_locales() -> list[Locale]:
     return [BASE_LOCALE] + current_app.babel_instance.list_translations()
 
 
-def get_locale_str() -> Optional[str]:
+def get_locale_str() -> str | None:
     """Return the current locale as a string.
 
     Return `None` outside of a request.

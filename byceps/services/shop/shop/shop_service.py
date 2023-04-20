@@ -6,7 +6,8 @@ byceps.services.shop.shop.shop_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from moneyed import Currency
 from sqlalchemy import delete, select
@@ -40,7 +41,7 @@ def delete_shop(shop_id: ShopID) -> None:
     db.session.commit()
 
 
-def find_shop_for_brand(brand_id: BrandID) -> Optional[Shop]:
+def find_shop_for_brand(brand_id: BrandID) -> Shop | None:
     """Return the shop for that brand, or `None` if not found."""
     db_shop = db.session.execute(
         select(DbShop).filter_by(brand_id=brand_id)
@@ -52,7 +53,7 @@ def find_shop_for_brand(brand_id: BrandID) -> Optional[Shop]:
     return _db_entity_to_shop(db_shop)
 
 
-def find_shop(shop_id: ShopID) -> Optional[Shop]:
+def find_shop(shop_id: ShopID) -> Shop | None:
     """Return the shop with that id, or `None` if not found."""
     db_shop = _find_db_shop(shop_id)
 
@@ -62,7 +63,7 @@ def find_shop(shop_id: ShopID) -> Optional[Shop]:
     return _db_entity_to_shop(db_shop)
 
 
-def _find_db_shop(shop_id: ShopID) -> Optional[DbShop]:
+def _find_db_shop(shop_id: ShopID) -> DbShop | None:
     """Return the database entity for the shop with that id, or `None`
     if not found.
     """

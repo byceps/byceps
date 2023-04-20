@@ -6,7 +6,8 @@ byceps.services.shop.order.dbmodels.invoice
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db, generate_uuid4
 from byceps.services.shop.order.models.order import OrderID
@@ -36,7 +37,7 @@ class DbInvoice(db.Model):
         order_id: OrderID,
         number: str,
         *,
-        url: Optional[str] = None,
+        url: str | None = None,
     ) -> None:
         self.order_id = order_id
         self.number = number

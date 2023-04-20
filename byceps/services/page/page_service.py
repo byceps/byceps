@@ -6,9 +6,10 @@ byceps.services.page.page_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -39,7 +40,7 @@ def create_page(
     title: str,
     body: str,
     *,
-    head: Optional[str] = None,
+    head: str | None = None,
 ) -> tuple[DbPageVersion, PageCreated]:
     """Create a page and its initial version."""
     creator = user_service.get_user(creator_id)
@@ -76,7 +77,7 @@ def update_page(
     url_path: str,
     creator_id: UserID,
     title: str,
-    head: Optional[str],
+    head: str | None,
     body: str,
 ) -> tuple[DbPageVersion, PageUpdated]:
     """Update page with a new version."""
@@ -108,8 +109,8 @@ def update_page(
 
 
 def delete_page(
-    page_id: PageID, *, initiator_id: Optional[UserID] = None
-) -> tuple[bool, Optional[PageDeleted]]:
+    page_id: PageID, *, initiator_id: UserID | None = None
+) -> tuple[bool, PageDeleted | None]:
     """Delete the page and its versions.
 
     It is expected that no database records refer to the page anymore.
@@ -118,7 +119,7 @@ def delete_page(
     """
     db_page = _get_db_page(page_id)
 
-    initiator: Optional[User]
+    initiator: User | None
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:
@@ -161,7 +162,7 @@ def delete_page(
     return True, event
 
 
-def set_nav_menu_id(page_id: PageID, nav_menu_id: Optional[NavMenuID]) -> None:
+def set_nav_menu_id(page_id: PageID, nav_menu_id: NavMenuID | None) -> None:
     """Set navigation menu for page."""
     db_page = _get_db_page(page_id)
 
@@ -169,7 +170,7 @@ def set_nav_menu_id(page_id: PageID, nav_menu_id: Optional[NavMenuID]) -> None:
     db.session.commit()
 
 
-def find_page(page_id: PageID) -> Optional[Page]:
+def find_page(page_id: PageID) -> Page | None:
     """Return the page, or `None` if not found."""
     db_page = _find_db_page(page_id)
 
@@ -189,7 +190,7 @@ def get_page(page_id: PageID) -> Page:
     return _db_entity_to_page(db_page)
 
 
-def _find_db_page(page_id: PageID) -> Optional[DbPage]:
+def _find_db_page(page_id: PageID) -> DbPage | None:
     """Return the page, or `None` if not found."""
     return db.session.get(DbPage, page_id)
 
@@ -207,7 +208,7 @@ def _get_db_page(page_id: PageID) -> DbPage:
     return db_page
 
 
-def find_version(version_id: PageVersionID) -> Optional[PageVersion]:
+def find_version(version_id: PageVersionID) -> PageVersion | None:
     """Return the page version, or `None` if not found."""
     db_version = db.session.get(DbPageVersion, version_id)
 
@@ -217,7 +218,7 @@ def find_version(version_id: PageVersionID) -> Optional[PageVersion]:
     return _db_entity_to_version(db_version)
 
 
-def get_version(version_id: PageVersionID) -> Optional[PageVersion]:
+def get_version(version_id: PageVersionID) -> PageVersion | None:
     """Return the page version.
 
     Raise error if not found.
@@ -250,7 +251,7 @@ def _get_db_versions(page_id: PageID) -> Sequence[DbPageVersion]:
     ).all()
 
 
-def find_current_version_id(page_id: PageID) -> Optional[PageVersionID]:
+def find_current_version_id(page_id: PageID) -> PageVersionID | None:
     """Return the ID of current version of the page."""
     return db.session.scalar(
         select(DbCurrentPageVersionAssociation.version_id).filter(
@@ -272,7 +273,7 @@ def is_current_version(page_id: PageID, version_id: PageVersionID) -> bool:
 
 def find_current_version_for_name(
     site_id: SiteID, name: str, language_code: str
-) -> Optional[DbPageVersion]:
+) -> DbPageVersion | None:
     """Return the current version of the page with that name and
     language code for that site.
     """
@@ -288,7 +289,7 @@ def find_current_version_for_name(
 
 def find_current_version_for_url_path(
     site_id: SiteID, url_path: str, language_code: str
-) -> Optional[DbPageVersion]:
+) -> DbPageVersion | None:
     """Return the current version of the page with that URL path and
     language code for that site.
     """
@@ -320,7 +321,7 @@ def get_pages_for_site(site_id: SiteID) -> Sequence[Page]:
     return [_db_entity_to_page(db_page) for db_page in db_pages]
 
 
-def find_page_aggregate(version_id: PageVersionID) -> Optional[PageAggregate]:
+def find_page_aggregate(version_id: PageVersionID) -> PageAggregate | None:
     """Return an aggregated page for that version."""
     version = get_version(version_id)
     if version is None:

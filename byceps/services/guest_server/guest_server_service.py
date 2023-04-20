@@ -6,7 +6,8 @@ byceps.services.guest_server.guest_server_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -50,11 +51,11 @@ def get_setting_for_party(party_id: PartyID) -> Setting:
 
 def update_setting(
     party_id: PartyID,
-    netmask: Optional[IPAddress],
-    gateway: Optional[IPAddress],
-    dns_server1: Optional[IPAddress],
-    dns_server2: Optional[IPAddress],
-    domain: Optional[str],
+    netmask: IPAddress | None,
+    gateway: IPAddress | None,
+    dns_server1: IPAddress | None,
+    dns_server2: IPAddress | None,
+    domain: str | None,
 ) -> Setting:
     """Update the setting for the party."""
     party = party_service.get_party(party_id)
@@ -73,7 +74,7 @@ def update_setting(
     return _db_entity_to_setting(db_setting)
 
 
-def _get_db_setting(party_id: PartyID) -> Optional[DbSetting]:
+def _get_db_setting(party_id: PartyID) -> DbSetting | None:
     return db.session.execute(
         select(DbSetting).filter_by(party_id=party_id)
     ).scalar_one_or_none()
@@ -99,13 +100,13 @@ def create_server(
     creator_id: UserID,
     owner_id: UserID,
     *,
-    notes_owner: Optional[str] = None,
-    notes_admin: Optional[str] = None,
+    notes_owner: str | None = None,
+    notes_admin: str | None = None,
     approved: bool = False,
-    ip_address: Optional[IPAddress] = None,
-    hostname: Optional[str] = None,
-    netmask: Optional[IPAddress] = None,
-    gateway: Optional[IPAddress] = None,
+    ip_address: IPAddress | None = None,
+    hostname: str | None = None,
+    netmask: IPAddress | None = None,
+    gateway: IPAddress | None = None,
 ) -> tuple[Server, GuestServerRegistered]:
     """Create a server."""
     party = party_service.get_party(party_id)
@@ -144,7 +145,7 @@ def create_server(
 
 def update_server(
     server_id: ServerID,
-    notes_admin: Optional[str],
+    notes_admin: str | None,
     approved: bool,
 ) -> Server:
     """Update the server."""
@@ -158,7 +159,7 @@ def update_server(
     return _db_entity_to_server(db_server)
 
 
-def find_server(server_id: ServerID) -> Optional[Server]:
+def find_server(server_id: ServerID) -> Server | None:
     """Return the server, if found."""
     db_server = _find_db_server(server_id)
 
@@ -221,7 +222,7 @@ def delete_server(server_id: ServerID) -> None:
     db.session.commit()
 
 
-def _find_db_server(server_id: ServerID) -> Optional[DbServer]:
+def _find_db_server(server_id: ServerID) -> DbServer | None:
     return db.session.execute(
         select(DbServer).filter_by(id=server_id)
     ).scalar_one_or_none()
@@ -258,7 +259,7 @@ def _db_entity_to_server(db_server: DbServer) -> Server:
 # address
 
 
-def find_address(address_id: AddressID) -> Optional[Address]:
+def find_address(address_id: AddressID) -> Address | None:
     """Return the address, if found."""
     db_address = _find_db_address(address_id)
 
@@ -270,10 +271,10 @@ def find_address(address_id: AddressID) -> Optional[Address]:
 
 def create_address(
     server_id: ServerID,
-    ip_address: Optional[IPAddress] = None,
-    hostname: Optional[str] = None,
-    netmask: Optional[IPAddress] = None,
-    gateway: Optional[IPAddress] = None,
+    ip_address: IPAddress | None = None,
+    hostname: str | None = None,
+    netmask: IPAddress | None = None,
+    gateway: IPAddress | None = None,
 ) -> Address:
     """Append an address to a server."""
     db_server = _get_db_server(server_id)
@@ -294,10 +295,10 @@ def create_address(
 
 def update_address(
     address_id: AddressID,
-    ip_address: Optional[IPAddress],
-    hostname: Optional[str],
-    netmask: Optional[IPAddress] = None,
-    gateway: Optional[IPAddress] = None,
+    ip_address: IPAddress | None,
+    hostname: str | None,
+    netmask: IPAddress | None = None,
+    gateway: IPAddress | None = None,
 ) -> Address:
     """Update the address."""
     db_address = _find_db_address(address_id)
@@ -315,7 +316,7 @@ def update_address(
     return _db_entity_to_address(db_address)
 
 
-def _find_db_address(address_id: AddressID) -> Optional[DbAddress]:
+def _find_db_address(address_id: AddressID) -> DbAddress | None:
     return db.session.execute(
         select(DbAddress).filter_by(id=address_id)
     ).scalar_one_or_none()

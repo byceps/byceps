@@ -6,8 +6,9 @@ byceps.services.text_diff.text_diff_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from difflib import HtmlDiff
-from typing import Optional
 
 
 def create_html_diff(
@@ -17,7 +18,7 @@ def create_html_diff(
     to_description: str,
     *,
     numlines: int = 3,
-) -> Optional[str]:
+) -> str | None:
     """Calculate the difference between the two texts and render it as HTML.
 
     If the texts to compare are equal, `None` is returned.
@@ -41,5 +42,5 @@ def create_html_diff(
     )
 
 
-def _fallback_if_none(value: Optional[str], *, fallback: str = '') -> str:
+def _fallback_if_none(value: str | None, *, fallback: str = '') -> str:
     return value if (value is not None) else fallback

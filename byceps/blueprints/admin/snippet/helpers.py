@@ -6,7 +6,8 @@ byceps.blueprints.admin.snippet.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask import abort
 
@@ -24,14 +25,14 @@ from byceps.services.snippet.models import (
 from byceps.typing import BrandID
 
 
-def find_brand_for_scope(scope: SnippetScope) -> Optional[Brand]:
+def find_brand_for_scope(scope: SnippetScope) -> Brand | None:
     if scope.type_ != 'brand':
         return None
 
     return brand_service.find_brand(BrandID(scope.name))
 
 
-def find_site_for_scope(scope: SnippetScope) -> Optional[Site]:
+def find_site_for_scope(scope: SnippetScope) -> Site | None:
     if scope.type_ != 'site':
         return None
 

@@ -8,7 +8,6 @@ byceps.blueprints.admin.authentication.login.service
 
 from __future__ import annotations
 
-from typing import Optional
 
 import structlog
 
@@ -36,7 +35,7 @@ def log_in_user(
     password: str,
     permanent: bool,
     *,
-    ip_address: Optional[str] = None,
+    ip_address: str | None = None,
 ) -> Result[
     tuple[User, UserLoggedIn], AuthenticationFailed | AuthorizationFailed
 ]:

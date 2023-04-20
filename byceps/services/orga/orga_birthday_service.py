@@ -6,9 +6,10 @@ byceps.services.orga.orga_birthday_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable, Iterator
 from itertools import islice
-from typing import Optional
 
 from sqlalchemy import select
 
@@ -32,7 +33,7 @@ def get_orgas_with_birthday_today() -> set[User]:
 
 
 def collect_orgas_with_next_birthdays(
-    *, limit: Optional[int] = None
+    *, limit: int | None = None
 ) -> list[tuple[User, Birthday]]:
     """Return the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_known_birthdays()
@@ -71,7 +72,7 @@ def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
 
 
 def _to_user_dto(
-    user: DbUser, avatar_urls_by_user_id: dict[UserID, Optional[str]]
+    user: DbUser, avatar_urls_by_user_id: dict[UserID, str | None]
 ) -> User:
     """Create user DTO from database entity."""
     avatar_url = avatar_urls_by_user_id.get(user.id)

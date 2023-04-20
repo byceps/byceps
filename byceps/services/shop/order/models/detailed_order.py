@@ -6,8 +6,9 @@ byceps.services.shop.order.models.detailed_order
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
@@ -22,16 +23,16 @@ from .payment import Payment
 class DetailedOrder(BaseOrder):
     shop_id: ShopID
     storefront_id: StorefrontID
-    company: Optional[str]
+    company: str | None
     first_name: str
     last_name: str
     address: Address
     line_items: list[LineItem]
-    payment_method: Optional[str]
+    payment_method: str | None
     is_invoiced: bool
     is_processing_required: bool
     is_processed: bool
-    cancelation_reason: Optional[str]
+    cancelation_reason: str | None
 
 
 @dataclass(frozen=True)

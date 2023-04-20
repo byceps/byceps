@@ -9,7 +9,6 @@ byceps.blueprints.site.board.models
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 from byceps.services.board.models import BoardCategoryWithLastUpdate
 from byceps.services.user.models.user import User
@@ -52,7 +51,7 @@ class Ticket:
 class Creator(User):
     is_orga: bool
     badges: set[Badge]
-    ticket: Optional[Ticket]
+    ticket: Ticket | None
 
     @classmethod
     def from_(
@@ -60,7 +59,7 @@ class Creator(User):
         user: User,
         orga_ids: set[UserID],
         badges: set[Badge],
-        ticket: Optional[Ticket],
+        ticket: Ticket | None,
     ) -> Creator:
         return cls(
             id=user.id,

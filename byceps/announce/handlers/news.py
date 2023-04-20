@@ -8,8 +8,9 @@ Announce news events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from functools import wraps
-from typing import Optional
 
 from flask_babel import gettext
 
@@ -22,7 +23,7 @@ def apply_selectors(handler):
     @wraps(handler)
     def wrapper(
         event: NewsItemPublished, webhook: OutgoingWebhook
-    ) -> Optional[Announcement]:
+    ) -> Announcement | None:
         channel_id = str(event.channel_id)
         if not matches_selectors(event, webhook, 'channel_id', channel_id):
             return None
@@ -36,7 +37,7 @@ def apply_selectors(handler):
 @with_locale
 def announce_news_item_published(
     event: NewsItemPublished, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a news item has been published."""
     text = gettext(
         'The news "%(title)s" has been published.', title=event.title

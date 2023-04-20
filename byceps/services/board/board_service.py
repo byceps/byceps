@@ -6,7 +6,8 @@ byceps.services.board.board_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -38,7 +39,7 @@ def delete_board(board_id: BoardID) -> None:
     db.session.commit()
 
 
-def find_board(board_id: BoardID) -> Optional[Board]:
+def find_board(board_id: BoardID) -> Board | None:
     """Return the board with that id, or `None` if not found."""
     db_board = db.session.get(DbBoard, board_id)
 

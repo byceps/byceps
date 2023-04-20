@@ -6,9 +6,11 @@ byceps.services.consent.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from byceps.typing import UserID
@@ -23,7 +25,7 @@ class ConsentSubject:
     name: str
     title: str
     checkbox_label: str
-    checkbox_link_target: Optional[str]
+    checkbox_link_target: str | None
 
 
 @dataclass(frozen=True)

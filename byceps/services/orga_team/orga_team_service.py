@@ -6,9 +6,10 @@ byceps.services.orga_team.orga_team_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
 from itertools import groupby
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -85,7 +86,7 @@ def get_teams_for_party(party_id: PartyID) -> set[OrgaTeam]:
     return {_db_entity_to_team(db_team) for db_team in db_teams}
 
 
-def find_team(team_id: OrgaTeamID) -> Optional[OrgaTeam]:
+def find_team(team_id: OrgaTeamID) -> OrgaTeam | None:
     """Return the team with that id, or `None` if not found."""
     db_team = _find_db_team(team_id)
 
@@ -95,7 +96,7 @@ def find_team(team_id: OrgaTeamID) -> Optional[OrgaTeam]:
     return _db_entity_to_team(db_team)
 
 
-def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
+def _find_db_team(team_id: OrgaTeamID) -> DbOrgaTeam | None:
     """Return the team with that id, or `None` if not found."""
     return db.session.get(DbOrgaTeam, team_id)
 
@@ -150,7 +151,7 @@ def _db_entity_to_team(db_team: DbOrgaTeam) -> OrgaTeam:
 
 
 def create_membership(
-    team_id: OrgaTeamID, user_id: UserID, duties: Optional[str]
+    team_id: OrgaTeamID, user_id: UserID, duties: str | None
 ) -> Membership:
     """Assign the user to the team."""
     db_membership = DbMembership(team_id, user_id, duties=duties)
@@ -209,7 +210,7 @@ def get_memberships_for_party(party_id: PartyID) -> set[Membership]:
     }
 
 
-def find_membership(membership_id: MembershipID) -> Optional[Membership]:
+def find_membership(membership_id: MembershipID) -> Membership | None:
     """Return the membership with that id, or `None` if not found."""
     db_membership = _find_db_membership(membership_id)
 
@@ -219,7 +220,7 @@ def find_membership(membership_id: MembershipID) -> Optional[Membership]:
     return _db_entity_to_membership(db_membership)
 
 
-def _find_db_membership(membership_id: MembershipID) -> Optional[DbMembership]:
+def _find_db_membership(membership_id: MembershipID) -> DbMembership | None:
     """Return the membership with that id, or `None` if not found."""
     return db.session.get(DbMembership, membership_id)
 

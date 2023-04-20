@@ -6,7 +6,8 @@ byceps.services.board.board_category_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import select
 
@@ -30,7 +31,7 @@ def count_categories_for_board(board_id: BoardID) -> int:
 
 def find_category_by_id(
     category_id: BoardCategoryID,
-) -> Optional[BoardCategory]:
+) -> BoardCategory | None:
     """Return the category with that id, or `None` if not found."""
     db_category = db.session.get(DbBoardCategory, category_id)
 
@@ -42,7 +43,7 @@ def find_category_by_id(
 
 def find_category_by_slug(
     board_id: BoardID, slug: str
-) -> Optional[BoardCategory]:
+) -> BoardCategory | None:
     """Return the category for that board and slug, or `None` if not found."""
     db_category = db.session.scalars(
         select(DbBoardCategory)

@@ -6,8 +6,9 @@ byceps.services.newsletter.newsletter_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterator, Sequence
-from typing import Optional
 
 from sqlalchemy import select
 
@@ -19,7 +20,7 @@ from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
 from .models import List, ListID, Subscriber
 
 
-def find_list(list_id: ListID) -> Optional[List]:
+def find_list(list_id: ListID) -> List | None:
     """Return the list with that ID, or `None` if not found."""
     db_list = db.session.get(DbList, list_id)
 

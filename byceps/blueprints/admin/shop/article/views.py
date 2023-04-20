@@ -6,11 +6,12 @@ byceps.blueprints.admin.shop.article.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
 import dataclasses
 from datetime import date, datetime, time
 from decimal import Decimal
-from typing import Optional
 
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
@@ -915,7 +916,7 @@ def _get_active_article_number_sequences_for_shop(
     return [sequence for sequence in sequences if not sequence.archived]
 
 
-def _assemble_datetime_utc(d: date, t: time) -> Optional[datetime]:
+def _assemble_datetime_utc(d: date, t: time) -> datetime | None:
     if not d or not t:
         return None
 

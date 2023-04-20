@@ -8,7 +8,8 @@ Announce user events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask_babel import gettext
 
@@ -30,7 +31,7 @@ from byceps.services.webhooks.models import OutgoingWebhook
 @with_locale
 def announce_user_account_created(
     event: UserAccountCreated, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a user account has been created."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -61,7 +62,7 @@ def announce_user_account_created(
 @with_locale
 def announce_user_screen_name_changed(
     event: UserScreenNameChanged, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a user's screen name has been changed."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -83,7 +84,7 @@ def announce_user_screen_name_changed(
 @with_locale
 def announce_user_email_address_changed(
     event: UserEmailAddressChanged, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a user's email address has been changed."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -102,7 +103,7 @@ def announce_user_email_address_changed(
 @with_locale
 def announce_user_email_address_invalidated(
     event: UserEmailAddressInvalidated, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a user's email address has been invalidated."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -121,7 +122,7 @@ def announce_user_email_address_invalidated(
 @with_locale
 def announce_user_details_updated(
     event: UserDetailsUpdated, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a user's details have been changed."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -140,7 +141,7 @@ def announce_user_details_updated(
 @with_locale
 def announce_user_account_suspended(
     event: UserAccountSuspended, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a user account has been suspended."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -159,7 +160,7 @@ def announce_user_account_suspended(
 @with_locale
 def announce_user_account_unsuspended(
     event: UserAccountUnsuspended, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a user account has been unsuspended."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -178,7 +179,7 @@ def announce_user_account_unsuspended(
 @with_locale
 def announce_user_account_deleted(
     event: UserAccountDeleted, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a user account has been deleted."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name

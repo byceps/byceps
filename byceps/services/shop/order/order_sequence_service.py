@@ -6,7 +6,8 @@ byceps.services.shop.order.order_sequence_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
@@ -23,7 +24,7 @@ class OrderNumberSequenceCreationFailed(Exception):
 
 
 def create_order_number_sequence(
-    shop_id: ShopID, prefix: str, *, value: Optional[int] = None
+    shop_id: ShopID, prefix: str, *, value: int | None = None
 ) -> OrderNumberSequence:
     """Create an order number sequence."""
     db_sequence = DbOrderNumberSequence(shop_id, prefix, value=value)

@@ -6,9 +6,10 @@ byceps.events.news
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 from byceps.services.news.models import NewsChannelID, NewsItemID
 
@@ -21,4 +22,4 @@ class NewsItemPublished(_BaseEvent):
     channel_id: NewsChannelID
     published_at: datetime
     title: str
-    external_url: Optional[str]
+    external_url: str | None

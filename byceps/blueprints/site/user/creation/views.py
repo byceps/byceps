@@ -6,8 +6,9 @@ byceps.blueprints.site.user.creation.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from flask import abort, g, request
 from flask_babel import gettext
@@ -162,7 +163,7 @@ def _get_required_consent_subjects() -> set[ConsentSubject]:
     return consent_subject_service.get_subjects_required_for_brand(g.brand_id)
 
 
-def _find_newsletter_list_for_brand() -> Optional[NewsletterListID]:
+def _find_newsletter_list_for_brand() -> NewsletterListID | None:
     """Return the newsletter list configured for this brand, or `None`
     if none is configured.
     """
@@ -174,14 +175,14 @@ def _find_newsletter_list_for_brand() -> Optional[NewsletterListID]:
     return NewsletterListID(value)
 
 
-def _find_brand_setting_value(setting_name: str) -> Optional[str]:
+def _find_brand_setting_value(setting_name: str) -> str | None:
     """Return the value configured for this brand and the given setting
     name, or `None` if not configured.
     """
     return brand_setting_service.find_setting_value(g.brand_id, setting_name)
 
 
-def _find_site_setting_value(setting_name: str) -> Optional[str]:
+def _find_site_setting_value(setting_name: str) -> str | None:
     """Return the value configured for this site and the given setting
     name, or `None` if not configured.
     """

@@ -6,9 +6,10 @@ byceps.services.snippet.snippet_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -93,8 +94,8 @@ def update_snippet(
 
 
 def delete_snippet(
-    snippet_id: SnippetID, *, initiator_id: Optional[UserID] = None
-) -> tuple[bool, Optional[SnippetDeleted]]:
+    snippet_id: SnippetID, *, initiator_id: UserID | None = None
+) -> tuple[bool, SnippetDeleted | None]:
     """Delete the snippet and its versions.
 
     It is expected that no database records (consents, etc.) refer to
@@ -106,7 +107,7 @@ def delete_snippet(
     if snippet is None:
         raise ValueError('Unknown snippet ID')
 
-    initiator: Optional[User]
+    initiator: User | None
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:
@@ -149,7 +150,7 @@ def delete_snippet(
     return True, event
 
 
-def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
+def find_snippet(snippet_id: SnippetID) -> DbSnippet | None:
     """Return the snippet with that id, or `None` if not found."""
     return db.session.get(DbSnippet, snippet_id)
 
@@ -183,14 +184,14 @@ def get_snippets_for_scope_with_current_versions(
 
 def find_snippet_version(
     version_id: SnippetVersionID,
-) -> Optional[DbSnippetVersion]:
+) -> DbSnippetVersion | None:
     """Return the snippet version with that id, or `None` if not found."""
     return db.session.get(DbSnippetVersion, version_id)
 
 
 def find_current_version_of_snippet_with_name(
     scope: SnippetScope, name: str, language_code: str
-) -> Optional[DbSnippetVersion]:
+) -> DbSnippetVersion | None:
     """Return the current version of the snippet with that name and
     language code in that scope, or `None` if not found.
     """
@@ -233,7 +234,7 @@ def get_snippet_body(scope: SnippetScope, name: str, language_code: str) -> str:
 
 
 def search_snippets(
-    search_term: str, scope: Optional[SnippetScope]
+    search_term: str, scope: SnippetScope | None
 ) -> Sequence[DbSnippetVersion]:
     """Search in (the latest versions of) snippets."""
     stmt = (

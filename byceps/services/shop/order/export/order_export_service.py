@@ -6,9 +6,11 @@ byceps.services.shop.order.export.order_export_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Any, Optional
+from typing import Any
 from zoneinfo import ZoneInfo
 
 from flask import current_app
@@ -20,7 +22,7 @@ from byceps.services.user import user_service
 from byceps.util.templating import load_template
 
 
-def export_order_as_xml(order_id: OrderID) -> Optional[dict[str, str]]:
+def export_order_as_xml(order_id: OrderID) -> dict[str, str] | None:
     """Export the order as an XML document."""
     order = order_service.find_order_with_details(order_id)
 

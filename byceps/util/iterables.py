@@ -6,9 +6,11 @@ byceps.util.iterables
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable, Iterator
 from itertools import tee
-from typing import Callable, Optional, TypeVar
+from typing import Callable, TypeVar
 
 
 T = TypeVar('T')
@@ -16,7 +18,7 @@ T = TypeVar('T')
 Predicate = Callable[[T], bool]
 
 
-def find(iterable: Iterable[T], predicate: Predicate) -> Optional[T]:
+def find(iterable: Iterable[T], predicate: Predicate) -> T | None:
     """Return the first element in the iterable that matches the
     predicate.
 
@@ -29,7 +31,7 @@ def find(iterable: Iterable[T], predicate: Predicate) -> Optional[T]:
     return None
 
 
-def index_of(iterable: Iterable[T], predicate: Predicate) -> Optional[int]:
+def index_of(iterable: Iterable[T], predicate: Predicate) -> int | None:
     """Return the (0-based) index of the first element in the iterable
     that matches the predicate.
 

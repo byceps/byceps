@@ -6,8 +6,9 @@ byceps.services.shop.order.email.order_email_example_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from flask_babel import gettext
 from moneyed import EUR, Money
@@ -121,7 +122,7 @@ def _build_order(
     is_open: bool = False,
     is_canceled: bool = False,
     is_paid: bool = False,
-    cancelation_reason: Optional[str] = None,
+    cancelation_reason: str | None = None,
 ) -> Order:
     order_id = OrderID(generate_uuid4())
     storefront_id = StorefrontID('storefront-1')

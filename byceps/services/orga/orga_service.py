@@ -6,8 +6,9 @@ byceps.services.orga.orga_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -106,7 +107,7 @@ def remove_orga_flag(
     db.session.commit()
 
 
-def find_orga_flag(brand_id: BrandID, user_id: UserID) -> Optional[DbOrgaFlag]:
+def find_orga_flag(brand_id: BrandID, user_id: UserID) -> DbOrgaFlag | None:
     """Return the orga flag for that brand and user, or `None` if not found."""
     return db.session.scalars(
         select(DbOrgaFlag)

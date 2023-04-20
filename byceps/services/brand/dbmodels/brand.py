@@ -6,7 +6,8 @@ byceps.services.brand.dbmodels.brand
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db
 from byceps.typing import BrandID
@@ -28,7 +29,7 @@ class DbBrand(db.Model):
         brand_id: BrandID,
         title: str,
         *,
-        image_filename: Optional[str] = None,
+        image_filename: str | None = None,
     ) -> None:
         self.id = brand_id
         self.title = title

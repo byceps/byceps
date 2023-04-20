@@ -6,7 +6,8 @@ byceps.services.news.news_channel_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -23,7 +24,7 @@ def create_channel(
     brand_id: BrandID,
     channel_id: NewsChannelID,
     *,
-    announcement_site_id: Optional[SiteID] = None,
+    announcement_site_id: SiteID | None = None,
 ) -> NewsChannel:
     """Create a channel for that brand."""
     brand = brand_service.find_brand(brand_id)
@@ -42,7 +43,7 @@ def create_channel(
 
 def update_channel(
     channel_id: NewsChannelID,
-    announcement_site_id: Optional[SiteID],
+    announcement_site_id: SiteID | None,
     archived: bool,
 ) -> NewsChannel:
     """Update a channel."""
@@ -64,7 +65,7 @@ def delete_channel(channel_id: NewsChannelID) -> None:
     db.session.commit()
 
 
-def _find_db_channel(channel_id: NewsChannelID) -> Optional[DbNewsChannel]:
+def _find_db_channel(channel_id: NewsChannelID) -> DbNewsChannel | None:
     return db.session.get(DbNewsChannel, channel_id)
 
 
@@ -77,7 +78,7 @@ def get_db_channel(channel_id: NewsChannelID) -> DbNewsChannel:
     return db_channel
 
 
-def find_channel(channel_id: NewsChannelID) -> Optional[NewsChannel]:
+def find_channel(channel_id: NewsChannelID) -> NewsChannel | None:
     """Return the channel with that id, or `None` if not found."""
     db_channel = _find_db_channel(channel_id)
 

@@ -6,8 +6,9 @@ byceps.services.user_group.user_group_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
-from typing import Optional
 
 from sqlalchemy import select
 
@@ -21,7 +22,7 @@ def create_group(
     party_id: PartyID,
     creator_id: UserID,
     title: str,
-    description: Optional[str],
+    description: str | None,
 ) -> DbUserGroup:
     """Introduce a new group."""
     group = DbUserGroup(party_id, creator_id, title, description)

@@ -3,10 +3,12 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterator
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Optional
+from typing import Any
 
 from flask import Flask
 from moneyed import EUR
@@ -118,7 +120,7 @@ def data_path() -> Path:
 def make_client():
     """Provide a test HTTP client against the application."""
 
-    def _wrapper(app: Flask, *, user_id: Optional[UserID] = None):
+    def _wrapper(app: Flask, *, user_id: UserID | None = None):
         with http_client(app, user_id=user_id) as client:
             return client
 
@@ -182,9 +184,9 @@ def make_email_config(admin_app: Flask):
     def _wrapper(
         brand_id: BrandID,
         *,
-        sender_address: Optional[str] = None,
-        sender_name: Optional[str] = None,
-        contact_address: Optional[str] = None,
+        sender_address: str | None = None,
+        sender_name: str | None = None,
+        contact_address: str | None = None,
     ) -> EmailConfig:
         if sender_address is None:
             sender_address = f'{generate_token()}@domain.example'
@@ -226,7 +228,7 @@ def site(email_config: EmailConfig, party: Party, board: Board) -> Site:
 @pytest.fixture(scope='session')
 def make_brand(admin_app: Flask):
     def _wrapper(
-        brand_id: Optional[BrandID] = None, title: Optional[str] = None
+        brand_id: BrandID | None = None, title: str | None = None
     ) -> Brand:
         if brand_id is None:
             brand_id = BrandID(generate_token())
@@ -275,9 +277,9 @@ def board(brand: Brand) -> Board:
 def make_news_channel():
     def _wrapper(
         brand_id: BrandID,
-        channel_id: Optional[NewsChannelID] = None,
+        channel_id: NewsChannelID | None = None,
         *,
-        announcement_site_id: Optional[SiteID] = None,
+        announcement_site_id: SiteID | None = None,
     ) -> NewsChannel:
         if channel_id is None:
             channel_id = NewsChannelID(generate_token())
@@ -294,8 +296,8 @@ def make_shop(admin_app: Flask):
     def _wrapper(
         brand_id: BrandID,
         *,
-        shop_id: Optional[ShopID] = None,
-        title: Optional[str] = None,
+        shop_id: ShopID | None = None,
+        title: str | None = None,
     ) -> Shop:
         if shop_id is None:
             shop_id = ShopID(generate_token())
@@ -313,8 +315,8 @@ def make_order_number_sequence():
     def _wrapper(
         shop_id: ShopID,
         *,
-        prefix: Optional[str] = None,
-        value: Optional[int] = None,
+        prefix: str | None = None,
+        value: int | None = None,
     ) -> OrderNumberSequence:
         if prefix is None:
             prefix = f'{generate_token()}-O'

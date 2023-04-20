@@ -6,9 +6,11 @@ byceps.services.verification_token.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 import secrets
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -49,7 +51,7 @@ class DbVerificationToken(db.Model):
         user_id: UserID,
         purpose: Purpose,
         *,
-        data: Optional[dict[str, str]],
+        data: dict[str, str] | None,
     ) -> None:
         self.user_id = user_id
         self.purpose = purpose

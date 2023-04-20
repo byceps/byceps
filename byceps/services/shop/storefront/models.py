@@ -6,8 +6,10 @@ byceps.services.shop.storefront.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import NewType, Optional
+from typing import NewType
 
 from byceps.services.shop.catalog.models import CatalogID
 from byceps.services.shop.order.models.number import OrderNumberSequenceID
@@ -21,6 +23,6 @@ StorefrontID = NewType('StorefrontID', str)
 class Storefront:
     id: StorefrontID
     shop_id: ShopID
-    catalog_id: Optional[CatalogID]
+    catalog_id: CatalogID | None
     order_number_sequence_id: OrderNumberSequenceID
     closed: bool

@@ -6,8 +6,9 @@ byceps.events.guest_server
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from byceps.services.guest_server.models import ServerID
 from byceps.typing import PartyID, UserID
@@ -19,5 +20,5 @@ from .base import _BaseEvent
 class GuestServerRegistered(_BaseEvent):
     party_id: PartyID
     owner_id: UserID
-    owner_screen_name: Optional[str]
+    owner_screen_name: str | None
     server_id: ServerID

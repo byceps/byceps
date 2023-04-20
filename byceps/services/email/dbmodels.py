@@ -6,7 +6,8 @@ byceps.services.email.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from byceps.database import db
 from byceps.typing import BrandID
@@ -30,8 +31,8 @@ class DbEmailConfig(db.Model):
         brand_id: BrandID,
         sender_address: str,
         *,
-        sender_name: Optional[str] = None,
-        contact_address: Optional[str] = None,
+        sender_name: str | None = None,
+        contact_address: str | None = None,
     ) -> None:
         self.brand_id = brand_id
         self.sender_address = sender_address

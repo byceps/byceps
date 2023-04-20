@@ -6,8 +6,9 @@ byceps.blueprints.admin.user.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from flask import abort, g, request
 from flask_babel import gettext
@@ -147,7 +148,7 @@ def view(user_id):
     }
 
 
-def _calculate_days_since(dt: Optional[datetime]) -> Optional[int]:
+def _calculate_days_since(dt: datetime | None) -> int | None:
     if dt is None:
         return None
 

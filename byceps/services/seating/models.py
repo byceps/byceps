@@ -6,8 +6,10 @@ byceps.services.seating.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -25,9 +27,9 @@ class SeatingArea:
     party_id: PartyID
     slug: str
     title: str
-    image_filename: Optional[str]
-    image_width: Optional[int]
-    image_height: Optional[int]
+    image_filename: str | None
+    image_width: int | None
+    image_height: int | None
 
 
 SeatID = NewType('SeatID', UUID)
@@ -39,10 +41,10 @@ class Seat:
     area_id: SeatingAreaID
     coord_x: int
     coord_y: int
-    rotation: Optional[int]
+    rotation: int | None
     category_id: TicketCategoryID
-    label: Optional[str]
-    type_: Optional[str]
+    label: str | None
+    type_: str | None
 
 
 SeatGroupID = NewType('SeatGroupID', UUID)
@@ -59,10 +61,10 @@ class SerializableSeatToImport(BaseModel):
     coord_x: int
     coord_y: int
     category_title: str
-    rotation: Optional[int] = None
-    label: Optional[str] = None
-    type_: Optional[str] = None
-    group_title: Optional[str] = None
+    rotation: int | None = None
+    label: str | None = None
+    type_: str | None = None
+    group_title: str | None = None
 
 
 @dataclass(frozen=True)
@@ -71,7 +73,7 @@ class SeatToImport:
     coord_x: int
     coord_y: int
     category_id: TicketCategoryID
-    rotation: Optional[int] = None
-    label: Optional[str] = None
-    type_: Optional[str] = None
-    group_title: Optional[str] = None
+    rotation: int | None = None
+    label: str | None = None
+    type_: str | None = None
+    group_title: str | None = None

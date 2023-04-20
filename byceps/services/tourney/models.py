@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from byceps.services.user.models.user import User
@@ -36,8 +36,8 @@ class Tourney:
     id: TourneyID
     party_id: PartyID
     title: str
-    subtitle: Optional[str]
-    logo_url: Optional[str]
+    subtitle: str | None
+    logo_url: str | None
     category_id: TourneyCategoryID
     current_participant_count: int
     max_participant_count: int
@@ -83,7 +83,7 @@ class Participant:
     id: ParticipantID
     tourney_id: TourneyID
     title: str
-    logo_url: Optional[str]
+    logo_url: str | None
 
 
 @dataclass(frozen=True)
@@ -99,8 +99,8 @@ class MatchComment:
     created_by: User
     body_text: str
     body_html: str
-    last_edited_at: Optional[datetime]
-    last_edited_by: Optional[User]
+    last_edited_at: datetime | None
+    last_edited_by: User | None
     hidden: bool
-    hidden_at: Optional[datetime]
-    hidden_by: Optional[User]
+    hidden_at: datetime | None
+    hidden_by: User | None

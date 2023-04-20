@@ -6,9 +6,10 @@ byceps.services.attendance.attendance_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections import defaultdict
 from collections.abc import Iterable, Sequence
-from typing import Optional
 
 from sqlalchemy import select
 
@@ -27,7 +28,7 @@ def get_attendees_paginated(
     page: int,
     per_page: int,
     *,
-    search_term: Optional[str] = None,
+    search_term: str | None = None,
 ) -> Pagination:
     """Return the party's ticket users with tickets and seats."""
     users_paginated = _get_users_paginated(
@@ -50,7 +51,7 @@ def _get_users_paginated(
     page: int,
     per_page: int,
     *,
-    search_term: Optional[str] = None,
+    search_term: str | None = None,
 ) -> Pagination:
     # Drop revoked tickets here already to avoid users without tickets
     # being included in the list.

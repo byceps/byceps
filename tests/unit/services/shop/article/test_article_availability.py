@@ -3,9 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 
 from freezegun import freeze_time
 from moneyed import EUR, Money
@@ -111,7 +112,7 @@ def test_is_available_without_start_and_without_end(now, expected):
 
 
 def create_article(
-    available_from: Optional[datetime], available_until: Optional[datetime]
+    available_from: datetime | None, available_until: datetime | None
 ) -> Article:
     return Article(
         id=ArticleID(generate_uuid4()),

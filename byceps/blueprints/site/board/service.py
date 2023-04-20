@@ -6,9 +6,10 @@ byceps.blueprints.site.board.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
 from datetime import datetime
-from typing import Optional
 
 from flask import g
 
@@ -112,14 +113,14 @@ def is_posting_unseen(posting: DbPosting, last_viewed_at: datetime) -> bool:
 def enrich_creators(
     postings: Iterable[DbPosting],
     brand_id: BrandID,
-    party_id: Optional[PartyID],
+    party_id: PartyID | None,
 ) -> None:
     """Enrich creators with their orga status and badges."""
     creator_ids = {posting.creator_id for posting in postings}
 
     badges_by_user_id = _get_badges_for_users(creator_ids, brand_id)
 
-    party: Optional[Party]
+    party: Party | None
     if party_id is not None:
         party = party_service.get_party(party_id)
         orga_ids = orga_team_service.select_orgas_for_party(
@@ -138,7 +139,7 @@ def enrich_creators(
 
         badges: set[Badge] = badges_by_user_id.get(user_id, set())
 
-        ticket: Optional[Ticket]
+        ticket: Ticket | None
         if (party is not None) and (user_id in ticket_users):
             ticket = Ticket(party.title)
         else:

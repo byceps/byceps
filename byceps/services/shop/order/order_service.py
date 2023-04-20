@@ -6,9 +6,11 @@ byceps.services.shop.order.order_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime, timedelta
 import dataclasses
-from typing import Any, Optional
+from typing import Any
 from uuid import UUID
 
 from flask_babel import lazy_gettext
@@ -207,7 +209,7 @@ def mark_order_as_paid(
     payment_method: str,
     initiator_id: UserID,
     *,
-    additional_payment_data: Optional[AdditionalPaymentData] = None,
+    additional_payment_data: AdditionalPaymentData | None = None,
 ) -> Result[ShopOrderPaid, OrderAlreadyMarkedAsPaidError]:
     """Mark the order as paid."""
     db_order = _get_order_entity(order_id)
@@ -396,7 +398,7 @@ def count_orders_per_payment_state(shop_id: ShopID) -> dict[PaymentState, int]:
     return counts_by_payment_state
 
 
-def _find_order_entity(order_id: OrderID) -> Optional[DbOrder]:
+def _find_order_entity(order_id: OrderID) -> DbOrder | None:
     """Return the order database entity with that id, or `None` if not
     found.
     """
@@ -415,7 +417,7 @@ def _get_order_entity(order_id: OrderID) -> DbOrder:
     return db_order
 
 
-def find_order(order_id: OrderID) -> Optional[Order]:
+def find_order(order_id: OrderID) -> Order | None:
     """Return the order with that id, or `None` if not found."""
     db_order = _find_order_entity(order_id)
 
@@ -431,7 +433,7 @@ def get_order(order_id: OrderID) -> Order:
     return _order_to_transfer_object(db_order)
 
 
-def find_order_with_details(order_id: OrderID) -> Optional[DetailedOrder]:
+def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
     """Return the order with that id, or `None` if not found."""
     db_order = (
         db.session.scalars(
@@ -477,7 +479,7 @@ def find_order_with_details(order_id: OrderID) -> Optional[DetailedOrder]:
 
 def find_order_with_details_for_admin(
     order_id: OrderID,
-) -> Optional[AdminDetailedOrder]:
+) -> AdminDetailedOrder | None:
     """Return the order with that id, or `None` if not found."""
     detailed_order = find_order_with_details(order_id)
 
@@ -503,7 +505,7 @@ def find_order_with_details_for_admin(
     )
 
 
-def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
+def find_order_by_order_number(order_number: OrderNumber) -> Order | None:
     """Return the order with that order number, or `None` if not found."""
     db_order = db.session.execute(
         select(DbOrder).filter_by(order_number=order_number)
@@ -594,9 +596,9 @@ def get_orders_for_shop_paginated(
     per_page: int,
     *,
     search_term=None,
-    only_payment_state: Optional[PaymentState] = None,
-    only_overdue: Optional[bool] = None,
-    only_processed: Optional[bool] = None,
+    only_payment_state: PaymentState | None = None,
+    only_overdue: bool | None = None,
+    only_processed: bool | None = None,
 ) -> Pagination:
     """Return all orders for that shop, ordered by creation date.
 
@@ -747,12 +749,12 @@ _PAYMENT_METHOD_LABELS = {
 }
 
 
-def find_payment_method_label(payment_method: str) -> Optional[str]:
+def find_payment_method_label(payment_method: str) -> str | None:
     """Return a label for the payment method."""
     return _PAYMENT_METHOD_LABELS.get(payment_method)
 
 
-def get_payment_date(order_id: OrderID) -> Optional[datetime]:
+def get_payment_date(order_id: OrderID) -> datetime | None:
     """Return the date the order has been marked as paid, or `None` if
     it has not been paid.
     """

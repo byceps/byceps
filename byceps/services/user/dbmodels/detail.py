@@ -6,7 +6,8 @@ byceps.services.user.dbmodels.detail
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy.ext.mutable import MutableDict
 
@@ -35,7 +36,7 @@ class DbUserDetail(db.Model):
     extras = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
 
     @property
-    def full_name(self) -> Optional[str]:
+    def full_name(self) -> str | None:
         names = [self.first_name, self.last_name]
         return ' '.join(filter(None, names)) or None
 

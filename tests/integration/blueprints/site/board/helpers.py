@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
 
 from byceps.services.board import (
     board_category_command_service,
@@ -30,9 +30,9 @@ def create_category(
     board_id: BoardID,
     *,
     number: int = 1,
-    slug: Optional[str] = None,
-    title: Optional[str] = None,
-    description: Optional[str] = None,
+    slug: str | None = None,
+    title: str | None = None,
+    description: str | None = None,
 ) -> BoardCategory:
     if slug is None:
         slug = generate_token()
@@ -53,8 +53,8 @@ def create_topic(
     creator_id: UserID,
     *,
     number: int = 1,
-    title: Optional[str] = None,
-    body: Optional[str] = None,
+    title: str | None = None,
+    body: str | None = None,
 ) -> DbTopic:
     if title is None:
         title = f'Thema {number}'
@@ -74,7 +74,7 @@ def create_posting(
     creator_id: UserID,
     *,
     number: int = 1,
-    body: Optional[str] = None,
+    body: str | None = None,
 ) -> DbPosting:
     if body is None:
         body = f'Inhalt von Beitrag {number}.'
@@ -86,9 +86,9 @@ def create_posting(
     return posting
 
 
-def find_topic(topic_id: TopicID) -> Optional[DbTopic]:
+def find_topic(topic_id: TopicID) -> DbTopic | None:
     return board_topic_query_service.find_topic_by_id(topic_id)
 
 
-def find_posting(posting_id: PostingID) -> Optional[DbPosting]:
+def find_posting(posting_id: PostingID) -> DbPosting | None:
     return board_posting_query_service.find_posting_by_id(posting_id)

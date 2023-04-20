@@ -6,7 +6,8 @@ byceps.services.user_badge.user_badge_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -22,8 +23,8 @@ def create_badge(
     label: str,
     image_filename: str,
     *,
-    description: Optional[str] = None,
-    brand_id: Optional[BrandID] = None,
+    description: str | None = None,
+    brand_id: BrandID | None = None,
     featured: bool = False,
 ) -> Badge:
     """Create a badge."""
@@ -46,9 +47,9 @@ def update_badge(
     badge_id: BadgeID,
     slug: str,
     label: str,
-    description: Optional[str],
+    description: str | None,
     image_filename: str,
-    brand_id: Optional[BrandID],
+    brand_id: BrandID | None,
     featured: bool,
 ) -> Badge:
     """Update a badge."""
@@ -74,7 +75,7 @@ def delete_badge(badge_id: BadgeID) -> None:
     db.session.commit()
 
 
-def find_badge(badge_id: BadgeID) -> Optional[Badge]:
+def find_badge(badge_id: BadgeID) -> Badge | None:
     """Return the badge with that id, or `None` if not found."""
     badge = db.session.get(DbBadge, badge_id)
 
@@ -94,7 +95,7 @@ def get_badge(badge_id: BadgeID) -> Badge:
     return badge
 
 
-def find_badge_by_slug(slug: str) -> Optional[Badge]:
+def find_badge_by_slug(slug: str) -> Badge | None:
     """Return the badge with that slug, or `None` if not found."""
     badge = db.session.scalars(
         select(DbBadge).filter_by(slug=slug)

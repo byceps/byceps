@@ -6,9 +6,10 @@ byceps.services.ticketing.ticket_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 from enum import Enum
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -66,7 +67,7 @@ def delete_ticket(ticket_id: TicketID) -> None:
     db.session.commit()
 
 
-def find_ticket(ticket_id: TicketID) -> Optional[DbTicket]:
+def find_ticket(ticket_id: TicketID) -> DbTicket | None:
     """Return the ticket with that id, or `None` if not found."""
     return db.session.get(DbTicket, ticket_id)
 
@@ -83,7 +84,7 @@ def get_ticket(ticket_id: TicketID) -> DbTicket:
 
 def find_ticket_by_code(
     party_id: PartyID, code: TicketCode
-) -> Optional[DbTicket]:
+) -> DbTicket | None:
     """Return the ticket with that code for that party, or `None` if not
     found.
     """
@@ -264,7 +265,7 @@ def select_ticket_users_for_party(
     return set(user_ids)
 
 
-def get_ticket_with_details(ticket_id: TicketID) -> Optional[DbTicket]:
+def get_ticket_with_details(ticket_id: TicketID) -> DbTicket | None:
     """Return the ticket with that id, or `None` if not found."""
     return db.session.scalar(
         select(DbTicket)
@@ -287,10 +288,10 @@ def get_tickets_with_details_for_party_paginated(
     page: int,
     per_page: int,
     *,
-    search_term: Optional[str] = None,
-    filter_category_id: Optional[TicketCategoryID] = None,
-    filter_revoked: Optional[FilterMode] = None,
-    filter_checked_in: Optional[FilterMode] = None,
+    search_term: str | None = None,
+    filter_category_id: TicketCategoryID | None = None,
+    filter_revoked: FilterMode | None = None,
+    filter_checked_in: FilterMode | None = None,
 ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
     stmt = (
@@ -368,7 +369,7 @@ def get_ticket_sale_stats(party_id: PartyID) -> TicketSaleStats:
     )
 
 
-def find_ticket_occupying_seat(seat_id: SeatID) -> Optional[DbTicket]:
+def find_ticket_occupying_seat(seat_id: SeatID) -> DbTicket | None:
     """Return the ticket that occupies that seat, or `None` if not found."""
     return db.session.execute(
         select(DbTicket).filter_by(occupied_seat_id=seat_id)

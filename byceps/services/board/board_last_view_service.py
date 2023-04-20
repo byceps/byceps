@@ -6,8 +6,9 @@ byceps.services.board.board_last_view_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -44,7 +45,7 @@ def contains_category_unseen_postings(
 
 def find_last_category_view(
     user_id: UserID, category_id: BoardCategoryID
-) -> Optional[DbLastCategoryView]:
+) -> DbLastCategoryView | None:
     """Return the user's last view of the category, or `None` if not found."""
     return db.session.scalars(
         select(DbLastCategoryView).filter_by(
@@ -96,7 +97,7 @@ def contains_topic_unseen_postings(topic: DbTopic, user_id: UserID) -> bool:
 
 def find_last_topic_view(
     user_id: UserID, topic_id: TopicID
-) -> Optional[DbLastTopicView]:
+) -> DbLastTopicView | None:
     """Return the user's last view of the topic, or `None` if not found."""
     return db.session.scalars(
         select(DbLastTopicView).filter_by(user_id=user_id, topic_id=topic_id)
@@ -105,7 +106,7 @@ def find_last_topic_view(
 
 def find_topic_last_viewed_at(
     topic_id: TopicID, user_id: UserID
-) -> Optional[datetime]:
+) -> datetime | None:
     """Return the time the topic was last viewed by the user (or
     nothing, if it hasn't been viewed by the user yet).
     """

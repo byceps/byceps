@@ -6,9 +6,10 @@ byceps.events.base
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 from byceps.typing import UserID
 
@@ -16,5 +17,5 @@ from byceps.typing import UserID
 @dataclass(frozen=True)
 class _BaseEvent:
     occurred_at: datetime
-    initiator_id: Optional[UserID]
-    initiator_screen_name: Optional[str]
+    initiator_id: UserID | None
+    initiator_screen_name: str | None

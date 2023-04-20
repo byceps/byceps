@@ -6,7 +6,8 @@ byceps.services.ticketing.ticket_category_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -57,7 +58,7 @@ def count_categories_for_party(party_id: PartyID) -> int:
     )
 
 
-def find_category(category_id: TicketCategoryID) -> Optional[TicketCategory]:
+def find_category(category_id: TicketCategoryID) -> TicketCategory | None:
     """Return the category with that ID, or `None` if not found."""
     db_category = db.session.get(DbTicketCategory, category_id)
 
@@ -79,7 +80,7 @@ def get_category(category_id: TicketCategoryID) -> TicketCategory:
 
 def find_category_by_title(
     party_id: PartyID, title: str
-) -> Optional[TicketCategory]:
+) -> TicketCategory | None:
     """Return the category with that title, or `None` if not found."""
     db_category = db.session.scalar(
         select(DbTicketCategory)

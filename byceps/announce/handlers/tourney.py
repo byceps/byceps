@@ -8,7 +8,8 @@ Announce tourney events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask_babel import gettext
 
@@ -38,7 +39,7 @@ from byceps.services.webhooks.models import OutgoingWebhook
 @with_locale
 def announce_tourney_started(
     event: TourneyStarted, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         'Tourney %(tourney_title)s has been started.',
         tourney_title=event.tourney_title,
@@ -50,7 +51,7 @@ def announce_tourney_started(
 @with_locale
 def announce_tourney_paused(
     event: TourneyPaused, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         'Tourney %(tourney_title)s has been paused.',
         tourney_title=event.tourney_title,
@@ -62,7 +63,7 @@ def announce_tourney_paused(
 @with_locale
 def announce_tourney_canceled(
     event: TourneyCanceled, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         'Tourney %(tourney_title)s has been canceled.',
         tourney_title=event.tourney_title,
@@ -74,7 +75,7 @@ def announce_tourney_canceled(
 @with_locale
 def announce_tourney_finished(
     event: TourneyFinished, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         'Tourney %(tourney_title)s has been finished.',
         tourney_title=event.tourney_title,
@@ -90,7 +91,7 @@ def announce_tourney_finished(
 @with_locale
 def announce_match_ready(
     event: TourneyMatchReady, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     # Do not announce a match if it does not actually need to be played.
     if None in {event.participant1_id, event.participant2_id}:
         return None
@@ -107,7 +108,7 @@ def announce_match_ready(
 @with_locale
 def announce_match_reset(
     event: TourneyMatchReset, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         'Match %(match_label)s in tourney %(tourney_title)s has been reset.',
         match_label=get_match_label(event),
@@ -120,7 +121,7 @@ def announce_match_reset(
 @with_locale
 def announce_match_score_submitted(
     event: TourneyMatchScoreSubmitted, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         'A result has been entered for match %(match_label)s in tourney %(tourney_title)s.',
         match_label=get_match_label(event),
@@ -133,7 +134,7 @@ def announce_match_score_submitted(
 @with_locale
 def announce_match_score_confirmed(
     event: TourneyMatchScoreConfirmed, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         'The result for match %(match_label)s in tourney %(tourney_title)s has been confirmed.',
         match_label=get_match_label(event),
@@ -146,7 +147,7 @@ def announce_match_score_confirmed(
 @with_locale
 def announce_match_score_randomized(
     event: TourneyMatchScoreRandomized, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         'A random result has been entered for match %(match_label)s in tourney %(tourney_title)s.',
         match_label=get_match_label(event),
@@ -163,7 +164,7 @@ def announce_match_score_randomized(
 @with_locale
 def announce_participant_ready(
     event: TourneyParticipantReady, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         '"%(participant_name)s" in tourney %(tourney_title)s is ready to play.',
         participant_name=event.participant_name,
@@ -176,7 +177,7 @@ def announce_participant_ready(
 @with_locale
 def announce_participant_eliminated(
     event: TourneyParticipantEliminated, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     text = gettext(
         '"%(participant_name)s" has been eliminated from tourney %(tourney_title)s.',
         participant_name=event.participant_name,
@@ -189,7 +190,7 @@ def announce_participant_eliminated(
 @with_locale
 def announce_participant_warned(
     event: TourneyParticipantWarned, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     yellow_card_irc = ' \x038,8 \x03'
 
     text = (
@@ -207,7 +208,7 @@ def announce_participant_warned(
 @with_locale
 def announce_participant_disqualified(
     event: TourneyParticipantDisqualified, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     red_card_irc = ' \x034,4 \x03'
 
     text = (
@@ -242,7 +243,7 @@ def get_match_label(match_event) -> str:
 
 
 def get_participant_label(
-    participant_id: Optional[str], participant_name: Optional[str]
+    participant_id: str | None, participant_name: str | None
 ) -> str:
     if participant_id is None:
         return gettext('bye')

@@ -12,7 +12,6 @@ from collections import defaultdict
 from collections.abc import Iterable
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 
 from moneyed import Money
 from sqlalchemy import delete, select, update
@@ -55,9 +54,9 @@ def create_article(
     max_quantity_per_order: int,
     processing_required: bool,
     *,
-    type_params: Optional[ArticleTypeParams] = None,
-    available_from: Optional[datetime] = None,
-    available_until: Optional[datetime] = None,
+    type_params: ArticleTypeParams | None = None,
+    available_from: datetime | None = None,
+    available_until: datetime | None = None,
     not_directly_orderable: bool = False,
     separate_order_required: bool = False,
 ) -> Article:
@@ -95,8 +94,8 @@ def create_ticket_article(
     max_quantity_per_order: int,
     ticket_category_id: TicketCategoryID,
     *,
-    available_from: Optional[datetime] = None,
-    available_until: Optional[datetime] = None,
+    available_from: datetime | None = None,
+    available_until: datetime | None = None,
     not_directly_orderable: bool = False,
     separate_order_required: bool = False,
 ) -> Article:
@@ -135,8 +134,8 @@ def create_ticket_bundle_article(
     ticket_category_id: TicketCategoryID,
     ticket_quantity: int,
     *,
-    available_from: Optional[datetime] = None,
-    available_until: Optional[datetime] = None,
+    available_from: datetime | None = None,
+    available_until: datetime | None = None,
     not_directly_orderable: bool = False,
     separate_order_required: bool = False,
 ) -> Article:
@@ -170,8 +169,8 @@ def update_article(
     description: str,
     price: Money,
     tax_rate: Decimal,
-    available_from: Optional[datetime],
-    available_until: Optional[datetime],
+    available_from: datetime | None,
+    available_until: datetime | None,
     total_quantity: int,
     max_quantity_per_order: int,
     not_directly_orderable: bool,
@@ -252,7 +251,7 @@ def delete_article(article_id: ArticleID) -> None:
     db.session.commit()
 
 
-def find_article(article_id: ArticleID) -> Optional[Article]:
+def find_article(article_id: ArticleID) -> Article | None:
     """Return the article with that ID, or `None` if not found."""
     db_article = find_db_article(article_id)
 
@@ -275,7 +274,7 @@ def get_article(article_id: ArticleID) -> Article:
     return article
 
 
-def find_db_article(article_id: ArticleID) -> Optional[DbArticle]:
+def find_db_article(article_id: ArticleID) -> DbArticle | None:
     """Return the database entity for the article with that ID, or
     `None` if not found.
     """
@@ -295,7 +294,7 @@ def _get_db_article(article_id: ArticleID) -> DbArticle:
     return db_article
 
 
-def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
+def find_article_with_details(article_id: ArticleID) -> DbArticle | None:
     """Return the article with that ID, or `None` if not found."""
     return (
         db.session.execute(
@@ -317,7 +316,7 @@ def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
 
 def find_attached_article(
     attached_article_id: AttachedArticleID,
-) -> Optional[DbAttachedArticle]:
+) -> DbAttachedArticle | None:
     """Return the attached article with that ID, or `None` if not found."""
     return db.session.get(DbAttachedArticle, attached_article_id)
 

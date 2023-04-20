@@ -6,7 +6,8 @@ byceps.blueprints.admin.orga.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask import abort, g, request
 from flask_babel import gettext
@@ -50,7 +51,7 @@ def persons_for_brand(brand_id):
     }
 
 
-def _to_birthday(user) -> Optional[Birthday]:
+def _to_birthday(user) -> Birthday | None:
     dob = user.detail.date_of_birth
 
     if dob is None:

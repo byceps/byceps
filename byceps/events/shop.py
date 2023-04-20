@@ -6,8 +6,9 @@ byceps.events.shop
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
@@ -21,7 +22,7 @@ class _ShopOrderEvent(_BaseEvent):
     order_id: OrderID
     order_number: OrderNumber
     orderer_id: UserID
-    orderer_screen_name: Optional[str]
+    orderer_screen_name: str | None
 
 
 @dataclass(frozen=True)

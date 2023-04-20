@@ -6,7 +6,8 @@ byceps.util.user_session
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 from uuid import UUID
 
 from babel import parse_locale
@@ -62,7 +63,7 @@ def get_current_user(required_permissions: set[str]) -> CurrentUser:
     )
 
 
-def _find_user() -> Optional[User]:
+def _find_user() -> User | None:
     """Return the current user if authenticated, `None` if not.
 
     Return `None` if:
@@ -96,12 +97,12 @@ def _find_user() -> Optional[User]:
     return user
 
 
-def _get_session_locale() -> Optional[str]:
+def _get_session_locale() -> str | None:
     """Return the locale set in the session, if any."""
     return session.get(KEY_LOCALE)
 
 
-def _get_user_locale(user: User) -> Optional[str]:
+def _get_user_locale(user: User) -> str | None:
     """Return the locale set for the user, if any."""
     locale_str = user.locale
     if not locale_str:

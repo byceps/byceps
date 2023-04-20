@@ -8,8 +8,10 @@ Database utilities.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
-from typing import Any, Callable, Optional, TypeVar
+from typing import Any, Callable, TypeVar
 import uuid
 
 from flask_sqlalchemy import SQLAlchemy
@@ -56,7 +58,7 @@ def paginate(
     page: int,
     per_page: int,
     *,
-    item_mapper: Optional[Mapper] = None,
+    item_mapper: Mapper | None = None,
 ) -> Pagination:
     """Return `per_page` items from page `page`."""
     pagination = db.paginate(

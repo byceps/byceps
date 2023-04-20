@@ -6,9 +6,10 @@ byceps.services.board.board_topic_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.sql import Select
@@ -30,7 +31,7 @@ def count_topics_for_board(board_id: BoardID) -> int:
     )
 
 
-def find_topic_by_id(topic_id: TopicID) -> Optional[DbTopic]:
+def find_topic_by_id(topic_id: TopicID) -> DbTopic | None:
     """Return the topic with that id, or `None` if not found."""
     return db.session.get(DbTopic, topic_id)
 
@@ -47,7 +48,7 @@ def get_topic(topic_id: TopicID) -> DbTopic:
 
 def find_topic_visible_for_user(
     topic_id: TopicID, include_hidden: bool
-) -> Optional[DbTopic]:
+) -> DbTopic | None:
     """Return the topic with that id, or `None` if not found or
     invisible for the user.
     """
@@ -143,7 +144,7 @@ def _select_topics(include_hidden: bool) -> Select:
 
 def find_default_posting_to_jump_to(
     topic_id: TopicID, include_hidden: bool, last_viewed_at: datetime
-) -> Optional[DbPosting]:
+) -> DbPosting | None:
     """Return the posting of the topic to show by default, or `None`."""
     postings_stmt = select(DbPosting).filter_by(topic_id=topic_id)
 

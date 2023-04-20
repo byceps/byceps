@@ -6,7 +6,8 @@ byceps.blueprints.admin.snippet.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
@@ -320,7 +321,7 @@ def _create_html_diff(
     from_version: DbSnippetVersion,
     to_version: DbSnippetVersion,
     attribute_name: str,
-) -> Optional[str]:
+) -> str | None:
     """Create an HTML diff between the named attribute's value of each
     of the two versions.
     """

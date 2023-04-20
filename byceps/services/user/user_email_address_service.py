@@ -6,7 +6,8 @@ byceps.services.user.user_email_address_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask_babel import gettext
 
@@ -138,7 +139,7 @@ def confirm_email_address(
 
 
 def invalidate_email_address(
-    user_id: UserID, reason: str, *, initiator_id: Optional[UserID] = None
+    user_id: UserID, reason: str, *, initiator_id: UserID | None = None
 ) -> UserEmailAddressInvalidated:
     """Invalidate the user's email address by marking it as unverified.
 
@@ -148,7 +149,7 @@ def invalidate_email_address(
     """
     user = user_service.get_db_user(user_id)
 
-    initiator: Optional[User]
+    initiator: User | None
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:

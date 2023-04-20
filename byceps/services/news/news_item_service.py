@@ -12,7 +12,6 @@ from collections.abc import Sequence
 import dataclasses
 from datetime import datetime
 from functools import partial
-from typing import Optional
 
 from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
@@ -51,7 +50,7 @@ def create_item(
     body: str,
     body_format: BodyFormat,
     *,
-    image_url_path: Optional[str] = None,
+    image_url_path: str | None = None,
 ) -> NewsItem:
     """Create a news item, a version, and set the version as the item's
     current one.
@@ -87,7 +86,7 @@ def update_item(
     body: str,
     body_format: BodyFormat,
     *,
-    image_url_path: Optional[str] = None,
+    image_url_path: str | None = None,
 ) -> NewsItem:
     """Update a news item by creating a new version of it and setting
     the new version as the current one.
@@ -120,7 +119,7 @@ def _create_version(
     body: str,
     body_format: BodyFormat,
     *,
-    image_url_path: Optional[str] = None,
+    image_url_path: str | None = None,
 ) -> DbNewsItemVersion:
     db_version = DbNewsItemVersion(
         db_item, creator_id, title, body, body_format
@@ -143,8 +142,8 @@ def set_featured_image(item_id: NewsItemID, image_id: NewsImageID) -> None:
 def publish_item(
     item_id: NewsItemID,
     *,
-    publish_at: Optional[datetime] = None,
-    initiator_id: Optional[UserID] = None,
+    publish_at: datetime | None = None,
+    initiator_id: UserID | None = None,
 ) -> NewsItemPublished:
     """Publish a news item."""
     db_item = _get_db_item(item_id)
@@ -156,7 +155,7 @@ def publish_item(
     if publish_at is None:
         publish_at = now
 
-    initiator: Optional[User]
+    initiator: User | None
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:
@@ -188,7 +187,7 @@ def publish_item(
 def unpublish_item(
     item_id: NewsItemID,
     *,
-    initiator_id: Optional[UserID] = None,
+    initiator_id: UserID | None = None,
 ) -> None:
     """Unublish a news item."""
     db_item = _get_db_item(item_id)
@@ -214,7 +213,7 @@ def delete_item(item_id: NewsItemID) -> None:
     db.session.commit()
 
 
-def find_item(item_id: NewsItemID) -> Optional[NewsItem]:
+def find_item(item_id: NewsItemID) -> NewsItem | None:
     """Return the item with that id, or `None` if not found."""
     db_item = _find_db_item(item_id)
 
@@ -224,7 +223,7 @@ def find_item(item_id: NewsItemID) -> Optional[NewsItem]:
     return _db_entity_to_item(db_item)
 
 
-def _find_db_item(item_id: NewsItemID) -> Optional[DbNewsItem]:
+def _find_db_item(item_id: NewsItemID) -> DbNewsItem | None:
     """Return the item with that id, or `None` if not found."""
     return (
         db.session.scalars(
@@ -252,7 +251,7 @@ def _get_db_item(item_id: NewsItemID) -> DbNewsItem:
 
 def find_aggregated_item_by_slug(
     channel_ids: set[NewsChannelID], slug: str, *, published_only: bool = False
-) -> Optional[NewsItem]:
+) -> NewsItem | None:
     """Return the news item identified by that slug in one of the given
     channels, or `None` if not found.
     """
@@ -393,7 +392,7 @@ def get_current_item_version(item_id: NewsItemID) -> DbNewsItemVersion:
 
 def find_item_version(
     version_id: NewsItemVersionID,
-) -> Optional[DbNewsItemVersion]:
+) -> DbNewsItemVersion | None:
     """Return the item version with that ID, or `None` if not found."""
     return db.session.get(DbNewsItemVersion, version_id)
 
@@ -428,7 +427,7 @@ def get_item_count_by_channel_id() -> dict[NewsChannelID, int]:
 
 
 def _db_entity_to_item(
-    db_item: DbNewsItem, *, render_body: Optional[bool] = False
+    db_item: DbNewsItem, *, render_body: bool | None = False
 ) -> NewsItem:
     channel = news_channel_service._db_entity_to_channel(db_item.channel)
 
@@ -459,7 +458,7 @@ def _db_entity_to_item(
     return item
 
 
-def _assemble_image_url_path(db_item: DbNewsItem) -> Optional[str]:
+def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
     url_path = db_item.current_version.image_url_path
 
     if not url_path:
@@ -468,7 +467,7 @@ def _assemble_image_url_path(db_item: DbNewsItem) -> Optional[str]:
     return f'/data/global/news_channels/{db_item.channel_id}/{url_path}'
 
 
-def _render_body(item: NewsItem) -> Optional[str]:
+def _render_body(item: NewsItem) -> str | None:
     """Render body text to HTML."""
     try:
         return news_html_service.render_body(item, item.body, item.body_format)

@@ -6,8 +6,9 @@ byceps.blueprints.site.core.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from http import HTTPStatus
-from typing import Optional
 
 from flask import g, redirect, url_for
 
@@ -26,7 +27,7 @@ blueprint.add_app_template_filter(text_markup_service.render_html, 'bbcode')
 
 
 @blueprint.app_template_global()
-def url_for_site_file(filename, **kwargs) -> Optional[str]:
+def url_for_site_file(filename, **kwargs) -> str | None:
     """Render URL for a static file local to the current site."""
     site_id = getattr(g, 'site_id', None)
 

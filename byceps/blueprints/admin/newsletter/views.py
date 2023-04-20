@@ -6,9 +6,10 @@ byceps.blueprints.admin.newsletter.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from operator import attrgetter
-from typing import Optional
 
 from flask import abort
 from flask_babel import gettext
@@ -154,7 +155,7 @@ def _get_brand_or_404(brand_id: BrandID) -> Brand:
     return brand
 
 
-def _find_brand(brand_id: BrandID) -> Optional[Brand]:
+def _find_brand(brand_id: BrandID) -> Brand | None:
     return brand_service.find_brand(brand_id)
 
 
@@ -167,5 +168,5 @@ def _get_list_or_404(list_id: ListID) -> List:
     return list_
 
 
-def _find_list(list_id: ListID) -> Optional[List]:
+def _find_list(list_id: ListID) -> List | None:
     return newsletter_service.find_list(list_id)

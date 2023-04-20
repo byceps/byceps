@@ -6,8 +6,10 @@ byceps.services.seating.dbmodels.seat
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections import namedtuple
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -56,9 +58,9 @@ class DbSeat(db.Model):
         *,
         coord_x: int = 0,
         coord_y: int = 0,
-        rotation: Optional[int] = None,
-        label: Optional[str] = None,
-        type_: Optional[str] = None,
+        rotation: int | None = None,
+        label: str | None = None,
+        type_: str | None = None,
     ) -> None:
         self.area_id = area_id
         self.coord_x = coord_x

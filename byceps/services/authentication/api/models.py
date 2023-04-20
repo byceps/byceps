@@ -6,9 +6,10 @@ byceps.services.authentication.api.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from byceps.services.authorization.models import PermissionID
@@ -22,5 +23,5 @@ class ApiToken:
     creator_id: UserID
     token: str
     permissions: frozenset[PermissionID]
-    description: Optional[str]
+    description: str | None
     suspended: bool

@@ -6,12 +6,14 @@ byceps.util.image.typeguess
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import BinaryIO, Optional
+from __future__ import annotations
+
+from typing import BinaryIO
 
 from .models import ImageType
 
 
-def guess_type(stream: BinaryIO) -> Optional[ImageType]:
+def guess_type(stream: BinaryIO) -> ImageType | None:
     """Return the guessed type, or `None` if the type could not be
     guessed or is not allowed (i.e. not a member of the enum).
     """

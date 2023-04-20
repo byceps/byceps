@@ -6,7 +6,8 @@ byceps.services.shop.article.article_sequence_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
@@ -27,7 +28,7 @@ class ArticleNumberSequenceCreationFailed(Exception):
 
 
 def create_article_number_sequence(
-    shop_id: ShopID, prefix: str, *, value: Optional[int] = None
+    shop_id: ShopID, prefix: str, *, value: int | None = None
 ) -> ArticleNumberSequence:
     """Create an article number sequence."""
     db_sequence = DbArticleNumberSequence(shop_id, prefix, value=value)

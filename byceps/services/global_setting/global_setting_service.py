@@ -6,7 +6,8 @@ byceps.services.global_setting.global_setting_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -48,7 +49,7 @@ def remove_setting(name: str) -> None:
     db.session.commit()
 
 
-def find_setting(name: str) -> Optional[GlobalSetting]:
+def find_setting(name: str) -> GlobalSetting | None:
     """Return the global setting with that name, or `None` if not found."""
     db_setting = db.session.get(DbSetting, name)
 
@@ -58,7 +59,7 @@ def find_setting(name: str) -> Optional[GlobalSetting]:
     return _db_entity_to_global_setting(db_setting)
 
 
-def find_setting_value(name: str) -> Optional[str]:
+def find_setting_value(name: str) -> str | None:
     """Return the value of the global setting with that name, or `None`
     if not found.
     """

@@ -6,7 +6,7 @@ byceps.util.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
 
 from flask_babel import lazy_gettext
 from wtforms import Field, SelectMultipleField
@@ -75,7 +75,7 @@ class UserScreenNameField(Field):
         self.data = user
 
 
-def _find_user_by_screen_name(screen_name: str) -> Optional[User]:
+def _find_user_by_screen_name(screen_name: str) -> User | None:
     return user_service.find_user_by_screen_name(
         screen_name, case_insensitive=True
     )

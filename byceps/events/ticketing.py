@@ -6,8 +6,9 @@ byceps.events.ticketing
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import Optional
 
 from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
@@ -24,14 +25,14 @@ class _TicketEvent(_BaseEvent):
 @dataclass(frozen=True)
 class TicketCheckedIn(_TicketEvent):
     ticket_code: TicketCode
-    occupied_seat_id: Optional[SeatID]
-    user_id: Optional[UserID]
-    user_screen_name: Optional[str]
+    occupied_seat_id: SeatID | None
+    user_id: UserID | None
+    user_screen_name: str | None
 
 
 @dataclass(frozen=True)
 class TicketsSold(_BaseEvent):
     party_id: PartyID
-    owner_id: Optional[UserID]
-    owner_screen_name: Optional[str]
+    owner_id: UserID | None
+    owner_screen_name: str | None
     quantity: int

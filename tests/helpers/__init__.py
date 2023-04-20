@@ -13,7 +13,7 @@ from contextlib import contextmanager
 from datetime import date, datetime
 from pathlib import Path
 from secrets import token_hex
-from typing import Any, Optional
+from typing import Any
 from uuid import UUID
 
 from flask import appcontext_pushed, Flask, g
@@ -40,7 +40,7 @@ CONFIG_FILENAME_TESTING = Path('..') / 'config' / 'testing.toml'
 
 
 def create_admin_app(
-    config_overrides: Optional[dict[str, Any]] = None
+    config_overrides: dict[str, Any] | None = None
 ) -> Flask:
     if config_overrides is None:
         config_overrides = {}
@@ -55,7 +55,7 @@ def create_admin_app(
 
 
 def create_site_app(
-    site_id: SiteID, config_overrides: Optional[dict[str, Any]] = None
+    site_id: SiteID, config_overrides: dict[str, Any] | None = None
 ) -> Flask:
     if config_overrides is None:
         config_overrides = {}
@@ -80,7 +80,7 @@ def generate_uuid() -> UUID:
 
 @contextmanager
 def app_context(
-    *, config_filename: Optional[Path | str] = CONFIG_FILENAME_TESTING
+    *, config_filename: Path | str | None = CONFIG_FILENAME_TESTING
 ):
     app = create_app(config_filename=config_filename)
 
@@ -111,23 +111,23 @@ DEFAULT_DATE_OF_BIRTH = date(1993, 2, 15)
 
 
 def create_user(
-    screen_name: Optional[str] = '__random__',
+    screen_name: str | None = '__random__',
     *,
-    email_address: Optional[str] = None,
+    email_address: str | None = None,
     email_address_verified: bool = False,
     initialized: bool = True,
     suspended: bool = False,
     deleted: bool = False,
-    locale: Optional[str] = None,
-    legacy_id: Optional[str] = None,
-    first_name: Optional[str] = 'John Joseph',
-    last_name: Optional[str] = 'Doe',
+    locale: str | None = None,
+    legacy_id: str | None = None,
+    first_name: str | None = 'John Joseph',
+    last_name: str | None = 'Doe',
     date_of_birth=DEFAULT_DATE_OF_BIRTH,
-    country: Optional[str] = 'State of Mind',
-    zip_code: Optional[str] = '31337',
-    city: Optional[str] = 'Atrocity',
-    street: Optional[str] = 'Elite Street 1337',
-    phone_number: Optional[str] = '555-CALL-ME-MAYBE',
+    country: str | None = 'State of Mind',
+    zip_code: str | None = '31337',
+    city: str | None = 'Atrocity',
+    street: str | None = 'Elite Street 1337',
+    phone_number: str | None = '555-CALL-ME-MAYBE',
     password: str = 'hunter2',
 ) -> User:
     if screen_name == '__random__':
@@ -174,10 +174,10 @@ def create_role_with_permissions_assigned(
 
 def create_party(
     brand_id: BrandID,
-    party_id: Optional[PartyID] = None,
-    title: Optional[str] = None,
+    party_id: PartyID | None = None,
+    title: str | None = None,
     *,
-    max_ticket_quantity: Optional[int] = None,
+    max_ticket_quantity: int | None = None,
 ) -> Party:
     if party_id is None:
         party_id = PartyID(generate_token())
@@ -202,14 +202,14 @@ def create_site(
     site_id: SiteID,
     brand_id: BrandID,
     *,
-    title: Optional[str] = None,
-    server_name: Optional[str] = None,
+    title: str | None = None,
+    server_name: str | None = None,
     enabled: bool = True,
     user_account_creation_enabled: bool = True,
     login_enabled: bool = True,
-    party_id: Optional[PartyID] = None,
-    board_id: Optional[BoardID] = None,
-    storefront_id: Optional[StorefrontID] = None,
+    party_id: PartyID | None = None,
+    board_id: BoardID | None = None,
+    storefront_id: StorefrontID | None = None,
     is_intranet: bool = False,
 ):
     if title is None:
@@ -234,7 +234,7 @@ def create_site(
 
 
 @contextmanager
-def http_client(app: Flask, *, user_id: Optional[UserID] = None):
+def http_client(app: Flask, *, user_id: UserID | None = None):
     """Provide an HTTP client.
 
     If a user ID is given, the client authenticates with the user's

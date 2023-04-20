@@ -6,8 +6,9 @@ byceps.services.consent.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 
 from byceps.database import db, generate_uuid4
 from byceps.services.user.dbmodels.user import DbUser
@@ -33,7 +34,7 @@ class DbConsentSubject(db.Model):
         name: str,
         title: str,
         checkbox_label: str,
-        checkbox_link_target: Optional[str],
+        checkbox_link_target: str | None,
     ) -> None:
         self.name = name
         self.title = title

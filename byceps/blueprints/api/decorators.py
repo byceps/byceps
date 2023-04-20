@@ -6,8 +6,9 @@ byceps.blueprints.api.decorators
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from functools import wraps
-from typing import Optional
 
 from flask import abort, request
 from werkzeug.datastructures import WWWAuthenticate
@@ -37,7 +38,7 @@ def api_token_required(func):
     return wrapper
 
 
-def _find_valid_api_token() -> Optional[ApiToken]:
+def _find_valid_api_token() -> ApiToken | None:
     request_token = _extract_token_from_request()
     if request_token is None:
         return None
@@ -45,7 +46,7 @@ def _find_valid_api_token() -> Optional[ApiToken]:
     return authn_api_service.find_api_token_by_token(request_token)
 
 
-def _extract_token_from_request() -> Optional[str]:
+def _extract_token_from_request() -> str | None:
     header_value = request.headers.get('Authorization')
     if header_value is None:
         return None

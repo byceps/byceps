@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import NewType, Optional, Union
+from typing import NewType, Union
 from uuid import UUID
 
 from flask_babel import lazy_gettext
@@ -74,8 +74,8 @@ class Article:
     description: str
     price: Money
     tax_rate: Decimal
-    available_from: Optional[datetime]
-    available_until: Optional[datetime]
+    available_from: datetime | None
+    available_until: datetime | None
     total_quantity: int
     quantity: int
     max_quantity_per_order: int
@@ -87,7 +87,7 @@ class Article:
 @dataclass(frozen=True)
 class ArticleCompilationItem:
     article: Article
-    fixed_quantity: Optional[int] = None
+    fixed_quantity: int | None = None
 
     def __post_init__(self) -> None:
         if (self.fixed_quantity is not None) and (self.fixed_quantity < 1):
@@ -101,7 +101,7 @@ class ArticleCompilationItem:
 
 class ArticleCompilation:
     def __init__(
-        self, items: Optional[list[ArticleCompilationItem]] = None
+        self, items: list[ArticleCompilationItem] | None = None
     ) -> None:
         self._items: list[ArticleCompilationItem] = []
 

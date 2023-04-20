@@ -6,7 +6,9 @@ byceps.services.webhooks.webhook_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Optional
+from __future__ import annotations
+
+from typing import Any
 
 from sqlalchemy import delete, select
 
@@ -24,9 +26,9 @@ def create_outgoing_webhook(
     url: str,
     enabled: bool,
     *,
-    text_prefix: Optional[str] = None,
-    extra_fields: Optional[dict[str, Any]] = None,
-    description: Optional[str] = None,
+    text_prefix: str | None = None,
+    extra_fields: dict[str, Any] | None = None,
+    description: str | None = None,
 ) -> OutgoingWebhook:
     """Create an outgoing webhook."""
     webhook = DbOutgoingWebhook(
@@ -51,10 +53,10 @@ def update_outgoing_webhook(
     event_types: set[str],
     event_filters: EventFilters,
     format: str,
-    text_prefix: Optional[str],
-    extra_fields: Optional[dict[str, Any]],
+    text_prefix: str | None,
+    extra_fields: dict[str, Any] | None,
     url: str,
-    description: Optional[str],
+    description: str | None,
     enabled: bool,
 ) -> Result[OutgoingWebhook, str]:
     """Update an outgoing webhook."""
@@ -84,7 +86,7 @@ def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
     db.session.commit()
 
 
-def find_webhook(webhook_id: WebhookID) -> Optional[OutgoingWebhook]:
+def find_webhook(webhook_id: WebhookID) -> OutgoingWebhook | None:
     """Return the webhook with that ID, if found."""
     webhook = _find_db_webhook(webhook_id)
 
@@ -94,7 +96,7 @@ def find_webhook(webhook_id: WebhookID) -> Optional[OutgoingWebhook]:
     return _db_entity_to_outgoing_webhook(webhook)
 
 
-def _find_db_webhook(webhook_id: WebhookID) -> Optional[DbOutgoingWebhook]:
+def _find_db_webhook(webhook_id: WebhookID) -> DbOutgoingWebhook | None:
     """Return the webhook database entity with that ID, if found."""
     return db.session.get(DbOutgoingWebhook, webhook_id)
 

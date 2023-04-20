@@ -8,7 +8,8 @@ Announce auth events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from flask_babel import gettext
 
@@ -21,7 +22,7 @@ from byceps.services.webhooks.models import OutgoingWebhook
 @with_locale
 def announce_user_logged_in(
     event: UserLoggedIn, webhook: OutgoingWebhook
-) -> Optional[Announcement]:
+) -> Announcement | None:
     """Announce that a user has logged in."""
     screen_name = get_screen_name_or_fallback(event.initiator_screen_name)
 

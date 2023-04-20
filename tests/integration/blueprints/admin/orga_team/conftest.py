@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
 
 from flask import Flask
 import pytest
@@ -41,7 +41,7 @@ def orga_team_admin_client(
 def make_team(admin_app: Flask):
     team_ids = []
 
-    def _wrapper(party_id: PartyID, title: Optional[str] = None) -> OrgaTeam:
+    def _wrapper(party_id: PartyID, title: str | None = None) -> OrgaTeam:
         if title is None:
             title = generate_token()
 

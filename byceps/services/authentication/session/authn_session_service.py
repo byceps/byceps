@@ -6,8 +6,9 @@ byceps.services.authentication.session.authn_session_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 from uuid import UUID, uuid4
 
 from sqlalchemy import delete, select
@@ -64,7 +65,7 @@ def delete_all_session_tokens() -> int:
     return num_deleted
 
 
-def find_session_token_for_user(user_id: UserID) -> Optional[DbSessionToken]:
+def find_session_token_for_user(user_id: UserID) -> DbSessionToken | None:
     """Return the session token for the user with that ID, or `None` if
     not found.
     """
@@ -104,8 +105,8 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
 def log_in_user(
     user_id: UserID,
     *,
-    ip_address: Optional[str] = None,
-    site_id: Optional[SiteID] = None,
+    ip_address: str | None = None,
+    site_id: SiteID | None = None,
 ) -> tuple[str, UserLoggedIn]:
     """Create a session token and record the log in."""
     session_token = get_session_token(user_id)
@@ -132,8 +133,8 @@ def _create_login_log_entry(
     user_id: UserID,
     occurred_at: datetime,
     *,
-    ip_address: Optional[str] = None,
-    site_id: Optional[SiteID] = None,
+    ip_address: str | None = None,
+    site_id: SiteID | None = None,
 ) -> None:
     """Create a log entry that represents a user login."""
     data = {}
@@ -149,7 +150,7 @@ def _create_login_log_entry(
     )
 
 
-def find_recent_login(user_id: UserID) -> Optional[datetime]:
+def find_recent_login(user_id: UserID) -> datetime | None:
     """Return the time of the user's most recent login, if found."""
     recent_login = db.session.execute(
         select(DbRecentLogin).filter_by(user_id=user_id)
@@ -173,7 +174,7 @@ def _record_recent_login(user_id: UserID, occurred_at: datetime) -> None:
 ANONYMOUS_USER_ID = UserID(UUID('00000000-0000-0000-0000-000000000000'))
 
 
-def get_anonymous_current_user(locale: Optional[str]) -> CurrentUser:
+def get_anonymous_current_user(locale: str | None) -> CurrentUser:
     """Return an anonymous current user object."""
     return CurrentUser(
         id=ANONYMOUS_USER_ID,
@@ -189,7 +190,7 @@ def get_anonymous_current_user(locale: Optional[str]) -> CurrentUser:
 
 def get_authenticated_current_user(
     user: User,
-    locale: Optional[str],
+    locale: str | None,
     permissions: frozenset[str],
 ) -> CurrentUser:
     """Return an authenticated current user object."""

@@ -6,7 +6,8 @@ byceps.services.shop.order.order_invoice_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import select
 
@@ -22,7 +23,7 @@ def add_invoice(
     order_id: OrderID,
     number: str,
     *,
-    url: Optional[str] = None,
+    url: str | None = None,
 ) -> Invoice:
     """Add an invoice to an order."""
     db_invoice = DbInvoice(order_id, number, url=url)

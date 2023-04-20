@@ -6,7 +6,8 @@ byceps.services.brand.brand_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -31,7 +32,7 @@ def create_brand(brand_id: BrandID, title: str) -> Brand:
 def update_brand(
     brand_id: BrandID,
     title: str,
-    image_filename: Optional[str],
+    image_filename: str | None,
     archived: bool,
 ) -> Brand:
     """Update a brand."""
@@ -53,7 +54,7 @@ def delete_brand(brand_id: BrandID) -> None:
     db.session.commit()
 
 
-def find_brand(brand_id: BrandID) -> Optional[Brand]:
+def find_brand(brand_id: BrandID) -> Brand | None:
     """Return the brand with that id, or `None` if not found."""
     db_brand = _get_db_brand(brand_id)
 
@@ -102,7 +103,7 @@ def count_brands() -> int:
 
 
 def _db_entity_to_brand(db_brand: DbBrand) -> Brand:
-    image_url_path: Optional[str]
+    image_url_path: str | None
     if db_brand.image_filename:
         image_url_path = f'/data/global/brand_images/{db_brand.image_filename}'
     else:

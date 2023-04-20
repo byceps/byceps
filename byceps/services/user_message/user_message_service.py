@@ -8,8 +8,9 @@ Send an e-mail message from one user to another.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from email.utils import formataddr
-from typing import Optional
 
 from flask_babel import gettext
 
@@ -94,12 +95,12 @@ def _get_subject(sender_screen_name: str, website_server_name: str) -> str:
 
 
 def _get_body(
-    recipient_screen_name: Optional[str],
+    recipient_screen_name: str | None,
     sender_screen_name: str,
     text: str,
     sender_contact_url: str,
     website_server_name: str,
-    website_contact_address: Optional[str],
+    website_contact_address: str | None,
 ) -> str:
     paragraphs = [
         gettext('Hello %(screen_name)s,', screen_name=recipient_screen_name),

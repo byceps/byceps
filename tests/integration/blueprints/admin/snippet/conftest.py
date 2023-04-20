@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
 
 import pytest
 
@@ -44,7 +44,7 @@ def global_scope() -> SnippetScope:
 @pytest.fixture
 def make_snippet(global_scope: SnippetScope, snippet_admin: User):
     def _wrapper(
-        name: Optional[str] = None,
+        name: str | None = None,
         language_code: str = 'en',
         body: str = 'Body',
     ) -> tuple[DbSnippetVersion, SnippetCreated]:

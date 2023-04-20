@@ -6,7 +6,8 @@ byceps.services.tourney.tourney_category_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
+from __future__ import annotations
+
 
 from sqlalchemy import delete, select
 
@@ -86,7 +87,7 @@ def delete_category(category_id: TourneyCategoryID) -> None:
     db.session.commit()
 
 
-def find_category(category_id: TourneyCategoryID) -> Optional[TourneyCategory]:
+def find_category(category_id: TourneyCategoryID) -> TourneyCategory | None:
     """Return the category with that id, or `None` if not found."""
     db_category = _find_db_category(category_id)
 
@@ -108,7 +109,7 @@ def get_category(category_id: TourneyCategoryID) -> TourneyCategory:
 
 def _find_db_category(
     category_id: TourneyCategoryID,
-) -> Optional[DbTourneyCategory]:
+) -> DbTourneyCategory | None:
     return db.session.get(DbTourneyCategory, category_id)
 
 
