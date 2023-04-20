@@ -127,7 +127,7 @@ def _inline_svg(svg: str) -> str:
         .replace('#', '%23')
         .replace('<', '%3C')
         .replace('>', '%3E')
-        .replace('"', '\'')
+        .replace('"', "'")
     )
 
     return 'data:image/svg+xml,' + replaced

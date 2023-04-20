@@ -123,7 +123,7 @@ def view_printable_html(ticket_id):
             .replace('#', '%23') \
             .replace('<', '%3C') \
             .replace('>', '%3E') \
-            .replace('"', '\'')
+            .replace('"', "'")
 
     return {
         'party_title': party.title,
