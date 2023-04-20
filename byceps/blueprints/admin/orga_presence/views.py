@@ -13,12 +13,12 @@ from typing import Iterable
 from flask import abort, g, request
 from flask_babel import to_utc
 
+from ....services.orga_presence import orga_presence_service
 from ....services.orga_presence.models import (
     PartyTimeSlot,
     PresenceTimeSlot,
     TimeSlot,
 )
-from ....services.orga_presence import orga_presence_service
 from ....services.party import party_service
 from ....services.user.models.user import User
 from ....util.framework.blueprint import create_blueprint

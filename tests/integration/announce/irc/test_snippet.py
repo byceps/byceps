@@ -6,8 +6,8 @@
 import pytest
 
 from byceps.announce.connections import build_announcement_request
-from byceps.services.snippet.models import SnippetScope
 from byceps.services.snippet import snippet_service
+from byceps.services.snippet.models import SnippetScope
 
 from .helpers import build_announcement_request_for_irc
 

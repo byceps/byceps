@@ -11,9 +11,9 @@ from typing import Iterable, Iterator, Optional
 import click
 from flask.cli import with_appcontext
 
+from ...services.seating import seat_group_service, seat_import_service
 from ...services.seating.models import Seat
 from ...services.seating.seat_import_service import SeatToImport
-from ...services.seating import seat_group_service, seat_import_service
 from ...typing import PartyID
 from ...util.result import Err, Ok, Result
 

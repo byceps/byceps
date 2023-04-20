@@ -4,8 +4,8 @@
 """
 
 from byceps.database import db
-from byceps.services.authentication.password.dbmodels import DbCredential
 from byceps.services.authentication.password import authn_password_service
+from byceps.services.authentication.password.dbmodels import DbCredential
 from byceps.services.user import user_log_service
 
 

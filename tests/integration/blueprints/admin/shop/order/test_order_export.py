@@ -13,8 +13,8 @@ import pytest
 
 from byceps.services.shop.article.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.order import order_checkout_service
+from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.user.models.user import User

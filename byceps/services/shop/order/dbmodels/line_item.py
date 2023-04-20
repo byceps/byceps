@@ -9,6 +9,7 @@ byceps.services.shop.order.dbmodels.line_item
 from decimal import Decimal
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:

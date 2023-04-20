@@ -26,11 +26,11 @@ from ...typing import UserID
 from ..authorization import authz_service
 from ..authorization.models import RoleID
 
+from . import user_log_service, user_service
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
 from .models.log import UserLogEntryData
 from .models.user import User
-from . import user_log_service, user_service
 
 
 def initialize_account(

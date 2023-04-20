@@ -13,8 +13,8 @@ from sqlalchemy import delete, select
 
 from ...database import db
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
-from ...services.user.models.user import User
 from ...services.user import user_service
+from ...services.user.models.user import User
 from ...typing import UserID
 
 from .dbmodels import (

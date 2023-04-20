@@ -16,9 +16,9 @@ from sqlalchemy import delete, select
 from ...database import db, insert_ignore_on_conflict
 from ...typing import BrandID, PartyID, UserID
 
+from ..party import party_service
 from ..party.dbmodels.party import DbParty
 from ..party.models import Party
-from ..party import party_service
 
 from .dbmodels.archived_attendance import DbArchivedAttendance
 from .dbmodels.category import DbTicketCategory

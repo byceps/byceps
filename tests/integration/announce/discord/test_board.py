@@ -7,12 +7,12 @@ import pytest
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.board import BoardPostingCreated, BoardTopicCreated
-from byceps.services.board.models import BoardID
 from byceps.services.board import (
     board_category_command_service,
     board_posting_command_service,
     board_topic_command_service,
 )
+from byceps.services.board.models import BoardID
 from byceps.services.webhooks.models import OutgoingWebhook
 
 from .helpers import build_announcement_request_for_discord, build_webhook

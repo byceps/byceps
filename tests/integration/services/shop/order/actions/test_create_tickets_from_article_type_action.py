@@ -11,8 +11,8 @@ from pytest import raises
 
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.article.models import Article
-from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.ticketing.models.ticket import TicketCategory

@@ -12,15 +12,15 @@ from moneyed import get_currency
 
 from .....services.brand import brand_service
 from .....services.shop.cancelation_request import cancelation_request_service
-from .....services.shop.order.models.log import OrderLogEntryData
-from .....services.shop.order.models.order import PaymentState
 from .....services.shop.order import (
     order_log_service,
     order_payment_service,
     order_service,
 )
-from .....services.shop.shop.models import ShopID
+from .....services.shop.order.models.log import OrderLogEntryData
+from .....services.shop.order.models.order import PaymentState
 from .....services.shop.shop import shop_service
+from .....services.shop.shop.models import ShopID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated

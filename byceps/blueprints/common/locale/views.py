@@ -8,8 +8,8 @@ byceps.blueprints.common.locale.views
 
 from flask import redirect, request
 
-from ....util.framework.blueprint import create_blueprint
 from ....util import user_session
+from ....util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('locale', __name__)

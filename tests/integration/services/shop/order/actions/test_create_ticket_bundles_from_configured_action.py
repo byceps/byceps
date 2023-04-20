@@ -10,16 +10,16 @@ import pytest
 
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.article.models import Article
-from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.order import (
     order_action_registry_service,
     order_log_service,
 )
+from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
+from byceps.services.ticketing import ticket_bundle_service, ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketCategory
-from byceps.services.ticketing import ticket_service, ticket_bundle_service
 from byceps.services.user.models.user import User
 
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order

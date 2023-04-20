@@ -8,7 +8,6 @@ byceps.blueprints.monitoring.healthcheck
 
 from flask import current_app
 from flask.json import dumps
-
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 

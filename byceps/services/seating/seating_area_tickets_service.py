@@ -14,8 +14,8 @@ from ...typing import UserID
 
 from ..ticketing.dbmodels.ticket import DbTicket
 from ..ticketing.models.ticket import TicketCode, TicketID
-from ..user.models.user import User
 from ..user import user_service
+from ..user.models.user import User
 
 from .models import Seat
 

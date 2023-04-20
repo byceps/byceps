@@ -7,8 +7,8 @@ from datetime import datetime
 
 import pytest
 
-from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.dbmodels.detail import DbUserDetail
+from byceps.services.user.dbmodels.user import DbUser
 
 
 @pytest.mark.parametrize(

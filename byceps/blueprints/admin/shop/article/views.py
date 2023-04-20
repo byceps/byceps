@@ -30,23 +30,23 @@ from .....services.shop.order import (
     ordered_articles_service,
 )
 from .....services.shop.order.models.order import Order, PaymentState
-from .....services.shop.shop.models import ShopID
 from .....services.shop.shop import shop_service
+from .....services.shop.shop.models import ShopID
 from .....services.ticketing import ticket_category_service
-from .....services.user.models.user import User
 from .....services.user import user_service
+from .....services.user.models.user import User
 from .....services.user_badge import user_badge_service
+from .....typing import UserID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
-from .....typing import UserID
 
 from .forms import (
-    ArticleCreateForm,
-    ArticleUpdateForm,
     ArticleAttachmentCreateForm,
+    ArticleCreateForm,
     ArticleNumberSequenceCreateForm,
+    ArticleUpdateForm,
     RegisterBadgeAwardingActionForm,
     RegisterTicketBundlesCreationActionForm,
     RegisterTicketsCreationActionForm,

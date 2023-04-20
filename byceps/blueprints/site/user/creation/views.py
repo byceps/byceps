@@ -15,8 +15,8 @@ from flask_babel import gettext
 from .....services.brand import brand_setting_service
 from .....services.consent import consent_service, consent_subject_service
 from .....services.consent.models import ConsentSubject
-from .....services.newsletter.models import ListID as NewsletterListID
 from .....services.newsletter import newsletter_command_service
+from .....services.newsletter.models import ListID as NewsletterListID
 from .....services.site import site_setting_service
 from .....services.user import user_creation_service
 from .....signals import user as user_signals

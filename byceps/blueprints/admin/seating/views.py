@@ -10,13 +10,13 @@ from flask import abort, request
 from flask_babel import gettext
 
 from ....services.party import party_service
-from ....services.seating.models import SeatingArea, SeatingAreaID
 from ....services.seating import (
     seat_group_service,
     seat_service,
     seating_area_service,
     seating_area_tickets_service,
 )
+from ....services.seating.models import SeatingArea, SeatingAreaID
 from ....services.ticketing import ticket_category_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success

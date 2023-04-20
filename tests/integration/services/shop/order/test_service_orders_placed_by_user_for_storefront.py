@@ -7,8 +7,8 @@ from moneyed import EUR
 import pytest
 
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order.models.order import Order, Orderer, OrderID
 from byceps.services.shop.order import order_checkout_service, order_service
+from byceps.services.shop.order.models.order import Order, Orderer, OrderID
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
 

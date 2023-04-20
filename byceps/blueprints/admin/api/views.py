@@ -16,7 +16,6 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-
 from .forms import CreateForm
 
 

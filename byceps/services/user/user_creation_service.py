@@ -18,11 +18,10 @@ from ...typing import UserID
 from ..authentication.password import authn_password_service
 from ..site.models import SiteID
 
-from . import user_email_address_service, user_log_service
+from . import user_email_address_service, user_log_service, user_service
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
 from .models.user import User
-from . import user_service
 
 
 class UserCreationFailed(Exception):

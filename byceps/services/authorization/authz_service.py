@@ -16,8 +16,8 @@ from ...database import db
 from ...typing import UserID
 from ...util.result import Err, Ok, Result
 
-from ..user.models.user import User
 from ..user import user_log_service, user_service
+from ..user.models.user import User
 
 from .dbmodels import DbRole, DbRolePermission, DbUserRole
 from .models import PermissionID, Role, RoleID

@@ -4,6 +4,7 @@
 """
 
 from __future__ import annotations
+
 from decimal import Decimal
 from unittest.mock import patch
 
@@ -18,9 +19,9 @@ from byceps.services.shop.article.models import (
     ArticleID,
     ArticleNumber,
 )
+from byceps.services.shop.order import order_service
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import LineItem, Order
-from byceps.services.shop.order import order_service
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID

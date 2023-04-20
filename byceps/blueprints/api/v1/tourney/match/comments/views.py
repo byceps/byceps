@@ -14,18 +14,18 @@ from flask import abort, jsonify, request, url_for
 from pydantic import BaseModel, ValidationError
 
 from .......services.orga_team import orga_team_service
-from .......services.tourney.models import (
-    Match,
-    MatchID,
-    MatchComment,
-    MatchCommentID,
-)
 from .......services.tourney import (
     tourney_match_comment_service,
     tourney_match_service,
 )
-from .......services.user.models.user import User
+from .......services.tourney.models import (
+    Match,
+    MatchComment,
+    MatchCommentID,
+    MatchID,
+)
 from .......services.user import user_service
+from .......services.user.models.user import User
 from .......signals import tourney as tourney_signals
 from .......typing import UserID
 from .......util.framework.blueprint import create_blueprint

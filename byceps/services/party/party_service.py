@@ -7,6 +7,7 @@ byceps.services.party.party_service
 """
 
 from __future__ import annotations
+
 import dataclasses
 from datetime import date, datetime, timedelta
 from typing import Callable, Optional

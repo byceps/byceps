@@ -7,15 +7,16 @@ byceps.services.orga_presence.models
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from uuid import UUID
 
+from ...util.datetime.range import DateTimeRange
+
 from ..party.models import Party
 from ..user.models.user import User
-
-from ...util.datetime.range import DateTimeRange
 
 
 TimeSlotType = Enum('TimeSlotType', ['party', 'presence', 'task'])

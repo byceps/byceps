@@ -8,17 +8,17 @@ byceps.blueprints.site.site.views
 
 from flask import g, url_for
 
-from ..page.templating import url_for_site_page
-
+from ....services.site_navigation import site_navigation_service
 from ....services.site_navigation.models import (
     NavItem,
     NavItemForRendering,
     NavItemTargetType,
     NavMenuID,
 )
-from ....services.site_navigation import site_navigation_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.l10n import get_locale_str
+
+from ..page.templating import url_for_site_page
 
 
 blueprint = create_blueprint('site', __name__)

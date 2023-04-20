@@ -11,16 +11,16 @@ Current user's dashboard
 from flask import abort, g
 
 from ....services.authentication.session.models import CurrentUser
-from ....services.board.dbmodels.topic import DbTopic
 from ....services.board import (
     board_access_control_service,
     board_topic_query_service,
 )
+from ....services.board.dbmodels.topic import DbTopic
 from ....services.guest_server import guest_server_service
-from ....services.news.models import NewsHeadline
 from ....services.news import news_item_service
-from ....services.shop.order.models.order import SiteOrderListItem
+from ....services.news.models import NewsHeadline
 from ....services.shop.order import order_service
+from ....services.shop.order.models.order import SiteOrderListItem
 from ....services.shop.storefront import storefront_service
 from ....services.ticketing import ticket_service
 from ....services.ticketing.dbmodels.ticket import DbTicket

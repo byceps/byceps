@@ -5,8 +5,8 @@
 
 import pytest
 
-from byceps.services.snippet.models import SnippetScope
 from byceps.services.snippet import snippet_service
+from byceps.services.snippet.models import SnippetScope
 
 
 @pytest.fixture(scope='module')

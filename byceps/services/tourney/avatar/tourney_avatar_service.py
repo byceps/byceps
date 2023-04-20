@@ -11,9 +11,9 @@ from typing import BinaryIO
 
 from ....database import db
 from ....typing import PartyID, UserID
+from ....util import upload
 from ....util.image import create_thumbnail
 from ....util.image.models import Dimensions, ImageType
-from ....util import upload
 
 from ...image import image_service
 from ...image.image_service import (

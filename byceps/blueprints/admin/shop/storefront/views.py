@@ -12,10 +12,10 @@ from flask_babel import gettext
 from .....services.brand import brand_service
 from .....services.shop.catalog import catalog_service
 from .....services.shop.order import order_sequence_service
-from .....services.shop.shop.models import Shop, ShopID
 from .....services.shop.shop import shop_service
-from .....services.shop.storefront.models import Storefront, StorefrontID
+from .....services.shop.shop.models import Shop, ShopID
 from .....services.shop.storefront import storefront_service
+from .....services.shop.storefront.models import Storefront, StorefrontID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated

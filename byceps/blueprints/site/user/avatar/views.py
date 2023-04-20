@@ -14,8 +14,8 @@ from .....services.user import user_avatar_service
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
-from .....util.image.models import ImageType
 from .....util.framework.templating import templated
+from .....util.image.models import ImageType
 from .....util.views import redirect_to, respond_no_content
 
 from .forms import UpdateForm

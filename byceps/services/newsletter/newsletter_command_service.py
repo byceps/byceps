@@ -14,9 +14,9 @@ from sqlalchemy.dialects.postgresql import insert
 from ...database import db
 from ...typing import UserID
 
+from . import newsletter_service
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
 from .models import List, ListID
-from . import newsletter_service
 from .types import SubscriptionState
 
 

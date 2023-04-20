@@ -17,16 +17,16 @@ from ....typing import UserID
 from ....util.l10n import format_money
 from ....util.templating import load_template
 
-from ...snippet.models import SnippetScope
 from ...snippet import snippet_service
+from ...snippet.models import SnippetScope
 from ...user import user_service
 
 from ..shop.models import ShopID
 
-from .dbmodels.payment import DbPayment
-from .models.payment import AdditionalPaymentData, Payment
-from .models.order import Order, OrderID
 from . import order_log_service
+from .dbmodels.payment import DbPayment
+from .models.order import Order, OrderID
+from .models.payment import AdditionalPaymentData, Payment
 
 
 def add_payment(

@@ -13,13 +13,13 @@ from typing import Optional
 from flask import abort
 from flask_babel import gettext
 
-from ....services.brand.models import Brand, BrandID
 from ....services.brand import brand_service
-from ....services.newsletter.models import List, ListID
+from ....services.brand.models import Brand, BrandID
 from ....services.newsletter import (
     newsletter_command_service,
     newsletter_service,
 )
+from ....services.newsletter.models import List, ListID
 from ....services.user import user_stats_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success

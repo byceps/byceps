@@ -9,7 +9,7 @@ byceps.blueprints.common.authentication.password.forms
 from flask import g
 from flask_babel import lazy_gettext
 from wtforms import PasswordField, StringField
-from wtforms.validators import InputRequired, EqualTo, Length, ValidationError
+from wtforms.validators import EqualTo, InputRequired, Length, ValidationError
 
 from .....services.authentication.password import authn_password_service
 from .....util.l10n import LocalizedForm

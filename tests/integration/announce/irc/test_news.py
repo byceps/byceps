@@ -8,8 +8,8 @@ import pytest
 
 from byceps.announce.connections import build_announcement_request
 from byceps.services.brand.models import Brand
-from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 from byceps.services.news import news_item_service
+from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 from byceps.services.site.models import Site
 
 from .helpers import build_announcement_request_for_irc

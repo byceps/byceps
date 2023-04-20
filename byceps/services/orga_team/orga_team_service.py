@@ -16,10 +16,10 @@ from ...typing import PartyID, UserID
 
 from ..orga.dbmodels import DbOrgaFlag
 from ..party import party_service
+from ..user import user_service
 from ..user.dbmodels.detail import DbUserDetail
 from ..user.dbmodels.user import DbUser
 from ..user.models.user import User
-from ..user import user_service
 
 from .dbmodels import DbMembership, DbOrgaTeam
 from .models import (

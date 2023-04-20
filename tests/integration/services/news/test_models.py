@@ -5,8 +5,8 @@
 
 import pytest
 
-from byceps.services.news.models import BodyFormat, NewsChannel
 from byceps.services.news import news_item_service
+from byceps.services.news.models import BodyFormat, NewsChannel
 
 
 @pytest.fixture(scope='module')

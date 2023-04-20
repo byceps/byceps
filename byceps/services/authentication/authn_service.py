@@ -10,8 +10,8 @@ from typing import Optional
 
 from ...util.result import Err, Ok, Result
 
-from ..user.models.user import User
 from ..user import user_service
+from ..user.models.user import User
 
 from .errors import AuthenticationFailed
 from .password import authn_password_service

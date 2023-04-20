@@ -12,9 +12,7 @@ from pydantic import ValidationError
 from .....services.user import user_email_address_service, user_service
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
-from .....util.views import create_empty_json_response
-from .....util.views import respond_no_content
-
+from .....util.views import create_empty_json_response, respond_no_content
 from ...decorators import api_token_required
 
 from .models import InvalidateEmailAddressRequest

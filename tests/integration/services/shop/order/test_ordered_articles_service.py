@@ -3,21 +3,21 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import pytest
 from flask import Flask
 from moneyed import EUR
-import pytest
 from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order import (
+    order_checkout_service,
+    ordered_articles_service,
+)
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import Order, Orderer, PaymentState
-from byceps.services.shop.order import (
-    ordered_articles_service,
-    order_checkout_service,
-)
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
 

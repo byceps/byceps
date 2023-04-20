@@ -12,10 +12,10 @@ from sqlalchemy import select
 
 from ....database import db
 
+from . import order_log_service
 from .dbmodels.invoice import DbInvoice
 from .models.invoice import Invoice
 from .models.order import OrderID
-from . import order_log_service
 
 
 def add_invoice(

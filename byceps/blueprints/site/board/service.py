@@ -12,24 +12,23 @@ from typing import Iterable, Optional
 from flask import g
 
 from ....services.authentication.session.models import CurrentUser
-from ....services.board.dbmodels.topic import DbTopic
-from ....services.board.dbmodels.posting import DbPosting
 from ....services.board import (
     board_last_view_service,
     board_posting_query_service,
 )
+from ....services.board.dbmodels.posting import DbPosting
+from ....services.board.dbmodels.topic import DbTopic
 from ....services.board.models import BoardCategoryWithLastUpdate
 from ....services.orga_team import orga_team_service
-from ....services.party.models import Party
 from ....services.party import party_service
+from ....services.party.models import Party
 from ....services.site import site_setting_service
 from ....services.ticketing import ticket_service
 from ....services.user import user_service
-from ....services.user_badge.models import Badge
 from ....services.user_badge import user_badge_awarding_service
-from ....util.authorization import has_current_user_permission
+from ....services.user_badge.models import Badge
 from ....typing import BrandID, PartyID, UserID
-
+from ....util.authorization import has_current_user_permission
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 
 

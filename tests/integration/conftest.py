@@ -20,26 +20,26 @@ from byceps.services.brand.models import Brand
 from byceps.services.email import email_config_service
 from byceps.services.email.models import EmailConfig
 from byceps.services.language import language_service
-from byceps.services.news.models import NewsChannel, NewsChannelID
 from byceps.services.news import news_channel_service
+from byceps.services.news.models import NewsChannel, NewsChannelID
 from byceps.services.party.models import Party
 from byceps.services.shop.article.models import Article
+from byceps.services.shop.order import order_sequence_service
 from byceps.services.shop.order.models.number import (
     OrderNumberSequence,
     OrderNumberSequenceID,
 )
 from byceps.services.shop.order.models.order import Orderer
-from byceps.services.shop.order import order_sequence_service
-from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.shop.shop import shop_service
+from byceps.services.shop.shop.models import Shop, ShopID
+from byceps.services.shop.storefront import storefront_service
 from byceps.services.shop.storefront.models import (
     Storefront,
     StorefrontID,
 )
-from byceps.services.shop.storefront import storefront_service
 from byceps.services.site.models import Site, SiteID
-from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.ticketing import ticket_category_service
+from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User
 from byceps.typing import BrandID, PartyID, UserID
 

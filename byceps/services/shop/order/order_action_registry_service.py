@@ -11,10 +11,9 @@ from ...user_badge.models import BadgeID
 
 from ..article.models import ArticleID
 
+from . import order_action_service
 from .models.action import ActionParameters
 from .models.order import PaymentState
-
-from . import order_action_service
 
 
 def register_badge_awarding(article_id: ArticleID, badge_id: BadgeID) -> None:

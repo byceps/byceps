@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 
 from flask import current_app
 
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:

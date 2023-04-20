@@ -14,7 +14,6 @@ from typing import Optional
 from flask_babel import gettext
 
 from ...events.board import (
-    _BoardEvent,
     BoardPostingCreated,
     BoardPostingHidden,
     BoardPostingUnhidden,
@@ -26,6 +25,7 @@ from ...events.board import (
     BoardTopicUnhidden,
     BoardTopicUnlocked,
     BoardTopicUnpinned,
+    _BoardEvent,
 )
 from ...services.board import board_topic_query_service
 from ...services.board.models import TopicID

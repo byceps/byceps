@@ -12,7 +12,7 @@ from ...database import db
 from ...typing import UserID
 
 from .dbmodels.board import DbBoard
-from .dbmodels.board_access_grant import DbBoardAccessGrant, BoardAccessGrantID
+from .dbmodels.board_access_grant import BoardAccessGrantID, DbBoardAccessGrant
 from .models import BoardID
 
 

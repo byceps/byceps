@@ -8,6 +8,7 @@ byceps.services.site_navigation.dbmodels
 
 from typing import Optional, TYPE_CHECKING
 
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:

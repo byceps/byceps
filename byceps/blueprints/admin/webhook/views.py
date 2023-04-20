@@ -13,8 +13,8 @@ from flask import abort, request
 from flask_babel import gettext
 
 from ....announce.helpers import assemble_request_data, call_webhook
-from ....services.webhooks.models import OutgoingWebhook, WebhookID
 from ....services.webhooks import webhook_service
+from ....services.webhooks.models import OutgoingWebhook, WebhookID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated

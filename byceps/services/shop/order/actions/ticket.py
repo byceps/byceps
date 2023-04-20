@@ -11,17 +11,17 @@ from uuid import UUID
 
 from .....typing import UserID
 
-from ....ticketing.dbmodels.ticket import DbTicket
 from ....ticketing import (
     ticket_category_service,
     ticket_creation_service,
     ticket_revocation_service,
     ticket_service,
 )
+from ....ticketing.dbmodels.ticket import DbTicket
 from ....ticketing.models.ticket import TicketCategoryID, TicketID
 
-from ..models.order import LineItem, Order, OrderID
 from .. import order_log_service, order_service
+from ..models.order import LineItem, Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 

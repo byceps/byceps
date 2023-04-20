@@ -12,6 +12,7 @@ from typing import Optional, TYPE_CHECKING
 
 from sqlalchemy.dialects import postgresql
 
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:

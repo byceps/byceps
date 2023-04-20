@@ -10,13 +10,12 @@ from flask_babel import lazy_gettext, pgettext
 from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
-from ....util.l10n import LocalizedForm
-
 from ....services.board import board_service
 from ....services.brand import brand_service
 from ....services.news import news_channel_service
 from ....services.party import party_service
 from ....services.shop.storefront import storefront_service
+from ....util.l10n import LocalizedForm
 
 
 class _BaseForm(LocalizedForm):

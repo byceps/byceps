@@ -12,19 +12,19 @@ from sqlalchemy import select
 
 from ...database import db
 from ...typing import UserID
+from ...util import upload
 from ...util.image import create_thumbnail
 from ...util.image.models import Dimensions, ImageType
-from ...util import upload
 
 from ..image import image_service
 from ..image.image_service import (
     ImageTypeProhibited,  # noqa: F401
 )  # Provide to view functions.
 
+from . import user_log_service, user_service
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.user import DbUser
 from .models.user import UserAvatarID
-from . import user_log_service, user_service
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)

@@ -23,12 +23,11 @@ from ....util.authorization import has_current_user_permission
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, respond_no_content_with_location
-
 from ..site.navigation import subnavigation_for_view
-
+from . import _helpers as h
+from . import service
 from .blueprint import blueprint
 from .forms import PostingCreateForm, PostingUpdateForm
-from . import _helpers as h, service
 
 
 @blueprint.get('/postings/<uuid:posting_id>')

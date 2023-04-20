@@ -16,10 +16,10 @@ from ...typing import PartyID, UserID
 
 from ..shop.order.models.number import OrderNumber
 
+from . import ticket_code_service
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
 from .models.ticket import TicketCategoryID
-from . import ticket_code_service
 
 
 class TicketCreationFailed(Exception):

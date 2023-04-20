@@ -7,6 +7,7 @@ byceps.services.site_navigation.models
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import NewType, Optional

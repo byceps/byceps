@@ -11,8 +11,8 @@ from typing import Optional
 
 from flask import g
 
-from ....services.site_navigation.models import NavMenuID
 from ....services.site_navigation import site_navigation_service
+from ....services.site_navigation.models import NavMenuID
 from ....util.l10n import get_default_locale, get_locale_str
 
 

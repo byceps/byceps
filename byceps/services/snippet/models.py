@@ -7,13 +7,14 @@ byceps.services.snippet.models
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from ..site.models import SiteID
-
 from ...typing import BrandID
+
+from ..site.models import SiteID
 
 
 @dataclass(frozen=True)

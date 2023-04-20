@@ -7,6 +7,11 @@ import pytest
 from pytest import raises
 
 from byceps.services.seating import seat_service, seating_area_service
+
+# Import models to ensure the corresponding tables are created so
+# `Seat.assignment` is available.
+import byceps.services.seating.dbmodels.seat_group  # noqa: F401
+
 from byceps.services.ticketing import (
     ticket_bundle_service,
     ticket_creation_service,
@@ -18,10 +23,6 @@ from byceps.services.ticketing.exceptions import (
     SeatChangeDeniedForBundledTicket,
     TicketCategoryMismatch,
 )
-
-# Import models to ensure the corresponding tables are created so
-# `Seat.assignment` is available.
-import byceps.services.seating.dbmodels.seat_group  # noqa: F401
 
 
 @pytest.fixture(scope='module')

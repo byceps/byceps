@@ -7,6 +7,7 @@ byceps.blueprints.site.page.templating
 """
 
 from __future__ import annotations
+
 import sys
 import traceback
 from typing import Any, Optional
@@ -14,10 +15,10 @@ from typing import Any, Optional
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
 
-from ....services.page.models import Page, PageVersion
 from ....services.page import page_service
-from ....services.site_navigation.models import NavMenuID
+from ....services.page.models import Page, PageVersion
 from ....services.site_navigation import site_navigation_service
+from ....services.site_navigation.models import NavMenuID
 from ....util.l10n import get_default_locale, get_locale_str
 from ....util.templating import load_template
 

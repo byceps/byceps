@@ -11,6 +11,7 @@ from html import escape
 from bbcode import Parser
 from flask_babel import gettext
 
+
 try:
     from .smileys import get_smileys
 except ModuleNotFoundError:

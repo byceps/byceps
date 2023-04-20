@@ -16,8 +16,7 @@ from ....database import db
 from ..shop.models import ShopID
 
 from .dbmodels.number_sequence import DbOrderNumberSequence
-from .models.number import OrderNumberSequence, OrderNumberSequenceID
-from .models.number import OrderNumber
+from .models.number import OrderNumber, OrderNumberSequence, OrderNumberSequenceID
 
 
 class OrderNumberSequenceCreationFailed(Exception):

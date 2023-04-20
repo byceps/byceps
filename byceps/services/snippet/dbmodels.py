@@ -18,8 +18,8 @@ from ...database import db, generate_uuid7
 from ...typing import UserID
 from ...util.instances import ReprBuilder
 
-from ..user.dbmodels.user import DbUser
 from ..language.dbmodels import DbLanguage
+from ..user.dbmodels.user import DbUser
 
 from .models import SnippetScope
 

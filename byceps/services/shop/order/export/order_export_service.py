@@ -16,9 +16,9 @@ from flask import current_app
 from .....services.user import user_service
 from .....util.templating import load_template
 
+from .. import order_service
 from ..models.detailed_order import DetailedOrder
 from ..models.order import OrderID
-from .. import order_service
 
 
 def export_order_as_xml(order_id: OrderID) -> Optional[dict[str, str]]:

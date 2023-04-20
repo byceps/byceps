@@ -7,6 +7,7 @@ byceps.services.seating.seat_import_service
 """
 
 from __future__ import annotations
+
 import json
 from typing import Iterable, Iterator, Optional
 
@@ -15,11 +16,11 @@ from pydantic import ValidationError
 from ...typing import PartyID
 from ...util.result import Err, Ok, Result
 
-from ..ticketing.models.ticket import TicketCategoryID
 from ..ticketing import ticket_category_service
+from ..ticketing.models.ticket import TicketCategoryID
 
+from . import seat_group_service, seat_service, seating_area_service
 from .models import Seat, SeatingAreaID, SeatToImport, SerializableSeatToImport
-from . import seating_area_service, seat_group_service, seat_service
 
 
 def serialize_seat_to_import(

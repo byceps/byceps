@@ -15,10 +15,10 @@ from ....database import db
 
 from ..article.models import ArticleID
 
+from . import order_service
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.order import DbOrder
 from .models.order import Order, PaymentState
-from . import order_service
 
 
 def count_ordered_articles(article_id: ArticleID) -> dict[PaymentState, int]:

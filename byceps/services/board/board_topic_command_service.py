@@ -24,8 +24,8 @@ from ...events.board import (
 )
 from ...typing import UserID
 
-from ..user.models.user import User
 from ..user import user_service
+from ..user.models.user import User
 
 from . import (
     board_aggregation_service,

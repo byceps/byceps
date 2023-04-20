@@ -11,6 +11,7 @@ from ...typing import UserID
 
 from ..user import user_service
 
+from . import ticket_log_service, ticket_service
 from .exceptions import (
     TicketIsRevoked,
     UserAccountSuspended,
@@ -18,7 +19,6 @@ from .exceptions import (
     UserIdUnknown,
 )
 from .models.ticket import TicketID
-from . import ticket_log_service, ticket_service
 
 
 def appoint_user_manager(

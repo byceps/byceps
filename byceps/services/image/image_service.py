@@ -7,6 +7,7 @@ byceps.services.image.image_service
 """
 
 from __future__ import annotations
+
 from typing import BinaryIO, Iterable
 
 from ...util.image import read_dimensions

@@ -20,8 +20,9 @@ from ....util.views import respond_no_content_with_location
 
 from ..site.navigation import subnavigation_for_view
 
+from . import _helpers as h
+from . import service
 from .blueprint import blueprint
-from . import _helpers as h, service
 
 
 @blueprint.get('/')

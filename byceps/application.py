@@ -7,6 +7,7 @@ byceps.application
 """
 
 from __future__ import annotations
+
 from collections.abc import Iterator
 from importlib import import_module
 import os
@@ -20,12 +21,12 @@ from redis import Redis
 import rtoml
 import structlog
 
-from .blueprints.blueprints import register_blueprints
 from . import config, config_defaults
+from .blueprints.blueprints import register_blueprints
 from .database import db
+from .util import templatefilters, templatefunctions
 from .util.authorization import has_current_user_permission, load_permissions
 from .util.l10n import get_current_user_locale
-from .util import templatefilters, templatefunctions
 from .util.templating import SiteTemplateOverridesLoader
 
 

@@ -20,16 +20,16 @@ from ..seating.models import SeatID
 from ..shop.order.models.number import OrderNumber
 from ..user.dbmodels.user import DbUser
 
+from . import ticket_code_service, ticket_log_service
 from .dbmodels.category import DbTicketCategory
-from .dbmodels.ticket import DbTicket
 from .dbmodels.log import DbTicketLogEntry
+from .dbmodels.ticket import DbTicket
 from .models.ticket import (
     TicketCategoryID,
     TicketCode,
     TicketID,
     TicketSaleStats,
 )
-from . import ticket_code_service, ticket_log_service
 
 
 def update_ticket_code(

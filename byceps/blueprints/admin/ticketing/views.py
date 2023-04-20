@@ -23,8 +23,8 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
-from .forms import SpecifyUserForm, UpdateCodeForm
 from . import service
+from .forms import SpecifyUserForm, UpdateCodeForm
 
 
 blueprint = create_blueprint('ticketing_admin', __name__)

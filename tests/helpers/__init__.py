@@ -7,6 +7,7 @@ tests.helpers
 """
 
 from __future__ import annotations
+
 from contextlib import contextmanager
 from datetime import date, datetime
 from pathlib import Path
@@ -24,13 +25,13 @@ from byceps.services.authentication.session.models import CurrentUser
 from byceps.services.authorization import authz_service
 from byceps.services.authorization.models import PermissionID, RoleID
 from byceps.services.board.models import BoardID
-from byceps.services.party.models import Party
 from byceps.services.party import party_service
+from byceps.services.party.models import Party
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.site.models import SiteID
 from byceps.services.site import site_service
-from byceps.services.user.models.user import User
+from byceps.services.site.models import SiteID
 from byceps.services.user import user_creation_service, user_service
+from byceps.services.user.models.user import User
 from byceps.typing import BrandID, PartyID, UserID
 
 

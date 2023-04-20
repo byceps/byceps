@@ -12,17 +12,17 @@ from typing import Optional
 
 from moneyed import EUR, Money
 
+from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import (
     Article,
     ArticleNumber,
     ArticleType,
     ArticleTypeParams,
 )
-from byceps.services.shop.article import article_service
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.shop.models import ShopID
-from byceps.services.snippet.models import SnippetID, SnippetScope
 from byceps.services.snippet import snippet_service
+from byceps.services.snippet.models import SnippetID, SnippetScope
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
 from byceps.typing import UserID

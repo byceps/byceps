@@ -9,6 +9,7 @@ A result wrapper that represents either the result value or an error.
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Callable, Generic, Literal, NoReturn, TypeVar, Union
 

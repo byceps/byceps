@@ -14,8 +14,8 @@ from flask_babel import gettext, to_user_timezone, to_utc
 
 from ....services.brand import brand_service
 from ....services.party import party_service, party_setting_service
-from ....services.ticketing.models.ticket import TicketSaleStats
 from ....services.ticketing import ticket_service
+from ....services.ticketing.models.ticket import TicketSaleStats
 from ....typing import PartyID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success

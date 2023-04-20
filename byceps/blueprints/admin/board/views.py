@@ -12,11 +12,11 @@ from typing import Optional
 from flask import abort, request
 from flask_babel import gettext
 
-from ....services.board import board_service
 from ....services.board import (
     board_category_command_service,
     board_category_query_service,
     board_posting_query_service,
+    board_service,
     board_topic_query_service,
 )
 from ....services.board.models import Board, BoardCategory

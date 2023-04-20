@@ -12,19 +12,21 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.party import party_service
-from ....services.seating.models import Seat, SeatID, SeatingArea
 from ....services.seating import (
     seat_service,
     seating_area_service,
     seating_area_tickets_service,
 )
-from ....services.ticketing.dbmodels.ticket import DbTicket
-from ....services.ticketing.models.ticket import TicketID
+from ....services.seating.models import Seat, SeatID, SeatingArea
 from ....services.ticketing import (
     exceptions as ticket_exceptions,
+)
+from ....services.ticketing import (
     ticket_seat_management_service,
     ticket_service,
 )
+from ....services.ticketing.dbmodels.ticket import DbTicket
+from ....services.ticketing.models.ticket import TicketID
 from ....util.authorization import has_current_user_permission
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success

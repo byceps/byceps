@@ -7,6 +7,7 @@ byceps.services.site.site_service
 """
 
 from __future__ import annotations
+
 import dataclasses
 from typing import Callable, Optional
 
@@ -17,12 +18,12 @@ from ...typing import BrandID, PartyID
 
 from ..board.models import BoardID
 from ..brand import brand_service
-from ..news.models import NewsChannelID
 from ..news import news_channel_service
+from ..news.models import NewsChannelID
 from ..shop.storefront.models import StorefrontID
 
-from .dbmodels.site import DbSite
 from .dbmodels.setting import DbSetting
+from .dbmodels.site import DbSite
 from .models import Site, SiteID, SiteWithBrand
 
 

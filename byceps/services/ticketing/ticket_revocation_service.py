@@ -11,9 +11,9 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
+from . import ticket_log_service, ticket_seat_management_service, ticket_service
 from .dbmodels.log import DbTicketLogEntry
 from .models.ticket import TicketID
-from . import ticket_log_service, ticket_seat_management_service, ticket_service
 
 
 def revoke_ticket(

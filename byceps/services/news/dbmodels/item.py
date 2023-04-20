@@ -9,6 +9,7 @@ byceps.services.news.dbmodels.item
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:

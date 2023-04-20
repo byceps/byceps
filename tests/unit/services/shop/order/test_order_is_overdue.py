@@ -10,10 +10,10 @@ from freezegun import freeze_time
 from moneyed import EUR
 import pytest
 
+from byceps.services.shop.order import order_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import PaymentState
-from byceps.services.shop.order import order_service
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.typing import UserID

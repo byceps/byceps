@@ -7,10 +7,10 @@ import pytest
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
-    TourneyParticipantReady,
-    TourneyParticipantEliminated,
-    TourneyParticipantWarned,
     TourneyParticipantDisqualified,
+    TourneyParticipantEliminated,
+    TourneyParticipantReady,
+    TourneyParticipantWarned,
 )
 
 from ..helpers import build_announcement_request_for_irc, now

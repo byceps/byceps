@@ -9,8 +9,8 @@ byceps.services.email.email_footer_service
 from ...typing import BrandID, UserID
 
 from ..brand import brand_service
-from ..snippet.models import SnippetScope
 from ..snippet import snippet_service
+from ..snippet.models import SnippetScope
 
 
 def create_footers(

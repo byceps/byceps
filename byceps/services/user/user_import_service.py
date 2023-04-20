@@ -14,8 +14,8 @@ from typing import Iterator, Optional
 
 from pydantic import BaseModel, ValidationError
 
-from .models.user import User
 from . import user_creation_service
+from .models.user import User
 
 
 class UserToImport(BaseModel):

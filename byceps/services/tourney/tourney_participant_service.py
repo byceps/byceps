@@ -12,9 +12,9 @@ from sqlalchemy import delete, select
 
 from ...database import db
 
+from . import tourney_service
 from .dbmodels.participant import DbParticipant
 from .models import Participant, ParticipantID, TourneyID
-from . import tourney_service
 
 
 def create_participant(

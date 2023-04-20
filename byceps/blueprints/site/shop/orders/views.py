@@ -17,8 +17,8 @@ from .....services.email import (
     email_service,
 )
 from .....services.shop.cancelation_request import cancelation_request_service
-from .....services.shop.order.email import order_email_service
 from .....services.shop.order import order_payment_service, order_service
+from .....services.shop.order.email import order_email_service
 from .....services.shop.order.models.order import PaymentState
 from .....services.shop.storefront import storefront_service
 from .....services.user import user_service

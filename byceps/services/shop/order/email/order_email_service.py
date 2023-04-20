@@ -18,11 +18,11 @@ from .....services.email import (
     email_service,
 )
 from .....services.email.models import Message
-from .....services.shop.order.models.order import Order, OrderID
 from .....services.shop.order import order_service
+from .....services.shop.order.models.order import Order, OrderID
 from .....services.shop.shop import shop_service
-from .....services.user.models.user import User
 from .....services.user import user_service
+from .....services.user.models.user import User
 from .....typing import BrandID
 from .....util.l10n import force_user_locale, format_money, get_user_locale
 

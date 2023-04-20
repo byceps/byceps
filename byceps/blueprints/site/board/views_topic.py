@@ -32,9 +32,10 @@ from ....util.views import permission_required, respond_no_content_with_location
 from ..orga_team.service import is_orga_for_current_party
 from ..site.navigation import subnavigation_for_view
 
+from . import _helpers as h
+from . import service
 from .blueprint import blueprint
 from .forms import PostingCreateForm, TopicCreateForm, TopicUpdateForm
-from . import _helpers as h, service
 
 
 @blueprint.get('/topics', defaults={'page': 1})

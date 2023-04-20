@@ -8,9 +8,9 @@ from typing import Optional
 import pytest
 
 from byceps.events.snippet import SnippetCreated
+from byceps.services.snippet import snippet_service
 from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet.models import SnippetScope
-from byceps.services.snippet import snippet_service
 from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token, log_in_user

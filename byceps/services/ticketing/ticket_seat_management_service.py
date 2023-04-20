@@ -9,20 +9,20 @@ byceps.services.ticketing.ticket_seat_management_service
 from ...database import db
 from ...typing import UserID
 
+from ..seating import seat_group_service, seat_service
 # Load `Seat.assignment` backref.
 from ..seating.dbmodels.seat_group import DbSeatGroup  # noqa: F401
 from ..seating.models import Seat, SeatID
-from ..seating import seat_service, seat_group_service
 
+from . import ticket_log_service, ticket_service
+from .dbmodels.ticket import DbTicket
 from .exceptions import (
     SeatChangeDeniedForBundledTicket,
     SeatChangeDeniedForGroupSeat,
     TicketCategoryMismatch,
     TicketIsRevoked,
 )
-from .dbmodels.ticket import DbTicket
 from .models.ticket import TicketID
-from . import ticket_log_service, ticket_service
 
 
 def appoint_seat_manager(

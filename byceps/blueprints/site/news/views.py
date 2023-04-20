@@ -7,14 +7,15 @@ byceps.blueprints.site.news.views
 """
 
 from __future__ import annotations
+
 from typing import Optional
 
 from flask import abort, g
 
-from ....services.news.models import NewsChannelID, NewsItem
 from ....services.news import news_item_service
-from ....services.site.models import SiteID
+from ....services.news.models import NewsChannelID, NewsItem
 from ....services.site import site_service, site_setting_service
+from ....services.site.models import SiteID
 from ....util.authorization import has_current_user_permission
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated

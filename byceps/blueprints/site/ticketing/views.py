@@ -17,18 +17,18 @@ from ....services.shop.order import order_service
 from ....services.ticketing import (
     barcode_service,
     ticket_category_service,
-    ticket_service,
     ticket_seat_management_service,
+    ticket_service,
     ticket_user_management_service,
 )
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
-from ....util.iterables import find
 from ....util.framework.templating import templated
+from ....util.iterables import find
 from ....util.views import login_required, redirect_to, respond_no_content
 
-from .forms import SpecifyUserForm
 from . import notification_service
+from .forms import SpecifyUserForm
 
 
 blueprint = create_blueprint('ticketing', __name__)

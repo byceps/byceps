@@ -7,10 +7,10 @@ from flask import g
 from flask_babel import lazy_gettext
 import pytest
 
-from byceps.util.authorization import register_permissions
 from byceps.util.authorization import (
     has_current_user_any_permission,
     has_current_user_permission,
+    register_permissions,
 )
 
 

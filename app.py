@@ -9,10 +9,10 @@ application instance
 from warnings import warn
 
 from byceps.application import create_app
+from byceps.services.shop.order import order_service
 from byceps.services.shop.order.models.order import (
     PaymentState as OrderPaymentState,
 )
-from byceps.services.shop.order import order_service
 from byceps.services.ticketing.ticket_service import find_ticket_by_code
 from byceps.services.user import user_service
 

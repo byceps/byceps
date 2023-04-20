@@ -7,11 +7,11 @@ from sqlalchemy import select
 import pytest
 
 from byceps.database import db
-from byceps.services.tourney.dbmodels.match_comment import DbMatchComment
 from byceps.services.tourney import (
     tourney_match_comment_service,
     tourney_match_service,
 )
+from byceps.services.tourney.dbmodels.match_comment import DbMatchComment
 
 
 def test_create_comment(api_client, api_client_authz_header, user, match):

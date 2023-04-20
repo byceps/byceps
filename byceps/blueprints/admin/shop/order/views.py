@@ -26,6 +26,7 @@ from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 
+from . import service
 from .forms import (
     AddNoteForm,
     CancelForm,
@@ -33,7 +34,6 @@ from .forms import (
     OrderNumberSequenceCreateForm,
 )
 from .models import OrderStateFilter
-from . import service
 
 
 blueprint = create_blueprint('shop_order_admin', __name__)

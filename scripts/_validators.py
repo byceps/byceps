@@ -16,12 +16,12 @@ import click
 
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import Brand
-from byceps.services.party.models import Party
 from byceps.services.party import party_service
-from byceps.services.site.models import Site, SiteID
+from byceps.services.party.models import Party
 from byceps.services.site import site_service
-from byceps.services.user.models.user import User
+from byceps.services.site.models import Site, SiteID
 from byceps.services.user import user_service
+from byceps.services.user.models.user import User
 from byceps.typing import BrandID, PartyID, UserID
 
 

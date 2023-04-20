@@ -18,10 +18,10 @@ from ...util.l10n import force_user_locale
 
 from ..email import email_config_service, email_service
 from ..email.models import Message
-from ..site.models import SiteID
 from ..site import site_service
-from ..user.models.user import User
+from ..site.models import SiteID
 from ..user import user_service
+from ..user.models.user import User
 
 
 def send_message(

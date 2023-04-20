@@ -10,9 +10,11 @@ from ...database import db
 from ...events.ticketing import TicketCheckedIn
 from ...typing import PartyID, UserID
 
-from ..user.models.user import User
 from ..user import user_service
+from ..user.models.user import User
 
+from . import ticket_log_service, ticket_service
+from .dbmodels.ticket import DbTicket
 from .exceptions import (
     TicketBelongsToDifferentParty,
     TicketIsRevoked,
@@ -22,9 +24,7 @@ from .exceptions import (
     UserAlreadyCheckedIn,
     UserIdUnknown,
 )
-from .dbmodels.ticket import DbTicket
 from .models.ticket import TicketID
-from . import ticket_log_service, ticket_service
 
 
 def check_in_user(

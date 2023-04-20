@@ -7,6 +7,7 @@ byceps.services.guest_server.models
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from ipaddress import IPv4Address, IPv6Address

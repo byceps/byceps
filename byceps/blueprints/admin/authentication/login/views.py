@@ -15,8 +15,8 @@ from .....util.framework.flash import flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util.views import redirect_to
 
-from .forms import LogInForm
 from . import service
+from .forms import LogInForm
 
 
 blueprint = create_blueprint('authentication_login_admin', __name__)

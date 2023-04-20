@@ -17,23 +17,23 @@ from ...services.board.models import Board, BoardID
 from ...services.brand import brand_service
 from ...services.brand.models import Brand
 from ...services.page import page_service
-from ...services.party.models import Party
 from ...services.party import party_service
+from ...services.party.models import Party
 from ...services.shop.article import article_sequence_service, article_service
 from ...services.shop.article.models import ArticleType
 from ...services.shop.order import order_sequence_service
-from ...services.shop.shop.models import Shop, ShopID
 from ...services.shop.shop import shop_service
+from ...services.shop.shop.models import Shop, ShopID
 from ...services.shop.storefront import storefront_service
 from ...services.shop.storefront.models import Storefront, StorefrontID
-from ...services.site.models import Site, SiteID
 from ...services.site import site_service
-from ...services.site_navigation.models import NavItemTargetType
+from ...services.site.models import Site, SiteID
 from ...services.site_navigation import site_navigation_service
-from ...services.ticketing.models.ticket import TicketCategory
+from ...services.site_navigation.models import NavItemTargetType
 from ...services.ticketing import ticket_category_service
-from ...services.user.models.user import User
+from ...services.ticketing.models.ticket import TicketCategory
 from ...services.user import user_command_service, user_creation_service
+from ...services.user.models.user import User
 from ...typing import BrandID, PartyID, UserID
 
 

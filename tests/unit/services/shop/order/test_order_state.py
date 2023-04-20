@@ -9,6 +9,7 @@ from uuid import UUID
 from moneyed import EUR
 import pytest
 
+from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import (
     Order,
@@ -16,7 +17,6 @@ from byceps.services.shop.order.models.order import (
     OrderState,
     PaymentState,
 )
-from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.typing import UserID

@@ -17,8 +17,8 @@ from ..authentication.session import authn_session_service
 from ..authorization import authz_service
 from ..verification_token import verification_token_service
 
-from .dbmodels.user import DbUser
 from . import user_log_service, user_service
+from .dbmodels.user import DbUser
 
 
 def delete_account(

@@ -32,8 +32,6 @@ from ..events.ticketing import TicketCheckedIn, TicketsSold
 from ..events.tourney import (
     TourneyCanceled,
     TourneyFinished,
-    TourneyPaused,
-    TourneyStarted,
     TourneyMatchReady,
     TourneyMatchReset,
     TourneyMatchScoreConfirmed,
@@ -43,6 +41,8 @@ from ..events.tourney import (
     TourneyParticipantEliminated,
     TourneyParticipantReady,
     TourneyParticipantWarned,
+    TourneyPaused,
+    TourneyStarted,
 )
 from ..events.user import (
     UserAccountCreated,

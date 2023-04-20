@@ -15,8 +15,8 @@ from .....util.framework.flash import flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util.views import redirect_to, respond_no_content
 
-from .forms import LogInForm
 from . import service
+from .forms import LogInForm
 from .service import ConsentRequired
 
 

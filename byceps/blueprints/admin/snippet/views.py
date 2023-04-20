@@ -7,12 +7,13 @@ byceps.blueprints.admin.snippet.views
 """
 
 from typing import Optional
+
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
+from ....services.snippet import snippet_service
 from ....services.snippet.dbmodels import DbSnippetVersion
 from ....services.snippet.models import SnippetScope
-from ....services.snippet import snippet_service
 from ....services.text_diff import text_diff_service
 from ....services.user import user_service
 from ....signals import snippet as snippet_signals

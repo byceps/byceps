@@ -7,13 +7,14 @@ byceps.blueprints.admin.page.views
 """
 
 from typing import Optional
+
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
-from ....services.page.models import Page, PageVersion, PageVersionID
 from ....services.page import page_service
-from ....services.site.models import Site, SiteID
+from ....services.page.models import Page, PageVersion, PageVersionID
 from ....services.site import site_service
+from ....services.site.models import Site, SiteID
 from ....services.site_navigation import site_navigation_service
 from ....services.text_diff import text_diff_service
 from ....services.user import user_service

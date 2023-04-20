@@ -13,19 +13,19 @@ from typing import Optional
 from flask_babel import gettext
 
 from ...events.tourney import (
-    TourneyStarted,
-    TourneyPaused,
     TourneyCanceled,
     TourneyFinished,
     TourneyMatchReady,
     TourneyMatchReset,
-    TourneyMatchScoreSubmitted,
     TourneyMatchScoreConfirmed,
     TourneyMatchScoreRandomized,
-    TourneyParticipantReady,
-    TourneyParticipantEliminated,
-    TourneyParticipantWarned,
+    TourneyMatchScoreSubmitted,
     TourneyParticipantDisqualified,
+    TourneyParticipantEliminated,
+    TourneyParticipantReady,
+    TourneyParticipantWarned,
+    TourneyPaused,
+    TourneyStarted,
 )
 from ...services.webhooks.models import OutgoingWebhook
 

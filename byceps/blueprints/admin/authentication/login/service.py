@@ -7,6 +7,7 @@ byceps.blueprints.admin.authentication.login.service
 """
 
 from __future__ import annotations
+
 from typing import Optional
 
 import structlog
@@ -18,9 +19,9 @@ from .....services.authentication.session.authn_session_service import (
     UserLoggedIn,
 )
 from .....services.user.models.user import User
+from .....util import user_session
 from .....util.authorization import get_permissions_for_user
 from .....util.result import Err, Ok, Result
-from .....util import user_session
 
 
 log = structlog.get_logger()

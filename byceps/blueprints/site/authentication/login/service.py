@@ -7,6 +7,7 @@ byceps.blueprints.site.authentication.login.service
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Optional
 
@@ -23,8 +24,8 @@ from .....services.site.models import SiteID
 from .....services.user.models.user import User
 from .....services.verification_token import verification_token_service
 from .....typing import BrandID, UserID
-from .....util.result import Err, Ok, Result
 from .....util import user_session
+from .....util.result import Err, Ok, Result
 
 
 log = structlog.get_logger()

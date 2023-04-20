@@ -16,9 +16,9 @@ from .....services.country import country_service
 from .....services.shop.article import article_service
 from .....services.shop.article.models import ArticleCompilation
 from .....services.shop.cart.models import Cart
+from .....services.shop.order import order_checkout_service, order_service
 from .....services.shop.order.email import order_email_service
 from .....services.shop.order.models.order import Order
-from .....services.shop.order import order_checkout_service, order_service
 from .....services.shop.shop import shop_service
 from .....services.shop.storefront import storefront_service
 from .....services.user import user_service
@@ -31,7 +31,7 @@ from .....util.views import login_required, redirect_to
 
 from ...site.navigation import subnavigation_for_view
 
-from .forms import assemble_articles_order_form, OrderForm
+from .forms import OrderForm, assemble_articles_order_form
 
 
 blueprint = create_blueprint('shop_order', __name__)

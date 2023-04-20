@@ -12,10 +12,10 @@ from ....util.l10n import force_user_locale
 
 from ...email import email_service
 from ...email.models import NameAndAddress
-from ...user.models.user import User
 from ...user import user_service
-from ...verification_token.models import VerificationToken
+from ...user.models.user import User
 from ...verification_token import verification_token_service
+from ...verification_token.models import VerificationToken
 
 from . import authn_password_service
 

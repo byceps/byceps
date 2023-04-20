@@ -21,22 +21,22 @@ from ...user import user_service
 
 from ..article import article_service
 from ..cart.models import Cart, CartItem
-from ..shop.models import ShopID
 from ..shop import shop_service
-from ..storefront.models import StorefrontID
+from ..shop.models import ShopID
 from ..storefront import storefront_service
+from ..storefront.models import StorefrontID
 
+from . import (
+    order_log_service,
+    order_sequence_service,
+    order_service,
+)
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.order import DbOrder
 from .models.number import OrderNumber
 from .models.order import (
     Order,
     Orderer,
-)
-from . import (
-    order_log_service,
-    order_sequence_service,
-    order_service,
 )
 
 

@@ -3,11 +3,11 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.user_badge.models import QuantifiedBadgeAwarding
 from byceps.services.user_badge import (
     user_badge_awarding_service,
     user_badge_service,
 )
+from byceps.services.user_badge.models import QuantifiedBadgeAwarding
 
 
 def test_award_badge(api_client, api_client_authz_header, user, admin_user):

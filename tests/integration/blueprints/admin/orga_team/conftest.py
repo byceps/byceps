@@ -8,8 +8,8 @@ from typing import Optional
 from flask import Flask
 import pytest
 
-from byceps.services.orga_team.models import OrgaTeam
 from byceps.services.orga_team import orga_team_service
+from byceps.services.orga_team.models import OrgaTeam
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
 

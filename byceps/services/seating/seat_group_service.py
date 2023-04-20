@@ -23,7 +23,7 @@ from .dbmodels.seat_group import (
     DbSeatGroupAssignment,
     DbSeatGroupOccupancy,
 )
-from .models import Seat, SeatID, SeatGroupID
+from .models import Seat, SeatGroupID, SeatID
 
 
 def create_seat_group(

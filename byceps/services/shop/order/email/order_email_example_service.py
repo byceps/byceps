@@ -19,16 +19,16 @@ from .....typing import BrandID, UserID
 from ....email.models import Message
 from ....user.models.user import User
 
-from ...shop.models import ShopID
 from ...shop import shop_service
+from ...shop.models import ShopID
 from ...storefront.models import StorefrontID
 
 from ..models.number import OrderNumber
 from ..models.order import (
     Address,
+    LineItem,
     Order,
     OrderID,
-    LineItem,
     OrderState,
     PaymentState,
 )

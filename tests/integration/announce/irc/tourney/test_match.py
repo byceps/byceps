@@ -9,9 +9,9 @@ from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
     TourneyMatchReady,
     TourneyMatchReset,
-    TourneyMatchScoreSubmitted,
     TourneyMatchScoreConfirmed,
     TourneyMatchScoreRandomized,
+    TourneyMatchScoreSubmitted,
 )
 
 from ..helpers import build_announcement_request_for_irc, now

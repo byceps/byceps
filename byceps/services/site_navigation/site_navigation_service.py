@@ -18,6 +18,7 @@ from ..site.models import SiteID
 
 from .dbmodels import DbNavItem, DbNavMenu
 from .models import (
+    _VIEW_TYPES,
     NavItem,
     NavItemID,
     NavItemTargetType,
@@ -26,7 +27,6 @@ from .models import (
     NavMenuID,
     NavMenuTree,
     ViewType,
-    _VIEW_TYPES,
 )
 
 

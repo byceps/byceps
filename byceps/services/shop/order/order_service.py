@@ -30,6 +30,12 @@ from ..shop.dbmodels import DbShop
 from ..shop.models import ShopID
 from ..storefront.models import StorefrontID
 
+from . import (
+    order_action_service,
+    order_invoice_service,
+    order_log_service,
+    order_payment_service,
+)
 from .actions import ticket as ticket_actions
 from .actions import ticket_bundle as ticket_bundle_actions
 from .dbmodels.line_item import DbLineItem
@@ -41,22 +47,16 @@ from .models.number import OrderNumber
 from .models.order import (
     Address,
     AdminOrderListItem,
+    LineItem,
     LineItemID,
+    LineItemProcessingState,
     Order,
     OrderID,
-    LineItem,
-    LineItemProcessingState,
     OrderState,
     PaymentState,
     SiteOrderListItem,
 )
 from .models.payment import AdditionalPaymentData
-from . import (
-    order_action_service,
-    order_invoice_service,
-    order_log_service,
-    order_payment_service,
-)
 
 
 OVERDUE_THRESHOLD = timedelta(days=14)

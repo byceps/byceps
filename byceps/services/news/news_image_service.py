@@ -19,10 +19,10 @@ from ...util.image.models import Dimensions, ImageType
 from ..image import image_service
 from ..user import user_service
 
+from . import news_item_service
 from .dbmodels.image import DbNewsImage
 from .dbmodels.item import DbNewsItem
 from .models import NewsChannelID, NewsImage, NewsImageID, NewsItemID
-from . import news_item_service
 
 
 ALLOWED_IMAGE_TYPES = frozenset(

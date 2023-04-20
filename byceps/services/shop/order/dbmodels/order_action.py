@@ -8,6 +8,7 @@ byceps.services.shop.order.dbmodels.order_action
 
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:

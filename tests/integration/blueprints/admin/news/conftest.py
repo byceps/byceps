@@ -6,8 +6,8 @@
 import pytest
 
 from byceps.services.brand.models import Brand
-from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 from byceps.services.news import news_item_service
+from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 
 from tests.helpers import generate_token, log_in_user
 

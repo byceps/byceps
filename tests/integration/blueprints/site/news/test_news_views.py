@@ -5,8 +5,8 @@
 
 import pytest
 
-from byceps.services.news.models import BodyFormat
 from byceps.services.news import news_channel_service, news_item_service
+from byceps.services.news.models import BodyFormat
 from byceps.services.site import site_service
 
 from tests.helpers import create_site, http_client

@@ -15,13 +15,12 @@ from flask_babel import gettext
 from ....services.authentication.password import authn_password_service
 from ....services.authentication.session import authn_session_service
 from ....services.authorization import authz_service
-from ....services.authorization.models import Role, Permission, PermissionID
+from ....services.authorization.models import Permission, PermissionID, Role
 from ....services.country import country_service
 from ....services.orga_team import orga_team_service
 from ....services.shop.order import order_service
 from ....services.shop.shop import shop_service
 from ....services.site import site_service
-from ....services.user.models.user import UserForAdmin, UserStateFilter
 from ....services.user import (
     user_command_service,
     user_creation_service,
@@ -30,6 +29,7 @@ from ....services.user import (
     user_service,
     user_stats_service,
 )
+from ....services.user.models.user import UserForAdmin, UserStateFilter
 from ....services.user_badge import user_badge_awarding_service
 from ....signals import user as user_signals
 from ....util.authorization import permission_registry
@@ -38,6 +38,7 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
+from . import service
 from .forms import (
     ACCOUNT_DELETION_VERIFICATION_TEXT,
     ChangeDetailsForm,
@@ -49,7 +50,6 @@ from .forms import (
     SetPasswordForm,
     SuspendAccountForm,
 )
-from . import service
 
 
 blueprint = create_blueprint('user_admin', __name__)
