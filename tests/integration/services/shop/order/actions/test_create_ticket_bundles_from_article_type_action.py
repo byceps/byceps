@@ -29,7 +29,7 @@ def ticket_quantity_per_bundle() -> int:
     return 5
 
 
-@pytest.fixture
+@pytest.fixture()
 def article(
     shop: Shop, ticket_category: TicketCategory, ticket_quantity_per_bundle: int
 ) -> Article:
@@ -43,7 +43,7 @@ def bundle_quantity() -> int:
     return 2
 
 
-@pytest.fixture
+@pytest.fixture()
 def order(
     article: Article,
     bundle_quantity: int,

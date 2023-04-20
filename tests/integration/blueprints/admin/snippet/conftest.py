@@ -41,7 +41,7 @@ def global_scope() -> SnippetScope:
     return SnippetScope('global', 'global')
 
 
-@pytest.fixture
+@pytest.fixture()
 def make_snippet(global_scope: SnippetScope, snippet_admin: User):
     def _wrapper(
         name: str | None = None,

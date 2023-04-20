@@ -30,7 +30,7 @@ def party(brand, make_party):
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def tickets(party, make_ticket_category, user):
     category = make_ticket_category(party.id, 'Normal')
     quantity = 5

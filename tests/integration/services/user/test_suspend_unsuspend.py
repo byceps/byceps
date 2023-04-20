@@ -17,12 +17,12 @@ def admin_user(make_user):
     return make_user()
 
 
-@pytest.fixture
+@pytest.fixture()
 def cheater(make_user):
     return make_user()
 
 
-@pytest.fixture
+@pytest.fixture()
 def remorseful_user(make_user):
     return make_user()
 

@@ -45,12 +45,12 @@ def test_update_nonexistent_comment(api_client, api_client_authz_header, user):
 # helpers
 
 
-@pytest.fixture
+@pytest.fixture()
 def match(api_app):
     return tourney_match_service.create_match()
 
 
-@pytest.fixture
+@pytest.fixture()
 def comment(match, user):
     body = 'Something stupid.'
 

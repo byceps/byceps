@@ -22,12 +22,12 @@ from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
 
 
-@pytest.fixture
+@pytest.fixture()
 def article(make_article, shop: Shop) -> Article:
     return make_article(shop.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def orderer(make_user, make_orderer) -> Orderer:
     user = make_user()
     return make_orderer(user.id)

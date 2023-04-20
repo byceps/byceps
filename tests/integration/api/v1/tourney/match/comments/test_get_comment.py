@@ -114,19 +114,19 @@ def test_get_comment_with_edited_comment(
 # helpers
 
 
-@pytest.fixture
+@pytest.fixture()
 def match(api_app):
     return tourney_match_service.create_match()
 
 
-@pytest.fixture
+@pytest.fixture()
 def comment(api_app, match, user):
     return tourney_match_comment_service.create_comment(
         match.id, user.id, 'Denn man tau.'
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def edited_comment(api_app, comment, admin_user):
     tourney_match_comment_service.update_comment(
         comment.id, admin_user.id, '[b]So nicht[/b], Freundchen!'

@@ -61,19 +61,19 @@ def build_news_webhook(channel: NewsChannel) -> OutgoingWebhook:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def channel_with_site(
     brand: Brand, site: Site, make_news_channel
 ) -> NewsChannel:
     return make_news_channel(brand.id, announcement_site_id=site.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def channel_without_site(brand: Brand, make_news_channel) -> NewsChannel:
     return make_news_channel(brand.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def make_item(make_user):
     def _wrapper(channel: NewsChannel, slug: str, title: str) -> NewsItem:
         editor = make_user()
@@ -87,7 +87,7 @@ def make_item(make_user):
     return _wrapper
 
 
-@pytest.fixture
+@pytest.fixture()
 def item_with_url(make_item, channel_with_site: NewsChannel) -> NewsItem:
     slug = 'zieh-dir-das-rein'
     title = 'Zieh dir das rein!'
@@ -95,7 +95,7 @@ def item_with_url(make_item, channel_with_site: NewsChannel) -> NewsItem:
     return make_item(channel_with_site, slug, title)
 
 
-@pytest.fixture
+@pytest.fixture()
 def item_without_url(make_item, channel_without_site: NewsChannel) -> NewsItem:
     slug = 'zieh-dir-auch-das-rein'
     title = 'Zieh dir auch das rein!'

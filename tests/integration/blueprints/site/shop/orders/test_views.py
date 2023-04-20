@@ -16,7 +16,7 @@ from tests.helpers import create_site, http_client, log_in_user
 from tests.helpers.shop import create_shop_snippet
 
 
-@pytest.fixture
+@pytest.fixture()
 def shop1(admin_app, make_brand, make_shop, admin_user):
     brand = make_brand()
     shop = make_shop(brand.id)
@@ -27,7 +27,7 @@ def shop1(admin_app, make_brand, make_shop, admin_user):
     snippet_service.delete_snippet(snippet_id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def shop2(admin_app, make_brand, make_shop):
     brand = make_brand()
     shop = make_shop(brand.id)
@@ -35,7 +35,7 @@ def shop2(admin_app, make_brand, make_shop):
     yield shop
 
 
-@pytest.fixture
+@pytest.fixture()
 def storefront1(
     shop1, make_order_number_sequence, make_storefront
 ) -> Storefront:
@@ -44,7 +44,7 @@ def storefront1(
     return make_storefront(shop1.id, order_number_sequence.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def storefront2(
     shop2, make_order_number_sequence, make_storefront
 ) -> Storefront:
@@ -53,28 +53,28 @@ def storefront2(
     return make_storefront(shop2.id, order_number_sequence.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def site1(brand, storefront1):
     site = create_site('site1', brand.id, storefront_id=storefront1.id)
     yield site
     site_service.delete_site(site.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def site2(brand, storefront2):
     site = create_site('site2', brand.id, storefront_id=storefront2.id)
     yield site
     site_service.delete_site(site.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def site1_app(site1, make_site_app):
     app = make_site_app(site1.id)
     with app.app_context():
         yield app
 
 
-@pytest.fixture
+@pytest.fixture()
 def site2_app(site2, make_site_app):
     app = make_site_app(site2.id)
     with app.app_context():
@@ -91,7 +91,7 @@ def user2(make_user):
     return make_user()
 
 
-@pytest.fixture
+@pytest.fixture()
 def order(make_orderer, storefront1, user1):
     orderer = make_orderer(user1.id)
     cart = Cart(EUR)

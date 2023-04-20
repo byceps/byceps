@@ -38,7 +38,7 @@ def user5(make_user):
     return make_user(email_address='user5@mail.test', initialized=True)
 
 
-@pytest.fixture
+@pytest.fixture()
 def role(admin_app, site, user1, user2):
     role = authz_service.create_role('board_user', 'Board User').unwrap()
 

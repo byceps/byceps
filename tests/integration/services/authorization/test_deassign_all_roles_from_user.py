@@ -29,17 +29,17 @@ def test_deassign_all_roles_from_user(admin_app, user1, user2, roles):
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def user1(make_user):
     return make_user()
 
 
-@pytest.fixture
+@pytest.fixture()
 def user2(make_user):
     return make_user()
 
 
-@pytest.fixture
+@pytest.fixture()
 def roles(user1, user2, admin_user):
     role1 = authz_service.create_role('demigod', 'Demigod').unwrap()
     role2 = authz_service.create_role('pausenclown', 'Pausenclown').unwrap()

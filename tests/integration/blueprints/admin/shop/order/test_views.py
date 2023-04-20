@@ -56,7 +56,7 @@ def shop_order_admin_client(
     return make_client(admin_app, user_id=shop_order_admin.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def article1(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
@@ -66,7 +66,7 @@ def article1(make_article, shop: Shop) -> Article:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def article2(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
@@ -76,7 +76,7 @@ def article2(make_article, shop: Shop) -> Article:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def article3(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,

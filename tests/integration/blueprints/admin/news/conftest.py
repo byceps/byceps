@@ -33,12 +33,12 @@ def news_admin_client(make_client, admin_app, news_admin):
     return make_client(admin_app, user_id=news_admin.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def channel(brand: Brand, make_news_channel) -> NewsChannel:
     return make_news_channel(brand.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def item(channel: NewsChannel, news_admin) -> NewsItem:
     return news_item_service.create_item(
         channel.id,

@@ -13,7 +13,7 @@ from byceps.services.user import (
 )
 
 
-@pytest.fixture
+@pytest.fixture()
 def role():
     role = authz_service.create_role('demigod', 'Demigod').unwrap()
     authz_service.assign_permission_to_role('board.view_hidden', role.id)

@@ -25,7 +25,7 @@ from tests.helpers.shop import create_ticket_article
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 
-@pytest.fixture
+@pytest.fixture()
 def article(shop: Shop, ticket_category: TicketCategory) -> Article:
     return create_ticket_article(shop.id, ticket_category.id)
 
@@ -35,7 +35,7 @@ def ticket_quantity() -> int:
     return 4
 
 
-@pytest.fixture
+@pytest.fixture()
 def order(
     article: Article, ticket_quantity, storefront: Storefront, orderer: Orderer
 ) -> Order:

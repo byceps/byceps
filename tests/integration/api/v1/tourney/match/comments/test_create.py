@@ -76,7 +76,7 @@ def test_create_comment_by_unknown_user(
 # helpers
 
 
-@pytest.fixture
+@pytest.fixture()
 def match(api_app):
     return tourney_match_service.create_match()
 

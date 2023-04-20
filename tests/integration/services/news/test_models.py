@@ -19,12 +19,12 @@ def brand(make_brand):
     return make_brand()
 
 
-@pytest.fixture
+@pytest.fixture()
 def channel(brand, make_news_channel) -> NewsChannel:
     return make_news_channel(brand.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def news_item_with_image(channel: NewsChannel, editor):
     item = create_item(
         channel.id,
@@ -38,7 +38,7 @@ def news_item_with_image(channel: NewsChannel, editor):
     news_item_service.delete_item(item.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def news_item_without_image(channel: NewsChannel, editor):
     item = create_item(channel.id, 'without-image', editor.id)
 

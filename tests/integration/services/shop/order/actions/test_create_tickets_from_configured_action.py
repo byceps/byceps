@@ -26,7 +26,7 @@ from byceps.services.user.models.user import User
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 
-@pytest.fixture
+@pytest.fixture()
 def article(make_article, shop: Shop) -> Article:
     return make_article(shop.id)
 
@@ -36,7 +36,7 @@ def ticket_quantity() -> int:
     return 4
 
 
-@pytest.fixture
+@pytest.fixture()
 def order(
     article: Article, ticket_quantity, storefront: Storefront, orderer: Orderer
 ) -> Order:
@@ -44,7 +44,7 @@ def order(
     return place_order(storefront.id, orderer, articles_with_quantity)
 
 
-@pytest.fixture
+@pytest.fixture()
 def order_action(article: Article, ticket_category: TicketCategory) -> None:
     order_action_registry_service.register_tickets_creation(
         article.id, ticket_category.id

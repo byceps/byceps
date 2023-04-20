@@ -85,7 +85,7 @@ def site_app(site: Site, make_site_app):
         yield app
 
 
-@pytest.fixture
+@pytest.fixture()
 def article(make_article, admin_app: Flask, shop: Shop) -> Article:
     return make_article(shop.id, total_quantity=5)
 

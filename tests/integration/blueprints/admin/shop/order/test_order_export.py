@@ -28,7 +28,7 @@ def shop_order_admin(make_admin) -> User:
     return make_admin(permission_ids)
 
 
-@pytest.fixture
+@pytest.fixture()
 def article_bungalow(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
@@ -39,7 +39,7 @@ def article_bungalow(make_article, shop: Shop) -> Article:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def article_guest_fee(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
@@ -50,7 +50,7 @@ def article_guest_fee(make_article, shop: Shop) -> Article:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def article_table(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
@@ -61,7 +61,7 @@ def article_table(make_article, shop: Shop) -> Article:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def cart(
     article_bungalow: Article,
     article_guest_fee: Article,
@@ -76,7 +76,7 @@ def cart(
     return cart
 
 
-@pytest.fixture
+@pytest.fixture()
 def orderer(make_user) -> Orderer:
     user = make_user(email_address='h-w.mustermann@users.test')
 
@@ -92,7 +92,7 @@ def orderer(make_user) -> Orderer:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def storefront(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Storefront:
@@ -103,7 +103,7 @@ def storefront(
     return make_storefront(shop.id, order_number_sequence.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def order(storefront: Storefront, cart: Cart, orderer: Orderer):
     created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 

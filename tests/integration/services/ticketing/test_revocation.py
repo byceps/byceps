@@ -27,7 +27,7 @@ def area(party):
     seating_area_service.delete_area(area.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def ticket(category, ticket_owner):
     ticket = ticket_creation_service.create_ticket(
         category.party_id, category.id, ticket_owner.id
@@ -36,7 +36,7 @@ def ticket(category, ticket_owner):
     ticket_service.delete_ticket(ticket.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def tickets(category, ticket_owner):
     quantity = 3
     tickets = ticket_creation_service.create_tickets(
@@ -49,14 +49,14 @@ def tickets(category, ticket_owner):
         ticket_service.delete_ticket(ticket.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def seat(area, category):
     seat = seat_service.create_seat(area.id, 0, 0, category.id)
     yield seat
     seat_service.delete_seat(seat.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def seats(tickets, area):
     seats = [
         seat_service.create_seat(area.id, 0, 0, ticket.category_id)

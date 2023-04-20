@@ -15,7 +15,7 @@ from byceps.services.user import user_log_service
 from tests.helpers import generate_token
 
 
-@pytest.fixture
+@pytest.fixture()
 def client(site_app, site):
     return site_app.test_client()
 

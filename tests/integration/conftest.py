@@ -273,7 +273,7 @@ def board(brand: Brand) -> Board:
     return board_service.create_board(brand.id, board_id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def make_news_channel():
     def _wrapper(
         brand_id: BrandID,

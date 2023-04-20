@@ -53,7 +53,7 @@ def test_revoke_bundle(admin_app, bundle, ticketing_admin):
 # helpers
 
 
-@pytest.fixture
+@pytest.fixture()
 def bundle(category, ticket_owner):
     quantity = 4
     bundle = bundle_service.create_bundle(

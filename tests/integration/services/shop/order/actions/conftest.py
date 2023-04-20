@@ -13,7 +13,7 @@ from byceps.services.user.models.user import User
 from tests.helpers import generate_token
 
 
-@pytest.fixture
+@pytest.fixture()
 def ticket_category(make_ticket_category, party: Party) -> TicketCategory:
     title = 'Deluxe-' + generate_token()
     return make_ticket_category(party.id, title)

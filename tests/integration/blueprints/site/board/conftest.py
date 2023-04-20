@@ -25,12 +25,12 @@ def another_category(board: Board) -> BoardCategory:
     return create_category(board.id, number=2)
 
 
-@pytest.fixture
+@pytest.fixture()
 def topic(category: BoardCategory, board_poster: User) -> DbTopic:
     return create_topic(category.id, board_poster.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def posting(topic: DbTopic, board_poster: User) -> DbPosting:
     return create_posting(topic.id, board_poster.id)
 

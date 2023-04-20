@@ -31,28 +31,28 @@ def area(party):
     seating_area_service.delete_area(area.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def seat1(area, category):
     seat = seat_service.create_seat(area.id, 0, 1, category.id)
     yield seat
     seat_service.delete_seat(seat.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def seat2(area, category):
     seat = seat_service.create_seat(area.id, 0, 2, category.id)
     yield seat
     seat_service.delete_seat(seat.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def seat_of_another_category(area, another_category):
     seat = seat_service.create_seat(area.id, 0, 0, another_category.id)
     yield seat
     seat_service.delete_seat(seat.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def ticket(admin_app, category, ticket_owner):
     ticket = ticket_creation_service.create_ticket(
         category.party_id, category.id, ticket_owner.id
@@ -61,7 +61,7 @@ def ticket(admin_app, category, ticket_owner):
     ticket_service.delete_ticket(ticket.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def ticket_bundle(category, ticket_owner):
     ticket_quantity = 1
     bundle = ticket_bundle_service.create_bundle(

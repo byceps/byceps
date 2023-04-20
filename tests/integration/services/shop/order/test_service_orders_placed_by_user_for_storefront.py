@@ -13,14 +13,14 @@ from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
 
 
-@pytest.fixture
+@pytest.fixture()
 def shop(make_brand, make_shop) -> Shop:
     brand = make_brand()
 
     return make_shop(brand.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def storefront1(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Storefront:
@@ -31,7 +31,7 @@ def storefront1(
     return make_storefront(shop.id, order_number_sequence.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def storefront2(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Storefront:

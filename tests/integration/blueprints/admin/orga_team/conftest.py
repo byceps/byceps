@@ -37,7 +37,7 @@ def orga_team_admin_client(
     return make_client(admin_app, user_id=orga_team_admin.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def make_team(admin_app: Flask):
     team_ids = []
 

@@ -9,7 +9,7 @@ from byceps.services.authentication.session import authn_session_service
 from byceps.services.user import user_log_service
 
 
-@pytest.fixture
+@pytest.fixture()
 def client(admin_app, site):
     return admin_app.test_client()
 

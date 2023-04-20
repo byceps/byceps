@@ -32,12 +32,12 @@ def customer(make_user) -> User:
     return make_user('Interessent', email_address='interessent@users.test')
 
 
-@pytest.fixture
+@pytest.fixture()
 def orderer(make_orderer, customer: User) -> Orderer:
     return make_orderer(customer.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def storefront(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Storefront:
@@ -48,7 +48,7 @@ def storefront(
     return make_storefront(shop.id, order_number_sequence.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def article1(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
@@ -58,7 +58,7 @@ def article1(make_article, shop: Shop) -> Article:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def article2(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
@@ -68,7 +68,7 @@ def article2(make_article, shop: Shop) -> Article:
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def order(
     storefront: Storefront,
     article1: Article,

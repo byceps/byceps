@@ -114,7 +114,7 @@ def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
     return make_storefront(shop.id, order_number_sequence.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def placed_order(storefront, orderer):
     cart = Cart(EUR)
     order, _ = order_checkout_service.place_order(
@@ -124,7 +124,7 @@ def placed_order(storefront, orderer):
     return order
 
 
-@pytest.fixture
+@pytest.fixture()
 def canceled_order(placed_order, shop_admin):
     order_service.cancel_order(
         placed_order.id, shop_admin.id, 'Kein Geld!'
@@ -133,7 +133,7 @@ def canceled_order(placed_order, shop_admin):
     return placed_order
 
 
-@pytest.fixture
+@pytest.fixture()
 def paid_order(placed_order, shop_admin):
     order_service.mark_order_as_paid(
         placed_order.id, 'bank_transfer', shop_admin.id

@@ -8,7 +8,7 @@ import pytest
 from byceps.services.ticketing import ticket_attendance_service
 
 
-@pytest.fixture
+@pytest.fixture()
 def another_user(make_user):
     return make_user()
 

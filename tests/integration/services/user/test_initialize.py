@@ -33,7 +33,7 @@ def already_initialized_user(make_user):
     return make_user('AlreadyInitialized')
 
 
-@pytest.fixture
+@pytest.fixture()
 def role(
     admin_app,
     uninitialized_user_created_online,

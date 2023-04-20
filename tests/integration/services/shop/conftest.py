@@ -14,7 +14,7 @@ from byceps.services.shop.storefront.models import Storefront
 from byceps.services.user.models.user import User
 
 
-@pytest.fixture
+@pytest.fixture()
 def shop_brand(make_brand, make_email_config) -> Brand:
     brand = make_brand()
     make_email_config(brand.id, sender_address='noreply@acmecon.test')
@@ -22,19 +22,19 @@ def shop_brand(make_brand, make_email_config) -> Brand:
     return brand
 
 
-@pytest.fixture
+@pytest.fixture()
 def email_footer_snippets(shop_brand: Brand, admin_user: User) -> None:
     email_footer_service.create_footers(
         shop_brand.id, admin_user.id, 'info@acmecon.test'
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def shop(shop_brand: Brand, make_email_config, make_shop) -> Shop:
     return make_shop(shop_brand.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def storefront(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Storefront:
@@ -43,6 +43,6 @@ def storefront(
     return make_storefront(shop.id, order_number_sequence.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def empty_cart() -> Cart:
     return Cart(EUR)

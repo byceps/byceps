@@ -25,17 +25,17 @@ from .helpers import (
 )
 
 
-@pytest.fixture
+@pytest.fixture()
 def customer(make_user) -> User:
     return make_user('Versager', email_address='versager@users.test')
 
 
-@pytest.fixture
+@pytest.fixture()
 def orderer(make_orderer, customer: User) -> Orderer:
     return make_orderer(customer.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def storefront(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Storefront:
@@ -46,7 +46,7 @@ def storefront(
     return make_storefront(shop.id, order_number_sequence.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def order(storefront: Storefront, orderer: Orderer, email_footer_snippets):
     created_at = datetime(2014, 11, 5, 23, 32, 9)
 

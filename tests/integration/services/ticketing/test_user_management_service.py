@@ -13,7 +13,7 @@ from byceps.services.ticketing import (
 )
 
 
-@pytest.fixture
+@pytest.fixture()
 def ticket(admin_app, category, ticket_owner):
     ticket = ticket_creation_service.create_ticket(
         category.party_id, category.id, ticket_owner.id

@@ -26,7 +26,7 @@ def test_get_permission_ids_for_user_with_user_permissions(
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def permissions(user, admin_user):
     role_id_god = 'god'
     role_id_demigod = 'demigod'

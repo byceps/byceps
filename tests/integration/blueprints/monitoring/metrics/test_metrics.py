@@ -9,12 +9,12 @@ import pytest
 
 
 # To be overridden by test parametrization
-@pytest.fixture
+@pytest.fixture()
 def config_overrides():
     return {}
 
 
-@pytest.fixture
+@pytest.fixture()
 def client(admin_app, config_overrides, make_admin_app):
     app = make_admin_app(**config_overrides)
     with app.app_context():

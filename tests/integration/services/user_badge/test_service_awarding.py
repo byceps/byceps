@@ -17,7 +17,7 @@ from byceps.services.user_badge.dbmodels.awarding import DbBadgeAwarding
 from byceps.services.user_badge.models import QuantifiedBadgeAwarding
 
 
-@pytest.fixture
+@pytest.fixture()
 def admin_user(make_user):
     return make_user()
 
@@ -52,7 +52,7 @@ def badge3():
     return _create_badge('eternal-wisdom', 'Eternal Wisdom')
 
 
-@pytest.fixture
+@pytest.fixture()
 def awardings_scope():
     yield
 

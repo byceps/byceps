@@ -18,7 +18,7 @@ def order_admin(make_user):
     return make_user()
 
 
-@pytest.fixture
+@pytest.fixture()
 def email_payment_instructions_snippets(shop: Shop, order_admin: User) -> None:
     order_payment_service.create_email_payment_instructions(
         shop.id, order_admin.id

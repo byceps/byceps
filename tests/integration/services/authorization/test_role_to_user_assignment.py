@@ -54,7 +54,7 @@ def test_deassign_role_from_user(admin_app, user, admin_user, role):
     assert PERMISSION_ID not in user_permission_ids_after
 
 
-@pytest.fixture
+@pytest.fixture()
 def role(user):
     role = authz_service.create_role('demigod', 'Demigod').unwrap()
     authz_service.assign_permission_to_role(PERMISSION_ID, role.id)

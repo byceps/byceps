@@ -36,7 +36,7 @@ def page_admin_client(make_client, admin_app, page_admin):
     return make_client(admin_app, user_id=page_admin.id)
 
 
-@pytest.fixture
+@pytest.fixture()
 def make_page(site: Site, page_admin: User):
     def _wrapper(
         name: str | None = None,
