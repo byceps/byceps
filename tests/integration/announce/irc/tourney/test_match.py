@@ -14,7 +14,10 @@ from byceps.events.tourney import (
     TourneyMatchScoreSubmitted,
 )
 
-from ..helpers import build_announcement_request_for_irc, now
+from tests.integration.announce.irc.helpers import (
+    build_announcement_request_for_irc,
+    now,
+)
 
 
 def test_announce_match_ready(admin_app, tourney, match, webhook_for_irc):
