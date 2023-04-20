@@ -6,7 +6,7 @@ byceps.blueprints.common.style_guide.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import xml.etree.ElementTree as ET
+from xml.etree import ElementTree
 
 from flask import current_app
 
@@ -34,7 +34,7 @@ def index():
 def _get_icon_names():
     """Extract icon names from SVG file."""
     with current_app.open_resource(ICONS_FILENAME) as f:
-        tree = ET.parse(f)
+        tree = ElementTree.parse(f)
 
     svg_namespace = 'http://www.w3.org/2000/svg'
     symbol_elems = tree.iterfind('.//{%s}symbol' % svg_namespace)
