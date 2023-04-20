@@ -131,7 +131,7 @@ def _ensure_actual_quantities_match(
     """Raise an error if the totals of seats and tickets don't match."""
     if len(db_seats) != len(db_tickets):
         raise ValueError(
-            'The actual quantities of seats and tickets ' 'do not match.'
+            'The actual quantities of seats and tickets do not match.'
         )
 
 
