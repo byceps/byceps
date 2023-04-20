@@ -111,8 +111,7 @@ class _SeatsImportParser:
     ) -> Iterator[tuple[int, Result[SeatToImport, str]]]:
         """Parse JSON lines into importable seat objects."""
         for line_number, line in enumerate(lines, start=1):
-            line = line.rstrip()
-            parse_result = self._parse_line(line)
+            parse_result = self._parse_line(line.rstrip())
             yield line_number, parse_result
 
     def _parse_line(self, line: str) -> Result[SeatToImport, str]:
