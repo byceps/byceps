@@ -58,5 +58,8 @@ ignore = [
     "E501",  # Line too long
 ]
 
+[tool.ruff.isort]
+lines-after-imports = 2
+
 [tool.setuptools]
 packages = [ "byceps" ]
