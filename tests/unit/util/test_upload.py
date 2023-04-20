@@ -5,7 +5,7 @@
 
 from io import BytesIO
 
-from pytest import raises
+import pytest
 
 from byceps.util.upload import delete, store
 
@@ -27,14 +27,14 @@ def test_store_with_existent_target_path(tmp_path):
     target_path.touch(exist_ok=False)
     assert target_path.exists()
 
-    with raises(FileExistsError):
+    with pytest.raises(FileExistsError):
         store(SOURCE_BYTES, target_path)
 
 
 def test_store_with_nonexistent_parent_path1(tmp_path):
     target_path = tmp_path / 'nonexistent' / 'famous-words.txt'
 
-    with raises(FileNotFoundError):
+    with pytest.raises(FileNotFoundError):
         store(SOURCE_BYTES, target_path)
 
 

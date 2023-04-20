@@ -5,7 +5,7 @@
 
 from unittest.mock import patch
 
-from pytest import raises
+import pytest
 
 from byceps.services.ticketing import (
     ticket_code_service,
@@ -33,7 +33,9 @@ def test_create_ticket_with_existing_code(
     )
     assert existing_ticket.code == 'TAKEN'
 
-    with raises(ticket_creation_service.TicketCreationFailedWithConflict):
+    with pytest.raises(
+        ticket_creation_service.TicketCreationFailedWithConflict
+    ):
         ticket_creation_service.create_ticket(
             category.party_id, category.id, ticket_owner.id
         )
@@ -57,7 +59,7 @@ def test_create_tickets_with_clashing_generated_codes(
 
     quantity = 3
 
-    with raises(ticket_creation_service.TicketCreationFailed) as excinfo:
+    with pytest.raises(ticket_creation_service.TicketCreationFailed) as excinfo:
         ticket_creation_service.create_tickets(
             category.party_id, category.id, ticket_owner.id, quantity
         )

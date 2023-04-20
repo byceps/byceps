@@ -5,7 +5,7 @@
 
 from uuid import UUID
 
-from pytest import raises
+import pytest
 
 from byceps.services.user import user_service
 
@@ -39,5 +39,5 @@ def test_get_email_address_found(admin_app, make_user):
 def test_get_email_address_not_found(admin_app):
     unknown_user_id = UUID('00000000-0000-0000-0000-000000000001')
 
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         user_service.get_email_address(unknown_user_id)

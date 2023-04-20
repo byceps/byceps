@@ -6,7 +6,7 @@
 from decimal import Decimal
 
 from moneyed import EUR, Money, USD
-from pytest import raises
+import pytest
 
 from byceps.database import generate_uuid4
 from byceps.services.shop.article.models import (
@@ -32,7 +32,7 @@ def test_add_item_with_different_currency():
     cart = Cart(USD)
     article = create_article()
 
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         cart.add_item(article, 1)
 
 

@@ -4,7 +4,6 @@
 """
 
 import pytest
-from pytest import raises
 
 from byceps.services.authorization import authz_service
 from byceps.services.user import (
@@ -154,7 +153,7 @@ def test_initialize_already_initialized_account(
 
     # -------------------------------- #
 
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         user_command_service.initialize_account(
             user.id, initiator_id=admin_user.id
         )

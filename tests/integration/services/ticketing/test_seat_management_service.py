@@ -4,7 +4,6 @@
 """
 
 import pytest
-from pytest import raises
 
 from byceps.services.seating import seat_service, seating_area_service
 
@@ -183,7 +182,7 @@ def test_occupy_and_release_seat(admin_app, seat1, seat2, ticket):
 def test_occupy_seat_with_invalid_id(admin_app, ticket):
     invalid_seat_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'
 
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         ticket_seat_management_service.occupy_seat(
             ticket.id, invalid_seat_id, ticket.owned_by_id
         )
@@ -194,7 +193,7 @@ def test_occupy_seat_with_bundled_ticket(
 ):
     bundled_ticket = ticket_bundle.tickets[0]
 
-    with raises(SeatChangeDeniedForBundledTicket):
+    with pytest.raises(SeatChangeDeniedForBundledTicket):
         ticket_seat_management_service.occupy_seat(
             bundled_ticket.id, seat1.id, ticket.owned_by_id
         )
@@ -205,7 +204,7 @@ def test_occupy_seat_with_wrong_category(
 ):
     assert ticket.category_id != another_category.id
 
-    with raises(TicketCategoryMismatch):
+    with pytest.raises(TicketCategoryMismatch):
         ticket_seat_management_service.occupy_seat(
             ticket.id, seat_of_another_category.id, ticket.owned_by_id
         )

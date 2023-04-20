@@ -7,7 +7,6 @@ from decimal import Decimal
 
 from moneyed import EUR, Money
 import pytest
-from pytest import raises
 
 from byceps.database import generate_uuid4
 from byceps.services.shop.article.models import (
@@ -38,12 +37,12 @@ def test_init_with_positive_quantity(
 
 
 def test_init_with_zero_quantity():
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         create_item(0)
 
 
 def test_init_with_negative_quantity():
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         create_item(-1)
 
 

@@ -7,7 +7,6 @@ from unittest.mock import patch
 
 from flask import Flask
 import pytest
-from pytest import raises
 
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.article.models import Article
@@ -111,7 +110,7 @@ def test_create_tickets_with_same_code_fails(
 ) -> None:
     generate_ticket_code_mock.side_effect = lambda: 'EQUAL'  # noqa: E731
 
-    with raises(TicketCreationFailed):
+    with pytest.raises(TicketCreationFailed):
         mark_order_as_paid(order.id, admin_user.id)
 
 
