@@ -29,7 +29,7 @@ def test_get_countries_contains_country(site_app, name, alpha2, alpha3):
 def test_get_country_names_contains_selected_items(site_app):
     actual = country_service.get_country_names()
 
-    some_expected = frozenset([
+    some_expected = {
         'Belgien',
         'Dänemark',
         'Deutschland',
@@ -38,7 +38,7 @@ def test_get_country_names_contains_selected_items(site_app):
         'Niederlande',
         'Österreich',
         'Schweiz',
-    ])
+    }
 
     assert frozenset(actual).issuperset(some_expected)
 
