@@ -7,7 +7,8 @@ byceps.services.authorization.authz_service
 """
 
 from collections import defaultdict
-from typing import Iterable, Optional
+from collections.abc import Iterable
+from typing import Optional
 
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError

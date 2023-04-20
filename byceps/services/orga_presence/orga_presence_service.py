@@ -6,9 +6,9 @@ byceps.services.orga_presence.orga_presence_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable, Iterator
 from datetime import date, datetime, timedelta, timezone
 from itertools import groupby
-from typing import Iterable, Iterator
 from uuid import UUID
 from zoneinfo import ZoneInfo
 

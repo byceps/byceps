@@ -6,10 +6,11 @@ byceps.blueprints.admin.shop.article.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
 import dataclasses
 from datetime import date, datetime, time
 from decimal import Decimal
-from typing import Iterable, Optional
+from typing import Optional
 
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc

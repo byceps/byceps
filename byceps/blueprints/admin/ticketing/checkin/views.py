@@ -6,8 +6,8 @@ byceps.blueprints.admin.ticketing.checkin.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterator
 from datetime import date
-from typing import Iterator
 
 from flask import abort, g, request, url_for
 from flask_babel import gettext

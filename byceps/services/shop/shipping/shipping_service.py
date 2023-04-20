@@ -7,8 +7,8 @@ byceps.services.shop.shipping.shipping_service
 """
 
 from collections import Counter, defaultdict
+from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import Iterator
 
 from sqlalchemy import select
 

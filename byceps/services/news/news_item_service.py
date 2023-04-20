@@ -8,10 +8,11 @@ byceps.services.news.news_item_service
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 import dataclasses
 from datetime import datetime
 from functools import partial
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy import delete, select
 from sqlalchemy.sql import Select

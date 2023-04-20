@@ -6,9 +6,10 @@ byceps.blueprints.api.v1.tourney.match.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterator
 from datetime import datetime
 from itertools import chain
-from typing import Any, Iterator, Optional, Type
+from typing import Any, Optional, Type
 
 from flask import abort, jsonify, request, url_for
 from pydantic import BaseModel, ValidationError

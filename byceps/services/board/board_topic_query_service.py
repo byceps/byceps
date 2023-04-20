@@ -6,8 +6,9 @@ byceps.services.board.board_topic_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
 from datetime import datetime
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.sql import Select

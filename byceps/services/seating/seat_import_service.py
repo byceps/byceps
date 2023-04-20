@@ -8,8 +8,9 @@ byceps.services.seating.seat_import_service
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Iterator
 import json
-from typing import Iterable, Iterator, Optional
+from typing import Optional
 
 from pydantic import ValidationError
 

@@ -6,7 +6,8 @@ byceps.services.user_group.user_group_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Sequence
+from collections.abc import Sequence
+from typing import Optional
 
 from sqlalchemy import select
 

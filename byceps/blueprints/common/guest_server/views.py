@@ -6,7 +6,7 @@ byceps.blueprints.common.guest_server.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable
+from collections.abc import Iterable
 
 from flask import abort, g
 import qrcode

@@ -8,9 +8,9 @@ Data export as CSV.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterator, Sequence
 import csv
 import io
-from typing import Iterator, Sequence
 
 
 def serialize_dicts_to_csv(

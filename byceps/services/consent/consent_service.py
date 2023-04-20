@@ -6,8 +6,8 @@ byceps.services.consent.consent_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
 from datetime import datetime
-from typing import Iterable
 
 from sqlalchemy import select
 

@@ -6,9 +6,9 @@ byceps.util.checkdigit
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterator
 import math
 from string import ascii_uppercase, digits
-from typing import Iterator
 
 
 VALID_CHARS = frozenset(ascii_uppercase + digits)

@@ -7,8 +7,8 @@ byceps.blueprints.admin.orga_presence.views
 """
 
 from collections import defaultdict
+from collections.abc import Iterable
 from datetime import datetime
-from typing import Iterable
 
 from flask import abort, g, request
 from flask_babel import to_utc

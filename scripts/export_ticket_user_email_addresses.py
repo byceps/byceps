@@ -6,7 +6,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator
+from collections.abc import Iterator
 
 import click
 

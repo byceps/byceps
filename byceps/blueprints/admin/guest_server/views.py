@@ -6,8 +6,9 @@ byceps.blueprints.admin.guest_server.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
 import ipaddress
-from typing import Iterable, Optional
+from typing import Optional
 
 from flask import abort, g, request, url_for
 from flask_babel import gettext

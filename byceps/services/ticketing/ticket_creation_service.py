@@ -6,7 +6,8 @@ byceps.services.ticketing.ticket_creation_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator, Optional
+from collections.abc import Iterator
+from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt

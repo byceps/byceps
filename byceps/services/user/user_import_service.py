@@ -6,11 +6,12 @@ byceps.services.user.user_import_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterator
 from datetime import date
 import json
 from io import TextIOBase
 import secrets
-from typing import Iterator, Optional
+from typing import Optional
 
 from pydantic import BaseModel, ValidationError
 

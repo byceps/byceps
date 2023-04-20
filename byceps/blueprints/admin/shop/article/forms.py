@@ -6,9 +6,9 @@ byceps.blueprints.admin.shop.article.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
 from datetime import date, datetime, time
 from decimal import Decimal
-from typing import Iterable
 
 from flask_babel import gettext, lazy_gettext, pgettext
 from wtforms import (

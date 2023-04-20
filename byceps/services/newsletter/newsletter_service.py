@@ -6,7 +6,8 @@ byceps.services.newsletter.newsletter_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator, Optional, Sequence
+from collections.abc import Iterator, Sequence
+from typing import Optional
 
 from sqlalchemy import select
 

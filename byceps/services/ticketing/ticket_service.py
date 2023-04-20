@@ -6,8 +6,9 @@ byceps.services.ticketing.ticket_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
 from enum import Enum
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy import delete, select
 

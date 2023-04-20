@@ -6,7 +6,7 @@ byceps.blueprints.admin.shop.order.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable, Iterator
+from collections.abc import Iterable, Iterator
 from uuid import UUID
 
 from byceps.services.shop.cancelation_request import cancelation_request_service

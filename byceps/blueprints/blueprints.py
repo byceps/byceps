@@ -6,7 +6,8 @@ byceps.application.blueprints.blueprints
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator, Optional
+from collections.abc import Iterator
+from typing import Optional
 
 from flask import Flask
 import structlog

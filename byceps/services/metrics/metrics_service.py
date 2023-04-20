@@ -6,7 +6,7 @@ byceps.metrics.metrics_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator
+from collections.abc import Iterator
 
 from byceps.services.board import (
     board_posting_query_service,

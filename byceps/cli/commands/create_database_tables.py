@@ -6,10 +6,10 @@ Existing tables will be ignored, and those not existing will be created.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterator
 from importlib import import_module
 from itertools import chain
 from pathlib import Path
-from typing import Iterator
 
 import click
 from flask.cli import with_appcontext

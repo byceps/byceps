@@ -8,7 +8,8 @@ byceps.services.image.image_service
 
 from __future__ import annotations
 
-from typing import BinaryIO, Iterable
+from collections.abc import Iterable
+from typing import BinaryIO
 
 from byceps.util.image import read_dimensions
 from byceps.util.image.models import Dimensions, ImageType

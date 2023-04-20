@@ -6,9 +6,10 @@ byceps.services.seating.seating_area_tickets_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from itertools import chain
-from typing import Iterable, Iterator, Optional
+from typing import Optional
 
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID

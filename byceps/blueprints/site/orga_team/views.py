@@ -7,7 +7,7 @@ byceps.blueprints.site.orga_team.views
 """
 
 from collections import defaultdict
-from typing import Iterable, Iterator
+from collections.abc import Iterable, Iterator
 
 from flask import abort, g
 

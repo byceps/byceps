@@ -6,7 +6,8 @@ byceps.services.seating.seat_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable, Iterator, Optional
+from collections.abc import Iterable, Iterator
+from typing import Optional
 
 from sqlalchemy import delete, select
 

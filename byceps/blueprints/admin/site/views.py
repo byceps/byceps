@@ -6,8 +6,8 @@ byceps.blueprints.admin.site.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable, Iterator
 import dataclasses
-from typing import Iterable, Iterator
 
 from flask import abort, request
 from flask_babel import gettext

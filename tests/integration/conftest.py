@@ -3,9 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterator
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Iterator, Optional
+from typing import Any, Optional
 
 from flask import Flask
 from moneyed import EUR

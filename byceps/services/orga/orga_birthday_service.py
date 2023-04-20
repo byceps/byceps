@@ -6,8 +6,9 @@ byceps.services.orga.orga_birthday_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable, Iterator
 from itertools import islice
-from typing import Iterable, Iterator, Optional
+from typing import Optional
 
 from sqlalchemy import select
 

@@ -7,7 +7,8 @@ byceps.services.attendance.attendance_service
 """
 
 from collections import defaultdict
-from typing import Iterable, Optional, Sequence
+from collections.abc import Iterable, Sequence
+from typing import Optional
 
 from sqlalchemy import select
 

@@ -6,8 +6,9 @@ byceps.services.shop.order.order_checkout_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterator
 from datetime import datetime
-from typing import Iterator, Optional
+from typing import Optional
 
 from moneyed import Currency
 from sqlalchemy.exc import IntegrityError

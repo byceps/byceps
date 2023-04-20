@@ -8,8 +8,9 @@ Localization.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Iterator, Optional
+from typing import Optional
 
 from babel import Locale
 from flask import current_app, g, request

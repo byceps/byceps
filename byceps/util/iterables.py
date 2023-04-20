@@ -6,8 +6,9 @@ byceps.util.iterables
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable, Iterator
 from itertools import tee
-from typing import Callable, Iterable, Iterator, Optional, TypeVar
+from typing import Callable, Optional, TypeVar
 
 
 T = TypeVar('T')

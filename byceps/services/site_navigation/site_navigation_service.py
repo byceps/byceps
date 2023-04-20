@@ -6,7 +6,8 @@ byceps.services.site_navigation.site_navigation_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable, Optional
+from collections.abc import Iterable
+from typing import Optional
 
 from sqlalchemy import delete, select
 

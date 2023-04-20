@@ -6,9 +6,9 @@ byceps.util.datetime.range
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Iterable, Iterator
 
 from byceps.util.iterables import pairwise
 

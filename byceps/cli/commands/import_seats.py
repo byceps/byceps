@@ -5,8 +5,9 @@
 """
 
 from collections import defaultdict
+from collections.abc import Iterable, Iterator
 from pathlib import Path
-from typing import Iterable, Iterator, Optional
+from typing import Optional
 
 import click
 from flask.cli import with_appcontext

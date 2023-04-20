@@ -6,8 +6,9 @@ byceps.services.shop.order.order_log_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
 from datetime import datetime
-from typing import Iterable, Optional
+from typing import Optional
 
 from sqlalchemy import select
 

@@ -8,7 +8,8 @@ Database utilities.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Callable, Iterable, Optional, TypeVar
+from collections.abc import Iterable
+from typing import Any, Callable, Optional, TypeVar
 import uuid
 
 from flask_sqlalchemy import SQLAlchemy

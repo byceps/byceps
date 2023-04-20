@@ -9,9 +9,10 @@ byceps.services.shop.article.article_service
 from __future__ import annotations
 
 from collections import defaultdict
+from collections.abc import Iterable
 from datetime import datetime
 from decimal import Decimal
-from typing import Iterable, Optional
+from typing import Optional
 
 from moneyed import Money
 from sqlalchemy import delete, select, update

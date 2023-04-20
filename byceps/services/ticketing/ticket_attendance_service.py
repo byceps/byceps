@@ -7,9 +7,10 @@ byceps.services.ticketing.ticket_attendance_service
 """
 
 from collections import Counter
+from collections.abc import Sequence
 from datetime import datetime
 from itertools import chain
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy import delete, select
 

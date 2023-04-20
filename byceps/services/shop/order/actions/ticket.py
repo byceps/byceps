@@ -6,7 +6,8 @@ byceps.services.shop.order.actions.ticket
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
 from uuid import UUID
 
 from byceps.services.shop.order import order_log_service, order_service

@@ -8,11 +8,12 @@ tests.helpers
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from contextlib import contextmanager
 from datetime import date, datetime
 from pathlib import Path
 from secrets import token_hex
-from typing import Any, Iterable, Optional
+from typing import Any, Optional
 from uuid import UUID
 
 from flask import appcontext_pushed, Flask, g

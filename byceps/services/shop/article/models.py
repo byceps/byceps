@@ -8,11 +8,12 @@ byceps.services.shop.article.models
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Iterator, NewType, Optional, Union
+from typing import NewType, Optional, Union
 from uuid import UUID
 
 from flask_babel import lazy_gettext

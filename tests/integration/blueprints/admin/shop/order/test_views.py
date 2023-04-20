@@ -3,7 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable, Optional
+from collections.abc import Iterable
+from typing import Optional
 from unittest.mock import patch
 
 from flask import Flask

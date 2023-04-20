@@ -7,8 +7,9 @@ byceps.blueprints.admin.user.service
 """
 
 from collections import defaultdict
+from collections.abc import Iterable, Iterator
 from operator import attrgetter
-from typing import Any, Iterable, Iterator
+from typing import Any
 from uuid import UUID
 
 from byceps.services.consent import consent_service, consent_subject_service

@@ -11,7 +11,7 @@ Run script `clean_up_after_deleted_users.py` before this one.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable, Iterator
+from collections.abc import Iterable, Iterator
 
 import click
 
