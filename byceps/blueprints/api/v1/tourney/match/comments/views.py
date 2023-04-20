@@ -9,7 +9,7 @@ byceps.blueprints.api.v1.tourney.match.views
 from collections.abc import Iterator
 from datetime import datetime
 from itertools import chain
-from typing import Any, Optional, Type
+from typing import Any, Optional
 
 from flask import abort, jsonify, request, url_for
 from pydantic import BaseModel, ValidationError
@@ -247,7 +247,7 @@ def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
     return comment
 
 
-def _parse_request(model_class: Type[BaseModel]) -> BaseModel:
+def _parse_request(model_class: type[BaseModel]) -> BaseModel:
     try:
         return model_class.parse_obj(request.get_json())
     except ValidationError as e:
