@@ -39,9 +39,7 @@ from byceps.typing import BrandID, PartyID, UserID
 CONFIG_FILENAME_TESTING = Path('..') / 'config' / 'testing.toml'
 
 
-def create_admin_app(
-    config_overrides: dict[str, Any] | None = None
-) -> Flask:
+def create_admin_app(config_overrides: dict[str, Any] | None = None) -> Flask:
     if config_overrides is None:
         config_overrides = {}
 

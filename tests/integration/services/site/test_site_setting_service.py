@@ -103,9 +103,7 @@ def test_find_value(site):
     name = 'name5'
     value = 'value5'
 
-    value_before_create = site_setting_service.find_setting_value(
-        site_id, name
-    )
+    value_before_create = site_setting_service.find_setting_value(site_id, name)
     assert value_before_create is None
 
     site_setting_service.create_setting(site_id, name, value)

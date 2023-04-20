@@ -30,7 +30,10 @@ from byceps.services.user import user_service
 from byceps.signals import board as board_signals
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import permission_required, respond_no_content_with_location
+from byceps.util.views import (
+    permission_required,
+    respond_no_content_with_location,
+)
 
 from . import _helpers as h
 from . import service

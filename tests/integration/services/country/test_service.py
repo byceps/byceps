@@ -12,7 +12,7 @@ from byceps.services.country import country_service
     ('name', 'alpha2', 'alpha3'),
     [
         ('Deutschland', 'DE', 'DEU'),
-        ('Österreich' , 'AT', 'AUT'),
+        ('Österreich', 'AT', 'AUT'),
     ],
 )
 def test_get_countries_contains_country(site_app, name, alpha2, alpha3):

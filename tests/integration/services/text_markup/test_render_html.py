@@ -101,5 +101,7 @@ def test_quote_with_author(site_app):
         ),
     ],
 )
-def test_quote_with_author_whose_name_contains_square_brackets(site_app, text, expected):
+def test_quote_with_author_whose_name_contains_square_brackets(
+    site_app, text, expected
+):
     assert render_html(text) == expected

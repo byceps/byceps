@@ -82,9 +82,7 @@ def get_ticket(ticket_id: TicketID) -> DbTicket:
     return db_ticket
 
 
-def find_ticket_by_code(
-    party_id: PartyID, code: TicketCode
-) -> DbTicket | None:
+def find_ticket_by_code(party_id: PartyID, code: TicketCode) -> DbTicket | None:
     """Return the ticket with that code for that party, or `None` if not
     found.
     """

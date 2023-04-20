@@ -33,9 +33,7 @@ class DbTicket(db.Model):
     """
 
     __tablename__ = 'tickets'
-    __table_args__ = (
-        db.UniqueConstraint('party_id', 'code'),
-    )
+    __table_args__ = (db.UniqueConstraint('party_id', 'code'),)
 
     id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

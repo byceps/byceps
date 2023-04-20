@@ -19,7 +19,10 @@ from byceps.services.brand.models import Brand
 from byceps.services.page import page_service
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
-from byceps.services.shop.article import article_sequence_service, article_service
+from byceps.services.shop.article import (
+    article_sequence_service,
+    article_service,
+)
 from byceps.services.shop.article.models import ArticleType
 from byceps.services.shop.order import order_sequence_service
 from byceps.services.shop.shop import shop_service

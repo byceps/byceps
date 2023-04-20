@@ -10,7 +10,6 @@ from collections import namedtuple
 
 
 class MonthDay(namedtuple('MonthDay', ['month', 'day'])):
-
     __slots__ = ()
 
     @classmethod

@@ -11,7 +11,10 @@ from uuid import UUID
 
 from byceps.services.shop.cancelation_request import cancelation_request_service
 from byceps.services.shop.order import order_log_service, order_service
-from byceps.services.shop.order.models.log import OrderLogEntry, OrderLogEntryData
+from byceps.services.shop.order.models.log import (
+    OrderLogEntry,
+    OrderLogEntryData,
+)
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.user import user_service

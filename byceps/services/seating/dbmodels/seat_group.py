@@ -12,7 +12,10 @@ from byceps.database import db, generate_uuid7
 from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
-from byceps.services.ticketing.models.ticket import TicketBundleID, TicketCategoryID
+from byceps.services.ticketing.models.ticket import (
+    TicketBundleID,
+    TicketCategoryID,
+)
 from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
 
@@ -23,9 +26,7 @@ class DbSeatGroup(db.Model):
     """A group of seats."""
 
     __tablename__ = 'seat_groups'
-    __table_args__ = (
-        db.UniqueConstraint('party_id', 'title'),
-    )
+    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
     id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(

@@ -15,9 +15,7 @@ class DbTicketCategory(db.Model):
     """A ticket category."""
 
     __tablename__ = 'ticket_categories'
-    __table_args__ = (
-        db.UniqueConstraint('party_id', 'title'),
-    )
+    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
     id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     party_id = db.Column(

@@ -21,9 +21,7 @@ class DbInvoice(db.Model):
     """
 
     __tablename__ = 'shop_order_invoices'
-    __table_args__ = (
-        db.UniqueConstraint('order_id', 'number'),
-    )
+    __table_args__ = (db.UniqueConstraint('order_id', 'number'),)
 
     id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     order_id = db.Column(

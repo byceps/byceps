@@ -39,9 +39,7 @@ class DbCollection(db.Model):
     """A group of articles inside of catalog."""
 
     __tablename__ = 'shop_catalog_collections'
-    __table_args__ = (
-        db.UniqueConstraint('catalog_id', 'title'),
-    )
+    __table_args__ = (db.UniqueConstraint('catalog_id', 'title'),)
 
     id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     catalog_id = db.Column(
@@ -76,9 +74,7 @@ class DbCatalogArticle(db.Model):
     """The assignment of an article to a collection."""
 
     __tablename__ = 'shop_catalog_articles'
-    __table_args__ = (
-        db.UniqueConstraint('collection_id', 'article_id'),
-    )
+    __table_args__ = (db.UniqueConstraint('collection_id', 'article_id'),)
 
     id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     collection_id = db.Column(

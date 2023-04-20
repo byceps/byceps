@@ -24,7 +24,11 @@ from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import permission_required, redirect_to, respond_no_content
+from byceps.util.views import (
+    permission_required,
+    redirect_to,
+    respond_no_content,
+)
 
 from . import service
 from .forms import (

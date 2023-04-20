@@ -18,13 +18,13 @@ IMAGES_PATH = Path('tests/fixtures/images')
 @pytest.mark.parametrize(
     ('filename', 'expected'),
     [
-        ('image.bmp',                           None          ),
-        ('image.gif',                           ImageType.gif ),
-        ('image.jpeg',                          ImageType.jpeg),
-        ('image.png',                           ImageType.png ),
-        ('image.webp',                          ImageType.webp),
-        ('image-with-xml-declaration.svg',      ImageType.svg ),
-        ('image-without-xml-declaration.svg',   ImageType.svg ),
+        ('image.bmp', None),
+        ('image.gif', ImageType.gif),
+        ('image.jpeg', ImageType.jpeg),
+        ('image.png', ImageType.png),
+        ('image.webp', ImageType.webp),
+        ('image-with-xml-declaration.svg', ImageType.svg),
+        ('image-without-xml-declaration.svg', ImageType.svg),
     ],
 )
 def test_guess_type(filename, expected):
@@ -37,11 +37,11 @@ def test_guess_type(filename, expected):
 @pytest.mark.parametrize(
     ('filename_suffix', 'expected_width', 'expected_height'),
     [
-        ('bmp',   7, 11),
-        ('gif',  17,  4),
-        ('jpeg', 12,  7),
-        ('png',   8, 25),
-        ('webp',  9, 16),
+        ('bmp', 7, 11),
+        ('gif', 17, 4),
+        ('jpeg', 12, 7),
+        ('png', 8, 25),
+        ('webp', 9, 16),
     ],
 )
 def test_read_dimensions(filename_suffix, expected_width, expected_height):

@@ -16,7 +16,11 @@ from byceps.database import db
 from byceps.services.shop.shop.models import ShopID
 
 from .dbmodels.number_sequence import DbOrderNumberSequence
-from .models.number import OrderNumber, OrderNumberSequence, OrderNumberSequenceID
+from .models.number import (
+    OrderNumber,
+    OrderNumberSequence,
+    OrderNumberSequenceID,
+)
 
 
 class OrderNumberSequenceCreationFailed(Exception):

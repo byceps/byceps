@@ -22,9 +22,7 @@ class DbUserGroup(db.Model):
     """A self-organized group of users."""
 
     __tablename__ = 'user_groups'
-    __table_args__ = (
-        db.UniqueConstraint('party_id', 'title'),
-    )
+    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
     id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(

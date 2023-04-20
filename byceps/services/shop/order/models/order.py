@@ -18,7 +18,11 @@ from uuid import UUID
 from moneyed import Money
 
 from byceps.typing import UserID
-from byceps.services.shop.article.models import ArticleID, ArticleNumber, ArticleType
+from byceps.services.shop.article.models import (
+    ArticleID,
+    ArticleNumber,
+    ArticleType,
+)
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.models.user import User

@@ -8,7 +8,11 @@ byceps.events.snippet
 
 from dataclasses import dataclass
 
-from byceps.services.snippet.models import SnippetID, SnippetScope, SnippetVersionID
+from byceps.services.snippet.models import (
+    SnippetID,
+    SnippetScope,
+    SnippetVersionID,
+)
 
 from .base import _BaseEvent
 

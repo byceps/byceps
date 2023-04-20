@@ -31,7 +31,10 @@ def test_create_fails_with_unknown_user_id(
 
 
 def test_create_fails_with_uninitialized_user(
-    api_client, api_client_authz_header, party, uninitialized_user,
+    api_client,
+    api_client_authz_header,
+    party,
+    uninitialized_user,
 ):
     response = send_request(
         api_client, api_client_authz_header, party.id, uninitialized_user.id

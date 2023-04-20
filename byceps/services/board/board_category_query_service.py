@@ -41,9 +41,7 @@ def find_category_by_id(
     return _db_entity_to_category(db_category)
 
 
-def find_category_by_slug(
-    board_id: BoardID, slug: str
-) -> BoardCategory | None:
+def find_category_by_slug(board_id: BoardID, slug: str) -> BoardCategory | None:
     """Return the category for that board and slug, or `None` if not found."""
     db_category = db.session.scalars(
         select(DbBoardCategory)

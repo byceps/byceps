@@ -16,11 +16,11 @@ from byceps.typing import BrandID, PartyID
     ('starts_at', 'ends_at', 'expected'),
     [
         (
-            datetime(2020, 8, 22,  9, 30, 0),
+            datetime(2020, 8, 22, 9, 30, 0),
             datetime(2020, 8, 22, 23, 30, 0),
             [
                 date(2020, 8, 22),
-            ]
+            ],
         ),
         (
             datetime(2020, 3, 16, 14, 0, 0),
@@ -29,7 +29,7 @@ from byceps.typing import BrandID, PartyID
                 date(2020, 3, 16),
                 date(2020, 3, 17),
                 date(2020, 3, 18),
-            ]
+            ],
         ),
         (
             datetime(2020, 12, 10, 17, 0, 0),

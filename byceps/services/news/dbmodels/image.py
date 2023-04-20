@@ -22,9 +22,7 @@ class DbNewsImage(db.Model):
     """An image to illustrate a news item."""
 
     __tablename__ = 'news_images'
-    __table_args__ = (
-        db.UniqueConstraint('item_id', 'number'),
-    )
+    __table_args__ = (db.UniqueConstraint('item_id', 'number'),)
 
     id = db.Column(db.Uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

@@ -15,7 +15,9 @@ from typing import Any
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
 
-from byceps.blueprints.site.snippet.templating import render_snippet_as_partial_from_template
+from byceps.blueprints.site.snippet.templating import (
+    render_snippet_as_partial_from_template,
+)
 from byceps.services.page import page_service
 from byceps.services.page.models import Page, PageVersion
 from byceps.services.site_navigation import site_navigation_service

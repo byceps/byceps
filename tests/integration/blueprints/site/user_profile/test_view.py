@@ -13,9 +13,7 @@ def test_view_profile_of_existing_user(site_app, site, user):
     assert response.mimetype == 'text/html'
 
 
-def test_view_profile_of_uninitialized_user(
-    site_app, site, uninitialized_user
-):
+def test_view_profile_of_uninitialized_user(site_app, site, uninitialized_user):
     response = request_profile(site_app, uninitialized_user.id)
 
     assert response.status_code == 404

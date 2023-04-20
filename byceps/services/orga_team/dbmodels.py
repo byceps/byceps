@@ -22,9 +22,7 @@ class DbOrgaTeam(db.Model):
     """A group of organizers for a single party."""
 
     __tablename__ = 'orga_teams'
-    __table_args__ = (
-        db.UniqueConstraint('party_id', 'title'),
-    )
+    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
     id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(
@@ -51,9 +49,7 @@ class DbMembership(db.Model):
     """The assignment of a user to an organizer team."""
 
     __tablename__ = 'orga_team_memberships'
-    __table_args__ = (
-        db.UniqueConstraint('orga_team_id', 'user_id'),
-    )
+    __table_args__ = (db.UniqueConstraint('orga_team_id', 'user_id'),)
 
     id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     orga_team_id = db.Column(

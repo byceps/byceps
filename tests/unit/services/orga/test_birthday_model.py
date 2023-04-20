@@ -32,9 +32,9 @@ def test_age(today_text, expected):
 @pytest.mark.parametrize(
     ('today_text', 'expected'),
     [
-        ('2014-03-16',   2),
-        ('2014-03-17',   1),
-        ('2014-03-18',   0),
+        ('2014-03-16', 2),
+        ('2014-03-17', 1),
+        ('2014-03-18', 0),
         ('2014-03-19', 364),
     ],
 )
@@ -49,10 +49,10 @@ def test_days_until_next_birthday(today_text, expected):
     ('today_text', 'expected'),
     [
         ('1994-03-17', False),
-        ('1994-03-18', True ),
+        ('1994-03-18', True),
         ('1994-03-19', False),
         ('2014-03-17', False),
-        ('2014-03-18', True ),
+        ('2014-03-18', True),
         ('2014-03-19', False),
     ],
 )

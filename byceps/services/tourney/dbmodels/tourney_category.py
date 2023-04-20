@@ -18,9 +18,7 @@ class DbTourneyCategory(db.Model):
     """One of potentially multiple tourney categories for a party."""
 
     __tablename__ = 'tourney_categories'
-    __table_args__ = (
-        db.UniqueConstraint('party_id', 'title'),
-    )
+    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
     id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     party_id = db.Column(

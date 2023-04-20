@@ -20,7 +20,11 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from byceps.database import db, generate_uuid7
-from byceps.services.shop.article.models import ArticleNumber, ArticleType, ArticleTypeParams
+from byceps.services.shop.article.models import (
+    ArticleNumber,
+    ArticleType,
+    ArticleTypeParams,
+)
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
 

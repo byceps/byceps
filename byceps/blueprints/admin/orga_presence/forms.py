@@ -17,7 +17,6 @@ from byceps.util.l10n import LocalizedForm
 
 
 def build_presence_create_form(dt_range: DateTimeRange):
-
     dt_range = dt_range._replace(
         start=to_user_timezone(dt_range.start).replace(tzinfo=None),
         end=to_user_timezone(dt_range.end).replace(tzinfo=None),

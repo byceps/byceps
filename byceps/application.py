@@ -25,7 +25,10 @@ from byceps import config, config_defaults
 from byceps.blueprints.blueprints import register_blueprints
 from byceps.database import db
 from byceps.util import templatefilters, templatefunctions
-from byceps.util.authorization import has_current_user_permission, load_permissions
+from byceps.util.authorization import (
+    has_current_user_permission,
+    load_permissions,
+)
 from byceps.util.l10n import get_current_user_locale
 from byceps.util.templating import SiteTemplateOverridesLoader
 

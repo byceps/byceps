@@ -22,9 +22,7 @@ class DbTourney(db.Model):
     """A tournament."""
 
     __tablename__ = 'tourneys'
-    __table_args__ = (
-        db.UniqueConstraint('category_id', 'title'),
-    )
+    __table_args__ = (db.UniqueConstraint('category_id', 'title'),)
 
     id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(

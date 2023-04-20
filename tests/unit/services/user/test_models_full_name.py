@@ -14,9 +14,9 @@ from byceps.services.user.dbmodels.user import DbUser
 @pytest.mark.parametrize(
     ('first_name', 'last_name', 'expected'),
     [
-        (None,          None    , None                ),
-        ('Giesbert Z.', None    , 'Giesbert Z.'       ),
-        (None,          'Blümli', 'Blümli'            ),
+        (None, None, None),
+        ('Giesbert Z.', None, 'Giesbert Z.'),
+        (None, 'Blümli', 'Blümli'),
         ('Giesbert Z.', 'Blümli', 'Giesbert Z. Blümli'),
     ],
 )
