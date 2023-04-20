@@ -9,19 +9,19 @@ byceps.blueprints.admin.ticketing.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.party import party_service
-from ....services.shop.order import order_service
-from ....services.ticketing import (
+from byceps.services.party import party_service
+from byceps.services.shop.order import order_service
+from byceps.services.ticketing import (
     ticket_bundle_service,
     ticket_category_service,
     ticket_service,
     ticket_user_management_service,
 )
-from ....services.ticketing.ticket_service import FilterMode
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to
+from byceps.services.ticketing.ticket_service import FilterMode
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to
 
 from . import service
 from .forms import SpecifyUserForm, UpdateCodeForm

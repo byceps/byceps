@@ -17,12 +17,10 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from .....database import db, generate_uuid7
-from .....util.instances import ReprBuilder
-
-from ...shop.models import ShopID
-
-from ..models import ArticleNumber, ArticleType, ArticleTypeParams
+from byceps.database import db, generate_uuid7
+from byceps.services.shop.article.models import ArticleNumber, ArticleType, ArticleTypeParams
+from byceps.services.shop.shop.models import ShopID
+from byceps.util.instances import ReprBuilder
 
 
 class DbArticle(db.Model):

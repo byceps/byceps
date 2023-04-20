@@ -13,17 +13,17 @@ from typing import Iterable
 from flask import abort, g, request
 from flask_babel import to_utc
 
-from ....services.orga_presence import orga_presence_service
-from ....services.orga_presence.models import (
+from byceps.services.orga_presence import orga_presence_service
+from byceps.services.orga_presence.models import (
     PartyTimeSlot,
     PresenceTimeSlot,
     TimeSlot,
 )
-from ....services.party import party_service
-from ....services.user.models.user import User
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to, respond_no_content
+from byceps.services.party import party_service
+from byceps.services.user.models.user import User
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import build_presence_create_form
 

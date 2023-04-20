@@ -11,25 +11,24 @@ from typing import Optional
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
-from ....services.page import page_service
-from ....services.page.models import Page, PageVersion, PageVersionID
-from ....services.site import site_service
-from ....services.site.models import Site, SiteID
-from ....services.site_navigation import site_navigation_service
-from ....services.text_diff import text_diff_service
-from ....services.user import user_service
-from ....signals import page as page_signals
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.iterables import pairwise
-from ....util.views import (
+from byceps.blueprints.site.page.templating import build_template_context
+from byceps.services.page import page_service
+from byceps.services.page.models import Page, PageVersion, PageVersionID
+from byceps.services.site import site_service
+from byceps.services.site.models import Site, SiteID
+from byceps.services.site_navigation import site_navigation_service
+from byceps.services.text_diff import text_diff_service
+from byceps.services.user import user_service
+from byceps.signals import page as page_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.iterables import pairwise
+from byceps.util.views import (
     permission_required,
     redirect_to,
     respond_no_content_with_location,
 )
-
-from ...site.page.templating import build_template_context
 
 from .forms import CreateForm, SetNavMenuForm, UpdateForm
 

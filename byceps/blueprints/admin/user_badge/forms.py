@@ -12,7 +12,7 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, SelectField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length, Regexp
 
-from ....util.l10n import LocalizedForm
+from byceps.util.l10n import LocalizedForm
 
 
 SLUG_REGEX = re.compile('^[a-z0-9-]+$')

@@ -15,9 +15,9 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...database import db
-from ...typing import UserID
-from ...util.instances import ReprBuilder
+from byceps.database import db
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 from .models import Purpose
 

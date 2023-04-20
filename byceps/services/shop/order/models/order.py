@@ -15,13 +15,11 @@ from uuid import UUID
 
 from moneyed import Money
 
-from .....typing import UserID
-
-from ....user.models.user import User
-
-from ...article.models import ArticleID, ArticleNumber, ArticleType
-from ...shop.models import ShopID
-from ...storefront.models import StorefrontID
+from byceps.typing import UserID
+from byceps.services.shop.article.models import ArticleID, ArticleNumber, ArticleType
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.user.models.user import User
 
 from .number import OrderNumber
 

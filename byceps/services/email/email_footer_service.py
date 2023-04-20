@@ -6,11 +6,10 @@ byceps.services.email.email_footer_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...typing import BrandID, UserID
-
-from ..brand import brand_service
-from ..snippet import snippet_service
-from ..snippet.models import SnippetScope
+from byceps.services.brand import brand_service
+from byceps.services.snippet import snippet_service
+from byceps.services.snippet.models import SnippetScope
+from byceps.typing import BrandID, UserID
 
 
 def create_footers(

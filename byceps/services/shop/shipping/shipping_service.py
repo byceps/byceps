@@ -12,14 +12,13 @@ from typing import Iterator
 
 from sqlalchemy import select
 
-from ....database import db
-
-from ..article.dbmodels.article import DbArticle
-from ..article.models import ArticleID
-from ..order.dbmodels.line_item import DbLineItem
-from ..order.dbmodels.order import DbOrder
-from ..order.models.order import PaymentState
-from ..shop.models import ShopID
+from byceps.database import db
+from byceps.services.shop.article.dbmodels.article import DbArticle
+from byceps.services.shop.article.models import ArticleID
+from byceps.services.shop.order.dbmodels.line_item import DbLineItem
+from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.shop.models import ShopID
 
 from .models import ArticleToShip
 

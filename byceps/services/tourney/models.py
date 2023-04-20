@@ -13,9 +13,8 @@ from datetime import datetime
 from typing import NewType, Optional
 from uuid import UUID
 
-from ...typing import PartyID
-
-from ..user.models.user import User
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID
 
 
 TourneyCategoryID = NewType('TourneyCategoryID', UUID)

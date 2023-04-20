@@ -13,19 +13,19 @@ from typing import Optional
 
 import structlog
 
-from .....services.authentication import authn_service
-from .....services.authentication.errors import AuthenticationFailed
-from .....services.authentication.session import authn_session_service
-from .....services.authentication.session.authn_session_service import (
+from byceps.services.authentication import authn_service
+from byceps.services.authentication.errors import AuthenticationFailed
+from byceps.services.authentication.session import authn_session_service
+from byceps.services.authentication.session.authn_session_service import (
     UserLoggedIn,
 )
-from .....services.consent import consent_service, consent_subject_service
-from .....services.site.models import SiteID
-from .....services.user.models.user import User
-from .....services.verification_token import verification_token_service
-from .....typing import BrandID, UserID
-from .....util import user_session
-from .....util.result import Err, Ok, Result
+from byceps.services.consent import consent_service, consent_subject_service
+from byceps.services.site.models import SiteID
+from byceps.services.user.models.user import User
+from byceps.services.verification_token import verification_token_service
+from byceps.typing import BrandID, UserID
+from byceps.util import user_session
+from byceps.util.result import Err, Ok, Result
 
 
 log = structlog.get_logger()

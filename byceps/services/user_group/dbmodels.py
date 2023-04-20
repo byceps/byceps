@@ -11,11 +11,10 @@ from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ...database import db, generate_uuid7
-from ...typing import PartyID, UserID
-from ...util.instances import ReprBuilder
-
-from ..user.dbmodels.user import DbUser
+from byceps.database import db, generate_uuid7
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import PartyID, UserID
+from byceps.util.instances import ReprBuilder
 
 
 class DbUserGroup(db.Model):

@@ -8,7 +8,7 @@ byceps.blueprints.site.board._helpers
 
 from flask import abort, g, url_for
 
-from ....services.board import (
+from byceps.services.board import (
     board_access_control_service,
     board_category_query_service,
     board_posting_query_service,

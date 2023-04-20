@@ -11,9 +11,8 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from ....typing import UserID
-
-from ...authorization.models import PermissionID
+from byceps.services.authorization.models import PermissionID
+from byceps.typing import UserID
 
 
 @dataclass(frozen=True)

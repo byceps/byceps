@@ -10,8 +10,8 @@ from typing import Optional
 
 from sqlalchemy.ext.mutable import MutableDict
 
-from ....database import db
-from ....util.instances import ReprBuilder
+from byceps.database import db
+from byceps.util.instances import ReprBuilder
 
 
 class DbUserDetail(db.Model):

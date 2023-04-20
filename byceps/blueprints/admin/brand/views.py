@@ -9,14 +9,14 @@ byceps.blueprints.admin.brand.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.brand import brand_service, brand_setting_service
-from ....services.email import email_config_service, email_footer_service
-from ....services.orga import orga_service
-from ....services.party import party_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to
+from byceps.services.brand import brand_service, brand_setting_service
+from byceps.services.email import email_config_service, email_footer_service
+from byceps.services.orga import orga_service
+from byceps.services.party import party_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm, EmailConfigUpdateForm, UpdateForm
 

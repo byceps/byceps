@@ -15,32 +15,32 @@ from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 from moneyed import Money
 
-from .....services.brand import brand_service
-from .....services.party import party_service
-from .....services.shop.article import article_sequence_service, article_service
-from .....services.shop.article.models import (
+from byceps.services.brand import brand_service
+from byceps.services.party import party_service
+from byceps.services.shop.article import article_sequence_service, article_service
+from byceps.services.shop.article.models import (
     Article,
     ArticleNumberSequence,
     ArticleType,
     get_article_type_label,
 )
-from .....services.shop.order import (
+from byceps.services.shop.order import (
     order_action_registry_service,
     order_action_service,
     ordered_articles_service,
 )
-from .....services.shop.order.models.order import Order, PaymentState
-from .....services.shop.shop import shop_service
-from .....services.shop.shop.models import ShopID
-from .....services.ticketing import ticket_category_service
-from .....services.user import user_service
-from .....services.user.models.user import User
-from .....services.user_badge import user_badge_service
-from .....typing import UserID
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_success
-from .....util.framework.templating import templated
-from .....util.views import permission_required, redirect_to, respond_no_content
+from byceps.services.shop.order.models.order import Order, PaymentState
+from byceps.services.shop.shop import shop_service
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.ticketing import ticket_category_service
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.services.user_badge import user_badge_service
+from byceps.typing import UserID
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import (
     ArticleAttachmentCreateForm,

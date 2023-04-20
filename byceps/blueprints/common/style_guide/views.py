@@ -10,8 +10,8 @@ from xml.etree import ElementTree
 
 from flask import current_app
 
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
 
 
 blueprint = create_blueprint('style_guide', __name__)

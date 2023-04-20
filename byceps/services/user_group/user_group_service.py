@@ -10,8 +10,8 @@ from typing import Optional, Sequence
 
 from sqlalchemy import select
 
-from ...database import db
-from ...typing import PartyID, UserID
+from byceps.database import db
+from byceps.typing import PartyID, UserID
 
 from .dbmodels import DbUserGroup
 

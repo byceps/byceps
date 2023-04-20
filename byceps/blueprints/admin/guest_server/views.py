@@ -12,16 +12,16 @@ from typing import Iterable, Optional
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
-from ....services.guest_server import guest_server_service
-from ....services.guest_server.models import Address, IPAddress, Setting
-from ....services.party import party_service
-from ....services.user import user_service
-from ....signals import guest_server as guest_server_signals
-from ....util.export import serialize_tuples_to_csv
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import (
+from byceps.services.guest_server import guest_server_service
+from byceps.services.guest_server.models import Address, IPAddress, Setting
+from byceps.services.party import party_service
+from byceps.services.user import user_service
+from byceps.signals import guest_server as guest_server_signals
+from byceps.util.export import serialize_tuples_to_csv
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import (
     permission_required,
     redirect_to,
     respond_no_content_with_location,

@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 from sqlalchemy import select
 
-from ...database import db
+from byceps.database import db
 
 from .dbmodels.user import DbUser
 

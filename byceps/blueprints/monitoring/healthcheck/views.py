@@ -11,8 +11,8 @@ from flask.json import dumps
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 
-from ....database import db
-from ....util.framework.blueprint import create_blueprint
+from byceps.database import db
+from byceps.util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('healthcheck', __name__)

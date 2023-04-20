@@ -12,19 +12,19 @@ from typing import Optional
 from flask import abort, request
 from flask_babel import gettext
 
-from ....services.board import (
+from byceps.services.board import (
     board_category_command_service,
     board_category_query_service,
     board_posting_query_service,
     board_service,
     board_topic_query_service,
 )
-from ....services.board.models import Board, BoardCategory
-from ....services.brand import brand_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to, respond_no_content
+from byceps.services.board.models import Board, BoardCategory
+from byceps.services.brand import brand_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import BoardCreateForm, CategoryCreateForm, CategoryUpdateForm
 

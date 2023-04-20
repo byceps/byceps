@@ -11,9 +11,8 @@ from typing import Optional
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
-from ....database import db
-
-from ..shop.models import ShopID
+from byceps.database import db
+from byceps.services.shop.shop.models import ShopID
 
 from .dbmodels.number_sequence import DbOrderNumberSequence
 from .models.number import OrderNumber, OrderNumberSequence, OrderNumberSequenceID

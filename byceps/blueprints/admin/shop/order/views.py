@@ -9,22 +9,22 @@ byceps.blueprints.admin.shop.order.views
 from flask import abort, g, request, Response
 from flask_babel import gettext
 
-from .....services.brand import brand_service
-from .....services.shop.order import (
+from byceps.services.brand import brand_service
+from byceps.services.shop.order import (
     order_log_service,
     order_sequence_service,
     order_service,
 )
-from .....services.shop.order.email import order_email_service
-from .....services.shop.order.export import order_export_service
-from .....services.shop.order.models.order import PaymentState
-from .....services.shop.shop import shop_service
-from .....services.ticketing import ticket_service
-from .....signals import shop as shop_signals
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_notice, flash_success
-from .....util.framework.templating import templated
-from .....util.views import permission_required, redirect_to, respond_no_content
+from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.export import order_export_service
+from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.shop import shop_service
+from byceps.services.ticketing import ticket_service
+from byceps.signals import shop as shop_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_notice, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from . import service
 from .forms import (

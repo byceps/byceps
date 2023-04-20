@@ -8,11 +8,10 @@ byceps.services.authorization.dbmodels
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ...database import db
-from ...typing import UserID
-from ...util.instances import ReprBuilder
-
-from ..user.dbmodels.user import DbUser
+from byceps.database import db
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 from .models import PermissionID, RoleID
 

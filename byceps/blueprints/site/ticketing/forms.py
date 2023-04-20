@@ -11,9 +11,9 @@ from flask_babel import gettext, lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
-from ....services.consent import consent_service, consent_subject_service
-from ....services.user import user_service
-from ....util.l10n import LocalizedForm
+from byceps.services.consent import consent_service, consent_subject_service
+from byceps.services.user import user_service
+from byceps.util.l10n import LocalizedForm
 
 
 def validate_user(form, field):

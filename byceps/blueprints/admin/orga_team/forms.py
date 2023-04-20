@@ -10,7 +10,7 @@ from flask_babel import lazy_gettext
 from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired, Length
 
-from ....util.l10n import LocalizedForm
+from byceps.util.l10n import LocalizedForm
 
 
 class OrgaTeamCreateForm(LocalizedForm):

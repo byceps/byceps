@@ -13,12 +13,11 @@ from typing import Optional, Sequence
 
 from sqlalchemy import delete, select
 
-from ...database import db, insert_ignore_on_conflict
-from ...typing import BrandID, PartyID, UserID
-
-from ..party import party_service
-from ..party.dbmodels.party import DbParty
-from ..party.models import Party
+from byceps.database import db, insert_ignore_on_conflict
+from byceps.services.party import party_service
+from byceps.services.party.dbmodels.party import DbParty
+from byceps.services.party.models import Party
+from byceps.typing import BrandID, PartyID, UserID
 
 from .dbmodels.archived_attendance import DbArchivedAttendance
 from .dbmodels.category import DbTicketCategory

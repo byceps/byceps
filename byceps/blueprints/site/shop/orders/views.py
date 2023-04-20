@@ -11,23 +11,23 @@ from decimal import Decimal
 from flask import abort, g, request
 from flask_babel import gettext
 
-from .....services.email import (
+from byceps.services.email import (
     email_config_service,
     email_footer_service,
     email_service,
 )
-from .....services.shop.cancelation_request import cancelation_request_service
-from .....services.shop.order import order_payment_service, order_service
-from .....services.shop.order.email import order_email_service
-from .....services.shop.order.models.order import PaymentState
-from .....services.shop.storefront import storefront_service
-from .....services.user import user_service
-from .....signals import shop as shop_signals
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_success
-from .....util.framework.templating import templated
-from .....util.l10n import get_user_locale
-from .....util.views import login_required, redirect_to
+from byceps.services.shop.cancelation_request import cancelation_request_service
+from byceps.services.shop.order import order_payment_service, order_service
+from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.storefront import storefront_service
+from byceps.services.user import user_service
+from byceps.signals import shop as shop_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.l10n import get_user_locale
+from byceps.util.views import login_required, redirect_to
 
 from .forms import CancelForm, RequestFullRefundForm, RequestPartialRefundForm
 

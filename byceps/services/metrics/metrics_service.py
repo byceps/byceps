@@ -8,24 +8,24 @@ byceps.metrics.metrics_service
 
 from typing import Iterator
 
-from ...services.board import (
+from byceps.services.board import (
     board_posting_query_service,
     board_service,
     board_topic_query_service,
 )
-from ...services.brand import brand_service
-from ...services.consent import consent_service
-from ...services.metrics.models import Label, Metric
-from ...services.party import party_service
-from ...services.party.models import Party
-from ...services.seating import seat_service
-from ...services.shop.article import article_service as shop_article_service
-from ...services.shop.order import order_service
-from ...services.shop.shop import shop_service
-from ...services.shop.shop.models import Shop, ShopID
-from ...services.ticketing import ticket_service
-from ...services.user import user_stats_service
-from ...typing import BrandID, PartyID
+from byceps.services.brand import brand_service
+from byceps.services.consent import consent_service
+from byceps.services.metrics.models import Label, Metric
+from byceps.services.party import party_service
+from byceps.services.party.models import Party
+from byceps.services.seating import seat_service
+from byceps.services.shop.article import article_service as shop_article_service
+from byceps.services.shop.order import order_service
+from byceps.services.shop.shop import shop_service
+from byceps.services.shop.shop.models import Shop, ShopID
+from byceps.services.ticketing import ticket_service
+from byceps.services.user import user_stats_service
+from byceps.typing import BrandID, PartyID
 
 
 def serialize(metrics: Iterator[Metric]) -> Iterator[str]:

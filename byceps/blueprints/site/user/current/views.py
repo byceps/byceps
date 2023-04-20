@@ -8,7 +8,7 @@ byceps.blueprints.site.user.current.views
 
 from flask import g, jsonify, Response
 
-from .....util.framework.blueprint import create_blueprint
+from byceps.util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('user_current', __name__)

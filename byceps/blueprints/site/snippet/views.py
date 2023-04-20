@@ -6,7 +6,7 @@ byceps.blueprints.site.snippet.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....util.framework.blueprint import create_blueprint
+from byceps.util.framework.blueprint import create_blueprint
 
 from .templating import render_snippet_as_partial_from_template
 

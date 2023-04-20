@@ -8,9 +8,9 @@ byceps.blueprints.api.v1.user_avatar.views
 
 from flask import redirect
 
-from .....services.user import user_avatar_service
-from .....services.user.dbmodels.avatar import FALLBACK_AVATAR_URL_PATH
-from .....util.framework.blueprint import create_blueprint
+from byceps.services.user import user_avatar_service
+from byceps.services.user.dbmodels.avatar import FALLBACK_AVATAR_URL_PATH
+from byceps.util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('user_avatar_api', __name__)

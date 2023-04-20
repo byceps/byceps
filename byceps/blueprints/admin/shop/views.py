@@ -8,7 +8,7 @@ byceps.blueprints.admin.shop.views
 
 from decimal import Decimal
 
-from ....util.framework.blueprint import create_blueprint
+from byceps.util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('shop_admin', __name__)

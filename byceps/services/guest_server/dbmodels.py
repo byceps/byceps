@@ -18,9 +18,9 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...database import db, generate_uuid7
-from ...typing import PartyID, UserID
-from ...util.instances import ReprBuilder
+from byceps.database import db, generate_uuid7
+from byceps.typing import PartyID, UserID
+from byceps.util.instances import ReprBuilder
 
 from .models import IPAddress
 

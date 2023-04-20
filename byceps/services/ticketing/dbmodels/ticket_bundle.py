@@ -9,13 +9,11 @@ byceps.services.ticketing.dbmodels.ticket_bundle
 from datetime import datetime
 from typing import Optional
 
-from ....database import db, generate_uuid7
-from ....typing import PartyID, UserID
-from ....util.instances import ReprBuilder
-
-from ...user.dbmodels.user import DbUser
-
-from ..models.ticket import TicketCategoryID
+from byceps.database import db, generate_uuid7
+from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import PartyID, UserID
+from byceps.util.instances import ReprBuilder
 
 from .category import DbTicketCategory
 

@@ -10,8 +10,8 @@ from typing import Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...typing import PartyID
+from byceps.database import db
+from byceps.typing import PartyID
 
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket

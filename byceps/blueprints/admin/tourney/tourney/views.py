@@ -12,12 +12,12 @@ from datetime import datetime
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
-from .....services.party import party_service
-from .....services.tourney import tourney_service
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_success
-from .....util.framework.templating import templated
-from .....util.views import permission_required, redirect_to
+from byceps.services.party import party_service
+from byceps.services.tourney import tourney_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm, UpdateForm
 

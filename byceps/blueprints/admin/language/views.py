@@ -10,11 +10,11 @@ from babel import Locale
 from flask import request
 from flask_babel import gettext
 
-from ....services.language import language_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to
+from byceps.services.language import language_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm
 

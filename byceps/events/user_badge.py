@@ -9,8 +9,8 @@ byceps.events.user_badge
 from dataclasses import dataclass
 from typing import Optional
 
-from ..services.user_badge.models import BadgeID
-from ..typing import UserID
+from byceps.services.user_badge.models import BadgeID
+from byceps.typing import UserID
 
 from .base import _BaseEvent
 

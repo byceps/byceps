@@ -8,14 +8,14 @@ byceps.blueprints.admin.shop.cancelation_request.views
 
 from flask import abort, request
 
-from .....services.brand import brand_service
-from .....services.shop.cancelation_request import cancelation_request_service
-from .....services.shop.order import order_service
-from .....services.shop.shop import shop_service
-from .....services.user import user_service
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.templating import templated
-from .....util.views import permission_required
+from byceps.services.brand import brand_service
+from byceps.services.shop.cancelation_request import cancelation_request_service
+from byceps.services.shop.order import order_service
+from byceps.services.shop.shop import shop_service
+from byceps.services.user import user_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required
 
 
 blueprint = create_blueprint('shop_cancelation_request_admin', __name__)

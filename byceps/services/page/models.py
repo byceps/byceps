@@ -11,10 +11,9 @@ from datetime import datetime
 from typing import NewType, Optional
 from uuid import UUID
 
-from ...typing import UserID
-
-from ..site.models import SiteID
-from ..site_navigation.models import NavMenuID
+from byceps.services.site.models import SiteID
+from byceps.services.site_navigation.models import NavMenuID
+from byceps.typing import UserID
 
 
 PageID = NewType('PageID', UUID)

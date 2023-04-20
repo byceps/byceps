@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from ....typing import UserID
+from byceps.typing import UserID
 
 
 UserLogEntryData = dict[str, Any]

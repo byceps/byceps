@@ -10,25 +10,25 @@ from datetime import date, timedelta
 
 from flask import abort
 
-from ....services.board import board_service
-from ....services.brand import brand_service, brand_setting_service
-from ....services.consent import consent_subject_service
-from ....services.guest_server import guest_server_service
-from ....services.news import news_channel_service
-from ....services.newsletter import newsletter_service
-from ....services.orga import orga_birthday_service
-from ....services.orga_team import orga_team_service
-from ....services.party import party_service
-from ....services.seating import seat_service, seating_area_service
-from ....services.shop.order import order_service as shop_order_service
-from ....services.shop.shop import shop_service
-from ....services.shop.storefront import storefront_service
-from ....services.site import site_service
-from ....services.ticketing import ticket_service
-from ....services.user import user_service, user_stats_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
-from ....util.views import permission_required
+from byceps.services.board import board_service
+from byceps.services.brand import brand_service, brand_setting_service
+from byceps.services.consent import consent_subject_service
+from byceps.services.guest_server import guest_server_service
+from byceps.services.news import news_channel_service
+from byceps.services.newsletter import newsletter_service
+from byceps.services.orga import orga_birthday_service
+from byceps.services.orga_team import orga_team_service
+from byceps.services.party import party_service
+from byceps.services.seating import seat_service, seating_area_service
+from byceps.services.shop.order import order_service as shop_order_service
+from byceps.services.shop.shop import shop_service
+from byceps.services.shop.storefront import storefront_service
+from byceps.services.site import site_service
+from byceps.services.ticketing import ticket_service
+from byceps.services.user import user_service, user_stats_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required
 
 
 blueprint = create_blueprint('admin_dashboard', __name__)

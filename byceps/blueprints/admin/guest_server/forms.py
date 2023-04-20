@@ -18,8 +18,8 @@ from wtforms.validators import (
     Regexp,
 )
 
-from ....util.forms import UserScreenNameField
-from ....util.l10n import LocalizedForm
+from byceps.util.forms import UserScreenNameField
+from byceps.util.l10n import LocalizedForm
 
 
 class SettingUpdateForm(LocalizedForm):

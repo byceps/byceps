@@ -16,10 +16,9 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from .....database import db, generate_uuid7
-
-from ..models.order import OrderID
-from ..models.payment import AdditionalPaymentData
+from byceps.database import db, generate_uuid7
+from byceps.services.shop.order.models.order import OrderID
+from byceps.services.shop.order.models.payment import AdditionalPaymentData
 
 
 class DbPayment(db.Model):

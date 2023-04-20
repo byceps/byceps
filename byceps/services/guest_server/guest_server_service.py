@@ -10,12 +10,11 @@ from typing import Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...events.guest_server import GuestServerRegistered
-from ...typing import PartyID, UserID
-
-from ..party import party_service
-from ..user import user_service
+from byceps.database import db
+from byceps.events.guest_server import GuestServerRegistered
+from byceps.services.party import party_service
+from byceps.services.user import user_service
+from byceps.typing import PartyID, UserID
 
 from .dbmodels import DbAddress, DbServer, DbSetting
 from .models import (

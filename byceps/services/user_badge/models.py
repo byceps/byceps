@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from ...typing import BrandID, UserID
+from byceps.typing import BrandID, UserID
 
 
 BadgeID = NewType('BadgeID', UUID)

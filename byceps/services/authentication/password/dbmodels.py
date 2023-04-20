@@ -8,8 +8,8 @@ byceps.services.authentication.password.dbmodels
 
 from datetime import datetime
 
-from ....database import db
-from ....typing import UserID
+from byceps.database import db
+from byceps.typing import UserID
 
 
 class DbCredential(db.Model):

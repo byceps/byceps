@@ -9,14 +9,14 @@ byceps.blueprints.site.user.avatar.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from .....services.image import image_service
-from .....services.user import user_avatar_service
-from .....signals import user as user_signals
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_notice, flash_success
-from .....util.framework.templating import templated
-from .....util.image.models import ImageType
-from .....util.views import redirect_to, respond_no_content
+from byceps.services.image import image_service
+from byceps.services.user import user_avatar_service
+from byceps.signals import user as user_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_notice, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.image.models import ImageType
+from byceps.util.views import redirect_to, respond_no_content
 
 from .forms import UpdateForm
 

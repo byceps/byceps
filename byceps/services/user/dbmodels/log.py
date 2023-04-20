@@ -8,11 +8,10 @@ byceps.services.user.dbmodels.log
 
 from datetime import datetime
 
-from ....database import db, generate_uuid7
-from ....typing import UserID
-from ....util.instances import ReprBuilder
-
-from ..models.log import UserLogEntryData
+from byceps.database import db, generate_uuid7
+from byceps.services.user.models.log import UserLogEntryData
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 
 class DbUserLogEntry(db.Model):

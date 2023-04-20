@@ -12,8 +12,8 @@ from flask_babel import gettext, lazy_gettext, to_user_timezone, to_utc
 from wtforms import DateField, TimeField
 from wtforms.validators import InputRequired
 
-from ....util.datetime.range import DateTimeRange
-from ....util.l10n import LocalizedForm
+from byceps.util.datetime.range import DateTimeRange
+from byceps.util.l10n import LocalizedForm
 
 
 def build_presence_create_form(dt_range: DateTimeRange):

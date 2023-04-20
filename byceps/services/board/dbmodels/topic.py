@@ -10,13 +10,11 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....database import db, generate_uuid7
-from ....typing import UserID
-from ....util.instances import ReprBuilder
-
-from ...user.dbmodels.user import DbUser
-
-from ..models import BoardCategoryID
+from byceps.database import db, generate_uuid7
+from byceps.services.board.models import BoardCategoryID
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 from .category import DbBoardCategory
 

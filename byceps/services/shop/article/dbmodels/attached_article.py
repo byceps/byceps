@@ -6,9 +6,8 @@ byceps.services.shop.article.dbmodels.attached_article
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from .....database import db, generate_uuid7
-
-from ..models import ArticleID
+from byceps.database import db, generate_uuid7
+from byceps.services.shop.article.models import ArticleID
 
 from .article import DbArticle
 

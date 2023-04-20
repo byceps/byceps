@@ -17,8 +17,8 @@ Metrics then become available at `http://127.0.0.1/metrics`.
 
 from flask import Flask
 
-from ..database import db
-from ..util.framework.blueprint import get_blueprint
+from byceps.database import db
+from byceps.util.framework.blueprint import get_blueprint
 
 
 def create_app(database_uri):

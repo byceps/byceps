@@ -10,7 +10,7 @@ from flask_babel import lazy_gettext
 from wtforms import FileField
 from wtforms.validators import InputRequired
 
-from .....util.l10n import LocalizedForm
+from byceps.util.l10n import LocalizedForm
 
 
 class UpdateForm(LocalizedForm):

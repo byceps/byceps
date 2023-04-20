@@ -10,9 +10,9 @@ from flask_babel import lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
-from ....services.orga import orga_service
-from ....services.user import user_service
-from ....util.l10n import LocalizedForm
+from byceps.services.orga import orga_service
+from byceps.services.user import user_service
+from byceps.util.l10n import LocalizedForm
 
 
 def validate_user_screen_name(form, field):

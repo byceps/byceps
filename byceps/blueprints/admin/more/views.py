@@ -8,12 +8,12 @@ byceps.blueprints.admin.more.views
 
 from flask import abort
 
-from ....services.brand import brand_service
-from ....services.party import party_service
-from ....services.site import site_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
-from ....util.views import permission_required
+from byceps.services.brand import brand_service
+from byceps.services.party import party_service
+from byceps.services.site import site_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required
 
 
 blueprint = create_blueprint('more_admin', __name__)

@@ -9,17 +9,16 @@ byceps.services.tourney.avatar.tourney_avatars_service
 from uuid import UUID
 from typing import BinaryIO
 
-from ....database import db
-from ....typing import PartyID, UserID
-from ....util import upload
-from ....util.image import create_thumbnail
-from ....util.image.models import Dimensions, ImageType
-
-from ...image import image_service
-from ...image.image_service import (
+from byceps.database import db
+from byceps.services.image import image_service
+from byceps.services.image.image_service import (
     ImageTypeProhibited,  # noqa: F401
 )  # Provide to view functions.
-from ...user import user_service
+from byceps.services.user import user_service
+from byceps.typing import PartyID, UserID
+from byceps.util import upload
+from byceps.util.image import create_thumbnail
+from byceps.util.image.models import Dimensions, ImageType
 
 from .dbmodels import DbTourneyAvatar
 

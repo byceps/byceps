@@ -9,7 +9,7 @@ from pathlib import Path
 import click
 from flask.cli import with_appcontext
 
-from ...services.user import user_import_service
+from byceps.services.user import user_import_service
 
 
 @click.command()

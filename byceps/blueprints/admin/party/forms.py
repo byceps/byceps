@@ -18,8 +18,8 @@ from wtforms import (
 )
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
-from ....services.party import party_service
-from ....util.l10n import LocalizedForm
+from byceps.services.party import party_service
+from byceps.util.l10n import LocalizedForm
 
 
 class _BaseForm(LocalizedForm):

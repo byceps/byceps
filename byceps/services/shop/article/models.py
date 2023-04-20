@@ -18,7 +18,7 @@ from uuid import UUID
 from flask_babel import lazy_gettext
 from moneyed import Money
 
-from ..shop.models import ShopID
+from byceps.services.shop.shop.models import ShopID
 
 
 ArticleID = NewType('ArticleID', UUID)

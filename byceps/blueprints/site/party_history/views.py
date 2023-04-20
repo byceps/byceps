@@ -8,13 +8,12 @@ byceps.blueprints.site.party_history.views
 
 from flask import abort, g
 
-from ....services.party import party_service
-from ....services.ticketing import ticket_attendance_service
-from ....services.user import user_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
-
-from ..site.navigation import subnavigation_for_view
+from byceps.blueprints.site.site.navigation import subnavigation_for_view
+from byceps.services.party import party_service
+from byceps.services.ticketing import ticket_attendance_service
+from byceps.services.user import user_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
 
 
 blueprint = create_blueprint('party_history', __name__)

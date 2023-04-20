@@ -11,10 +11,9 @@ from typing import Optional
 
 from sqlalchemy.ext.mutable import MutableList
 
-from ....database import db, generate_uuid4
-from ....typing import UserID
-
-from ...authorization.models import PermissionID
+from byceps.database import db, generate_uuid4
+from byceps.services.authorization.models import PermissionID
+from byceps.typing import UserID
 
 
 class DbApiToken(db.Model):

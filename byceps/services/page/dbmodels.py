@@ -14,13 +14,12 @@ from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ...database import db, generate_uuid7
-from ...typing import UserID
-
-from ..language.dbmodels import DbLanguage
-from ..site.models import SiteID
-from ..site_navigation.dbmodels import DbNavMenu
-from ..user.dbmodels.user import DbUser
+from byceps.database import db, generate_uuid7
+from byceps.services.language.dbmodels import DbLanguage
+from byceps.services.site.models import SiteID
+from byceps.services.site_navigation.dbmodels import DbNavMenu
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
 
 
 class DbPage(db.Model):

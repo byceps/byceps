@@ -12,8 +12,8 @@ from smtplib import SMTP, SMTP_SSL
 
 from flask import current_app
 
-from ...util.jobqueue import enqueue
-from ...util.result import Err, Ok, Result
+from byceps.util.jobqueue import enqueue
+from byceps.util.result import Err, Ok, Result
 
 from .models import Message, NameAndAddress
 

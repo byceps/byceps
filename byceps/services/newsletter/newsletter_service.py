@@ -10,10 +10,9 @@ from typing import Iterator, Optional, Sequence
 
 from sqlalchemy import select
 
-from ...database import db
-from ...typing import UserID
-
-from ..user.dbmodels.user import DbUser
+from byceps.database import db
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
 
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
 from .models import List, ListID, Subscriber

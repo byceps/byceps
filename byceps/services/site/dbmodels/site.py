@@ -8,16 +8,14 @@ byceps.services.site.dbmodels.site
 
 from typing import Optional
 
-from ....database import db
-from ....typing import BrandID, PartyID
-from ....util.instances import ReprBuilder
-
-from ...board.models import BoardID
-from ...brand.dbmodels.brand import DbBrand
-from ...news.dbmodels.channel import DbNewsChannel
-from ...shop.storefront.models import StorefrontID
-
-from ..models import SiteID
+from byceps.database import db
+from byceps.services.board.models import BoardID
+from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.services.news.dbmodels.channel import DbNewsChannel
+from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.site.models import SiteID
+from byceps.typing import BrandID, PartyID
+from byceps.util.instances import ReprBuilder
 
 
 site_news_channels = db.Table(

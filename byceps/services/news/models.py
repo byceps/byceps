@@ -12,7 +12,7 @@ from enum import Enum
 from typing import NewType, Optional
 from uuid import UUID
 
-from ...typing import BrandID, UserID
+from byceps.typing import BrandID, UserID
 
 
 NewsChannelID = NewType('NewsChannelID', str)

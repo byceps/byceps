@@ -10,7 +10,7 @@ from datetime import datetime
 
 from sqlalchemy import select
 
-from ...database import db
+from byceps.database import db
 
 from .dbmodels.log import DbTicketLogEntry
 from .models.log import TicketLogEntry, TicketLogEntryData

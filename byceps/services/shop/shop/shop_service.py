@@ -11,8 +11,8 @@ from typing import Optional
 from moneyed import Currency
 from sqlalchemy import delete, select
 
-from ....database import db
-from ....typing import BrandID
+from byceps.database import db
+from byceps.typing import BrandID
 
 from .dbmodels import DbShop
 from .models import Shop, ShopID

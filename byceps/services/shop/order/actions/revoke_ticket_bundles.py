@@ -6,10 +6,9 @@ byceps.services.shop.order.actions.revoke_ticket_bundles
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from .....typing import UserID
-
-from ..models.action import ActionParameters
-from ..models.order import LineItem, Order
+from byceps.services.shop.order.models.action import ActionParameters
+from byceps.services.shop.order.models.order import LineItem, Order
+from byceps.typing import UserID
 
 from . import ticket_bundle
 

@@ -10,9 +10,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from ...typing import BrandID, PartyID
-
-from ..brand.models import Brand
+from byceps.services.brand.models import Brand
+from byceps.typing import BrandID, PartyID
 
 
 @dataclass(frozen=True)

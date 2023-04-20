@@ -10,8 +10,8 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from ..article.models import ArticleNumber
-from ..shop.models import ShopID
+from byceps.services.shop.article.models import ArticleNumber
+from byceps.services.shop.shop.models import ShopID
 
 
 CatalogID = NewType('CatalogID', UUID)

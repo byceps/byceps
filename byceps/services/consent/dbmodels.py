@@ -9,11 +9,10 @@ byceps.services.consent.dbmodels
 from datetime import datetime
 from typing import Optional
 
-from ...database import db, generate_uuid4
-from ...typing import BrandID, UserID
-from ...util.instances import ReprBuilder
-
-from ..user.dbmodels.user import DbUser
+from byceps.database import db, generate_uuid4
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import BrandID, UserID
+from byceps.util.instances import ReprBuilder
 
 from .models import ConsentSubjectID
 

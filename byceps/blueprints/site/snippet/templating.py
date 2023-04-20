@@ -11,11 +11,11 @@ from typing import Any, Optional
 from flask import g
 from jinja2 import Template
 
-from ....services.snippet import snippet_service
-from ....services.snippet.dbmodels import DbSnippetVersion
-from ....services.snippet.models import SnippetScope
-from ....util.l10n import get_user_locale
-from ....util.templating import load_template
+from byceps.services.snippet import snippet_service
+from byceps.services.snippet.dbmodels import DbSnippetVersion
+from byceps.services.snippet.models import SnippetScope
+from byceps.util.l10n import get_user_locale
+from byceps.util.templating import load_template
 
 
 Context = dict[str, Any]

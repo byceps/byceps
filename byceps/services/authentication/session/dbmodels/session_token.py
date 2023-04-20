@@ -8,8 +8,8 @@ byceps.services.authentication.session.dbmodels.session_token
 
 from datetime import datetime
 
-from .....database import db
-from .....typing import UserID
+from byceps.database import db
+from byceps.typing import UserID
 
 
 class DbSessionToken(db.Model):

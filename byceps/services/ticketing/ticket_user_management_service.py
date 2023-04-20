@@ -6,10 +6,9 @@ byceps.services.ticketing.ticket_user_management_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import db
-from ...typing import UserID
-
-from ..user import user_service
+from byceps.database import db
+from byceps.services.user import user_service
+from byceps.typing import UserID
 
 from . import ticket_log_service, ticket_service
 from .exceptions import (

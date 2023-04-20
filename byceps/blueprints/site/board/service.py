@@ -11,24 +11,25 @@ from typing import Iterable, Optional
 
 from flask import g
 
-from ....services.authentication.session.models import CurrentUser
-from ....services.board import (
+from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.board import (
     board_last_view_service,
     board_posting_query_service,
 )
-from ....services.board.dbmodels.posting import DbPosting
-from ....services.board.dbmodels.topic import DbTopic
-from ....services.board.models import BoardCategoryWithLastUpdate
-from ....services.orga_team import orga_team_service
-from ....services.party import party_service
-from ....services.party.models import Party
-from ....services.site import site_setting_service
-from ....services.ticketing import ticket_service
-from ....services.user import user_service
-from ....services.user_badge import user_badge_awarding_service
-from ....services.user_badge.models import Badge
-from ....typing import BrandID, PartyID, UserID
-from ....util.authorization import has_current_user_permission
+from byceps.services.board.dbmodels.posting import DbPosting
+from byceps.services.board.dbmodels.topic import DbTopic
+from byceps.services.board.models import BoardCategoryWithLastUpdate
+from byceps.services.orga_team import orga_team_service
+from byceps.services.party import party_service
+from byceps.services.party.models import Party
+from byceps.services.site import site_setting_service
+from byceps.services.ticketing import ticket_service
+from byceps.services.user import user_service
+from byceps.services.user_badge import user_badge_awarding_service
+from byceps.services.user_badge.models import Badge
+from byceps.typing import BrandID, PartyID, UserID
+from byceps.util.authorization import has_current_user_permission
+
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 
 

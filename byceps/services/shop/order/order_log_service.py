@@ -11,10 +11,9 @@ from typing import Iterable, Optional
 
 from sqlalchemy import select
 
-from ....database import db
-from ....typing import UserID
-
-from ..shop.models import ShopID
+from byceps.database import db
+from byceps.services.shop.shop.models import ShopID
+from byceps.typing import UserID
 
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder

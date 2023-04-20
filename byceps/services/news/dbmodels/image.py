@@ -9,11 +9,10 @@ byceps.services.news.dbmodels.image
 from datetime import datetime
 from typing import Optional
 
-from ....database import db
-from ....typing import UserID
-from ....util.instances import ReprBuilder
-
-from ..models import NewsImageID, NewsItemID
+from byceps.database import db
+from byceps.services.news.models import NewsImageID, NewsItemID
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 from .item import DbNewsItem
 

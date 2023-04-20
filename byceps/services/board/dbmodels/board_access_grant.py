@@ -9,11 +9,10 @@ byceps.services.board.dbmodels.board_access_grant
 from datetime import datetime
 from typing import NewType
 
-from ....database import db, generate_uuid7
-from ....typing import UserID
-from ....util.instances import ReprBuilder
-
-from ..models import BoardID
+from byceps.database import db, generate_uuid7
+from byceps.services.board.models import BoardID
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 
 BoardAccessGrantID = NewType('BoardAccessGrantID', str)

@@ -12,16 +12,16 @@ from typing import Optional
 
 import structlog
 
-from .....services.authentication import authn_service
-from .....services.authentication.errors import AuthenticationFailed
-from .....services.authentication.session import authn_session_service
-from .....services.authentication.session.authn_session_service import (
+from byceps.services.authentication import authn_service
+from byceps.services.authentication.errors import AuthenticationFailed
+from byceps.services.authentication.session import authn_session_service
+from byceps.services.authentication.session.authn_session_service import (
     UserLoggedIn,
 )
-from .....services.user.models.user import User
-from .....util import user_session
-from .....util.authorization import get_permissions_for_user
-from .....util.result import Err, Ok, Result
+from byceps.services.user.models.user import User
+from byceps.util import user_session
+from byceps.util.authorization import get_permissions_for_user
+from byceps.util.result import Err, Ok, Result
 
 
 log = structlog.get_logger()

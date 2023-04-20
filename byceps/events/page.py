@@ -8,8 +8,8 @@ byceps.events.page
 
 from dataclasses import dataclass
 
-from ..services.page.models import PageID, PageVersionID
-from ..services.site.models import SiteID
+from byceps.services.page.models import PageID, PageVersionID
+from byceps.services.site.models import SiteID
 
 from .base import _BaseEvent
 

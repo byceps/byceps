@@ -6,12 +6,11 @@ byceps.services.ticketing.ticket_user_checkin_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import db
-from ...events.ticketing import TicketCheckedIn
-from ...typing import PartyID, UserID
-
-from ..user import user_service
-from ..user.models.user import User
+from byceps.database import db
+from byceps.events.ticketing import TicketCheckedIn
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID, UserID
 
 from . import ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket

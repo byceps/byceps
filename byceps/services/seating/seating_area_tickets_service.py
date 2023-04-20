@@ -10,12 +10,11 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import Iterable, Iterator, Optional
 
-from ...typing import UserID
-
-from ..ticketing.dbmodels.ticket import DbTicket
-from ..ticketing.models.ticket import TicketCode, TicketID
-from ..user import user_service
-from ..user.models.user import User
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.ticketing.models.ticket import TicketCode, TicketID
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
 
 from .models import Seat
 

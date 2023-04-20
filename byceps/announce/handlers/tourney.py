@@ -12,7 +12,8 @@ from typing import Optional
 
 from flask_babel import gettext
 
-from ...events.tourney import (
+from byceps.announce.helpers import Announcement, with_locale
+from byceps.events.tourney import (
     TourneyCanceled,
     TourneyFinished,
     TourneyMatchReady,
@@ -27,9 +28,7 @@ from ...events.tourney import (
     TourneyPaused,
     TourneyStarted,
 )
-from ...services.webhooks.models import OutgoingWebhook
-
-from ..helpers import Announcement, with_locale
+from byceps.services.webhooks.models import OutgoingWebhook
 
 
 # -------------------------------------------------------------------- #

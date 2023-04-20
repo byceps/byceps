@@ -8,9 +8,9 @@ Mapping between event types and names.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..events.auth import UserLoggedIn
-from ..events.base import _BaseEvent
-from ..events.board import (
+from byceps.events.auth import UserLoggedIn
+from byceps.events.base import _BaseEvent
+from byceps.events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
     BoardPostingUnhidden,
@@ -23,13 +23,13 @@ from ..events.board import (
     BoardTopicUnlocked,
     BoardTopicUnpinned,
 )
-from ..events.guest_server import GuestServerRegistered
-from ..events.news import NewsItemPublished
-from ..events.page import PageCreated, PageDeleted, PageUpdated
-from ..events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
-from ..events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
-from ..events.ticketing import TicketCheckedIn, TicketsSold
-from ..events.tourney import (
+from byceps.events.guest_server import GuestServerRegistered
+from byceps.events.news import NewsItemPublished
+from byceps.events.page import PageCreated, PageDeleted, PageUpdated
+from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
+from byceps.events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
+from byceps.events.ticketing import TicketCheckedIn, TicketsSold
+from byceps.events.tourney import (
     TourneyCanceled,
     TourneyFinished,
     TourneyMatchReady,
@@ -44,7 +44,7 @@ from ..events.tourney import (
     TourneyPaused,
     TourneyStarted,
 )
-from ..events.user import (
+from byceps.events.user import (
     UserAccountCreated,
     UserAccountDeleted,
     UserAccountSuspended,
@@ -54,7 +54,7 @@ from ..events.user import (
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
-from ..events.user_badge import UserBadgeAwarded
+from byceps.events.user_badge import UserBadgeAwarded
 
 
 EVENT_TYPES_TO_NAMES = {

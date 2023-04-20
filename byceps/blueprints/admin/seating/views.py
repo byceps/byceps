@@ -9,19 +9,19 @@ byceps.blueprints.admin.seating.views
 from flask import abort, request
 from flask_babel import gettext
 
-from ....services.party import party_service
-from ....services.seating import (
+from byceps.services.party import party_service
+from byceps.services.seating import (
     seat_group_service,
     seat_service,
     seating_area_service,
     seating_area_tickets_service,
 )
-from ....services.seating.models import SeatingArea, SeatingAreaID
-from ....services.ticketing import ticket_category_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to
+from byceps.services.seating.models import SeatingArea, SeatingAreaID
+from byceps.services.ticketing import ticket_category_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to
 
 from .forms import AreaCreateForm, AreaUpdateForm
 

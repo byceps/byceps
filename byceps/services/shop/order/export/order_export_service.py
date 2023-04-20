@@ -13,12 +13,11 @@ from zoneinfo import ZoneInfo
 
 from flask import current_app
 
-from .....services.user import user_service
-from .....util.templating import load_template
-
-from .. import order_service
-from ..models.detailed_order import DetailedOrder
-from ..models.order import OrderID
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.models.detailed_order import DetailedOrder
+from byceps.services.shop.order.models.order import OrderID
+from byceps.services.user import user_service
+from byceps.util.templating import load_template
 
 
 def export_order_as_xml(order_id: OrderID) -> Optional[dict[str, str]]:

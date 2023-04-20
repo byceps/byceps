@@ -10,11 +10,10 @@ from typing import Iterable, Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...util.iterables import find, index_of
-from ...util.result import Err, Ok, Result
-
-from ..site.models import SiteID
+from byceps.database import db
+from byceps.services.site.models import SiteID
+from byceps.util.iterables import find, index_of
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbNavItem, DbNavMenu
 from .models import (

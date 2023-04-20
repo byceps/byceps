@@ -11,23 +11,23 @@ from operator import attrgetter
 from typing import Any, Iterable, Iterator
 from uuid import UUID
 
-from ....services.consent import consent_service, consent_subject_service
-from ....services.newsletter import newsletter_service
-from ....services.newsletter.models import List as NewsletterList
-from ....services.party import party_service
-from ....services.party.models import Party
-from ....services.shop.order import order_log_service, order_service
-from ....services.site import site_service
-from ....services.ticketing import ticket_attendance_service, ticket_service
-from ....services.ticketing.dbmodels.ticket import DbTicket
-from ....services.user import user_log_service, user_service
-from ....services.user.dbmodels.avatar import (
+from byceps.services.consent import consent_service, consent_subject_service
+from byceps.services.newsletter import newsletter_service
+from byceps.services.newsletter.models import List as NewsletterList
+from byceps.services.party import party_service
+from byceps.services.party.models import Party
+from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.site import site_service
+from byceps.services.ticketing import ticket_attendance_service, ticket_service
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.user import user_log_service, user_service
+from byceps.services.user.dbmodels.avatar import (
     get_absolute_url_path as get_absolute_url_path_for_avatar,
 )
-from ....services.user.models.log import UserLogEntry, UserLogEntryData
-from ....services.user.models.user import User
-from ....services.user_badge import user_badge_service
-from ....typing import PartyID, UserID
+from byceps.services.user.models.log import UserLogEntry, UserLogEntryData
+from byceps.services.user.models.user import User
+from byceps.services.user_badge import user_badge_service
+from byceps.typing import PartyID, UserID
 
 
 def get_parties_and_tickets(

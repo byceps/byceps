@@ -8,11 +8,10 @@ byceps.services.board.dbmodels.posting
 
 from datetime import datetime
 
-from ....database import db, generate_uuid7
-from ....typing import UserID
-from ....util.instances import ReprBuilder
-
-from ...user.dbmodels.user import DbUser
+from byceps.database import db, generate_uuid7
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 from .topic import DbTopic
 

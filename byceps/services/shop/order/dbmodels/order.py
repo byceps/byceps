@@ -16,17 +16,14 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from .....database import db, generate_uuid7
-from .....typing import UserID
-from .....util.instances import ReprBuilder
-
-from ....user.dbmodels.user import DbUser
-
-from ...shop.models import ShopID
-from ...storefront.models import StorefrontID
-
-from ..models.number import OrderNumber
-from ..models.order import PaymentState
+from byceps.database import db, generate_uuid7
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 
 class DbOrder(db.Model):

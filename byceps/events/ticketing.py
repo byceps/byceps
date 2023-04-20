@@ -9,9 +9,9 @@ byceps.events.ticketing
 from dataclasses import dataclass
 from typing import Optional
 
-from ..services.seating.models import SeatID
-from ..services.ticketing.models.ticket import TicketCode, TicketID
-from ..typing import PartyID, UserID
+from byceps.services.seating.models import SeatID
+from byceps.services.ticketing.models.ticket import TicketCode, TicketID
+from byceps.typing import PartyID, UserID
 
 from .base import _BaseEvent
 

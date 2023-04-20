@@ -13,7 +13,7 @@ Existing tables will be ignored.
 import click
 from flask.cli import with_appcontext
 
-from ...services.language import language_service
+from byceps.services.language import language_service
 
 from .create_database_tables import _create_database_tables
 from .import_roles import _DEFAULT_DATA_FILE, _import_roles

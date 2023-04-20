@@ -10,9 +10,9 @@ from flask_babel import lazy_gettext
 from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
-from ....services.consent import consent_subject_service
-from ....typing import BrandID
-from ....util.l10n import LocalizedForm
+from byceps.services.consent import consent_subject_service
+from byceps.typing import BrandID
+from byceps.util.l10n import LocalizedForm
 
 
 class SubjectCreateForm(LocalizedForm):

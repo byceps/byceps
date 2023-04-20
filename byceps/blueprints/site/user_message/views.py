@@ -11,12 +11,12 @@ Send messages from one user to another.
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
-from ....services.user import user_service
-from ....services.user_message import user_message_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import login_required, redirect_to
+from byceps.services.user import user_service
+from byceps.services.user_message import user_message_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import login_required, redirect_to
 
 from .forms import CreateForm
 

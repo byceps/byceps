@@ -8,14 +8,13 @@ byceps.services.shop.storefront.dbmodels
 
 from typing import Optional
 
-from ....database import db
-from ....util.instances import ReprBuilder
-
+from byceps.database import db
 # Make shop catalog tables available for database creation.
-from ..catalog.dbmodels import DbCatalog  # noqa: F401
-from ..catalog.models import CatalogID
-from ..order.models.number import OrderNumberSequenceID
-from ..shop.models import ShopID
+from byceps.services.shop.catalog.dbmodels import DbCatalog  # noqa: F401
+from byceps.services.shop.catalog.models import CatalogID
+from byceps.services.shop.order.models.number import OrderNumberSequenceID
+from byceps.services.shop.shop.models import ShopID
+from byceps.util.instances import ReprBuilder
 
 from .models import StorefrontID
 

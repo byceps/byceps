@@ -12,12 +12,11 @@ from typing import Iterable, Optional
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
-from ...database import db
-from ...typing import UserID
-from ...util.result import Err, Ok, Result
-
-from ..user import user_log_service, user_service
-from ..user.models.user import User
+from byceps.database import db
+from byceps.services.user import user_log_service, user_service
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbRole, DbRolePermission, DbUserRole
 from .models import PermissionID, Role, RoleID

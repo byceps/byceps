@@ -8,15 +8,13 @@ byceps.services.seating.dbmodels.seat_group
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....database import db, generate_uuid7
-from ....typing import PartyID
-from ....util.instances import ReprBuilder
-
-from ...ticketing.dbmodels.category import DbTicketCategory
-from ...ticketing.dbmodels.ticket_bundle import DbTicketBundle
-from ...ticketing.models.ticket import TicketBundleID, TicketCategoryID
-
-from ..models import SeatID
+from byceps.database import db, generate_uuid7
+from byceps.services.seating.models import SeatID
+from byceps.services.ticketing.dbmodels.category import DbTicketCategory
+from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
+from byceps.services.ticketing.models.ticket import TicketBundleID, TicketCategoryID
+from byceps.typing import PartyID
+from byceps.util.instances import ReprBuilder
 
 from .seat import DbSeat
 

@@ -10,8 +10,8 @@ from typing import Optional
 
 from sqlalchemy import select
 
-from ...database import db
-from ...typing import BrandID
+from byceps.database import db
+from byceps.typing import BrandID
 
 from .dbmodels import DbConsent, DbConsentBrandRequirement, DbConsentSubject
 from .models import ConsentSubject, ConsentSubjectID

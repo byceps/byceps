@@ -15,12 +15,10 @@ from werkzeug.security import (
     generate_password_hash as _generate_password_hash,
 )
 
-from ....database import db
-from ....typing import UserID
-
-from ...user import user_log_service
-
-from ..session import authn_session_service
+from byceps.database import db
+from byceps.services.authentication.session import authn_session_service
+from byceps.services.user import user_log_service
+from byceps.typing import UserID
 
 from .dbmodels import DbCredential
 

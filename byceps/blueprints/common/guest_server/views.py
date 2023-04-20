@@ -12,17 +12,17 @@ from flask import abort, g
 import qrcode
 from qrcode.image.svg import SvgPathImage
 
-from ....services.guest_server import guest_server_service
-from ....services.guest_server.models import Address, Server
-from ....services.party import party_service, party_setting_service
-from ....services.site import site_service
-from ....services.site.models import SiteID
-from ....services.user import user_service
-from ....typing import PartyID
-from ....util.authorization import has_current_user_permission
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
-from ....util.views import login_required
+from byceps.services.guest_server import guest_server_service
+from byceps.services.guest_server.models import Address, Server
+from byceps.services.party import party_service, party_setting_service
+from byceps.services.site import site_service
+from byceps.services.site.models import SiteID
+from byceps.services.user import user_service
+from byceps.typing import PartyID
+from byceps.util.authorization import has_current_user_permission
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
+from byceps.util.views import login_required
 
 
 blueprint = create_blueprint('guest_server_common', __name__)

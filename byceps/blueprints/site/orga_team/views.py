@@ -11,13 +11,12 @@ from typing import Iterable, Iterator
 
 from flask import abort, g
 
-from ....services.orga_team import orga_team_service
-from ....services.orga_team.models import PublicOrga
-from ....services.user import user_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
-
-from ..site.navigation import subnavigation_for_view
+from byceps.blueprints.site.site.navigation import subnavigation_for_view
+from byceps.services.orga_team import orga_team_service
+from byceps.services.orga_team.models import PublicOrga
+from byceps.services.user import user_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
 
 
 blueprint = create_blueprint('orga_team', __name__)

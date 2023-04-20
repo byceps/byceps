@@ -11,8 +11,8 @@ from typing import Optional
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
-from ...database import db, upsert
-from ...typing import BrandID
+from byceps.database import db, upsert
+from byceps.typing import BrandID
 
 from .dbmodels import DbEmailConfig
 from .models import EmailConfig, NameAndAddress

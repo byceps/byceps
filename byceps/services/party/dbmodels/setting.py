@@ -6,9 +6,9 @@ byceps.services.party.dbmodels.setting
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....database import db
-from ....typing import PartyID
-from ....util.instances import ReprBuilder
+from byceps.database import db
+from byceps.typing import PartyID
+from byceps.util.instances import ReprBuilder
 
 
 class DbSetting(db.Model):

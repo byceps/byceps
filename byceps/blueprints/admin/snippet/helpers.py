@@ -10,18 +10,18 @@ from typing import Optional
 
 from flask import abort
 
-from ....services.brand import brand_service
-from ....services.brand.models import Brand
-from ....services.site import site_service
-from ....services.site.models import Site, SiteID
-from ....services.snippet import snippet_service
-from ....services.snippet.dbmodels import DbSnippet, DbSnippetVersion
-from ....services.snippet.models import (
+from byceps.services.brand import brand_service
+from byceps.services.brand.models import Brand
+from byceps.services.site import site_service
+from byceps.services.site.models import Site, SiteID
+from byceps.services.snippet import snippet_service
+from byceps.services.snippet.dbmodels import DbSnippet, DbSnippetVersion
+from byceps.services.snippet.models import (
     SnippetID,
     SnippetScope,
     SnippetVersionID,
 )
-from ....typing import BrandID
+from byceps.typing import BrandID
 
 
 def find_brand_for_scope(scope: SnippetScope) -> Optional[Brand]:

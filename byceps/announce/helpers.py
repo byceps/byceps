@@ -16,10 +16,10 @@ from flask import current_app
 from flask_babel import force_locale, gettext
 import requests
 
-from ..events.base import _BaseEvent
-from ..services.webhooks import webhook_service
-from ..services.webhooks.models import OutgoingWebhook
-from ..util.l10n import get_default_locale
+from byceps.events.base import _BaseEvent
+from byceps.services.webhooks import webhook_service
+from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.util.l10n import get_default_locale
 
 from .events import get_name_for_event
 

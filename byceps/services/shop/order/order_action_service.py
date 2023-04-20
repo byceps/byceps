@@ -11,11 +11,10 @@ from uuid import UUID
 
 from sqlalchemy import delete, select
 
-from ....database import db
-from ....typing import UserID
-
-from ..article import article_service
-from ..article.models import ArticleID
+from byceps.database import db
+from byceps.services.shop.article import article_service
+from byceps.services.shop.article.models import ArticleID
+from byceps.typing import UserID
 
 from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles

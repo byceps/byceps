@@ -11,12 +11,12 @@ import dataclasses
 from flask import abort, request
 from flask_babel import gettext
 
-from .....services.brand import brand_service
-from .....services.page import page_service
-from .....services.site import site_service
-from .....services.site.models import Site, SiteID
-from .....services.site_navigation import site_navigation_service
-from .....services.site_navigation.models import (
+from byceps.services.brand import brand_service
+from byceps.services.page import page_service
+from byceps.services.site import site_service
+from byceps.services.site.models import Site, SiteID
+from byceps.services.site_navigation import site_navigation_service
+from byceps.services.site_navigation.models import (
     NavItem,
     NavItemID,
     NavItemTargetType,
@@ -24,10 +24,10 @@ from .....services.site_navigation.models import (
     NavMenuAggregate,
     NavMenuID,
 )
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_success
-from .....util.framework.templating import templated
-from .....util.views import permission_required, redirect_to, respond_no_content
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import (
     ItemCreatePageForm,

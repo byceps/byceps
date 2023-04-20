@@ -8,11 +8,10 @@ byceps.services.board.dbmodels.last_category_view
 
 from datetime import datetime
 
-from ....database import db
-from ....typing import UserID
-from ....util.instances import ReprBuilder
-
-from ..models import BoardCategoryID
+from byceps.database import db
+from byceps.services.board.models import BoardCategoryID
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 from .category import DbBoardCategory
 

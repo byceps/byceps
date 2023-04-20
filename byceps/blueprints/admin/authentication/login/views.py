@@ -9,11 +9,11 @@ byceps.blueprints.admin.authentication.login.views
 from flask import g, request
 from flask_babel import gettext
 
-from .....signals import auth as auth_signals
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_notice, flash_success
-from .....util.framework.templating import templated
-from .....util.views import redirect_to
+from byceps.signals import auth as auth_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_notice, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import redirect_to
 
 from . import service
 from .forms import LogInForm

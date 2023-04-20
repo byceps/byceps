@@ -7,15 +7,15 @@
 import click
 from flask.cli import with_appcontext
 
-from ...services.authorization import authz_service
-from ...services.authorization.models import RoleID
-from ...services.user import (
+from byceps.services.authorization import authz_service
+from byceps.services.authorization.models import RoleID
+from byceps.services.user import (
     user_command_service,
     user_creation_service,
     user_email_address_service,
 )
-from ...services.user.models.user import User
-from ...typing import UserID
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
 
 
 @click.command()

@@ -13,9 +13,9 @@ from moneyed import Money
 
 from moneyed import Currency
 
-from ....util.instances import ReprBuilder
+from byceps.util.instances import ReprBuilder
 
-from ..article.models import Article
+from byceps.services.shop.article.models import Article
 
 
 @dataclass(frozen=True)

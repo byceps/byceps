@@ -12,7 +12,7 @@ from typing import Optional, Sequence
 from sqlalchemy import select
 from sqlalchemy.sql import Select
 
-from ...database import db, paginate, Pagination
+from byceps.database import db, paginate, Pagination
 
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting

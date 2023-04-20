@@ -10,7 +10,7 @@ from typing import Optional
 
 from sqlalchemy import delete
 
-from ...database import db
+from byceps.database import db
 
 from .dbmodels.match import DbMatch
 from .models import Match, MatchID

@@ -9,7 +9,7 @@ byceps.blueprints.common.user.forms
 from flask_babel import lazy_gettext
 from wtforms.validators import ValidationError
 
-from ....services.user import screen_name_validator
+from byceps.services.user import screen_name_validator
 
 
 class ScreenNameValidator:

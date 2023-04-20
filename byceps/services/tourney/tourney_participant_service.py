@@ -10,7 +10,7 @@ from typing import Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db
+from byceps.database import db
 
 from . import tourney_service
 from .dbmodels.participant import DbParticipant

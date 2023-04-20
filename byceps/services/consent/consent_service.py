@@ -11,8 +11,8 @@ from typing import Iterable
 
 from sqlalchemy import select
 
-from ...database import db
-from ...typing import UserID
+from byceps.database import db
+from byceps.typing import UserID
 
 from .dbmodels import DbConsent, DbConsentSubject
 from .models import Consent, ConsentSubjectID

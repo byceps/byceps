@@ -16,14 +16,13 @@ from typing import Optional, Sequence
 from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
 
-from ...database import db, paginate, Pagination
-from ...events.news import NewsItemPublished
-from ...typing import UserID
-
-from ..site import site_service
-from ..site.models import SiteID
-from ..user import user_service
-from ..user.models.user import User
+from byceps.database import db, paginate, Pagination
+from byceps.events.news import NewsItemPublished
+from byceps.services.site import site_service
+from byceps.services.site.models import SiteID
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
 
 from . import news_channel_service, news_html_service, news_image_service
 from .dbmodels.channel import DbNewsChannel

@@ -7,7 +7,7 @@
 import click
 from flask.cli import with_appcontext
 
-from ...services.authorization import impex_service
+from byceps.services.authorization import impex_service
 
 
 @click.command()

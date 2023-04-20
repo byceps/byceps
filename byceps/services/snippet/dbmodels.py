@@ -14,12 +14,11 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ...database import db, generate_uuid7
-from ...typing import UserID
-from ...util.instances import ReprBuilder
-
-from ..language.dbmodels import DbLanguage
-from ..user.dbmodels.user import DbUser
+from byceps.database import db, generate_uuid7
+from byceps.services.language.dbmodels import DbLanguage
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
+from byceps.util.instances import ReprBuilder
 
 from .models import SnippetScope
 

@@ -11,10 +11,10 @@ from typing import Any
 
 from flask import g, redirect, url_for
 
-from ....services.brand import brand_service
-from ....services.text_markup import text_markup_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.user_session import get_current_user
+from byceps.services.brand import brand_service
+from byceps.services.text_markup import text_markup_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.user_session import get_current_user
 
 
 blueprint = create_blueprint('core_admin', __name__)

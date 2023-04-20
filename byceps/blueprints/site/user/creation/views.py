@@ -12,18 +12,18 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from .....services.brand import brand_setting_service
-from .....services.consent import consent_service, consent_subject_service
-from .....services.consent.models import ConsentSubject
-from .....services.newsletter import newsletter_command_service
-from .....services.newsletter.models import ListID as NewsletterListID
-from .....services.site import site_setting_service
-from .....services.user import user_creation_service
-from .....signals import user as user_signals
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_success
-from .....util.framework.templating import templated
-from .....util.views import redirect_to
+from byceps.services.brand import brand_setting_service
+from byceps.services.consent import consent_service, consent_subject_service
+from byceps.services.consent.models import ConsentSubject
+from byceps.services.newsletter import newsletter_command_service
+from byceps.services.newsletter.models import ListID as NewsletterListID
+from byceps.services.site import site_setting_service
+from byceps.services.user import user_creation_service
+from byceps.signals import user as user_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import redirect_to
 
 from .forms import assemble_user_create_form
 

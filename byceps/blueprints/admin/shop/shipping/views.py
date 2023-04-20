@@ -8,13 +8,13 @@ byceps.blueprints.admin.shop.shipping.views
 
 from flask import abort
 
-from .....services.brand import brand_service
-from .....services.shop.article import article_service
-from .....services.shop.shipping import shipping_service
-from .....services.shop.shop import shop_service
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.templating import templated
-from .....util.views import permission_required
+from byceps.services.brand import brand_service
+from byceps.services.shop.article import article_service
+from byceps.services.shop.shipping import shipping_service
+from byceps.services.shop.shop import shop_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required
 
 
 blueprint = create_blueprint('shop_shipping_admin', __name__)

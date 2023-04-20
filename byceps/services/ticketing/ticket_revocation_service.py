@@ -8,8 +8,8 @@ byceps.services.ticketing.ticket_revocation_service
 
 from typing import Optional
 
-from ...database import db
-from ...typing import UserID
+from byceps.database import db
+from byceps.typing import UserID
 
 from . import ticket_log_service, ticket_seat_management_service, ticket_service
 from .dbmodels.log import DbTicketLogEntry

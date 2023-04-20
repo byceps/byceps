@@ -10,11 +10,10 @@ from typing import Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...typing import BrandID
-
-from ..brand import brand_service
-from ..site.models import SiteID
+from byceps.database import db
+from byceps.services.brand import brand_service
+from byceps.services.site.models import SiteID
+from byceps.typing import BrandID
 
 from .dbmodels.channel import DbNewsChannel
 from .models import NewsChannel, NewsChannelID

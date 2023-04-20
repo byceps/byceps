@@ -10,10 +10,9 @@ from typing import Optional
 
 from sqlalchemy import delete, select
 
-from ....database import db
-
-from ..article.models import ArticleID
-from ..shop.models import ShopID
+from byceps.database import db
+from byceps.services.shop.article.models import ArticleID
+from byceps.services.shop.shop.models import ShopID
 
 from .dbmodels import DbCatalog, DbCatalogArticle, DbCollection
 from .models import (

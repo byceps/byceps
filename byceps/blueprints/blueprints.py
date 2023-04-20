@@ -11,8 +11,8 @@ from typing import Iterator, Optional
 from flask import Flask
 import structlog
 
-from ..config import AppMode
-from ..util.framework.blueprint import get_blueprint
+from byceps.config import AppMode
+from byceps.util.framework.blueprint import get_blueprint
 
 
 log = structlog.get_logger()

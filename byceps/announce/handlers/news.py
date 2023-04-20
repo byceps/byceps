@@ -13,10 +13,9 @@ from typing import Optional
 
 from flask_babel import gettext
 
-from ...events.news import NewsItemPublished
-from ...services.webhooks.models import OutgoingWebhook
-
-from ..helpers import Announcement, matches_selectors, with_locale
+from byceps.announce.helpers import Announcement, matches_selectors, with_locale
+from byceps.events.news import NewsItemPublished
+from byceps.services.webhooks.models import OutgoingWebhook
 
 
 def apply_selectors(handler):

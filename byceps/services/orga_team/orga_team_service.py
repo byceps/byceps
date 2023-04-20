@@ -11,15 +11,14 @@ from typing import Iterable, Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...typing import PartyID, UserID
-
-from ..orga.dbmodels import DbOrgaFlag
-from ..party import party_service
-from ..user import user_service
-from ..user.dbmodels.detail import DbUserDetail
-from ..user.dbmodels.user import DbUser
-from ..user.models.user import User
+from byceps.database import db
+from byceps.services.orga.dbmodels import DbOrgaFlag
+from byceps.services.party import party_service
+from byceps.services.user import user_service
+from byceps.services.user.dbmodels.detail import DbUserDetail
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID, UserID
 
 from .dbmodels import DbMembership, DbOrgaTeam
 from .models import (

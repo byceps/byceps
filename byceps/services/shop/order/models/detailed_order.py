@@ -9,10 +9,9 @@ byceps.services.shop.order.models.detailed_order
 from dataclasses import dataclass
 from typing import Optional
 
-from ....user.models.user import User
-
-from ...shop.models import ShopID
-from ...storefront.models import StorefrontID
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.user.models.user import User
 
 from .invoice import Invoice
 from .order import Address, BaseOrder, LineItem

@@ -6,14 +6,12 @@ byceps.services.shop.order.actions.award_badge
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from .....typing import UserID
-
-from ....user_badge import user_badge_awarding_service, user_badge_service
-from ....user_badge.models import BadgeAwarding
-
-from .. import order_log_service
-from ..models.action import ActionParameters
-from ..models.order import LineItem, Order, OrderID
+from byceps.services.shop.order import order_log_service
+from byceps.services.shop.order.models.action import ActionParameters
+from byceps.services.shop.order.models.order import LineItem, Order, OrderID
+from byceps.services.user_badge import user_badge_awarding_service, user_badge_service
+from byceps.services.user_badge.models import BadgeAwarding
+from byceps.typing import UserID
 
 
 def award_badge(

@@ -12,24 +12,23 @@ from flask import abort, g, request
 from flask_babel import gettext
 from moneyed import Currency
 
-from .....services.country import country_service
-from .....services.shop.article import article_service
-from .....services.shop.article.models import ArticleCompilation
-from .....services.shop.cart.models import Cart
-from .....services.shop.order import order_checkout_service, order_service
-from .....services.shop.order.email import order_email_service
-from .....services.shop.order.models.order import Order
-from .....services.shop.shop import shop_service
-from .....services.shop.storefront import storefront_service
-from .....services.user import user_service
-from .....signals import shop as shop_signals
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_notice, flash_success
-from .....util.framework.templating import templated
-from .....util.result import Err, Ok, Result
-from .....util.views import login_required, redirect_to
-
-from ...site.navigation import subnavigation_for_view
+from byceps.blueprints.site.site.navigation import subnavigation_for_view
+from byceps.services.country import country_service
+from byceps.services.shop.article import article_service
+from byceps.services.shop.article.models import ArticleCompilation
+from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order import order_checkout_service, order_service
+from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.shop import shop_service
+from byceps.services.shop.storefront import storefront_service
+from byceps.services.user import user_service
+from byceps.signals import shop as shop_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_notice, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok, Result
+from byceps.util.views import login_required, redirect_to
 
 from .forms import OrderForm, assemble_articles_order_form
 

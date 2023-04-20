@@ -8,7 +8,7 @@ byceps.services.shop.shipping.models
 
 from dataclasses import dataclass
 
-from ..article.models import ArticleID
+from byceps.services.shop.article.models import ArticleID
 
 
 @dataclass(frozen=True)

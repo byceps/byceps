@@ -8,10 +8,9 @@ byceps.services.user_badge.dbmodels.awarding
 
 from datetime import datetime
 
-from ....database import db, generate_uuid7
-from ....typing import UserID
-
-from ..models import BadgeID
+from byceps.database import db, generate_uuid7
+from byceps.services.user_badge.models import BadgeID
+from byceps.typing import UserID
 
 
 class DbBadgeAwarding(db.Model):

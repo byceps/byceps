@@ -12,16 +12,16 @@ from datetime import date, datetime
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
-from ....services.brand import brand_service
-from ....services.party import party_service, party_setting_service
-from ....services.ticketing import ticket_service
-from ....services.ticketing.models.ticket import TicketSaleStats
-from ....typing import PartyID
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.iterables import partition
-from ....util.views import permission_required, redirect_to
+from byceps.services.brand import brand_service
+from byceps.services.party import party_service, party_setting_service
+from byceps.services.ticketing import ticket_service
+from byceps.services.ticketing.models.ticket import TicketSaleStats
+from byceps.typing import PartyID
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.iterables import partition
+from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm, UpdateForm
 

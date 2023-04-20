@@ -11,8 +11,8 @@ from typing import Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...typing import UserID
+from byceps.database import db
+from byceps.typing import UserID
 
 from .dbmodels.log import DbUserLogEntry
 from .models.log import UserLogEntry, UserLogEntryData

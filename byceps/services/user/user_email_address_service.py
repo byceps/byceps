@@ -10,22 +10,21 @@ from typing import Optional
 
 from flask_babel import gettext
 
-from ...database import db
-from ...events.user import (
+from byceps.database import db
+from byceps.events.user import (
     UserEmailAddressChanged,
     UserEmailAddressConfirmed,
     UserEmailAddressInvalidated,
 )
-from ...typing import UserID
-from ...util.l10n import force_user_locale
-
-from ..email import email_config_service, email_service
-from ..email.models import NameAndAddress
-from ..site import site_service
-from ..site.models import SiteID
-from ..user import user_command_service, user_service
-from ..verification_token import verification_token_service
-from ..verification_token.models import VerificationToken
+from byceps.services.email import email_config_service, email_service
+from byceps.services.email.models import NameAndAddress
+from byceps.services.site import site_service
+from byceps.services.site.models import SiteID
+from byceps.services.user import user_command_service, user_service
+from byceps.services.verification_token import verification_token_service
+from byceps.services.verification_token.models import VerificationToken
+from byceps.typing import UserID
+from byceps.util.l10n import force_user_locale
 
 from . import user_log_service
 from .models.user import User

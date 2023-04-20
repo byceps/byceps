@@ -12,21 +12,19 @@ from dataclasses import dataclass
 
 from flask_babel import format_date, gettext
 
-from .....services.email import (
+from byceps.services.email import (
     email_config_service,
     email_footer_service,
     email_service,
 )
-from .....services.email.models import Message
-from .....services.shop.order import order_service
-from .....services.shop.order.models.order import Order, OrderID
-from .....services.shop.shop import shop_service
-from .....services.user import user_service
-from .....services.user.models.user import User
-from .....typing import BrandID
-from .....util.l10n import force_user_locale, format_money, get_user_locale
-
-from .. import order_payment_service
+from byceps.services.email.models import Message
+from byceps.services.shop.order import order_payment_service, order_service
+from byceps.services.shop.order.models.order import Order, OrderID
+from byceps.services.shop.shop import shop_service
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.typing import BrandID
+from byceps.util.l10n import force_user_locale, format_money, get_user_locale
 
 
 @dataclass(frozen=True)

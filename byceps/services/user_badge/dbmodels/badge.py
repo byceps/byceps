@@ -8,9 +8,9 @@ byceps.services.user_badge.dbmodels.badge
 
 from typing import Optional
 
-from ....database import db, generate_uuid4
-from ....typing import BrandID
-from ....util.instances import ReprBuilder
+from byceps.database import db, generate_uuid4
+from byceps.typing import BrandID
+from byceps.util.instances import ReprBuilder
 
 
 class DbBadge(db.Model):

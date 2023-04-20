@@ -9,12 +9,12 @@ byceps.blueprints.site.ticketing.notification_service
 from flask import g
 from flask_babel import gettext
 
-from ....services.email import email_config_service, email_service
-from ....services.party import party_service
-from ....services.ticketing.dbmodels.ticket import DbTicket
-from ....services.user import user_service
-from ....services.user.models.user import User
-from ....util.l10n import force_user_locale
+from byceps.services.email import email_config_service, email_service
+from byceps.services.party import party_service
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.util.l10n import force_user_locale
 
 
 def notify_appointed_user(ticket: DbTicket, user: User, manager: User) -> None:

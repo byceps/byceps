@@ -11,14 +11,14 @@ import dataclasses
 
 from flask import abort, g
 
-from ....services.party import party_service
-from ....services.tourney import (
+from byceps.services.party import party_service
+from byceps.services.tourney import (
     tourney_category_service,
     tourney_participant_service,
     tourney_service,
 )
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
 
 
 blueprint = create_blueprint('tourney', __name__)

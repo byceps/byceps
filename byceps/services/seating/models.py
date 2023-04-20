@@ -12,9 +12,8 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
-from ...typing import PartyID
-
-from ..ticketing.models.ticket import TicketCategoryID
+from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.typing import PartyID
 
 
 SeatingAreaID = NewType('SeatingAreaID', UUID)

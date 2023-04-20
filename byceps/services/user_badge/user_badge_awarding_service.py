@@ -12,12 +12,11 @@ from typing import Optional
 
 from sqlalchemy import select
 
-from ...database import db
-from ...events.user_badge import UserBadgeAwarded
-from ...typing import UserID
-
-from ..user import user_log_service, user_service
-from ..user.models.user import User
+from byceps.database import db
+from byceps.events.user_badge import UserBadgeAwarded
+from byceps.services.user import user_log_service, user_service
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
 
 from .dbmodels.awarding import DbBadgeAwarding
 from .dbmodels.badge import DbBadge

@@ -14,7 +14,7 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 
-from ...database import db, generate_uuid4
+from byceps.database import db, generate_uuid4
 
 from .models import EventFilters
 

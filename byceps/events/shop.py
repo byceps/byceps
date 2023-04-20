@@ -9,9 +9,9 @@ byceps.events.shop
 from dataclasses import dataclass
 from typing import Optional
 
-from ..services.shop.order.models.number import OrderNumber
-from ..services.shop.order.models.order import OrderID
-from ..typing import UserID
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import OrderID
+from byceps.typing import UserID
 
 from .base import _BaseEvent
 

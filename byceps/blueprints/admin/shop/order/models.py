@@ -11,8 +11,8 @@ from __future__ import annotations
 from enum import Enum
 from typing import Optional
 
-from .....services.shop.order.models.order import PaymentState
-from .....util import iterables
+from byceps.services.shop.order.models.order import PaymentState
+from byceps.util import iterables
 
 
 IGNORED = None

@@ -6,11 +6,10 @@ byceps.services.board.dbmodels.board
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....database import db
-from ....typing import BrandID
-from ....util.instances import ReprBuilder
-
-from ..models import BoardID
+from byceps.database import db
+from byceps.services.board.models import BoardID
+from byceps.typing import BrandID
+from byceps.util.instances import ReprBuilder
 
 
 class DbBoard(db.Model):

@@ -13,10 +13,9 @@ from datetime import datetime
 from enum import Enum
 from uuid import UUID
 
-from ...util.datetime.range import DateTimeRange
-
-from ..party.models import Party
-from ..user.models.user import User
+from byceps.services.party.models import Party
+from byceps.services.user.models.user import User
+from byceps.util.datetime.range import DateTimeRange
 
 
 TimeSlotType = Enum('TimeSlotType', ['party', 'presence', 'task'])

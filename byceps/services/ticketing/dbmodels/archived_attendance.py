@@ -8,9 +8,9 @@ byceps.services.ticketing.dbmodels.archived_attendance
 
 from datetime import datetime
 
-from ....database import db
-from ....typing import PartyID, UserID
-from ....util.instances import ReprBuilder
+from byceps.database import db
+from byceps.typing import PartyID, UserID
+from byceps.util.instances import ReprBuilder
 
 
 class DbArchivedAttendance(db.Model):

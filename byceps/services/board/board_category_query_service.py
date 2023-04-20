@@ -10,7 +10,7 @@ from typing import Optional
 
 from sqlalchemy import select
 
-from ...database import db
+from byceps.database import db
 
 from .dbmodels.category import DbBoardCategory
 from .models import (

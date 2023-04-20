@@ -11,8 +11,8 @@ from datetime import datetime
 from sqlalchemy import delete
 from sqlalchemy.dialects.postgresql import insert
 
-from ...database import db
-from ...typing import UserID
+from byceps.database import db
+from byceps.typing import UserID
 
 from . import newsletter_service
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate

@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Iterable, Iterator
 
-from ..iterables import pairwise
+from byceps.util.iterables import pairwise
 
 
 @dataclass(frozen=True)

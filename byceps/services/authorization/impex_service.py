@@ -17,7 +17,7 @@ from typing import Iterator
 import rtoml
 from sqlalchemy import select
 
-from ...database import db
+from byceps.database import db
 
 from . import authz_service
 from .dbmodels import DbRole

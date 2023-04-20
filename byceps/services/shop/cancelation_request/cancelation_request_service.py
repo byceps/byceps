@@ -13,11 +13,10 @@ from uuid import UUID
 
 from sqlalchemy import select
 
-from ....database import db, paginate, Pagination
-
-from ..order.dbmodels.order import DbOrder
-from ..order.models.number import OrderNumber
-from ..shop.models import ShopID
+from byceps.database import db, paginate, Pagination
+from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.shop.models import ShopID
 
 from .dbmodels import DbCancelationRequest
 from .models import (

@@ -10,13 +10,13 @@ from typing import Optional
 
 from flask import abort, current_app, g
 
-from .....services.brand import brand_service
-from .....services.email import email_config_service
-from .....services.shop.order.email import order_email_example_service
-from .....services.shop.shop import shop_service
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.templating import templated
-from .....util.views import permission_required
+from byceps.services.brand import brand_service
+from byceps.services.email import email_config_service
+from byceps.services.shop.order.email import order_email_example_service
+from byceps.services.shop.shop import shop_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required
 
 
 blueprint = create_blueprint('shop_email_admin', __name__)

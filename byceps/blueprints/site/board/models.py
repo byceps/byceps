@@ -11,10 +11,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from ....services.board.models import BoardCategoryWithLastUpdate
-from ....services.user.models.user import User
-from ....services.user_badge.models import Badge
-from ....typing import UserID
+from byceps.services.board.models import BoardCategoryWithLastUpdate
+from byceps.services.user.models.user import User
+from byceps.services.user_badge.models import Badge
+from byceps.typing import UserID
 
 
 @dataclass(frozen=True)

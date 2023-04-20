@@ -12,11 +12,10 @@ from typing import Optional
 
 from flask_babel import gettext
 
-from ...events.auth import UserLoggedIn
-from ...services.site import site_service
-from ...services.webhooks.models import OutgoingWebhook
-
-from ..helpers import Announcement, get_screen_name_or_fallback, with_locale
+from byceps.announce.helpers import Announcement, get_screen_name_or_fallback, with_locale
+from byceps.events.auth import UserLoggedIn
+from byceps.services.site import site_service
+from byceps.services.webhooks.models import OutgoingWebhook
 
 
 @with_locale

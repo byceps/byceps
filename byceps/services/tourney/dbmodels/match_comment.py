@@ -8,12 +8,10 @@ byceps.services.tourney.dbmodels.match_comment
 
 from datetime import datetime
 
-from ....database import db, generate_uuid7
-from ....typing import UserID
-
-from ...user.dbmodels.user import DbUser
-
-from ..models import MatchID
+from byceps.database import db, generate_uuid7
+from byceps.services.tourney.models import MatchID
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
 
 from .match import DbMatch
 

@@ -6,10 +6,9 @@ byceps.services.shop.order.order_action_registry_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...ticketing.models.ticket import TicketCategoryID
-from ...user_badge.models import BadgeID
-
-from ..article.models import ArticleID
+from byceps.services.shop.article.models import ArticleID
+from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.services.user_badge.models import BadgeID
 
 from . import order_action_service
 from .models.action import ActionParameters

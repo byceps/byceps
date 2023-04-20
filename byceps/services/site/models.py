@@ -9,12 +9,11 @@ byceps.services.site.models
 from dataclasses import dataclass
 from typing import NewType, Optional
 
-from ...typing import BrandID, PartyID
-
-from ..board.models import BoardID
-from ..brand.models import Brand
-from ..news.models import NewsChannelID
-from ..shop.storefront.models import StorefrontID
+from byceps.services.board.models import BoardID
+from byceps.services.brand.models import Brand
+from byceps.services.news.models import NewsChannelID
+from byceps.services.shop.storefront.models import StorefrontID
+from byceps.typing import BrandID, PartyID
 
 
 SiteID = NewType('SiteID', str)

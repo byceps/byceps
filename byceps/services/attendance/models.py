@@ -9,8 +9,8 @@ byceps.services.attendance.models
 from dataclasses import dataclass
 from typing import Optional
 
-from ...services.seating.dbmodels.seat import DbSeat
-from ...services.user.dbmodels.user import DbUser
+from byceps.services.seating.dbmodels.seat import DbSeat
+from byceps.services.user.dbmodels.user import DbUser
 
 
 @dataclass  # Not yet frozen b/c models are not immutable.

@@ -8,11 +8,10 @@ byceps.services.shop.order.dbmodels.log
 
 from datetime import datetime
 
-from .....database import db, generate_uuid7
-from .....util.instances import ReprBuilder
-
-from ..models.log import OrderLogEntryData
-from ..models.order import OrderID
+from byceps.database import db, generate_uuid7
+from byceps.services.shop.order.models.log import OrderLogEntryData
+from byceps.services.shop.order.models.order import OrderID
+from byceps.util.instances import ReprBuilder
 
 
 class DbOrderLogEntry(db.Model):

@@ -15,7 +15,7 @@ import click
 from flask.cli import with_appcontext
 
 import byceps
-from ...database import db
+from byceps.database import db
 
 
 @click.command()

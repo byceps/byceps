@@ -8,7 +8,7 @@ byceps.services.language.language_service
 
 from sqlalchemy import select
 
-from ...database import db
+from byceps.database import db
 
 from .dbmodels import DbLanguage
 from .models import Language

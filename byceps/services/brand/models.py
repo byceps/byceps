@@ -9,7 +9,7 @@ byceps.services.brand.models
 from dataclasses import dataclass
 from typing import Optional
 
-from ...typing import BrandID
+from byceps.typing import BrandID
 
 
 @dataclass(frozen=True)

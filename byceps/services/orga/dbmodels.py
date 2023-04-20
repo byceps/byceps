@@ -6,12 +6,11 @@ byceps.services.orga.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import db
-from ...typing import BrandID, UserID
-from ...util.instances import ReprBuilder
-
-from ..brand.dbmodels.brand import DbBrand
-from ..user.dbmodels.user import DbUser
+from byceps.database import db
+from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import BrandID, UserID
+from byceps.util.instances import ReprBuilder
 
 
 class DbOrgaFlag(db.Model):

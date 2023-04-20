@@ -8,9 +8,9 @@ byceps.services.email.dbmodels
 
 from typing import Optional
 
-from ...database import db
-from ...typing import BrandID
-from ...util.instances import ReprBuilder
+from byceps.database import db
+from byceps.typing import BrandID
+from byceps.util.instances import ReprBuilder
 
 
 class DbEmailConfig(db.Model):

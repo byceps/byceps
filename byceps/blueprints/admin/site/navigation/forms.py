@@ -10,10 +10,10 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired
 
-from .....services.page import page_service
-from .....services.site.models import SiteID
-from .....services.site_navigation import site_navigation_service
-from .....util.l10n import LocalizedForm
+from byceps.services.page import page_service
+from byceps.services.site.models import SiteID
+from byceps.services.site_navigation import site_navigation_service
+from byceps.util.l10n import LocalizedForm
 
 
 class _MenuBaseForm(LocalizedForm):

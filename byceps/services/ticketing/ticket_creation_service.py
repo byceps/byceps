@@ -11,10 +11,9 @@ from typing import Iterator, Optional
 from sqlalchemy.exc import IntegrityError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
-from ...database import db
-from ...typing import PartyID, UserID
-
-from ..shop.order.models.number import OrderNumber
+from byceps.database import db
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.typing import PartyID, UserID
 
 from . import ticket_code_service
 from .dbmodels.ticket import DbTicket

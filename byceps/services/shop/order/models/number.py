@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from ...shop.models import ShopID
+from byceps.services.shop.shop.models import ShopID
 
 
 OrderNumberSequenceID = NewType('OrderNumberSequenceID', UUID)

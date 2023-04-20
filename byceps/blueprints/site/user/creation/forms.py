@@ -12,11 +12,10 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
-from .....services.consent.models import ConsentSubject, ConsentSubjectID
-from .....services.user import screen_name_validator, user_service
-from .....util.l10n import LocalizedForm
-
-from ....common.core.forms import ScreenNameValidator
+from byceps.blueprints.common.core.forms import ScreenNameValidator
+from byceps.services.consent.models import ConsentSubject, ConsentSubjectID
+from byceps.services.user import screen_name_validator, user_service
+from byceps.util.l10n import LocalizedForm
 
 
 EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')

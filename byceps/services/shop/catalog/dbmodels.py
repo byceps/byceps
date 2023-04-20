@@ -8,11 +8,10 @@ byceps.services.shop.catalog.dbmodels
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ....database import db, generate_uuid7
-from ....util.instances import ReprBuilder
-
-from ..article.models import ArticleID
-from ..shop.models import ShopID
+from byceps.database import db, generate_uuid7
+from byceps.services.shop.article.models import ArticleID
+from byceps.services.shop.shop.models import ShopID
+from byceps.util.instances import ReprBuilder
 
 from .models import CatalogID, CollectionID
 

@@ -8,9 +8,8 @@ byceps.services.shop.order.dbmodels.invoice
 
 from typing import Optional
 
-from .....database import db, generate_uuid4
-
-from ..models.order import OrderID
+from byceps.database import db, generate_uuid4
+from byceps.services.shop.order.models.order import OrderID
 
 
 class DbInvoice(db.Model):

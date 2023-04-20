@@ -11,9 +11,8 @@ from typing import Optional
 
 from sqlalchemy import select
 
-from ....database import db
-
-from ..article.models import ArticleID
+from byceps.database import db
+from byceps.services.shop.article.models import ArticleID
 
 from . import order_service
 from .dbmodels.line_item import DbLineItem

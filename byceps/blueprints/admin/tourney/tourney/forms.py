@@ -10,9 +10,9 @@ from flask_babel import lazy_gettext
 from wtforms import DateField, IntegerField, SelectField, StringField, TimeField
 from wtforms.validators import InputRequired, Length, Optional
 
-from .....services.tourney import tourney_category_service
-from .....typing import PartyID
-from .....util.l10n import LocalizedForm
+from byceps.services.tourney import tourney_category_service
+from byceps.typing import PartyID
+from byceps.util.l10n import LocalizedForm
 
 
 class CreateForm(LocalizedForm):

@@ -10,13 +10,13 @@ from datetime import datetime, timedelta
 
 from flask_babel import gettext
 
-from ....services.authentication.session import authn_session_service
-from ....services.user import user_log_service
-from ....services.verification_token import verification_token_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, respond_no_content
+from byceps.services.authentication.session import authn_session_service
+from byceps.services.user import user_log_service
+from byceps.services.verification_token import verification_token_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, respond_no_content
 
 
 blueprint = create_blueprint('maintenance_admin', __name__)

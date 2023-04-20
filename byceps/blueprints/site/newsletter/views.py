@@ -11,13 +11,13 @@ from datetime import datetime
 from flask import abort, g
 from flask_babel import gettext
 
-from ....services.newsletter import (
+from byceps.services.newsletter import (
     newsletter_command_service,
     newsletter_service,
 )
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.views import login_required, respond_no_content
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.views import login_required, respond_no_content
 
 
 blueprint = create_blueprint('newsletter', __name__)

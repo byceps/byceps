@@ -10,10 +10,9 @@ from dataclasses import dataclass
 from typing import NewType, Optional
 from uuid import UUID
 
-from ...typing import PartyID, UserID
-
-from ..party.models import Party
-from ..user.models.user import User
+from byceps.services.party.models import Party
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID, UserID
 
 
 OrgaTeamID = NewType('OrgaTeamID', UUID)

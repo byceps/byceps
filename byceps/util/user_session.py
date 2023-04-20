@@ -12,11 +12,11 @@ from uuid import UUID
 from babel import parse_locale
 from flask import session
 
-from ..services.authentication.session import authn_session_service
-from ..services.authentication.session.models import CurrentUser
-from ..services.user import user_service
-from ..services.user.models.user import User
-from ..typing import UserID
+from byceps.services.authentication.session import authn_session_service
+from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
 
 from .authorization import get_permissions_for_user
 

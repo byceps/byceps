@@ -10,28 +10,27 @@ Current user's dashboard
 
 from flask import abort, g
 
-from ....services.authentication.session.models import CurrentUser
-from ....services.board import (
+from byceps.blueprints.site.board import service as board_helper_service
+from byceps.blueprints.site.guest_server.views import _sort_addresses
+from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.board import (
     board_access_control_service,
     board_topic_query_service,
 )
-from ....services.board.dbmodels.topic import DbTopic
-from ....services.guest_server import guest_server_service
-from ....services.news import news_item_service
-from ....services.news.models import NewsHeadline
-from ....services.shop.order import order_service
-from ....services.shop.order.models.order import SiteOrderListItem
-from ....services.shop.storefront import storefront_service
-from ....services.ticketing import ticket_service
-from ....services.ticketing.dbmodels.ticket import DbTicket
-from ....services.user import user_service
-from ....typing import UserID
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
-from ....util.views import login_required
-
-from ..board import service as board_helper_service
-from ..guest_server.views import _sort_addresses
+from byceps.services.board.dbmodels.topic import DbTopic
+from byceps.services.guest_server import guest_server_service
+from byceps.services.news import news_item_service
+from byceps.services.news.models import NewsHeadline
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.models.order import SiteOrderListItem
+from byceps.services.shop.storefront import storefront_service
+from byceps.services.ticketing import ticket_service
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.user import user_service
+from byceps.typing import UserID
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
+from byceps.util.views import login_required
 
 
 blueprint = create_blueprint('dashboard', __name__)

@@ -13,25 +13,24 @@ from typing import Any, Iterator, Optional, Type
 from flask import abort, jsonify, request, url_for
 from pydantic import BaseModel, ValidationError
 
-from .......services.orga_team import orga_team_service
-from .......services.tourney import (
+from byceps.blueprints.api.decorators import api_token_required
+from byceps.services.orga_team import orga_team_service
+from byceps.services.tourney import (
     tourney_match_comment_service,
     tourney_match_service,
 )
-from .......services.tourney.models import (
+from byceps.services.tourney.models import (
     Match,
     MatchComment,
     MatchCommentID,
     MatchID,
 )
-from .......services.user import user_service
-from .......services.user.models.user import User
-from .......signals import tourney as tourney_signals
-from .......typing import UserID
-from .......util.framework.blueprint import create_blueprint
-from .......util.views import respond_created, respond_no_content
-
-from .....decorators import api_token_required
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.signals import tourney as tourney_signals
+from byceps.typing import UserID
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.views import respond_created, respond_no_content
 
 from .models import (
     CreateMatchCommentRequest,

@@ -9,11 +9,10 @@ byceps.services.party.dbmodels.party
 from datetime import datetime
 from typing import Optional
 
-from ....database import db
-from ....typing import BrandID, PartyID
-from ....util.instances import ReprBuilder
-
-from ...brand.dbmodels.brand import DbBrand
+from byceps.database import db
+from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.typing import BrandID, PartyID
+from byceps.util.instances import ReprBuilder
 
 
 class DbParty(db.Model):

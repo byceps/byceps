@@ -27,11 +27,11 @@ from wtforms.validators import (
     ValidationError,
 )
 
-from .....services.party import party_service
-from .....services.ticketing import ticket_category_service
-from .....services.user_badge.models import Badge
-from .....typing import BrandID
-from .....util.l10n import LocalizedForm
+from byceps.services.party import party_service
+from byceps.services.ticketing import ticket_category_service
+from byceps.services.user_badge.models import Badge
+from byceps.typing import BrandID
+from byceps.util.l10n import LocalizedForm
 
 
 class _ArticleBaseForm(LocalizedForm):

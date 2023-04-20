@@ -9,14 +9,14 @@ byceps.blueprints.admin.shop.order.service
 from typing import Iterable, Iterator
 from uuid import UUID
 
-from .....services.shop.cancelation_request import cancelation_request_service
-from .....services.shop.order import order_log_service, order_service
-from .....services.shop.order.models.log import OrderLogEntry, OrderLogEntryData
-from .....services.shop.order.models.order import OrderID
-from .....services.ticketing import ticket_category_service
-from .....services.user import user_service
-from .....services.user.models.user import User
-from .....services.user_badge import user_badge_service
+from byceps.services.shop.cancelation_request import cancelation_request_service
+from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order.models.log import OrderLogEntry, OrderLogEntryData
+from byceps.services.shop.order.models.order import OrderID
+from byceps.services.ticketing import ticket_category_service
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.services.user_badge import user_badge_service
 
 
 def get_enriched_log_entry_data_for_order(

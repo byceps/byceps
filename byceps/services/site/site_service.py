@@ -13,14 +13,13 @@ from typing import Callable, Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...typing import BrandID, PartyID
-
-from ..board.models import BoardID
-from ..brand import brand_service
-from ..news import news_channel_service
-from ..news.models import NewsChannelID
-from ..shop.storefront.models import StorefrontID
+from byceps.database import db
+from byceps.services.board.models import BoardID
+from byceps.services.brand import brand_service
+from byceps.services.news import news_channel_service
+from byceps.services.news.models import NewsChannelID
+from byceps.services.shop.storefront.models import StorefrontID
+from byceps.typing import BrandID, PartyID
 
 from .dbmodels.setting import DbSetting
 from .dbmodels.site import DbSite

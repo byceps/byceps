@@ -12,13 +12,13 @@ from uuid import UUID
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.consent import consent_service, consent_subject_service
-from ....services.verification_token import verification_token_service
-from ....services.verification_token.models import VerificationToken
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import redirect_to
+from byceps.services.consent import consent_service, consent_subject_service
+from byceps.services.verification_token import verification_token_service
+from byceps.services.verification_token.models import VerificationToken
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import redirect_to
 
 from .forms import create_consent_form, get_subject_field_name
 

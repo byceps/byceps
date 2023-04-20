@@ -8,12 +8,10 @@ byceps.services.board.dbmodels.category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ....database import db, generate_uuid4
-from ....util.instances import ReprBuilder
-
-from ...user.dbmodels.user import DbUser
-
-from ..models import BoardID
+from byceps.database import db, generate_uuid4
+from byceps.services.board.models import BoardID
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.util.instances import ReprBuilder
 
 from .board import DbBoard
 

@@ -13,8 +13,8 @@ from enum import Enum
 from typing import Optional
 from uuid import UUID
 
-from ..order.models.number import OrderNumber
-from ..shop.models import ShopID
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.shop.models import ShopID
 
 
 DonationExtent = Enum(

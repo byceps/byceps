@@ -12,13 +12,12 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import delete, select
 
-from ....database import db, insert_ignore_on_conflict, upsert
-from ....events.auth import UserLoggedIn
-from ....typing import UserID
-
-from ...site.models import SiteID
-from ...user import user_log_service, user_service
-from ...user.models.user import User
+from byceps.database import db, insert_ignore_on_conflict, upsert
+from byceps.events.auth import UserLoggedIn
+from byceps.services.site.models import SiteID
+from byceps.services.user import user_log_service, user_service
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
 
 from .dbmodels.recent_login import DbRecentLogin
 from .dbmodels.session_token import DbSessionToken

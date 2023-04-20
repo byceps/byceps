@@ -12,11 +12,10 @@ from typing import Optional
 
 from flask_babel import gettext
 
-from ...events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
-from ...services.shop.order import order_service
-from ...services.webhooks.models import OutgoingWebhook
-
-from ..helpers import Announcement, get_screen_name_or_fallback, with_locale
+from byceps.announce.helpers import Announcement, get_screen_name_or_fallback, with_locale
+from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
+from byceps.services.shop.order import order_service
+from byceps.services.webhooks.models import OutgoingWebhook
 
 
 @with_locale

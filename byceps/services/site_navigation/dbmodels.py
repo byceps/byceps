@@ -16,10 +16,9 @@ else:
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ...database import db, generate_uuid7
-
-from ..language.dbmodels import DbLanguage
-from ..site.models import SiteID
+from byceps.database import db, generate_uuid7
+from byceps.services.language.dbmodels import DbLanguage
+from byceps.services.site.models import SiteID
 
 from .models import NavItemID, NavItemTargetType, NavMenuID
 

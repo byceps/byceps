@@ -6,7 +6,7 @@ byceps.blueprints.admin.tourney.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....util.framework.blueprint import create_blueprint
+from byceps.util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('tourney_admin', __name__)

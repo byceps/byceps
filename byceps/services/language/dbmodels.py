@@ -6,7 +6,7 @@ byceps.services.language.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import db
+from byceps.database import db
 
 
 class DbLanguage(db.Model):

@@ -10,8 +10,8 @@ Metrics export for `Prometheus <https://prometheus.io/>`_
 
 from flask import Response
 
-from ....services.metrics import metrics_service
-from ....util.framework.blueprint import create_blueprint
+from byceps.services.metrics import metrics_service
+from byceps.util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('metrics', __name__)

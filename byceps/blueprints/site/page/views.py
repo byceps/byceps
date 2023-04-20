@@ -8,9 +8,9 @@ byceps.blueprints.site.page.views
 
 from flask import abort, g
 
-from ....services.page import page_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.l10n import get_default_locale, get_locale_str
+from byceps.services.page import page_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.l10n import get_default_locale, get_locale_str
 
 from .templating import render_page, url_for_page
 

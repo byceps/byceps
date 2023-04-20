@@ -9,8 +9,8 @@ byceps.services.user.dbmodels.user
 from datetime import datetime
 from typing import Optional
 
-from ....database import db, generate_uuid4
-from ....util.instances import ReprBuilder
+from byceps.database import db, generate_uuid4
+from byceps.util.instances import ReprBuilder
 
 from .avatar import DbUserAvatar
 

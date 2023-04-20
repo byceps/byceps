@@ -8,11 +8,10 @@ byceps.services.ticketing.dbmodels.log
 
 from datetime import datetime
 
-from ....database import db, generate_uuid7
-from ....util.instances import ReprBuilder
-
-from ..models.log import TicketLogEntryData
-from ..models.ticket import TicketID
+from byceps.database import db, generate_uuid7
+from byceps.services.ticketing.models.log import TicketLogEntryData
+from byceps.services.ticketing.models.ticket import TicketID
+from byceps.util.instances import ReprBuilder
 
 
 class DbTicketLogEntry(db.Model):

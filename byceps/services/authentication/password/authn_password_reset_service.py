@@ -8,14 +8,13 @@ byceps.services.authentication.password.authn_password_reset_service
 
 from flask_babel import gettext
 
-from ....util.l10n import force_user_locale
-
-from ...email import email_service
-from ...email.models import NameAndAddress
-from ...user import user_service
-from ...user.models.user import User
-from ...verification_token import verification_token_service
-from ...verification_token.models import VerificationToken
+from byceps.services.email import email_service
+from byceps.services.email.models import NameAndAddress
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.services.verification_token import verification_token_service
+from byceps.services.verification_token.models import VerificationToken
+from byceps.util.l10n import force_user_locale
 
 from . import authn_password_service
 

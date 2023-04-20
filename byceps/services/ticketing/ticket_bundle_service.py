@@ -11,11 +11,10 @@ from typing import Optional, Sequence
 from sqlalchemy import delete, select
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
-from ...database import db, paginate, Pagination
-from ...typing import PartyID, UserID
-
-from ..seating import seat_group_service
-from ..shop.order.models.number import OrderNumber
+from byceps.database import db, paginate, Pagination
+from byceps.services.seating import seat_group_service
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.typing import PartyID, UserID
 
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket

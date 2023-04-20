@@ -12,16 +12,16 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.authentication.password import authn_password_service
-from ....services.authentication.session import authn_session_service
-from ....services.authorization import authz_service
-from ....services.authorization.models import Permission, PermissionID, Role
-from ....services.country import country_service
-from ....services.orga_team import orga_team_service
-from ....services.shop.order import order_service
-from ....services.shop.shop import shop_service
-from ....services.site import site_service
-from ....services.user import (
+from byceps.services.authentication.password import authn_password_service
+from byceps.services.authentication.session import authn_session_service
+from byceps.services.authorization import authz_service
+from byceps.services.authorization.models import Permission, PermissionID, Role
+from byceps.services.country import country_service
+from byceps.services.orga_team import orga_team_service
+from byceps.services.shop.order import order_service
+from byceps.services.shop.shop import shop_service
+from byceps.services.site import site_service
+from byceps.services.user import (
     user_command_service,
     user_creation_service,
     user_deletion_service,
@@ -29,14 +29,14 @@ from ....services.user import (
     user_service,
     user_stats_service,
 )
-from ....services.user.models.user import UserForAdmin, UserStateFilter
-from ....services.user_badge import user_badge_awarding_service
-from ....signals import user as user_signals
-from ....util.authorization import permission_registry
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to, respond_no_content
+from byceps.services.user.models.user import UserForAdmin, UserStateFilter
+from byceps.services.user_badge import user_badge_awarding_service
+from byceps.signals import user as user_signals
+from byceps.util.authorization import permission_registry
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from . import service
 from .forms import (

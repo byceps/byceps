@@ -9,15 +9,15 @@ byceps.blueprints.admin.consent.views
 from flask import abort, request
 from flask_babel import gettext
 
-from ....services.brand import brand_service
-from ....services.consent import (
+from byceps.services.brand import brand_service
+from byceps.services.consent import (
     brand_requirements_service,
     consent_subject_service,
 )
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to, respond_no_content
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import RequirementCreateForm, SubjectCreateForm
 

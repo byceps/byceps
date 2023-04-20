@@ -9,17 +9,17 @@ byceps.blueprints.admin.user_badge.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.brand import brand_service
-from ....services.user import user_service
-from ....services.user_badge import (
+from byceps.services.brand import brand_service
+from byceps.services.user import user_service
+from byceps.services.user_badge import (
     user_badge_awarding_service,
     user_badge_service,
 )
-from ....signals import user_badge as user_badge_signals
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to
+from byceps.signals import user_badge as user_badge_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to
 
 from .forms import AwardForm, CreateForm, UpdateForm
 

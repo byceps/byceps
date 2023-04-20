@@ -10,12 +10,11 @@ from typing import Optional, Sequence
 
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...typing import BrandID, UserID
-
-from ..brand.dbmodels.brand import DbBrand
-from ..user import user_log_service
-from ..user.dbmodels.user import DbUser
+from byceps.database import db
+from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.services.user import user_log_service
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import BrandID, UserID
 
 from .dbmodels import DbOrgaFlag
 

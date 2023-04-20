@@ -10,9 +10,9 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, RadioField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
-from .....services.shop.order import order_service
-from .....services.shop.order.models.order import PAYMENT_METHODS
-from .....util.l10n import LocalizedForm
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.models.order import PAYMENT_METHODS
+from byceps.util.l10n import LocalizedForm
 
 
 class AddNoteForm(LocalizedForm):

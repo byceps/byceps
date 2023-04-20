@@ -8,12 +8,11 @@ byceps.services.orga_team.dbmodels
 
 from typing import Optional
 
-from ...database import db, generate_uuid7
-from ...typing import PartyID, UserID
-from ...util.instances import ReprBuilder
-
-from ..party.dbmodels.party import DbParty
-from ..user.dbmodels.user import DbUser
+from byceps.database import db, generate_uuid7
+from byceps.services.party.dbmodels.party import DbParty
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import PartyID, UserID
+from byceps.util.instances import ReprBuilder
 
 from .models import OrgaTeamID
 

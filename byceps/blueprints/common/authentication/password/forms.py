@@ -11,8 +11,8 @@ from flask_babel import lazy_gettext
 from wtforms import PasswordField, StringField
 from wtforms.validators import EqualTo, InputRequired, Length, ValidationError
 
-from .....services.authentication.password import authn_password_service
-from .....util.l10n import LocalizedForm
+from byceps.services.authentication.password import authn_password_service
+from byceps.util.l10n import LocalizedForm
 
 
 MINIMUM_PASSWORD_LENGTH = 8

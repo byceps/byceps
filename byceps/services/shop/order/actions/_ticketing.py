@@ -6,16 +6,14 @@ byceps.services.shop.order.actions._ticketing
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from .....events.ticketing import TicketsSold
-from .....signals import ticketing as ticketing_signals
-from .....typing import UserID
-
-from ....ticketing import ticket_category_service
-from ....ticketing.models.ticket import TicketCategoryID
-from ....user import user_service
-
-from .. import order_service
-from ..models.order import OrderID
+from byceps.events.ticketing import TicketsSold
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.models.order import OrderID
+from byceps.services.ticketing import ticket_category_service
+from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.services.user import user_service
+from byceps.signals import ticketing as ticketing_signals
+from byceps.typing import UserID
 
 
 def create_tickets_sold_event(

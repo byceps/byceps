@@ -13,18 +13,17 @@ from warnings import warn
 from babel import Locale
 from sqlalchemy import select
 
-from ...database import db
-from ...events.user import (
+from byceps.database import db
+from byceps.events.user import (
     UserAccountSuspended,
     UserAccountUnsuspended,
     UserDetailsUpdated,
     UserEmailAddressChanged,
     UserScreenNameChanged,
 )
-from ...typing import UserID
-
-from ..authorization import authz_service
-from ..authorization.models import RoleID
+from byceps.services.authorization import authz_service
+from byceps.services.authorization.models import RoleID
+from byceps.typing import UserID
 
 from . import user_log_service, user_service
 from .dbmodels.detail import DbUserDetail

@@ -11,7 +11,7 @@ from moneyed import CHF, DKK, EUR, GBP, NOK, SEK, USD
 from wtforms import SelectField
 from wtforms.validators import InputRequired
 
-from .....util.l10n import LocalizedForm
+from byceps.util.l10n import LocalizedForm
 
 
 class CreateForm(LocalizedForm):

@@ -9,13 +9,13 @@ byceps.events.board
 from dataclasses import dataclass
 from typing import Optional
 
-from ..services.board.models import (
+from byceps.services.board.models import (
     BoardCategoryID,
     BoardID,
     PostingID,
     TopicID,
 )
-from ..typing import UserID
+from byceps.typing import UserID
 
 from .base import _BaseEvent
 

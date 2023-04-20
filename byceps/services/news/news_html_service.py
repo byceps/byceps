@@ -16,8 +16,8 @@ from flask_babel import gettext
 from markupsafe import Markup
 import mistletoe
 
-from ...util.iterables import find
-from ...util.templating import load_template
+from byceps.util.iterables import find
+from byceps.util.templating import load_template
 
 from .models import BodyFormat, NewsImage, NewsItem
 

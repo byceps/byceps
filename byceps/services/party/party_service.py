@@ -14,11 +14,10 @@ from typing import Callable, Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db, paginate, Pagination
-from ...typing import BrandID, PartyID
-
-from ..brand import brand_service
-from ..brand.dbmodels.brand import DbBrand
+from byceps.database import db, paginate, Pagination
+from byceps.services.brand import brand_service
+from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.typing import BrandID, PartyID
 
 from .dbmodels.party import DbParty
 from .dbmodels.setting import DbSetting

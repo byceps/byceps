@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import NewType, Optional
 from uuid import UUID
 
-from ....typing import PartyID
+from byceps.typing import PartyID
 
 
 TicketCategoryID = NewType('TicketCategoryID', UUID)

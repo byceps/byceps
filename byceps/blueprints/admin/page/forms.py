@@ -10,10 +10,10 @@ from flask_babel import gettext, lazy_gettext
 from wtforms import SelectField, StringField, TextAreaField
 from wtforms.validators import InputRequired, ValidationError
 
-from ....services.language import language_service
-from ....services.site.models import SiteID
-from ....services.site_navigation import site_navigation_service
-from ....util.l10n import LocalizedForm
+from byceps.services.language import language_service
+from byceps.services.site.models import SiteID
+from byceps.services.site_navigation import site_navigation_service
+from byceps.util.l10n import LocalizedForm
 
 
 class _PageBaseForm(LocalizedForm):

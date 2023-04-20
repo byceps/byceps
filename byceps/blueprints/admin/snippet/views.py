@@ -11,23 +11,22 @@ from typing import Optional
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
-from ....services.snippet import snippet_service
-from ....services.snippet.dbmodels import DbSnippetVersion
-from ....services.snippet.models import SnippetScope
-from ....services.text_diff import text_diff_service
-from ....services.user import user_service
-from ....signals import snippet as snippet_signals
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.iterables import pairwise
-from ....util.views import (
+from byceps.blueprints.site.snippet.templating import get_rendered_snippet_body
+from byceps.services.snippet import snippet_service
+from byceps.services.snippet.dbmodels import DbSnippetVersion
+from byceps.services.snippet.models import SnippetScope
+from byceps.services.text_diff import text_diff_service
+from byceps.services.user import user_service
+from byceps.signals import snippet as snippet_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.iterables import pairwise
+from byceps.util.views import (
     permission_required,
     redirect_to,
     respond_no_content_with_location,
 )
-
-from ...site.snippet.templating import get_rendered_snippet_body
 
 from .forms import CreateForm, UpdateForm
 from .helpers import (

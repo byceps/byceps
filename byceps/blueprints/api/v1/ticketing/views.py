@@ -8,14 +8,12 @@ byceps.blueprints.api.v1.ticketing
 
 from flask import abort, jsonify
 
-from .....services.party import party_service
-from .....services.party.models import Party
-from .....services.ticketing import ticket_service
-
-from .....typing import PartyID
-from .....util.framework.blueprint import create_blueprint
-
-from ...decorators import api_token_required
+from byceps.blueprints.api.decorators import api_token_required
+from byceps.services.party import party_service
+from byceps.services.party.models import Party
+from byceps.services.ticketing import ticket_service
+from byceps.typing import PartyID
+from byceps.util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('ticketing_api', __name__)

@@ -10,24 +10,23 @@ from flask import abort, g, request
 from flask_babel import gettext
 from moneyed import get_currency
 
-from .....services.brand import brand_service
-from .....services.shop.cancelation_request import cancelation_request_service
-from .....services.shop.order import (
+from byceps.blueprints.admin.shop.order.service import enrich_log_entry_data
+from byceps.services.brand import brand_service
+from byceps.services.shop.cancelation_request import cancelation_request_service
+from byceps.services.shop.order import (
     order_log_service,
     order_payment_service,
     order_service,
 )
-from .....services.shop.order.models.log import OrderLogEntryData
-from .....services.shop.order.models.order import PaymentState
-from .....services.shop.shop import shop_service
-from .....services.shop.shop.models import ShopID
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_success
-from .....util.framework.templating import templated
-from .....util.l10n import get_default_locale, get_locale_str
-from .....util.views import permission_required, redirect_to
-
-from ..order.service import enrich_log_entry_data
+from byceps.services.shop.order.models.log import OrderLogEntryData
+from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.shop import shop_service
+from byceps.services.shop.shop.models import ShopID
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.l10n import get_default_locale, get_locale_str
+from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm
 

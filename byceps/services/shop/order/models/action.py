@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import Any
 from uuid import UUID
 
-from ...article.models import ArticleID
+from byceps.services.shop.article.models import ArticleID
 
 from .order import PaymentState
 

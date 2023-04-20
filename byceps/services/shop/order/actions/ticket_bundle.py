@@ -9,14 +9,12 @@ byceps.services.shop.order.actions.ticket_bundle
 from typing import Any
 from uuid import UUID
 
-from .....typing import UserID
-
-from ....ticketing import ticket_bundle_service, ticket_category_service
-from ....ticketing.dbmodels.ticket_bundle import DbTicketBundle
-from ....ticketing.models.ticket import TicketBundleID, TicketCategoryID
-
-from .. import order_log_service, order_service
-from ..models.order import LineItem, Order, OrderID
+from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order.models.order import LineItem, Order, OrderID
+from byceps.services.ticketing import ticket_bundle_service, ticket_category_service
+from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
+from byceps.services.ticketing.models.ticket import TicketBundleID, TicketCategoryID
+from byceps.typing import UserID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 

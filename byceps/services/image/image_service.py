@@ -10,9 +10,9 @@ from __future__ import annotations
 
 from typing import BinaryIO, Iterable
 
-from ...util.image import read_dimensions
-from ...util.image.models import Dimensions, ImageType
-from ...util.image.typeguess import guess_type
+from byceps.util.image import read_dimensions
+from byceps.util.image.models import Dimensions, ImageType
+from byceps.util.image.typeguess import guess_type
 
 
 class ImageTypeProhibited(ValueError):

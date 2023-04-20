@@ -10,12 +10,12 @@ from operator import attrgetter
 
 from flask import abort, g
 
-from ....services.orga_team import orga_team_service
-from ....services.ticketing import ticket_attendance_service, ticket_service
-from ....services.user import user_service
-from ....services.user_badge import user_badge_awarding_service
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.templating import templated
+from byceps.services.orga_team import orga_team_service
+from byceps.services.ticketing import ticket_attendance_service, ticket_service
+from byceps.services.user import user_service
+from byceps.services.user_badge import user_badge_awarding_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.templating import templated
 
 
 blueprint = create_blueprint('user_profile', __name__)

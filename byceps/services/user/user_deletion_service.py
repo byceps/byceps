@@ -8,14 +8,13 @@ User account anonymization and removal
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import db
-from ...events.user import UserAccountDeleted
-from ...typing import UserID
-
-from ..authentication.password import authn_password_service
-from ..authentication.session import authn_session_service
-from ..authorization import authz_service
-from ..verification_token import verification_token_service
+from byceps.database import db
+from byceps.events.user import UserAccountDeleted
+from byceps.services.authentication.password import authn_password_service
+from byceps.services.authentication.session import authn_session_service
+from byceps.services.authorization import authz_service
+from byceps.services.verification_token import verification_token_service
+from byceps.typing import UserID
 
 from . import user_log_service, user_service
 from .dbmodels.user import DbUser

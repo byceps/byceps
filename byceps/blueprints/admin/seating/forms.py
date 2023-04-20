@@ -10,7 +10,7 @@ from flask_babel import lazy_gettext
 from wtforms import IntegerField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
-from ....util.l10n import LocalizedForm
+from byceps.util.l10n import LocalizedForm
 
 
 class _AreaFormBase(LocalizedForm):

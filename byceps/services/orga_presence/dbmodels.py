@@ -6,9 +6,8 @@ byceps.services.orga_presence.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import db, generate_uuid7
-
-from ..user.dbmodels.user import DbUser
+from byceps.database import db, generate_uuid7
+from byceps.services.user.dbmodels.user import DbUser
 
 
 class DbTimeSlot(db.Model):

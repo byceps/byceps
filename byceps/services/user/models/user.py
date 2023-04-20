@@ -14,7 +14,7 @@ from enum import Enum
 from typing import Any, NewType, Optional
 from uuid import UUID
 
-from ....typing import UserID
+from byceps.typing import UserID
 
 
 UserAvatarID = NewType('UserAvatarID', UUID)

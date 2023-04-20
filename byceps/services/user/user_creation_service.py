@@ -11,12 +11,11 @@ from typing import Any, Optional
 
 from flask import current_app
 
-from ...database import db
-from ...events.user import UserAccountCreated
-from ...typing import UserID
-
-from ..authentication.password import authn_password_service
-from ..site.models import SiteID
+from byceps.database import db
+from byceps.events.user import UserAccountCreated
+from byceps.services.authentication.password import authn_password_service
+from byceps.services.site.models import SiteID
+from byceps.typing import UserID
 
 from . import user_email_address_service, user_log_service, user_service
 from .dbmodels.detail import DbUserDetail

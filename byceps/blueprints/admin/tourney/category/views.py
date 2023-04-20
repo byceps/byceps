@@ -9,12 +9,12 @@ byceps.blueprints.admin.tourney.category.views
 from flask import abort, request
 from flask_babel import gettext
 
-from .....services.party import party_service
-from .....services.tourney import tourney_category_service
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_success
-from .....util.framework.templating import templated
-from .....util.views import permission_required, redirect_to, respond_no_content
+from byceps.services.party import party_service
+from byceps.services.tourney import tourney_category_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import CreateForm, UpdateForm
 

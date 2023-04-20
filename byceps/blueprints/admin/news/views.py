@@ -11,24 +11,24 @@ from datetime import date, datetime
 from flask import abort, g, request
 from flask_babel import format_datetime, gettext, to_utc
 
-from ....services.brand import brand_service
-from ....services.image import image_service
-from ....services.news import (
+from byceps.services.brand import brand_service
+from byceps.services.image import image_service
+from byceps.services.news import (
     news_channel_service,
     news_html_service,
     news_image_service,
     news_item_service,
 )
-from ....services.news.models import NewsChannel
-from ....services.site import site_service
-from ....services.text_diff import text_diff_service
-from ....services.user import user_service
-from ....signals import news as news_signals
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.iterables import pairwise
-from ....util.views import permission_required, redirect_to, respond_no_content
+from byceps.services.news.models import NewsChannel
+from byceps.services.site import site_service
+from byceps.services.text_diff import text_diff_service
+from byceps.services.user import user_service
+from byceps.signals import news as news_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.iterables import pairwise
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import (
     ChannelCreateForm,

@@ -11,15 +11,15 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.brand import brand_service
-from ....services.orga import orga_birthday_service, orga_service
-from ....services.orga.models import Birthday
-from ....services.user import user_service
-from ....util.export import serialize_dicts_to_csv
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import (
+from byceps.services.brand import brand_service
+from byceps.services.orga import orga_birthday_service, orga_service
+from byceps.services.orga.models import Birthday
+from byceps.services.user import user_service
+from byceps.util.export import serialize_dicts_to_csv
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import (
     permission_required,
     redirect_to,
     respond_no_content,

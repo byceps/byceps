@@ -17,7 +17,7 @@ from flask_babel import force_locale, format_currency, get_locale
 from moneyed import Money
 from wtforms import Form
 
-from ..services.user.models.user import User
+from byceps.services.user.models.user import User
 
 
 def get_current_user_locale() -> Optional[str]:

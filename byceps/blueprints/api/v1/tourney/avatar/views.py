@@ -8,14 +8,13 @@ byceps.blueprints.api.v1.tourney.avatar.views
 
 from flask import abort, request
 
-from ......services.party import party_service
-from ......services.tourney.avatar import tourney_avatar_service
-from ......services.user import user_service
-from ......util.framework.blueprint import create_blueprint
-from ......util.image.models import ImageType
-from ......util.views import respond_created, respond_no_content
-
-from ....decorators import api_token_required
+from byceps.blueprints.api.decorators import api_token_required
+from byceps.services.party import party_service
+from byceps.services.tourney.avatar import tourney_avatar_service
+from byceps.services.user import user_service
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.image.models import ImageType
+from byceps.util.views import respond_created, respond_no_content
 
 from .forms import CreateForm
 

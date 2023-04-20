@@ -9,11 +9,10 @@ byceps.services.tourney.dbmodels.tourney
 from datetime import datetime
 from typing import Optional
 
-from ....database import db, generate_uuid7
-from ....typing import PartyID
-from ....util.instances import ReprBuilder
-
-from ..models import TourneyCategoryID
+from byceps.database import db, generate_uuid7
+from byceps.services.tourney.models import TourneyCategoryID
+from byceps.typing import PartyID
+from byceps.util.instances import ReprBuilder
 
 from .tourney_category import DbTourneyCategory
 

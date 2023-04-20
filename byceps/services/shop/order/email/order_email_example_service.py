@@ -12,19 +12,11 @@ from typing import Optional
 from flask_babel import gettext
 from moneyed import EUR, Money
 
-from .....config import ConfigurationError
-from .....database import generate_uuid4
-from .....typing import BrandID, UserID
-
-from ....email.models import Message
-from ....user.models.user import User
-
-from ...shop import shop_service
-from ...shop.models import ShopID
-from ...storefront.models import StorefrontID
-
-from ..models.number import OrderNumber
-from ..models.order import (
+from byceps.config import ConfigurationError
+from byceps.database import generate_uuid4
+from byceps.services.email.models import Message
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import (
     Address,
     LineItem,
     Order,
@@ -32,6 +24,11 @@ from ..models.order import (
     OrderState,
     PaymentState,
 )
+from byceps.services.shop.shop import shop_service
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.user.models.user import User
+from byceps.typing import BrandID, UserID
 
 from . import order_email_service
 from .order_email_service import OrderEmailData

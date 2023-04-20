@@ -10,17 +10,16 @@ from datetime import datetime
 
 from sqlalchemy import delete
 
-from ...database import db
-from ...events.board import (
+from byceps.database import db
+from byceps.events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
     BoardPostingUnhidden,
     BoardPostingUpdated,
 )
-from ...typing import UserID
-
-from ..user import user_service
-from ..user.models.user import User
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
 
 from . import (
     board_aggregation_service,

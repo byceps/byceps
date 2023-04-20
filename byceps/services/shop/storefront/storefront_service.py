@@ -10,11 +10,10 @@ from typing import Optional
 
 from sqlalchemy import delete, select
 
-from ....database import db
-
-from ..catalog.models import CatalogID
-from ..order.models.number import OrderNumberSequenceID
-from ..shop.models import ShopID
+from byceps.database import db
+from byceps.services.shop.catalog.models import CatalogID
+from byceps.services.shop.order.models.number import OrderNumberSequenceID
+from byceps.services.shop.shop.models import ShopID
 
 from .dbmodels import DbStorefront
 from .models import Storefront, StorefrontID

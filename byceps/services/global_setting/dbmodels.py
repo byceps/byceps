@@ -6,8 +6,8 @@ byceps.services.global_setting.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import db
-from ...util.instances import ReprBuilder
+from byceps.database import db
+from byceps.util.instances import ReprBuilder
 
 
 class DbSetting(db.Model):

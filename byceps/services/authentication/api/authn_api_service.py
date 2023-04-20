@@ -12,10 +12,9 @@ from uuid import UUID
 
 from sqlalchemy import delete, select
 
-from ....database import db
-from ....typing import UserID
-
-from ...authorization.models import PermissionID
+from byceps.database import db
+from byceps.services.authorization.models import PermissionID
+from byceps.typing import UserID
 
 from .dbmodels import DbApiToken
 from .models import ApiToken

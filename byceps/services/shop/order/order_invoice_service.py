@@ -10,7 +10,7 @@ from typing import Optional
 
 from sqlalchemy import select
 
-from ....database import db
+from byceps.database import db
 
 from . import order_log_service
 from .dbmodels.invoice import DbInvoice

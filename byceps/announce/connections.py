@@ -11,9 +11,9 @@ Connect event signals to announcement handlers.
 from datetime import datetime
 from typing import Any, Optional
 
-from ..events.auth import UserLoggedIn
-from ..events.base import _BaseEvent
-from ..events.board import (
+from byceps.events.auth import UserLoggedIn
+from byceps.events.base import _BaseEvent
+from byceps.events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
     BoardPostingUnhidden,
@@ -26,13 +26,13 @@ from ..events.board import (
     BoardTopicUnlocked,
     BoardTopicUnpinned,
 )
-from ..events.guest_server import GuestServerRegistered
-from ..events.news import NewsItemPublished
-from ..events.page import PageCreated, PageDeleted, PageUpdated
-from ..events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
-from ..events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
-from ..events.ticketing import TicketCheckedIn, TicketsSold
-from ..events.tourney import (
+from byceps.events.guest_server import GuestServerRegistered
+from byceps.events.news import NewsItemPublished
+from byceps.events.page import PageCreated, PageDeleted, PageUpdated
+from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
+from byceps.events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
+from byceps.events.ticketing import TicketCheckedIn, TicketsSold
+from byceps.events.tourney import (
     TourneyCanceled,
     TourneyFinished,
     TourneyMatchReady,
@@ -47,7 +47,7 @@ from ..events.tourney import (
     TourneyPaused,
     TourneyStarted,
 )
-from ..events.user import (
+from byceps.events.user import (
     UserAccountCreated,
     UserAccountDeleted,
     UserAccountSuspended,
@@ -57,20 +57,20 @@ from ..events.user import (
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
-from ..events.user_badge import UserBadgeAwarded
-from ..services.webhooks.models import OutgoingWebhook
-from ..signals import auth as auth_signals
-from ..signals import board as board_signals
-from ..signals import guest_server as guest_server_signals
-from ..signals import news as news_signals
-from ..signals import page as page_signals
-from ..signals import shop as shop_signals
-from ..signals import snippet as snippet_signals
-from ..signals import ticketing as ticketing_signals
-from ..signals import tourney as tourney_signals
-from ..signals import user as user_signals
-from ..signals import user_badge as user_badge_signals
-from ..util.jobqueue import enqueue, enqueue_at
+from byceps.events.user_badge import UserBadgeAwarded
+from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.signals import auth as auth_signals
+from byceps.signals import board as board_signals
+from byceps.signals import guest_server as guest_server_signals
+from byceps.signals import news as news_signals
+from byceps.signals import page as page_signals
+from byceps.signals import shop as shop_signals
+from byceps.signals import snippet as snippet_signals
+from byceps.signals import ticketing as ticketing_signals
+from byceps.signals import tourney as tourney_signals
+from byceps.signals import user as user_signals
+from byceps.signals import user_badge as user_badge_signals
+from byceps.util.jobqueue import enqueue, enqueue_at
 
 from .handlers import (
     auth as auth_handlers,

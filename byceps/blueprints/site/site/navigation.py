@@ -11,9 +11,9 @@ from typing import Optional
 
 from flask import g
 
-from ....services.site_navigation import site_navigation_service
-from ....services.site_navigation.models import NavMenuID
-from ....util.l10n import get_default_locale, get_locale_str
+from byceps.services.site_navigation import site_navigation_service
+from byceps.services.site_navigation.models import NavMenuID
+from byceps.util.l10n import get_default_locale, get_locale_str
 
 
 def find_subnav_menu_id(view_name: str) -> Optional[NavMenuID]:

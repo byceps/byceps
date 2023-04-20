@@ -12,28 +12,28 @@ from typing import Iterator
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
-from .....services.party import party_service
-from .....services.party.models import Party
-from .....services.shop.order import order_service
-from .....services.shop.order.models.order import AdminOrderListItem
-from .....services.shop.shop import shop_service
-from .....services.ticketing import (
+from byceps.services.party import party_service
+from byceps.services.party.models import Party
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.models.order import AdminOrderListItem
+from byceps.services.shop.shop import shop_service
+from byceps.services.ticketing import (
     exceptions as ticket_exceptions,
 )
-from .....services.ticketing import (
+from byceps.services.ticketing import (
     ticket_service,
     ticket_user_checkin_service,
 )
-from .....services.ticketing.dbmodels.ticket import DbTicket
-from .....services.ticketing.models.ticket import TicketID
-from .....services.user import user_service
-from .....services.user.models.user import User
-from .....signals import ticketing as ticketing_signals
-from .....typing import BrandID, PartyID
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_notice, flash_success
-from .....util.framework.templating import templated
-from .....util.views import permission_required, respond_no_content
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.ticketing.models.ticket import TicketID
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.signals import ticketing as ticketing_signals
+from byceps.typing import BrandID, PartyID
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_notice, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, respond_no_content
 
 
 blueprint = create_blueprint('ticketing_checkin_admin', __name__)

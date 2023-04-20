@@ -11,16 +11,16 @@ from typing import Iterable
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
-from ....services.global_setting import global_setting_service
-from ....services.guest_server import guest_server_service
-from ....services.guest_server.models import Address
-from ....services.ticketing import ticket_service
-from ....signals import guest_server as guest_server_signals
-from ....typing import PartyID
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import login_required, permission_required, redirect_to
+from byceps.services.global_setting import global_setting_service
+from byceps.services.guest_server import guest_server_service
+from byceps.services.guest_server.models import Address
+from byceps.services.ticketing import ticket_service
+from byceps.signals import guest_server as guest_server_signals
+from byceps.typing import PartyID
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import login_required, permission_required, redirect_to
 
 from .forms import CreateForm
 

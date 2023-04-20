@@ -12,9 +12,9 @@ import pkgutil
 from flask import g
 from flask_babel import LazyString
 
-from ..services.authorization import authz_service
-from ..services.authorization.models import Permission, PermissionID
-from ..typing import UserID
+from byceps.services.authorization import authz_service
+from byceps.services.authorization.models import Permission, PermissionID
+from byceps.typing import UserID
 
 
 def load_permissions() -> None:

@@ -9,19 +9,17 @@ byceps.services.shop.order.actions.ticket
 from typing import Any, Iterable
 from uuid import UUID
 
-from .....typing import UserID
-
-from ....ticketing import (
+from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order.models.order import LineItem, Order, OrderID
+from byceps.services.ticketing import (
     ticket_category_service,
     ticket_creation_service,
     ticket_revocation_service,
     ticket_service,
 )
-from ....ticketing.dbmodels.ticket import DbTicket
-from ....ticketing.models.ticket import TicketCategoryID, TicketID
-
-from .. import order_log_service, order_service
-from ..models.order import LineItem, Order, OrderID
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.ticketing.models.ticket import TicketCategoryID, TicketID
+from byceps.typing import UserID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 

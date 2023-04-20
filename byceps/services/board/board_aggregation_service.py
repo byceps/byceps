@@ -8,7 +8,7 @@ byceps.services.board.board_aggregation_service
 
 from sqlalchemy import select
 
-from ...database import db
+from byceps.database import db
 
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting

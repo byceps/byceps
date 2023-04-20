@@ -8,10 +8,9 @@ byceps.services.shop.article.dbmodels.sequence
 
 from typing import Optional
 
-from .....database import db, generate_uuid4
-from .....util.instances import ReprBuilder
-
-from ...shop.models import ShopID
+from byceps.database import db, generate_uuid4
+from byceps.services.shop.shop.models import ShopID
+from byceps.util.instances import ReprBuilder
 
 
 class DbArticleNumberSequence(db.Model):

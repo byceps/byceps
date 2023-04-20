@@ -15,11 +15,10 @@ from zoneinfo import ZoneInfo
 from flask import current_app
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...typing import PartyID, UserID
-from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
-
-from ..party import party_service
+from byceps.database import db
+from byceps.services.party import party_service
+from byceps.typing import PartyID, UserID
+from byceps.util.datetime.range import create_adjacent_ranges, DateTimeRange
 
 from .dbmodels import DbPresence, DbTask, DbTimeSlot
 from .models import PresenceTimeSlot, TaskTimeSlot, TimeSlot

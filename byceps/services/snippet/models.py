@@ -12,9 +12,8 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from ...typing import BrandID
-
-from ..site.models import SiteID
+from byceps.services.site.models import SiteID
+from byceps.typing import BrandID
 
 
 @dataclass(frozen=True)

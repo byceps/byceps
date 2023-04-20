@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.dbmodels.sequence
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.dbmodels.number_sequence
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -8,10 +8,9 @@ byceps.services.shop.order.dbmodels.sequence
 
 from typing import Optional
 
-from .....database import db, generate_uuid4
-from .....util.instances import ReprBuilder
-
-from ...shop.models import ShopID
+from byceps.database import db, generate_uuid4
+from byceps.services.shop.shop.models import ShopID
+from byceps.util.instances import ReprBuilder
 
 
 class DbOrderNumberSequence(db.Model):

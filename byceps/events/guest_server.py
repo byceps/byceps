@@ -9,8 +9,8 @@ byceps.events.guest_server
 from dataclasses import dataclass
 from typing import Optional
 
-from ..services.guest_server.models import ServerID
-from ..typing import PartyID, UserID
+from byceps.services.guest_server.models import ServerID
+from byceps.typing import PartyID, UserID
 
 from .base import _BaseEvent
 

@@ -14,13 +14,11 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from ....database import db, generate_uuid7
-from ....util.instances import ReprBuilder
-
-from ...ticketing.dbmodels.category import DbTicketCategory
-from ...ticketing.models.ticket import TicketCategoryID
-
-from ..models import SeatingAreaID
+from byceps.database import db, generate_uuid7
+from byceps.services.seating.models import SeatingAreaID
+from byceps.services.ticketing.dbmodels.category import DbTicketCategory
+from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.util.instances import ReprBuilder
 
 from .area import DbSeatingArea
 

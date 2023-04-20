@@ -12,16 +12,14 @@ from datetime import datetime
 from moneyed import Money
 from sqlalchemy import delete, select
 
-from ....database import db
-from ....typing import UserID
-from ....util.l10n import format_money
-from ....util.templating import load_template
-
-from ...snippet import snippet_service
-from ...snippet.models import SnippetScope
-from ...user import user_service
-
-from ..shop.models import ShopID
+from byceps.database import db
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.snippet import snippet_service
+from byceps.services.snippet.models import SnippetScope
+from byceps.services.user import user_service
+from byceps.typing import UserID
+from byceps.util.l10n import format_money
+from byceps.util.templating import load_template
 
 from . import order_log_service
 from .dbmodels.payment import DbPayment

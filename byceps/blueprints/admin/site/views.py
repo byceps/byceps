@@ -12,20 +12,20 @@ from typing import Iterable, Iterator
 from flask import abort, request
 from flask_babel import gettext
 
-from ....services.board import board_service
-from ....services.brand import brand_service
-from ....services.brand.models import Brand
-from ....services.news import news_channel_service
-from ....services.party import party_service
-from ....services.shop.shop import shop_service
-from ....services.shop.storefront import storefront_service
-from ....services.shop.storefront.models import Storefront, StorefrontID
-from ....services.site import site_service, site_setting_service
-from ....services.site.models import Site, SiteWithBrand
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to, respond_no_content
+from byceps.services.board import board_service
+from byceps.services.brand import brand_service
+from byceps.services.brand.models import Brand
+from byceps.services.news import news_channel_service
+from byceps.services.party import party_service
+from byceps.services.shop.shop import shop_service
+from byceps.services.shop.storefront import storefront_service
+from byceps.services.shop.storefront.models import Storefront, StorefrontID
+from byceps.services.site import site_service, site_setting_service
+from byceps.services.site.models import Site, SiteWithBrand
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import AddNewsChannelForm, CreateForm, UpdateForm
 

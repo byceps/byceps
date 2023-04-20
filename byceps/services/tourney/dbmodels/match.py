@@ -6,7 +6,7 @@ byceps.services.tourney.dbmodels.match
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....database import db, generate_uuid7
+from byceps.database import db, generate_uuid7
 
 
 class DbMatch(db.Model):

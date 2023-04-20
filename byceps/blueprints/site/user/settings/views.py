@@ -12,23 +12,22 @@ from babel import Locale
 from flask import abort, g, request
 from flask_babel import force_locale, gettext
 
-from .....services.brand import brand_setting_service
-from .....services.country import country_service
-from .....services.newsletter import newsletter_service
-from .....services.newsletter.models import ListID as NewsletterListID
-from .....services.user import (
+from byceps.blueprints.site.orga_team import service as orga_team_service
+from byceps.services.brand import brand_setting_service
+from byceps.services.country import country_service
+from byceps.services.newsletter import newsletter_service
+from byceps.services.newsletter.models import ListID as NewsletterListID
+from byceps.services.user import (
     user_command_service,
     user_email_address_service,
     user_service,
 )
-from .....signals import user as user_signals
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_success
-from .....util.framework.templating import templated
-from .....util.l10n import get_locales
-from .....util.views import login_required, redirect_to, respond_no_content
-
-from ...orga_team import service as orga_team_service
+from byceps.signals import user as user_signals
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.l10n import get_locales
+from byceps.util.views import login_required, redirect_to, respond_no_content
 
 from .forms import ChangeEmailAddressForm, ChangeScreenNameForm, DetailsForm
 

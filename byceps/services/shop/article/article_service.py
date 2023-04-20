@@ -17,15 +17,13 @@ from moneyed import Money
 from sqlalchemy import delete, select, update
 from sqlalchemy.sql import Select
 
-from ....database import db, paginate, Pagination
-
-from ...ticketing.models.ticket import TicketCategoryID
-
-from ..cart.models import Cart
-from ..order.dbmodels.line_item import DbLineItem
-from ..order.dbmodels.order import DbOrder
-from ..order.models.order import PaymentState
-from ..shop.models import ShopID
+from byceps.database import db, paginate, Pagination
+from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order.dbmodels.line_item import DbLineItem
+from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.ticketing.models.ticket import TicketCategoryID
 
 from .dbmodels.article import DbArticle
 from .dbmodels.attached_article import DbAttachedArticle

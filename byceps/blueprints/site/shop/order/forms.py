@@ -11,9 +11,9 @@ from moneyed import EUR
 from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
-from .....services.shop.cart.models import Cart
-from .....services.shop.order.models.order import Orderer
-from .....util.l10n import LocalizedForm
+from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order.models.order import Orderer
+from byceps.util.l10n import LocalizedForm
 
 
 class OrderForm(LocalizedForm):

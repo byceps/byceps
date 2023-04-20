@@ -8,12 +8,10 @@ byceps.services.tourney.dbmodels.participant
 
 from datetime import datetime
 
-from ....database import db, generate_uuid7
-from ....util.instances import ReprBuilder
-
-from ...user.dbmodels.user import DbUser
-
-from ..models import TourneyID
+from byceps.database import db, generate_uuid7
+from byceps.services.tourney.models import TourneyID
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.util.instances import ReprBuilder
 
 from .tourney import DbTourney
 

@@ -15,7 +15,7 @@ from uuid import UUID
 
 from flask_babel import lazy_gettext
 
-from ..site.models import SiteID
+from byceps.services.site.models import SiteID
 
 
 NavMenuID = NewType('NavMenuID', UUID)

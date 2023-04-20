@@ -12,7 +12,7 @@ from flask_babel import lazy_gettext
 from wtforms import StringField, TextAreaField
 from wtforms.validators import Length, Optional, Regexp
 
-from ....util.l10n import LocalizedForm
+from byceps.util.l10n import LocalizedForm
 
 
 HOSTNAME_REGEX = re.compile('^[A-Za-z][A-Za-z0-9-]+$')

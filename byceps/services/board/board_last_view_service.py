@@ -11,8 +11,8 @@ from typing import Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db, upsert, upsert_many
-from ...typing import UserID
+from byceps.database import db, upsert, upsert_many
+from byceps.typing import UserID
 
 from . import board_topic_query_service
 from .dbmodels.last_category_view import DbLastCategoryView

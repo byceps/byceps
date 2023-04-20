@@ -11,12 +11,11 @@ from typing import Iterable, Iterator, Optional
 
 from sqlalchemy import select
 
-from ...database import db
-
-from ..user import user_avatar_service
-from ..user.dbmodels.detail import DbUserDetail
-from ..user.dbmodels.user import DbUser
-from ..user.models.user import User, UserID
+from byceps.database import db
+from byceps.services.user import user_avatar_service
+from byceps.services.user.dbmodels.detail import DbUserDetail
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.models.user import User, UserID
 
 from .dbmodels import DbOrgaFlag
 from .models import Birthday

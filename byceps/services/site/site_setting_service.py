@@ -10,7 +10,7 @@ from typing import Optional
 
 from sqlalchemy import delete, select
 
-from ...database import db, upsert
+from byceps.database import db, upsert
 
 from .dbmodels.setting import DbSetting
 from .models import SiteID, SiteSetting

@@ -11,11 +11,11 @@ from typing import Optional, Sequence
 
 from sqlalchemy import delete, select
 
-from ...database import db
-from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
-from ...services.user import user_service
-from ...services.user.models.user import User
-from ...typing import UserID
+from byceps.database import db
+from byceps.events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
 
 from .dbmodels import (
     DbCurrentSnippetVersionAssociation,

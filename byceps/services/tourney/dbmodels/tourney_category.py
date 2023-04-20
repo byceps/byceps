@@ -8,11 +8,10 @@ byceps.services.tourney.dbmodels.tourney_category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ....database import db, generate_uuid4
-from ....typing import PartyID
-from ....util.instances import ReprBuilder
-
-from ...party.dbmodels.party import DbParty
+from byceps.database import db, generate_uuid4
+from byceps.services.party.dbmodels.party import DbParty
+from byceps.typing import PartyID
+from byceps.util.instances import ReprBuilder
 
 
 class DbTourneyCategory(db.Model):

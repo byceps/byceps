@@ -8,10 +8,9 @@ byceps.services.authentication.authn_service
 
 from typing import Optional
 
-from ...util.result import Err, Ok, Result
-
-from ..user import user_service
-from ..user.models.user import User
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok, Result
 
 from .errors import AuthenticationFailed
 from .password import authn_password_service

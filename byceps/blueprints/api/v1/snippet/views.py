@@ -8,14 +8,12 @@ byceps.blueprints.api.v1.snippet.views
 
 from flask import jsonify
 
-from .....services.snippet import snippet_service
-from .....services.snippet.models import SnippetScope
-from .....util.framework.blueprint import create_blueprint
-from .....util.views import create_empty_json_response
-
-from ....site.snippet.templating import get_rendered_snippet_body
-
-from ...decorators import api_token_required
+from byceps.blueprints.api.decorators import api_token_required
+from byceps.blueprints.site.snippet.templating import get_rendered_snippet_body
+from byceps.services.snippet import snippet_service
+from byceps.services.snippet.models import SnippetScope
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.views import create_empty_json_response
 
 
 blueprint = create_blueprint('snippet_api', __name__)

@@ -19,8 +19,8 @@ from wtforms.validators import (
     ValidationError,
 )
 
-from .....services.shop.order.models.order import Order
-from .....util.l10n import LocalizedForm
+from byceps.services.shop.order.models.order import Order
+from byceps.util.l10n import LocalizedForm
 
 
 class CancelForm(LocalizedForm):

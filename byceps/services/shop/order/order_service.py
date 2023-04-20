@@ -16,19 +16,17 @@ from moneyed import Currency, Money
 from sqlalchemy import delete, select
 import structlog
 
-from ....database import db, paginate, Pagination
-from ....events.shop import ShopOrderCanceled, ShopOrderPaid
-from ....typing import UserID
-from ....util.result import Err, Ok, Result
-
-from ...ticketing.models.ticket import TicketCategoryID
-from ...user import user_service
-
-from ..article import article_service
-from ..article.models import ArticleType
-from ..shop.dbmodels import DbShop
-from ..shop.models import ShopID
-from ..storefront.models import StorefrontID
+from byceps.database import db, paginate, Pagination
+from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
+from byceps.services.shop.article import article_service
+from byceps.services.shop.article.models import ArticleType
+from byceps.services.shop.shop.dbmodels import DbShop
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.services.user import user_service
+from byceps.typing import UserID
+from byceps.util.result import Err, Ok, Result
 
 from . import (
     order_action_service,

@@ -12,8 +12,8 @@ from typing import Optional
 from sqlalchemy import select
 from sqlalchemy.sql import Select
 
-from ...database import db, paginate, Pagination
-from ...typing import UserID
+from byceps.database import db, paginate, Pagination
+from byceps.typing import UserID
 
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.detail import DbUserDetail

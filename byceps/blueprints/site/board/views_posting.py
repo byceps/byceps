@@ -11,19 +11,20 @@ import dataclasses
 from flask import g, redirect, request
 from flask_babel import gettext
 
-from ....services.board import (
+from byceps.blueprints.site.site.navigation import subnavigation_for_view
+from byceps.services.board import (
     board_last_view_service,
     board_posting_command_service,
     board_posting_query_service,
 )
-from ....services.text_markup import text_markup_service
-from ....services.user import user_service
-from ....signals import board as board_signals
-from ....util.authorization import has_current_user_permission
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import permission_required, respond_no_content_with_location
-from ..site.navigation import subnavigation_for_view
+from byceps.services.text_markup import text_markup_service
+from byceps.services.user import user_service
+from byceps.signals import board as board_signals
+from byceps.util.authorization import has_current_user_permission
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, respond_no_content_with_location
+
 from . import _helpers as h
 from . import service
 from .blueprint import blueprint

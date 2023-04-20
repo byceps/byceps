@@ -6,9 +6,9 @@ byceps.services.ticketing.dbmodels.category
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....database import db, generate_uuid4
-from ....typing import PartyID
-from ....util.instances import ReprBuilder
+from byceps.database import db, generate_uuid4
+from byceps.typing import PartyID
+from byceps.util.instances import ReprBuilder
 
 
 class DbTicketCategory(db.Model):

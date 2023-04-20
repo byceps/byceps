@@ -13,15 +13,14 @@ from typing import Optional
 
 from flask_babel import gettext
 
-from ...typing import UserID
-from ...util.l10n import force_user_locale
-
-from ..email import email_config_service, email_service
-from ..email.models import Message
-from ..site import site_service
-from ..site.models import SiteID
-from ..user import user_service
-from ..user.models.user import User
+from byceps.services.email import email_config_service, email_service
+from byceps.services.email.models import Message
+from byceps.services.site import site_service
+from byceps.services.site.models import SiteID
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
+from byceps.typing import UserID
+from byceps.util.l10n import force_user_locale
 
 
 def send_message(

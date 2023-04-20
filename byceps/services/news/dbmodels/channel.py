@@ -8,13 +8,11 @@ byceps.services.news.dbmodels.channel
 
 from typing import Optional
 
-from ....database import db
-from ....typing import BrandID
-from ....util.instances import ReprBuilder
-
-from ...site.models import SiteID
-
-from ..models import NewsChannelID
+from byceps.database import db
+from byceps.services.news.models import NewsChannelID
+from byceps.services.site.models import SiteID
+from byceps.typing import BrandID
+from byceps.util.instances import ReprBuilder
 
 
 class DbNewsChannel(db.Model):

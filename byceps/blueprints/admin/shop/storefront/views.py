@@ -9,17 +9,17 @@ byceps.blueprints.admin.shop.storefront.views
 from flask import abort, request
 from flask_babel import gettext
 
-from .....services.brand import brand_service
-from .....services.shop.catalog import catalog_service
-from .....services.shop.order import order_sequence_service
-from .....services.shop.shop import shop_service
-from .....services.shop.shop.models import Shop, ShopID
-from .....services.shop.storefront import storefront_service
-from .....services.shop.storefront.models import Storefront, StorefrontID
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_success
-from .....util.framework.templating import templated
-from .....util.views import permission_required, redirect_to
+from byceps.services.brand import brand_service
+from byceps.services.shop.catalog import catalog_service
+from byceps.services.shop.order import order_sequence_service
+from byceps.services.shop.shop import shop_service
+from byceps.services.shop.shop.models import Shop, ShopID
+from byceps.services.shop.storefront import storefront_service
+from byceps.services.shop.storefront.models import Storefront, StorefrontID
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import permission_required, redirect_to
 
 from .forms import StorefrontCreateForm, StorefrontUpdateForm
 

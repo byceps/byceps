@@ -18,9 +18,9 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from ....database import db, generate_uuid7
-from ....util.image.models import ImageType
-from ....util.instances import ReprBuilder
+from byceps.database import db, generate_uuid7
+from byceps.util.image.models import ImageType
+from byceps.util.instances import ReprBuilder
 
 
 _ABSOLUTE_URL_PATH_PREFIX = '/data/global/users/avatars/'

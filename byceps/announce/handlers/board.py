@@ -13,7 +13,13 @@ from typing import Optional
 
 from flask_babel import gettext
 
-from ...events.board import (
+from byceps.announce.helpers import (
+    Announcement,
+    get_screen_name_or_fallback,
+    matches_selectors,
+    with_locale,
+)
+from byceps.events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
     BoardPostingUnhidden,
@@ -27,17 +33,10 @@ from ...events.board import (
     BoardTopicUnpinned,
     _BoardEvent,
 )
-from ...services.board import board_topic_query_service
-from ...services.board.models import TopicID
-from ...services.brand import brand_service
-from ...services.webhooks.models import OutgoingWebhook
-
-from ..helpers import (
-    Announcement,
-    get_screen_name_or_fallback,
-    matches_selectors,
-    with_locale,
-)
+from byceps.services.board import board_topic_query_service
+from byceps.services.board.models import TopicID
+from byceps.services.brand import brand_service
+from byceps.services.webhooks.models import OutgoingWebhook
 
 
 def apply_selectors(handler):

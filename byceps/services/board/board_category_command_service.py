@@ -6,7 +6,7 @@ byceps.services.board.board_category_command_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import db
+from byceps.database import db
 
 from . import board_topic_query_service
 from .dbmodels.board import DbBoard

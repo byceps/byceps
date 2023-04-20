@@ -13,18 +13,16 @@ from moneyed import Currency
 from sqlalchemy.exc import IntegrityError
 import structlog
 
-from ....database import db
-from ....events.shop import ShopOrderPlaced
-from ....util.result import Err, Ok, Result
-
-from ...user import user_service
-
-from ..article import article_service
-from ..cart.models import Cart, CartItem
-from ..shop import shop_service
-from ..shop.models import ShopID
-from ..storefront import storefront_service
-from ..storefront.models import StorefrontID
+from byceps.database import db
+from byceps.events.shop import ShopOrderPlaced
+from byceps.services.shop.article import article_service
+from byceps.services.shop.cart.models import Cart, CartItem
+from byceps.services.shop.shop import shop_service
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront import storefront_service
+from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.user import user_service
+from byceps.util.result import Err, Ok, Result
 
 from . import (
     order_log_service,

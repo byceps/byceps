@@ -11,13 +11,13 @@ from typing import Any
 
 from flask import g, render_template
 
-from .... import config
-from ....util.authorization import (
+from byceps import config
+from byceps.util.authorization import (
     has_current_user_any_permission,
     has_current_user_permission,
 )
-from ....util.framework.blueprint import create_blueprint
-from ....util.navigation import Navigation
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.navigation import Navigation
 
 
 blueprint = create_blueprint('core_common', __name__)

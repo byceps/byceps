@@ -11,29 +11,28 @@ from typing import Any
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.party import party_service
-from ....services.seating import (
+from byceps.blueprints.site.site.navigation import subnavigation_for_view
+from byceps.services.party import party_service
+from byceps.services.seating import (
     seat_service,
     seating_area_service,
     seating_area_tickets_service,
 )
-from ....services.seating.models import Seat, SeatID, SeatingArea
-from ....services.ticketing import (
+from byceps.services.seating.models import Seat, SeatID, SeatingArea
+from byceps.services.ticketing import (
     exceptions as ticket_exceptions,
 )
-from ....services.ticketing import (
+from byceps.services.ticketing import (
     ticket_seat_management_service,
     ticket_service,
 )
-from ....services.ticketing.dbmodels.ticket import DbTicket
-from ....services.ticketing.models.ticket import TicketID
-from ....util.authorization import has_current_user_permission
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import login_required, redirect_to, respond_no_content
-
-from ..site.navigation import subnavigation_for_view
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.ticketing.models.ticket import TicketID
+from byceps.util.authorization import has_current_user_permission
+from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.templating import templated
+from byceps.util.views import login_required, redirect_to, respond_no_content
 
 
 blueprint = create_blueprint('seating', __name__)

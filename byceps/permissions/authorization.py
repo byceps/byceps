@@ -8,7 +8,7 @@ byceps.permissions.authorization
 
 from flask_babel import lazy_gettext
 
-from ..util.authorization import register_permissions
+from byceps.util.authorization import register_permissions
 
 
 register_permissions(

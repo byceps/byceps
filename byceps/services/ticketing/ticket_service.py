@@ -11,14 +11,13 @@ from typing import Optional, Sequence
 
 from sqlalchemy import delete, select
 
-from ...database import db, paginate, Pagination
-from ...typing import PartyID, UserID
-
-from ..party import party_service
-from ..seating.dbmodels.seat import DbSeat
-from ..seating.models import SeatID
-from ..shop.order.models.number import OrderNumber
-from ..user.dbmodels.user import DbUser
+from byceps.database import db, paginate, Pagination
+from byceps.services.party import party_service
+from byceps.services.seating.dbmodels.seat import DbSeat
+from byceps.services.seating.models import SeatID
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import PartyID, UserID
 
 from . import ticket_code_service, ticket_log_service
 from .dbmodels.category import DbTicketCategory
