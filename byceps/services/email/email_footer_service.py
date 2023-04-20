@@ -12,6 +12,9 @@ from byceps.services.snippet.models import SnippetScope
 from byceps.typing import BrandID, UserID
 
 
+SIGNATURE_SEPARATOR = '-- '
+
+
 def create_footers(
     brand_id: BrandID,
     creator_id: UserID,
@@ -33,7 +36,7 @@ We are happy to answer your questions.
 Have a nice day,
 the team of {brand.title}
 
--- 
+{SIGNATURE_SEPARATOR}
 {brand.title}
 
 Email: {contact_address}
@@ -47,7 +50,7 @@ Für Fragen stehen wir gerne zur Verfügung.
 Viele Grüße,
 das Team der {brand.title}
 
--- 
+{SIGNATURE_SEPARATOR}
 {brand.title}
 
 E-Mail: {contact_address}
