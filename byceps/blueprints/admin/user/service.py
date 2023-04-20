@@ -26,7 +26,7 @@ from ....services.user.dbmodels.avatar import (
 from ....services.user.models.log import UserLogEntry, UserLogEntryData
 from ....services.user.models.user import User
 from ....services.user import user_log_service, user_service
-from ....services.user_badge import user_badge_service as user_badge_service
+from ....services.user_badge import user_badge_service
 from ....typing import PartyID, UserID
 
 
