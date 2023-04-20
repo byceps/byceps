@@ -245,7 +245,7 @@ def _get_additional_data(
         details = {
             k: v
             for k, v in log_entry.data.items()
-            if k.startswith('old_') or k.startswith('new_')
+            if k.startswith(('old_', 'new_'))
         }
         yield 'details', details
 
