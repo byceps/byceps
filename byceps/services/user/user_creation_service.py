@@ -102,7 +102,7 @@ def create_user(
     except Exception as e:
         current_app.logger.error('User creation failed: %s', e)
         db.session.rollback()
-        raise UserCreationFailed()
+        raise UserCreationFailed
 
     user = user_service._db_entity_to_user(db_user)
 
