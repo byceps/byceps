@@ -29,7 +29,7 @@ from ...events.tourney import (
 )
 from ...services.webhooks.models import OutgoingWebhook
 
-from ..helpers import Announcement, get_screen_name_or_fallback, with_locale
+from ..helpers import Announcement, with_locale
 
 
 # -------------------------------------------------------------------- #

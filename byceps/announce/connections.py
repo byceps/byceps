@@ -86,7 +86,6 @@ from .handlers import (
     user_badge as user_badge_handlers,
 )
 from .helpers import (
-    Announcement,
     AnnouncementRequest,
     assemble_request_data,
     call_webhook,
