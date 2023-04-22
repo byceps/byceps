@@ -291,7 +291,7 @@ def image_create(item_id):
         abort(400, 'No file to upload has been specified.')
 
     try:
-        image = news_image_service.create_image(
+        creation_result = news_image_service.create_image(
             creator_id,
             item.id,
             image.stream,
@@ -299,10 +299,12 @@ def image_create(item_id):
             caption=caption,
             attribution=attribution,
         )
+        if creation_result.is_err():
+            abort(400, creation_result.unwrap_err())
+
+        image = creation_result.unwrap()
     except user_service.UserIdRejected:
         abort(400, 'Invalid creator ID')
-    except image_service.ImageTypeProhibited as e:
-        abort(400, str(e))
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 

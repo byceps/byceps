@@ -15,10 +15,12 @@ from sqlalchemy import select
 
 from byceps.database import db, generate_uuid7
 from byceps.services.image import image_service
+from byceps.services.image.image_service import ImageTypeProhibited
 from byceps.services.user import user_service
 from byceps.typing import UserID
 from byceps.util import upload
 from byceps.util.image.models import Dimensions, ImageType
+from byceps.util.result import Err, Ok, Result
 
 from . import news_item_service
 from .dbmodels.image import DbNewsImage
@@ -47,7 +49,7 @@ def create_image(
     alt_text: str | None = None,
     caption: str | None = None,
     attribution: str | None = None,
-) -> NewsImage:
+) -> Result[NewsImage, str]:
     """Create an image for a news item."""
     creator = user_service.find_active_user(creator_id)
     if creator is None:
@@ -57,8 +59,12 @@ def create_image(
     if item is None:
         raise ValueError(f'Unknown news item ID "{item_id}".')
 
-    # Might raise `ImageTypeProhibited`.
-    image_type = image_service.determine_image_type(stream, ALLOWED_IMAGE_TYPES)
+    try:
+        image_type = image_service.determine_image_type(
+            stream, ALLOWED_IMAGE_TYPES
+        )
+    except ImageTypeProhibited as e:
+        return Err(str(e))
 
     if image_type != ImageType.svg:
         image_dimensions = image_service.determine_dimensions(stream)
@@ -93,7 +99,9 @@ def create_image(
     # Might raise `FileExistsError`.
     upload.store(stream, path, create_parent_path_if_nonexistent=True)
 
-    return _db_entity_to_image(db_image, item.channel.id)
+    image = _db_entity_to_image(db_image, item.channel.id)
+
+    return Ok(image)
 
 
 def _check_image_dimensions(image_dimensions: Dimensions) -> None:
