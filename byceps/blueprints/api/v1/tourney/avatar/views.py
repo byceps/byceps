@@ -64,13 +64,15 @@ def _create(party_id, creator_id, image):
         abort(400, 'No file to upload has been specified.')
 
     try:
-        return tourney_avatar_service.create_avatar_image(
+        creation_result = tourney_avatar_service.create_avatar_image(
             party_id, creator_id, image.stream, ALLOWED_IMAGE_TYPES
         )
+        if creation_result.is_err():
+            abort(400, creation_result.unwrap_err())
+
+        return creation_result.unwrap()
     except user_service.UserIdRejected:
         abort(400, 'Invalid creator ID')
-    except tourney_avatar_service.ImageTypeProhibited as e:
-        abort(400, str(e))
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 

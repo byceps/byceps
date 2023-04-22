@@ -11,14 +11,13 @@ from uuid import UUID
 
 from byceps.database import db
 from byceps.services.image import image_service
-from byceps.services.image.image_service import (
-    ImageTypeProhibited,  # noqa: F401
-)  # Provide to view functions.
+from byceps.services.image.image_service import ImageTypeProhibited
 from byceps.services.user import user_service
 from byceps.typing import PartyID, UserID
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
 from byceps.util.image.models import Dimensions, ImageType
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbTourneyAvatar
 
@@ -33,17 +32,17 @@ def create_avatar_image(
     allowed_types: set[ImageType],
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
-) -> DbTourneyAvatar:
-    """Create a new avatar image.
-
-    Raise `ImageTypeProhibited` if the stream data is not of one the
-    allowed types.
-    """
+) -> Result[DbTourneyAvatar, str]:
+    """Create a new avatar image."""
     creator = user_service.find_active_user(creator_id)
     if creator is None:
         raise user_service.UserIdRejected(creator_id)
 
-    image_type = image_service.determine_image_type(stream, allowed_types)
+    try:
+        image_type = image_service.determine_image_type(stream, allowed_types)
+    except ImageTypeProhibited as e:
+        return Err(str(e))
+
     image_dimensions = image_service.determine_dimensions(stream)
 
     image_too_large = image_dimensions > maximum_dimensions
@@ -59,7 +58,7 @@ def create_avatar_image(
     # Might raise `FileExistsError`.
     upload.store(stream, avatar.path, create_parent_path_if_nonexistent=True)
 
-    return avatar
+    return Ok(avatar)
 
 
 def delete_avatar_image(avatar_id: UUID) -> None:
