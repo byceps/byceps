@@ -32,15 +32,21 @@ def determine_image_type(
     image_type = guess_type(stream)
 
     if (image_type is None) or (image_type not in allowed_types):
-        allowed_type_names = get_image_type_names(allowed_types)
-        allowed_type_names_string = ', '.join(sorted(allowed_type_names))
-
-        raise ImageTypeProhibited(
-            'Image is not one of the allowed types '
-            f'({allowed_type_names_string}).'
-        )
+        message = _get_image_type_prohibited_error_message(allowed_types)
+        raise ImageTypeProhibited(message)
 
     return image_type
+
+
+def _get_image_type_prohibited_error_message(
+    allowed_types: frozenset[ImageType] | set[ImageType],
+) -> str:
+    allowed_type_names = get_image_type_names(allowed_types)
+    allowed_type_names_string = ', '.join(sorted(allowed_type_names))
+
+    return (
+        f'Image is not one of the allowed types ({allowed_type_names_string}).'
+    )
 
 
 def determine_dimensions(stream: BinaryIO) -> Dimensions:
