@@ -80,11 +80,11 @@ def _update(user_id, image):
         abort(400, 'No file to upload has been specified.')
 
     try:
-        user_avatar_service.update_avatar_image(
+        update_result = user_avatar_service.update_avatar_image(
             user_id, image.stream, ALLOWED_IMAGE_TYPES, user_id
         )
-    except user_avatar_service.ImageTypeProhibited as e:
-        abort(400, str(e))
+        if update_result.is_err():
+            abort(400, update_result.unwrap_err())
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 

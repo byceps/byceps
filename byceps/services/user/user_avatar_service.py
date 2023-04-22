@@ -14,13 +14,12 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.image import image_service
-from byceps.services.image.image_service import (
-    ImageTypeProhibited,  # noqa: F401
-)  # Provide to view functions.
+from byceps.services.image.image_service import ImageTypeProhibited
 from byceps.typing import UserID
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
 from byceps.util.image.models import Dimensions, ImageType
+from byceps.util.result import Err, Ok, Result
 
 from . import user_log_service, user_service
 from .dbmodels.avatar import DbUserAvatar
@@ -38,15 +37,15 @@ def update_avatar_image(
     initiator_id: UserID,
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
-) -> UserAvatarID:
-    """Set a new avatar image for the user.
-
-    Raise `ImageTypeProhibited` if the stream data is not of one the
-    allowed types.
-    """
+) -> Result[UserAvatarID, str]:
+    """Set a new avatar image for the user."""
     user = user_service.get_db_user(user_id)
 
-    image_type = image_service.determine_image_type(stream, allowed_types)
+    try:
+        image_type = image_service.determine_image_type(stream, allowed_types)
+    except ImageTypeProhibited as e:
+        return Err(str(e))
+
     image_dimensions = image_service.determine_dimensions(stream)
 
     image_too_large = image_dimensions > maximum_dimensions
@@ -77,7 +76,7 @@ def update_avatar_image(
 
     db.session.commit()
 
-    return avatar.id
+    return Ok(avatar.id)
 
 
 def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:

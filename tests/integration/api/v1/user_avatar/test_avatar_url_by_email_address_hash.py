@@ -60,7 +60,7 @@ def set_avatar(user_id):
     with Path('tests/fixtures/images/image.jpeg').open('rb') as f:
         avatar_id = user_avatar_service.update_avatar_image(
             user_id, f, {ImageType.jpeg}, user_id
-        )
+        ).unwrap()
     return avatar_id
 
 

@@ -22,7 +22,7 @@ def test_path(data_path, site_app, user, image_extension, image_type):
     with Path(f'tests/fixtures/images/image.{image_extension}').open('rb') as f:
         avatar_id = user_avatar_service.update_avatar_image(
             user.id, f, {image_type}, user.id
-        )
+        ).unwrap()
 
     avatar = user_avatar_service.get_db_avatar(avatar_id)
     expected_filename = f'{avatar.id}.{image_extension}'
