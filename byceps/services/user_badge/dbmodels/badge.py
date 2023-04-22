@@ -8,7 +8,6 @@ byceps.services.user_badge.dbmodels.badge
 
 from __future__ import annotations
 
-
 from byceps.database import db, generate_uuid4
 from byceps.typing import BrandID
 from byceps.util.instances import ReprBuilder

@@ -8,7 +8,6 @@ byceps.services.shop.storefront.dbmodels
 
 from __future__ import annotations
 
-
 from byceps.database import db
 # Make shop catalog tables available for database creation.
 from byceps.services.shop.catalog.dbmodels import DbCatalog  # noqa: F401

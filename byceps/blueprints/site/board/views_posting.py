@@ -28,8 +28,7 @@ from byceps.util.views import (
     respond_no_content_with_location,
 )
 
-from . import _helpers as h
-from . import service
+from . import _helpers as h, service
 from .blueprint import blueprint
 from .forms import PostingCreateForm, PostingUpdateForm
 

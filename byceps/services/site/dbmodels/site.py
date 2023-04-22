@@ -8,7 +8,6 @@ byceps.services.site.dbmodels.site
 
 from __future__ import annotations
 
-
 from byceps.database import db
 from byceps.services.board.models import BoardID
 from byceps.services.brand.dbmodels.brand import DbBrand

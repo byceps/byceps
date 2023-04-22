@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
 
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:

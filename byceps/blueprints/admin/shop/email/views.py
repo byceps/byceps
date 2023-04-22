@@ -8,7 +8,6 @@ byceps.blueprints.admin.shop.email.views
 
 from __future__ import annotations
 
-
 from flask import abort, current_app, g
 
 from byceps.services.brand import brand_service

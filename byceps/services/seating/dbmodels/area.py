@@ -8,7 +8,6 @@ byceps.services.seating.dbmodels.area
 
 from __future__ import annotations
 
-
 from byceps.database import db, generate_uuid4
 from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder

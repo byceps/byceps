@@ -6,8 +6,8 @@ byceps.services.tourney.avatar.tourney_avatars_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from uuid import UUID
 from typing import BinaryIO
+from uuid import UUID
 
 from byceps.database import db
 from byceps.services.image import image_service

@@ -3,8 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy import select
 import pytest
+from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.tourney import (

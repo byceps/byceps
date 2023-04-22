@@ -14,8 +14,8 @@ import click
 
 from byceps.announce.helpers import assemble_request_data, call_webhook
 from byceps.services.orga import orga_birthday_service
-from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
 from byceps.services.webhooks import webhook_service
+from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
 
 from _util import call_with_app_context
 

@@ -10,9 +10,9 @@ from __future__ import annotations
 
 import click
 
-from byceps.services.snippet.models import SnippetScope
-from byceps.services.snippet import snippet_service
 from byceps.services.site.models import Site
+from byceps.services.snippet import snippet_service
+from byceps.services.snippet.models import SnippetScope
 
 from _util import call_with_app_context
 from _validators import validate_site

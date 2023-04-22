@@ -8,7 +8,6 @@ byceps.services.user_badge.user_badge_service
 
 from __future__ import annotations
 
-
 from sqlalchemy import delete, select
 
 from byceps.database import db

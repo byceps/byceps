@@ -8,7 +8,6 @@ byceps.services.orga_team.dbmodels
 
 from __future__ import annotations
 
-
 from byceps.database import db, generate_uuid7
 from byceps.services.party.dbmodels.party import DbParty
 from byceps.services.user.dbmodels.user import DbUser

@@ -19,8 +19,6 @@ from byceps.services.shop.order.models.order import AdminOrderListItem
 from byceps.services.shop.shop import shop_service
 from byceps.services.ticketing import (
     exceptions as ticket_exceptions,
-)
-from byceps.services.ticketing import (
     ticket_service,
     ticket_user_checkin_service,
 )

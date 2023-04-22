@@ -10,7 +10,6 @@ from byceps.services.seating import seat_service, seating_area_service
 # Import models to ensure the corresponding tables are created so
 # `Seat.assignment` is available.
 import byceps.services.seating.dbmodels.seat_group  # noqa: F401
-
 from byceps.services.ticketing import (
     ticket_creation_service,
     ticket_log_service,

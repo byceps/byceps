@@ -21,6 +21,7 @@ from byceps.announce.helpers import (
     with_locale,
 )
 from byceps.events.board import (
+    _BoardEvent,
     BoardPostingCreated,
     BoardPostingHidden,
     BoardPostingUnhidden,
@@ -32,7 +33,6 @@ from byceps.events.board import (
     BoardTopicUnhidden,
     BoardTopicUnlocked,
     BoardTopicUnpinned,
-    _BoardEvent,
 )
 from byceps.services.board import board_topic_query_service
 from byceps.services.board.models import TopicID

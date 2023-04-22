@@ -30,7 +30,7 @@ from byceps.util.framework.templating import templated
 from byceps.util.result import Err, Ok, Result
 from byceps.util.views import login_required, redirect_to
 
-from .forms import OrderForm, assemble_articles_order_form
+from .forms import assemble_articles_order_form, OrderForm
 
 
 blueprint = create_blueprint('shop_order', __name__)

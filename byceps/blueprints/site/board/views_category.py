@@ -19,8 +19,7 @@ from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import respond_no_content_with_location
 
-from . import _helpers as h
-from . import service
+from . import _helpers as h, service
 from .blueprint import blueprint
 
 

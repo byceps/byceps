@@ -8,7 +8,6 @@ byceps.services.global_setting.global_setting_service
 
 from __future__ import annotations
 
-
 from sqlalchemy import delete, select
 
 from byceps.database import db, upsert

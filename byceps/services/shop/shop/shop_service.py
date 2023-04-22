@@ -8,7 +8,6 @@ byceps.services.shop.shop.shop_service
 
 from __future__ import annotations
 
-
 from moneyed import Currency
 from sqlalchemy import delete, select
 

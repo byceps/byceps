@@ -15,13 +15,13 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
+from byceps.database import db, generate_uuid7
 from byceps.services.shop.article.dbmodels.article import DbArticle
 from byceps.services.shop.article.models import (
     ArticleID,
     ArticleNumber,
     ArticleType,
 )
-from byceps.database import db, generate_uuid7
 
 from .order import DbOrder
 

@@ -8,7 +8,6 @@ byceps.services.authentication.authn_service
 
 from __future__ import annotations
 
-
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result

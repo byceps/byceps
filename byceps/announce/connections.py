@@ -61,17 +61,19 @@ from byceps.events.user import (
 )
 from byceps.events.user_badge import UserBadgeAwarded
 from byceps.services.webhooks.models import OutgoingWebhook
-from byceps.signals import auth as auth_signals
-from byceps.signals import board as board_signals
-from byceps.signals import guest_server as guest_server_signals
-from byceps.signals import news as news_signals
-from byceps.signals import page as page_signals
-from byceps.signals import shop as shop_signals
-from byceps.signals import snippet as snippet_signals
-from byceps.signals import ticketing as ticketing_signals
-from byceps.signals import tourney as tourney_signals
-from byceps.signals import user as user_signals
-from byceps.signals import user_badge as user_badge_signals
+from byceps.signals import (
+    auth as auth_signals,
+    board as board_signals,
+    guest_server as guest_server_signals,
+    news as news_signals,
+    page as page_signals,
+    shop as shop_signals,
+    snippet as snippet_signals,
+    ticketing as ticketing_signals,
+    tourney as tourney_signals,
+    user as user_signals,
+    user_badge as user_badge_signals,
+)
 from byceps.util.jobqueue import enqueue, enqueue_at
 
 from .handlers import (

@@ -8,7 +8,6 @@ byceps.blueprints.admin.snippet.helpers
 
 from __future__ import annotations
 
-
 from flask import abort
 
 from byceps.services.brand import brand_service

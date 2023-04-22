@@ -10,8 +10,8 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from datetime import date
-import json
 from io import TextIOBase
+import json
 import secrets
 
 from pydantic import BaseModel, ValidationError

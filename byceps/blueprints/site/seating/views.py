@@ -21,8 +21,6 @@ from byceps.services.seating import (
 from byceps.services.seating.models import Seat, SeatID, SeatingArea
 from byceps.services.ticketing import (
     exceptions as ticket_exceptions,
-)
-from byceps.services.ticketing import (
     ticket_seat_management_service,
     ticket_service,
 )

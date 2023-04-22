@@ -8,7 +8,6 @@ byceps.services.shop.order.order_invoice_service
 
 from __future__ import annotations
 
-
 from sqlalchemy import select
 
 from byceps.database import db

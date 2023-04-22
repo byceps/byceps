@@ -8,7 +8,6 @@ byceps.services.brand.brand_service
 
 from __future__ import annotations
 
-
 from sqlalchemy import delete, select
 
 from byceps.database import db

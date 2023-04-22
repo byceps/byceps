@@ -8,7 +8,6 @@ byceps.blueprints.admin.snippet.views
 
 from __future__ import annotations
 
-
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 

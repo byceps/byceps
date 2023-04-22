@@ -3,9 +3,9 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
 from flask import Flask
 from moneyed import EUR
+import pytest
 from sqlalchemy import select
 
 from byceps.database import db

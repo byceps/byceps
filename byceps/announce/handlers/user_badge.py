@@ -10,7 +10,6 @@ Announce user badge events.
 
 from __future__ import annotations
 
-
 from flask_babel import gettext
 
 from byceps.announce.helpers import (

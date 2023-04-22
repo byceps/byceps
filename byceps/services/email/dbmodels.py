@@ -8,7 +8,6 @@ byceps.services.email.dbmodels
 
 from __future__ import annotations
 
-
 from byceps.database import db
 from byceps.typing import BrandID
 from byceps.util.instances import ReprBuilder

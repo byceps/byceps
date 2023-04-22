@@ -8,7 +8,6 @@ byceps.services.board.board_category_query_service
 
 from __future__ import annotations
 
-
 from sqlalchemy import select
 
 from byceps.database import db

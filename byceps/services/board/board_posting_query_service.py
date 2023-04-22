@@ -8,10 +8,9 @@ byceps.services.board.board_posting_query_service
 
 from __future__ import annotations
 
-
 from sqlalchemy import select
 
-from byceps.database import Pagination, db, paginate
+from byceps.database import db, paginate, Pagination
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import User

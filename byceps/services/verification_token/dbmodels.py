@@ -12,6 +12,7 @@ from datetime import datetime
 import secrets
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:

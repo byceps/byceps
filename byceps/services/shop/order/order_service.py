@@ -8,8 +8,8 @@ byceps.services.shop.order.order_service
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta
 import dataclasses
+from datetime import datetime, timedelta
 from typing import Any
 from uuid import UUID
 
@@ -36,8 +36,7 @@ from . import (
     order_log_service,
     order_payment_service,
 )
-from .actions import ticket as ticket_actions
-from .actions import ticket_bundle as ticket_bundle_actions
+from .actions import ticket as ticket_actions, ticket_bundle as ticket_bundle_actions
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder

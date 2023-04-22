@@ -8,7 +8,6 @@ byceps.services.tourney.tourney_match_service
 
 from __future__ import annotations
 
-
 from sqlalchemy import delete
 
 from byceps.database import db

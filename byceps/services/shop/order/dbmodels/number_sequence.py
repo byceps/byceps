@@ -8,7 +8,6 @@ byceps.services.shop.order.dbmodels.number_sequence
 
 from __future__ import annotations
 
-
 from byceps.database import db, generate_uuid4
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder

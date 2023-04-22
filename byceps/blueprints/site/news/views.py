@@ -8,7 +8,6 @@ byceps.blueprints.site.news.views
 
 from __future__ import annotations
 
-
 from flask import abort, g
 
 from byceps.blueprints.site.site.navigation import subnavigation_for_view

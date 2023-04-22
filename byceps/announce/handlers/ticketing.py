@@ -10,7 +10,6 @@ Announce ticketing events.
 
 from __future__ import annotations
 
-
 from flask_babel import gettext, ngettext
 
 from byceps.announce.helpers import (

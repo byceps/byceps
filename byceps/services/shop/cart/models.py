@@ -7,15 +7,13 @@ byceps.services.shop.cart.models
 """
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 
-from moneyed import Money
-
-from moneyed import Currency
-
-from byceps.util.instances import ReprBuilder
+from moneyed import Currency, Money
 
 from byceps.services.shop.article.models import Article
+from byceps.util.instances import ReprBuilder
 
 
 @dataclass(frozen=True)

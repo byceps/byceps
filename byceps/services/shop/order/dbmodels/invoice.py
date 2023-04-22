@@ -8,7 +8,6 @@ byceps.services.shop.order.dbmodels.invoice
 
 from __future__ import annotations
 
-
 from byceps.database import db, generate_uuid4
 from byceps.services.shop.order.models.order import OrderID
 

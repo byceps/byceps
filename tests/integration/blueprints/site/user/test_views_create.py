@@ -5,8 +5,8 @@
 
 from unittest.mock import patch
 
-from sqlalchemy import select
 import pytest
+from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.authentication.password.dbmodels import DbCredential

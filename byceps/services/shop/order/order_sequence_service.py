@@ -8,7 +8,6 @@ byceps.services.shop.order.order_sequence_service
 
 from __future__ import annotations
 
-
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 

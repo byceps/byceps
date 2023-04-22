@@ -8,9 +8,9 @@
 
 import click
 
+from byceps.services.snippet import snippet_service
 from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet.models import SnippetScope
-from byceps.services.snippet import snippet_service
 
 from _util import call_with_app_context
 from _validators import validate_site

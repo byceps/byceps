@@ -8,7 +8,6 @@ byceps.services.user.dbmodels.detail
 
 from __future__ import annotations
 
-
 from sqlalchemy.ext.mutable import MutableDict
 
 from byceps.database import db

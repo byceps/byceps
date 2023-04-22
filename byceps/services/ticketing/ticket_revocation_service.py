@@ -8,7 +8,6 @@ byceps.services.ticketing.ticket_revocation_service
 
 from __future__ import annotations
 
-
 from byceps.database import db
 from byceps.typing import UserID
 

@@ -8,7 +8,6 @@ byceps.services.news.dbmodels.channel
 
 from __future__ import annotations
 
-
 from byceps.database import db
 from byceps.services.news.models import NewsChannelID
 from byceps.services.site.models import SiteID

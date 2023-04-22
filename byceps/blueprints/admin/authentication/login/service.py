@@ -8,7 +8,6 @@ byceps.blueprints.admin.authentication.login.service
 
 from __future__ import annotations
 
-
 import structlog
 
 from byceps.services.authentication import authn_service

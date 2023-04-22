@@ -8,7 +8,6 @@ byceps.services.seating.seating_area_service
 
 from __future__ import annotations
 
-
 from sqlalchemy import delete, select
 
 from byceps.database import db
