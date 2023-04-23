@@ -61,7 +61,8 @@ class SerializableSeatToImport(BaseModel):
     coord_x: int
     coord_y: int
     category_title: str
-    rotation: Optional[int] = None  # noqa: UP007; for pydantic on Python 3.9
+    # Use `Optional` instead of `| None` for pydantic on Python 3.9.
+    rotation: Optional[int] = None  # noqa: UP007
     label: Optional[str] = None  # noqa: UP007
     type_: Optional[str] = None  # noqa: UP007
     group_title: Optional[str] = None  # noqa: UP007

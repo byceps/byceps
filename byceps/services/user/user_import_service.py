@@ -13,6 +13,7 @@ from datetime import date
 from io import TextIOBase
 import json
 import secrets
+from typing import Optional
 
 from pydantic import BaseModel, ValidationError
 
@@ -22,17 +23,18 @@ from .models.user import User
 
 class UserToImport(BaseModel):
     screen_name: str
-    email_address: str | None = None
-    legacy_id: str | None = None
-    first_name: str | None = None
-    last_name: str | None = None
-    date_of_birth: date | None = None
-    country: str | None = None
-    zip_code: str | None = None
-    city: str | None = None
-    street: str | None = None
-    phone_number: str | None = None
-    internal_comment: str | None = None
+    # Use `Optional` instead of `| None` for pydantic on Python 3.9.
+    email_address: Optional[str] = None  # noqa: UP007
+    legacy_id: Optional[str] = None  # noqa: UP007
+    first_name: Optional[str] = None  # noqa: UP007
+    last_name: Optional[str] = None  # noqa: UP007
+    date_of_birth: Optional[date] = None  # noqa: UP007
+    country: Optional[str] = None  # noqa: UP007
+    zip_code: Optional[str] = None  # noqa: UP007
+    city: Optional[str] = None  # noqa: UP007
+    street: Optional[str] = None  # noqa: UP007
+    phone_number: Optional[str] = None  # noqa: UP007
+    internal_comment: Optional[str] = None  # noqa: UP007
 
 
 def parse_lines(lines: TextIOBase) -> Iterator[str]:
