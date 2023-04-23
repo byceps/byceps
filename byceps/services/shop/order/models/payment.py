@@ -26,3 +26,11 @@ class Payment:
     method: str
     amount: Money
     additional_data: AdditionalPaymentData
+
+
+DEFAULT_PAYMENT_METHODS = {
+    'bank_transfer',
+    'cash',
+    'direct_debit',
+    'free',
+}

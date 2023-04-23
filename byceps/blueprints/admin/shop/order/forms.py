@@ -11,7 +11,7 @@ from wtforms import BooleanField, RadioField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 from byceps.services.shop.order import order_service
-from byceps.services.shop.order.models.order import DEFAULT_PAYMENT_METHODS
+from byceps.services.shop.order.models.payment import DEFAULT_PAYMENT_METHODS
 from byceps.util.l10n import LocalizedForm
 
 
