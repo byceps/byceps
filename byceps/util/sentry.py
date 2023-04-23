@@ -19,11 +19,19 @@ def configure_sentry_for_webapp(dsn: str, environment: str, app: Flask) -> None:
     """
     import sentry_sdk
     from sentry_sdk.integrations.flask import FlaskIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
+    from sentry_sdk.integrations.rq import RqIntegration
+    from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
     sentry_sdk.init(
         dsn=dsn,
         environment=environment,
-        integrations=[FlaskIntegration()],
+        integrations=[
+            FlaskIntegration(),
+            RedisIntegration(),
+            RqIntegration(),
+            SqlalchemyIntegration(),
+        ],
     )
 
     app_mode = app.config.get('APP_MODE')
@@ -36,12 +44,20 @@ def configure_sentry_for_webapp(dsn: str, environment: str, app: Flask) -> None:
 def configure_sentry_for_worker(dsn: str, environment: str) -> None:
     """Initialize and configure the Sentry SDK for the RQ worker."""
     import sentry_sdk
+    from sentry_sdk.integrations.flask import FlaskIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
     from sentry_sdk.integrations.rq import RqIntegration
+    from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
     sentry_sdk.init(
         dsn=dsn,
         environment=environment,
-        integrations=[RqIntegration()],
+        integrations=[
+            FlaskIntegration(),
+            RedisIntegration(),
+            RqIntegration(),
+            SqlalchemyIntegration(),
+        ],
     )
 
     sentry_sdk.set_tag('app_mode', 'worker')
