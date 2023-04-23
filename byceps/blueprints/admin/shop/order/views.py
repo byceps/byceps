@@ -332,6 +332,7 @@ def mark_as_paid_form(order_id, erroneous_form=None):
     brand = brand_service.get_brand(shop.brand_id)
 
     form = erroneous_form if erroneous_form else MarkAsPaidForm()
+    form.set_payment_method_choices()
 
     return {
         'shop': shop,
@@ -348,6 +349,7 @@ def mark_as_paid(order_id):
     order = _get_order_or_404(order_id)
 
     form = MarkAsPaidForm(request.form)
+    form.set_payment_method_choices()
     if not form.validate():
         return mark_as_paid_form(order_id, form)
 

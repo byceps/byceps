@@ -20,6 +20,7 @@ from byceps.services.shop.order import (
 )
 from byceps.services.shop.order.models.log import OrderLogEntryData
 from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.payment import payment_gateway_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.framework.blueprint import create_blueprint
@@ -94,6 +95,8 @@ def view(shop_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
+    payment_gateways = payment_gateway_service.get_all_payment_gateways()
+
     order_counts_by_payment_state = (
         order_service.count_orders_per_payment_state(shop.id)
     )
@@ -101,6 +104,7 @@ def view(shop_id):
     return {
         'shop': shop,
         'brand': brand,
+        'payment_gateways': payment_gateways,
         'order_counts_by_payment_state': order_counts_by_payment_state,
         'PaymentState': PaymentState,
         'settings': shop.extra_settings,

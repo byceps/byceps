@@ -12,6 +12,7 @@ from wtforms.validators import InputRequired, Length
 
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.models.payment import DEFAULT_PAYMENT_METHODS
+from byceps.services.shop.payment import payment_gateway_service
 from byceps.util.l10n import LocalizedForm
 
 
@@ -29,22 +30,26 @@ class CancelForm(LocalizedForm):
     )
 
 
-def _get_payment_method_choices():
-    choices = [
-        (pm, order_service.find_payment_method_label(pm) or pm)
-        for pm in DEFAULT_PAYMENT_METHODS
-    ]
-    choices.sort()
-    return choices
-
-
 class MarkAsPaidForm(LocalizedForm):
     payment_method = RadioField(
         lazy_gettext('Payment type'),
-        choices=_get_payment_method_choices(),
         default='bank_transfer',
         validators=[InputRequired()],
     )
+
+    def set_payment_method_choices(self):
+        default_payment_methods = [
+            (pm, order_service.find_payment_method_label(pm) or pm)
+            for pm in DEFAULT_PAYMENT_METHODS
+        ]
+        payment_gateway_methods = [
+            (payment_gateway.id, payment_gateway.name)
+            for payment_gateway in payment_gateway_service.get_enabled_payment_gateways()
+        ]
+
+        choices = default_payment_methods + payment_gateway_methods
+        choices.sort()
+        self.payment_method.choices = choices
 
 
 class OrderNumberSequenceCreateForm(LocalizedForm):

@@ -12,6 +12,7 @@ from flask_babel import gettext
 from byceps.services.brand import brand_service
 from byceps.services.shop.catalog import catalog_service
 from byceps.services.shop.order import order_sequence_service
+from byceps.services.shop.payment import payment_gateway_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.shop.storefront import storefront_service
@@ -62,6 +63,12 @@ def view(storefront_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
+    enabled_payment_gateways = (
+        payment_gateway_service.get_payment_gateways_enabled_for_storefront(
+            storefront.id
+        )
+    )
+
     order_number_sequence = order_sequence_service.get_order_number_sequence(
         storefront.order_number_sequence_id
     )
@@ -71,6 +78,7 @@ def view(storefront_id):
         'storefront': storefront,
         'shop': shop,
         'brand': brand,
+        'enabled_payment_gateways': enabled_payment_gateways,
         'order_number_prefix': order_number_prefix,
     }
 

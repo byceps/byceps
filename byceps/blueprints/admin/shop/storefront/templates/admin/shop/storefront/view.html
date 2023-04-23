@@ -34,6 +34,17 @@
       </div>
     </div>
 
+    <div class="data-label">{{ _('Payment gateways') }}</div>
+    <div class="data-value">
+      {%- if enabled_payment_gateways %}
+        {%- for payment_gateway in enabled_payment_gateways|sort(attribute='name') %}
+          {{ payment_gateway.name }}{% if not loop.last %}, {% endif %}
+        {%- endfor %}
+      {%- else %}
+      {{ _('none')|dim }}
+      {%- endif %}
+    </div>
+
     <div class="data-label">{{ _('Status') }}</div>
     <div class="data-value">
       {%- if storefront.closed -%}
@@ -42,6 +53,7 @@
       {{ render_tag(_('open'), icon='success', class='color-success') }}
       {%- endif -%}
     </div>
+
   </div>
 
 {%- endblock %}

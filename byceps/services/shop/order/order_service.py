@@ -750,7 +750,8 @@ _PAYMENT_METHOD_LABELS = {
 
 def find_payment_method_label(payment_method: str) -> str | None:
     """Return a label for the payment method."""
-    return _PAYMENT_METHOD_LABELS.get(payment_method)
+    label = _PAYMENT_METHOD_LABELS.get(payment_method)
+    return label or payment_method
 
 
 def get_payment_date(order_id: OrderID) -> datetime | None:
