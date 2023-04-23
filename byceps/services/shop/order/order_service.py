@@ -36,7 +36,10 @@ from . import (
     order_log_service,
     order_payment_service,
 )
-from .actions import ticket as ticket_actions, ticket_bundle as ticket_bundle_actions
+from .actions import (
+    ticket as ticket_actions,
+    ticket_bundle as ticket_bundle_actions,
+)
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
