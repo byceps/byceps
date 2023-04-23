@@ -45,16 +45,19 @@ def create_superuser(screen_name, email_address, password) -> None:
 
 
 def _create_user(screen_name: str, email_address: str, password: str) -> User:
-    try:
-        user, event = user_creation_service.create_user(
-            screen_name,
-            email_address,
-            password,
-            creation_method='superuser creation command',
-        )
-        return user
-    except ValueError as e:
-        raise click.UsageError(f'User creation failed: {e}')
+    creation_result = user_creation_service.create_user(
+        screen_name,
+        email_address,
+        password,
+        creation_method='superuser creation command',
+    )
+    if creation_result.is_err():
+        error_message = creation_result.unwrap_err()
+        raise click.UsageError(f'User creation failed: {error_message}')
+
+    user, event = creation_result.unwrap()
+
+    return user
 
 
 def _get_role_ids() -> set[RoleID]:

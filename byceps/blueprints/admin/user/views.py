@@ -198,19 +198,18 @@ def create_account():
 
     initiator_id = g.user.id
 
-    try:
-        user, event = user_creation_service.create_user(
-            screen_name,
-            email_address,
-            password,
-            first_name=first_name,
-            last_name=last_name,
-            creation_method='admin app',
-            creator_id=initiator_id,
-            # Do not pass site ID here; the account is not created on a site.
-            ip_address=request.remote_addr,
-        )
-    except user_creation_service.UserCreationFailed:
+    creation_result = user_creation_service.create_user(
+        screen_name,
+        email_address,
+        password,
+        first_name=first_name,
+        last_name=last_name,
+        creation_method='admin app',
+        creator_id=initiator_id,
+        # Do not pass site ID here; the account is not created on a site.
+        ip_address=request.remote_addr,
+    )
+    if creation_result.is_err():
         flash_error(
             gettext(
                 'User "%(screen_name)s" could not be created.',
@@ -218,6 +217,8 @@ def create_account():
             )
         )
         return create_account_form(form)
+
+    user, event = creation_result.unwrap()
 
     flash_success(
         gettext(

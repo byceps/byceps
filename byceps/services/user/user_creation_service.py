@@ -18,15 +18,12 @@ from byceps.events.user import UserAccountCreated
 from byceps.services.authentication.password import authn_password_service
 from byceps.services.site.models import SiteID
 from byceps.typing import UserID
+from byceps.util.result import Err, Ok, Result
 
 from . import user_email_address_service, user_log_service, user_service
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
 from .models.user import User
-
-
-class UserCreationFailed(Exception):
-    pass
 
 
 def create_user(
@@ -50,7 +47,7 @@ def create_user(
     creator_id: UserID | None = None,
     site_id: SiteID | None = None,
     ip_address: str | None = None,
-) -> tuple[User, UserAccountCreated]:
+) -> Result[tuple[User, UserAccountCreated], None]:
     """Create a user account and related records."""
     creator: User | None
     if creator_id is not None:
@@ -102,7 +99,7 @@ def create_user(
     except Exception as e:
         current_app.logger.error('User creation failed: %s', e)
         db.session.rollback()
-        raise UserCreationFailed
+        return Err(None)
 
     user = user_service._db_entity_to_user(db_user)
 
@@ -128,7 +125,7 @@ def create_user(
     # password
     authn_password_service.create_password_hash(user.id, password)
 
-    return user, event
+    return Ok((user, event))
 
 
 def _create_user_created_log_entry(

@@ -94,18 +94,17 @@ def create():
         first_name = None
         last_name = None
 
-    try:
-        user, event = user_creation_service.create_user(
-            screen_name,
-            email_address,
-            password,
-            first_name=first_name,
-            last_name=last_name,
-            creation_method='site app',
-            site_id=g.site_id,
-            ip_address=request.remote_addr,
-        )
-    except user_creation_service.UserCreationFailed:
+    creation_result = user_creation_service.create_user(
+        screen_name,
+        email_address,
+        password,
+        first_name=first_name,
+        last_name=last_name,
+        creation_method='site app',
+        site_id=g.site_id,
+        ip_address=request.remote_addr,
+    )
+    if creation_result.is_err():
         flash_error(
             gettext(
                 'User "%(screen_name)s" could not be created.',
@@ -113,6 +112,8 @@ def create():
             )
         )
         return create_form(form)
+
+    user, event = creation_result.unwrap()
 
     user_creation_service.request_email_address_confirmation(
         user, email_address, g.site_id

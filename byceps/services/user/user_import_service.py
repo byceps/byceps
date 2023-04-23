@@ -67,6 +67,6 @@ def import_user(user_to_import: UserToImport) -> User:
         phone_number=user_to_import.phone_number,
         internal_comment=user_to_import.internal_comment,
         creation_method='import',
-    )
+    ).unwrap()
 
     return user

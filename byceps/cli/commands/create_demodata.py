@@ -59,7 +59,7 @@ def create_demodata() -> None:
 def _create_admin() -> User:
     user, _ = user_creation_service.create_user(
         'DemoAdmin', 'admin@demo.example', 'demodemo', locale='en'
-    )
+    ).unwrap()
     user_command_service.initialize_account(user.id)
 
     for role_id in authz_service.get_all_role_ids():

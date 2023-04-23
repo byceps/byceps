@@ -148,7 +148,7 @@ def create_user(
         city=city,
         street=street,
         phone_number=phone_number,
-    )
+    ).unwrap()
 
     if email_address_verified or initialized or suspended or deleted:
         db_user = user_service.get_db_user(user.id)

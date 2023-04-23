@@ -51,7 +51,7 @@ def create_initialized_user(screen_name, email_address):
     password = 'long enough'
     user, _ = user_creation_service.create_user(
         screen_name, email_address, password
-    )
+    ).unwrap()
     user_command_service.initialize_account(user.id, assign_roles=False)
     return user.id
 
