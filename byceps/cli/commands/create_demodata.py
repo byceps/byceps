@@ -175,7 +175,9 @@ def _create_shop_storefront(shop_id: ShopID) -> Storefront:
     order_number_sequence_id = (
         order_sequence_service.create_order_number_sequence(
             shop_id, 'O-CL2023-'
-        ).id
+        )
+        .unwrap()
+        .id
     )
     storefront = storefront_service.create_storefront(
         StorefrontID('cozylan'), shop_id, order_number_sequence_id, closed=False

@@ -13,6 +13,7 @@ from sqlalchemy.exc import IntegrityError
 
 from byceps.database import db
 from byceps.services.shop.shop.models import ShopID
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels.number_sequence import DbOrderNumberSequence
 from .models.number import (
@@ -22,13 +23,9 @@ from .models.number import (
 )
 
 
-class OrderNumberSequenceCreationFailed(Exception):
-    pass
-
-
 def create_order_number_sequence(
     shop_id: ShopID, prefix: str, *, value: int | None = None
-) -> OrderNumberSequence:
+) -> Result[OrderNumberSequence, None]:
     """Create an order number sequence."""
     db_sequence = DbOrderNumberSequence(shop_id, prefix, value=value)
 
@@ -36,13 +33,13 @@ def create_order_number_sequence(
 
     try:
         db.session.commit()
-    except IntegrityError as exc:
+    except IntegrityError:
         db.session.rollback()
-        raise OrderNumberSequenceCreationFailed(
-            f'Could not create order number sequence with prefix "{prefix}"'
-        ) from exc
+        return Err(None)
 
-    return _db_entity_to_order_number_sequence(db_sequence)
+    sequence = _db_entity_to_order_number_sequence(db_sequence)
+
+    return Ok(sequence)
 
 
 def delete_order_number_sequence(sequence_id: OrderNumberSequenceID) -> None:

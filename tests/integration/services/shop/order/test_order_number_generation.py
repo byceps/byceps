@@ -27,7 +27,7 @@ def test_generate_order_number_default(admin_app, shop1):
 
     sequence = order_sequence_service.create_order_number_sequence(
         shop.id, 'ONE-01-B'
-    )
+    ).unwrap()
 
     actual = order_sequence_service.generate_order_number(sequence.id)
 
@@ -41,7 +41,7 @@ def test_generate_order_number_custom(admin_app, shop2):
 
     sequence = order_sequence_service.create_order_number_sequence(
         shop.id, 'LOL-03-B', value=last_assigned_order_sequence_number
-    )
+    ).unwrap()
 
     actual = order_sequence_service.generate_order_number(sequence.id)
 

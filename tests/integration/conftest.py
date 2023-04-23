@@ -323,7 +323,7 @@ def make_order_number_sequence():
 
         return order_sequence_service.create_order_number_sequence(
             shop_id, prefix, value=value
-        )
+        ).unwrap()
 
     return _wrapper
 
