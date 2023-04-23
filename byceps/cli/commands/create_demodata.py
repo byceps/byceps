@@ -140,7 +140,7 @@ def _create_shop_articles(
 
     article_number_ticket = article_sequence_service.generate_article_number(
         article_number_sequence.id
-    )
+    ).unwrap()
     article_service.create_ticket_article(
         shop_id,
         article_number_ticket,
@@ -154,7 +154,7 @@ def _create_shop_articles(
 
     article_number_merch = article_sequence_service.generate_article_number(
         article_number_sequence.id
-    )
+    ).unwrap()
     article_service.create_article(
         shop_id,
         article_number_merch,

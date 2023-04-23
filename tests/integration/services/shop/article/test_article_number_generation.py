@@ -29,7 +29,9 @@ def test_generate_article_number_default(admin_app, shop1):
         shop.id, 'ONE-01-A'
     ).unwrap()
 
-    actual = article_sequence_service.generate_article_number(sequence.id)
+    actual = article_sequence_service.generate_article_number(
+        sequence.id
+    ).unwrap()
 
     assert actual == 'ONE-01-A00001'
 
@@ -41,6 +43,8 @@ def test_generate_article_number_custom(admin_app, shop2):
         shop.id, 'TWO-02-A', value=41
     ).unwrap()
 
-    actual = article_sequence_service.generate_article_number(sequence.id)
+    actual = article_sequence_service.generate_article_number(
+        sequence.id
+    ).unwrap()
 
     assert actual == 'TWO-02-A00042'

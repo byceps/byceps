@@ -400,12 +400,15 @@ def create(shop_id, type):
         flash_error(gettext('No valid article number sequence was specified.'))
         return create_form(shop_id, type_, form)
 
-    try:
-        item_number = article_sequence_service.generate_article_number(
+    article_number_generation_result = (
+        article_sequence_service.generate_article_number(
             article_number_sequence.id
         )
-    except article_sequence_service.ArticleNumberGenerationFailed as e:
-        abort(500, e.message)
+    )
+    if article_number_generation_result.is_err():
+        abort(500, article_number_generation_result.unwrap_err())
+
+    item_number = article_number_generation_result.unwrap()
 
     description = form.description.data.strip()
     price = Money(form.price_amount.data, shop.currency)

@@ -80,18 +80,9 @@ def get_article_number_sequences_for_shop(
     ]
 
 
-class ArticleNumberGenerationFailed(Exception):
-    """Indicate that generating a prefixed, sequential article number
-    has failed.
-    """
-
-    def __init__(self, message: str) -> None:
-        self.message = message
-
-
 def generate_article_number(
     sequence_id: ArticleNumberSequenceID,
-) -> ArticleNumber:
+) -> Result[ArticleNumber, str]:
     """Generate and reserve the next article number from this sequence."""
     db_sequence = db.session.execute(
         select(DbArticleNumberSequence)
@@ -100,14 +91,16 @@ def generate_article_number(
     ).scalar_one_or_none()
 
     if db_sequence is None:
-        raise ArticleNumberGenerationFailed(
-            f'No article number sequence found for ID "{sequence_id}".'
-        )
+        return Err(f'No article number sequence found for ID "{sequence_id}".')
 
     db_sequence.value = DbArticleNumberSequence.value + 1
     db.session.commit()
 
-    return ArticleNumber(f'{db_sequence.prefix}{db_sequence.value:05d}')
+    article_number = ArticleNumber(
+        f'{db_sequence.prefix}{db_sequence.value:05d}'
+    )
+
+    return Ok(article_number)
 
 
 def _db_entity_to_article_number_sequence(
