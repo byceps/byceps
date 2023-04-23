@@ -15,7 +15,6 @@ from sqlalchemy import select
 
 from byceps.database import db, generate_uuid7
 from byceps.services.image import image_service
-from byceps.services.image.image_service import ImageTypeProhibited
 from byceps.services.user import user_service
 from byceps.typing import UserID
 from byceps.util import upload
@@ -59,12 +58,13 @@ def create_image(
     if item is None:
         raise ValueError(f'Unknown news item ID "{item_id}".')
 
-    try:
-        image_type = image_service.determine_image_type(
-            stream, ALLOWED_IMAGE_TYPES
-        )
-    except ImageTypeProhibited as e:
-        return Err(str(e))
+    image_type_result = image_service.determine_image_type(
+        stream, ALLOWED_IMAGE_TYPES
+    )
+    if image_type_result.is_err():
+        return Err(image_type_result.unwrap_err())
+
+    image_type = image_type_result.unwrap()
 
     if image_type != ImageType.svg:
         image_dimensions = image_service.determine_dimensions(stream)

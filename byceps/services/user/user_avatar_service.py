@@ -14,7 +14,6 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.image import image_service
-from byceps.services.image.image_service import ImageTypeProhibited
 from byceps.typing import UserID
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
@@ -41,11 +40,13 @@ def update_avatar_image(
     """Set a new avatar image for the user."""
     user = user_service.get_db_user(user_id)
 
-    try:
-        image_type = image_service.determine_image_type(stream, allowed_types)
-    except ImageTypeProhibited as e:
-        return Err(str(e))
+    image_type_result = image_service.determine_image_type(
+        stream, allowed_types
+    )
+    if image_type_result.is_err():
+        return Err(image_type_result.unwrap_err())
 
+    image_type = image_type_result.unwrap()
     image_dimensions = image_service.determine_dimensions(stream)
 
     image_too_large = image_dimensions > maximum_dimensions

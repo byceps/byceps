@@ -14,10 +14,7 @@ from typing import BinaryIO
 from byceps.util.image import read_dimensions
 from byceps.util.image.models import Dimensions, ImageType
 from byceps.util.image.typeguess import guess_type
-
-
-class ImageTypeProhibited(ValueError):
-    pass
+from byceps.util.result import Err, Ok, Result
 
 
 def get_image_type_names(types: Iterable[ImageType]) -> frozenset[str]:
@@ -27,15 +24,15 @@ def get_image_type_names(types: Iterable[ImageType]) -> frozenset[str]:
 
 def determine_image_type(
     stream: BinaryIO, allowed_types: frozenset[ImageType] | set[ImageType]
-) -> ImageType:
+) -> Result[ImageType, str]:
     """Extract image type from stream."""
     image_type = guess_type(stream)
 
     if (image_type is None) or (image_type not in allowed_types):
         message = _get_image_type_prohibited_error_message(allowed_types)
-        raise ImageTypeProhibited(message)
+        return Err(message)
 
-    return image_type
+    return Ok(image_type)
 
 
 def _get_image_type_prohibited_error_message(
