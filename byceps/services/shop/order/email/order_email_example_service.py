@@ -30,6 +30,7 @@ from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.models.user import User
 from byceps.typing import BrandID, UserID
+from byceps.util.result import Err, Ok, Result
 
 from . import order_email_service
 from .order_email_service import OrderEmailData
@@ -38,13 +39,9 @@ from .order_email_service import OrderEmailData
 EXAMPLE_USER_ID = UserID(generate_uuid4())
 
 
-class EmailAssemblyFailed(Exception):
-    pass
-
-
 def build_example_placed_order_message_text(
     shop_id: ShopID, locale: str
-) -> str:
+) -> Result[str, str]:
     """Assemble an exemplary e-mail for a placed order."""
     shop = shop_service.get_shop(shop_id)
 
@@ -61,12 +58,14 @@ def build_example_placed_order_message_text(
             )
         )
     except Exception as e:
-        raise EmailAssemblyFailed(e)
+        return Err(str(e))
 
-    return _render_message(message)
+    return Ok(_render_message(message))
 
 
-def build_example_paid_order_message_text(shop_id: ShopID, locale: str) -> str:
+def build_example_paid_order_message_text(
+    shop_id: ShopID, locale: str
+) -> Result[str, str]:
     """Assemble an exemplary e-mail for a paid order."""
     shop = shop_service.get_shop(shop_id)
 
@@ -81,14 +80,14 @@ def build_example_paid_order_message_text(shop_id: ShopID, locale: str) -> str:
             data
         )
     except Exception as e:
-        raise EmailAssemblyFailed(e)
+        return Err(str(e))
 
-    return _render_message(message)
+    return Ok(_render_message(message))
 
 
 def build_example_canceled_order_message_text(
     shop_id: ShopID, locale: str
-) -> str:
+) -> Result[str, str]:
     """Assemble an exemplary e-mail for a canceled order."""
     shop = shop_service.get_shop(shop_id)
 
@@ -109,9 +108,9 @@ def build_example_canceled_order_message_text(
             )
         )
     except Exception as e:
-        raise EmailAssemblyFailed(e)
+        return Err(str(e))
 
-    return _render_message(message)
+    return Ok(_render_message(message))
 
 
 def _build_order(

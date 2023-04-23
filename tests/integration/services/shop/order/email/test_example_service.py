@@ -117,7 +117,7 @@ def test_example_placed_order_message_text(
         actual = (
             order_email_example_service.build_example_placed_order_message_text(
                 shop.id, locale
-            )
+            ).unwrap()
         )
 
     assert actual == expected_template.format(brand_title=shop_brand.title)
@@ -196,7 +196,7 @@ def test_example_paid_order_message_text(
         actual = (
             order_email_example_service.build_example_paid_order_message_text(
                 shop.id, locale
-            )
+            ).unwrap()
         )
 
     assert actual == expected_template.format(brand_title=shop_brand.title)
@@ -274,6 +274,6 @@ def test_example_canceled_order_message_text(
     with current_user_set(app, current_user), app.app_context():
         actual = order_email_example_service.build_example_canceled_order_message_text(
             shop.id, locale
-        )
+        ).unwrap()
 
     assert actual == expected_template.format(brand_title=shop_brand.title)
