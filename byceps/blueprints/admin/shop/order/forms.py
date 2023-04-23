@@ -11,7 +11,7 @@ from wtforms import BooleanField, RadioField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 from byceps.services.shop.order import order_service
-from byceps.services.shop.order.models.order import PAYMENT_METHODS
+from byceps.services.shop.order.models.order import DEFAULT_PAYMENT_METHODS
 from byceps.util.l10n import LocalizedForm
 
 
@@ -32,7 +32,7 @@ class CancelForm(LocalizedForm):
 def _get_payment_method_choices():
     choices = [
         (pm, order_service.find_payment_method_label(pm) or pm)
-        for pm in PAYMENT_METHODS
+        for pm in DEFAULT_PAYMENT_METHODS
     ]
     choices.sort()
     return choices

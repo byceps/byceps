@@ -57,7 +57,7 @@ OrderState = Enum(
 )
 
 
-PAYMENT_METHODS = {
+DEFAULT_PAYMENT_METHODS = {
     'bank_transfer',
     'cash',
     'direct_debit',
