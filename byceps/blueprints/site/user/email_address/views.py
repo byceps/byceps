@@ -165,13 +165,14 @@ def change(token):
         flash_error(gettext('No valid token specified.'))
         abort(404)
 
-    try:
-        event = user_email_address_service.change_email_address(
-            verification_token
-        )
-    except user_email_address_service.EmailAddressChangeFailed:
+    change_result = user_email_address_service.change_email_address(
+        verification_token
+    )
+    if change_result.is_err():
         flash_error(gettext('Email address change failed.'))
         return redirect_to('authentication_login.log_in_form')
+
+    event = change_result.unwrap()
 
     flash_success(gettext('Email address has been changed.'))
 

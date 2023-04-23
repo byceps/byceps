@@ -230,19 +230,15 @@ def send_email_address_change_email(
     email_service.enqueue_email(sender, recipients, subject, body)
 
 
-class EmailAddressChangeFailed(Exception):
-    pass
-
-
 def change_email_address(
     verification_token: VerificationToken,
-) -> UserEmailAddressChanged:
+) -> Result[UserEmailAddressChanged, str]:
     """Change the email address of the user account assigned with that
     verification token.
     """
     new_email_address = verification_token.data.get('new_email_address')
     if not new_email_address:
-        raise EmailAddressChangeFailed('Token contains no email address.')
+        return Err('Token contains no email address.')
 
     user = user_service.get_db_user(verification_token.user_id)
     verified = True
@@ -254,7 +250,7 @@ def change_email_address(
 
     verification_token_service.delete_token(verification_token.token)
 
-    return event
+    return Ok(event)
 
 
 def _get_user_screen_name_or_fallback(user: User) -> str:
