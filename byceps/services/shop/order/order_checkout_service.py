@@ -64,11 +64,7 @@ def place_order(
     )
     if order_number_generation_result.is_err():
         error_message = order_number_generation_result.unwrap_err()
-        log.error(
-            'Order placement failed',
-            order_number=order_number,
-            error_message=error_message,
-        )
+        log.error('Order placement failed', error_message=error_message)
         return Err(None)
 
     order_number = order_number_generation_result.unwrap()
