@@ -59,9 +59,19 @@ def place_order(
     order_number_sequence = order_sequence_service.get_order_number_sequence(
         storefront.order_number_sequence_id
     )
-    order_number = order_sequence_service.generate_order_number(
-        order_number_sequence.id
+    order_number_generation_result = (
+        order_sequence_service.generate_order_number(order_number_sequence.id)
     )
+    if order_number_generation_result.is_err():
+        error_message = order_number_generation_result.unwrap_err()
+        log.error(
+            'Order placement failed',
+            order_number=order_number,
+            error_message=error_message,
+        )
+        return Err(None)
+
+    order_number = order_number_generation_result.unwrap()
 
     cart_items = cart.get_items()
 

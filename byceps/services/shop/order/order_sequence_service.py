@@ -76,16 +76,9 @@ def get_order_number_sequences_for_shop(
     ]
 
 
-class OrderNumberGenerationFailed(Exception):
-    """Indicate that generating a prefixed, sequential order number has
-    failed.
-    """
-
-    def __init__(self, message: str) -> None:
-        self.message = message
-
-
-def generate_order_number(sequence_id: OrderNumberSequenceID) -> OrderNumber:
+def generate_order_number(
+    sequence_id: OrderNumberSequenceID,
+) -> Result[OrderNumber, str]:
     """Generate and reserve an unused, unique order number from this
     sequence.
     """
@@ -96,14 +89,14 @@ def generate_order_number(sequence_id: OrderNumberSequenceID) -> OrderNumber:
     ).scalar_one_or_none()
 
     if db_sequence is None:
-        raise OrderNumberGenerationFailed(
-            f'No order number sequence found for ID "{sequence_id}".'
-        )
+        return Err(f'No order number sequence found for ID "{sequence_id}".')
 
     db_sequence.value = DbOrderNumberSequence.value + 1
     db.session.commit()
 
-    return OrderNumber(f'{db_sequence.prefix}{db_sequence.value:05d}')
+    order_number = OrderNumber(f'{db_sequence.prefix}{db_sequence.value:05d}')
+
+    return Ok(order_number)
 
 
 def _db_entity_to_order_number_sequence(

@@ -29,7 +29,7 @@ def test_generate_order_number_default(admin_app, shop1):
         shop.id, 'ONE-01-B'
     ).unwrap()
 
-    actual = order_sequence_service.generate_order_number(sequence.id)
+    actual = order_sequence_service.generate_order_number(sequence.id).unwrap()
 
     assert actual == 'ONE-01-B00001'
 
@@ -43,6 +43,6 @@ def test_generate_order_number_custom(admin_app, shop2):
         shop.id, 'LOL-03-B', value=last_assigned_order_sequence_number
     ).unwrap()
 
-    actual = order_sequence_service.generate_order_number(sequence.id)
+    actual = order_sequence_service.generate_order_number(sequence.id).unwrap()
 
     assert actual == 'LOL-03-B00207'
