@@ -170,7 +170,7 @@
               <div>
                 <div class="data-label">{{ _('Manager') }}</div>
               </div>
-              {%- if ticket.owned_by_id == g.user.id %}
+              {%- if ticket_management_enabled and (ticket.owned_by_id == g.user.id) %}
               <div>
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
