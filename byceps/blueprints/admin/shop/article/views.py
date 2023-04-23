@@ -864,9 +864,10 @@ def create_number_sequence(shop_id):
 
     prefix = form.prefix.data.strip()
 
-    try:
-        article_sequence_service.create_article_number_sequence(shop.id, prefix)
-    except article_sequence_service.ArticleNumberSequenceCreationFailed:
+    creation_result = article_sequence_service.create_article_number_sequence(
+        shop.id, prefix
+    )
+    if creation_result.is_err():
         flash_error(
             gettext(
                 'Article number sequence could not be created. '

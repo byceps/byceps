@@ -135,7 +135,7 @@ def _create_shop_articles(
     article_number_sequence = (
         article_sequence_service.create_article_number_sequence(
             shop_id, 'A-CL2023-'
-        )
+        ).unwrap()
     )
 
     article_number_ticket = article_sequence_service.generate_article_number(

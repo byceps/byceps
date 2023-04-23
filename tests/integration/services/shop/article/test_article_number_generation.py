@@ -27,7 +27,7 @@ def test_generate_article_number_default(admin_app, shop1):
 
     sequence = article_sequence_service.create_article_number_sequence(
         shop.id, 'ONE-01-A'
-    )
+    ).unwrap()
 
     actual = article_sequence_service.generate_article_number(sequence.id)
 
@@ -39,7 +39,7 @@ def test_generate_article_number_custom(admin_app, shop2):
 
     sequence = article_sequence_service.create_article_number_sequence(
         shop.id, 'TWO-02-A', value=41
-    )
+    ).unwrap()
 
     actual = article_sequence_service.generate_article_number(sequence.id)
 
