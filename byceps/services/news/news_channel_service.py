@@ -109,13 +109,20 @@ def get_all_channels() -> list[NewsChannel]:
     return [_db_entity_to_channel(db_channel) for db_channel in db_channels]
 
 
-def get_channels_for_brand(brand_id: BrandID) -> list[NewsChannel]:
+def get_channels_for_brand(
+    brand_id: BrandID, *, only_non_archived: bool = False
+) -> list[NewsChannel]:
     """Return all channels that belong to the brand."""
-    db_channels = db.session.scalars(
+    stmt = (
         select(DbNewsChannel)
         .filter_by(brand_id=brand_id)
         .order_by(DbNewsChannel.id)
-    ).all()
+    )
+
+    if only_non_archived:
+        stmt = stmt.filter_by(archived=False)
+
+    db_channels = db.session.scalars(stmt).all()
 
     return [_db_entity_to_channel(db_channel) for db_channel in db_channels]
 

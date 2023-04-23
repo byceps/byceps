@@ -998,13 +998,15 @@ img {
   max-width: 100%;
 }
 
-ol.bare {
+ol.bare,
+ul.bare {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-ol.bare.bare--spaced li + li {
+ol.bare.bare--spaced li + li,
+ul.bare.bare--spaced li + li {
   margin-top: 0.5rem;
 }
 

@@ -115,6 +115,10 @@ def view_brand(brand_id):
         for party in active_parties
     ]
 
+    active_news_channels = news_channel_service.get_channels_for_brand(
+        brand.id, only_non_archived=True
+    )
+
     newsletter_list_id = brand_setting_service.find_setting_value(
         brand.id, 'newsletter_list_id'
     )
@@ -149,6 +153,7 @@ def view_brand(brand_id):
         'brand': brand,
         'current_sites': current_sites,
         'active_parties_with_stats': active_parties_with_stats,
+        'active_news_channels': active_news_channels,
         'newsletter_list': newsletter_list,
         'newsletter_subscriber_count': newsletter_subscriber_count,
         'consent_subjects_with_consent_counts': consent_subjects_with_consent_counts,
