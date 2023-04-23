@@ -33,7 +33,9 @@ def create_superuser(screen_name, email_address, password) -> None:
     user_command_service.initialize_account(user.id)
     click.secho('done.', fg='green')
 
-    user_email_address_service.confirm_email_address(user.id, email_address)
+    user_email_address_service.confirm_email_address(
+        user.id, email_address
+    ).unwrap()
 
     role_ids = _get_role_ids()
     click.echo(

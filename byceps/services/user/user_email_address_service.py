@@ -25,6 +25,7 @@ from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import VerificationToken
 from byceps.typing import UserID
 from byceps.util.l10n import force_user_locale
+from byceps.util.result import Err, Ok, Result
 
 from . import user_log_service
 from .models.user import User
@@ -81,13 +82,9 @@ def send_email_address_confirmation_email(
     email_service.enqueue_email(sender, recipients, subject, body)
 
 
-class EmailAddressConfirmationFailed(Exception):
-    pass
-
-
 def confirm_email_address_via_verification_token(
     verification_token: VerificationToken,
-) -> UserEmailAddressConfirmed:
+) -> Result[UserEmailAddressConfirmed, str]:
     """Confirm the email address of the user account assigned with that
     verification token.
     """
@@ -95,28 +92,30 @@ def confirm_email_address_via_verification_token(
 
     token_email_address = verification_token.data.get('email_address')
     if not token_email_address:
-        raise EmailAddressConfirmationFailed('Token contains no email address.')
+        return Err('Token contains no email address.')
 
-    event = confirm_email_address(user_id, token_email_address)
+    confirmation_result = confirm_email_address(user_id, token_email_address)
+    if confirmation_result.is_err():
+        return Err(confirmation_result.unwrap_err())
+
+    event = confirmation_result.unwrap()
 
     verification_token_service.delete_token(verification_token.token)
 
-    return event
+    return Ok(event)
 
 
 def confirm_email_address(
     user_id: UserID, email_address_to_confirm: str
-) -> UserEmailAddressConfirmed:
+) -> Result[UserEmailAddressConfirmed, str]:
     """Confirm the email address of the user account."""
     user = user_service.get_db_user(user_id)
 
     if user.email_address is None:
-        raise EmailAddressConfirmationFailed(
-            'Account has no email address assigned.'
-        )
+        return Err('Account has no email address assigned.')
 
     if user.email_address != email_address_to_confirm:
-        raise EmailAddressConfirmationFailed('Email addresses do not match.')
+        return Err('Email addresses do not match.')
 
     user.email_address_verified = True
 
@@ -128,13 +127,15 @@ def confirm_email_address(
 
     db.session.commit()
 
-    return UserEmailAddressConfirmed(
+    event = UserEmailAddressConfirmed(
         occurred_at=log_entry.occurred_at,
         initiator_id=user.id,
         initiator_screen_name=user.screen_name,
         user_id=user.id,
         user_screen_name=user.screen_name,
     )
+
+    return Ok(event)
 
 
 def invalidate_email_address(
