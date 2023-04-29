@@ -37,10 +37,10 @@
       </div>
 
       {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
-      {{ form_field_check(form.ticket_management_enabled, form.ticket_management_enabled.label.text) }}
-      {{ form_field_check(form.seat_management_enabled, form.seat_management_enabled.label.text) }}
-      {{ form_field_check(form.canceled, form.canceled.label.text) }}
-      {{ form_field_check(form.archived, form.archived.label.text) }}
+      {{ form_field_check(form.ticket_management_enabled) }}
+      {{ form_field_check(form.seat_management_enabled) }}
+      {{ form_field_check(form.canceled) }}
+      {{ form_field_check(form.archived) }}
 
     </div>
 

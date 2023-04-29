@@ -39,8 +39,8 @@
 
       {{ form_field(form.total_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
       {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5.5rem;') }}
-      {{ form_field_check(form.not_directly_orderable, form.not_directly_orderable.label.text) }}
-      {{ form_field_check(form.separate_order_required, form.separate_order_required.label.text) }}
+      {{ form_field_check(form.not_directly_orderable) }}
+      {{ form_field_check(form.separate_order_required) }}
 
     </div>
 
