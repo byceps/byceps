@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.cli.commands.create_database_tables import _load_dbmodels
 from byceps.database import db
 
 
@@ -13,6 +14,7 @@ def set_up_database() -> None:
 
     db.drop_all()
 
+    _load_dbmodels()
     db.create_all()
 
 
