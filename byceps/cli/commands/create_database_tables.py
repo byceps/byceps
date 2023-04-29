@@ -1,4 +1,8 @@
-"""Create the initial database structure.
+"""
+byceps.cli.command.create_database_tables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Create the initial database structure.
 
 Existing tables will be ignored, and those not existing will be created.
 

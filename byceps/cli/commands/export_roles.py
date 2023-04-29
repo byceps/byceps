@@ -1,4 +1,8 @@
-"""Export roles and their assigned permissions as TOML to STDOUT.
+"""
+byceps.cli.command.export_roles
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Export roles and their assigned permissions as TOML to STDOUT.
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

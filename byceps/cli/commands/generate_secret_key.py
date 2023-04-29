@@ -1,4 +1,8 @@
-"""Generate a secure secret key.
+"""
+byceps.cli.command.generate_secret_key
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Generate a secure secret key.
 
 Suitable as a value for ``SECRET_KEY`` in a BYCEPS configuration file.
 

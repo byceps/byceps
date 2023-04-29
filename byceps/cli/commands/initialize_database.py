@@ -1,4 +1,8 @@
-"""Initialize the database.
+"""
+byceps.cli.command.initialize_database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Initialize the database.
 
 - Create tables.
 - Import authorization roles.

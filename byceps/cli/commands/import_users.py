@@ -1,4 +1,8 @@
-"""Import user accounts from JSON lines.
+"""
+byceps.cli.command.import_users
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Import user accounts from JSON lines.
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
