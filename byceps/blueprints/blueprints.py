@@ -72,6 +72,7 @@ def _get_blueprints_site() -> Iterator[BlueprintReg]:
         ('site.attendance',                 '/attendance'                   ),
         ('site.authentication.login',       '/authentication'               ),
         ('site.board',                      '/board'                        ),
+        ('site.connected_external_accounts.discord',      '/connected_external_accounts/discord'     ),
         ('site.consent',                    '/consent'                      ),
         ('site.core',                       '/'                             ),
         ('site.dashboard',                  '/dashboard'                    ),

@@ -14,6 +14,9 @@ from flask_babel import force_locale, gettext
 
 from byceps.blueprints.site.orga_team import service as orga_team_service
 from byceps.services.brand import brand_setting_service
+from byceps.services.connected_external_accounts import (
+    connected_external_accounts_service,
+)
 from byceps.services.country import country_service
 from byceps.services.newsletter import newsletter_service
 from byceps.services.newsletter.models import ListID as NewsletterListID
@@ -57,6 +60,10 @@ def view():
         user.id, newsletter_list_id
     )
 
+    discord_account = connected_external_accounts_service.find_connected_external_account_for_user_and_service(
+        g.user.id, 'discord'
+    )
+
     return {
         'user': user,
         'user_locale': user_locale,
@@ -67,6 +74,7 @@ def view():
         'newsletter_offered': newsletter_offered,
         'newsletter_list_id': newsletter_list_id,
         'subscribed_to_newsletter': subscribed_to_newsletter,
+        'discord_account': discord_account,
     }
 
 

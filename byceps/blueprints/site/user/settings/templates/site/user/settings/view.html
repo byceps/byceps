@@ -15,6 +15,7 @@
   {%- if newsletter_offered %}
 {% include 'site/user/settings/_newsletter.html' %}
   {%- endif %}
+{%- include 'site/user/settings/_connected_external_accounts.html' %}
 
 {%- endblock %}
 
@@ -30,6 +31,9 @@
         // newsletter
         post_on_click_then_reload('[data-action="newsletter-subscribe"]');
         confirmed_delete_on_click_then_reload('[data-action="newsletter-unsubscribe"]', '{{ _('Unsubscribe from newsletter?') }}');
+
+        // connected external accounts
+        confirmed_delete_on_click_then_reload('[data-action="discord-remove"]', 'Verbindung mit Discord-Account entfernen?');
       });
     </script>
 {% endblock %}
