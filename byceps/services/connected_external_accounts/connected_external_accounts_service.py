@@ -63,6 +63,7 @@ def disconnect_external_account(
         return Err('Unknown connected external account ID')
 
     db.session.delete(db_connected_external_account)
+    db.session.commit()
 
     return Ok(None)
 
