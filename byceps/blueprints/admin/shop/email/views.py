@@ -67,6 +67,8 @@ def _get_example_placed_order_message_text(shop_id) -> str | None:
         )
         return None
 
+    return message_text_result.unwrap()
+
 
 def _get_example_paid_order_message_text(shop_id) -> str | None:
     message_text_result = (
@@ -82,6 +84,8 @@ def _get_example_paid_order_message_text(shop_id) -> str | None:
         )
         return None
 
+    return message_text_result.unwrap()
+
 
 def _get_example_canceled_order_message_text(shop_id) -> str | None:
     message_text_result = (
@@ -96,6 +100,8 @@ def _get_example_canceled_order_message_text(shop_id) -> str | None:
             f'Could not assemble example email for canceled order:\n{error_message}'
         )
         return None
+
+    return message_text_result.unwrap()
 
 
 def _get_shop_or_404(shop_id):
