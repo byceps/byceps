@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from byceps.services.seating.models import SeatingArea, SeatID
+from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user.models.user import User
 
 
@@ -23,6 +24,7 @@ class AttendeeSeat:
 
 @dataclass(frozen=True)
 class AttendeeTicket:
+    id: TicketID
     seat: AttendeeSeat | None
     checked_in: bool
 

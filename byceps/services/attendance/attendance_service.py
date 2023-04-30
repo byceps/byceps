@@ -153,6 +153,7 @@ def _to_attendee_tickets(
 
 def _to_attendee_ticket(db_ticket: DbTicket) -> AttendeeTicket:
     return AttendeeTicket(
+        id=db_ticket.id,
         seat=_to_attendee_seat(db_ticket),
         checked_in=db_ticket.user_checked_in,
     )
@@ -184,4 +185,7 @@ def _get_attendee_ticket_sort_key(
 
         # List checked in tickets first.
         not attendee_ticket.checked_in,
+
+        # Sort by ticket ID to stabilize sort.
+        attendee_ticket.id,
     )
