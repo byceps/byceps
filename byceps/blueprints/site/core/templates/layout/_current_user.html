@@ -18,6 +18,15 @@
       </li>
       <li class="dropdown-divider"></li>
 {% include 'layout/_current_user_menu_items.html' %}
+      {%- if g.site.is_intranet %}
+      <li class="dropdown-divider"></li>
+      <li>
+        <span class="dropdown-label label-and-name">
+          <span class="label">{{ _('IP address') }}</span>
+          <span class="name">{{ remote_addr }}</span>
+        </span>
+      </li>
+      {%- endif %}
       <li class="dropdown-divider"></li>
       <li><a class="dropdown-item" data-action="log-out" href="{{ url_for('authentication_login.log_out', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
     </ol>

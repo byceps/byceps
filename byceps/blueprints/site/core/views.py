@@ -9,8 +9,9 @@ byceps.blueprints.site.core.views
 from __future__ import annotations
 
 from http import HTTPStatus
+from typing import Any
 
-from flask import g, redirect, url_for
+from flask import g, redirect, request, url_for
 
 from byceps import config
 from byceps.services.party import party_service
@@ -54,6 +55,16 @@ def prepare_request_globals() -> None:
 
     required_permissions: set[str] = set()
     g.user = get_current_user(required_permissions)
+
+
+@blueprint.app_context_processor
+def inject_remote_addr() -> dict[str, Any]:
+    if not g.site.is_intranet or not g.user.authenticated:
+        return {}
+
+    return {
+        'remote_addr': request.remote_addr,
+    }
 
 
 @blueprint.get('/')
