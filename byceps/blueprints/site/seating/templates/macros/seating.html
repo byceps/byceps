@@ -1,5 +1,5 @@
 {% macro render_seat_link(seat) -%}
-  <a href="{{ url_for('seating.view_area', slug=seat.area.slug, _anchor='seat-%s'|format(seat.id)) }}">{{ seat.label }}</a>
+  <a href="{{ url_for('seating.view_area', slug=seat.area.slug, _anchor='seat-%s'|format(seat.id)) }}">{{ seat.label|fallback(_('unnamed')) }}</a>
 {%- endmacro %}
 
 
