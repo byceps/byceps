@@ -34,13 +34,13 @@ def get_attendees_paginated(
     users_paginated = _get_users_paginated(
         party_id, page, per_page, search_term=search_term
     )
-    users = users_paginated.items
-    user_ids = {u.id for u in users}
+    db_users = users_paginated.items
+    user_ids = {db_user.id for db_user in db_users}
 
-    tickets = _get_tickets_for_users(party_id, user_ids)
-    tickets_by_user_id = _index_tickets_by_user_id(tickets)
+    db_tickets = _get_tickets_for_users(party_id, user_ids)
+    tickets_by_user_id = _index_tickets_by_user_id(db_tickets)
 
-    attendees = list(_generate_attendees(users, tickets_by_user_id))
+    attendees = list(_generate_attendees(db_users, tickets_by_user_id))
 
     users_paginated.items = attendees
     return users_paginated
@@ -98,29 +98,42 @@ def _get_tickets_for_users(
 
 
 def _index_tickets_by_user_id(
-    tickets: Iterable[DbTicket],
+    db_tickets: Iterable[DbTicket],
 ) -> dict[UserID, set[DbTicket]]:
     tickets_by_user_id = defaultdict(set)
-    for ticket in tickets:
-        tickets_by_user_id[ticket.used_by_id].add(ticket)
+    for db_ticket in db_tickets:
+        tickets_by_user_id[db_ticket.used_by_id].add(db_ticket)
     return tickets_by_user_id
 
 
 def _generate_attendees(
-    users: Iterable[DbUser], tickets_by_user_id: dict[UserID, set[DbTicket]]
+    db_users: Iterable[DbUser], tickets_by_user_id: dict[UserID, set[DbTicket]]
 ) -> Iterable[Attendee]:
-    for user in users:
-        tickets = tickets_by_user_id[user.id]
-        attendee_tickets = _to_attendee_tickets(tickets)
-        yield Attendee(user, attendee_tickets)
+    for db_user in db_users:
+        db_tickets = tickets_by_user_id[db_user.id]
+        attendee_tickets = _to_attendee_tickets(db_tickets)
+
+        yield Attendee(
+            user=db_user,
+            tickets=attendee_tickets,
+        )
 
 
-def _to_attendee_tickets(tickets: Iterable[DbTicket]) -> list[AttendeeTicket]:
+def _to_attendee_tickets(
+    db_tickets: Iterable[DbTicket],
+) -> list[AttendeeTicket]:
     attendee_tickets = [
-        AttendeeTicket(t.occupied_seat, t.user_checked_in) for t in tickets
+        _to_attendee_ticket(db_ticket) for db_ticket in db_tickets
     ]
     attendee_tickets.sort(key=_get_attendee_ticket_sort_key)
     return attendee_tickets
+
+
+def _to_attendee_ticket(db_ticket: DbTicket) -> AttendeeTicket:
+    return AttendeeTicket(
+        seat=db_ticket.occupied_seat,
+        checked_in=db_ticket.user_checked_in,
+    )
 
 
 def _get_attendee_ticket_sort_key(
