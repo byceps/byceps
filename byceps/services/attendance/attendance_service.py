@@ -19,6 +19,7 @@ from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
 
 from .models import Attendee, AttendeeTicket
@@ -118,13 +119,22 @@ def _generate_attendees(
     orga_ids = orga_team_service.select_orgas_for_party(user_ids, party_id)
 
     for db_user in db_users:
+        user = User(
+            id=db_user.id,
+            screen_name=db_user.screen_name,
+            suspended=db_user.suspended,
+            deleted=db_user.deleted,
+            locale=db_user.locale,
+            avatar_url=db_user.avatar_url,
+        )
+
         is_orga = db_user.id in orga_ids
 
         db_tickets = tickets_by_user_id[db_user.id]
         attendee_tickets = _to_attendee_tickets(db_tickets)
 
         yield Attendee(
-            user=db_user,
+            user=user,
             is_orga=is_orga,
             tickets=attendee_tickets,
         )
