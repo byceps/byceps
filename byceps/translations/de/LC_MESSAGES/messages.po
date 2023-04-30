@@ -709,7 +709,7 @@ msgstr "Keine Teilnahmen an Partys dieser Marke gefunden."
 #: byceps/blueprints/site/ticketing/forms.py:60
 #: byceps/blueprints/site/user/creation/forms.py:41
 #: byceps/blueprints/site/user/email_address/forms.py:17
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:29
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:31
 msgid "Username"
 msgstr "Benutzername"
 
@@ -718,7 +718,7 @@ msgstr "Benutzername"
 #: byceps/blueprints/admin/user/forms.py:171
 #: byceps/blueprints/site/authentication/login/forms.py:18
 #: byceps/blueprints/site/user/creation/forms.py:57
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:49
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:51
 msgid "Password"
 msgstr "Passwort"
 
@@ -1397,7 +1397,7 @@ msgstr "Bearbeiten"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:33
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:50
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:8
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:10
 msgid "Avatar"
 msgstr "Avatar"
 
@@ -1412,6 +1412,8 @@ msgstr "Avatar"
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:88
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:60
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:126
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:3
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1515,7 +1517,7 @@ msgstr "Profil"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:20
 #: byceps/blueprints/common/authentication/password/templates/common/authentication/password/update_form.html:5
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:55
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:57
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -2349,7 +2351,7 @@ msgstr "Sprache hinzufügen"
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:27
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:28
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:30
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:59
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:61
 msgid "Language"
 msgstr "Sprache"
 
@@ -3065,7 +3067,7 @@ msgstr "Land"
 #: byceps/blueprints/admin/user/forms.py:71
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:45
 #: byceps/blueprints/site/user/creation/forms.py:53
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:39
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:41
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
@@ -3100,7 +3102,7 @@ msgstr "Jahre"
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:83
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:98
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:22
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:42
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:44
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:21
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:37
 msgid "not given"
@@ -4900,7 +4902,7 @@ msgid "normal"
 msgstr "normal"
 
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:113
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:19
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:21
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -5588,8 +5590,7 @@ msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:7
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:72
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:3
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:5
 msgid "Account"
 msgstr "Benutzerkonto"
 
@@ -5628,14 +5629,14 @@ msgstr "Entsperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:23
 #: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:5
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:35
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:37
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:5
 msgid "Change username"
 msgstr "Benutzername ändern"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:24
 #: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:5
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:45
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:47
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:5
 msgid "Change email address"
 msgstr "E-Mail-Adresse ändern"
@@ -7331,7 +7332,7 @@ msgid "If the image is not square it will be cropped."
 msgstr "Falls das Bild nicht quadratisch ist, wird es zugeschnitten."
 
 #: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:22
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:17
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:19
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -7442,11 +7443,11 @@ msgstr "Deine Sprachpräferenz wurde aktualisiert."
 msgid "Your data has been saved."
 msgstr "Deine Daten wurden gespeichert."
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:52
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:54
 msgid "not shown"
 msgstr "wird nicht angezeigt"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:72
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:74
 msgid "no preference"
 msgstr "keine Präferenz"
 
