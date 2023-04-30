@@ -23,4 +23,5 @@ class AttendeeTicket:
 @dataclass  # Not yet frozen b/c models are not immutable.
 class Attendee:
     user: DbUser
+    is_orga: bool
     tickets: list[AttendeeTicket]

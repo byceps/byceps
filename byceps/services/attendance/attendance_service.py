@@ -14,6 +14,7 @@ from collections.abc import Iterable, Sequence
 from sqlalchemy import select
 
 from byceps.database import db, paginate, Pagination
+from byceps.services.orga_team import orga_team_service
 from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
@@ -40,7 +41,9 @@ def get_attendees_paginated(
     db_tickets = _get_tickets_for_users(party_id, user_ids)
     tickets_by_user_id = _index_tickets_by_user_id(db_tickets)
 
-    attendees = list(_generate_attendees(db_users, tickets_by_user_id))
+    attendees = list(
+        _generate_attendees(party_id, db_users, tickets_by_user_id)
+    )
 
     users_paginated.items = attendees
     return users_paginated
@@ -107,14 +110,22 @@ def _index_tickets_by_user_id(
 
 
 def _generate_attendees(
-    db_users: Iterable[DbUser], tickets_by_user_id: dict[UserID, set[DbTicket]]
+    party_id: PartyID,
+    db_users: Iterable[DbUser],
+    tickets_by_user_id: dict[UserID, set[DbTicket]],
 ) -> Iterable[Attendee]:
+    user_ids = {db_user.id for db_user in db_users}
+    orga_ids = orga_team_service.select_orgas_for_party(user_ids, party_id)
+
     for db_user in db_users:
+        is_orga = db_user.id in orga_ids
+
         db_tickets = tickets_by_user_id[db_user.id]
         attendee_tickets = _to_attendee_tickets(db_tickets)
 
         yield Attendee(
             user=db_user,
+            is_orga=is_orga,
             tickets=attendee_tickets,
         )
 
