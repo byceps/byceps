@@ -84,7 +84,11 @@
             <div class="row row--space-between">
               <div>
               {%- with seat = ticket.seat %}
-                {{ render_seat_link(seat) if seat else _('not chosen')|dim }}
+                {%- if seat %}
+                {{ render_seat_link(seat) }}
+                {%- else %}
+                {{ _('not chosen')|dim }} ({{ ticket.category_title }})
+                {%- endif %}
               {%- endwith %}
               </div>
               {%- if ticket.checked_in %}

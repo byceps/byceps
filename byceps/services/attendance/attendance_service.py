@@ -154,6 +154,7 @@ def _to_attendee_tickets(
 def _to_attendee_ticket(db_ticket: DbTicket) -> AttendeeTicket:
     return AttendeeTicket(
         id=db_ticket.id,
+        category_title=db_ticket.category.title,
         seat=_to_attendee_seat(db_ticket),
         checked_in=db_ticket.user_checked_in,
     )

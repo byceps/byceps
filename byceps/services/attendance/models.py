@@ -25,6 +25,7 @@ class AttendeeSeat:
 @dataclass(frozen=True)
 class AttendeeTicket:
     id: TicketID
+    category_title: str
     seat: AttendeeSeat | None
     checked_in: bool
 
