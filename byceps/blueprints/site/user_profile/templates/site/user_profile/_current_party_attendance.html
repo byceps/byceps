@@ -8,7 +8,7 @@
 
   <ol class="bare">
     {%- for ticket in current_party_tickets %}
-    <li>{{ render_seat_link(ticket.occupied_seat.area, ticket.occupied_seat) if ticket.occupied_seat else _('not chosen')|dim }}{% if ticket.user_checked_in %} {{ render_tag(_('checked in')) }}{% endif %}</li>
+    <li>{{ render_seat_link(ticket.occupied_seat) if ticket.occupied_seat else _('not chosen')|dim }}{% if ticket.user_checked_in %} {{ render_tag(_('checked in')) }}{% endif %}</li>
     {%- endfor %}
   </ol>
   {%- endif %}

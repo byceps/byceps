@@ -158,7 +158,7 @@
             <div class="data-label">{{ _('Seat') }}</div>
             <div class="data-value">
               {%- if ticket.occupied_seat -%}
-              {{ render_seat_link(ticket.occupied_seat.area, ticket.occupied_seat) }}
+              {{ render_seat_link(ticket.occupied_seat) }}
               {%- else -%}
               {{ render_tag(_('no seat'), class='available') }}
               {%- endif -%}

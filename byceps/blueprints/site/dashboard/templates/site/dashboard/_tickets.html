@@ -19,7 +19,7 @@
       <td>{{ ticket.code }}</td>
       <td>
         {%- if ticket.occupied_seat -%}
-        {{ render_seat_link(ticket.occupied_seat.area, ticket.occupied_seat) }}
+        {{ render_seat_link(ticket.occupied_seat) }}
         {%- else -%}
         {{ render_tag(_('not chosen'), class='color-danger') }}
         {%- endif -%}
