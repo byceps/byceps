@@ -2351,7 +2351,6 @@ msgstr "Sprache hinzufügen"
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:27
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:28
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:30
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:61
 msgid "Language"
 msgstr "Sprache"
 
@@ -7446,6 +7445,10 @@ msgstr "Deine Daten wurden gespeichert."
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:54
 msgid "not shown"
 msgstr "wird nicht angezeigt"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:61
+msgid "Preferred language"
+msgstr "Bevorzugte Sprache"
 
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:74
 msgid "no preference"

@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <div class="data-label">{{ _('Language') }}</div>
+      <div class="data-label">{{ _('Preferred language') }}</div>
       <div class="row">
         <div class="column--grow">
           <div class="data-value">{{ (user_locale.get_display_name(g.user.locale) if user_locale else None)|fallback }}</div>
