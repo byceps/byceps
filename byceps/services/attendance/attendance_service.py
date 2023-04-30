@@ -180,7 +180,7 @@ def _get_attendee_ticket_sort_key(
         attendee_ticket.seat is None,
 
         # Sort by seat label.
-        attendee_ticket.seat.label if attendee_ticket.seat else None,
+        (attendee_ticket.seat.label if attendee_ticket.seat else None) or '',
 
         # List checked in tickets first.
         not attendee_ticket.checked_in,
