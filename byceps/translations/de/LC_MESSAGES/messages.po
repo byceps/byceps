@@ -1509,6 +1509,7 @@ msgid "Logged in as"
 msgstr "Eingeloggt als"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:19
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:5
 msgid "Profile"
 msgstr "Profil"
 
@@ -1672,7 +1673,7 @@ msgstr "Benutzer"
 #: byceps/blueprints/admin/ticketing/templates/layout/admin/ticketing.html:12
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:4
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:76
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:7
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:5
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:7
 #: sites/cozylan/template_overrides/layout/_sidebar_right.html:13
@@ -1724,7 +1725,7 @@ msgstr "Artikel"
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:49
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:4
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:75
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:7
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:8
 msgid "Orders"
 msgstr "Bestellungen"
 
@@ -5587,7 +5588,7 @@ msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:7
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:72
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:5
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:3
 msgid "Account"
 msgstr "Benutzerkonto"
@@ -7457,15 +7458,11 @@ msgstr "Abmelden"
 msgid "Subscribe"
 msgstr "Anmelden"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:10
-msgid "View public profile"
-msgstr "Öffentliches Profil ansehen"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:26
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:22
 msgid "Remove avatar image?"
 msgstr "Avatarbild entfernen?"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:33
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:29
 msgid "Unsubscribe from newsletter?"
 msgstr "Vom Newsletter abmelden?"
 
