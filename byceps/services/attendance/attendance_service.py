@@ -15,6 +15,7 @@ from sqlalchemy import select
 
 from byceps.database import db, paginate, Pagination
 from byceps.services.orga_team import orga_team_service
+from byceps.services.seating import seating_area_service
 from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
@@ -22,7 +23,7 @@ from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
 
-from .models import Attendee, AttendeeTicket
+from .models import Attendee, AttendeeSeat, AttendeeTicket
 
 
 def get_attendees_paginated(
@@ -152,8 +153,22 @@ def _to_attendee_tickets(
 
 def _to_attendee_ticket(db_ticket: DbTicket) -> AttendeeTicket:
     return AttendeeTicket(
-        seat=db_ticket.occupied_seat,
+        seat=_to_attendee_seat(db_ticket),
         checked_in=db_ticket.user_checked_in,
+    )
+
+
+def _to_attendee_seat(db_ticket: DbTicket) -> AttendeeSeat | None:
+    db_seat = db_ticket.occupied_seat
+    if not db_seat:
+        return None
+
+    seating_area = seating_area_service._db_entity_to_area(db_seat.area)
+
+    return AttendeeSeat(
+        id=db_seat.id,
+        area=seating_area,
+        label=db_seat.label,
     )
 
 
