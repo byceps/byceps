@@ -57,7 +57,7 @@ def test_login_succeeds(client, make_admin):
     assert len(cookies) == 1
 
     cookie = cookies[0]
-    assert cookie.domain == '.admin.acmecon.test'
+    assert cookie.domain == 'admin.acmecon.test'
     assert cookie.name == 'session'
     assert cookie.secure
 
