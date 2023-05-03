@@ -33,7 +33,7 @@ def test_login_succeeds(client, make_admin):
 
     assert authn_session_service.find_recent_login(user.id) is None
 
-    assert not list(client.cookie_jar)
+    assert get_session_cookie(client) is None
 
     form_data = {
         'username': user.screen_name,
@@ -53,12 +53,8 @@ def test_login_succeeds(client, make_admin):
 
     assert authn_session_service.find_recent_login(user.id) is not None
 
-    cookies = list(client.cookie_jar)
-    assert len(cookies) == 1
-
-    cookie = cookies[0]
-    assert cookie.domain == 'admin.acmecon.test'
-    assert cookie.name == 'session'
+    cookie = get_session_cookie(client)
+    assert cookie is not None
     assert cookie.secure
 
 
@@ -71,8 +67,7 @@ def test_login_fails_with_invalid_credentials(client):
     response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 200
 
-    cookies = list(client.cookie_jar)
-    assert len(cookies) == 0
+    assert get_session_cookie(client) is None
 
 
 def test_login_fails_lacking_access_permission(client, make_user):
@@ -80,7 +75,7 @@ def test_login_fails_lacking_access_permission(client, make_user):
 
     user = make_user(password=password)
 
-    assert not list(client.cookie_jar)
+    assert get_session_cookie(client) is None
 
     form_data = {
         'username': user.screen_name,
@@ -90,5 +85,8 @@ def test_login_fails_lacking_access_permission(client, make_user):
     response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 200
 
-    cookies = list(client.cookie_jar)
-    assert len(cookies) == 0
+    assert get_session_cookie(client) is None
+
+
+def get_session_cookie(client):
+    return client.get_cookie('session', domain='admin.acmecon.test')

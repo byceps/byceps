@@ -38,7 +38,7 @@ def test_login_succeeds(site, client, make_user):
 
     assert authn_session_service.find_recent_login(user.id) is None
 
-    assert not list(client.cookie_jar)
+    assert get_session_cookie(client) is None
 
     form_data = {
         'username': user.screen_name,
@@ -63,12 +63,8 @@ def test_login_succeeds(site, client, make_user):
 
     assert authn_session_service.find_recent_login(user.id) is not None
 
-    cookies = list(client.cookie_jar)
-    assert len(cookies) == 1
-
-    cookie = cookies[0]
-    assert cookie.domain == 'www.acmecon.test'
-    assert cookie.name == 'session'
+    cookie = get_session_cookie(client)
+    assert cookie is not None
     assert cookie.secure
 
 
@@ -81,8 +77,7 @@ def test_login_fails_with_invalid_credentials(client):
     response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 403
 
-    cookies = list(client.cookie_jar)
-    assert len(cookies) == 0
+    assert get_session_cookie(client) is None
 
 
 def test_login_fails_lacking_consent(client, brand, make_user):
@@ -107,5 +102,8 @@ def test_login_fails_lacking_consent(client, brand, make_user):
 
     brand_requirements_service.delete_brand_requirement(brand.id, subject.id)
 
-    cookies = list(client.cookie_jar)
-    assert len(cookies) == 0
+    assert get_session_cookie(client) is None
+
+
+def get_session_cookie(client):
+    return client.get_cookie('session', domain='www.acmecon.test')
