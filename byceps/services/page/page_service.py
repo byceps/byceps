@@ -309,7 +309,7 @@ def get_url_paths_by_page_name_for_site(site_id: SiteID) -> dict[str, str]:
         select(DbPage.name, DbPage.url_path).filter_by(site_id=site_id)
     ).all()
 
-    return {name: url_path for name, url_path in rows}
+    return dict(rows)
 
 
 def get_pages_for_site(site_id: SiteID) -> Sequence[Page]:

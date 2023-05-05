@@ -87,7 +87,7 @@ def count_awardings() -> dict[BadgeID, int]:
         .group_by(DbBadge.id)
     ).all()
 
-    return {badge_id: count for badge_id, count in rows}
+    return dict(rows)
 
 
 def get_awardings_of_badge(badge_id: BadgeID) -> set[QuantifiedBadgeAwarding]:
