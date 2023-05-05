@@ -54,7 +54,24 @@ addopts = "-vv -ra"
 testpaths = [ "tests/unit", "tests/integration" ]
 
 [tool.ruff]
-select = [ "E", "EXE", "F", "ISC", "PLE", "PLW", "PTH", "PYI", "Q", "RSE", "TID", "UP", "W" ]
+select = [
+    "B",
+    "E",
+    "EXE",
+    "F",
+    "G",
+    "ICN",
+    "ISC",
+    "PLE",
+    "PLW",
+    "PTH",
+    "PYI",
+    "Q",
+    "RSE",
+    "TID",
+    "UP",
+    "W",
+]
 ignore = [
     "E501",  # Line too long
     "W291",  # Trailing whitespace (because of email signature, `-- `)
