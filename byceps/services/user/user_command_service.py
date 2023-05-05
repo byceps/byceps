@@ -79,7 +79,8 @@ def _assign_roles(
     if board_user_role is None:
         warn(
             f'Role "{board_user_role_name}" not found; '
-            f'not assigning it to user "{user_id}".'
+            f'not assigning it to user "{user_id}".',
+            stacklevel=2,
         )
         return
 

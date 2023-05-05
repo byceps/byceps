@@ -26,7 +26,8 @@ if app.debug and app.config.get('DEBUG_TOOLBAR_ENABLED', False):
     except ImportError:
         warn(
             'Could not import Flask-DebugToolbar. '
-            '`pip install Flask-DebugToolbar` should make it available.'
+            '`pip install Flask-DebugToolbar` should make it available.',
+            stacklevel=2,
         )
     else:
         app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
