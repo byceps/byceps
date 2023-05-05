@@ -109,7 +109,7 @@ def build_tickets(
     try:
         codes = ticket_code_service.generate_ticket_codes(quantity)
     except ticket_code_service.TicketCodeGenerationFailed as exc:
-        raise TicketCreationFailed(e) from exc
+        raise TicketCreationFailed(exc) from exc
 
     for code in codes:
         yield DbTicket(
