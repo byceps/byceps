@@ -25,7 +25,7 @@ from byceps.services.user.models.user import User
 def get_current_user_locale() -> str | None:
     """Return the locale for the current user, if available."""
     # Look for a locale on the current user object.
-    user = getattr(g, 'user')
+    user = g.user
     if (user is not None) and (user.locale is not None):
         return user.locale
 

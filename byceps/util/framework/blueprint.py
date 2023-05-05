@@ -28,7 +28,7 @@ def get_blueprint(name: str) -> Blueprint:
     sub-package and to contain a blueprint instance named ``blueprint``.
     """
     module = _get_blueprint_views_module(name)
-    return getattr(module, 'blueprint')
+    return module.blueprint
 
 
 def _get_blueprint_views_module(name: str) -> ModuleType:
