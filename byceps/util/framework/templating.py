@@ -34,7 +34,7 @@ def templated(arg) -> Callable:
     returned.
     """
 
-    if hasattr(arg, '__call__'):
+    if callable(arg):
         return _decorate(arg)
 
     def wrapper(f: Callable):
