@@ -86,9 +86,9 @@ def create_tickets(
 
     try:
         db.session.commit()
-    except IntegrityError as e:
+    except IntegrityError as exc:
         db.session.rollback()
-        raise TicketCreationFailedWithConflict(e)
+        raise TicketCreationFailedWithConflict(exc) from exc
 
     return db_tickets
 
@@ -108,8 +108,8 @@ def build_tickets(
 
     try:
         codes = ticket_code_service.generate_ticket_codes(quantity)
-    except ticket_code_service.TicketCodeGenerationFailed as e:
-        raise TicketCreationFailed(e)
+    except ticket_code_service.TicketCodeGenerationFailed as exc:
+        raise TicketCreationFailed(e) from exc
 
     for code in codes:
         yield DbTicket(

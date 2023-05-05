@@ -66,8 +66,10 @@ def validate_user_id(ctx, param, user_id_value: str) -> User:
 def validate_user_id_format(ctx, param, user_id_value: str) -> UserID:
     try:
         return UserID(UUID(user_id_value))
-    except ValueError as e:
-        raise click.BadParameter(f'Invalid user ID "{user_id_value}": {e}')
+    except ValueError as exc:
+        raise click.BadParameter(
+            f'Invalid user ID "{user_id_value}": {exc}'
+        ) from exc
 
 
 def validate_user_screen_name(ctx, param, screen_name: str) -> User:

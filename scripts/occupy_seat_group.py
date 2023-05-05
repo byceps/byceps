@@ -22,10 +22,10 @@ from byceps.services.ticketing.models.ticket import TicketBundleID
 def validate_seat_group(ctx, param, seat_group_id_value: str) -> DbSeatGroup:
     try:
         seat_group_id = SeatGroupID(UUID(seat_group_id_value))
-    except ValueError as e:
+    except ValueError as exc:
         raise click.BadParameter(
-            f'Invalid seat group ID "{seat_group_id_value}": {e}'
-        )
+            f'Invalid seat group ID "{seat_group_id_value}": {exc}'
+        ) from exc
 
     seat_group = seat_group_service.find_seat_group(seat_group_id)
 
@@ -40,10 +40,10 @@ def validate_ticket_bundle(
 ) -> DbTicketBundle:
     try:
         ticket_bundle_id = TicketBundleID(UUID(ticket_bundle_id_value))
-    except ValueError as e:
+    except ValueError as exc:
         raise click.BadParameter(
-            f'Invalid ticket bundle ID "{ticket_bundle_id_value}": {e}'
-        )
+            f'Invalid ticket bundle ID "{ticket_bundle_id_value}": {exc}'
+        ) from exc
 
     ticket_bundle = ticket_bundle_service.find_bundle(ticket_bundle_id)
 

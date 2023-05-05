@@ -84,8 +84,10 @@ def _determine_app_mode(app: Flask) -> AppMode:
 
     try:
         return AppMode[value]
-    except KeyError:
-        raise ConfigurationError(f'Invalid app mode "{value}" configured.')
+    except KeyError as exc:
+        raise ConfigurationError(
+            f'Invalid app mode "{value}" configured.'
+        ) from exc
 
 
 def get_app_mode(app: Flask | None = None) -> AppMode:

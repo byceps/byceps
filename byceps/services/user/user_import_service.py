@@ -47,8 +47,8 @@ def parse_user_json(json_data: str) -> UserToImport:
 
     try:
         return UserToImport.parse_obj(data_dict)
-    except ValidationError as e:
-        raise Exception(str(e))
+    except ValidationError as exc:
+        raise Exception(str(exc)) from exc
 
 
 def import_user(user_to_import: UserToImport) -> User:

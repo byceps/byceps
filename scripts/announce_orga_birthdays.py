@@ -23,10 +23,10 @@ from _util import call_with_app_context
 def validate_webhook_id(ctx, param, webhook_id_value: str) -> OutgoingWebhook:
     try:
         webhook_id = WebhookID(UUID(webhook_id_value))
-    except ValueError as e:
+    except ValueError as exc:
         raise click.BadParameter(
-            f'Invalid webhook ID "{webhook_id_value}": {e}'
-        )
+            f'Invalid webhook ID "{webhook_id_value}": {exc}'
+        ) from exc
 
     webhook = webhook_service.find_webhook(webhook_id)
 

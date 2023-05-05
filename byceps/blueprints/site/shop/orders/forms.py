@@ -48,8 +48,8 @@ class _RequestRefundFormBase(LocalizedForm):
     def validate_recipient_iban(form, field):
         try:
             IBAN(field.data)  # Validate, but ignore the resulting object.
-        except SchwiftyException:
-            raise ValidationError('Ungültige IBAN')
+        except SchwiftyException as exc:
+            raise ValidationError('Ungültige IBAN') from exc
 
 
 class RequestFullRefundForm(_RequestRefundFormBase):
