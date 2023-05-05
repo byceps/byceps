@@ -46,8 +46,6 @@ def execute(webhook: OutgoingWebhook) -> None:
         request_data = assemble_request_data(webhook, text)
         call_webhook(webhook, request_data)
 
-    click.secho('Done.', fg='green')
-
 
 if __name__ == '__main__':
     call_with_app_context(execute)
