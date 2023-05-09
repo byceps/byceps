@@ -93,7 +93,7 @@
   <div class="button-row">
     <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
       {{ _('New category') }}:
-      <select name="category_id">
+      <select name="category_id" class="form-control" style="display: inline-block;">
       {%- for category in categories %}
         <option value="{{ category.id }}">{{ category.title }}</option>
       {%- endfor %}
