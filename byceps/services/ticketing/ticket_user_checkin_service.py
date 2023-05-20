@@ -6,6 +6,8 @@ byceps.services.ticketing.ticket_user_checkin_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from byceps.database import db
 from byceps.events.ticketing import TicketCheckedIn
 from byceps.services.user import user_service
@@ -32,6 +34,7 @@ def check_in_user(
     """Record that the ticket was used to check in its user."""
     db_ticket = _get_ticket_for_checkin(party_id, ticket_id)
 
+    occurred_at = datetime.utcnow()
     initiator = user_service.get_user(initiator_id)
 
     user = _get_user_for_checkin(db_ticket.used_by_id)
@@ -45,13 +48,14 @@ def check_in_user(
             'checked_in_user_id': str(db_ticket.used_by_id),
             'initiator_id': str(initiator.id),
         },
+        occurred_at=occurred_at,
     )
     db.session.add(db_log_entry)
 
     db.session.commit()
 
     return TicketCheckedIn(
-        occurred_at=db_log_entry.occurred_at,
+        occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         ticket_id=db_ticket.id,

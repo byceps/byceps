@@ -97,12 +97,16 @@ def place_order(
 
     order = order_service._order_to_transfer_object(db_order)
 
+    occurred_at = order.created_at
+
     # Create log entry in separate step as order ID is not available earlier.
     log_entry_data = {'initiator_id': str(orderer_user.id)}
-    order_log_service.create_entry('order-placed', order.id, log_entry_data)
+    order_log_service.create_entry(
+        'order-placed', order.id, log_entry_data, occurred_at=occurred_at
+    )
 
     event = ShopOrderPlaced(
-        occurred_at=order.created_at,
+        occurred_at=occurred_at,
         initiator_id=orderer_user.id,
         initiator_screen_name=orderer_user.screen_name,
         order_id=order.id,

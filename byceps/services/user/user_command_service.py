@@ -8,7 +8,7 @@ byceps.services.user.user_command_service
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from typing import Any
 from warnings import warn
 
@@ -95,6 +95,7 @@ def suspend_account(
     """Suspend the user account."""
     db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
+    occurred_at = datetime.utcnow()
 
     db_user.suspended = True
 
@@ -105,13 +106,14 @@ def suspend_account(
             'initiator_id': str(initiator.id),
             'reason': reason,
         },
+        occurred_at=occurred_at,
     )
     db.session.add(log_entry)
 
     db.session.commit()
 
     return UserAccountSuspended(
-        occurred_at=log_entry.occurred_at,
+        occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=db_user.id,
@@ -125,6 +127,7 @@ def unsuspend_account(
     """Unsuspend the user account."""
     db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
+    occurred_at = datetime.utcnow()
 
     db_user.suspended = False
 
@@ -135,13 +138,14 @@ def unsuspend_account(
             'initiator_id': str(initiator.id),
             'reason': reason,
         },
+        occurred_at=occurred_at,
     )
     db.session.add(log_entry)
 
     db.session.commit()
 
     return UserAccountUnsuspended(
-        occurred_at=log_entry.occurred_at,
+        occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=db_user.id,
@@ -159,6 +163,7 @@ def change_screen_name(
     """Change the user's screen name."""
     db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
+    occurred_at = datetime.utcnow()
 
     old_screen_name = db_user.screen_name
 
@@ -173,14 +178,17 @@ def change_screen_name(
         log_entry_data['reason'] = reason
 
     log_entry = user_log_service.build_entry(
-        'user-screen-name-changed', db_user.id, log_entry_data
+        'user-screen-name-changed',
+        db_user.id,
+        log_entry_data,
+        occurred_at=occurred_at,
     )
     db.session.add(log_entry)
 
     db.session.commit()
 
     return UserScreenNameChanged(
-        occurred_at=log_entry.occurred_at,
+        occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=db_user.id,
@@ -200,6 +208,7 @@ def change_email_address(
     """Change the user's e-mail address."""
     db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
+    occurred_at = datetime.utcnow()
 
     old_email_address = db_user.email_address
 
@@ -215,14 +224,17 @@ def change_email_address(
         log_entry_data['reason'] = reason
 
     log_entry = user_log_service.build_entry(
-        'user-email-address-changed', db_user.id, log_entry_data
+        'user-email-address-changed',
+        db_user.id,
+        log_entry_data,
+        occurred_at=occurred_at,
     )
     db.session.add(log_entry)
 
     db.session.commit()
 
     return UserEmailAddressChanged(
-        occurred_at=log_entry.occurred_at,
+        occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=db_user.id,
@@ -253,6 +265,7 @@ def update_user_details(
     """Update the user's details."""
     detail = _get_user_detail(user_id)
     initiator = user_service.get_user(initiator_id)
+    occurred_at = datetime.utcnow()
 
     old_first_name = detail.first_name
     old_last_name = detail.last_name
@@ -288,7 +301,10 @@ def update_user_details(
         log_entry_data, 'phone_number', old_phone_number, phone_number
     )
     log_entry = user_log_service.build_entry(
-        'user-details-updated', user_id, log_entry_data
+        'user-details-updated',
+        user_id,
+        log_entry_data,
+        occurred_at=occurred_at,
     )
     db.session.add(log_entry)
 
@@ -296,7 +312,7 @@ def update_user_details(
 
     user = user_service.get_user(detail.user_id)
     return UserDetailsUpdated(
-        occurred_at=log_entry.occurred_at,
+        occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,

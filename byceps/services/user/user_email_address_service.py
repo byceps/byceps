@@ -8,6 +8,8 @@ byceps.services.user.user_email_address_service
 
 from __future__ import annotations
 
+from datetime import datetime
+
 from flask_babel import gettext
 
 from byceps.database import db
@@ -117,18 +119,23 @@ def confirm_email_address(
     if user.email_address != email_address_to_confirm:
         return Err('Email addresses do not match.')
 
+    occurred_at = datetime.utcnow()
+
     user.email_address_verified = True
 
     log_entry_data = {'email_address': user.email_address}
     log_entry = user_log_service.build_entry(
-        'user-email-address-confirmed', user.id, log_entry_data
+        'user-email-address-confirmed',
+        user.id,
+        log_entry_data,
+        occurred_at=occurred_at,
     )
     db.session.add(log_entry)
 
     db.session.commit()
 
     event = UserEmailAddressConfirmed(
-        occurred_at=log_entry.occurred_at,
+        occurred_at=occurred_at,
         initiator_id=user.id,
         initiator_screen_name=user.screen_name,
         user_id=user.id,
@@ -149,6 +156,8 @@ def invalidate_email_address(
     """
     user = user_service.get_db_user(user_id)
 
+    occurred_at = datetime.utcnow()
+
     initiator: User | None
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
@@ -164,14 +173,17 @@ def invalidate_email_address(
     if initiator:
         log_entry_data['initiator_id'] = str(initiator.id)
     log_entry = user_log_service.build_entry(
-        'user-email-address-invalidated', user.id, log_entry_data
+        'user-email-address-invalidated',
+        user.id,
+        log_entry_data,
+        occurred_at=occurred_at,
     )
     db.session.add(log_entry)
 
     db.session.commit()
 
     return UserEmailAddressInvalidated(
-        occurred_at=log_entry.occurred_at,
+        occurred_at=occurred_at,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,
         user_id=user.id,

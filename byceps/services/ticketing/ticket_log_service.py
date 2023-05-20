@@ -6,6 +6,8 @@ byceps.services.ticketing.ticket_log_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 
 from sqlalchemy import select
@@ -28,12 +30,17 @@ def create_entry(
 
 
 def build_entry(
-    event_type: str, ticket_id: TicketID, data: TicketLogEntryData
+    event_type: str,
+    ticket_id: TicketID,
+    data: TicketLogEntryData,
+    *,
+    occurred_at: datetime | None = None,
 ) -> DbTicketLogEntry:
     """Assemble, but not persist, a ticket log entry."""
-    now = datetime.utcnow()
+    if occurred_at is None:
+        occurred_at = datetime.utcnow()
 
-    return DbTicketLogEntry(now, event_type, ticket_id, data)
+    return DbTicketLogEntry(occurred_at, event_type, ticket_id, data)
 
 
 def get_entries_for_ticket(ticket_id: TicketID) -> list[TicketLogEntry]:
