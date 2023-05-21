@@ -79,7 +79,9 @@ def render_snippet_as_partial(
         if ignore_if_unknown:
             return ''
         else:
-            raise snippet_service.SnippetNotFound(scope, name, language_code)
+            raise snippet_service.SnippetNotFoundError(
+                scope, name, language_code
+            )
 
     if context is None:
         context = {}
