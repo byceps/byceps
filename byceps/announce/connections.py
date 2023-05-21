@@ -28,7 +28,7 @@ from byceps.events.board import (
     BoardTopicUnlockedEvent,
     BoardTopicUnpinnedEvent,
 )
-from byceps.events.guest_server import GuestServerRegistered
+from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.events.news import NewsItemPublished
 from byceps.events.page import PageCreated, PageDeleted, PageUpdated
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
@@ -110,7 +110,7 @@ EVENT_TYPES_TO_HANDLERS = {
     BoardTopicUnhiddenEvent: board_handlers.announce_board_topic_unhidden,
     BoardTopicUnlockedEvent: board_handlers.announce_board_topic_unlocked,
     BoardTopicUnpinnedEvent: board_handlers.announce_board_topic_unpinned,
-    GuestServerRegistered: guest_server_handlers.announce_guest_server_registered,
+    GuestServerRegisteredEvent: guest_server_handlers.announce_guest_server_registered,
     NewsItemPublished: news_handlers.announce_news_item_published,
     PageCreated: page_handlers.announce_page_created,
     PageDeleted: page_handlers.announce_page_deleted,

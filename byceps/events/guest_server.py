@@ -17,7 +17,7 @@ from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
-class GuestServerRegistered(_BaseEvent):
+class GuestServerRegisteredEvent(_BaseEvent):
     party_id: PartyID
     owner_id: UserID
     owner_screen_name: str | None

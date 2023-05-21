@@ -17,14 +17,14 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.guest_server import GuestServerRegistered
+from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.party import party_service
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
 @with_locale
 def announce_guest_server_registered(
-    event: GuestServerRegistered, webhook: OutgoingWebhook
+    event: GuestServerRegisteredEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a guest server has been registered."""
     initiator_screen_name = get_screen_name_or_fallback(

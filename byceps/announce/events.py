@@ -23,7 +23,7 @@ from byceps.events.board import (
     BoardTopicUnlockedEvent,
     BoardTopicUnpinnedEvent,
 )
-from byceps.events.guest_server import GuestServerRegistered
+from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.events.news import NewsItemPublished
 from byceps.events.page import PageCreated, PageDeleted, PageUpdated
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
@@ -70,7 +70,7 @@ EVENT_TYPES_TO_NAMES = {
     BoardTopicUnhiddenEvent: 'board-topic-unhidden',
     BoardTopicUnlockedEvent: 'board-topic-unlocked',
     BoardTopicUnpinnedEvent: 'board-topic-unpinned',
-    GuestServerRegistered: 'guest-server-registered',
+    GuestServerRegisteredEvent: 'guest-server-registered',
     NewsItemPublished: 'news-item-published',
     PageCreated: 'page-created',
     PageDeleted: 'page-deleted',

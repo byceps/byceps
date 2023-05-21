@@ -11,7 +11,7 @@ from __future__ import annotations
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.guest_server import GuestServerRegistered
+from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.party import party_service
 from byceps.services.user import user_service
 from byceps.typing import PartyID, UserID
@@ -106,7 +106,7 @@ def create_server(
     hostname: str | None = None,
     netmask: IPAddress | None = None,
     gateway: IPAddress | None = None,
-) -> tuple[Server, GuestServerRegistered]:
+) -> tuple[Server, GuestServerRegisteredEvent]:
     """Create a server."""
     party = party_service.get_party(party_id)
     creator = user_service.get_user(creator_id)
@@ -129,7 +129,7 @@ def create_server(
 
     server = _db_entity_to_server(db_server)
 
-    event = GuestServerRegistered(
+    event = GuestServerRegisteredEvent(
         occurred_at=server.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
