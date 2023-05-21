@@ -25,15 +25,15 @@ class _SnippetEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
-class SnippetCreated(_SnippetEvent):
+class SnippetCreatedEvent(_SnippetEvent):
     snippet_version_id: SnippetVersionID
 
 
 @dataclass(frozen=True)
-class SnippetUpdated(_SnippetEvent):
+class SnippetUpdatedEvent(_SnippetEvent):
     snippet_version_id: SnippetVersionID
 
 
 @dataclass(frozen=True)
-class SnippetDeleted(_SnippetEvent):
+class SnippetDeletedEvent(_SnippetEvent):
     pass

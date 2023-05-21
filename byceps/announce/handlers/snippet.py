@@ -17,14 +17,18 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
+from byceps.events.snippet import (
+    SnippetCreatedEvent,
+    SnippetDeletedEvent,
+    SnippetUpdatedEvent,
+)
 from byceps.services.snippet.models import SnippetScope
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
 @with_locale
 def announce_snippet_created(
-    event: SnippetCreated, webhook: OutgoingWebhook
+    event: SnippetCreatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a snippet has been created."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -43,7 +47,7 @@ def announce_snippet_created(
 
 @with_locale
 def announce_snippet_updated(
-    event: SnippetUpdated, webhook: OutgoingWebhook
+    event: SnippetUpdatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a snippet has been updated."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -62,7 +66,7 @@ def announce_snippet_updated(
 
 @with_locale
 def announce_snippet_deleted(
-    event: SnippetDeleted, webhook: OutgoingWebhook
+    event: SnippetDeletedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a snippet has been deleted."""
     initiator_screen_name = get_screen_name_or_fallback(

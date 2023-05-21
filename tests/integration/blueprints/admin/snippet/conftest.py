@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pytest
 
-from byceps.events.snippet import SnippetCreated
+from byceps.events.snippet import SnippetCreatedEvent
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet.models import SnippetScope
@@ -47,7 +47,7 @@ def make_snippet(global_scope: SnippetScope, snippet_admin: User):
         name: str | None = None,
         language_code: str = 'en',
         body: str = 'Body',
-    ) -> tuple[DbSnippetVersion, SnippetCreated]:
+    ) -> tuple[DbSnippetVersion, SnippetCreatedEvent]:
         if name is None:
             name = generate_token()
 

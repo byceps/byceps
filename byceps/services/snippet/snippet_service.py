@@ -14,7 +14,11 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
+from byceps.events.snippet import (
+    SnippetCreatedEvent,
+    SnippetDeletedEvent,
+    SnippetUpdatedEvent,
+)
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
@@ -33,7 +37,7 @@ def create_snippet(
     language_code: str,
     creator_id: UserID,
     body: str,
-) -> tuple[DbSnippetVersion, SnippetCreated]:
+) -> tuple[DbSnippetVersion, SnippetCreatedEvent]:
     """Create a snippet and its initial version, and return that version."""
     creator = user_service.get_user(creator_id)
 
@@ -50,7 +54,7 @@ def create_snippet(
 
     db.session.commit()
 
-    event = SnippetCreated(
+    event = SnippetCreatedEvent(
         occurred_at=version.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -65,7 +69,7 @@ def create_snippet(
 
 def update_snippet(
     snippet_id: SnippetID, creator_id: UserID, body: str
-) -> tuple[DbSnippetVersion, SnippetUpdated]:
+) -> tuple[DbSnippetVersion, SnippetUpdatedEvent]:
     """Update snippet with a new version, and return that version."""
     snippet = find_snippet(snippet_id)
     if snippet is None:
@@ -80,7 +84,7 @@ def update_snippet(
 
     db.session.commit()
 
-    event = SnippetUpdated(
+    event = SnippetUpdatedEvent(
         occurred_at=version.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -95,7 +99,7 @@ def update_snippet(
 
 def delete_snippet(
     snippet_id: SnippetID, *, initiator_id: UserID | None = None
-) -> tuple[bool, SnippetDeleted | None]:
+) -> tuple[bool, SnippetDeletedEvent | None]:
     """Delete the snippet and its versions.
 
     It is expected that no database records (consents, etc.) refer to
@@ -138,7 +142,7 @@ def delete_snippet(
         db.session.rollback()
         return False, None
 
-    event = SnippetDeleted(
+    event = SnippetDeletedEvent(
         occurred_at=datetime.utcnow(),
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,
