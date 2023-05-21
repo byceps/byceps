@@ -20,7 +20,7 @@ from .models import List, ListID
 from .types import SubscriptionState
 
 
-class UnknownListId(Exception):
+class UnknownListIdError(Exception):
     pass
 
 
@@ -86,7 +86,7 @@ def _update_subscription_state(
     """Update the user's subscription state for that list."""
     list_ = newsletter_service.find_list(list_id)
     if list_ is None:
-        raise UnknownListId(list_id)
+        raise UnknownListIdError(list_id)
 
     subscription_update = DbSubscriptionUpdate(
         user_id, list_.id, expressed_at, state
