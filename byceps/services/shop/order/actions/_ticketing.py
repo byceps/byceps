@@ -6,7 +6,7 @@ byceps.services.shop.order.actions._ticketing
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.events.ticketing import TicketsSold
+from byceps.events.ticketing import TicketsSoldEvent
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.ticketing import ticket_category_service
@@ -22,13 +22,13 @@ def create_tickets_sold_event(
     category_id: TicketCategoryID,
     owner_id: UserID,
     quantity: int,
-) -> TicketsSold:
+) -> TicketsSoldEvent:
     occurred_at = order_service.get_payment_date(order_id)
     initiator_screen_name = user_service.find_screen_name(initiator_id)
     category = ticket_category_service.get_category(category_id)
     owner_screen_name = user_service.find_screen_name(owner_id)
 
-    return TicketsSold(
+    return TicketsSoldEvent(
         occurred_at=occurred_at,
         initiator_id=initiator_id,
         initiator_screen_name=initiator_screen_name,
@@ -39,5 +39,5 @@ def create_tickets_sold_event(
     )
 
 
-def send_tickets_sold_event(event: TicketsSold) -> None:
+def send_tickets_sold_event(event: TicketsSoldEvent) -> None:
     ticketing_signals.tickets_sold.send(None, event=event)

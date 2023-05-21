@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.database import db
-from byceps.events.ticketing import TicketCheckedIn
+from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.ticketing import (
     ticket_creation_service,
     ticket_log_service,
@@ -56,7 +56,7 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
     ticket_after = ticket_service.get_ticket(ticket_id)
     assert ticket_after.user_checked_in
 
-    assert event.__class__ is TicketCheckedIn
+    assert event.__class__ is TicketCheckedInEvent
     assert event.occurred_at is not None
     assert event.initiator_id == initiator.id
     assert event.initiator_screen_name == initiator.screen_name

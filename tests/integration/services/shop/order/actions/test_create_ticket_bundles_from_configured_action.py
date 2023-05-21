@@ -8,7 +8,7 @@ from unittest.mock import patch
 from flask import Flask
 import pytest
 
-from byceps.events.ticketing import TicketsSold
+from byceps.events.ticketing import TicketsSoldEvent
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.order import (
     order_action_registry_service,
@@ -100,7 +100,7 @@ def test_create_ticket_bundles(
     ]
     assert len(ticket_bundle_created_log_entries) == bundle_quantity
 
-    tickets_sold_event = TicketsSold(
+    tickets_sold_event = TicketsSoldEvent(
         occurred_at=shop_order_paid_event.occurred_at,
         initiator_id=admin_user.id,
         initiator_screen_name=admin_user.screen_name,

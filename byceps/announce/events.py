@@ -40,7 +40,7 @@ from byceps.events.snippet import (
     SnippetDeletedEvent,
     SnippetUpdatedEvent,
 )
-from byceps.events.ticketing import TicketCheckedIn, TicketsSold
+from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.events.tourney import (
     TourneyCanceled,
     TourneyFinished,
@@ -93,8 +93,8 @@ EVENT_TYPES_TO_NAMES = {
     SnippetCreatedEvent: 'snippet-created',
     SnippetDeletedEvent: 'snippet-deleted',
     SnippetUpdatedEvent: 'snippet-updated',
-    TicketCheckedIn: 'ticket-checked-in',
-    TicketsSold: 'tickets-sold',
+    TicketCheckedInEvent: 'ticket-checked-in',
+    TicketsSoldEvent: 'tickets-sold',
     TourneyCanceled: 'tourney-canceled',
     TourneyFinished: 'tourney-finished',
     TourneyPaused: 'tourney-paused',

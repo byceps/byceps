@@ -17,14 +17,14 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.ticketing import TicketCheckedIn, TicketsSold
+from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.services.ticketing import ticket_service
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
 @with_locale
 def announce_ticket_checked_in(
-    event: TicketCheckedIn, webhook: OutgoingWebhook
+    event: TicketCheckedInEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a ticket has been checked in."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -44,7 +44,7 @@ def announce_ticket_checked_in(
 
 @with_locale
 def announce_tickets_sold(
-    event: TicketsSold, webhook: OutgoingWebhook
+    event: TicketsSoldEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that tickets have been sold."""
     owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)

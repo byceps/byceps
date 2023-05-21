@@ -23,7 +23,7 @@ class _TicketEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
-class TicketCheckedIn(_TicketEvent):
+class TicketCheckedInEvent(_TicketEvent):
     ticket_code: TicketCode
     occupied_seat_id: SeatID | None
     user_id: UserID | None
@@ -31,7 +31,7 @@ class TicketCheckedIn(_TicketEvent):
 
 
 @dataclass(frozen=True)
-class TicketsSold(_BaseEvent):
+class TicketsSoldEvent(_BaseEvent):
     party_id: PartyID
     owner_id: UserID | None
     owner_screen_name: str | None

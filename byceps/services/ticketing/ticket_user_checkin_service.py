@@ -13,7 +13,7 @@ from datetime import datetime
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.events.ticketing import TicketCheckedIn
+from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
@@ -35,7 +35,7 @@ from .models.ticket import TicketCheckIn, TicketID
 
 def check_in_user(
     party_id: PartyID, ticket_id: TicketID, initiator_id: UserID
-) -> TicketCheckedIn:
+) -> TicketCheckedInEvent:
     """Record that the ticket was used to check in its user."""
     db_ticket = _get_ticket_for_checkin(party_id, ticket_id)
 
@@ -62,7 +62,7 @@ def check_in_user(
 
     db.session.commit()
 
-    return TicketCheckedIn(
+    return TicketCheckedInEvent(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,

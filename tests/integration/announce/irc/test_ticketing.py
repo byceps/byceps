@@ -6,7 +6,7 @@
 from unittest.mock import patch
 
 from byceps.announce.connections import build_announcement_request
-from byceps.events.ticketing import TicketCheckedIn, TicketsSold
+from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.services.ticketing.models.ticket import TicketSaleStats
 
 from .helpers import build_announcement_request_for_irc, now
@@ -20,7 +20,7 @@ def test_ticket_checked_in(admin_app, make_user, admin_user, webhook_for_irc):
 
     user = make_user('Einchecker')
 
-    event = TicketCheckedIn(
+    event = TicketCheckedInEvent(
         occurred_at=now(),
         initiator_id=admin_user.id,
         initiator_screen_name=admin_user.screen_name,
@@ -55,7 +55,7 @@ def test_single_ticket_sold(
 
     user = make_user('Neuling')
 
-    event = TicketsSold(
+    event = TicketsSoldEvent(
         occurred_at=now(),
         initiator_id=admin_user.id,
         initiator_screen_name=admin_user.screen_name,
@@ -89,7 +89,7 @@ def test_multiple_tickets_sold(
 
     user = make_user('TreuerKäufer')
 
-    event = TicketsSold(
+    event = TicketsSoldEvent(
         occurred_at=now(),
         initiator_id=admin_user.id,
         initiator_screen_name=admin_user.screen_name,
