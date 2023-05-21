@@ -14,9 +14,9 @@ from flask_babel import gettext
 
 from byceps.database import db
 from byceps.events.user import (
-    UserEmailAddressChanged,
-    UserEmailAddressConfirmed,
-    UserEmailAddressInvalidated,
+    UserEmailAddressChangedEvent,
+    UserEmailAddressConfirmedEvent,
+    UserEmailAddressInvalidatedEvent,
 )
 from byceps.services.email import email_config_service, email_service
 from byceps.services.email.models import NameAndAddress
@@ -86,7 +86,7 @@ def send_email_address_confirmation_email(
 
 def confirm_email_address_via_verification_token(
     verification_token: VerificationToken,
-) -> Result[UserEmailAddressConfirmed, str]:
+) -> Result[UserEmailAddressConfirmedEvent, str]:
     """Confirm the email address of the user account assigned with that
     verification token.
     """
@@ -109,7 +109,7 @@ def confirm_email_address_via_verification_token(
 
 def confirm_email_address(
     user_id: UserID, email_address_to_confirm: str
-) -> Result[UserEmailAddressConfirmed, str]:
+) -> Result[UserEmailAddressConfirmedEvent, str]:
     """Confirm the email address of the user account."""
     user = user_service.get_db_user(user_id)
 
@@ -134,7 +134,7 @@ def confirm_email_address(
 
     db.session.commit()
 
-    event = UserEmailAddressConfirmed(
+    event = UserEmailAddressConfirmedEvent(
         occurred_at=occurred_at,
         initiator_id=user.id,
         initiator_screen_name=user.screen_name,
@@ -147,7 +147,7 @@ def confirm_email_address(
 
 def invalidate_email_address(
     user_id: UserID, reason: str, *, initiator_id: UserID | None = None
-) -> UserEmailAddressInvalidated:
+) -> UserEmailAddressInvalidatedEvent:
     """Invalidate the user's email address by marking it as unverified.
 
     This might be appropriate if an email to the user's address bounced
@@ -182,7 +182,7 @@ def invalidate_email_address(
 
     db.session.commit()
 
-    return UserEmailAddressInvalidated(
+    return UserEmailAddressInvalidatedEvent(
         occurred_at=occurred_at,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,
@@ -244,7 +244,7 @@ def send_email_address_change_email(
 
 def change_email_address(
     verification_token: VerificationToken,
-) -> Result[UserEmailAddressChanged, str]:
+) -> Result[UserEmailAddressChangedEvent, str]:
     """Change the email address of the user account assigned with that
     verification token.
     """

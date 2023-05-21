@@ -5,13 +5,13 @@
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.user import (
-    UserAccountCreated,
-    UserAccountSuspended,
-    UserAccountUnsuspended,
-    UserDetailsUpdated,
-    UserEmailAddressChanged,
-    UserEmailAddressInvalidated,
-    UserScreenNameChanged,
+    UserAccountCreatedEvent,
+    UserAccountSuspendedEvent,
+    UserAccountUnsuspendedEvent,
+    UserDetailsUpdatedEvent,
+    UserEmailAddressChangedEvent,
+    UserEmailAddressInvalidatedEvent,
+    UserScreenNameChangedEvent,
 )
 from byceps.services.user import user_deletion_service
 
@@ -24,7 +24,7 @@ def test_account_created_announced(admin_app, make_user, webhook_for_irc):
 
     user = make_user('JaneDoe')
 
-    event = UserAccountCreated(
+    event = UserAccountCreatedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -47,7 +47,7 @@ def test_account_created_announced_on_site(
 
     user = make_user('JaneDoeOnSite')
 
-    event = UserAccountCreated(
+    event = UserAccountCreatedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -68,7 +68,7 @@ def test_account_created_by_admin_announced(
     admin = make_user('EinAdmin')
     user = make_user('EinUser')
 
-    event = UserAccountCreated(
+    event = UserAccountCreatedEvent(
         occurred_at=now(),
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
@@ -89,7 +89,7 @@ def test_screen_name_change_announced(admin_app, make_user, webhook_for_irc):
     admin = make_user('ElAdmin')
     user = make_user('DrJekyll')
 
-    event = UserScreenNameChanged(
+    event = UserScreenNameChangedEvent(
         occurred_at=now(),
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
@@ -111,7 +111,7 @@ def test_email_address_changed_announced(admin_app, make_user, webhook_for_irc):
     admin = make_user('UserSupporter')
     user = make_user('MailboxHopper')
 
-    event = UserEmailAddressChanged(
+    event = UserEmailAddressChangedEvent(
         occurred_at=now(),
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
@@ -134,7 +134,7 @@ def test_email_address_invalidated_announced(
     admin = make_user('BounceWatchman')
     user = make_user('Faker')
 
-    event = UserEmailAddressInvalidated(
+    event = UserEmailAddressInvalidatedEvent(
         occurred_at=now(),
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
@@ -154,7 +154,7 @@ def test_user_details_updated_announced(admin_app, make_user, webhook_for_irc):
 
     user = make_user('Chameleon')
 
-    event = UserDetailsUpdated(
+    event = UserDetailsUpdatedEvent(
         occurred_at=now(),
         initiator_id=user.id,
         initiator_screen_name=user.screen_name,
@@ -172,7 +172,7 @@ def test_suspended_account_announced(admin_app, make_user, webhook_for_irc):
     admin = make_user('She-Ra')
     user = make_user('Skeletor')
 
-    event = UserAccountSuspended(
+    event = UserAccountSuspendedEvent(
         occurred_at=now(),
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
@@ -190,7 +190,7 @@ def test_unsuspended_account_announced(admin_app, make_user, webhook_for_irc):
     admin = make_user('TheBoss')
     user = make_user('RambaZamba')
 
-    event = UserAccountUnsuspended(
+    event = UserAccountUnsuspendedEvent(
         occurred_at=now(),
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,

@@ -57,14 +57,14 @@ from byceps.events.tourney import (
     TourneyStartedEvent,
 )
 from byceps.events.user import (
-    UserAccountCreated,
-    UserAccountDeleted,
-    UserAccountSuspended,
-    UserAccountUnsuspended,
-    UserDetailsUpdated,
-    UserEmailAddressChanged,
-    UserEmailAddressInvalidated,
-    UserScreenNameChanged,
+    UserAccountCreatedEvent,
+    UserAccountDeletedEvent,
+    UserAccountSuspendedEvent,
+    UserAccountUnsuspendedEvent,
+    UserDetailsUpdatedEvent,
+    UserEmailAddressChangedEvent,
+    UserEmailAddressInvalidatedEvent,
+    UserScreenNameChangedEvent,
 )
 from byceps.events.user_badge import UserBadgeAwarded
 
@@ -108,15 +108,15 @@ EVENT_TYPES_TO_NAMES = {
     TourneyParticipantEliminatedEvent: 'tourney-participant-eliminated',
     TourneyParticipantReadyEvent: 'tourney-participant-ready',
     TourneyParticipantWarnedEvent: 'tourney-participant-warned',
-    UserAccountCreated: 'user-account-created',
-    UserAccountDeleted: 'user-account-deleted',
-    UserAccountSuspended: 'user-account-suspended',
-    UserAccountUnsuspended: 'user-account-unsuspended',
+    UserAccountCreatedEvent: 'user-account-created',
+    UserAccountDeletedEvent: 'user-account-deleted',
+    UserAccountSuspendedEvent: 'user-account-suspended',
+    UserAccountUnsuspendedEvent: 'user-account-unsuspended',
     UserBadgeAwarded: 'user-badge-awarded',
-    UserDetailsUpdated: 'user-details-updated',
-    UserEmailAddressChanged: 'user-email-address-changed',
-    UserEmailAddressInvalidated: 'user-email-address-invalidated',
-    UserScreenNameChanged: 'user-screen-name-changed',
+    UserDetailsUpdatedEvent: 'user-details-updated',
+    UserEmailAddressChangedEvent: 'user-email-address-changed',
+    UserEmailAddressInvalidatedEvent: 'user-email-address-invalidated',
+    UserScreenNameChangedEvent: 'user-screen-name-changed',
 }
 
 

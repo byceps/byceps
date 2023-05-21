@@ -18,14 +18,14 @@ from byceps.announce.helpers import (
     with_locale,
 )
 from byceps.events.user import (
-    UserAccountCreated,
-    UserAccountDeleted,
-    UserAccountSuspended,
-    UserAccountUnsuspended,
-    UserDetailsUpdated,
-    UserEmailAddressChanged,
-    UserEmailAddressInvalidated,
-    UserScreenNameChanged,
+    UserAccountCreatedEvent,
+    UserAccountDeletedEvent,
+    UserAccountSuspendedEvent,
+    UserAccountUnsuspendedEvent,
+    UserDetailsUpdatedEvent,
+    UserEmailAddressChangedEvent,
+    UserEmailAddressInvalidatedEvent,
+    UserScreenNameChangedEvent,
 )
 from byceps.services.site import site_service
 from byceps.services.webhooks.models import OutgoingWebhook
@@ -33,7 +33,7 @@ from byceps.services.webhooks.models import OutgoingWebhook
 
 @with_locale
 def announce_user_account_created(
-    event: UserAccountCreated, webhook: OutgoingWebhook
+    event: UserAccountCreatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user account has been created."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -64,7 +64,7 @@ def announce_user_account_created(
 
 @with_locale
 def announce_user_screen_name_changed(
-    event: UserScreenNameChanged, webhook: OutgoingWebhook
+    event: UserScreenNameChangedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user's screen name has been changed."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -86,7 +86,7 @@ def announce_user_screen_name_changed(
 
 @with_locale
 def announce_user_email_address_changed(
-    event: UserEmailAddressChanged, webhook: OutgoingWebhook
+    event: UserEmailAddressChangedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user's email address has been changed."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -105,7 +105,7 @@ def announce_user_email_address_changed(
 
 @with_locale
 def announce_user_email_address_invalidated(
-    event: UserEmailAddressInvalidated, webhook: OutgoingWebhook
+    event: UserEmailAddressInvalidatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user's email address has been invalidated."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -124,7 +124,7 @@ def announce_user_email_address_invalidated(
 
 @with_locale
 def announce_user_details_updated(
-    event: UserDetailsUpdated, webhook: OutgoingWebhook
+    event: UserDetailsUpdatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user's details have been changed."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -143,7 +143,7 @@ def announce_user_details_updated(
 
 @with_locale
 def announce_user_account_suspended(
-    event: UserAccountSuspended, webhook: OutgoingWebhook
+    event: UserAccountSuspendedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user account has been suspended."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -162,7 +162,7 @@ def announce_user_account_suspended(
 
 @with_locale
 def announce_user_account_unsuspended(
-    event: UserAccountUnsuspended, webhook: OutgoingWebhook
+    event: UserAccountUnsuspendedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user account has been unsuspended."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -181,7 +181,7 @@ def announce_user_account_unsuspended(
 
 @with_locale
 def announce_user_account_deleted(
-    event: UserAccountDeleted, webhook: OutgoingWebhook
+    event: UserAccountDeletedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user account has been deleted."""
     initiator_screen_name = get_screen_name_or_fallback(

@@ -62,14 +62,14 @@ from byceps.events.tourney import (
     TourneyStartedEvent,
 )
 from byceps.events.user import (
-    UserAccountCreated,
-    UserAccountDeleted,
-    UserAccountSuspended,
-    UserAccountUnsuspended,
-    UserDetailsUpdated,
-    UserEmailAddressChanged,
-    UserEmailAddressInvalidated,
-    UserScreenNameChanged,
+    UserAccountCreatedEvent,
+    UserAccountDeletedEvent,
+    UserAccountSuspendedEvent,
+    UserAccountUnsuspendedEvent,
+    UserDetailsUpdatedEvent,
+    UserEmailAddressChangedEvent,
+    UserEmailAddressInvalidatedEvent,
+    UserScreenNameChangedEvent,
 )
 from byceps.events.user_badge import UserBadgeAwarded
 from byceps.services.webhooks.models import OutgoingWebhook
@@ -148,15 +148,15 @@ EVENT_TYPES_TO_HANDLERS = {
     TourneyParticipantEliminatedEvent: tourney_handlers.announce_participant_eliminated,
     TourneyParticipantReadyEvent: tourney_handlers.announce_participant_ready,
     TourneyParticipantWarnedEvent: tourney_handlers.announce_participant_warned,
-    UserAccountCreated: user_handlers.announce_user_account_created,
-    UserAccountDeleted: user_handlers.announce_user_account_deleted,
-    UserAccountSuspended: user_handlers.announce_user_account_suspended,
-    UserAccountUnsuspended: user_handlers.announce_user_account_unsuspended,
+    UserAccountCreatedEvent: user_handlers.announce_user_account_created,
+    UserAccountDeletedEvent: user_handlers.announce_user_account_deleted,
+    UserAccountSuspendedEvent: user_handlers.announce_user_account_suspended,
+    UserAccountUnsuspendedEvent: user_handlers.announce_user_account_unsuspended,
     UserBadgeAwarded: user_badge_handlers.announce_user_badge_awarded,
-    UserDetailsUpdated: user_handlers.announce_user_details_updated,
-    UserEmailAddressChanged: user_handlers.announce_user_email_address_changed,
-    UserEmailAddressInvalidated: user_handlers.announce_user_email_address_invalidated,
-    UserScreenNameChanged: user_handlers.announce_user_screen_name_changed,
+    UserDetailsUpdatedEvent: user_handlers.announce_user_details_updated,
+    UserEmailAddressChangedEvent: user_handlers.announce_user_email_address_changed,
+    UserEmailAddressInvalidatedEvent: user_handlers.announce_user_email_address_invalidated,
+    UserScreenNameChangedEvent: user_handlers.announce_user_screen_name_changed,
 }
 
 

@@ -14,7 +14,7 @@ from typing import Any
 from flask import current_app
 
 from byceps.database import db
-from byceps.events.user import UserAccountCreated
+from byceps.events.user import UserAccountCreatedEvent
 from byceps.services.authentication.password import authn_password_service
 from byceps.services.site.models import SiteID
 from byceps.typing import UserID
@@ -47,7 +47,7 @@ def create_user(
     creator_id: UserID | None = None,
     site_id: SiteID | None = None,
     ip_address: str | None = None,
-) -> Result[tuple[User, UserAccountCreated], None]:
+) -> Result[tuple[User, UserAccountCreatedEvent], None]:
     """Create a user account and related records."""
     creator: User | None
     if creator_id is not None:
@@ -113,7 +113,7 @@ def create_user(
         ip_address,
     )
 
-    event = UserAccountCreated(
+    event = UserAccountCreatedEvent(
         occurred_at=db_user.created_at,
         initiator_id=creator.id if creator else None,
         initiator_screen_name=creator.screen_name if creator else None,

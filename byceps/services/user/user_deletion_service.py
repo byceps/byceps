@@ -9,7 +9,7 @@ User account anonymization and removal
 """
 
 from byceps.database import db
-from byceps.events.user import UserAccountDeleted
+from byceps.events.user import UserAccountDeletedEvent
 from byceps.services.authentication.password import authn_password_service
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authorization import authz_service
@@ -22,7 +22,7 @@ from .dbmodels.user import DbUser
 
 def delete_account(
     user_id: UserID, initiator_id: UserID, reason: str
-) -> UserAccountDeleted:
+) -> UserAccountDeletedEvent:
     """Delete the user account."""
     user = user_service.get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
@@ -53,7 +53,7 @@ def delete_account(
     authn_password_service.delete_password_hash(user.id)
     verification_token_service.delete_tokens_for_user(user.id)
 
-    return UserAccountDeleted(
+    return UserAccountDeletedEvent(
         occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,

@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.events.user import UserScreenNameChanged
+from byceps.events.user import UserScreenNameChangedEvent
 from byceps.services.user import (
     user_command_service,
     user_log_service,
@@ -39,7 +39,7 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
 
     # -------------------------------- #
 
-    assert isinstance(event, UserScreenNameChanged)
+    assert isinstance(event, UserScreenNameChangedEvent)
     assert event.user_id == user_id
     assert event.initiator_id == admin_user.id
     assert event.initiator_screen_name == admin_user.screen_name

@@ -17,11 +17,11 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.events.user import (
-    UserAccountSuspended,
-    UserAccountUnsuspended,
-    UserDetailsUpdated,
-    UserEmailAddressChanged,
-    UserScreenNameChanged,
+    UserAccountSuspendedEvent,
+    UserAccountUnsuspendedEvent,
+    UserDetailsUpdatedEvent,
+    UserEmailAddressChangedEvent,
+    UserScreenNameChangedEvent,
 )
 from byceps.services.authorization import authz_service
 from byceps.services.authorization.models import RoleID
@@ -91,7 +91,7 @@ def _assign_roles(
 
 def suspend_account(
     user_id: UserID, initiator_id: UserID, reason: str
-) -> UserAccountSuspended:
+) -> UserAccountSuspendedEvent:
     """Suspend the user account."""
     db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
@@ -112,7 +112,7 @@ def suspend_account(
 
     db.session.commit()
 
-    return UserAccountSuspended(
+    return UserAccountSuspendedEvent(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
@@ -123,7 +123,7 @@ def suspend_account(
 
 def unsuspend_account(
     user_id: UserID, initiator_id: UserID, reason: str
-) -> UserAccountUnsuspended:
+) -> UserAccountUnsuspendedEvent:
     """Unsuspend the user account."""
     db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
@@ -144,7 +144,7 @@ def unsuspend_account(
 
     db.session.commit()
 
-    return UserAccountUnsuspended(
+    return UserAccountUnsuspendedEvent(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
@@ -159,7 +159,7 @@ def change_screen_name(
     initiator_id: UserID,
     *,
     reason: str | None = None,
-) -> UserScreenNameChanged:
+) -> UserScreenNameChangedEvent:
     """Change the user's screen name."""
     db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
@@ -187,7 +187,7 @@ def change_screen_name(
 
     db.session.commit()
 
-    return UserScreenNameChanged(
+    return UserScreenNameChangedEvent(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
@@ -204,7 +204,7 @@ def change_email_address(
     initiator_id: UserID,
     *,
     reason: str | None = None,
-) -> UserEmailAddressChanged:
+) -> UserEmailAddressChangedEvent:
     """Change the user's e-mail address."""
     db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
@@ -233,7 +233,7 @@ def change_email_address(
 
     db.session.commit()
 
-    return UserEmailAddressChanged(
+    return UserEmailAddressChangedEvent(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
@@ -261,7 +261,7 @@ def update_user_details(
     street: str,
     phone_number: str,
     initiator_id: UserID,
-) -> UserDetailsUpdated:
+) -> UserDetailsUpdatedEvent:
     """Update the user's details."""
     detail = _get_user_detail(user_id)
     initiator = user_service.get_user(initiator_id)
@@ -311,7 +311,7 @@ def update_user_details(
     db.session.commit()
 
     user = user_service.get_user(detail.user_id)
-    return UserDetailsUpdated(
+    return UserDetailsUpdatedEvent(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,

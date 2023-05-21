@@ -22,47 +22,47 @@ class _UserEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
-class UserAccountCreated(_UserEvent):
+class UserAccountCreatedEvent(_UserEvent):
     user_screen_name: str | None
     site_id: SiteID | None
 
 
 @dataclass(frozen=True)
-class UserAccountDeleted(_UserEvent):
+class UserAccountDeletedEvent(_UserEvent):
     user_screen_name: str | None
 
 
 @dataclass(frozen=True)
-class UserAccountSuspended(_UserEvent):
+class UserAccountSuspendedEvent(_UserEvent):
     user_screen_name: str | None
 
 
 @dataclass(frozen=True)
-class UserAccountUnsuspended(_UserEvent):
+class UserAccountUnsuspendedEvent(_UserEvent):
     user_screen_name: str | None
 
 
 @dataclass(frozen=True)
-class UserDetailsUpdated(_UserEvent):
+class UserDetailsUpdatedEvent(_UserEvent):
     user_screen_name: str | None
 
 
 @dataclass(frozen=True)
-class UserEmailAddressChanged(_UserEvent):
+class UserEmailAddressChangedEvent(_UserEvent):
     user_screen_name: str | None
 
 
 @dataclass(frozen=True)
-class UserEmailAddressConfirmed(_UserEvent):
+class UserEmailAddressConfirmedEvent(_UserEvent):
     user_screen_name: str | None
 
 
 @dataclass(frozen=True)
-class UserEmailAddressInvalidated(_UserEvent):
+class UserEmailAddressInvalidatedEvent(_UserEvent):
     user_screen_name: str | None
 
 
 @dataclass(frozen=True)
-class UserScreenNameChanged(_UserEvent):
+class UserScreenNameChangedEvent(_UserEvent):
     old_screen_name: str | None
     new_screen_name: str | None

@@ -5,7 +5,7 @@
 
 from datetime import date
 
-from byceps.events.user import UserDetailsUpdated
+from byceps.events.user import UserDetailsUpdatedEvent
 from byceps.services.user import (
     user_command_service,
     user_log_service,
@@ -63,7 +63,7 @@ def test_update_user_address(site_app, make_user):
 
     # -------------------------------- #
 
-    assert isinstance(event, UserDetailsUpdated)
+    assert isinstance(event, UserDetailsUpdatedEvent)
     assert event.initiator_id == user.id
     assert event.initiator_screen_name == user.screen_name
     assert event.user_id == user.id
