@@ -26,7 +26,7 @@ from .dbmodels.site import DbSite
 from .models import Site, SiteID, SiteWithBrand
 
 
-class UnknownSiteId(Exception):
+class UnknownSiteIdError(Exception):
     pass
 
 
@@ -114,7 +114,7 @@ def _get_db_site(site_id: SiteID) -> DbSite:
     db_site = _find_db_site(site_id)
 
     if db_site is None:
-        raise UnknownSiteId(site_id)
+        raise UnknownSiteIdError(site_id)
 
     return db_site
 

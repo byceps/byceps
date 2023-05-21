@@ -294,7 +294,7 @@ def update(site_id):
             is_intranet,
             archived,
         )
-    except site_service.UnknownSiteId:
+    except site_service.UnknownSiteIdError:
         abort(404, f'Unknown site ID "{site_id}".')
 
     flash_success(
