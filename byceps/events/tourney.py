@@ -23,22 +23,22 @@ class _TourneyEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
-class TourneyStarted(_TourneyEvent):
+class TourneyStartedEvent(_TourneyEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyPaused(_TourneyEvent):
+class TourneyPausedEvent(_TourneyEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyCanceled(_TourneyEvent):
+class TourneyCanceledEvent(_TourneyEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyFinished(_TourneyEvent):
+class TourneyFinishedEvent(_TourneyEvent):
     pass
 
 
@@ -57,27 +57,27 @@ class _TourneyMatchEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
-class TourneyMatchReady(_TourneyMatchEvent):
+class TourneyMatchReadyEvent(_TourneyMatchEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyMatchReset(_TourneyMatchEvent):
+class TourneyMatchResetEvent(_TourneyMatchEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyMatchScoreSubmitted(_TourneyMatchEvent):
+class TourneyMatchScoreSubmittedEvent(_TourneyMatchEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyMatchScoreConfirmed(_TourneyMatchEvent):
+class TourneyMatchScoreConfirmedEvent(_TourneyMatchEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyMatchScoreRandomized(_TourneyMatchEvent):
+class TourneyMatchScoreRandomizedEvent(_TourneyMatchEvent):
     pass
 
 
@@ -94,20 +94,20 @@ class _TourneyParticipantEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
-class TourneyParticipantReady(_TourneyParticipantEvent):
+class TourneyParticipantReadyEvent(_TourneyParticipantEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyParticipantEliminated(_TourneyParticipantEvent):
+class TourneyParticipantEliminatedEvent(_TourneyParticipantEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyParticipantWarned(_TourneyParticipantEvent):
+class TourneyParticipantWarnedEvent(_TourneyParticipantEvent):
     pass
 
 
 @dataclass(frozen=True)
-class TourneyParticipantDisqualified(_TourneyParticipantEvent):
+class TourneyParticipantDisqualifiedEvent(_TourneyParticipantEvent):
     pass

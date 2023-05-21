@@ -7,10 +7,10 @@ import pytest
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
-    TourneyCanceled,
-    TourneyFinished,
-    TourneyPaused,
-    TourneyStarted,
+    TourneyCanceledEvent,
+    TourneyFinishedEvent,
+    TourneyPausedEvent,
+    TourneyStartedEvent,
 )
 
 from tests.integration.announce.irc.helpers import (
@@ -23,7 +23,7 @@ def test_announce_tourney_started(admin_app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde gestartet.'
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyStarted(
+    event = TourneyStartedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -38,7 +38,7 @@ def test_announce_tourney_paused(admin_app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde unterbrochen.'
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyPaused(
+    event = TourneyPausedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -53,7 +53,7 @@ def test_announce_tourney_canceled(admin_app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde abgesagt.'
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyCanceled(
+    event = TourneyCanceledEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -68,7 +68,7 @@ def test_announce_tourney_finished(admin_app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde beendet.'
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyFinished(
+    event = TourneyFinishedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,

@@ -7,10 +7,10 @@ import pytest
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
-    TourneyParticipantDisqualified,
-    TourneyParticipantEliminated,
-    TourneyParticipantReady,
-    TourneyParticipantWarned,
+    TourneyParticipantDisqualifiedEvent,
+    TourneyParticipantEliminatedEvent,
+    TourneyParticipantReadyEvent,
+    TourneyParticipantWarnedEvent,
 )
 
 from tests.integration.announce.irc.helpers import (
@@ -27,7 +27,7 @@ def test_announce_participant_ready(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyParticipantReady(
+    event = TourneyParticipantReadyEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -47,7 +47,7 @@ def test_announce_participant_eliminated(
     expected_text = '"Le Supern00bs" ist aus dem Turnier Burrito Blaster (3on3) ausgeschieden.'
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyParticipantEliminated(
+    event = TourneyParticipantEliminatedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -70,7 +70,7 @@ def test_announce_participant_warned(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyParticipantWarned(
+    event = TourneyParticipantWarnedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -93,7 +93,7 @@ def test_announce_participant_disqualified(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyParticipantDisqualified(
+    event = TourneyParticipantDisqualifiedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,

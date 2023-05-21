@@ -7,11 +7,11 @@ import pytest
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
-    TourneyMatchReady,
-    TourneyMatchReset,
-    TourneyMatchScoreConfirmed,
-    TourneyMatchScoreRandomized,
-    TourneyMatchScoreSubmitted,
+    TourneyMatchReadyEvent,
+    TourneyMatchResetEvent,
+    TourneyMatchScoreConfirmedEvent,
+    TourneyMatchScoreRandomizedEvent,
+    TourneyMatchScoreSubmittedEvent,
 )
 
 from tests.integration.announce.irc.helpers import (
@@ -28,7 +28,7 @@ def test_announce_match_ready(admin_app, tourney, match, webhook_for_irc):
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyMatchReady(
+    event = TourneyMatchReadyEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -52,7 +52,7 @@ def test_announce_match_reset(admin_app, tourney, match, webhook_for_irc):
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyMatchReset(
+    event = TourneyMatchResetEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -78,7 +78,7 @@ def test_announce_match_score_submitted(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyMatchScoreSubmitted(
+    event = TourneyMatchScoreSubmittedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -104,7 +104,7 @@ def test_announce_match_score_confirmed(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyMatchScoreConfirmed(
+    event = TourneyMatchScoreConfirmedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
@@ -130,7 +130,7 @@ def test_announce_match_score_randomized(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = TourneyMatchScoreRandomized(
+    event = TourneyMatchScoreRandomizedEvent(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
