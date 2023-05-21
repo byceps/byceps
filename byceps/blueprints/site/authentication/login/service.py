@@ -31,7 +31,7 @@ log = structlog.get_logger()
 
 
 @dataclass(frozen=True)
-class ConsentRequired:
+class ConsentRequiredError:
     verification_token: str
 
 
@@ -44,7 +44,7 @@ def log_in_user(
     ip_address: str | None = None,
     site_id: SiteID | None = None,
 ) -> Result[
-    tuple[User, UserLoggedIn], AuthenticationFailedError | ConsentRequired
+    tuple[User, UserLoggedIn], AuthenticationFailedError | ConsentRequiredError
 ]:
     authn_result = authn_service.authenticate(username, password)
     if authn_result.is_err():
@@ -64,7 +64,7 @@ def log_in_user(
         verification_token = verification_token_service.create_for_consent(
             user.id
         )
-        return Err(ConsentRequired(verification_token.token))
+        return Err(ConsentRequiredError(verification_token.token))
 
     auth_token, logged_in_event = authn_session_service.log_in_user(
         user.id, ip_address=ip_address, site_id=site_id

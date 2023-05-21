@@ -17,7 +17,7 @@ from byceps.util.views import redirect_to, respond_no_content
 
 from . import service
 from .forms import LogInForm
-from .service import ConsentRequired
+from .service import ConsentRequiredError
 
 
 blueprint = create_blueprint('authentication_login', __name__)
@@ -77,7 +77,7 @@ def log_in():
     )
     if log_in_result.is_err():
         err = log_in_result.unwrap_err()
-        if isinstance(err, ConsentRequired):
+        if isinstance(err, ConsentRequiredError):
             consent_form_url = url_for(
                 'consent.consent_form', token=err.verification_token
             )
