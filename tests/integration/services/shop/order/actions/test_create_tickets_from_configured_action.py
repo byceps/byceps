@@ -19,7 +19,7 @@ from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.ticketing.ticket_creation_service import (
-    TicketCreationFailed,
+    TicketCreationFailedError,
 )
 from byceps.services.user.models.user import User
 
@@ -110,7 +110,7 @@ def test_create_tickets_with_same_code_fails(
 ) -> None:
     generate_ticket_code_mock.side_effect = lambda: 'EQUAL'  # noqa: E731
 
-    with pytest.raises(TicketCreationFailed):
+    with pytest.raises(TicketCreationFailedError):
         mark_order_as_paid(order.id, admin_user.id)
 
 

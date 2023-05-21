@@ -34,7 +34,7 @@ def test_create_ticket_with_existing_code(
     assert existing_ticket.code == 'TAKEN'
 
     with pytest.raises(
-        ticket_creation_service.TicketCreationFailedWithConflict
+        ticket_creation_service.TicketCreationFailedWithConflictError
     ):
         ticket_creation_service.create_ticket(
             category.party_id, category.id, ticket_owner.id
@@ -59,7 +59,9 @@ def test_create_tickets_with_clashing_generated_codes(
 
     quantity = 3
 
-    with pytest.raises(ticket_creation_service.TicketCreationFailed) as excinfo:
+    with pytest.raises(
+        ticket_creation_service.TicketCreationFailedError
+    ) as excinfo:
         ticket_creation_service.create_tickets(
             category.party_id, category.id, ticket_owner.id, quantity
         )

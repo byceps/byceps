@@ -23,11 +23,11 @@ from .dbmodels.ticket_bundle import DbTicketBundle
 from .models.ticket import TicketCategoryID
 
 
-class TicketCreationFailed(Exception):
+class TicketCreationFailedError(Exception):
     """Ticket creation failed for some reason."""
 
 
-class TicketCreationFailedWithConflict(TicketCreationFailed):
+class TicketCreationFailedWithConflictError(TicketCreationFailedError):
     """Ticket creation failed because of a conflict with an existing,
     persisted ticket.
     """
@@ -58,7 +58,7 @@ def create_ticket(
 
 @retry(
     reraise=True,
-    retry=retry_if_exception_type(TicketCreationFailed),
+    retry=retry_if_exception_type(TicketCreationFailedError),
     stop=stop_after_attempt(5),
 )
 def create_tickets(
@@ -88,7 +88,7 @@ def create_tickets(
         db.session.commit()
     except IntegrityError as exc:
         db.session.rollback()
-        raise TicketCreationFailedWithConflict(exc) from exc
+        raise TicketCreationFailedWithConflictError(exc) from exc
 
     return db_tickets
 
@@ -109,7 +109,7 @@ def build_tickets(
     try:
         codes = ticket_code_service.generate_ticket_codes(quantity)
     except ticket_code_service.TicketCodeGenerationFailed as exc:
-        raise TicketCreationFailed(exc) from exc
+        raise TicketCreationFailedError(exc) from exc
 
     for code in codes:
         yield DbTicket(

@@ -22,13 +22,13 @@ from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
 from .models.ticket import TicketBundleID, TicketCategoryID
-from .ticket_creation_service import build_tickets, TicketCreationFailed
+from .ticket_creation_service import build_tickets, TicketCreationFailedError
 from .ticket_revocation_service import build_ticket_revoked_log_entry
 
 
 @retry(
     reraise=True,
-    retry=retry_if_exception_type(TicketCreationFailed),
+    retry=retry_if_exception_type(TicketCreationFailedError),
     stop=stop_after_attempt(5),
 )
 def create_bundle(
