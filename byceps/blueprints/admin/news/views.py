@@ -303,7 +303,7 @@ def image_create(item_id):
             abort(400, creation_result.unwrap_err())
 
         image = creation_result.unwrap()
-    except user_service.UserIdRejected:
+    except user_service.UserIdRejectedError:
         abort(400, 'Invalid creator ID')
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')

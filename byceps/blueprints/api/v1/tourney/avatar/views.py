@@ -71,7 +71,7 @@ def _create(party_id, creator_id, image):
             abort(400, creation_result.unwrap_err())
 
         return creation_result.unwrap()
-    except user_service.UserIdRejected:
+    except user_service.UserIdRejectedError:
         abort(400, 'Invalid creator ID')
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')

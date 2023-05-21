@@ -52,7 +52,7 @@ def create_image(
     """Create an image for a news item."""
     creator = user_service.find_active_user(creator_id)
     if creator is None:
-        raise user_service.UserIdRejected(creator_id)
+        raise user_service.UserIdRejectedError(creator_id)
 
     item = news_item_service.find_item(item_id)
     if item is None:

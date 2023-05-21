@@ -35,7 +35,7 @@ def create_avatar_image(
     """Create a new avatar image."""
     creator = user_service.find_active_user(creator_id)
     if creator is None:
-        raise user_service.UserIdRejected(creator_id)
+        raise user_service.UserIdRejectedError(creator_id)
 
     image_type_result = image_service.determine_image_type(
         stream, allowed_types

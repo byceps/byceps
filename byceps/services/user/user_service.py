@@ -29,7 +29,7 @@ from .models.user import (
 )
 
 
-class UserIdRejected(Exception):
+class UserIdRejectedError(Exception):
     """Indicate that the given user ID is not accepted.
 
     Reasons can include the user ID being
