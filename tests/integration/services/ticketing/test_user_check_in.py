@@ -33,6 +33,7 @@ def ticket(admin_app, category, ticket_owner):
 
 def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
     ticket_user = make_user()
+    initiator = ticketing_admin
 
     ticket_before = ticket
 
@@ -50,7 +51,7 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
 
     ticket_id = ticket_before.id
 
-    event = check_in_user(party.id, ticket_id, ticketing_admin.id)
+    event = check_in_user(party.id, ticket_id, initiator.id)
 
     # -------------------------------- #
 
@@ -59,8 +60,8 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
 
     assert event.__class__ is TicketCheckedIn
     assert event.occurred_at is not None
-    assert event.initiator_id == ticketing_admin.id
-    assert event.initiator_screen_name == ticketing_admin.screen_name
+    assert event.initiator_id == initiator.id
+    assert event.initiator_screen_name == initiator.screen_name
     assert event.ticket_id == ticket.id
     assert event.ticket_code == ticket.code
     assert event.occupied_seat_id is None
@@ -76,7 +77,7 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
     assert ticket_checked_in_log_entry.event_type == 'user-checked-in'
     assert ticket_checked_in_log_entry.data == {
         'checked_in_user_id': str(ticket_user.id),
-        'initiator_id': str(ticketing_admin.id),
+        'initiator_id': str(initiator.id),
     }
 
 
