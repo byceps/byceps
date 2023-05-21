@@ -17,7 +17,7 @@ from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
-class UserBadgeAwarded(_BaseEvent):
+class UserBadgeAwardedEvent(_BaseEvent):
     user_id: UserID
     user_screen_name: str | None
     badge_id: BadgeID

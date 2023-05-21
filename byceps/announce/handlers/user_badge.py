@@ -17,13 +17,13 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.user_badge import UserBadgeAwarded
+from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
 @with_locale
 def announce_user_badge_awarded(
-    event: UserBadgeAwarded, webhook: OutgoingWebhook
+    event: UserBadgeAwardedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a badge has been awarded to a user."""
     initiator_screen_name = get_screen_name_or_fallback(

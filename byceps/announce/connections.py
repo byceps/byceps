@@ -71,7 +71,7 @@ from byceps.events.user import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.events.user_badge import UserBadgeAwarded
+from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import OutgoingWebhook
 from byceps.signals import (
     auth as auth_signals,
@@ -152,7 +152,7 @@ EVENT_TYPES_TO_HANDLERS = {
     UserAccountDeletedEvent: user_handlers.announce_user_account_deleted,
     UserAccountSuspendedEvent: user_handlers.announce_user_account_suspended,
     UserAccountUnsuspendedEvent: user_handlers.announce_user_account_unsuspended,
-    UserBadgeAwarded: user_badge_handlers.announce_user_badge_awarded,
+    UserBadgeAwardedEvent: user_badge_handlers.announce_user_badge_awarded,
     UserDetailsUpdatedEvent: user_handlers.announce_user_details_updated,
     UserEmailAddressChangedEvent: user_handlers.announce_user_email_address_changed,
     UserEmailAddressInvalidatedEvent: user_handlers.announce_user_email_address_invalidated,

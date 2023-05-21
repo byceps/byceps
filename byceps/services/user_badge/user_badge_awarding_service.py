@@ -14,7 +14,7 @@ from datetime import datetime
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.events.user_badge import UserBadgeAwarded
+from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.user import user_log_service, user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
@@ -32,7 +32,7 @@ from .user_badge_service import _db_entity_to_badge, get_badge, get_badges
 
 def award_badge_to_user(
     badge_id: BadgeID, user_id: UserID, *, initiator_id: UserID | None = None
-) -> tuple[BadgeAwarding, UserBadgeAwarded]:
+) -> tuple[BadgeAwarding, UserBadgeAwardedEvent]:
     """Award the badge to the user."""
     badge = get_badge(badge_id)
     user = user_service.get_user(user_id)
@@ -62,7 +62,7 @@ def award_badge_to_user(
 
     awarding_dto = _db_entity_to_badge_awarding(awarding)
 
-    event = UserBadgeAwarded(
+    event = UserBadgeAwardedEvent(
         occurred_at=awarded_at,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,

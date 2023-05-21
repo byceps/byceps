@@ -66,7 +66,7 @@ from byceps.events.user import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.events.user_badge import UserBadgeAwarded
+from byceps.events.user_badge import UserBadgeAwardedEvent
 
 
 EVENT_TYPES_TO_NAMES = {
@@ -112,7 +112,7 @@ EVENT_TYPES_TO_NAMES = {
     UserAccountDeletedEvent: 'user-account-deleted',
     UserAccountSuspendedEvent: 'user-account-suspended',
     UserAccountUnsuspendedEvent: 'user-account-unsuspended',
-    UserBadgeAwarded: 'user-badge-awarded',
+    UserBadgeAwardedEvent: 'user-badge-awarded',
     UserDetailsUpdatedEvent: 'user-details-updated',
     UserEmailAddressChangedEvent: 'user-email-address-changed',
     UserEmailAddressInvalidatedEvent: 'user-email-address-invalidated',

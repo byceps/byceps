@@ -7,7 +7,7 @@ import pytest
 from sqlalchemy import delete
 
 from byceps.database import db
-from byceps.events.user_badge import UserBadgeAwarded
+from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.user import user_log_service
 from byceps.services.user_badge import (
     user_badge_awarding_service,
@@ -74,7 +74,7 @@ def test_award_badge_without_initiator(
         badge.id, user.id
     )
 
-    assert event.__class__ is UserBadgeAwarded
+    assert event.__class__ is UserBadgeAwardedEvent
     assert event.initiator_id is None
     assert event.initiator_screen_name is None
     assert event.user_id == user.id
@@ -104,7 +104,7 @@ def test_award_badge_with_initiator(
         badge.id, user.id, initiator_id=admin_user.id
     )
 
-    assert event.__class__ is UserBadgeAwarded
+    assert event.__class__ is UserBadgeAwardedEvent
     assert event.initiator_id == admin_user.id
     assert event.initiator_screen_name == admin_user.screen_name
     assert event.user_id == user.id
