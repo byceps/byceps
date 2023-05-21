@@ -67,7 +67,9 @@ def test_create_tickets_with_clashing_generated_codes(
         )
 
     wrapped_exc = excinfo.value.args[0]
-    assert type(wrapped_exc) is ticket_code_service.TicketCodeGenerationFailed
+    assert (
+        type(wrapped_exc) is ticket_code_service.TicketCodeGenerationFailedError
+    )
 
 
 def assert_created_ticket(ticket, expected_category_id, expected_owner_id):

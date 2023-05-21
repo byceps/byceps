@@ -35,7 +35,7 @@ def _generate_ticket_code_not_in(
         if code not in codes:
             return code
 
-    raise TicketCodeGenerationFailed(
+    raise TicketCodeGenerationFailedError(
         f'Could not generate unique ticket code after {max_attempts} attempts.'
     )
 
@@ -62,13 +62,13 @@ def _verify_total_matches(
     """
     actual_quantity = len(codes)
     if actual_quantity != requested_quantity:
-        raise TicketCodeGenerationFailed(
+        raise TicketCodeGenerationFailedError(
             f'Number of generated ticket codes ({actual_quantity}) '
             f'does not match requested amount ({requested_quantity}).'
         )
 
 
-class TicketCodeGenerationFailed(Exception):
+class TicketCodeGenerationFailedError(Exception):
     """Generating one or more unique ticket codes has failed."""
 
 

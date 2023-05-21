@@ -108,7 +108,7 @@ def build_tickets(
 
     try:
         codes = ticket_code_service.generate_ticket_codes(quantity)
-    except ticket_code_service.TicketCodeGenerationFailed as exc:
+    except ticket_code_service.TicketCodeGenerationFailedError as exc:
         raise TicketCreationFailedError(exc) from exc
 
     for code in codes:
