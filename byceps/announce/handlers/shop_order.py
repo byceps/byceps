@@ -17,14 +17,18 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
+from byceps.events.shop import (
+    ShopOrderCanceledEvent,
+    ShopOrderPaidEvent,
+    ShopOrderPlacedEvent,
+)
 from byceps.services.shop.order import order_service
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
 @with_locale
 def announce_order_placed(
-    event: ShopOrderPlaced, webhook: OutgoingWebhook
+    event: ShopOrderPlacedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that an order has been placed."""
     orderer_screen_name = get_screen_name_or_fallback(event.orderer_screen_name)
@@ -40,7 +44,7 @@ def announce_order_placed(
 
 @with_locale
 def announce_order_paid(
-    event: ShopOrderPaid, webhook: OutgoingWebhook
+    event: ShopOrderPaidEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that an order has been paid."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -64,7 +68,7 @@ def announce_order_paid(
 
 @with_locale
 def announce_order_canceled(
-    event: ShopOrderCanceled, webhook: OutgoingWebhook
+    event: ShopOrderCanceledEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that an order has been canceled."""
     initiator_screen_name = get_screen_name_or_fallback(

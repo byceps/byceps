@@ -5,7 +5,7 @@
 
 from moneyed import EUR
 
-from byceps.events.shop import ShopOrderPaid
+from byceps.events.shop import ShopOrderPaidEvent
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
@@ -36,7 +36,9 @@ def place_order(
     return order
 
 
-def mark_order_as_paid(order_id: OrderID, admin_id: UserID) -> ShopOrderPaid:
+def mark_order_as_paid(
+    order_id: OrderID, admin_id: UserID
+) -> ShopOrderPaidEvent:
     return order_service.mark_order_as_paid(
         order_id, 'bank_transfer', admin_id
     ).unwrap()

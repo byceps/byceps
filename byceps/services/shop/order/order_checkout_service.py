@@ -16,7 +16,7 @@ from sqlalchemy.exc import IntegrityError
 import structlog
 
 from byceps.database import db
-from byceps.events.shop import ShopOrderPlaced
+from byceps.events.shop import ShopOrderPlacedEvent
 from byceps.services.shop.article import article_service
 from byceps.services.shop.cart.models import Cart, CartItem
 from byceps.services.shop.shop import shop_service
@@ -49,7 +49,7 @@ def place_order(
     cart: Cart,
     *,
     created_at: datetime | None = None,
-) -> Result[tuple[Order, ShopOrderPlaced], None]:
+) -> Result[tuple[Order, ShopOrderPlacedEvent], None]:
     """Place an order for one or more articles."""
     storefront = storefront_service.get_storefront(storefront_id)
     shop = shop_service.get_shop(storefront.shop_id)
@@ -105,7 +105,7 @@ def place_order(
         'order-placed', order.id, log_entry_data, occurred_at=occurred_at
     )
 
-    event = ShopOrderPlaced(
+    event = ShopOrderPlacedEvent(
         occurred_at=occurred_at,
         initiator_id=orderer_user.id,
         initiator_screen_name=orderer_user.screen_name,

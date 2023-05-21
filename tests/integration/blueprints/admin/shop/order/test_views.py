@@ -13,7 +13,7 @@ from moneyed import EUR
 import pytest
 
 from byceps.database import db
-from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
+from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import (
     Article,
@@ -142,7 +142,7 @@ def test_cancel_before_paid(
         placed_order.id
     )
 
-    event = ShopOrderCanceled(
+    event = ShopOrderCanceledEvent(
         occurred_at=order_afterwards.payment_state_updated_at,
         initiator_id=shop_order_admin.id,
         initiator_screen_name=shop_order_admin.screen_name,
@@ -186,7 +186,7 @@ def test_cancel_before_paid_without_sending_email(
     # No e-mail should be send.
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_not_called()
 
-    event = ShopOrderCanceled(
+    event = ShopOrderCanceledEvent(
         occurred_at=order_afterwards.payment_state_updated_at,
         initiator_id=shop_order_admin.id,
         initiator_screen_name=shop_order_admin.screen_name,
@@ -231,7 +231,7 @@ def test_mark_order_as_paid(
         placed_order.id
     )
 
-    event = ShopOrderPaid(
+    event = ShopOrderPaidEvent(
         occurred_at=order_afterwards.payment_state_updated_at,
         initiator_id=shop_order_admin.id,
         initiator_screen_name=shop_order_admin.screen_name,
@@ -296,7 +296,7 @@ def test_cancel_after_paid(
         placed_order.id
     )
 
-    event = ShopOrderCanceled(
+    event = ShopOrderCanceledEvent(
         occurred_at=order_afterwards.payment_state_updated_at,
         initiator_id=shop_order_admin.id,
         initiator_screen_name=shop_order_admin.screen_name,

@@ -19,7 +19,7 @@ from sqlalchemy import delete, select
 import structlog
 
 from byceps.database import db, paginate, Pagination
-from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
+from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import ArticleType
 from byceps.services.shop.shop.dbmodels import DbShop
@@ -135,7 +135,7 @@ class OrderAlreadyMarkedAsPaidError:
 
 def cancel_order(
     order_id: OrderID, initiator_id: UserID, reason: str
-) -> Result[ShopOrderCanceled, OrderAlreadyCanceledError]:
+) -> Result[ShopOrderCanceledEvent, OrderAlreadyCanceledError]:
     """Cancel the order.
 
     Reserved quantities of articles from that order are made available
@@ -191,7 +191,7 @@ def cancel_order(
     if payment_state_to == PaymentState.canceled_after_paid:
         _execute_article_revocation_actions(order, initiator.id)
 
-    event = ShopOrderCanceled(
+    event = ShopOrderCanceledEvent(
         occurred_at=updated_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
@@ -212,7 +212,7 @@ def mark_order_as_paid(
     initiator_id: UserID,
     *,
     additional_payment_data: AdditionalPaymentData | None = None,
-) -> Result[ShopOrderPaid, OrderAlreadyMarkedAsPaidError]:
+) -> Result[ShopOrderPaidEvent, OrderAlreadyMarkedAsPaidError]:
     """Mark the order as paid."""
     db_order = _get_order_entity(order_id)
 
@@ -263,7 +263,7 @@ def mark_order_as_paid(
 
     _execute_article_creation_actions(order, initiator.id)
 
-    event = ShopOrderPaid(
+    event = ShopOrderPaidEvent(
         occurred_at=updated_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,

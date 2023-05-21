@@ -12,7 +12,7 @@ from flask import Flask
 from moneyed import Money
 import pytest
 
-from byceps.events.shop import ShopOrderPlaced
+from byceps.events.shop import ShopOrderPlacedEvent
 from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import (
     Article,
@@ -135,7 +135,7 @@ def test_order(
         order.id
     )
 
-    event = ShopOrderPlaced(
+    event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
         initiator_id=orderer_user.id,
         initiator_screen_name=orderer_user.screen_name,
@@ -199,7 +199,7 @@ def test_order_single(
         order.id
     )
 
-    event = ShopOrderPlaced(
+    event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
         initiator_id=orderer_user.id,
         initiator_screen_name=orderer_user.screen_name,

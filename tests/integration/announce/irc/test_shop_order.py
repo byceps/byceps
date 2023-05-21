@@ -7,7 +7,11 @@ from moneyed import EUR
 import pytest
 
 from byceps.announce.connections import build_announcement_request
-from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
+from byceps.events.shop import (
+    ShopOrderCanceledEvent,
+    ShopOrderPaidEvent,
+    ShopOrderPlacedEvent,
+)
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.storefront.models import Storefront
@@ -22,7 +26,7 @@ def test_shop_order_placed_announced(
     expected = build_announcement_request_for_irc(expected_text)
 
     order = placed_order
-    event = ShopOrderPlaced(
+    event = ShopOrderPlacedEvent(
         occurred_at=now(),
         initiator_id=orderer_user.id,
         initiator_screen_name=orderer_user.screen_name,
@@ -45,7 +49,7 @@ def test_shop_order_canceled_announced(
     expected = build_announcement_request_for_irc(expected_text)
 
     order = canceled_order
-    event = ShopOrderCanceled(
+    event = ShopOrderCanceledEvent(
         occurred_at=now(),
         initiator_id=shop_admin.id,
         initiator_screen_name=shop_admin.screen_name,
@@ -68,7 +72,7 @@ def test_shop_order_paid_announced(
     expected = build_announcement_request_for_irc(expected_text)
 
     order = paid_order
-    event = ShopOrderPaid(
+    event = ShopOrderPaidEvent(
         occurred_at=now(),
         initiator_id=shop_admin.id,
         initiator_screen_name=shop_admin.screen_name,

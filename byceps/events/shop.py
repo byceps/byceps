@@ -26,15 +26,15 @@ class _ShopOrderEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
-class ShopOrderPlaced(_ShopOrderEvent):
+class ShopOrderPlacedEvent(_ShopOrderEvent):
     pass
 
 
 @dataclass(frozen=True)
-class ShopOrderCanceled(_ShopOrderEvent):
+class ShopOrderCanceledEvent(_ShopOrderEvent):
     pass
 
 
 @dataclass(frozen=True)
-class ShopOrderPaid(_ShopOrderEvent):
+class ShopOrderPaidEvent(_ShopOrderEvent):
     payment_method: str
