@@ -14,11 +14,11 @@ from byceps.services.ticketing import (
     ticket_user_checkin_service,
 )
 from byceps.services.ticketing.exceptions import (
-    TicketBelongsToDifferentParty,
-    TicketIsRevoked,
-    TicketLacksUser,
-    UserAccountSuspended,
-    UserAlreadyCheckedIn,
+    TicketBelongsToDifferentPartyError,
+    TicketIsRevokedError,
+    TicketLacksUserError,
+    UserAccountSuspendedError,
+    UserAlreadyCheckedInError,
 )
 
 
@@ -89,14 +89,14 @@ def test_check_in_user_with_ticket_for_another_party(
 ):
     other_party = make_party(brand.id)
 
-    with pytest.raises(TicketBelongsToDifferentParty):
+    with pytest.raises(TicketBelongsToDifferentPartyError):
         check_in_user(other_party.id, ticket.id, ticketing_admin.id)
 
 
 def test_check_in_user_with_ticket_without_assigned_user(
     admin_app, party, ticket, ticketing_admin
 ):
-    with pytest.raises(TicketLacksUser):
+    with pytest.raises(TicketLacksUserError):
         check_in_user(party.id, ticket.id, ticketing_admin.id)
 
 
@@ -109,7 +109,7 @@ def test_check_in_user_with_revoked_ticket(
     ticket.used_by_id = ticket_user.id
     db.session.commit()
 
-    with pytest.raises(TicketIsRevoked):
+    with pytest.raises(TicketIsRevokedError):
         check_in_user(party.id, ticket.id, ticketing_admin.id)
 
 
@@ -122,7 +122,7 @@ def test_check_in_user_with_ticket_user_already_checked_in(
     ticket.user_checked_in = True
     db.session.commit()
 
-    with pytest.raises(UserAlreadyCheckedIn):
+    with pytest.raises(UserAlreadyCheckedInError):
         check_in_user(party.id, ticket.id, ticketing_admin.id)
 
 
@@ -134,7 +134,7 @@ def test_check_in_suspended_user(
     ticket.used_by_id = ticket_user.id
     db.session.commit()
 
-    with pytest.raises(UserAccountSuspended):
+    with pytest.raises(UserAccountSuspendedError):
         check_in_user(party.id, ticket.id, ticketing_admin.id)
 
 

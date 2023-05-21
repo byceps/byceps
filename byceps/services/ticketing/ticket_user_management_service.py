@@ -12,10 +12,10 @@ from byceps.typing import UserID
 
 from . import ticket_log_service, ticket_service
 from .exceptions import (
-    TicketIsRevoked,
-    UserAccountSuspended,
-    UserAlreadyCheckedIn,
-    UserIdUnknown,
+    TicketIsRevokedError,
+    UserAccountSuspendedError,
+    UserAlreadyCheckedInError,
+    UserIdUnknownError,
 )
 from .models.ticket import TicketID
 
@@ -27,7 +27,7 @@ def appoint_user_manager(
     db_ticket = ticket_service.get_ticket(ticket_id)
 
     if db_ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+        raise TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
 
     db_ticket.user_managed_by_id = manager_id
 
@@ -49,7 +49,7 @@ def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     db_ticket = ticket_service.get_ticket(ticket_id)
 
     if db_ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+        raise TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
 
     db_ticket.user_managed_by_id = None
 
@@ -72,17 +72,19 @@ def appoint_user(
     db_ticket = ticket_service.get_ticket(ticket_id)
 
     if db_ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+        raise TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
 
     if db_ticket.user_checked_in:
-        raise UserAlreadyCheckedIn('Ticket user has already been checked in.')
+        raise UserAlreadyCheckedInError(
+            'Ticket user has already been checked in.'
+        )
 
     user = user_service.find_user(user_id)
     if user is None:
-        raise UserIdUnknown(f"Unknown user ID '{user_id}'")
+        raise UserIdUnknownError(f"Unknown user ID '{user_id}'")
 
     if user.suspended:
-        raise UserAccountSuspended(
+        raise UserAccountSuspendedError(
             f'User account {user.screen_name} is suspended.'
         )
 
@@ -106,10 +108,12 @@ def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     db_ticket = ticket_service.get_ticket(ticket_id)
 
     if db_ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+        raise TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
 
     if db_ticket.user_checked_in:
-        raise UserAlreadyCheckedIn('Ticket user has already been checked in.')
+        raise UserAlreadyCheckedInError(
+            'Ticket user has already been checked in.'
+        )
 
     db_ticket.used_by_id = None
 

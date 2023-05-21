@@ -16,10 +16,10 @@ from byceps.typing import UserID
 from . import ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
 from .exceptions import (
-    SeatChangeDeniedForBundledTicket,
-    SeatChangeDeniedForGroupSeat,
-    TicketCategoryMismatch,
-    TicketIsRevoked,
+    SeatChangeDeniedForBundledTicketError,
+    SeatChangeDeniedForGroupSeatError,
+    TicketCategoryMismatchError,
+    TicketIsRevokedError,
 )
 from .models.ticket import TicketID
 
@@ -74,7 +74,7 @@ def occupy_seat(
     seat = seat_service.get_seat(seat_id)
 
     if seat.category_id != db_ticket.category_id:
-        raise TicketCategoryMismatch(
+        raise TicketCategoryMismatchError(
             'Ticket and seat belong to different categories.'
         )
 
@@ -135,7 +135,7 @@ def _get_ticket(ticket_id: TicketID) -> DbTicket:
     db_ticket = ticket_service.get_ticket(ticket_id)
 
     if db_ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+        raise TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
 
     return db_ticket
 
@@ -149,7 +149,7 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(
     appropriate mechanism, not to separately occupy single seats.
     """
     if db_ticket.belongs_to_bundle:
-        raise SeatChangeDeniedForBundledTicket(
+        raise SeatChangeDeniedForBundledTicketError(
             f"Ticket '{db_ticket.code}' belongs to a bundle and, thus, "
             'must not be used to occupy or release a single seat.'
         )
@@ -157,7 +157,7 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(
 
 def _deny_seat_management_if_seat_belongs_to_group(seat: Seat) -> None:
     if seat_group_service.is_seat_part_of_a_group(seat.id):
-        raise SeatChangeDeniedForGroupSeat(
+        raise SeatChangeDeniedForGroupSeatError(
             f"Seat '{seat.label}' belongs to a group and, thus, "
             'cannot be occupied by a single ticket, or removed separately.'
         )

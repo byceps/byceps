@@ -243,7 +243,7 @@ def occupy_seat(ticket_id, seat_id):
         ticket_seat_management_service.occupy_seat(
             ticket.id, seat.id, manager.id
         )
-    except ticket_exceptions.SeatChangeDeniedForBundledTicket:
+    except ticket_exceptions.SeatChangeDeniedForBundledTicketError:
         flash_error(
             gettext(
                 'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
@@ -251,7 +251,7 @@ def occupy_seat(ticket_id, seat_id):
             )
         )
         return
-    except ticket_exceptions.TicketCategoryMismatch:
+    except ticket_exceptions.TicketCategoryMismatchError:
         flash_error(
             gettext(
                 'Ticket %(ticket_code)s and seat "%(seat_label)s" belong to different categories.',
@@ -312,7 +312,7 @@ def release_seat(ticket_id):
 
     try:
         ticket_seat_management_service.release_seat(ticket.id, manager.id)
-    except ticket_exceptions.SeatChangeDeniedForBundledTicket:
+    except ticket_exceptions.SeatChangeDeniedForBundledTicketError:
         flash_error(
             gettext(
                 'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',

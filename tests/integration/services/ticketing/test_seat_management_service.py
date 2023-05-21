@@ -18,8 +18,8 @@ from byceps.services.ticketing import (
     ticket_service,
 )
 from byceps.services.ticketing.exceptions import (
-    SeatChangeDeniedForBundledTicket,
-    TicketCategoryMismatch,
+    SeatChangeDeniedForBundledTicketError,
+    TicketCategoryMismatchError,
 )
 
 
@@ -192,7 +192,7 @@ def test_occupy_seat_with_bundled_ticket(
 ):
     bundled_ticket = ticket_bundle.tickets[0]
 
-    with pytest.raises(SeatChangeDeniedForBundledTicket):
+    with pytest.raises(SeatChangeDeniedForBundledTicketError):
         ticket_seat_management_service.occupy_seat(
             bundled_ticket.id, seat1.id, ticket.owned_by_id
         )
@@ -203,7 +203,7 @@ def test_occupy_seat_with_wrong_category(
 ):
     assert ticket.category_id != another_category.id
 
-    with pytest.raises(TicketCategoryMismatch):
+    with pytest.raises(TicketCategoryMismatchError):
         ticket_seat_management_service.occupy_seat(
             ticket.id, seat_of_another_category.id, ticket.owned_by_id
         )

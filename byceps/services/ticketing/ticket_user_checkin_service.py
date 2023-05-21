@@ -22,13 +22,13 @@ from byceps.typing import PartyID, UserID
 from . import ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
 from .exceptions import (
-    TicketBelongsToDifferentParty,
-    TicketIsRevoked,
-    TicketLacksUser,
-    UserAccountDeleted,
-    UserAccountSuspended,
-    UserAlreadyCheckedIn,
-    UserIdUnknown,
+    TicketBelongsToDifferentPartyError,
+    TicketIsRevokedError,
+    TicketLacksUserError,
+    UserAccountDeletedError,
+    UserAccountSuspendedError,
+    UserAlreadyCheckedInError,
+    UserIdUnknownError,
 )
 from .models.ticket import TicketCheckIn, TicketID
 
@@ -78,18 +78,18 @@ def _get_ticket_for_checkin(party_id: PartyID, ticket_id: TicketID) -> DbTicket:
     db_ticket = ticket_service.get_ticket(ticket_id)
 
     if db_ticket.party_id != party_id:
-        raise TicketBelongsToDifferentParty(
+        raise TicketBelongsToDifferentPartyError(
             f'Ticket {ticket_id} belongs to another party ({db_ticket.party_id}).'
         )
 
     if db_ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+        raise TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
 
     if db_ticket.used_by_id is None:
-        raise TicketLacksUser(f'Ticket {ticket_id} has no user assigned.')
+        raise TicketLacksUserError(f'Ticket {ticket_id} has no user assigned.')
 
     if db_ticket.user_checked_in:
-        raise UserAlreadyCheckedIn(
+        raise UserAlreadyCheckedInError(
             f'Ticket {ticket_id} has already been used to check in a user.'
         )
 
@@ -100,15 +100,15 @@ def _get_user_for_checkin(user_id: UserID) -> User:
     user = user_service.find_user(user_id)
 
     if user is None:
-        raise UserIdUnknown(f"Unknown user ID '{user_id}'")
+        raise UserIdUnknownError(f"Unknown user ID '{user_id}'")
 
     if user.deleted:
-        raise UserAccountDeleted(
+        raise UserAccountDeletedError(
             f'User account {user.screen_name} has been deleted.'
         )
 
     if user.suspended:
-        raise UserAccountSuspended(
+        raise UserAccountSuspendedError(
             f'User account {user.screen_name} is suspended.'
         )
 

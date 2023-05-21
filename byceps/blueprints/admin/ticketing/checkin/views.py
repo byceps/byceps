@@ -150,14 +150,14 @@ def check_in_user(party_id, ticket_id):
         event = ticket_user_checkin_service.check_in_user(
             party.id, ticket.id, initiator_id
         )
-    except ticket_exceptions.UserAccountDeleted:
+    except ticket_exceptions.UserAccountDeletedError:
         flash_error(
             gettext(
                 'The user account assigned to this ticket has been deleted. Check-in denied.'
             )
         )
         return
-    except ticket_exceptions.UserAccountSuspended:
+    except ticket_exceptions.UserAccountSuspendedError:
         flash_error(
             gettext(
                 'The user account assigned to this ticket has been suspended. Check-in denied.'
