@@ -24,7 +24,7 @@ from .dbmodels.setting import DbSetting
 from .models import Party, PartyWithBrand
 
 
-class UnknownPartyId(Exception):
+class UnknownPartyIdError(Exception):
     pass
 
 
@@ -72,7 +72,7 @@ def update_party(
     db_party = db.session.get(DbParty, party_id)
 
     if db_party is None:
-        raise UnknownPartyId(party_id)
+        raise UnknownPartyIdError(party_id)
 
     db_party.title = title
     db_party.starts_at = starts_at
@@ -122,7 +122,7 @@ def get_party(party_id: PartyID) -> Party:
     party = find_party(party_id)
 
     if party is None:
-        raise UnknownPartyId(party_id)
+        raise UnknownPartyIdError(party_id)
 
     return party
 

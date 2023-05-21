@@ -230,7 +230,7 @@ def update(party_id):
             canceled,
             archived,
         )
-    except party_service.UnknownPartyId:
+    except party_service.UnknownPartyIdError:
         abort(404, f'Unknown party ID "{party_id}".')
 
     flash_success(
