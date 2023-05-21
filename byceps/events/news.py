@@ -17,7 +17,7 @@ from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
-class NewsItemPublished(_BaseEvent):
+class NewsItemPublishedEvent(_BaseEvent):
     item_id: NewsItemID
     channel_id: NewsChannelID
     published_at: datetime

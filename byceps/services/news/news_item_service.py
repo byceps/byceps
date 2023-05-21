@@ -17,7 +17,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
 
 from byceps.database import db, paginate, Pagination
-from byceps.events.news import NewsItemPublished
+from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
@@ -144,7 +144,7 @@ def publish_item(
     *,
     publish_at: datetime | None = None,
     initiator_id: UserID | None = None,
-) -> NewsItemPublished:
+) -> NewsItemPublishedEvent:
     """Publish a news item."""
     db_item = _get_db_item(item_id)
 
@@ -172,7 +172,7 @@ def publish_item(
     else:
         external_url = None
 
-    return NewsItemPublished(
+    return NewsItemPublishedEvent(
         occurred_at=now,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,

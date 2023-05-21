@@ -15,14 +15,14 @@ from functools import wraps
 from flask_babel import gettext
 
 from byceps.announce.helpers import Announcement, matches_selectors, with_locale
-from byceps.events.news import NewsItemPublished
+from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
 def apply_selectors(handler):
     @wraps(handler)
     def wrapper(
-        event: NewsItemPublished, webhook: OutgoingWebhook
+        event: NewsItemPublishedEvent, webhook: OutgoingWebhook
     ) -> Announcement | None:
         channel_id = str(event.channel_id)
         if not matches_selectors(event, webhook, 'channel_id', channel_id):
@@ -36,7 +36,7 @@ def apply_selectors(handler):
 @apply_selectors
 @with_locale
 def announce_news_item_published(
-    event: NewsItemPublished, webhook: OutgoingWebhook
+    event: NewsItemPublishedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a news item has been published."""
     text = gettext(
