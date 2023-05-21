@@ -14,7 +14,11 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.page import PageCreated, PageDeleted, PageUpdated
+from byceps.events.page import (
+    PageCreatedEvent,
+    PageDeletedEvent,
+    PageUpdatedEvent,
+)
 from byceps.services.site.models import SiteID
 from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.user import user_service
@@ -41,7 +45,7 @@ def create_page(
     body: str,
     *,
     head: str | None = None,
-) -> tuple[DbPageVersion, PageCreated]:
+) -> tuple[DbPageVersion, PageCreatedEvent]:
     """Create a page and its initial version."""
     creator = user_service.get_user(creator_id)
 
@@ -58,7 +62,7 @@ def create_page(
 
     db.session.commit()
 
-    event = PageCreated(
+    event = PageCreatedEvent(
         occurred_at=db_version.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -79,7 +83,7 @@ def update_page(
     title: str,
     head: str | None,
     body: str,
-) -> tuple[DbPageVersion, PageUpdated]:
+) -> tuple[DbPageVersion, PageUpdatedEvent]:
     """Update page with a new version."""
     db_page = _get_db_page(page_id)
 
@@ -95,7 +99,7 @@ def update_page(
 
     db.session.commit()
 
-    event = PageUpdated(
+    event = PageUpdatedEvent(
         occurred_at=db_version.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -110,7 +114,7 @@ def update_page(
 
 def delete_page(
     page_id: PageID, *, initiator_id: UserID | None = None
-) -> tuple[bool, PageDeleted | None]:
+) -> tuple[bool, PageDeletedEvent | None]:
     """Delete the page and its versions.
 
     It is expected that no database records refer to the page anymore.
@@ -150,7 +154,7 @@ def delete_page(
         db.session.rollback()
         return False, None
 
-    event = PageDeleted(
+    event = PageDeletedEvent(
         occurred_at=datetime.utcnow(),
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,

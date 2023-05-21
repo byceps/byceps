@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pytest
 
-from byceps.events.page import PageCreated
+from byceps.events.page import PageCreatedEvent
 from byceps.services.page import page_service
 from byceps.services.page.models import PageVersion
 from byceps.services.site.models import Site
@@ -44,7 +44,7 @@ def make_page(site: Site, page_admin: User):
         url_path: str | None = None,
         title: str = 'Title',
         body: str = 'Body',
-    ) -> tuple[PageVersion, PageCreated]:
+    ) -> tuple[PageVersion, PageCreatedEvent]:
         if name is None:
             name = generate_token()
 

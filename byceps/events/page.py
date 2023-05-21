@@ -22,15 +22,15 @@ class _PageEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
-class PageCreated(_PageEvent):
+class PageCreatedEvent(_PageEvent):
     page_version_id: PageVersionID
 
 
 @dataclass(frozen=True)
-class PageUpdated(_PageEvent):
+class PageUpdatedEvent(_PageEvent):
     page_version_id: PageVersionID
 
 
 @dataclass(frozen=True)
-class PageDeleted(_PageEvent):
+class PageDeletedEvent(_PageEvent):
     pass

@@ -17,13 +17,17 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.page import PageCreated, PageDeleted, PageUpdated
+from byceps.events.page import (
+    PageCreatedEvent,
+    PageDeletedEvent,
+    PageUpdatedEvent,
+)
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
 @with_locale
 def announce_page_created(
-    event: PageCreated, webhook: OutgoingWebhook
+    event: PageCreatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a page has been created."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -42,7 +46,7 @@ def announce_page_created(
 
 @with_locale
 def announce_page_updated(
-    event: PageUpdated, webhook: OutgoingWebhook
+    event: PageUpdatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a page has been updated."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -61,7 +65,7 @@ def announce_page_updated(
 
 @with_locale
 def announce_page_deleted(
-    event: PageDeleted, webhook: OutgoingWebhook
+    event: PageDeletedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a page has been deleted."""
     initiator_screen_name = get_screen_name_or_fallback(

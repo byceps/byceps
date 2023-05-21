@@ -25,7 +25,11 @@ from byceps.events.board import (
 )
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.events.news import NewsItemPublishedEvent
-from byceps.events.page import PageCreated, PageDeleted, PageUpdated
+from byceps.events.page import (
+    PageCreatedEvent,
+    PageDeletedEvent,
+    PageUpdatedEvent,
+)
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from byceps.events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from byceps.events.ticketing import TicketCheckedIn, TicketsSold
@@ -72,9 +76,9 @@ EVENT_TYPES_TO_NAMES = {
     BoardTopicUnpinnedEvent: 'board-topic-unpinned',
     GuestServerRegisteredEvent: 'guest-server-registered',
     NewsItemPublishedEvent: 'news-item-published',
-    PageCreated: 'page-created',
-    PageDeleted: 'page-deleted',
-    PageUpdated: 'page-updated',
+    PageCreatedEvent: 'page-created',
+    PageDeletedEvent: 'page-deleted',
+    PageUpdatedEvent: 'page-updated',
     ShopOrderCanceled: 'shop-order-canceled',
     ShopOrderPaid: 'shop-order-paid',
     ShopOrderPlaced: 'shop-order-placed',
