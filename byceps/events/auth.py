@@ -16,5 +16,5 @@ from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
-class UserLoggedIn(_BaseEvent):
+class UserLoggedInEvent(_BaseEvent):
     site_id: SiteID | None

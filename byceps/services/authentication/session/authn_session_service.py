@@ -14,7 +14,7 @@ from uuid import UUID, uuid4
 from sqlalchemy import delete, select
 
 from byceps.database import db, insert_ignore_on_conflict, upsert
-from byceps.events.auth import UserLoggedIn
+from byceps.events.auth import UserLoggedInEvent
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_log_service, user_service
 from byceps.services.user.models.user import User
@@ -107,7 +107,7 @@ def log_in_user(
     *,
     ip_address: str | None = None,
     site_id: SiteID | None = None,
-) -> tuple[str, UserLoggedIn]:
+) -> tuple[str, UserLoggedInEvent]:
     """Create a session token and record the log in."""
     session_token = get_session_token(user_id)
 
@@ -119,7 +119,7 @@ def log_in_user(
     )
     _record_recent_login(user_id, occurred_at)
 
-    event = UserLoggedIn(
+    event = UserLoggedInEvent(
         occurred_at=occurred_at,
         initiator_id=user.id,
         initiator_screen_name=user.screen_name,

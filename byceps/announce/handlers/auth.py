@@ -17,14 +17,14 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.auth import UserLoggedIn
+from byceps.events.auth import UserLoggedInEvent
 from byceps.services.site import site_service
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
 @with_locale
 def announce_user_logged_in(
-    event: UserLoggedIn, webhook: OutgoingWebhook
+    event: UserLoggedInEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user has logged in."""
     screen_name = get_screen_name_or_fallback(event.initiator_screen_name)

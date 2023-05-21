@@ -14,7 +14,7 @@ from byceps.services.authentication import authn_service
 from byceps.services.authentication.errors import AuthenticationFailedError
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authentication.session.authn_session_service import (
-    UserLoggedIn,
+    UserLoggedInEvent,
 )
 from byceps.services.user.models.user import User
 from byceps.util import user_session
@@ -36,7 +36,8 @@ def log_in_user(
     *,
     ip_address: str | None = None,
 ) -> Result[
-    tuple[User, UserLoggedIn], AuthenticationFailedError | AuthorizationFailed
+    tuple[User, UserLoggedInEvent],
+    AuthenticationFailedError | AuthorizationFailed,
 ]:
     authn_result = authn_service.authenticate(username, password)
     if authn_result.is_err():

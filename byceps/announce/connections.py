@@ -13,7 +13,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from byceps.events.auth import UserLoggedIn
+from byceps.events.auth import UserLoggedInEvent
 from byceps.events.base import _BaseEvent
 from byceps.events.board import (
     BoardPostingCreated,
@@ -98,7 +98,7 @@ from .helpers import (
 
 
 EVENT_TYPES_TO_HANDLERS = {
-    UserLoggedIn: auth_handlers.announce_user_logged_in,
+    UserLoggedInEvent: auth_handlers.announce_user_logged_in,
     BoardPostingCreated: board_handlers.announce_board_posting_created,
     BoardPostingHidden: board_handlers.announce_board_posting_hidden,
     BoardPostingUnhidden: board_handlers.announce_board_posting_unhidden,

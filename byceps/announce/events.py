@@ -8,7 +8,7 @@ Mapping between event types and names.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.events.auth import UserLoggedIn
+from byceps.events.auth import UserLoggedInEvent
 from byceps.events.base import _BaseEvent
 from byceps.events.board import (
     BoardPostingCreated,
@@ -58,7 +58,7 @@ from byceps.events.user_badge import UserBadgeAwarded
 
 
 EVENT_TYPES_TO_NAMES = {
-    UserLoggedIn: 'user-logged-in',
+    UserLoggedInEvent: 'user-logged-in',
     BoardPostingCreated: 'board-posting-created',
     BoardPostingHidden: 'board-posting-hidden',
     BoardPostingUnhidden: 'board-posting-unhidden',

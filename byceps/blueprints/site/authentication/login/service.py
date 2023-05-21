@@ -16,7 +16,7 @@ from byceps.services.authentication import authn_service
 from byceps.services.authentication.errors import AuthenticationFailedError
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authentication.session.authn_session_service import (
-    UserLoggedIn,
+    UserLoggedInEvent,
 )
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.site.models import SiteID
@@ -44,7 +44,8 @@ def log_in_user(
     ip_address: str | None = None,
     site_id: SiteID | None = None,
 ) -> Result[
-    tuple[User, UserLoggedIn], AuthenticationFailedError | ConsentRequiredError
+    tuple[User, UserLoggedInEvent],
+    AuthenticationFailedError | ConsentRequiredError,
 ]:
     authn_result = authn_service.authenticate(username, password)
     if authn_result.is_err():
