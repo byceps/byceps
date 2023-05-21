@@ -74,7 +74,7 @@ def consent(token):
 
     try:
         consent_subject_service.get_subjects(subject_ids_from_form)
-    except consent_subject_service.UnknownSubjectId:
+    except consent_subject_service.UnknownSubjectIdError:
         flash_error(gettext('Unknown consent subject'))
         return consent_form(token, erroneous_form=form)
 

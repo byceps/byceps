@@ -17,7 +17,7 @@ from .dbmodels import DbConsent, DbConsentBrandRequirement, DbConsentSubject
 from .models import ConsentSubject, ConsentSubjectID
 
 
-class UnknownSubjectId(ValueError):
+class UnknownSubjectIdError(ValueError):
     pass
 
 
@@ -69,7 +69,7 @@ def _check_for_unknown_subject_ids(
     unknown_subject_ids = subject_ids.difference(found_subject_ids)
     if unknown_subject_ids:
         unknown_subject_ids_str = ', '.join(map(str, unknown_subject_ids))
-        raise UnknownSubjectId(
+        raise UnknownSubjectIdError(
             f'Unknown subject IDs: {unknown_subject_ids_str}'
         )
 
