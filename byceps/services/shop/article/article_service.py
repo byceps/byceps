@@ -39,7 +39,7 @@ from .models import (
 )
 
 
-class UnknownArticleId(ValueError):
+class UnknownArticleIdError(ValueError):
     pass
 
 
@@ -269,7 +269,7 @@ def get_article(article_id: ArticleID) -> Article:
     article = find_article(article_id)
 
     if article is None:
-        raise UnknownArticleId(article_id)
+        raise UnknownArticleIdError(article_id)
 
     return article
 
@@ -289,7 +289,7 @@ def _get_db_article(article_id: ArticleID) -> DbArticle:
     db_article = find_db_article(article_id)
 
     if db_article is None:
-        raise UnknownArticleId(article_id)
+        raise UnknownArticleIdError(article_id)
 
     return db_article
 
