@@ -4,7 +4,7 @@
 """
 
 from byceps.services.authentication import authn_service
-from byceps.services.authentication.errors import AuthenticationFailed
+from byceps.services.authentication.errors import AuthenticationFailedError
 from byceps.util.result import Err, Ok
 
 
@@ -17,7 +17,7 @@ def test_unknown_username_is_rejected(make_user):
         'unknown-username', 'irrelevant-password'
     )
 
-    assert actual == Err(AuthenticationFailed.UsernameUnknown)
+    assert actual == Err(AuthenticationFailedError.UsernameUnknown)
 
 
 def test_uninitialized_user_is_rejected(make_user):
@@ -25,7 +25,7 @@ def test_uninitialized_user_is_rejected(make_user):
 
     actual = authn_service.authenticate(user.screen_name, CORRECT_PASSWORD)
 
-    assert actual == Err(AuthenticationFailed.AccountNotInitialized)
+    assert actual == Err(AuthenticationFailedError.AccountNotInitialized)
 
 
 def test_suspended_user_is_rejected(make_user):
@@ -33,7 +33,7 @@ def test_suspended_user_is_rejected(make_user):
 
     actual = authn_service.authenticate(user.screen_name, CORRECT_PASSWORD)
 
-    assert actual == Err(AuthenticationFailed.AccountSuspended)
+    assert actual == Err(AuthenticationFailedError.AccountSuspended)
 
 
 def test_deleted_user_is_rejected(make_user):
@@ -41,7 +41,7 @@ def test_deleted_user_is_rejected(make_user):
 
     actual = authn_service.authenticate(user.screen_name, CORRECT_PASSWORD)
 
-    assert actual == Err(AuthenticationFailed.AccountDeleted)
+    assert actual == Err(AuthenticationFailedError.AccountDeleted)
 
 
 def test_with_wrong_password_is_rejected(make_user):
@@ -49,7 +49,7 @@ def test_with_wrong_password_is_rejected(make_user):
 
     actual = authn_service.authenticate(user.screen_name, WRONG_PASSWORD)
 
-    assert actual == Err(AuthenticationFailed.WrongPassword)
+    assert actual == Err(AuthenticationFailedError.WrongPassword)
 
 
 def test_active_user_with_screen_name_and_correct_password_is_accepted(

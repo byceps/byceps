@@ -13,7 +13,7 @@ from dataclasses import dataclass
 import structlog
 
 from byceps.services.authentication import authn_service
-from byceps.services.authentication.errors import AuthenticationFailed
+from byceps.services.authentication.errors import AuthenticationFailedError
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authentication.session.authn_session_service import (
     UserLoggedIn,
@@ -43,7 +43,9 @@ def log_in_user(
     *,
     ip_address: str | None = None,
     site_id: SiteID | None = None,
-) -> Result[tuple[User, UserLoggedIn], AuthenticationFailed | ConsentRequired]:
+) -> Result[
+    tuple[User, UserLoggedIn], AuthenticationFailedError | ConsentRequired
+]:
     authn_result = authn_service.authenticate(username, password)
     if authn_result.is_err():
         log.info(
