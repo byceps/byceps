@@ -18,7 +18,7 @@ from .dbmodels import DbEmailConfig
 from .models import EmailConfig, NameAndAddress
 
 
-class UnknownEmailConfigId(ValueError):
+class UnknownEmailConfigIdError(ValueError):
     pass
 
 
@@ -53,7 +53,7 @@ def update_config(
     config = _find_db_config(brand_id)
 
     if config is None:
-        raise UnknownEmailConfigId(
+        raise UnknownEmailConfigIdError(
             f'No e-mail config found for brand ID "{brand_id}"'
         )
 
@@ -102,7 +102,7 @@ def get_config(brand_id: BrandID) -> EmailConfig:
     config = _find_db_config(brand_id)
 
     if config is None:
-        raise UnknownEmailConfigId(
+        raise UnknownEmailConfigIdError(
             f'No e-mail config found for brand ID "{brand_id}"'
         )
 
