@@ -34,11 +34,11 @@ the command line, e.g. for development and debugging).
 
 .. code-block:: python
 
-    from byceps.events.board import BoardTopicCreated
+    from byceps.events.board import BoardTopicCreatedEvent
     from byceps.signals.board import topic_created
 
     @topic_created.connect
-    def celebrate_created_topic(sender, *, event: BoardTopicCreated = None) -> None:
+    def celebrate_created_topic(sender, *, event: BoardTopicCreatedEvent = None) -> None:
         print(f'A topic titled "{event.topic_title}" has been created: {event.url}')
 
 More useful reactions include:

@@ -7,17 +7,17 @@ import pytest
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.board import (
-    BoardPostingCreated,
-    BoardPostingHidden,
-    BoardPostingUnhidden,
-    BoardTopicCreated,
-    BoardTopicHidden,
-    BoardTopicLocked,
-    BoardTopicMoved,
-    BoardTopicPinned,
-    BoardTopicUnhidden,
-    BoardTopicUnlocked,
-    BoardTopicUnpinned,
+    BoardPostingCreatedEvent,
+    BoardPostingHiddenEvent,
+    BoardPostingUnhiddenEvent,
+    BoardTopicCreatedEvent,
+    BoardTopicHiddenEvent,
+    BoardTopicLockedEvent,
+    BoardTopicMovedEvent,
+    BoardTopicPinnedEvent,
+    BoardTopicUnhiddenEvent,
+    BoardTopicUnlockedEvent,
+    BoardTopicUnpinnedEvent,
 )
 from byceps.services.board import (
     board_category_command_service,
@@ -38,7 +38,7 @@ def test_announce_topic_created(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardTopicCreated(
+    event = BoardTopicCreatedEvent(
         occurred_at=topic.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -64,7 +64,7 @@ def test_announce_topic_hidden(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardTopicHidden(
+    event = BoardTopicHiddenEvent(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -92,7 +92,7 @@ def test_announce_topic_unhidden(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardTopicUnhidden(
+    event = BoardTopicUnhiddenEvent(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -121,7 +121,7 @@ def test_announce_topic_locked(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardTopicLocked(
+    event = BoardTopicLockedEvent(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -149,7 +149,7 @@ def test_announce_topic_unlocked(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardTopicUnlocked(
+    event = BoardTopicUnlockedEvent(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -177,7 +177,7 @@ def test_announce_topic_pinned(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardTopicPinned(
+    event = BoardTopicPinnedEvent(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -205,7 +205,7 @@ def test_announce_topic_unpinned(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardTopicUnpinned(
+    event = BoardTopicUnpinnedEvent(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -240,7 +240,7 @@ def test_announce_topic_moved(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardTopicMoved(
+    event = BoardTopicMovedEvent(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -272,7 +272,7 @@ def test_announce_posting_created(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardPostingCreated(
+    event = BoardPostingCreatedEvent(
         occurred_at=posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -295,7 +295,7 @@ def test_announce_posting_created_on_muted_topic(
     link = f'http://example.com/board/postings/{posting.id}'
     expected = None
 
-    event = BoardPostingCreated(
+    event = BoardPostingCreatedEvent(
         occurred_at=posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -324,7 +324,7 @@ def test_announce_posting_hidden(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardPostingHidden(
+    event = BoardPostingHiddenEvent(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -354,7 +354,7 @@ def test_announce_posting_unhidden(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = BoardPostingUnhidden(
+    event = BoardPostingUnhiddenEvent(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,

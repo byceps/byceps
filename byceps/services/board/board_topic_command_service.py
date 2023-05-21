@@ -12,15 +12,15 @@ from sqlalchemy import delete
 
 from byceps.database import db
 from byceps.events.board import (
-    BoardTopicCreated,
-    BoardTopicHidden,
-    BoardTopicLocked,
-    BoardTopicMoved,
-    BoardTopicPinned,
-    BoardTopicUnhidden,
-    BoardTopicUnlocked,
-    BoardTopicUnpinned,
-    BoardTopicUpdated,
+    BoardTopicCreatedEvent,
+    BoardTopicHiddenEvent,
+    BoardTopicLockedEvent,
+    BoardTopicMovedEvent,
+    BoardTopicPinnedEvent,
+    BoardTopicUnhiddenEvent,
+    BoardTopicUnlockedEvent,
+    BoardTopicUnpinnedEvent,
+    BoardTopicUpdatedEvent,
 )
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
@@ -39,7 +39,7 @@ from .models import BoardCategoryID, TopicID
 
 def create_topic(
     category_id: BoardCategoryID, creator_id: UserID, title: str, body: str
-) -> tuple[DbTopic, BoardTopicCreated]:
+) -> tuple[DbTopic, BoardTopicCreatedEvent]:
     """Create a topic with an initial posting in that category."""
     creator = _get_user(creator_id)
 
@@ -56,7 +56,7 @@ def create_topic(
 
     board_aggregation_service.aggregate_topic(db_topic)
 
-    event = BoardTopicCreated(
+    event = BoardTopicCreatedEvent(
         occurred_at=db_topic.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -73,7 +73,7 @@ def create_topic(
 
 def update_topic(
     topic_id: TopicID, editor_id: UserID, title: str, body: str
-) -> BoardTopicUpdated:
+) -> BoardTopicUpdatedEvent:
     """Update the topic (and its initial posting)."""
     db_topic = _get_topic(topic_id)
     editor = _get_user(editor_id)
@@ -87,7 +87,7 @@ def update_topic(
     db.session.commit()
 
     topic_creator = _get_user(db_topic.creator_id)
-    return BoardTopicUpdated(
+    return BoardTopicUpdatedEvent(
         occurred_at=posting_event.occurred_at,
         initiator_id=editor.id,
         initiator_screen_name=editor.screen_name,
@@ -102,7 +102,9 @@ def update_topic(
     )
 
 
-def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
+def hide_topic(
+    topic_id: TopicID, moderator_id: UserID
+) -> BoardTopicHiddenEvent:
     """Hide the topic."""
     db_topic = _get_topic(topic_id)
     moderator = _get_user(moderator_id)
@@ -117,7 +119,7 @@ def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
     board_aggregation_service.aggregate_topic(db_topic)
 
     topic_creator = _get_user(db_topic.creator_id)
-    return BoardTopicHidden(
+    return BoardTopicHiddenEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -132,7 +134,9 @@ def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
     )
 
 
-def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
+def unhide_topic(
+    topic_id: TopicID, moderator_id: UserID
+) -> BoardTopicUnhiddenEvent:
     """Un-hide the topic."""
     db_topic = _get_topic(topic_id)
     moderator = _get_user(moderator_id)
@@ -148,7 +152,7 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
     board_aggregation_service.aggregate_topic(db_topic)
 
     topic_creator = _get_user(db_topic.creator_id)
-    return BoardTopicUnhidden(
+    return BoardTopicUnhiddenEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -163,7 +167,9 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
     )
 
 
-def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
+def lock_topic(
+    topic_id: TopicID, moderator_id: UserID
+) -> BoardTopicLockedEvent:
     """Lock the topic."""
     db_topic = _get_topic(topic_id)
     moderator = _get_user(moderator_id)
@@ -176,7 +182,7 @@ def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
     db.session.commit()
 
     topic_creator = _get_user(db_topic.creator_id)
-    return BoardTopicLocked(
+    return BoardTopicLockedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -191,7 +197,9 @@ def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
     )
 
 
-def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
+def unlock_topic(
+    topic_id: TopicID, moderator_id: UserID
+) -> BoardTopicUnlockedEvent:
     """Unlock the topic."""
     db_topic = _get_topic(topic_id)
     moderator = _get_user(moderator_id)
@@ -205,7 +213,7 @@ def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
     db.session.commit()
 
     topic_creator = _get_user(db_topic.creator_id)
-    return BoardTopicUnlocked(
+    return BoardTopicUnlockedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -220,7 +228,7 @@ def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
     )
 
 
-def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
+def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinnedEvent:
     """Pin the topic."""
     db_topic = _get_topic(topic_id)
     moderator = _get_user(moderator_id)
@@ -233,7 +241,7 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
     db.session.commit()
 
     topic_creator = _get_user(db_topic.creator_id)
-    return BoardTopicPinned(
+    return BoardTopicPinnedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -248,7 +256,9 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
     )
 
 
-def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
+def unpin_topic(
+    topic_id: TopicID, moderator_id: UserID
+) -> BoardTopicUnpinnedEvent:
     """Unpin the topic."""
     db_topic = _get_topic(topic_id)
     moderator = _get_user(moderator_id)
@@ -262,7 +272,7 @@ def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
     db.session.commit()
 
     topic_creator = _get_user(db_topic.creator_id)
-    return BoardTopicUnpinned(
+    return BoardTopicUnpinnedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -279,7 +289,7 @@ def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
 
 def move_topic(
     topic_id: TopicID, new_category_id: BoardCategoryID, moderator_id: UserID
-) -> BoardTopicMoved:
+) -> BoardTopicMovedEvent:
     """Move the topic to another category."""
     db_topic = _get_topic(topic_id)
     moderator = _get_user(moderator_id)
@@ -296,7 +306,7 @@ def move_topic(
         board_aggregation_service.aggregate_category(db_category)
 
     topic_creator = _get_user(db_topic.creator_id)
-    return BoardTopicMoved(
+    return BoardTopicMovedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,

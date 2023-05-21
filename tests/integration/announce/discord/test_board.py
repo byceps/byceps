@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.announce.connections import build_announcement_request
-from byceps.events.board import BoardPostingCreated, BoardTopicCreated
+from byceps.events.board import BoardPostingCreatedEvent, BoardTopicCreatedEvent
 from byceps.services.board import (
     board_category_command_service,
     board_posting_command_service,
@@ -27,7 +27,7 @@ def test_announce_topic_created(admin_app, board, topic, creator):
     )
     expected = build_announcement_request_for_discord(expected_content)
 
-    event = BoardTopicCreated(
+    event = BoardTopicCreatedEvent(
         occurred_at=topic.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -53,7 +53,7 @@ def test_announce_posting_created(admin_app, board, posting, creator):
     )
     expected = build_announcement_request_for_discord(expected_content)
 
-    event = BoardPostingCreated(
+    event = BoardPostingCreatedEvent(
         occurred_at=posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,

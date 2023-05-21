@@ -12,10 +12,10 @@ from sqlalchemy import delete
 
 from byceps.database import db
 from byceps.events.board import (
-    BoardPostingCreated,
-    BoardPostingHidden,
-    BoardPostingUnhidden,
-    BoardPostingUpdated,
+    BoardPostingCreatedEvent,
+    BoardPostingHiddenEvent,
+    BoardPostingUnhiddenEvent,
+    BoardPostingUpdatedEvent,
 )
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
@@ -32,7 +32,7 @@ from .models import PostingID, TopicID
 
 def create_posting(
     topic_id: TopicID, creator_id: UserID, body: str
-) -> tuple[DbPosting, BoardPostingCreated]:
+) -> tuple[DbPosting, BoardPostingCreatedEvent]:
     """Create a posting in that topic."""
     topic = board_topic_query_service.get_topic(topic_id)
     creator = _get_user(creator_id)
@@ -43,7 +43,7 @@ def create_posting(
 
     board_aggregation_service.aggregate_topic(topic)
 
-    event = BoardPostingCreated(
+    event = BoardPostingCreatedEvent(
         occurred_at=db_posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
@@ -62,7 +62,7 @@ def create_posting(
 
 def update_posting(
     posting_id: PostingID, editor_id: UserID, body: str, *, commit: bool = True
-) -> BoardPostingUpdated:
+) -> BoardPostingUpdatedEvent:
     """Update the posting."""
     db_posting = _get_posting(posting_id)
     editor = _get_user(editor_id)
@@ -78,7 +78,7 @@ def update_posting(
         db.session.commit()
 
     posting_creator = _get_user(db_posting.creator_id)
-    return BoardPostingUpdated(
+    return BoardPostingUpdatedEvent(
         occurred_at=now,
         initiator_id=editor.id,
         initiator_screen_name=editor.screen_name,
@@ -96,7 +96,7 @@ def update_posting(
 
 def hide_posting(
     posting_id: PostingID, moderator_id: UserID
-) -> BoardPostingHidden:
+) -> BoardPostingHiddenEvent:
     """Hide the posting."""
     db_posting = _get_posting(posting_id)
     moderator = _get_user(moderator_id)
@@ -111,7 +111,7 @@ def hide_posting(
     board_aggregation_service.aggregate_topic(db_posting.topic)
 
     posting_creator = _get_user(db_posting.creator_id)
-    event = BoardPostingHidden(
+    event = BoardPostingHiddenEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
@@ -131,7 +131,7 @@ def hide_posting(
 
 def unhide_posting(
     posting_id: PostingID, moderator_id: UserID
-) -> BoardPostingUnhidden:
+) -> BoardPostingUnhiddenEvent:
     """Un-hide the posting."""
     db_posting = _get_posting(posting_id)
     moderator = _get_user(moderator_id)
@@ -147,7 +147,7 @@ def unhide_posting(
     board_aggregation_service.aggregate_topic(db_posting.topic)
 
     posting_creator = _get_user(db_posting.creator_id)
-    event = BoardPostingUnhidden(
+    event = BoardPostingUnhiddenEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,

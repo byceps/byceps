@@ -45,48 +45,48 @@ class _BoardTopicModerationEvent(_BoardTopicEvent):
 
 
 @dataclass(frozen=True)
-class BoardTopicCreated(_BoardTopicEvent):
+class BoardTopicCreatedEvent(_BoardTopicEvent):
     pass
 
 
 @dataclass(frozen=True)
-class BoardTopicUpdated(_BoardTopicEvent):
+class BoardTopicUpdatedEvent(_BoardTopicEvent):
     editor_id: UserID
     editor_screen_name: str | None
 
 
 @dataclass(frozen=True)
-class BoardTopicHidden(_BoardTopicModerationEvent):
+class BoardTopicHiddenEvent(_BoardTopicModerationEvent):
     pass
 
 
 @dataclass(frozen=True)
-class BoardTopicUnhidden(_BoardTopicModerationEvent):
+class BoardTopicUnhiddenEvent(_BoardTopicModerationEvent):
     pass
 
 
 @dataclass(frozen=True)
-class BoardTopicLocked(_BoardTopicModerationEvent):
+class BoardTopicLockedEvent(_BoardTopicModerationEvent):
     pass
 
 
 @dataclass(frozen=True)
-class BoardTopicUnlocked(_BoardTopicModerationEvent):
+class BoardTopicUnlockedEvent(_BoardTopicModerationEvent):
     pass
 
 
 @dataclass(frozen=True)
-class BoardTopicPinned(_BoardTopicModerationEvent):
+class BoardTopicPinnedEvent(_BoardTopicModerationEvent):
     pass
 
 
 @dataclass(frozen=True)
-class BoardTopicUnpinned(_BoardTopicModerationEvent):
+class BoardTopicUnpinnedEvent(_BoardTopicModerationEvent):
     pass
 
 
 @dataclass(frozen=True)
-class BoardTopicMoved(_BoardTopicModerationEvent):
+class BoardTopicMovedEvent(_BoardTopicModerationEvent):
     old_category_id: BoardCategoryID
     old_category_title: str
     new_category_id: BoardCategoryID
@@ -113,21 +113,21 @@ class _BoardPostingModerationEvent(_BoardPostingEvent):
 
 
 @dataclass(frozen=True)
-class BoardPostingCreated(_BoardPostingEvent):
+class BoardPostingCreatedEvent(_BoardPostingEvent):
     topic_muted: bool
 
 
 @dataclass(frozen=True)
-class BoardPostingUpdated(_BoardPostingEvent):
+class BoardPostingUpdatedEvent(_BoardPostingEvent):
     editor_id: UserID
     editor_screen_name: str | None
 
 
 @dataclass(frozen=True)
-class BoardPostingHidden(_BoardPostingModerationEvent):
+class BoardPostingHiddenEvent(_BoardPostingModerationEvent):
     pass
 
 
 @dataclass(frozen=True)
-class BoardPostingUnhidden(_BoardPostingModerationEvent):
+class BoardPostingUnhiddenEvent(_BoardPostingModerationEvent):
     pass
