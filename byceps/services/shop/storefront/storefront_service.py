@@ -19,7 +19,7 @@ from .dbmodels import DbStorefront
 from .models import Storefront, StorefrontID
 
 
-class UnknownStorefrontId(ValueError):
+class UnknownStorefrontIdError(ValueError):
     pass
 
 
@@ -94,7 +94,7 @@ def get_storefront(storefront_id: StorefrontID) -> Storefront:
     storefront = find_storefront(storefront_id)
 
     if storefront is None:
-        raise UnknownStorefrontId(storefront_id)
+        raise UnknownStorefrontIdError(storefront_id)
 
     return storefront
 
@@ -107,7 +107,7 @@ def _get_db_storefront(storefront_id: StorefrontID) -> DbStorefront:
     db_storefront = _find_db_storefront(storefront_id)
 
     if db_storefront is None:
-        raise UnknownStorefrontId(storefront_id)
+        raise UnknownStorefrontIdError(storefront_id)
 
     return db_storefront
 
