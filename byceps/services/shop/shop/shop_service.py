@@ -18,7 +18,7 @@ from .dbmodels import DbShop
 from .models import Shop, ShopID
 
 
-class UnknownShopId(ValueError):
+class UnknownShopIdError(ValueError):
     pass
 
 
@@ -74,7 +74,7 @@ def get_shop(shop_id: ShopID) -> Shop:
     shop = find_shop(shop_id)
 
     if shop is None:
-        raise UnknownShopId(shop_id)
+        raise UnknownShopIdError(shop_id)
 
     return shop
 
@@ -87,7 +87,7 @@ def _get_db_shop(shop_id: ShopID) -> DbShop:
     db_shop = _find_db_shop(shop_id)
 
     if db_shop is None:
-        raise UnknownShopId(shop_id)
+        raise UnknownShopIdError(shop_id)
 
     return db_shop
 
