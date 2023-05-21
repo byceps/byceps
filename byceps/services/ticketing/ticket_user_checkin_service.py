@@ -6,10 +6,15 @@ byceps.services.ticketing.ticket_user_checkin_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
+
+from sqlalchemy import select
 
 from byceps.database import db
 from byceps.events.ticketing import TicketCheckedIn
+from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
@@ -25,7 +30,7 @@ from .exceptions import (
     UserAlreadyCheckedIn,
     UserIdUnknown,
 )
-from .models.ticket import TicketID
+from .models.ticket import TicketCheckIn, TicketID
 
 
 def check_in_user(
@@ -40,6 +45,9 @@ def check_in_user(
     user = _get_user_for_checkin(db_ticket.used_by_id)
 
     db_ticket.user_checked_in = True
+
+    db_check_in = DbTicketCheckIn(occurred_at, db_ticket.id, initiator.id)
+    db.session.add(db_check_in)
 
     db_log_entry = ticket_log_service.build_entry(
         'user-checked-in',
@@ -129,3 +137,19 @@ def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.add(db_log_entry)
 
     db.session.commit()
+
+
+def find_check_in_for_ticket(ticket_id: TicketID) -> TicketCheckIn | None:
+    db_check_in = db.session.scalar(
+        select(DbTicketCheckIn).filter_by(ticket_id=ticket_id)
+    )
+
+    if db_check_in is None:
+        return None
+
+    return TicketCheckIn(
+        id=db_check_in.id,
+        occurred_at=db_check_in.occurred_at,
+        ticket_id=db_check_in.ticket_id,
+        initiator_id=db_check_in.initiator_id,
+    )

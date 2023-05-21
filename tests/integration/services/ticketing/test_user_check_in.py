@@ -66,6 +66,11 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
     assert event.user_id == ticket_user.id
     assert event.user_screen_name == ticket_user.screen_name
 
+    check_in = ticket_user_checkin_service.find_check_in_for_ticket(ticket_id)
+    assert check_in is not None
+    assert check_in.occurred_at is not None
+    assert check_in.initiator_id == initiator.id
+
     log_entries_after = ticket_log_service.get_entries_for_ticket(
         ticket_after.id
     )

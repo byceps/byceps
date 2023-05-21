@@ -9,10 +9,11 @@ byceps.services.ticketing.models.ticket
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from byceps.typing import PartyID
+from byceps.typing import PartyID, UserID
 
 
 TicketCategoryID = NewType('TicketCategoryID', UUID)
@@ -38,3 +39,11 @@ TicketBundleID = NewType('TicketBundleID', UUID)
 class TicketSaleStats:
     tickets_max: int | None
     tickets_sold: int
+
+
+@dataclass(frozen=True)
+class TicketCheckIn:
+    id: UUID
+    occurred_at: datetime
+    ticket_id: TicketID
+    initiator_id: UserID
