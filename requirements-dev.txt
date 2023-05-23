@@ -6,4 +6,4 @@ mypy==1.2.0
 ruff>=0.0.260
 types-freezegun==1.1.10
 types-redis==4.5.4.1
-types-requests==2.29.0.0
+types-requests==2.31.0.0
