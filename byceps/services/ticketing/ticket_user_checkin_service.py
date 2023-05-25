@@ -18,11 +18,13 @@ from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
+from byceps.util.result import Err, Ok, Result
 
 from . import ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
 from .errors import (
     TicketBelongsToDifferentPartyError,
+    TicketingError,
     TicketIsRevokedError,
     TicketLacksUserError,
     UserAccountDeletedError,
@@ -35,14 +37,24 @@ from .models.ticket import TicketCheckIn, TicketID
 
 def check_in_user(
     party_id: PartyID, ticket_id: TicketID, initiator_id: UserID
-) -> TicketCheckedInEvent:
+) -> Result[TicketCheckedInEvent, TicketingError]:
     """Record that the ticket was used to check in its user."""
-    db_ticket = _get_ticket_for_checkin(party_id, ticket_id)
+    db_ticket_result = _get_ticket_for_checkin(party_id, ticket_id)
+
+    if db_ticket_result.is_err():
+        return Err(db_ticket_result.unwrap_err())
+
+    db_ticket = db_ticket_result.unwrap()
 
     occurred_at = datetime.utcnow()
     initiator = user_service.get_user(initiator_id)
 
-    user = _get_user_for_checkin(db_ticket.used_by_id)
+    user_result = _get_user_for_checkin(db_ticket.used_by_id)
+
+    if user_result.is_err():
+        return Err(user_result.unwrap_err())
+
+    user = user_result.unwrap()
 
     db_ticket.user_checked_in = True
 
@@ -62,7 +74,7 @@ def check_in_user(
 
     db.session.commit()
 
-    return TicketCheckedInEvent(
+    event = TicketCheckedInEvent(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
@@ -73,46 +85,62 @@ def check_in_user(
         user_screen_name=user.screen_name,
     )
 
+    return Ok(event)
 
-def _get_ticket_for_checkin(party_id: PartyID, ticket_id: TicketID) -> DbTicket:
+
+def _get_ticket_for_checkin(
+    party_id: PartyID, ticket_id: TicketID
+) -> Result[DbTicket, TicketingError]:
     db_ticket = ticket_service.get_ticket(ticket_id)
 
     if db_ticket.party_id != party_id:
-        raise TicketBelongsToDifferentPartyError(
-            f'Ticket {ticket_id} belongs to another party ({db_ticket.party_id}).'
+        return Err(
+            TicketBelongsToDifferentPartyError(
+                f'Ticket {ticket_id} belongs to another party ({db_ticket.party_id}).'
+            )
         )
 
     if db_ticket.revoked:
-        raise TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
-
-    if db_ticket.used_by_id is None:
-        raise TicketLacksUserError(f'Ticket {ticket_id} has no user assigned.')
-
-    if db_ticket.user_checked_in:
-        raise UserAlreadyCheckedInError(
-            f'Ticket {ticket_id} has already been used to check in a user.'
+        return Err(
+            TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
         )
 
-    return db_ticket
+    if db_ticket.used_by_id is None:
+        return Err(
+            TicketLacksUserError(f'Ticket {ticket_id} has no user assigned.')
+        )
+
+    if db_ticket.user_checked_in:
+        return Err(
+            UserAlreadyCheckedInError(
+                f'Ticket {ticket_id} has already been used to check in a user.'
+            )
+        )
+
+    return Ok(db_ticket)
 
 
-def _get_user_for_checkin(user_id: UserID) -> User:
+def _get_user_for_checkin(user_id: UserID) -> Result[User, TicketingError]:
     user = user_service.find_user(user_id)
 
     if user is None:
-        raise UserIdUnknownError(f"Unknown user ID '{user_id}'")
+        return Err(UserIdUnknownError(f"Unknown user ID '{user_id}'"))
 
     if user.deleted:
-        raise UserAccountDeletedError(
-            f'User account {user.screen_name} has been deleted.'
+        return Err(
+            UserAccountDeletedError(
+                f'User account {user.screen_name} has been deleted.'
+            )
         )
 
     if user.suspended:
-        raise UserAccountSuspendedError(
-            f'User account {user.screen_name} is suspended.'
+        return Err(
+            UserAccountSuspendedError(
+                f'User account {user.screen_name} is suspended.'
+            )
         )
 
-    return user
+    return Ok(user)
 
 
 def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:

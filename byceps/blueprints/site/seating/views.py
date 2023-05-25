@@ -240,28 +240,35 @@ def occupy_seat(ticket_id, seat_id):
         return
 
     try:
-        ticket_seat_management_service.occupy_seat(
+        occupy_seat_result = ticket_seat_management_service.occupy_seat(
             ticket.id, seat.id, manager.id
         )
-    except ticketing_errors.SeatChangeDeniedForBundledTicketError:
-        flash_error(
-            gettext(
-                'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
-                ticket_code=ticket.code,
-            )
-        )
-        return
-    except ticketing_errors.TicketCategoryMismatchError:
-        flash_error(
-            gettext(
-                'Ticket %(ticket_code)s and seat "%(seat_label)s" belong to different categories.',
-                ticket_code=ticket.code,
-                seat_label=seat.label,
-            )
-        )
-        return
     except ValueError:
         abort(404)
+
+    if occupy_seat_result.is_err():
+        err = occupy_seat_result.unwrap_err()
+        if isinstance(
+            err, ticketing_errors.SeatChangeDeniedForBundledTicketError
+        ):
+            flash_error(
+                gettext(
+                    'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
+                    ticket_code=ticket.code,
+                )
+            )
+        elif isinstance(err, ticketing_errors.TicketCategoryMismatchError):
+            flash_error(
+                gettext(
+                    'Ticket %(ticket_code)s and seat "%(seat_label)s" belong to different categories.',
+                    ticket_code=ticket.code,
+                    seat_label=seat.label,
+                )
+            )
+        else:
+            flash_error(gettext('An unexpected error occurred.'))
+
+        return
 
     flash_success(
         gettext(
@@ -310,15 +317,24 @@ def release_seat(ticket_id):
 
     seat = ticket.occupied_seat
 
-    try:
-        ticket_seat_management_service.release_seat(ticket.id, manager.id)
-    except ticketing_errors.SeatChangeDeniedForBundledTicketError:
-        flash_error(
-            gettext(
-                'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
-                ticket_code=ticket.code,
+    release_seat_result = ticket_seat_management_service.release_seat(
+        ticket.id, manager.id
+    )
+
+    if release_seat_result.is_err():
+        err = release_seat_result.unwrap_err()
+        if isinstance(
+            err, ticketing_errors.SeatChangeDeniedForBundledTicketError
+        ):
+            flash_error(
+                gettext(
+                    'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
+                    ticket_code=ticket.code,
+                )
             )
-        )
+        else:
+            flash_error(gettext('An unexpected error occurred.'))
+
         return
 
     flash_success(

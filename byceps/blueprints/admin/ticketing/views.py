@@ -227,7 +227,13 @@ def appoint_user(ticket_id):
     user = form.user.data
     manager = g.user
 
-    ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
+    result = ticket_user_management_service.appoint_user(
+        ticket.id, user.id, manager.id
+    )
+
+    if result.is_err():
+        flash_error(result.unwrap_err().message)
+        return redirect_to('.view_ticket', ticket_id=ticket.id)
 
     flash_success(
         gettext(

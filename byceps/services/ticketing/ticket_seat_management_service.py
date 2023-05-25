@@ -12,6 +12,7 @@ from byceps.services.seating import seat_group_service, seat_service
 from byceps.services.seating.dbmodels.seat_group import DbSeatGroup  # noqa: F401
 from byceps.services.seating.models import Seat, SeatID
 from byceps.typing import UserID
+from byceps.util.result import Err, Ok, Result
 
 from . import ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
@@ -19,6 +20,7 @@ from .errors import (
     SeatChangeDeniedForBundledTicketError,
     SeatChangeDeniedForGroupSeatError,
     TicketCategoryMismatchError,
+    TicketingError,
     TicketIsRevokedError,
 )
 from .models.ticket import TicketID
@@ -26,9 +28,13 @@ from .models.ticket import TicketID
 
 def appoint_seat_manager(
     ticket_id: TicketID, manager_id: UserID, initiator_id: UserID
-) -> None:
+) -> Result[None, TicketingError]:
     """Appoint the user as the ticket's seat manager."""
-    db_ticket = _get_ticket(ticket_id)
+    db_ticket_result = _get_ticket(ticket_id)
+    if db_ticket_result.is_err():
+        return Err(db_ticket_result.unwrap_err())
+
+    db_ticket = db_ticket_result.unwrap()
 
     db_ticket.seat_managed_by_id = manager_id
 
@@ -44,10 +50,18 @@ def appoint_seat_manager(
 
     db.session.commit()
 
+    return Ok(None)
 
-def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
+
+def withdraw_seat_manager(
+    ticket_id: TicketID, initiator_id: UserID
+) -> Result[None, TicketingError]:
     """Withdraw the ticket's custom seat manager."""
-    db_ticket = _get_ticket(ticket_id)
+    db_ticket_result = _get_ticket(ticket_id)
+    if db_ticket_result.is_err():
+        return Err(db_ticket_result.unwrap_err())
+
+    db_ticket = db_ticket_result.unwrap()
 
     db_ticket.seat_managed_by_id = None
 
@@ -62,23 +76,39 @@ def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     db.session.commit()
 
+    return Ok(None)
+
 
 def occupy_seat(
     ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
-) -> None:
+) -> Result[None, TicketingError]:
     """Occupy the seat with this ticket."""
-    db_ticket = _get_ticket(ticket_id)
+    db_ticket_result = _get_ticket(ticket_id)
+    if db_ticket_result.is_err():
+        return Err(db_ticket_result.unwrap_err())
 
-    _deny_seat_management_if_ticket_belongs_to_bundle(db_ticket)
+    db_ticket = db_ticket_result.unwrap()
+
+    ticket_belongs_to_bundle_result = (
+        _deny_seat_management_if_ticket_belongs_to_bundle(db_ticket)
+    )
+    if ticket_belongs_to_bundle_result.is_err():
+        return Err(ticket_belongs_to_bundle_result.unwrap_err())
 
     seat = seat_service.get_seat(seat_id)
 
     if seat.category_id != db_ticket.category_id:
-        raise TicketCategoryMismatchError(
-            'Ticket and seat belong to different categories.'
+        return Err(
+            TicketCategoryMismatchError(
+                'Ticket and seat belong to different categories.'
+            )
         )
 
-    _deny_seat_management_if_seat_belongs_to_group(seat)
+    seat_belongs_to_group_result = (
+        _deny_seat_management_if_seat_belongs_to_group(seat)
+    )
+    if seat_belongs_to_group_result.is_err():
+        return Err(seat_belongs_to_group_result.unwrap_err())
 
     previous_seat_id = db_ticket.occupied_seat_id
 
@@ -98,18 +128,34 @@ def occupy_seat(
 
     db.session.commit()
 
+    return Ok(None)
 
-def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
+
+def release_seat(
+    ticket_id: TicketID, initiator_id: UserID
+) -> Result[None, TicketingError]:
     """Release the seat occupied by this ticket."""
-    db_ticket = _get_ticket(ticket_id)
+    db_ticket_result = _get_ticket(ticket_id)
+    if db_ticket_result.is_err():
+        return Err(db_ticket_result.unwrap_err())
 
-    _deny_seat_management_if_ticket_belongs_to_bundle(db_ticket)
+    db_ticket = db_ticket_result.unwrap()
+
+    ticket_belongs_to_bundle_result = (
+        _deny_seat_management_if_ticket_belongs_to_bundle(db_ticket)
+    )
+    if ticket_belongs_to_bundle_result.is_err():
+        return Err(ticket_belongs_to_bundle_result.unwrap_err())
 
     seat = seat_service.find_seat(db_ticket.occupied_seat_id)
     if seat is None:
         raise ValueError('Ticket does not occupy a seat.')
 
-    _deny_seat_management_if_seat_belongs_to_group(seat)
+    seat_belongs_to_group_result = (
+        _deny_seat_management_if_seat_belongs_to_group(seat)
+    )
+    if seat_belongs_to_group_result.is_err():
+        return Err(seat_belongs_to_group_result.unwrap_err())
 
     db_ticket.occupied_seat_id = None
 
@@ -125,39 +171,54 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     db.session.commit()
 
+    return Ok(None)
 
-def _get_ticket(ticket_id: TicketID) -> DbTicket:
+
+def _get_ticket(ticket_id: TicketID) -> Result[DbTicket, TicketIsRevokedError]:
     """Return the ticket with that ID.
 
-    Raise an exception if the ID is unknown or if the ticket has been
-    revoked.
+    Raise an exception if the ID is unknown.
+
+    Return an error if the ticket has been revoked.
     """
     db_ticket = ticket_service.get_ticket(ticket_id)
 
     if db_ticket.revoked:
-        raise TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
+        return Err(
+            TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
+        )
 
-    return db_ticket
+    return Ok(db_ticket)
 
 
 def _deny_seat_management_if_ticket_belongs_to_bundle(
     db_ticket: DbTicket,
-) -> None:
-    """Raise an exception if this ticket belongs to a bundle.
+) -> Result[None, SeatChangeDeniedForBundledTicketError]:
+    """Return an error if this ticket belongs to a bundle.
 
     A ticket bundle is meant to occupy a matching seat group with the
     appropriate mechanism, not to separately occupy single seats.
     """
     if db_ticket.belongs_to_bundle:
-        raise SeatChangeDeniedForBundledTicketError(
-            f"Ticket '{db_ticket.code}' belongs to a bundle and, thus, "
-            'must not be used to occupy or release a single seat.'
+        return Err(
+            SeatChangeDeniedForBundledTicketError(
+                f"Ticket '{db_ticket.code}' belongs to a bundle and, thus, "
+                'must not be used to occupy or release a single seat.'
+            )
         )
 
+    return Ok(None)
 
-def _deny_seat_management_if_seat_belongs_to_group(seat: Seat) -> None:
+
+def _deny_seat_management_if_seat_belongs_to_group(
+    seat: Seat,
+) -> Result[None, SeatChangeDeniedForGroupSeatError]:
     if seat_group_service.is_seat_part_of_a_group(seat.id):
-        raise SeatChangeDeniedForGroupSeatError(
-            f"Seat '{seat.label}' belongs to a group and, thus, "
-            'cannot be occupied by a single ticket, or removed separately.'
+        return Err(
+            SeatChangeDeniedForGroupSeatError(
+                f"Seat '{seat.label}' belongs to a group and, thus, "
+                'cannot be occupied by a single ticket, or removed separately.'
+            )
         )
+
+    return Ok(None)

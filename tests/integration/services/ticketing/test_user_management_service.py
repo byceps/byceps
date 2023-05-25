@@ -27,9 +27,12 @@ def test_appoint_and_withdraw_user_manager(admin_app, ticket, ticket_manager):
 
     # appoint user manager
 
-    ticket_user_management_service.appoint_user_manager(
-        ticket.id, ticket_manager.id, ticket.owned_by_id
+    appoint_user_manager_result = (
+        ticket_user_management_service.appoint_user_manager(
+            ticket.id, ticket_manager.id, ticket.owned_by_id
+        )
     )
+    assert appoint_user_manager_result.is_ok()
     assert ticket.user_managed_by_id == ticket_manager.id
 
     log_entries_after_appointment = ticket_log_service.get_entries_for_ticket(
@@ -49,9 +52,12 @@ def test_appoint_and_withdraw_user_manager(admin_app, ticket, ticket_manager):
 
     # withdraw user manager
 
-    ticket_user_management_service.withdraw_user_manager(
-        ticket.id, ticket.owned_by_id
+    withdraw_user_manager_result = (
+        ticket_user_management_service.withdraw_user_manager(
+            ticket.id, ticket.owned_by_id
+        )
     )
+    assert withdraw_user_manager_result.is_ok()
     assert ticket.user_managed_by_id is None
 
     log_entries_after_withdrawal = ticket_log_service.get_entries_for_ticket(
@@ -74,9 +80,10 @@ def test_appoint_and_withdraw_user(admin_app, ticket, make_user):
 
     # appoint user
 
-    ticket_user_management_service.appoint_user(
+    appoint_user_result = ticket_user_management_service.appoint_user(
         ticket.id, ticket_user.id, ticket.owned_by_id
     )
+    assert appoint_user_result.is_ok()
     assert ticket.used_by_id == ticket_user.id
 
     log_entries_after_appointment = ticket_log_service.get_entries_for_ticket(
@@ -96,7 +103,10 @@ def test_appoint_and_withdraw_user(admin_app, ticket, make_user):
 
     # withdraw user
 
-    ticket_user_management_service.withdraw_user(ticket.id, ticket.owned_by_id)
+    withdraw_user_result = ticket_user_management_service.withdraw_user(
+        ticket.id, ticket.owned_by_id
+    )
+    assert withdraw_user_result.is_ok()
     assert ticket.used_by_id is None
 
     log_entries_after_withdrawal = ticket_log_service.get_entries_for_ticket(

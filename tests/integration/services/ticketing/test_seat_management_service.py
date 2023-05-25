@@ -75,9 +75,12 @@ def test_appoint_and_withdraw_seat_manager(admin_app, ticket, ticket_manager):
 
     # appoint seat manager
 
-    ticket_seat_management_service.appoint_seat_manager(
-        ticket.id, ticket_manager.id, ticket.owned_by_id
+    appoint_seat_manager_result = (
+        ticket_seat_management_service.appoint_seat_manager(
+            ticket.id, ticket_manager.id, ticket.owned_by_id
+        )
     )
+    assert appoint_seat_manager_result.is_ok()
     assert ticket.seat_managed_by_id == ticket_manager.id
 
     log_entries_after_appointment = ticket_log_service.get_entries_for_ticket(
@@ -97,9 +100,12 @@ def test_appoint_and_withdraw_seat_manager(admin_app, ticket, ticket_manager):
 
     # withdraw seat manager
 
-    ticket_seat_management_service.withdraw_seat_manager(
-        ticket.id, ticket.owned_by_id
+    withdraw_seat_manager_result = (
+        ticket_seat_management_service.withdraw_seat_manager(
+            ticket.id, ticket.owned_by_id
+        )
     )
+    assert withdraw_seat_manager_result.is_ok()
     assert ticket.seat_managed_by_id is None
 
     log_entries_after_withdrawal = ticket_log_service.get_entries_for_ticket(
@@ -120,9 +126,10 @@ def test_occupy_and_release_seat(admin_app, seat1, seat2, ticket):
 
     # occupy seat
 
-    ticket_seat_management_service.occupy_seat(
+    occupy_seat_result1 = ticket_seat_management_service.occupy_seat(
         ticket.id, seat1.id, ticket.owned_by_id
     )
+    assert occupy_seat_result1.is_ok()
     assert ticket.occupied_seat_id == seat1.id
 
     log_entries_after_occupation = ticket_log_service.get_entries_for_ticket(
@@ -139,9 +146,10 @@ def test_occupy_and_release_seat(admin_app, seat1, seat2, ticket):
 
     # switch to another seat
 
-    ticket_seat_management_service.occupy_seat(
+    occupy_seat_result2 = ticket_seat_management_service.occupy_seat(
         ticket.id, seat2.id, ticket.owned_by_id
     )
+    assert occupy_seat_result2.is_ok()
     assert ticket.occupied_seat_id == seat2.id
 
     log_entries_after_switch = ticket_log_service.get_entries_for_ticket(
@@ -162,7 +170,10 @@ def test_occupy_and_release_seat(admin_app, seat1, seat2, ticket):
 
     # release seat
 
-    ticket_seat_management_service.release_seat(ticket.id, ticket.owned_by_id)
+    release_seat_result = ticket_seat_management_service.release_seat(
+        ticket.id, ticket.owned_by_id
+    )
+    assert release_seat_result.is_ok()
     assert ticket.occupied_seat_id is None
 
     log_entries_after_release = ticket_log_service.get_entries_for_ticket(
@@ -192,10 +203,12 @@ def test_occupy_seat_with_bundled_ticket(
 ):
     bundled_ticket = ticket_bundle.tickets[0]
 
-    with pytest.raises(SeatChangeDeniedForBundledTicketError):
-        ticket_seat_management_service.occupy_seat(
-            bundled_ticket.id, seat1.id, ticket.owned_by_id
-        )
+    actual = ticket_seat_management_service.occupy_seat(
+        bundled_ticket.id, seat1.id, ticket.owned_by_id
+    )
+    assert isinstance(
+        actual.unwrap_err(), SeatChangeDeniedForBundledTicketError
+    )
 
 
 def test_occupy_seat_with_wrong_category(
@@ -203,10 +216,10 @@ def test_occupy_seat_with_wrong_category(
 ):
     assert ticket.category_id != another_category.id
 
-    with pytest.raises(TicketCategoryMismatchError):
-        ticket_seat_management_service.occupy_seat(
-            ticket.id, seat_of_another_category.id, ticket.owned_by_id
-        )
+    actual = ticket_seat_management_service.occupy_seat(
+        ticket.id, seat_of_another_category.id, ticket.owned_by_id
+    )
+    assert isinstance(actual.unwrap_err(), TicketCategoryMismatchError)
 
 
 # helpers

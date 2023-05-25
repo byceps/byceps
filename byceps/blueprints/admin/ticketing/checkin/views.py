@@ -146,24 +146,30 @@ def check_in_user(party_id, ticket_id):
 
     initiator_id = g.user.id
 
-    try:
-        event = ticket_user_checkin_service.check_in_user(
-            party.id, ticket.id, initiator_id
-        )
-    except ticketing_errors.UserAccountDeletedError:
-        flash_error(
-            gettext(
-                'The user account assigned to this ticket has been deleted. Check-in denied.'
+    check_in_result = ticket_user_checkin_service.check_in_user(
+        party.id, ticket.id, initiator_id
+    )
+
+    if check_in_result.is_err():
+        err = check_in_result.unwrap_err()
+        if isinstance(err, ticketing_errors.UserAccountDeletedError):
+            flash_error(
+                gettext(
+                    'The user account assigned to this ticket has been deleted. Check-in denied.'
+                )
             )
-        )
-        return
-    except ticketing_errors.UserAccountSuspendedError:
-        flash_error(
-            gettext(
-                'The user account assigned to this ticket has been suspended. Check-in denied.'
+        elif isinstance(err, ticketing_errors.UserAccountSuspendedError):
+            flash_error(
+                gettext(
+                    'The user account assigned to this ticket has been suspended. Check-in denied.'
+                )
             )
-        )
+        else:
+            flash_error(gettext('An unexpected error occurred.'))
+
         return
+
+    event = check_in_result.unwrap()
 
     ticketing_signals.ticket_checked_in.send(None, event=event)
 

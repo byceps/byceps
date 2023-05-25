@@ -49,7 +49,10 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
 
     ticket_id = ticket_before.id
 
-    event = check_in_user(party.id, ticket_id, initiator.id)
+    check_in_result = check_in_user(party.id, ticket_id, initiator.id)
+    assert check_in_result.is_ok()
+
+    event = check_in_result.unwrap()
 
     # -------------------------------- #
 
@@ -89,15 +92,15 @@ def test_check_in_user_with_ticket_for_another_party(
 ):
     other_party = make_party(brand.id)
 
-    with pytest.raises(TicketBelongsToDifferentPartyError):
-        check_in_user(other_party.id, ticket.id, ticketing_admin.id)
+    actual = check_in_user(other_party.id, ticket.id, ticketing_admin.id)
+    assert isinstance(actual.unwrap_err(), TicketBelongsToDifferentPartyError)
 
 
 def test_check_in_user_with_ticket_without_assigned_user(
     admin_app, party, ticket, ticketing_admin
 ):
-    with pytest.raises(TicketLacksUserError):
-        check_in_user(party.id, ticket.id, ticketing_admin.id)
+    actual = check_in_user(party.id, ticket.id, ticketing_admin.id)
+    assert isinstance(actual.unwrap_err(), TicketLacksUserError)
 
 
 def test_check_in_user_with_revoked_ticket(
@@ -109,8 +112,8 @@ def test_check_in_user_with_revoked_ticket(
     ticket.used_by_id = ticket_user.id
     db.session.commit()
 
-    with pytest.raises(TicketIsRevokedError):
-        check_in_user(party.id, ticket.id, ticketing_admin.id)
+    actual = check_in_user(party.id, ticket.id, ticketing_admin.id)
+    assert isinstance(actual.unwrap_err(), TicketIsRevokedError)
 
 
 def test_check_in_user_with_ticket_user_already_checked_in(
@@ -122,8 +125,8 @@ def test_check_in_user_with_ticket_user_already_checked_in(
     ticket.user_checked_in = True
     db.session.commit()
 
-    with pytest.raises(UserAlreadyCheckedInError):
-        check_in_user(party.id, ticket.id, ticketing_admin.id)
+    actual = check_in_user(party.id, ticket.id, ticketing_admin.id)
+    assert isinstance(actual.unwrap_err(), UserAlreadyCheckedInError)
 
 
 def test_check_in_suspended_user(
@@ -134,8 +137,8 @@ def test_check_in_suspended_user(
     ticket.used_by_id = ticket_user.id
     db.session.commit()
 
-    with pytest.raises(UserAccountSuspendedError):
-        check_in_user(party.id, ticket.id, ticketing_admin.id)
+    actual = check_in_user(party.id, ticket.id, ticketing_admin.id)
+    assert isinstance(actual.unwrap_err(), UserAccountSuspendedError)
 
 
 # helpers

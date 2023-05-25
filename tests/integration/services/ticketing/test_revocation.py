@@ -140,7 +140,7 @@ def test_revoke_ticket_with_seat(
 ):
     ticket_seat_management_service.occupy_seat(
         ticket.id, seat.id, ticket.owned_by_id
-    )
+    ).unwrap()
 
     assert ticket.occupied_seat_id == seat.id
 
@@ -169,7 +169,7 @@ def test_revoke_tickets_with_seats(
     for ticket, seat in zip(tickets, seats):
         ticket_seat_management_service.occupy_seat(
             ticket.id, seat.id, ticket.owned_by_id
-        )
+        ).unwrap()
 
         assert ticket.occupied_seat_id == seat.id
 
