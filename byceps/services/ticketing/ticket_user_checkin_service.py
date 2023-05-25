@@ -8,11 +8,9 @@ byceps.services.ticketing.ticket_user_checkin_service
 
 from __future__ import annotations
 
-from datetime import datetime
-
 from sqlalchemy import select
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
@@ -20,7 +18,7 @@ from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
 from byceps.util.result import Err, Ok, Result
 
-from . import ticket_log_service, ticket_service
+from . import ticket_domain_service, ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
 from .errors import (
     TicketBelongsToDifferentPartyError,
@@ -46,8 +44,6 @@ def check_in_user(
 
     db_ticket = db_ticket_result.unwrap()
 
-    check_in_id = generate_uuid7()
-    occurred_at = datetime.utcnow()
     initiator = user_service.get_user(initiator_id)
 
     user_result = _get_user_for_checkin(db_ticket.used_by_id)
@@ -57,23 +53,14 @@ def check_in_user(
 
     user = user_result.unwrap()
 
-    check_in = TicketCheckIn(
-        id=check_in_id,
-        occurred_at=occurred_at,
-        ticket_id=db_ticket.id,
-        initiator_id=initiator.id,
+    check_in_result = ticket_domain_service.check_in_user(
+        db_ticket, user, initiator
     )
 
-    event = TicketCheckedInEvent(
-        occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        ticket_id=db_ticket.id,
-        ticket_code=db_ticket.code,
-        occupied_seat_id=db_ticket.occupied_seat_id,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
-    )
+    if check_in_result.is_err():
+        return Err(check_in_result.unwrap_err())
+
+    check_in, event = check_in_result.unwrap()
 
     _persist_check_in(db_ticket, check_in, event)
 
