@@ -17,7 +17,7 @@ from byceps.services.ticketing import (
     ticket_seat_management_service,
     ticket_service,
 )
-from byceps.services.ticketing.exceptions import (
+from byceps.services.ticketing.errors import (
     SeatChangeDeniedForBundledTicketError,
     TicketCategoryMismatchError,
 )

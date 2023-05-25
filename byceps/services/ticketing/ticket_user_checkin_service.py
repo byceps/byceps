@@ -21,7 +21,7 @@ from byceps.typing import PartyID, UserID
 
 from . import ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
-from .exceptions import (
+from .errors import (
     TicketBelongsToDifferentPartyError,
     TicketIsRevokedError,
     TicketLacksUserError,

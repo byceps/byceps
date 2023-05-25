@@ -15,7 +15,7 @@ from byceps.typing import UserID
 
 from . import ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
-from .exceptions import (
+from .errors import (
     SeatChangeDeniedForBundledTicketError,
     SeatChangeDeniedForGroupSeatError,
     TicketCategoryMismatchError,

@@ -11,7 +11,7 @@ from byceps.services.user import user_service
 from byceps.typing import UserID
 
 from . import ticket_log_service, ticket_service
-from .exceptions import (
+from .errors import (
     TicketIsRevokedError,
     UserAccountSuspendedError,
     UserAlreadyCheckedInError,

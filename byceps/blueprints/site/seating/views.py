@@ -20,7 +20,7 @@ from byceps.services.seating import (
 )
 from byceps.services.seating.models import Seat, SeatID, SeatingArea
 from byceps.services.ticketing import (
-    exceptions as ticket_exceptions,
+    errors as ticketing_errors,
     ticket_seat_management_service,
     ticket_service,
 )
@@ -243,7 +243,7 @@ def occupy_seat(ticket_id, seat_id):
         ticket_seat_management_service.occupy_seat(
             ticket.id, seat.id, manager.id
         )
-    except ticket_exceptions.SeatChangeDeniedForBundledTicketError:
+    except ticketing_errors.SeatChangeDeniedForBundledTicketError:
         flash_error(
             gettext(
                 'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
@@ -251,7 +251,7 @@ def occupy_seat(ticket_id, seat_id):
             )
         )
         return
-    except ticket_exceptions.TicketCategoryMismatchError:
+    except ticketing_errors.TicketCategoryMismatchError:
         flash_error(
             gettext(
                 'Ticket %(ticket_code)s and seat "%(seat_label)s" belong to different categories.',
@@ -312,7 +312,7 @@ def release_seat(ticket_id):
 
     try:
         ticket_seat_management_service.release_seat(ticket.id, manager.id)
-    except ticket_exceptions.SeatChangeDeniedForBundledTicketError:
+    except ticketing_errors.SeatChangeDeniedForBundledTicketError:
         flash_error(
             gettext(
                 'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',

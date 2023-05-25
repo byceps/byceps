@@ -13,7 +13,7 @@ from byceps.services.ticketing import (
     ticket_service,
     ticket_user_checkin_service,
 )
-from byceps.services.ticketing.exceptions import (
+from byceps.services.ticketing.errors import (
     TicketBelongsToDifferentPartyError,
     TicketIsRevokedError,
     TicketLacksUserError,

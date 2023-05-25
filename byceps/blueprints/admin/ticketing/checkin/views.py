@@ -18,7 +18,7 @@ from byceps.services.shop.order import order_service
 from byceps.services.shop.order.models.order import AdminOrderListItem
 from byceps.services.shop.shop import shop_service
 from byceps.services.ticketing import (
-    exceptions as ticket_exceptions,
+    errors as ticketing_errors,
     ticket_service,
     ticket_user_checkin_service,
 )
@@ -150,14 +150,14 @@ def check_in_user(party_id, ticket_id):
         event = ticket_user_checkin_service.check_in_user(
             party.id, ticket.id, initiator_id
         )
-    except ticket_exceptions.UserAccountDeletedError:
+    except ticketing_errors.UserAccountDeletedError:
         flash_error(
             gettext(
                 'The user account assigned to this ticket has been deleted. Check-in denied.'
             )
         )
         return
-    except ticket_exceptions.UserAccountSuspendedError:
+    except ticketing_errors.UserAccountSuspendedError:
         flash_error(
             gettext(
                 'The user account assigned to this ticket has been suspended. Check-in denied.'
