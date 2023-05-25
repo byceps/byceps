@@ -12,7 +12,7 @@ from datetime import datetime
 
 from sqlalchemy import select
 
-from byceps.database import db
+from byceps.database import db, generate_uuid7
 from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
@@ -46,6 +46,7 @@ def check_in_user(
 
     db_ticket = db_ticket_result.unwrap()
 
+    check_in_id = generate_uuid7()
     occurred_at = datetime.utcnow()
     initiator = user_service.get_user(initiator_id)
 
@@ -56,23 +57,12 @@ def check_in_user(
 
     user = user_result.unwrap()
 
-    db_ticket.user_checked_in = True
-
-    db_check_in = DbTicketCheckIn(occurred_at, db_ticket.id, initiator.id)
-    db.session.add(db_check_in)
-
-    db_log_entry = ticket_log_service.build_entry(
-        'user-checked-in',
-        db_ticket.id,
-        {
-            'checked_in_user_id': str(db_ticket.used_by_id),
-            'initiator_id': str(initiator.id),
-        },
+    check_in = TicketCheckIn(
+        id=check_in_id,
         occurred_at=occurred_at,
+        ticket_id=db_ticket.id,
+        initiator_id=initiator.id,
     )
-    db.session.add(db_log_entry)
-
-    db.session.commit()
 
     event = TicketCheckedInEvent(
         occurred_at=occurred_at,
@@ -84,6 +74,8 @@ def check_in_user(
         user_id=user.id,
         user_screen_name=user.screen_name,
     )
+
+    _persist_check_in(db_ticket, check_in, event)
 
     return Ok(event)
 
@@ -141,6 +133,30 @@ def _get_user_for_checkin(user_id: UserID) -> Result[User, TicketingError]:
         )
 
     return Ok(user)
+
+
+def _persist_check_in(
+    db_ticket: DbTicket, check_in: TicketCheckIn, event: TicketCheckedInEvent
+) -> None:
+    db_ticket.user_checked_in = True
+
+    db_check_in = DbTicketCheckIn(
+        event.occurred_at, event.ticket_id, event.initiator_id
+    )
+    db.session.add(db_check_in)
+
+    db_log_entry = ticket_log_service.build_entry(
+        'user-checked-in',
+        event.ticket_id,
+        {
+            'checked_in_user_id': str(event.user_id),
+            'initiator_id': str(event.initiator_id),
+        },
+        occurred_at=event.occurred_at,
+    )
+    db.session.add(db_log_entry)
+
+    db.session.commit()
 
 
 def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
