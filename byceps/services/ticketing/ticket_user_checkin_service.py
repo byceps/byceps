@@ -30,7 +30,8 @@ from .errors import (
     UserAlreadyCheckedInError,
     UserIdUnknownError,
 )
-from .models.ticket import TicketCheckIn, TicketID
+from .models.checkin import TicketCheckIn
+from .models.ticket import TicketID
 
 
 def check_in_user(

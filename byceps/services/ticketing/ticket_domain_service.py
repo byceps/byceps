@@ -17,7 +17,7 @@ from byceps.util.result import Ok, Result
 
 from .dbmodels.ticket import DbTicket
 from .errors import TicketingError
-from .models.ticket import TicketCheckIn
+from .models.checkin import TicketCheckIn
 
 
 def check_in_user(
