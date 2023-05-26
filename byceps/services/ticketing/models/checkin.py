@@ -6,13 +6,24 @@ byceps.services.ticketing.models.checkin
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
+from byceps.services.seating.models import SeatID
 from byceps.typing import UserID
 
-from .ticket import TicketID
+from .ticket import TicketCode, TicketID
+
+
+@dataclass(frozen=True)
+class TicketValidForCheckIn:
+    id: TicketID
+    code: TicketCode
+    used_by_id: UserID
+    occupied_seat_id: SeatID | None
 
 
 @dataclass(frozen=True)
