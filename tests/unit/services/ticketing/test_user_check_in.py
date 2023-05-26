@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 import pytest
 
 from byceps.database import generate_uuid7
