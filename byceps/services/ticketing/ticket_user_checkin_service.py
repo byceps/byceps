@@ -14,19 +14,13 @@ from byceps.database import db
 from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import ticket_domain_service, ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
-from .errors import (
-    TicketingError,
-    UserAccountDeletedError,
-    UserAccountSuspendedError,
-    UserIdUnknownError,
-)
-from .models.checkin import TicketCheckIn
+from .errors import TicketingError, UserIdUnknownError
+from .models.checkin import TicketCheckIn, TicketForCheckIn
 from .models.ticket import TicketID
 
 
@@ -38,22 +32,36 @@ def check_in_user(
 
     initiator = user_service.get_user(initiator_id)
 
+    used_by_id = db_ticket.used_by_id
+    if used_by_id is None:
+        used_by = None
+    else:
+        used_by = user_service.find_user(used_by_id)
+        if used_by is None:
+            return Err(UserIdUnknownError(f"Unknown user ID '{used_by_id}'"))
+
+    ticket_for_check_in = TicketForCheckIn(
+        id=db_ticket.id,
+        party_id=db_ticket.party_id,
+        code=db_ticket.code,
+        occupied_seat_id=db_ticket.occupied_seat_id,
+        used_by=used_by,
+        revoked=db_ticket.revoked,
+        user_checked_in=db_ticket.user_checked_in,
+    )
+
     ticket_validation_result = (
-        ticket_domain_service.validate_ticket_for_check_in(party_id, db_ticket)
+        ticket_domain_service.validate_ticket_for_check_in(
+            party_id, ticket_for_check_in
+        )
     )
     if ticket_validation_result.is_err():
         return Err(ticket_validation_result.unwrap_err())
 
     ticket_valid_for_check_in = ticket_validation_result.unwrap()
 
-    user_result = _get_user_for_checkin(ticket_valid_for_check_in.used_by_id)
-    if user_result.is_err():
-        return Err(user_result.unwrap_err())
-
-    user = user_result.unwrap()
-
     check_in_result = ticket_domain_service.check_in_user(
-        ticket_valid_for_check_in, user, initiator
+        ticket_valid_for_check_in, initiator
     )
 
     if check_in_result.is_err():
@@ -64,29 +72,6 @@ def check_in_user(
     _persist_check_in(db_ticket, check_in, event)
 
     return Ok(event)
-
-
-def _get_user_for_checkin(user_id: UserID) -> Result[User, TicketingError]:
-    user = user_service.find_user(user_id)
-
-    if user is None:
-        return Err(UserIdUnknownError(f"Unknown user ID '{user_id}'"))
-
-    if user.deleted:
-        return Err(
-            UserAccountDeletedError(
-                f'User account {user.screen_name} has been deleted.'
-            )
-        )
-
-    if user.suspended:
-        return Err(
-            UserAccountSuspendedError(
-                f'User account {user.screen_name} is suspended.'
-            )
-        )
-
-    return Ok(user)
 
 
 def _persist_check_in(
