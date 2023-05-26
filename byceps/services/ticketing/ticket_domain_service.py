@@ -90,17 +90,29 @@ def validate_ticket_for_check_in(
 def check_in_user(
     ticket: TicketValidForCheckIn, initiator: User
 ) -> Result[tuple[TicketCheckIn, TicketCheckedInEvent], TicketingError]:
-    check_in_id = generate_uuid7()
     occurred_at = datetime.utcnow()
 
-    check_in = TicketCheckIn(
-        id=check_in_id,
+    check_in = _build_check_in(occurred_at, ticket, initiator)
+    event = _build_check_in_event(occurred_at, ticket, initiator)
+
+    return Ok((check_in, event))
+
+
+def _build_check_in(
+    occurred_at: datetime, ticket: TicketValidForCheckIn, initiator: User
+) -> TicketCheckIn:
+    return TicketCheckIn(
+        id=generate_uuid7(),
         occurred_at=occurred_at,
         ticket_id=ticket.id,
         initiator_id=initiator.id,
     )
 
-    event = TicketCheckedInEvent(
+
+def _build_check_in_event(
+    occurred_at: datetime, ticket: TicketValidForCheckIn, initiator: User
+) -> TicketCheckedInEvent:
+    return TicketCheckedInEvent(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
@@ -110,5 +122,3 @@ def check_in_user(
         user_id=ticket.used_by.id,
         user_screen_name=ticket.used_by.screen_name,
     )
-
-    return Ok((check_in, event))
