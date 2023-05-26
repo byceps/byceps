@@ -50,18 +50,8 @@ def check_in_user(
         user_checked_in=db_ticket.user_checked_in,
     )
 
-    ticket_validation_result = (
-        ticket_domain_service.validate_ticket_for_check_in(
-            party_id, ticket_for_check_in
-        )
-    )
-    if ticket_validation_result.is_err():
-        return Err(ticket_validation_result.unwrap_err())
-
-    ticket_valid_for_check_in = ticket_validation_result.unwrap()
-
     check_in_result = ticket_domain_service.check_in_user(
-        ticket_valid_for_check_in, initiator
+        party_id, ticket_for_check_in, initiator
     )
 
     if check_in_result.is_err():

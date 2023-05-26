@@ -32,9 +32,9 @@ from .models.checkin import (
 )
 
 
-def validate_ticket_for_check_in(
-    party_id: PartyID, ticket: TicketForCheckIn
-) -> Result[TicketValidForCheckIn, TicketingError]:
+def check_in_user(
+    party_id: PartyID, ticket: TicketForCheckIn, initiator: User
+) -> Result[tuple[TicketCheckIn, TicketCheckedInEvent], TicketingError]:
     ticket_id = ticket.id
 
     if ticket.party_id != party_id:
@@ -84,16 +84,10 @@ def validate_ticket_for_check_in(
         occupied_seat_id=ticket.occupied_seat_id,
     )
 
-    return Ok(valid_ticket)
-
-
-def check_in_user(
-    ticket: TicketValidForCheckIn, initiator: User
-) -> Result[tuple[TicketCheckIn, TicketCheckedInEvent], TicketingError]:
     occurred_at = datetime.utcnow()
 
-    check_in = _build_check_in(occurred_at, ticket, initiator)
-    event = _build_check_in_event(occurred_at, ticket, initiator)
+    check_in = _build_check_in(occurred_at, valid_ticket, initiator)
+    event = _build_check_in_event(occurred_at, valid_ticket, initiator)
 
     return Ok((check_in, event))
 
