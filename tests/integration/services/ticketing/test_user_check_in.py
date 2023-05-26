@@ -17,6 +17,7 @@ from byceps.services.ticketing.errors import (
     TicketBelongsToDifferentPartyError,
     TicketIsRevokedError,
     TicketLacksUserError,
+    UserAccountDeletedError,
     UserAccountSuspendedError,
     UserAlreadyCheckedInError,
 )
@@ -129,12 +130,20 @@ def test_check_in_user_with_ticket_user_already_checked_in(
     assert isinstance(actual.unwrap_err(), UserAlreadyCheckedInError)
 
 
-def test_check_in_suspended_user(
-    admin_app, party, ticket, ticketing_admin, make_user
+def test_check_in_deleted_user(
+    admin_app, party, ticket, ticketing_admin, deleted_user
 ):
-    ticket_user = make_user(suspended=True)
+    ticket.used_by_id = deleted_user.id
+    db.session.commit()
 
-    ticket.used_by_id = ticket_user.id
+    actual = check_in_user(party.id, ticket.id, ticketing_admin.id)
+    assert isinstance(actual.unwrap_err(), UserAccountDeletedError)
+
+
+def test_check_in_suspended_user(
+    admin_app, party, ticket, ticketing_admin, suspended_user
+):
+    ticket.used_by_id = suspended_user.id
     db.session.commit()
 
     actual = check_in_user(party.id, ticket.id, ticketing_admin.id)
