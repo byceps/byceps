@@ -19,16 +19,6 @@ from .models.log import TicketLogEntry, TicketLogEntryData
 from .models.ticket import TicketID
 
 
-def create_entry(
-    event_type: str, ticket_id: TicketID, data: TicketLogEntryData
-) -> None:
-    """Create a ticket log entry."""
-    db_entry = build_entry(event_type, ticket_id, data)
-
-    db.session.add(db_entry)
-    db.session.commit()
-
-
 def build_entry(
     event_type: str,
     ticket_id: TicketID,
