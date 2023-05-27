@@ -19,7 +19,7 @@ from .models.log import TicketLogEntry, TicketLogEntryData
 from .models.ticket import TicketID
 
 
-def build_entry(
+def build_db_entry(
     event_type: str,
     ticket_id: TicketID,
     data: TicketLogEntryData,

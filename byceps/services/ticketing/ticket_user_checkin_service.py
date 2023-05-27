@@ -74,7 +74,7 @@ def _persist_check_in(
     )
     db.session.add(db_check_in)
 
-    db_log_entry = ticket_log_service.build_entry(
+    db_log_entry = ticket_log_service.build_db_entry(
         'user-checked-in',
         event.ticket_id,
         {
@@ -99,7 +99,7 @@ def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     db_ticket.user_checked_in = False
 
-    db_log_entry = ticket_log_service.build_entry(
+    db_log_entry = ticket_log_service.build_db_entry(
         'user-check-in-reverted',
         db_ticket.id,
         {
