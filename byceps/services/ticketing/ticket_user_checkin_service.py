@@ -21,6 +21,7 @@ from . import ticket_domain_service, ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
 from .errors import TicketingError, UserIdUnknownError
 from .models.checkin import TicketCheckIn, TicketForCheckIn
+from .models.log import TicketLogEntry
 from .models.ticket import TicketID
 
 
@@ -57,15 +58,18 @@ def check_in_user(
     if check_in_result.is_err():
         return Err(check_in_result.unwrap_err())
 
-    check_in, event = check_in_result.unwrap()
+    check_in, event, log_entry = check_in_result.unwrap()
 
-    _persist_check_in(db_ticket, check_in, event)
+    _persist_check_in(db_ticket, check_in, event, log_entry)
 
     return Ok(event)
 
 
 def _persist_check_in(
-    db_ticket: DbTicket, check_in: TicketCheckIn, event: TicketCheckedInEvent
+    db_ticket: DbTicket,
+    check_in: TicketCheckIn,
+    event: TicketCheckedInEvent,
+    log_entry: TicketLogEntry,
 ) -> None:
     db_ticket.user_checked_in = True
 
@@ -74,15 +78,7 @@ def _persist_check_in(
     )
     db.session.add(db_check_in)
 
-    db_log_entry = ticket_log_service.build_db_entry(
-        'user-checked-in',
-        event.ticket_id,
-        {
-            'checked_in_user_id': str(event.user_id),
-            'initiator_id': str(event.initiator_id),
-        },
-        occurred_at=event.occurred_at,
-    )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()

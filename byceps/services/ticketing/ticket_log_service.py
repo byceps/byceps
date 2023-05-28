@@ -35,6 +35,17 @@ def build_db_entry(
     return DbTicketLogEntry(entry_id, occurred_at, event_type, ticket_id, data)
 
 
+def to_db_entry(entry: TicketLogEntry) -> DbTicketLogEntry:
+    """Convert log entry to database entity."""
+    return DbTicketLogEntry(
+        entry.id,
+        entry.occurred_at,
+        entry.event_type,
+        entry.ticket_id,
+        entry.data,
+    )
+
+
 def get_entries_for_ticket(ticket_id: TicketID) -> list[TicketLogEntry]:
     """Return the log entries for that ticket."""
     db_entries = db.session.scalars(

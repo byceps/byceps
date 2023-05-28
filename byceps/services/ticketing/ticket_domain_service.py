@@ -30,11 +30,15 @@ from .models.checkin import (
     TicketForCheckIn,
     TicketValidForCheckIn,
 )
+from .models.log import TicketLogEntry, TicketLogEntryData
+from .models.ticket import TicketID
 
 
 def check_in_user(
     party_id: PartyID, ticket: TicketForCheckIn, initiator: User
-) -> Result[tuple[TicketCheckIn, TicketCheckedInEvent], TicketingError]:
+) -> Result[
+    tuple[TicketCheckIn, TicketCheckedInEvent, TicketLogEntry], TicketingError
+]:
     ticket_id = ticket.id
 
     if ticket.party_id != party_id:
@@ -88,8 +92,17 @@ def check_in_user(
 
     check_in = _build_check_in(occurred_at, valid_ticket, initiator)
     event = _build_check_in_event(occurred_at, valid_ticket, initiator)
+    log_entry = _build_log_entry(
+        occurred_at,
+        'user-checked-in',
+        ticket_id,
+        {
+            'checked_in_user_id': str(user.id),
+            'initiator_id': str(initiator.id),
+        },
+    )
 
-    return Ok((check_in, event))
+    return Ok((check_in, event, log_entry))
 
 
 def _build_check_in(
@@ -115,4 +128,19 @@ def _build_check_in_event(
         occupied_seat_id=ticket.occupied_seat_id,
         user_id=ticket.used_by.id,
         user_screen_name=ticket.used_by.screen_name,
+    )
+
+
+def _build_log_entry(
+    occurred_at: datetime,
+    event_type: str,
+    ticket_id: TicketID,
+    data: TicketLogEntryData,
+) -> TicketLogEntry:
+    return TicketLogEntry(
+        id=generate_uuid7(),
+        occurred_at=occurred_at,
+        event_type=event_type,
+        ticket_id=ticket_id,
+        data=data.copy(),
     )

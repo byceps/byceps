@@ -32,7 +32,7 @@ def test_check_in_user(party_id, build_ticket, ticket_user, initiator):
     actual = ticket_domain_service.check_in_user(party_id, ticket, initiator)
     assert actual.is_ok()
 
-    check_in, event = actual.unwrap()
+    check_in, event, log_entry = actual.unwrap()
 
     assert check_in.id is not None
     assert check_in.occurred_at is not None
@@ -48,6 +48,15 @@ def test_check_in_user(party_id, build_ticket, ticket_user, initiator):
     assert event.occupied_seat_id is None
     assert event.user_id == ticket_user.id
     assert event.user_screen_name == ticket_user.screen_name
+
+    assert log_entry.id is not None
+    assert log_entry.occurred_at is not None
+    assert log_entry.event_type == 'user-checked-in'
+    assert log_entry.ticket_id == ticket.id
+    assert log_entry.data == {
+        'checked_in_user_id': str(ticket_user.id),
+        'initiator_id': str(initiator.id),
+    }
 
 
 def test_check_in_user_with_ticket_for_another_party(
