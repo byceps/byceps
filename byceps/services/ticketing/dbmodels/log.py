@@ -7,8 +7,9 @@ byceps.services.ticketing.dbmodels.log
 """
 
 from datetime import datetime
+from uuid import UUID
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.ticketing.models.log import TicketLogEntryData
 from byceps.services.ticketing.models.ticket import TicketID
 from byceps.util.instances import ReprBuilder
@@ -19,7 +20,7 @@ class DbTicketLogEntry(db.Model):
 
     __tablename__ = 'ticket_log_entries'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
+    id = db.Column(db.Uuid, primary_key=True)
     occurred_at = db.Column(db.DateTime, nullable=False)
     event_type = db.Column(db.UnicodeText, index=True, nullable=False)
     ticket_id = db.Column(
@@ -29,11 +30,13 @@ class DbTicketLogEntry(db.Model):
 
     def __init__(
         self,
+        id: UUID,
         occurred_at: datetime,
         event_type: str,
         ticket_id: TicketID,
         data: TicketLogEntryData,
     ) -> None:
+        self.id = id
         self.occurred_at = occurred_at
         self.event_type = event_type
         self.ticket_id = ticket_id

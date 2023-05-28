@@ -12,7 +12,7 @@ from datetime import datetime
 
 from sqlalchemy import select
 
-from byceps.database import db
+from byceps.database import db, generate_uuid7
 
 from .dbmodels.log import DbTicketLogEntry
 from .models.log import TicketLogEntry, TicketLogEntryData
@@ -27,10 +27,12 @@ def build_db_entry(
     occurred_at: datetime | None = None,
 ) -> DbTicketLogEntry:
     """Assemble, but not persist, a ticket log entry."""
+    entry_id = generate_uuid7()
+
     if occurred_at is None:
         occurred_at = datetime.utcnow()
 
-    return DbTicketLogEntry(occurred_at, event_type, ticket_id, data)
+    return DbTicketLogEntry(entry_id, occurred_at, event_type, ticket_id, data)
 
 
 def get_entries_for_ticket(ticket_id: TicketID) -> list[TicketLogEntry]:
