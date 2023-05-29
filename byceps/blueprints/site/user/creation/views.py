@@ -101,7 +101,8 @@ def create():
         first_name=first_name,
         last_name=last_name,
         creation_method='site app',
-        site_id=g.site_id,
+        site_id=g.site.id,
+        site_title=g.site.title,
         ip_address=request.remote_addr,
     )
     if creation_result.is_err():

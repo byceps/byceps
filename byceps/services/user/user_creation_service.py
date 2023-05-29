@@ -46,6 +46,7 @@ def create_user(
     creation_method: str | None = None,
     creator_id: UserID | None = None,
     site_id: SiteID | None = None,
+    site_title: str | None = None,
     ip_address: str | None = None,
 ) -> Result[tuple[User, UserAccountCreatedEvent], None]:
     """Create a user account and related records."""
@@ -120,6 +121,7 @@ def create_user(
         user_id=user.id,
         user_screen_name=user.screen_name,
         site_id=site_id,
+        site_title=site_title,
     )
 
     # password

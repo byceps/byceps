@@ -31,6 +31,7 @@ def test_account_created_announced(admin_app, make_user, webhook_for_irc):
         user_id=user.id,
         user_screen_name=user.screen_name,
         site_id=None,
+        site_title=None,
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
@@ -54,6 +55,7 @@ def test_account_created_announced_on_site(
         user_id=user.id,
         user_screen_name=user.screen_name,
         site_id=site.id,
+        site_title=site.title,
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
@@ -75,6 +77,7 @@ def test_account_created_by_admin_announced(
         user_id=user.id,
         user_screen_name=user.screen_name,
         site_id=None,
+        site_title=None,
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected

@@ -27,7 +27,6 @@ from byceps.events.user import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.services.site import site_service
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
@@ -41,16 +40,12 @@ def announce_user_account_created(
     )
     user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
-    site = None
     if event.site_id:
-        site = site_service.find_site(event.site_id)
-
-    if site:
         text = gettext(
             '%(initiator_screen_name)s has created user account "%(user_screen_name)s" on site "%(site_title)s".',
             initiator_screen_name=initiator_screen_name,
             user_screen_name=user_screen_name,
-            site_title=site.title,
+            site_title=event.site_title,
         )
     else:
         text = gettext(

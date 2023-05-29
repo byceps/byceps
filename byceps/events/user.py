@@ -25,6 +25,7 @@ class _UserEvent(_BaseEvent):
 class UserAccountCreatedEvent(_UserEvent):
     user_screen_name: str | None
     site_id: SiteID | None
+    site_title: str | None
 
 
 @dataclass(frozen=True)
