@@ -134,6 +134,7 @@ def create_server(
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
         party_id=party.id,
+        party_title=party.title,
         owner_id=owner.id,
         owner_screen_name=owner.screen_name,
         server_id=server.id,

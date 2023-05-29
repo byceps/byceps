@@ -18,7 +18,6 @@ from byceps.announce.helpers import (
     with_locale,
 )
 from byceps.events.guest_server import GuestServerRegisteredEvent
-from byceps.services.party import party_service
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
@@ -31,14 +30,13 @@ def announce_guest_server_registered(
         event.initiator_screen_name
     )
     owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
-    party = party_service.get_party(event.party_id)
 
     text = gettext(
         '%(initiator_screen_name)s has registered a guest server '
         'owned by "%(owner_screen_name)s for party "%(party_title)s".',
         initiator_screen_name=initiator_screen_name,
         owner_screen_name=owner_screen_name,
-        party_title=party.title,
+        party_title=event.party_title,
     )
 
     return Announcement(text)
