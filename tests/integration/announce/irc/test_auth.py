@@ -30,7 +30,7 @@ def test_user_logged_in_into_site_app_announced(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    _, event = authn_session_service.log_in_user(user.id, site_id=site.id)
+    _, event = authn_session_service.log_in_user(user.id, site=site)
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 

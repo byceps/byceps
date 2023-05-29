@@ -19,7 +19,7 @@ from byceps.services.authentication.session.authn_session_service import (
     UserLoggedInEvent,
 )
 from byceps.services.consent import consent_service, consent_subject_service
-from byceps.services.site.models import SiteID
+from byceps.services.site.models import Site
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import verification_token_service
 from byceps.typing import BrandID, UserID
@@ -42,7 +42,7 @@ def log_in_user(
     brand_id: BrandID,
     *,
     ip_address: str | None = None,
-    site_id: SiteID | None = None,
+    site: Site | None = None,
 ) -> Result[
     tuple[User, UserLoggedInEvent],
     AuthenticationFailedError | ConsentRequiredError,
@@ -68,7 +68,7 @@ def log_in_user(
         return Err(ConsentRequiredError(verification_token.token))
 
     auth_token, logged_in_event = authn_session_service.log_in_user(
-        user.id, ip_address=ip_address, site_id=site_id
+        user.id, ip_address=ip_address, site=site
     )
     user_session.start(user.id, auth_token, permanent=permanent)
 

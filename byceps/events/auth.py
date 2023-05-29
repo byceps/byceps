@@ -18,3 +18,4 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class UserLoggedInEvent(_BaseEvent):
     site_id: SiteID | None
+    site_title: str | None

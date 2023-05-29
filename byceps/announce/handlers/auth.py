@@ -18,7 +18,6 @@ from byceps.announce.helpers import (
     with_locale,
 )
 from byceps.events.auth import UserLoggedInEvent
-from byceps.services.site import site_service
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
@@ -29,15 +28,11 @@ def announce_user_logged_in(
     """Announce that a user has logged in."""
     screen_name = get_screen_name_or_fallback(event.initiator_screen_name)
 
-    site = None
     if event.site_id:
-        site = site_service.find_site(event.site_id)
-
-    if site:
         text = gettext(
             '%(screen_name)s has logged in on site "%(site_title)s".',
             screen_name=screen_name,
-            site_title=site.title,
+            site_title=event.site_title,
         )
     else:
         text = gettext(
