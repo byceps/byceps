@@ -16,13 +16,15 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
-from byceps.typing import UserID
+from byceps.typing import BrandID, UserID
 
 from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
 class _BoardEvent(_BaseEvent):
+    brand_id: BrandID
+    brand_title: str
     board_id: BoardID
 
 

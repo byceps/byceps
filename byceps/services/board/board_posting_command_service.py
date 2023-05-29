@@ -17,6 +17,7 @@ from byceps.events.board import (
     BoardPostingUnhiddenEvent,
     BoardPostingUpdatedEvent,
 )
+from byceps.services.brand import brand_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
@@ -43,10 +44,13 @@ def create_posting(
 
     board_aggregation_service.aggregate_topic(topic)
 
+    brand = brand_service.get_brand(db_posting.topic.category.board.brand_id)
     event = BoardPostingCreatedEvent(
         occurred_at=db_posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=topic.category.board_id,
         posting_id=db_posting.id,
         posting_creator_id=creator.id,
@@ -77,11 +81,14 @@ def update_posting(
     if commit:
         db.session.commit()
 
+    brand = brand_service.get_brand(db_posting.topic.category.board.brand_id)
     posting_creator = _get_user(db_posting.creator_id)
     return BoardPostingUpdatedEvent(
         occurred_at=now,
         initiator_id=editor.id,
         initiator_screen_name=editor.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
         posting_creator_id=posting_creator.id,
@@ -110,11 +117,14 @@ def hide_posting(
 
     board_aggregation_service.aggregate_topic(db_posting.topic)
 
+    brand = brand_service.get_brand(db_posting.topic.category.board.brand_id)
     posting_creator = _get_user(db_posting.creator_id)
     event = BoardPostingHiddenEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
         posting_creator_id=posting_creator.id,
@@ -146,11 +156,14 @@ def unhide_posting(
 
     board_aggregation_service.aggregate_topic(db_posting.topic)
 
+    brand = brand_service.get_brand(db_posting.topic.category.board.brand_id)
     posting_creator = _get_user(db_posting.creator_id)
     event = BoardPostingUnhiddenEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
         posting_creator_id=posting_creator.id,

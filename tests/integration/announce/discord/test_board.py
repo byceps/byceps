@@ -18,7 +18,7 @@ from byceps.services.webhooks.models import OutgoingWebhook
 from .helpers import build_announcement_request_for_discord, build_webhook
 
 
-def test_announce_topic_created(admin_app, board, topic, creator):
+def test_announce_topic_created(admin_app, brand, board, topic, creator):
     expected_url = f'https://website.test/board/topics/{topic.id}'
     expected_content = (
         '[Forum] RocketRandy hat das Thema '
@@ -31,6 +31,8 @@ def test_announce_topic_created(admin_app, board, topic, creator):
         occurred_at=topic.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
@@ -44,7 +46,7 @@ def test_announce_topic_created(admin_app, board, topic, creator):
     assert build_announcement_request(event, webhook) == expected
 
 
-def test_announce_posting_created(admin_app, board, posting, creator):
+def test_announce_posting_created(admin_app, brand, board, posting, creator):
     expected_url = f'https://website.test/board/postings/{posting.id}'
     expected_content = (
         '[Forum] RocketRandy hat auf das Thema '
@@ -57,6 +59,8 @@ def test_announce_posting_created(admin_app, board, posting, creator):
         occurred_at=posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,

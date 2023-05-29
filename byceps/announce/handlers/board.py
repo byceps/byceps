@@ -34,9 +34,6 @@ from byceps.events.board import (
     BoardTopicUnlockedEvent,
     BoardTopicUnpinnedEvent,
 )
-from byceps.services.board import board_topic_query_service
-from byceps.services.board.models import TopicID
-from byceps.services.brand import brand_service
 from byceps.services.webhooks.models import OutgoingWebhook
 
 
@@ -64,7 +61,7 @@ def announce_board_topic_created(
         event.topic_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -92,7 +89,7 @@ def announce_board_topic_hidden(
         event.topic_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -121,7 +118,7 @@ def announce_board_topic_unhidden(
         event.topic_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -150,7 +147,7 @@ def announce_board_topic_locked(
         event.topic_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -179,7 +176,7 @@ def announce_board_topic_unlocked(
         event.topic_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -208,7 +205,7 @@ def announce_board_topic_pinned(
         event.topic_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -237,7 +234,7 @@ def announce_board_topic_unpinned(
         event.topic_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -266,7 +263,7 @@ def announce_board_topic_moved(
         event.topic_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -297,7 +294,7 @@ def announce_board_posting_created(
         event.posting_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -325,7 +322,7 @@ def announce_board_posting_hidden(
         event.posting_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -354,7 +351,7 @@ def announce_board_posting_unhidden(
         event.posting_creator_screen_name
     )
     board_label_segment = _get_board_label_segment(
-        event.topic_id, webhook.format
+        event.brand_title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -373,18 +370,11 @@ def announce_board_posting_unhidden(
 # helpers
 
 
-def _get_board_label(topic_id: TopicID) -> str:
-    topic = board_topic_query_service.get_topic(topic_id)
-    brand_id = topic.category.board.brand_id
-    brand = brand_service.get_brand(brand_id)
-    return gettext('"%(brand_title)s" board', brand_title=brand.title)
-
-
-def _get_board_label_segment(topic_id: TopicID, webhook_format: str) -> str:
+def _get_board_label_segment(brand_title: str, webhook_format: str) -> str:
     if webhook_format != 'weitersager':
         return ''
 
-    board_label = _get_board_label(topic_id)
+    board_label = gettext('"%(brand_title)s" board', brand_title=brand_title)
     return gettext(' in %(board_label)s', board_label=board_label)
 
 

@@ -29,7 +29,7 @@ from .helpers import build_announcement_request_for_irc, now
 
 
 def test_announce_topic_created(
-    admin_app, board, topic, creator, webhook_for_irc
+    admin_app, brand, board, topic, creator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -42,6 +42,8 @@ def test_announce_topic_created(
         occurred_at=topic.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
@@ -54,7 +56,7 @@ def test_announce_topic_created(
 
 
 def test_announce_topic_hidden(
-    admin_app, board, topic, creator, moderator, webhook_for_irc
+    admin_app, brand, board, topic, creator, moderator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -68,6 +70,8 @@ def test_announce_topic_hidden(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
@@ -82,7 +86,7 @@ def test_announce_topic_hidden(
 
 
 def test_announce_topic_unhidden(
-    admin_app, board, topic, creator, moderator, webhook_for_irc
+    admin_app, brand, board, topic, creator, moderator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -96,6 +100,8 @@ def test_announce_topic_unhidden(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
@@ -111,7 +117,7 @@ def test_announce_topic_unhidden(
 
 
 def test_announce_topic_locked(
-    admin_app, board, topic, creator, moderator, webhook_for_irc
+    admin_app, brand, board, topic, creator, moderator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -125,6 +131,8 @@ def test_announce_topic_locked(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
@@ -139,7 +147,7 @@ def test_announce_topic_locked(
 
 
 def test_announce_topic_unlocked(
-    admin_app, board, topic, creator, moderator, webhook_for_irc
+    admin_app, brand, board, topic, creator, moderator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -153,6 +161,8 @@ def test_announce_topic_unlocked(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
@@ -167,7 +177,7 @@ def test_announce_topic_unlocked(
 
 
 def test_announce_topic_pinned(
-    admin_app, board, topic, creator, moderator, webhook_for_irc
+    admin_app, brand, board, topic, creator, moderator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -181,6 +191,8 @@ def test_announce_topic_pinned(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
@@ -195,7 +207,7 @@ def test_announce_topic_pinned(
 
 
 def test_announce_topic_unpinned(
-    admin_app, board, topic, creator, moderator, webhook_for_irc
+    admin_app, brand, board, topic, creator, moderator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -209,6 +221,8 @@ def test_announce_topic_unpinned(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
@@ -224,6 +238,7 @@ def test_announce_topic_unpinned(
 
 def test_announce_topic_moved(
     admin_app,
+    brand,
     board,
     category,
     another_category,
@@ -244,6 +259,8 @@ def test_announce_topic_moved(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
@@ -262,7 +279,7 @@ def test_announce_topic_moved(
 
 
 def test_announce_posting_created(
-    admin_app, board, posting, creator, webhook_for_irc
+    admin_app, brand, board, posting, creator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
@@ -276,6 +293,8 @@ def test_announce_posting_created(
         occurred_at=posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,
@@ -290,7 +309,7 @@ def test_announce_posting_created(
 
 
 def test_announce_posting_created_on_muted_topic(
-    admin_app, board, posting, creator, webhook_for_irc
+    admin_app, brand, board, posting, creator, webhook_for_irc
 ):
     link = f'http://example.com/board/postings/{posting.id}'
     expected = None
@@ -299,6 +318,8 @@ def test_announce_posting_created_on_muted_topic(
         occurred_at=posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,
@@ -313,7 +334,7 @@ def test_announce_posting_created_on_muted_topic(
 
 
 def test_announce_posting_hidden(
-    admin_app, board, posting, creator, moderator, webhook_for_irc
+    admin_app, brand, board, posting, creator, moderator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
@@ -328,6 +349,8 @@ def test_announce_posting_hidden(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         posting_id=posting.id,
         posting_creator_id=creator.id,
@@ -343,7 +366,7 @@ def test_announce_posting_hidden(
 
 
 def test_announce_posting_unhidden(
-    admin_app, board, posting, creator, moderator, webhook_for_irc
+    admin_app, brand, board, posting, creator, moderator, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
@@ -358,6 +381,8 @@ def test_announce_posting_unhidden(
         occurred_at=now(),
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=board.id,
         posting_id=posting.id,
         posting_creator_id=creator.id,

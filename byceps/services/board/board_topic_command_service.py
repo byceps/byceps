@@ -22,6 +22,7 @@ from byceps.events.board import (
     BoardTopicUnpinnedEvent,
     BoardTopicUpdatedEvent,
 )
+from byceps.services.brand import brand_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
@@ -56,10 +57,13 @@ def create_topic(
 
     board_aggregation_service.aggregate_topic(db_topic)
 
+    brand = brand_service.get_brand(db_topic.category.board.brand_id)
     event = BoardTopicCreatedEvent(
         occurred_at=db_topic.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator_id=creator.id,
@@ -86,11 +90,14 @@ def update_topic(
 
     db.session.commit()
 
+    brand = brand_service.get_brand(db_topic.category.board.brand_id)
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUpdatedEvent(
         occurred_at=posting_event.occurred_at,
         initiator_id=editor.id,
         initiator_screen_name=editor.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator_id=topic_creator.id,
@@ -118,11 +125,14 @@ def hide_topic(
 
     board_aggregation_service.aggregate_topic(db_topic)
 
+    brand = brand_service.get_brand(db_topic.category.board.brand_id)
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicHiddenEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator_id=topic_creator.id,
@@ -151,11 +161,14 @@ def unhide_topic(
 
     board_aggregation_service.aggregate_topic(db_topic)
 
+    brand = brand_service.get_brand(db_topic.category.board.brand_id)
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUnhiddenEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator_id=topic_creator.id,
@@ -181,11 +194,14 @@ def lock_topic(
     db_topic.locked_by_id = moderator.id
     db.session.commit()
 
+    brand = brand_service.get_brand(db_topic.category.board.brand_id)
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicLockedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator_id=topic_creator.id,
@@ -212,11 +228,14 @@ def unlock_topic(
     db_topic.locked_by_id = None
     db.session.commit()
 
+    brand = brand_service.get_brand(db_topic.category.board.brand_id)
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUnlockedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator_id=topic_creator.id,
@@ -240,11 +259,14 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinnedEvent:
     db_topic.pinned_by_id = moderator.id
     db.session.commit()
 
+    brand = brand_service.get_brand(db_topic.category.board.brand_id)
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicPinnedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator_id=topic_creator.id,
@@ -271,11 +293,14 @@ def unpin_topic(
     db_topic.pinned_by_id = None
     db.session.commit()
 
+    brand = brand_service.get_brand(db_topic.category.board.brand_id)
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUnpinnedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator_id=topic_creator.id,
@@ -305,11 +330,14 @@ def move_topic(
     for db_category in db_old_category, db_new_category:
         board_aggregation_service.aggregate_category(db_category)
 
+    brand = brand_service.get_brand(db_topic.category.board.brand_id)
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicMovedEvent(
         occurred_at=now,
         initiator_id=moderator.id,
         initiator_screen_name=moderator.screen_name,
+        brand_id=brand.id,
+        brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator_id=topic_creator.id,
