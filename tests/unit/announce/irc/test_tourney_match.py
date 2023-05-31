@@ -15,10 +15,8 @@ from byceps.events.tourney import (
 )
 
 from tests.helpers import generate_token, generate_uuid
-from tests.unit.announce.irc.helpers import (
-    build_announcement_request_for_irc,
-    now,
-)
+
+from .helpers import build_announcement_request_for_irc, now
 
 
 OCCURRED_AT = now()
