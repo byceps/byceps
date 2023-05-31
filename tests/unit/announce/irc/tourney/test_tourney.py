@@ -13,7 +13,7 @@ from byceps.events.tourney import (
     TourneyStartedEvent,
 )
 
-from tests.integration.announce.irc.helpers import (
+from tests.unit.announce.irc.helpers import (
     build_announcement_request_for_irc,
     now,
 )
