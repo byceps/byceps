@@ -36,7 +36,7 @@ MODERATOR_SCREEN_NAME = 'TheModerator'
 USER_ID = UserID(generate_uuid())
 
 
-def test_announce_topic_created(admin_app: Flask):
+def test_announce_topic_created(app: Flask):
     expected_url = f'https://website.test/board/topics/{TOPIC_ID}'
     expected_content = (
         '[Forum] RocketRandy hat das Thema '
@@ -64,7 +64,7 @@ def test_announce_topic_created(admin_app: Flask):
     assert build_announcement_request(event, webhook) == expected
 
 
-def test_announce_posting_created(admin_app: Flask):
+def test_announce_posting_created(app: Flask):
     expected_url = f'https://website.test/board/postings/{POSTING_ID}'
     expected_content = (
         '[Forum] RocketRandy hat auf das Thema '

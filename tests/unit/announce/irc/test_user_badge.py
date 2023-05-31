@@ -22,7 +22,7 @@ BADGE_ID = BadgeID(generate_uuid())
 
 
 def test_user_badge_awarding_announced_without_initiator(
-    admin_app: Flask, webhook_for_irc
+    app: Flask, webhook_for_irc
 ):
     expected_text = (
         'Jemand hat das Abzeichen "First Post!" an Erster verliehen.'
@@ -43,7 +43,7 @@ def test_user_badge_awarding_announced_without_initiator(
 
 
 def test_user_badge_awarding_announced_with_initiator(
-    admin_app: Flask, webhook_for_irc
+    app: Flask, webhook_for_irc
 ):
     expected_text = (
         'Admin hat das Abzeichen "Glanzleistung" an PathFinder verliehen.'

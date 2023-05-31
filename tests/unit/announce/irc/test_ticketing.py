@@ -22,7 +22,7 @@ ADMIN_ID = UserID(generate_uuid())
 USER_ID = UserID(generate_uuid())
 
 
-def test_ticket_checked_in(admin_app: Flask, webhook_for_irc):
+def test_ticket_checked_in(app: Flask, webhook_for_irc):
     expected_text = 'TicketingAdmin hat Ticket "GTFIN", genutzt von Teilnehmer, eingecheckt.'
     expected = build_announcement_request_for_irc(expected_text)
 
@@ -42,9 +42,7 @@ def test_ticket_checked_in(admin_app: Flask, webhook_for_irc):
 
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
 def test_single_ticket_sold(
-    get_ticket_sale_stats_mock,
-    admin_app: Flask,
-    webhook_for_irc,
+    get_ticket_sale_stats_mock, app: Flask, webhook_for_irc
 ):
     expected_text = (
         'Neuling hat 1 Ticket bezahlt. '
@@ -72,9 +70,7 @@ def test_single_ticket_sold(
 
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
 def test_multiple_tickets_sold(
-    get_ticket_sale_stats_mock,
-    admin_app: Flask,
-    webhook_for_irc,
+    get_ticket_sale_stats_mock, app: Flask, webhook_for_irc
 ):
     expected_text = (
         'TreuerKäufer hat 3 Tickets bezahlt. '

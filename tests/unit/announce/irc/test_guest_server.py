@@ -20,7 +20,7 @@ ADMIN_ID = UserID(generate_uuid())
 USER_ID = UserID(generate_uuid())
 
 
-def test_guest_server_registered(admin_app: Flask, webhook_for_irc):
+def test_guest_server_registered(app: Flask, webhook_for_irc):
     expected_text = 'Admin hat einen Gastserver von User für die Party "ACMECon 2014" registriert.'
     expected = build_announcement_request_for_irc(expected_text)
 

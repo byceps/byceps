@@ -25,7 +25,7 @@ ORDER_ID = OrderID(generate_uuid())
 ORDERER_ID = UserID(generate_uuid())
 
 
-def test_shop_order_placed_announced(admin_app: Flask, webhook_for_irc):
+def test_shop_order_placed_announced(app: Flask, webhook_for_irc):
     expected_text = 'Ken_von_Kaufkraft hat Bestellung ORDER-00001 aufgegeben.'
     expected = build_announcement_request_for_irc(expected_text)
 
@@ -42,7 +42,7 @@ def test_shop_order_placed_announced(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_shop_order_canceled_announced(admin_app: Flask, webhook_for_irc):
+def test_shop_order_canceled_announced(app: Flask, webhook_for_irc):
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00002 von Ken_von_Kaufkraft '
         'storniert.'
@@ -62,7 +62,7 @@ def test_shop_order_canceled_announced(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_shop_order_paid_announced(admin_app: Flask, webhook_for_irc):
+def test_shop_order_paid_announced(app: Flask, webhook_for_irc):
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00003 von Ken_von_Kaufkraft '
         'als per Überweisung bezahlt markiert.'

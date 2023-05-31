@@ -19,7 +19,7 @@ from tests.integration.announce.irc.helpers import (
 )
 
 
-def test_announce_tourney_started(admin_app, tourney, webhook_for_irc):
+def test_announce_tourney_started(app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde gestartet.'
     expected = build_announcement_request_for_irc(expected_text)
 
@@ -34,7 +34,7 @@ def test_announce_tourney_started(admin_app, tourney, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_tourney_paused(admin_app, tourney, webhook_for_irc):
+def test_announce_tourney_paused(app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde unterbrochen.'
     expected = build_announcement_request_for_irc(expected_text)
 
@@ -49,7 +49,7 @@ def test_announce_tourney_paused(admin_app, tourney, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_tourney_canceled(admin_app, tourney, webhook_for_irc):
+def test_announce_tourney_canceled(app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde abgesagt.'
     expected = build_announcement_request_for_irc(expected_text)
 
@@ -64,7 +64,7 @@ def test_announce_tourney_canceled(admin_app, tourney, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_tourney_finished(admin_app, tourney, webhook_for_irc):
+def test_announce_tourney_finished(app, tourney, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde beendet.'
     expected = build_announcement_request_for_irc(expected_text)
 

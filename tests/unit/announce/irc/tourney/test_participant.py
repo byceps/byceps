@@ -20,7 +20,7 @@ from tests.integration.announce.irc.helpers import (
 
 
 def test_announce_participant_ready(
-    admin_app, tourney, match, participant, webhook_for_irc
+    app, tourney, match, participant, webhook_for_irc
 ):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) ist spielbereit.'
@@ -42,7 +42,7 @@ def test_announce_participant_ready(
 
 
 def test_announce_participant_eliminated(
-    admin_app, tourney, match, participant, webhook_for_irc
+    app, tourney, match, participant, webhook_for_irc
 ):
     expected_text = '"Le Supern00bs" ist aus dem Turnier Burrito Blaster (3on3) ausgeschieden.'
     expected = build_announcement_request_for_irc(expected_text)
@@ -62,7 +62,7 @@ def test_announce_participant_eliminated(
 
 
 def test_announce_participant_warned(
-    admin_app, tourney, match, participant, webhook_for_irc
+    app, tourney, match, participant, webhook_for_irc
 ):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
@@ -85,7 +85,7 @@ def test_announce_participant_warned(
 
 
 def test_announce_participant_disqualified(
-    admin_app, tourney, match, participant, webhook_for_irc
+    app, tourney, match, participant, webhook_for_irc
 ):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '

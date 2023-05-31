@@ -32,7 +32,7 @@ SNIPPET_ID = SnippetID(generate_uuid())
 SNIPPET_VERSION_ID = SnippetVersionID(generate_uuid())
 
 
-def test_announce_snippet_created(admin_app: Flask, webhook_for_irc):
+def test_announce_snippet_created(app: Flask, webhook_for_irc):
     expected_text = (
         'Dr.Schnipsel hat das Snippet "team_intro" '
         'im Scope "site/acme-2019-website" angelegt.'
@@ -52,7 +52,7 @@ def test_announce_snippet_created(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_snippet_updated(admin_app: Flask, webhook_for_irc):
+def test_announce_snippet_updated(app: Flask, webhook_for_irc):
     expected_text = (
         'Dr.Schnipsel hat das Snippet "team_intro" '
         'im Scope "site/acme-2019-website" aktualisiert.'
@@ -72,7 +72,7 @@ def test_announce_snippet_updated(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_snippet_deleted(admin_app: Flask, webhook_for_irc):
+def test_announce_snippet_deleted(app: Flask, webhook_for_irc):
     expected_text = (
         'Dr.Schnipsel hat das Snippet "outdated_info" '
         'im Scope "site/acme-2019-website" gelöscht.'

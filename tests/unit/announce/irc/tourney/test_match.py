@@ -20,7 +20,7 @@ from tests.integration.announce.irc.helpers import (
 )
 
 
-def test_announce_match_ready(admin_app, tourney, match, webhook_for_irc):
+def test_announce_match_ready(app, tourney, match, webhook_for_irc):
     expected_text = (
         'Das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '
@@ -44,7 +44,7 @@ def test_announce_match_ready(admin_app, tourney, match, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_match_reset(admin_app, tourney, match, webhook_for_irc):
+def test_announce_match_reset(app, tourney, match, webhook_for_irc):
     expected_text = (
         'Das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '
@@ -68,9 +68,7 @@ def test_announce_match_reset(admin_app, tourney, match, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_match_score_submitted(
-    admin_app, tourney, match, webhook_for_irc
-):
+def test_announce_match_score_submitted(app, tourney, match, webhook_for_irc):
     expected_text = (
         'Für das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '
@@ -94,9 +92,7 @@ def test_announce_match_score_submitted(
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_match_score_confirmed(
-    admin_app, tourney, match, webhook_for_irc
-):
+def test_announce_match_score_confirmed(app, tourney, match, webhook_for_irc):
     expected_text = (
         'Für das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '
@@ -120,9 +116,7 @@ def test_announce_match_score_confirmed(
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_match_score_randomized(
-    admin_app, tourney, match, webhook_for_irc
-):
+def test_announce_match_score_randomized(app, tourney, match, webhook_for_irc):
     expected_text = (
         'Für das Match "Die Einen" vs. "Die Anderen" '
         'im Turnier Octo-Highlander (8on8) '

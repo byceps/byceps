@@ -47,7 +47,7 @@ MODERATOR_SCREEN_NAME = 'TheModerator'
 USER_ID = UserID(generate_uuid())
 
 
-def test_announce_topic_created(admin_app: Flask, webhook_for_irc):
+def test_announce_topic_created(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
@@ -72,7 +72,7 @@ def test_announce_topic_created(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_hidden(admin_app: Flask, webhook_for_irc):
+def test_announce_topic_hidden(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
         'TheModerator hat im "ACME Entertainment Convention"-Forum das Thema '
@@ -100,7 +100,7 @@ def test_announce_topic_hidden(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_unhidden(admin_app: Flask, webhook_for_irc):
+def test_announce_topic_unhidden(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
         'TheModerator hat im "ACME Entertainment Convention"-Forum das Thema '
@@ -129,7 +129,7 @@ def test_announce_topic_unhidden(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_locked(admin_app: Flask, webhook_for_irc):
+def test_announce_topic_locked(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
         'TheModerator hat im "ACME Entertainment Convention"-Forum das Thema '
@@ -157,7 +157,7 @@ def test_announce_topic_locked(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_unlocked(admin_app: Flask, webhook_for_irc):
+def test_announce_topic_unlocked(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
         'TheModerator hat im "ACME Entertainment Convention"-Forum '
@@ -185,7 +185,7 @@ def test_announce_topic_unlocked(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_pinned(admin_app: Flask, webhook_for_irc):
+def test_announce_topic_pinned(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
         'TheModerator hat im "ACME Entertainment Convention"-Forum '
@@ -213,7 +213,7 @@ def test_announce_topic_pinned(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_unpinned(admin_app: Flask, webhook_for_irc):
+def test_announce_topic_unpinned(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
         'TheModerator hat im "ACME Entertainment Convention"-Forum '
@@ -241,7 +241,7 @@ def test_announce_topic_unpinned(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_topic_moved(admin_app: Flask, webhook_for_irc):
+def test_announce_topic_moved(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
         'TheModerator hat im "ACME Entertainment Convention"-Forum '
@@ -273,7 +273,7 @@ def test_announce_topic_moved(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_posting_created(admin_app: Flask, webhook_for_irc):
+def test_announce_posting_created(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
@@ -301,9 +301,7 @@ def test_announce_posting_created(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_posting_created_on_muted_topic(
-    admin_app: Flask, webhook_for_irc
-):
+def test_announce_posting_created_on_muted_topic(app: Flask, webhook_for_irc):
     link = f'http://example.com/board/postings/{POSTING_ID}'
     expected = None
 
@@ -326,7 +324,7 @@ def test_announce_posting_created_on_muted_topic(
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_posting_hidden(admin_app: Flask, webhook_for_irc):
+def test_announce_posting_hidden(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
         'TheModerator hat im "ACME Entertainment Convention"-Forum '
@@ -356,7 +354,7 @@ def test_announce_posting_hidden(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_posting_unhidden(admin_app: Flask, webhook_for_irc):
+def test_announce_posting_unhidden(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
         'TheModerator hat im "ACME Entertainment Convention"-Forum '

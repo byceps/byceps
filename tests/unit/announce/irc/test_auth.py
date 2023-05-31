@@ -19,9 +19,7 @@ OCCURRED_AT = now()
 USER_ID = UserID(generate_uuid())
 
 
-def test_user_logged_in_into_admin_app_announced(
-    admin_app: Flask, webhook_for_irc
-):
+def test_user_logged_in_into_admin_app_announced(app: Flask, webhook_for_irc):
     expected_text = 'Logvogel hat sich eingeloggt.'
     expected = build_announcement_request_for_irc(expected_text)
 
@@ -36,9 +34,7 @@ def test_user_logged_in_into_admin_app_announced(
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_user_logged_in_into_site_app_announced(
-    admin_app: Flask, webhook_for_irc
-):
+def test_user_logged_in_into_site_app_announced(app: Flask, webhook_for_irc):
     expected_text = (
         'Logvogel hat sich auf Site "ACMECon 2014 website" eingeloggt.'
     )
