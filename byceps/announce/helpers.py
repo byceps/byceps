@@ -92,7 +92,7 @@ def call_webhook(
     webhook: OutgoingWebhook, request_data: dict[str, Any]
 ) -> None:
     """Send HTTP request to the webhook."""
-    response = requests.post(webhook.url, json=request_data)
+    response = requests.post(webhook.url, json=request_data, timeout=10)
 
     _check_response_status_code(webhook, response.status_code)
 

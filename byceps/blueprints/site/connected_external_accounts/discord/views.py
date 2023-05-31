@@ -80,7 +80,10 @@ def connect_verify():
 
     # Try to obtain access token with given authorization code.
     token_response = requests.post(
-        API_URL_BASE + '/oauth2/token', auth=auth, data=token_request_data
+        API_URL_BASE + '/oauth2/token',
+        auth=auth,
+        data=token_request_data,
+        timeout=10,
     )
     reponse_token = token_response.json()
     if not token_response.ok or ('access_token' not in reponse_token):
@@ -89,7 +92,9 @@ def connect_verify():
     # Get user info.
     access_token = reponse_token['access_token']
     headers = {'Authorization': f'Bearer {access_token}'}
-    user_response = requests.get(API_URL_BASE + '/users/@me', headers=headers)
+    user_response = requests.get(
+        API_URL_BASE + '/users/@me', headers=headers, timeout=10
+    )
     user_response_data = user_response.json()
     if not user_response.ok:
         return error()
