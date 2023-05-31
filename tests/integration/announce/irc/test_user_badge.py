@@ -3,52 +3,61 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.announce.connections import build_announcement_request
-from byceps.services.user_badge import (
-    user_badge_awarding_service,
-    user_badge_service,
-)
+from flask import Flask
 
-from .helpers import build_announcement_request_for_irc
+from byceps.announce.connections import build_announcement_request
+from byceps.events.user_badge import UserBadgeAwardedEvent
+from byceps.services.user.models.user import User
+from byceps.services.user_badge.models import BadgeID
+from byceps.typing import UserID
+
+from tests.helpers import generate_uuid
+
+from .helpers import build_announcement_request_for_irc, now
+
+
+OCCURRED_AT = now()
+BADGE_ID = BadgeID(generate_uuid())
+USER_ID = UserID(generate_uuid())
 
 
 def test_user_badge_awarding_announced_without_initiator(
-    admin_app, make_user, webhook_for_irc
+    admin_app: Flask, webhook_for_irc
 ):
     expected_text = (
         'Jemand hat das Abzeichen "First Post!" an Erster verliehen.'
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    badge = user_badge_service.create_badge(
-        'first-post', 'First Post!', 'first-post.svg'
-    )
-
-    user = make_user('Erster')
-
-    _, event = user_badge_awarding_service.award_badge_to_user(
-        badge.id, user.id
+    event = UserBadgeAwardedEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=None,
+        initiator_screen_name=None,
+        user_id=USER_ID,
+        user_screen_name='Erster',
+        badge_id=BADGE_ID,
+        badge_label='First Post!',
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 def test_user_badge_awarding_announced_with_initiator(
-    admin_app, make_user, admin_user, webhook_for_irc
+    admin_app: Flask, admin_user: User, webhook_for_irc
 ):
     expected_text = (
         'Admin hat das Abzeichen "Glanzleistung" an PathFinder verliehen.'
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    badge = user_badge_service.create_badge(
-        'glnzlstng', 'Glanzleistung', 'glanz.svg'
-    )
-
-    user = make_user('PathFinder')
-
-    _, event = user_badge_awarding_service.award_badge_to_user(
-        badge.id, user.id, initiator_id=admin_user.id
+    event = UserBadgeAwardedEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=admin_user.id,
+        initiator_screen_name=admin_user.screen_name,
+        user_id=USER_ID,
+        user_screen_name='PathFinder',
+        badge_id=BADGE_ID,
+        badge_label='Glanzleistung',
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected

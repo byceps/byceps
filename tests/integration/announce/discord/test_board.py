@@ -3,23 +3,41 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
+from flask import Flask
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.board import BoardPostingCreatedEvent, BoardTopicCreatedEvent
-from byceps.services.board import (
-    board_category_command_service,
-    board_posting_command_service,
-    board_topic_command_service,
+from byceps.services.board.models import (
+    BoardCategoryID,
+    BoardID,
+    PostingID,
+    TopicID,
 )
-from byceps.services.board.models import BoardID
 from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.typing import BrandID, UserID
 
-from .helpers import build_announcement_request_for_discord, build_webhook
+from tests.helpers import generate_token, generate_uuid
+
+from .helpers import build_announcement_request_for_discord, build_webhook, now
 
 
-def test_announce_topic_created(admin_app, brand, board, topic, creator):
-    expected_url = f'https://website.test/board/topics/{topic.id}'
+OCCURRED_AT = now()
+BRAND_ID = BrandID('acmecon')
+BRAND_TITLE = 'ACME Entertainment Convention'
+BOARD_ID = BoardID(generate_token())
+CATEGORY_1_ID = BoardCategoryID(generate_uuid())
+CATEGORY_1_TITLE = 'Kategorie 1'
+CATEGORY_2_ID = BoardCategoryID(generate_uuid())
+CATEGORY_2_TITLE = 'Kategorie 2'
+TOPIC_ID = TopicID(generate_uuid())
+POSTING_ID = PostingID(generate_uuid())
+MODERATOR_ID = UserID(generate_uuid())
+MODERATOR_SCREEN_NAME = 'TheModerator'
+USER_ID = UserID(generate_uuid())
+
+
+def test_announce_topic_created(admin_app: Flask):
+    expected_url = f'https://website.test/board/topics/{TOPIC_ID}'
     expected_content = (
         '[Forum] RocketRandy hat das Thema '
         '"Cannot connect to the party network :(" erstellt: '
@@ -28,26 +46,26 @@ def test_announce_topic_created(admin_app, brand, board, topic, creator):
     expected = build_announcement_request_for_discord(expected_content)
 
     event = BoardTopicCreatedEvent(
-        occurred_at=topic.created_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
-        brand_id=brand.id,
-        brand_title=brand.title,
-        board_id=board.id,
-        topic_id=topic.id,
-        topic_creator_id=creator.id,
-        topic_creator_screen_name=creator.screen_name,
-        topic_title=topic.title,
+        occurred_at=OCCURRED_AT,
+        initiator_id=USER_ID,
+        initiator_screen_name='RocketRandy',
+        brand_id=BRAND_ID,
+        brand_title=BRAND_TITLE,
+        board_id=BOARD_ID,
+        topic_id=TOPIC_ID,
+        topic_creator_id=USER_ID,
+        topic_creator_screen_name='RocketRandy',
+        topic_title='Cannot connect to the party network :(',
         url=expected_url,
     )
 
-    webhook = build_board_webhook(board.id)
+    webhook = build_board_webhook(BOARD_ID)
 
     assert build_announcement_request(event, webhook) == expected
 
 
-def test_announce_posting_created(admin_app, brand, board, posting, creator):
-    expected_url = f'https://website.test/board/postings/{posting.id}'
+def test_announce_posting_created(admin_app: Flask):
+    expected_url = f'https://website.test/board/postings/{POSTING_ID}'
     expected_content = (
         '[Forum] RocketRandy hat auf das Thema '
         '"Cannot connect to the party network :(" geantwortet: '
@@ -56,22 +74,22 @@ def test_announce_posting_created(admin_app, brand, board, posting, creator):
     expected = build_announcement_request_for_discord(expected_content)
 
     event = BoardPostingCreatedEvent(
-        occurred_at=posting.created_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
-        brand_id=brand.id,
-        brand_title=brand.title,
-        board_id=board.id,
-        posting_creator_id=creator.id,
-        posting_creator_screen_name=creator.screen_name,
-        posting_id=posting.id,
-        topic_id=posting.topic.id,
-        topic_title=posting.topic.title,
-        topic_muted=posting.topic.muted,
+        occurred_at=OCCURRED_AT,
+        initiator_id=USER_ID,
+        initiator_screen_name='RocketRandy',
+        brand_id=BRAND_ID,
+        brand_title=BRAND_TITLE,
+        board_id=BOARD_ID,
+        posting_creator_id=USER_ID,
+        posting_creator_screen_name='RocketRandy',
+        posting_id=POSTING_ID,
+        topic_id=TOPIC_ID,
+        topic_title='Cannot connect to the party network :(',
+        topic_muted=False,
         url=expected_url,
     )
 
-    webhook = build_board_webhook(board.id)
+    webhook = build_board_webhook(BOARD_ID)
 
     assert build_announcement_request(event, webhook) == expected
 
@@ -92,40 +110,3 @@ def build_board_webhook(board_id: BoardID) -> OutgoingWebhook:
         text_prefix='[Forum] ',
         url='https://webhoooks.test/board',
     )
-
-
-@pytest.fixture(scope='module')
-def creator(make_user):
-    return make_user('RocketRandy')
-
-
-@pytest.fixture(scope='module')
-def category(board):
-    slug = 'support'
-    title = 'Support'
-    description = 'How can I help you, dear Sir/Madam?'
-
-    return board_category_command_service.create_category(
-        board.id, slug, title, description
-    )
-
-
-@pytest.fixture(scope='module')
-def topic(category, creator):
-    title = 'Cannot connect to the party network :('
-    body = 'I think I did not receive an IP address via DHCP. BUT WHY?!'
-
-    topic, _ = board_topic_command_service.create_topic(
-        category.id, creator.id, title, body
-    )
-
-    return topic
-
-
-@pytest.fixture(scope='module')
-def posting(topic, creator):
-    posting, _ = board_posting_command_service.create_posting(
-        topic.id, creator.id, 'This is nice and all, but check out my website!'
-    )
-
-    return posting

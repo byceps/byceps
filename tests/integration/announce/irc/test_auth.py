@@ -3,41 +3,53 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
+from flask import Flask
 
 from byceps.announce.connections import build_announcement_request
-from byceps.services.authentication.session import authn_session_service
+from byceps.events.auth import UserLoggedInEvent
+from byceps.services.site.models import SiteID
+from byceps.typing import UserID
 
-from .helpers import build_announcement_request_for_irc
+from tests.helpers import generate_uuid
+
+from .helpers import build_announcement_request_for_irc, now
+
+
+OCCURRED_AT = now()
+USER_ID = UserID(generate_uuid())
 
 
 def test_user_logged_in_into_admin_app_announced(
-    admin_app, user, webhook_for_irc
+    admin_app: Flask, webhook_for_irc
 ):
     expected_text = 'Logvogel hat sich eingeloggt.'
     expected = build_announcement_request_for_irc(expected_text)
 
-    _, event = authn_session_service.log_in_user(user.id)
+    event = UserLoggedInEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=USER_ID,
+        initiator_screen_name='Logvogel',
+        site_id=None,
+        site_title=None,
+    )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 def test_user_logged_in_into_site_app_announced(
-    admin_app, site, user, webhook_for_irc
+    admin_app: Flask, webhook_for_irc
 ):
     expected_text = (
         'Logvogel hat sich auf Site "ACMECon 2014 website" eingeloggt.'
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    _, event = authn_session_service.log_in_user(user.id, site=site)
+    event = UserLoggedInEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=USER_ID,
+        initiator_screen_name='Logvogel',
+        site_id=SiteID('acmecon-2014'),
+        site_title='ACMECon 2014 website',
+    )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
-
-
-# helpers
-
-
-@pytest.fixture(scope='module')
-def user(make_user):
-    return make_user('Logvogel')

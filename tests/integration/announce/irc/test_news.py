@@ -4,19 +4,24 @@
 """
 
 from flask import Flask
-import pytest
 
 from byceps.announce.connections import build_announcement_request
-from byceps.services.brand.models import Brand
-from byceps.services.news import news_item_service
-from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
-from byceps.services.site.models import Site
+from byceps.events.news import NewsItemPublishedEvent
+from byceps.services.news.models import NewsChannelID, NewsItemID
+from byceps.services.user.models.user import User
 
-from .helpers import build_announcement_request_for_irc
+from tests.helpers import generate_token, generate_uuid
+
+from .helpers import build_announcement_request_for_irc, now
+
+
+OCCURRED_AT = now()
+NEWS_CHANNEL_ID = NewsChannelID(generate_token())
+NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
 
 def test_published_news_item_announced_with_url(
-    admin_app: Flask, item_with_url: NewsItem, webhook_for_irc
+    admin_app: Flask, admin_user: User, webhook_for_irc
 ) -> None:
     expected_text = (
         'Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
@@ -24,64 +29,35 @@ def test_published_news_item_announced_with_url(
     )
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = news_item_service.publish_item(item_with_url.id)
+    event = NewsItemPublishedEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=admin_user.id,
+        initiator_screen_name=admin_user.screen_name,
+        item_id=NEWS_ITEM_ID,
+        channel_id=NEWS_CHANNEL_ID,
+        published_at=OCCURRED_AT,
+        title='Zieh dir das mal rein!',
+        external_url='https://www.acmecon.test/news/zieh-dir-das-mal-rein',
+    )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
 def test_published_news_item_announced_without_url(
-    admin_app: Flask, item_without_url: NewsItem, webhook_for_irc
+    admin_app: Flask, admin_user: User, webhook_for_irc
 ) -> None:
-    expected_text = (
-        'Die News "Zieh dir auch das mal rein!" wurde veröffentlicht.'
-    )
+    expected_text = 'Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
     expected = build_announcement_request_for_irc(expected_text)
 
-    event = news_item_service.publish_item(item_without_url.id)
+    event = NewsItemPublishedEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=admin_user.id,
+        initiator_screen_name=admin_user.screen_name,
+        item_id=NEWS_ITEM_ID,
+        channel_id=NEWS_CHANNEL_ID,
+        published_at=OCCURRED_AT,
+        title='Zieh dir auch das rein!',
+        external_url=None,
+    )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
-
-
-# helpers
-
-
-@pytest.fixture()
-def channel_with_site(
-    brand: Brand, site: Site, make_news_channel
-) -> NewsChannel:
-    return make_news_channel(brand.id, announcement_site_id=site.id)
-
-
-@pytest.fixture()
-def channel_without_site(brand: Brand, make_news_channel) -> NewsChannel:
-    return make_news_channel(brand.id)
-
-
-@pytest.fixture()
-def make_item(make_user):
-    def _wrapper(channel: NewsChannel, slug: str, title: str) -> NewsItem:
-        editor = make_user()
-        body = 'any body'
-        body_format = BodyFormat.html
-
-        return news_item_service.create_item(
-            channel.id, slug, editor.id, title, body, body_format
-        )
-
-    return _wrapper
-
-
-@pytest.fixture()
-def item_with_url(make_item, channel_with_site: NewsChannel) -> NewsItem:
-    slug = 'zieh-dir-das-mal-rein'
-    title = 'Zieh dir das mal rein!'
-
-    return make_item(channel_with_site, slug, title)
-
-
-@pytest.fixture()
-def item_without_url(make_item, channel_without_site: NewsChannel) -> NewsItem:
-    slug = 'zieh-dir-auch-das-mal-rein'
-    title = 'Zieh dir auch das mal rein!'
-
-    return make_item(channel_without_site, slug, title)
