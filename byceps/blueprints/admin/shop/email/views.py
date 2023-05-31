@@ -63,7 +63,8 @@ def _get_example_placed_order_message_text(shop_id) -> str | None:
     if message_text_result.is_err():
         error_message = message_text_result.unwrap_err()
         current_app.logger.error(
-            f'Could not assemble example email for placed order:\n{error_message}'
+            'Could not assemble example email for placed order:\n%s',
+            error_message,
         )
         return None
 
@@ -80,7 +81,8 @@ def _get_example_paid_order_message_text(shop_id) -> str | None:
     if message_text_result.is_err():
         error_message = message_text_result.unwrap_err()
         current_app.logger.error(
-            f'Could not assemble example email for paid order:\n{error_message}'
+            'Could not assemble example email for paid order:\n%s',
+            error_message,
         )
         return None
 
@@ -97,7 +99,8 @@ def _get_example_canceled_order_message_text(shop_id) -> str | None:
     if message_text_result.is_err():
         error_message = message_text_result.unwrap_err()
         current_app.logger.error(
-            f'Could not assemble example email for canceled order:\n{error_message}'
+            'Could not assemble example email for canceled order:\n%s',
+            error_message,
         )
         return None
 
