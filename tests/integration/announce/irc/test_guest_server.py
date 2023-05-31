@@ -8,8 +8,7 @@ from flask import Flask
 from byceps.announce.connections import build_announcement_request
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.guest_server.models import ServerID
-from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.typing import PartyID, UserID
 
 from tests.helpers import generate_uuid
 
@@ -17,22 +16,22 @@ from .helpers import build_announcement_request_for_irc, now
 
 
 OCCURRED_AT = now()
+ADMIN_ID = UserID(generate_uuid())
+USER_ID = UserID(generate_uuid())
 
 
-def test_guest_server_registered(
-    admin_app: Flask, party: Party, admin_user: User, user, webhook_for_irc
-):
+def test_guest_server_registered(admin_app: Flask, webhook_for_irc):
     expected_text = 'Admin hat einen Gastserver von User für die Party "ACMECon 2014" registriert.'
     expected = build_announcement_request_for_irc(expected_text)
 
     event = GuestServerRegisteredEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=admin_user.id,
-        initiator_screen_name=admin_user.screen_name,
-        party_id=party.id,
-        party_title=party.title,
-        owner_id=user.id,
-        owner_screen_name=user.screen_name,
+        initiator_id=ADMIN_ID,
+        initiator_screen_name='Admin',
+        party_id=PartyID('acmecon-2014'),
+        party_title='ACMECon 2014',
+        owner_id=USER_ID,
+        owner_screen_name='User',
         server_id=ServerID(generate_uuid()),
     )
 

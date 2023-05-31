@@ -8,7 +8,7 @@ from flask import Flask
 from byceps.announce.connections import build_announcement_request
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
-from byceps.services.user.models.user import User
+from byceps.typing import UserID
 
 from tests.helpers import generate_token, generate_uuid
 
@@ -16,12 +16,13 @@ from .helpers import build_announcement_request_for_irc, now
 
 
 OCCURRED_AT = now()
+ADMIN_ID = UserID(generate_uuid())
 NEWS_CHANNEL_ID = NewsChannelID(generate_token())
 NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
 
 def test_published_news_item_announced_with_url(
-    admin_app: Flask, admin_user: User, webhook_for_irc
+    admin_app: Flask, webhook_for_irc
 ) -> None:
     expected_text = (
         'Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
@@ -31,8 +32,8 @@ def test_published_news_item_announced_with_url(
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=admin_user.id,
-        initiator_screen_name=admin_user.screen_name,
+        initiator_id=ADMIN_ID,
+        initiator_screen_name='Admin',
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,
@@ -44,15 +45,15 @@ def test_published_news_item_announced_with_url(
 
 
 def test_published_news_item_announced_without_url(
-    admin_app: Flask, admin_user: User, webhook_for_irc
+    admin_app: Flask, webhook_for_irc
 ) -> None:
     expected_text = 'Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
     expected = build_announcement_request_for_irc(expected_text)
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=admin_user.id,
-        initiator_screen_name=admin_user.screen_name,
+        initiator_id=ADMIN_ID,
+        initiator_screen_name='Admin',
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,

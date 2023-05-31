@@ -4,28 +4,25 @@
 """
 
 from flask import Flask
-import pytest
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.news import NewsItemPublishedEvent
-from byceps.services.brand.models import Brand
-from byceps.services.news.models import NewsChannel, NewsItemID
-from byceps.services.site.models import Site
-from byceps.services.user.models.user import User
+from byceps.services.news.models import NewsChannelID, NewsItemID
 from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.typing import UserID
 
-from tests.helpers import generate_uuid
+from tests.helpers import generate_token, generate_uuid
 
 from .helpers import build_announcement_request_for_discord, build_webhook, now
 
 
 OCCURRED_AT = now()
+ADMIN_ID = UserID(generate_uuid())
+NEWS_CHANNEL_ID = NewsChannelID(generate_token())
 NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
 
-def test_published_news_item_announced_with_url(
-    admin_app: Flask, admin_user: User, channel_with_site: NewsChannel
-) -> None:
+def test_published_news_item_announced_with_url(admin_app: Flask) -> None:
     expected_content = (
         '[News] Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
         'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
@@ -34,23 +31,21 @@ def test_published_news_item_announced_with_url(
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=admin_user.id,
-        initiator_screen_name=admin_user.screen_name,
+        initiator_id=ADMIN_ID,
+        initiator_screen_name='Admin',
         item_id=NEWS_ITEM_ID,
-        channel_id=channel_with_site.id,
+        channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,
         title='Zieh dir das mal rein!',
         external_url='https://www.acmecon.test/news/zieh-dir-das-mal-rein',
     )
 
-    webhook = build_news_webhook(channel_with_site)
+    webhook = build_news_webhook()
 
     assert build_announcement_request(event, webhook) == expected
 
 
-def test_published_news_item_announced_without_url(
-    admin_app: Flask, admin_user: User, channel_without_site: NewsChannel
-) -> None:
+def test_published_news_item_announced_without_url(admin_app: Flask) -> None:
     expected_content = (
         '[News] Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
     )
@@ -58,16 +53,16 @@ def test_published_news_item_announced_without_url(
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=admin_user.id,
-        initiator_screen_name=admin_user.screen_name,
+        initiator_id=ADMIN_ID,
+        initiator_screen_name='Admin',
         item_id=NEWS_ITEM_ID,
-        channel_id=channel_without_site.id,
+        channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,
         title='Zieh dir auch das rein!',
         external_url=None,
     )
 
-    webhook = build_news_webhook(channel_without_site)
+    webhook = build_news_webhook()
 
     assert build_announcement_request(event, webhook) == expected
 
@@ -75,24 +70,12 @@ def test_published_news_item_announced_without_url(
 # helpers
 
 
-def build_news_webhook(channel: NewsChannel) -> OutgoingWebhook:
+def build_news_webhook() -> OutgoingWebhook:
     return build_webhook(
         event_types={'news-item-published'},
         event_filters={
-            'news-item-published': {'channel_id': [str(channel.id)]}
+            'news-item-published': {'channel_id': [str(NEWS_CHANNEL_ID)]}
         },
         text_prefix='[News] ',
         url='https://webhoooks.test/news',
     )
-
-
-@pytest.fixture()
-def channel_with_site(
-    brand: Brand, site: Site, make_news_channel
-) -> NewsChannel:
-    return make_news_channel(brand.id, announcement_site_id=site.id)
-
-
-@pytest.fixture()
-def channel_without_site(brand: Brand, make_news_channel) -> NewsChannel:
-    return make_news_channel(brand.id)

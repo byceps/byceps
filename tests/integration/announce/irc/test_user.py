@@ -46,9 +46,7 @@ def test_account_created_announced(admin_app: Flask, webhook_for_irc):
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_account_created_announced_on_site(
-    admin_app: Flask, site, webhook_for_irc
-):
+def test_account_created_announced_on_site(admin_app: Flask, webhook_for_irc):
     expected_text = (
         'Jemand hat das Benutzerkonto "JaneDoeOnSite" '
         'auf Site "ACMECon 2014 website" angelegt.'
