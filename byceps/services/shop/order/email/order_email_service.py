@@ -39,7 +39,7 @@ class OrderEmailData:
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
 
-    message = _assemble_email_for_incoming_order_to_orderer(data)
+    message = assemble_email_for_incoming_order_to_orderer(data)
 
     _send_email(message)
 
@@ -47,7 +47,7 @@ def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
 def send_email_for_canceled_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
 
-    message = _assemble_email_for_canceled_order_to_orderer(data)
+    message = assemble_email_for_canceled_order_to_orderer(data)
 
     _send_email(message)
 
@@ -55,12 +55,12 @@ def send_email_for_canceled_order_to_orderer(order_id: OrderID) -> None:
 def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
 
-    message = _assemble_email_for_paid_order_to_orderer(data)
+    message = assemble_email_for_paid_order_to_orderer(data)
 
     _send_email(message)
 
 
-def _assemble_email_for_incoming_order_to_orderer(
+def assemble_email_for_incoming_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
     order = data.order
@@ -130,7 +130,7 @@ def _assemble_email_for_incoming_order_to_orderer(
     )
 
 
-def _assemble_email_for_canceled_order_to_orderer(
+def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
     order = data.order
@@ -161,7 +161,7 @@ def _assemble_email_for_canceled_order_to_orderer(
     )
 
 
-def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
+def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
     order = data.order
     order_number = order.order_number
 
