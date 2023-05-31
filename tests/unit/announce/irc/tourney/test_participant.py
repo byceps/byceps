@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
+from flask import Flask
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
@@ -13,15 +13,21 @@ from byceps.events.tourney import (
     TourneyParticipantWarnedEvent,
 )
 
+from tests.helpers import generate_token, generate_uuid
 from tests.unit.announce.irc.helpers import (
     build_announcement_request_for_irc,
     now,
 )
 
 
-def test_announce_participant_ready(
-    app, tourney, match, participant, webhook_for_irc
-):
+OCCURRED_AT = now()
+TOURNEY_ID = str(generate_uuid())
+MATCH_ID = str(generate_uuid())
+PARTICIPANT_ID = generate_token()
+PARTICIPANT_NAME = 'Le Supern00bs'
+
+
+def test_announce_participant_ready(app: Flask, webhook_for_irc):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) ist spielbereit.'
     )
@@ -31,19 +37,17 @@ def test_announce_participant_ready(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
-        tourney_id=tourney.id,
-        tourney_title=tourney.title,
-        match_id=match.id,
-        participant_id=participant.id,
-        participant_name=participant.name,
+        tourney_id=TOURNEY_ID,
+        tourney_title='Burrito Blaster (3on3)',
+        match_id=MATCH_ID,
+        participant_id=PARTICIPANT_ID,
+        participant_name=PARTICIPANT_NAME,
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_participant_eliminated(
-    app, tourney, match, participant, webhook_for_irc
-):
+def test_announce_participant_eliminated(app: Flask, webhook_for_irc):
     expected_text = '"Le Supern00bs" ist aus dem Turnier Burrito Blaster (3on3) ausgeschieden.'
     expected = build_announcement_request_for_irc(expected_text)
 
@@ -51,19 +55,17 @@ def test_announce_participant_eliminated(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
-        tourney_id=tourney.id,
-        tourney_title=tourney.title,
-        match_id=match.id,
-        participant_id=participant.id,
-        participant_name=participant.name,
+        tourney_id=TOURNEY_ID,
+        tourney_title='Burrito Blaster (3on3)',
+        match_id=MATCH_ID,
+        participant_id=PARTICIPANT_ID,
+        participant_name=PARTICIPANT_NAME,
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_participant_warned(
-    app, tourney, match, participant, webhook_for_irc
-):
+def test_announce_participant_warned(app: Flask, webhook_for_irc):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
         'wurde verwarnt. \x038,8 \x03'
@@ -74,19 +76,17 @@ def test_announce_participant_warned(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
-        tourney_id=tourney.id,
-        tourney_title=tourney.title,
-        match_id=match.id,
-        participant_id=participant.id,
-        participant_name=participant.name,
+        tourney_id=TOURNEY_ID,
+        tourney_title='Burrito Blaster (3on3)',
+        match_id=MATCH_ID,
+        participant_id=PARTICIPANT_ID,
+        participant_name=PARTICIPANT_NAME,
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_participant_disqualified(
-    app, tourney, match, participant, webhook_for_irc
-):
+def test_announce_participant_disqualified(app: Flask, webhook_for_irc):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
         'wurde disqualifiziert. \x034,4 \x03'
@@ -97,34 +97,11 @@ def test_announce_participant_disqualified(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
-        tourney_id=tourney.id,
-        tourney_title=tourney.title,
-        match_id=match.id,
-        participant_id=participant.id,
-        participant_name=participant.name,
+        tourney_id=TOURNEY_ID,
+        tourney_title='Burrito Blaster (3on3)',
+        match_id=MATCH_ID,
+        participant_id=PARTICIPANT_ID,
+        participant_name=PARTICIPANT_NAME,
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
-
-
-# helpers
-
-
-@pytest.fixture(scope='module')
-def tourney(make_tourney):
-    return make_tourney('T-77', 'Burrito Blaster (3on3)')
-
-
-@pytest.fixture(scope='module')
-def participant(make_participant):
-    return make_participant('P-119', 'Le Supern00bs')
-
-
-@pytest.fixture(scope='module')
-def another_participant(make_participant):
-    return make_participant('P-160', 'Rndm Plrs')
-
-
-@pytest.fixture(scope='module')
-def match(make_match, tourney, participant, another_participant):
-    return make_match('M-25', tourney, participant, another_participant)

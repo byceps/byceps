@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
+from flask import Flask
 
 from byceps.announce.connections import build_announcement_request
 from byceps.events.tourney import (
@@ -13,75 +13,72 @@ from byceps.events.tourney import (
     TourneyStartedEvent,
 )
 
+from tests.helpers import generate_uuid
 from tests.unit.announce.irc.helpers import (
     build_announcement_request_for_irc,
     now,
 )
 
 
-def test_announce_tourney_started(app, tourney, webhook_for_irc):
+OCCURRED_AT = now()
+TOURNEY_ID = str(generate_uuid())
+
+
+def test_announce_tourney_started(app: Flask, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde gestartet.'
     expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyStartedEvent(
-        occurred_at=now(),
+        occurred_at=OCCURRED_AT,
         initiator_id=None,
         initiator_screen_name=None,
-        tourney_id=tourney.id,
-        tourney_title=tourney.title,
+        tourney_id=TOURNEY_ID,
+        tourney_title='Taco Arena (1on1)',
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_tourney_paused(app, tourney, webhook_for_irc):
+def test_announce_tourney_paused(app: Flask, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde unterbrochen.'
     expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyPausedEvent(
-        occurred_at=now(),
+        occurred_at=OCCURRED_AT,
         initiator_id=None,
         initiator_screen_name=None,
-        tourney_id=tourney.id,
-        tourney_title=tourney.title,
+        tourney_id=TOURNEY_ID,
+        tourney_title='Taco Arena (1on1)',
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_tourney_canceled(app, tourney, webhook_for_irc):
+def test_announce_tourney_canceled(app: Flask, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde abgesagt.'
     expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyCanceledEvent(
-        occurred_at=now(),
+        occurred_at=OCCURRED_AT,
         initiator_id=None,
         initiator_screen_name=None,
-        tourney_id=tourney.id,
-        tourney_title=tourney.title,
+        tourney_id=TOURNEY_ID,
+        tourney_title='Taco Arena (1on1)',
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
 
 
-def test_announce_tourney_finished(app, tourney, webhook_for_irc):
+def test_announce_tourney_finished(app: Flask, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde beendet.'
     expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyFinishedEvent(
-        occurred_at=now(),
+        occurred_at=OCCURRED_AT,
         initiator_id=None,
         initiator_screen_name=None,
-        tourney_id=tourney.id,
-        tourney_title=tourney.title,
+        tourney_id=TOURNEY_ID,
+        tourney_title='Taco Arena (1on1)',
     )
 
     assert build_announcement_request(event, webhook_for_irc) == expected
-
-
-# helpers
-
-
-@pytest.fixture(scope='module')
-def tourney(make_tourney):
-    return make_tourney('T-37', 'Taco Arena (1on1)')
