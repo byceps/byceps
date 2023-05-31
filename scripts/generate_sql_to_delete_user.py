@@ -65,7 +65,7 @@ def generate_delete_statements_for_user(user_id: UserID) -> Iterator[str]:
         ('user_log_entries', 'user_id'),
         ('users', 'id'),
     ]:
-        yield f"DELETE FROM {table} WHERE {user_id_column} = '{user_id}';"
+        yield f"DELETE FROM {table} WHERE {user_id_column} = '{user_id}';"  # noqa: S608
 
 
 if __name__ == '__main__':

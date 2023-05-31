@@ -68,6 +68,7 @@ select = [
     "PYI",
     "Q",
     "RSE",
+    "S",
     "TID",
     "UP",
     "W",

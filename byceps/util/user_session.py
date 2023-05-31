@@ -24,7 +24,7 @@ from .authorization import get_permissions_for_user
 
 KEY_LOCALE = 'locale'
 KEY_USER_ID = 'user_id'
-KEY_USER_AUTH_TOKEN = 'user_auth_token'
+KEY_USER_AUTH_TOKEN = 'user_auth_token'  # noqa: S105
 
 
 def start(user_id: UserID, auth_token: str, *, permanent: bool = False) -> None:

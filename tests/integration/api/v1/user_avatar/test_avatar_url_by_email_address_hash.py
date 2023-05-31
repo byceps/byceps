@@ -65,7 +65,7 @@ def set_avatar(user_id):
 
 
 def hash_email_address(email_address):
-    return hashlib.md5(email_address.encode('utf-8')).hexdigest()
+    return hashlib.md5(email_address.encode('utf-8')).hexdigest()  # noqa: S324
 
 
 def send_request(api_client, email_address_hash):
