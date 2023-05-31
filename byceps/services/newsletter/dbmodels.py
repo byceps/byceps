@@ -82,7 +82,6 @@ class DbSubscriptionUpdate(db.Model):
 
     @state.setter
     def state(self, state: SubscriptionState) -> None:
-        assert state is not None
         self._state = state.name
 
     def __repr__(self) -> str:

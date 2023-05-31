@@ -115,7 +115,6 @@ class DbNewsItemVersion(db.Model):
 
     @body_format.setter
     def body_format(self, body_format: BodyFormat) -> None:
-        assert body_format is not None
         self._body_format = body_format.name
 
     @property

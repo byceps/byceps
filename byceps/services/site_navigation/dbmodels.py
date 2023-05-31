@@ -121,5 +121,4 @@ class DbNavItem(db.Model):
 
     @target_type.setter
     def target_type(self, target_type: NavItemTargetType) -> None:
-        assert target_type is not None
         self._target_type = target_type.name

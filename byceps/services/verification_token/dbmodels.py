@@ -64,7 +64,6 @@ class DbVerificationToken(db.Model):
 
     @purpose.setter
     def purpose(self, purpose: Purpose) -> None:
-        assert purpose is not None
         self._purpose = purpose.name
 
     def __repr__(self) -> str:

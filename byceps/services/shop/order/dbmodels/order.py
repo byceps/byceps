@@ -125,7 +125,6 @@ class DbOrder(db.Model):
 
     @payment_state.setter
     def payment_state(self, state: PaymentState) -> None:
-        assert state is not None
         self._payment_state = state.name
 
     def __repr__(self) -> str:
