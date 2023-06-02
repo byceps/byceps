@@ -7,7 +7,7 @@ from datetime import datetime
 from uuid import UUID
 
 from freezegun import freeze_time
-from moneyed import EUR
+from moneyed import EUR, Money
 import pytest
 
 from byceps.services.shop.order import order_service
@@ -57,7 +57,8 @@ def create_db_order(created_at: datetime) -> DbOrder:
         zip_code='n/a',
         city='n/a',
         street='n/a',
-        currency=EUR,
+        total_amount=Money('13.37', EUR),
+        processing_required=False,
     )
 
     db_order.payment_state = PaymentState.open

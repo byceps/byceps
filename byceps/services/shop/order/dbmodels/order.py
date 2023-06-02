@@ -89,7 +89,8 @@ class DbOrder(db.Model):
         zip_code: str,
         city: str,
         street: str,
-        currency: Currency,
+        total_amount: Money,
+        processing_required: bool,
     ) -> None:
         self.created_at = created_at
         self.shop_id = shop_id
@@ -103,9 +104,10 @@ class DbOrder(db.Model):
         self.zip_code = zip_code
         self.city = city
         self.street = street
-        self.currency = currency
-        self._total_amount = currency.zero.amount
+        self.currency = total_amount.currency
+        self._total_amount = total_amount.amount
         self.payment_state = PaymentState.open
+        self.processing_required = processing_required
 
     @hybrid_property
     def currency(self) -> Currency:

@@ -82,8 +82,6 @@ def place_order(
     db_line_items = list(
         _build_db_line_items(incoming_order.line_items, db_order)
     )
-    db_order._total_amount = incoming_order.total_amount.amount
-    db_order.processing_required = incoming_order.processing_required
 
     db.session.add(db_order)
     db.session.add_all(db_line_items)
@@ -191,7 +189,8 @@ def _build_db_order(
         zip_code=orderer.zip_code,
         city=orderer.city,
         street=orderer.street,
-        currency=incoming_order.total_amount.currency,
+        total_amount=incoming_order.total_amount,
+        processing_required=incoming_order.processing_required,
     )
 
 
