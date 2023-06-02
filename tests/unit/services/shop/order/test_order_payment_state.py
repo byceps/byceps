@@ -9,6 +9,7 @@ from uuid import UUID
 from moneyed import EUR
 
 from byceps.services.shop.order import order_checkout_service, order_service
+from byceps.services.shop.order.models.checkout import IncomingOrder
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import (
     Order,
@@ -68,14 +69,22 @@ def test_is_canceled_after_paid():
 
 
 def create_order_with_payment_state(payment_state: PaymentState) -> Order:
-    shop_id = ShopID('shop-123')
-    storefront_id = StorefrontID('storefront-123')
     order_number = OrderNumber('AEC-03-B00074')
     orderer = create_orderer()
     created_at = datetime.utcnow()
 
-    db_order = order_checkout_service._build_order(
-        created_at, shop_id, storefront_id, order_number, orderer, EUR
+    incoming_order = IncomingOrder(
+        created_at=created_at,
+        shop_id=ShopID('shop-123'),
+        storefront_id=StorefrontID('storefront-123'),
+        orderer=orderer,
+        line_items=[],
+        total_amount=EUR.zero,
+        processing_required=False,
+    )
+
+    db_order = order_checkout_service._build_db_order(
+        incoming_order, order_number
     )
     db_order.payment_state = payment_state
 

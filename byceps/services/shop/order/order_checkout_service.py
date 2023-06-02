@@ -33,6 +33,7 @@ from . import (
 )
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.order import DbOrder
+from .models.checkout import IncomingLineItem, IncomingOrder
 from .models.number import OrderNumber
 from .models.order import (
     Order,
@@ -69,24 +70,25 @@ def place_order(
 
     order_number = order_number_generation_result.unwrap()
 
-    cart_items = cart.get_items()
-
     if created_at is None:
         created_at = datetime.utcnow()
 
-    db_order = _build_order(
-        created_at, shop.id, storefront.id, order_number, orderer, shop.currency
+    incoming_order = build_incoming_order(
+        created_at, shop.id, storefront.id, orderer, shop.currency, cart
     )
-    db_line_items = list(_build_line_items(cart_items, db_order))
-    db_order._total_amount = cart.calculate_total_amount().amount
-    db_order.processing_required = any(
-        db_line_item.processing_required for db_line_item in db_line_items
+
+    db_order = _build_db_order(incoming_order, order_number)
+
+    db_line_items = list(
+        _build_db_line_items(incoming_order.line_items, db_order)
     )
+    db_order._total_amount = incoming_order.total_amount.amount
+    db_order.processing_required = incoming_order.processing_required
 
     db.session.add(db_order)
     db.session.add_all(db_line_items)
 
-    _reduce_article_stock(cart_items)
+    _reduce_article_stock(incoming_order)
 
     try:
         db.session.commit()
@@ -120,19 +122,66 @@ def place_order(
     return Ok((order, event))
 
 
-def _build_order(
+def build_incoming_order(
     created_at: datetime,
     shop_id: ShopID,
     storefront_id: StorefrontID,
-    order_number: OrderNumber,
     orderer: Orderer,
     currency: Currency,
+    cart: Cart,
+) -> IncomingOrder:
+    """Build an incoming order object."""
+    line_items = list(_build_incoming_line_items(cart.get_items()))
+
+    total_amount = cart.calculate_total_amount()
+
+    processing_required = any(
+        line_item.processing_required for line_item in line_items
+    )
+
+    return IncomingOrder(
+        created_at=created_at,
+        shop_id=shop_id,
+        storefront_id=storefront_id,
+        orderer=orderer,
+        line_items=line_items,
+        total_amount=total_amount,
+        processing_required=processing_required,
+    )
+
+
+def _build_incoming_line_items(
+    cart_items: list[CartItem],
+) -> Iterator[IncomingLineItem]:
+    """Build incoming line item objects from the cart's content."""
+    for cart_item in cart_items:
+        article = cart_item.article
+        quantity = cart_item.quantity
+        line_amount = cart_item.line_amount
+
+        yield IncomingLineItem(
+            article_id=article.id,
+            article_number=article.item_number,
+            article_type=article.type_,
+            description=article.description,
+            unit_price=article.price,
+            tax_rate=article.tax_rate,
+            quantity=quantity,
+            line_amount=line_amount,
+            processing_required=article.processing_required,
+        )
+
+
+def _build_db_order(
+    incoming_order: IncomingOrder, order_number: OrderNumber
 ) -> DbOrder:
     """Build an order."""
+    orderer = incoming_order.orderer
+
     return DbOrder(
-        created_at,
-        shop_id,
-        storefront_id,
+        incoming_order.created_at,
+        incoming_order.shop_id,
+        incoming_order.storefront_id,
         order_number,
         orderer.user_id,
         orderer.company,
@@ -142,37 +191,32 @@ def _build_order(
         orderer.zip_code,
         orderer.city,
         orderer.street,
-        currency,
+        incoming_order.total_amount.currency,
     )
 
 
-def _build_line_items(
-    cart_items: list[CartItem], db_order: DbOrder
+def _build_db_line_items(
+    incoming_line_items: list[IncomingLineItem], db_order: DbOrder
 ) -> Iterator[DbLineItem]:
     """Build line items from the cart's content."""
-    for cart_item in cart_items:
-        article = cart_item.article
-        quantity = cart_item.quantity
-        line_amount = cart_item.line_amount
-
+    for incoming_line_item in incoming_line_items:
         yield DbLineItem(
             db_order,
-            article.id,
-            article.item_number,
-            article.type_,
-            article.description,
-            article.price.amount,
-            article.tax_rate,
-            quantity,
-            line_amount.amount,
-            article.processing_required,
+            incoming_line_item.article_id,
+            incoming_line_item.article_number,
+            incoming_line_item.article_type,
+            incoming_line_item.description,
+            incoming_line_item.unit_price.amount,
+            incoming_line_item.tax_rate,
+            incoming_line_item.quantity,
+            incoming_line_item.line_amount.amount,
+            incoming_line_item.processing_required,
         )
 
 
-def _reduce_article_stock(cart_items: list[CartItem]) -> None:
+def _reduce_article_stock(incoming_order: IncomingOrder) -> None:
     """Reduce article stock according to what is in the cart."""
-    for cart_item in cart_items:
-        article = cart_item.article
-        quantity = cart_item.quantity
-
-        article_service.decrease_quantity(article.id, quantity, commit=False)
+    for line_item in incoming_order.line_items:
+        article_service.decrease_quantity(
+            line_item.article_id, line_item.quantity, commit=False
+        )
