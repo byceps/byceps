@@ -88,7 +88,7 @@ Für Fragen stehen wir gerne zur Verfügung.
 Viele Grüße,
 das Team der {brand_title}
 
--- 
+--\x20
 {brand_title}
 
 E-Mail: info@acmecon.test

@@ -62,7 +62,7 @@ Alice
 
 ---8<-------------------------------------
 
--- 
+--\x20
 This message was sent via website www.acmecon.test.
 If you have any questions, please contact us via email to: help@acmecon.test\
 '''
@@ -128,7 +128,7 @@ Bob
 
 ---8<-------------------------------------
 
--- 
+--\x20
 Diese Mitteilung wurde über die Website www.acmecon.test gesendet.
 Bei Fragen kontaktiere uns bitte per E-Mail an: help@acmecon.test\
 '''
