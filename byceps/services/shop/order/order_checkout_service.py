@@ -179,19 +179,19 @@ def _build_db_order(
     orderer = incoming_order.orderer
 
     return DbOrder(
-        incoming_order.created_at,
-        incoming_order.shop_id,
-        incoming_order.storefront_id,
-        order_number,
-        orderer.user_id,
-        orderer.company,
-        orderer.first_name,
-        orderer.last_name,
-        orderer.country,
-        orderer.zip_code,
-        orderer.city,
-        orderer.street,
-        incoming_order.total_amount.currency,
+        created_at=incoming_order.created_at,
+        shop_id=incoming_order.shop_id,
+        storefront_id=incoming_order.storefront_id,
+        order_number=order_number,
+        placed_by_id=orderer.user_id,
+        company=orderer.company,
+        first_name=orderer.first_name,
+        last_name=orderer.last_name,
+        country=orderer.country,
+        zip_code=orderer.zip_code,
+        city=orderer.city,
+        street=orderer.street,
+        currency=incoming_order.total_amount.currency,
     )
 
 
@@ -201,16 +201,16 @@ def _build_db_line_items(
     """Build line items from the cart's content."""
     for incoming_line_item in incoming_line_items:
         yield DbLineItem(
-            db_order,
-            incoming_line_item.article_id,
-            incoming_line_item.article_number,
-            incoming_line_item.article_type,
-            incoming_line_item.description,
-            incoming_line_item.unit_price.amount,
-            incoming_line_item.tax_rate,
-            incoming_line_item.quantity,
-            incoming_line_item.line_amount.amount,
-            incoming_line_item.processing_required,
+            order=db_order,
+            article_id=incoming_line_item.article_id,
+            article_number=incoming_line_item.article_number,
+            article_type=incoming_line_item.article_type,
+            description=incoming_line_item.description,
+            unit_price=incoming_line_item.unit_price.amount,
+            tax_rate=incoming_line_item.tax_rate,
+            quantity=incoming_line_item.quantity,
+            line_amount=incoming_line_item.line_amount.amount,
+            processing_required=incoming_line_item.processing_required,
         )
 
 
