@@ -123,11 +123,7 @@ def assemble_email_for_incoming_order_to_orderer(
         ]
         body = _assemble_body(data, paragraphs)
 
-    recipient_address = data.orderer_email_address
-
-    return _assemble_email_to_orderer(
-        subject, body, data.brand_id, recipient_address
-    )
+    return _assemble_email_to_orderer(subject, body, data)
 
 
 def assemble_email_for_canceled_order_to_orderer(
@@ -154,11 +150,7 @@ def assemble_email_for_canceled_order_to_orderer(
         ]
         body = _assemble_body(data, paragraphs)
 
-    recipient_address = data.orderer_email_address
-
-    return _assemble_email_to_orderer(
-        subject, body, data.brand_id, recipient_address
-    )
+    return _assemble_email_to_orderer(subject, body, data)
 
 
 def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
@@ -184,11 +176,7 @@ def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
         ]
         body = _assemble_body(data, paragraphs)
 
-    recipient_address = data.orderer_email_address
-
-    return _assemble_email_to_orderer(
-        subject, body, data.brand_id, recipient_address
-    )
+    return _assemble_email_to_orderer(subject, body, data)
 
 
 def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
@@ -222,13 +210,12 @@ def _assemble_body(data: OrderEmailData, paragraphs: list[str]) -> str:
 def _assemble_email_to_orderer(
     subject: str,
     body: str,
-    brand_id: BrandID,
-    recipient_address: str,
+    data: OrderEmailData,
 ) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    config = email_config_service.get_config(brand_id)
+    config = email_config_service.get_config(data.brand_id)
     sender = config.sender
-    recipients = [recipient_address]
+    recipients = [data.orderer_email_address]
 
     return Message(sender, recipients, subject, body)
 
