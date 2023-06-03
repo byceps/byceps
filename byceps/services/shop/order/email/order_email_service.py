@@ -80,7 +80,7 @@ def assemble_email_for_incoming_order_to_orderer(
             data.order, payment_instructions
         )
 
-    return _assemble_email_to_orderer(data, text, footer)
+        return _assemble_email_to_orderer(data, text, footer)
 
 
 def assemble_text_for_incoming_order_to_orderer(
@@ -146,7 +146,7 @@ def assemble_email_for_canceled_order_to_orderer(
     with force_user_locale(data.orderer):
         text = assemble_text_for_canceled_order_to_orderer(data.order)
 
-    return _assemble_email_to_orderer(data, text, footer)
+        return _assemble_email_to_orderer(data, text, footer)
 
 
 def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
@@ -176,7 +176,7 @@ def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
     with force_user_locale(data.orderer):
         text = assemble_text_for_paid_order_to_orderer(data.order)
 
-    return _assemble_email_to_orderer(data, text, footer)
+        return _assemble_email_to_orderer(data, text, footer)
 
 
 def assemble_text_for_paid_order_to_orderer(order: Order) -> OrderEmailText:
@@ -228,8 +228,7 @@ def _get_footer(data: OrderEmailData) -> str:
 def _assemble_body(data: OrderEmailData, main_part: str, footer: str) -> str:
     """Assemble the plain text part of the email."""
     screen_name = data.orderer.screen_name or 'UnknownUser'
-    with force_user_locale(data.orderer):
-        salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
+    salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
 
     parts = [salutation, main_part, footer]
     return '\n\n'.join(parts)
