@@ -79,7 +79,7 @@ def assemble_email_for_incoming_order_to_orderer(
         data, payment_instructions, footer
     )
 
-    return _assemble_email_to_orderer(text.subject, text.body, data)
+    return _assemble_email_to_orderer(data, text)
 
 
 def assemble_text_for_incoming_order_to_orderer(
@@ -149,7 +149,7 @@ def assemble_email_for_canceled_order_to_orderer(
 
     text = assemble_text_for_canceled_order_to_orderer(data, footer)
 
-    return _assemble_email_to_orderer(text.subject, text.body, data)
+    return _assemble_email_to_orderer(data, text)
 
 
 def assemble_text_for_canceled_order_to_orderer(
@@ -183,7 +183,7 @@ def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
 
     text = assemble_text_for_paid_order_to_orderer(data, footer)
 
-    return _assemble_email_to_orderer(text.subject, text.body, data)
+    return _assemble_email_to_orderer(data, text)
 
 
 def assemble_text_for_paid_order_to_orderer(
@@ -248,16 +248,14 @@ def _assemble_body(
 
 
 def _assemble_email_to_orderer(
-    subject: str,
-    body: str,
-    data: OrderEmailData,
+    data: OrderEmailData, text: OrderEmailText
 ) -> Message:
     """Assemble an email message with the rendered template as its body."""
     config = email_config_service.get_config(data.brand_id)
     sender = config.sender
     recipients = [data.orderer_email_address]
 
-    return Message(sender, recipients, subject, body)
+    return Message(sender, recipients, text.subject, text.body)
 
 
 def _send_email(message: Message) -> None:
