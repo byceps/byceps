@@ -76,18 +76,16 @@ def assemble_email_for_incoming_order_to_orderer(
     footer = _get_footer(data)
 
     text = assemble_text_for_incoming_order_to_orderer(
-        data, payment_instructions
+        data.order, data.orderer, payment_instructions
     )
 
     return _assemble_email_to_orderer(data, text, footer)
 
 
 def assemble_text_for_incoming_order_to_orderer(
-    data: OrderEmailData, payment_instructions: str
+    order: Order, orderer: User, payment_instructions: str
 ) -> OrderEmailText:
-    order = data.order
-
-    with force_user_locale(data.orderer):
+    with force_user_locale(orderer):
         subject = gettext(
             'Your order (%(order_number)s) has been received.',
             order_number=order.order_number,
@@ -147,17 +145,15 @@ def assemble_email_for_canceled_order_to_orderer(
 ) -> Message:
     footer = _get_footer(data)
 
-    text = assemble_text_for_canceled_order_to_orderer(data)
+    text = assemble_text_for_canceled_order_to_orderer(data.order, data.orderer)
 
     return _assemble_email_to_orderer(data, text, footer)
 
 
 def assemble_text_for_canceled_order_to_orderer(
-    data: OrderEmailData,
+    order: Order, orderer: User
 ) -> OrderEmailText:
-    order = data.order
-
-    with force_user_locale(data.orderer):
+    with force_user_locale(orderer):
         subject = '\u274c ' + gettext(
             'Your order (%(order_number)s) has been canceled.',
             order_number=order.order_number,
@@ -181,17 +177,15 @@ def assemble_text_for_canceled_order_to_orderer(
 def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
     footer = _get_footer(data)
 
-    text = assemble_text_for_paid_order_to_orderer(data)
+    text = assemble_text_for_paid_order_to_orderer(data.order, data.orderer)
 
     return _assemble_email_to_orderer(data, text, footer)
 
 
 def assemble_text_for_paid_order_to_orderer(
-    data: OrderEmailData,
+    order: Order, orderer: User
 ) -> OrderEmailText:
-    order = data.order
-
-    with force_user_locale(data.orderer):
+    with force_user_locale(orderer):
         subject = '\u2705 ' + gettext(
             'Your order (%(order_number)s) has been paid.',
             order_number=order.order_number,
