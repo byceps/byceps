@@ -32,17 +32,3 @@ def place_order_with_items(
     ).unwrap()
 
     return order
-
-
-def assert_email(
-    mock, expected_sender, expected_recipients, expected_subject, expected_body
-):
-    calls = mock.call_args_list
-    assert len(calls) == 1
-
-    pos_args, _ = calls[0]
-    actual_sender, actual_recipients, actual_subject, actual_body = pos_args
-    assert actual_sender == expected_sender
-    assert actual_recipients == expected_recipients
-    assert actual_subject == expected_subject
-    assert actual_body == expected_body

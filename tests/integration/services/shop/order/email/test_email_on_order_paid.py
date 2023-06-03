@@ -4,13 +4,14 @@
 """
 
 from datetime import datetime
-from unittest.mock import patch
 
 import pytest
 
 from byceps.services.brand.models import Brand
+from byceps.services.email.models import NameAndAddress
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.email.order_email_service import OrderEmailData
 from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
@@ -18,11 +19,7 @@ from byceps.services.user.models.user import User
 
 from tests.helpers import current_user_set
 
-from .helpers import (
-    assert_email,
-    get_current_user_for_user,
-    place_order_with_items,
-)
+from .helpers import get_current_user_for_user, place_order_with_items
 
 
 @pytest.fixture()
@@ -53,9 +50,7 @@ def order(storefront: Storefront, orderer: Orderer, email_footer_snippets):
     return place_order_with_items(storefront.id, orderer, created_at, [])
 
 
-@patch('byceps.services.email.email_service.send')
 def test_email_on_order_paid(
-    send_email_mock,
     site_app,
     customer: User,
     order_admin,
@@ -67,17 +62,34 @@ def test_email_on_order_paid(
     order_service.mark_order_as_paid(
         order.id, 'bank_transfer', order_admin.id
     ).unwrap()
+    order = order_service.get_order(order.id)
 
-    current_user = get_current_user_for_user(customer, 'de')
-    with current_user_set(app, current_user), app.app_context():
-        order_email_service.send_email_for_paid_order_to_orderer(order.id)
-
-    expected_sender = 'noreply@acmecon.test'
-    expected_recipients = ['vorbild@users.test']
-    expected_subject = (
-        '\u2705 Deine Bestellung (EF-33-B00022) ist bezahlt worden.'
+    language_code = 'de'
+    order_email_data = OrderEmailData(
+        order=order,
+        brand_id=shop_brand.id,
+        orderer=customer,
+        orderer_email_address='vorbild@users.test',
+        language_code=language_code,
     )
-    expected_body = '''
+    current_user = get_current_user_for_user(customer, language_code)
+
+    with current_user_set(app, current_user), app.app_context():
+        actual = order_email_service.assemble_email_for_paid_order_to_orderer(
+            order_email_data
+        )
+
+    assert actual.sender == NameAndAddress(
+        name=None, address='noreply@acmecon.test'
+    )
+    assert actual.recipients == ['vorbild@users.test']
+    assert (
+        actual.subject
+        == '\u2705 Deine Bestellung (EF-33-B00022) ist bezahlt worden.'
+    )
+    assert (
+        actual.body
+        == '''
 Hallo Vorbild,
 
 vielen Dank für deine Bestellung mit der Nummer EF-33-B00022 am 23.09.2014 über unsere Website.
@@ -94,13 +106,6 @@ das Team der {brand_title}
 
 E-Mail: info@acmecon.test
     '''.strip().format(
-        brand_title=shop_brand.title
-    )
-
-    assert_email(
-        send_email_mock,
-        expected_sender,
-        expected_recipients,
-        expected_subject,
-        expected_body,
+            brand_title=shop_brand.title
+        )
     )
