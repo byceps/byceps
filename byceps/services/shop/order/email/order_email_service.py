@@ -64,12 +64,11 @@ def assemble_email_for_incoming_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
     order = data.order
-    order_number = order.order_number
 
     with force_user_locale(data.orderer):
         subject = gettext(
             'Your order (%(order_number)s) has been received.',
-            order_number=order_number,
+            order_number=order.order_number,
         )
 
         date_str = format_date(order.created_at)
@@ -113,7 +112,7 @@ def assemble_email_for_incoming_order_to_orderer(
         paragraphs = [
             gettext(
                 'thank you for your order %(order_number)s on %(order_date)s through our website.',
-                order_number=order_number,
+                order_number=order.order_number,
                 order_date=date_str,
             ),
             gettext('You have ordered these items:'),
@@ -130,12 +129,11 @@ def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
     order = data.order
-    order_number = order.order_number
 
     with force_user_locale(data.orderer):
         subject = '\u274c ' + gettext(
             'Your order (%(order_number)s) has been canceled.',
-            order_number=order_number,
+            order_number=order.order_number,
         )
 
         date_str = format_date(order.created_at)
@@ -143,7 +141,7 @@ def assemble_email_for_canceled_order_to_orderer(
         paragraphs = [
             gettext(
                 'your order %(order_number)s on %(order_date)s has been canceled by us for this reason:',
-                order_number=order_number,
+                order_number=order.order_number,
                 order_date=date_str,
             ),
             cancelation_reason,
@@ -155,19 +153,18 @@ def assemble_email_for_canceled_order_to_orderer(
 
 def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
     order = data.order
-    order_number = order.order_number
 
     with force_user_locale(data.orderer):
         subject = '\u2705 ' + gettext(
             'Your order (%(order_number)s) has been paid.',
-            order_number=order_number,
+            order_number=order.order_number,
         )
 
         date_str = format_date(order.created_at)
         paragraphs = [
             gettext(
                 'thank you for your order %(order_number)s on %(order_date)s through our website.',
-                order_number=order_number,
+                order_number=order.order_number,
                 order_date=date_str,
             ),
             gettext(
