@@ -19,7 +19,7 @@ from byceps.services.email import (
     email_footer_service,
     email_service,
 )
-from byceps.services.email.models import Message
+from byceps.services.email.models import EmailConfig, Message
 from byceps.services.shop.order import order_payment_service, order_service
 from byceps.services.shop.order.models.order import Order, OrderID
 from byceps.services.shop.shop import shop_service
@@ -218,12 +218,13 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
 def _assemble_email(
     data: OrderEmailData, func: Callable[[Order], OrderEmailText]
 ) -> Message:
+    config = email_config_service.get_config(data.brand_id)
     footer = email_footer_service.get_footer(data.brand_id, data.language_code)
 
     with force_user_locale(data.orderer):
         text = func(data.order)
         body = _assemble_body_parts(data, text.body_main_part, footer)
-        return _assemble_message(data, text.subject, body)
+        return _assemble_message(config, data, text.subject, body)
 
 
 def _assemble_body_parts(
@@ -237,9 +238,10 @@ def _assemble_body_parts(
     return '\n\n'.join(parts)
 
 
-def _assemble_message(data: OrderEmailData, subject: str, body: str) -> Message:
+def _assemble_message(
+    config: EmailConfig, data: OrderEmailData, subject: str, body: str
+) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    config = email_config_service.get_config(data.brand_id)
     sender = config.sender
     recipients = [data.orderer_email_address]
 
