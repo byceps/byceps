@@ -39,7 +39,7 @@ class OrderEmailData:
 @dataclass(frozen=True)
 class OrderEmailText:
     subject: str
-    body: str
+    body_main_part: str
 
 
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
@@ -76,14 +76,14 @@ def assemble_email_for_incoming_order_to_orderer(
     footer = _get_footer(data)
 
     text = assemble_text_for_incoming_order_to_orderer(
-        data, payment_instructions, footer
+        data, payment_instructions
     )
 
-    return _assemble_email_to_orderer(data, text)
+    return _assemble_email_to_orderer(data, text, footer)
 
 
 def assemble_text_for_incoming_order_to_orderer(
-    data: OrderEmailData, payment_instructions: str, footer: str
+    data: OrderEmailData, payment_instructions: str
 ) -> OrderEmailText:
     order = data.order
 
@@ -137,9 +137,9 @@ def assemble_text_for_incoming_order_to_orderer(
             total_amount,
             payment_instructions,
         ]
-        body = _assemble_body(data, paragraphs, footer)
+        body_main_part = '\n\n'.join(paragraphs)
 
-    return OrderEmailText(subject=subject, body=body)
+    return OrderEmailText(subject=subject, body_main_part=body_main_part)
 
 
 def assemble_email_for_canceled_order_to_orderer(
@@ -147,13 +147,13 @@ def assemble_email_for_canceled_order_to_orderer(
 ) -> Message:
     footer = _get_footer(data)
 
-    text = assemble_text_for_canceled_order_to_orderer(data, footer)
+    text = assemble_text_for_canceled_order_to_orderer(data)
 
-    return _assemble_email_to_orderer(data, text)
+    return _assemble_email_to_orderer(data, text, footer)
 
 
 def assemble_text_for_canceled_order_to_orderer(
-    data: OrderEmailData, footer: str
+    data: OrderEmailData,
 ) -> OrderEmailText:
     order = data.order
 
@@ -173,21 +173,21 @@ def assemble_text_for_canceled_order_to_orderer(
             ),
             cancelation_reason,
         ]
-        body = _assemble_body(data, paragraphs, footer)
+        body_main_part = '\n\n'.join(paragraphs)
 
-    return OrderEmailText(subject=subject, body=body)
+    return OrderEmailText(subject=subject, body_main_part=body_main_part)
 
 
 def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
     footer = _get_footer(data)
 
-    text = assemble_text_for_paid_order_to_orderer(data, footer)
+    text = assemble_text_for_paid_order_to_orderer(data)
 
-    return _assemble_email_to_orderer(data, text)
+    return _assemble_email_to_orderer(data, text, footer)
 
 
 def assemble_text_for_paid_order_to_orderer(
-    data: OrderEmailData, footer: str
+    data: OrderEmailData,
 ) -> OrderEmailText:
     order = data.order
 
@@ -208,9 +208,9 @@ def assemble_text_for_paid_order_to_orderer(
                 'We have received your payment and have marked your order as paid.'
             ),
         ]
-        body = _assemble_body(data, paragraphs, footer)
+        body_main_part = '\n\n'.join(paragraphs)
 
-    return OrderEmailText(subject=subject, body=body)
+    return OrderEmailText(subject=subject, body_main_part=body_main_part)
 
 
 def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
@@ -237,25 +237,27 @@ def _get_footer(data: OrderEmailData) -> str:
     return email_footer_service.get_footer(data.brand_id, data.language_code)
 
 
-def _assemble_body(
-    data: OrderEmailData, paragraphs: list[str], footer: str
-) -> str:
+def _assemble_body(data: OrderEmailData, main_part: str, footer: str) -> str:
     """Assemble the plain text part of the email."""
     screen_name = data.orderer.screen_name or 'UnknownUser'
-    salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
+    with force_user_locale(data.orderer):
+        salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
 
-    return '\n\n'.join([salutation] + paragraphs + [footer])
+    parts = [salutation, main_part, footer]
+    return '\n\n'.join(parts)
 
 
 def _assemble_email_to_orderer(
-    data: OrderEmailData, text: OrderEmailText
+    data: OrderEmailData, text: OrderEmailText, footer: str
 ) -> Message:
     """Assemble an email message with the rendered template as its body."""
     config = email_config_service.get_config(data.brand_id)
     sender = config.sender
     recipients = [data.orderer_email_address]
 
-    return Message(sender, recipients, text.subject, text.body)
+    body = _assemble_body(data, text.body_main_part, footer)
+
+    return Message(sender, recipients, text.subject, body)
 
 
 def _send_email(message: Message) -> None:
