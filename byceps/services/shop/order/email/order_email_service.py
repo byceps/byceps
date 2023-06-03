@@ -9,6 +9,8 @@ Notification e-mails about shop orders
 """
 
 from dataclasses import dataclass
+from functools import partial
+from typing import Callable
 
 from flask_babel import format_date, gettext
 
@@ -73,14 +75,17 @@ def assemble_email_for_incoming_order_to_orderer(
         data.order, data.language_code
     )
 
-    footer = _get_footer(data)
-
-    with force_user_locale(data.orderer):
-        text = assemble_text_for_incoming_order_to_orderer(
-            data.order, payment_instructions
+    assemble_text_for_incoming_order_to_orderer_with_payment_instructions = (
+        partial(
+            assemble_text_for_incoming_order_to_orderer,
+            payment_instructions=payment_instructions,
         )
+    )
 
-        return _assemble_message(data, text, footer)
+    return _assemble_email(
+        data,
+        assemble_text_for_incoming_order_to_orderer_with_payment_instructions,
+    )
 
 
 def assemble_text_for_incoming_order_to_orderer(
@@ -141,12 +146,7 @@ def assemble_text_for_incoming_order_to_orderer(
 def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
-    footer = _get_footer(data)
-
-    with force_user_locale(data.orderer):
-        text = assemble_text_for_canceled_order_to_orderer(data.order)
-
-        return _assemble_message(data, text, footer)
+    return _assemble_email(data, assemble_text_for_canceled_order_to_orderer)
 
 
 def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
@@ -171,12 +171,7 @@ def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
 
 
 def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
-    footer = _get_footer(data)
-
-    with force_user_locale(data.orderer):
-        text = assemble_text_for_paid_order_to_orderer(data.order)
-
-        return _assemble_message(data, text, footer)
+    return _assemble_email(data, assemble_text_for_paid_order_to_orderer)
 
 
 def assemble_text_for_paid_order_to_orderer(order: Order) -> OrderEmailText:
@@ -218,6 +213,16 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
         orderer_email_address=email_address,
         language_code=language_code,
     )
+
+
+def _assemble_email(
+    data: OrderEmailData, func: Callable[[Order], OrderEmailText]
+) -> Message:
+    footer = _get_footer(data)
+
+    with force_user_locale(data.orderer):
+        text = func(data.order)
+        return _assemble_message(data, text, footer)
 
 
 def _get_footer(data: OrderEmailData) -> str:
