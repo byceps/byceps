@@ -69,13 +69,21 @@ def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
 def assemble_email_for_incoming_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
-    text = assemble_text_for_incoming_order_to_orderer(data)
+    payment_instructions = order_payment_service.get_email_payment_instructions(
+        data.order, data.language_code
+    )
+
+    footer = _get_footer(data)
+
+    text = assemble_text_for_incoming_order_to_orderer(
+        data, payment_instructions, footer
+    )
 
     return _assemble_email_to_orderer(text.subject, text.body, data)
 
 
 def assemble_text_for_incoming_order_to_orderer(
-    data: OrderEmailData,
+    data: OrderEmailData, payment_instructions: str, footer: str
 ) -> OrderEmailText:
     order = data.order
 
@@ -118,11 +126,6 @@ def assemble_text_for_incoming_order_to_orderer(
             + ': '
             + format_money(order.total_amount)
         )
-        payment_instructions = (
-            order_payment_service.get_email_payment_instructions(
-                order, data.language_code
-            )
-        )
         paragraphs = [
             gettext(
                 'thank you for your order %(order_number)s on %(order_date)s through our website.',
@@ -134,7 +137,7 @@ def assemble_text_for_incoming_order_to_orderer(
             total_amount,
             payment_instructions,
         ]
-        body = _assemble_body(data, paragraphs)
+        body = _assemble_body(data, paragraphs, footer)
 
     return OrderEmailText(subject=subject, body=body)
 
@@ -142,13 +145,15 @@ def assemble_text_for_incoming_order_to_orderer(
 def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
-    text = assemble_text_for_canceled_order_to_orderer(data)
+    footer = _get_footer(data)
+
+    text = assemble_text_for_canceled_order_to_orderer(data, footer)
 
     return _assemble_email_to_orderer(text.subject, text.body, data)
 
 
 def assemble_text_for_canceled_order_to_orderer(
-    data: OrderEmailData,
+    data: OrderEmailData, footer: str
 ) -> OrderEmailText:
     order = data.order
 
@@ -168,19 +173,21 @@ def assemble_text_for_canceled_order_to_orderer(
             ),
             cancelation_reason,
         ]
-        body = _assemble_body(data, paragraphs)
+        body = _assemble_body(data, paragraphs, footer)
 
     return OrderEmailText(subject=subject, body=body)
 
 
 def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
-    text = assemble_text_for_paid_order_to_orderer(data)
+    footer = _get_footer(data)
+
+    text = assemble_text_for_paid_order_to_orderer(data, footer)
 
     return _assemble_email_to_orderer(text.subject, text.body, data)
 
 
 def assemble_text_for_paid_order_to_orderer(
-    data: OrderEmailData,
+    data: OrderEmailData, footer: str
 ) -> OrderEmailText:
     order = data.order
 
@@ -201,7 +208,7 @@ def assemble_text_for_paid_order_to_orderer(
                 'We have received your payment and have marked your order as paid.'
             ),
         ]
-        body = _assemble_body(data, paragraphs)
+        body = _assemble_body(data, paragraphs, footer)
 
     return OrderEmailText(subject=subject, body=body)
 
@@ -225,11 +232,17 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     )
 
 
-def _assemble_body(data: OrderEmailData, paragraphs: list[str]) -> str:
+def _get_footer(data: OrderEmailData) -> str:
+    """Obtain the brand's email footer."""
+    return email_footer_service.get_footer(data.brand_id, data.language_code)
+
+
+def _assemble_body(
+    data: OrderEmailData, paragraphs: list[str], footer: str
+) -> str:
     """Assemble the plain text part of the email."""
     screen_name = data.orderer.screen_name or 'UnknownUser'
     salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
-    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
 
     return '\n\n'.join([salutation] + paragraphs + [footer])
 
