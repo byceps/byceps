@@ -218,16 +218,11 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
 def _assemble_email(
     data: OrderEmailData, func: Callable[[Order], OrderEmailText]
 ) -> Message:
-    footer = _get_footer(data)
+    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
 
     with force_user_locale(data.orderer):
         text = func(data.order)
         return _assemble_message(data, text, footer)
-
-
-def _get_footer(data: OrderEmailData) -> str:
-    """Obtain the brand's email footer."""
-    return email_footer_service.get_footer(data.brand_id, data.language_code)
 
 
 def _assemble_body_parts(
