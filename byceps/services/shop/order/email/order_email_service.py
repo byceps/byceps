@@ -36,6 +36,12 @@ class OrderEmailData:
     language_code: str
 
 
+@dataclass(frozen=True)
+class OrderEmailText:
+    subject: str
+    body: str
+
+
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
 
@@ -63,6 +69,14 @@ def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
 def assemble_email_for_incoming_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
+    text = assemble_text_for_incoming_order_to_orderer(data)
+
+    return _assemble_email_to_orderer(text.subject, text.body, data)
+
+
+def assemble_text_for_incoming_order_to_orderer(
+    data: OrderEmailData,
+) -> OrderEmailText:
     order = data.order
 
     with force_user_locale(data.orderer):
@@ -122,12 +136,20 @@ def assemble_email_for_incoming_order_to_orderer(
         ]
         body = _assemble_body(data, paragraphs)
 
-    return _assemble_email_to_orderer(subject, body, data)
+    return OrderEmailText(subject=subject, body=body)
 
 
 def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
+    text = assemble_text_for_canceled_order_to_orderer(data)
+
+    return _assemble_email_to_orderer(text.subject, text.body, data)
+
+
+def assemble_text_for_canceled_order_to_orderer(
+    data: OrderEmailData,
+) -> OrderEmailText:
     order = data.order
 
     with force_user_locale(data.orderer):
@@ -148,10 +170,18 @@ def assemble_email_for_canceled_order_to_orderer(
         ]
         body = _assemble_body(data, paragraphs)
 
-    return _assemble_email_to_orderer(subject, body, data)
+    return OrderEmailText(subject=subject, body=body)
 
 
 def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
+    text = assemble_text_for_paid_order_to_orderer(data)
+
+    return _assemble_email_to_orderer(text.subject, text.body, data)
+
+
+def assemble_text_for_paid_order_to_orderer(
+    data: OrderEmailData,
+) -> OrderEmailText:
     order = data.order
 
     with force_user_locale(data.orderer):
@@ -173,7 +203,7 @@ def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
         ]
         body = _assemble_body(data, paragraphs)
 
-    return _assemble_email_to_orderer(subject, body, data)
+    return OrderEmailText(subject=subject, body=body)
 
 
 def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
