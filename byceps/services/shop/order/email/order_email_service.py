@@ -80,7 +80,7 @@ def assemble_email_for_incoming_order_to_orderer(
             data.order, payment_instructions
         )
 
-        return _assemble_email_to_orderer(data, text, footer)
+        return _assemble_message(data, text, footer)
 
 
 def assemble_text_for_incoming_order_to_orderer(
@@ -146,7 +146,7 @@ def assemble_email_for_canceled_order_to_orderer(
     with force_user_locale(data.orderer):
         text = assemble_text_for_canceled_order_to_orderer(data.order)
 
-        return _assemble_email_to_orderer(data, text, footer)
+        return _assemble_message(data, text, footer)
 
 
 def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
@@ -176,7 +176,7 @@ def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
     with force_user_locale(data.orderer):
         text = assemble_text_for_paid_order_to_orderer(data.order)
 
-        return _assemble_email_to_orderer(data, text, footer)
+        return _assemble_message(data, text, footer)
 
 
 def assemble_text_for_paid_order_to_orderer(order: Order) -> OrderEmailText:
@@ -225,8 +225,10 @@ def _get_footer(data: OrderEmailData) -> str:
     return email_footer_service.get_footer(data.brand_id, data.language_code)
 
 
-def _assemble_body(data: OrderEmailData, main_part: str, footer: str) -> str:
-    """Assemble the plain text part of the email."""
+def _assemble_body_parts(
+    data: OrderEmailData, main_part: str, footer: str
+) -> str:
+    """Assemble the plain text body part of the email."""
     screen_name = data.orderer.screen_name or 'UnknownUser'
     salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
 
@@ -234,7 +236,7 @@ def _assemble_body(data: OrderEmailData, main_part: str, footer: str) -> str:
     return '\n\n'.join(parts)
 
 
-def _assemble_email_to_orderer(
+def _assemble_message(
     data: OrderEmailData, text: OrderEmailText, footer: str
 ) -> Message:
     """Assemble an email message with the rendered template as its body."""
@@ -242,7 +244,7 @@ def _assemble_email_to_orderer(
     sender = config.sender
     recipients = [data.orderer_email_address]
 
-    body = _assemble_body(data, text.body_main_part, footer)
+    body = _assemble_body_parts(data, text.body_main_part, footer)
 
     return Message(sender, recipients, text.subject, body)
 
