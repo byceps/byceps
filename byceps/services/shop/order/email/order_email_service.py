@@ -223,7 +223,7 @@ def _assemble_email(
 
     with force_user_locale(data.orderer):
         text = func(data.order)
-        body = _assemble_body_parts(data, text.body_main_part, footer)
+        body = _assemble_body_parts(data.orderer, text.body_main_part, footer)
 
         return Message(
             sender=config.sender,
@@ -233,11 +233,9 @@ def _assemble_email(
         )
 
 
-def _assemble_body_parts(
-    data: OrderEmailData, main_part: str, footer: str
-) -> str:
+def _assemble_body_parts(recipient: User, main_part: str, footer: str) -> str:
     """Assemble the plain text body part of the email."""
-    screen_name = data.orderer.screen_name or 'UnknownUser'
+    screen_name = recipient.screen_name or 'UnknownUser'
     salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
 
     parts = [salutation, main_part, footer]
