@@ -222,7 +222,8 @@ def _assemble_email(
 
     with force_user_locale(data.orderer):
         text = func(data.order)
-        return _assemble_message(data, text, footer)
+        body = _assemble_body_parts(data, text.body_main_part, footer)
+        return _assemble_message(data, text.subject, body)
 
 
 def _assemble_body_parts(
@@ -236,17 +237,13 @@ def _assemble_body_parts(
     return '\n\n'.join(parts)
 
 
-def _assemble_message(
-    data: OrderEmailData, text: OrderEmailText, footer: str
-) -> Message:
+def _assemble_message(data: OrderEmailData, subject: str, body: str) -> Message:
     """Assemble an email message with the rendered template as its body."""
     config = email_config_service.get_config(data.brand_id)
     sender = config.sender
     recipients = [data.orderer_email_address]
 
-    body = _assemble_body_parts(data, text.body_main_part, footer)
-
-    return Message(sender, recipients, text.subject, body)
+    return Message(sender, recipients, subject, body)
 
 
 def _send_email(message: Message) -> None:
