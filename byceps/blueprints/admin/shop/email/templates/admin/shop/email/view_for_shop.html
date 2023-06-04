@@ -32,20 +32,9 @@
 
   <h2>{{ _('Examples') }}</h2>
 
-    <details class="email-example">
-      <summary class="mb">{{ _('Order confirmation') }}</summary>
-{{ render_message_text(placed_order_message_text) }}
-    </details>
-
-    <details class="email-example">
-      <summary class="mb">{{ _('Payment receipt') }}</summary>
-{{ render_message_text(paid_order_message_text) }}
-    </details>
-
-    <details class="email-example">
-      <summary class="mb">{{ _('Cancelation') }}</summary>
-{{ render_message_text(canceled_order_message_text) }}
-    </details>
+{{ render_example_email(_('Order confirmation'), placed_order_message_text) }}
+{{ render_example_email(_('Payment receipt'), paid_order_message_text) }}
+{{ render_example_email(_('Cancelation'), canceled_order_message_text) }}
 
   <h2>{{ _('Configuration') }}</h2>
   <div class="box">
@@ -72,14 +61,17 @@
 
 {%- endblock %}
 
-{% macro render_message_text(message_text) -%}
-  {%- if message_text -%}
+{% macro render_example_email(title, text) -%}
+    <details class="email-example">
+      <summary class="mb">{{ title }}</summary>
+  {%- if text -%}
       <div class="box email-example">
-        <pre><code>{{ message_text }}</code></pre>
+        <pre><code>{{ text }}</code></pre>
       </div>
   {%- else -%}
       <div class="mb">
 {{ render_notification('Could not assemble example email. Are all necessary templates defined?', category='danger') }}
       </div>
   {%- endif -%}
+    </details>
 {%- endmacro %}
