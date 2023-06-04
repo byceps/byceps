@@ -62,7 +62,7 @@
 {%- endblock %}
 
 {% macro render_example_email(title, text) -%}
-    <details class="email-example">
+    <details class="email-example"{% if not text %} open{% endif %}>
       <summary class="mb">{{ title }}</summary>
   {%- if text -%}
       <div class="box email-example">
