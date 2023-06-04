@@ -72,6 +72,8 @@ def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
 def assemble_email_for_incoming_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
+    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
+
     payment_instructions = order_payment_service.get_email_payment_instructions(
         data.order, data.language_code
     )
@@ -85,6 +87,7 @@ def assemble_email_for_incoming_order_to_orderer(
 
     return _assemble_email(
         data,
+        footer,
         assemble_text_for_incoming_order_to_orderer_with_payment_instructions,
     )
 
@@ -147,7 +150,11 @@ def assemble_text_for_incoming_order_to_orderer(
 def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
-    return _assemble_email(data, assemble_text_for_canceled_order_to_orderer)
+    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
+
+    return _assemble_email(
+        data, footer, assemble_text_for_canceled_order_to_orderer
+    )
 
 
 def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
@@ -172,7 +179,11 @@ def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
 
 
 def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
-    return _assemble_email(data, assemble_text_for_paid_order_to_orderer)
+    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
+
+    return _assemble_email(
+        data, footer, assemble_text_for_paid_order_to_orderer
+    )
 
 
 def assemble_text_for_paid_order_to_orderer(order: Order) -> OrderEmailText:
@@ -219,10 +230,8 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
 
 
 def _assemble_email(
-    data: OrderEmailData, func: Callable[[Order], OrderEmailText]
+    data: OrderEmailData, footer: str, func: Callable[[Order], OrderEmailText]
 ) -> Message:
-    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
-
     with force_user_locale(data.orderer):
         text = func(data.order)
         body = _assemble_body_parts(data.orderer, text.body_main_part, footer)
