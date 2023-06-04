@@ -23,7 +23,7 @@ ORDER_PLACED_AT = '2021-10-12 12:34:56'
         (
             'de',
             '''\
-From: NameAndAddress(name=None, address='noreply@acmecon.test')
+From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: Deine Bestellung (AWSM-ORDR-9247) ist eingegangen.
 
@@ -62,7 +62,7 @@ E-Mail: info@acmecon.test
         (
             'en',
             '''\
-From: NameAndAddress(name=None, address='noreply@acmecon.test')
+From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: Your order (AWSM-ORDR-9247) has been received.
 
@@ -130,7 +130,7 @@ def test_example_placed_order_message_text(
         (
             'de',
             '''\
-From: NameAndAddress(name=None, address='noreply@acmecon.test')
+From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: ✅ Deine Bestellung (AWSM-ORDR-9247) ist bezahlt worden.
 
@@ -155,7 +155,7 @@ E-Mail: info@acmecon.test
         (
             'en',
             '''\
-From: NameAndAddress(name=None, address='noreply@acmecon.test')
+From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: ✅ Your order (AWSM-ORDR-9247) has been paid.
 
@@ -209,7 +209,7 @@ def test_example_paid_order_message_text(
         (
             'de',
             '''\
-From: NameAndAddress(name=None, address='noreply@acmecon.test')
+From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: ❌ Deine Bestellung (AWSM-ORDR-9247) ist storniert worden.
 
@@ -234,7 +234,7 @@ E-Mail: info@acmecon.test
         (
             'en',
             '''\
-From: NameAndAddress(name=None, address='noreply@acmecon.test')
+From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: ❌ Your order (AWSM-ORDR-9247) has been canceled.
 

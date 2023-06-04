@@ -193,7 +193,7 @@ def _render_message(message: Message) -> str:
         )
 
     return (
-        f'From: {message.sender}\n'
+        f'From: {message.sender.format()}\n'
         f'To: {message.recipients}\n'
         f'Subject: {message.subject}\n'
         f'\n\n{message.body}\n'
