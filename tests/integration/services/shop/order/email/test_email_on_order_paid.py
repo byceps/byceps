@@ -66,6 +66,7 @@ def test_email_on_order_paid(
 
     language_code = 'de'
     order_email_data = OrderEmailData(
+        sender=NameAndAddress(name=None, address='noreply@acmecon.test'),
         order=order,
         brand_id=shop_brand.id,
         orderer=customer,

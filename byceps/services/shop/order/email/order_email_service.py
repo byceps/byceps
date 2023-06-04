@@ -19,7 +19,7 @@ from byceps.services.email import (
     email_footer_service,
     email_service,
 )
-from byceps.services.email.models import Message
+from byceps.services.email.models import Message, NameAndAddress
 from byceps.services.shop.order import order_payment_service, order_service
 from byceps.services.shop.order.models.order import Order, OrderID
 from byceps.services.shop.shop import shop_service
@@ -31,6 +31,7 @@ from byceps.util.l10n import force_user_locale, format_money, get_user_locale
 
 @dataclass(frozen=True)
 class OrderEmailData:
+    sender: NameAndAddress
     order: Order
     brand_id: BrandID
     orderer: User
@@ -201,12 +202,14 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     order = order_service.get_order(order_id)
 
     shop = shop_service.get_shop(order.shop_id)
+    email_config = email_config_service.get_config(shop.brand_id)
     orderer_id = order.placed_by_id
     orderer = user_service.get_user(orderer_id)
     email_address = user_service.get_email_address(orderer_id)
     language_code = get_user_locale(orderer)
 
     return OrderEmailData(
+        sender=email_config.sender,
         order=order,
         brand_id=shop.brand_id,
         orderer=orderer,
@@ -218,7 +221,6 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
 def _assemble_email(
     data: OrderEmailData, func: Callable[[Order], OrderEmailText]
 ) -> Message:
-    config = email_config_service.get_config(data.brand_id)
     footer = email_footer_service.get_footer(data.brand_id, data.language_code)
 
     with force_user_locale(data.orderer):
@@ -226,7 +228,7 @@ def _assemble_email(
         body = _assemble_body_parts(data.orderer, text.body_main_part, footer)
 
         return Message(
-            sender=config.sender,
+            sender=data.sender,
             recipients=[data.orderer_email_address],
             subject=text.subject,
             body=body,
