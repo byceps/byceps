@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from functools import partial
 from typing import Callable
 
-from flask_babel import format_date, gettext
+from flask_babel import force_locale, format_date, gettext
 
 from byceps.services.email import (
     email_config_service,
@@ -26,7 +26,7 @@ from byceps.services.shop.shop import shop_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import BrandID
-from byceps.util.l10n import force_user_locale, format_money, get_user_locale
+from byceps.util.l10n import format_money, get_user_locale
 
 
 @dataclass(frozen=True)
@@ -36,7 +36,6 @@ class OrderEmailData:
     brand_id: BrandID
     orderer: User
     orderer_email_address: str
-    language_code: str
 
 
 @dataclass(frozen=True)
@@ -47,35 +46,39 @@ class OrderEmailText:
 
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
+    language_code = get_user_locale(data.orderer)
 
-    message = assemble_email_for_incoming_order_to_orderer(data)
+    message = assemble_email_for_incoming_order_to_orderer(data, language_code)
 
     _send_email(message)
 
 
 def send_email_for_canceled_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
+    language_code = get_user_locale(data.orderer)
 
-    message = assemble_email_for_canceled_order_to_orderer(data)
+    message = assemble_email_for_canceled_order_to_orderer(data, language_code)
 
     _send_email(message)
 
 
 def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
+    language_code = get_user_locale(data.orderer)
 
-    message = assemble_email_for_paid_order_to_orderer(data)
+    message = assemble_email_for_paid_order_to_orderer(data, language_code)
 
     _send_email(message)
 
 
 def assemble_email_for_incoming_order_to_orderer(
     data: OrderEmailData,
+    language_code: str,
 ) -> Message:
-    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
+    footer = email_footer_service.get_footer(data.brand_id, language_code)
 
     payment_instructions = order_payment_service.get_email_payment_instructions(
-        data.order, data.language_code
+        data.order, language_code
     )
 
     assemble_text_for_incoming_order_to_orderer_with_payment_instructions = (
@@ -87,6 +90,7 @@ def assemble_email_for_incoming_order_to_orderer(
 
     return _assemble_email(
         data,
+        language_code,
         footer,
         assemble_text_for_incoming_order_to_orderer_with_payment_instructions,
     )
@@ -149,11 +153,12 @@ def assemble_text_for_incoming_order_to_orderer(
 
 def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
+    language_code: str,
 ) -> Message:
-    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
+    footer = email_footer_service.get_footer(data.brand_id, language_code)
 
     return _assemble_email(
-        data, footer, assemble_text_for_canceled_order_to_orderer
+        data, language_code, footer, assemble_text_for_canceled_order_to_orderer
     )
 
 
@@ -178,11 +183,13 @@ def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
     return OrderEmailText(subject=subject, body_main_part=body_main_part)
 
 
-def assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
-    footer = email_footer_service.get_footer(data.brand_id, data.language_code)
+def assemble_email_for_paid_order_to_orderer(
+    data: OrderEmailData, language_code: str
+) -> Message:
+    footer = email_footer_service.get_footer(data.brand_id, language_code)
 
     return _assemble_email(
-        data, footer, assemble_text_for_paid_order_to_orderer
+        data, language_code, footer, assemble_text_for_paid_order_to_orderer
     )
 
 
@@ -217,7 +224,6 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     orderer_id = order.placed_by_id
     orderer = user_service.get_user(orderer_id)
     email_address = user_service.get_email_address(orderer_id)
-    language_code = get_user_locale(orderer)
 
     return OrderEmailData(
         sender=email_config.sender,
@@ -225,23 +231,25 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
         brand_id=shop.brand_id,
         orderer=orderer,
         orderer_email_address=email_address,
-        language_code=language_code,
     )
 
 
 def _assemble_email(
-    data: OrderEmailData, footer: str, func: Callable[[Order], OrderEmailText]
+    data: OrderEmailData,
+    language_code: str,
+    footer: str,
+    func: Callable[[Order], OrderEmailText],
 ) -> Message:
-    with force_user_locale(data.orderer):
+    with force_locale(language_code):
         text = func(data.order)
         body = _assemble_body_parts(data.orderer, text.body_main_part, footer)
 
-        return Message(
-            sender=data.sender,
-            recipients=[data.orderer_email_address],
-            subject=text.subject,
-            body=body,
-        )
+    return Message(
+        sender=data.sender,
+        recipients=[data.orderer_email_address],
+        subject=text.subject,
+        body=body,
+    )
 
 
 def _assemble_body_parts(recipient: User, main_part: str, footer: str) -> str:

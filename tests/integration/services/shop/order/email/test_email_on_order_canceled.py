@@ -70,14 +70,13 @@ def test_email_on_order_canceled(
         brand_id=shop_brand.id,
         orderer=customer,
         orderer_email_address='versager@users.test',
-        language_code=language_code,
     )
     current_user = get_current_user_for_user(customer, language_code)
 
     with current_user_set(app, current_user), app.app_context():
         actual = (
             order_email_service.assemble_email_for_canceled_order_to_orderer(
-                order_email_data
+                order_email_data, language_code
             )
         )
 

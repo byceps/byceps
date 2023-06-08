@@ -50,12 +50,12 @@ def build_example_placed_order_message_text(
         shop.id, PaymentState.open, state=OrderState.open, is_open=True
     )
 
-    data = _build_email_data(order, shop.brand_id, locale)
+    data = _build_email_data(order, shop.brand_id)
 
     try:
         message = (
             order_email_service.assemble_email_for_incoming_order_to_orderer(
-                data
+                data, locale
             )
         )
     except Exception as e:
@@ -74,11 +74,11 @@ def build_example_paid_order_message_text(
         shop.id, PaymentState.paid, state=OrderState.open, is_paid=True
     )
 
-    data = _build_email_data(order, shop.brand_id, locale)
+    data = _build_email_data(order, shop.brand_id)
 
     try:
         message = order_email_service.assemble_email_for_paid_order_to_orderer(
-            data
+            data, locale
         )
     except Exception as e:
         return Err(str(e))
@@ -100,12 +100,12 @@ def build_example_canceled_order_message_text(
         cancelation_reason=gettext('Not paid in time.'),
     )
 
-    data = _build_email_data(order, shop.brand_id, locale)
+    data = _build_email_data(order, shop.brand_id)
 
     try:
         message = (
             order_email_service.assemble_email_for_canceled_order_to_orderer(
-                data
+                data, locale
             )
         )
     except Exception as e:
@@ -166,15 +166,13 @@ def _build_order(
     )
 
 
-def _build_email_data(
-    order: Order, brand_id: BrandID, locale: str
-) -> OrderEmailData:
+def _build_email_data(order: Order, brand_id: BrandID) -> OrderEmailData:
     orderer = User(
         id=EXAMPLE_USER_ID,
         screen_name='Orderer',
         suspended=False,
         deleted=False,
-        locale=locale,
+        locale=None,
         avatar_url=None,
     )
 
@@ -186,7 +184,6 @@ def _build_email_data(
         brand_id=brand_id,
         orderer=orderer,
         orderer_email_address='orderer@example.com',
-        language_code=locale,
     )
 
 
