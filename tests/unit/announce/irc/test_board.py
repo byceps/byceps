@@ -29,7 +29,7 @@ from byceps.typing import BrandID, UserID
 
 from tests.helpers import generate_token, generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -53,7 +53,6 @@ def test_announce_topic_created(app: Flask, webhook_for_irc):
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
         f'das Thema "Brötchen zum Frühstück" erstellt: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicCreatedEvent(
         occurred_at=OCCURRED_AT,
@@ -69,7 +68,9 @@ def test_announce_topic_created(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_topic_hidden(app: Flask, webhook_for_irc):
@@ -79,7 +80,6 @@ def test_announce_topic_hidden(app: Flask, webhook_for_irc):
         '"Brötchen zum Frühstück" von TheShadow999 '
         f'versteckt: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicHiddenEvent(
         occurred_at=OCCURRED_AT,
@@ -97,7 +97,9 @@ def test_announce_topic_hidden(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_topic_unhidden(app: Flask, webhook_for_irc):
@@ -107,7 +109,6 @@ def test_announce_topic_unhidden(app: Flask, webhook_for_irc):
         '"Brötchen zum Frühstück" von TheShadow999 '
         f'wieder sichtbar gemacht: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicUnhiddenEvent(
         occurred_at=OCCURRED_AT,
@@ -124,9 +125,10 @@ def test_announce_topic_unhidden(app: Flask, webhook_for_irc):
         moderator_screen_name=MODERATOR_SCREEN_NAME,
         url=expected_link,
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_topic_locked(app: Flask, webhook_for_irc):
@@ -136,7 +138,6 @@ def test_announce_topic_locked(app: Flask, webhook_for_irc):
         '"Brötchen zum Frühstück" von TheShadow999 '
         f'geschlossen: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicLockedEvent(
         occurred_at=OCCURRED_AT,
@@ -154,7 +155,9 @@ def test_announce_topic_locked(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_topic_unlocked(app: Flask, webhook_for_irc):
@@ -164,7 +167,6 @@ def test_announce_topic_unlocked(app: Flask, webhook_for_irc):
         'das Thema "Brötchen zum Frühstück" von TheShadow999 '
         f'wieder geöffnet: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicUnlockedEvent(
         occurred_at=OCCURRED_AT,
@@ -182,7 +184,9 @@ def test_announce_topic_unlocked(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_topic_pinned(app: Flask, webhook_for_irc):
@@ -192,7 +196,6 @@ def test_announce_topic_pinned(app: Flask, webhook_for_irc):
         'das Thema "Brötchen zum Frühstück" von TheShadow999 '
         f'angepinnt: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicPinnedEvent(
         occurred_at=OCCURRED_AT,
@@ -210,7 +213,9 @@ def test_announce_topic_pinned(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_topic_unpinned(app: Flask, webhook_for_irc):
@@ -220,7 +225,6 @@ def test_announce_topic_unpinned(app: Flask, webhook_for_irc):
         'das Thema "Brötchen zum Frühstück" von TheShadow999 '
         f'wieder gelöst: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicUnpinnedEvent(
         occurred_at=OCCURRED_AT,
@@ -238,7 +242,9 @@ def test_announce_topic_unpinned(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_topic_moved(app: Flask, webhook_for_irc):
@@ -248,7 +254,6 @@ def test_announce_topic_moved(app: Flask, webhook_for_irc):
         'das Thema "Brötchen zum Frühstück" von TheShadow999 '
         f'aus "Kategorie 1" in "Kategorie 2" verschoben: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardTopicMovedEvent(
         occurred_at=OCCURRED_AT,
@@ -270,7 +275,9 @@ def test_announce_topic_moved(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_posting_created(app: Flask, webhook_for_irc):
@@ -280,7 +287,6 @@ def test_announce_posting_created(app: Flask, webhook_for_irc):
         'auf das Thema "Brötchen zum Frühstück" '
         f'geantwortet: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardPostingCreatedEvent(
         occurred_at=OCCURRED_AT,
@@ -298,12 +304,13 @@ def test_announce_posting_created(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_posting_created_on_muted_topic(app: Flask, webhook_for_irc):
     link = f'http://example.com/board/postings/{POSTING_ID}'
-    expected = None
 
     event = BoardPostingCreatedEvent(
         occurred_at=OCCURRED_AT,
@@ -321,7 +328,9 @@ def test_announce_posting_created_on_muted_topic(app: Flask, webhook_for_irc):
         url=link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert actual is None
 
 
 def test_announce_posting_hidden(app: Flask, webhook_for_irc):
@@ -332,7 +341,6 @@ def test_announce_posting_hidden(app: Flask, webhook_for_irc):
         'im Thema "Brötchen zum Frühstück" '
         f'versteckt: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardPostingHiddenEvent(
         occurred_at=OCCURRED_AT,
@@ -351,7 +359,9 @@ def test_announce_posting_hidden(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_posting_unhidden(app: Flask, webhook_for_irc):
@@ -362,7 +372,6 @@ def test_announce_posting_unhidden(app: Flask, webhook_for_irc):
         'im Thema "Brötchen zum Frühstück" '
         f'wieder sichtbar gemacht: {expected_link}'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = BoardPostingUnhiddenEvent(
         occurred_at=OCCURRED_AT,
@@ -381,4 +390,6 @@ def test_announce_posting_unhidden(app: Flask, webhook_for_irc):
         url=expected_link,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)

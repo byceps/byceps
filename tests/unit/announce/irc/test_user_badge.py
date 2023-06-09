@@ -12,7 +12,7 @@ from byceps.typing import UserID
 
 from tests.helpers import generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -27,7 +27,6 @@ def test_user_badge_awarding_announced_without_initiator(
     expected_text = (
         'Jemand hat das Abzeichen "First Post!" an Erster verliehen.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = UserBadgeAwardedEvent(
         occurred_at=OCCURRED_AT,
@@ -39,7 +38,9 @@ def test_user_badge_awarding_announced_without_initiator(
         badge_label='First Post!',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_user_badge_awarding_announced_with_initiator(
@@ -48,7 +49,6 @@ def test_user_badge_awarding_announced_with_initiator(
     expected_text = (
         'Admin hat das Abzeichen "Glanzleistung" an PathFinder verliehen.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = UserBadgeAwardedEvent(
         occurred_at=OCCURRED_AT,
@@ -60,4 +60,6 @@ def test_user_badge_awarding_announced_with_initiator(
         badge_label='Glanzleistung',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)

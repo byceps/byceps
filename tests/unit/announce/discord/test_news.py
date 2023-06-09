@@ -13,7 +13,7 @@ from byceps.typing import UserID
 
 from tests.helpers import generate_token, generate_uuid
 
-from .helpers import build_announcement_request_for_discord, build_webhook, now
+from .helpers import assert_text, build_webhook, now
 
 
 OCCURRED_AT = now()
@@ -21,16 +21,11 @@ ADMIN_ID = UserID(generate_uuid())
 NEWS_CHANNEL_ID = NewsChannelID(generate_token())
 NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
-WEBHOOK_URL = 'https://webhoooks.test/news'
-
 
 def test_published_news_item_announced_with_url(app: Flask) -> None:
-    expected_content = (
+    expected_text = (
         '[News] Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
         'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
-    )
-    expected = build_announcement_request_for_discord(
-        WEBHOOK_URL, expected_content
     )
 
     event = NewsItemPublishedEvent(
@@ -46,15 +41,14 @@ def test_published_news_item_announced_with_url(app: Flask) -> None:
 
     webhook = build_news_webhook()
 
-    assert build_announcement_request(event, webhook) == expected
+    actual = build_announcement_request(event, webhook)
+
+    assert_text(actual, expected_text)
 
 
 def test_published_news_item_announced_without_url(app: Flask) -> None:
-    expected_content = (
+    expected_text = (
         '[News] Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
-    )
-    expected = build_announcement_request_for_discord(
-        WEBHOOK_URL, expected_content
     )
 
     event = NewsItemPublishedEvent(
@@ -70,7 +64,9 @@ def test_published_news_item_announced_without_url(app: Flask) -> None:
 
     webhook = build_news_webhook()
 
-    assert build_announcement_request(event, webhook) == expected
+    actual = build_announcement_request(event, webhook)
+
+    assert_text(actual, expected_text)
 
 
 # helpers
@@ -83,5 +79,5 @@ def build_news_webhook() -> OutgoingWebhook:
             'news-item-published': {'channel_id': [str(NEWS_CHANNEL_ID)]}
         },
         text_prefix='[News] ',
-        url=WEBHOOK_URL,
+        url='https://webhoooks.test/news',
     )

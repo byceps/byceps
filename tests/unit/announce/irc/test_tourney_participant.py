@@ -15,7 +15,7 @@ from byceps.events.tourney import (
 
 from tests.helpers import generate_token, generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -29,7 +29,6 @@ def test_announce_participant_ready(app: Flask, webhook_for_irc):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) ist spielbereit.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyParticipantReadyEvent(
         occurred_at=now(),
@@ -42,12 +41,13 @@ def test_announce_participant_ready(app: Flask, webhook_for_irc):
         participant_name=PARTICIPANT_NAME,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_participant_eliminated(app: Flask, webhook_for_irc):
     expected_text = '"Le Supern00bs" ist aus dem Turnier Burrito Blaster (3on3) ausgeschieden.'
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyParticipantEliminatedEvent(
         occurred_at=now(),
@@ -60,7 +60,9 @@ def test_announce_participant_eliminated(app: Flask, webhook_for_irc):
         participant_name=PARTICIPANT_NAME,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_participant_warned(app: Flask, webhook_for_irc):
@@ -68,7 +70,6 @@ def test_announce_participant_warned(app: Flask, webhook_for_irc):
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
         'wurde verwarnt. \x038,8 \x03'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyParticipantWarnedEvent(
         occurred_at=now(),
@@ -81,7 +82,9 @@ def test_announce_participant_warned(app: Flask, webhook_for_irc):
         participant_name=PARTICIPANT_NAME,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_participant_disqualified(app: Flask, webhook_for_irc):
@@ -89,7 +92,6 @@ def test_announce_participant_disqualified(app: Flask, webhook_for_irc):
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
         'wurde disqualifiziert. \x034,4 \x03'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyParticipantDisqualifiedEvent(
         occurred_at=now(),
@@ -102,4 +104,6 @@ def test_announce_participant_disqualified(app: Flask, webhook_for_irc):
         participant_name=PARTICIPANT_NAME,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)

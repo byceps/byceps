@@ -14,7 +14,7 @@ from byceps.typing import PartyID, UserID
 
 from tests.helpers import generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -24,7 +24,6 @@ USER_ID = UserID(generate_uuid())
 
 def test_ticket_checked_in(app: Flask, webhook_for_irc):
     expected_text = 'TicketingAdmin hat Ticket "GTFIN", genutzt von Teilnehmer, eingecheckt.'
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = TicketCheckedInEvent(
         occurred_at=OCCURRED_AT,
@@ -37,7 +36,9 @@ def test_ticket_checked_in(app: Flask, webhook_for_irc):
         user_screen_name='Teilnehmer',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
@@ -48,7 +49,6 @@ def test_single_ticket_sold(
         'Neuling hat 1 Ticket bezahlt. '
         'Aktuell sind 772 von 1001 Tickets bezahlt.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     get_ticket_sale_stats_mock.return_value = TicketSaleStats(
         tickets_max=1001,
@@ -65,7 +65,9 @@ def test_single_ticket_sold(
         quantity=1,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
@@ -76,7 +78,6 @@ def test_multiple_tickets_sold(
         'TreuerKäufer hat 3 Tickets bezahlt. '
         'Aktuell sind 775 von 1001 Tickets bezahlt.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     get_ticket_sale_stats_mock.return_value = TicketSaleStats(
         tickets_max=1001,
@@ -93,4 +94,6 @@ def test_multiple_tickets_sold(
         quantity=3,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)

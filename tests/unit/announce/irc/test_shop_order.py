@@ -16,7 +16,7 @@ from byceps.typing import UserID
 
 from tests.helpers import generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -27,7 +27,6 @@ ORDERER_ID = UserID(generate_uuid())
 
 def test_shop_order_placed_announced(app: Flask, webhook_for_irc):
     expected_text = 'Ken_von_Kaufkraft hat Bestellung ORDER-00001 aufgegeben.'
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = ShopOrderPlacedEvent(
         occurred_at=OCCURRED_AT,
@@ -39,7 +38,9 @@ def test_shop_order_placed_announced(app: Flask, webhook_for_irc):
         orderer_screen_name='Ken_von_Kaufkraft',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_shop_order_canceled_announced(app: Flask, webhook_for_irc):
@@ -47,7 +48,6 @@ def test_shop_order_canceled_announced(app: Flask, webhook_for_irc):
         'ShoppingSheriff hat Bestellung ORDER-00002 von Ken_von_Kaufkraft '
         'storniert.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = ShopOrderCanceledEvent(
         occurred_at=now(),
@@ -59,7 +59,9 @@ def test_shop_order_canceled_announced(app: Flask, webhook_for_irc):
         orderer_screen_name='Ken_von_Kaufkraft',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_shop_order_paid_announced(app: Flask, webhook_for_irc):
@@ -67,7 +69,6 @@ def test_shop_order_paid_announced(app: Flask, webhook_for_irc):
         'ShoppingSheriff hat Bestellung ORDER-00003 von Ken_von_Kaufkraft '
         'als per Überweisung bezahlt markiert.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = ShopOrderPaidEvent(
         occurred_at=now(),
@@ -80,4 +81,6 @@ def test_shop_order_paid_announced(app: Flask, webhook_for_irc):
         payment_method='bank_transfer',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)

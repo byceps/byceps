@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 
 from byceps.services.webhooks.models import (
@@ -16,12 +18,6 @@ from tests.helpers import generate_uuid
 
 def now() -> datetime:
     return datetime.utcnow()
-
-
-def build_announcement_request_for_discord(
-    url: str, content: str
-) -> AnnouncementRequest:
-    return AnnouncementRequest(url=url, data={'content': content})
 
 
 def build_webhook(
@@ -38,3 +34,8 @@ def build_webhook(
         description='',
         enabled=True,
     )
+
+
+def assert_text(actual: AnnouncementRequest | None, expected_text: str) -> None:
+    assert actual is not None
+    assert actual.data == {'content': expected_text}

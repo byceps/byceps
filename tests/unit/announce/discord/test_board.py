@@ -18,7 +18,7 @@ from byceps.typing import BrandID, UserID
 
 from tests.helpers import generate_token, generate_uuid
 
-from .helpers import build_announcement_request_for_discord, build_webhook, now
+from .helpers import assert_text, build_webhook, now
 
 
 OCCURRED_AT = now()
@@ -35,18 +35,13 @@ MODERATOR_ID = UserID(generate_uuid())
 MODERATOR_SCREEN_NAME = 'TheModerator'
 USER_ID = UserID(generate_uuid())
 
-WEBHOOK_URL = 'https://webhoooks.test/board'
-
 
 def test_announce_topic_created(app: Flask):
     expected_url = f'https://website.test/board/topics/{TOPIC_ID}'
-    expected_content = (
+    expected_text = (
         '[Forum] RocketRandy hat das Thema '
         '"Cannot connect to the party network :(" erstellt: '
         f'<{expected_url}>'
-    )
-    expected = build_announcement_request_for_discord(
-        WEBHOOK_URL, expected_content
     )
 
     event = BoardTopicCreatedEvent(
@@ -65,18 +60,17 @@ def test_announce_topic_created(app: Flask):
 
     webhook = build_board_webhook(BOARD_ID)
 
-    assert build_announcement_request(event, webhook) == expected
+    actual = build_announcement_request(event, webhook)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_posting_created(app: Flask):
     expected_url = f'https://website.test/board/postings/{POSTING_ID}'
-    expected_content = (
+    expected_text = (
         '[Forum] RocketRandy hat auf das Thema '
         '"Cannot connect to the party network :(" geantwortet: '
         f'<{expected_url}>'
-    )
-    expected = build_announcement_request_for_discord(
-        WEBHOOK_URL, expected_content
     )
 
     event = BoardPostingCreatedEvent(
@@ -97,7 +91,9 @@ def test_announce_posting_created(app: Flask):
 
     webhook = build_board_webhook(BOARD_ID)
 
-    assert build_announcement_request(event, webhook) == expected
+    actual = build_announcement_request(event, webhook)
+
+    assert_text(actual, expected_text)
 
 
 # helpers
@@ -114,5 +110,5 @@ def build_board_webhook(board_id: BoardID) -> OutgoingWebhook:
             'board-topic-created': {'board_id': [str(board_id)]},
         },
         text_prefix='[Forum] ',
-        url=WEBHOOK_URL,
+        url='https://webhoooks.test/board',
     )

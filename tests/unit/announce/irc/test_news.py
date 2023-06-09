@@ -12,7 +12,7 @@ from byceps.typing import UserID
 
 from tests.helpers import generate_token, generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -28,7 +28,6 @@ def test_published_news_item_announced_with_url(
         'Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
         'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
@@ -41,14 +40,15 @@ def test_published_news_item_announced_with_url(
         external_url='https://www.acmecon.test/news/zieh-dir-das-mal-rein',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_published_news_item_announced_without_url(
     app: Flask, webhook_for_irc
 ) -> None:
     expected_text = 'Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
@@ -61,4 +61,6 @@ def test_published_news_item_announced_without_url(
         external_url=None,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)

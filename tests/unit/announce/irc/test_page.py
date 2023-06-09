@@ -17,7 +17,7 @@ from byceps.typing import UserID
 
 from tests.helpers import generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -31,7 +31,6 @@ def test_announce_page_created(app: Flask, webhook_for_irc):
         'PageEditor hat die Seite "overview" '
         'in Site "acmecon-2014-website" angelegt.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = PageCreatedEvent(
         occurred_at=OCCURRED_AT,
@@ -43,7 +42,9 @@ def test_announce_page_created(app: Flask, webhook_for_irc):
         page_version_id=PAGE_VERSION_ID,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_page_updated(app: Flask, webhook_for_irc):
@@ -51,7 +52,6 @@ def test_announce_page_updated(app: Flask, webhook_for_irc):
         'PageEditor hat die Seite "overview" '
         'in Site "acmecon-2014-website" aktualisiert.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = PageUpdatedEvent(
         occurred_at=OCCURRED_AT,
@@ -63,7 +63,9 @@ def test_announce_page_updated(app: Flask, webhook_for_irc):
         page_version_id=PAGE_VERSION_ID,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_page_deleted(app: Flask, webhook_for_irc):
@@ -71,7 +73,6 @@ def test_announce_page_deleted(app: Flask, webhook_for_irc):
         'PageEditor hat die Seite "old_page" '
         'in Site "acmecon-2014-website" gelöscht.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = PageDeletedEvent(
         occurred_at=OCCURRED_AT,
@@ -82,4 +83,6 @@ def test_announce_page_deleted(app: Flask, webhook_for_irc):
         page_name='old_page',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)

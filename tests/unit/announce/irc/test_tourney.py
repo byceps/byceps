@@ -15,7 +15,7 @@ from byceps.events.tourney import (
 
 from tests.helpers import generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -24,7 +24,6 @@ TOURNEY_ID = str(generate_uuid())
 
 def test_announce_tourney_started(app: Flask, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde gestartet.'
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyStartedEvent(
         occurred_at=OCCURRED_AT,
@@ -34,12 +33,13 @@ def test_announce_tourney_started(app: Flask, webhook_for_irc):
         tourney_title='Taco Arena (1on1)',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_tourney_paused(app: Flask, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde unterbrochen.'
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyPausedEvent(
         occurred_at=OCCURRED_AT,
@@ -49,12 +49,13 @@ def test_announce_tourney_paused(app: Flask, webhook_for_irc):
         tourney_title='Taco Arena (1on1)',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_tourney_canceled(app: Flask, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde abgesagt.'
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyCanceledEvent(
         occurred_at=OCCURRED_AT,
@@ -64,12 +65,13 @@ def test_announce_tourney_canceled(app: Flask, webhook_for_irc):
         tourney_title='Taco Arena (1on1)',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_tourney_finished(app: Flask, webhook_for_irc):
     expected_text = 'Das Turnier Taco Arena (1on1) wurde beendet.'
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = TourneyFinishedEvent(
         occurred_at=OCCURRED_AT,
@@ -79,4 +81,6 @@ def test_announce_tourney_finished(app: Flask, webhook_for_irc):
         tourney_title='Taco Arena (1on1)',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)

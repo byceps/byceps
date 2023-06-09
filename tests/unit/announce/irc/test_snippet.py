@@ -22,7 +22,7 @@ from byceps.typing import UserID
 
 from tests.helpers import generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -37,7 +37,6 @@ def test_announce_snippet_created(app: Flask, webhook_for_irc):
         'Dr.Schnipsel hat das Snippet "team_intro" '
         'im Scope "site/acme-2019-website" angelegt.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = SnippetCreatedEvent(
         occurred_at=OCCURRED_AT,
@@ -49,7 +48,9 @@ def test_announce_snippet_created(app: Flask, webhook_for_irc):
         snippet_version_id=SNIPPET_VERSION_ID,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_snippet_updated(app: Flask, webhook_for_irc):
@@ -57,7 +58,6 @@ def test_announce_snippet_updated(app: Flask, webhook_for_irc):
         'Dr.Schnipsel hat das Snippet "team_intro" '
         'im Scope "site/acme-2019-website" aktualisiert.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = SnippetUpdatedEvent(
         occurred_at=OCCURRED_AT,
@@ -69,7 +69,9 @@ def test_announce_snippet_updated(app: Flask, webhook_for_irc):
         snippet_version_id=SNIPPET_VERSION_ID,
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_snippet_deleted(app: Flask, webhook_for_irc):
@@ -77,7 +79,6 @@ def test_announce_snippet_deleted(app: Flask, webhook_for_irc):
         'Dr.Schnipsel hat das Snippet "outdated_info" '
         'im Scope "site/acme-2019-website" gelöscht.'
     )
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = SnippetDeletedEvent(
         occurred_at=OCCURRED_AT,
@@ -88,4 +89,6 @@ def test_announce_snippet_deleted(app: Flask, webhook_for_irc):
         snippet_name='outdated_info',
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)

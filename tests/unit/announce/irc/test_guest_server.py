@@ -12,7 +12,7 @@ from byceps.typing import PartyID, UserID
 
 from tests.helpers import generate_uuid
 
-from .helpers import build_announcement_request_for_irc, now
+from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
@@ -22,7 +22,6 @@ USER_ID = UserID(generate_uuid())
 
 def test_guest_server_registered(app: Flask, webhook_for_irc):
     expected_text = 'Admin hat einen Gastserver von User für die Party "ACMECon 2014" registriert.'
-    expected = build_announcement_request_for_irc(expected_text)
 
     event = GuestServerRegisteredEvent(
         occurred_at=OCCURRED_AT,
@@ -35,4 +34,6 @@ def test_guest_server_registered(app: Flask, webhook_for_irc):
         server_id=ServerID(generate_uuid()),
     )
 
-    assert build_announcement_request(event, webhook_for_irc) == expected
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
