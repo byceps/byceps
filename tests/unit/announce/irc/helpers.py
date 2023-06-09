@@ -13,4 +13,7 @@ def now() -> datetime:
 
 
 def build_announcement_request_for_irc(text: str) -> AnnouncementRequest:
-    return AnnouncementRequest({'channel': '#eventlog', 'text': text})
+    return AnnouncementRequest(
+        url='http://127.0.0.1:12345/',
+        data={'channel': '#eventlog', 'text': text},
+    )

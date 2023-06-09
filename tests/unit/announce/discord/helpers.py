@@ -18,8 +18,10 @@ def now() -> datetime:
     return datetime.utcnow()
 
 
-def build_announcement_request_for_discord(content: str) -> AnnouncementRequest:
-    return AnnouncementRequest({'content': content})
+def build_announcement_request_for_discord(
+    url: str, content: str
+) -> AnnouncementRequest:
+    return AnnouncementRequest(url=url, data={'content': content})
 
 
 def build_webhook(

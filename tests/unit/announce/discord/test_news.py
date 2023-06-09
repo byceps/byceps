@@ -21,13 +21,17 @@ ADMIN_ID = UserID(generate_uuid())
 NEWS_CHANNEL_ID = NewsChannelID(generate_token())
 NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
+WEBHOOK_URL = 'https://webhoooks.test/news'
+
 
 def test_published_news_item_announced_with_url(app: Flask) -> None:
     expected_content = (
         '[News] Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
         'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
     )
-    expected = build_announcement_request_for_discord(expected_content)
+    expected = build_announcement_request_for_discord(
+        WEBHOOK_URL, expected_content
+    )
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
@@ -49,7 +53,9 @@ def test_published_news_item_announced_without_url(app: Flask) -> None:
     expected_content = (
         '[News] Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
     )
-    expected = build_announcement_request_for_discord(expected_content)
+    expected = build_announcement_request_for_discord(
+        WEBHOOK_URL, expected_content
+    )
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
@@ -77,5 +83,5 @@ def build_news_webhook() -> OutgoingWebhook:
             'news-item-published': {'channel_id': [str(NEWS_CHANNEL_ID)]}
         },
         text_prefix='[News] ',
-        url='https://webhoooks.test/news',
+        url=WEBHOOK_URL,
     )

@@ -35,6 +35,8 @@ MODERATOR_ID = UserID(generate_uuid())
 MODERATOR_SCREEN_NAME = 'TheModerator'
 USER_ID = UserID(generate_uuid())
 
+WEBHOOK_URL = 'https://webhoooks.test/board'
+
 
 def test_announce_topic_created(app: Flask):
     expected_url = f'https://website.test/board/topics/{TOPIC_ID}'
@@ -43,7 +45,9 @@ def test_announce_topic_created(app: Flask):
         '"Cannot connect to the party network :(" erstellt: '
         f'<{expected_url}>'
     )
-    expected = build_announcement_request_for_discord(expected_content)
+    expected = build_announcement_request_for_discord(
+        WEBHOOK_URL, expected_content
+    )
 
     event = BoardTopicCreatedEvent(
         occurred_at=OCCURRED_AT,
@@ -71,7 +75,9 @@ def test_announce_posting_created(app: Flask):
         '"Cannot connect to the party network :(" geantwortet: '
         f'<{expected_url}>'
     )
-    expected = build_announcement_request_for_discord(expected_content)
+    expected = build_announcement_request_for_discord(
+        WEBHOOK_URL, expected_content
+    )
 
     event = BoardPostingCreatedEvent(
         occurred_at=OCCURRED_AT,
@@ -108,5 +114,5 @@ def build_board_webhook(board_id: BoardID) -> OutgoingWebhook:
             'board-topic-created': {'board_id': [str(board_id)]},
         },
         text_prefix='[Forum] ',
-        url='https://webhoooks.test/board',
+        url=WEBHOOK_URL,
     )

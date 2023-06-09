@@ -41,5 +41,6 @@ class Announcement:
 
 @dataclass(frozen=True)
 class AnnouncementRequest:
+    url: str
     data: dict[str, Any]
     announce_at: datetime | None = None

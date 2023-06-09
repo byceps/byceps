@@ -41,7 +41,9 @@ def assemble_announcement_request(
     webhook: OutgoingWebhook, text: str, *, announce_at: datetime | None = None
 ) -> AnnouncementRequest:
     data = _assemble_request_data(webhook, text)
-    return AnnouncementRequest(data, announce_at)
+    return AnnouncementRequest(
+        url=webhook.url, data=data, announce_at=announce_at
+    )
 
 
 def _assemble_request_data(
@@ -102,7 +104,7 @@ def call_webhook(
 ) -> None:
     """Send HTTP request to the webhook."""
     response = requests.post(
-        webhook.url, json=announcement_request.data, timeout=10
+        announcement_request.url, json=announcement_request.data, timeout=10
     )
 
     _check_response_status_code(webhook, response.status_code)
