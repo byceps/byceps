@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from flask_babel import gettext
 
-from byceps.announce.helpers import Announcement, with_locale
+from byceps.announce.helpers import with_locale
 from byceps.events.tourney import (
     TourneyCanceledEvent,
     TourneyFinishedEvent,
@@ -28,7 +28,7 @@ from byceps.events.tourney import (
     TourneyPausedEvent,
     TourneyStartedEvent,
 )
-from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 
 # -------------------------------------------------------------------- #

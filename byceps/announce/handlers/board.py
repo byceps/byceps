@@ -15,7 +15,6 @@ from functools import wraps
 from flask_babel import gettext
 
 from byceps.announce.helpers import (
-    Announcement,
     get_screen_name_or_fallback,
     matches_selectors,
     with_locale,
@@ -34,7 +33,7 @@ from byceps.events.board import (
     BoardTopicUnlockedEvent,
     BoardTopicUnpinnedEvent,
 )
-from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 
 def apply_selectors(handler):

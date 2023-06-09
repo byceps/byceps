@@ -9,6 +9,7 @@ byceps.services.webhooks.models
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, NewType, Optional
 from uuid import UUID
 
@@ -30,3 +31,9 @@ class OutgoingWebhook:
     url: str
     description: str
     enabled: bool
+
+
+@dataclass(frozen=True)
+class Announcement:
+    text: str
+    announce_at: datetime | None = None

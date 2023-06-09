@@ -13,12 +13,11 @@ from __future__ import annotations
 from flask_babel import gettext
 
 from byceps.announce.helpers import (
-    Announcement,
     get_screen_name_or_fallback,
     with_locale,
 )
 from byceps.events.auth import UserLoggedInEvent
-from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 
 @with_locale

@@ -42,12 +42,6 @@ def with_locale(handler):
 
 
 @dataclass(frozen=True)
-class Announcement:
-    text: str
-    announce_at: datetime | None = None
-
-
-@dataclass(frozen=True)
 class AnnouncementRequest:
     data: dict[str, Any]
     announce_at: datetime | None = None
