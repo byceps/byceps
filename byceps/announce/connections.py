@@ -88,6 +88,7 @@ from byceps.signals import (
 )
 from byceps.util.jobqueue import enqueue, enqueue_at
 
+from .announce import assemble_request_data, call_webhook, get_webhooks
 from .handlers import (
     auth as auth_handlers,
     board as board_handlers,
@@ -101,7 +102,6 @@ from .handlers import (
     user as user_handlers,
     user_badge as user_badge_handlers,
 )
-from .helpers import assemble_request_data, call_webhook, get_webhooks
 
 
 EVENT_TYPES_TO_HANDLERS = {

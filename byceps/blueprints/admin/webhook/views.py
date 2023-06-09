@@ -12,7 +12,7 @@ import json
 from flask import abort, request
 from flask_babel import gettext
 
-from byceps.announce.helpers import assemble_request_data, call_webhook
+from byceps.announce.announce import assemble_request_data, call_webhook
 from byceps.services.webhooks import webhook_service
 from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
 from byceps.util.framework.blueprint import create_blueprint

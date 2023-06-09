@@ -12,7 +12,7 @@ from uuid import UUID
 
 import click
 
-from byceps.announce.helpers import assemble_request_data, call_webhook
+from byceps.announce.announce import assemble_request_data, call_webhook
 from byceps.services.orga import orga_birthday_service
 from byceps.services.webhooks import webhook_service
 from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
