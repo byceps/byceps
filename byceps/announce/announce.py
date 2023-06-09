@@ -107,7 +107,16 @@ def call_webhook(
         announcement_request.url, json=announcement_request.data, timeout=10
     )
 
-    _check_response_status_code(webhook, response.status_code)
+    expected_response_code = EXPECTED_RESPONSE_STATUS_CODES.get(webhook.format)
+    if expected_response_code is None:
+        return
+
+    actual_response_code = response.status_code
+    if actual_response_code != expected_response_code:
+        raise WebhookError(
+            f'Endpoint for webhook {webhook.id} '
+            f'returned unexpected status code {actual_response_code}'
+        )
 
 
 EXPECTED_RESPONSE_STATUS_CODES = {
@@ -116,15 +125,3 @@ EXPECTED_RESPONSE_STATUS_CODES = {
     'matrix': HTTPStatus.OK,
     'weitersager': HTTPStatus.ACCEPTED,
 }
-
-
-def _check_response_status_code(webhook: OutgoingWebhook, code: int) -> None:
-    expected_code = EXPECTED_RESPONSE_STATUS_CODES.get(webhook.format)
-    if expected_code is None:
-        return
-
-    if code != expected_code:
-        raise WebhookError(
-            f'Endpoint for webhook {webhook.id} '
-            f'returned unexpected status code {code}'
-        )
