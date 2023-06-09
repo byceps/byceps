@@ -259,5 +259,8 @@ SIGNALS = [
     user_signals.screen_name_changed,
     user_badge_signals.user_badge_awarded,
 ]
-for signal in SIGNALS:
-    signal.connect(receive_signal)
+
+
+def enable_announcements() -> None:
+    for signal in SIGNALS:
+        signal.connect(receive_signal)

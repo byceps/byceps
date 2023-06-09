@@ -22,6 +22,7 @@ import rtoml
 import structlog
 
 from byceps import config, config_defaults
+from byceps.announce.connections import enable_announcements
 from byceps.blueprints.blueprints import register_blueprints
 from byceps.database import db
 from byceps.util import templatefilters, templatefunctions
@@ -77,7 +78,7 @@ def create_app(
     elif app_mode.is_site():
         _init_site_app(app)
 
-    _load_announce_signal_handlers()
+    enable_announcements()
 
     log.info('Application created', app_mode=app_mode.name, debug=app.debug)
 
@@ -240,10 +241,3 @@ def _find_site_template_context_processor(
         return None
 
     return context_processor
-
-
-def _load_announce_signal_handlers() -> None:
-    """Import modules containing handlers so they connect to the
-    corresponding signals.
-    """
-    from .announce import connections  # noqa: F401
