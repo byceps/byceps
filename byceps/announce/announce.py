@@ -8,7 +8,6 @@ byceps.announce.announce
 
 from __future__ import annotations
 
-from datetime import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -17,7 +16,7 @@ import requests
 
 from byceps.events.base import _BaseEvent
 from byceps.services.webhooks import webhook_service
-from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.services.webhooks.models import AnnouncementRequest, OutgoingWebhook
 from byceps.util.jobqueue import enqueue_at
 
 from .events import get_name_for_event
@@ -78,22 +77,25 @@ def assemble_request_data(
 
 def announce(
     webhook: OutgoingWebhook,
-    request_data: dict[str, Any],
-    announce_at: datetime | None,
+    announcement_request: AnnouncementRequest,
 ) -> None:
+    announce_at = announcement_request.announce_at
     if announce_at is not None:
         # Schedule job to announce later.
-        enqueue_at(announce_at, call_webhook, webhook, request_data)
+        enqueue_at(announce_at, call_webhook, webhook, announcement_request)
     else:
         # Announce now.
-        call_webhook(webhook, request_data)
+        call_webhook(webhook, announcement_request)
 
 
 def call_webhook(
-    webhook: OutgoingWebhook, request_data: dict[str, Any]
+    webhook: OutgoingWebhook,
+    announcement_request: AnnouncementRequest,
 ) -> None:
     """Send HTTP request to the webhook."""
-    response = requests.post(webhook.url, json=request_data, timeout=10)
+    response = requests.post(
+        webhook.url, json=announcement_request.data, timeout=10
+    )
 
     _check_response_status_code(webhook, response.status_code)
 

@@ -15,7 +15,11 @@ import click
 from byceps.announce.announce import assemble_request_data, call_webhook
 from byceps.services.orga import orga_birthday_service
 from byceps.services.webhooks import webhook_service
-from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
+from byceps.services.webhooks.models import (
+    AnnouncementRequest,
+    OutgoingWebhook,
+    WebhookID,
+)
 
 from _util import call_with_app_context
 
@@ -44,7 +48,8 @@ def execute(webhook: OutgoingWebhook) -> None:
     for user in users:
         text = f'Happy Birthday, {user.screen_name}! 🥳'
         request_data = assemble_request_data(webhook, text)
-        call_webhook(webhook, request_data)
+        announcement_request = AnnouncementRequest(request_data)
+        call_webhook(webhook, announcement_request)
 
 
 if __name__ == '__main__':
