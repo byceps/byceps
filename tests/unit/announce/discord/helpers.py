@@ -5,8 +5,11 @@
 
 from datetime import datetime
 
-from byceps.announce.helpers import AnnouncementRequest
-from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
+from byceps.services.webhooks.models import (
+    AnnouncementRequest,
+    OutgoingWebhook,
+    WebhookID,
+)
 
 from tests.helpers import generate_uuid
 

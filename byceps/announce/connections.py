@@ -72,7 +72,7 @@ from byceps.events.user import (
     UserScreenNameChangedEvent,
 )
 from byceps.events.user_badge import UserBadgeAwardedEvent
-from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.services.webhooks.models import AnnouncementRequest, OutgoingWebhook
 from byceps.signals import (
     auth as auth_signals,
     board as board_signals,
@@ -101,12 +101,7 @@ from .handlers import (
     user as user_handlers,
     user_badge as user_badge_handlers,
 )
-from .helpers import (
-    AnnouncementRequest,
-    assemble_request_data,
-    call_webhook,
-    get_webhooks,
-)
+from .helpers import assemble_request_data, call_webhook, get_webhooks
 
 
 EVENT_TYPES_TO_HANDLERS = {

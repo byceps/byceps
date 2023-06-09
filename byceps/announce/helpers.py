@@ -8,8 +8,6 @@ byceps.announce.helpers
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime
 from functools import wraps
 from http import HTTPStatus
 from typing import Any
@@ -39,12 +37,6 @@ def with_locale(handler):
             return handler(*args, **kwargs)
 
     return wrapper
-
-
-@dataclass(frozen=True)
-class AnnouncementRequest:
-    data: dict[str, Any]
-    announce_at: datetime | None = None
 
 
 class WebhookError(Exception):

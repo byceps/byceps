@@ -5,7 +5,7 @@
 
 from datetime import datetime
 
-from byceps.announce.helpers import AnnouncementRequest
+from byceps.services.webhooks.models import AnnouncementRequest
 
 
 def now() -> datetime:
