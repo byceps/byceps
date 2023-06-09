@@ -12,13 +12,9 @@ import json
 from flask import abort, request
 from flask_babel import gettext
 
-from byceps.announce.announce import assemble_request_data, call_webhook
+from byceps.announce.announce import assemble_announcement_request, call_webhook
 from byceps.services.webhooks import webhook_service
-from byceps.services.webhooks.models import (
-    AnnouncementRequest,
-    OutgoingWebhook,
-    WebhookID,
-)
+from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -171,8 +167,7 @@ def test(webhook_id):
 
     text = 'Test, test … is this thing on?!'
     try:
-        request_data = assemble_request_data(webhook, text)
-        announcement_request = AnnouncementRequest(request_data)
+        announcement_request = assemble_announcement_request(webhook, text)
         call_webhook(webhook, announcement_request)
 
         flash_success(

@@ -8,6 +8,7 @@ byceps.announce.announce
 
 from __future__ import annotations
 
+from datetime import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -36,7 +37,14 @@ def get_webhooks(event: _BaseEvent) -> list[OutgoingWebhook]:
     return webhooks
 
 
-def assemble_request_data(
+def assemble_announcement_request(
+    webhook: OutgoingWebhook, text: str, *, announce_at: datetime | None = None
+) -> AnnouncementRequest:
+    data = _assemble_request_data(webhook, text)
+    return AnnouncementRequest(data, announce_at)
+
+
+def _assemble_request_data(
     webhook: OutgoingWebhook, text: str
 ) -> dict[str, Any]:
     text_prefix = webhook.text_prefix

@@ -85,7 +85,7 @@ from byceps.signals import (
 )
 from byceps.util.jobqueue import enqueue
 
-from .announce import announce, assemble_request_data, get_webhooks
+from .announce import announce, assemble_announcement_request, get_webhooks
 from .handlers import (
     auth as auth_handlers,
     board as board_handlers,
@@ -173,9 +173,9 @@ def build_announcement_request(
     if announcement is None:
         return None
 
-    request_data = assemble_request_data(webhook, announcement.text)
-
-    return AnnouncementRequest(request_data, announcement.announce_at)
+    return assemble_announcement_request(
+        webhook, announcement.text, announce_at=announcement.announce_at
+    )
 
 
 def receive_signal(sender, *, event: _BaseEvent | None = None) -> None:
