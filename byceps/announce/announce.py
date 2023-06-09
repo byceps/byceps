@@ -8,6 +8,7 @@ byceps.announce.announce
 
 from __future__ import annotations
 
+from datetime import datetime
 from http import HTTPStatus
 from typing import Any
 
@@ -17,6 +18,7 @@ import requests
 from byceps.events.base import _BaseEvent
 from byceps.services.webhooks import webhook_service
 from byceps.services.webhooks.models import OutgoingWebhook
+from byceps.util.jobqueue import enqueue_at
 
 from .events import get_name_for_event
 
@@ -72,6 +74,19 @@ def assemble_request_data(
 
     else:
         return {}
+
+
+def announce(
+    webhook: OutgoingWebhook,
+    request_data: dict[str, Any],
+    announce_at: datetime | None,
+) -> None:
+    if announce_at is not None:
+        # Schedule job to announce later.
+        enqueue_at(announce_at, call_webhook, webhook, request_data)
+    else:
+        # Announce now.
+        call_webhook(webhook, request_data)
 
 
 def call_webhook(

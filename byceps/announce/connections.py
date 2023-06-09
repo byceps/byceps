@@ -10,9 +10,6 @@ Connect event signals to announcement handlers.
 
 from __future__ import annotations
 
-from datetime import datetime
-from typing import Any
-
 from byceps.events.auth import UserLoggedInEvent
 from byceps.events.base import _BaseEvent
 from byceps.events.board import (
@@ -86,9 +83,9 @@ from byceps.signals import (
     user as user_signals,
     user_badge as user_badge_signals,
 )
-from byceps.util.jobqueue import enqueue, enqueue_at
+from byceps.util.jobqueue import enqueue
 
-from .announce import assemble_request_data, call_webhook, get_webhooks
+from .announce import announce, assemble_request_data, get_webhooks
 from .handlers import (
     auth as auth_handlers,
     board as board_handlers,
@@ -181,19 +178,6 @@ def build_announcement_request(
     request_data = assemble_request_data(webhook, announcement.text)
 
     return AnnouncementRequest(request_data, announcement.announce_at)
-
-
-def announce(
-    webhook: OutgoingWebhook,
-    request_data: dict[str, Any],
-    announce_at: datetime | None,
-) -> None:
-    if announce_at is not None:
-        # Schedule job to announce later.
-        enqueue_at(announce_at, call_webhook, webhook, request_data)
-    else:
-        # Announce now.
-        call_webhook(webhook, request_data)
 
 
 def receive_signal(sender, *, event: _BaseEvent | None = None) -> None:
