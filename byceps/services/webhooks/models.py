@@ -41,6 +41,7 @@ class Announcement:
 
 @dataclass(frozen=True)
 class AnnouncementRequest:
+    webhook_id: WebhookID
     url: str
     data: dict[str, Any]
     announce_at: datetime | None = None

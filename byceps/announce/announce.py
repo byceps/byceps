@@ -42,7 +42,10 @@ def assemble_announcement_request(
 ) -> AnnouncementRequest:
     data = _assemble_request_data(webhook, text)
     return AnnouncementRequest(
-        url=webhook.url, data=data, announce_at=announce_at
+        webhook_id=webhook.id,
+        url=webhook.url,
+        data=data,
+        announce_at=announce_at,
     )
 
 
@@ -114,7 +117,7 @@ def call_webhook(
     actual_response_code = response.status_code
     if actual_response_code != expected_response_code:
         raise WebhookError(
-            f'Endpoint for webhook {webhook.id} '
+            f'Endpoint for webhook {announcement_request.webhook_id} '
             f'returned unexpected status code {actual_response_code}'
         )
 
