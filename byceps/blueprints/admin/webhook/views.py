@@ -168,7 +168,7 @@ def test(webhook_id):
     text = 'Test, test … is this thing on?!'
     try:
         announcement_request = assemble_announcement_request(webhook, text)
-        call_webhook(webhook, announcement_request)
+        call_webhook(announcement_request)
 
         flash_success(
             gettext('Webhook call has been successful.'), icon='success'

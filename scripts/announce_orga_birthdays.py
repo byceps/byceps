@@ -44,7 +44,7 @@ def execute(webhook: OutgoingWebhook) -> None:
     for user in users:
         text = f'Happy Birthday, {user.screen_name}! 🥳'
         announcement_request = assemble_announcement_request(webhook, text)
-        call_webhook(webhook, announcement_request)
+        call_webhook(announcement_request)
 
 
 if __name__ == '__main__':

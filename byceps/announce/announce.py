@@ -93,23 +93,17 @@ def _assemble_request_data(
         return {}
 
 
-def announce(
-    webhook: OutgoingWebhook,
-    announcement_request: AnnouncementRequest,
-) -> None:
+def announce(announcement_request: AnnouncementRequest) -> None:
     announce_at = announcement_request.announce_at
     if announce_at is not None:
         # Schedule job to announce later.
-        enqueue_at(announce_at, call_webhook, webhook, announcement_request)
+        enqueue_at(announce_at, call_webhook, announcement_request)
     else:
         # Announce now.
-        call_webhook(webhook, announcement_request)
+        call_webhook(announcement_request)
 
 
-def call_webhook(
-    webhook: OutgoingWebhook,
-    announcement_request: AnnouncementRequest,
-) -> None:
+def call_webhook(announcement_request: AnnouncementRequest) -> None:
     """Send HTTP request to the webhook."""
     response = requests.post(
         announcement_request.url, json=announcement_request.data, timeout=10

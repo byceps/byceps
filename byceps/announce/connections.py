@@ -157,7 +157,7 @@ def handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:
     if announcement_request is None:
         return
 
-    announce(webhook, announcement_request)
+    announce(announcement_request)
 
 
 def build_announcement_request(
