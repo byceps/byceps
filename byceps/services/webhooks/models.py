@@ -44,4 +44,5 @@ class AnnouncementRequest:
     webhook_id: WebhookID
     url: str
     data: dict[str, Any]
+    expected_response_status_code: int | None
     announce_at: datetime | None = None

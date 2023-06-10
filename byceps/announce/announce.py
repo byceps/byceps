@@ -41,10 +41,15 @@ def assemble_announcement_request(
     webhook: OutgoingWebhook, text: str, *, announce_at: datetime | None = None
 ) -> AnnouncementRequest:
     data = _assemble_request_data(webhook, text)
+    expected_response_status_code = _EXPECTED_RESPONSE_STATUS_CODES.get(
+        webhook.format
+    )
+
     return AnnouncementRequest(
         webhook_id=webhook.id,
         url=webhook.url,
         data=data,
+        expected_response_status_code=expected_response_status_code,
         announce_at=announce_at,
     )
 
@@ -110,7 +115,7 @@ def call_webhook(
         announcement_request.url, json=announcement_request.data, timeout=10
     )
 
-    expected_response_code = EXPECTED_RESPONSE_STATUS_CODES.get(webhook.format)
+    expected_response_code = announcement_request.expected_response_status_code
     if expected_response_code is None:
         return
 
@@ -122,7 +127,7 @@ def call_webhook(
         )
 
 
-EXPECTED_RESPONSE_STATUS_CODES = {
+_EXPECTED_RESPONSE_STATUS_CODES = {
     'discord': HTTPStatus.NO_CONTENT,
     'mattermost': HTTPStatus.OK,
     'matrix': HTTPStatus.OK,
