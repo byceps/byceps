@@ -3,9 +3,21 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask import Flask
+from flask_babel import Babel
 import pytest
 
 from byceps.services.text_markup.text_markup_service import render_html
+
+
+@pytest.fixture(scope='module')
+def app():
+    app = Flask('byceps')
+    app.config['BABEL_DEFAULT_LOCALE'] = 'de'
+    Babel(app)
+
+    with app.app_context():
+        yield app
 
 
 def test_auto_url_linking():
@@ -62,7 +74,7 @@ def test_quote_without_author():
     assert render_html(text) == expected
 
 
-def test_quote_with_author(site_app):
+def test_quote_with_author(app: Flask):
     text = '[quote author="CATS"]All your base are belong to us.[/quote]'
     expected = '<p class="quote-intro"><cite>CATS</cite> schrieb:</p>\n<blockquote>All your base are belong to us.</blockquote>'
     assert render_html(text) == expected
@@ -102,6 +114,6 @@ def test_quote_with_author(site_app):
     ],
 )
 def test_quote_with_author_whose_name_contains_square_brackets(
-    site_app, text, expected
+    app: Flask, text: str, expected: str
 ):
     assert render_html(text) == expected
