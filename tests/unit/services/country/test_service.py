@@ -3,9 +3,20 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
+
+from flask import Flask
 import pytest
 
 from byceps.services.country import country_service
+from byceps.services.country.country_service import Country
+
+
+@pytest.fixture(scope='module')
+def app():
+    app = Flask('byceps')
+    with app.app_context():
+        yield app
 
 
 @pytest.mark.parametrize(
@@ -15,7 +26,9 @@ from byceps.services.country import country_service
         ('Österreich', 'AT', 'AUT'),
     ],
 )
-def test_get_countries_contains_country(site_app, name, alpha2, alpha3):
+def test_get_countries_contains_country(
+    app: Flask, name: str, alpha2: str, alpha3: str
+):
     countries = country_service.get_countries()
 
     country = find_by_name(countries, name)
@@ -26,7 +39,7 @@ def test_get_countries_contains_country(site_app, name, alpha2, alpha3):
     assert country.alpha3 == alpha3
 
 
-def test_get_country_names_contains_selected_items(site_app):
+def test_get_country_names_contains_selected_items(app: Flask):
     actual = country_service.get_country_names()
 
     some_expected = {
@@ -43,7 +56,7 @@ def test_get_country_names_contains_selected_items(site_app):
     assert frozenset(actual).issuperset(some_expected)
 
 
-def test_get_country_names_contains_no_duplicates(site_app):
+def test_get_country_names_contains_no_duplicates(app: Flask):
     actual = country_service.get_country_names()
 
     assert len(actual) == len(set(actual))
@@ -52,7 +65,7 @@ def test_get_country_names_contains_no_duplicates(site_app):
 # helpers
 
 
-def find_by_name(countries, name):
+def find_by_name(countries: Iterable[Country], name: str):
     """Return the first country with that name, or `None` if none matches."""
     for country in countries:
         if country.name == name:
