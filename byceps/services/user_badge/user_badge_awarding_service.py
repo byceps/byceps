@@ -9,7 +9,6 @@ byceps.services.user_badge.user_badge_awarding_service
 from __future__ import annotations
 
 from collections import defaultdict
-from datetime import datetime
 
 from sqlalchemy import select
 
@@ -38,7 +37,6 @@ def award_badge_to_user(
     """Award the badge to the user."""
     badge = get_badge(badge_id)
     awardee = user_service.get_user(awardee_id)
-    awarded_at = datetime.utcnow()
 
     initiator: User | None
     if initiator_id is not None:
