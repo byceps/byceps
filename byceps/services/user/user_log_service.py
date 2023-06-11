@@ -12,7 +12,7 @@ from datetime import datetime
 
 from sqlalchemy import delete, select
 
-from byceps.database import db
+from byceps.database import db, generate_uuid7
 from byceps.typing import UserID
 
 from .dbmodels.log import DbUserLogEntry
@@ -41,10 +41,12 @@ def build_entry(
     occurred_at: datetime | None = None,
 ) -> DbUserLogEntry:
     """Assemble, but not persist, a user log entry."""
+    entry_id = generate_uuid7()
+
     if occurred_at is None:
         occurred_at = datetime.utcnow()
 
-    return DbUserLogEntry(occurred_at, event_type, user_id, data)
+    return DbUserLogEntry(entry_id, occurred_at, event_type, user_id, data)
 
 
 def get_entries_for_user(user_id: UserID) -> list[UserLogEntry]:
