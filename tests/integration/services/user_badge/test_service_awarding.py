@@ -62,27 +62,27 @@ def awardings_scope():
 
 
 def test_award_badge_without_initiator(
-    site_app, user1, badge1, awardings_scope
+    site_app, badge1, user1, awardings_scope
 ):
-    user = user1
     badge = badge1
+    awardee = user1
 
-    log_entries_before = user_log_service.get_entries_for_user(user.id)
+    log_entries_before = user_log_service.get_entries_for_user(awardee.id)
     assert len(log_entries_before) == 1  # user creation
 
     _, event = user_badge_awarding_service.award_badge_to_user(
-        badge.id, user.id
+        badge.id, awardee.id
     )
 
     assert event.__class__ is UserBadgeAwardedEvent
     assert event.initiator_id is None
     assert event.initiator_screen_name is None
-    assert event.user_id == user.id
-    assert event.user_screen_name == user.screen_name
     assert event.badge_id == badge.id
     assert event.badge_label == badge.label
+    assert event.awardee_id == awardee.id
+    assert event.awardee_screen_name == awardee.screen_name
 
-    log_entries_after = user_log_service.get_entries_for_user(user.id)
+    log_entries_after = user_log_service.get_entries_for_user(awardee.id)
     assert len(log_entries_after) == 2
 
     user_awarding_log_entry = log_entries_after[1]
@@ -91,28 +91,27 @@ def test_award_badge_without_initiator(
 
 
 def test_award_badge_with_initiator(
-    site_app, user2, badge2, admin_user, awardings_scope
+    site_app, badge2, user2, admin_user, awardings_scope
 ):
-    user = user2
-
     badge = badge2
+    awardee = user2
 
-    log_entries_before = user_log_service.get_entries_for_user(user.id)
+    log_entries_before = user_log_service.get_entries_for_user(awardee.id)
     assert len(log_entries_before) == 1  # user creation
 
     _, event = user_badge_awarding_service.award_badge_to_user(
-        badge.id, user.id, initiator_id=admin_user.id
+        badge.id, awardee.id, initiator_id=admin_user.id
     )
 
     assert event.__class__ is UserBadgeAwardedEvent
     assert event.initiator_id == admin_user.id
     assert event.initiator_screen_name == admin_user.screen_name
-    assert event.user_id == user.id
-    assert event.user_screen_name == user.screen_name
     assert event.badge_id == badge.id
     assert event.badge_label == badge.label
+    assert event.awardee_id == awardee.id
+    assert event.awardee_screen_name == awardee.screen_name
 
-    log_entries_after = user_log_service.get_entries_for_user(user.id)
+    log_entries_after = user_log_service.get_entries_for_user(awardee.id)
     assert len(log_entries_after) == 2
 
     user_awarding_log_entry = log_entries_after[1]

@@ -31,11 +31,11 @@ from .user_badge_service import _db_entity_to_badge, get_badge, get_badges
 
 
 def award_badge_to_user(
-    badge_id: BadgeID, user_id: UserID, *, initiator_id: UserID | None = None
+    badge_id: BadgeID, awardee_id: UserID, *, initiator_id: UserID | None = None
 ) -> tuple[BadgeAwarding, UserBadgeAwardedEvent]:
     """Award the badge to the user."""
     badge = get_badge(badge_id)
-    user = user_service.get_user(user_id)
+    awardee = user_service.get_user(awardee_id)
     awarded_at = datetime.utcnow()
 
     initiator: User | None
@@ -44,7 +44,7 @@ def award_badge_to_user(
     else:
         initiator = None
 
-    awarding = DbBadgeAwarding(badge_id, user_id, awarded_at=awarded_at)
+    awarding = DbBadgeAwarding(badge_id, awardee_id, awarded_at=awarded_at)
     db.session.add(awarding)
 
     user_log_entry_data = {'badge_id': str(badge_id)}
@@ -52,7 +52,7 @@ def award_badge_to_user(
         user_log_entry_data['initiator_id'] = str(initiator_id)
     user_log_entry = user_log_service.build_entry(
         'user-badge-awarded',
-        user_id,
+        awardee_id,
         user_log_entry_data,
         occurred_at=awarded_at,
     )
@@ -66,10 +66,10 @@ def award_badge_to_user(
         occurred_at=awarded_at,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,
-        user_id=user_id,
-        user_screen_name=user.screen_name,
         badge_id=badge_id,
         badge_label=badge.label,
+        awardee_id=awardee_id,
+        awardee_screen_name=awardee.screen_name,
     )
 
     return awarding_dto, event

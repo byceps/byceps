@@ -28,7 +28,7 @@ def announce_user_badge_awarded(
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
-    awardee_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+    awardee_screen_name = get_screen_name_or_fallback(event.awardee_screen_name)
 
     text = gettext(
         '%(initiator_screen_name)s has awarded badge "%(badge_label)s" to %(awardee_screen_name)s.',
