@@ -16,9 +16,11 @@ from sqlalchemy import select
 from byceps.database import db
 from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.user import user_log_service, user_service
+from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
+from . import user_badge_domain_service
 from .dbmodels.awarding import DbBadgeAwarding
 from .dbmodels.badge import DbBadge
 from .models import (
@@ -44,35 +46,29 @@ def award_badge_to_user(
     else:
         initiator = None
 
-    awarding = DbBadgeAwarding(badge_id, awardee_id, awarded_at=awarded_at)
-    db.session.add(awarding)
-
-    user_log_entry_data = {'badge_id': str(badge_id)}
-    if initiator_id:
-        user_log_entry_data['initiator_id'] = str(initiator_id)
-    user_log_entry = user_log_service.build_entry(
-        'user-badge-awarded',
-        awardee_id,
-        user_log_entry_data,
-        occurred_at=awarded_at,
+    awarding, event, log_entry = user_badge_domain_service.award_badge(
+        badge, awardee, initiator=initiator
     )
-    db.session.add(user_log_entry)
+
+    _persist_awarding(awarding, event, log_entry)
+
+    return awarding, event
+
+
+def _persist_awarding(
+    awarding: BadgeAwarding,
+    event: UserBadgeAwardedEvent,
+    log_entry: UserLogEntry,
+) -> None:
+    db_awarding = DbBadgeAwarding(
+        awarding.id, awarding.badge_id, awarding.user_id, awarding.awarded_at
+    )
+    db.session.add(db_awarding)
+
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
-
-    awarding_dto = _db_entity_to_badge_awarding(awarding)
-
-    event = UserBadgeAwardedEvent(
-        occurred_at=awarded_at,
-        initiator_id=initiator.id if initiator else None,
-        initiator_screen_name=initiator.screen_name if initiator else None,
-        badge_id=badge_id,
-        badge_label=badge.label,
-        awardee_id=awardee_id,
-        awardee_screen_name=awardee.screen_name,
-    )
-
-    return awarding_dto, event
 
 
 def count_awardings() -> dict[BadgeID, int]:
