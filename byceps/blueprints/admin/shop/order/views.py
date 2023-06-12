@@ -16,6 +16,10 @@ from byceps.services.shop.order import (
     order_service,
 )
 from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.errors import (
+    OrderAlreadyCanceledError,
+    OrderAlreadyMarkedAsPaidError,
+)
 from byceps.services.shop.order.export import order_export_service
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop import shop_service
@@ -282,7 +286,7 @@ def cancel(order_id):
     cancelation_result = order_service.cancel_order(order.id, g.user.id, reason)
     if cancelation_result.is_err():
         err = cancelation_result.unwrap_err()
-        if isinstance(err, order_service.OrderAlreadyCanceledError):
+        if isinstance(err, OrderAlreadyCanceledError):
             flash_error(
                 gettext(
                     'The order has already been canceled. '
@@ -361,7 +365,7 @@ def mark_as_paid(order_id):
     )
     if mark_as_paid_result.is_err():
         err = mark_as_paid_result.unwrap_err()
-        if isinstance(err, order_service.OrderAlreadyMarkedAsPaidError):
+        if isinstance(err, OrderAlreadyMarkedAsPaidError):
             flash_error(gettext('Order is already marked as paid.'))
         else:
             flash_error(gettext('An unexpected error occurred.'))

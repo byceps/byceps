@@ -43,6 +43,7 @@ from .actions import (
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
+from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
 from .models.detailed_order import AdminDetailedOrder, DetailedOrder
 from .models.log import OrderLogEntryData
 from .models.number import OrderNumber
@@ -127,14 +128,6 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     db_order.processed_at = None
 
     db.session.commit()
-
-
-class OrderAlreadyCanceledError:
-    pass
-
-
-class OrderAlreadyMarkedAsPaidError:
-    pass
 
 
 def cancel_order(

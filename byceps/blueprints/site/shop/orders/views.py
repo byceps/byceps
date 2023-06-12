@@ -19,6 +19,7 @@ from byceps.services.email import (
 from byceps.services.shop.cancelation_request import cancelation_request_service
 from byceps.services.shop.order import order_payment_service, order_service
 from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.errors import OrderAlreadyCanceledError
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.storefront import storefront_service
 from byceps.services.user import user_service
@@ -165,7 +166,7 @@ def cancel(order_id):
     cancelation_result = order_service.cancel_order(order.id, g.user.id, reason)
     if cancelation_result.is_err():
         err = cancelation_result.unwrap_err()
-        if isinstance(err, order_service.OrderAlreadyCanceledError):
+        if isinstance(err, OrderAlreadyCanceledError):
             flash_error(
                 gettext(
                     'The order has already been canceled. The payment state cannot be changed anymore.'
@@ -282,7 +283,7 @@ def donate_everything(order_id):
     cancelation_result = order_service.cancel_order(order.id, g.user.id, reason)
     if cancelation_result.is_err():
         err = cancelation_result.unwrap_err()
-        if isinstance(err, order_service.OrderAlreadyCanceledError):
+        if isinstance(err, OrderAlreadyCanceledError):
             flash_error(
                 gettext(
                     'The order has already been canceled. The payment state cannot be changed anymore.'
