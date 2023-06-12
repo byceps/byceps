@@ -46,7 +46,6 @@ from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
 from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
 from .models.detailed_order import AdminDetailedOrder, DetailedOrder
-from .models.log import OrderLogEntryData
 from .models.number import OrderNumber
 from .models.order import (
     Address,
@@ -144,39 +143,35 @@ def cancel_order(
     if _is_canceled(db_order):
         return Err(OrderAlreadyCanceledError())
 
-    initiator = user_service.get_user(initiator_id)
+    order = _order_to_transfer_object(db_order)
     orderer_user = user_service.get_user(db_order.placed_by_id)
+    initiator = user_service.get_user(initiator_id)
 
-    has_order_been_paid = _is_paid(db_order)
+    occurred_at = datetime.utcnow()
 
-    now = datetime.utcnow()
+    cancel_order_result = order_domain_service.cancel_order(
+        order,
+        orderer_user,
+        occurred_at,
+        reason,
+        initiator,
+    )
+    if cancel_order_result.is_err():
+        return Err(cancel_order_result.unwrap_err())
 
-    updated_at = now
-    payment_state_from = db_order.payment_state
+    event, log_entry = cancel_order_result.unwrap()
+
     payment_state_to = (
         PaymentState.canceled_after_paid
-        if has_order_been_paid
+        if _is_paid(db_order)
         else PaymentState.canceled_before_paid
     )
 
-    _update_payment_state(db_order, payment_state_to, updated_at, initiator.id)
+    _update_payment_state(db_order, payment_state_to, occurred_at, initiator.id)
     db_order.cancelation_reason = reason
 
-    event_type = (
-        'order-canceled-after-paid'
-        if has_order_been_paid
-        else 'order-canceled-before-paid'
-    )
-    data = {
-        'initiator_id': str(initiator.id),
-        'former_payment_state': payment_state_from.name,
-        'reason': reason,
-    }
-
-    log_entry = DbOrderLogEntry(
-        generate_uuid7(), now, event_type, db_order.id, data
-    )
-    db.session.add(log_entry)
+    db_log_entry = order_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     # Make the reserved quantity of articles available again.
     for db_line_item in db_order.line_items:
@@ -190,16 +185,6 @@ def cancel_order(
 
     if payment_state_to == PaymentState.canceled_after_paid:
         _execute_article_revocation_actions(order, initiator.id)
-
-    event = ShopOrderCanceledEvent(
-        occurred_at=updated_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        order_id=order.id,
-        order_number=order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
-    )
 
     log.info('Order canceled', shop_order_canceled_event=event)
 
