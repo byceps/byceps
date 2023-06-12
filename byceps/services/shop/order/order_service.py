@@ -18,7 +18,7 @@ from moneyed import Currency, Money
 from sqlalchemy import delete, select
 import structlog
 
-from byceps.database import db, paginate, Pagination
+from byceps.database import db, generate_uuid7, paginate, Pagination
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import ArticleType
@@ -95,7 +95,9 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
+    log_entry = DbOrderLogEntry(
+        generate_uuid7(), now, event_type, db_order.id, data
+    )
     db.session.add(log_entry)
 
     db_order.processed_at = now
@@ -117,7 +119,9 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
+    log_entry = DbOrderLogEntry(
+        generate_uuid7(), now, event_type, db_order.id, data
+    )
     db.session.add(log_entry)
 
     db_order.processed_at = None
@@ -175,7 +179,9 @@ def cancel_order(
         'reason': reason,
     }
 
-    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
+    log_entry = DbOrderLogEntry(
+        generate_uuid7(), now, event_type, db_order.id, data
+    )
     db.session.add(log_entry)
 
     # Make the reserved quantity of articles available again.
@@ -254,7 +260,9 @@ def mark_order_as_paid(
         }
     )
 
-    log_entry = DbOrderLogEntry(now, event_type, db_order.id, log_entry_data)
+    log_entry = DbOrderLogEntry(
+        generate_uuid7(), now, event_type, db_order.id, log_entry_data
+    )
     db.session.add(log_entry)
 
     db.session.commit()

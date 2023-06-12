@@ -13,7 +13,7 @@ from datetime import datetime
 
 from sqlalchemy import select
 
-from byceps.database import db
+from byceps.database import db, generate_uuid7
 from byceps.services.shop.shop.models import ShopID
 from byceps.typing import UserID
 
@@ -55,10 +55,12 @@ def build_entry(
     occurred_at: datetime | None = None,
 ) -> DbOrderLogEntry:
     """Assemble, but not persist, an order log entry."""
+    entry_id = generate_uuid7()
+
     if occurred_at is None:
         occurred_at = datetime.utcnow()
 
-    return DbOrderLogEntry(occurred_at, event_type, order_id, data)
+    return DbOrderLogEntry(entry_id, occurred_at, event_type, order_id, data)
 
 
 def get_entries_for_order(order_id: OrderID) -> list[OrderLogEntry]:
