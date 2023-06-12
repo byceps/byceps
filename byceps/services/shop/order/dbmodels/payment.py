@@ -8,6 +8,7 @@ byceps.services.shop.order.dbmodels.payment
 
 from datetime import datetime
 from typing import TYPE_CHECKING
+from uuid import UUID
 
 from moneyed import Currency, get_currency, Money
 
@@ -17,7 +18,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.order.models.payment import AdditionalPaymentData
 
@@ -27,7 +28,7 @@ class DbPayment(db.Model):
 
     __tablename__ = 'shop_payments'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
+    id = db.Column(db.Uuid, primary_key=True)
     order_id = db.Column(
         db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False
     )
@@ -39,12 +40,14 @@ class DbPayment(db.Model):
 
     def __init__(
         self,
+        payment_id: UUID,
         order_id: OrderID,
         created_at: datetime,
         method: str,
         amount: Money,
         additional_data: AdditionalPaymentData,
     ) -> None:
+        self.id = payment_id
         self.order_id = order_id
         self.created_at = created_at
         self.method = method

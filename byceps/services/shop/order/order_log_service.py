@@ -63,6 +63,17 @@ def build_entry(
     return DbOrderLogEntry(entry_id, occurred_at, event_type, order_id, data)
 
 
+def to_db_entry(entry: OrderLogEntry) -> DbOrderLogEntry:
+    """Convert log entry to database entity."""
+    return DbOrderLogEntry(
+        entry.id,
+        entry.occurred_at,
+        entry.event_type,
+        entry.order_id,
+        entry.data,
+    )
+
+
 def get_entries_for_order(order_id: OrderID) -> list[OrderLogEntry]:
     """Return the log entries for that order."""
     db_entries = db.session.scalars(

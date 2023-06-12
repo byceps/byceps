@@ -231,7 +231,7 @@ def mark_order_as_paid(
     now = datetime.utcnow()
 
     order_payment_service.add_payment(
-        db_order.id,
+        _order_to_transfer_object(db_order),
         now,
         payment_method,
         db_order.total_amount,

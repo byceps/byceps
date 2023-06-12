@@ -21,14 +21,15 @@ from byceps.typing import UserID
 from byceps.util.l10n import format_money
 from byceps.util.templating import load_template
 
-from . import order_log_service
+from . import order_domain_service, order_log_service
 from .dbmodels.payment import DbPayment
+from .models.log import OrderLogEntry
 from .models.order import Order, OrderID
 from .models.payment import AdditionalPaymentData, Payment
 
 
 def add_payment(
-    order_id: OrderID,
+    order: Order,
     created_at: datetime,
     method: str,
     amount: Money,
@@ -38,23 +39,30 @@ def add_payment(
     """Add a payment to an order."""
     initiator = user_service.get_user(initiator_id)
 
-    db_payment = DbPayment(
-        order_id, created_at, method, amount, additional_data
+    payment, log_entry = order_domain_service.create_payment(
+        order, created_at, method, amount, initiator, additional_data
     )
-    db.session.add(db_payment)
-    db.session.commit()
 
-    payment = _db_entity_to_payment(db_payment)
-
-    log_entry_data = {
-        'initiator_id': str(initiator.id),
-        'payment_id': str(payment.id),
-    }
-    order_log_service.create_entry(
-        'order-payment-created', payment.order_id, log_entry_data
-    )
+    _persist_payment(payment, log_entry)
 
     return payment
+
+
+def _persist_payment(payment: Payment, log_entry: OrderLogEntry) -> None:
+    db_payment = DbPayment(
+        payment.id,
+        payment.order_id,
+        payment.created_at,
+        payment.method,
+        payment.amount,
+        payment.additional_data,
+    )
+    db.session.add(db_payment)
+
+    db_log_entry = order_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+
+    db.session.commit()
 
 
 def delete_payments_for_order(order_id: OrderID) -> None:
