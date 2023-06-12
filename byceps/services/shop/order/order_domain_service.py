@@ -13,10 +13,13 @@ from datetime import datetime
 from moneyed import Money
 
 from byceps.database import generate_uuid7
+from byceps.events.shop import ShopOrderPaidEvent
 from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok, Result
 
-from .models.log import OrderLogEntry
-from .models.order import Order, OrderID
+from .errors import OrderAlreadyMarkedAsPaidError
+from .models.log import OrderLogEntry, OrderLogEntryData
+from .models.order import Order, OrderID, PaymentState
 from .models.payment import AdditionalPaymentData, Payment
 
 
@@ -68,3 +71,91 @@ def _build_payment_log_entry(
         order_id=payment.order_id,
         data=data,
     )
+
+
+def mark_order_as_paid(
+    order: Order,
+    orderer_user: User,
+    occurred_at: datetime,
+    payment_method: str,
+    additional_payment_data: AdditionalPaymentData | None,
+    initiator: User,
+) -> Result[
+    tuple[ShopOrderPaidEvent, OrderLogEntry],
+    OrderAlreadyMarkedAsPaidError,
+]:
+    if _is_paid(order):
+        return Err(OrderAlreadyMarkedAsPaidError())
+
+    payment_state_from = order.payment_state
+
+    event = _build_order_paid_event(
+        occurred_at, order, orderer_user, payment_method, initiator
+    )
+
+    log_entry = _build_order_paid_log_entry(
+        occurred_at,
+        order.id,
+        payment_state_from,
+        payment_method,
+        additional_payment_data,
+        initiator,
+    )
+
+    return Ok((event, log_entry))
+
+
+def _build_order_paid_event(
+    occurred_at: datetime,
+    order: Order,
+    orderer_user: User,
+    payment_method: str,
+    initiator: User,
+) -> ShopOrderPaidEvent:
+    return ShopOrderPaidEvent(
+        occurred_at=occurred_at,
+        initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
+        order_id=order.id,
+        order_number=order.order_number,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
+        payment_method=payment_method,
+    )
+
+
+def _build_order_paid_log_entry(
+    occurred_at: datetime,
+    order_id: OrderID,
+    payment_state_from: PaymentState,
+    payment_method: str,
+    additional_payment_data: AdditionalPaymentData | None,
+    initiator: User,
+) -> OrderLogEntry:
+    data: OrderLogEntryData = {}
+
+    # Add required, internally set properties after given additional
+    # ones to ensure the former are not overridden by the latter.
+
+    if additional_payment_data is not None:
+        data.update(additional_payment_data)
+
+    data.update(
+        {
+            'former_payment_state': payment_state_from.name,
+            'payment_method': payment_method,
+            'initiator_id': str(initiator.id),
+        }
+    )
+
+    return OrderLogEntry(
+        id=generate_uuid7(),
+        occurred_at=occurred_at,
+        event_type='order-paid',
+        order_id=order_id,
+        data=data,
+    )
+
+
+def _is_paid(order: Order) -> bool:
+    return order.payment_state == PaymentState.paid

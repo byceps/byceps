@@ -32,6 +32,7 @@ from byceps.util.result import Err, Ok, Result
 
 from . import (
     order_action_service,
+    order_domain_service,
     order_invoice_service,
     order_log_service,
     order_payment_service,
@@ -215,65 +216,45 @@ def mark_order_as_paid(
     """Mark the order as paid."""
     db_order = _get_order_entity(order_id)
 
-    if _is_paid(db_order):
-        return Err(OrderAlreadyMarkedAsPaidError())
-
-    initiator = user_service.get_user(initiator_id)
+    order = _order_to_transfer_object(db_order)
     orderer_user = user_service.get_user(db_order.placed_by_id)
+    initiator = user_service.get_user(initiator_id)
 
-    now = datetime.utcnow()
+    occurred_at = datetime.utcnow()
 
     order_payment_service.add_payment(
-        _order_to_transfer_object(db_order),
-        now,
+        order,
+        occurred_at,
         payment_method,
-        db_order.total_amount,
+        order.total_amount,
         initiator_id,
         additional_payment_data if additional_payment_data is not None else {},
     )
 
-    updated_at = now
-    payment_state_from = db_order.payment_state
-    payment_state_to = PaymentState.paid
+    mark_order_as_paid_result = order_domain_service.mark_order_as_paid(
+        order,
+        orderer_user,
+        occurred_at,
+        payment_method,
+        additional_payment_data,
+        initiator,
+    )
+    if mark_order_as_paid_result.is_err():
+        return Err(mark_order_as_paid_result.unwrap_err())
+
+    event, log_entry = mark_order_as_paid_result.unwrap()
 
     db_order.payment_method = payment_method
-    _update_payment_state(db_order, payment_state_to, updated_at, initiator.id)
-
-    event_type = 'order-paid'
-    # Add required, internally set properties after given additional
-    # ones to ensure the former are not overridden by the latter.
-    log_entry_data: OrderLogEntryData = {}
-    if additional_payment_data is not None:
-        log_entry_data.update(additional_payment_data)
-    log_entry_data.update(
-        {
-            'initiator_id': str(initiator.id),
-            'former_payment_state': payment_state_from.name,
-            'payment_method': payment_method,
-        }
+    _update_payment_state(
+        db_order, PaymentState.paid, occurred_at, initiator.id
     )
 
-    log_entry = DbOrderLogEntry(
-        generate_uuid7(), now, event_type, db_order.id, log_entry_data
-    )
-    db.session.add(log_entry)
+    db_log_entry = order_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
-    order = _order_to_transfer_object(db_order)
-
     _execute_article_creation_actions(order, initiator.id)
-
-    event = ShopOrderPaidEvent(
-        occurred_at=updated_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        order_id=order.id,
-        order_number=order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
-        payment_method=payment_method,
-    )
 
     log.info('Order paid', shop_order_paid_event=event)
 
