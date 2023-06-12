@@ -73,13 +73,11 @@ def add_note(order_id: OrderID, author_id: UserID, text: str) -> None:
     order = get_order(order_id)
     author = user_service.get_user(author_id)
 
-    event_type = 'order-note-added'
-    data = {
-        'author_id': str(author.id),
-        'text': text,
-    }
+    log_entry = order_domain_service.add_note(order, author, text)
 
-    order_log_service.create_entry(event_type, order.id, data)
+    db_log_entry = order_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+    db.session.commit()
 
 
 def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:

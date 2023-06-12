@@ -23,6 +23,31 @@ from .models.order import Order, OrderID, PaymentState
 from .models.payment import AdditionalPaymentData, Payment
 
 
+def add_note(order: Order, author: User, text: str) -> OrderLogEntry:
+    log_entry = _build_note_log_entry(order.id, author, text)
+
+    return log_entry
+
+
+def _build_note_log_entry(
+    order_id: OrderID,
+    author: User,
+    text: str,
+) -> OrderLogEntry:
+    data = {
+        'author_id': str(author.id),
+        'text': text,
+    }
+
+    return OrderLogEntry(
+        id=generate_uuid7(),
+        occurred_at=datetime.utcnow(),
+        event_type='order-note-added',
+        order_id=order_id,
+        data=data,
+    )
+
+
 def create_payment(
     order: Order,
     created_at: datetime,
