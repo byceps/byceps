@@ -92,7 +92,7 @@ def check_in_user(
 
     check_in = _build_check_in(occurred_at, valid_ticket, initiator)
     event = _build_check_in_event(occurred_at, valid_ticket, initiator)
-    log_entry = _build_log_entry(
+    log_entry = _build_check_in_log_entry(
         occurred_at,
         'user-checked-in',
         ticket_id,
@@ -131,7 +131,7 @@ def _build_check_in_event(
     )
 
 
-def _build_log_entry(
+def _build_check_in_log_entry(
     occurred_at: datetime,
     event_type: str,
     ticket_id: TicketID,

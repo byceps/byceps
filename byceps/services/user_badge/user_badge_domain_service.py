@@ -27,7 +27,9 @@ def award_badge(
 
     awarding = _build_awarding(awarding_id, badge, awardee, occurred_at)
     event = _build_awarding_event(occurred_at, badge, awardee, initiator)
-    log_entry = _build_log_entry(occurred_at, badge, awardee, initiator)
+    log_entry = _build_awarding_log_entry(
+        occurred_at, badge, awardee, initiator
+    )
 
     return awarding, event, log_entry
 
@@ -57,7 +59,7 @@ def _build_awarding_event(
     )
 
 
-def _build_log_entry(
+def _build_awarding_log_entry(
     occurred_at: datetime, badge: Badge, user: User, initiator: User | None
 ) -> UserLogEntry:
     data = {'badge_id': str(badge.id)}
