@@ -10,7 +10,7 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, StringField
 from wtforms.validators import InputRequired, Optional
 
-from byceps.announce.events import EVENT_TYPES_TO_NAMES
+from byceps.announce.connections import EVENT_TYPES_TO_NAMES
 from byceps.util.forms import MultiCheckboxField
 from byceps.util.l10n import LocalizedForm
 

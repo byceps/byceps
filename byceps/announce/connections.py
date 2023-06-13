@@ -86,7 +86,6 @@ from byceps.signals import (
 from byceps.util.jobqueue import enqueue
 
 from .announce import announce, assemble_announcement_request, get_webhooks
-from .events import get_name_for_event
 from .handlers import (
     auth as auth_handlers,
     board as board_handlers,
@@ -100,6 +99,57 @@ from .handlers import (
     user as user_handlers,
     user_badge as user_badge_handlers,
 )
+
+
+EVENT_TYPES_TO_NAMES = {
+    UserLoggedInEvent: 'user-logged-in',
+    BoardPostingCreatedEvent: 'board-posting-created',
+    BoardPostingHiddenEvent: 'board-posting-hidden',
+    BoardPostingUnhiddenEvent: 'board-posting-unhidden',
+    BoardTopicCreatedEvent: 'board-topic-created',
+    BoardTopicHiddenEvent: 'board-topic-hidden',
+    BoardTopicLockedEvent: 'board-topic-locked',
+    BoardTopicMovedEvent: 'board-topic-moved',
+    BoardTopicPinnedEvent: 'board-topic-pinned',
+    BoardTopicUnhiddenEvent: 'board-topic-unhidden',
+    BoardTopicUnlockedEvent: 'board-topic-unlocked',
+    BoardTopicUnpinnedEvent: 'board-topic-unpinned',
+    GuestServerRegisteredEvent: 'guest-server-registered',
+    NewsItemPublishedEvent: 'news-item-published',
+    PageCreatedEvent: 'page-created',
+    PageDeletedEvent: 'page-deleted',
+    PageUpdatedEvent: 'page-updated',
+    ShopOrderCanceledEvent: 'shop-order-canceled',
+    ShopOrderPaidEvent: 'shop-order-paid',
+    ShopOrderPlacedEvent: 'shop-order-placed',
+    SnippetCreatedEvent: 'snippet-created',
+    SnippetDeletedEvent: 'snippet-deleted',
+    SnippetUpdatedEvent: 'snippet-updated',
+    TicketCheckedInEvent: 'ticket-checked-in',
+    TicketsSoldEvent: 'tickets-sold',
+    TourneyCanceledEvent: 'tourney-canceled',
+    TourneyFinishedEvent: 'tourney-finished',
+    TourneyPausedEvent: 'tourney-paused',
+    TourneyStartedEvent: 'tourney-started',
+    TourneyMatchReadyEvent: 'tourney-match-ready',
+    TourneyMatchResetEvent: 'tourney-match-reset',
+    TourneyMatchScoreConfirmedEvent: 'tourney-match-score-confirmed',
+    TourneyMatchScoreRandomizedEvent: 'tourney-match-score-randomized',
+    TourneyMatchScoreSubmittedEvent: 'tourney-match-score-submitted',
+    TourneyParticipantDisqualifiedEvent: 'tourney-participant-disqualified',
+    TourneyParticipantEliminatedEvent: 'tourney-participant-eliminated',
+    TourneyParticipantReadyEvent: 'tourney-participant-ready',
+    TourneyParticipantWarnedEvent: 'tourney-participant-warned',
+    UserAccountCreatedEvent: 'user-account-created',
+    UserAccountDeletedEvent: 'user-account-deleted',
+    UserAccountSuspendedEvent: 'user-account-suspended',
+    UserAccountUnsuspendedEvent: 'user-account-unsuspended',
+    UserBadgeAwardedEvent: 'user-badge-awarded',
+    UserDetailsUpdatedEvent: 'user-details-updated',
+    UserEmailAddressChangedEvent: 'user-email-address-changed',
+    UserEmailAddressInvalidatedEvent: 'user-email-address-invalidated',
+    UserScreenNameChangedEvent: 'user-screen-name-changed',
+}
 
 
 EVENT_TYPES_TO_HANDLERS = {
@@ -151,6 +201,15 @@ EVENT_TYPES_TO_HANDLERS = {
     UserEmailAddressInvalidatedEvent: user_handlers.announce_user_email_address_invalidated,
     UserScreenNameChangedEvent: user_handlers.announce_user_screen_name_changed,
 }
+
+
+def get_name_for_event(event: _BaseEvent) -> str:
+    """Return the name for the event type.
+
+    Raise exception if no name is defined for the event type.
+    """
+    event_type = type(event)
+    return EVENT_TYPES_TO_NAMES[event_type]
 
 
 def handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:

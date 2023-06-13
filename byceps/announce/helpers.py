@@ -16,7 +16,7 @@ from byceps.events.base import _BaseEvent
 from byceps.services.webhooks.models import OutgoingWebhook
 from byceps.util.l10n import get_default_locale
 
-from .events import get_name_for_event
+from .connections import get_name_for_event
 
 
 def get_screen_name_or_fallback(screen_name: str | None) -> str:
