@@ -86,19 +86,6 @@ from byceps.signals import (
 from byceps.util.jobqueue import enqueue
 
 from .announce import announce, assemble_announcement_request, get_webhooks
-from .handlers import (
-    auth as auth_handlers,
-    board as board_handlers,
-    guest_server as guest_server_handlers,
-    news as news_handlers,
-    page as page_handlers,
-    shop_order as shop_order_handlers,
-    snippet as snippet_handlers,
-    ticketing as ticketing_handlers,
-    tourney as tourney_handlers,
-    user as user_handlers,
-    user_badge as user_badge_handlers,
-)
 
 
 EVENT_TYPES_TO_NAMES = {
@@ -152,55 +139,74 @@ EVENT_TYPES_TO_NAMES = {
 }
 
 
-EVENT_TYPES_TO_HANDLERS = {
-    UserLoggedInEvent: auth_handlers.announce_user_logged_in,
-    BoardPostingCreatedEvent: board_handlers.announce_board_posting_created,
-    BoardPostingHiddenEvent: board_handlers.announce_board_posting_hidden,
-    BoardPostingUnhiddenEvent: board_handlers.announce_board_posting_unhidden,
-    BoardTopicCreatedEvent: board_handlers.announce_board_topic_created,
-    BoardTopicHiddenEvent: board_handlers.announce_board_topic_hidden,
-    BoardTopicLockedEvent: board_handlers.announce_board_topic_locked,
-    BoardTopicMovedEvent: board_handlers.announce_board_topic_moved,
-    BoardTopicPinnedEvent: board_handlers.announce_board_topic_pinned,
-    BoardTopicUnhiddenEvent: board_handlers.announce_board_topic_unhidden,
-    BoardTopicUnlockedEvent: board_handlers.announce_board_topic_unlocked,
-    BoardTopicUnpinnedEvent: board_handlers.announce_board_topic_unpinned,
-    GuestServerRegisteredEvent: guest_server_handlers.announce_guest_server_registered,
-    NewsItemPublishedEvent: news_handlers.announce_news_item_published,
-    PageCreatedEvent: page_handlers.announce_page_created,
-    PageDeletedEvent: page_handlers.announce_page_deleted,
-    PageUpdatedEvent: page_handlers.announce_page_updated,
-    ShopOrderCanceledEvent: shop_order_handlers.announce_order_canceled,
-    ShopOrderPaidEvent: shop_order_handlers.announce_order_paid,
-    ShopOrderPlacedEvent: shop_order_handlers.announce_order_placed,
-    SnippetCreatedEvent: snippet_handlers.announce_snippet_created,
-    SnippetDeletedEvent: snippet_handlers.announce_snippet_deleted,
-    SnippetUpdatedEvent: snippet_handlers.announce_snippet_updated,
-    TicketCheckedInEvent: ticketing_handlers.announce_ticket_checked_in,
-    TicketsSoldEvent: ticketing_handlers.announce_tickets_sold,
-    TourneyCanceledEvent: tourney_handlers.announce_tourney_canceled,
-    TourneyFinishedEvent: tourney_handlers.announce_tourney_finished,
-    TourneyPausedEvent: tourney_handlers.announce_tourney_paused,
-    TourneyStartedEvent: tourney_handlers.announce_tourney_started,
-    TourneyMatchReadyEvent: tourney_handlers.announce_match_ready,
-    TourneyMatchResetEvent: tourney_handlers.announce_match_reset,
-    TourneyMatchScoreConfirmedEvent: tourney_handlers.announce_match_score_confirmed,
-    TourneyMatchScoreRandomizedEvent: tourney_handlers.announce_match_score_randomized,
-    TourneyMatchScoreSubmittedEvent: tourney_handlers.announce_match_score_submitted,
-    TourneyParticipantDisqualifiedEvent: tourney_handlers.announce_participant_disqualified,
-    TourneyParticipantEliminatedEvent: tourney_handlers.announce_participant_eliminated,
-    TourneyParticipantReadyEvent: tourney_handlers.announce_participant_ready,
-    TourneyParticipantWarnedEvent: tourney_handlers.announce_participant_warned,
-    UserAccountCreatedEvent: user_handlers.announce_user_account_created,
-    UserAccountDeletedEvent: user_handlers.announce_user_account_deleted,
-    UserAccountSuspendedEvent: user_handlers.announce_user_account_suspended,
-    UserAccountUnsuspendedEvent: user_handlers.announce_user_account_unsuspended,
-    UserBadgeAwardedEvent: user_badge_handlers.announce_user_badge_awarded,
-    UserDetailsUpdatedEvent: user_handlers.announce_user_details_updated,
-    UserEmailAddressChangedEvent: user_handlers.announce_user_email_address_changed,
-    UserEmailAddressInvalidatedEvent: user_handlers.announce_user_email_address_invalidated,
-    UserScreenNameChangedEvent: user_handlers.announce_user_screen_name_changed,
-}
+_EVENT_TYPES_TO_HANDLERS = {}
+
+
+def register_handlers() -> None:
+    from .handlers import (
+        auth as auth_handlers,
+        board as board_handlers,
+        guest_server as guest_server_handlers,
+        news as news_handlers,
+        page as page_handlers,
+        shop_order as shop_order_handlers,
+        snippet as snippet_handlers,
+        ticketing as ticketing_handlers,
+        tourney as tourney_handlers,
+        user as user_handlers,
+        user_badge as user_badge_handlers,
+    )
+
+    global _EVENT_TYPES_TO_HANDLERS
+    _EVENT_TYPES_TO_HANDLERS = {
+        UserLoggedInEvent: auth_handlers.announce_user_logged_in,
+        BoardPostingCreatedEvent: board_handlers.announce_board_posting_created,
+        BoardPostingHiddenEvent: board_handlers.announce_board_posting_hidden,
+        BoardPostingUnhiddenEvent: board_handlers.announce_board_posting_unhidden,
+        BoardTopicCreatedEvent: board_handlers.announce_board_topic_created,
+        BoardTopicHiddenEvent: board_handlers.announce_board_topic_hidden,
+        BoardTopicLockedEvent: board_handlers.announce_board_topic_locked,
+        BoardTopicMovedEvent: board_handlers.announce_board_topic_moved,
+        BoardTopicPinnedEvent: board_handlers.announce_board_topic_pinned,
+        BoardTopicUnhiddenEvent: board_handlers.announce_board_topic_unhidden,
+        BoardTopicUnlockedEvent: board_handlers.announce_board_topic_unlocked,
+        BoardTopicUnpinnedEvent: board_handlers.announce_board_topic_unpinned,
+        GuestServerRegisteredEvent: guest_server_handlers.announce_guest_server_registered,
+        NewsItemPublishedEvent: news_handlers.announce_news_item_published,
+        PageCreatedEvent: page_handlers.announce_page_created,
+        PageDeletedEvent: page_handlers.announce_page_deleted,
+        PageUpdatedEvent: page_handlers.announce_page_updated,
+        ShopOrderCanceledEvent: shop_order_handlers.announce_order_canceled,
+        ShopOrderPaidEvent: shop_order_handlers.announce_order_paid,
+        ShopOrderPlacedEvent: shop_order_handlers.announce_order_placed,
+        SnippetCreatedEvent: snippet_handlers.announce_snippet_created,
+        SnippetDeletedEvent: snippet_handlers.announce_snippet_deleted,
+        SnippetUpdatedEvent: snippet_handlers.announce_snippet_updated,
+        TicketCheckedInEvent: ticketing_handlers.announce_ticket_checked_in,
+        TicketsSoldEvent: ticketing_handlers.announce_tickets_sold,
+        TourneyCanceledEvent: tourney_handlers.announce_tourney_canceled,
+        TourneyFinishedEvent: tourney_handlers.announce_tourney_finished,
+        TourneyPausedEvent: tourney_handlers.announce_tourney_paused,
+        TourneyStartedEvent: tourney_handlers.announce_tourney_started,
+        TourneyMatchReadyEvent: tourney_handlers.announce_match_ready,
+        TourneyMatchResetEvent: tourney_handlers.announce_match_reset,
+        TourneyMatchScoreConfirmedEvent: tourney_handlers.announce_match_score_confirmed,
+        TourneyMatchScoreRandomizedEvent: tourney_handlers.announce_match_score_randomized,
+        TourneyMatchScoreSubmittedEvent: tourney_handlers.announce_match_score_submitted,
+        TourneyParticipantDisqualifiedEvent: tourney_handlers.announce_participant_disqualified,
+        TourneyParticipantEliminatedEvent: tourney_handlers.announce_participant_eliminated,
+        TourneyParticipantReadyEvent: tourney_handlers.announce_participant_ready,
+        TourneyParticipantWarnedEvent: tourney_handlers.announce_participant_warned,
+        UserAccountCreatedEvent: user_handlers.announce_user_account_created,
+        UserAccountDeletedEvent: user_handlers.announce_user_account_deleted,
+        UserAccountSuspendedEvent: user_handlers.announce_user_account_suspended,
+        UserAccountUnsuspendedEvent: user_handlers.announce_user_account_unsuspended,
+        UserBadgeAwardedEvent: user_badge_handlers.announce_user_badge_awarded,
+        UserDetailsUpdatedEvent: user_handlers.announce_user_details_updated,
+        UserEmailAddressChangedEvent: user_handlers.announce_user_email_address_changed,
+        UserEmailAddressInvalidatedEvent: user_handlers.announce_user_email_address_invalidated,
+        UserScreenNameChangedEvent: user_handlers.announce_user_screen_name_changed,
+    }
 
 
 def get_name_for_event(event: _BaseEvent) -> str:
@@ -225,7 +231,7 @@ def build_announcement_request(
 ) -> AnnouncementRequest | None:
     event_type = type(event)
 
-    handler = EVENT_TYPES_TO_HANDLERS.get(event_type)
+    handler = _EVENT_TYPES_TO_HANDLERS.get(event_type)
     if handler is None:
         return None
 
@@ -300,5 +306,7 @@ SIGNALS = [
 
 
 def enable_announcements() -> None:
+    register_handlers()
+
     for signal in SIGNALS:
         signal.connect(receive_signal)
