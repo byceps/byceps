@@ -86,6 +86,7 @@ from byceps.signals import (
 from byceps.util.jobqueue import enqueue
 
 from .announce import announce, assemble_announcement_request, get_webhooks
+from .events import get_name_for_event
 from .handlers import (
     auth as auth_handlers,
     board as board_handlers,
@@ -182,7 +183,8 @@ def receive_signal(sender, *, event: _BaseEvent | None = None) -> None:
     if event is None:
         return None
 
-    webhooks = get_webhooks(event)
+    event_name = get_name_for_event(event)
+    webhooks = get_webhooks(event_name)
     for webhook in webhooks:
         enqueue(handle_event, event, webhook)
 

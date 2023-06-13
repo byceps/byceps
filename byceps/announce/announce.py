@@ -15,20 +15,16 @@ from typing import Any
 from flask import current_app
 import requests
 
-from byceps.events.base import _BaseEvent
 from byceps.services.webhooks import webhook_service
 from byceps.services.webhooks.models import AnnouncementRequest, OutgoingWebhook
 from byceps.util.jobqueue import enqueue_at
-
-from .events import get_name_for_event
 
 
 class WebhookError(Exception):
     pass
 
 
-def get_webhooks(event: _BaseEvent) -> list[OutgoingWebhook]:
-    event_name = get_name_for_event(event)
+def get_webhooks(event_name: str) -> list[OutgoingWebhook]:
     webhooks = webhook_service.get_enabled_outgoing_webhooks(event_name)
 
     # Stable order is easier to test.
