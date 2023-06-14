@@ -22,7 +22,7 @@ import rtoml
 import structlog
 
 from byceps import config, config_defaults
-from byceps.announce.connections import enable_announcements
+from byceps.announce.announce import enable_announcements
 from byceps.blueprints.blueprints import register_blueprints
 from byceps.database import db
 from byceps.util import templatefilters, templatefunctions

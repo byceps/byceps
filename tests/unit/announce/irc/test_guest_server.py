@@ -5,7 +5,7 @@
 
 from flask import Flask
 
-from byceps.announce.connections import build_announcement_request
+from byceps.announce.announce import build_announcement_request
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.guest_server.models import ServerID
 from byceps.typing import PartyID, UserID

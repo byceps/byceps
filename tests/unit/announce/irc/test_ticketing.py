@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 from flask import Flask
 
-from byceps.announce.connections import build_announcement_request
+from byceps.announce.announce import build_announcement_request
 from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.services.ticketing.models.ticket import TicketCode, TicketSaleStats
 from byceps.typing import PartyID, UserID

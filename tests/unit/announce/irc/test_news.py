@@ -5,7 +5,7 @@
 
 from flask import Flask
 
-from byceps.announce.connections import build_announcement_request
+from byceps.announce.announce import build_announcement_request
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
 from byceps.typing import UserID

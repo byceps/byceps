@@ -15,22 +15,82 @@ from typing import Any
 from flask import current_app
 import requests
 
+from byceps.events.base import _BaseEvent
 from byceps.services.webhooks import webhook_service
 from byceps.services.webhooks.models import AnnouncementRequest, OutgoingWebhook
-from byceps.util.jobqueue import enqueue_at
+from byceps.util.jobqueue import enqueue, enqueue_at
+
+from .connections import (
+    EVENT_TYPES_TO_NAMES,
+    get_handler_for_event_type,
+    register_handlers,
+    SIGNALS,
+)
 
 
 class WebhookError(Exception):
     pass
 
 
-def get_webhooks(event_name: str) -> list[OutgoingWebhook]:
+def enable_announcements() -> None:
+    register_handlers()
+
+    for signal in SIGNALS:
+        signal.connect(_receive_signal)
+
+
+def _receive_signal(sender, *, event: _BaseEvent | None = None) -> None:
+    if event is None:
+        return None
+
+    event_name = get_name_for_event(event)
+    webhooks = _get_webhooks(event_name)
+    for webhook in webhooks:
+        enqueue(_handle_event, event, webhook)
+
+
+def get_name_for_event(event: _BaseEvent) -> str:
+    """Return the name for the event type.
+
+    Raise exception if no name is defined for the event type.
+    """
+    event_type = type(event)
+    return EVENT_TYPES_TO_NAMES[event_type]
+
+
+def _get_webhooks(event_name: str) -> list[OutgoingWebhook]:
     webhooks = webhook_service.get_enabled_outgoing_webhooks(event_name)
 
     # Stable order is easier to test.
     webhooks.sort(key=lambda wh: wh.extra_fields.get('channel', ''))
 
     return webhooks
+
+
+def _handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:
+    announcement_request = build_announcement_request(event, webhook)
+    if announcement_request is None:
+        return
+
+    announce(announcement_request)
+
+
+def build_announcement_request(
+    event: _BaseEvent, webhook: OutgoingWebhook
+) -> AnnouncementRequest | None:
+    event_type = type(event)
+
+    handler = get_handler_for_event_type(event_type)
+    if handler is None:
+        return None
+
+    announcement = handler(event, webhook)
+    if announcement is None:
+        return None
+
+    return assemble_announcement_request(
+        webhook, announcement.text, announce_at=announcement.announce_at
+    )
 
 
 def assemble_announcement_request(

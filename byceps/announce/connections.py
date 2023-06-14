@@ -11,7 +11,6 @@ Connect event signals to announcement handlers.
 from __future__ import annotations
 
 from byceps.events.auth import UserLoggedInEvent
-from byceps.events.base import _BaseEvent
 from byceps.events.board import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -69,7 +68,6 @@ from byceps.events.user import (
     UserScreenNameChangedEvent,
 )
 from byceps.events.user_badge import UserBadgeAwardedEvent
-from byceps.services.webhooks.models import AnnouncementRequest, OutgoingWebhook
 from byceps.signals import (
     auth as auth_signals,
     board as board_signals,
@@ -83,9 +81,6 @@ from byceps.signals import (
     user as user_signals,
     user_badge as user_badge_signals,
 )
-from byceps.util.jobqueue import enqueue
-
-from .announce import announce, assemble_announcement_request, get_webhooks
 
 
 EVENT_TYPES_TO_NAMES = {
@@ -209,49 +204,8 @@ def register_handlers() -> None:
     }
 
 
-def get_name_for_event(event: _BaseEvent) -> str:
-    """Return the name for the event type.
-
-    Raise exception if no name is defined for the event type.
-    """
-    event_type = type(event)
-    return EVENT_TYPES_TO_NAMES[event_type]
-
-
-def handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:
-    announcement_request = build_announcement_request(event, webhook)
-    if announcement_request is None:
-        return
-
-    announce(announcement_request)
-
-
-def build_announcement_request(
-    event: _BaseEvent, webhook: OutgoingWebhook
-) -> AnnouncementRequest | None:
-    event_type = type(event)
-
-    handler = _EVENT_TYPES_TO_HANDLERS.get(event_type)
-    if handler is None:
-        return None
-
-    announcement = handler(event, webhook)
-    if announcement is None:
-        return None
-
-    return assemble_announcement_request(
-        webhook, announcement.text, announce_at=announcement.announce_at
-    )
-
-
-def receive_signal(sender, *, event: _BaseEvent | None = None) -> None:
-    if event is None:
-        return None
-
-    event_name = get_name_for_event(event)
-    webhooks = get_webhooks(event_name)
-    for webhook in webhooks:
-        enqueue(handle_event, event, webhook)
+def get_handler_for_event_type(event_type: str):
+    return _EVENT_TYPES_TO_HANDLERS.get(event_type)
 
 
 SIGNALS = [
@@ -303,10 +257,3 @@ SIGNALS = [
     user_signals.screen_name_changed,
     user_badge_signals.user_badge_awarded,
 ]
-
-
-def enable_announcements() -> None:
-    register_handlers()
-
-    for signal in SIGNALS:
-        signal.connect(receive_signal)
