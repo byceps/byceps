@@ -14,11 +14,8 @@ from functools import wraps
 
 from flask_babel import gettext
 
-from byceps.announce.helpers import (
-    get_screen_name_or_fallback,
-    matches_selectors,
-    with_locale,
-)
+from byceps.announce.announce import matches_selectors
+from byceps.announce.helpers import get_screen_name_or_fallback, with_locale
 from byceps.events.board import (
     _BoardEvent,
     BoardPostingCreatedEvent,
