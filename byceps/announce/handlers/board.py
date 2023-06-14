@@ -39,7 +39,7 @@ def apply_selectors(handler):
         event_name: str, event: _BoardEvent, webhook: OutgoingWebhook
     ) -> Announcement | None:
         board_id = str(event.board_id)
-        if not matches_selectors(event, webhook, 'board_id', board_id):
+        if not matches_selectors(event_name, webhook, 'board_id', board_id):
             return None
 
         return handler(event_name, event, webhook)

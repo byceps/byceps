@@ -26,7 +26,7 @@ def apply_selectors(handler):
         event_name: str, event: NewsItemPublishedEvent, webhook: OutgoingWebhook
     ) -> Announcement | None:
         channel_id = str(event.channel_id)
-        if not matches_selectors(event, webhook, 'channel_id', channel_id):
+        if not matches_selectors(event_name, webhook, 'channel_id', channel_id):
             return None
 
         return handler(event_name, event, webhook)
