@@ -12,7 +12,28 @@ from functools import wraps
 
 from flask_babel import force_locale, gettext
 
+from byceps.services.webhooks.models import OutgoingWebhook
 from byceps.util.l10n import get_default_locale
+
+
+def matches_selectors(
+    event_name: str,
+    webhook: OutgoingWebhook,
+    attribute_name: str,
+    actual_value: str,
+) -> bool:
+    if event_name not in webhook.event_types:
+        # This should not happen as only webhooks supporting this
+        # event type should have been selected before calling an
+        # event announcement handler.
+        return False
+
+    event_filter = webhook.event_filters.get(event_name)
+    if event_filter is None:
+        return True
+
+    allowed_values = event_filter.get(attribute_name)
+    return (allowed_values is None) or (actual_value in allowed_values)
 
 
 def get_screen_name_or_fallback(screen_name: str | None) -> str:
