@@ -82,6 +82,20 @@ from byceps.signals import (
     user_badge as user_badge_signals,
 )
 
+from .handlers import (
+    auth as auth_handlers,
+    board as board_handlers,
+    guest_server as guest_server_handlers,
+    news as news_handlers,
+    page as page_handlers,
+    shop_order as shop_order_handlers,
+    snippet as snippet_handlers,
+    ticketing as ticketing_handlers,
+    tourney as tourney_handlers,
+    user as user_handlers,
+    user_badge as user_badge_handlers,
+)
+
 
 EVENT_TYPES_TO_NAMES = {
     UserLoggedInEvent: 'user-logged-in',
@@ -138,20 +152,6 @@ _EVENT_TYPES_TO_HANDLERS = {}
 
 
 def register_handlers() -> None:
-    from .handlers import (
-        auth as auth_handlers,
-        board as board_handlers,
-        guest_server as guest_server_handlers,
-        news as news_handlers,
-        page as page_handlers,
-        shop_order as shop_order_handlers,
-        snippet as snippet_handlers,
-        ticketing as ticketing_handlers,
-        tourney as tourney_handlers,
-        user as user_handlers,
-        user_badge as user_badge_handlers,
-    )
-
     global _EVENT_TYPES_TO_HANDLERS
     _EVENT_TYPES_TO_HANDLERS = {
         UserLoggedInEvent: auth_handlers.announce_user_logged_in,
