@@ -26,7 +26,7 @@ from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 @with_locale
 def announce_page_created(
-    event: PageCreatedEvent, webhook: OutgoingWebhook
+    event_name: str, event: PageCreatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a page has been created."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -45,7 +45,7 @@ def announce_page_created(
 
 @with_locale
 def announce_page_updated(
-    event: PageUpdatedEvent, webhook: OutgoingWebhook
+    event_name: str, event: PageUpdatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a page has been updated."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -64,7 +64,7 @@ def announce_page_updated(
 
 @with_locale
 def announce_page_deleted(
-    event: PageDeletedEvent, webhook: OutgoingWebhook
+    event_name: str, event: PageDeletedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a page has been deleted."""
     initiator_screen_name = get_screen_name_or_fallback(

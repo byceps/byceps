@@ -23,13 +23,13 @@ from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 def apply_selectors(handler):
     @wraps(handler)
     def wrapper(
-        event: NewsItemPublishedEvent, webhook: OutgoingWebhook
+        event_name: str, event: NewsItemPublishedEvent, webhook: OutgoingWebhook
     ) -> Announcement | None:
         channel_id = str(event.channel_id)
         if not matches_selectors(event, webhook, 'channel_id', channel_id):
             return None
 
-        return handler(event, webhook)
+        return handler(event_name, event, webhook)
 
     return wrapper
 
@@ -37,7 +37,7 @@ def apply_selectors(handler):
 @apply_selectors
 @with_locale
 def announce_news_item_published(
-    event: NewsItemPublishedEvent, webhook: OutgoingWebhook
+    event_name: str, event: NewsItemPublishedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a news item has been published."""
     text = gettext(

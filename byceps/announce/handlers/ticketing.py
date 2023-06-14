@@ -23,7 +23,7 @@ from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 @with_locale
 def announce_ticket_checked_in(
-    event: TicketCheckedInEvent, webhook: OutgoingWebhook
+    event_name: str, event: TicketCheckedInEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a ticket has been checked in."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -43,7 +43,7 @@ def announce_ticket_checked_in(
 
 @with_locale
 def announce_tickets_sold(
-    event: TicketsSoldEvent, webhook: OutgoingWebhook
+    event_name: str, event: TicketsSoldEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that tickets have been sold."""
     owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)

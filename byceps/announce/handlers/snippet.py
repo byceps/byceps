@@ -27,7 +27,7 @@ from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 @with_locale
 def announce_snippet_created(
-    event: SnippetCreatedEvent, webhook: OutgoingWebhook
+    event_name: str, event: SnippetCreatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a snippet has been created."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -46,7 +46,7 @@ def announce_snippet_created(
 
 @with_locale
 def announce_snippet_updated(
-    event: SnippetUpdatedEvent, webhook: OutgoingWebhook
+    event_name: str, event: SnippetUpdatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a snippet has been updated."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -65,7 +65,7 @@ def announce_snippet_updated(
 
 @with_locale
 def announce_snippet_deleted(
-    event: SnippetDeletedEvent, webhook: OutgoingWebhook
+    event_name: str, event: SnippetDeletedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a snippet has been deleted."""
     initiator_screen_name = get_screen_name_or_fallback(

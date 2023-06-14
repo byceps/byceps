@@ -22,7 +22,7 @@ from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 @with_locale
 def announce_user_logged_in(
-    event: UserLoggedInEvent, webhook: OutgoingWebhook
+    event_name: str, event: UserLoggedInEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user has logged in."""
     screen_name = get_screen_name_or_fallback(event.initiator_screen_name)

@@ -22,7 +22,7 @@ from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 @with_locale
 def announce_user_badge_awarded(
-    event: UserBadgeAwardedEvent, webhook: OutgoingWebhook
+    event_name: str, event: UserBadgeAwardedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a badge has been awarded to a user."""
     initiator_screen_name = get_screen_name_or_fallback(

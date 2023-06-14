@@ -22,7 +22,7 @@ from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 @with_locale
 def announce_guest_server_registered(
-    event: GuestServerRegisteredEvent, webhook: OutgoingWebhook
+    event_name: str, event: GuestServerRegisteredEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a guest server has been registered."""
     initiator_screen_name = get_screen_name_or_fallback(

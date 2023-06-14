@@ -84,7 +84,9 @@ def build_announcement_request(
     if handler is None:
         return None
 
-    announcement = handler(event, webhook)
+    event_name = get_name_for_event(event)
+
+    announcement = handler(event_name, event, webhook)
     if announcement is None:
         return None
 
