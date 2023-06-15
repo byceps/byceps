@@ -109,55 +109,74 @@ AnnouncementEventHandler = Callable[
 ]
 
 
-EVENT_TYPES_TO_NAMES: dict[AnnouncementEvent, str] = {
-    UserLoggedInEvent: 'user-logged-in',
-    BoardPostingCreatedEvent: 'board-posting-created',
-    BoardPostingHiddenEvent: 'board-posting-hidden',
-    BoardPostingUnhiddenEvent: 'board-posting-unhidden',
-    BoardTopicCreatedEvent: 'board-topic-created',
-    BoardTopicHiddenEvent: 'board-topic-hidden',
-    BoardTopicLockedEvent: 'board-topic-locked',
-    BoardTopicMovedEvent: 'board-topic-moved',
-    BoardTopicPinnedEvent: 'board-topic-pinned',
-    BoardTopicUnhiddenEvent: 'board-topic-unhidden',
-    BoardTopicUnlockedEvent: 'board-topic-unlocked',
-    BoardTopicUnpinnedEvent: 'board-topic-unpinned',
-    GuestServerRegisteredEvent: 'guest-server-registered',
-    NewsItemPublishedEvent: 'news-item-published',
-    PageCreatedEvent: 'page-created',
-    PageDeletedEvent: 'page-deleted',
-    PageUpdatedEvent: 'page-updated',
-    ShopOrderCanceledEvent: 'shop-order-canceled',
-    ShopOrderPaidEvent: 'shop-order-paid',
-    ShopOrderPlacedEvent: 'shop-order-placed',
-    SnippetCreatedEvent: 'snippet-created',
-    SnippetDeletedEvent: 'snippet-deleted',
-    SnippetUpdatedEvent: 'snippet-updated',
-    TicketCheckedInEvent: 'ticket-checked-in',
-    TicketsSoldEvent: 'tickets-sold',
-    TourneyCanceledEvent: 'tourney-canceled',
-    TourneyFinishedEvent: 'tourney-finished',
-    TourneyPausedEvent: 'tourney-paused',
-    TourneyStartedEvent: 'tourney-started',
-    TourneyMatchReadyEvent: 'tourney-match-ready',
-    TourneyMatchResetEvent: 'tourney-match-reset',
-    TourneyMatchScoreConfirmedEvent: 'tourney-match-score-confirmed',
-    TourneyMatchScoreRandomizedEvent: 'tourney-match-score-randomized',
-    TourneyMatchScoreSubmittedEvent: 'tourney-match-score-submitted',
-    TourneyParticipantDisqualifiedEvent: 'tourney-participant-disqualified',
-    TourneyParticipantEliminatedEvent: 'tourney-participant-eliminated',
-    TourneyParticipantReadyEvent: 'tourney-participant-ready',
-    TourneyParticipantWarnedEvent: 'tourney-participant-warned',
-    UserAccountCreatedEvent: 'user-account-created',
-    UserAccountDeletedEvent: 'user-account-deleted',
-    UserAccountSuspendedEvent: 'user-account-suspended',
-    UserAccountUnsuspendedEvent: 'user-account-unsuspended',
-    UserBadgeAwardedEvent: 'user-badge-awarded',
-    UserDetailsUpdatedEvent: 'user-details-updated',
-    UserEmailAddressChangedEvent: 'user-email-address-changed',
-    UserEmailAddressInvalidatedEvent: 'user-email-address-invalidated',
-    UserScreenNameChangedEvent: 'user-screen-name-changed',
-}
+class AnnouncementEventRegistry:
+    def __init__(self) -> None:
+        self._event_types_to_names: dict[AnnouncementEvent, str] = {}
+
+    def register_event(self, event: AnnouncementEvent, name: str) -> None:
+        self._event_types_to_names[event] = name
+
+    def get_event_name(self, event: _BaseEvent) -> str:
+        event_type = type(event)
+        return self._event_types_to_names[event_type]
+
+    def get_event_names(self) -> set[str]:
+        return set(self._event_types_to_names.values())
+
+
+registry = AnnouncementEventRegistry()
+
+
+for event, name in [
+    (UserLoggedInEvent, 'user-logged-in'),
+    (BoardPostingCreatedEvent, 'board-posting-created'),
+    (BoardPostingHiddenEvent, 'board-posting-hidden'),
+    (BoardPostingUnhiddenEvent, 'board-posting-unhidden'),
+    (BoardTopicCreatedEvent, 'board-topic-created'),
+    (BoardTopicHiddenEvent, 'board-topic-hidden'),
+    (BoardTopicLockedEvent, 'board-topic-locked'),
+    (BoardTopicMovedEvent, 'board-topic-moved'),
+    (BoardTopicPinnedEvent, 'board-topic-pinned'),
+    (BoardTopicUnhiddenEvent, 'board-topic-unhidden'),
+    (BoardTopicUnlockedEvent, 'board-topic-unlocked'),
+    (BoardTopicUnpinnedEvent, 'board-topic-unpinned'),
+    (GuestServerRegisteredEvent, 'guest-server-registered'),
+    (NewsItemPublishedEvent, 'news-item-published'),
+    (PageCreatedEvent, 'page-created'),
+    (PageDeletedEvent, 'page-deleted'),
+    (PageUpdatedEvent, 'page-updated'),
+    (ShopOrderCanceledEvent, 'shop-order-canceled'),
+    (ShopOrderPaidEvent, 'shop-order-paid'),
+    (ShopOrderPlacedEvent, 'shop-order-placed'),
+    (SnippetCreatedEvent, 'snippet-created'),
+    (SnippetDeletedEvent, 'snippet-deleted'),
+    (SnippetUpdatedEvent, 'snippet-updated'),
+    (TicketCheckedInEvent, 'ticket-checked-in'),
+    (TicketsSoldEvent, 'tickets-sold'),
+    (TourneyCanceledEvent, 'tourney-canceled'),
+    (TourneyFinishedEvent, 'tourney-finished'),
+    (TourneyPausedEvent, 'tourney-paused'),
+    (TourneyStartedEvent, 'tourney-started'),
+    (TourneyMatchReadyEvent, 'tourney-match-ready'),
+    (TourneyMatchResetEvent, 'tourney-match-reset'),
+    (TourneyMatchScoreConfirmedEvent, 'tourney-match-score-confirmed'),
+    (TourneyMatchScoreRandomizedEvent, 'tourney-match-score-randomized'),
+    (TourneyMatchScoreSubmittedEvent, 'tourney-match-score-submitted'),
+    (TourneyParticipantDisqualifiedEvent, 'tourney-participant-disqualified'),
+    (TourneyParticipantEliminatedEvent, 'tourney-participant-eliminated'),
+    (TourneyParticipantReadyEvent, 'tourney-participant-ready'),
+    (TourneyParticipantWarnedEvent, 'tourney-participant-warned'),
+    (UserAccountCreatedEvent, 'user-account-created'),
+    (UserAccountDeletedEvent, 'user-account-deleted'),
+    (UserAccountSuspendedEvent, 'user-account-suspended'),
+    (UserAccountUnsuspendedEvent, 'user-account-unsuspended'),
+    (UserBadgeAwardedEvent, 'user-badge-awarded'),
+    (UserDetailsUpdatedEvent, 'user-details-updated'),
+    (UserEmailAddressChangedEvent, 'user-email-address-changed'),
+    (UserEmailAddressInvalidatedEvent, 'user-email-address-invalidated'),
+    (UserScreenNameChangedEvent, 'user-screen-name-changed'),
+]:
+    registry.register_event(event, name)
 
 
 _EVENT_TYPES_TO_HANDLERS: dict[AnnouncementEvent, AnnouncementEventHandler] = {}

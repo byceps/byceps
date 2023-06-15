@@ -21,10 +21,10 @@ from byceps.services.webhooks.models import AnnouncementRequest, OutgoingWebhook
 from byceps.util.jobqueue import enqueue, enqueue_at
 
 from .connections import (
-    EVENT_TYPES_TO_NAMES,
     get_handler_for_event_type,
     get_signals,
     register_handlers,
+    registry,
 )
 
 
@@ -50,7 +50,7 @@ def _receive_signal(sender, *, event: _BaseEvent | None = None) -> None:
 
 
 def get_event_names() -> set[str]:
-    return set(EVENT_TYPES_TO_NAMES.values())
+    return registry.get_event_names()
 
 
 def get_name_for_event(event: _BaseEvent) -> str:
@@ -58,8 +58,7 @@ def get_name_for_event(event: _BaseEvent) -> str:
 
     Raise exception if no name is defined for the event type.
     """
-    event_type = type(event)
-    return EVENT_TYPES_TO_NAMES[event_type]
+    return registry.get_event_name(event)
 
 
 def _get_webhooks(event_name: str) -> list[OutgoingWebhook]:
