@@ -10,7 +10,12 @@ Connect event signals to announcement handlers.
 
 from __future__ import annotations
 
+from typing import Callable, Optional
+
+from blinker import NamedSignal
+
 from byceps.events.auth import UserLoggedInEvent
+from byceps.events.base import _BaseEvent
 from byceps.events.board import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -68,6 +73,7 @@ from byceps.events.user import (
     UserScreenNameChangedEvent,
 )
 from byceps.events.user_badge import UserBadgeAwardedEvent
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
     auth as auth_signals,
     board as board_signals,
@@ -97,7 +103,13 @@ from .handlers import (
 )
 
 
-EVENT_TYPES_TO_NAMES = {
+AnnouncementEvent = type[_BaseEvent]
+AnnouncementEventHandler = Callable[
+    [str, _BaseEvent, OutgoingWebhook], Optional[Announcement]
+]
+
+
+EVENT_TYPES_TO_NAMES: dict[AnnouncementEvent, str] = {
     UserLoggedInEvent: 'user-logged-in',
     BoardPostingCreatedEvent: 'board-posting-created',
     BoardPostingHiddenEvent: 'board-posting-hidden',
@@ -148,7 +160,7 @@ EVENT_TYPES_TO_NAMES = {
 }
 
 
-_EVENT_TYPES_TO_HANDLERS = {}
+_EVENT_TYPES_TO_HANDLERS: dict[AnnouncementEvent, AnnouncementEventHandler] = {}
 
 
 def register_handlers() -> None:
@@ -204,11 +216,13 @@ def register_handlers() -> None:
     }
 
 
-def get_handler_for_event_type(event_type: str):
+def get_handler_for_event_type(
+    event_type: AnnouncementEvent,
+) -> AnnouncementEventHandler | None:
     return _EVENT_TYPES_TO_HANDLERS.get(event_type)
 
 
-_SIGNALS = [
+_SIGNALS: list[NamedSignal] = [
     auth_signals.user_logged_in,
     board_signals.posting_created,
     board_signals.posting_hidden,
