@@ -10,13 +10,13 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, StringField
 from wtforms.validators import InputRequired, Optional
 
-from byceps.announce.announce import EVENT_TYPES_TO_NAMES
+from byceps.announce.announce import get_event_names
 from byceps.util.forms import MultiCheckboxField
 from byceps.util.l10n import LocalizedForm
 
 
 def _get_event_type_choices() -> list[tuple[str, str]]:
-    event_names = EVENT_TYPES_TO_NAMES.values()
+    event_names = get_event_names()
     return [(event_name, event_name) for event_name in sorted(event_names)]
 
 

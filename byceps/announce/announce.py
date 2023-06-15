@@ -49,6 +49,10 @@ def _receive_signal(sender, *, event: _BaseEvent | None = None) -> None:
         enqueue(_handle_event, event, webhook)
 
 
+def get_event_names() -> set[str]:
+    return set(EVENT_TYPES_TO_NAMES.values())
+
+
 def get_name_for_event(event: _BaseEvent) -> str:
     """Return the name for the event type.
 
