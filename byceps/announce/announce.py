@@ -23,8 +23,8 @@ from byceps.util.jobqueue import enqueue, enqueue_at
 from .connections import (
     EVENT_TYPES_TO_NAMES,
     get_handler_for_event_type,
+    get_signals,
     register_handlers,
-    SIGNALS,
 )
 
 
@@ -35,7 +35,7 @@ class WebhookError(Exception):
 def enable_announcements() -> None:
     register_handlers()
 
-    for signal in SIGNALS:
+    for signal in get_signals():
         signal.connect(_receive_signal)
 
 

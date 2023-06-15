@@ -208,7 +208,7 @@ def get_handler_for_event_type(event_type: str):
     return _EVENT_TYPES_TO_HANDLERS.get(event_type)
 
 
-SIGNALS = [
+_SIGNALS = [
     auth_signals.user_logged_in,
     board_signals.posting_created,
     board_signals.posting_hidden,
@@ -257,3 +257,7 @@ SIGNALS = [
     user_signals.screen_name_changed,
     user_badge_signals.user_badge_awarded,
 ]
+
+
+def get_signals():
+    return _SIGNALS
