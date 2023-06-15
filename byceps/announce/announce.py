@@ -20,12 +20,7 @@ from byceps.services.webhooks import webhook_service
 from byceps.services.webhooks.models import AnnouncementRequest, OutgoingWebhook
 from byceps.util.jobqueue import enqueue, enqueue_at
 
-from .connections import (
-    get_handler_for_event_type,
-    get_signals,
-    register_handlers,
-    registry,
-)
+from .connections import get_signals, registry
 
 
 class WebhookError(Exception):
@@ -33,8 +28,6 @@ class WebhookError(Exception):
 
 
 def enable_announcements() -> None:
-    register_handlers()
-
     for signal in get_signals():
         signal.connect(_receive_signal)
 
@@ -83,7 +76,7 @@ def build_announcement_request(
 ) -> AnnouncementRequest | None:
     event_type = type(event)
 
-    handler = get_handler_for_event_type(event_type)
+    handler = registry.get_handler_for_event_type(event_type)
     if handler is None:
         return None
 

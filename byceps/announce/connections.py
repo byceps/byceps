@@ -112,9 +112,18 @@ AnnouncementEventHandler = Callable[
 class AnnouncementEventRegistry:
     def __init__(self) -> None:
         self._event_types_to_names: dict[AnnouncementEvent, str] = {}
+        self._event_types_to_handlers: dict[
+            AnnouncementEvent, AnnouncementEventHandler
+        ] = {}
 
-    def register_event(self, event: AnnouncementEvent, name: str) -> None:
+    def register_event(
+        self,
+        event: AnnouncementEvent,
+        name: str,
+        handler: AnnouncementEventHandler,
+    ) -> None:
         self._event_types_to_names[event] = name
+        self._event_types_to_handlers[event] = handler
 
     def get_event_name(self, event: _BaseEvent) -> str:
         event_type = type(event)
@@ -123,122 +132,241 @@ class AnnouncementEventRegistry:
     def get_event_names(self) -> set[str]:
         return set(self._event_types_to_names.values())
 
+    def get_handler_for_event_type(
+        self, event_type: AnnouncementEvent
+    ) -> AnnouncementEventHandler | None:
+        return self._event_types_to_handlers.get(event_type)
+
 
 registry = AnnouncementEventRegistry()
 
 
-for event, name in [
-    (UserLoggedInEvent, 'user-logged-in'),
-    (BoardPostingCreatedEvent, 'board-posting-created'),
-    (BoardPostingHiddenEvent, 'board-posting-hidden'),
-    (BoardPostingUnhiddenEvent, 'board-posting-unhidden'),
-    (BoardTopicCreatedEvent, 'board-topic-created'),
-    (BoardTopicHiddenEvent, 'board-topic-hidden'),
-    (BoardTopicLockedEvent, 'board-topic-locked'),
-    (BoardTopicMovedEvent, 'board-topic-moved'),
-    (BoardTopicPinnedEvent, 'board-topic-pinned'),
-    (BoardTopicUnhiddenEvent, 'board-topic-unhidden'),
-    (BoardTopicUnlockedEvent, 'board-topic-unlocked'),
-    (BoardTopicUnpinnedEvent, 'board-topic-unpinned'),
-    (GuestServerRegisteredEvent, 'guest-server-registered'),
-    (NewsItemPublishedEvent, 'news-item-published'),
-    (PageCreatedEvent, 'page-created'),
-    (PageDeletedEvent, 'page-deleted'),
-    (PageUpdatedEvent, 'page-updated'),
-    (ShopOrderCanceledEvent, 'shop-order-canceled'),
-    (ShopOrderPaidEvent, 'shop-order-paid'),
-    (ShopOrderPlacedEvent, 'shop-order-placed'),
-    (SnippetCreatedEvent, 'snippet-created'),
-    (SnippetDeletedEvent, 'snippet-deleted'),
-    (SnippetUpdatedEvent, 'snippet-updated'),
-    (TicketCheckedInEvent, 'ticket-checked-in'),
-    (TicketsSoldEvent, 'tickets-sold'),
-    (TourneyCanceledEvent, 'tourney-canceled'),
-    (TourneyFinishedEvent, 'tourney-finished'),
-    (TourneyPausedEvent, 'tourney-paused'),
-    (TourneyStartedEvent, 'tourney-started'),
-    (TourneyMatchReadyEvent, 'tourney-match-ready'),
-    (TourneyMatchResetEvent, 'tourney-match-reset'),
-    (TourneyMatchScoreConfirmedEvent, 'tourney-match-score-confirmed'),
-    (TourneyMatchScoreRandomizedEvent, 'tourney-match-score-randomized'),
-    (TourneyMatchScoreSubmittedEvent, 'tourney-match-score-submitted'),
-    (TourneyParticipantDisqualifiedEvent, 'tourney-participant-disqualified'),
-    (TourneyParticipantEliminatedEvent, 'tourney-participant-eliminated'),
-    (TourneyParticipantReadyEvent, 'tourney-participant-ready'),
-    (TourneyParticipantWarnedEvent, 'tourney-participant-warned'),
-    (UserAccountCreatedEvent, 'user-account-created'),
-    (UserAccountDeletedEvent, 'user-account-deleted'),
-    (UserAccountSuspendedEvent, 'user-account-suspended'),
-    (UserAccountUnsuspendedEvent, 'user-account-unsuspended'),
-    (UserBadgeAwardedEvent, 'user-badge-awarded'),
-    (UserDetailsUpdatedEvent, 'user-details-updated'),
-    (UserEmailAddressChangedEvent, 'user-email-address-changed'),
-    (UserEmailAddressInvalidatedEvent, 'user-email-address-invalidated'),
-    (UserScreenNameChangedEvent, 'user-screen-name-changed'),
+for event, name, handler in [
+    (
+        UserLoggedInEvent,
+        'user-logged-in',
+        auth_handlers.announce_user_logged_in,
+    ),
+    (
+        BoardPostingCreatedEvent,
+        'board-posting-created',
+        board_handlers.announce_board_posting_created,
+    ),
+    (
+        BoardPostingHiddenEvent,
+        'board-posting-hidden',
+        board_handlers.announce_board_posting_hidden,
+    ),
+    (
+        BoardPostingUnhiddenEvent,
+        'board-posting-unhidden',
+        board_handlers.announce_board_posting_unhidden,
+    ),
+    (
+        BoardTopicCreatedEvent,
+        'board-topic-created',
+        board_handlers.announce_board_topic_created,
+    ),
+    (
+        BoardTopicHiddenEvent,
+        'board-topic-hidden',
+        board_handlers.announce_board_topic_hidden,
+    ),
+    (
+        BoardTopicLockedEvent,
+        'board-topic-locked',
+        board_handlers.announce_board_topic_locked,
+    ),
+    (
+        BoardTopicMovedEvent,
+        'board-topic-moved',
+        board_handlers.announce_board_topic_moved,
+    ),
+    (
+        BoardTopicPinnedEvent,
+        'board-topic-pinned',
+        board_handlers.announce_board_topic_pinned,
+    ),
+    (
+        BoardTopicUnhiddenEvent,
+        'board-topic-unhidden',
+        board_handlers.announce_board_topic_unhidden,
+    ),
+    (
+        BoardTopicUnlockedEvent,
+        'board-topic-unlocked',
+        board_handlers.announce_board_topic_unlocked,
+    ),
+    (
+        BoardTopicUnpinnedEvent,
+        'board-topic-unpinned',
+        board_handlers.announce_board_topic_unpinned,
+    ),
+    (
+        GuestServerRegisteredEvent,
+        'guest-server-registered',
+        guest_server_handlers.announce_guest_server_registered,
+    ),
+    (
+        NewsItemPublishedEvent,
+        'news-item-published',
+        news_handlers.announce_news_item_published,
+    ),
+    (PageCreatedEvent, 'page-created', page_handlers.announce_page_created),
+    (PageDeletedEvent, 'page-deleted', page_handlers.announce_page_deleted),
+    (PageUpdatedEvent, 'page-updated', page_handlers.announce_page_updated),
+    (
+        ShopOrderCanceledEvent,
+        'shop-order-canceled',
+        shop_order_handlers.announce_order_canceled,
+    ),
+    (
+        ShopOrderPaidEvent,
+        'shop-order-paid',
+        shop_order_handlers.announce_order_paid,
+    ),
+    (
+        ShopOrderPlacedEvent,
+        'shop-order-placed',
+        shop_order_handlers.announce_order_placed,
+    ),
+    (
+        SnippetCreatedEvent,
+        'snippet-created',
+        snippet_handlers.announce_snippet_created,
+    ),
+    (
+        SnippetDeletedEvent,
+        'snippet-deleted',
+        snippet_handlers.announce_snippet_deleted,
+    ),
+    (
+        SnippetUpdatedEvent,
+        'snippet-updated',
+        snippet_handlers.announce_snippet_updated,
+    ),
+    (
+        TicketCheckedInEvent,
+        'ticket-checked-in',
+        ticketing_handlers.announce_ticket_checked_in,
+    ),
+    (
+        TicketsSoldEvent,
+        'tickets-sold',
+        ticketing_handlers.announce_tickets_sold,
+    ),
+    (
+        TourneyCanceledEvent,
+        'tourney-canceled',
+        tourney_handlers.announce_tourney_canceled,
+    ),
+    (
+        TourneyFinishedEvent,
+        'tourney-finished',
+        tourney_handlers.announce_tourney_finished,
+    ),
+    (
+        TourneyPausedEvent,
+        'tourney-paused',
+        tourney_handlers.announce_tourney_paused,
+    ),
+    (
+        TourneyStartedEvent,
+        'tourney-started',
+        tourney_handlers.announce_tourney_started,
+    ),
+    (
+        TourneyMatchReadyEvent,
+        'tourney-match-ready',
+        tourney_handlers.announce_match_ready,
+    ),
+    (
+        TourneyMatchResetEvent,
+        'tourney-match-reset',
+        tourney_handlers.announce_match_reset,
+    ),
+    (
+        TourneyMatchScoreConfirmedEvent,
+        'tourney-match-score-confirmed',
+        tourney_handlers.announce_match_score_confirmed,
+    ),
+    (
+        TourneyMatchScoreRandomizedEvent,
+        'tourney-match-score-randomized',
+        tourney_handlers.announce_match_score_randomized,
+    ),
+    (
+        TourneyMatchScoreSubmittedEvent,
+        'tourney-match-score-submitted',
+        tourney_handlers.announce_match_score_submitted,
+    ),
+    (
+        TourneyParticipantDisqualifiedEvent,
+        'tourney-participant-disqualified',
+        tourney_handlers.announce_participant_disqualified,
+    ),
+    (
+        TourneyParticipantEliminatedEvent,
+        'tourney-participant-eliminated',
+        tourney_handlers.announce_participant_eliminated,
+    ),
+    (
+        TourneyParticipantReadyEvent,
+        'tourney-participant-ready',
+        tourney_handlers.announce_participant_ready,
+    ),
+    (
+        TourneyParticipantWarnedEvent,
+        'tourney-participant-warned',
+        tourney_handlers.announce_participant_warned,
+    ),
+    (
+        UserAccountCreatedEvent,
+        'user-account-created',
+        user_handlers.announce_user_account_created,
+    ),
+    (
+        UserAccountDeletedEvent,
+        'user-account-deleted',
+        user_handlers.announce_user_account_deleted,
+    ),
+    (
+        UserAccountSuspendedEvent,
+        'user-account-suspended',
+        user_handlers.announce_user_account_suspended,
+    ),
+    (
+        UserAccountUnsuspendedEvent,
+        'user-account-unsuspended',
+        user_handlers.announce_user_account_unsuspended,
+    ),
+    (
+        UserBadgeAwardedEvent,
+        'user-badge-awarded',
+        user_badge_handlers.announce_user_badge_awarded,
+    ),
+    (
+        UserDetailsUpdatedEvent,
+        'user-details-updated',
+        user_handlers.announce_user_details_updated,
+    ),
+    (
+        UserEmailAddressChangedEvent,
+        'user-email-address-changed',
+        user_handlers.announce_user_email_address_changed,
+    ),
+    (
+        UserEmailAddressInvalidatedEvent,
+        'user-email-address-invalidated',
+        user_handlers.announce_user_email_address_invalidated,
+    ),
+    (
+        UserScreenNameChangedEvent,
+        'user-screen-name-changed',
+        user_handlers.announce_user_screen_name_changed,
+    ),
 ]:
-    registry.register_event(event, name)
-
-
-_EVENT_TYPES_TO_HANDLERS: dict[AnnouncementEvent, AnnouncementEventHandler] = {}
-
-
-def register_handlers() -> None:
-    global _EVENT_TYPES_TO_HANDLERS
-    _EVENT_TYPES_TO_HANDLERS = {
-        UserLoggedInEvent: auth_handlers.announce_user_logged_in,
-        BoardPostingCreatedEvent: board_handlers.announce_board_posting_created,
-        BoardPostingHiddenEvent: board_handlers.announce_board_posting_hidden,
-        BoardPostingUnhiddenEvent: board_handlers.announce_board_posting_unhidden,
-        BoardTopicCreatedEvent: board_handlers.announce_board_topic_created,
-        BoardTopicHiddenEvent: board_handlers.announce_board_topic_hidden,
-        BoardTopicLockedEvent: board_handlers.announce_board_topic_locked,
-        BoardTopicMovedEvent: board_handlers.announce_board_topic_moved,
-        BoardTopicPinnedEvent: board_handlers.announce_board_topic_pinned,
-        BoardTopicUnhiddenEvent: board_handlers.announce_board_topic_unhidden,
-        BoardTopicUnlockedEvent: board_handlers.announce_board_topic_unlocked,
-        BoardTopicUnpinnedEvent: board_handlers.announce_board_topic_unpinned,
-        GuestServerRegisteredEvent: guest_server_handlers.announce_guest_server_registered,
-        NewsItemPublishedEvent: news_handlers.announce_news_item_published,
-        PageCreatedEvent: page_handlers.announce_page_created,
-        PageDeletedEvent: page_handlers.announce_page_deleted,
-        PageUpdatedEvent: page_handlers.announce_page_updated,
-        ShopOrderCanceledEvent: shop_order_handlers.announce_order_canceled,
-        ShopOrderPaidEvent: shop_order_handlers.announce_order_paid,
-        ShopOrderPlacedEvent: shop_order_handlers.announce_order_placed,
-        SnippetCreatedEvent: snippet_handlers.announce_snippet_created,
-        SnippetDeletedEvent: snippet_handlers.announce_snippet_deleted,
-        SnippetUpdatedEvent: snippet_handlers.announce_snippet_updated,
-        TicketCheckedInEvent: ticketing_handlers.announce_ticket_checked_in,
-        TicketsSoldEvent: ticketing_handlers.announce_tickets_sold,
-        TourneyCanceledEvent: tourney_handlers.announce_tourney_canceled,
-        TourneyFinishedEvent: tourney_handlers.announce_tourney_finished,
-        TourneyPausedEvent: tourney_handlers.announce_tourney_paused,
-        TourneyStartedEvent: tourney_handlers.announce_tourney_started,
-        TourneyMatchReadyEvent: tourney_handlers.announce_match_ready,
-        TourneyMatchResetEvent: tourney_handlers.announce_match_reset,
-        TourneyMatchScoreConfirmedEvent: tourney_handlers.announce_match_score_confirmed,
-        TourneyMatchScoreRandomizedEvent: tourney_handlers.announce_match_score_randomized,
-        TourneyMatchScoreSubmittedEvent: tourney_handlers.announce_match_score_submitted,
-        TourneyParticipantDisqualifiedEvent: tourney_handlers.announce_participant_disqualified,
-        TourneyParticipantEliminatedEvent: tourney_handlers.announce_participant_eliminated,
-        TourneyParticipantReadyEvent: tourney_handlers.announce_participant_ready,
-        TourneyParticipantWarnedEvent: tourney_handlers.announce_participant_warned,
-        UserAccountCreatedEvent: user_handlers.announce_user_account_created,
-        UserAccountDeletedEvent: user_handlers.announce_user_account_deleted,
-        UserAccountSuspendedEvent: user_handlers.announce_user_account_suspended,
-        UserAccountUnsuspendedEvent: user_handlers.announce_user_account_unsuspended,
-        UserBadgeAwardedEvent: user_badge_handlers.announce_user_badge_awarded,
-        UserDetailsUpdatedEvent: user_handlers.announce_user_details_updated,
-        UserEmailAddressChangedEvent: user_handlers.announce_user_email_address_changed,
-        UserEmailAddressInvalidatedEvent: user_handlers.announce_user_email_address_invalidated,
-        UserScreenNameChangedEvent: user_handlers.announce_user_screen_name_changed,
-    }
-
-
-def get_handler_for_event_type(
-    event_type: AnnouncementEvent,
-) -> AnnouncementEventHandler | None:
-    return _EVENT_TYPES_TO_HANDLERS.get(event_type)
+    registry.register_event(event, name, handler)
 
 
 _SIGNALS: list[NamedSignal] = [
