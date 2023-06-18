@@ -15,39 +15,40 @@
 
   <h1>{{ _('Board') }}</h1>
 
-  <table class="index index--higher index--v-centered index--wide board-category-index">
-    <thead>
-      <tr>
-        <th>{{ _('Category') }}</th>
-        <th class="centered">{{ _('Topics') }}</th>
-        <th class="centered">{{ _('Posts') }}</th>
-        <th>{{ _('Latest post') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for category in categories|sort(attribute='position') %}
-      <tr>
-        <td>
-          <a class="board-index-item-link disguised" href="{{ url_for('.category_view', slug=category.slug) }}">
-            <div class="board-index-item-title">
-              {%- if category.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
-              <strong>{{ category.title }}</strong>
-            </div>
-            <div class="board-index-item-meta">{{ category.description }}</div>
-          </a>
-        </td>
-        <td class="centered bignumber">{{ category.topic_count|numberformat }}</td>
-        <td class="centered bignumber">{{ category.posting_count|numberformat }}</td>
-        <td class="nowrap">
-          {%- if category.last_posting_updated_at and category.last_posting_updated_by -%}
-            {{ category.last_posting_updated_at|dateformat }}, {{ category.last_posting_updated_at|timeformat('short') }}<br>
-            {{ _('by') }} {{ render_user_avatar_and_name(category.last_posting_updated_by, size=16) }}
-          {%- endif -%}
-        </td>
-      </tr>
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
+  <div class="main-body-box">
+    <table class="index index--higher index--v-centered index--wide board-category-index">
+      <thead>
+        <tr>
+          <th>{{ _('Category') }}</th>
+          <th class="centered">{{ _('Topics') }}</th>
+          <th class="centered">{{ _('Posts') }}</th>
+          <th>{{ _('Latest post') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for category in categories|sort(attribute='position') %}
+        <tr>
+          <td>
+            <a class="board-index-item-link disguised" href="{{ url_for('.category_view', slug=category.slug) }}">
+              <div class="board-index-item-title">
+                {%- if category.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
+                <strong>{{ category.title }}</strong>
+              </div>
+              <div class="board-index-item-meta">{{ category.description }}</div>
+            </a>
+          </td>
+          <td class="centered bignumber">{{ category.topic_count|numberformat }}</td>
+          <td class="centered bignumber">{{ category.posting_count|numberformat }}</td>
+          <td class="nowrap">
+            {%- if category.last_posting_updated_at and category.last_posting_updated_by -%}
+              {{ category.last_posting_updated_at|dateformat }}, {{ category.last_posting_updated_at|timeformat('short') }}<br>
+              {{ _('by') }} {{ render_user_avatar_and_name(category.last_posting_updated_by, size=16) }}
+            {%- endif -%}
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {%- endblock %}

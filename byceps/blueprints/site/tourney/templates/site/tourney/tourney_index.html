@@ -33,45 +33,47 @@
 
   <h1>{{ page_title }}</h1>
 
+  <div class="main-body-box">
   {%- if categories_with_tourneys %}
-  <table class="index index--v-centered">
-    <thead>
-      <tr>
-        <th></th>
-        <th></th>
-        <th class="centered">{{ _('Participants') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for category, tourneys in categories_with_tourneys %}
-      <tr>
-        <td colspan="3"><div class="tourney-category">{{ category.title }}</div></td>
-      </tr>
-      {%- for tourney in tourneys %}
-      <tr>
-        <td>
-          <div class="tourney-icon">
-          {%- if tourney.logo_url %}
-            <img src="{{ tourney.logo_url }}">
-          {%- else %}
-            {{ render_icon('trophy') }}
-          {%- endif %}
-          </div>
-        </td>
-        <td>
-          <a href="{{ url_for('.tourney_view', tourney_id=tourney.id) }}" class="disguised">
-            <div class="tourney-title">{{ tourney.title }}</div>
-            <div class="tourney-subtitle">{{ tourney.subtitle|safe if tourney.subtitle else '' }}</div>
-          </a>
-        </td>
-        <td class="bignumber centered nowrap">{{ tourney.current_participant_count }} / {{ tourney.max_participant_count }}</td>
-      </tr>
+    <table class="index index--v-centered">
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th class="centered">{{ _('Participants') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for category, tourneys in categories_with_tourneys %}
+        <tr>
+          <td colspan="3"><div class="tourney-category">{{ category.title }}</div></td>
+        </tr>
+        {%- for tourney in tourneys %}
+        <tr>
+          <td>
+            <div class="tourney-icon">
+            {%- if tourney.logo_url %}
+              <img src="{{ tourney.logo_url }}">
+            {%- else %}
+              {{ render_icon('trophy') }}
+            {%- endif %}
+            </div>
+          </td>
+          <td>
+            <a href="{{ url_for('.tourney_view', tourney_id=tourney.id) }}" class="disguised">
+              <div class="tourney-title">{{ tourney.title }}</div>
+              <div class="tourney-subtitle">{{ tourney.subtitle|safe if tourney.subtitle else '' }}</div>
+            </a>
+          </td>
+          <td class="bignumber centered nowrap">{{ tourney.current_participant_count }} / {{ tourney.max_participant_count }}</td>
+        </tr>
+        {%- endfor %}
       {%- endfor %}
-    {%- endfor %}
-    </tbody>
-  </table>
+      </tbody>
+    </table>
   {%- else %}
-  <p class="dimmed">{{ _('No tourneys found.') }}</p>
+    <p class="dimmed">{{ _('No tourneys found.') }}</p>
   {%- endif %}
+  </div>
 
 {%- endblock %}

@@ -25,21 +25,24 @@
   <p>{{ _('Posting by %(creator)s in topic &quot;%(topic)s&quot;', creator=render_user_link(posting.creator), topic=posting.topic.title) }}
 
   <h2>{{ render_icon('view') }} {{ _('Visibility') }}</h2>
+  <div class="main-body-box">
 
-  {%- if posting.hidden %}
-  <p>{{ _('The posting is <strong>hidden</strong> (%(timestamp)s by %(moderator)s).', timestamp=posting.hidden_at|datetimeformat, moderator=render_user_screen_name(posting.hidden_by)) }}</p>
-  {%- else %}
-  <p>{{ _('The posting is <strong>visible</strong>.') }}</p>
-  {%- endif %}
+    {%- if posting.hidden %}
+    <div>{{ _('The posting is <strong>hidden</strong> (%(timestamp)s by %(moderator)s).', timestamp=posting.hidden_at|datetimeformat, moderator=render_user_screen_name(posting.hidden_by)) }}</div>
+    {%- else %}
+    <div>{{ _('The posting is <strong>visible</strong>.') }}</div>
+    {%- endif %}
 
-  <div class="button-row">
-  {%- if posting.hidden %}
-    <span class="button button--disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>
-    <a class="button" data-action="posting-unhide" href="{{ url_for('.posting_unhide', posting_id=posting.id) }}">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>
-  {%- else %}
-    <a class="button" data-action="posting-hide" href="{{ url_for('.posting_hide', posting_id=posting.id) }}">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></a>
-    <span class="button button--disabled">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></span>
-  {%- endif %}
+    <div class="button-row button-row--compact mt">
+    {%- if posting.hidden %}
+      <span class="button button--disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>
+      <a class="button" data-action="posting-unhide" href="{{ url_for('.posting_unhide', posting_id=posting.id) }}">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>
+    {%- else %}
+      <a class="button" data-action="posting-hide" href="{{ url_for('.posting_hide', posting_id=posting.id) }}">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></a>
+      <span class="button button--disabled">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></span>
+    {%- endif %}
+    </div>
+
   </div>
 
 {%- endblock %}

@@ -7,41 +7,43 @@
 
   <h1>{{ page_title }}</h1>
 
-  <form action="{{ url_for('.create') }}" method="post" class="disable-submit-button-on-submit">
+  <div class="main-body-box">
+    <form action="{{ url_for('.create') }}" method="post" class="disable-submit-button-on-submit">
 
-    {{ form_field(form.screen_name, maxlength=24, note=_('publicly visible'), autofocus='autofocus') }}
+      {{ form_field(form.screen_name, maxlength=24, note=_('publicly visible'), autofocus='autofocus') }}
 
-    {%- if form.first_name is defined and form.last_name is defined %}
-    <div class="row">
-      {%- if form.first_name is defined %}
-      <div class="column--grow">
-        {{ form_field(form.first_name, maxlength=40) }}
+      {%- if form.first_name is defined and form.last_name is defined %}
+      <div class="row">
+        {%- if form.first_name is defined %}
+        <div class="column--grow">
+          {{ form_field(form.first_name, maxlength=40) }}
+        </div>
+        {%- endif %}
+        {%- if form.last_name is defined %}
+        <div class="column--grow">
+          {{ form_field(form.last_name, maxlength=80) }}
+        </div>
+        {%- endif %}
       </div>
       {%- endif %}
-      {%- if form.last_name is defined %}
-      <div class="column--grow">
-        {{ form_field(form.last_name, maxlength=80) }}
-      </div>
+
+      {{ form_field(form.email_address, type='email', maxlength=120) }}
+      {{ form_field(form.password, maxlength=40) }}
+
+      {%- for subject in required_consent_subjects %}
+        {%- with field = form.get_field_for_consent_subject_id(subject.id) %}
+      {{ form_field_check(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
+        {%- endwith %}
+      {%- endfor %}
+
+      {%- if form.subscribe_to_newsletter is defined %}
+      {{ form_field_check(form.subscribe_to_newsletter, _('I like to subscribe to the newsletter.')) }}
       {%- endif %}
-    </div>
-    {%- endif %}
 
-    {{ form_field(form.email_address, type='email', maxlength=120) }}
-    {{ form_field(form.password, maxlength=40) }}
+      <div style="display: none;">{{ form_field_check(form.is_bot, _('I am a bot.')) }}</div>
 
-    {%- for subject in required_consent_subjects %}
-      {%- with field = form.get_field_for_consent_subject_id(subject.id) %}
-    {{ form_field_check(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
-      {%- endwith %}
-    {%- endfor %}
-
-    {%- if form.subscribe_to_newsletter is defined %}
-    {{ form_field_check(form.subscribe_to_newsletter, _('I like to subscribe to the newsletter.')) }}
-    {%- endif %}
-
-    <div style="display: none;">{{ form_field_check(form.is_bot, _('I am a bot.')) }}</div>
-
-    {{ form_buttons(_('Create')) }}
-  </form>
+      {{ form_buttons(_('Create')) }}
+    </form>
+  </div>
 
 {%- endblock %}

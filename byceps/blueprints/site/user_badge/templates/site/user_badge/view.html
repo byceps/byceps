@@ -9,9 +9,11 @@
     .badge-details {
       display: flex;
     }
+
     .badge-details .badge {
       flex: 0 0 auto;
     }
+
     .badge-details .description {
       align-self: center;
       margin-left: 1rem;
@@ -22,6 +24,7 @@
       display: block;
       text-decoration: none;
     }
+
     a.recipient:hover .avatar {
       outline: currentColor solid 1px;
     }
@@ -37,20 +40,24 @@
   </nav>
   <h1>{{ badge.label }}</h1>
 
-  <div class="badge-details">
-    <div class="badge">{{ render_user_badge(badge, 64) }}</div>
-    {%- if badge.description %}
-    <div class="description">{{ badge.description|safe }}</div>
-    {%- endif %}
+  <div class="main-body-box">
+    <div class="badge-details">
+      <div class="badge">{{ render_user_badge(badge, 64) }}</div>
+      {%- if badge.description %}
+      <div class="description">{{ badge.description|safe }}</div>
+      {%- endif %}
+    </div>
   </div>
 
   <h2>an {{ recipients|length }} Personen verliehen</h2>
-  <ul class="list-grid">
-    {%- for user in recipients|sort(attribute='screen_name') %}
-    <li><a class="recipient" href="{{ url_for('user_profile.view', user_id=user.id) }}">
+  <div class="main-body-box">
+    <ul class="list-grid">
+      {%- for user in recipients|sort(attribute='screen_name') %}
+      <li><a class="recipient" href="{{ url_for('user_profile.view', user_id=user.id) }}">
 {{ render_user_avatar(user, size=64, orga=user.id in orga_ids) }}
-    </a></li>
-    {%- endfor %}
-  </ul>
+      </a></li>
+      {%- endfor %}
+    </ul>
+  </div>
 
 {%- endblock %}

@@ -13,11 +13,13 @@
 
   <h1>{{ page_title }}</h1>
 
-  {%- for party in parties %}
-  <h2><a class="disguised" href="{{ url_for('.view', party_id=party.id) }}">{{ party.title }}</a></h2>
+  <div class="main-body-box">
+    {%- for party in parties %}
+    <h2><a class="disguised" href="{{ url_for('.view', party_id=party.id) }}">{{ party.title }}</a></h2>
 {% include 'site/party_history/_meta.html' %}
-  {%- else %}
-  <p class="dimmed">{{ _('There haven\'t been any parties yet.') }}</p>
-  {%- endfor %}
+    {%- else %}
+    <p class="dimmed">{{ _('There haven\'t been any parties yet.') }}</p>
+    {%- endfor %}
+  </div>
 
 {%- endblock %}

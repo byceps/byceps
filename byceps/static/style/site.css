@@ -24,6 +24,13 @@ body {
 }
 
 
+/* layout */
+
+.main-body-box--no-padding {
+  padding: 0 !important;
+}
+
+
 /* headings */
 
 h1 {

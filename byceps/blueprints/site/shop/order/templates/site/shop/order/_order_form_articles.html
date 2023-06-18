@@ -1,50 +1,52 @@
 {%- from 'macros/forms.html' import form_field_errors %}
 
     <h2>{{ _('Articles') }}</h2>
-    <table class="index index--v-centered index--wide">
-      <thead>
-        <tr>
-          <th style="width: 15%;">{{ _('Quantity') }}</th>
-          <th>{{ _('Description') }}</th>
-          <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
-          <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for item in article_compilation %}
-          {%- with is_available = (item.article.quantity > 0) %}
-        <tr{% if not is_available %} class="dimmed"{% endif %}>
-          {%- if item.has_fixed_quantity() %}
-          <td class="number">{{ item.fixed_quantity }}</td>
-          {%- else %}
-          <td>
-          {%- with field = form.get_field_for_article(item.article) %}
-            {%- if is_available %}
-            {{ field(class='form-control') }}
+    <div class="main-body-box">
+      <table class="index index--v-centered index--wide">
+        <thead>
+          <tr>
+            <th style="width: 15%;">{{ _('Quantity') }}</th>
+            <th>{{ _('Description') }}</th>
+            <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
+            <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for item in article_compilation %}
+            {%- with is_available = (item.article.quantity > 0) %}
+          <tr{% if not is_available %} class="dimmed"{% endif %}>
+            {%- if item.has_fixed_quantity() %}
+            <td class="number">{{ item.fixed_quantity }}</td>
             {%- else %}
-            {{ field(hidden=true) }}
+            <td>
+            {%- with field = form.get_field_for_article(item.article) %}
+              {%- if is_available %}
+              {{ field(class='form-control') }}
+              {%- else %}
+              {{ field(hidden=true) }}
+              {%- endif %}
+              {{ form_field_errors(field) }}
+            {%- endwith -%}
+            </td>
             {%- endif %}
-            {{ form_field_errors(field) }}
-          {%- endwith -%}
-          </td>
-          {%- endif %}
-          <td>{{ item.article.description }}
-            {%- if not is_available %}
-            <br><em>{{ _('currently not available') }}</em>
-            {%- endif -%}
-          </td>
-          <td class="number">{{ item.article.tax_rate|tax_rate_as_percentage }}</td>
-          <td class="number">{{ item.article.price|moneyformat }}</td>
-        </tr>
-          {%- endwith %}
-        {%- endfor %}
-      </tbody>
-      {%- if total_amount is defined %}
-      <tfoot>
-        <tr>
-          <th colspan="3">{{ _('Total') }}</th>
-          <td class="bignumber number">{{ total_amount|moneyformat }}</td>
-        </tr>
-      </tfoot>
-      {%- endif %}
-    </table>
+            <td>{{ item.article.description }}
+              {%- if not is_available %}
+              <br><em>{{ _('currently not available') }}</em>
+              {%- endif -%}
+            </td>
+            <td class="number">{{ item.article.tax_rate|tax_rate_as_percentage }}</td>
+            <td class="number">{{ item.article.price|moneyformat }}</td>
+          </tr>
+            {%- endwith %}
+          {%- endfor %}
+        </tbody>
+        {%- if total_amount is defined %}
+        <tfoot>
+          <tr>
+            <th colspan="3">{{ _('Total') }}</th>
+            <td class="bignumber number">{{ total_amount|moneyformat }}</td>
+          </tr>
+        </tfoot>
+        {%- endif %}
+      </table>
+    </div>

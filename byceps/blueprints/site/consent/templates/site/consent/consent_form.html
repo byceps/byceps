@@ -7,15 +7,19 @@
 
   <h1>{{ page_title }}</h1>
 
-  {{ render_notification(_('Please consent to the updated terms to be able to continue.'), category='warning', icon='warning') }}
+  <div class="notifications">
+{{ render_notification(_('Please consent to the updated terms to be able to continue.'), category='warning', icon='warning') }}
+  </div>
 
-  <form action="{{ url_for('.consent', token=token) }}" method="post" class="disable-submit-button-on-submit" style="margin-top: 1rem;">
-    {{ form.subject_ids() }}
-    {%- for subject, field in subjects_and_fields %}
-    {{ form_field_check(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
-    {%- endfor %}
+  <div class="main-body-box">
+    <form action="{{ url_for('.consent', token=token) }}" method="post" class="disable-submit-button-on-submit" style="margin-top: 1rem;">
+      {{ form.subject_ids() }}
+      {%- for subject, field in subjects_and_fields %}
+      {{ form_field_check(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
+      {%- endfor %}
 
-    {{ form_buttons(_('I consent')) }}
-  </form>
+      {{ form_buttons(_('I consent')) }}
+    </form>
+  </div>
 
 {%- endblock %}

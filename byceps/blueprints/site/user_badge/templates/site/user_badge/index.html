@@ -47,20 +47,22 @@
 
   <h1>{{ _('Badges') }}</h1>
 
-  <ol class="badges">
-    {%- for badge in badges|sort(attribute='label') %}
-      <li>
-        <div class="badge">
-          {{ render_user_badge_linked(badge, 64) }}
-        </div>
-        {%- if badge.description %}
-        <div class="description">
-          <p><strong>{{ badge.label }}</strong></p>
-          <p>{{ badge.description|safe }}</p>
-        </div>
-        {%- endif %}
-      </li>
-    {%- endfor %}
-  </ol>
+  <div class="main-body-box">
+    <ol class="badges">
+      {%- for badge in badges|sort(attribute='label') %}
+        <li>
+          <div class="badge">
+            {{ render_user_badge_linked(badge, 64) }}
+          </div>
+          {%- if badge.description %}
+          <div class="description">
+            <p><strong>{{ badge.label }}</strong></p>
+            <p>{{ badge.description|safe }}</p>
+          </div>
+          {%- endif %}
+        </li>
+      {%- endfor %}
+    </ol>
+  </div>
 
 {%- endblock %}

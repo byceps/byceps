@@ -26,17 +26,19 @@
   <h1>{{ page_title }}</h1>
 
   {%- if login_enabled %}
-  <form action="{{ url_for('.log_in') }}" method="post" id="login-form">
-    {{ form_field(form.username, maxlength=40, autofocus='autofocus') }}
-    {{ form_field(form.password, maxlength=40) }}
-    {{ form_field_check(form.permanent, _('permanently stay logged in')) }}
+  <div class="main-body-box">
+    <form action="{{ url_for('.log_in') }}" method="post" id="login-form">
+      {{ form_field(form.username, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.password, maxlength=40) }}
+      {{ form_field_check(form.permanent, _('permanently stay logged in')) }}
 
-    <div id="login-failed-notice" class="hidden">
+      <div id="login-failed-notice" class="hidden">
 {{ render_notification(_('Login failed.'), category='danger', icon='warning') }}
-    </div>
+      </div>
 
-    {{ form_buttons(_('Log in')) }}
-  </form>
+      {{ form_buttons(_('Log in')) }}
+    </form>
+  </div>
 
   <div style="margin-top: 3rem;">
     {% if g.site.user_account_creation_enabled %}

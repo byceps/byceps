@@ -13,50 +13,54 @@
 
 {% block body %}
 
-  <div class="user-profile">
+  <div class="main-body-box main-body-box--no-padding">
 
-    <div class="user-profile-header">
+    <div class="user-profile">
 
-      <div class="user-profile-header-column">
+      <div class="user-profile-header">
+
+        <div class="user-profile-header-column">
 {{ render_user_avatar(user, size=128, orga=(orga_teams|length > 0)) }}
+        </div>
+
+        <div class="user-profile-header-column screenname-and-orgateam">
+          <div class="user-profile-header-cell-top screenname">
+            {{ render_user_screen_name(user) }}
+          </div>
+          <div class="user-profile-header-cell-bottom orgateam">
+            {%- if orga_teams %}
+            {{ orga_teams|map(attribute='title')|join(', ') }}
+            {%- endif %}
+          </div>
+        </div>
+
+        <div class="user-profile-header-column">
+          <div class="user-profile-header-cell-top stats">
+            {{ attended_parties|length }}
+          </div>
+          <div class="user-profile-header-cell-bottom stats-label">
+            {{ ngettext('Party', 'Parties', attended_parties|length) }}
+          </div>
+        </div>
+
+        <div class="user-profile-header-column">
+          <div class="user-profile-header-cell-top stats">
+            {{ badges_with_awarding_quantity|length }}
+          </div>
+          <div class="user-profile-header-cell-bottom stats-label">
+            {{ _('Badges') }}
+          </div>
+        </div>
+
       </div>
 
-      <div class="user-profile-header-column screenname-and-orgateam">
-        <div class="user-profile-header-cell-top screenname">
-          {{ render_user_screen_name(user) }}
-        </div>
-        <div class="user-profile-header-cell-bottom orgateam">
-          {%- if orga_teams %}
-          {{ orga_teams|map(attribute='title')|join(', ') }}
-          {%- endif %}
-        </div>
-      </div>
-
-      <div class="user-profile-header-column">
-        <div class="user-profile-header-cell-top stats">
-          {{ attended_parties|length }}
-        </div>
-        <div class="user-profile-header-cell-bottom stats-label">
-          {{ ngettext('Party', 'Parties', attended_parties|length) }}
-        </div>
-      </div>
-
-      <div class="user-profile-header-column">
-        <div class="user-profile-header-cell-top stats">
-          {{ badges_with_awarding_quantity|length }}
-        </div>
-        <div class="user-profile-header-cell-bottom stats-label">
-          {{ _('Badges') }}
-        </div>
-      </div>
-
-    </div>
-
-    <div class="user-profile-detail-blocks">
+      <div class="user-profile-detail-blocks">
 {% include 'site/user_profile/_current_party_attendance.html' %}
 {% include 'site/user_profile/_contact.html' %}
 {% include 'site/user_profile/_attended_parties.html' %}
 {% include 'site/user_profile/_badges.html' %}
+      </div>
+
     </div>
 
   </div>

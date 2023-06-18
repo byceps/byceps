@@ -25,16 +25,18 @@
 
   {%- if topic.creator_id != g.user.id %}
   <div class="mb">
-  {{ render_notification(_('You are about to modify a topic created by someone else.'), category='danger', icon='warning') }}
+{{ render_notification(_('You are about to modify a topic created by someone else.'), category='danger', icon='warning') }}
   </div>
   {%- endif %}
 
-  <form action="{{ url_for('.topic_update', topic_id=topic.id) }}" method="post">
-    {{ form_field(form.title, maxlength=80, autofocus='autofocus') }}
-    {{ form_field(form.body) }}
+  <div class="main-body-box">
+    <form action="{{ url_for('.topic_update', topic_id=topic.id) }}" method="post">
+      {{ form_field(form.title, maxlength=80, autofocus='autofocus') }}
+      {{ form_field(form.body) }}
 {% include 'site/board/_posting_form_body_supplement.html' %}
 
-    {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
-  </form>
+      {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
+    </form>
+  </div>
 
 {%- endblock %}

@@ -3,27 +3,29 @@
 
   <h2>Verbundene Accounts</h2>
 
-  <div class="row">
-    <div>
+  <div class="main-body-box">
+    <div class="row">
+      <div>
 
-      <div class="data-label">Discord</div>
-      <div class="row mb">
-        {%- if discord_account %}
-        <div class="column-auto column-auto--grow">
-          <div class="data-value">{{ render_icon('enabled', color='#009900') }} verbunden</div>
+        <div class="data-label">Discord</div>
+        <div class="row mb">
+          {%- if discord_account %}
+          <div class="column-auto column-auto--grow">
+            <div class="data-value">{{ render_icon('enabled', color='#009900') }} verbunden</div>
+          </div>
+          <div class="column-auto">
+            <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.remove') }}" data-action="discord-remove" title="Verbindung trennen">{{ render_icon('remove', color='#cc0000') }}</a>
+          </div>
+          {%- else -%}
+          <div class="column-auto column-auto--grow">
+            <div class="data-value dimmed">nicht verbunden</div>
+          </div>
+          <div class="column-auto">
+            <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.connect') }}" title="Account verbinden">{{ render_icon('add') }}</a>
+          </div>
+          {%- endif %}
         </div>
-        <div class="column-auto">
-          <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.remove') }}" data-action="discord-remove" title="Verbindung trennen">{{ render_icon('remove', color='#cc0000') }}</a>
-        </div>
-        {%- else -%}
-        <div class="column-auto column-auto--grow">
-          <div class="data-value dimmed">nicht verbunden</div>
-        </div>
-        <div class="column-auto">
-          <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.connect') }}" title="Account verbinden">{{ render_icon('add') }}</a>
-        </div>
-        {%- endif %}
+
       </div>
-
     </div>
   </div>

@@ -2,17 +2,19 @@
 
 <h2>{{ _('News') }}</h2>
 
+<div class="main-body-box">
 {%- if news_headlines %}
-<ol class="items">
-  {%- for headline in news_headlines %}
-  <li>
-    <a class="disguised" href="{{ url_for('news.view', slug=headline.slug) }}">{{ headline.title }}</a>
-    <div class="item-meta">{{ headline.published_at|dateformat('full') }}</div>
-  </li>
-  {%- endfor %}
-</ol>
+  <ol class="items">
+    {%- for headline in news_headlines %}
+    <li>
+      <a class="disguised" href="{{ url_for('news.view', slug=headline.slug) }}">{{ headline.title }}</a>
+      <div class="item-meta">{{ headline.published_at|dateformat('full') }}</div>
+    </li>
+    {%- endfor %}
+  </ol>
 {%- else %}
-<p class="dimmed">{{ _('No news yet.') }}</p>
+  <p class="dimmed">{{ _('No news yet.') }}</p>
 {%- endif %}
+</div>
 
 {{ render_continuative_link(url_for('news.index'), _('All news')) }}

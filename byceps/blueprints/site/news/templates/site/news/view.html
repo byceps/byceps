@@ -11,6 +11,8 @@
 
 {% block body %}
 
+  <div class="main-body-box">
+
   <nav class="breadcrumbs">
     <ol>
       <li><a href="{{ url_for('.index') }}">{{ _('News') }}</a></li>
@@ -18,5 +20,7 @@
   </nav>
 
 {% include 'site/news/_item.html' %}
+
+  </div>
 
 {%- endblock %}

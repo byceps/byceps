@@ -102,14 +102,16 @@
       </div>
     </div>
   </h2>
+  <div class="main-body-box">
   {%- if participants %}
-  <ul>
-    {%- for participant in participants %}
-    <li>{{ participant.title }}</li>
-    {%- endfor %}
-  </ul>
+    <ul>
+      {%- for participant in participants %}
+      <li>{{ participant.title }}</li>
+      {%- endfor %}
+    </ul>
   {%- else %}
-  <p class="dimmed">Es sind noch keine Teilnehmer angemeldet.</p>
+    <p class="dimmed">Es sind noch keine Teilnehmer angemeldet.</p>
   {%- endif %}
+  </div>
 
 {%- endblock %}

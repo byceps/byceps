@@ -47,129 +47,138 @@
 
   {%- if servers %}
 
-  <div class="servers">
-    {%- for server in servers %}
-    <div class="row row--space-between server">
-      <div>
+  <div class="main-body-box">
+    <div class="servers">
+      {%- for server in servers %}
+      <div class="row row--space-between server">
+        <div>
 
-        <div class="data-label">{{ _('Status') }}</div>
-        <div class="data-value">
-          {%- if server.approved -%}
-          {{ render_tag(_('approved'), class='color-success') }}
-          {%- else -%}
-          {{ render_tag(_('pending'), class='color-warning') }}
-          {%- endif -%}
+          <div class="data-label">{{ _('Status') }}</div>
+          <div class="data-value">
+            {%- if server.approved -%}
+            {{ render_tag(_('approved'), class='color-success') }}
+            {%- else -%}
+            {{ render_tag(_('pending'), class='color-warning') }}
+            {%- endif -%}
+          </div>
+
         </div>
+        <div class="column--grow">
 
-      </div>
-      <div class="column--grow">
+          <div class="server-addresses{% if server.approved %} server-addresses--approved{% endif %}">
 
-        <div class="server-addresses{% if server.approved %} server-addresses--approved{% endif %}">
+            {%- if server.approved %}
+            <div class="data-label">{{ _('IP address') }}</div>
+            {%- endif %}
+            <div class="data-label">{{ _('Hostname') }}</div>
+            {%- if server.approved %}
+            <div class="data-label">{{ _('Netmask') }}</div>
+            <div class="data-label">{{ _('Gateway') }}</div>
+            {%- endif %}
 
-          {%- if server.approved %}
-          <div class="data-label">{{ _('IP address') }}</div>
-          {%- endif %}
-          <div class="data-label">{{ _('Hostname') }}</div>
-          {%- if server.approved %}
-          <div class="data-label">{{ _('Netmask') }}</div>
-          <div class="data-label">{{ _('Gateway') }}</div>
-          {%- endif %}
+          {%- for address in sort_addresses(server.addresses) %}
 
-        {%- for address in sort_addresses(server.addresses) %}
+            {%- if server.approved %}
 
-          {%- if server.approved %}
+            <div class="data-value">
+              {%- if address.ip_address -%}
+              <span class="monospace">{{ address.ip_address }}</span>
+              {%- else -%}
+              {{ render_tag(_('none'), class='color-disabled') }}
+              {%- endif -%}
+            </div>
 
-          <div class="data-value">
-            {%- if address.ip_address -%}
-            <span class="monospace">{{ address.ip_address }}</span>
-            {%- else -%}
-            {{ render_tag(_('none'), class='color-disabled') }}
-            {%- endif -%}
+            {%- endif %}
+
+            <div class="data-value">
+              {%- if address.hostname -%}
+              <span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>
+              {%- else -%}
+              {{ _('not specified')|dim }}
+              {%- endif -%}
+            </div>
+
+            {%- if server.approved %}
+
+            <div class="data-value">
+              {%- if address.netmask -%}
+              <span class="monospace">{{ address.netmask }}</span>
+              {%- elif setting.netmask -%}
+              <span class="monospace">{{ setting.netmask }}</span>
+              {%- else -%}
+              {{ _('not specified')|dim }}
+              {%- endif -%}
+            </div>
+
+            <div class="data-value">
+              {%- if address.gateway -%}
+              <span class="monospace">{{ address.gateway }}</span>
+              {%- elif setting.gateway -%}
+              <span class="monospace">{{ setting.gateway }}</span>
+              {%- else -%}
+              {{ _('not specified')|dim }}
+              {%- endif -%}
+            </div>
+
+            {%- endif %}
+
+          {%- endfor %}
           </div>
 
-          {%- endif %}
-
-          <div class="data-value">
-            {%- if address.hostname -%}
-            <span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>
-            {%- else -%}
-            {{ _('not specified')|dim }}
-            {%- endif -%}
-          </div>
-
-          {%- if server.approved %}
-
-          <div class="data-value">
-            {%- if address.netmask -%}
-            <span class="monospace">{{ address.netmask }}</span>
-            {%- elif setting.netmask -%}
-            <span class="monospace">{{ setting.netmask }}</span>
-            {%- else -%}
-            {{ _('not specified')|dim }}
-            {%- endif -%}
-          </div>
-
-          <div class="data-value">
-            {%- if address.gateway -%}
-            <span class="monospace">{{ address.gateway }}</span>
-            {%- elif setting.gateway -%}
-            <span class="monospace">{{ setting.gateway }}</span>
-            {%- else -%}
-            {{ _('not specified')|dim }}
-            {%- endif -%}
-          </div>
-
-          {%- endif %}
-
-        {%- endfor %}
         </div>
+        {%- if server.approved %}
+        <div>
 
+          <a class="button button--compact" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a>
+
+        </div>
+        {%- endif %}
       </div>
-      {%- if server.approved %}
-      <div>
-
-        <a class="button button--compact" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a>
-
-      </div>
-      {%- endif %}
+      {%- endfor %}
     </div>
-    {%- endfor %}
   </div>
 
   <h2>{{ _('Further Settings') }}</h2>
 
-  <div class="row">
-    <div>
+  <div class="main-body-box">
+    <div class="row">
+      <div>
 
-      <div class="data-label">{{ _('DNS servers') }}</div>
-      <div class="data-value">
-        {%- with dns_servers = [setting.dns_server1, setting.dns_server2]|reject('none')|list %}
-          {%- if dns_servers %}
-            {%- for dns_server in dns_servers %}
-        <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
-            {%- endfor %}
-          {%- else %}
+        <div class="data-label">{{ _('DNS servers') }}</div>
+        <div class="data-value">
+          {%- with dns_servers = [setting.dns_server1, setting.dns_server2]|reject('none')|list %}
+            {%- if dns_servers %}
+              {%- for dns_server in dns_servers %}
+          <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
+              {%- endfor %}
+            {%- else %}
+            {{ _('not specified')|dim }}
+            {%- endif %}
+          {%- endwith %}
+        </div>
+
+      </div>
+      <div>
+
+        <div class="data-label">{{ _('Domain') }}</div>
+        <div class="data-value">
+          {%- if setting.domain -%}
+          <span class="monospace">{{ setting.domain }}</span>
+          {%- else -%}
           {{ _('not specified')|dim }}
-          {%- endif %}
-        {%- endwith %}
+          {%- endif -%}
+        </div>
+
       </div>
-
-    </div>
-    <div>
-
-      <div class="data-label">{{ _('Domain') }}</div>
-      <div class="data-value">
-        {%- if setting.domain -%}
-        <span class="monospace">{{ setting.domain }}</span>
-        {%- else -%}
-        {{ _('not specified')|dim }}
-        {%- endif -%}
-      </div>
-
     </div>
   </div>
+
   {%- else %}
-  <p class="dimmed">{{ _('No servers registered.') }}</p>
+
+  <div class="main-body-box">
+    <p class="dimmed">{{ _('No servers registered.') }}</p>
+  </div>
+
   {%- endif %}
 
 {%- endblock %}

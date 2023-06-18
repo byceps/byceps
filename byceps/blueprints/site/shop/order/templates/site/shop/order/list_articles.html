@@ -14,34 +14,38 @@
 
   <h1>{{ page_title }}</h1>
 
+  <div class="notifications">
 {{ render_notification(_('You have to be <a href="%(url)s">logged in</a> to order something.', url=url_for('authentication_login.log_in_form')), category='info', icon='info') }}
+  </div>
 
 {{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}
 
   <h2>{{ _('Articles') }}</h2>
-  <table class="index index--wide">
-    <thead>
-      <tr>
-        <th>{{ _('Description') }}</th>
-        <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
-        <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for item in article_compilation %}
-        {%- with is_available = (item.article.quantity > 0) %}
-      <tr{% if not is_available %} class="dimmed"{% endif %}>
-        <td>{{ item.article.description }}
-          {%- if not is_available %}
-          <br><em>{{ _('currently not available') }}</em>
-          {%- endif -%}
-        </td>
-        <td class="number">{{ item.article.tax_rate|tax_rate_as_percentage }}</td>
-        <td class="number">{{ item.article.price|moneyformat }}</td>
-      </tr>
-        {%- endwith %}
-      {%- endfor %}
-    </tbody>
-  </table>
+  <div class="main-body-box">
+    <table class="index index--wide">
+      <thead>
+        <tr>
+          <th>{{ _('Description') }}</th>
+          <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
+          <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for item in article_compilation %}
+          {%- with is_available = (item.article.quantity > 0) %}
+        <tr{% if not is_available %} class="dimmed"{% endif %}>
+          <td>{{ item.article.description }}
+            {%- if not is_available %}
+            <br><em>{{ _('currently not available') }}</em>
+            {%- endif -%}
+          </td>
+          <td class="number">{{ item.article.tax_rate|tax_rate_as_percentage }}</td>
+          <td class="number">{{ item.article.price|moneyformat }}</td>
+        </tr>
+          {%- endwith %}
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {%- endblock %}

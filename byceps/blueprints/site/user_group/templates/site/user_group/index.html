@@ -8,30 +8,32 @@
 
   <h1>{{ page_title }}</h1>
 
-  <table class="index index--wide">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Ersteller</th>
-        <th class="centered">Mitglieder</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for group in groups|sort(attribute='title') %}
-      <tr>
-        <td>
-          <strong>{{ group.title }}</strong>
-          {%- if group.description is not none %}
-          <div class="details">{{ group.description }}</div>
-          {%- endif %}
-        </td>
-        <td>{{ render_user_link(group.creator) }}</td>
-        <td class="centered">{{ group.member_count }}</td>
-      </tr>
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
+  <div class="main-body-box">
+    <table class="index index--wide">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Ersteller</th>
+          <th class="centered">Mitglieder</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for group in groups|sort(attribute='title') %}
+        <tr>
+          <td>
+            <strong>{{ group.title }}</strong>
+            {%- if group.description is not none %}
+            <div class="details">{{ group.description }}</div>
+            {%- endif %}
+          </td>
+          <td>{{ render_user_link(group.creator) }}</td>
+          <td class="centered">{{ group.member_count }}</td>
+        </tr>
+        {%- endfor %}
+        <tr>
+      </tbody>
+    </table>
+  </div>
 
   {%- if g.user.authenticated %}
   <div class="button-row">

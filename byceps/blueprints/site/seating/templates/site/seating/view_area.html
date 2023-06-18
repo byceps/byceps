@@ -32,31 +32,35 @@
     <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
   </form>
 
+  <div class="main-body-box">
+
   {%- if seat_management_enabled and g.user.authenticated %}
     {%- if manage_mode %}
 {% include 'site/seating/_ticket_selector.html' %}
     {%- else %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">{{ _('Manage seats') }}</a>
-  </div>
+    <div class="button-row button-row--right">
+      <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">{{ _('Manage seats') }}</a>
+    </div>
     {%- endif %}
   {%- endif %}
 
 {{ render_area(area, seats_and_tickets) }}
 
-  <div class="row row--space-between mt">
-    <div>
+    <div class="row row--space-between mt">
+      <div>
 {% include 'site/seating/_legend.html' %}
+      </div>
+      <div>
+        <small>
+          <p><strong>{{ _('Utilization') }}</strong></p>
+          <div class="progress">
+            {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total) }}
+          </div>
+          {{ seat_utilization.occupied|numberformat }} / {{ seat_utilization.total|numberformat }} {{ _('seats occupied') }}
+        </small>
+      </div>
     </div>
-    <div>
-      <small>
-        <p><strong>{{ _('Utilization') }}</strong></p>
-        <div class="progress">
-          {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total) }}
-        </div>
-        {{ seat_utilization.occupied|numberformat }} / {{ seat_utilization.total|numberformat }} {{ _('seats occupied') }}
-      </small>
-    </div>
+
   </div>
 
 {%- endblock %}

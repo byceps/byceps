@@ -4,37 +4,39 @@
 
 <h2>{{ _('Tickets') }}</h2>
 
+<div class="main-body-box">
 {%- if tickets %}
-<table class="index index--wide">
-  <thead>
-    <tr>
-      <th>{{ _('Code') }}</th>
-      <th>{{ _('Seat') }}</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {%- for ticket in tickets %}
-    <tr>
-      <td>{{ ticket.code }}</td>
-      <td>
-        {%- if ticket.occupied_seat -%}
-        {{ render_seat_link(ticket.occupied_seat) }}
-        {%- else -%}
-        {{ render_tag(_('not chosen'), class='color-danger') }}
-        {%- endif -%}
-      </td>
-      <td>
-        {%- if ticket.user_checked_in %}
-        {{ render_tag(_('checked in'), class='color-success') }}
-        {%- endif %}
-      </td>
-    </tr>
-    {%- endfor %}
-  </tbody>
-</table>
+  <table class="index index--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Code') }}</th>
+        <th>{{ _('Seat') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for ticket in tickets %}
+      <tr>
+        <td>{{ ticket.code }}</td>
+        <td>
+          {%- if ticket.occupied_seat -%}
+          {{ render_seat_link(ticket.occupied_seat) }}
+          {%- else -%}
+          {{ render_tag(_('not chosen'), class='color-danger') }}
+          {%- endif -%}
+        </td>
+        <td>
+          {%- if ticket.user_checked_in %}
+          {{ render_tag(_('checked in'), class='color-success') }}
+          {%- endif %}
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
 {%- else %}
-<p class="dimmed">{{ _('You do not use a ticket yet.') }}</p>
+  <p class="dimmed">{{ _('You do not use a ticket yet.') }}</p>
 {%- endif %}
+</div>
 
 {{ render_continuative_link(url_for('ticketing.index_mine'), _('Ticket management')) }}

@@ -68,6 +68,8 @@
 
 {{ render_snippet('orga_team_intro', ignore_if_unknown=True)|safe }}
 
+  <div class="main-body-box">
+
   {%- for team_name, orgas in teams %}
     {%- if group_by_team %}
   <h2>{{ team_name }}</h2>
@@ -92,5 +94,7 @@
     {%- endfor %}
   </ol>
   {%- endfor %}
+
+  </div>
 
 {%- endblock %}

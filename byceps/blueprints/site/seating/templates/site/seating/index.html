@@ -21,41 +21,43 @@
   </form>
 
   <h2>{{ _('Areas') }}</h2>
-  <table class="index index--v-centered">
-    <thead>
-      <tr>
-        <th>{{ _('Name') }}</th>
-        <th>{{ _('Utilization') }}</th>
-        <th class="number">{{ _('Seats') }}<br>{{ _('occupied') }}</th>
-        <th class="number">{{ _('Seats') }}<br>{{ _('available') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for area, utilization in areas_with_utilization|sort(attribute='0.title') %}
-      <tr>
-        <td><a href="{{ url_for('.view_area', slug=area.slug) }}">{{ area.title }}</a></td>
-        <td>
-          <div class="progress">
-            {{ render_progress_bar(utilization.occupied, utilization.total) }}
-          </div>
-        </td>
-        <td class="bignumber number">{{ utilization.occupied|numberformat }}</td>
-        <td class="bignumber number">{{ utilization.total|numberformat }}</td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-    <tfoot>
-      <tr>
-        <td>{{ _('Total') }}</td>
-        <td>
-          <div class="progress">
-            {{ render_progress_bar(total_seat_utilization.occupied, total_seat_utilization.total) }}
-          </div>
-        </td>
-        <td class="bignumber number">{{ total_seat_utilization.occupied|numberformat }}</td>
-        <td class="bignumber number">{{ total_seat_utilization.total|numberformat }}</td>
-      </tr>
-    </tfoot>
-  </table>
+  <div class="main-body-box">
+    <table class="index index--v-centered">
+      <thead>
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Utilization') }}</th>
+          <th class="number">{{ _('Seats') }}<br>{{ _('occupied') }}</th>
+          <th class="number">{{ _('Seats') }}<br>{{ _('available') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for area, utilization in areas_with_utilization|sort(attribute='0.title') %}
+        <tr>
+          <td><a href="{{ url_for('.view_area', slug=area.slug) }}">{{ area.title }}</a></td>
+          <td>
+            <div class="progress">
+              {{ render_progress_bar(utilization.occupied, utilization.total) }}
+            </div>
+          </td>
+          <td class="bignumber number">{{ utilization.occupied|numberformat }}</td>
+          <td class="bignumber number">{{ utilization.total|numberformat }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>{{ _('Total') }}</td>
+          <td>
+            <div class="progress">
+              {{ render_progress_bar(total_seat_utilization.occupied, total_seat_utilization.total) }}
+            </div>
+          </td>
+          <td class="bignumber number">{{ total_seat_utilization.occupied|numberformat }}</td>
+          <td class="bignumber number">{{ total_seat_utilization.total|numberformat }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 
 {%- endblock %}

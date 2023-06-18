@@ -12,14 +12,18 @@
   <p>Dies sind die für dich relevanten (d.h. gekauften, verwalteten und/oder genutzten) Tickets für die Party <strong>{{ party_title }}</strong>.</p>
 
   {%- if not current_user_uses_any_ticket %}
-  {{ render_notification('Du nutzt derzeit kein Ticket.', category='warning', icon='warning') }}
+  <div class="notifications">
+{{ render_notification('Du nutzt derzeit kein Ticket.', category='warning', icon='warning') }}
+  </div>
   {%- endif %}
 
+  <div class="main-body-box">
   {%- if tickets %}
-  {{ render_tickets(tickets) }}
+{{ render_tickets(tickets) }}
   {%- else %}
-  <p><em>{{ _('none') }}</em></p>
+    <p><em>{{ _('none') }}</em></p>
   {%- endif %}
+  </div>
 
 {%- endblock %}
 

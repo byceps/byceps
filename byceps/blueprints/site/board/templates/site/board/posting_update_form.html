@@ -24,14 +24,18 @@
   <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
 
   {%- if posting.creator_id != g.user.id %}
-  {{ render_notification(_('You are about to modify a post created by someone else.'), category='danger', icon='warning') }}
+  <div class="mb">
+{{ render_notification(_('You are about to modify a post created by someone else.'), category='danger', icon='warning') }}
+  </div>
   {%- endif %}
 
-  <form action="{{ url_for('.posting_update', posting_id=posting.id) }}" method="post">
-    {{ form_field(form.body, autofocus='autofocus') }}
+  <div class="main-body-box">
+    <form action="{{ url_for('.posting_update', posting_id=posting.id) }}" method="post">
+      {{ form_field(form.body, autofocus='autofocus') }}
 {% include 'site/board/_posting_form_body_supplement.html' %}
 
-    {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=posting.topic.id)) }}
-  </form>
+      {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=posting.topic.id)) }}
+    </form>
+  </div>
 
 {%- endblock %}

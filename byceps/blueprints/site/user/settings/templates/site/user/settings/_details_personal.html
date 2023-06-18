@@ -3,44 +3,46 @@
 
   <h2>{{ _('Personal Data') }} <a class="button button--compact" href="{{ url_for('.details_update_form') }}" title="{{ _('Change personal data') }}">{{ render_icon('edit') }}</a></h2>
 
-  <table>
-    <tr>
-      <td>
-        <div class="mb">
-          <div class="data-label">{{ _('Name') }}</div>
-          <div class="data-value">{{ detail.full_name|fallback }}</div>
-        </div>
-      </td>
-      <td>
-        <div class="mb">
-          <div class="data-label">{{ _('Date of birth') }}</div>
+  <div class="main-body-box">
+    <table>
+      <tr>
+        <td>
+          <div class="mb">
+            <div class="data-label">{{ _('Name') }}</div>
+            <div class="data-value">{{ detail.full_name|fallback }}</div>
+          </div>
+        </td>
+        <td>
+          <div class="mb">
+            <div class="data-label">{{ _('Date of birth') }}</div>
+            <div class="data-value">
+            {%- if detail.date_of_birth -%}
+              {{ detail.date_of_birth|dateformat }}
+            {%- else -%}
+              {{ _('not given')|dim }}
+            {%- endif -%}
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="data-label">{{ _('Address') }}</div>
           <div class="data-value">
-          {%- if detail.date_of_birth -%}
-            {{ detail.date_of_birth|dateformat }}
+          {%- if detail.street or detail.zip_code or detail.city or detail.country %}
+            {%- if detail.street %}{{ detail.street }}<br>{% endif -%}
+            {%- if detail.zip_code %}{{ detail.zip_code }} {% endif %}
+            {%- if detail.city %}{{ detail.city }}{% endif -%}
+            {%- if detail.country %}<br>{{ detail.country }}{% endif -%}
           {%- else -%}
             {{ _('not given')|dim }}
           {%- endif -%}
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="data-label">{{ _('Address') }}</div>
-        <div class="data-value">
-        {%- if detail.street or detail.zip_code or detail.city or detail.country %}
-          {%- if detail.street %}{{ detail.street }}<br>{% endif -%}
-          {%- if detail.zip_code %}{{ detail.zip_code }} {% endif %}
-          {%- if detail.city %}{{ detail.city }}{% endif -%}
-          {%- if detail.country %}<br>{{ detail.country }}{% endif -%}
-        {%- else -%}
-          {{ _('not given')|dim }}
-        {%- endif -%}
-        </div>
-      </td>
-      <td>
-        <div class="data-label">{{ _('Phone number') }}</div>
-        <div class="data-value">{{ detail.phone_number|fallback }}</div>
-      </td>
-    </tr>
-  </table>
+        </td>
+        <td>
+          <div class="data-label">{{ _('Phone number') }}</div>
+          <div class="data-value">{{ detail.phone_number|fallback }}</div>
+        </td>
+      </tr>
+    </table>
+  </div>

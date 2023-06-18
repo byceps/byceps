@@ -8,11 +8,13 @@
 
   <h1>{{ page_title }}</h1>
 
-  <form action="{{ url_for('.change_screen_name') }}" method="post">
-    {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}
-    {{ form_field(form.password) }}
+  <div class="main-body-box">
+    <form action="{{ url_for('.change_screen_name') }}" method="post">
+      {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}
+      {{ form_field(form.password) }}
 
-    {{ form_buttons(_('Change'), cancel_url=url_for('.view')) }}
-  </form>
+      {{ form_buttons(_('Change'), cancel_url=url_for('.view')) }}
+    </form>
+  </div>
 
 {%- endblock %}

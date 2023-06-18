@@ -29,11 +29,13 @@
 
   {%- if attendees %}
   <h2>{{ _('Attendees') }}</h2>
-  <ol class="attendees">
-    {%- for user in attendees|sort(attribute='screen_name') -%}
-    <li>{{- render_user_avatar_and_link(user, size=20) -}}</li>
-    {%- endfor %}
-  </ol>
+  <div class="main-body-box">
+    <ol class="attendees">
+      {%- for user in attendees|sort(attribute='screen_name') -%}
+      <li>{{- render_user_avatar_and_link(user, size=20) -}}</li>
+      {%- endfor %}
+    </ol>
+  </div>
   {%- endif %}
 
 {%- endblock %}

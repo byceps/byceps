@@ -26,105 +26,120 @@
 
   {%- if has_current_user_permission('board.hide') %}
   <h2>{{ render_icon('view') }} {{ _('Visibility') }}</h2>
+  <div class="main-body-box">
 
     {%- if topic.hidden %}
-  <p>{{ _('The topic is <strong>hidden</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.hidden_at|datetimeformat, moderator=render_user_screen_name(topic.hidden_by)) }}</p>
+    <div>{{ _('The topic is <strong>hidden</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.hidden_at|datetimeformat, moderator=render_user_screen_name(topic.hidden_by)) }}</div>
     {%- else %}
-  <p>{{ _('The topic is <strong>visible</strong>.') }}</p>
+    <div>{{ _('The topic is <strong>visible</strong>.') }}</div>
     {%- endif %}
 
-  <div class="button-row">
+    <div class="button-row button-row--compact mt">
     {%- if topic.hidden %}
-    <span class="button button--disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>
-    <a class="button" data-action="topic-unhide" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>
+      <span class="button button--disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>
+      <a class="button" data-action="topic-unhide" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>
     {%- else %}
-    <a class="button" data-action="topic-hide" href="{{ url_for('.topic_hide', topic_id=topic.id) }}">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></a>
-    <span class="button button--disabled">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></span>
+      <a class="button" data-action="topic-hide" href="{{ url_for('.topic_hide', topic_id=topic.id) }}">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></a>
+      <span class="button button--disabled">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></span>
     {%- endif %}
+    </div>
+
   </div>
   {%- endif %}
 
   {%- if has_current_user_permission('board_topic.lock') %}
   <h2>{{ render_icon('lock') }} {{ _('Write lock') }}</h2>
+  <div class="main-body-box">
 
     {%- if topic.locked %}
-  <p>{{ _('The topic is <strong>locked</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.locked_at|datetimeformat, moderator=render_user_screen_name(topic.locked_by)) }}</p>
+    <div>{{ _('The topic is <strong>locked</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.locked_at|datetimeformat, moderator=render_user_screen_name(topic.locked_by)) }}</div>
     {%- else %}
-  <p>{{ _('The topic is <strong>not locked</strong>.') }}</p>
+    <div>{{ _('The topic is <strong>not locked</strong>.') }}</div>
     {%- endif %}
 
-  <div class="button-row">
+    <div class="button-row button-row--compact mt">
     {%- if topic.locked %}
-    <span class="button button--disabled">{{ render_icon('lock') }} <span>{{ _('Lock') }}</span></span>
-    <a class="button" data-action="topic-unlock" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}">{{ render_icon('unlock') }} <span>{{ _('Unlock') }}</span></a>
+      <span class="button button--disabled">{{ render_icon('lock') }} <span>{{ _('Lock') }}</span></span>
+      <a class="button" data-action="topic-unlock" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}">{{ render_icon('unlock') }} <span>{{ _('Unlock') }}</span></a>
     {%- else %}
-    <a class="button" data-action="topic-lock" href="{{ url_for('.topic_lock', topic_id=topic.id) }}">{{ render_icon('lock') }} <span>{{ _('Lock') }}</span></a>
-    <span class="button button--disabled">{{ render_icon('unlock') }} <span>{{ _('Unlock') }}</span></span>
+      <a class="button" data-action="topic-lock" href="{{ url_for('.topic_lock', topic_id=topic.id) }}">{{ render_icon('lock') }} <span>{{ _('Lock') }}</span></a>
+      <span class="button button--disabled">{{ render_icon('unlock') }} <span>{{ _('Unlock') }}</span></span>
     {%- endif %}
+    </div>
+
   </div>
   {%- endif %}
 
   {%- if has_current_user_permission('board_topic.pin') %}
   <h2>{{ render_icon('pin') }} {{ _('Pinning') }}</h2>
+  <div class="main-body-box">
 
     {%- if topic.pinned %}
-  <p>{{ _('The topic is <strong>pinned</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.pinned_at|datetimeformat, moderator=render_user_screen_name(topic.pinned_by)) }}</p>
+    <div>{{ _('The topic is <strong>pinned</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.pinned_at|datetimeformat, moderator=render_user_screen_name(topic.pinned_by)) }}</div>
     {%- else %}
-  <p>{{ _('The topic is <strong>not pinned</strong>.') }}</p>
+    <div>{{ _('The topic is <strong>not pinned</strong>.') }}</div>
     {%- endif %}
 
-  <div class="button-row">
+    <div class="button-row button-row--compact mt">
     {%- if topic.pinned %}
-    <span class="button button--disabled">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></span>
-    <a class="button" data-action="topic-unpin" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></a>
+      <span class="button button--disabled">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></span>
+      <a class="button" data-action="topic-unpin" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></a>
     {%- else %}
-    <a class="button" data-action="topic-pin" href="{{ url_for('.topic_pin', topic_id=topic.id) }}">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></a>
-    <span class="button button--disabled">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></span>
+      <a class="button" data-action="topic-pin" href="{{ url_for('.topic_pin', topic_id=topic.id) }}">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></a>
+      <span class="button button--disabled">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></span>
     {%- endif %}
+    </div>
+
   </div>
   {%- endif %}
 
   {%- if has_current_user_permission('board_topic.move') %}
   <h2>{{ render_icon('move') }} {{ _('Move') }}</h2>
+  <div class="main-body-box">
 
-  <p>{{ _('This topic is in category &quot;%(category)s&quot;.', category=topic.category.title) }}</p>
+    <div>{{ _('This topic is in category &quot;%(category)s&quot;.', category=topic.category.title) }}</div>
 
     {%- if categories %}
-  <div class="button-row">
-    <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
-      {{ _('New category') }}:
-      <select name="category_id" class="form-control" style="display: inline-block;">
-      {%- for category in categories %}
-        <option value="{{ category.id }}">{{ category.title }}</option>
-      {%- endfor %}
-      </select>
-      <button type="submit" class="button">{{ render_icon('move') }} <span>{{ _('Move') }}</span></button>
-    </form>
-  </div>
+    <div class="button-row button-row--compact mt">
+      <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
+        {{ _('New category') }}:
+        <select name="category_id" class="form-control" style="display: inline-block;">
+        {%- for category in categories %}
+          <option value="{{ category.id }}">{{ category.title }}</option>
+        {%- endfor %}
+        </select>
+        <button type="submit" class="button">{{ render_icon('move') }} <span>{{ _('Move') }}</span></button>
+      </form>
+    </div>
     {%- else %}
-  <small>
-    <p>{{ _('There are no other categories in this board. Thus, this topic cannot be moved.') }}</p>
-  </small>
+    <small>
+      <div>{{ _('There are no other categories in this board. Thus, this topic cannot be moved.') }}</div>
+    </small>
     {%- endif %}
+
+  </div>
   {%- endif %}
 
   {%- if has_current_user_permission('board.announce') %}
   <h2>{{ render_icon('announce') }} {{ _('Announcements') }}</h2>
+  <div class="main-body-box">
 
     {%- if not topic.posting_limited_to_moderators %}
-  <p>{{ _('The topic is <strong>not limited</strong> to announcements by moderators.') }}</p>
+    <div>{{ _('The topic is <strong>not limited</strong> to announcements by moderators.') }}</div>
     {%- else %}
-  <p>{{ _('The topic is <strong>limited to announcements</strong> by moderators.') }}</p>
+    <div>{{ _('The topic is <strong>limited to announcements</strong> by moderators.') }}</div>
     {%- endif %}
 
-  <div class="button-row">
+    <div class="button-row button-row--compact mt">
     {%- if topic.posting_limited_to_moderators %}
-    <span class="button button--disabled">{{ render_icon('announce') }} <span>{{ _('Limit to announcements') }}</span></span>
-    <a class="button" data-action="topic-remove-limit-to-announcements" href="{{ url_for('.topic_remove_limit_to_announcements', topic_id=topic.id) }}">{{ render_icon('board') }} <span>{{ _('Open for all postings') }}</span></a>
+      <span class="button button--disabled">{{ render_icon('announce') }} <span>{{ _('Limit to announcements') }}</span></span>
+      <a class="button" data-action="topic-remove-limit-to-announcements" href="{{ url_for('.topic_remove_limit_to_announcements', topic_id=topic.id) }}">{{ render_icon('board') }} <span>{{ _('Open for all postings') }}</span></a>
     {%- else %}
-    <a class="button" data-action="topic-limit-to-announcements" href="{{ url_for('.topic_limit_to_announcements', topic_id=topic.id) }}">{{ render_icon('announce') }} <span>{{ _('Limit to announcements') }}</span></a>
-    <span class="button button--disabled">{{ render_icon('board') }} <span>{{ _('Open for all postings') }}</span></span>
+      <a class="button" data-action="topic-limit-to-announcements" href="{{ url_for('.topic_limit_to_announcements', topic_id=topic.id) }}">{{ render_icon('announce') }} <span>{{ _('Limit to announcements') }}</span></a>
+      <span class="button button--disabled">{{ render_icon('board') }} <span>{{ _('Open for all postings') }}</span></span>
     {%- endif %}
+    </div>
+
   </div>
   {%- endif %}
 

@@ -1,23 +1,25 @@
 {% from 'macros/forms.html' import form_datalist, form_field %}
 
     <h2>{{ _('Billing and shipping address') }}</h2>
-    {{ form_field(form.company, note=_('optional'), autofocus='autofocus') }}
-    <div class="row">
-      <div class="column--grow">
-        {{ form_field(form.first_name, maxlength=40) }}
+    <div class="main-body-box">
+      {{ form_field(form.company, note=_('optional'), autofocus='autofocus') }}
+      <div class="row">
+        <div class="column--grow">
+          {{ form_field(form.first_name, maxlength=40) }}
+        </div>
+        <div class="column--grow">
+          {{ form_field(form.last_name, maxlength=80) }}
+        </div>
       </div>
-      <div class="column--grow">
-        {{ form_field(form.last_name, maxlength=80) }}
+      {{ form_field(form.street, maxlength=40) }}
+      <div class="row">
+        <div>
+          {{ form_field(form.zip_code, size=5, maxlength=5) }}
+        </div>
+        <div class="column--grow">
+          {{ form_field(form.city, maxlength=40) }}
+        </div>
       </div>
+      {{ form_datalist('countries', country_names) }}
+      {{ form_field(form.country, maxlength=60) }}
     </div>
-    {{ form_field(form.street, maxlength=40) }}
-    <div class="row">
-      <div>
-        {{ form_field(form.zip_code, size=5, maxlength=5) }}
-      </div>
-      <div class="column--grow">
-        {{ form_field(form.city, maxlength=40) }}
-      </div>
-    </div>
-    {{ form_datalist('countries', country_names) }}
-    {{ form_field(form.country, maxlength=60) }}

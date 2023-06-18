@@ -60,51 +60,53 @@
   </small>
   {%- endif %}
 
+  <div class="main-body-box">
   {%- if attendees.items %}
-  <table class="index index--wide attendees-list">
-    <thead>
-      <tr>
-        <th>{{ _('User') }}</th>
-        <th>{{ _('Seat') }}</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for attendee in attendees.items %}
-      <tr>
-        <td>
-          <div class="attendee">
-            <div class="attendee-avatar">{{ render_user_avatar(attendee.user, size=32, orga=attendee.is_orga) }}</div>
-            <div class="attendee-name">{{ render_user_link(attendee.user) }}</div>
-          </div>
-        </td>
-        <td>
-          <div class="attendee-seats">
-            {%- for ticket in attendee.tickets %}
-            <div class="row row--space-between">
-              <div>
-              {%- with seat = ticket.seat %}
-                {%- if seat %}
-                {{ render_seat_link(seat) }}
-                {%- else %}
-                {{ _('not chosen')|dim }} ({{ ticket.category_title }})
-                {%- endif %}
-              {%- endwith %}
-              </div>
-              {%- if ticket.checked_in %}
-              <div>{{ render_tag(_('checked in')) }}</div>
-              {%- endif %}
+    <table class="index index--wide attendees-list">
+      <thead>
+        <tr>
+          <th>{{ _('User') }}</th>
+          <th>{{ _('Seat') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for attendee in attendees.items %}
+        <tr>
+          <td>
+            <div class="attendee">
+              <div class="attendee-avatar">{{ render_user_avatar(attendee.user, size=32, orga=attendee.is_orga) }}</div>
+              <div class="attendee-name">{{ render_user_link(attendee.user) }}</div>
             </div>
-            {%- endfor %}
-          </div>
-        </td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
+          </td>
+          <td>
+            <div class="attendee-seats">
+              {%- for ticket in attendee.tickets %}
+              <div class="row row--space-between">
+                <div>
+                {%- with seat = ticket.seat %}
+                  {%- if seat %}
+                  {{ render_seat_link(seat) }}
+                  {%- else %}
+                  {{ _('not chosen')|dim }} ({{ ticket.category_title }})
+                  {%- endif %}
+                {%- endwith %}
+                </div>
+                {%- if ticket.checked_in %}
+                <div>{{ render_tag(_('checked in')) }}</div>
+                {%- endif %}
+              </div>
+              {%- endfor %}
+            </div>
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
   {%- else %}
-  <p class="dimmed">{{ _('No attendees found.') }}</p>
+    <p class="dimmed">{{ _('No attendees found.') }}</p>
   {%- endif %}
+  </div>
 
 {{ render_pagination_nav(attendees, '.attendees', {
   'per_page': per_page,
