@@ -23,10 +23,10 @@ def api_token_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         request_token = _extract_token_from_request()
-        if request_token is None:
-            return None
-
-        api_token = authn_api_service.find_api_token_by_token(request_token)
+        if request_token:
+            api_token = authn_api_service.find_api_token_by_token(request_token)
+        else:
+            api_token = None
 
         if api_token is None:
             www_authenticate = WWWAuthenticate('Bearer')
