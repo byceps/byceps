@@ -11,7 +11,8 @@ A result wrapper that represents either the result value or an error.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Generic, Literal, NoReturn, TypeVar, Union
+from typing import Callable, Generic, Literal, TypeVar, Union
+from typing_extensions import Never
 
 
 T = TypeVar('T')
@@ -38,7 +39,7 @@ class Ok(Generic[T]):
     def unwrap(self) -> T:
         return self._value
 
-    def unwrap_err(self) -> NoReturn:
+    def unwrap_err(self) -> Never:
         raise UnwrapError(self, '`unwrap_err()` called on `Ok` value')
 
     def unwrap_or(self, default: T) -> T:
@@ -70,7 +71,7 @@ class Err(Generic[E]):
     def map_or_else(self, default: Callable[[E], U], f: Callable[[T], U]) -> U:
         return default(self._error)
 
-    def unwrap(self) -> NoReturn:
+    def unwrap(self) -> Never:
         raise UnwrapError(self)
 
     def unwrap_err(self) -> E:

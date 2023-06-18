@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from typing_extensions import Self
+
 from .authorization import has_current_user_permission
 
 
@@ -41,7 +43,7 @@ class Navigation:
         required_permission: str | None = None,
         precondition: bool = True,
         icon: str | None = None,
-    ) -> object:
+    ) -> Self:
         """Add an item to the navigation."""
         if not precondition:
             return self

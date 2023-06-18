@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from typing_extensions import Self
+
 from byceps.services.board.models import BoardCategoryWithLastUpdate
 from byceps.services.user.models.user import User
 from byceps.services.user_badge.models import Badge
@@ -25,7 +27,7 @@ class CategoryWithLastUpdateAndUnseenFlag(BoardCategoryWithLastUpdate):
         cls,
         category: BoardCategoryWithLastUpdate,
         contains_unseen_postings: bool,
-    ) -> CategoryWithLastUpdateAndUnseenFlag:
+    ) -> Self:
         return cls(
             category.id,
             category.board_id,
@@ -60,7 +62,7 @@ class Creator(User):
         orga_ids: set[UserID],
         badges: set[Badge],
         ticket: Ticket | None,
-    ) -> Creator:
+    ) -> Self:
         return cls(
             id=user.id,
             screen_name=user.screen_name,

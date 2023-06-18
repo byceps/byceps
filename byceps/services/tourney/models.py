@@ -13,6 +13,8 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
+from typing_extensions import Self
+
 from byceps.services.user.models.user import User
 from byceps.typing import PartyID
 
@@ -54,7 +56,7 @@ class TourneyWithCategory(Tourney):
         tourney: Tourney,
         category: TourneyCategory,
         current_participant_count: int,
-    ) -> TourneyWithCategory:
+    ) -> Self:
         return cls(
             id=tourney.id,
             party_id=tourney.party_id,

@@ -6,6 +6,8 @@ byceps.util.instances
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing_extensions import Self
+
 
 class ReprBuilder:
     """An instance representation builder."""
@@ -23,7 +25,7 @@ class ReprBuilder:
         """Add the attribute with the given value."""
         return self.add_custom(f'{name}={value!r}')
 
-    def add_custom(self, value):
+    def add_custom(self, value) -> Self:
         """Add a custom value."""
         self.attributes.append(value)
         return self

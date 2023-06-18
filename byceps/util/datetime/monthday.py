@@ -8,12 +8,14 @@ byceps.util.datetime.monthday
 
 from collections import namedtuple
 
+from typing_extensions import Self
+
 
 class MonthDay(namedtuple('MonthDay', ['month', 'day'])):
     __slots__ = ()
 
     @classmethod
-    def of(cls, date):
+    def of(cls, date) -> Self:
         return cls(date.month, date.day)
 
     def matches(self, date):

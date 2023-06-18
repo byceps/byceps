@@ -6,12 +6,12 @@ byceps.services.orga_presence.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from uuid import UUID
+
+from typing_extensions import Self
 
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
@@ -37,7 +37,7 @@ class PartyTimeSlot(TimeSlot):
     party: Party
 
     @classmethod
-    def from_party(cls, party: Party) -> PartyTimeSlot:
+    def from_party(cls, party: Party) -> Self:
         return cls(
             type=TimeSlotType.party,
             starts_at=party.starts_at,
@@ -58,7 +58,7 @@ class PresenceTimeSlot(TimeSlot):
         orga: User,
         starts_at: datetime,
         ends_at: datetime,
-    ) -> PresenceTimeSlot:
+    ) -> Self:
         return cls(
             id=time_slot_id,
             type=TimeSlotType.presence,
@@ -80,7 +80,7 @@ class TaskTimeSlot(TimeSlot):
         title: str,
         starts_at: datetime,
         ends_at: datetime,
-    ) -> TaskTimeSlot:
+    ) -> Self:
         return cls(
             id=time_slot_id,
             type=TimeSlotType.task,

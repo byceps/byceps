@@ -25,6 +25,7 @@ schwifty==2023.03.0
 sqlalchemy==2.0.16
 structlog==23.1.0
 tenacity==8.2.2
+typing-extensions==4.6.3
 uuid6==2023.5.2
 werkzeug==2.3.6
 wtforms==3.0.1
