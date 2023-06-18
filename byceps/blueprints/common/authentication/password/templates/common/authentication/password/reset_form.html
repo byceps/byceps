@@ -8,11 +8,13 @@
 
   <h1>{{ render_icon('password') }} {{ page_title }}</h1>
 
-  <form action="{{ url_for('.reset', token=token) }}" method="post">
-    {{ form_field(form.new_password, maxlength=40, autofocus='autofocus') }}
-    {{ form_field(form.new_password_confirmation, maxlength=40) }}
+  <div class="main-body-box">
+    <form action="{{ url_for('.reset', token=token) }}" method="post">
+      {{ form_field(form.new_password, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.new_password_confirmation, maxlength=40) }}
 
-    {{ form_buttons(_('Save')) }}
-  </form>
+      {{ form_buttons(_('Save')) }}
+    </form>
+  </div>
 
 {%- endblock %}

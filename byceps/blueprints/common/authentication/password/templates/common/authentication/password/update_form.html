@@ -8,12 +8,14 @@
 
   <h1>{{ render_icon('password') }} {{ page_title }}</h1>
 
-  <form action="{{ url_for('.update') }}" method="post">
-    {{ form_field(form.old_password, maxlength=100, autofocus='autofocus') }}
-    {{ form_field(form.new_password, maxlength=100) }}
-    {{ form_field(form.new_password_confirmation, maxlength=100) }}
+  <div class="main-body-box">
+    <form action="{{ url_for('.update') }}" method="post">
+      {{ form_field(form.old_password, maxlength=100, autofocus='autofocus') }}
+      {{ form_field(form.new_password, maxlength=100) }}
+      {{ form_field(form.new_password_confirmation, maxlength=100) }}
 
-    {{ form_buttons(_('Change'), cancel_url=url_for('user_settings.view') if g.app_mode.is_site() else None) }}
-  </form>
+      {{ form_buttons(_('Change'), cancel_url=url_for('user_settings.view') if g.app_mode.is_site() else None) }}
+    </form>
+  </div>
 
 {%- endblock %}
