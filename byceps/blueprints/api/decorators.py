@@ -51,4 +51,11 @@ def _extract_token_from_request() -> str | None:
     if header_value is None:
         return None
 
-    return header_value.replace('Bearer ', '', 1)
+    scheme, _, token = header_value.partition(' ')
+    if scheme != 'Bearer':
+        return None
+
+    if not token:
+        return None
+
+    return token
