@@ -8,34 +8,36 @@
 
 {% include 'site/shop/orders/_request_cancelation_head.html' %}
 
-  <form action="{{ url_for('.request_full_refund', order_id=order.id) }}" method="post">
+  <div class="main-body-box">
+    <form action="{{ url_for('.request_full_refund', order_id=order.id) }}" method="post">
 
-    <p>Du möchtest <strong>den vollen Betrag erstattet bekommen</strong> und nichts spenden.</p>
+      <p>Du möchtest <strong>den vollen Betrag erstattet bekommen</strong> und nichts spenden.</p>
 
 {% include 'site/shop/orders/_articles.html' %}
 
-    <p>Damit wir dir den Betrag zurückerstatten können, benötigen wir deine Bankverbindung.</p>
+      <p>Damit wir dir den Betrag zurückerstatten können, benötigen wir deine Bankverbindung.</p>
 
-    <div style="display: grid; grid-gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));">
-      <div>
-    {{ form_field(form.recipient_name) }}
+      <div style="display: grid; grid-gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));">
+        <div>
+      {{ form_field(form.recipient_name) }}
+        </div>
+        <div>
+      {{ form_field(form.recipient_iban) }}
+        </div>
       </div>
-      <div>
-    {{ form_field(form.recipient_iban) }}
-      </div>
-    </div>
 
-    <p>Bitte beachte, dass die Abwicklung der Rückzahlung einige Zeit in Anspruch nehmen kann.</p>
+      <p>Bitte beachte, dass die Abwicklung der Rückzahlung einige Zeit in Anspruch nehmen kann.</p>
 
-    <div class="row row--space-between mt">
-      <div>
-        <a class="button button--clear button--compact" href="{{ url_for('.request_cancelation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>Zurück zur Auswahl</span></a>
+      <div class="row row--space-between mt">
+        <div>
+          <a class="button button--clear button--compact" href="{{ url_for('.request_cancelation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>Zurück zur Auswahl</span></a>
+        </div>
+        <div>
+          <button type="submit" class="button color-primary">Tickets zurückgeben</button>
+        </div>
       </div>
-      <div>
-        <button type="submit" class="button color-primary">Tickets zurückgeben</button>
-      </div>
-    </div>
 
-  </form>
+    </form>
+  </div>
 
 {%- endblock %}

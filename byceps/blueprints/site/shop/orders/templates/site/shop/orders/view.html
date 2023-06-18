@@ -15,73 +15,82 @@
   <h1>{{ order.order_number }}</h1>
 
   {%- if cancelation_request and cancelation_request.state.name != 'accepted' %}
-  <div class="mb">
+  <div class="notifications">
 {{ render_notification('Zu dieser Bestellung wurde am %s, %s Uhr eine Stornierung angefordert.'|format(cancelation_request.created_at|dateformat, cancelation_request.created_at|timeformat('short')), category='info') }}
   </div>
   {%- endif %}
 
-  <div class="row row--space-between">
-    <div>
+  <div class="main-body-box">
+    <div class="row row--space-between">
+      <div>
 
-      <div class="mb">
-        <div class="data-label">{{ _('Date') }}</div>
-        <div class="data-value">{{ order.created_at|dateformat }}, {{ order.created_at|timeformat('short') }}</div>
-      </div>
-
-      <div class="row mb">
-        <div>
-          <div class="data-label">{{ _('Payment state') }}</div>
-          <div class="data-value">{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }}</div>
+        <div class="mb">
+          <div class="data-label">{{ _('Date') }}</div>
+          <div class="data-value">{{ order.created_at|dateformat }}, {{ order.created_at|timeformat('short') }}</div>
         </div>
-        <div>
-        {%- if order.payment_method %}
-          <div class="data-label">{{ _('Payment method') }}</div>
-          <div class="data-value">{{ render_order_payment_method(order.payment_method) }}</div>
+
+        <div class="row mb">
+          <div>
+            <div class="data-label">{{ _('Payment state') }}</div>
+            <div class="data-value">{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }}</div>
+          </div>
+          <div>
+          {%- if order.payment_method %}
+            <div class="data-label">{{ _('Payment method') }}</div>
+            <div class="data-value">{{ render_order_payment_method(order.payment_method) }}</div>
+          {%- endif %}
+          </div>
+        </div>
+
+        {%- if order.is_canceled %}
+        <div class="data-label">{{ _('Reason for cancelation') }}</div>
+        <div class="data-value">{{ order.cancelation_reason|fallback }}</div>
         {%- endif %}
+
+      </div>
+      <div>
+
+        {%- if order.is_open %}
+        <div class="button-row button-row--compact button-row--right">
+          <a class="button" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('remove') }} <span>{{ _('Cancel order') }}</span></a>
         </div>
+        {%- endif %}
+
       </div>
-
-      {%- if order.is_canceled %}
-      <div class="data-label">{{ _('Reason for cancelation') }}</div>
-      <div class="data-value">{{ order.cancelation_reason|fallback }}</div>
-      {%- endif %}
-
-    </div>
-    <div>
-
-      {%- if order.is_open %}
-      <div class="button-row button-row--compact button-row--right">
-        <a class="button" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('remove') }} <span>{{ _('Cancel order') }}</span></a>
-      </div>
-      {%- endif %}
-
     </div>
   </div>
 
   {%- if order.is_open %}
   <h2>{{ _('Payment notes') }}</h2>
+  <div class="main-body-box">
 {{ payment_instructions|safe }}
+  </div>
   {%- endif %}
 
   <h2>{{ _('Billing and shipping address') }}</h2>
+  <div class="main-body-box">
 
-  {%- if order.company %}
-  <div class="data-label">{{ _('Company') }}</div>
-  <div class="data-value">{{ order.company }}</div>
-  {%- endif %}
+    {%- if order.company %}
+    <div class="data-label">{{ _('Company') }}</div>
+    <div class="data-value">{{ order.company }}</div>
+    {%- endif %}
 
-  <div class="data-label">{{ _('Full name') }}</div>
-  <div class="data-value">{{ order.first_name }} {{ order.last_name }}</div>
+    <div class="data-label">{{ _('Full name') }}</div>
+    <div class="data-value">{{ order.first_name }} {{ order.last_name }}</div>
 
-  <div class="data-label">{{ _('Address') }}</div>
-  <div class="data-value">
-    {{ order.address.street }}<br>
-    {{ order.address.zip_code }} {{ order.address.city }}<br>
-    {{ order.address.country }}
+    <div class="data-label">{{ _('Address') }}</div>
+    <div class="data-value">
+      {{ order.address.street }}<br>
+      {{ order.address.zip_code }} {{ order.address.city }}<br>
+      {{ order.address.country }}
+    </div>
+
   </div>
 
   <h2>{{ _('Articles') }}</h2>
+  <div class="main-body-box">
 {% include 'site/shop/orders/_articles.html' %}
+  </div>
 
   {%- if order.is_paid and not cancelation_request %}
   <h2>{{ _('Cancelation') }}</h2>

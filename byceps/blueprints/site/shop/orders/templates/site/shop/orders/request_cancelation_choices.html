@@ -7,14 +7,18 @@
 
 {% include 'site/shop/orders/_request_cancelation_head.html' %}
 
-  <p>Du kannst hier die Rückgabe deiner Tickets anfragen. Dabei hast du die Möglichkeit, einen Teil des Betrages zu spenden.</p>
+  <div class="main-body-box">
+
+    <p>Du kannst hier die Rückgabe deiner Tickets anfragen. Dabei hast du die Möglichkeit, einen Teil des Betrages zu spenden.</p>
 
 {% include 'site/shop/orders/_articles.html' %}
 
-  <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem auto; width: max-content;">
-    <div><a class="button" href="{{ url_for('.donate_everything_form', order_id=order.id) }}"><span>Den gesamten Bestellbetrag spenden</span> {{ render_icon('chevron-right') }}</a></div>
-    <div><a class="button" href="{{ url_for('.request_partial_refund', order_id=order.id) }}"><span>Einen Teil des Bestellbetrags spenden</span> {{ render_icon('chevron-right') }}</a></div>
-    <div><a class="button" href="{{ url_for('.request_full_refund', order_id=order.id) }}"><span>Nichts spenden</span> {{ render_icon('chevron-right') }}</a></div>
+    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem auto; width: max-content;">
+      <div><a class="button" href="{{ url_for('.donate_everything_form', order_id=order.id) }}"><span>Den gesamten Bestellbetrag spenden</span> {{ render_icon('chevron-right') }}</a></div>
+      <div><a class="button" href="{{ url_for('.request_partial_refund', order_id=order.id) }}"><span>Einen Teil des Bestellbetrags spenden</span> {{ render_icon('chevron-right') }}</a></div>
+      <div><a class="button" href="{{ url_for('.request_full_refund', order_id=order.id) }}"><span>Nichts spenden</span> {{ render_icon('chevron-right') }}</a></div>
+    </div>
+
   </div>
 
 {%- endblock %}
