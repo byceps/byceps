@@ -6,10 +6,8 @@ byceps.blueprints.site.shop.order.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from decimal import Decimal
-
 from flask import abort, g, request
-from flask_babel import gettext
+from flask_babel import gettext, format_percent
 from moneyed import Currency
 
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
@@ -40,8 +38,7 @@ blueprint = create_blueprint('shop_order', __name__)
 def tax_rate_as_percentage(tax_rate) -> str:
     # Keep a digit after the decimal point in case
     # the tax rate is a fractional number.
-    percentage = (tax_rate * 100).quantize(Decimal('.0'))
-    return str(percentage).replace('.', ',')
+    return format_percent(tax_rate, '#0.0 %')
 
 
 @blueprint.get('/order')

@@ -6,7 +6,7 @@ byceps.blueprints.admin.shop.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from decimal import Decimal
+from flask_babel import format_percent
 
 from byceps.util.framework.blueprint import create_blueprint
 
@@ -18,5 +18,4 @@ blueprint = create_blueprint('shop_admin', __name__)
 def tax_rate_as_percentage(tax_rate) -> str:
     # Keep a digit after the decimal point in case
     # the tax rate is a fractional number.
-    percentage = (tax_rate * 100).quantize(Decimal('.0'))
-    return str(percentage).replace('.', ',')
+    return format_percent(tax_rate, '#0.0 %')
