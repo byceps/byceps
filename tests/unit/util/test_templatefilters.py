@@ -121,8 +121,7 @@ def test_moneyformat(value: Money, locale: str, expected: str):
 
 def create_app_with_babel(locale: str = 'en') -> Flask:
     app = Flask(__name__)
-    babel = Babel(app)
-    babel.locale_selector_func = lambda: locale
+    Babel(app, locale_selector=lambda: locale)
     return app
 
 

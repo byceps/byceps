@@ -243,7 +243,7 @@ Hello Orderer,
 
 your order AWSM-ORDR-9247 on Oct 12, 2021 has been canceled by us for this reason:
 
-Kein fristgerechter Geldeingang feststellbar.
+Not paid in time.
 
 We are happy to answer your questions.
 

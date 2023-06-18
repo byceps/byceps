@@ -53,8 +53,7 @@ def create_app(
     #      environment too early.
     app.jinja_options['undefined'] = jinja2.StrictUndefined
 
-    babel = Babel(app)
-    babel.locale_selector_func = get_current_user_locale
+    app.babel_instance = Babel(app, locale_selector=get_current_user_locale)
 
     # Initialize database.
     db.init_app(app)
