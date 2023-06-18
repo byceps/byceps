@@ -22,7 +22,11 @@ def api_token_required(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        api_token = _find_valid_api_token()
+        request_token = _extract_token_from_request()
+        if request_token is None:
+            return None
+
+        api_token = authn_api_service.find_api_token_by_token(request_token)
 
         if api_token is None:
             www_authenticate = WWWAuthenticate('Bearer')
@@ -36,14 +40,6 @@ def api_token_required(func):
         return func(*args, **kwargs)
 
     return wrapper
-
-
-def _find_valid_api_token() -> ApiToken | None:
-    request_token = _extract_token_from_request()
-    if request_token is None:
-        return None
-
-    return authn_api_service.find_api_token_by_token(request_token)
 
 
 def _extract_token_from_request() -> str | None:
