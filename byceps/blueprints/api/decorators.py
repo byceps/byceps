@@ -47,13 +47,10 @@ def _find_valid_api_token() -> ApiToken | None:
 
 
 def _extract_token_from_request() -> str | None:
-    header_value = request.headers.get('Authorization')
-    if header_value is None:
+    if request.authorization is None or request.authorization.type != 'bearer':
         return None
 
-    scheme, _, token = header_value.partition(' ')
-    if scheme != 'Bearer':
-        return None
+    token = request.authorization.token
 
     if not token:
         return None
