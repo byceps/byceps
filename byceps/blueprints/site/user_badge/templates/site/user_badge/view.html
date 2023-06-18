@@ -6,19 +6,6 @@
 
 {% block head %}
   <style>
-    .badge-details {
-      display: flex;
-    }
-
-    .badge-details .badge {
-      flex: 0 0 auto;
-    }
-
-    .badge-details .description {
-      align-self: center;
-      margin-left: 1rem;
-    }
-
     a.recipient {
       border: none;
       display: block;
@@ -41,10 +28,10 @@
   <h1>{{ badge.label }}</h1>
 
   <div class="main-body-box">
-    <div class="badge-details">
-      <div class="badge">{{ render_user_badge(badge, 64) }}</div>
+    <div class="row row--vertically-centered">
+      <div>{{ render_user_badge(badge, 64) }}</div>
       {%- if badge.description %}
-      <div class="description">{{ badge.description|safe }}</div>
+      <div class="column--grow">{{ badge.description|safe }}</div>
       {%- endif %}
     </div>
   </div>

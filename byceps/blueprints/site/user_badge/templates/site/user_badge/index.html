@@ -11,25 +11,12 @@
       padding: 0;
     }
 
-    .badges li {
-      align-items: center;
-      display: flex;
-    }
-
     .badges li + li {
       margin-top: 1.5rem;
     }
 
-    .badges .badge {
-      flex: 0 0 auto;
-    }
-
     .badges .badge a.user-badge {
       display: block;
-    }
-
-    .badges .description {
-      margin-left: 1rem;
     }
 
     .badges .description p {
@@ -51,15 +38,15 @@
     <ol class="badges">
       {%- for badge in badges|sort(attribute='label') %}
         <li>
-          <div class="badge">
-            {{ render_user_badge_linked(badge, 64) }}
+          <div class="row row--vertically-centered">
+            <div>{{ render_user_badge_linked(badge, 64) }}</div>
+            {%- if badge.description %}
+            <div class="column--grow description">
+              <p><strong>{{ badge.label }}</strong></p>
+              <p>{{ badge.description|safe }}</p>
+            </div>
+            {%- endif %}
           </div>
-          {%- if badge.description %}
-          <div class="description">
-            <p><strong>{{ badge.label }}</strong></p>
-            <p>{{ badge.description|safe }}</p>
-          </div>
-          {%- endif %}
         </li>
       {%- endfor %}
     </ol>
