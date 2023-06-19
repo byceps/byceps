@@ -45,14 +45,10 @@ def _render_html(
     if body_format == BodyFormat.markdown:
         body_html = mistletoe.markdown(body_html)
 
-    featured_image_html = None
-    if item.featured_image_id:
-        featured_image = find(
-            item.images, lambda image: image.id == item.featured_image_id
-        )
-
-        if featured_image:
-            featured_image_html = _render_image(featured_image)
+    featured_image = _find_featured_image(item)
+    featured_image_html = (
+        _render_image(featured_image) if featured_image else None
+    )
 
     return NewsItemHtml(
         body=body_html,
@@ -107,3 +103,10 @@ def _render_template(path: str, context: dict[str, Any]) -> str:
 
     template = load_template(source)
     return template.render(**context)
+
+
+def _find_featured_image(item: NewsItem) -> NewsImage | None:
+    if not item.featured_image_id:
+        return None
+
+    return find(item.images, lambda image: image.id == item.featured_image_id)
