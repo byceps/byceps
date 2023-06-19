@@ -11,7 +11,6 @@ from __future__ import annotations
 from collections.abc import Sequence
 import dataclasses
 from datetime import datetime
-from functools import partial
 
 from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
@@ -280,7 +279,8 @@ def find_aggregated_item_by_slug(
     if db_item is None:
         return None
 
-    return _db_entity_to_item(db_item, render_html=True)
+    item = _db_entity_to_item(db_item)
+    return _render_html(item)
 
 
 def get_aggregated_items_paginated(
@@ -297,7 +297,9 @@ def get_aggregated_items_paginated(
         now = datetime.utcnow()
         stmt = stmt.filter(DbNewsItem.published_at <= now)
 
-    item_mapper = partial(_db_entity_to_item, render_html=True)
+    def item_mapper(db_item: DbNewsItem) -> NewsItem:
+        item = _db_entity_to_item(db_item)
+        return _render_html(item)
 
     return paginate(stmt, page, items_per_page, item_mapper=item_mapper)
 
@@ -430,9 +432,7 @@ def get_item_count_by_channel_id() -> dict[NewsChannelID, int]:
     return dict(channel_ids_and_item_counts)
 
 
-def _db_entity_to_item(
-    db_item: DbNewsItem, *, render_html: bool | None = False
-) -> NewsItem:
+def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
     channel = news_channel_service._db_entity_to_channel(db_item.channel)
 
     image_url_path = _assemble_image_url_path(db_item)
@@ -441,7 +441,7 @@ def _db_entity_to_item(
         for image in db_item.images
     ]
 
-    item = NewsItem(
+    return NewsItem(
         id=db_item.id,
         channel=channel,
         slug=db_item.slug,
@@ -456,31 +456,6 @@ def _db_entity_to_item(
         featured_image_html=None,
     )
 
-    if render_html:
-        result = news_html_service.render_html(
-            item, item.body, item.body_format
-        )
-        if result.is_ok():
-            html = result.unwrap()
-
-            body_html = html.body
-            featured_image_html = html.featured_image
-        else:
-            log.warning(
-                'HTML rendering for news item %s failed: %s',
-                item.id,
-                result.unwrap_err(),
-            )
-
-            body_html = None
-            featured_image_html = None
-
-        item = dataclasses.replace(
-            item, body=body_html, featured_image_html=featured_image_html
-        )
-
-    return item
-
 
 def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
     url_path = db_item.current_version.image_url_path
@@ -489,6 +464,29 @@ def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
         return None
 
     return f'/data/global/news_channels/{db_item.channel_id}/{url_path}'
+
+
+def _render_html(item: NewsItem) -> NewsItem:
+    result = news_html_service.render_html(item, item.body, item.body_format)
+
+    if result.is_ok():
+        html = result.unwrap()
+
+        body_html = html.body
+        featured_image_html = html.featured_image
+    else:
+        log.warning(
+            'HTML rendering for news item %s failed: %s',
+            item.id,
+            result.unwrap_err(),
+        )
+
+        body_html = None
+        featured_image_html = None
+
+    return dataclasses.replace(
+        item, body=body_html, featured_image_html=featured_image_html
+    )
 
 
 def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:
