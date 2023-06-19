@@ -58,7 +58,7 @@ def create_item(channel_id, editor_id, *, image_url_path=None) -> NewsItem:
     body = 'the body'
     body_format = BodyFormat.html
 
-    news_item_service.create_item(
+    item = news_item_service.create_item(
         channel_id,
         slug,
         editor_id,
@@ -68,6 +68,4 @@ def create_item(channel_id, editor_id, *, image_url_path=None) -> NewsItem:
         image_url_path=image_url_path,
     )
 
-    # Return aggregated version of item.
-    channel_ids = {channel_id}
-    return news_item_service.find_aggregated_item_by_slug(channel_ids, slug)
+    return news_item_service.find_item(item.id)
