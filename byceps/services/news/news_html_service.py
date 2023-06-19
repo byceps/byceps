@@ -21,18 +21,21 @@ import mistletoe
 from byceps.util.iterables import find
 from byceps.util.templating import load_template
 
-from .models import BodyFormat, NewsImage, NewsItem
+from .models import BodyFormat, NewsImage, NewsItem, NewsItemHtml
 
 
-def render_body(item: NewsItem, raw_body: str, body_format: BodyFormat) -> str:
+def render_html(
+    item: NewsItem, raw_body: str, body_format: BodyFormat
+) -> NewsItemHtml:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
     render_image = partial(_render_image_by_number, item.images)
-    html = template.render(render_image=render_image)
+    body_html = template.render(render_image=render_image)
 
     if body_format == BodyFormat.markdown:
-        html = mistletoe.markdown(html)
+        body_html = mistletoe.markdown(body_html)
 
+    featured_image_html = None
     if item.featured_image_id:
         featured_image = find(
             item.images, lambda image: image.id == item.featured_image_id
@@ -40,9 +43,11 @@ def render_body(item: NewsItem, raw_body: str, body_format: BodyFormat) -> str:
 
         if featured_image:
             featured_image_html = _render_image(featured_image)
-            html = featured_image_html + '\n\n' + html
 
-    return html
+    return NewsItemHtml(
+        body=body_html,
+        featured_image=featured_image_html,
+    )
 
 
 def _render_image_by_number(

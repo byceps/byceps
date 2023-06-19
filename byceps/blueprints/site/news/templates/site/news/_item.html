@@ -11,6 +11,10 @@
       {%- endif %}
     </footer>
     <div class="body">
+{% if item.featured_image_html %}
+{{ item.featured_image_html|safe }}
+{%- endif %}
+
 {% if item.body is not none %}
 {{ item.body|safe }}
 {%- else %}

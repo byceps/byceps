@@ -18,7 +18,11 @@
 {{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(error_message)|safe, category='danger') }}
 {%- else %}
       <h1>{{ title }}</h1>
-{{ body|safe }}
+  {% if featured_image_html %}
+{{ featured_image_html|safe }}
+  {%- endif %}
+
+{{ body_html|safe }}
 {%- endif %}
     </main>
 

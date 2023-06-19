@@ -57,6 +57,12 @@ class NewsImage:
 
 
 @dataclass(frozen=True)
+class NewsItemHtml:
+    body: str
+    featured_image: str | None
+
+
+@dataclass(frozen=True)
 class NewsItem:
     id: NewsItemID
     channel: NewsChannel
@@ -69,6 +75,7 @@ class NewsItem:
     image_url_path: str | None
     images: list[NewsImage]
     featured_image_id: NewsImageID | None
+    featured_image_html: str | None
 
 
 @dataclass(frozen=True)

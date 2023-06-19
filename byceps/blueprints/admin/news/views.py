@@ -441,13 +441,14 @@ def item_view_version_preview(version_id):
     item = news_item_service.find_item(version.item_id)
 
     try:
-        rendered_body = news_html_service.render_body(
+        html = news_html_service.render_html(
             item, version.body, version.body_format
         )
 
         return {
             'title': version.title,
-            'body': rendered_body,
+            'body_html': html.body,
+            'featured_image_html': html.featured_image,
             'error_occurred': False,
         }
     except Exception as e:

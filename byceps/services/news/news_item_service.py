@@ -37,6 +37,7 @@ from .models import (
     NewsHeadline,
     NewsImageID,
     NewsItem,
+    NewsItemHtml,
     NewsItemID,
     NewsItemVersionID,
 )
@@ -449,11 +450,14 @@ def _db_entity_to_item(
         image_url_path=image_url_path,
         images=images,
         featured_image_id=db_item.featured_image_id,
+        featured_image_html=None,
     )
 
     if render_body:
-        rendered_body = _render_body(item)
-        item = dataclasses.replace(item, body=rendered_body)
+        html = _render_html(item)
+        item = dataclasses.replace(
+            item, body=html.body, featured_image_html=html.featured_image
+        )
 
     return item
 
@@ -467,10 +471,10 @@ def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
     return f'/data/global/news_channels/{db_item.channel_id}/{url_path}'
 
 
-def _render_body(item: NewsItem) -> str | None:
+def _render_html(item: NewsItem) -> NewsItemHtml | None:
     """Render body text to HTML."""
     try:
-        return news_html_service.render_body(item, item.body, item.body_format)
+        return news_html_service.render_html(item, item.body, item.body_format)
     except Exception:
         return None  # Not the best error indicator.
 
