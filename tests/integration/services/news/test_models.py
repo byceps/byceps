@@ -8,6 +8,8 @@ import pytest
 from byceps.services.news import news_item_service
 from byceps.services.news.models import BodyFormat, NewsChannel
 
+from tests.helpers import generate_token
+
 
 @pytest.fixture(scope='module')
 def editor(make_user):
@@ -26,12 +28,7 @@ def channel(brand, make_news_channel) -> NewsChannel:
 
 @pytest.fixture()
 def news_item_with_image(channel: NewsChannel, editor):
-    item = create_item(
-        channel.id,
-        'with-image',
-        editor.id,
-        image_url_path='breaking.png',
-    )
+    item = create_item(channel.id, editor.id, image_url_path='breaking.png')
 
     yield item
 
@@ -40,7 +37,7 @@ def news_item_with_image(channel: NewsChannel, editor):
 
 @pytest.fixture()
 def news_item_without_image(channel: NewsChannel, editor):
-    item = create_item(channel.id, 'without-image', editor.id)
+    item = create_item(channel.id, editor.id)
 
     yield item
 
@@ -63,7 +60,8 @@ def test_image_url_without_image(news_item_without_image):
 # helpers
 
 
-def create_item(channel_id, slug, editor_id, *, image_url_path=None):
+def create_item(channel_id, editor_id, *, image_url_path=None):
+    slug = generate_token()
     title = 'the title'
     body = 'the body'
     body_format = BodyFormat.html
