@@ -2,6 +2,11 @@
 
 <div class="main-body-box">
   <article class="news-item">
+    <div class="mb">
+{% if item.featured_image_html %}
+{{ item.featured_image_html|safe }}
+{%- endif %}
+    </div>
     <h1><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
     <footer class="meta">
       {%- if item.published %}
@@ -11,10 +16,6 @@
       {%- endif %}
     </footer>
     <div class="body">
-{% if item.featured_image_html %}
-{{ item.featured_image_html|safe }}
-{%- endif %}
-
 {% if item.body is not none %}
 {{ item.body|safe }}
 {%- else %}
