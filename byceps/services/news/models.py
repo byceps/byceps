@@ -15,6 +15,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.typing import BrandID, UserID
+from byceps.util.result import Result
 
 
 NewsChannelID = NewType('NewsChannelID', str)
@@ -85,8 +86,8 @@ class RenderedNewsItem:
     published_at: datetime | None
     published: bool
     title: str
-    featured_image_html: str | None
-    body_html: str | None
+    featured_image_html: Result[str | None, str]
+    body_html: Result[str, str]
 
 
 @dataclass(frozen=True)

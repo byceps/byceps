@@ -1,10 +1,16 @@
-{%- from 'macros/misc.html' import render_tag %}
+{%- from 'macros/misc.html' import render_notification, render_tag %}
 
 <div class="main-body-box">
   <article class="news-item">
     <div class="featured-image mb">
-{% if item.featured_image_html %}
-{{ item.featured_image_html|safe }}
+{%- if item.featured_image_html.is_ok() %}
+  {%- with featured_image_html = item.featured_image_html.unwrap() %}
+    {%- if featured_image_html %}
+{{ featured_image_html|safe }}
+    {%- endif %}
+  {%- endwith %}
+{%- else %}
+{{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
 {%- endif %}
     </div>
     <h1><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
@@ -16,10 +22,11 @@
       {%- endif %}
     </footer>
     <div class="body">
-{% if item.body_html %}
-{{ item.body_html|safe }}
+{%- if item.body_html.is_ok() %}
+  {%- with body_html = item.body_html.unwrap() %}
+{{ body_html|safe }}
+  {%- endwith %}
 {%- else %}
-{% from 'macros/misc.html' import render_notification %}
 {{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
 {%- endif %}
     </div>

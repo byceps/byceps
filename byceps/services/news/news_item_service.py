@@ -22,6 +22,7 @@ from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
+from byceps.util.result import Err, Ok, Result
 
 from . import news_channel_service, news_html_service, news_image_service
 from .dbmodels.channel import DbNewsChannel
@@ -469,11 +470,13 @@ def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
 def _render_html(item: NewsItem) -> RenderedNewsItem:
     result = news_html_service.render_html(item)
 
+    featured_image_html: Result[str | None, str]
+    body_html: Result[str, str]
     if result.is_ok():
         html = result.unwrap()
 
-        body_html = html.body
-        featured_image_html = html.featured_image
+        featured_image_html = Ok(html.featured_image)
+        body_html = Ok(html.body)
     else:
         log.warning(
             'HTML rendering for news item %s failed: %s',
@@ -481,8 +484,8 @@ def _render_html(item: NewsItem) -> RenderedNewsItem:
             result.unwrap_err(),
         )
 
-        body_html = None
-        featured_image_html = None
+        featured_image_html = Err('Rendering error')
+        body_html = Err('Rendering error')
 
     return RenderedNewsItem(
         channel=item.channel,
