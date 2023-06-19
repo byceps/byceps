@@ -443,6 +443,7 @@ def item_view_version_preview(version_id):
 
     item = dataclasses.replace(
         item,
+        title=version.title,
         body=version.body,
         body_format=version.body_format,
     )
@@ -457,7 +458,7 @@ def item_view_version_preview(version_id):
 
     html = result.unwrap()
     return {
-        'title': version.title,
+        'title': item.title,
         'body_html': html.body,
         'featured_image_html': html.featured_image,
         'error_occurred': False,
