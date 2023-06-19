@@ -30,6 +30,10 @@ body {
   padding: 0 !important;
 }
 
+.main-body-box + .main-body-box {
+  margin-top: 1.5rem;
+}
+
 
 /* headings */
 
@@ -46,10 +50,6 @@ h2 {
 
 /* news */
 
-.news-items {
-  --news-item-divider-color: #cccccc;
-}
-
 .news-item {
   -webkit-hyphens: auto;
   hyphens: auto;
@@ -63,17 +63,6 @@ h2 {
   font-size: 0.6875rem; /* 11px / 16px */
   margin: 10px 0;
   opacity: 0.5;
-}
-
-.news-items .news-item,
-.news-items .pagination {
-  border-top: var(--news-item-divider-color) solid 1px;
-  margin: 20px 0 0;
-  padding: 20px 0 0;
-}
-
-.news-items .news-item h1 {
-  margin-top: 0;
 }
 
 

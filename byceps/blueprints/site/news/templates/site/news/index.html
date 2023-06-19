@@ -14,12 +14,10 @@
 
   <h1>{{ _('News') }}</h1>
 
-  <div class="main-body-box">
-    <div class="news-items">
+  <div class="news-items">
     {%- for item in items.items %}
 {% include 'site/news/_item.html' %}
     {%- endfor %}
-    </div>
   </div>
 
 {{ render_pagination_nav(items, 'news.index', {

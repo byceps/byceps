@@ -1,20 +1,22 @@
 {%- from 'macros/misc.html' import render_tag %}
 
-<article class="news-item">
-  <h1><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
-  <footer class="meta">
-    {%- if item.published %}
-    {{ item.published_at|dateformat('full') }}
-    {%- else %}
-    {{ render_tag(_('Draft')) }}
-    {%- endif %}
-  </footer>
-  <div class="body">
+<div class="main-body-box">
+  <article class="news-item">
+    <h1><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
+    <footer class="meta">
+      {%- if item.published %}
+      {{ item.published_at|dateformat('full') }}
+      {%- else %}
+      {{ render_tag(_('Draft')) }}
+      {%- endif %}
+    </footer>
+    <div class="body">
 {% if item.body is not none %}
 {{ item.body|safe }}
 {%- else %}
-  {% from 'macros/misc.html' import render_notification %}
-  {{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
+{% from 'macros/misc.html' import render_notification %}
+{{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
 {%- endif %}
-  </div>
-</article>
+    </div>
+  </article>
+</div>
