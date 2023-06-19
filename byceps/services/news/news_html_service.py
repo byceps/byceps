@@ -25,11 +25,9 @@ from byceps.util.templating import load_template
 from .models import BodyFormat, NewsImage, NewsItem, NewsItemHtml
 
 
-def render_html(
-    item: NewsItem, raw_body: str, body_format: BodyFormat
-) -> Result[NewsItemHtml, str]:
+def render_html(item: NewsItem) -> Result[NewsItemHtml, str]:
     """Render item's raw body and featured image to HTML."""
-    body_html_result = render_body_html(item, raw_body, body_format)
+    body_html_result = render_body_html(item)
     if body_html_result.is_err():
         return Err(body_html_result.unwrap_err())
 
@@ -53,16 +51,14 @@ def render_html(
     )
 
 
-def render_body_html(
-    item: NewsItem, raw_body: str, body_format: BodyFormat
-) -> Result[str, str]:
+def render_body_html(item: NewsItem) -> Result[str, str]:
     """Render item's raw body to HTML."""
-    template = load_template(raw_body)
+    template = load_template(item.body)
     render_image = partial(_render_image_by_number, item.images)
 
     try:
         html = template.render(render_image=render_image)
-        if body_format == BodyFormat.markdown:
+        if item.body_format == BodyFormat.markdown:
             html = mistletoe.markdown(html)
         return Ok(html)
     except Exception as exc:

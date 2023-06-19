@@ -6,6 +6,7 @@ byceps.blueprints.admin.news.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import dataclasses
 from datetime import date, datetime
 
 from flask import abort, g, request
@@ -440,9 +441,13 @@ def item_view_version_preview(version_id):
 
     item = news_item_service.find_item(version.item_id)
 
-    result = news_html_service.render_html(
-        item, version.body, version.body_format
+    item = dataclasses.replace(
+        item,
+        body=version.body,
+        body_format=version.body_format,
     )
+
+    result = news_html_service.render_html(item)
 
     if result.is_err():
         return {

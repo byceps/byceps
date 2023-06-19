@@ -467,7 +467,7 @@ def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
 
 
 def _render_html(item: NewsItem) -> RenderedNewsItem:
-    result = news_html_service.render_html(item, item.body, item.body_format)
+    result = news_html_service.render_html(item)
 
     if result.is_ok():
         html = result.unwrap()
