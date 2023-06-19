@@ -16,7 +16,6 @@ from byceps.services.brand import brand_service
 from byceps.services.image import image_service
 from byceps.services.news import (
     news_channel_service,
-    news_html_service,
     news_image_service,
     news_item_service,
 )
@@ -448,20 +447,10 @@ def item_view_version_preview(version_id):
         body_format=version.body_format,
     )
 
-    result = news_html_service.render_html(item)
+    rendered_item = news_item_service.render_html(item)
 
-    if result.is_err():
-        return {
-            'error_occurred': True,
-            'error_message': result.unwrap_err(),
-        }
-
-    html = result.unwrap()
     return {
-        'title': item.title,
-        'body_html': html.body,
-        'featured_image_html': html.featured_image,
-        'error_occurred': False,
+        'item': rendered_item,
     }
 
 

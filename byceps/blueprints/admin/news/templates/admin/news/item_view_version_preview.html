@@ -13,17 +13,29 @@
   <body style="background-color: transparent; padding: 2rem;">
 
     <main>
-{%- if error_occurred %}
-      <h1>{{ _('Error') }}</h1>
-{{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(error_message)|safe, category='danger') }}
-{%- else %}
-      <h1>{{ title }}</h1>
-  {% if featured_image_html %}
-{{ featured_image_html|safe }}
-  {%- endif %}
 
-{{ body_html|safe }}
+      <h1>{{ item.title }}</h1>
+
+{%- if item.featured_image_html.is_ok() %}
+  {%- with featured_image_html = item.featured_image_html.unwrap() %}
+    {%- if featured_image_html %}
+{{ featured_image_html|safe }}
+    {%- endif %}
+  {%- endwith %}
+{%- else %}
+{{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(item.featured_image_html.unwrap_err())|safe, category='danger') }}
 {%- endif %}
+
+{%- if item.body_html.is_ok() %}
+  {%- with body_html = item.body_html.unwrap() %}
+    {%- if body_html %}
+{{ body_html|safe }}
+    {%- endif %}
+  {%- endwith %}
+{%- else %}
+{{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(item.body_html.unwrap_err())|safe, category='danger') }}
+{%- endif %}
+
     </main>
 
   </body>

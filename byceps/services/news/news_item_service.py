@@ -281,7 +281,7 @@ def find_aggregated_item_by_slug(
         return None
 
     item = _db_entity_to_item(db_item)
-    return _render_html(item)
+    return render_html(item)
 
 
 def get_aggregated_items_paginated(
@@ -300,7 +300,7 @@ def get_aggregated_items_paginated(
 
     def item_mapper(db_item: DbNewsItem) -> RenderedNewsItem:
         item = _db_entity_to_item(db_item)
-        return _render_html(item)
+        return render_html(item)
 
     return paginate(stmt, page, items_per_page, item_mapper=item_mapper)
 
@@ -467,7 +467,7 @@ def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
     return f'/data/global/news_channels/{db_item.channel_id}/{url_path}'
 
 
-def _render_html(item: NewsItem) -> RenderedNewsItem:
+def render_html(item: NewsItem) -> RenderedNewsItem:
     result = news_html_service.render_html(item)
 
     featured_image_html: Result[str | None, str]
