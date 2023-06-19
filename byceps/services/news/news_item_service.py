@@ -280,7 +280,7 @@ def find_aggregated_item_by_slug(
     if db_item is None:
         return None
 
-    return _db_entity_to_item(db_item, render_body=True)
+    return _db_entity_to_item(db_item, render_html=True)
 
 
 def get_aggregated_items_paginated(
@@ -297,7 +297,7 @@ def get_aggregated_items_paginated(
         now = datetime.utcnow()
         stmt = stmt.filter(DbNewsItem.published_at <= now)
 
-    item_mapper = partial(_db_entity_to_item, render_body=True)
+    item_mapper = partial(_db_entity_to_item, render_html=True)
 
     return paginate(stmt, page, items_per_page, item_mapper=item_mapper)
 
@@ -431,7 +431,7 @@ def get_item_count_by_channel_id() -> dict[NewsChannelID, int]:
 
 
 def _db_entity_to_item(
-    db_item: DbNewsItem, *, render_body: bool | None = False
+    db_item: DbNewsItem, *, render_html: bool | None = False
 ) -> NewsItem:
     channel = news_channel_service._db_entity_to_channel(db_item.channel)
 
@@ -456,7 +456,7 @@ def _db_entity_to_item(
         featured_image_html=None,
     )
 
-    if render_body:
+    if render_html:
         result = news_html_service.render_html(
             item, item.body, item.body_format
         )
