@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.news import news_item_service
-from byceps.services.news.models import BodyFormat, NewsChannel
+from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 
 from tests.helpers import generate_token
 
@@ -27,21 +27,13 @@ def channel(brand, make_news_channel) -> NewsChannel:
 
 
 @pytest.fixture()
-def news_item_with_image(channel: NewsChannel, editor):
-    item = create_item(channel.id, editor.id, image_url_path='breaking.png')
-
-    yield item
-
-    news_item_service.delete_item(item.id)
+def news_item_with_image(channel: NewsChannel, editor) -> NewsItem:
+    return create_item(channel.id, editor.id, image_url_path='breaking.png')
 
 
 @pytest.fixture()
-def news_item_without_image(channel: NewsChannel, editor):
-    item = create_item(channel.id, editor.id)
-
-    yield item
-
-    news_item_service.delete_item(item.id)
+def news_item_without_image(channel: NewsChannel, editor) -> NewsItem:
+    return create_item(channel.id, editor.id)
 
 
 def test_image_url_with_image(news_item_with_image):
@@ -60,7 +52,7 @@ def test_image_url_without_image(news_item_without_image):
 # helpers
 
 
-def create_item(channel_id, editor_id, *, image_url_path=None):
+def create_item(channel_id, editor_id, *, image_url_path=None) -> NewsItem:
     slug = generate_token()
     title = 'the title'
     body = 'the body'
