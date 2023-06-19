@@ -15,6 +15,7 @@ from functools import partial
 
 from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
+import structlog
 
 from byceps.database import db, paginate, Pagination
 from byceps.events.news import NewsItemPublishedEvent
@@ -41,6 +42,9 @@ from .models import (
     NewsItemID,
     NewsItemVersionID,
 )
+
+
+log = structlog.get_logger()
 
 
 def create_item(
@@ -455,8 +459,12 @@ def _db_entity_to_item(
 
     if render_body:
         html = _render_html(item)
+
+        body_html = html.body if html else None
+        featured_image_html = html.featured_image if html else None
+
         item = dataclasses.replace(
-            item, body=html.body, featured_image_html=html.featured_image
+            item, body=body_html, featured_image_html=featured_image_html
         )
 
     return item
@@ -475,7 +483,10 @@ def _render_html(item: NewsItem) -> NewsItemHtml | None:
     """Render body text to HTML."""
     try:
         return news_html_service.render_html(item, item.body, item.body_format)
-    except Exception:
+    except Exception as exc:
+        log.warning(
+            'HTML rendering for news item %s failed', item.id, exc_info=exc
+        )
         return None  # Not the best error indicator.
 
 
