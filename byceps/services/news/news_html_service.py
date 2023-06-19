@@ -22,33 +22,7 @@ from byceps.util.iterables import find
 from byceps.util.result import Err, Ok, Result
 from byceps.util.templating import load_template
 
-from .models import BodyFormat, NewsImage, NewsItem, NewsItemHtml
-
-
-def render_html(item: NewsItem) -> Result[NewsItemHtml, str]:
-    """Render item's raw body and featured image to HTML."""
-    body_html_result = render_body_html(item)
-    if body_html_result.is_err():
-        return Err(body_html_result.unwrap_err())
-
-    body_html = body_html_result.unwrap()
-
-    featured_image = _find_featured_image(item)
-    if featured_image:
-        featured_image_html_result = render_featured_image_html(featured_image)
-        if featured_image_html_result.is_err():
-            return Err(featured_image_html_result.unwrap_err())
-
-        featured_image_html = featured_image_html_result.unwrap()
-    else:
-        featured_image_html = None
-
-    return Ok(
-        NewsItemHtml(
-            body=body_html,
-            featured_image=featured_image_html,
-        )
-    )
+from .models import BodyFormat, NewsImage, NewsItem
 
 
 def render_body_html(item: NewsItem) -> Result[str, str]:
@@ -120,10 +94,3 @@ def _render_template(path: str, context: dict[str, Any]) -> str:
 
     template = load_template(source)
     return template.render(**context)
-
-
-def _find_featured_image(item: NewsItem) -> NewsImage | None:
-    if not item.featured_image_id:
-        return None
-
-    return find(item.images, lambda image: image.id == item.featured_image_id)

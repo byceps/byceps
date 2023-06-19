@@ -22,6 +22,7 @@ from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
+from byceps.util.iterables import find
 from byceps.util.result import Err, Ok, Result
 
 from . import news_channel_service, news_html_service, news_image_service
@@ -35,6 +36,7 @@ from .models import (
     BodyFormat,
     NewsChannelID,
     NewsHeadline,
+    NewsImage,
     NewsImageID,
     NewsItem,
     NewsItemID,
@@ -468,34 +470,55 @@ def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
 
 
 def render_html(item: NewsItem) -> RenderedNewsItem:
-    result = news_html_service.render_html(item)
-
-    featured_image_html: Result[str | None, str]
-    body_html: Result[str, str]
-    if result.is_ok():
-        html = result.unwrap()
-
-        featured_image_html = Ok(html.featured_image)
-        body_html = Ok(html.body)
-    else:
-        log.warning(
-            'HTML rendering for news item %s failed: %s',
-            item.id,
-            result.unwrap_err(),
-        )
-
-        featured_image_html = Err('Rendering error')
-        body_html = Err('Rendering error')
-
+    """Render item's raw body and featured image to HTML."""
     return RenderedNewsItem(
         channel=item.channel,
         slug=item.slug,
         published_at=item.published_at,
         published=item.published,
         title=item.title,
-        featured_image_html=featured_image_html,
-        body_html=body_html,
+        featured_image_html=_render_featured_image_html(item),
+        body_html=_render_body_html(item),
     )
+
+
+def _render_featured_image_html(item: NewsItem) -> Result[str | None, str]:
+    featured_image = _find_featured_image(item)
+    if not featured_image:
+        return Ok(None)
+
+    result = news_html_service.render_featured_image_html(featured_image)
+
+    if result.is_err():
+        # Log, but do not return error.
+        log.warning(
+            'HTML rendering of featured image for news item %s failed: %s',
+            item.id,
+            result.unwrap_err(),
+        )
+
+    return Ok(result.unwrap())
+
+
+def _render_body_html(item: NewsItem) -> Result[str, str]:
+    result = news_html_service.render_body_html(item)
+
+    if result.is_err():
+        # Log, but do not return error.
+        log.warning(
+            'HTML rendering of body for news item %s failed: %s',
+            item.id,
+            result.unwrap_err(),
+        )
+
+    return result
+
+
+def _find_featured_image(item: NewsItem) -> NewsImage | None:
+    if not item.featured_image_id:
+        return None
+
+    return find(item.images, lambda image: image.id == item.featured_image_id)
 
 
 def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:
