@@ -79,6 +79,17 @@ class NewsItem:
 
 
 @dataclass(frozen=True)
+class RenderedNewsItem:
+    channel: NewsChannel
+    slug: str
+    published_at: datetime | None
+    published: bool
+    title: str
+    featured_image_html: str | None
+    body_html: str | None
+
+
+@dataclass(frozen=True)
 class NewsHeadline:
     slug: str
     published_at: datetime | None

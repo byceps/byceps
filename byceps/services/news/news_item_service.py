@@ -9,7 +9,6 @@ byceps.services.news.news_item_service
 from __future__ import annotations
 
 from collections.abc import Sequence
-import dataclasses
 from datetime import datetime
 
 from sqlalchemy import delete, select
@@ -39,6 +38,7 @@ from .models import (
     NewsItem,
     NewsItemID,
     NewsItemVersionID,
+    RenderedNewsItem,
 )
 
 
@@ -254,9 +254,9 @@ def _get_db_item(item_id: NewsItemID) -> DbNewsItem:
 
 def find_aggregated_item_by_slug(
     channel_ids: set[NewsChannelID], slug: str, *, published_only: bool = False
-) -> NewsItem | None:
-    """Return the news item identified by that slug in one of the given
-    channels, or `None` if not found.
+) -> RenderedNewsItem | None:
+    """Return the rendered item identified by that slug in one of the
+    given channels, or `None` if not found.
     """
     stmt = (
         select(DbNewsItem)
@@ -290,14 +290,14 @@ def get_aggregated_items_paginated(
     *,
     published_only: bool = False,
 ) -> Pagination:
-    """Return the news items to show on the specified page."""
+    """Return the rendered news items to show on the specified page."""
     stmt = _get_items_stmt(channel_ids)
 
     if published_only:
         now = datetime.utcnow()
         stmt = stmt.filter(DbNewsItem.published_at <= now)
 
-    def item_mapper(db_item: DbNewsItem) -> NewsItem:
+    def item_mapper(db_item: DbNewsItem) -> RenderedNewsItem:
         item = _db_entity_to_item(db_item)
         return _render_html(item)
 
@@ -466,7 +466,7 @@ def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
     return f'/data/global/news_channels/{db_item.channel_id}/{url_path}'
 
 
-def _render_html(item: NewsItem) -> NewsItem:
+def _render_html(item: NewsItem) -> RenderedNewsItem:
     result = news_html_service.render_html(item, item.body, item.body_format)
 
     if result.is_ok():
@@ -484,8 +484,14 @@ def _render_html(item: NewsItem) -> NewsItem:
         body_html = None
         featured_image_html = None
 
-    return dataclasses.replace(
-        item, body=body_html, featured_image_html=featured_image_html
+    return RenderedNewsItem(
+        channel=item.channel,
+        slug=item.slug,
+        published_at=item.published_at,
+        published=item.published,
+        title=item.title,
+        featured_image_html=featured_image_html,
+        body_html=body_html,
     )
 
 

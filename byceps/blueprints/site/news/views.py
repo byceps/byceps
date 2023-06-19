@@ -12,7 +12,7 @@ from flask import abort, g
 
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.news import news_item_service
-from byceps.services.news.models import NewsChannelID, NewsItem
+from byceps.services.news.models import NewsChannelID, RenderedNewsItem
 from byceps.services.site import site_service, site_setting_service
 from byceps.services.site.models import SiteID
 from byceps.util.authorization import has_current_user_permission
@@ -115,7 +115,7 @@ def _may_current_user_view_drafts() -> bool:
     return has_current_user_permission('news_item.view_draft')
 
 
-def _get_external_url(item: NewsItem) -> str | None:
+def _get_external_url(item: RenderedNewsItem) -> str | None:
     announcement_site_id = item.channel.announcement_site_id
     if announcement_site_id is None:
         return None

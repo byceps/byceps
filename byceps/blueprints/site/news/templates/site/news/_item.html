@@ -16,8 +16,8 @@
       {%- endif %}
     </footer>
     <div class="body">
-{% if item.body is not none %}
-{{ item.body|safe }}
+{% if item.body_html %}
+{{ item.body_html|safe }}
 {%- else %}
 {% from 'macros/misc.html' import render_notification %}
 {{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
