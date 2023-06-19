@@ -255,7 +255,7 @@ def _get_db_item(item_id: NewsItemID) -> DbNewsItem:
     return db_item
 
 
-def find_aggregated_item_by_slug(
+def find_rendered_item_by_slug(
     channel_ids: set[NewsChannelID], slug: str, *, published_only: bool = False
 ) -> RenderedNewsItem | None:
     """Return the rendered item identified by that slug in one of the
@@ -286,7 +286,7 @@ def find_aggregated_item_by_slug(
     return render_html(item)
 
 
-def get_aggregated_items_paginated(
+def get_rendered_items_paginated(
     channel_ids: set[NewsChannelID],
     page: int,
     items_per_page: int,
