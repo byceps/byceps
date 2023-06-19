@@ -28,32 +28,53 @@ from .models import BodyFormat, NewsImage, NewsItem, NewsItemHtml
 def render_html(
     item: NewsItem, raw_body: str, body_format: BodyFormat
 ) -> Result[NewsItemHtml, str]:
+    """Render item's raw body and featured image to HTML."""
+    body_html_result = render_body_html(item, raw_body, body_format)
+    if body_html_result.is_err():
+        return Err(body_html_result.unwrap_err())
+
+    body_html = body_html_result.unwrap()
+
+    featured_image = _find_featured_image(item)
+    if featured_image:
+        featured_image_html_result = render_featured_image_html(featured_image)
+        if featured_image_html_result.is_err():
+            return Err(featured_image_html_result.unwrap_err())
+
+        featured_image_html = featured_image_html_result.unwrap()
+    else:
+        featured_image_html = None
+
+    return Ok(
+        NewsItemHtml(
+            body=body_html,
+            featured_image=featured_image_html,
+        )
+    )
+
+
+def render_body_html(
+    item: NewsItem, raw_body: str, body_format: BodyFormat
+) -> Result[str, str]:
     """Render item's raw body to HTML."""
+    template = load_template(raw_body)
+    render_image = partial(_render_image_by_number, item.images)
+
     try:
-        return Ok(_render_html(item, raw_body, body_format))
+        html = template.render(render_image=render_image)
+        if body_format == BodyFormat.markdown:
+            html = mistletoe.markdown(html)
+        return Ok(html)
     except Exception as exc:
         return Err(str(exc))
 
 
-def _render_html(
-    item: NewsItem, raw_body: str, body_format: BodyFormat
-) -> NewsItemHtml:
-    template = load_template(raw_body)
-    render_image = partial(_render_image_by_number, item.images)
-    body_html = template.render(render_image=render_image)
-
-    if body_format == BodyFormat.markdown:
-        body_html = mistletoe.markdown(body_html)
-
-    featured_image = _find_featured_image(item)
-    featured_image_html = (
-        _render_image(featured_image) if featured_image else None
-    )
-
-    return NewsItemHtml(
-        body=body_html,
-        featured_image=featured_image_html,
-    )
+def render_featured_image_html(image: NewsImage) -> Result[str, str]:
+    """Render item's featured image to HTML."""
+    try:
+        return Ok(_render_image(image))
+    except Exception as exc:
+        return Err(str(exc))
 
 
 def _render_image_by_number(
