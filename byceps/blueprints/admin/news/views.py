@@ -440,22 +440,23 @@ def item_view_version_preview(version_id):
 
     item = news_item_service.find_item(version.item_id)
 
-    try:
-        html = news_html_service.render_html(
-            item, version.body, version.body_format
-        )
+    result = news_html_service.render_html(
+        item, version.body, version.body_format
+    )
 
-        return {
-            'title': version.title,
-            'body_html': html.body,
-            'featured_image_html': html.featured_image,
-            'error_occurred': False,
-        }
-    except Exception as e:
+    if result.is_err():
         return {
             'error_occurred': True,
-            'error_message': str(e),
+            'error_message': result.unwrap_err(),
         }
+
+    html = result.unwrap()
+    return {
+        'title': version.title,
+        'body_html': html.body,
+        'featured_image_html': html.featured_image,
+        'error_occurred': False,
+    }
 
 
 @blueprint.get('/items/<uuid:item_id>/versions')

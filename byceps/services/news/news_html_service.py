@@ -19,6 +19,7 @@ from markupsafe import Markup
 import mistletoe
 
 from byceps.util.iterables import find
+from byceps.util.result import Err, Ok, Result
 from byceps.util.templating import load_template
 
 from .models import BodyFormat, NewsImage, NewsItem, NewsItemHtml
@@ -26,8 +27,17 @@ from .models import BodyFormat, NewsImage, NewsItem, NewsItemHtml
 
 def render_html(
     item: NewsItem, raw_body: str, body_format: BodyFormat
-) -> NewsItemHtml:
+) -> Result[NewsItemHtml, str]:
     """Render item's raw body to HTML."""
+    try:
+        return Ok(_render_html(item, raw_body, body_format))
+    except Exception as exc:
+        return Err(str(exc))
+
+
+def _render_html(
+    item: NewsItem, raw_body: str, body_format: BodyFormat
+) -> NewsItemHtml:
     template = load_template(raw_body)
     render_image = partial(_render_image_by_number, item.images)
     body_html = template.render(render_image=render_image)

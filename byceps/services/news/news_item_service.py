@@ -38,7 +38,6 @@ from .models import (
     NewsHeadline,
     NewsImageID,
     NewsItem,
-    NewsItemHtml,
     NewsItemID,
     NewsItemVersionID,
 )
@@ -458,10 +457,23 @@ def _db_entity_to_item(
     )
 
     if render_body:
-        html = _render_html(item)
+        result = news_html_service.render_html(
+            item, item.body, item.body_format
+        )
+        if result.is_ok():
+            html = result.unwrap()
 
-        body_html = html.body if html else None
-        featured_image_html = html.featured_image if html else None
+            body_html = html.body
+            featured_image_html = html.featured_image
+        else:
+            log.warning(
+                'HTML rendering for news item %s failed: %s',
+                item.id,
+                result.unwrap_err(),
+            )
+
+            body_html = None
+            featured_image_html = None
 
         item = dataclasses.replace(
             item, body=body_html, featured_image_html=featured_image_html
@@ -477,17 +489,6 @@ def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
         return None
 
     return f'/data/global/news_channels/{db_item.channel_id}/{url_path}'
-
-
-def _render_html(item: NewsItem) -> NewsItemHtml | None:
-    """Render body text to HTML."""
-    try:
-        return news_html_service.render_html(item, item.body, item.body_format)
-    except Exception as exc:
-        log.warning(
-            'HTML rendering for news item %s failed', item.id, exc_info=exc
-        )
-        return None  # Not the best error indicator.
 
 
 def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:
