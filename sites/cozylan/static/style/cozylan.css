@@ -272,10 +272,6 @@ table.index {
   --table-border-color: var(--border-color);
 }
 
-.news-items {
-  --news-item-divider-color: var(--border-color);
-}
-
 .user-comment-main header,
 .user-comment-main .body {
   border-color: var(--border-color);
