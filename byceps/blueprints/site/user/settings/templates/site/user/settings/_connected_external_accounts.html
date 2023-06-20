@@ -11,7 +11,7 @@
         <div class="row mb">
           {%- if discord_account %}
           <div class="column-auto column-auto--grow">
-            <div class="data-value">{{ render_icon('enabled', color='#009900') }} verbunden</div>
+            <div class="data-value">{{ render_icon('enabled', color='#009900') }} verbunden als <strong>{{ discord_account.external_name }}</strong></div>
           </div>
           <div class="column-auto">
             <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.remove') }}" data-action="discord-remove" title="Verbindung trennen">{{ render_icon('remove', color='#cc0000') }}</a>
