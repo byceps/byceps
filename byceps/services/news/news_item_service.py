@@ -33,6 +33,7 @@ from .dbmodels.item import (
     DbNewsItemVersion,
 )
 from .models import (
+    AdminListNewsItem,
     BodyFormat,
     NewsChannelID,
     NewsHeadline,
@@ -307,13 +308,27 @@ def get_rendered_items_paginated(
     return paginate(stmt, page, items_per_page, item_mapper=item_mapper)
 
 
-def get_items_paginated(
+def get_admin_list_items_paginated(
     channel_ids: set[NewsChannelID], page: int, items_per_page: int
 ) -> Pagination:
     """Return the news items to show on the specified page."""
     stmt = _get_items_stmt(channel_ids)
 
-    return paginate(stmt, page, items_per_page)
+    def to_admin_list_item(db_item: DbNewsItem) -> AdminListNewsItem:
+        db_version = db_item.current_version
+
+        return AdminListNewsItem(
+            id=db_item.id,
+            created_at=db_version.created_at,
+            creator_id=db_version.creator_id,
+            slug=db_item.slug,
+            title=db_version.title,
+            image_url_path=db_version.image_url_path,
+            image_total=len(db_item.images),
+            published=db_item.published,
+        )
+
+    return paginate(stmt, page, items_per_page, item_mapper=to_admin_list_item)
 
 
 def get_headlines_paginated(

@@ -89,3 +89,15 @@ class NewsHeadline:
     published_at: datetime | None
     published: bool
     title: str
+
+
+@dataclass(frozen=True)
+class AdminListNewsItem:
+    id: NewsItemID
+    created_at: datetime
+    creator_id: UserID
+    slug: str
+    title: str
+    image_url_path: str | None
+    image_total: int
+    published: bool
