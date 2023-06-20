@@ -26,43 +26,45 @@
 
   <h1>{{ _('Board') }}</h1>
 
+  <div class="main-body-box">
   {%- if topics.items %}
-  <table class="index index--higher index--v-centered index--wide board-topic-index">
-    <thead>
-      <tr>
-        <th>{{ _('Topic') }}</th>
-        <th class="centered">{{ _('Replies') }}</th>
-        <th>{{ _('Latest post') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for topic in topics.items %}
-      <tr id="topic-{{ topic.id }}"{% if topic.hidden %} class="dimmed"{% endif %}>
-        <td>
-          <a class="board-index-item-link disguised" href="{{ url_for('.topic_view', topic_id=topic.id) }}">
-            <div class="board-index-item-title">
-              {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
-              {%- if topic.hidden %}<span class="tag tag--outlined">{{ render_icon('hidden', title='%s (%s %s)'|format(_('hidden'), _('by'), topic.hidden_by.screen_name)) }}</span> {% endif -%}
-              {%- if topic.locked %}<span class="tag tag--outlined">{{ render_icon('lock', title=_('locked')) }}</span> {% endif -%}
-              {%- if topic.pinned %}<span class="tag tag--outlined">{{ render_icon('pin', title=_('pinned')) }}</span> {% endif -%}
-              <strong>{{ topic.title }}</strong>
-            </div>
-            <div class="board-index-item-meta">
-              <span class="board-category-tag">{{ topic.category.title }}</span>
-              &middot;
-              {{ _('started by') }} {{ render_user_avatar_and_name(topic.creator, size=16) }}
-            </div>
-          </a>
-        </td>
-        <td class="centered bignumber">{{ topic.reply_count|numberformat }}</td>
-        <td class="nowrap">{{ topic.last_updated_at|dateformat }}, {{ topic.last_updated_at|timeformat('short') }}<br>{{ _('by') }} {{ render_user_avatar_and_name(topic.last_updated_by, size=16) }}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
+    <table class="index index--higher index--v-centered index--wide board-topic-index">
+      <thead>
+        <tr>
+          <th>{{ _('Topic') }}</th>
+          <th class="centered">{{ _('Replies') }}</th>
+          <th>{{ _('Latest post') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for topic in topics.items %}
+        <tr id="topic-{{ topic.id }}"{% if topic.hidden %} class="dimmed"{% endif %}>
+          <td>
+            <a class="board-index-item-link disguised" href="{{ url_for('.topic_view', topic_id=topic.id) }}">
+              <div class="board-index-item-title">
+                {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
+                {%- if topic.hidden %}<span class="tag tag--outlined">{{ render_icon('hidden', title='%s (%s %s)'|format(_('hidden'), _('by'), topic.hidden_by.screen_name)) }}</span> {% endif -%}
+                {%- if topic.locked %}<span class="tag tag--outlined">{{ render_icon('lock', title=_('locked')) }}</span> {% endif -%}
+                {%- if topic.pinned %}<span class="tag tag--outlined">{{ render_icon('pin', title=_('pinned')) }}</span> {% endif -%}
+                <strong>{{ topic.title }}</strong>
+              </div>
+              <div class="board-index-item-meta">
+                <span class="board-category-tag">{{ topic.category.title }}</span>
+                &middot;
+                {{ _('started by') }} {{ render_user_avatar_and_name(topic.creator, size=16) }}
+              </div>
+            </a>
+          </td>
+          <td class="centered bignumber">{{ topic.reply_count|numberformat }}</td>
+          <td class="nowrap">{{ topic.last_updated_at|dateformat }}, {{ topic.last_updated_at|timeformat('short') }}<br>{{ _('by') }} {{ render_user_avatar_and_name(topic.last_updated_by, size=16) }}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
   {%- else %}
-  <p class="dimmed">{{ _('No topics exist in this category.') }}</p>
+    <p class="dimmed">{{ _('No topics exist in this category.') }}</p>
   {%- endif %}
+  </div>
 
 {{ render_pagination_nav(topics, 'board.topic_index', centered=True) }}
 
