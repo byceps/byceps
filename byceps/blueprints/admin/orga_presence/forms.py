@@ -6,6 +6,7 @@ byceps.blueprints.admin.orga_presence.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import dataclasses
 from datetime import datetime
 
 from flask_babel import gettext, lazy_gettext, to_user_timezone, to_utc
@@ -17,7 +18,8 @@ from byceps.util.l10n import LocalizedForm
 
 
 def build_presence_create_form(dt_range: DateTimeRange):
-    dt_range = dt_range._replace(
+    dt_range = dataclasses.replace(
+        dt_range,
         start=to_user_timezone(dt_range.start).replace(tzinfo=None),
         end=to_user_timezone(dt_range.end).replace(tzinfo=None),
     )
