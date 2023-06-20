@@ -1,5 +1,9 @@
 /* basic */
 
+:root {
+  --main-body-box-hspace: 0;
+}
+
 body {
   background-color: #f4f4f4;
   color: #333333;
@@ -32,6 +36,11 @@ body {
 
 .main-body-box + .main-body-box {
   margin-top: 1.5rem;
+}
+
+.main-body-box .featured-image {
+  margin-left: calc(-1 * var(--main-body-box-hspace));
+  margin-right: calc(-1 * var(--main-body-box-hspace));
 }
 
 
