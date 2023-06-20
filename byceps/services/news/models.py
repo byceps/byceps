@@ -70,7 +70,6 @@ class NewsItem:
     image_url_path: str | None
     images: list[NewsImage]
     featured_image_id: NewsImageID | None
-    featured_image_html: str | None
 
 
 @dataclass(frozen=True)

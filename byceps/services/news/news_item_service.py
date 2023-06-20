@@ -23,7 +23,7 @@ from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 from byceps.util.iterables import find
-from byceps.util.result import Err, Ok, Result
+from byceps.util.result import Ok, Result
 
 from . import news_channel_service, news_html_service, news_image_service
 from .dbmodels.channel import DbNewsChannel
@@ -456,7 +456,6 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
         image_url_path=image_url_path,
         images=images,
         featured_image_id=db_item.featured_image_id,
-        featured_image_html=None,
     )
 
 
