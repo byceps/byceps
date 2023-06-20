@@ -506,6 +506,7 @@ def render_html(item: NewsItem) -> RenderedNewsItem:
         title=item.title,
         featured_image_html=_render_featured_image_html(item),
         body_html=_render_body_html(item),
+        image_url_path=item.image_url_path,
     )
 
 

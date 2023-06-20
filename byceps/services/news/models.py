@@ -82,6 +82,7 @@ class RenderedNewsItem:
     title: str
     featured_image_html: Result[str | None, str]
     body_html: Result[str, str]
+    image_url_path: str | None
 
 
 @dataclass(frozen=True)
