@@ -9,6 +9,7 @@ byceps.services.news.news_item_service
 from __future__ import annotations
 
 from collections.abc import Sequence
+import dataclasses
 from datetime import datetime
 
 from sqlalchemy import delete, select
@@ -320,7 +321,7 @@ def get_admin_list_items_paginated(
         return AdminListNewsItem(
             id=db_item.id,
             created_at=db_version.created_at,
-            creator_id=db_version.creator_id,
+            creator=db_version.creator_id,
             slug=db_item.slug,
             title=db_version.title,
             image_url_path=db_version.image_url_path,
@@ -328,7 +329,19 @@ def get_admin_list_items_paginated(
             published=db_item.published,
         )
 
-    return paginate(stmt, page, items_per_page, item_mapper=to_admin_list_item)
+    pagination = paginate(
+        stmt, page, items_per_page, item_mapper=to_admin_list_item
+    )
+
+    user_ids = {item.creator for item in pagination.items}
+    users = user_service.get_users(user_ids, include_avatars=True)
+    users_by_id = user_service.index_users_by_id(users)
+    pagination.items = [
+        dataclasses.replace(item, creator=users_by_id[item.creator])
+        for item in pagination.items
+    ]
+
+    return pagination
 
 
 def get_headlines_paginated(

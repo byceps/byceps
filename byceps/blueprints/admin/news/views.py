@@ -99,17 +99,12 @@ def channel_view(channel_id, page):
         channel_ids, page, per_page
     )
 
-    user_ids = {item.creator_id for item in items.items}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
-
     return {
         'channel': channel,
         'brand': brand,
         'announcement_site': announcement_site,
         'items': items,
         'per_page': per_page,
-        'users_by_id': users_by_id,
     }
 
 

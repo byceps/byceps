@@ -86,7 +86,7 @@
             {{ item.created_at|datetimeformat }}
             {%- endif -%}
             <br>
-            {{ _('by') }} {{ render_user_avatar_and_name(users_by_id[item.creator_id], size=16) }}
+            {{ _('by') }} {{ render_user_avatar_and_name(item.creator, size=16) }}
           </td>
           <td class="centered bignumber{% if item.image_total == 0 %} dimmed{% endif %}">{{ item.image_total }}</td>
         </tr>

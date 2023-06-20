@@ -14,6 +14,7 @@ from enum import Enum
 from typing import NewType
 from uuid import UUID
 
+from byceps.services.user.models.user import User
 from byceps.typing import BrandID, UserID
 from byceps.util.result import Result
 
@@ -95,7 +96,7 @@ class NewsHeadline:
 class AdminListNewsItem:
     id: NewsItemID
     created_at: datetime
-    creator_id: UserID
+    creator: User
     slug: str
     title: str
     image_url_path: str | None
