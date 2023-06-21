@@ -122,10 +122,8 @@ def create(party_id):
     if not form.validate():
         return create_form(party.id, form)
 
-    starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
-    starts_at_utc = to_utc(starts_at_local)
-    ends_at_local = datetime.combine(form.ends_on.data, form.ends_at.data)
-    ends_at_utc = to_utc(ends_at_local)
+    starts_at_utc = to_utc(form.starts_at.data)
+    ends_at_utc = to_utc(form.ends_at.data)
 
     orga_presence_service.create_presence(
         party.id,
