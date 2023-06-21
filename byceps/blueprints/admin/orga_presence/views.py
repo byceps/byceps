@@ -21,6 +21,7 @@ from byceps.services.orga_presence.models import (
 )
 from byceps.services.party import party_service
 from byceps.services.user.models.user import User
+from byceps.util.datetime.range import DateTimeRange
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 from byceps.util.views import (
@@ -96,7 +97,7 @@ def create_form(party_id, erroneous_form=None):
     party = _get_party_or_404(party_id)
 
     party_time_slot = PartyTimeSlot.from_party(party)
-    valid_range = party_time_slot.range
+    valid_range = _get_valid_range(party_time_slot)
 
     CreateForm = build_presence_create_form(valid_range)
     form = erroneous_form if erroneous_form else CreateForm()
@@ -115,8 +116,9 @@ def create(party_id):
     party = _get_party_or_404(party_id)
 
     party_time_slot = PartyTimeSlot.from_party(party)
+    valid_range = _get_valid_range(party_time_slot)
 
-    CreateForm = build_presence_create_form(party_time_slot.range)
+    CreateForm = build_presence_create_form(valid_range)
     form = CreateForm(request.form)
 
     if not form.validate():
@@ -133,6 +135,10 @@ def create(party_id):
     )
 
     return redirect_to('.view', party_id=party.id)
+
+
+def _get_valid_range(party_time_slot: PartyTimeSlot) -> DateTimeRange:
+    return party_time_slot.range
 
 
 @blueprint.delete('/time_slots/<time_slot_id>')
