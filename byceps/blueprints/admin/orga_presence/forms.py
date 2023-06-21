@@ -17,32 +17,32 @@ from byceps.util.datetime.range import DateTimeRange
 from byceps.util.l10n import LocalizedForm
 
 
-def build_presence_create_form(dt_range: DateTimeRange):
-    dt_range = dataclasses.replace(
-        dt_range,
-        start=to_user_timezone(dt_range.start).replace(tzinfo=None),
-        end=to_user_timezone(dt_range.end).replace(tzinfo=None),
+def build_presence_create_form(dt_range_utc: DateTimeRange):
+    dt_range_local = dataclasses.replace(
+        dt_range_utc,
+        start=to_user_timezone(dt_range_utc.start).replace(tzinfo=None),
+        end=to_user_timezone(dt_range_utc.end).replace(tzinfo=None),
     )
 
     class CreateForm(LocalizedForm):
         starts_on = DateField(
             lazy_gettext('Start date'),
-            default=dt_range.start.date,
+            default=dt_range_local.start.date,
             validators=[InputRequired()],
         )
         starts_at = TimeField(
             lazy_gettext('Start time'),
-            default=dt_range.start.time,
+            default=dt_range_local.start.time,
             validators=[InputRequired()],
         )
         ends_on = DateField(
             lazy_gettext('End date'),
-            default=dt_range.end.date,
+            default=dt_range_local.end.date,
             validators=[InputRequired()],
         )
         ends_at = TimeField(
             lazy_gettext('End time'),
-            default=dt_range.end.time,
+            default=dt_range_local.end.time,
             validators=[InputRequired()],
         )
 
@@ -63,7 +63,7 @@ def build_presence_create_form(dt_range: DateTimeRange):
                 (starts_at, self.starts_on, self.starts_at),
                 (ends_at, self.ends_on, self.ends_at),
             ]:
-                if dt not in dt_range:
+                if dt not in dt_range_utc:
                     for field in field_date, field_time:
                         field.errors.append(
                             gettext('Value must be in valid range.')
