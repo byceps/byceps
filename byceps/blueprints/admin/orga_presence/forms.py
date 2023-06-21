@@ -59,16 +59,21 @@ def build_presence_create_form(dt_range_utc: DateTimeRange):
                 datetime.combine(self.ends_on.data, self.ends_at.data)
             )
 
-            for dt, field_date, field_time in [
-                (starts_at, self.starts_on, self.starts_at),
-                (ends_at, self.ends_on, self.ends_at),
-            ]:
-                if dt not in dt_range_utc:
-                    for field in field_date, field_time:
-                        field.errors.append(
-                            gettext('Value must be in valid range.')
-                        )
-                    valid = False
+            def append_date_time_error(field_date, field_time):
+                for field in field_date, field_time:
+                    field.errors.append(
+                        gettext('Value must be in valid range.')
+                    )
+
+            if not (dt_range_utc.start <= starts_at < dt_range_utc.end):
+                append_date_time_error(self.starts_on, self.starts_at)
+                valid = False
+
+            # As the presence end timestamp is exclusive, it may match
+            # the date range's end, which is exclusive, too.
+            if not (dt_range_utc.start <= ends_at <= dt_range_utc.end):
+                append_date_time_error(self.ends_on, self.ends_at)
+                valid = False
 
             if starts_at >= ends_at:
                 self.form_errors.append(
