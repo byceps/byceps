@@ -19,23 +19,23 @@ from byceps.util.l10n import LocalizedForm
 DATE_TIME_LOCAL_FIELD_FORMAT = '%Y-%m-%dT%H:%M'
 
 
-def build_presence_create_form(dt_range_utc: DateTimeRange):
-    dt_range_local = dataclasses.replace(
-        dt_range_utc,
-        start=to_user_timezone(dt_range_utc.start).replace(tzinfo=None),
-        end=to_user_timezone(dt_range_utc.end).replace(tzinfo=None),
+def build_presence_create_form(valid_range_utc: DateTimeRange):
+    valid_range_local = dataclasses.replace(
+        valid_range_utc,
+        start=to_user_timezone(valid_range_utc.start).replace(tzinfo=None),
+        end=to_user_timezone(valid_range_utc.end).replace(tzinfo=None),
     )
 
     class CreateForm(LocalizedForm):
         starts_at = DateTimeLocalField(
             lazy_gettext('Start'),
-            default=dt_range_local.start,
+            default=valid_range_local.start,
             validators=[InputRequired()],
             format=DATE_TIME_LOCAL_FIELD_FORMAT,
         )
         ends_at = DateTimeLocalField(
             lazy_gettext('End'),
-            default=dt_range_local.end,
+            default=valid_range_local.end,
             validators=[InputRequired()],
             format=DATE_TIME_LOCAL_FIELD_FORMAT,
         )
@@ -52,13 +52,13 @@ def build_presence_create_form(dt_range_utc: DateTimeRange):
             def append_date_time_error(field):
                 field.errors.append(gettext('Value must be in valid range.'))
 
-            if not (dt_range_utc.start <= starts_at < dt_range_utc.end):
+            if not (valid_range_utc.start <= starts_at < valid_range_utc.end):
                 append_date_time_error(self.starts_at)
                 valid = False
 
             # As the presence end timestamp is exclusive, it may match
             # the date range's end, which is exclusive, too.
-            if not (dt_range_utc.start <= ends_at <= dt_range_utc.end):
+            if not (valid_range_utc.start <= ends_at <= valid_range_utc.end):
                 append_date_time_error(self.ends_at)
                 valid = False
 
