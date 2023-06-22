@@ -6,7 +6,7 @@ byceps.blueprints.admin.orga_presence.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import dataclasses
+from datetime import datetime
 
 from flask_babel import gettext, lazy_gettext, to_user_timezone, to_utc
 from wtforms import DateTimeLocalField
@@ -19,23 +19,23 @@ from byceps.util.l10n import LocalizedForm
 DATE_TIME_LOCAL_FIELD_FORMAT = '%Y-%m-%dT%H:%M'
 
 
-def build_presence_create_form(valid_range_utc: DateTimeRange):
-    valid_range_local = dataclasses.replace(
-        valid_range_utc,
-        start=to_user_timezone(valid_range_utc.start).replace(tzinfo=None),
-        end=to_user_timezone(valid_range_utc.end).replace(tzinfo=None),
-    )
-
+def build_presence_create_form(
+    valid_range_utc: DateTimeRange,
+    default_starts_at_utc: datetime,
+    default_ends_at_utc: datetime,
+):
     class CreateForm(LocalizedForm):
         starts_at = DateTimeLocalField(
             lazy_gettext('Start'),
-            default=valid_range_local.start,
+            default=to_user_timezone(default_starts_at_utc).replace(
+                tzinfo=None
+            ),
             validators=[InputRequired()],
             format=DATE_TIME_LOCAL_FIELD_FORMAT,
         )
         ends_at = DateTimeLocalField(
             lazy_gettext('End'),
-            default=valid_range_local.end,
+            default=to_user_timezone(default_ends_at_utc).replace(tzinfo=None),
             validators=[InputRequired()],
             format=DATE_TIME_LOCAL_FIELD_FORMAT,
         )

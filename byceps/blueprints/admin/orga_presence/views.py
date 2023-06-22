@@ -8,7 +8,8 @@ byceps.blueprints.admin.orga_presence.views
 
 from collections import defaultdict
 from collections.abc import Iterable
-from datetime import datetime
+import dataclasses
+from datetime import datetime, timedelta
 
 from flask import abort, g, request
 from flask_babel import to_utc
@@ -97,9 +98,12 @@ def create_form(party_id, erroneous_form=None):
     party = _get_party_or_404(party_id)
 
     party_time_slot = PartyTimeSlot.from_party(party)
-    valid_range = _get_valid_range(party_time_slot)
+    party_range = party_time_slot.range
+    valid_range = _get_valid_range(party_range)
 
-    CreateForm = build_presence_create_form(valid_range)
+    CreateForm = build_presence_create_form(
+        valid_range, party_range.start, party_range.end
+    )
     form = erroneous_form if erroneous_form else CreateForm()
 
     return {
@@ -116,9 +120,12 @@ def create(party_id):
     party = _get_party_or_404(party_id)
 
     party_time_slot = PartyTimeSlot.from_party(party)
-    valid_range = _get_valid_range(party_time_slot)
+    party_range = party_time_slot.range
+    valid_range = _get_valid_range(party_range)
 
-    CreateForm = build_presence_create_form(valid_range)
+    CreateForm = build_presence_create_form(
+        valid_range, party_range.start, party_range.end
+    )
     form = CreateForm(request.form)
 
     if not form.validate():
@@ -137,8 +144,13 @@ def create(party_id):
     return redirect_to('.view', party_id=party.id)
 
 
-def _get_valid_range(party_time_slot: PartyTimeSlot) -> DateTimeRange:
-    return party_time_slot.range
+def _get_valid_range(party_range: DateTimeRange) -> DateTimeRange:
+    # Extend range beyond mere party date.
+    return dataclasses.replace(
+        party_range,
+        start=party_range.start - timedelta(4),
+        end=party_range.end + timedelta(4),
+    )
 
 
 @blueprint.delete('/time_slots/<time_slot_id>')
