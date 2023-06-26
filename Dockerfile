@@ -1,4 +1,4 @@
-FROM python:3.9-bullseye
+FROM python:3.11-bookworm
 
 # Install Debian dependencies.
 # A final `apt-get clean` is part of the Debian base image.
