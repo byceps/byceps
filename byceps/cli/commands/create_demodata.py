@@ -20,6 +20,7 @@ from byceps.services.board import board_category_command_service, board_service
 from byceps.services.board.models import Board, BoardID
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import Brand
+from byceps.services.email import email_config_service
 from byceps.services.page import page_service
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
@@ -50,6 +51,7 @@ def create_demodata() -> None:
     """Generate data for demonstration purposes."""
     admin = _create_admin()
     brand = _create_brand()
+    _create_email_config(brand.id)
     party = _create_party(brand.id)
     board = _create_board(brand.id)
     ticket_category = _create_ticket_category(party.id)
@@ -77,6 +79,12 @@ def _create_brand() -> Brand:
     brand = brand_service.create_brand(BrandID('cozylan'), 'CozyLAN')
     click.secho('done. ', fg='green')
     return brand
+
+
+def _create_email_config(brand_id: BrandID) -> None:
+    click.echo('Creating email configuration ... ', nl=False)
+    email_config_service.create_config(brand_id, 'noreply@demo.example')
+    click.secho('done. ', fg='green')
 
 
 def _create_party(brand_id: BrandID) -> Party:
