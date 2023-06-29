@@ -15,7 +15,7 @@ BYCEPS comes with a command-line tool for some tasks.
      - Description
    * - ``byceps create-database-tables``
      - :ref:`Create database tables <Create Database Tables>`
-   * - ``byceps create-demodata``
+   * - ``byceps create-demo-data``
      - :ref:`Create examplary data for demonstration purposes <Create Demo Data>`
    * - ``byceps create-superuser``
      - :ref:`Create superuser <Create Superuser>`
@@ -243,12 +243,12 @@ To import it:
 Create Demo Data
 ================
 
-``byceps create-demodata`` inserts data for demonstration purposes into
+``byceps create-demo-data`` inserts data for demonstration purposes into
 the database.
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-demodata
+    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-demo-data
     Creating byceps_byceps-admin_run ... done
     Creating brand ... done.
     Creating party ... done.

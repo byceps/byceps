@@ -1,6 +1,6 @@
 """
-byceps.cli.command.create_demodata
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.cli.command.create_demo_data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Populate the database with data for demonstration purposes.
 
@@ -47,7 +47,7 @@ from byceps.typing import BrandID, PartyID, UserID
 
 @click.command()
 @with_appcontext
-def create_demodata() -> None:
+def create_demo_data() -> None:
     """Generate data for demonstration purposes."""
     admin = _create_admin()
     brand = _create_brand()
