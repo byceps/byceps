@@ -7,10 +7,7 @@ It is a tool to prepare and operate a LAN party, both online on the
 Internet and locally as an intranet system, for both organizers and
 attendees.
 
-The system incorporates both experience from more than 15 years of
-organizing LAN parties as well as concepts and source code developed
-for more than a decade.
-
+This documentation should guide you to understand and set up BYCEPS.
 
 .. toctree::
    :maxdepth: 2
