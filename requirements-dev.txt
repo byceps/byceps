@@ -3,7 +3,7 @@
 black==23.3.0
 Flask-DebugToolbar==0.13.1
 mypy==1.4.1
-ruff>=0.0.269
+ruff>=0.0.275
 types-freezegun==1.1.10
 types-redis==4.6.0.0
 types-requests==2.31.0.1
