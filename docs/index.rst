@@ -18,6 +18,7 @@ for more than a decade.
    concepts/index
    blueprints/index
    installation/index
+   installation_docker/index
    running/index
    upgrading/index
    config/index
