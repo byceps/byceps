@@ -25,11 +25,11 @@ def award_badge(
 ) -> None:
     """Award badge to user."""
     badge = user_badge_service.get_badge(parameters['badge_id'])
-    user_id = order.placed_by_id
+    awardee_id = order.placed_by_id
 
     for _ in range(line_item.quantity):
         awarding, _ = user_badge_awarding_service.award_badge_to_user(
-            badge.id, user_id
+            badge.id, awardee_id
         )
 
         _create_order_log_entry(order.id, awarding)
@@ -40,7 +40,7 @@ def _create_order_log_entry(order_id: OrderID, awarding: BadgeAwarding) -> None:
     data = {
         'awarding_id': str(awarding.id),
         'badge_id': str(awarding.badge_id),
-        'recipient_id': str(awarding.user_id),
+        'recipient_id': str(awarding.awardee_id),
     }
 
     order_log_service.create_entry(event_type, order_id, data)
