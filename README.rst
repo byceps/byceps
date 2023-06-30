@@ -97,7 +97,7 @@ Code Status
 Author
 ======
 
-BYCEPS was created, and is developed and maintained, by Jochen
+BYCEPS was created, and is developed and maintained, by Jochen "Y0Gi"
 Kupperschmidt.
 
 
