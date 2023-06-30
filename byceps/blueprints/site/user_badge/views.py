@@ -42,18 +42,18 @@ def view(slug):
         abort(404)
 
     awardings = user_badge_awarding_service.get_awardings_of_badge(badge.id)
-    recipient_ids = {awarding.user_id for awarding in awardings}
-    recipients = user_service.get_users(recipient_ids, include_avatars=True)
+    awardee_ids = {awarding.awardee_id for awarding in awardings}
+    awardees = user_service.get_users(awardee_ids, include_avatars=True)
 
     if g.party_id is not None:
         orga_ids = orga_team_service.select_orgas_for_party(
-            recipient_ids, g.party_id
+            awardee_ids, g.party_id
         )
     else:
         orga_ids = set()
 
     return {
         'badge': badge,
-        'recipients': recipients,
+        'awardees': awardees,
         'orga_ids': orga_ids,
     }

@@ -42,16 +42,16 @@ def award_badge_to_user():
     if not badge:
         abort(400, 'Badge slug unknown')
 
-    user = user_service.find_user(req.user_id)
-    if not user:
-        abort(400, 'User ID unknown')
+    awardee = user_service.find_user(req.awardee_id)
+    if not awardee:
+        abort(400, 'Awardee ID unknown')
 
     initiator = user_service.find_user(req.initiator_id)
     if not initiator:
         abort(400, 'Initiator ID unknown')
 
     _, event = user_badge_awarding_service.award_badge_to_user(
-        badge.id, user.id, initiator_id=initiator.id
+        badge.id, awardee.id, initiator_id=initiator.id
     )
 
     user_badge_signals.user_badge_awarded.send(None, event=event)

@@ -5,17 +5,17 @@
 {% set page_title = [_('Badges'), badge.label] %}
 
 {% block head %}
-  <style>
-    a.recipient {
-      border: none;
-      display: block;
-      text-decoration: none;
-    }
+<style>
+a.awardee {
+  border: none;
+  display: block;
+  text-decoration: none;
+}
 
-    a.recipient:hover .avatar {
-      outline: currentColor solid 1px;
-    }
-  </style>
+a.awardee:hover .avatar {
+  outline: currentColor solid 1px;
+}
+</style>
 {% endblock %}
 
 {% block body %}
@@ -36,12 +36,12 @@
     </div>
   </div>
 
-  <h2>an {{ recipients|length }} Personen verliehen</h2>
+  <h2>{{ _('Awarded to %(awardee_count)s users', awardee_count=awardees|length) }}</h2>
   <div class="main-body-box">
     <ul class="list-grid">
-      {%- for user in recipients|sort(attribute='screen_name') %}
-      <li><a class="recipient" href="{{ url_for('user_profile.view', user_id=user.id) }}">
-{{ render_user_avatar(user, size=64, orga=user.id in orga_ids) }}
+      {%- for awardee in awardees|sort(attribute='screen_name') %}
+      <li><a class="awardee" href="{{ url_for('user_profile.view', user_id=awardee.id) }}">
+{{ render_user_avatar(awardee, size=64, orga=awardee.id in orga_ids) }}
       </a></li>
       {%- endfor %}
     </ul>

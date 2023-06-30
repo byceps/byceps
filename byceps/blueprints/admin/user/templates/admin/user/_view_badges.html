@@ -12,7 +12,7 @@
 
     {%- if has_current_user_permission('user_badge.award') %}
     <div class="button-row button-row--compact button-row--right">
-      <a class="button" href="{{ url_for('user_badge_admin.award_form', user_id=user.id) }}">{{ render_icon('add') }} <span>{{ _('Award badge') }}</span></a>
+      <a class="button" href="{{ url_for('user_badge_admin.award_form', awardee_id=user.id) }}">{{ render_icon('add') }} <span>{{ _('Award badge') }}</span></a>
     </div>
     {%- endif %}
 

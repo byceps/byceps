@@ -40,7 +40,7 @@ def _build_awarding(
     return BadgeAwarding(
         id=awarding_id,
         badge_id=badge.id,
-        user_id=awardee.id,
+        awardee_id=awardee.id,
         awarded_at=awarded_at,
     )
 
@@ -60,7 +60,7 @@ def _build_awarding_event(
 
 
 def _build_awarding_log_entry(
-    occurred_at: datetime, badge: Badge, user: User, initiator: User | None
+    occurred_at: datetime, badge: Badge, awardee: User, initiator: User | None
 ) -> UserLogEntry:
     data = {'badge_id': str(badge.id)}
     if initiator:
@@ -70,6 +70,6 @@ def _build_awarding_log_entry(
         id=generate_uuid7(),
         occurred_at=occurred_at,
         event_type='user-badge-awarded',
-        user_id=user.id,
+        user_id=awardee.id,
         data=data,
     )

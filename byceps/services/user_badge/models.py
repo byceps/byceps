@@ -33,12 +33,12 @@ class Badge:
 class BadgeAwarding:
     id: UUID
     badge_id: BadgeID
-    user_id: UserID
+    awardee_id: UserID
     awarded_at: datetime
 
 
 @dataclass(frozen=True)
 class QuantifiedBadgeAwarding:
     badge_id: BadgeID
-    user_id: UserID
+    awardee_id: UserID
     quantity: int

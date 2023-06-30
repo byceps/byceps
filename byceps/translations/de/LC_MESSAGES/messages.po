@@ -6090,8 +6090,8 @@ msgstr "Abzeichen bearbeiten"
 
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:89
 #, python-format
-msgid "Awarded to %(recipient_count)s users"
-msgstr "An %(recipient_count)s Personen verliehen"
+msgid "Awarded to %(awardee_count)s users"
+msgstr "An %(awardee_count)s Personen verliehen"
 
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:101
 msgid "This badge has not been awarded yet."

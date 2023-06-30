@@ -13,5 +13,5 @@ from pydantic import BaseModel
 
 class AwardBadgeToUserRequest(BaseModel):
     badge_slug: str
-    user_id: UUID
+    awardee_id: UUID
     initiator_id: UUID

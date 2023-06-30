@@ -22,13 +22,13 @@
   margin-left: 1rem;
 }
 
-a.recipient {
+a.awardee {
   border: none;
   display: block;
   text-decoration: none;
 }
 
-a.recipient:hover .avatar {
+a.awardee:hover .avatar {
   outline: currentColor solid 1px;
 }
 </style>
@@ -86,14 +86,14 @@ a.recipient:hover .avatar {
 
   </div>
 
-  <h2>{{ _('Awarded to %(recipient_count)s users', recipient_count=recipients|length) }}</h2>
+  <h2>{{ _('Awarded to %(awardee_count)s users', awardee_count=awardees|length) }}</h2>
   <div class="box">
 
-    {%- if recipients %}
+    {%- if awardees %}
     <ul class="list-grid">
-      {%- for user in recipients %}
-      <li><a class="recipient" href="{{ url_for('user_admin.view', user_id=user.id) }}">
-{{ render_user_avatar(user, size=64) }}
+      {%- for awardee in awardees %}
+      <li><a class="awardee" href="{{ url_for('user_admin.view', user_id=awardee.id) }}">
+{{ render_user_avatar(awardee, size=64) }}
       </a></li>
       {%- endfor %}
     </ul>

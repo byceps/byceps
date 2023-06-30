@@ -6,20 +6,20 @@
 {% set page_title = _('Award Badge') %}
 
 {% block before_body %}
-{{ render_backlink(url_for('user_admin.view', user_id=user.id), user.screen_name) }}
+{{ render_backlink(url_for('user_admin.view', user_id=awardee.id), awardee.screen_name) }}
 {%- endblock %}
 
 {% block body %}
 
   <h1>{{ page_title }}</h1>
 
-  <form action="{{ url_for('.award', user_id=user.id) }}" method="post">
+  <form action="{{ url_for('.award', awardee_id=awardee.id) }}" method="post">
     <div class="box">
 
       <div class="mb">
         <label class="form-label">{{ _('User') }}</label>
         <div>
-          {{ render_user_avatar_and_admin_link(user, size=20) }}
+          {{ render_user_avatar_and_admin_link(awardee, size=20) }}
         </div>
       </div>
 

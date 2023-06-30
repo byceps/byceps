@@ -80,14 +80,14 @@ def view(badge_id):
         brand = None
 
     awardings = user_badge_awarding_service.get_awardings_of_badge(badge.id)
-    recipient_ids = [awarding.user_id for awarding in awardings]
-    recipients = user_service.get_users(recipient_ids, include_avatars=True)
-    recipients = list(sorted(recipients, key=lambda r: r.screen_name or ''))
+    awardee_ids = [awarding.awardee_id for awarding in awardings]
+    awardees = user_service.get_users(awardee_ids, include_avatars=True)
+    awardees = list(sorted(awardees, key=lambda r: r.screen_name or ''))
 
     return {
         'badge': badge,
         'brand': brand,
-        'recipients': recipients,
+        'awardees': awardees,
     }
 
 
@@ -201,39 +201,41 @@ def _set_brand_ids_on_form(form):
 # awarding
 
 
-@blueprint.get('/awardings/to/<uuid:user_id>')
+@blueprint.get('/awardings/to/<uuid:awardee_id>')
 @permission_required('user_badge.award')
 @templated
-def award_form(user_id, erroneous_form=None):
+def award_form(awardee_id, erroneous_form=None):
     """Show form to award a badge to a user."""
-    user = user_service.find_user(user_id)
-    if not user:
+    awardee = user_service.find_user(awardee_id)
+    if not awardee:
         abort(404)
 
-    form = erroneous_form if erroneous_form else AwardForm(user_id=user.id)
+    form = (
+        erroneous_form if erroneous_form else AwardForm(awardee_id=awardee.id)
+    )
     _set_badge_ids_on_form(form)
 
     return {
         'form': form,
-        'user': user,
+        'awardee': awardee,
     }
 
 
-@blueprint.post('/awardings/to/<uuid:user_id>')
+@blueprint.post('/awardings/to/<uuid:awardee_id>')
 @permission_required('user_badge.award')
-def award(user_id):
+def award(awardee_id):
     """Award a badge to a user."""
     form = AwardForm(request.form)
     _set_badge_ids_on_form(form)
 
     if not form.validate():
-        return award_form(user_id, form)
+        return award_form(awardee_id, form)
 
     badge_id = form.badge_id.data
 
-    user = user_service.find_user(user_id)
-    if not user:
-        abort(401, 'Unknown user ID')
+    awardee = user_service.find_user(awardee_id)
+    if not awardee:
+        abort(401, 'Unknown awardee ID')
 
     badge = user_badge_service.find_badge(badge_id)
     if not badge:
@@ -242,20 +244,20 @@ def award(user_id):
     initiator_id = g.user.id
 
     _, event = user_badge_awarding_service.award_badge_to_user(
-        badge_id, user_id, initiator_id=initiator_id
+        badge_id, awardee_id, initiator_id=initiator_id
     )
 
     flash_success(
         gettext(
             'Badge "%(badge_label)s" has been awarded to %(screen_name)s.',
             badge_label=badge.label,
-            screen_name=user.screen_name,
+            screen_name=awardee.screen_name,
         )
     )
 
     user_badge_signals.user_badge_awarded.send(None, event=event)
 
-    return redirect_to('user_admin.view', user_id=user.id)
+    return redirect_to('user_admin.view', user_id=awardee.id)
 
 
 def _set_badge_ids_on_form(form):
