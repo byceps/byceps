@@ -19,8 +19,8 @@ This documentation should guide you to understand and set up BYCEPS.
   `BYCEPS Discord server <https://discord.gg/HxXbBN554U>`_.
 
   .. image:: https://discordapp.com/api/guilds/736558889767796789/widget.png?style=banner2
-    :alt: Join BYCEPS on Discord
-    :target: https://discord.gg/HxXbBN554U
+     :alt: Join BYCEPS on Discord
+     :target: https://discord.gg/HxXbBN554U
 
 - If you happen to find an issue or even a bug, please report it on the
   `issue tracker at GitHub <https://github.com/byceps/byceps/issues>`_.

@@ -31,8 +31,9 @@ Community
 If you have questions, suggestions, or want to exchange experience,
 consider yourself invited to join us on the BYCEPS Discord server:
 
-[![Join BYCEPS on
-Discord](https://discordapp.com/api/guilds/736558889767796789/widget.png?style=banner2)](https://discord.gg/HxXbBN554U)
+.. image:: https://discordapp.com/api/guilds/736558889767796789/widget.png?style=banner2
+   :alt: Join BYCEPS on Discord
+   :target: https://discord.gg/HxXbBN554U
 
 
 In the Wild
