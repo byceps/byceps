@@ -25,6 +25,16 @@ Website
 The official tiny website is at https://byceps.nwsnet.de/.
 
 
+Community
+=========
+
+If you have questions, suggestions, or want to exchange experience,
+consider yourself invited to join us on the BYCEPS Discord server:
+
+[![Join BYCEPS on
+Discord](https://discordapp.com/api/guilds/736558889767796789/widget.png?style=banner2)](https://discord.gg/HxXbBN554U)
+
+
 In the Wild
 ===========
 
