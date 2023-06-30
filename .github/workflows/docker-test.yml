@@ -16,7 +16,7 @@ jobs:
       run: docker-compose build
 
     - name: Generate secret key
-      run: docker-compose run --rm byceps-admin byceps generate-secret-key
+      run: docker-compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt
 
     - name: Initialize database
       run: docker-compose run --rm byceps-admin byceps initialize-database

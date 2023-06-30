@@ -8,9 +8,7 @@ x-byceps-base: &byceps-base
 
 x-byceps-base-env: &byceps-base-env
     REDIS_URL: "redis://redis/0"
-    # TODO: Generate secret key with:
-    #       `docker-compose run --rm byceps-admin byceps generate-secret-key`
-    #SECRET_KEY: "insert-secret-key-here"
+    SECRET_KEY: /run/secrets/secret_key
     SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://byceps:byceps@db/byceps"
 
 services:
@@ -58,6 +56,12 @@ services:
     ports:
       - "8081:81"
       - "8082:82"
+
+secrets:
+  secret_key:
+    # TODO: Generate secret key file with:
+    #       `docker-compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt`
+    file: ./secret_key.txt
 
 volumes:
   byceps-data:

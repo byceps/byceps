@@ -9,6 +9,7 @@
 .pytest_cache
 .ruff_cache
 .scrutinizer.yml
+.secret_key.txt
 *.egg-info
 assets
 compose.yaml
