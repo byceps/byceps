@@ -12,8 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Build containers
-      run: docker-compose build
+    - name: Create services
+      run: docker-compose up --no-start --quiet-pull
 
     - name: Generate secret key
       run: docker-compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt
