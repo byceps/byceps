@@ -52,7 +52,7 @@ def create_demo_data() -> None:
     admin = _create_admin()
     brand = _create_brand()
     _create_email_config(brand.id)
-    _create_email_footer_snippets(brand.id)
+    _create_email_footer_snippets(brand.id, admin.id)
     party = _create_party(brand.id)
     board = _create_board(brand.id)
     ticket_category = _create_ticket_category(party.id)
