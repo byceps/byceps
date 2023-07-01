@@ -18,7 +18,7 @@
       {{ form_field(
         form.reason,
         maxlength=1000,
-        note='%s %s %s'|format(
+        caption='%s %s %s'|format(
           render_icon('warning'),
           _('The reason is visible to the orderer.'),
           _('This is not an internal remark.')

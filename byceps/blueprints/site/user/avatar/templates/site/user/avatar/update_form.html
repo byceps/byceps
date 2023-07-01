@@ -11,13 +11,13 @@
   <div class="main-body-box">
     <form action="{{ url_for('.update') }}" method="post" enctype="multipart/form-data" class="disable-submit-button-on-submit">
     {%- with %}
-      {%- set note %}
+      {%- set caption %}
         {{ _('Allowed formats') }}: {{ allowed_types|sort|join(', ') }}<br>
         {{ _('Maximum image dimensions') }}: {{ maximum_dimensions.width }} &times; {{ maximum_dimensions.height }} {{ _('pixels') }}<br>
         {{ _('Maximum file size') }}: 150 KB<br>
         {{ _('If the image is not square it will be cropped.') }}
       {%- endset %}
-      {{ form_field(form.image, maxlength=150000, accept='image/*', autofocus='autofocus', note=note) }}
+      {{ form_field(form.image, maxlength=150000, accept='image/*', autofocus='autofocus', caption=caption) }}
     {%- endwith %}
 
       {{ form_buttons(render_icon('upload') + ' ' + _('Upload')) }}

@@ -15,7 +15,7 @@
 
   <form action="{{ url_for('.channel_update', channel_id=channel.id) }}" method="post">
     <div class="box">
-      {{ form_field(form.announcement_site_id, note=_("This site's server name will be used in the URL when announcing news items from this channel.")) }}
+      {{ form_field(form.announcement_site_id, caption=_("This site's server name will be used in the URL when announcing news items from this channel.")) }}
       {{ form_field_check(form.archived) }}
     </div>
 

@@ -16,12 +16,12 @@
   <form action="{{ url_for('.image_create', item_id=item.id) }}" method="post" enctype="multipart/form-data" class="disable-submit-button-on-submit">
     <div class="box">
     {%- with %}
-      {%- set note %}
+      {%- set caption %}
       {{ _('Allowed formats') }}: {{ allowed_types|sort|join(', ') }}<br>
       {{ _('Maximum image dimensions') }}: {{ maximum_dimensions.width }} &times; {{ maximum_dimensions.height }} {{ _('pixels') }}<br>
       {{ _('Maximum file size') }}: 250 KB<br>
       {%- endset %}
-      {{ form_field(form.image, maxlength=250000, accept='image/*', autofocus='autofocus', note=note) }}
+      {{ form_field(form.image, maxlength=250000, accept='image/*', autofocus='autofocus', caption=caption) }}
     {%- endwith %}
       {{ form_field(form.alt_text) }}
       {{ form_field(form.caption) }}

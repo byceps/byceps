@@ -14,7 +14,7 @@
 
   <div class="main-body-box">
     <form action="{{ url_for('.create') }}" method="post">
-      {{ form_field(form.hostname, size=20, placeholder='myserver', autofocus='autofocus', suffix='.' ~ domain, note=_('Just the hostname. The suffix <code>%(suffix)s</code> will be added automatically.', suffix=('.' + domain) if domain else '')) }}
+      {{ form_field(form.hostname, size=20, placeholder='myserver', autofocus='autofocus', suffix='.' ~ domain, caption=_('Just the hostname. The suffix <code>%(suffix)s</code> will be added automatically.', suffix=('.' + domain) if domain else '')) }}
       {{ form_field(form.notes, style='height: 8rem;') }}
 
       {{ form_buttons(_('Register guest server')) }}

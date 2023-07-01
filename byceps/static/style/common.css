@@ -459,7 +459,7 @@ textarea.collapsible.collapsed {
   height: 3rem;
 }
 
-.form-note {
+.form-caption {
   color: var(--dimmed-color);
   font-size: 0.75rem; /* 12px / 16px */
   margin-top: 0.5rem;

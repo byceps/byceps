@@ -26,7 +26,7 @@
 
       {{ form_field(form.id, maxlength=40, placeholder='intranet', autofocus='autofocus') }}
       {{ form_field(form.title, maxlength=40, placeholder='Intranet') }}
-      {{ form_field(form.server_name, placeholder='www.example.com', note=_('Has to be unique.')) }}
+      {{ form_field(form.server_name, placeholder='www.example.com', caption=_('Has to be unique.')) }}
       {{ form_field(form.party_id) }}
       {{ form_field(form.board_id) }}
       {{ form_field(form.storefront_id) }}

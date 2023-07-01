@@ -10,7 +10,7 @@
   <div class="main-body-box">
     <form action="{{ url_for('.create') }}" method="post" class="disable-submit-button-on-submit">
 
-      {{ form_field(form.screen_name, maxlength=24, note=_('publicly visible'), autofocus='autofocus') }}
+      {{ form_field(form.screen_name, maxlength=24, caption=_('publicly visible'), autofocus='autofocus') }}
 
       {%- if form.first_name is defined and form.last_name is defined %}
       <div class="row">
