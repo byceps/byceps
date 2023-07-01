@@ -29,7 +29,7 @@ def _on_user_logged_in(sender, *, event: UserLoggedInEvent) -> None:
 
     site = site_service.get_site(event.site_id)
 
-    if site.check_in_on_login:
+    if site.party_id and site.check_in_on_login:
         enqueue(_check_in_users_tickets, event.initiator_id, site.party_id)
 
 
