@@ -27,7 +27,7 @@ class Site:
     title: str
     server_name: str
     brand_id: BrandID
-    party_id: PartyID
+    party_id: PartyID | None
     enabled: bool
     user_account_creation_enabled: bool
     login_enabled: bool
