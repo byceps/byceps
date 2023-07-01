@@ -216,6 +216,7 @@ def create(brand_id):
         board_id=board_id,
         storefront_id=storefront_id,
         is_intranet=is_intranet,
+        check_in_on_login=check_in_on_login,
     )
 
     flash_success(
@@ -265,6 +266,7 @@ def update(site_id):
     board_id = form.board_id.data.strip() or None
     storefront_id = form.storefront_id.data.strip() or None
     is_intranet = form.is_intranet.data
+    check_in_on_login = form.check_in_on_login.data
     archived = form.archived.data
 
     if party_id:

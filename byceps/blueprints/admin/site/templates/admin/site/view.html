@@ -54,6 +54,12 @@
         <div class="data-value">{{ render_tag(_('open'), class='color-success') if site.login_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</div>
 
       </div>
+      <div>
+
+        <div class="data-label">{{ _('Check in attendees on login to this site') }}</div>
+        <div class="data-value">{{ render_tag(_('yes'), class='color-warning') if site.check_in_on_login else render_tag(_('no'), class='color-disabled') }}</div>
+
+      </div>
     </div>
 
     <div class="data-label">{{ _('Party') }}</div>
