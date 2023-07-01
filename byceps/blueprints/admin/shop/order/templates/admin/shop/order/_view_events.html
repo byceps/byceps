@@ -111,9 +111,9 @@
       {%- elif log_entry.event_type == 'badge-awarded' %}
         {%- call render_log_entry('badge', log_entry.occurred_at) %}
           {{ _(
-            'Badge "%(badge)s" has been <strong>awarded</strong> to %(user)s.',
+            'Badge "%(badge)s" has been <strong>awarded</strong> to %(awardee)s.',
             badge=log_entry.badge_label,
-            user=render_log_user(log_entry.recipient),
+            awardee=render_log_user(log_entry.awardee),
           ) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'ticket-bundle-created' %}

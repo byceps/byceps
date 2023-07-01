@@ -4343,8 +4343,8 @@ msgstr ""
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:113
 #, python-format
-msgid "Badge \"%(badge)s\" has been <strong>awarded</strong> to %(user)s."
-msgstr "Das Abzeichen \"%(badge)s\" wurde an %(user)s <strong>verliehen</strong>."
+msgid "Badge \"%(badge)s\" has been <strong>awarded</strong> to %(awardee)s."
+msgstr "Das Abzeichen \"%(badge)s\" wurde an %(awardee)s <strong>verliehen</strong>."
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:121
 #, python-format

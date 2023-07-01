@@ -130,12 +130,12 @@ def _get_additional_data_for_badge_awarded(
     badge_id = log_entry.data['badge_id']
     badge = user_badge_service.get_badge(badge_id)
 
-    recipient_id = log_entry.data['recipient_id']
-    recipient = user_service.get_user(recipient_id, include_avatar=True)
+    awardee_id = log_entry.data['awardee_id']
+    awardee = user_service.get_user(awardee_id, include_avatar=True)
 
     return {
         'badge_label': badge.label,
-        'recipient': recipient,
+        'awardee': awardee,
     }
 
 
