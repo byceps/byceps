@@ -27,7 +27,10 @@ from byceps.util.framework.templating import templated
 from byceps.util.iterables import find
 from byceps.util.views import login_required, redirect_to, respond_no_content
 
-from . import notification_service
+from . import (
+    intranet_login_as_checkin,  # Load to connect to signal.  # noqa: F401
+    notification_service,
+)
 from .forms import SpecifyUserForm
 
 

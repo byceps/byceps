@@ -189,6 +189,7 @@ def create(brand_id):
     board_id = form.board_id.data.strip() or None
     storefront_id = form.storefront_id.data.strip() or None
     is_intranet = form.is_intranet.data
+    check_in_on_login = form.check_in_on_login.data
 
     if party_id:
         party = party_service.find_party(party_id)
@@ -292,6 +293,7 @@ def update(site_id):
             board_id,
             storefront_id,
             is_intranet,
+            check_in_on_login,
             archived,
         )
     except site_service.UnknownSiteIdError:

@@ -43,6 +43,7 @@ def create_site(
     board_id: BoardID | None = None,
     storefront_id: StorefrontID | None = None,
     is_intranet: bool = False,
+    check_in_on_login: bool = False,
 ) -> Site:
     """Create a site for that party."""
     db_site = DbSite(
@@ -57,6 +58,7 @@ def create_site(
         board_id=board_id,
         storefront_id=storefront_id,
         is_intranet=is_intranet,
+        check_in_on_login=check_in_on_login,
     )
 
     db.session.add(db_site)
@@ -77,6 +79,7 @@ def update_site(
     board_id: BoardID | None,
     storefront_id: StorefrontID | None,
     is_intranet: bool,
+    check_in_on_login: bool,
     archived: bool,
 ) -> Site:
     """Update the site."""
@@ -92,6 +95,7 @@ def update_site(
     db_site.board_id = board_id
     db_site.storefront_id = storefront_id
     db_site.is_intranet = is_intranet
+    db_site.check_in_on_login = check_in_on_login
     db_site.archived = archived
 
     db.session.commit()
@@ -206,6 +210,7 @@ def _db_entity_to_site(db_site: DbSite) -> Site:
         board_id=db_site.board_id,
         storefront_id=db_site.storefront_id,
         is_intranet=db_site.is_intranet,
+        check_in_on_login=db_site.check_in_on_login,
         archived=db_site.archived,
     )
 

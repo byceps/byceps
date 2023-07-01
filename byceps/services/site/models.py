@@ -35,6 +35,7 @@ class Site:
     board_id: BoardID | None
     storefront_id: StorefrontID | None
     is_intranet: bool
+    check_in_on_login: bool
     archived: bool
 
 
