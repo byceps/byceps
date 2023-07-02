@@ -8,11 +8,18 @@
   <p>With pre-defined colors and styles:</p>
 
 {% call render_example() %}
+{%- with colors = ('info', 'success', 'warning', 'danger', 'disabled') %}
 <p>
-  {%- for color in ('info', 'success', 'warning', 'danger', 'disabled') %}
+  {%- for color in colors %}
   {{ render_tag(color, class='color-{}'.format(color)) }}
   {%- endfor %}
 </p>
+<p>
+  {%- for color in colors %}
+  {{ render_tag(color, class='color-{} color--light'.format(color)) }}
+  {%- endfor %}
+</p>
+{%- endwith %}
 <p>
   {{ render_tag('outlined', class='tag--outlined') }}
   {{ render_tag('with icon', icon='success') }}

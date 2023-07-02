@@ -1,9 +1,14 @@
 :root {
   --color-danger: #ff2222;
+  --color-danger-light: #ffcccc;
   --color-disabled: #aaaaaa;
+  --color-disabled-light: #e2e2e2;
   --color-info: #1199ff;
+  --color-info-light: #aaddff;
   --color-success: #55cc00;
+  --color-success-light: #cceecc;
   --color-warning: #ffcc11;
+  --color-warning-light: #ffe99a;
 
   --dimmed-color: #808080;
   --link-color: #0066c6;
@@ -935,9 +940,17 @@ table.user-badges-list td {
   background-color: var(--color-danger);
 }
 
+.tag.color-danger.color--light {
+  background-color: var(--color-danger-light);
+}
+
 .progress-bar.color-disabled,
 .tag.color-disabled {
   background-color: var(--color-disabled);
+}
+
+.tag.color-disabled.color--light {
+  background-color: var(--color-disabled-light);
 }
 
 .progress-bar.color-info,
@@ -945,14 +958,36 @@ table.user-badges-list td {
   background-color: var(--color-info);
 }
 
+.tag.color-info.color--light {
+  background-color: var(--color-info-light);
+}
+
 .progress-bar.color-success,
 .tag.color-success {
   background-color: var(--color-success);
 }
 
+.tag.color-success.color--light {
+  background-color: var(--color-success-light);
+}
+
 .progress-bar.color-warning,
 .tag.color-warning {
   background-color: var(--color-warning);
+}
+
+.tag.color-warning.color--light {
+  background-color: var(--color-warning-light);
+}
+
+.tag.color-danger.color--light,
+.tag.color-disabled.color--light,
+.tag.color-info.color--light,
+.tag.color-success.color--light,
+.tag.color-warning.color--light {
+  color: #333333;
+  font-weight: normal;
+  text-shadow: none;
 }
 
 
