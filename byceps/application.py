@@ -79,6 +79,9 @@ def create_app(
 
     enable_announcements()
 
+    if app.debug and app.config.get('DEBUG_TOOLBAR_ENABLED', False):
+        _enable_debug_toolbar(app)
+
     log.info('Application created', app_mode=app_mode.name, debug=app.debug)
 
     return app
@@ -240,3 +243,18 @@ def _find_site_template_context_processor(
         return None
 
     return context_processor
+
+
+def _enable_debug_toolbar(app: Flask) -> None:
+    try:
+        from flask_debugtoolbar import DebugToolbarExtension
+    except ImportError:
+        log.warning(
+            'Could not import Flask-DebugToolbar. '
+            '`pip install Flask-DebugToolbar` should make it available.'
+        )
+        return
+
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    DebugToolbarExtension(app)
+    log.info('Debug toolbar enabled')

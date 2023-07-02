@@ -6,8 +6,6 @@ application instance
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from warnings import warn
-
 from byceps.application import create_app
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.models.order import (
@@ -18,20 +16,6 @@ from byceps.services.user import user_service
 
 
 app = create_app()
-
-
-if app.debug and app.config.get('DEBUG_TOOLBAR_ENABLED', False):
-    try:
-        from flask_debugtoolbar import DebugToolbarExtension
-    except ImportError:
-        warn(
-            'Could not import Flask-DebugToolbar. '
-            '`pip install Flask-DebugToolbar` should make it available.',
-            stacklevel=2,
-        )
-    else:
-        app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-        toolbar = DebugToolbarExtension(app)
 
 
 @app.shell_context_processor
