@@ -940,7 +940,7 @@ table.user-badges-list td {
   background-color: var(--color-danger);
 }
 
-.tag.color-danger.color--light {
+.tag.color-danger--light {
   background-color: var(--color-danger-light);
 }
 
@@ -949,7 +949,7 @@ table.user-badges-list td {
   background-color: var(--color-disabled);
 }
 
-.tag.color-disabled.color--light {
+.tag.color-disabled--light {
   background-color: var(--color-disabled-light);
 }
 
@@ -958,7 +958,7 @@ table.user-badges-list td {
   background-color: var(--color-info);
 }
 
-.tag.color-info.color--light {
+.tag.color-info--light {
   background-color: var(--color-info-light);
 }
 
@@ -967,7 +967,7 @@ table.user-badges-list td {
   background-color: var(--color-success);
 }
 
-.tag.color-success.color--light {
+.tag.color-success--light {
   background-color: var(--color-success-light);
 }
 
@@ -976,15 +976,15 @@ table.user-badges-list td {
   background-color: var(--color-warning);
 }
 
-.tag.color-warning.color--light {
+.tag.color-warning--light {
   background-color: var(--color-warning-light);
 }
 
-.tag.color-danger.color--light,
-.tag.color-disabled.color--light,
-.tag.color-info.color--light,
-.tag.color-success.color--light,
-.tag.color-warning.color--light {
+.tag.color-danger--light,
+.tag.color-disabled--light,
+.tag.color-info--light,
+.tag.color-success--light,
+.tag.color-warning--light {
   color: #333333;
   font-weight: normal;
   text-shadow: none;

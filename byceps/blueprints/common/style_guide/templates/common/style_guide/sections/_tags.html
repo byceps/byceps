@@ -16,7 +16,7 @@
 </p>
 <p>
   {%- for color in colors %}
-  {{ render_tag(color, class='color-{} color--light'.format(color)) }}
+  {{ render_tag(color, class='color-{}--light'.format(color)) }}
   {%- endfor %}
 </p>
 {%- endwith %}
