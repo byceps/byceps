@@ -12,6 +12,7 @@ def test_is_admin():
     assert app_mode.is_admin()
     assert not app_mode.is_base()
     assert not app_mode.is_site()
+    assert not app_mode.is_worker()
 
 
 def test_is_base():
@@ -20,6 +21,7 @@ def test_is_base():
     assert not app_mode.is_admin()
     assert app_mode.is_base()
     assert not app_mode.is_site()
+    assert not app_mode.is_worker()
 
 
 def test_is_site():
@@ -28,3 +30,13 @@ def test_is_site():
     assert not app_mode.is_admin()
     assert not app_mode.is_base()
     assert app_mode.is_site()
+    assert not app_mode.is_worker()
+
+
+def test_is_worker():
+    app_mode = AppMode.worker
+
+    assert not app_mode.is_admin()
+    assert not app_mode.is_base()
+    assert not app_mode.is_site()
+    assert app_mode.is_worker()

@@ -25,6 +25,7 @@ class AppMode(Enum):
     admin = object()
     base = object()
     site = object()
+    worker = object()
 
     def is_admin(self) -> bool:
         return self == AppMode.admin
@@ -34,6 +35,9 @@ class AppMode(Enum):
 
     def is_site(self) -> bool:
         return self == AppMode.site
+
+    def is_worker(self) -> bool:
+        return self == AppMode.worker
 
 
 class ConfigurationError(Exception):
