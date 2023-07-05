@@ -215,14 +215,7 @@ def _add_static_file_url_rules(app: Flask) -> None:
 
 def _init_admin_app(app: Flask) -> None:
     """Initialize admin application."""
-    import rq_dashboard
-
-    @rq_dashboard.blueprint.before_request
-    def require_permission():
-        if not has_current_user_permission('jobs.view'):
-            abort(403)
-
-    app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
+    _enable_rq_dashboard(app)
 
 
 def _init_site_app(app: Flask) -> None:
@@ -307,3 +300,16 @@ def _enable_debug_toolbar(app: Flask) -> None:
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     DebugToolbarExtension(app)
     log.info('Debug toolbar enabled')
+
+
+def _enable_rq_dashboard(app: Flask) -> None:
+    import rq_dashboard
+
+    @rq_dashboard.blueprint.before_request
+    def require_permission():
+        if not has_current_user_permission('jobs.view'):
+            abort(403)
+
+    app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
+
+    log.info('RQ dashboard enabled')
