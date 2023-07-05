@@ -6,7 +6,9 @@ an environment variable.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.application import create_app
+
+from byceps.application import get_app_factory
 
 
-app = create_app()
+app_factory = get_app_factory()
+app = app_factory()

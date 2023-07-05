@@ -24,6 +24,7 @@ import structlog
 from byceps import config, config_defaults
 from byceps.announce.announce import enable_announcements
 from byceps.blueprints.blueprints import register_blueprints
+from byceps.config import ConfigurationError
 from byceps.database import db
 from byceps.util import templatefilters, templatefunctions
 from byceps.util.authorization import (
@@ -35,6 +36,22 @@ from byceps.util.templating import SiteTemplateOverridesLoader
 
 
 log = structlog.get_logger()
+
+
+def get_app_factory():
+    """Return a function to create the application based on the
+    environment.
+    """
+    app_mode = os.environ.get('APP_MODE')
+
+    if app_mode == 'admin':
+        return create_admin_app
+    elif app_mode == 'site':
+        return create_site_app
+    else:
+        raise ConfigurationError(
+            'Unknown or no app mode configured for configuration key "APP_MODE".'
+        )
 
 
 def create_admin_app(
@@ -181,7 +198,7 @@ def _ensure_required_config_keys(app: Flask) -> None:
         'SQLALCHEMY_DATABASE_URI',
     ):
         if not app.config.get(key):
-            raise config.ConfigurationError(
+            raise ConfigurationError(
                 f'Missing value for configuration key "{key}".'
             )
 
