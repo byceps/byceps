@@ -158,7 +158,7 @@ def _parse_seat_json(json_data: str) -> Result[SerializableSeatToImport, str]:
         return Err(f'Could not parse JSON: {e}')
 
     try:
-        seat_to_import = SerializableSeatToImport.parse_obj(data_dict)
+        seat_to_import = SerializableSeatToImport.model_validate(data_dict)
         return Ok(seat_to_import)
     except ValidationError as e:
         return Err(str(e))

@@ -44,7 +44,7 @@ def get_profile(user_id):
 def invalidate_email_address():
     """Invalidate the email address."""
     try:
-        req = InvalidateEmailAddressRequest.parse_obj(request.get_json())
+        req = InvalidateEmailAddressRequest.model_validate(request.get_json())
     except ValidationError as e:
         abort(400, e.json())
 

@@ -251,6 +251,6 @@ def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
 
 def _parse_request(model_class: type[BaseModel]) -> BaseModel:
     try:
-        return model_class.parse_obj(request.get_json())
+        return model_class.model_validate(request.get_json())
     except ValidationError as e:
         abort(400, e.json())

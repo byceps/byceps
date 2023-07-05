@@ -34,7 +34,7 @@ def award_badge_to_user():
         abort(415)
 
     try:
-        req = AwardBadgeToUserRequest.parse_obj(request.get_json())
+        req = AwardBadgeToUserRequest.model_validate(request.get_json())
     except ValidationError as e:
         abort(400, e.json())
 

@@ -31,7 +31,7 @@ def create_archived_attendance():
         abort(415)
 
     try:
-        req = CreateArchivedAttendanceRequest.parse_obj(request.get_json())
+        req = CreateArchivedAttendanceRequest.model_validate(request.get_json())
     except ValidationError as e:
         abort(400, e.json())
 

@@ -46,7 +46,7 @@ def parse_user_json(json_data: str) -> UserToImport:
     data_dict = json.loads(json_data)
 
     try:
-        return UserToImport.parse_obj(data_dict)
+        return UserToImport.model_validate(data_dict)
     except ValidationError as exc:
         raise Exception(str(exc)) from exc
 
