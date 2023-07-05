@@ -7,18 +7,24 @@ from byceps.config import AppMode
 
 
 def test_is_admin():
-    assert AppMode.admin.is_admin()
-    assert not AppMode.admin.is_base()
-    assert not AppMode.admin.is_site()
+    app_mode = AppMode.admin
+
+    assert app_mode.is_admin()
+    assert not app_mode.is_base()
+    assert not app_mode.is_site()
 
 
 def test_is_base():
-    assert not AppMode.base.is_admin()
-    assert AppMode.base.is_base()
-    assert not AppMode.base.is_site()
+    app_mode = AppMode.base
+
+    assert not app_mode.is_admin()
+    assert app_mode.is_base()
+    assert not app_mode.is_site()
 
 
 def test_is_site():
-    assert not AppMode.site.is_admin()
-    assert not AppMode.site.is_base()
-    assert AppMode.site.is_site()
+    app_mode = AppMode.site
+
+    assert not app_mode.is_admin()
+    assert not app_mode.is_base()
+    assert app_mode.is_site()
