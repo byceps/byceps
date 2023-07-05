@@ -81,13 +81,13 @@ def admin_app(make_admin_app) -> Iterator[Flask]:
     """Provide the admin web application."""
     app = make_admin_app()
     with app.app_context():
+        tear_down_database()
         set_up_database()
 
         for code in 'en', 'de':
             language_service.create_language(code)
 
         yield app
-        # tear_down_database()
 
 
 @pytest.fixture(scope='session')
