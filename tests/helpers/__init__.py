@@ -19,7 +19,11 @@ from uuid import UUID
 from flask import appcontext_pushed, Flask, g
 from uuid6 import uuid7
 
-from byceps.application import create_app
+from byceps.application import (
+    create_admin_app as _create_admin_app,
+    create_app,
+    create_site_app as _create_site_app,
+)
 from byceps.database import db
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authentication.session.models import CurrentUser
@@ -44,9 +48,8 @@ def create_admin_app(config_overrides: dict[str, Any] | None = None) -> Flask:
         config_overrides = {}
 
     config_overrides['SERVER_NAME'] = 'admin.acmecon.test'
-    config_overrides['APP_MODE'] = 'admin'
 
-    return create_app(
+    return _create_admin_app(
         config_filename=CONFIG_FILENAME_TESTING,
         config_overrides=config_overrides,
     )
@@ -59,10 +62,9 @@ def create_site_app(
         config_overrides = {}
 
     config_overrides['SERVER_NAME'] = 'www.acmecon.test'
-    config_overrides['APP_MODE'] = 'site'
     config_overrides['SITE_ID'] = site_id
 
-    return create_app(
+    return _create_site_app(
         config_filename=CONFIG_FILENAME_TESTING,
         config_overrides=config_overrides,
     )

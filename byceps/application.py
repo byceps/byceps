@@ -37,6 +37,38 @@ from byceps.util.templating import SiteTemplateOverridesLoader
 log = structlog.get_logger()
 
 
+def create_admin_app(
+    *,
+    config_filename: Path | str | None = None,
+    config_overrides: dict[str, Any] | None = None,
+) -> Flask:
+    if config_overrides is None:
+        config_overrides = {}
+
+    config_overrides['APP_MODE'] = 'admin'
+
+    return create_app(
+        config_filename=config_filename,
+        config_overrides=config_overrides,
+    )
+
+
+def create_site_app(
+    *,
+    config_filename: Path | str | None = None,
+    config_overrides: dict[str, Any] | None = None,
+) -> Flask:
+    if config_overrides is None:
+        config_overrides = {}
+
+    config_overrides['APP_MODE'] = 'site'
+
+    return create_app(
+        config_filename=config_filename,
+        config_overrides=config_overrides,
+    )
+
+
 def create_app(
     *,
     config_filename: Path | str | None = None,
