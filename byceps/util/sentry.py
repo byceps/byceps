@@ -11,6 +11,11 @@ Sentry_ integration
 """
 
 from flask import Flask
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
+from sentry_sdk.integrations.rq import RqIntegration
+from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 
 def configure_sentry_for_webapp(dsn: str, environment: str, app: Flask) -> None:
@@ -34,12 +39,6 @@ def configure_sentry_for_worker(dsn: str, environment: str) -> None:
 
 
 def _init_sentry_sdk(dsn: str, environment: str):
-    import sentry_sdk
-    from sentry_sdk.integrations.flask import FlaskIntegration
-    from sentry_sdk.integrations.redis import RedisIntegration
-    from sentry_sdk.integrations.rq import RqIntegration
-    from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
-
     sentry_sdk.init(
         dsn=dsn,
         environment=environment,
