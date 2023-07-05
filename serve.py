@@ -8,7 +8,10 @@ an environment variable.
 
 
 from byceps.application import get_app_factory
+from byceps.util.sentry import configure_sentry_from_env
 
+
+configure_sentry_from_env()
 
 app_factory = get_app_factory()
 app = app_factory()

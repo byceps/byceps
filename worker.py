@@ -9,9 +9,12 @@ from rq import Worker
 
 from byceps.application import create_app
 from byceps.util.jobqueue import connection, get_queue
+from byceps.util.sentry import configure_sentry_from_env
 
 
 if __name__ == '__main__':
+    configure_sentry_from_env()
+
     app = create_app()
 
     with app.app_context():
