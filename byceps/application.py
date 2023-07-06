@@ -64,10 +64,14 @@ def create_admin_app(
 
     config_overrides['APP_MODE'] = 'admin'
 
-    return create_app(
+    app = create_app(
         config_filename=config_filename,
         config_overrides=config_overrides,
     )
+
+    _enable_rq_dashboard(app)
+
+    return app
 
 
 def create_site_app(
@@ -80,10 +84,14 @@ def create_site_app(
 
     config_overrides['APP_MODE'] = 'site'
 
-    return create_app(
+    app = create_app(
         config_filename=config_filename,
         config_overrides=config_overrides,
     )
+
+    _init_site_app(app)
+
+    return app
 
 
 def create_app(
@@ -120,11 +128,6 @@ def create_app(
     templatefunctions.register(app)
 
     _add_static_file_url_rules(app)
-
-    if app_mode.is_admin():
-        _init_admin_app(app)
-    elif app_mode.is_site():
-        _init_site_app(app)
 
     enable_announcements()
 
@@ -211,11 +214,6 @@ def _add_static_file_url_rules(app: Flask) -> None:
         methods=['GET'],
         build_only=True,
     )
-
-
-def _init_admin_app(app: Flask) -> None:
-    """Initialize admin application."""
-    _enable_rq_dashboard(app)
 
 
 def _init_site_app(app: Flask) -> None:
