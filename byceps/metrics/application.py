@@ -21,7 +21,7 @@ from byceps.database import db
 from byceps.util.framework.blueprint import get_blueprint
 
 
-def create_app(database_uri):
+def create_metrics_app(database_uri):
     """Create the actual Flask application."""
     app = Flask(__name__)
 

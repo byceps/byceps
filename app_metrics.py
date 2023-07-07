@@ -9,7 +9,7 @@ metrics application instance
 import os
 
 from byceps.config import ConfigurationError
-from byceps.metrics.application import create_app
+from byceps.metrics.application import create_metrics_app
 
 
 ENV_VAR_NAME_DATABASE_URI = 'DATABASE_URI'
@@ -22,4 +22,4 @@ if not database_uri:
         "environment variable.",
     )
 
-app = create_app(database_uri)
+app = create_metrics_app(database_uri)
