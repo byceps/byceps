@@ -21,7 +21,6 @@ from uuid6 import uuid7
 
 from byceps.application import (
     create_admin_app as _create_admin_app,
-    create_app,
     create_site_app as _create_site_app,
 )
 from byceps.database import db
@@ -76,16 +75,6 @@ def generate_token(n: int = 4) -> str:
 
 def generate_uuid() -> UUID:
     return uuid7()
-
-
-@contextmanager
-def app_context(
-    *, config_filename: Path | str | None = CONFIG_FILENAME_TESTING
-):
-    app = create_app(config_filename=config_filename)
-
-    with app.app_context():
-        yield app
 
 
 @contextmanager
