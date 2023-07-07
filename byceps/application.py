@@ -39,8 +39,8 @@ log = structlog.get_logger()
 
 
 def get_app_factory():
-    """Return a function to create the application based on the
-    environment.
+    """Return a function to create either the admin application or the
+    site application, based on the environment.
     """
     app_mode = os.environ.get('APP_MODE')
 
@@ -92,6 +92,18 @@ def create_site_app(
     _init_site_app(app)
 
     return app
+
+
+def create_worker_app() -> Flask:
+    config_overrides = {
+        'API_ENABLED': False,
+        'APP_MODE': 'worker',
+        'DEBUG_TOOLBAR_ENABLED': False,
+        'METRICS_ENABLED': False,
+        'STYLE_GUIDE_ENABLED': False,
+    }
+
+    return create_app(config_overrides=config_overrides)
 
 
 def create_app(
