@@ -713,7 +713,7 @@ nav.pagination {
   text-align: left;
 }
 
-nav.pagination.centered {
+nav.pagination.pagination--centered {
   text-align: center;
 }
 
