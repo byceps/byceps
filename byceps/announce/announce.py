@@ -23,6 +23,9 @@ from byceps.util.jobqueue import enqueue, enqueue_at
 from .connections import get_signals, registry
 
 
+DEFAULT_WEBHOOK_TIMEOUT = 15
+
+
 class WebhookError(Exception):
     pass
 
@@ -160,7 +163,9 @@ def announce(announcement_request: AnnouncementRequest) -> None:
 def call_webhook(announcement_request: AnnouncementRequest) -> None:
     """Send HTTP request to the webhook."""
     response = requests.post(
-        announcement_request.url, json=announcement_request.data, timeout=10
+        announcement_request.url,
+        json=announcement_request.data,
+        timeout=DEFAULT_WEBHOOK_TIMEOUT,
     )
 
     expected_response_code = announcement_request.expected_response_status_code
