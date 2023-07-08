@@ -11,6 +11,7 @@ def test_is_admin():
 
     assert app_mode.is_admin()
     assert not app_mode.is_base()
+    assert not app_mode.is_cli()
     assert not app_mode.is_site()
     assert not app_mode.is_worker()
 
@@ -20,6 +21,17 @@ def test_is_base():
 
     assert not app_mode.is_admin()
     assert app_mode.is_base()
+    assert not app_mode.is_cli()
+    assert not app_mode.is_site()
+    assert not app_mode.is_worker()
+
+
+def test_is_cli():
+    app_mode = AppMode.cli
+
+    assert not app_mode.is_admin()
+    assert not app_mode.is_base()
+    assert app_mode.is_cli()
     assert not app_mode.is_site()
     assert not app_mode.is_worker()
 
@@ -29,6 +41,7 @@ def test_is_site():
 
     assert not app_mode.is_admin()
     assert not app_mode.is_base()
+    assert not app_mode.is_cli()
     assert app_mode.is_site()
     assert not app_mode.is_worker()
 
@@ -38,5 +51,6 @@ def test_is_worker():
 
     assert not app_mode.is_admin()
     assert not app_mode.is_base()
+    assert not app_mode.is_cli()
     assert not app_mode.is_site()
     assert app_mode.is_worker()

@@ -10,11 +10,11 @@ Utilities for scripts
 
 from typing import Callable
 
-from byceps.application import create_app
+from byceps.application import create_cli_app
 
 
 def call_with_app_context(func: Callable) -> None:
     """Call a callable inside of an application context."""
-    app = create_app()
+    app = create_cli_app()
     with app.app_context():
         func()

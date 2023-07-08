@@ -78,6 +78,18 @@ def create_site_app(
     return app
 
 
+def create_cli_app() -> Flask:
+    config_overrides = {
+        'API_ENABLED': False,
+        'APP_MODE': 'cli',
+        'DEBUG_TOOLBAR_ENABLED': False,
+        'METRICS_ENABLED': False,
+        'STYLE_GUIDE_ENABLED': False,
+    }
+
+    return create_app(config_overrides=config_overrides)
+
+
 def create_worker_app() -> Flask:
     config_overrides = {
         'API_ENABLED': False,

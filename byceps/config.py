@@ -24,6 +24,7 @@ KEY_SITE_ID = 'site_id'
 class AppMode(Enum):
     admin = object()
     base = object()
+    cli = object()
     site = object()
     worker = object()
 
@@ -32,6 +33,9 @@ class AppMode(Enum):
 
     def is_base(self) -> bool:
         return self == AppMode.base
+
+    def is_cli(self) -> bool:
+        return self == AppMode.cli
 
     def is_site(self) -> bool:
         return self == AppMode.site
