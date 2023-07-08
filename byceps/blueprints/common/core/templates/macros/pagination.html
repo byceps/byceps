@@ -6,7 +6,7 @@
     <nav class="pagination{{ ' pagination--centered' if centered else '' }}">
       <ol>
       {%- if pagination.has_prev %}
-        <li class="previous"><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.prev_num)) }}" title="vorige Seite">{{ render_icon('arrow-left') }}</a></li>
+        <li><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.prev_num)) }}" title="vorige Seite">{{ render_icon('arrow-left') }}</a></li>
       {%- endif %}
       {%- for page in pagination.iter_pages(left_edge=2, left_current=1, right_current=2, right_edge=2) %}
         {%- if page %}
@@ -20,7 +20,7 @@
         {%- endif %}
       {%- endfor %}
       {%- if pagination.has_next %}
-        <li class="next"><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.next_num)) }}" title="nächste Seite">{{ render_icon('arrow-right') }}</a></li>
+        <li><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.next_num)) }}" title="nächste Seite">{{ render_icon('arrow-right') }}</a></li>
       {%- endif %}
       </ol>
     </nav>
