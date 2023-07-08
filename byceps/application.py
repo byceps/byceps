@@ -38,22 +38,6 @@ from byceps.util.templating import SiteTemplateOverridesLoader
 log = structlog.get_logger()
 
 
-def get_app_factory():
-    """Return a function to create either the admin application or the
-    site application, based on the environment.
-    """
-    app_mode = os.environ.get('APP_MODE')
-
-    if app_mode == 'admin':
-        return create_admin_app
-    elif app_mode == 'site':
-        return create_site_app
-    else:
-        raise ConfigurationError(
-            'Unknown or no app mode configured for configuration key "APP_MODE".'
-        )
-
-
 def create_admin_app(
     *,
     config_filename: Path | str | None = None,
