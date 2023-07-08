@@ -1,10 +1,9 @@
 {% from 'macros/icons.html' import render_icon %}
 
 
-{% macro render_pagination_nav(pagination, endpoint, url_args=None, show_label=True, centered=False) %}
+{% macro render_pagination_nav(pagination, endpoint, url_args=None, centered=False) %}
   {%- if pagination.pages > 1 %}
     <nav class="pagination{{ ' centered' if centered else '' }}">
-      {% if show_label %}Seiten: {% endif %}
       <ol>
       {%- if pagination.has_prev %}
         <li class="previous"><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.prev_num)) }}" title="vorige Seite">{{ render_icon('arrow-left') }}</a></li>
