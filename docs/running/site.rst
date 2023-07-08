@@ -10,7 +10,7 @@ the admin application):
 
 .. code-block:: sh
 
-   (venv)$ BYCEPS_CONFIG=../config/development.toml APP_MODE=site SITE_ID=cozylan flask --debug run --port 5001
+   (venv)$ BYCEPS_CONFIG=../config/development.toml SITE_ID=cozylan flask --app=serve_site --debug run --port 5001
 
 The application for site ``cozylan`` should now be reachable at
 `<http://127.0.0.1:5001>`_.
