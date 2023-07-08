@@ -48,7 +48,7 @@ def create_admin_app(
 
     config_overrides['APP_MODE'] = 'admin'
 
-    app = create_app(
+    app = _create_app(
         config_filename=config_filename,
         config_overrides=config_overrides,
     )
@@ -68,7 +68,7 @@ def create_site_app(
 
     config_overrides['APP_MODE'] = 'site'
 
-    app = create_app(
+    app = _create_app(
         config_filename=config_filename,
         config_overrides=config_overrides,
     )
@@ -87,7 +87,7 @@ def create_cli_app() -> Flask:
         'STYLE_GUIDE_ENABLED': False,
     }
 
-    return create_app(config_overrides=config_overrides)
+    return _create_app(config_overrides=config_overrides)
 
 
 def create_worker_app() -> Flask:
@@ -99,10 +99,10 @@ def create_worker_app() -> Flask:
         'STYLE_GUIDE_ENABLED': False,
     }
 
-    return create_app(config_overrides=config_overrides)
+    return _create_app(config_overrides=config_overrides)
 
 
-def create_app(
+def _create_app(
     *,
     config_filename: Path | str | None = None,
     config_overrides: dict[str, Any] | None = None,
