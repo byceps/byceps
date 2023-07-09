@@ -6,21 +6,21 @@
     <nav class="pagination{{ ' pagination--centered' if centered else '' }}">
       <ol>
       {%- if pagination.has_prev %}
-        <li><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.prev_num)) }}" title="vorige Seite">{{ render_icon('arrow-left') }}</a></li>
+        <li class="pagination-item"><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.prev_num)) }}" title="vorige Seite">{{ render_icon('arrow-left') }}</a></li>
       {%- endif %}
       {%- for page in pagination.iter_pages(left_edge=2, left_current=1, right_current=2, right_edge=2) %}
         {%- if page %}
           {%- if page != pagination.page %}
-        <li><a href="{{ url_for(endpoint, **add_page_arg(url_args, page)) }}">{{ page }}</a></li>
+        <li class="pagination-item"><a href="{{ url_for(endpoint, **add_page_arg(url_args, page)) }}">{{ page }}</a></li>
           {%- else %}
-        <li class="current">{{ page }}</li>
+        <li class="pagination-item pagination--current"><span>{{ page }}</span></li>
           {%- endif %}
         {%- else %}
         <li>…</li>
         {%- endif %}
       {%- endfor %}
       {%- if pagination.has_next %}
-        <li><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.next_num)) }}" title="nächste Seite">{{ render_icon('arrow-right') }}</a></li>
+        <li class="pagination-item"><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.next_num)) }}" title="nächste Seite">{{ render_icon('arrow-right') }}</a></li>
       {%- endif %}
       </ol>
     </nav>

@@ -285,3 +285,16 @@ table.index {
   --header-bg-color: var(--bg-color-light);
   --header-border-color: var(--border-color);
 }
+
+.pagination-item a,
+.pagination-item.pagination--current span {
+  border-color: var(--border-color);
+}
+
+.pagination-item a:hover {
+  background-color: var(--bg-color-light);
+}
+
+.pagination-item.pagination--current span {
+  background-color: var(--bg-color-light);
+}

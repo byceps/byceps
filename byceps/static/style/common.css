@@ -708,41 +708,44 @@ button.button[disabled],
 /* pagination */
 
 nav.pagination {
-  font-size: 0.75rem; /* 12px / 16px */
-  margin: 1em 0;
-  text-align: left;
-}
-
-nav.pagination.pagination--centered {
-  text-align: center;
+  margin: 2em 0;
 }
 
 nav.pagination ol {
-  display: inline-block;
+  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   list-style: none;
-  margin: 0;
   padding: 0;
+  margin: 0;
 }
 
-nav.pagination li {
-  display: inline;
-  line-height: 1.7;
-  margin: 0;
-  padding: 0;
+nav.pagination.pagination--centered ol {
+  justify-content: center;
 }
 
-nav.pagination li a,
-nav.pagination li.current {
-  display: inline-block;
-  padding: 0 0.4rem;
-  text-align: center;
+.pagination-item a,
+.pagination-item.pagination--current span {
+  border-color: #cccccc;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  color: currentColor;
+  display: grid;
+  font-size: 0.75rem; /* 12px / 16px */
+  height: 100%;
+  padding: 0.375rem 0.75rem;
+  place-items: center;
   text-decoration: none;
 }
 
-nav.pagination li a:hover,
-nav.pagination li.current {
-  background-color: #dddddd;
-  border-radius: 3px;
+.pagination-item a:hover {
+  background-color: #eeeeee;
+}
+
+.pagination-item.pagination--current span {
+  background-color: #eeeeee;
 }
 
 
