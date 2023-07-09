@@ -375,6 +375,7 @@ for event, name, handler in [
 
 
 _SIGNALS: list[NamedSignal] = [
+    auth_signals.password_updated,
     auth_signals.user_logged_in,
     board_signals.posting_created,
     board_signals.posting_hidden,
