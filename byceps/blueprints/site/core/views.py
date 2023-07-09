@@ -12,6 +12,7 @@ from http import HTTPStatus
 from typing import Any
 
 from flask import g, redirect, request, url_for
+from flask_babel import get_locale
 
 from byceps import config
 from byceps.services.party import party_service
@@ -58,6 +59,8 @@ def prepare_request_globals() -> None:
     g.user = get_current_user(required_permissions)
 
     g.locales = get_locales()
+    # Must only be called *after* `g.user` is set.
+    g.current_locale = get_locale()
 
 
 @blueprint.app_context_processor
