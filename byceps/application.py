@@ -26,7 +26,7 @@ from byceps.announce.announce import enable_announcements
 from byceps.blueprints.blueprints import register_blueprints
 from byceps.config import ConfigurationError
 from byceps.database import db
-from byceps.util import templatefilters, templatefunctions
+from byceps.util import templatefilters
 from byceps.util.authorization import (
     has_current_user_permission,
     load_permissions,
@@ -133,7 +133,6 @@ def _create_app(
     register_blueprints(app, app_mode)
 
     templatefilters.register(app)
-    templatefunctions.register(app)
 
     _add_static_file_url_rules(app)
 
