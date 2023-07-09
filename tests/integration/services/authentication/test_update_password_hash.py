@@ -23,8 +23,8 @@ def test_update_password_hash(site_app, admin_user, make_user):
 
     # -------------------------------- #
 
-    authn_password_service.update_password_hash(
-        user_id, 'ReplacementPassw0rd', admin_id
+    event = authn_password_service.update_password_hash(
+        user, 'ReplacementPassw0rd', admin_user
     )
 
     # -------------------------------- #
@@ -32,6 +32,11 @@ def test_update_password_hash(site_app, admin_user, make_user):
     password_hash_after = get_password_hash(user_id)
     assert password_hash_after is not None
     assert password_hash_after != password_hash_before
+
+    assert event.user_id == user.id
+    assert event.user_screen_name == user.screen_name
+    assert event.initiator_id == admin_user.id
+    assert event.initiator_screen_name == admin_user.screen_name
 
     log_entries_after = user_log_service.get_entries_for_user(user_id)
     assert len(log_entries_after) == 2

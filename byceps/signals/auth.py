@@ -12,4 +12,5 @@ from blinker import Namespace
 auth_signals = Namespace()
 
 
+password_updated = auth_signals.signal('password-updated')
 user_logged_in = auth_signals.signal('user-logged-in')

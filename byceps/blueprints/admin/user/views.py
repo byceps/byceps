@@ -32,6 +32,7 @@ from byceps.services.user import (
 )
 from byceps.services.user.models.user import UserForAdmin, UserStateFilter
 from byceps.services.user_badge import user_badge_awarding_service
+from byceps.signals import auth as auth_signals
 from byceps.signals import user as user_signals
 from byceps.util.authorization import permission_registry
 from byceps.util.framework.blueprint import create_blueprint
@@ -698,11 +699,13 @@ def set_password(user_id):
         return set_password_form(user.id, form)
 
     new_password = form.password.data
-    initiator_id = g.user.id
+    initiator = g.user
 
-    authn_password_service.update_password_hash(
-        user.id, new_password, initiator_id
+    event = authn_password_service.update_password_hash(
+        user, new_password, initiator
     )
+
+    auth_signals.password_updated.send(None, event=event)
 
     flash_success(
         gettext(

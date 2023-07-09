@@ -8,6 +8,7 @@ byceps.services.authentication.password.authn_password_reset_service
 
 from flask_babel import gettext
 
+from byceps.events.auth import PasswordUpdatedEvent
 from byceps.services.email import email_service
 from byceps.services.email.models import NameAndAddress
 from byceps.services.user import user_service
@@ -55,10 +56,10 @@ def prepare_password_reset(
 
 def reset_password(
     verification_token: VerificationToken, password: str
-) -> None:
+) -> PasswordUpdatedEvent:
     """Reset the user's password."""
     user = user_service.get_db_user(verification_token.user_id)
 
     verification_token_service.delete_token(verification_token.token)
 
-    authn_password_service.update_password_hash(user.id, password, user.id)
+    return authn_password_service.update_password_hash(user, password, user)

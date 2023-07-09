@@ -14,7 +14,7 @@ from typing import Callable, Optional
 
 from blinker import NamedSignal
 
-from byceps.events.auth import UserLoggedInEvent
+from byceps.events.auth import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.events.base import _BaseEvent
 from byceps.events.board import (
     BoardPostingCreatedEvent,
@@ -142,6 +142,11 @@ registry = AnnouncementEventRegistry()
 
 
 for event, name, handler in [
+    (
+        PasswordUpdatedEvent,
+        'password-updated',
+        auth_handlers.announce_password_updated,
+    ),
     (
         UserLoggedInEvent,
         'user-logged-in',

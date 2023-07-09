@@ -16,8 +16,27 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.auth import UserLoggedInEvent
+from byceps.events.auth import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+
+@with_locale
+def announce_password_updated(
+    event_name: str, event: PasswordUpdatedEvent, webhook: OutgoingWebhook
+) -> Announcement | None:
+    """Announce that an account password was updated."""
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+
+    text = gettext(
+        '%(initiator_screen_name)s has updated the password for %(user_screen_name)s.',
+        initiator_screen_name=initiator_screen_name,
+        user_screen_name=user_screen_name,
+    )
+
+    return Announcement(text)
 
 
 @with_locale

@@ -11,8 +11,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from byceps.services.site.models import SiteID
+from byceps.typing import UserID
 
 from .base import _BaseEvent
+
+
+@dataclass(frozen=True)
+class PasswordUpdatedEvent(_BaseEvent):
+    user_id: UserID
+    user_screen_name: str | None
 
 
 @dataclass(frozen=True)

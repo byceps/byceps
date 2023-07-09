@@ -6,7 +6,7 @@
 from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
-from byceps.events.auth import UserLoggedInEvent
+from byceps.events.auth import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.services.site.models import SiteID
 from byceps.typing import UserID
 
@@ -16,7 +16,26 @@ from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
+ADMIN_ID = UserID(generate_uuid())
 USER_ID = UserID(generate_uuid())
+
+
+def test_password_updated_announced(app: Flask, webhook_for_irc):
+    expected_text = (
+        'AuthAdmin hat ein neues Passwort für ForgetfulFred gesetzt.'
+    )
+
+    event = PasswordUpdatedEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=ADMIN_ID,
+        initiator_screen_name='AuthAdmin',
+        user_id=USER_ID,
+        user_screen_name='ForgetfulFred',
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_user_logged_in_into_admin_app_announced(app: Flask, webhook_for_irc):

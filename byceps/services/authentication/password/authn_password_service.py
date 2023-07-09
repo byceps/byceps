@@ -17,8 +17,10 @@ from werkzeug.security import (
 )
 
 from byceps.database import db
+from byceps.events.auth import PasswordUpdatedEvent
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.user import user_log_service
+from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 from .dbmodels import DbCredential
@@ -45,28 +47,41 @@ def create_password_hash(user_id: UserID, password: str) -> None:
 
 
 def update_password_hash(
-    user_id: UserID, password: str, initiator_id: UserID
-) -> None:
+    user: User, password: str, initiator: User
+) -> PasswordUpdatedEvent:
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """
-    credential = _get_credential_for_user(user_id)
+    credential = _get_credential_for_user(user.id)
 
     credential.password_hash = generate_password_hash(password)
     credential.updated_at = datetime.utcnow()
 
+    occurred_at = datetime.utcnow()
+
+    event = PasswordUpdatedEvent(
+        occurred_at=occurred_at,
+        initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+    )
+
     log_entry = user_log_service.build_entry(
         'password-updated',
-        user_id,
+        user.id,
         {
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         },
+        occurred_at=occurred_at,
     )
     db.session.add(log_entry)
 
     db.session.commit()
 
-    authn_session_service.delete_session_tokens_for_user(user_id)
+    authn_session_service.delete_session_tokens_for_user(user.id)
+
+    return event
 
 
 def is_password_valid_for_user(user_id: UserID, password: str) -> bool:
