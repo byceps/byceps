@@ -9,12 +9,11 @@ byceps.application
 from __future__ import annotations
 
 from collections.abc import Iterator
-from importlib import import_module
 import os
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
-from flask import abort, current_app, Flask, g
+from flask import abort, Flask
 from flask_babel import Babel
 import jinja2
 from redis import Redis
@@ -227,69 +226,6 @@ def _init_site_app(app: Flask) -> None:
     """Initialize site application."""
     # Incorporate site-specific template overrides.
     app.jinja_loader = SiteTemplateOverridesLoader()
-
-    # Set up site-aware template context processor.
-    app._site_context_processors = {}
-    app.context_processor(_get_site_template_context)
-
-
-def _get_site_template_context() -> dict[str, Any]:
-    """Return the site-specific additions to the template context."""
-    site_context_processor = _find_site_template_context_processor_cached(
-        g.site_id
-    )
-
-    if not site_context_processor:
-        return {}
-
-    return site_context_processor()
-
-
-def _find_site_template_context_processor_cached(
-    site_id: str,
-) -> Callable[[], dict[str, Any]] | None:
-    """Return the template context processor for the site.
-
-    A processor will be cached after it has been obtained for the first
-    time.
-    """
-    # `None` is a valid value for a site that does not specify a
-    # template context processor.
-
-    if site_id in current_app._site_context_processors:
-        return current_app._site_context_processors.get(site_id)
-    else:
-        context_processor = _find_site_template_context_processor(site_id)
-        current_app._site_context_processors[site_id] = context_processor
-        return context_processor
-
-
-def _find_site_template_context_processor(
-    site_id: str,
-) -> Callable[[], dict[str, Any]] | None:
-    """Import a template context processor from the site's package.
-
-    If a site package contains a module named `extension` and that
-    contains a top-level callable named `template_context_processor`,
-    then that callable is imported and returned.
-    """
-    module_name = f'sites.{site_id}.extension'
-    try:
-        module = import_module(module_name)
-    except ModuleNotFoundError:
-        # No extension module found in site package.
-        return None
-
-    context_processor = getattr(module, 'template_context_processor', None)
-    if context_processor is None:
-        # Context processor not found in module.
-        return None
-
-    if not callable(context_processor):
-        # Context processor object is not callable.
-        return None
-
-    return context_processor
 
 
 def _enable_debug_toolbar(app: Flask) -> None:
