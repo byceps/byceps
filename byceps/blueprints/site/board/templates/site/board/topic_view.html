@@ -39,7 +39,7 @@
   </div>
   {%- endif %}
 
-{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}, centered=True) }}
+{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}) }}
 
   <div class="user-comments">
 
@@ -79,7 +79,7 @@
   </div>
   {%- endif %}
 
-{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}, centered=True) }}
+{{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}) }}
 
   <nav class="breadcrumbs compact">
     <ol>

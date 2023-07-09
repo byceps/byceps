@@ -61,7 +61,7 @@
   {%- endif %}
   </div>
 
-{{ render_pagination_nav(topics, 'board.category_view', {'slug': category.slug}, centered=True) }}
+{{ render_pagination_nav(topics, 'board.category_view', {'slug': category.slug}) }}
 
   {%- set current_user_may_create_topic = has_current_user_permission('board_topic.create') %}
 
