@@ -1,0 +1,11 @@
+{% call render_example() %}
+<nav class="pagination pagination--centered">
+  <ol>
+    <li class="pagination-item"><a href="/items"><svg class="icon"><use xlink:href="/static/style/icons.svg#arrow-left"/></svg></a></li>
+    <li class="pagination-item"><a href="/items">1</a></li>
+    <li class="pagination-item pagination--current"><span>2</span></li>
+    <li class="pagination-item"><a href="/items/pages/3">3</a></li>
+    <li class="pagination-item"><a href="/items/pages/3"><svg class="icon"><use xlink:href="/static/style/icons.svg#arrow-right"/></svg></a></li>
+  </ol>
+</nav>
+{% endcall %}
