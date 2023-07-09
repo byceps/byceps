@@ -68,7 +68,7 @@
             <div class="dropdown">
               <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
               <ol class="dropdown-menu dropdown-menu--right">
-              {% for locale in locales %}
+              {% for locale in g.locales %}
                 <li><a class="dropdown-item" data-action="locale-update" href="{{ url_for('.update_locale', locale=locale.language) }}">{{ locale.get_display_name(g.user.locale) }}</a></li>
               {% endfor %}
                 <li class="dropdown-divider"></li>

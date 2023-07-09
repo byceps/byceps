@@ -18,6 +18,7 @@ from byceps.services.party import party_service
 from byceps.services.site import site_service
 from byceps.services.text_markup import text_markup_service
 from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.l10n import get_locales
 from byceps.util.user_session import get_current_user
 
 
@@ -55,6 +56,8 @@ def prepare_request_globals() -> None:
 
     required_permissions: set[str] = set()
     g.user = get_current_user(required_permissions)
+
+    g.locales = get_locales()
 
 
 @blueprint.app_context_processor

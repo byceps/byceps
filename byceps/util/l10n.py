@@ -31,7 +31,7 @@ def get_current_user_locale() -> str | None:
 
     if request:
         # Try to match user agent's accepted languages.
-        languages = [locale.language for locale in get_locales()]
+        languages = [locale.language for locale in g.locales]
         return request.accept_languages.best_match(languages)
 
     return None

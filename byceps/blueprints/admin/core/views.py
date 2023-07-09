@@ -14,6 +14,7 @@ from flask import g, redirect, url_for
 from byceps.services.brand import brand_service
 from byceps.services.text_markup import text_markup_service
 from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.l10n import get_locales
 from byceps.util.user_session import get_current_user
 
 
@@ -41,6 +42,8 @@ def inject_template_variables() -> dict[str, Any]:
 def prepare_request_globals() -> None:
     required_permissions = {'admin.access'}
     g.user = get_current_user(required_permissions)
+
+    g.locales = get_locales()
 
 
 @blueprint.get('/')

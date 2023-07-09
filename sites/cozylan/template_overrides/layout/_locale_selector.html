@@ -4,7 +4,7 @@
 <div class="dropdown">
   <button class="dropdown-toggle button button--clear button--compact"><span>{{ current_locale.get_display_name(current_locale) }}</span> {{ render_icon('chevron-down') }}</button>
   <ol class="dropdown-menu">
-    {%- for locale in locales %}
+    {%- for locale in g.locales %}
     <li><a class="dropdown-item{% if locale.language == current_locale.language %} current{% endif %}" href="{{ url_for('locale.set_locale', locale=locale.language) }}">{{ locale.get_display_name(current_locale) }}</a></li>
     {%- endfor %}
   </ol>

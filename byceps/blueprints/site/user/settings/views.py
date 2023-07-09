@@ -29,7 +29,6 @@ from byceps.signals import user as user_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.l10n import get_locales
 from byceps.util.views import login_required, redirect_to, respond_no_content
 
 from .forms import ChangeEmailAddressForm, ChangeScreenNameForm, DetailsForm
@@ -67,7 +66,6 @@ def view():
     return {
         'user': user,
         'user_locale': user_locale,
-        'locales': get_locales(),
         'email_address': email_address,
         'detail': detail,
         'is_orga': is_orga,
