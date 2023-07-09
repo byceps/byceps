@@ -735,17 +735,17 @@ nav.pagination.pagination--centered ol {
   display: grid;
   font-size: 0.75rem; /* 12px / 16px */
   height: 100%;
-  padding: 0.375rem 0.75rem;
+  padding: 0.3rem 0.6rem;
   place-items: center;
   text-decoration: none;
 }
 
 .pagination-item a:hover {
-  background-color: #eeeeee;
+  background-color: #ffffff;
 }
 
 .pagination-item.pagination--current span {
-  background-color: #eeeeee;
+  background-color: #ffffff;
 }
 
 
