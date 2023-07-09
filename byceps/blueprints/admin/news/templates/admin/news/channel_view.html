@@ -93,13 +93,14 @@
       {%- endfor %}
       </tbody>
     </table>
-{{ render_pagination_nav(items, '.channel_view', {
-  'per_page': per_page,
-  'channel_id': channel.id,
-}) }}
     {%- else %}
     <div class="dimmed-box centered">{{ _('No news posts exist for this channel.') }}</div>
     {%- endif %}
   </div>
+
+{{ render_pagination_nav(items, '.channel_view', {
+  'per_page': per_page,
+  'channel_id': channel.id,
+}) }}
 
 {%- endblock %}

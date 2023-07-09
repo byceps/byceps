@@ -81,23 +81,19 @@
     </div>
   </div>
 
+  {%- with users = users.items %}
   <div class="box">
-
-    {%- with users = users.items %}
 {% include 'admin/user/_user_list.html' %}
-    {%- endwith %}
-
-    <div class="mt">
-    {{ render_pagination_nav(users, '.index', {
-        'only': only if only else None,
-        'search_term': search_term if search_term else None,
-    }) }}
-    </div>
-
-    <small>
-      <p>{{ users.total }} {{ ngettext('result', 'results', users.total) }}</p>
-    </small>
-
   </div>
+  {%- endwith %}
+
+  {{ render_pagination_nav(users, '.index', {
+      'only': only if only else None,
+      'search_term': search_term if search_term else None,
+  }) }}
+
+  <small>
+    <p>{{ users.total }} {{ ngettext('result', 'results', users.total) }}</p>
+  </small>
 
 {%- endblock %}

@@ -56,9 +56,10 @@
     </div>
   </div>
 
-  <div class="box">
   {%- with orders = orders.items %}
+  <div class="box">
 {% include 'admin/shop/order/_order_list.html' %}
+  </div>
   {%- endwith %}
 
 {{ render_pagination_nav(orders, '.index_for_shop', {
@@ -69,6 +70,5 @@
   'only_overdue': ('true' if only_overdue else 'false') if (only_overdue is not none) else None,
   'only_processed': 'false' if ((only_processed is not none) and not only_processed) else None,
 }) }}
-  </div>
 
 {%- endblock %}

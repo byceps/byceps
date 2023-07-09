@@ -172,16 +172,15 @@
 
   </div>
     {%- endfor %}
-  <div class="mt">
-{{ render_pagination_nav(requests, '.index', {
-  'shop_id': shop.id,
-  'per_page': per_page,
-}) }}
-  </div>
   {%- else %}
   <div class="box">
     <div class="dimmed-box centered">Keine</div>
   </div>
   {%- endif %}
+
+{{ render_pagination_nav(requests, '.index', {
+  'shop_id': shop.id,
+  'per_page': per_page,
+}) }}
 
 {%- endblock %}

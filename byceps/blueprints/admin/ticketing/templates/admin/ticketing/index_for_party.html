@@ -106,9 +106,10 @@
     </div>
   </div>
 
-  <div class="box">
   {%- with tickets = tickets.items %}
+  <div class="box">
 {% include 'admin/ticketing/_ticket_list.html' %}
+  </div>
   {%- endwith %}
 
 {{ render_pagination_nav(tickets, '.index_for_party', {
@@ -118,6 +119,5 @@
   'revoked': filter_revoked.name if filter_revoked else None,
   'checked_in': filter_checked_in.name if filter_checked_in else None,
 }) }}
-  </div>
 
 {%- endblock %}
