@@ -18,7 +18,6 @@ from byceps.services.site.models import SiteID
 
 EXTENSION_KEY = 'byceps_config'
 KEY_APP_MODE = 'app_mode'
-KEY_SITE_ID = 'site_id'
 
 
 class AppMode(Enum):
@@ -53,10 +52,6 @@ def init_app(app: Flask) -> None:
 
     app_mode = _determine_app_mode(app)
     _set_extension_value(KEY_APP_MODE, app_mode, app)
-
-    if app_mode.is_site():
-        site_id = _determine_site_id(app)
-        _set_extension_value(KEY_SITE_ID, site_id, app)
 
 
 def _get_extension_value(key: str, app: Flask | None = None) -> Any:
@@ -107,14 +102,13 @@ def get_app_mode(app: Flask | None = None) -> AppMode:
 # site ID
 
 
-def _determine_site_id(app: Flask) -> SiteID:
-    site_id = app.config.get('SITE_ID')
+def get_site_id() -> SiteID:
+    """Return the id of the current site.o
+
+    Raise an error if not configured.
+    """
+    site_id = current_app.config.get('SITE_ID')
     if site_id is None:
         raise ConfigurationError('No site ID configured.')
 
     return site_id
-
-
-def get_current_site_id(app: Flask | None = None) -> SiteID:
-    """Return the id of the current site."""
-    return _get_extension_value(KEY_SITE_ID, app)
