@@ -9,7 +9,7 @@ byceps.blueprints.common.core.views
 from datetime import date, datetime
 from typing import Any
 
-from flask import g, render_template
+from flask import current_app, g, render_template
 
 from byceps import config
 from byceps.util.authorization import (
@@ -60,4 +60,4 @@ def add_page_arg(args, page) -> dict[str, Any]:
 
 @blueprint.before_app_request
 def prepare_request_globals() -> None:
-    g.app_mode = config.get_app_mode()
+    g.app_mode = current_app.byceps_app_mode

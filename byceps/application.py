@@ -125,11 +125,9 @@ def _create_app(
     # Initialize Redis client.
     app.redis_client = Redis.from_url(app.config['REDIS_URL'])
 
-    app_mode = config.get_app_mode(app)
-
     load_permissions()
 
-    register_blueprints(app, app_mode)
+    register_blueprints(app, app.byceps_app_mode)
 
     templatefilters.register(app)
 
@@ -140,7 +138,11 @@ def _create_app(
     if app.debug and app.config.get('DEBUG_TOOLBAR_ENABLED', False):
         _enable_debug_toolbar(app)
 
-    log.info('Application created', app_mode=app_mode.name, debug=app.debug)
+    log.info(
+        'Application created',
+        app_mode=app.byceps_app_mode.name,
+        debug=app.debug,
+    )
 
     return app
 

@@ -15,7 +15,6 @@ from flask import current_app, Flask
 
 
 EXTENSION_KEY = 'byceps_config'
-KEY_APP_MODE = 'app_mode'
 
 
 class AppMode(Enum):
@@ -48,10 +47,9 @@ class ConfigurationError(Exception):
 def init_app(app: Flask) -> None:
     app.extensions[EXTENSION_KEY] = {}
 
-    app_mode = _determine_app_mode(app)
-    _set_extension_value(KEY_APP_MODE, app_mode, app)
+    app.byceps_app_mode = _determine_app_mode(app)
 
-    if app_mode.is_site():
+    if app.byceps_app_mode.is_site():
         if not app.config.get('SITE_ID'):
             raise ConfigurationError('No site ID configured.')
 
@@ -93,8 +91,3 @@ def _determine_app_mode(app: Flask) -> AppMode:
         raise ConfigurationError(
             f'Invalid app mode "{value}" configured.'
         ) from exc
-
-
-def get_app_mode(app: Flask | None = None) -> AppMode:
-    """Return the mode the site should run in."""
-    return _get_extension_value(KEY_APP_MODE, app)
