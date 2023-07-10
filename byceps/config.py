@@ -13,8 +13,6 @@ from typing import Any
 
 from flask import current_app, Flask
 
-from byceps.services.site.models import SiteID
-
 
 EXTENSION_KEY = 'byceps_config'
 KEY_APP_MODE = 'app_mode'
@@ -52,6 +50,10 @@ def init_app(app: Flask) -> None:
 
     app_mode = _determine_app_mode(app)
     _set_extension_value(KEY_APP_MODE, app_mode, app)
+
+    if app_mode.is_site():
+        if not app.config.get('SITE_ID'):
+            raise ConfigurationError('No site ID configured.')
 
 
 def _get_extension_value(key: str, app: Flask | None = None) -> Any:
@@ -96,19 +98,3 @@ def _determine_app_mode(app: Flask) -> AppMode:
 def get_app_mode(app: Flask | None = None) -> AppMode:
     """Return the mode the site should run in."""
     return _get_extension_value(KEY_APP_MODE, app)
-
-
-# -------------------------------------------------------------------- #
-# site ID
-
-
-def get_site_id() -> SiteID:
-    """Return the id of the current site.o
-
-    Raise an error if not configured.
-    """
-    site_id = current_app.config.get('SITE_ID')
-    if site_id is None:
-        raise ConfigurationError('No site ID configured.')
-
-    return site_id

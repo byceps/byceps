@@ -11,10 +11,9 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import Any
 
-from flask import g, redirect, request, url_for
+from flask import current_app, g, redirect, request, url_for
 from flask_babel import get_locale
 
-from byceps.config import get_site_id
 from byceps.services.party import party_service
 from byceps.services.site import site_service
 from byceps.services.text_markup import text_markup_service
@@ -42,7 +41,7 @@ def url_for_site_file(filename, **kwargs) -> str | None:
 
 @blueprint.before_app_request
 def prepare_request_globals() -> None:
-    site_id = get_site_id()
+    site_id = current_app.config['SITE_ID']
     site = site_service.get_site(site_id)
     g.site = site
     g.site_id = site.id
