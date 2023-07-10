@@ -35,6 +35,9 @@ class AppMode(Enum):
     def is_worker(self) -> bool:
         return self == AppMode.worker
 
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}[{self.name}]'
+
 
 class ConfigurationError(Exception):
     pass
