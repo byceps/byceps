@@ -49,9 +49,7 @@ def init_app(app: Flask) -> None:
 
 
 def _determine_app_mode(app: Flask) -> AppMode:
-    value = app.config.get('APP_MODE')
-    if value is None:
-        return AppMode.base
+    value = app.config.get('APP_MODE', 'base')
 
     try:
         return AppMode[value]
