@@ -14,7 +14,6 @@ from typing import Optional
 from flask import Flask
 import structlog
 
-from byceps.config import AppMode
 from byceps.util.framework.blueprint import get_blueprint
 
 
@@ -24,9 +23,9 @@ log = structlog.get_logger()
 BlueprintReg = tuple[str, Optional[str]]
 
 
-def register_blueprints(app: Flask, app_mode: AppMode) -> None:
+def register_blueprints(app: Flask) -> None:
     """Register blueprints depending on the configuration."""
-    for name, url_prefix in _get_blueprints(app, app_mode):
+    for name, url_prefix in _get_blueprints(app):
         blueprint = get_blueprint(name)
         app.register_blueprint(blueprint, url_prefix=url_prefix)
 
@@ -34,8 +33,10 @@ def register_blueprints(app: Flask, app_mode: AppMode) -> None:
         register_api_blueprints(app)
 
 
-def _get_blueprints(app: Flask, app_mode: AppMode) -> Iterator[BlueprintReg]:
+def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
+    app_mode = app.byceps_app_mode
+
     if app_mode.is_admin() or app_mode.is_site():
         yield from _get_blueprints_common()
 

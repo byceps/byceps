@@ -127,7 +127,7 @@ def _create_app(
 
     load_permissions()
 
-    register_blueprints(app, app.byceps_app_mode)
+    register_blueprints(app)
 
     templatefilters.register(app)
 
