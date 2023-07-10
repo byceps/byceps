@@ -9,12 +9,8 @@ byceps.config
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any
 
-from flask import current_app, Flask
-
-
-EXTENSION_KEY = 'byceps_config'
+from flask import Flask
 
 
 class AppMode(Enum):
@@ -45,39 +41,11 @@ class ConfigurationError(Exception):
 
 
 def init_app(app: Flask) -> None:
-    app.extensions[EXTENSION_KEY] = {}
-
     app.byceps_app_mode = _determine_app_mode(app)
 
     if app.byceps_app_mode.is_site():
         if not app.config.get('SITE_ID'):
             raise ConfigurationError('No site ID configured.')
-
-
-def _get_extension_value(key: str, app: Flask | None = None) -> Any:
-    """Return the value for the key in this application's own extension
-    namespace.
-
-    It is expected that the value has already been set. An exception is
-    raised if that is not the case.
-    """
-    if app is None:
-        app = current_app
-
-    extension = app.extensions[EXTENSION_KEY]
-    return extension[key]
-
-
-def _set_extension_value(key: str, value: Any, app: Flask) -> None:
-    """Set/replace the value for the key in this application's own
-    extension namespace.
-    """
-    extension = app.extensions[EXTENSION_KEY]
-    extension[key] = value
-
-
-# -------------------------------------------------------------------- #
-# app mode
 
 
 def _determine_app_mode(app: Flask) -> AppMode:
