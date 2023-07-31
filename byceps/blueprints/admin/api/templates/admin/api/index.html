@@ -86,7 +86,7 @@ code {
               <details>
                 <summary>{{ api_token.permissions|length }} {{ _('permissions') }}</summary>
                 <ul style="margin: 0.5rem 0 0 0; padding-left: 1rem;">
-                  {%- for permission_id in api_token.permissions %}
+                  {%- for permission_id in api_token.permissions|sort %}
                   <li>{{ permission_id }}</li>
                   {%- endfor %}
                 </ul>
