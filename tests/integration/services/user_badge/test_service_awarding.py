@@ -64,12 +64,12 @@ def test_count_awardings(
     badge3,
     awardings_scope,
 ):
-    user_badge_awarding_service.award_badge_to_user(badge1.id, user1.id)
-    user_badge_awarding_service.award_badge_to_user(badge1.id, user1.id)
-    user_badge_awarding_service.award_badge_to_user(badge1.id, user2.id)
-    user_badge_awarding_service.award_badge_to_user(badge1.id, user3.id)
-    user_badge_awarding_service.award_badge_to_user(badge3.id, user2.id)
-    user_badge_awarding_service.award_badge_to_user(badge3.id, user3.id)
+    user_badge_awarding_service.award_badge_to_user(badge1, user1)
+    user_badge_awarding_service.award_badge_to_user(badge1, user1)
+    user_badge_awarding_service.award_badge_to_user(badge1, user2)
+    user_badge_awarding_service.award_badge_to_user(badge1, user3)
+    user_badge_awarding_service.award_badge_to_user(badge3, user2)
+    user_badge_awarding_service.award_badge_to_user(badge3, user3)
 
     actual = user_badge_awarding_service.count_awardings()
 
@@ -105,9 +105,9 @@ def test_get_awardings_of_badge(
 ):
     badge = badge1
 
-    user_badge_awarding_service.award_badge_to_user(badge.id, user1.id)
-    user_badge_awarding_service.award_badge_to_user(badge.id, user1.id)
-    user_badge_awarding_service.award_badge_to_user(badge.id, user2.id)
+    user_badge_awarding_service.award_badge_to_user(badge, user1)
+    user_badge_awarding_service.award_badge_to_user(badge, user1)
+    user_badge_awarding_service.award_badge_to_user(badge, user2)
 
     actual = user_badge_awarding_service.get_awardings_of_badge(badge.id)
 

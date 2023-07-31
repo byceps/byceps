@@ -51,7 +51,7 @@ def award_badge_to_user():
         abort(400, 'Initiator ID unknown')
 
     _, event = user_badge_awarding_service.award_badge_to_user(
-        badge.id, awardee.id, initiator_id=initiator.id
+        badge, awardee, initiator=initiator
     )
 
     user_badge_signals.user_badge_awarded.send(None, event=event)

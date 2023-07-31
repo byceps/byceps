@@ -241,10 +241,10 @@ def award(awardee_id):
     if not badge:
         abort(400, 'Unknown badge ID')
 
-    initiator_id = g.user.id
+    initiator = g.user
 
     _, event = user_badge_awarding_service.award_badge_to_user(
-        badge_id, awardee_id, initiator_id=initiator_id
+        badge, awardee, initiator=initiator
     )
 
     flash_success(
