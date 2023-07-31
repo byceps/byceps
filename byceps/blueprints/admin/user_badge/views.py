@@ -235,11 +235,11 @@ def award(awardee_id):
 
     awardee = user_service.find_user(awardee_id)
     if not awardee:
-        abort(401, 'Unknown awardee ID')
+        abort(400, 'Unknown awardee ID')
 
     badge = user_badge_service.find_badge(badge_id)
     if not badge:
-        abort(401, 'Unknown badge ID')
+        abort(400, 'Unknown badge ID')
 
     initiator_id = g.user.id
 
