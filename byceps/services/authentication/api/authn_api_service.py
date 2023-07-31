@@ -8,7 +8,6 @@ byceps.services.authentication.api.authn_api_service
 
 from __future__ import annotations
 
-from secrets import token_urlsafe
 from uuid import UUID
 
 from sqlalchemy import delete, select
@@ -17,6 +16,7 @@ from byceps.database import db
 from byceps.services.authorization.models import PermissionID
 from byceps.typing import UserID
 
+from . import authn_api_domain_service
 from .dbmodels import DbApiToken
 from .models import ApiToken
 
@@ -28,16 +28,27 @@ def create_api_token(
     description: str | None = None,
 ) -> ApiToken:
     """Create an API token."""
-    num_bytes = 40
-    token = token_urlsafe(num_bytes)
+    api_token = authn_api_domain_service.create_api_token(
+        creator_id, permissions, description=description
+    )
 
+    _persist_api_token(api_token)
+
+    return api_token
+
+
+def _persist_api_token(api_token: ApiToken) -> None:
     db_api_token = DbApiToken(
-        creator_id, token, permissions, description=description
+        api_token.id,
+        api_token.created_at,
+        api_token.creator_id,
+        api_token.token,
+        api_token.permissions,
+        api_token.description,
+        api_token.suspended,
     )
     db.session.add(db_api_token)
     db.session.commit()
-
-    return _db_entity_to_api_token(db_api_token)
 
 
 def find_api_token_by_token(token: str) -> ApiToken | None:
