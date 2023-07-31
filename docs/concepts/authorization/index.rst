@@ -59,26 +59,17 @@ As a result, the users have these roles and permissions:
 
 .. list-table::
    :header-rows: 1
-   :widths: 3 7 8
 
    * - User
      - Roles
      - Permissions
 
    * - Alice
-     - - Guest
-     - - View Topic
+     - Guest
+     - View Topic
    * - Bob
-     - - Guest
-       - Author
-     - - View Topic
-       - Create Topic
-       - Update Topic
+     - Guest, Author
+     - View Topic, Create Topic, Update Topic
    * - Eve
-     - - Guest
-       - Author
-       - Moderator
-     - - View Topic
-       - Create Topic
-       - Update Topic
-       - Hide Topic
+     - Guest, Author, Moderator
+     - View Topic, Create Topic, Update Topic, Hide Topic
