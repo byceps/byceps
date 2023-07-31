@@ -23,6 +23,7 @@ def test_create_api_token():
     assert actual.id is not None
     assert actual.created_at is not None
     assert len(actual.token) >= 64
+    assert actual.token.startswith('api_')
     assert actual.permissions == permissions
     assert actual.description == description
     assert not actual.suspended

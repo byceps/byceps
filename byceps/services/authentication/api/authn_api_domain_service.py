@@ -28,7 +28,7 @@ def create_api_token(
     """Create an API token."""
     api_token_id = generate_uuid7()
     created_at = datetime.utcnow()
-    token = token_urlsafe(num_bytes)
+    token = 'api_' + token_urlsafe(num_bytes)
 
     return ApiToken(
         id=api_token_id,
