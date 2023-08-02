@@ -6,26 +6,25 @@ byceps.services.email.email_footer_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.brand import brand_service
+from byceps.services.brand.models import Brand
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.models import SnippetScope
-from byceps.typing import BrandID, UserID
+from byceps.services.user.models.user import User
+from byceps.typing import BrandID
 
 
 SIGNATURE_SEPARATOR = '-- '
 
 
 def create_footers(
-    brand_id: BrandID,
-    creator_id: UserID,
+    brand: Brand,
+    creator: User,
     contact_address: str,
 ) -> None:
     """Create email footer snippets for that brand in the supported
     languages.
     """
-    brand = brand_service.get_brand(brand_id)
-
-    scope = SnippetScope.for_brand(brand_id)
+    scope = SnippetScope.for_brand(brand.id)
 
     language_codes_and_bodies = [
         (
@@ -60,7 +59,7 @@ E-Mail: {contact_address}
 
     for language_code, body in language_codes_and_bodies:
         snippet_service.create_snippet(
-            scope, 'email_footer', language_code, creator_id, body
+            scope, 'email_footer', language_code, creator.id, body
         )
 
 

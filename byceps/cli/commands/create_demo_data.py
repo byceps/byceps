@@ -52,7 +52,7 @@ def create_demo_data() -> None:
     admin = _create_admin()
     brand = _create_brand()
     _create_email_config(brand.id)
-    _create_email_footer_snippets(brand.id, admin.id)
+    _create_email_footer_snippets(brand, admin)
     party = _create_party(brand.id)
     board = _create_board(brand.id)
     ticket_category = _create_ticket_category(party.id)
@@ -88,9 +88,9 @@ def _create_email_config(brand_id: BrandID) -> None:
     click.secho('done. ', fg='green')
 
 
-def _create_email_footer_snippets(brand_id: BrandID, admin_id: UserID) -> None:
+def _create_email_footer_snippets(brand: Brand, admin: User) -> None:
     click.echo('Creating email footer snippets ... ', nl=False)
-    email_footer_service.create_footers(brand_id, admin_id, 'info@demo.example')
+    email_footer_service.create_footers(brand, admin, 'info@demo.example')
     click.secho('done. ', fg='green')
 
 

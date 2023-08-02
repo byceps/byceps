@@ -25,7 +25,7 @@ def shop_brand(make_brand, make_email_config) -> Brand:
 @pytest.fixture()
 def email_footer_snippets(shop_brand: Brand, admin_user: User) -> None:
     email_footer_service.create_footers(
-        shop_brand.id, admin_user.id, 'info@acmecon.test'
+        shop_brand, admin_user, 'info@acmecon.test'
     )
 
 

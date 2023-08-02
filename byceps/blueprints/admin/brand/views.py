@@ -88,7 +88,7 @@ def create():
     sender_address = f'noreply@{brand.id}.example'
     contact_address = f'info@{brand.id}.example'
 
-    email_footer_service.create_footers(brand.id, g.user.id, contact_address)
+    email_footer_service.create_footers(brand, g.user, contact_address)
 
     email_config_service.create_config(
         brand.id,
