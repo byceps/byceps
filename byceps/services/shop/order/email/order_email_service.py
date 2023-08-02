@@ -22,8 +22,8 @@ from byceps.services.email import (
     email_service,
 )
 from byceps.services.email.models import Message, NameAndAddress
-from byceps.services.shop.order import order_payment_service, order_service
-from byceps.services.shop.order.models.order import Order, OrderID
+from byceps.services.shop.order import order_payment_service
+from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.shop import shop_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
@@ -45,8 +45,8 @@ class OrderEmailText:
     body_main_part: str
 
 
-def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
-    data = _get_order_email_data(order_id)
+def send_email_for_incoming_order_to_orderer(order: Order) -> None:
+    data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
     message = assemble_email_for_incoming_order_to_orderer(data, language_code)
@@ -54,8 +54,8 @@ def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
     _send_email(message)
 
 
-def send_email_for_canceled_order_to_orderer(order_id: OrderID) -> None:
-    data = _get_order_email_data(order_id)
+def send_email_for_canceled_order_to_orderer(order: Order) -> None:
+    data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
     message = assemble_email_for_canceled_order_to_orderer(data, language_code)
@@ -63,8 +63,8 @@ def send_email_for_canceled_order_to_orderer(order_id: OrderID) -> None:
     _send_email(message)
 
 
-def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
-    data = _get_order_email_data(order_id)
+def send_email_for_paid_order_to_orderer(order: Order) -> None:
+    data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
     message = assemble_email_for_paid_order_to_orderer(data, language_code)
@@ -216,10 +216,8 @@ def assemble_text_for_paid_order_to_orderer(order: Order) -> OrderEmailText:
     return OrderEmailText(subject=subject, body_main_part=body_main_part)
 
 
-def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
+def _get_order_email_data(order: Order) -> OrderEmailData:
     """Collect data required for an order e-mail template."""
-    order = order_service.get_order(order_id)
-
     shop = shop_service.get_shop(order.shop_id)
     brand = brand_service.get_brand(shop.brand_id)
     email_config = email_config_service.get_config(brand.id)

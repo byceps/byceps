@@ -308,7 +308,7 @@ def cancel(order_id):
 
     if send_email:
         order_email_service.send_email_for_canceled_order_to_orderer(
-            canceled_order.id
+            canceled_order
         )
     else:
         flash_notice(gettext('No email has been sent to the orderer.'))
@@ -377,7 +377,7 @@ def mark_as_paid(order_id):
 
     flash_success(gettext('Order has been marked as paid.'))
 
-    order_email_service.send_email_for_paid_order_to_orderer(paid_order.id)
+    order_email_service.send_email_for_paid_order_to_orderer(paid_order)
 
     shop_signals.order_paid.send(None, event=event)
 
@@ -397,7 +397,7 @@ def resend_email_for_incoming_order_to_orderer(order_id):
 
     initiator_id = g.user.id
 
-    order_email_service.send_email_for_incoming_order_to_orderer(order.id)
+    order_email_service.send_email_for_incoming_order_to_orderer(order)
 
     order_log_service.create_entry(
         'order-placed-confirmation-email-resent',

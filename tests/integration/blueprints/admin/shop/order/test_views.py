@@ -21,7 +21,7 @@ from byceps.services.shop.article.models import (
     ArticleNumber,
 )
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import order_checkout_service
+from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.order import (
     Order,
@@ -138,8 +138,10 @@ def test_cancel_before_paid(
 
     assert get_article_quantity(article.id) == 8
 
+    order_afterwards = order_service.get_order(placed_order.id)
+
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_called_once_with(
-        placed_order.id
+        order_afterwards
     )
 
     event = ShopOrderCanceledEvent(
@@ -227,8 +229,10 @@ def test_mark_order_as_paid(
         shop_order_admin.id,
     )
 
+    order_afterwards = order_service.get_order(placed_order.id)
+
     order_email_service_mock.send_email_for_paid_order_to_orderer.assert_called_once_with(
-        placed_order.id
+        order_afterwards
     )
 
     event = ShopOrderPaidEvent(
@@ -292,8 +296,10 @@ def test_cancel_after_paid(
 
     assert get_article_quantity(article.id) == 8
 
+    order_afterwards = order_service.get_order(placed_order.id)
+
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_called_once_with(
-        placed_order.id
+        order_afterwards
     )
 
     event = ShopOrderCanceledEvent(

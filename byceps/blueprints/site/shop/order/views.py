@@ -289,7 +289,7 @@ def _place_order(storefront_id, orderer, cart) -> Result[Order, None]:
 
     order, event = placement_result.unwrap()
 
-    order_email_service.send_email_for_incoming_order_to_orderer(order.id)
+    order_email_service.send_email_for_incoming_order_to_orderer(order)
 
     shop_signals.order_placed.send(None, event=event)
 

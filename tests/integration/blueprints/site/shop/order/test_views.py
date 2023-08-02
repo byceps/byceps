@@ -132,7 +132,7 @@ def test_order(
     )
 
     order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
-        order.id
+        order
     )
 
     event = ShopOrderPlacedEvent(
@@ -196,7 +196,7 @@ def test_order_single(
     )
 
     order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
-        order.id
+        order
     )
 
     event = ShopOrderPlacedEvent(

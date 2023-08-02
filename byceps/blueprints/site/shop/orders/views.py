@@ -181,9 +181,7 @@ def cancel(order_id):
 
     flash_success(gettext('Order has been canceled.'))
 
-    order_email_service.send_email_for_canceled_order_to_orderer(
-        canceled_order.id
-    )
+    order_email_service.send_email_for_canceled_order_to_orderer(canceled_order)
 
     shop_signals.order_canceled.send(None, event=event)
 
@@ -302,9 +300,7 @@ def donate_everything(order_id):
 
     flash_success(gettext('Order has been canceled.'))
 
-    order_email_service.send_email_for_canceled_order_to_orderer(
-        canceled_order.id
-    )
+    order_email_service.send_email_for_canceled_order_to_orderer(canceled_order)
 
     shop_signals.order_canceled.send(None, event=event)
 
