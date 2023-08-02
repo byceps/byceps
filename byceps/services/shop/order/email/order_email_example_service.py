@@ -27,8 +27,7 @@ from byceps.services.shop.order.models.order import (
     OrderState,
     PaymentState,
 )
-from byceps.services.shop.shop import shop_service
-from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.models.user import User
 from byceps.typing import BrandID, UserID
@@ -42,13 +41,11 @@ EXAMPLE_USER_ID = UserID(generate_uuid4())
 
 
 def build_example_placed_order_message_text(
-    shop_id: ShopID, locale: str
+    shop: Shop, locale: str
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a placed order."""
-    shop = shop_service.get_shop(shop_id)
-
     order = _build_order(
-        shop.id, PaymentState.open, state=OrderState.open, is_open=True
+        shop, PaymentState.open, state=OrderState.open, is_open=True
     )
 
     data = _build_email_data(order, shop.brand_id)
@@ -66,13 +63,11 @@ def build_example_placed_order_message_text(
 
 
 def build_example_paid_order_message_text(
-    shop_id: ShopID, locale: str
+    shop: Shop, locale: str
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a paid order."""
-    shop = shop_service.get_shop(shop_id)
-
     order = _build_order(
-        shop.id, PaymentState.paid, state=OrderState.open, is_paid=True
+        shop, PaymentState.paid, state=OrderState.open, is_paid=True
     )
 
     data = _build_email_data(order, shop.brand_id)
@@ -88,13 +83,11 @@ def build_example_paid_order_message_text(
 
 
 def build_example_canceled_order_message_text(
-    shop_id: ShopID, locale: str
+    shop: Shop, locale: str
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a canceled order."""
-    shop = shop_service.get_shop(shop_id)
-
     order = _build_order(
-        shop.id,
+        shop,
         PaymentState.canceled_before_paid,
         state=OrderState.canceled,
         is_canceled=True,
@@ -116,7 +109,7 @@ def build_example_canceled_order_message_text(
 
 
 def _build_order(
-    shop_id: ShopID,
+    shop: Shop,
     payment_state: PaymentState,
     *,
     state: OrderState,
@@ -143,7 +136,7 @@ def _build_order(
     return Order(
         id=order_id,
         created_at=created_at,
-        shop_id=shop_id,
+        shop_id=shop.id,
         storefront_id=storefront_id,
         order_number=order_number,
         placed_by_id=placed_by_id,

@@ -14,6 +14,7 @@ from byceps.services.brand import brand_service
 from byceps.services.email import email_config_service
 from byceps.services.shop.order.email import order_email_example_service
 from byceps.services.shop.shop import shop_service
+from byceps.services.shop.shop.models import Shop
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required
@@ -34,13 +35,11 @@ def view_for_shop(shop_id):
     email_config = email_config_service.get_config(shop.brand_id)
 
     example_placed_order_message_text = _get_example_placed_order_message_text(
-        shop.id
+        shop
     )
-    example_paid_order_message_text = _get_example_paid_order_message_text(
-        shop.id
-    )
+    example_paid_order_message_text = _get_example_paid_order_message_text(shop)
     example_canceled_order_message_text = (
-        _get_example_canceled_order_message_text(shop.id)
+        _get_example_canceled_order_message_text(shop)
     )
 
     return {
@@ -53,10 +52,10 @@ def view_for_shop(shop_id):
     }
 
 
-def _get_example_placed_order_message_text(shop_id) -> str | None:
+def _get_example_placed_order_message_text(shop: Shop) -> str | None:
     message_text_result = (
         order_email_example_service.build_example_placed_order_message_text(
-            shop_id, g.user.locale
+            shop, g.user.locale
         )
     )
 
@@ -71,10 +70,10 @@ def _get_example_placed_order_message_text(shop_id) -> str | None:
     return message_text_result.unwrap()
 
 
-def _get_example_paid_order_message_text(shop_id) -> str | None:
+def _get_example_paid_order_message_text(shop: Shop) -> str | None:
     message_text_result = (
         order_email_example_service.build_example_paid_order_message_text(
-            shop_id, g.user.locale
+            shop, g.user.locale
         )
     )
 
@@ -89,10 +88,10 @@ def _get_example_paid_order_message_text(shop_id) -> str | None:
     return message_text_result.unwrap()
 
 
-def _get_example_canceled_order_message_text(shop_id) -> str | None:
+def _get_example_canceled_order_message_text(shop: Shop) -> str | None:
     message_text_result = (
         order_email_example_service.build_example_canceled_order_message_text(
-            shop_id, g.user.locale
+            shop, g.user.locale
         )
     )
 
