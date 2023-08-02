@@ -11,6 +11,7 @@ from decimal import Decimal
 from flask import abort, g, request
 from flask_babel import gettext
 
+from byceps.services.brand import brand_service
 from byceps.services.email import (
     email_config_service,
     email_footer_service,
@@ -476,8 +477,9 @@ def _send_refund_request_confirmation_email(
 
     screen_name = g.user.screen_name or 'User'
 
+    brand = brand_service.get_brand(g.brand_id)
     language_code = get_user_locale(g.user)
-    footer = email_footer_service.get_footer(g.brand_id, language_code)
+    footer = email_footer_service.get_footer(brand, language_code)
 
     sender = email_config.sender
     recipients = [email_address.address]

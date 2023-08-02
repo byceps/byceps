@@ -14,6 +14,8 @@ from typing import Callable
 
 from flask_babel import force_locale, format_date, gettext
 
+from byceps.services.brand import brand_service
+from byceps.services.brand.models import Brand
 from byceps.services.email import (
     email_config_service,
     email_footer_service,
@@ -25,7 +27,6 @@ from byceps.services.shop.order.models.order import Order, OrderID
 from byceps.services.shop.shop import shop_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.typing import BrandID
 from byceps.util.l10n import format_money, get_user_locale
 
 
@@ -33,7 +34,7 @@ from byceps.util.l10n import format_money, get_user_locale
 class OrderEmailData:
     sender: NameAndAddress
     order: Order
-    brand_id: BrandID
+    brand: Brand
     orderer: User
     orderer_email_address: str
 
@@ -75,7 +76,7 @@ def assemble_email_for_incoming_order_to_orderer(
     data: OrderEmailData,
     language_code: str,
 ) -> Message:
-    footer = email_footer_service.get_footer(data.brand_id, language_code)
+    footer = email_footer_service.get_footer(data.brand, language_code)
 
     payment_instructions = order_payment_service.get_email_payment_instructions(
         data.order, language_code
@@ -155,7 +156,7 @@ def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
     language_code: str,
 ) -> Message:
-    footer = email_footer_service.get_footer(data.brand_id, language_code)
+    footer = email_footer_service.get_footer(data.brand, language_code)
 
     return _assemble_email(
         data, language_code, footer, assemble_text_for_canceled_order_to_orderer
@@ -186,7 +187,7 @@ def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
 def assemble_email_for_paid_order_to_orderer(
     data: OrderEmailData, language_code: str
 ) -> Message:
-    footer = email_footer_service.get_footer(data.brand_id, language_code)
+    footer = email_footer_service.get_footer(data.brand, language_code)
 
     return _assemble_email(
         data, language_code, footer, assemble_text_for_paid_order_to_orderer
@@ -220,7 +221,8 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     order = order_service.get_order(order_id)
 
     shop = shop_service.get_shop(order.shop_id)
-    email_config = email_config_service.get_config(shop.brand_id)
+    brand = brand_service.get_brand(shop.brand_id)
+    email_config = email_config_service.get_config(brand.id)
     orderer_id = order.placed_by_id
     orderer = user_service.get_user(orderer_id)
     email_address = user_service.get_email_address(orderer_id)
@@ -228,7 +230,7 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     return OrderEmailData(
         sender=email_config.sender,
         order=order,
-        brand_id=shop.brand_id,
+        brand=brand,
         orderer=orderer,
         orderer_email_address=email_address,
     )

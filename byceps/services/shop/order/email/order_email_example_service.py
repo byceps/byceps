@@ -15,6 +15,7 @@ from moneyed import EUR, Money
 
 from byceps.config import ConfigurationError
 from byceps.database import generate_uuid4
+from byceps.services.brand import brand_service
 from byceps.services.email import email_config_service
 from byceps.services.email.models import Message
 from byceps.services.shop.order.models.number import OrderNumber
@@ -176,12 +177,13 @@ def _build_email_data(order: Order, brand_id: BrandID) -> OrderEmailData:
         avatar_url=None,
     )
 
-    email_config = email_config_service.get_config(brand_id)
+    brand = brand_service.get_brand(brand_id)
+    email_config = email_config_service.get_config(brand.id)
 
     return OrderEmailData(
         sender=email_config.sender,
         order=order,
-        brand_id=brand_id,
+        brand=brand,
         orderer=orderer,
         orderer_email_address='orderer@example.com',
     )
