@@ -6,6 +6,7 @@
 from freezegun import freeze_time
 import pytest
 
+from byceps.services.email.models import NameAndAddress
 from byceps.services.shop.order.email import order_email_example_service
 
 from tests.helpers import current_user_set
@@ -14,6 +15,7 @@ from .helpers import get_current_user_for_user
 
 
 ORDER_PLACED_AT = '2021-10-12 12:34:56'
+SENDER = NameAndAddress(None, 'noreply@acmecon.test')
 
 
 @freeze_time(ORDER_PLACED_AT)
@@ -116,7 +118,7 @@ def test_example_placed_order_message_text(
     with current_user_set(app, current_user), app.app_context():
         actual = (
             order_email_example_service.build_example_placed_order_message_text(
-                shop, locale
+                shop, SENDER, shop_brand, locale
             ).unwrap()
         )
 
@@ -195,7 +197,7 @@ def test_example_paid_order_message_text(
     with current_user_set(app, current_user), app.app_context():
         actual = (
             order_email_example_service.build_example_paid_order_message_text(
-                shop, locale
+                shop, SENDER, shop_brand, locale
             ).unwrap()
         )
 
@@ -273,7 +275,7 @@ def test_example_canceled_order_message_text(
 
     with current_user_set(app, current_user), app.app_context():
         actual = order_email_example_service.build_example_canceled_order_message_text(
-            shop, locale
+            shop, SENDER, shop_brand, locale
         ).unwrap()
 
     assert actual == expected_template.format(brand_title=shop_brand.title)

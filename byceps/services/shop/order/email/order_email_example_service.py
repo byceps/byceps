@@ -15,9 +15,8 @@ from moneyed import EUR, Money
 
 from byceps.config import ConfigurationError
 from byceps.database import generate_uuid4
-from byceps.services.brand import brand_service
-from byceps.services.email import email_config_service
-from byceps.services.email.models import Message
+from byceps.services.brand.models import Brand
+from byceps.services.email.models import Message, NameAndAddress
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import (
     Address,
@@ -30,7 +29,7 @@ from byceps.services.shop.order.models.order import (
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.models.user import User
-from byceps.typing import BrandID, UserID
+from byceps.typing import UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import order_email_service
@@ -41,14 +40,14 @@ EXAMPLE_USER_ID = UserID(generate_uuid4())
 
 
 def build_example_placed_order_message_text(
-    shop: Shop, locale: str
+    shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a placed order."""
     order = _build_order(
         shop, PaymentState.open, state=OrderState.open, is_open=True
     )
 
-    data = _build_email_data(order, shop.brand_id)
+    data = _build_email_data(sender, order, brand)
 
     try:
         message = (
@@ -63,14 +62,14 @@ def build_example_placed_order_message_text(
 
 
 def build_example_paid_order_message_text(
-    shop: Shop, locale: str
+    shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a paid order."""
     order = _build_order(
         shop, PaymentState.paid, state=OrderState.open, is_paid=True
     )
 
-    data = _build_email_data(order, shop.brand_id)
+    data = _build_email_data(sender, order, brand)
 
     try:
         message = order_email_service.assemble_email_for_paid_order_to_orderer(
@@ -83,7 +82,7 @@ def build_example_paid_order_message_text(
 
 
 def build_example_canceled_order_message_text(
-    shop: Shop, locale: str
+    shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a canceled order."""
     order = _build_order(
@@ -94,7 +93,7 @@ def build_example_canceled_order_message_text(
         cancelation_reason=gettext('Not paid in time.'),
     )
 
-    data = _build_email_data(order, shop.brand_id)
+    data = _build_email_data(sender, order, brand)
 
     try:
         message = (
@@ -160,7 +159,9 @@ def _build_order(
     )
 
 
-def _build_email_data(order: Order, brand_id: BrandID) -> OrderEmailData:
+def _build_email_data(
+    sender: NameAndAddress, order: Order, brand: Brand
+) -> OrderEmailData:
     orderer = User(
         id=EXAMPLE_USER_ID,
         screen_name='Orderer',
@@ -170,11 +171,8 @@ def _build_email_data(order: Order, brand_id: BrandID) -> OrderEmailData:
         avatar_url=None,
     )
 
-    brand = brand_service.get_brand(brand_id)
-    email_config = email_config_service.get_config(brand.id)
-
     return OrderEmailData(
-        sender=email_config.sender,
+        sender=sender,
         order=order,
         brand=brand,
         orderer=orderer,
