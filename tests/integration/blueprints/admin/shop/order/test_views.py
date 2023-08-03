@@ -114,23 +114,23 @@ def test_cancel_before_paid(
     placed_order = place_order(
         storefront.id, orderer, quantified_articles_to_order
     )
-    order_before = get_order(placed_order.id)
+    db_order_before = get_db_order(placed_order.id)
 
     assert get_article_quantity(article.id) == 5
 
-    assert_payment_is_open(order_before)
+    assert_payment_is_open(db_order_before)
 
-    url = f'/admin/shop/orders/{order_before.id}/cancel'
+    url = f'/admin/shop/orders/{db_order_before.id}/cancel'
     form_data = {
         'reason': 'Dein Vorname ist albern!',
         'send_email': 'y',
     }
     response = shop_order_admin_client.post(url, data=form_data)
 
-    order_afterwards = get_order(order_before.id)
+    db_order_afterwards = get_db_order(db_order_before.id)
     assert response.status_code == 302
     assert_payment(
-        order_afterwards,
+        db_order_afterwards,
         None,
         PaymentState.canceled_before_paid,
         shop_order_admin.id,
@@ -143,7 +143,7 @@ def test_cancel_before_paid(
     )
 
     event = ShopOrderCanceledEvent(
-        occurred_at=order_afterwards.payment_state_updated_at,
+        occurred_at=db_order_afterwards.payment_state_updated_at,
         initiator_id=shop_order_admin.id,
         initiator_screen_name=shop_order_admin.screen_name,
         order_id=placed_order.id,
@@ -180,14 +180,14 @@ def test_cancel_before_paid_without_sending_email(
     }
     response = shop_order_admin_client.post(url, data=form_data)
 
-    order_afterwards = get_order(placed_order.id)
+    db_order_afterwards = get_db_order(placed_order.id)
     assert response.status_code == 302
 
     # No e-mail should be send.
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_not_called()
 
     event = ShopOrderCanceledEvent(
-        occurred_at=order_afterwards.payment_state_updated_at,
+        occurred_at=db_order_afterwards.payment_state_updated_at,
         initiator_id=shop_order_admin.id,
         initiator_screen_name=shop_order_admin.screen_name,
         order_id=placed_order.id,
@@ -210,18 +210,18 @@ def test_mark_order_as_paid(
     shop_order_admin_client,
 ):
     placed_order = place_order(storefront.id, orderer, [])
-    order_before = get_order(placed_order.id)
+    db_order_before = get_db_order(placed_order.id)
 
-    assert_payment_is_open(order_before)
+    assert_payment_is_open(db_order_before)
 
-    url = f'/admin/shop/orders/{order_before.id}/mark_as_paid'
+    url = f'/admin/shop/orders/{db_order_before.id}/mark_as_paid'
     form_data = {'payment_method': 'direct_debit'}
     response = shop_order_admin_client.post(url, data=form_data)
 
-    order_afterwards = get_order(order_before.id)
+    db_order_afterwards = get_db_order(db_order_before.id)
     assert response.status_code == 302
     assert_payment(
-        order_afterwards,
+        db_order_afterwards,
         'direct_debit',
         PaymentState.paid,
         shop_order_admin.id,
@@ -232,7 +232,7 @@ def test_mark_order_as_paid(
     )
 
     event = ShopOrderPaidEvent(
-        occurred_at=order_afterwards.payment_state_updated_at,
+        occurred_at=db_order_afterwards.payment_state_updated_at,
         initiator_id=shop_order_admin.id,
         initiator_screen_name=shop_order_admin.screen_name,
         order_id=placed_order.id,
@@ -264,27 +264,27 @@ def test_cancel_after_paid(
     placed_order = place_order(
         storefront.id, orderer, quantified_articles_to_order
     )
-    order_before = get_order(placed_order.id)
+    db_order_before = get_db_order(placed_order.id)
 
     assert get_article_quantity(article.id) == 5
 
-    assert_payment_is_open(order_before)
+    assert_payment_is_open(db_order_before)
 
-    url = f'/admin/shop/orders/{order_before.id}/mark_as_paid'
+    url = f'/admin/shop/orders/{db_order_before.id}/mark_as_paid'
     form_data = {'payment_method': 'bank_transfer'}
     response = shop_order_admin_client.post(url, data=form_data)
 
-    url = f'/admin/shop/orders/{order_before.id}/cancel'
+    url = f'/admin/shop/orders/{db_order_before.id}/cancel'
     form_data = {
         'reason': 'Dein Vorname ist albern!',
         'send_email': 'n',
     }
     response = shop_order_admin_client.post(url, data=form_data)
 
-    order_afterwards = get_order(order_before.id)
+    db_order_afterwards = get_db_order(db_order_before.id)
     assert response.status_code == 302
     assert_payment(
-        order_afterwards,
+        db_order_afterwards,
         'bank_transfer',
         PaymentState.canceled_after_paid,
         shop_order_admin.id,
@@ -297,7 +297,7 @@ def test_cancel_after_paid(
     )
 
     event = ShopOrderCanceledEvent(
-        occurred_at=order_afterwards.payment_state_updated_at,
+        occurred_at=db_order_afterwards.payment_state_updated_at,
         initiator_id=shop_order_admin.id,
         initiator_screen_name=shop_order_admin.screen_name,
         order_id=placed_order.id,
@@ -333,24 +333,24 @@ def place_order(
     return order
 
 
-def assert_payment_is_open(order: DbOrder) -> None:
-    assert order.payment_method is None  # default
-    assert order.payment_state == PaymentState.open
-    assert order.payment_state_updated_at is None
-    assert order.payment_state_updated_by_id is None
+def assert_payment_is_open(db_order: DbOrder) -> None:
+    assert db_order.payment_method is None  # default
+    assert db_order.payment_state == PaymentState.open
+    assert db_order.payment_state_updated_at is None
+    assert db_order.payment_state_updated_by_id is None
 
 
 def assert_payment(
-    order: DbOrder,
+    db_order: DbOrder,
     method: str | None,
     state: PaymentState,
     updated_by_id: UserID,
 ) -> None:
-    assert order.payment_method == method
-    assert order.payment_state == state
-    assert order.payment_state_updated_at is not None
-    assert order.payment_state_updated_by_id == updated_by_id
+    assert db_order.payment_method == method
+    assert db_order.payment_state == state
+    assert db_order.payment_state_updated_at is not None
+    assert db_order.payment_state_updated_by_id == updated_by_id
 
 
-def get_order(order_id: OrderID) -> DbOrder:
+def get_db_order(order_id: OrderID) -> DbOrder:
     return db.session.get(DbOrder, order_id)
