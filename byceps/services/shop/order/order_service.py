@@ -130,7 +130,7 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
 
 def cancel_order(
     order_id: OrderID, initiator_id: UserID, reason: str
-) -> Result[ShopOrderCanceledEvent, OrderAlreadyCanceledError]:
+) -> Result[tuple[Order, ShopOrderCanceledEvent], OrderAlreadyCanceledError]:
     """Cancel the order.
 
     Reserved quantities of articles from that order are made available
@@ -179,14 +179,14 @@ def cancel_order(
 
     db.session.commit()
 
-    order = _order_to_transfer_object(db_order)
+    canceled_order = _order_to_transfer_object(db_order)
 
     if payment_state_to == PaymentState.canceled_after_paid:
-        _execute_article_revocation_actions(order, initiator.id)
+        _execute_article_revocation_actions(canceled_order, initiator.id)
 
     log.info('Order canceled', shop_order_canceled_event=event)
 
-    return Ok(event)
+    return Ok((canceled_order, event))
 
 
 def mark_order_as_paid(

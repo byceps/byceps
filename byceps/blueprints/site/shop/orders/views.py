@@ -177,15 +177,17 @@ def cancel(order_id):
             flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
 
-    event = cancelation_result.unwrap()
+    canceled_order, event = cancelation_result.unwrap()
 
     flash_success(gettext('Order has been canceled.'))
 
-    order_email_service.send_email_for_canceled_order_to_orderer(order.id)
+    order_email_service.send_email_for_canceled_order_to_orderer(
+        canceled_order.id
+    )
 
     shop_signals.order_canceled.send(None, event=event)
 
-    return redirect_to('.view', order_id=order.id)
+    return redirect_to('.view', order_id=canceled_order.id)
 
 
 @blueprint.get('/<uuid:order_id>/request_cancelation')
@@ -294,17 +296,19 @@ def donate_everything(order_id):
             flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
 
-    event = cancelation_result.unwrap()
+    canceled_order, event = cancelation_result.unwrap()
 
     cancelation_request_service.accept_request(cancelation_request.id)
 
     flash_success(gettext('Order has been canceled.'))
 
-    order_email_service.send_email_for_canceled_order_to_orderer(order.id)
+    order_email_service.send_email_for_canceled_order_to_orderer(
+        canceled_order.id
+    )
 
     shop_signals.order_canceled.send(None, event=event)
 
-    return redirect_to('.view', order_id=order.id)
+    return redirect_to('.view', order_id=canceled_order.id)
 
 
 @blueprint.get('/<uuid:order_id>/request_partial_refund')

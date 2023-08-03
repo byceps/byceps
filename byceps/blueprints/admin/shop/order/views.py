@@ -297,7 +297,7 @@ def cancel(order_id):
             flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
 
-    event = cancelation_result.unwrap()
+    canceled_order, event = cancelation_result.unwrap()
 
     flash_success(
         gettext(
@@ -307,13 +307,15 @@ def cancel(order_id):
     )
 
     if send_email:
-        order_email_service.send_email_for_canceled_order_to_orderer(order.id)
+        order_email_service.send_email_for_canceled_order_to_orderer(
+            canceled_order.id
+        )
     else:
         flash_notice(gettext('No email has been sent to the orderer.'))
 
     shop_signals.order_canceled.send(None, event=event)
 
-    return redirect_to('.view', order_id=order.id)
+    return redirect_to('.view', order_id=canceled_order.id)
 
 
 # -------------------------------------------------------------------- #
