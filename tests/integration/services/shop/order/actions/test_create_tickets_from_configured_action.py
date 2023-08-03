@@ -67,7 +67,7 @@ def test_create_tickets(
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
-    shop_order_paid_event = mark_order_as_paid(order.id, admin_user.id)
+    shop_order_paid_event = mark_order_as_paid(order.id, admin_user)
 
     tickets_after_paid = get_tickets_for_order(order)
     assert len(tickets_after_paid) == ticket_quantity
@@ -111,7 +111,7 @@ def test_create_tickets_with_same_code_fails(
     generate_ticket_code_mock.side_effect = lambda: 'EQUAL'  # noqa: E731
 
     with pytest.raises(TicketCreationFailedError):
-        mark_order_as_paid(order.id, admin_user.id)
+        mark_order_as_paid(order.id, admin_user)
 
 
 @patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
@@ -136,7 +136,7 @@ def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
-    mark_order_as_paid(order.id, admin_user.id)
+    mark_order_as_paid(order.id, admin_user)
 
     tickets_after_paid = get_tickets_for_order(order)
     assert len(tickets_after_paid) == ticket_quantity

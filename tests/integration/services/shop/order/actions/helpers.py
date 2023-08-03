@@ -13,7 +13,7 @@ from byceps.services.shop.order.models.order import Order, Orderer, OrderID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.typing import UserID
+from byceps.services.user.models.user import User
 
 
 def get_tickets_for_order(order: Order) -> list[DbTicket]:
@@ -36,11 +36,9 @@ def place_order(
     return order
 
 
-def mark_order_as_paid(
-    order_id: OrderID, admin_id: UserID
-) -> ShopOrderPaidEvent:
+def mark_order_as_paid(order_id: OrderID, admin: User) -> ShopOrderPaidEvent:
     _, event = order_service.mark_order_as_paid(
-        order_id, 'bank_transfer', admin_id
+        order_id, 'bank_transfer', admin
     ).unwrap()
 
     return event

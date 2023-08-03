@@ -39,7 +39,7 @@ def test_mark_order_as_paid(order, admin_user):
     payments_before = order_payment_service.get_payments_for_order(order.id)
     assert not payments_before
 
-    order_service.mark_order_as_paid(order.id, 'cash', admin_user.id).unwrap()
+    order_service.mark_order_as_paid(order.id, 'cash', admin_user).unwrap()
 
     order_after = order_service.get_order(order.id)
     assert order_after.payment_method == 'cash'
@@ -70,7 +70,7 @@ def test_additional_payment_data(order, admin_user):
     order_service.mark_order_as_paid(
         order.id,
         'cash',
-        admin_user.id,
+        admin_user,
         additional_payment_data=additional_payment_data,
     ).unwrap()
 

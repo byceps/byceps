@@ -187,7 +187,7 @@ def add_note(order_id):
 
     text = form.text.data.strip()
 
-    order_service.add_note(order.id, g.user.id, text)
+    order_service.add_note(order.id, g.user, text)
 
     flash_success(gettext('Note has been added.'))
 
@@ -204,9 +204,9 @@ def add_note(order_id):
 def set_shipped_flag(order_id):
     """Mark the order as shipped."""
     order = _get_order_or_404(order_id)
-    initiator_id = g.user.id
+    initiator = g.user
 
-    order_service.set_shipped_flag(order.id, initiator_id)
+    order_service.set_shipped_flag(order.id, initiator)
 
     flash_success(
         gettext(
@@ -222,9 +222,9 @@ def set_shipped_flag(order_id):
 def unset_shipped_flag(order_id):
     """Mark the order as not shipped."""
     order = _get_order_or_404(order_id)
-    initiator_id = g.user.id
+    initiator = g.user
 
-    order_service.unset_shipped_flag(order.id, initiator_id)
+    order_service.unset_shipped_flag(order.id, initiator)
 
     flash_success(
         gettext(
@@ -283,7 +283,7 @@ def cancel(order_id):
     reason = form.reason.data.strip()
     send_email = form.send_email.data
 
-    cancelation_result = order_service.cancel_order(order.id, g.user.id, reason)
+    cancelation_result = order_service.cancel_order(order.id, g.user, reason)
     if cancelation_result.is_err():
         err = cancelation_result.unwrap_err()
         if isinstance(err, OrderAlreadyCanceledError):
@@ -360,10 +360,10 @@ def mark_as_paid(order_id):
         return mark_as_paid_form(order_id, form)
 
     payment_method = form.payment_method.data
-    updated_by_id = g.user.id
+    initiator = g.user
 
     mark_as_paid_result = order_service.mark_order_as_paid(
-        order.id, payment_method, updated_by_id
+        order.id, payment_method, initiator
     )
     if mark_as_paid_result.is_err():
         err = mark_as_paid_result.unwrap_err()

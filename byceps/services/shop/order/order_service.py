@@ -27,6 +27,7 @@ from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
+from byceps.services.user.models.user import User
 from byceps.typing import UserID
 from byceps.util.result import Err, Ok, Result
 
@@ -68,10 +69,9 @@ OVERDUE_THRESHOLD = timedelta(days=14)
 log = structlog.get_logger()
 
 
-def add_note(order_id: OrderID, author_id: UserID, text: str) -> None:
+def add_note(order_id: OrderID, author: User, text: str) -> None:
     """Add a note to the order."""
     order = get_order(order_id)
-    author = user_service.get_user(author_id)
 
     log_entry = order_domain_service.add_note(order, author, text)
 
@@ -80,10 +80,9 @@ def add_note(order_id: OrderID, author_id: UserID, text: str) -> None:
     db.session.commit()
 
 
-def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
+def set_shipped_flag(order_id: OrderID, initiator: User) -> None:
     """Mark the order as shipped."""
     db_order = _get_order_entity(order_id)
-    initiator = user_service.get_user(initiator_id)
 
     if not db_order.processing_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -104,10 +103,9 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
+def unset_shipped_flag(order_id: OrderID, initiator: User) -> None:
     """Mark the order as not shipped."""
     db_order = _get_order_entity(order_id)
-    initiator = user_service.get_user(initiator_id)
 
     if not db_order.processing_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -129,7 +127,7 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
 
 
 def cancel_order(
-    order_id: OrderID, initiator_id: UserID, reason: str
+    order_id: OrderID, initiator: User, reason: str
 ) -> Result[tuple[Order, ShopOrderCanceledEvent], OrderAlreadyCanceledError]:
     """Cancel the order.
 
@@ -143,7 +141,6 @@ def cancel_order(
 
     order = _order_to_transfer_object(db_order)
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    initiator = user_service.get_user(initiator_id)
 
     occurred_at = datetime.utcnow()
 
@@ -192,7 +189,7 @@ def cancel_order(
 def mark_order_as_paid(
     order_id: OrderID,
     payment_method: str,
-    initiator_id: UserID,
+    initiator: User,
     *,
     additional_payment_data: AdditionalPaymentData | None = None,
 ) -> Result[tuple[Order, ShopOrderPaidEvent], OrderAlreadyMarkedAsPaidError]:
@@ -201,7 +198,6 @@ def mark_order_as_paid(
 
     order = _order_to_transfer_object(db_order)
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    initiator = user_service.get_user(initiator_id)
 
     occurred_at = datetime.utcnow()
 
@@ -210,7 +206,7 @@ def mark_order_as_paid(
         occurred_at,
         payment_method,
         order.total_amount,
-        initiator_id,
+        initiator.id,
         additional_payment_data if additional_payment_data is not None else {},
     )
 

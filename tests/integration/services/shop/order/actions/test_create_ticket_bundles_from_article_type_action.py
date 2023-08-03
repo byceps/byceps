@@ -72,7 +72,7 @@ def test_create_ticket_bundles(
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
-    shop_order_paid_event = mark_order_as_paid(order.id, admin_user.id)
+    shop_order_paid_event = mark_order_as_paid(order.id, admin_user)
 
     tickets_after_paid = get_tickets_for_order(order)
     assert len(tickets_after_paid) == expected_ticket_total

@@ -164,7 +164,7 @@ def cancel(order_id):
 
     reason = form.reason.data.strip()
 
-    cancelation_result = order_service.cancel_order(order.id, g.user.id, reason)
+    cancelation_result = order_service.cancel_order(order.id, g.user, reason)
     if cancelation_result.is_err():
         err = cancelation_result.unwrap_err()
         if isinstance(err, OrderAlreadyCanceledError):
@@ -281,7 +281,7 @@ def donate_everything(order_id):
 
     reason = 'Ticketrückgabe und Spende des Bestellbetrags in voller Höhe wie angefordert'
 
-    cancelation_result = order_service.cancel_order(order.id, g.user.id, reason)
+    cancelation_result = order_service.cancel_order(order.id, g.user, reason)
     if cancelation_result.is_err():
         err = cancelation_result.unwrap_err()
         if isinstance(err, OrderAlreadyCanceledError):
