@@ -187,7 +187,7 @@ def add_note(order_id):
 
     text = form.text.data.strip()
 
-    order_service.add_note(order.id, g.user, text)
+    order_service.add_note(order, g.user, text)
 
     flash_success(gettext('Note has been added.'))
 
@@ -206,7 +206,7 @@ def set_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator = g.user
 
-    order_service.set_shipped_flag(order.id, initiator)
+    order_service.set_shipped_flag(order, initiator)
 
     flash_success(
         gettext(
@@ -224,7 +224,7 @@ def unset_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator = g.user
 
-    order_service.unset_shipped_flag(order.id, initiator)
+    order_service.unset_shipped_flag(order, initiator)
 
     flash_success(
         gettext(

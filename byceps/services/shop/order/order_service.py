@@ -69,10 +69,8 @@ OVERDUE_THRESHOLD = timedelta(days=14)
 log = structlog.get_logger()
 
 
-def add_note(order_id: OrderID, author: User, text: str) -> None:
+def add_note(order: Order, author: User, text: str) -> None:
     """Add a note to the order."""
-    order = get_order(order_id)
-
     log_entry = order_domain_service.add_note(order, author, text)
 
     db_log_entry = order_log_service.to_db_entry(log_entry)
@@ -80,9 +78,9 @@ def add_note(order_id: OrderID, author: User, text: str) -> None:
     db.session.commit()
 
 
-def set_shipped_flag(order_id: OrderID, initiator: User) -> None:
+def set_shipped_flag(order: Order, initiator: User) -> None:
     """Mark the order as shipped."""
-    db_order = _get_order_entity(order_id)
+    db_order = _get_order_entity(order.id)
 
     if not db_order.processing_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -103,9 +101,9 @@ def set_shipped_flag(order_id: OrderID, initiator: User) -> None:
     db.session.commit()
 
 
-def unset_shipped_flag(order_id: OrderID, initiator: User) -> None:
+def unset_shipped_flag(order: Order, initiator: User) -> None:
     """Mark the order as not shipped."""
-    db_order = _get_order_entity(order_id)
+    db_order = _get_order_entity(order.id)
 
     if not db_order.processing_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -321,10 +319,8 @@ def update_line_item_processing_result(
     db.session.commit()
 
 
-def delete_order(order_id: OrderID) -> None:
+def delete_order(order: Order) -> None:
     """Delete an order."""
-    order = get_order(order_id)
-
     order_payment_service.delete_payments_for_order(order.id)
 
     db.session.execute(delete(DbOrderLogEntry).filter_by(order_id=order.id))
