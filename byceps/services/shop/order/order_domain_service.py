@@ -48,6 +48,60 @@ def _build_note_log_entry(
     )
 
 
+def set_shipped_flag(
+    order: Order, initiator: User
+) -> Result[OrderLogEntry, str]:
+    if not order.is_processing_required:
+        return Err('Order contains no items that require shipping.')
+
+    log_entry = _build_set_shipped_flag_log_entry(order.id, initiator)
+
+    return Ok(log_entry)
+
+
+def _build_set_shipped_flag_log_entry(
+    order_id: OrderID, initiator: User
+) -> OrderLogEntry:
+    data = {
+        'initiator_id': str(initiator.id),
+    }
+
+    return OrderLogEntry(
+        id=generate_uuid7(),
+        occurred_at=datetime.utcnow(),
+        event_type='order-shipped',
+        order_id=order_id,
+        data=data,
+    )
+
+
+def unset_shipped_flag(
+    order: Order, initiator: User
+) -> Result[OrderLogEntry, str]:
+    if not order.is_processing_required:
+        return Err('Order contains no items that require shipping.')
+
+    log_entry = _build_unset_shipped_flag_log_entry(order.id, initiator)
+
+    return Ok(log_entry)
+
+
+def _build_unset_shipped_flag_log_entry(
+    order_id: OrderID, initiator: User
+) -> OrderLogEntry:
+    data = {
+        'initiator_id': str(initiator.id),
+    }
+
+    return OrderLogEntry(
+        id=generate_uuid7(),
+        occurred_at=datetime.utcnow(),
+        event_type='order-shipped-withdrawn',
+        order_id=order_id,
+        data=data,
+    )
+
+
 def create_payment(
     order: Order,
     created_at: datetime,

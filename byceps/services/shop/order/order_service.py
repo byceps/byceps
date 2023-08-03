@@ -47,6 +47,7 @@ from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
 from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
 from .models.detailed_order import AdminDetailedOrder, DetailedOrder
+from .models.log import OrderLogEntry
 from .models.number import OrderNumber
 from .models.order import (
     Address,
@@ -80,46 +81,41 @@ def add_note(order: Order, author: User, text: str) -> None:
 
 def set_shipped_flag(order: Order, initiator: User) -> None:
     """Mark the order as shipped."""
-    db_order = _get_order_entity(order.id)
-
-    if not db_order.processing_required:
-        raise ValueError('Order contains no items that require shipping.')
-
-    now = datetime.utcnow()
-    event_type = 'order-shipped'
-    data = {
-        'initiator_id': str(initiator.id),
-    }
-
-    log_entry = DbOrderLogEntry(
-        generate_uuid7(), now, event_type, db_order.id, data
+    set_shipped_flag_result = order_domain_service.set_shipped_flag(
+        order, initiator
     )
-    db.session.add(log_entry)
 
-    db_order.processed_at = now
+    if set_shipped_flag_result.is_err():
+        raise ValueError(set_shipped_flag_result.unwrap_err())
 
-    db.session.commit()
+    log_entry = set_shipped_flag_result.unwrap()
+
+    _persist_shipped_flag(log_entry, log_entry.occurred_at)
 
 
 def unset_shipped_flag(order: Order, initiator: User) -> None:
     """Mark the order as not shipped."""
-    db_order = _get_order_entity(order.id)
-
-    if not db_order.processing_required:
-        raise ValueError('Order contains no items that require shipping.')
-
-    now = datetime.utcnow()
-    event_type = 'order-shipped-withdrawn'
-    data = {
-        'initiator_id': str(initiator.id),
-    }
-
-    log_entry = DbOrderLogEntry(
-        generate_uuid7(), now, event_type, db_order.id, data
+    unset_shipped_flag_result = order_domain_service.unset_shipped_flag(
+        order, initiator
     )
-    db.session.add(log_entry)
 
-    db_order.processed_at = None
+    if unset_shipped_flag_result.is_err():
+        raise ValueError(unset_shipped_flag_result.unwrap_err())
+
+    log_entry = unset_shipped_flag_result.unwrap()
+
+    _persist_shipped_flag(log_entry, None)
+
+
+def _persist_shipped_flag(
+    log_entry: OrderLogEntry, processed_at: datetime | None
+) -> None:
+    db_order = _get_order_entity(log_entry.order_id)
+
+    db_log_entry = order_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+
+    db_order.processed_at = processed_at
 
     db.session.commit()
 
