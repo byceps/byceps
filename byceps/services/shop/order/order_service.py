@@ -195,7 +195,7 @@ def mark_order_as_paid(
     initiator_id: UserID,
     *,
     additional_payment_data: AdditionalPaymentData | None = None,
-) -> Result[ShopOrderPaidEvent, OrderAlreadyMarkedAsPaidError]:
+) -> Result[tuple[Order, ShopOrderPaidEvent], OrderAlreadyMarkedAsPaidError]:
     """Mark the order as paid."""
     db_order = _get_order_entity(order_id)
 
@@ -237,11 +237,13 @@ def mark_order_as_paid(
 
     db.session.commit()
 
-    _execute_article_creation_actions(order, initiator.id)
+    paid_order = _order_to_transfer_object(db_order)
+
+    _execute_article_creation_actions(paid_order, initiator.id)
 
     log.info('Order paid', shop_order_paid_event=event)
 
-    return Ok(event)
+    return Ok((paid_order, event))
 
 
 def _update_payment_state(

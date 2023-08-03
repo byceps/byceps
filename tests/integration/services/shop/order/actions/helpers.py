@@ -39,6 +39,8 @@ def place_order(
 def mark_order_as_paid(
     order_id: OrderID, admin_id: UserID
 ) -> ShopOrderPaidEvent:
-    return order_service.mark_order_as_paid(
+    _, event = order_service.mark_order_as_paid(
         order_id, 'bank_transfer', admin_id
     ).unwrap()
+
+    return event

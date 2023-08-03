@@ -373,15 +373,15 @@ def mark_as_paid(order_id):
             flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
 
-    event = mark_as_paid_result.unwrap()
+    paid_order, event = mark_as_paid_result.unwrap()
 
     flash_success(gettext('Order has been marked as paid.'))
 
-    order_email_service.send_email_for_paid_order_to_orderer(order.id)
+    order_email_service.send_email_for_paid_order_to_orderer(paid_order.id)
 
     shop_signals.order_paid.send(None, event=event)
 
-    return redirect_to('.view', order_id=order.id)
+    return redirect_to('.view', order_id=paid_order.id)
 
 
 # -------------------------------------------------------------------- #
