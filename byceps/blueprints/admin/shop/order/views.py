@@ -206,7 +206,11 @@ def set_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator = g.user
 
-    order_service.set_shipped_flag(order, initiator)
+    result = order_service.set_shipped_flag(order, initiator)
+
+    if result.is_err():
+        flash_error(result.unwrap_err())
+        return
 
     flash_success(
         gettext(
@@ -224,7 +228,11 @@ def unset_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator = g.user
 
-    order_service.unset_shipped_flag(order, initiator)
+    result = order_service.unset_shipped_flag(order, initiator)
+
+    if result.is_err():
+        flash_error(result.unwrap_err())
+        return
 
     flash_success(
         gettext(

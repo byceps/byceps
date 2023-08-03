@@ -79,32 +79,36 @@ def add_note(order: Order, author: User, text: str) -> None:
     db.session.commit()
 
 
-def set_shipped_flag(order: Order, initiator: User) -> None:
+def set_shipped_flag(order: Order, initiator: User) -> Result[None, str]:
     """Mark the order as shipped."""
     set_shipped_flag_result = order_domain_service.set_shipped_flag(
         order, initiator
     )
 
     if set_shipped_flag_result.is_err():
-        raise ValueError(set_shipped_flag_result.unwrap_err())
+        return Err(set_shipped_flag_result.unwrap_err())
 
     log_entry = set_shipped_flag_result.unwrap()
 
     _persist_shipped_flag(log_entry, log_entry.occurred_at)
 
+    return Ok(None)
 
-def unset_shipped_flag(order: Order, initiator: User) -> None:
+
+def unset_shipped_flag(order: Order, initiator: User) -> Result[None, str]:
     """Mark the order as not shipped."""
     unset_shipped_flag_result = order_domain_service.unset_shipped_flag(
         order, initiator
     )
 
     if unset_shipped_flag_result.is_err():
-        raise ValueError(unset_shipped_flag_result.unwrap_err())
+        return Err(unset_shipped_flag_result.unwrap_err())
 
     log_entry = unset_shipped_flag_result.unwrap()
 
     _persist_shipped_flag(log_entry, None)
+
+    return Ok(None)
 
 
 def _persist_shipped_flag(
