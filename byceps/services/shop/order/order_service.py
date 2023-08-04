@@ -18,7 +18,7 @@ from moneyed import Currency, Money
 from sqlalchemy import delete, select
 import structlog
 
-from byceps.database import db, generate_uuid7, paginate, Pagination
+from byceps.database import db, paginate, Pagination
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import ArticleType
@@ -160,7 +160,7 @@ def cancel_order(
         else PaymentState.canceled_before_paid
     )
 
-    _update_payment_state(db_order, payment_state_to, occurred_at, initiator.id)
+    _update_payment_state(db_order, payment_state_to, occurred_at, initiator)
     db_order.cancelation_reason = reason
 
     db_log_entry = order_log_service.to_db_entry(log_entry)
@@ -177,7 +177,7 @@ def cancel_order(
     canceled_order = _order_to_transfer_object(db_order)
 
     if payment_state_to == PaymentState.canceled_after_paid:
-        _execute_article_revocation_actions(canceled_order, initiator.id)
+        _execute_article_revocation_actions(canceled_order, initiator)
 
     log.info('Order canceled', shop_order_canceled_event=event)
 
@@ -222,9 +222,7 @@ def mark_order_as_paid(
     event, log_entry = mark_order_as_paid_result.unwrap()
 
     db_order.payment_method = payment_method
-    _update_payment_state(
-        db_order, PaymentState.paid, occurred_at, initiator.id
-    )
+    _update_payment_state(db_order, PaymentState.paid, occurred_at, initiator)
 
     db_log_entry = order_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -233,7 +231,7 @@ def mark_order_as_paid(
 
     paid_order = _order_to_transfer_object(db_order)
 
-    _execute_article_creation_actions(paid_order, initiator.id)
+    _execute_article_creation_actions(paid_order, initiator)
 
     log.info('Order paid', shop_order_paid_event=event)
 
@@ -244,16 +242,14 @@ def _update_payment_state(
     db_order: DbOrder,
     state: PaymentState,
     updated_at: datetime,
-    initiator_id: UserID,
+    initiator: User,
 ) -> None:
     db_order.payment_state = state
     db_order.payment_state_updated_at = updated_at
-    db_order.payment_state_updated_by_id = initiator_id
+    db_order.payment_state_updated_by_id = initiator.id
 
 
-def _execute_article_creation_actions(
-    order: Order, initiator_id: UserID
-) -> None:
+def _execute_article_creation_actions(order: Order, initiator: User) -> None:
     # based on article type
     for line_item in order.line_items:
         if line_item.article_type in (
@@ -271,7 +267,7 @@ def _execute_article_creation_actions(
                     order,
                     line_item,
                     ticket_category_id,
-                    initiator_id,
+                    initiator.id,
                 )
             elif line_item.article_type == ArticleType.ticket_bundle:
                 ticket_quantity_per_bundle = int(
@@ -282,27 +278,25 @@ def _execute_article_creation_actions(
                     line_item,
                     ticket_category_id,
                     ticket_quantity_per_bundle,
-                    initiator_id,
+                    initiator.id,
                 )
 
     # based on order action registered for article number
-    order_action_service.execute_creation_actions(order, initiator_id)
+    order_action_service.execute_creation_actions(order, initiator.id)
 
 
-def _execute_article_revocation_actions(
-    order: Order, initiator_id: UserID
-) -> None:
+def _execute_article_revocation_actions(order: Order, initiator: User) -> None:
     # based on article type
     for line_item in order.line_items:
         if line_item.article_type == ArticleType.ticket:
-            ticket_actions.revoke_tickets(order, line_item, initiator_id)
+            ticket_actions.revoke_tickets(order, line_item, initiator.id)
         elif line_item.article_type == ArticleType.ticket_bundle:
             ticket_bundle_actions.revoke_ticket_bundles(
-                order, line_item, initiator_id
+                order, line_item, initiator.id
             )
 
     # based on order action registered for article number
-    order_action_service.execute_revocation_actions(order, initiator_id)
+    order_action_service.execute_revocation_actions(order, initiator.id)
 
 
 def update_line_item_processing_result(
