@@ -296,22 +296,23 @@ def category_move_up(category_id):
     """Move the category upwards by one position."""
     category = _get_category_or_404(category_id)
 
-    try:
-        board_category_command_service.move_category_up(category.id)
-    except ValueError:
+    result = board_category_command_service.move_category_up(category.id)
+
+    if result.is_err():
         flash_error(
             gettext(
                 'Category "%(title)s" is already at the top.',
                 title=category.title,
             )
         )
-    else:
-        flash_success(
-            gettext(
-                'Category "%(title)s" has been moved upwards by one position.',
-                title=category.title,
-            )
+        return
+
+    flash_success(
+        gettext(
+            'Category "%(title)s" has been moved upwards by one position.',
+            title=category.title,
         )
+    )
 
 
 @blueprint.post('/categories/<uuid:category_id>/down')
@@ -321,22 +322,23 @@ def category_move_down(category_id):
     """Move the category downwards by one position."""
     category = _get_category_or_404(category_id)
 
-    try:
-        board_category_command_service.move_category_down(category.id)
-    except ValueError:
+    result = board_category_command_service.move_category_down(category.id)
+
+    if result.is_err():
         flash_error(
             gettext(
                 'Category "%(title)s" is already at the bottom.',
                 title=category.title,
             )
         )
-    else:
-        flash_success(
-            gettext(
-                'Category "%(title)s" has been moved downwards by one position.',
-                title=category.title,
-            )
+        return
+
+    flash_success(
+        gettext(
+            'Category "%(title)s" has been moved downwards by one position.',
+            title=category.title,
         )
+    )
 
 
 @blueprint.delete('/categories/<uuid:category_id>')

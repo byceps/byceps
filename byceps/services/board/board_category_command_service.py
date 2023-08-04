@@ -7,6 +7,7 @@ byceps.services.board.board_category_command_service
 """
 
 from byceps.database import db
+from byceps.util.result import Err, Ok, Result
 
 from . import board_topic_query_service
 from .dbmodels.board import DbBoard
@@ -61,34 +62,38 @@ def unhide_category(category_id: BoardCategoryID) -> None:
     db.session.commit()
 
 
-def move_category_up(category_id: BoardCategoryID) -> None:
+def move_category_up(category_id: BoardCategoryID) -> Result[None, str]:
     """Move a category upwards by one position."""
     category = _get_category(category_id)
 
     category_list = category.board.categories
 
     if category.position == 1:
-        raise ValueError('Category already is at the top.')
+        return Err('Category already is at the top.')
 
     popped_category = category_list.pop(category.position - 1)
     category_list.insert(popped_category.position - 2, popped_category)
 
     db.session.commit()
 
+    return Ok(None)
 
-def move_category_down(category_id: BoardCategoryID) -> None:
+
+def move_category_down(category_id: BoardCategoryID) -> Result[None, str]:
     """Move a category downwards by one position."""
     category = _get_category(category_id)
 
     category_list = category.board.categories
 
     if category.position == len(category_list):
-        raise ValueError('Category already is at the bottom.')
+        return Err('Category already is at the bottom.')
 
     popped_category = category_list.pop(category.position - 1)
     category_list.insert(popped_category.position, popped_category)
 
     db.session.commit()
+
+    return Ok(None)
 
 
 def delete_category(category_id: BoardCategoryID) -> None:
