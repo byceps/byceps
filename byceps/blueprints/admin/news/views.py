@@ -653,9 +653,15 @@ def item_publish_later(item_id):
         datetime.combine(form.publish_on.data, form.publish_at.data)
     )
 
-    event = news_item_service.publish_item(
+    result = news_item_service.publish_item(
         item.id, publish_at=publish_at, initiator=g.user
     )
+
+    if result.is_err():
+        flash_error(result.unwrap_err())
+        return redirect_to('.item_view', item_id=item.id)
+
+    event = result.unwrap()
 
     news_signals.item_published.send(None, event=event)
 
@@ -675,7 +681,13 @@ def item_publish_now(item_id):
     """Publish a news item now."""
     item = _get_item_or_404(item_id)
 
-    event = news_item_service.publish_item(item.id, initiator=g.user)
+    result = news_item_service.publish_item(item.id, initiator=g.user)
+
+    if result.is_err():
+        flash_error(result.unwrap_err())
+        return
+
+    event = result.unwrap()
 
     news_signals.item_published.send(None, event=event)
 
@@ -691,7 +703,11 @@ def item_unpublish(item_id):
     """Unpublish a news item."""
     item = _get_item_or_404(item_id)
 
-    news_item_service.unpublish_item(item.id)
+    result = news_item_service.unpublish_item(item.id)
+
+    if result.is_err():
+        flash_error(result.unwrap_err())
+        return
 
     flash_success(
         gettext('News item "%(title)s" has been unpublished.', title=item.title)

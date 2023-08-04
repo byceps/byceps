@@ -46,7 +46,7 @@ def published_news_item(news_channel, editor):
     item = news_item_service.create_item(
         news_channel.id, slug, editor, title, body, body_format
     )
-    news_item_service.publish_item(item.id)
+    news_item_service.publish_item(item.id).unwrap()
     return item
 
 

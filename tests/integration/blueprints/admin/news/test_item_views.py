@@ -118,7 +118,7 @@ def test_publish_now(news_admin_client, item):
 
 
 def test_unpublish(news_admin_client, item):
-    news_item_service.publish_item(item.id)
+    news_item_service.publish_item(item.id).unwrap()
 
     item_before = news_item_service.find_item(item.id)
     assert item_before.published_at is not None

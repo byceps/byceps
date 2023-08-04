@@ -23,7 +23,7 @@ from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.iterables import find
-from byceps.util.result import Ok, Result
+from byceps.util.result import Err, Ok, Result
 
 from . import news_channel_service, news_html_service, news_image_service
 from .dbmodels.channel import DbNewsChannel
@@ -151,12 +151,12 @@ def publish_item(
     *,
     publish_at: datetime | None = None,
     initiator: User | None = None,
-) -> NewsItemPublishedEvent:
+) -> Result[NewsItemPublishedEvent, str]:
     """Publish a news item."""
     db_item = _get_db_item(item_id)
 
     if db_item.published:
-        raise ValueError('News item has already been published')
+        return Err('News item has already been published')
 
     now = datetime.utcnow()
     if publish_at is None:
@@ -173,7 +173,7 @@ def publish_item(
     else:
         external_url = None
 
-    return NewsItemPublishedEvent(
+    event = NewsItemPublishedEvent(
         occurred_at=now,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,
@@ -184,20 +184,24 @@ def publish_item(
         external_url=external_url,
     )
 
+    return Ok(event)
+
 
 def unpublish_item(
     item_id: NewsItemID,
     *,
     initiator: User | None = None,
-) -> None:
+) -> Result[None, str]:
     """Unublish a news item."""
     db_item = _get_db_item(item_id)
 
     if not db_item.published:
-        raise ValueError('News item is not published')
+        return Err('News item is not published')
 
     db_item.published_at = None
     db.session.commit()
+
+    return Ok(None)
 
 
 def delete_item(item_id: NewsItemID) -> None:
