@@ -19,9 +19,7 @@ from byceps.events.snippet import (
     SnippetDeletedEvent,
     SnippetUpdatedEvent,
 )
-from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.typing import UserID
 
 from .dbmodels import (
     DbCurrentSnippetVersionAssociation,
@@ -35,16 +33,14 @@ def create_snippet(
     scope: SnippetScope,
     name: str,
     language_code: str,
-    creator_id: UserID,
+    creator: User,
     body: str,
 ) -> tuple[DbSnippetVersion, SnippetCreatedEvent]:
     """Create a snippet and its initial version, and return that version."""
-    creator = user_service.get_user(creator_id)
-
     snippet = DbSnippet(scope, name, language_code)
     db.session.add(snippet)
 
-    version = DbSnippetVersion(snippet, creator_id, body)
+    version = DbSnippetVersion(snippet, creator.id, body)
     db.session.add(version)
 
     current_version_association = DbCurrentSnippetVersionAssociation(
@@ -68,16 +64,14 @@ def create_snippet(
 
 
 def update_snippet(
-    snippet_id: SnippetID, creator_id: UserID, body: str
+    snippet_id: SnippetID, creator: User, body: str
 ) -> tuple[DbSnippetVersion, SnippetUpdatedEvent]:
     """Update snippet with a new version, and return that version."""
     snippet = find_snippet(snippet_id)
     if snippet is None:
         raise ValueError('Unknown snippet ID')
 
-    creator = user_service.get_user(creator_id)
-
-    version = DbSnippetVersion(snippet, creator_id, body)
+    version = DbSnippetVersion(snippet, creator.id, body)
     db.session.add(version)
 
     snippet.current_version = version
@@ -98,7 +92,7 @@ def update_snippet(
 
 
 def delete_snippet(
-    snippet_id: SnippetID, *, initiator_id: UserID | None = None
+    snippet_id: SnippetID, *, initiator: User | None = None
 ) -> tuple[bool, SnippetDeletedEvent | None]:
     """Delete the snippet and its versions.
 
@@ -110,12 +104,6 @@ def delete_snippet(
     snippet = find_snippet(snippet_id)
     if snippet is None:
         raise ValueError('Unknown snippet ID')
-
-    initiator: User | None
-    if initiator_id is not None:
-        initiator = user_service.get_user(initiator_id)
-    else:
-        initiator = None
 
     # Keep values for use after snippet is deleted.
     snippet_name = snippet.name

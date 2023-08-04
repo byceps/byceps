@@ -58,7 +58,7 @@ E-Mail: {contact_address}
 
     for language_code, body in language_codes_and_bodies:
         snippet_service.create_snippet(
-            scope, 'email_footer', language_code, creator.id, body
+            scope, 'email_footer', language_code, creator, body
         )
 
 

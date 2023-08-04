@@ -45,7 +45,7 @@ def test_compare_versions(snippet_admin_client, snippet_admin, make_snippet):
     snippet_id = event.snippet_id
 
     version2, _ = snippet_service.update_snippet(
-        snippet_id, snippet_admin.id, 'Body v2'
+        snippet_id, snippet_admin, 'Body v2'
     )
 
     url = f'/admin/snippets/versions/{version1.id}/compare_to/{version2.id}'

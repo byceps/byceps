@@ -52,7 +52,7 @@ def make_snippet(global_scope: SnippetScope, snippet_admin: User):
             name = generate_token()
 
         version, event = snippet_service.create_snippet(
-            global_scope, name, language_code, snippet_admin.id, body
+            global_scope, name, language_code, snippet_admin, body
         )
         return version, event
 

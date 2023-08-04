@@ -132,7 +132,7 @@ Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/o
 
     for language_code, body in language_codes_and_bodies:
         snippet_service.create_snippet(
-            scope, 'email_payment_instructions', language_code, creator.id, body
+            scope, 'email_payment_instructions', language_code, creator, body
         )
 
 
@@ -230,7 +230,7 @@ def create_html_payment_instructions(shop_id: ShopID, creator: User) -> None:
 
     for language_code, body in language_codes_and_bodies:
         snippet_service.create_snippet(
-            scope, 'payment_instructions', language_code, creator.id, body
+            scope, 'payment_instructions', language_code, creator, body
         )
 
 

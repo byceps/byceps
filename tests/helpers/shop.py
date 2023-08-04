@@ -26,6 +26,7 @@ from byceps.services.snippet import snippet_service
 from byceps.services.snippet.models import SnippetID, SnippetScope
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
+from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 from . import generate_token
@@ -33,7 +34,7 @@ from . import generate_token
 
 def create_shop_snippet(
     shop_id: ShopID,
-    creator_id: UserID,
+    creator: User,
     name: str,
     language_code: str,
     body: str,
@@ -41,7 +42,7 @@ def create_shop_snippet(
     scope = SnippetScope('shop', shop_id)
 
     version, _ = snippet_service.create_snippet(
-        scope, name, language_code, creator_id, body
+        scope, name, language_code, creator, body
     )
 
     return version.snippet_id

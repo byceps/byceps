@@ -48,7 +48,7 @@ def shop(make_brand, make_shop, admin_user: User):
     shop = make_shop(brand.id)
     create_shop_snippet(
         shop.id,
-        admin_user.id,
+        admin_user,
         'payment_instructions',
         'de',
         'Send all ur moneyz!',

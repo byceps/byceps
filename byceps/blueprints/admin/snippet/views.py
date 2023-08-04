@@ -189,7 +189,7 @@ def create(scope_type, scope_name):
     body = form.body.data.strip()
 
     version, event = snippet_service.create_snippet(
-        scope, name, language_code, creator.id, body
+        scope, name, language_code, creator, body
     )
 
     flash_success(
@@ -238,9 +238,7 @@ def update(snippet_id):
     creator = g.user
     body = form.body.data.strip()
 
-    version, event = snippet_service.update_snippet(
-        snippet.id, creator.id, body
-    )
+    version, event = snippet_service.update_snippet(snippet.id, creator, body)
 
     flash_success(
         gettext(
@@ -295,7 +293,7 @@ def delete_snippet(snippet_id):
     scope = snippet.scope
 
     success, event = snippet_service.delete_snippet(
-        snippet.id, initiator_id=g.user.id
+        snippet.id, initiator=g.user
     )
 
     if not success:

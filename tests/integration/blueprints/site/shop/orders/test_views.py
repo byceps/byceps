@@ -20,7 +20,7 @@ from tests.helpers.shop import create_shop_snippet
 def shop1(admin_app, make_brand, make_shop, admin_user):
     brand = make_brand()
     shop = make_shop(brand.id)
-    snippet_id = create_payment_instructions_snippet(shop.id, admin_user.id)
+    snippet_id = create_payment_instructions_snippet(shop.id, admin_user)
 
     yield shop
 
@@ -128,10 +128,10 @@ def test_view_matching_user_but_different_site_and_shop(
 # helpers
 
 
-def create_payment_instructions_snippet(shop_id, admin_id):
+def create_payment_instructions_snippet(shop_id, admin):
     body = 'Please pay {{ total_amount }} for order {{ order_number }}!'
     return create_shop_snippet(
-        shop_id, admin_id, 'payment_instructions', 'de', body
+        shop_id, admin, 'payment_instructions', 'de', body
     )
 
 

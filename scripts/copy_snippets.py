@@ -11,6 +11,7 @@ import click
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet.models import SnippetScope
+from byceps.services.user import user_service
 
 from _util import call_with_app_context
 from _validators import validate_site
@@ -57,11 +58,13 @@ def get_version(
 def copy_snippet(
     target_scope: SnippetScope, version: DbSnippetVersion, ctx
 ) -> None:
+    creator = user_service.get_user(version.creator_id)
+
     snippet_service.create_snippet(
         target_scope,
         version.snippet.name,
         version.snippet.language_code,
-        version.creator_id,
+        creator,
         version.body,
     )
 

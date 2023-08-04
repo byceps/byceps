@@ -26,8 +26,8 @@ def test_current_party_is_considered(party1, party2, make_user):
     name = 'info'
     creator = make_user()
 
-    snippet_info2014_version = create_snippet(scope_site2014, name, creator.id)
-    snippet_info2015_version = create_snippet(scope_site2015, name, creator.id)
+    snippet_info2014_version = create_snippet(scope_site2014, name, creator)
+    snippet_info2015_version = create_snippet(scope_site2015, name, creator)
 
     actual = snippet_service.find_current_version_of_snippet_with_name(
         scope_site2014, name, 'en'
@@ -52,9 +52,9 @@ def test_unknown_name(party1):
 # helpers
 
 
-def create_snippet(scope: SnippetScope, name, creator_id):
+def create_snippet(scope: SnippetScope, name, creator):
     body = ''
     version, _ = snippet_service.create_snippet(
-        scope, name, 'en', creator_id, body
+        scope, name, 'en', creator, body
     )
     return version

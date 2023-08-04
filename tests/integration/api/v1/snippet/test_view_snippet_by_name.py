@@ -17,7 +17,7 @@ def test_get_snippet_by_name(
 ):
     language_code = 'en'
     snippet_version, _ = snippet_service.create_snippet(
-        scope, 'infos', language_code, admin_user.id, 'TBD'
+        scope, 'infos', language_code, admin_user, 'TBD'
     )
     snippet_name = snippet_version.snippet.name
 
