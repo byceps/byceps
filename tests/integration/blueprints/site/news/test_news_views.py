@@ -32,7 +32,7 @@ def unpublished_news_item(news_channel, editor):
     body_format = BodyFormat.html
 
     return news_item_service.create_item(
-        news_channel.id, slug, editor.id, title, body, body_format
+        news_channel.id, slug, editor, title, body, body_format
     )
 
 
@@ -44,7 +44,7 @@ def published_news_item(news_channel, editor):
     body_format = BodyFormat.html
 
     item = news_item_service.create_item(
-        news_channel.id, slug, editor.id, title, body, body_format
+        news_channel.id, slug, editor, title, body, body_format
     )
     news_item_service.publish_item(item.id)
     return item

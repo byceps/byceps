@@ -552,7 +552,7 @@ def item_create(channel_id):
     item = news_item_service.create_item(
         channel.id,
         slug,
-        creator.id,
+        creator,
         title,
         body,
         body_format,
@@ -610,7 +610,7 @@ def item_update(item_id):
     item = news_item_service.update_item(
         item.id,
         slug,
-        creator.id,
+        creator,
         title,
         body,
         body_format,
@@ -654,7 +654,7 @@ def item_publish_later(item_id):
     )
 
     event = news_item_service.publish_item(
-        item.id, publish_at=publish_at, initiator_id=g.user.id
+        item.id, publish_at=publish_at, initiator=g.user
     )
 
     news_signals.item_published.send(None, event=event)
@@ -675,7 +675,7 @@ def item_publish_now(item_id):
     """Publish a news item now."""
     item = _get_item_or_404(item_id)
 
-    event = news_item_service.publish_item(item.id, initiator_id=g.user.id)
+    event = news_item_service.publish_item(item.id, initiator=g.user)
 
     news_signals.item_published.send(None, event=event)
 

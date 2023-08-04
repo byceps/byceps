@@ -43,7 +43,7 @@ def item(channel: NewsChannel, news_admin) -> NewsItem:
     return news_item_service.create_item(
         channel.id,
         f'save-the-date-{generate_token()}',
-        news_admin.id,
+        news_admin,
         'Save the Date!',
         'Party will be next year.',
         BodyFormat.html,

@@ -22,7 +22,6 @@ from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.typing import UserID
 from byceps.util.iterables import find
 from byceps.util.result import Ok, Result
 
@@ -53,7 +52,7 @@ log = structlog.get_logger()
 def create_item(
     channel_id: NewsChannelID,
     slug: str,
-    creator_id: UserID,
+    creator: User,
     title: str,
     body: str,
     body_format: BodyFormat,
@@ -68,7 +67,7 @@ def create_item(
 
     db_version = _create_version(
         db_item,
-        creator_id,
+        creator,
         title,
         body,
         body_format,
@@ -89,7 +88,7 @@ def create_item(
 def update_item(
     item_id: NewsItemID,
     slug: str,
-    creator_id: UserID,
+    creator: User,
     title: str,
     body: str,
     body_format: BodyFormat,
@@ -105,7 +104,7 @@ def update_item(
 
     db_version = _create_version(
         db_item,
-        creator_id,
+        creator,
         title,
         body,
         body_format,
@@ -122,7 +121,7 @@ def update_item(
 
 def _create_version(
     db_item: DbNewsItem,
-    creator_id: UserID,
+    creator: User,
     title: str,
     body: str,
     body_format: BodyFormat,
@@ -130,7 +129,7 @@ def _create_version(
     image_url_path: str | None = None,
 ) -> DbNewsItemVersion:
     db_version = DbNewsItemVersion(
-        db_item, creator_id, title, body, body_format
+        db_item, creator.id, title, body, body_format
     )
 
     if image_url_path:
@@ -151,7 +150,7 @@ def publish_item(
     item_id: NewsItemID,
     *,
     publish_at: datetime | None = None,
-    initiator_id: UserID | None = None,
+    initiator: User | None = None,
 ) -> NewsItemPublishedEvent:
     """Publish a news item."""
     db_item = _get_db_item(item_id)
@@ -162,12 +161,6 @@ def publish_item(
     now = datetime.utcnow()
     if publish_at is None:
         publish_at = now
-
-    initiator: User | None
-    if initiator_id is not None:
-        initiator = user_service.get_user(initiator_id)
-    else:
-        initiator = None
 
     db_item.published_at = publish_at
     db.session.commit()
@@ -195,7 +188,7 @@ def publish_item(
 def unpublish_item(
     item_id: NewsItemID,
     *,
-    initiator_id: UserID | None = None,
+    initiator: User | None = None,
 ) -> None:
     """Unublish a news item."""
     db_item = _get_db_item(item_id)
