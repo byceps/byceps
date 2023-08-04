@@ -233,7 +233,7 @@ def create(site_id):
         name,
         language_code,
         url_path,
-        creator.id,
+        creator,
         title,
         body,
         head=head,
@@ -291,7 +291,7 @@ def update(page_id):
         page.id,
         language_code,
         url_path,
-        creator.id,
+        creator,
         title,
         head,
         body,
@@ -314,7 +314,7 @@ def delete(page_id):
     page_name = page.name
     site_id = page.site_id
 
-    success, event = page_service.delete_page(page.id, initiator_id=g.user.id)
+    success, event = page_service.delete_page(page.id, initiator=g.user)
 
     if not success:
         flash_error(

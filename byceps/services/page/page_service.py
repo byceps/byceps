@@ -21,9 +21,7 @@ from byceps.events.page import (
 )
 from byceps.services.site.models import SiteID
 from byceps.services.site_navigation.models import NavMenuID
-from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.typing import UserID
 
 from .dbmodels import DbCurrentPageVersionAssociation, DbPage, DbPageVersion
 from .models import (
@@ -40,19 +38,17 @@ def create_page(
     name: str,
     language_code: str,
     url_path: str,
-    creator_id: UserID,
+    creator: User,
     title: str,
     body: str,
     *,
     head: str | None = None,
 ) -> tuple[DbPageVersion, PageCreatedEvent]:
     """Create a page and its initial version."""
-    creator = user_service.get_user(creator_id)
-
     db_page = DbPage(site_id, name, language_code, url_path)
     db.session.add(db_page)
 
-    db_version = DbPageVersion(db_page, creator_id, title, head, body)
+    db_version = DbPageVersion(db_page, creator.id, title, head, body)
     db.session.add(db_version)
 
     db_current_version_association = DbCurrentPageVersionAssociation(
@@ -79,7 +75,7 @@ def update_page(
     page_id: PageID,
     language_code: str,
     url_path: str,
-    creator_id: UserID,
+    creator: User,
     title: str,
     head: str | None,
     body: str,
@@ -90,9 +86,7 @@ def update_page(
     db_page.language_code = language_code
     db_page.url_path = url_path
 
-    creator = user_service.get_user(creator_id)
-
-    db_version = DbPageVersion(db_page, creator_id, title, head, body)
+    db_version = DbPageVersion(db_page, creator.id, title, head, body)
     db.session.add(db_version)
 
     db_page.current_version = db_version
@@ -113,7 +107,7 @@ def update_page(
 
 
 def delete_page(
-    page_id: PageID, *, initiator_id: UserID | None = None
+    page_id: PageID, *, initiator: User | None = None
 ) -> tuple[bool, PageDeletedEvent | None]:
     """Delete the page and its versions.
 
@@ -122,12 +116,6 @@ def delete_page(
     Return `True` on success, or `False` if an error occurred.
     """
     db_page = _get_db_page(page_id)
-
-    initiator: User | None
-    if initiator_id is not None:
-        initiator = user_service.get_user(initiator_id)
-    else:
-        initiator = None
 
     # Keep values for use after page is deleted.
     site_id = db_page.site_id

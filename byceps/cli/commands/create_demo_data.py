@@ -42,7 +42,7 @@ from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user import user_command_service, user_creation_service
 from byceps.services.user.models.user import User
-from byceps.typing import BrandID, PartyID, UserID
+from byceps.typing import BrandID, PartyID
 
 
 @click.command()
@@ -60,7 +60,7 @@ def create_demo_data() -> None:
     _create_shop_articles(shop.id, ticket_category)
     storefront = _create_shop_storefront(shop.id)
     site = _create_site(brand.id, party.id, board.id, storefront.id)
-    _create_pages(site.id, admin.id)
+    _create_pages(site.id, admin)
 
 
 def _create_admin() -> User:
@@ -228,13 +228,13 @@ def _create_site(
     return site
 
 
-def _create_pages(site_id: SiteID, creator_id: UserID) -> None:
+def _create_pages(site_id: SiteID, creator: User) -> None:
     page_service.create_page(
         site_id,
         'imprint',
         'en',
         '/imprint',
-        creator_id,
+        creator,
         'Imprint',
         'Legal stuff goes here.',
     )
@@ -244,7 +244,7 @@ def _create_pages(site_id: SiteID, creator_id: UserID) -> None:
         'impressum',
         'de',
         '/impressum',
-        creator_id,
+        creator,
         'Impressum',
         'Hier kommt das Impressum hin.',
     )

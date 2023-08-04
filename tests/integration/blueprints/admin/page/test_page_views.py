@@ -52,7 +52,7 @@ def make_page(site: Site, page_admin: User):
             url_path = f'/page-{generate_token()}'
 
         version, event = page_service.create_page(
-            site.id, name, language_code, url_path, page_admin.id, title, body
+            site.id, name, language_code, url_path, page_admin, title, body
         )
         return version, event
 
@@ -101,7 +101,7 @@ def test_compare(page_admin_client, page_admin, make_page):
         page.id,
         page.language_code,
         page.url_path,
-        page_admin.id,
+        page_admin,
         'Title v2',
         'Head v2',
         'Body v2',
