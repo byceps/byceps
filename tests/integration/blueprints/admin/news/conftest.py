@@ -35,7 +35,7 @@ def news_admin_client(make_client, admin_app, news_admin):
 
 @pytest.fixture()
 def channel(brand: Brand, make_news_channel) -> NewsChannel:
-    return make_news_channel(brand.id)
+    return make_news_channel(brand)
 
 
 @pytest.fixture()

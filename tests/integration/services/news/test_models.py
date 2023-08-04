@@ -23,7 +23,7 @@ def brand(make_brand):
 
 @pytest.fixture()
 def channel(brand, make_news_channel) -> NewsChannel:
-    return make_news_channel(brand.id)
+    return make_news_channel(brand)
 
 
 @pytest.fixture()

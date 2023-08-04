@@ -276,7 +276,7 @@ def board(brand: Brand) -> Board:
 @pytest.fixture()
 def make_news_channel():
     def _wrapper(
-        brand_id: BrandID,
+        brand: Brand,
         channel_id: NewsChannelID | None = None,
         *,
         announcement_site_id: SiteID | None = None,
@@ -285,7 +285,7 @@ def make_news_channel():
             channel_id = NewsChannelID(generate_token())
 
         return news_channel_service.create_channel(
-            brand_id, channel_id, announcement_site_id=announcement_site_id
+            brand, channel_id, announcement_site_id=announcement_site_id
         )
 
     return _wrapper

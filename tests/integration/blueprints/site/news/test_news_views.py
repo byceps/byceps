@@ -21,7 +21,7 @@ def editor(make_user):
 def news_channel(brand):
     channel_id = f'{brand.id}-public'
 
-    return news_channel_service.create_channel(brand.id, channel_id)
+    return news_channel_service.create_channel(brand, channel_id)
 
 
 @pytest.fixture(scope='module')

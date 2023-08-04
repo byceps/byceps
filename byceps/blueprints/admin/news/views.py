@@ -140,7 +140,7 @@ def channel_create(brand_id):
     announcement_site_id = form.announcement_site_id.data or None
 
     channel = news_channel_service.create_channel(
-        brand.id, channel_id, announcement_site_id=announcement_site_id
+        brand, channel_id, announcement_site_id=announcement_site_id
     )
 
     flash_success(

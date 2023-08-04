@@ -11,7 +11,7 @@ from __future__ import annotations
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.brand import brand_service
+from byceps.services.brand.models import Brand
 from byceps.services.site.models import SiteID
 from byceps.typing import BrandID
 
@@ -20,16 +20,12 @@ from .models import NewsChannel, NewsChannelID
 
 
 def create_channel(
-    brand_id: BrandID,
+    brand: Brand,
     channel_id: NewsChannelID,
     *,
     announcement_site_id: SiteID | None = None,
 ) -> NewsChannel:
     """Create a channel for that brand."""
-    brand = brand_service.find_brand(brand_id)
-    if brand is None:
-        raise ValueError(f'Unknown brand ID "{brand_id}"')
-
     db_channel = DbNewsChannel(
         channel_id, brand.id, announcement_site_id=announcement_site_id
     )
