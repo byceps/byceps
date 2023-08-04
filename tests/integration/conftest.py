@@ -270,7 +270,7 @@ def make_ticket_category(admin_app: Flask):
 @pytest.fixture(scope='session')
 def board(brand: Brand) -> Board:
     board_id = BoardID(generate_token())
-    return board_service.create_board(brand.id, board_id)
+    return board_service.create_board(brand, board_id)
 
 
 @pytest.fixture()

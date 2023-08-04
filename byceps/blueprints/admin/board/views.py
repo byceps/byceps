@@ -120,7 +120,7 @@ def board_create(brand_id):
 
     board_id = form.board_id.data.strip().lower()
 
-    board = board_service.create_board(brand.id, board_id)
+    board = board_service.create_board(brand, board_id)
 
     flash_success(
         gettext(

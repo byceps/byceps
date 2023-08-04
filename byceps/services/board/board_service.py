@@ -11,19 +11,15 @@ from __future__ import annotations
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.brand import brand_service
+from byceps.services.brand.models import Brand
 from byceps.typing import BrandID
 
 from .dbmodels.board import DbBoard
 from .models import Board, BoardID
 
 
-def create_board(brand_id: BrandID, board_id: BoardID) -> Board:
+def create_board(brand: Brand, board_id: BoardID) -> Board:
     """Create a board for that brand."""
-    brand = brand_service.find_brand(brand_id)
-    if brand is None:
-        raise ValueError(f'Unknown brand ID "{brand_id}"')
-
     db_board = DbBoard(board_id, brand.id)
 
     db.session.add(db_board)

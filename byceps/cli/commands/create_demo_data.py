@@ -54,7 +54,7 @@ def create_demo_data() -> None:
     _create_email_config(brand.id)
     _create_email_footer_snippets(brand, admin)
     party = _create_party(brand.id)
-    board = _create_board(brand.id)
+    board = _create_board(brand)
     ticket_category = _create_ticket_category(party.id)
     shop = _create_shop(brand.id)
     _create_shop_articles(shop.id, ticket_category)
@@ -110,9 +110,9 @@ def _create_party(brand_id: BrandID) -> Party:
     return party
 
 
-def _create_board(brand_id: BrandID) -> Board:
+def _create_board(brand: Brand) -> Board:
     click.echo('Creating board ... ', nl=False)
-    board = board_service.create_board(brand_id, BoardID('cozylan'))
+    board = board_service.create_board(brand, BoardID('cozylan'))
     click.secho('done. ', fg='green')
 
     click.echo('Creating board categories ... ', nl=False)
