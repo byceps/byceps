@@ -204,7 +204,7 @@ def mark_order_as_paid(
         occurred_at,
         payment_method,
         order.total_amount,
-        initiator.id,
+        initiator,
         additional_payment_data if additional_payment_data is not None else {},
     )
 

@@ -16,8 +16,7 @@ from byceps.database import db
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.models import SnippetScope
-from byceps.services.user import user_service
-from byceps.typing import UserID
+from byceps.services.user.models.user import User
 from byceps.util.l10n import format_money
 from byceps.util.templating import load_template
 
@@ -33,11 +32,10 @@ def add_payment(
     created_at: datetime,
     method: str,
     amount: Money,
-    initiator_id: UserID,
+    initiator: User,
     additional_data: AdditionalPaymentData,
 ) -> Payment:
     """Add a payment to an order."""
-    initiator = user_service.get_user(initiator_id)
 
     payment, log_entry = order_domain_service.create_payment(
         order, created_at, method, amount, initiator, additional_data
@@ -91,9 +89,7 @@ def _db_entity_to_payment(db_payment: DbPayment) -> Payment:
     )
 
 
-def create_email_payment_instructions(
-    shop_id: ShopID, creator_id: UserID
-) -> None:
+def create_email_payment_instructions(shop_id: ShopID, creator: User) -> None:
     """Create email payment instructions snippets for that shop in the
     supported languages.
     """
@@ -136,7 +132,7 @@ Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/o
 
     for language_code, body in language_codes_and_bodies:
         snippet_service.create_snippet(
-            scope, 'email_payment_instructions', language_code, creator_id, body
+            scope, 'email_payment_instructions', language_code, creator.id, body
         )
 
 
@@ -157,9 +153,7 @@ def get_email_payment_instructions(order: Order, language_code: str) -> str:
     )
 
 
-def create_html_payment_instructions(
-    shop_id: ShopID, creator_id: UserID
-) -> None:
+def create_html_payment_instructions(shop_id: ShopID, creator: User) -> None:
     """Create HTML payment instructions snippets for that shop in the
     supported languages.
     """
@@ -236,7 +230,7 @@ def create_html_payment_instructions(
 
     for language_code, body in language_codes_and_bodies:
         snippet_service.create_snippet(
-            scope, 'payment_instructions', language_code, creator_id, body
+            scope, 'payment_instructions', language_code, creator.id, body
         )
 
 

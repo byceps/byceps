@@ -164,8 +164,8 @@ def create(brand_id):
 
     shop = shop_service.create_shop(shop_id, brand.id, title, currency)
 
-    order_payment_service.create_email_payment_instructions(shop.id, g.user.id)
-    order_payment_service.create_html_payment_instructions(shop.id, g.user.id)
+    order_payment_service.create_email_payment_instructions(shop.id, g.user)
+    order_payment_service.create_html_payment_instructions(shop.id, g.user)
 
     flash_success(gettext('Shop has been created.'))
 
