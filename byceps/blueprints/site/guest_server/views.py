@@ -14,6 +14,7 @@ from flask_babel import gettext
 from byceps.services.global_setting import global_setting_service
 from byceps.services.guest_server import guest_server_service
 from byceps.services.guest_server.models import Address
+from byceps.services.party import party_service
 from byceps.services.ticketing import ticket_service
 from byceps.signals import guest_server as guest_server_signals
 from byceps.typing import PartyID
@@ -86,6 +87,8 @@ def create():
     """Create a guest server."""
     party_id = _get_current_party_id_or_404()
 
+    party = party_service.get_party(server.party_id)
+
     if not _current_user_uses_ticket_for_party(party_id):
         flash_success(gettext('Using a ticket for this party is required.'))
         return redirect_to('.index')
@@ -106,7 +109,7 @@ def create():
     notes = form.notes.data.strip()
 
     server, event = guest_server_service.create_server(
-        party_id, g.user.id, g.user.id, notes_owner=notes, hostname=hostname
+        party, g.user, g.user, notes_owner=notes, hostname=hostname
     )
 
     flash_success(gettext('The server has been registered.'))

@@ -12,8 +12,8 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.events.guest_server import GuestServerRegisteredEvent
-from byceps.services.party import party_service
-from byceps.services.user import user_service
+from byceps.services.party.models import Party
+from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
 
 from .dbmodels import DbAddress, DbServer, DbSetting
@@ -49,7 +49,7 @@ def get_setting_for_party(party_id: PartyID) -> Setting:
 
 
 def update_setting(
-    party_id: PartyID,
+    party: Party,
     netmask: IPAddress | None,
     gateway: IPAddress | None,
     dns_server1: IPAddress | None,
@@ -57,8 +57,6 @@ def update_setting(
     domain: str | None,
 ) -> Setting:
     """Update the setting for the party."""
-    party = party_service.get_party(party_id)
-
     db_setting = _get_db_setting(party.id) or DbSetting(party.id)
 
     db_setting.netmask = netmask
@@ -95,9 +93,9 @@ def _db_entity_to_setting(db_setting: DbSetting) -> Setting:
 
 
 def create_server(
-    party_id: PartyID,
-    creator_id: UserID,
-    owner_id: UserID,
+    party: Party,
+    creator: User,
+    owner: User,
     *,
     notes_owner: str | None = None,
     notes_admin: str | None = None,
@@ -108,10 +106,6 @@ def create_server(
     gateway: IPAddress | None = None,
 ) -> tuple[Server, GuestServerRegisteredEvent]:
     """Create a server."""
-    party = party_service.get_party(party_id)
-    creator = user_service.get_user(creator_id)
-    owner = user_service.get_user(owner_id)
-
     db_server = DbServer(
         party.id,
         creator.id,

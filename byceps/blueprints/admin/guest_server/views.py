@@ -129,9 +129,9 @@ def server_create(party_id):
     gateway = _to_ip_address(form.gateway.data.strip())
 
     server, event = guest_server_service.create_server(
-        party.id,
-        creator.id,
-        owner.id,
+        party,
+        creator,
+        owner,
         notes_admin=notes_admin,
         approved=approved,
         ip_address=ip_address,
@@ -419,7 +419,7 @@ def setting_update(party_id):
     domain = form.domain.data.strip() or None
 
     guest_server_service.update_setting(
-        party.id, netmask, gateway, dns_server1, dns_server2, domain
+        party, netmask, gateway, dns_server1, dns_server2, domain
     )
 
     flash_success(gettext('Changes have been saved.'))
