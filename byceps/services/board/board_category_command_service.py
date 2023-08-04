@@ -96,7 +96,7 @@ def move_category_down(category_id: BoardCategoryID) -> Result[None, str]:
     return Ok(None)
 
 
-def delete_category(category_id: BoardCategoryID) -> None:
+def delete_category(category_id: BoardCategoryID) -> Result[None, str]:
     """Delete category."""
     category = _get_category(category_id)
 
@@ -104,13 +104,15 @@ def delete_category(category_id: BoardCategoryID) -> None:
         category.id
     )
     if topic_ids:
-        raise ValueError(
+        return Err(
             f'Category "{category.title}" in board "{category.board_id}" '
             'contains topics. It will not be deleted because of that.'
         )
 
     db.session.delete(category)
     db.session.commit()
+
+    return Ok(None)
 
 
 def _get_category(category_id: BoardCategoryID) -> DbBoardCategory:

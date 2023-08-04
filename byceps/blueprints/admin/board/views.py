@@ -348,21 +348,20 @@ def category_delete(category_id):
     """Delete a category."""
     category = _get_category_or_404(category_id)
 
-    try:
-        board_category_command_service.delete_category(category.id)
-    except Exception:
+    result = board_category_command_service.delete_category(category.id)
+
+    if result.is_err():
         flash_error(
             gettext(
                 'Category "%(title)s" could not be deleted.',
                 title=category.title,
             )
         )
-    else:
-        flash_success(
-            gettext(
-                'Category "%(title)s" has been deleted.', title=category.title
-            )
-        )
+        return
+
+    flash_success(
+        gettext('Category "%(title)s" has been deleted.', title=category.title)
+    )
 
 
 # -------------------------------------------------------------------- #
