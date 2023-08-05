@@ -67,7 +67,7 @@ def update():
 
     image = request.files.get('image')
 
-    _update(user.id, image)
+    _update(user, image)
 
     flash_success(gettext('Avatar image has been updated.'), icon='upload')
     user_signals.avatar_updated.send(None, user_id=user.id)
@@ -75,13 +75,13 @@ def update():
     return redirect_to('user_settings.view')
 
 
-def _update(user_id, image):
+def _update(user, image):
     if not image or not image.filename:
         abort(400, 'No file to upload has been specified.')
 
     try:
         update_result = user_avatar_service.update_avatar_image(
-            user_id, image.stream, ALLOWED_IMAGE_TYPES, user_id
+            user.id, image.stream, ALLOWED_IMAGE_TYPES, user
         )
         if update_result.is_err():
             abort(400, update_result.unwrap_err())
@@ -96,7 +96,7 @@ def delete():
     user = _get_current_user_or_404()
 
     try:
-        user_avatar_service.remove_avatar_image(user.id, user.id)
+        user_avatar_service.remove_avatar_image(user.id, user)
     except ValueError:
         # No avatar selected.
         # But that's ok, deletions should be idempotent.

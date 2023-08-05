@@ -23,7 +23,7 @@ from byceps.util.result import Err, Ok, Result
 from . import user_log_service, user_service
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.user import DbUser
-from .models.user import UserAvatarID
+from .models.user import User, UserAvatarID
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -33,7 +33,7 @@ def update_avatar_image(
     user_id: UserID,
     stream: BinaryIO,
     allowed_types: set[ImageType],
-    initiator_id: UserID,
+    initiator: User,
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> Result[UserAvatarID, str]:
@@ -70,7 +70,7 @@ def update_avatar_image(
         {
             'avatar_id': str(avatar.id),
             'filename': str(avatar.filename),
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         },
     )
     db.session.add(log_entry)
@@ -80,7 +80,7 @@ def update_avatar_image(
     return Ok(avatar.id)
 
 
-def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:
+def remove_avatar_image(user_id: UserID, initiator: User) -> None:
     """Remove the user's avatar image.
 
     The avatar will be unlinked from the user, but the database record
@@ -97,7 +97,7 @@ def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:
         {
             'avatar_id': str(user.avatar_id),
             'filename': str(user.avatar.filename),
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         },
     )
     db.session.add(log_entry)
