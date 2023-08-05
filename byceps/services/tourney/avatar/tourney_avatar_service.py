@@ -58,12 +58,12 @@ def create_avatar_image(
     return Ok(avatar)
 
 
-def delete_avatar_image(avatar_id: UUID) -> None:
+def delete_avatar_image(avatar_id: UUID) -> Result[None, str]:
     """Delete the avatar image."""
     avatar = db.session.get(DbTourneyAvatar, avatar_id)
 
     if avatar is None:
-        raise ValueError('Unknown avatar ID')
+        return Err('Unknown avatar ID')
 
     # Delete file.
     upload.delete(avatar.path)
@@ -71,3 +71,5 @@ def delete_avatar_image(avatar_id: UUID) -> None:
     # Delete database record.
     db.session.delete(avatar)
     db.session.commit()
+
+    return Ok(None)

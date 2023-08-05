@@ -84,7 +84,7 @@ def _create(party_id, creator_id, image):
 @respond_no_content
 def delete(avatar_id):
     """Delete the avatar image."""
-    try:
-        tourney_avatar_service.delete_avatar_image(avatar_id)
-    except ValueError:
-        abort(404)
+    result = tourney_avatar_service.delete_avatar_image(avatar_id)
+
+    if result.is_err():
+        abort(404, result.unwrap_err())
