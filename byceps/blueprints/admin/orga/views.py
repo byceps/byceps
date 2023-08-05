@@ -87,7 +87,7 @@ def create_orgaflag(brand_id):
     user = form.user.data
     initiator = g.user
 
-    orga_flag = orga_service.add_orga_flag(brand.id, user.id, initiator.id)
+    orga_flag = orga_service.add_orga_flag(brand.id, user.id, initiator)
 
     flash_success(
         gettext(
@@ -114,7 +114,7 @@ def remove_orgaflag(brand_id, user_id):
     user = orga_flag.user
     initiator = g.user
 
-    orga_service.remove_orga_flag(brand.id, user.id, initiator.id)
+    orga_service.remove_orga_flag(brand.id, user.id, initiator)
 
     flash_success(
         gettext(

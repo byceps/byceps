@@ -16,6 +16,7 @@ from byceps.database import db
 from byceps.services.brand.dbmodels.brand import DbBrand
 from byceps.services.user import user_log_service
 from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.models.user import User
 from byceps.typing import BrandID, UserID
 
 from .dbmodels import DbOrgaFlag
@@ -63,7 +64,7 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
 
 
 def add_orga_flag(
-    brand_id: BrandID, user_id: UserID, initiator_id: UserID
+    brand_id: BrandID, user_id: UserID, initiator: User
 ) -> DbOrgaFlag:
     """Add an orga flag for a user for that brand."""
     orga_flag = DbOrgaFlag(brand_id, user_id)
@@ -74,7 +75,7 @@ def add_orga_flag(
         user_id,
         {
             'brand_id': str(brand_id),
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         },
     )
     db.session.add(log_entry)
@@ -85,7 +86,7 @@ def add_orga_flag(
 
 
 def remove_orga_flag(
-    brand_id: BrandID, user_id: UserID, initiator_id: UserID
+    brand_id: BrandID, user_id: UserID, initiator: User
 ) -> None:
     """Remove the orga flag."""
     db.session.execute(
@@ -99,7 +100,7 @@ def remove_orga_flag(
         user_id,
         {
             'brand_id': str(brand_id),
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         },
     )
     db.session.add(log_entry)

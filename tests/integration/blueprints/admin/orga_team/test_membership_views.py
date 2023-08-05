@@ -24,7 +24,7 @@ def test_membership_create(
     user = make_user()
     party = make_party(brand.id)
     team = make_team(party.id)
-    orga_service.add_orga_flag(party.brand_id, user.id, user.id)
+    orga_service.add_orga_flag(party.brand_id, user.id, user)
 
     assert orga_team_service.count_memberships_for_party(party.id) == 0
 
