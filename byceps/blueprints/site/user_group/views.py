@@ -69,7 +69,7 @@ def create():
     description = form.description.data.strip()
 
     group = user_group_service.create_group(
-        g.party_id, creator.id, title, description
+        g.party_id, creator, title, description
     )
 
     flash_success(

@@ -13,19 +13,20 @@ from collections.abc import Sequence
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.typing import PartyID, UserID
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID
 
 from .dbmodels import DbUserGroup
 
 
 def create_group(
     party_id: PartyID,
-    creator_id: UserID,
+    creator: User,
     title: str,
     description: str | None,
 ) -> DbUserGroup:
     """Introduce a new group."""
-    group = DbUserGroup(party_id, creator_id, title, description)
+    group = DbUserGroup(party_id, creator.id, title, description)
 
     db.session.add(group)
     db.session.commit()
