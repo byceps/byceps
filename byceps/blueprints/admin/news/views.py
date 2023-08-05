@@ -278,7 +278,7 @@ def image_create(item_id):
     if not form.validate():
         return image_create_form(item.id, form)
 
-    creator_id = g.user.id
+    creator = g.user
     image = request.files.get('image')
     alt_text = form.alt_text.data.strip()
     caption = form.caption.data.strip()
@@ -289,8 +289,8 @@ def image_create(item_id):
 
     try:
         creation_result = news_image_service.create_image(
-            creator_id,
-            item.id,
+            creator,
+            item,
             image.stream,
             alt_text=alt_text,
             caption=caption,
@@ -300,8 +300,6 @@ def image_create(item_id):
             abort(400, creation_result.unwrap_err())
 
         image = creation_result.unwrap()
-    except user_service.UserIdRejectedError:
-        abort(400, 'Invalid creator ID')
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 

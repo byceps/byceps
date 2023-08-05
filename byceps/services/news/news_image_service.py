@@ -15,16 +15,14 @@ from sqlalchemy import select
 
 from byceps.database import db, generate_uuid7
 from byceps.services.image import image_service
-from byceps.services.user import user_service
-from byceps.typing import UserID
+from byceps.services.user.models.user import User
 from byceps.util import upload
 from byceps.util.image.models import Dimensions, ImageType
 from byceps.util.result import Err, Ok, Result
 
-from . import news_item_service
 from .dbmodels.image import DbNewsImage
 from .dbmodels.item import DbNewsItem
-from .models import NewsChannelID, NewsImage, NewsImageID, NewsItemID
+from .models import NewsChannelID, NewsImage, NewsImageID, NewsItem, NewsItemID
 
 
 ALLOWED_IMAGE_TYPES = frozenset(
@@ -41,8 +39,8 @@ MAXIMUM_DIMENSIONS = Dimensions(2560, 1440)
 
 
 def create_image(
-    creator_id: UserID,
-    item_id: NewsItemID,
+    creator: User,
+    item: NewsItem,
     stream: BinaryIO,
     *,
     alt_text: str | None = None,
@@ -50,14 +48,6 @@ def create_image(
     attribution: str | None = None,
 ) -> Result[NewsImage, str]:
     """Create an image for a news item."""
-    creator = user_service.find_active_user(creator_id)
-    if creator is None:
-        raise user_service.UserIdRejectedError(creator_id)
-
-    item = news_item_service.find_item(item_id)
-    if item is None:
-        raise ValueError(f'Unknown news item ID "{item_id}".')
-
     image_type_result = image_service.determine_image_type(
         stream, ALLOWED_IMAGE_TYPES
     )
@@ -76,7 +66,7 @@ def create_image(
 
     db_image = DbNewsImage(
         image_id,
-        creator_id,
+        creator.id,
         item.id,
         number,
         filename,
