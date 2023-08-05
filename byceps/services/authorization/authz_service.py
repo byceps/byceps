@@ -110,7 +110,7 @@ def deassign_permission_from_role(
 
 
 def assign_role_to_user(
-    role_id: RoleID, user_id: UserID, *, initiator_id: UserID | None = None
+    role_id: RoleID, user_id: UserID, *, initiator: User | None = None
 ) -> None:
     """Assign the role to the user."""
     if _is_role_assigned_to_user(role_id, user_id):
@@ -121,8 +121,8 @@ def assign_role_to_user(
     db.session.add(db_user_role)
 
     log_entry_data = {'role_id': str(role_id)}
-    if initiator_id is not None:
-        log_entry_data['initiator_id'] = str(initiator_id)
+    if initiator is not None:
+        log_entry_data['initiator_id'] = str(initiator.id)
     log_entry = user_log_service.build_entry(
         'role-assigned', user_id, log_entry_data
     )
@@ -132,7 +132,7 @@ def assign_role_to_user(
 
 
 def deassign_role_from_user(
-    role_id: RoleID, user_id: UserID, initiator_id: UserID | None = None
+    role_id: RoleID, user_id: UserID, *, initiator: User | None = None
 ) -> Result[None, str]:
     """Deassign the role from the user."""
     db_user_role = db.session.get(DbUserRole, (user_id, role_id))
@@ -143,8 +143,8 @@ def deassign_role_from_user(
     db.session.delete(db_user_role)
 
     log_entry_data = {'role_id': str(role_id)}
-    if initiator_id is not None:
-        log_entry_data['initiator_id'] = str(initiator_id)
+    if initiator is not None:
+        log_entry_data['initiator_id'] = str(initiator.id)
     log_entry = user_log_service.build_entry(
         'role-deassigned', user_id, log_entry_data
     )
@@ -156,7 +156,7 @@ def deassign_role_from_user(
 
 
 def deassign_all_roles_from_user(
-    user_id: UserID, initiator_id: UserID | None = None, commit: bool = True
+    user_id: UserID, *, initiator: User | None = None, commit: bool = True
 ) -> None:
     """Deassign all roles from the user."""
     db.session.execute(delete(DbUserRole).where(DbUserRole.user_id == user_id))

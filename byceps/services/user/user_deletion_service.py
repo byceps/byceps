@@ -44,7 +44,7 @@ def delete_account(
 
     # Deassign authorization roles.
     authz_service.deassign_all_roles_from_user(
-        user.id, initiator.id, commit=False
+        user.id, initiator=initiator, commit=False
     )
 
     db.session.commit()

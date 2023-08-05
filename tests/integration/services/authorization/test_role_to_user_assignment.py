@@ -17,9 +17,7 @@ def test_assign_role_to_user(admin_app, user, admin_user, role):
     )
     assert PERMISSION_ID not in user_permission_ids_before
 
-    authz_service.assign_role_to_user(
-        role.id, user.id, initiator_id=admin_user.id
-    )
+    authz_service.assign_role_to_user(role.id, user.id, initiator=admin_user)
 
     user_permission_ids_after = authz_service.get_permission_ids_for_user(
         user.id
@@ -28,15 +26,11 @@ def test_assign_role_to_user(admin_app, user, admin_user, role):
 
     # Expect attempt to assign that role again to that user to have no
     # effect and to not raise an exception.
-    authz_service.assign_role_to_user(
-        role.id, user.id, initiator_id=admin_user.id
-    )
+    authz_service.assign_role_to_user(role.id, user.id, initiator=admin_user)
 
 
 def test_deassign_role_from_user(admin_app, user, admin_user, role):
-    authz_service.assign_role_to_user(
-        role.id, user.id, initiator_id=admin_user.id
-    )
+    authz_service.assign_role_to_user(role.id, user.id, initiator=admin_user)
 
     user_permission_ids_before = authz_service.get_permission_ids_for_user(
         user.id
@@ -44,7 +38,7 @@ def test_deassign_role_from_user(admin_app, user, admin_user, role):
     assert PERMISSION_ID in user_permission_ids_before
 
     deassign_result = authz_service.deassign_role_from_user(
-        role.id, user.id, initiator_id=admin_user.id
+        role.id, user.id, initiator=admin_user
     )
     assert deassign_result.is_ok()
 

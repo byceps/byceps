@@ -77,9 +77,7 @@ def _assign_roles(user_id: UserID, *, initiator: User | None = None) -> None:
         return
 
     authz_service.assign_role_to_user(
-        board_user_role.id,
-        user_id,
-        initiator_id=initiator.id if initiator else None,
+        board_user_role.id, user_id, initiator=initiator
     )
 
 

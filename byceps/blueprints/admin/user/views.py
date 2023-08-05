@@ -788,11 +788,9 @@ def role_assign(user_id, role_id):
     """Assign the role to the user."""
     user = _get_user_or_404(user_id)
     role = _get_role_or_404(role_id)
-    initiator_id = g.user.id
+    initiator = g.user
 
-    authz_service.assign_role_to_user(
-        role.id, user.id, initiator_id=initiator_id
-    )
+    authz_service.assign_role_to_user(role.id, user.id, initiator=initiator)
 
     flash_success(
         gettext(
@@ -810,10 +808,10 @@ def role_deassign(user_id, role_id):
     """Deassign the role from the user."""
     user = _get_user_or_404(user_id)
     role = _get_role_or_404(role_id)
-    initiator_id = g.user.id
+    initiator = g.user
 
     authz_service.deassign_role_from_user(
-        role.id, user.id, initiator_id=initiator_id
+        role.id, user.id, initiator=initiator
     ).unwrap()
 
     flash_success(

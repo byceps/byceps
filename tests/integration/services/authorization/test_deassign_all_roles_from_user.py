@@ -45,19 +45,10 @@ def roles(user1, user2, admin_user):
     role2 = authz_service.create_role('pausenclown', 'Pausenclown').unwrap()
     role3 = authz_service.create_role('partymeister', 'Partymeister').unwrap()
 
-    authz_service.assign_role_to_user(
-        role1.id, user1.id, initiator_id=admin_user.id
-    )
-    authz_service.assign_role_to_user(
-        role2.id, user1.id, initiator_id=admin_user.id
-    )
-
-    authz_service.assign_role_to_user(
-        role1.id, user2.id, initiator_id=admin_user.id
-    )
-    authz_service.assign_role_to_user(
-        role3.id, user2.id, initiator_id=admin_user.id
-    )
+    authz_service.assign_role_to_user(role1.id, user1.id, initiator=admin_user)
+    authz_service.assign_role_to_user(role2.id, user1.id, initiator=admin_user)
+    authz_service.assign_role_to_user(role1.id, user2.id, initiator=admin_user)
+    authz_service.assign_role_to_user(role3.id, user2.id, initiator=admin_user)
 
     yield
 

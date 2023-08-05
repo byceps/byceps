@@ -39,15 +39,15 @@ def permissions(user, admin_user):
     )
 
     authz_service.assign_role_to_user(
-        role_id_god, user.id, initiator_id=admin_user.id
+        role_id_god, user.id, initiator=admin_user
     )
     authz_service.assign_role_to_user(
-        role_id_demigod, user.id, initiator_id=admin_user.id
+        role_id_demigod, user.id, initiator=admin_user
     )
 
     yield
 
-    authz_service.deassign_all_roles_from_user(user.id, user.id)
+    authz_service.deassign_all_roles_from_user(user.id, initiator=user.id)
 
     for role_id in role_id_god, role_id_demigod:
         authz_service.delete_role(role_id)
