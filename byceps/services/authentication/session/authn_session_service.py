@@ -16,7 +16,7 @@ from sqlalchemy import delete, select
 from byceps.database import db, insert_ignore_on_conflict, upsert
 from byceps.events.auth import UserLoggedInEvent
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user import user_log_service, user_service
+from byceps.services.user import user_log_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
@@ -103,24 +103,23 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
 
 
 def log_in_user(
-    user_id: UserID,
+    user: User,
     *,
     ip_address: str | None = None,
     site: Site | None = None,
 ) -> tuple[str, UserLoggedInEvent]:
     """Create a session token and record the log in."""
-    session_token = get_session_token(user_id)
+    session_token = get_session_token(user.id)
 
     occurred_at = datetime.utcnow()
-    user = user_service.get_user(user_id)
 
     _create_login_log_entry(
-        user_id,
+        user.id,
         occurred_at,
         ip_address=ip_address,
         site_id=site.id if site else None,
     )
-    _record_recent_login(user_id, occurred_at)
+    _record_recent_login(user.id, occurred_at)
 
     event = UserLoggedInEvent(
         occurred_at=occurred_at,
