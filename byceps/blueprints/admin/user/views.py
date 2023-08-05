@@ -428,10 +428,10 @@ def delete_account(user_id):
     if not form.validate():
         return delete_account_form(user.id, form)
 
-    initiator_id = g.user.id
+    initiator = g.user
     reason = form.reason.data.strip()
 
-    event = user_deletion_service.delete_account(user.id, initiator_id, reason)
+    event = user_deletion_service.delete_account(user.id, initiator, reason)
 
     user_signals.account_deleted.send(None, event=event)
 

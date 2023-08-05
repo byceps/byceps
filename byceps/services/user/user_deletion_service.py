@@ -18,14 +18,14 @@ from byceps.typing import UserID
 
 from . import user_log_service, user_service
 from .dbmodels.user import DbUser
+from .models.user import User
 
 
 def delete_account(
-    user_id: UserID, initiator_id: UserID, reason: str
+    user_id: UserID, initiator: User, reason: str
 ) -> UserAccountDeletedEvent:
     """Delete the user account."""
     user = user_service.get_db_user(user_id)
-    initiator = user_service.get_user(initiator_id)
 
     user_screen_name_before_anonymization = user.screen_name
 
