@@ -8,7 +8,7 @@ byceps.services.shop.order.actions.revoke_tickets
 
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import LineItem, Order
-from byceps.typing import UserID
+from byceps.services.user.models.user import User
 
 from . import ticket
 
@@ -16,8 +16,8 @@ from . import ticket
 def revoke_tickets(
     order: Order,
     line_item: LineItem,
-    initiator_id: UserID,
+    initiator: User,
     parameters: ActionParameters,
 ) -> None:
     """Revoke all tickets in the order."""
-    ticket.revoke_tickets(order, line_item, initiator_id)
+    ticket.revoke_tickets(order, line_item, initiator)

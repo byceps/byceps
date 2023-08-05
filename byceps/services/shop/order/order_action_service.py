@@ -16,7 +16,7 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import ArticleID
-from byceps.typing import UserID
+from byceps.services.user.models.user import User
 
 from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles
@@ -28,7 +28,7 @@ from .models.action import Action, ActionParameters
 from .models.order import LineItem, Order, PaymentState
 
 
-OrderActionType = Callable[[Order, LineItem, UserID, ActionParameters], None]
+OrderActionType = Callable[[Order, LineItem, User, ActionParameters], None]
 
 
 PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
@@ -108,18 +108,18 @@ def _db_entity_to_action(db_action: DbOrderAction) -> Action:
 # execution
 
 
-def execute_creation_actions(order: Order, initiator_id: UserID) -> None:
+def execute_creation_actions(order: Order, initiator: User) -> None:
     """Execute item creation actions for this order."""
-    _execute_actions(order, PaymentState.paid, initiator_id)
+    _execute_actions(order, PaymentState.paid, initiator)
 
 
-def execute_revocation_actions(order: Order, initiator_id: UserID) -> None:
+def execute_revocation_actions(order: Order, initiator: User) -> None:
     """Execute item revocation actions for this order."""
-    _execute_actions(order, PaymentState.canceled_after_paid, initiator_id)
+    _execute_actions(order, PaymentState.canceled_after_paid, initiator)
 
 
 def _execute_actions(
-    order: Order, payment_state: PaymentState, initiator_id: UserID
+    order: Order, payment_state: PaymentState, initiator: User
 ) -> None:
     """Execute relevant actions for this order in its new payment state."""
     article_ids = {line_item.article_id for line_item in order.line_items}
@@ -133,7 +133,7 @@ def _execute_actions(
             continue
 
         procedure = _get_procedure(action.procedure_name, action.article_id)
-        procedure(order, line_item, initiator_id, action.parameters)
+        procedure(order, line_item, initiator, action.parameters)
 
 
 def _get_actions(

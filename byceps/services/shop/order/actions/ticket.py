@@ -20,7 +20,8 @@ from byceps.services.ticketing import (
 )
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketCategoryID, TicketID
-from byceps.typing import UserID
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 
@@ -29,10 +30,10 @@ def create_tickets(
     order: Order,
     line_item: LineItem,
     ticket_category_id: TicketCategoryID,
-    initiator_id: UserID,
+    initiator: User,
 ) -> None:
     """Create tickets."""
-    owned_by_id = order.placed_by_id
+    owner = user_service.get_user(order.placed_by_id)
     order_number = order.order_number
     ticket_quantity = line_item.quantity
 
@@ -41,10 +42,10 @@ def create_tickets(
     tickets = ticket_creation_service.create_tickets(
         ticket_category.party_id,
         ticket_category_id,
-        owned_by_id,
+        owner.id,
         ticket_quantity,
         order_number=order_number,
-        used_by_id=owned_by_id,
+        used_by_id=owner.id,
     )
 
     _create_creation_order_log_entries(order.id, tickets)
@@ -55,7 +56,7 @@ def create_tickets(
     order_service.update_line_item_processing_result(line_item.id, data)
 
     tickets_sold_event = create_tickets_sold_event(
-        order.id, initiator_id, ticket_category_id, owned_by_id, ticket_quantity
+        order.id, initiator, ticket_category_id, owner, ticket_quantity
     )
     send_tickets_sold_event(tickets_sold_event)
 
@@ -78,9 +79,7 @@ def _create_creation_order_log_entries(
     order_log_service.create_entries(event_type, order_id, datas)
 
 
-def revoke_tickets(
-    order: Order, line_item: LineItem, initiator_id: UserID
-) -> None:
+def revoke_tickets(order: Order, line_item: LineItem, initiator: User) -> None:
     """Revoke all tickets related to the line item."""
     ticket_id_strs = line_item.processing_result['ticket_ids']
     ticket_ids = {
@@ -88,13 +87,13 @@ def revoke_tickets(
     }
     tickets = ticket_service.get_tickets(ticket_ids)
 
-    ticket_revocation_service.revoke_tickets(ticket_ids, initiator_id)
+    ticket_revocation_service.revoke_tickets(ticket_ids, initiator.id)
 
-    _create_revocation_order_log_entries(order.id, tickets, initiator_id)
+    _create_revocation_order_log_entries(order.id, tickets, initiator)
 
 
 def _create_revocation_order_log_entries(
-    order_id: OrderID, tickets: Iterable[DbTicket], initiator_id: UserID
+    order_id: OrderID, tickets: Iterable[DbTicket], initiator: User
 ) -> None:
     event_type = 'ticket-revoked'
 
@@ -102,7 +101,7 @@ def _create_revocation_order_log_entries(
         {
             'ticket_id': str(ticket.id),
             'ticket_code': ticket.code,
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         }
         for ticket in tickets
     ]

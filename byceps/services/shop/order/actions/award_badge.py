@@ -10,18 +10,18 @@ from byceps.services.shop.order import order_log_service
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import LineItem, Order, OrderID
 from byceps.services.user import user_service
+from byceps.services.user.models.user import User
 from byceps.services.user_badge import (
     user_badge_awarding_service,
     user_badge_service,
 )
 from byceps.services.user_badge.models import BadgeAwarding
-from byceps.typing import UserID
 
 
 def award_badge(
     order: Order,
     line_item: LineItem,
-    initiator_id: UserID,
+    initiator: User,
     parameters: ActionParameters,
 ) -> None:
     """Award badge to user."""

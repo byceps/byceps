@@ -267,7 +267,7 @@ def _execute_article_creation_actions(order: Order, initiator: User) -> None:
                     order,
                     line_item,
                     ticket_category_id,
-                    initiator.id,
+                    initiator,
                 )
             elif line_item.article_type == ArticleType.ticket_bundle:
                 ticket_quantity_per_bundle = int(
@@ -278,25 +278,25 @@ def _execute_article_creation_actions(order: Order, initiator: User) -> None:
                     line_item,
                     ticket_category_id,
                     ticket_quantity_per_bundle,
-                    initiator.id,
+                    initiator,
                 )
 
     # based on order action registered for article number
-    order_action_service.execute_creation_actions(order, initiator.id)
+    order_action_service.execute_creation_actions(order, initiator)
 
 
 def _execute_article_revocation_actions(order: Order, initiator: User) -> None:
     # based on article type
     for line_item in order.line_items:
         if line_item.article_type == ArticleType.ticket:
-            ticket_actions.revoke_tickets(order, line_item, initiator.id)
+            ticket_actions.revoke_tickets(order, line_item, initiator)
         elif line_item.article_type == ArticleType.ticket_bundle:
             ticket_bundle_actions.revoke_ticket_bundles(
-                order, line_item, initiator.id
+                order, line_item, initiator
             )
 
     # based on order action registered for article number
-    order_action_service.execute_revocation_actions(order, initiator.id)
+    order_action_service.execute_revocation_actions(order, initiator)
 
 
 def update_line_item_processing_result(
