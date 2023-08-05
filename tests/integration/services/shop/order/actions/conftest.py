@@ -8,7 +8,6 @@ import pytest
 from byceps.services.party.models import Party
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.ticketing.models.ticket import TicketCategory
-from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token
 
@@ -20,10 +19,6 @@ def ticket_category(make_ticket_category, party: Party) -> TicketCategory:
 
 
 @pytest.fixture(scope='module')
-def orderer_user(make_user) -> User:
-    return make_user()
-
-
-@pytest.fixture(scope='module')
-def orderer(make_orderer, orderer_user: User) -> Orderer:
-    return make_orderer(orderer_user.id)
+def orderer(make_orderer, make_user) -> Orderer:
+    user = make_user()
+    return make_orderer(user)

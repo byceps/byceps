@@ -18,7 +18,7 @@ from byceps.util.iterables import find
 @pytest.fixture(scope='module')
 def orderer(make_user, make_orderer):
     user = make_user()
-    return make_orderer(user.id)
+    return make_orderer(user)
 
 
 @pytest.fixture()

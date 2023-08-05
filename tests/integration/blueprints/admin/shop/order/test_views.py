@@ -93,7 +93,7 @@ def orderer_user(make_user) -> User:
 
 @pytest.fixture(scope='module')
 def orderer(make_orderer, orderer_user: User) -> Orderer:
-    return make_orderer(orderer_user.id)
+    return make_orderer(orderer_user)
 
 
 @patch('byceps.signals.shop.order_canceled.send')

@@ -93,7 +93,7 @@ def user2(make_user):
 
 @pytest.fixture()
 def order(make_orderer, storefront1, user1):
-    orderer = make_orderer(user1.id)
+    orderer = make_orderer(user1)
     cart = Cart(EUR)
 
     order, _ = order_checkout_service.place_order(

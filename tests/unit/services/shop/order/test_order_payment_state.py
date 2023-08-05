@@ -4,7 +4,6 @@
 """
 
 from datetime import datetime
-from uuid import UUID
 
 from moneyed import EUR
 
@@ -18,7 +17,10 @@ from byceps.services.shop.order.models.order import (
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.user.models.user import User
 from byceps.typing import UserID
+
+from tests.helpers import generate_token, generate_uuid
 
 
 def test_is_open():
@@ -92,8 +94,17 @@ def create_order_with_payment_state(payment_state: PaymentState) -> Order:
 
 
 def create_orderer() -> Orderer:
+    user = User(
+        id=UserID(generate_uuid()),
+        screen_name=generate_token(),
+        suspended=False,
+        deleted=False,
+        locale=None,
+        avatar_url=None,
+    )
+
     return Orderer(
-        user_id=UserID(UUID('d8a9c61c-2286-41b3-85ae-7d9f7a2f3357')),
+        user=user,
         company='JJD, LLC',
         first_name='John Joseph',
         last_name='Doe',

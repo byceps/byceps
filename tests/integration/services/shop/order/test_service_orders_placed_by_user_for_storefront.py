@@ -45,13 +45,13 @@ def storefront2(
 @pytest.fixture(scope='module')
 def orderer1(make_user, make_orderer) -> Orderer:
     user = make_user()
-    return make_orderer(user.id)
+    return make_orderer(user)
 
 
 @pytest.fixture(scope='module')
 def orderer2(make_user, make_orderer) -> Orderer:
     user = make_user()
-    return make_orderer(user.id)
+    return make_orderer(user)
 
 
 def test_get_orders_placed_by_user(
@@ -93,6 +93,6 @@ def get_order_ids_by_user(
     orderer: Orderer, storefront_id: StorefrontID
 ) -> set[OrderID]:
     orders = order_service.get_orders_placed_by_user_for_storefront(
-        orderer.user_id, storefront_id
+        orderer.user.id, storefront_id
     )
     return {order.id for order in orders}

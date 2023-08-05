@@ -23,7 +23,6 @@ from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront import storefront_service
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.user import user_service
 from byceps.util.result import Err, Ok, Result
 
 from . import (
@@ -54,8 +53,6 @@ def place_order(
     """Place an order for one or more articles."""
     storefront = storefront_service.get_storefront(storefront_id)
     shop = shop_service.get_shop(storefront.shop_id)
-
-    orderer_user = user_service.get_user(orderer.user_id)
 
     order_number_sequence = order_sequence_service.get_order_number_sequence(
         storefront.order_number_sequence_id
@@ -100,19 +97,19 @@ def place_order(
     occurred_at = order.created_at
 
     # Create log entry in separate step as order ID is not available earlier.
-    log_entry_data = {'initiator_id': str(orderer_user.id)}
+    log_entry_data = {'initiator_id': str(orderer.user.id)}
     order_log_service.create_entry(
         'order-placed', order.id, log_entry_data, occurred_at=occurred_at
     )
 
     event = ShopOrderPlacedEvent(
         occurred_at=occurred_at,
-        initiator_id=orderer_user.id,
-        initiator_screen_name=orderer_user.screen_name,
+        initiator_id=orderer.user.id,
+        initiator_screen_name=orderer.user.screen_name,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
+        orderer_id=orderer.user.id,
+        orderer_screen_name=orderer.user.screen_name,
     )
 
     log.info('Order placed', shop_order_placed_event=event)
@@ -181,7 +178,7 @@ def _build_db_order(
         shop_id=incoming_order.shop_id,
         storefront_id=incoming_order.storefront_id,
         order_number=order_number,
-        placed_by_id=orderer.user_id,
+        placed_by_id=orderer.user.id,
         company=orderer.company,
         first_name=orderer.first_name,
         last_name=orderer.last_name,

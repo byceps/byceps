@@ -81,7 +81,7 @@ def orderer(make_user) -> Orderer:
     user = make_user(email_address='h-w.mustermann@users.test')
 
     return Orderer(
-        user_id=user.id,
+        user=user,
         company=None,
         first_name='Hans-Werner',
         last_name='Mustermann',

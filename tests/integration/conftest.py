@@ -351,7 +351,7 @@ def make_article():
 
 @pytest.fixture(scope='session')
 def make_orderer():
-    def _wrapper(user_id: UserID) -> Orderer:
-        return create_orderer(user_id)
+    def _wrapper(user: User) -> Orderer:
+        return create_orderer(user)
 
     return _wrapper

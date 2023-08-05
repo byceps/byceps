@@ -30,7 +30,7 @@ def article(make_article, shop: Shop) -> Article:
 @pytest.fixture()
 def orderer(make_user, make_orderer) -> Orderer:
     user = make_user()
-    return make_orderer(user.id)
+    return make_orderer(user)
 
 
 def test_count_ordered_articles(

@@ -13,6 +13,7 @@ from wtforms.validators import InputRequired, Length, Optional
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Orderer
+from byceps.services.user.models.user import User
 from byceps.util.l10n import LocalizedForm
 
 
@@ -34,9 +35,9 @@ class OrderForm(LocalizedForm):
     city = StringField(lazy_gettext('City'), validators=[Length(min=2)])
     street = StringField(lazy_gettext('Street'), validators=[Length(min=2)])
 
-    def get_orderer(self, user_id):
+    def get_orderer(self, user: User) -> Orderer:
         return Orderer(
-            user_id=user_id,
+            user=user,
             company=(self.company.data or '').strip(),
             first_name=self.first_name.data.strip(),
             last_name=self.last_name.data.strip(),

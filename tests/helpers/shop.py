@@ -27,7 +27,6 @@ from byceps.services.snippet.models import SnippetID, SnippetScope
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.typing import UserID
 
 from . import generate_token
 
@@ -171,11 +170,11 @@ def create_ticket_bundle_article(
     )
 
 
-def create_orderer(user_id: UserID) -> Orderer:
-    detail = user_service.get_detail(user_id)
+def create_orderer(user: User) -> Orderer:
+    detail = user_service.get_detail(user.id)
 
     return Orderer(
-        user_id=user_id,
+        user=user,
         company=None,
         first_name=detail.first_name or 'n/a',
         last_name=detail.last_name or 'n/a',

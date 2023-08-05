@@ -80,7 +80,7 @@ class Address:
 class Orderer:
     """Someone who orders articles."""
 
-    user_id: UserID
+    user: User
     company: str | None
     first_name: str
     last_name: str

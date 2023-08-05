@@ -122,7 +122,7 @@ def order():
         flash_error(gettext('No articles have been selected.'))
         return order_form(form)
 
-    orderer = form.get_orderer(g.user.id)
+    orderer = form.get_orderer(g.user)
 
     placement_result = _place_order(storefront.id, orderer, cart)
     if placement_result.is_err():
@@ -233,7 +233,7 @@ def order_single(article_id):
     if not form.validate():
         return order_single_form(article.id, form)
 
-    orderer = form.get_orderer(user.id)
+    orderer = form.get_orderer(user)
 
     cart = _create_cart_from_article_compilation(
         shop.currency, article_compilation
