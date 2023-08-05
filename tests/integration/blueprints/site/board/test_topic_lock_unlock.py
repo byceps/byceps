@@ -28,7 +28,7 @@ def test_lock_topic(site_app, moderator, moderator_client, topic):
 def test_unlock_topic(site_app, moderator, moderator_client, topic):
     topic_before = topic
 
-    board_topic_command_service.lock_topic(topic_before.id, moderator.id)
+    board_topic_command_service.lock_topic(topic_before.id, moderator)
 
     db.session.expire_all()
 

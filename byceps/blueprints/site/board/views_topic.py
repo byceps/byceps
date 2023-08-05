@@ -207,7 +207,7 @@ def topic_create(category_id):
     body = form.body.data.strip()
 
     topic, event = board_topic_command_service.create_topic(
-        category.id, creator.id, title, body
+        category.id, creator, title, body
     )
     topic_url = h.build_external_url_for_topic(topic.id)
 
@@ -287,7 +287,7 @@ def topic_update(topic_id):
         return topic_update_form(topic_id, form)
 
     board_topic_command_service.update_topic(
-        topic.id, g.user.id, form.title.data, form.body.data
+        topic.id, g.user, form.title.data, form.body.data
     )
 
     flash_success(
@@ -323,9 +323,9 @@ def topic_moderate_form(topic_id):
 def topic_hide(topic_id):
     """Hide a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.user.id
+    moderator = g.user
 
-    event = board_topic_command_service.hide_topic(topic.id, moderator_id)
+    event = board_topic_command_service.hide_topic(topic.id, moderator)
 
     flash_success(
         gettext('Topic "%(title)s" has been hidden.', title=topic.title),
@@ -346,9 +346,9 @@ def topic_hide(topic_id):
 def topic_unhide(topic_id):
     """Un-hide a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.user.id
+    moderator = g.user
 
-    event = board_topic_command_service.unhide_topic(topic.id, moderator_id)
+    event = board_topic_command_service.unhide_topic(topic.id, moderator)
 
     flash_success(
         gettext(
@@ -372,9 +372,9 @@ def topic_unhide(topic_id):
 def topic_lock(topic_id):
     """Lock a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.user.id
+    moderator = g.user
 
-    event = board_topic_command_service.lock_topic(topic.id, moderator_id)
+    event = board_topic_command_service.lock_topic(topic.id, moderator)
 
     flash_success(
         gettext('Topic "%(title)s" has been locked.', title=topic.title),
@@ -395,9 +395,9 @@ def topic_lock(topic_id):
 def topic_unlock(topic_id):
     """Unlock a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.user.id
+    moderator = g.user
 
-    event = board_topic_command_service.unlock_topic(topic.id, moderator_id)
+    event = board_topic_command_service.unlock_topic(topic.id, moderator)
 
     flash_success(
         gettext('Topic "%(title)s" has been unlocked.', title=topic.title),
@@ -418,9 +418,9 @@ def topic_unlock(topic_id):
 def topic_pin(topic_id):
     """Pin a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.user.id
+    moderator = g.user
 
-    event = board_topic_command_service.pin_topic(topic.id, moderator_id)
+    event = board_topic_command_service.pin_topic(topic.id, moderator)
 
     flash_success(
         gettext('Topic "%(title)s" has been pinned.', title=topic.title),
@@ -441,9 +441,9 @@ def topic_pin(topic_id):
 def topic_unpin(topic_id):
     """Unpin a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.user.id
+    moderator = g.user
 
-    event = board_topic_command_service.unpin_topic(topic.id, moderator_id)
+    event = board_topic_command_service.unpin_topic(topic.id, moderator)
 
     flash_success(
         gettext('Topic "%(title)s" has been unpinned.', title=topic.title)
@@ -462,7 +462,7 @@ def topic_unpin(topic_id):
 def topic_move(topic_id):
     """Move a topic from one category to another."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.user.id
+    moderator = g.user
 
     new_category_id = request.form.get('category_id')
     if not new_category_id:
@@ -473,7 +473,7 @@ def topic_move(topic_id):
     old_category = topic.category
 
     event = board_topic_command_service.move_topic(
-        topic.id, new_category.id, moderator_id
+        topic.id, new_category.id, moderator
     )
 
     flash_success(

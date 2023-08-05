@@ -51,7 +51,7 @@ def create_category(
 
 def create_topic(
     category_id: BoardCategoryID,
-    creator_id: UserID,
+    creator: User,
     *,
     number: int = 1,
     title: str | None = None,
@@ -64,7 +64,7 @@ def create_topic(
         body = f'Inhalt von Thema {number}'
 
     topic, _ = board_topic_command_service.create_topic(
-        category_id, creator_id, title, body
+        category_id, creator, title, body
     )
 
     return topic

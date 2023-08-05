@@ -39,11 +39,9 @@ from .models import BoardCategoryID, TopicID
 
 
 def create_topic(
-    category_id: BoardCategoryID, creator_id: UserID, title: str, body: str
+    category_id: BoardCategoryID, creator: User, title: str, body: str
 ) -> tuple[DbTopic, BoardTopicCreatedEvent]:
     """Create a topic with an initial posting in that category."""
-    creator = _get_user(creator_id)
-
     db_topic = DbTopic(category_id, creator.id, title)
     db_posting = DbPosting(db_topic, creator.id, body)
     db_initial_topic_posting_association = DbInitialTopicPostingAssociation(
@@ -76,11 +74,10 @@ def create_topic(
 
 
 def update_topic(
-    topic_id: TopicID, editor_id: UserID, title: str, body: str
+    topic_id: TopicID, editor: User, title: str, body: str
 ) -> BoardTopicUpdatedEvent:
     """Update the topic (and its initial posting)."""
     db_topic = _get_topic(topic_id)
-    editor = _get_user(editor_id)
 
     db_topic.title = title.strip()
 
@@ -109,12 +106,9 @@ def update_topic(
     )
 
 
-def hide_topic(
-    topic_id: TopicID, moderator_id: UserID
-) -> BoardTopicHiddenEvent:
+def hide_topic(topic_id: TopicID, moderator: User) -> BoardTopicHiddenEvent:
     """Hide the topic."""
     db_topic = _get_topic(topic_id)
-    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -144,12 +138,9 @@ def hide_topic(
     )
 
 
-def unhide_topic(
-    topic_id: TopicID, moderator_id: UserID
-) -> BoardTopicUnhiddenEvent:
+def unhide_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnhiddenEvent:
     """Un-hide the topic."""
     db_topic = _get_topic(topic_id)
-    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -180,12 +171,9 @@ def unhide_topic(
     )
 
 
-def lock_topic(
-    topic_id: TopicID, moderator_id: UserID
-) -> BoardTopicLockedEvent:
+def lock_topic(topic_id: TopicID, moderator: User) -> BoardTopicLockedEvent:
     """Lock the topic."""
     db_topic = _get_topic(topic_id)
-    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -213,12 +201,9 @@ def lock_topic(
     )
 
 
-def unlock_topic(
-    topic_id: TopicID, moderator_id: UserID
-) -> BoardTopicUnlockedEvent:
+def unlock_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnlockedEvent:
     """Unlock the topic."""
     db_topic = _get_topic(topic_id)
-    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -247,10 +232,9 @@ def unlock_topic(
     )
 
 
-def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinnedEvent:
+def pin_topic(topic_id: TopicID, moderator: User) -> BoardTopicPinnedEvent:
     """Pin the topic."""
     db_topic = _get_topic(topic_id)
-    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -278,12 +262,9 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinnedEvent:
     )
 
 
-def unpin_topic(
-    topic_id: TopicID, moderator_id: UserID
-) -> BoardTopicUnpinnedEvent:
+def unpin_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnpinnedEvent:
     """Unpin the topic."""
     db_topic = _get_topic(topic_id)
-    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -313,11 +294,10 @@ def unpin_topic(
 
 
 def move_topic(
-    topic_id: TopicID, new_category_id: BoardCategoryID, moderator_id: UserID
+    topic_id: TopicID, new_category_id: BoardCategoryID, moderator: User
 ) -> BoardTopicMovedEvent:
     """Move the topic to another category."""
     db_topic = _get_topic(topic_id)
-    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 

@@ -17,7 +17,7 @@ def test_move_topic(
     category,
     another_category,
 ):
-    topic_before = create_topic(category.id, board_poster.id)
+    topic_before = create_topic(category.id, board_poster)
     assert topic_before.category.id == category.id
 
     url = f'/board/topics/{topic_before.id}/move'
