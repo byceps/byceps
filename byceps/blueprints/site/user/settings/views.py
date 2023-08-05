@@ -138,10 +138,10 @@ def change_screen_name():
         return change_screen_name_form(form)
 
     new_screen_name = form.screen_name.data.strip()
-    initiator_id = current_user.id
+    initiator = current_user
 
     event = user_command_service.change_screen_name(
-        current_user.id, new_screen_name, initiator_id
+        current_user.id, new_screen_name, initiator
     )
 
     user_signals.screen_name_changed.send(None, event=event)
@@ -211,6 +211,7 @@ def details_update():
     city = form.city.data.strip()
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
+    initiator = current_user
 
     event = user_command_service.update_user_details(
         current_user.id,
@@ -222,7 +223,7 @@ def details_update():
         city,
         street,
         phone_number,
-        current_user.id,  # initiator_id
+        initiator,
     )
 
     flash_success(gettext('Your data has been saved.'))

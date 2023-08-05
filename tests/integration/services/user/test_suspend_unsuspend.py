@@ -40,7 +40,7 @@ def test_suspend(admin_app, cheater, admin_user):
 
     # -------------------------------- #
 
-    user_command_service.suspend_account(user_id, admin_user.id, reason)
+    user_command_service.suspend_account(user_id, admin_user, reason)
 
     # -------------------------------- #
 
@@ -61,7 +61,7 @@ def test_suspend(admin_app, cheater, admin_user):
 def test_unsuspend(admin_app, remorseful_user, admin_user):
     user_id = remorseful_user.id
 
-    user_command_service.suspend_account(user_id, admin_user.id, 'Annoying')
+    user_command_service.suspend_account(user_id, admin_user, 'Annoying')
 
     reason = 'User showed penitence. Drop the ban.'
 
@@ -73,7 +73,7 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
 
     # -------------------------------- #
 
-    user_command_service.unsuspend_account(user_id, admin_user.id, reason)
+    user_command_service.unsuspend_account(user_id, admin_user, reason)
 
     # -------------------------------- #
 

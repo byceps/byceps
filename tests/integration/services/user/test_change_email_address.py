@@ -39,7 +39,7 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     # -------------------------------- #
 
     event = user_command_service.change_email_address(
-        user.id, new_email_address, verified, admin_user.id, reason=reason
+        user.id, new_email_address, verified, admin_user, reason=reason
     )
 
     # -------------------------------- #
@@ -80,7 +80,7 @@ def test_change_email_address_without_reason(admin_app, make_user, admin_user):
     # -------------------------------- #
 
     user_command_service.change_email_address(
-        user.id, new_email_address, verified, admin_user.id
+        user.id, new_email_address, verified, admin_user
     )
 
     # -------------------------------- #

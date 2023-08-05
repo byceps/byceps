@@ -58,7 +58,7 @@ def test_update_user_address(site_app, make_user):
         new_city,
         new_street,
         new_phone_number,
-        user.id,
+        user,
     )
 
     # -------------------------------- #
@@ -123,7 +123,7 @@ def test_update_user_real_name(site_app, make_user):
         user_detail.city,
         user_detail.street,
         user_detail.phone_number,
-        user.id,
+        user,
     )
 
     # -------------------------------- #
@@ -171,7 +171,7 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
         user_detail.city,
         user_detail.street,
         '',
-        user.id,
+        user,
     )
 
     # -------------------------------- #

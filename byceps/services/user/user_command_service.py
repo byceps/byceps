@@ -37,7 +37,7 @@ from .models.user import User
 def initialize_account(
     user_id: UserID,
     *,
-    initiator_id: UserID | None = None,
+    initiator: User | None = None,
     assign_roles: bool = True,
 ) -> None:
     """Initialize the user account.
@@ -45,12 +45,6 @@ def initialize_account(
     This is meant to happen only once at most, and can not be undone.
     """
     db_user = _get_db_user(user_id)
-
-    initiator: User | None
-    if initiator_id is not None:
-        initiator = user_service.get_user(initiator_id)
-    else:
-        initiator = None
 
     if db_user.initialized:
         raise ValueError('Account is already initialized.')
@@ -68,12 +62,10 @@ def initialize_account(
     db.session.commit()
 
     if assign_roles:
-        _assign_roles(db_user.id, initiator_id=initiator_id)
+        _assign_roles(db_user.id, initiator=initiator)
 
 
-def _assign_roles(
-    user_id: UserID, *, initiator_id: UserID | None = None
-) -> None:
+def _assign_roles(user_id: UserID, *, initiator: User | None = None) -> None:
     board_user_role_name = 'board_user'
     board_user_role = authz_service.find_role(RoleID(board_user_role_name))
     if board_user_role is None:
@@ -85,16 +77,17 @@ def _assign_roles(
         return
 
     authz_service.assign_role_to_user(
-        board_user_role.id, user_id, initiator_id=initiator_id
+        board_user_role.id,
+        user_id,
+        initiator_id=initiator.id if initiator else None,
     )
 
 
 def suspend_account(
-    user_id: UserID, initiator_id: UserID, reason: str
+    user_id: UserID, initiator: User, reason: str
 ) -> UserAccountSuspendedEvent:
     """Suspend the user account."""
     db_user = _get_db_user(user_id)
-    initiator = user_service.get_user(initiator_id)
     occurred_at = datetime.utcnow()
 
     db_user.suspended = True
@@ -122,11 +115,10 @@ def suspend_account(
 
 
 def unsuspend_account(
-    user_id: UserID, initiator_id: UserID, reason: str
+    user_id: UserID, initiator: User, reason: str
 ) -> UserAccountUnsuspendedEvent:
     """Unsuspend the user account."""
     db_user = _get_db_user(user_id)
-    initiator = user_service.get_user(initiator_id)
     occurred_at = datetime.utcnow()
 
     db_user.suspended = False
@@ -156,13 +148,12 @@ def unsuspend_account(
 def change_screen_name(
     user_id: UserID,
     new_screen_name: str,
-    initiator_id: UserID,
+    initiator: User,
     *,
     reason: str | None = None,
 ) -> UserScreenNameChangedEvent:
     """Change the user's screen name."""
     db_user = _get_db_user(user_id)
-    initiator = user_service.get_user(initiator_id)
     occurred_at = datetime.utcnow()
 
     old_screen_name = db_user.screen_name
@@ -201,13 +192,12 @@ def change_email_address(
     user_id: UserID,
     new_email_address: str | None,
     verified: bool,
-    initiator_id: UserID,
+    initiator: User,
     *,
     reason: str | None = None,
 ) -> UserEmailAddressChangedEvent:
     """Change the user's e-mail address."""
     db_user = _get_db_user(user_id)
-    initiator = user_service.get_user(initiator_id)
     occurred_at = datetime.utcnow()
 
     old_email_address = db_user.email_address
@@ -260,11 +250,10 @@ def update_user_details(
     city: str,
     street: str,
     phone_number: str,
-    initiator_id: UserID,
+    initiator: User,
 ) -> UserDetailsUpdatedEvent:
     """Update the user's details."""
     detail = _get_user_detail(user_id)
-    initiator = user_service.get_user(initiator_id)
     occurred_at = datetime.utcnow()
 
     old_first_name = detail.first_name

@@ -257,7 +257,7 @@ def change_email_address(
     initiator = user
 
     event = user_command_service.change_email_address(
-        user.id, new_email_address, verified, initiator.id
+        user.id, new_email_address, verified, initiator
     )
 
     verification_token_service.delete_token(verification_token.token)

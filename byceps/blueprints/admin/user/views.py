@@ -249,9 +249,9 @@ def initialize_account(user_id):
     """Initialize the user account."""
     user = _get_user_or_404(user_id)
 
-    initiator_id = g.user.id
+    initiator = g.user
 
-    user_command_service.initialize_account(user.id, initiator_id=initiator_id)
+    user_command_service.initialize_account(user.id, initiator=initiator)
 
     flash_success(
         gettext(
@@ -305,10 +305,10 @@ def suspend_account(user_id):
     if not form.validate():
         return suspend_account_form(user.id, form)
 
-    initiator_id = g.user.id
+    initiator = g.user
     reason = form.reason.data.strip()
 
-    event = user_command_service.suspend_account(user.id, initiator_id, reason)
+    event = user_command_service.suspend_account(user.id, initiator, reason)
 
     user_signals.account_suspended.send(None, event=event)
 
@@ -366,12 +366,10 @@ def unsuspend_account(user_id):
     if not form.validate():
         return unsuspend_account_form(user.id, form)
 
-    initiator_id = g.user.id
+    initiator = g.user
     reason = form.reason.data.strip()
 
-    event = user_command_service.unsuspend_account(
-        user.id, initiator_id, reason
-    )
+    event = user_command_service.unsuspend_account(user.id, initiator, reason)
 
     user_signals.account_unsuspended.send(None, event=event)
 
@@ -479,11 +477,11 @@ def change_screen_name(user_id):
 
     old_screen_name = user.screen_name
     new_screen_name = form.screen_name.data.strip()
-    initiator_id = g.user.id
+    initiator = g.user
     reason = form.reason.data.strip()
 
     event = user_command_service.change_screen_name(
-        user.id, new_screen_name, initiator_id, reason=reason
+        user.id, new_screen_name, initiator, reason=reason
     )
 
     user_signals.screen_name_changed.send(None, event=event)
@@ -531,11 +529,11 @@ def change_email_address(user_id):
 
     new_email_address = form.email_address.data.strip()
     verified = False
-    initiator_id = g.user.id
+    initiator = g.user
     reason = form.reason.data.strip()
 
     event = user_command_service.change_email_address(
-        user.id, new_email_address, verified, initiator_id, reason=reason
+        user.id, new_email_address, verified, initiator, reason=reason
     )
 
     user_signals.email_address_changed.send(None, event=event)
@@ -647,6 +645,7 @@ def change_details(user_id):
     city = form.city.data.strip()
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
+    initiator = g.user
 
     event = user_command_service.update_user_details(
         user.id,
@@ -658,7 +657,7 @@ def change_details(user_id):
         city,
         street,
         phone_number,
-        g.user.id,  # initiator_id
+        initiator,
     )
 
     flash_success(gettext('Changes have been saved.'))
