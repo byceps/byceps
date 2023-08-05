@@ -584,11 +584,11 @@ def invalidate_email_address(user_id):
     if not form.validate():
         return invalidate_email_address_form(user.id, form)
 
-    initiator_id = g.user.id
+    initiator = g.user
     reason = form.reason.data.strip()
 
     event = user_email_address_service.invalidate_email_address(
-        user.id, reason, initiator_id=initiator_id
+        user.id, reason, initiator=initiator
     )
 
     user_signals.email_address_invalidated.send(None, event=event)

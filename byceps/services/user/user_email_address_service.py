@@ -146,7 +146,7 @@ def confirm_email_address(
 
 
 def invalidate_email_address(
-    user_id: UserID, reason: str, *, initiator_id: UserID | None = None
+    user_id: UserID, reason: str, *, initiator: User | None = None
 ) -> UserEmailAddressInvalidatedEvent:
     """Invalidate the user's email address by marking it as unverified.
 
@@ -157,12 +157,6 @@ def invalidate_email_address(
     user = user_service.get_db_user(user_id)
 
     occurred_at = datetime.utcnow()
-
-    initiator: User | None
-    if initiator_id is not None:
-        initiator = user_service.get_user(initiator_id)
-    else:
-        initiator = None
 
     user.email_address_verified = False
 
