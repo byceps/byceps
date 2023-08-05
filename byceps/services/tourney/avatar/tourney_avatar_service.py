@@ -11,8 +11,8 @@ from uuid import UUID
 
 from byceps.database import db
 from byceps.services.image import image_service
-from byceps.services.user import user_service
-from byceps.typing import PartyID, UserID
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
 from byceps.util.image.models import Dimensions, ImageType
@@ -26,17 +26,13 @@ MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 def create_avatar_image(
     party_id: PartyID,
-    creator_id: UserID,
+    creator: User,
     stream: BinaryIO,
     allowed_types: set[ImageType],
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> Result[DbTourneyAvatar, str]:
     """Create a new avatar image."""
-    creator = user_service.find_active_user(creator_id)
-    if creator is None:
-        raise user_service.UserIdRejectedError(creator_id)
-
     image_type_result = image_service.determine_image_type(
         stream, allowed_types
     )
@@ -52,7 +48,7 @@ def create_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    avatar = DbTourneyAvatar(party_id, creator_id, image_type)
+    avatar = DbTourneyAvatar(party_id, creator.id, image_type)
     db.session.add(avatar)
     db.session.commit()
 
