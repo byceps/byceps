@@ -54,7 +54,7 @@ def match(api_app):
 def comment(match, user):
     body = 'Something stupid.'
 
-    return tourney_match_comment_service.create_comment(match.id, user.id, body)
+    return tourney_match_comment_service.create_comment(match.id, user, body)
 
 
 def request_comment_update(

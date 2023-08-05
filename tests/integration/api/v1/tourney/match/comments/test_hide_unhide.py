@@ -34,7 +34,7 @@ def test_hide_comment(api_client, api_client_authz_header, admin_user, comment):
 def test_unhide_comment(
     api_client, api_client_authz_header, admin_user, comment
 ):
-    tourney_match_comment_service.hide_comment(comment.id, admin_user.id)
+    tourney_match_comment_service.hide_comment(comment.id, admin_user)
 
     comment_before = tourney_match_comment_service.get_comment(comment.id)
     assert comment_before.hidden
@@ -65,5 +65,5 @@ def match(api_app, scope='module'):
 @pytest.fixture()
 def comment(api_app, match, user):
     return tourney_match_comment_service.create_comment(
-        match.id, user.id, '¡Vámonos!'
+        match.id, user, '¡Vámonos!'
     )

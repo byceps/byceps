@@ -134,13 +134,13 @@ def match(api_app):
 @pytest.fixture()
 def comment(api_app, match, user):
     return tourney_match_comment_service.create_comment(
-        match.id, user.id, 'Denn man tau.'
+        match.id, user, 'Denn man tau.'
     )
 
 
 @pytest.fixture()
 def edited_comment(api_app, comment, admin_user):
     tourney_match_comment_service.update_comment(
-        comment.id, admin_user.id, '[b]So nicht[/b], Freundchen!'
+        comment.id, admin_user, '[b]So nicht[/b], Freundchen!'
     )
     return tourney_match_comment_service.get_comment(comment.id)

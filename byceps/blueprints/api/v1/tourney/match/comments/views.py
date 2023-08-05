@@ -173,7 +173,7 @@ def create():
     body = req.body.strip()
 
     comment = tourney_match_comment_service.create_comment(
-        match.id, creator.id, body
+        match.id, creator, body
     )
 
     tourney_signals.match_comment_created.send(None, comment_id=comment.id)
@@ -196,7 +196,7 @@ def update(comment_id):
 
     body = req.body.strip()
 
-    tourney_match_comment_service.update_comment(comment.id, editor.id, body)
+    tourney_match_comment_service.update_comment(comment.id, editor, body)
 
 
 @blueprint.post('/match_comments/<uuid:comment_id>/flags/hidden')
@@ -212,7 +212,7 @@ def hide(comment_id):
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
-    tourney_match_comment_service.hide_comment(comment.id, initiator.id)
+    tourney_match_comment_service.hide_comment(comment.id, initiator)
 
 
 @blueprint.delete('/match_comments/<uuid:comment_id>/flags/hidden')
@@ -228,7 +228,7 @@ def unhide(comment_id):
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
-    tourney_match_comment_service.unhide_comment(comment.id, initiator.id)
+    tourney_match_comment_service.unhide_comment(comment.id, initiator)
 
 
 def _get_match_or_404(match_id: MatchID) -> Match:

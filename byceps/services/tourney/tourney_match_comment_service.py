@@ -118,11 +118,9 @@ def _get_users_by_id(user_ids: set[UserID]) -> dict[UserID, User]:
     return user_service.index_users_by_id(users)
 
 
-def create_comment(
-    match_id: MatchID, creator_id: UserID, body: str
-) -> MatchComment:
+def create_comment(match_id: MatchID, creator: User, body: str) -> MatchComment:
     """Create a comment on a match."""
-    db_comment = DbMatchComment(match_id, creator_id, body)
+    db_comment = DbMatchComment(match_id, creator.id, body)
 
     db.session.add(db_comment)
     db.session.commit()
@@ -131,32 +129,32 @@ def create_comment(
 
 
 def update_comment(
-    comment_id: MatchCommentID, editor_id: UserID, body: str
+    comment_id: MatchCommentID, editor: User, body: str
 ) -> MatchComment:
     """Update a comment on a match."""
     db_comment = _get_db_comment(comment_id)
 
     db_comment.body = body
     db_comment.last_edited_at = datetime.utcnow()
-    db_comment.last_edited_by_id = editor_id
+    db_comment.last_edited_by_id = editor.id
 
     db.session.commit()
 
     return get_comment(db_comment.id)
 
 
-def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
+def hide_comment(comment_id: MatchCommentID, initiator: User) -> None:
     """Hide the match comment."""
     db_comment = _get_db_comment(comment_id)
 
     db_comment.hidden = True
     db_comment.hidden_at = datetime.utcnow()
-    db_comment.hidden_by_id = initiator_id
+    db_comment.hidden_by_id = initiator.id
 
     db.session.commit()
 
 
-def unhide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
+def unhide_comment(comment_id: MatchCommentID, initiator: User) -> None:
     """Un-hide the match comment."""
     db_comment = _get_db_comment(comment_id)
 
