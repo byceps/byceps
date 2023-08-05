@@ -32,7 +32,7 @@ def topic(category: BoardCategory, board_poster: User) -> DbTopic:
 
 @pytest.fixture()
 def posting(topic: DbTopic, board_poster: User) -> DbPosting:
-    return create_posting(topic.id, board_poster.id)
+    return create_posting(topic.id, board_poster)
 
 
 @pytest.fixture(scope='package')

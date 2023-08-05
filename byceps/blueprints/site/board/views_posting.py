@@ -113,7 +113,7 @@ def posting_create(topic_id):
         return redirect(h.build_url_for_topic(topic.id))
 
     posting, event = board_posting_command_service.create_posting(
-        topic.id, creator.id, body
+        topic.id, creator, body
     )
 
     if g.user.authenticated:
@@ -206,7 +206,7 @@ def posting_update(posting_id):
         return posting_update_form(posting_id, form)
 
     event = board_posting_command_service.update_posting(
-        posting.id, g.user.id, form.body.data
+        posting.id, g.user, form.body.data
     )
 
     flash_success(gettext('The post has been updated.'))
@@ -240,9 +240,9 @@ def posting_moderate_form(posting_id):
 def posting_hide(posting_id):
     """Hide a post."""
     posting = h.get_posting_or_404(posting_id)
-    moderator_id = g.user.id
+    moderator = g.user
 
-    event = board_posting_command_service.hide_posting(posting.id, moderator_id)
+    event = board_posting_command_service.hide_posting(posting.id, moderator)
 
     page = service.calculate_posting_page_number(posting)
 
@@ -262,11 +262,9 @@ def posting_hide(posting_id):
 def posting_unhide(posting_id):
     """Un-hide a post."""
     posting = h.get_posting_or_404(posting_id)
-    moderator_id = g.user.id
+    moderator = g.user
 
-    event = board_posting_command_service.unhide_posting(
-        posting.id, moderator_id
-    )
+    event = board_posting_command_service.unhide_posting(posting.id, moderator)
 
     page = service.calculate_posting_page_number(posting)
 

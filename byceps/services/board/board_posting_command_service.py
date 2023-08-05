@@ -32,11 +32,10 @@ from .models import PostingID, TopicID
 
 
 def create_posting(
-    topic_id: TopicID, creator_id: UserID, body: str
+    topic_id: TopicID, creator: User, body: str
 ) -> tuple[DbPosting, BoardPostingCreatedEvent]:
     """Create a posting in that topic."""
     topic = board_topic_query_service.get_topic(topic_id)
-    creator = _get_user(creator_id)
 
     db_posting = DbPosting(topic, creator.id, body)
     db.session.add(db_posting)
@@ -65,11 +64,10 @@ def create_posting(
 
 
 def update_posting(
-    posting_id: PostingID, editor_id: UserID, body: str, *, commit: bool = True
+    posting_id: PostingID, editor: User, body: str, *, commit: bool = True
 ) -> BoardPostingUpdatedEvent:
     """Update the posting."""
     db_posting = _get_posting(posting_id)
-    editor = _get_user(editor_id)
 
     now = datetime.utcnow()
 
@@ -102,11 +100,10 @@ def update_posting(
 
 
 def hide_posting(
-    posting_id: PostingID, moderator_id: UserID
+    posting_id: PostingID, moderator: User
 ) -> BoardPostingHiddenEvent:
     """Hide the posting."""
     db_posting = _get_posting(posting_id)
-    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -140,11 +137,10 @@ def hide_posting(
 
 
 def unhide_posting(
-    posting_id: PostingID, moderator_id: UserID
+    posting_id: PostingID, moderator: User
 ) -> BoardPostingUnhiddenEvent:
     """Un-hide the posting."""
     db_posting = _get_posting(posting_id)
-    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 

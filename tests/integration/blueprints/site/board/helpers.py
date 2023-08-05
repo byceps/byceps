@@ -21,6 +21,7 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
+from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 from tests.helpers import generate_token
@@ -71,7 +72,7 @@ def create_topic(
 
 def create_posting(
     topic_id: TopicID,
-    creator_id: UserID,
+    creator: User,
     *,
     number: int = 1,
     body: str | None = None,
@@ -80,7 +81,7 @@ def create_posting(
         body = f'Inhalt von Beitrag {number}.'
 
     posting, event = board_posting_command_service.create_posting(
-        topic_id, creator_id, body
+        topic_id, creator, body
     )
 
     return posting

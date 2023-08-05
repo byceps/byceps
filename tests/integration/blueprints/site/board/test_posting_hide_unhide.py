@@ -28,7 +28,7 @@ def test_hide_posting(site_app, moderator, moderator_client, posting):
 def test_unhide_posting(site_app, moderator, moderator_client, posting):
     posting_before = posting
 
-    board_posting_command_service.hide_posting(posting_before.id, moderator.id)
+    board_posting_command_service.hide_posting(posting_before.id, moderator)
 
     assert_posting_is_hidden(posting_before, moderator.id)
 
