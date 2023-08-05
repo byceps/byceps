@@ -14,7 +14,8 @@ from byceps.database import db
 from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
-from byceps.typing import PartyID, UserID
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID
 from byceps.util.result import Err, Ok, Result
 
 from . import ticket_domain_service, ticket_log_service, ticket_service
@@ -26,12 +27,10 @@ from .models.ticket import TicketID
 
 
 def check_in_user(
-    party_id: PartyID, ticket_id: TicketID, initiator_id: UserID
+    party_id: PartyID, ticket_id: TicketID, initiator: User
 ) -> Result[TicketCheckedInEvent, TicketingError]:
     """Record that the ticket was used to check in its user."""
     db_ticket = ticket_service.get_ticket(ticket_id)
-
-    initiator = user_service.get_user(initiator_id)
 
     used_by_id = db_ticket.used_by_id
     if used_by_id is None:
@@ -84,11 +83,9 @@ def _persist_check_in(
     db.session.commit()
 
 
-def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
+def revert_user_check_in(ticket_id: TicketID, initiator: User) -> None:
     """Revert a user check-in that was done by mistake."""
     db_ticket = ticket_service.get_ticket(ticket_id)
-
-    initiator = user_service.get_user(initiator_id)
 
     if not db_ticket.user_checked_in:
         raise ValueError(f'User of ticket {ticket_id} has not been checked in.')

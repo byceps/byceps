@@ -43,7 +43,7 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
     ticket_id = ticket_before.id
 
     check_in_result = ticket_user_checkin_service.check_in_user(
-        party.id, ticket_id, initiator.id
+        party.id, ticket_id, initiator
     )
     assert check_in_result.is_ok()
 

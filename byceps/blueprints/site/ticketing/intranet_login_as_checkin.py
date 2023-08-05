@@ -17,8 +17,10 @@ from byceps.services.ticketing import (
     ticket_service,
     ticket_user_checkin_service,
 )
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User
 from byceps.signals.auth import user_logged_in
-from byceps.typing import PartyID, UserID
+from byceps.typing import PartyID
 from byceps.util.jobqueue import enqueue
 
 
@@ -27,15 +29,16 @@ def _on_user_logged_in(sender, *, event: UserLoggedInEvent) -> None:
     if event.site_id is None:
         return
 
+    user = user_service.get_user(event.initiator_id)
     site = site_service.get_site(event.site_id)
 
     if site.party_id and site.check_in_on_login:
-        enqueue(_check_in_users_tickets, event.initiator_id, site.party_id)
+        enqueue(_check_in_users_tickets, user, site.party_id)
 
 
-def _check_in_users_tickets(user_id: UserID, party_id: PartyID) -> None:
+def _check_in_users_tickets(user: User, party_id: PartyID) -> None:
     """Find the user's tickets used for the party and check them in."""
-    tickets = ticket_service.get_tickets_used_by_user(user_id, party_id)
+    tickets = ticket_service.get_tickets_used_by_user(user.id, party_id)
 
     for ticket in tickets:
-        ticket_user_checkin_service.check_in_user(party_id, ticket.id, user_id)
+        ticket_user_checkin_service.check_in_user(party_id, ticket.id, user)

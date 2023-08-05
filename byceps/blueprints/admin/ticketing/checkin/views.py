@@ -144,10 +144,10 @@ def check_in_user(party_id, ticket_id):
     party = _get_party_or_404(party_id)
     ticket = _get_ticket_or_404(ticket_id)
 
-    initiator_id = g.user.id
+    initiator = g.user
 
     check_in_result = ticket_user_checkin_service.check_in_user(
-        party.id, ticket.id, initiator_id
+        party.id, ticket.id, initiator
     )
 
     if check_in_result.is_err():
@@ -205,9 +205,9 @@ def revert_user_check_in(ticket_id):
     """Revert the user check-in state."""
     ticket = _get_ticket_or_404(ticket_id)
 
-    initiator_id = g.user.id
+    initiator = g.user
 
-    ticket_user_checkin_service.revert_user_check_in(ticket.id, initiator_id)
+    ticket_user_checkin_service.revert_user_check_in(ticket.id, initiator)
 
     flash_success(gettext('Check-in has been reverted.'))
 
