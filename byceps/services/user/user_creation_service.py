@@ -17,7 +17,6 @@ from byceps.database import db
 from byceps.events.user import UserAccountCreatedEvent
 from byceps.services.authentication.password import authn_password_service
 from byceps.services.site.models import SiteID
-from byceps.typing import UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import user_email_address_service, user_log_service, user_service
@@ -44,18 +43,12 @@ def create_user(
     internal_comment: str | None = None,
     extras: dict[str, Any] | None = None,
     creation_method: str | None = None,
-    creator_id: UserID | None = None,
+    creator: User | None = None,
     site_id: SiteID | None = None,
     site_title: str | None = None,
     ip_address: str | None = None,
 ) -> Result[tuple[User, UserAccountCreatedEvent], None]:
     """Create a user account and related records."""
-    creator: User | None
-    if creator_id is not None:
-        creator = user_service.get_user(creator_id)
-    else:
-        creator = None
-
     created_at = datetime.utcnow()
 
     normalized_screen_name: str | None
@@ -106,7 +99,7 @@ def create_user(
 
     # Create log entry in separate step as user ID is not available earlier.
     _create_user_created_log_entry(
-        user.id,
+        user,
         db_user.created_at,
         creation_method,
         creator,
@@ -131,7 +124,7 @@ def create_user(
 
 
 def _create_user_created_log_entry(
-    user_id: UserID,
+    user: User,
     created_at: datetime,
     creation_method: str | None,
     creator: User | None,
@@ -153,7 +146,7 @@ def _create_user_created_log_entry(
         log_entry_data['ip_address'] = ip_address
 
     user_log_service.create_entry(
-        'user-created', user_id, log_entry_data, occurred_at=created_at
+        'user-created', user.id, log_entry_data, occurred_at=created_at
     )
 
 

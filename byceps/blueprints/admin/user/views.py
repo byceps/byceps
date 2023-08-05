@@ -197,7 +197,7 @@ def create_account():
     else:
         site_for_email = None
 
-    initiator_id = g.user.id
+    initiator = g.user
 
     creation_result = user_creation_service.create_user(
         screen_name,
@@ -206,7 +206,7 @@ def create_account():
         first_name=first_name,
         last_name=last_name,
         creation_method='admin app',
-        creator_id=initiator_id,
+        creator=initiator,
         # Do not pass site ID here; the account is not created on a site.
         ip_address=request.remote_addr,
     )
