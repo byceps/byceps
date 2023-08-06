@@ -12,16 +12,21 @@ from string import ascii_uppercase, digits
 from .models.ticket import TicketCode
 
 
-def generate_ticket_codes(quantity: int) -> set[TicketCode]:
+def generate_ticket_codes(requested_quantity: int) -> set[TicketCode]:
     """Generate a number of ticket codes."""
     codes: set[TicketCode] = set()
 
-    for _ in range(quantity):
+    for _ in range(requested_quantity):
         code = _generate_ticket_code_not_in(codes)
         codes.add(code)
 
-    # Check if the correct number of codes has been generated.
-    _verify_total_matches(codes, quantity)
+    # Check if the requested quantity of codes has been generated.
+    actual_quantity = len(codes)
+    if actual_quantity != requested_quantity:
+        raise TicketCodeGenerationFailedError(
+            f'Number of generated ticket codes ({actual_quantity}) '
+            f'does not match requested quantity ({requested_quantity}).'
+        )
 
     return codes
 
@@ -50,22 +55,6 @@ def _generate_ticket_code() -> TicketCode:
     Generated codes are not necessarily unique!
     """
     return TicketCode(''.join(sample(_CODE_ALPHABET, _CODE_LENGTH)))
-
-
-def _verify_total_matches(
-    codes: set[TicketCode], requested_quantity: int
-) -> None:
-    """Verify if the number of generated codes matches the number of
-    requested codes.
-
-    Raise an exception if they do not match.
-    """
-    actual_quantity = len(codes)
-    if actual_quantity != requested_quantity:
-        raise TicketCodeGenerationFailedError(
-            f'Number of generated ticket codes ({actual_quantity}) '
-            f'does not match requested amount ({requested_quantity}).'
-        )
 
 
 class TicketCodeGenerationFailedError(Exception):
