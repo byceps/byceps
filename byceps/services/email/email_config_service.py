@@ -30,17 +30,17 @@ def create_config(
     contact_address: str | None = None,
 ) -> EmailConfig:
     """Create a configuration."""
-    config = DbEmailConfig(
+    db_config = DbEmailConfig(
         brand_id,
         sender_address,
         sender_name=sender_name,
         contact_address=contact_address,
     )
 
-    db.session.add(config)
+    db.session.add(db_config)
     db.session.commit()
 
-    return _db_entity_to_config(config)
+    return _db_entity_to_config(db_config)
 
 
 def update_config(
@@ -50,20 +50,20 @@ def update_config(
     contact_address: str | None,
 ) -> EmailConfig:
     """Update a configuration."""
-    config = _find_db_config(brand_id)
+    db_config = _find_db_config(brand_id)
 
-    if config is None:
+    if db_config is None:
         raise UnknownEmailConfigIdError(
             f'No e-mail config found for brand ID "{brand_id}"'
         )
 
-    config.sender_address = sender_address
-    config.sender_name = sender_name
-    config.contact_address = contact_address
+    db_config.sender_address = sender_address
+    db_config.sender_name = sender_name
+    db_config.contact_address = contact_address
 
     db.session.commit()
 
-    return _db_entity_to_config(config)
+    return _db_entity_to_config(db_config)
 
 
 def delete_config(brand_id: BrandID) -> bool:
@@ -99,14 +99,14 @@ def get_config(brand_id: BrandID) -> EmailConfig:
     """Return the configuration, or raise an error if none is configured
     for that brand.
     """
-    config = _find_db_config(brand_id)
+    db_config = _find_db_config(brand_id)
 
-    if config is None:
+    if db_config is None:
         raise UnknownEmailConfigIdError(
             f'No e-mail config found for brand ID "{brand_id}"'
         )
 
-    return _db_entity_to_config(config)
+    return _db_entity_to_config(db_config)
 
 
 def set_config(
@@ -132,19 +132,19 @@ def set_config(
 
 def get_all_configs() -> list[EmailConfig]:
     """Return all configurations."""
-    configs = db.session.scalars(select(DbEmailConfig)).all()
+    db_configs = db.session.scalars(select(DbEmailConfig)).all()
 
-    return [_db_entity_to_config(config) for config in configs]
+    return [_db_entity_to_config(db_config) for db_config in db_configs]
 
 
-def _db_entity_to_config(config: DbEmailConfig) -> EmailConfig:
+def _db_entity_to_config(db_config: DbEmailConfig) -> EmailConfig:
     sender = NameAndAddress(
-        name=config.sender_name,
-        address=config.sender_address,
+        name=db_config.sender_name,
+        address=db_config.sender_address,
     )
 
     return EmailConfig(
-        brand_id=config.brand_id,
+        brand_id=db_config.brand_id,
         sender=sender,
-        contact_address=config.contact_address,
+        contact_address=db_config.contact_address,
     )
