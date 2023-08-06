@@ -87,7 +87,7 @@ def create():
     """Create a guest server."""
     party_id = _get_current_party_id_or_404()
 
-    party = party_service.get_party(server.party_id)
+    party = party_service.get_party(party_id)
 
     if not _current_user_uses_ticket_for_party(party_id):
         flash_success(gettext('Using a ticket for this party is required.'))
