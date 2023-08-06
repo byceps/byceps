@@ -78,6 +78,8 @@ def revoke_bundle(
     """Revoke the tickets included in this bundle."""
     db_bundle = get_bundle(bundle_id)
 
+    db_bundle.revoked = True
+
     seat_group_id = (
         seat_group_service.find_seat_group_occupied_by_ticket_bundle(
             db_bundle.id

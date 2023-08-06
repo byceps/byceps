@@ -1,6 +1,7 @@
 {% extends 'layout/admin/ticketing.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page_party = party %}
 {% set current_tab = 'bundles' %}
@@ -26,7 +27,9 @@
         {%- for bundle in bundles.items %}
         <tr>
           <td>
-            <a class="disguised" href="{{ url_for('.view_bundle', bundle_id=bundle.id) }}"><strong>{{ bundle.label|fallback(_('unnamed')) }}</strong></a><br>
+            <a class="disguised" href="{{ url_for('.view_bundle', bundle_id=bundle.id) }}"><strong>{{ bundle.label|fallback(_('unnamed')) }}</strong></a>
+            {% if bundle.revoked %}{{ render_tag(_('revoked'), class='color-danger nowrap', icon='disabled') }}{% endif %}
+            <br>
             <span class="monospace">{{ bundle.id }}</span>
           </td>
           <td>{{ bundle.created_at|datetimeformat }}</td>

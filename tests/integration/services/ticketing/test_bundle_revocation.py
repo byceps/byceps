@@ -15,6 +15,9 @@ from byceps.services.ticketing import (
 def test_revoke_bundle(admin_app, bundle, ticketing_admin):
     expected_quantity = 4
 
+    bundle_before = bundle
+    assert not bundle_before.revoked
+
     tickets_before = bundle_service.get_tickets_for_bundle(bundle.id)
     assert len(tickets_before) == expected_quantity
 
@@ -31,6 +34,9 @@ def test_revoke_bundle(admin_app, bundle, ticketing_admin):
     bundle_service.revoke_bundle(bundle.id, ticketing_admin)
 
     # -------------------------------- #
+
+    bundle_after = bundle_service.get_bundle(bundle.id)
+    assert bundle.revoked
 
     tickets_after = bundle_service.get_tickets_for_bundle(bundle.id)
     assert len(tickets_after) == expected_quantity

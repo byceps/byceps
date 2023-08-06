@@ -56,6 +56,7 @@ class DbTicketBundle(db.Model):
         DbUser, foreign_keys=[users_managed_by_id]
     )
     label = db.Column(db.UnicodeText, nullable=True)
+    revoked = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(
         self,

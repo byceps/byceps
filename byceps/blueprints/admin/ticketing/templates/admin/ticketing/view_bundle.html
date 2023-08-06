@@ -2,13 +2,17 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page_party = party %}
 {% set current_tab = 'bundles' %}
 {% set page_title = [_('Ticket bundle'), bundle.id] %}
 
 {% block body %}
 
-  <h1>{{ render_icon('ticket-bundle') }} {{ bundle.id }}</h1>
+  <h1>
+    {{ render_icon('ticket-bundle') }} {{ bundle.id }}
+    {%- if bundle.revoked %} {{ render_tag(_('revoked'), class='color-danger nowrap', icon='disabled') }}{% endif -%}
+  </h1>
 
   <div class="box">
 
