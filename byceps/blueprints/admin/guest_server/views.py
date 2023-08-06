@@ -21,7 +21,7 @@ from byceps.services.user import user_service
 from byceps.signals import guest_server as guest_server_signals
 from byceps.util.export import serialize_tuples_to_csv
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_success
+from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import (
     permission_required,
@@ -357,11 +357,14 @@ def address_update(address_id):
     netmask = _to_ip_address(form.netmask.data.strip())
     gateway = _to_ip_address(form.gateway.data.strip())
 
-    guest_server_service.update_address(
+    update_result = guest_server_service.update_address(
         address.id, ip_address, hostname, netmask, gateway
     )
 
-    flash_success(gettext('Changes have been saved.'))
+    if update_result.is_err():
+        flash_error(update_result.unwrap_err())
+    else:
+        flash_success(gettext('Changes have been saved.'))
 
     return redirect_to('.server_view', server_id=server.id)
 

@@ -15,6 +15,7 @@ from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbAddress, DbServer, DbSetting
 from .models import (
@@ -293,12 +294,12 @@ def update_address(
     hostname: str | None,
     netmask: IPAddress | None = None,
     gateway: IPAddress | None = None,
-) -> Address:
+) -> Result[Address, str]:
     """Update the address."""
     db_address = _find_db_address(address_id)
 
     if db_address is None:
-        raise ValueError(f'Unknown address ID "{address_id}"')
+        return Err(f'Unknown address ID "{address_id}"')
 
     db_address.ip_address = ip_address
     db_address.hostname = hostname
@@ -307,7 +308,9 @@ def update_address(
 
     db.session.commit()
 
-    return _db_entity_to_address(db_address)
+    address = _db_entity_to_address(db_address)
+
+    return Ok(address)
 
 
 def _find_db_address(address_id: AddressID) -> DbAddress | None:
