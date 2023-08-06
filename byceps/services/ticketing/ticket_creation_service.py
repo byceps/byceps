@@ -107,10 +107,12 @@ def build_tickets(
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    try:
-        codes = ticket_code_service.generate_ticket_codes(quantity)
-    except ticket_code_service.TicketCodeGenerationFailedError as exc:
-        raise TicketCreationFailedError(exc) from exc
+    generation_result = ticket_code_service.generate_ticket_codes(quantity)
+
+    if generation_result.is_err():
+        raise TicketCreationFailedError(generation_result.unwrap_err())
+
+    codes = generation_result.unwrap()
 
     for code in codes:
         yield DbTicket(

@@ -9,38 +9,47 @@ byceps.services.ticketing.ticket_code_service
 from random import sample
 from string import ascii_uppercase, digits
 
+from byceps.util.result import Err, Ok, Result
+
 from .models.ticket import TicketCode
 
 
-def generate_ticket_codes(requested_quantity: int) -> set[TicketCode]:
+def generate_ticket_codes(
+    requested_quantity: int,
+) -> Result[set[TicketCode], str]:
     """Generate a number of ticket codes."""
     codes: set[TicketCode] = set()
 
     for _ in range(requested_quantity):
-        code = _generate_ticket_code_not_in(codes)
+        generation_result = _generate_ticket_code_not_in(codes)
+
+        if generation_result.is_err():
+            return Err(generation_result.unwrap_err())
+
+        code = generation_result.unwrap()
         codes.add(code)
 
     # Check if the requested quantity of codes has been generated.
     actual_quantity = len(codes)
     if actual_quantity != requested_quantity:
-        raise TicketCodeGenerationFailedError(
+        return Err(
             f'Number of generated ticket codes ({actual_quantity}) '
             f'does not match requested quantity ({requested_quantity}).'
         )
 
-    return codes
+    return Ok(codes)
 
 
 def _generate_ticket_code_not_in(
     codes: set[TicketCode], *, max_attempts: int = 4
-) -> TicketCode:
+) -> Result[TicketCode, str]:
     """Generate ticket codes and return the first one not in the set."""
     for _ in range(max_attempts):
         code = _generate_ticket_code()
         if code not in codes:
-            return code
+            return Ok(code)
 
-    raise TicketCodeGenerationFailedError(
+    return Err(
         f'Could not generate unique ticket code after {max_attempts} attempts.'
     )
 
@@ -55,10 +64,6 @@ def _generate_ticket_code() -> TicketCode:
     Generated codes are not necessarily unique!
     """
     return TicketCode(''.join(sample(_CODE_ALPHABET, _CODE_LENGTH)))
-
-
-class TicketCodeGenerationFailedError(Exception):
-    """Generating one or more unique ticket codes has failed."""
 
 
 _ALLOWED_CODE_SYMBOLS = frozenset(_CODE_ALPHABET + ascii_uppercase + digits)

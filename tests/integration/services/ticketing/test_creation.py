@@ -66,9 +66,9 @@ def test_create_tickets_with_clashing_generated_codes(
             category.party_id, category.id, ticket_owner, quantity
         )
 
-    wrapped_exc = excinfo.value.args[0]
     assert (
-        type(wrapped_exc) is ticket_code_service.TicketCodeGenerationFailedError
+        excinfo.value.args[0]
+        == 'Could not generate unique ticket code after 4 attempts.'
     )
 
 
