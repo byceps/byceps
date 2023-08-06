@@ -599,13 +599,21 @@ def get_orders_for_shop_paginated(
         else:
             stmt = stmt.filter(DbOrder.processed_at.is_(None))
 
+    paginated_orders = paginate(stmt, page, per_page)
+
+    orderer_ids = {db_order.placed_by_id for db_order in paginated_orders.items}
+    orderers = user_service.get_users(orderer_ids, include_avatars=True)
+    orderers_by_id = user_service.index_users_by_id(orderers)
+
     def to_admin_order_list_item(db_order: DbOrder) -> AdminOrderListItem:
+        placed_by = orderers_by_id[db_order.placed_by_id]
+
         return AdminOrderListItem(
             id=db_order.id,
             created_at=db_order.created_at,
             order_number=db_order.order_number,
-            placed_by_id=db_order.placed_by_id,
-            placed_by=None,
+            placed_by_id=placed_by.id,
+            placed_by=placed_by,
             first_name=db_order.first_name,
             last_name=db_order.last_name,
             total_amount=db_order.total_amount,
@@ -620,17 +628,8 @@ def get_orders_for_shop_paginated(
             is_processed=_is_processed(db_order),
         )
 
-    paginated_orders = paginate(
-        stmt, page, per_page, item_mapper=to_admin_order_list_item
-    )
-
-    orderer_ids = {order.placed_by_id for order in paginated_orders.items}
-    orderers = user_service.get_users(orderer_ids, include_avatars=True)
-    orderers_by_id = user_service.index_users_by_id(orderers)
-
     paginated_orders.items = [
-        dataclasses.replace(order, placed_by=orderers_by_id[order.placed_by_id])
-        for order in paginated_orders.items
+        to_admin_order_list_item(item) for item in paginated_orders.items
     ]
 
     return paginated_orders
