@@ -132,7 +132,6 @@ def build_order(orderer: Orderer):
             shop_id=ShopID(generate_token()),
             storefront_id=StorefrontID(generate_token()),
             order_number=order_number,
-            placed_by_id=orderer.user.id,
             placed_by=orderer.user,
             company=orderer.company,
             first_name=orderer.first_name,

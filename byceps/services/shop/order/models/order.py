@@ -25,7 +25,6 @@ from byceps.services.shop.article.models import (
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.models.user import User
-from byceps.typing import UserID
 
 from .number import OrderNumber
 
@@ -113,7 +112,6 @@ class BaseOrder:
     id: OrderID
     created_at: datetime
     order_number: OrderNumber
-    placed_by_id: UserID
     placed_by: User
     total_amount: Money
     payment_state: PaymentState
