@@ -14,7 +14,7 @@ from flask_babel import gettext
 from byceps.services.global_setting import global_setting_service
 from byceps.services.guest_server import guest_server_service
 from byceps.services.guest_server.models import Address
-from byceps.services.party import party_service
+from byceps.services.party.models import Party
 from byceps.services.ticketing import ticket_service
 from byceps.signals import guest_server as guest_server_signals
 from byceps.typing import PartyID
@@ -37,13 +37,13 @@ blueprint = create_blueprint('guest_server', __name__)
 @templated
 def index():
     """List current user's guest servers."""
-    party_id = _get_current_party_id_or_404()
+    party = _get_current_party_or_404()
 
     servers = guest_server_service.get_servers_for_owner_and_party(
-        g.user.id, party_id
+        g.user.id, party.id
     )
 
-    setting = guest_server_service.get_setting_for_party(party_id)
+    setting = guest_server_service.get_setting_for_party(party.id)
 
     return {
         'servers': servers,
@@ -57,13 +57,13 @@ def index():
 @templated
 def create_form(erroneous_form=None):
     """Show a form to create a guest server."""
-    party_id = _get_current_party_id_or_404()
+    party = _get_current_party_or_404()
 
-    if not _current_user_uses_ticket_for_party(party_id):
+    if not _current_user_uses_ticket_for_party(party.id):
         flash_success(gettext('Using a ticket for this party is required.'))
         return redirect_to('.index')
 
-    if _server_limit_reached(party_id):
+    if _server_limit_reached(party.id):
         flash_success(
             gettext(
                 'You have already registered the maximum number of servers allowed.'
@@ -71,7 +71,7 @@ def create_form(erroneous_form=None):
         )
         return redirect_to('.index')
 
-    setting = guest_server_service.get_setting_for_party(party_id)
+    setting = guest_server_service.get_setting_for_party(party.id)
 
     form = erroneous_form if erroneous_form else CreateForm()
 
@@ -85,15 +85,13 @@ def create_form(erroneous_form=None):
 @login_required
 def create():
     """Create a guest server."""
-    party_id = _get_current_party_id_or_404()
+    party = _get_current_party_or_404()
 
-    party = party_service.get_party(party_id)
-
-    if not _current_user_uses_ticket_for_party(party_id):
+    if not _current_user_uses_ticket_for_party(party.id):
         flash_success(gettext('Using a ticket for this party is required.'))
         return redirect_to('.index')
 
-    if _server_limit_reached(party_id):
+    if _server_limit_reached(party.id):
         flash_success(
             gettext(
                 'You have already registered the maximum number of servers allowed.'
@@ -135,13 +133,13 @@ def server_view(server_id):
     return redirect(url)
 
 
-def _get_current_party_id_or_404() -> PartyID:
-    party_id = g.party_id
+def _get_current_party_or_404() -> Party:
+    party = g.party
 
-    if party_id is None:
+    if party is None:
         abort(404)
 
-    return party_id
+    return party
 
 
 def _current_user_uses_ticket_for_party(party_id: PartyID) -> bool:

@@ -41,7 +41,7 @@ blueprint = create_blueprint('seating', __name__)
 @subnavigation_for_view('seating_plan')
 def index():
     """List areas."""
-    if g.party_id is None:
+    if g.party is None:
         # No party is configured for the current site.
         abort(404)
 
@@ -69,7 +69,7 @@ def index():
 @blueprint.get('/areas/<slug>')
 def view_area(slug):
     """View area."""
-    if g.party_id is None:
+    if g.party is None:
         # No party is configured for the current site.
         abort(404)
 
@@ -352,8 +352,7 @@ def _is_seat_management_enabled():
     if _is_current_user_seating_admin():
         return True
 
-    party = party_service.get_party(g.party_id)
-    return party.seat_management_enabled
+    return g.party.seat_management_enabled
 
 
 def _is_current_user_seating_admin() -> bool:

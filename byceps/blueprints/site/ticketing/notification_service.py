@@ -10,7 +10,6 @@ from flask import g
 from flask_babel import gettext
 
 from byceps.services.email import email_config_service, email_service
-from byceps.services.party import party_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
@@ -18,7 +17,7 @@ from byceps.util.l10n import force_user_locale
 
 
 def notify_appointed_user(ticket: DbTicket, user: User, manager: User) -> None:
-    party_title = _get_party_title()
+    party_title = g.party.title
 
     with force_user_locale(user):
         subject = gettext(
@@ -38,7 +37,7 @@ def notify_appointed_user(ticket: DbTicket, user: User, manager: User) -> None:
 
 
 def notify_withdrawn_user(ticket: DbTicket, user: User, manager: User) -> None:
-    party_title = _get_party_title()
+    party_title = g.party.title
 
     with force_user_locale(user):
         subject = gettext(
@@ -60,7 +59,7 @@ def notify_withdrawn_user(ticket: DbTicket, user: User, manager: User) -> None:
 def notify_appointed_user_manager(
     ticket: DbTicket, user: User, manager: User
 ) -> None:
-    party_title = _get_party_title()
+    party_title = g.party.title
 
     with force_user_locale(user):
         subject = gettext(
@@ -82,7 +81,7 @@ def notify_appointed_user_manager(
 def notify_withdrawn_user_manager(
     ticket: DbTicket, user: User, manager: User
 ) -> None:
-    party_title = _get_party_title()
+    party_title = g.party.title
 
     with force_user_locale(user):
         subject = gettext(
@@ -104,7 +103,7 @@ def notify_withdrawn_user_manager(
 def notify_appointed_seat_manager(
     ticket: DbTicket, user: User, manager: User
 ) -> None:
-    party_title = _get_party_title()
+    party_title = g.party.title
 
     with force_user_locale(user):
         subject = gettext(
@@ -126,7 +125,7 @@ def notify_appointed_seat_manager(
 def notify_withdrawn_seat_manager(
     ticket: DbTicket, user: User, manager: User
 ) -> None:
-    party_title = _get_party_title()
+    party_title = g.party.title
 
     with force_user_locale(user):
         subject = gettext(
@@ -143,11 +142,6 @@ def notify_withdrawn_seat_manager(
         )
 
     _enqueue_email(user, subject, body)
-
-
-def _get_party_title():
-    party = party_service.get_party(g.party_id)
-    return party.title
 
 
 def _enqueue_email(recipient: User, subject: str, body: str) -> None:

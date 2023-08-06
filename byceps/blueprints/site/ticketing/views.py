@@ -57,11 +57,11 @@ def inject_ticket_sale_stats() -> dict[str, Any]:
 @templated
 def index_mine():
     """List tickets related to the current user."""
-    if g.party_id is None:
+    if g.party is None:
         # No party is configured for the current site.
         abort(404)
 
-    party = party_service.get_party(g.party_id)
+    party = g.party
 
     user = g.user
 
@@ -471,11 +471,10 @@ def _is_ticket_management_enabled():
     if not g.user.authenticated:
         return False
 
-    if g.party_id is None:
+    if g.party is None:
         return False
 
-    party = party_service.get_party(g.party_id)
-    return party.ticket_management_enabled
+    return g.party.ticket_management_enabled
 
 
 def _get_ticket_or_404(ticket_id):
