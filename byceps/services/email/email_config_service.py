@@ -13,6 +13,7 @@ from sqlalchemy.exc import IntegrityError
 
 from byceps.database import db, upsert
 from byceps.typing import BrandID
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbEmailConfig
 from .models import EmailConfig, NameAndAddress
@@ -48,14 +49,12 @@ def update_config(
     sender_address: str,
     sender_name: str | None,
     contact_address: str | None,
-) -> EmailConfig:
+) -> Result[EmailConfig, str]:
     """Update a configuration."""
     db_config = _find_db_config(brand_id)
 
     if db_config is None:
-        raise UnknownEmailConfigIdError(
-            f'No e-mail config found for brand ID "{brand_id}"'
-        )
+        return Err(f'No e-mail config found for brand ID "{brand_id}"')
 
     db_config.sender_address = sender_address
     db_config.sender_name = sender_name
@@ -63,7 +62,9 @@ def update_config(
 
     db.session.commit()
 
-    return _db_entity_to_config(db_config)
+    config = _db_entity_to_config(db_config)
+
+    return Ok(config)
 
 
 def delete_config(brand_id: BrandID) -> bool:
