@@ -20,7 +20,6 @@ from byceps.services.ticketing import (
 )
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketCategoryID, TicketID
-from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
@@ -33,7 +32,7 @@ def create_tickets(
     initiator: User,
 ) -> None:
     """Create tickets."""
-    owner = user_service.get_user(order.placed_by_id)
+    owner = order.placed_by
     order_number = order.order_number
     ticket_quantity = line_item.quantity
 

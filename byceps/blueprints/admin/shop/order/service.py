@@ -45,7 +45,7 @@ def _fake_cancelation_request_log_entries(
         return
 
     data = {
-        'initiator_id': str(order.placed_by_id),
+        'initiator_id': str(order.placed_by.id),
     }
 
     yield OrderLogEntry(

@@ -8,7 +8,6 @@ byceps.blueprints.admin.shop.article.views
 
 from __future__ import annotations
 
-from collections.abc import Iterable
 import dataclasses
 from datetime import date, datetime, time
 from decimal import Decimal
@@ -38,10 +37,7 @@ from byceps.services.shop.order.models.order import Order, PaymentState
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.ticketing import ticket_category_service
-from byceps.services.user import user_service
-from byceps.services.user.models.user import User
 from byceps.services.user_badge import user_badge_service
-from byceps.typing import UserID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -171,31 +167,26 @@ def view_orders(article_id):
     brand = brand_service.get_brand(shop.brand_id)
 
     orders = ordered_articles_service.get_orders_including_article(article.id)
-    users_by_id = _get_orderer_users_by_id(orders)
 
-    def transform(order: Order) -> tuple[Order, User, int]:
-        orderer = users_by_id[order.placed_by_id]
-
+    def transform(order: Order) -> tuple[Order, int]:
         quantity = sum(
             line_item.quantity
             for line_item in order.line_items
             if line_item.article_id == article.id
         )
 
-        return order, orderer, quantity
+        return order, quantity
 
-    orders_orderers_quantities = list(map(transform, orders))
+    orders_with_quantities = list(map(transform, orders))
 
-    quantity_total = sum(
-        quantity for _, _, quantity in orders_orderers_quantities
-    )
+    quantity_total = sum(quantity for _, quantity in orders_with_quantities)
 
     return {
         'article': article,
         'shop': shop,
         'brand': brand,
         'quantity_total': quantity_total,
-        'orders_orderers_quantities': orders_orderers_quantities,
+        'orders_with_quantities': orders_with_quantities,
         'now': datetime.utcnow(),
     }
 
@@ -213,39 +204,28 @@ def view_purchases(article_id):
     orders = ordered_articles_service.get_orders_including_article(
         article.id, only_payment_state=PaymentState.paid
     )
-    users_by_id = _get_orderer_users_by_id(orders)
 
-    def transform(order: Order) -> tuple[Order, User, int]:
-        orderer = users_by_id[order.placed_by_id]
-
+    def transform(order: Order) -> tuple[Order, int]:
         quantity = sum(
             line_item.quantity
             for line_item in order.line_items
             if line_item.article_id == article.id
         )
 
-        return order, orderer, quantity
+        return order, quantity
 
-    orders_orderers_quantities = list(map(transform, orders))
+    orders_with_quantities = list(map(transform, orders))
 
-    quantity_total = sum(
-        quantity for _, _, quantity in orders_orderers_quantities
-    )
+    quantity_total = sum(quantity for _, quantity in orders_with_quantities)
 
     return {
         'article': article,
         'shop': shop,
         'brand': brand,
         'quantity_total': quantity_total,
-        'orders_orderers_quantities': orders_orderers_quantities,
+        'orders_with_quantities': orders_with_quantities,
         'now': datetime.utcnow(),
     }
-
-
-def _get_orderer_users_by_id(orders: Iterable[Order]) -> dict[UserID, User]:
-    user_ids = {order.placed_by_id for order in orders}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    return user_service.index_users_by_id(users)
 
 
 # -------------------------------------------------------------------- #

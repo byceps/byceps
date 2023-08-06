@@ -21,7 +21,7 @@
   </div>
 
   <div class="box">
-    {%- if orders_orderers_quantities %}
+    {%- if orders_with_quantities %}
     <table class="index index--v-centered index--wide">
       <thead>
         <tr>
@@ -31,10 +31,10 @@
         </tr>
       </thead>
       <tbody>
-      {%- for order, orderer, quantity in orders_orderers_quantities|sort(attribute='0.order_number', reverse=True) %}
+      {%- for order, quantity in orders_with_quantities|sort(attribute='0.order_number', reverse=True) %}
         <tr>
           <td class="nowrap"><strong>{{ render_order_link(order) }}</strong><br>{{ order.created_at|datetimeformat|dim }}</td>
-          <td>{{ render_user_microcard(orderer, full_name='%s %s'|format(order.first_name, order.last_name)) }}</td>
+          <td>{{ render_user_microcard(order.placed_by, full_name='%s %s'|format(order.first_name, order.last_name)) }}</td>
           <td class="bignumber number">{{ quantity }}</td>
         </tr>
       {%- endfor %}

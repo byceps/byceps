@@ -762,10 +762,10 @@ def _order_to_transfer_object(db_order: DbOrder, placed_by: User) -> Order:
 
 
 def _db_orders_to_transfer_objects_with_orderer_users(
-    db_orders: Sequence[DbOrder],
+    db_orders: Sequence[DbOrder], *, include_avatars=False
 ) -> list[Order]:
     orderer_ids = {db_order.placed_by_id for db_order in db_orders}
-    orderers = user_service.get_users(orderer_ids)
+    orderers = user_service.get_users(orderer_ids, include_avatars=True)
     orderers_by_id = user_service.index_users_by_id(orderers)
 
     return [

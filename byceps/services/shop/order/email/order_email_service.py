@@ -221,9 +221,8 @@ def _get_order_email_data(order: Order) -> OrderEmailData:
     shop = shop_service.get_shop(order.shop_id)
     brand = brand_service.get_brand(shop.brand_id)
     email_config = email_config_service.get_config(brand.id)
-    orderer_id = order.placed_by_id
-    orderer = user_service.get_user(orderer_id)
-    email_address = user_service.get_email_address(orderer_id)
+    orderer = order.placed_by
+    email_address = user_service.get_email_address(orderer.id)
 
     return OrderEmailData(
         sender=email_config.sender,

@@ -40,7 +40,7 @@ def export_order_as_xml(order_id: OrderID) -> dict[str, str] | None:
 
 def _assemble_context(order: DetailedOrder) -> dict[str, Any]:
     """Assemble template context."""
-    email_address = user_service.get_email_address(order.placed_by_id)
+    email_address = user_service.get_email_address(order.placed_by.id)
 
     now = datetime.utcnow()
 

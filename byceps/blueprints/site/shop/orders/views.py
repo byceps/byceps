@@ -512,4 +512,4 @@ def _get_order_by_current_user_or_404(order_id):
 
 
 def _is_order_placed_by_current_user(order) -> bool:
-    return order.placed_by_id == g.user.id
+    return order.placed_by.id == g.user.id

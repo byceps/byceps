@@ -69,5 +69,5 @@ def get_orders_including_article(
     db_orders = db.session.scalars(stmt).unique().all()
 
     return order_service._db_orders_to_transfer_objects_with_orderer_users(
-        db_orders
+        db_orders, include_avatars=False
     )
