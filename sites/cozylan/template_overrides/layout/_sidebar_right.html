@@ -1,7 +1,7 @@
 {%- from 'macros/misc.html' import render_progress_bar %}
 
 
-{%- if g.party is defined %}
+{%- if g.party %}
 <div class="sidebar-section">
   <h3>{{ g.party.title }}</h3>
   {{ g.party.starts_at|dateformat }}–{{ g.party.ends_at|dateformat }}

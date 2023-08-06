@@ -48,10 +48,12 @@ def prepare_request_globals() -> None:
 
     g.brand_id = site.brand_id
 
+    party = None
     party_id = site.party_id
     if party_id is not None:
-        g.party = party_service.get_party(party_id)
-        party_id = g.party.id
+        party = party_service.get_party(party_id)
+        party_id = party.id
+    g.party = party
     g.party_id = party_id
 
     required_permissions: set[str] = set()
