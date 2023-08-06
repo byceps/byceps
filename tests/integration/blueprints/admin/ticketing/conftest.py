@@ -51,7 +51,7 @@ def category(party):
 @pytest.fixture(scope='package')
 def ticket(category, ticket_owner):
     ticket = ticket_creation_service.create_ticket(
-        category.party_id, category.id, ticket_owner.id
+        category.party_id, category.id, ticket_owner
     )
     ticket_id = ticket.id
 

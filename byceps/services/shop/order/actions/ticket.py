@@ -41,10 +41,10 @@ def create_tickets(
     tickets = ticket_creation_service.create_tickets(
         ticket_category.party_id,
         ticket_category_id,
-        owner.id,
+        owner,
         ticket_quantity,
         order_number=order_number,
-        used_by_id=owner.id,
+        user=owner,
     )
 
     _create_creation_order_log_entries(order.id, tickets)

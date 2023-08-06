@@ -16,7 +16,7 @@ from byceps.services.ticketing import (
 @pytest.fixture()
 def ticket(admin_app, category, ticket_owner):
     ticket = ticket_creation_service.create_ticket(
-        category.party_id, category.id, ticket_owner.id
+        category.party_id, category.id, ticket_owner
     )
     yield ticket
     ticket_service.delete_ticket(ticket.id)

@@ -36,4 +36,4 @@ def tickets(party, make_ticket_category, user):
     quantity = 5
 
     for _ in range(quantity):
-        ticket_creation_service.create_ticket(party.id, category.id, user.id)
+        ticket_creation_service.create_ticket(party.id, category.id, user)

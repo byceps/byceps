@@ -16,7 +16,7 @@ from byceps.services.ticketing import (
 
 def test_create_ticket(admin_app, category, ticket_owner):
     ticket = ticket_creation_service.create_ticket(
-        category.party_id, category.id, ticket_owner.id
+        category.party_id, category.id, ticket_owner
     )
 
     assert_created_ticket(ticket, category.id, ticket_owner.id)
@@ -29,7 +29,7 @@ def test_create_ticket_with_existing_code(
     generate_ticket_code_mock.return_value = 'TAKEN'
 
     existing_ticket = ticket_creation_service.create_ticket(
-        category.party_id, category.id, ticket_owner.id
+        category.party_id, category.id, ticket_owner
     )
     assert existing_ticket.code == 'TAKEN'
 
@@ -37,14 +37,14 @@ def test_create_ticket_with_existing_code(
         ticket_creation_service.TicketCreationFailedWithConflictError
     ):
         ticket_creation_service.create_ticket(
-            category.party_id, category.id, ticket_owner.id
+            category.party_id, category.id, ticket_owner
         )
 
 
 def test_create_tickets(admin_app, category, ticket_owner):
     quantity = 3
     tickets = ticket_creation_service.create_tickets(
-        category.party_id, category.id, ticket_owner.id, quantity
+        category.party_id, category.id, ticket_owner, quantity
     )
 
     for ticket in tickets:
@@ -63,7 +63,7 @@ def test_create_tickets_with_clashing_generated_codes(
         ticket_creation_service.TicketCreationFailedError
     ) as excinfo:
         ticket_creation_service.create_tickets(
-            category.party_id, category.id, ticket_owner.id, quantity
+            category.party_id, category.id, ticket_owner, quantity
         )
 
     wrapped_exc = excinfo.value.args[0]

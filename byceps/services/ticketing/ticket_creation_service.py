@@ -15,7 +15,8 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
 from byceps.database import db
 from byceps.services.shop.order.models.number import OrderNumber
-from byceps.typing import PartyID, UserID
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID
 
 from . import ticket_code_service
 from .dbmodels.ticket import DbTicket
@@ -36,10 +37,10 @@ class TicketCreationFailedWithConflictError(TicketCreationFailedError):
 def create_ticket(
     party_id: PartyID,
     category_id: TicketCategoryID,
-    owned_by_id: UserID,
+    owner: User,
     *,
     order_number: OrderNumber | None = None,
-    used_by_id: UserID | None = None,
+    user: User | None = None,
 ) -> DbTicket:
     """Create a single ticket."""
     quantity = 1
@@ -47,10 +48,10 @@ def create_ticket(
     db_tickets = create_tickets(
         party_id,
         category_id,
-        owned_by_id,
+        owner,
         quantity,
         order_number=order_number,
-        used_by_id=used_by_id,
+        user=user,
     )
 
     return db_tickets[0]
@@ -64,21 +65,21 @@ def create_ticket(
 def create_tickets(
     party_id: PartyID,
     category_id: TicketCategoryID,
-    owned_by_id: UserID,
+    owner: User,
     quantity: int,
     *,
     order_number: OrderNumber | None = None,
-    used_by_id: UserID | None = None,
+    user: User | None = None,
 ) -> list[DbTicket]:
     """Create a number of tickets of the same category for a single owner."""
     db_tickets = list(
         build_tickets(
             party_id,
             category_id,
-            owned_by_id,
+            owner,
             quantity,
             order_number=order_number,
-            used_by_id=used_by_id,
+            user=user,
         )
     )
 
@@ -96,12 +97,12 @@ def create_tickets(
 def build_tickets(
     party_id: PartyID,
     category_id: TicketCategoryID,
-    owned_by_id: UserID,
+    owner: User,
     quantity: int,
     *,
     bundle: DbTicketBundle | None = None,
     order_number: OrderNumber | None = None,
-    used_by_id: UserID | None = None,
+    user: User | None = None,
 ) -> Iterator[DbTicket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
@@ -116,8 +117,8 @@ def build_tickets(
             party_id,
             code,
             category_id,
-            owned_by_id,
+            owner.id,
             bundle=bundle,
             order_number=order_number,
-            used_by_id=used_by_id,
+            used_by_id=user.id if user else None,
         )

@@ -55,11 +55,11 @@ def create_bundle(
         build_tickets(
             party_id,
             category_id,
-            owner.id,
+            owner,
             ticket_quantity,
             bundle=db_bundle,
             order_number=order_number,
-            used_by_id=user.id if user else None,
+            user=user,
         )
     )
     db.session.add_all(db_tickets)
