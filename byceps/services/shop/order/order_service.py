@@ -672,12 +672,19 @@ def get_orders_placed_by_user_for_storefront(
         .all()
     )
 
+    orderer_ids = {db_order.placed_by_id for db_order in db_orders}
+    orderers = user_service.get_users(orderer_ids)
+    orderers_by_id = user_service.index_users_by_id(orderers)
+
     def to_site_order_list_item(db_order: DbOrder) -> SiteOrderListItem:
+        placed_by = orderers_by_id[db_order.placed_by_id]
+
         return SiteOrderListItem(
             id=db_order.id,
             created_at=db_order.created_at,
             order_number=db_order.order_number,
-            placed_by_id=db_order.placed_by_id,
+            placed_by_id=placed_by.id,
+            placed_by=placed_by,
             total_amount=db_order.total_amount,
             payment_state=db_order.payment_state,
             state=_get_order_state(db_order),

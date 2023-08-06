@@ -152,4 +152,4 @@ class AdminOrderListItem(BaseOrder):
 
 @dataclass(frozen=True)
 class SiteOrderListItem(BaseOrder):
-    pass
+    placed_by: User
