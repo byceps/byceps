@@ -16,7 +16,8 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 from byceps.database import db, paginate, Pagination
 from byceps.services.seating import seat_group_service
 from byceps.services.shop.order.models.number import OrderNumber
-from byceps.typing import PartyID, UserID
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID
 
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
@@ -35,18 +36,18 @@ def create_bundle(
     party_id: PartyID,
     category_id: TicketCategoryID,
     ticket_quantity: int,
-    owned_by_id: UserID,
+    owner: User,
     *,
     label: str | None = None,
     order_number: OrderNumber | None = None,
-    used_by_id: UserID | None = None,
+    user: User | None = None,
 ) -> DbTicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
     db_bundle = DbTicketBundle(
-        party_id, category_id, ticket_quantity, owned_by_id, label=label
+        party_id, category_id, ticket_quantity, owner.id, label=label
     )
     db.session.add(db_bundle)
 
@@ -54,11 +55,11 @@ def create_bundle(
         build_tickets(
             party_id,
             category_id,
-            owned_by_id,
+            owner.id,
             ticket_quantity,
             bundle=db_bundle,
             order_number=order_number,
-            used_by_id=used_by_id,
+            used_by_id=user.id if user else None,
         )
     )
     db.session.add_all(db_tickets)
@@ -70,7 +71,7 @@ def create_bundle(
 
 def revoke_bundle(
     bundle_id: TicketBundleID,
-    initiator_id: UserID,
+    initiator: User,
     *,
     reason: str | None = None,
 ) -> None:
@@ -89,7 +90,7 @@ def revoke_bundle(
         db_ticket.revoked = True
 
         db_log_entry = build_ticket_revoked_log_entry(
-            db_ticket.id, initiator_id, reason
+            db_ticket.id, initiator.id, reason
         )
         db.session.add(db_log_entry)
 

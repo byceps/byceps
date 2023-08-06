@@ -64,7 +64,7 @@ def ticket(category, ticket_owner):
 def bundle(category, ticket_owner):
     quantity = 4
     bundle = ticket_bundle_service.create_bundle(
-        category.party_id, category.id, quantity, ticket_owner.id
+        category.party_id, category.id, quantity, ticket_owner
     )
     tickets = bundle.tickets
 

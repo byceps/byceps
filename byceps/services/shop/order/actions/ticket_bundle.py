@@ -45,9 +45,9 @@ def create_ticket_bundles(
             ticket_category.party_id,
             ticket_category.id,
             ticket_quantity_per_bundle,
-            owner.id,
+            owner,
             order_number=order_number,
-            used_by_id=owner.id,
+            user=owner,
         )
 
         bundle_ids.add(bundle.id)
@@ -97,7 +97,7 @@ def revoke_ticket_bundles(
     }
 
     for bundle_id in bundle_ids:
-        ticket_bundle_service.revoke_bundle(bundle_id, initiator.id)
+        ticket_bundle_service.revoke_bundle(bundle_id, initiator)
         _create_revocation_order_log_entry(order.id, bundle_id, initiator)
 
 

@@ -64,7 +64,7 @@ def ticket(admin_app, category, ticket_owner):
 def ticket_bundle(category, ticket_owner):
     ticket_quantity = 1
     bundle = ticket_bundle_service.create_bundle(
-        category.party_id, category.id, ticket_quantity, ticket_owner.id
+        category.party_id, category.id, ticket_quantity, ticket_owner
     )
     yield bundle
     ticket_bundle_service.delete_bundle(bundle.id)
