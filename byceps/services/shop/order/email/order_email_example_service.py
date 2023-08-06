@@ -144,6 +144,7 @@ def _build_order(
         storefront_id=storefront_id,
         order_number=order_number,
         placed_by_id=placed_by.id,
+        placed_by=placed_by,
         company=None,
         first_name=first_name,
         last_name=last_name,

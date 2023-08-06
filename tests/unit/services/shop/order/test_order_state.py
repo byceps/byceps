@@ -83,7 +83,7 @@ def create_order(
     db_order.processing_required = incoming_order.processing_required
     db_order.processed_at = created_at if processed else None
 
-    return order_service._order_to_transfer_object(db_order)
+    return order_service._order_to_transfer_object(db_order, orderer.user)
 
 
 def create_orderer() -> Orderer:

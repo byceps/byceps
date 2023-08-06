@@ -68,4 +68,6 @@ def get_orders_including_article(
 
     db_orders = db.session.scalars(stmt).unique().all()
 
-    return list(map(order_service._order_to_transfer_object, db_orders))
+    return order_service._db_orders_to_transfer_objects_with_orderer_users(
+        db_orders
+    )

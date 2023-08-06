@@ -8,6 +8,7 @@ byceps.services.shop.order.order_service
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 import dataclasses
 from datetime import datetime, timedelta
 from typing import Any
@@ -137,8 +138,8 @@ def cancel_order(
     if _is_canceled(db_order):
         return Err(OrderAlreadyCanceledError())
 
-    order = _order_to_transfer_object(db_order)
     orderer_user = user_service.get_user(db_order.placed_by_id)
+    order = _order_to_transfer_object(db_order, orderer_user)
 
     occurred_at = datetime.utcnow()
 
@@ -174,7 +175,7 @@ def cancel_order(
 
     db.session.commit()
 
-    canceled_order = _order_to_transfer_object(db_order)
+    canceled_order = _order_to_transfer_object(db_order, orderer_user)
 
     if payment_state_to == PaymentState.canceled_after_paid:
         _execute_article_revocation_actions(canceled_order, initiator)
@@ -194,8 +195,8 @@ def mark_order_as_paid(
     """Mark the order as paid."""
     db_order = _get_order_entity(order_id)
 
-    order = _order_to_transfer_object(db_order)
     orderer_user = user_service.get_user(db_order.placed_by_id)
+    order = _order_to_transfer_object(db_order, orderer_user)
 
     occurred_at = datetime.utcnow()
 
@@ -229,7 +230,7 @@ def mark_order_as_paid(
 
     db.session.commit()
 
-    paid_order = _order_to_transfer_object(db_order)
+    paid_order = _order_to_transfer_object(db_order, orderer_user)
 
     _execute_article_creation_actions(paid_order, initiator)
 
@@ -379,13 +380,15 @@ def find_order(order_id: OrderID) -> Order | None:
     if db_order is None:
         return None
 
-    return _order_to_transfer_object(db_order)
+    orderer_user = user_service.get_user(db_order.placed_by_id)
+    return _order_to_transfer_object(db_order, orderer_user)
 
 
 def get_order(order_id: OrderID) -> Order:
     """Return the order with that id, or raise an exception."""
     db_order = _get_order_entity(order_id)
-    return _order_to_transfer_object(db_order)
+    orderer_user = user_service.get_user(db_order.placed_by_id)
+    return _order_to_transfer_object(db_order, orderer_user)
 
 
 def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
@@ -470,7 +473,8 @@ def find_order_by_order_number(order_number: OrderNumber) -> Order | None:
     if db_order is None:
         return None
 
-    return _order_to_transfer_object(db_order)
+    orderer_user = user_service.get_user(db_order.placed_by_id)
+    return _order_to_transfer_object(db_order, orderer_user)
 
 
 def get_orders_for_order_numbers(
@@ -490,7 +494,7 @@ def get_orders_for_order_numbers(
         .all()
     )
 
-    return list(map(_order_to_transfer_object, db_orders))
+    return _db_orders_to_transfer_objects_with_orderer_users(db_orders)
 
 
 def get_order_ids_for_order_numbers(
@@ -543,7 +547,7 @@ def get_orders(order_ids: frozenset[OrderID]) -> list[Order]:
         .all()
     )
 
-    return [_order_to_transfer_object(db_order) for db_order in db_orders]
+    return _db_orders_to_transfer_objects_with_orderer_users(db_orders)
 
 
 def get_orders_for_shop_paginated(
@@ -647,7 +651,7 @@ def get_orders_placed_by_user(user_id: UserID) -> list[Order]:
         .all()
     )
 
-    return list(map(_order_to_transfer_object, db_orders))
+    return _db_orders_to_transfer_objects_with_orderer_users(db_orders)
 
 
 def get_orders_placed_by_user_for_storefront(
@@ -720,7 +724,7 @@ def get_payment_date(order_id: OrderID) -> datetime | None:
     )
 
 
-def _order_to_transfer_object(db_order: DbOrder) -> Order:
+def _order_to_transfer_object(db_order: DbOrder, placed_by: User) -> Order:
     """Create transfer object from order database entity."""
     return Order(
         id=db_order.id,
@@ -729,6 +733,7 @@ def _order_to_transfer_object(db_order: DbOrder) -> Order:
         storefront_id=db_order.storefront_id,
         order_number=db_order.order_number,
         placed_by_id=db_order.placed_by_id,
+        placed_by=placed_by,
         company=db_order.company,
         first_name=db_order.first_name,
         last_name=db_order.last_name,
@@ -747,6 +752,21 @@ def _order_to_transfer_object(db_order: DbOrder) -> Order:
         is_processed=_is_processed(db_order),
         cancelation_reason=db_order.cancelation_reason,
     )
+
+
+def _db_orders_to_transfer_objects_with_orderer_users(
+    db_orders: Sequence[DbOrder],
+) -> list[Order]:
+    orderer_ids = {db_order.placed_by_id for db_order in db_orders}
+    orderers = user_service.get_users(orderer_ids)
+    orderers_by_id = user_service.index_users_by_id(orderers)
+
+    return [
+        _order_to_transfer_object(
+            db_order, orderers_by_id[db_order.placed_by_id]
+        )
+        for db_order in db_orders
+    ]
 
 
 def _get_address(db_order: DbOrder) -> Address:

@@ -125,6 +125,7 @@ class BaseOrder:
 
 @dataclass(frozen=True)
 class Order(BaseOrder):
+    placed_by: User
     shop_id: ShopID
     storefront_id: StorefrontID
     company: str | None
