@@ -114,6 +114,7 @@ class BaseOrder:
     created_at: datetime
     order_number: OrderNumber
     placed_by_id: UserID
+    placed_by: User
     total_amount: Money
     payment_state: PaymentState
     state: OrderState
@@ -125,7 +126,6 @@ class BaseOrder:
 
 @dataclass(frozen=True)
 class Order(BaseOrder):
-    placed_by: User
     shop_id: ShopID
     storefront_id: StorefrontID
     company: str | None
@@ -142,7 +142,6 @@ class Order(BaseOrder):
 
 @dataclass(frozen=True)
 class AdminOrderListItem(BaseOrder):
-    placed_by: User
     first_name: str
     last_name: str
     is_invoiced: bool
@@ -152,4 +151,4 @@ class AdminOrderListItem(BaseOrder):
 
 @dataclass(frozen=True)
 class SiteOrderListItem(BaseOrder):
-    placed_by: User
+    pass
