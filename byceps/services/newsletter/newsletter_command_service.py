@@ -7,12 +7,14 @@ byceps.services.newsletter.newsletter_command_service
 """
 
 from datetime import datetime
+from dataclasses import dataclass
 
 from sqlalchemy import delete
 from sqlalchemy.dialects.postgresql import insert
 
 from byceps.database import db
 from byceps.typing import UserID
+from byceps.util.result import Err, Ok, Result
 
 from . import newsletter_service
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
@@ -20,8 +22,9 @@ from .models import List, ListID
 from .types import SubscriptionState
 
 
-class UnknownListIdError(Exception):
-    pass
+@dataclass(frozen=True)
+class UnknownListIdError:
+    list_id: ListID
 
 
 def create_list(list_id: ListID, title: str) -> List:
@@ -40,11 +43,15 @@ def delete_list(list_id: ListID) -> None:
     db.session.commit()
 
 
-def subscribe(user_id: UserID, list_id: ListID, expressed_at: datetime) -> None:
+def subscribe(
+    user_id: UserID, list_id: ListID, expressed_at: datetime
+) -> Result[None, UnknownListIdError]:
     """Subscribe the user to that list."""
-    _update_subscription_state(
+    update_subscription_state_result = _update_subscription_state(
         user_id, list_id, expressed_at, SubscriptionState.requested
     )
+    if update_subscription_state_result.is_err():
+        return Err(update_subscription_state_result.unwrap_err())
 
     table = DbSubscription.__table__
     query = (
@@ -60,14 +67,18 @@ def subscribe(user_id: UserID, list_id: ListID, expressed_at: datetime) -> None:
     db.session.execute(query)
     db.session.commit()
 
+    return Ok(None)
+
 
 def unsubscribe(
     user_id: UserID, list_id: ListID, expressed_at: datetime
-) -> None:
+) -> Result[None, UnknownListIdError]:
     """Unsubscribe the user from that list."""
-    _update_subscription_state(
+    update_subscription_state_result = _update_subscription_state(
         user_id, list_id, expressed_at, SubscriptionState.declined
     )
+    if update_subscription_state_result.is_err():
+        return Err(update_subscription_state_result.unwrap_err())
 
     db.session.execute(
         delete(DbSubscription)
@@ -76,20 +87,24 @@ def unsubscribe(
     )
     db.session.commit()
 
+    return Ok(None)
+
 
 def _update_subscription_state(
     user_id: UserID,
     list_id: ListID,
     expressed_at: datetime,
     state: SubscriptionState,
-) -> None:
+) -> Result[None, UnknownListIdError]:
     """Update the user's subscription state for that list."""
     list_ = newsletter_service.find_list(list_id)
     if list_ is None:
-        raise UnknownListIdError(list_id)
+        return Err(UnknownListIdError(list_id))
 
     subscription_update = DbSubscriptionUpdate(
         user_id, list_.id, expressed_at, state
     )
 
     db.session.add(subscription_update)
+
+    return Ok(None)
