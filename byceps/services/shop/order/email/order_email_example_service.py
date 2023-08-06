@@ -36,9 +36,6 @@ from . import order_email_service
 from .order_email_service import OrderEmailData
 
 
-EXAMPLE_USER_ID = UserID(generate_uuid4())
-
-
 def build_example_placed_order_message_text(
     shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
 ) -> Result[str, str]:
@@ -122,7 +119,15 @@ def _build_order(
     order_number = OrderNumber('AWSM-ORDR-9247')
 
     created_at = datetime.utcnow()
-    placed_by_id = EXAMPLE_USER_ID
+
+    placed_by = User(
+        id=UserID(generate_uuid4()),
+        screen_name='Orderer',
+        suspended=False,
+        deleted=False,
+        locale=None,
+        avatar_url=None,
+    )
 
     first_name = 'Bella-Bernadine'
     last_name = 'Ballerwurm'
@@ -138,7 +143,7 @@ def _build_order(
         shop_id=shop.id,
         storefront_id=storefront_id,
         order_number=order_number,
-        placed_by_id=placed_by_id,
+        placed_by_id=placed_by.id,
         company=None,
         first_name=first_name,
         last_name=last_name,
@@ -162,20 +167,11 @@ def _build_order(
 def _build_email_data(
     sender: NameAndAddress, order: Order, brand: Brand
 ) -> OrderEmailData:
-    orderer = User(
-        id=EXAMPLE_USER_ID,
-        screen_name='Orderer',
-        suspended=False,
-        deleted=False,
-        locale=None,
-        avatar_url=None,
-    )
-
     return OrderEmailData(
         sender=sender,
         order=order,
         brand=brand,
-        orderer=orderer,
+        orderer=order.placed_by,
         orderer_email_address='orderer@example.com',
     )
 
