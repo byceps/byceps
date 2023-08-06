@@ -21,6 +21,7 @@ from .payment import Payment
 
 @dataclass(frozen=True)
 class DetailedOrder(BaseOrder):
+    placed_by: User
     shop_id: ShopID
     storefront_id: StorefrontID
     company: str | None
@@ -37,6 +38,5 @@ class DetailedOrder(BaseOrder):
 
 @dataclass(frozen=True)
 class AdminDetailedOrder(DetailedOrder):
-    placed_by: User
     invoices: list[Invoice]
     payments: list[Payment]

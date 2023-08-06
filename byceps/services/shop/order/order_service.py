@@ -405,6 +405,10 @@ def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
     if db_order is None:
         return None
 
+    placed_by = user_service.get_user(
+        db_order.placed_by_id, include_avatar=True
+    )
+
     return DetailedOrder(
         id=db_order.id,
         created_at=db_order.created_at,
@@ -412,6 +416,7 @@ def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
         storefront_id=db_order.storefront_id,
         order_number=db_order.order_number,
         placed_by_id=db_order.placed_by_id,
+        placed_by=placed_by,
         company=db_order.company,
         first_name=db_order.first_name,
         last_name=db_order.last_name,
@@ -441,9 +446,6 @@ def find_order_with_details_for_admin(
     if detailed_order is None:
         return None
 
-    placed_by = user_service.get_user(
-        detailed_order.placed_by_id, include_avatar=True
-    )
     invoices = order_invoice_service.get_invoices_for_order(detailed_order.id)
     payments = order_payment_service.get_payments_for_order(detailed_order.id)
 
@@ -453,7 +455,6 @@ def find_order_with_details_for_admin(
     detailed_order_attributes['line_items'] = detailed_order.line_items
 
     return AdminDetailedOrder(
-        placed_by=placed_by,
         invoices=invoices,
         payments=payments,
         **detailed_order_attributes,
