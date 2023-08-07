@@ -124,3 +124,7 @@ def _build_guest_server_registered_event(
         owner_screen_name=owner.screen_name,
         server_id=server.id,
     )
+
+
+def is_server_quantity_limit_reached(quantity: int) -> bool:
+    return quantity >= 5

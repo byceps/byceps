@@ -12,7 +12,10 @@ from flask import abort, g, redirect, request
 from flask_babel import gettext
 
 from byceps.services.global_setting import global_setting_service
-from byceps.services.guest_server import guest_server_service
+from byceps.services.guest_server import (
+    guest_server_domain_service,
+    guest_server_service,
+)
 from byceps.services.guest_server.models import Address
 from byceps.services.party.models import Party
 from byceps.services.ticketing import ticket_service
@@ -24,9 +27,6 @@ from byceps.util.framework.templating import templated
 from byceps.util.views import login_required, permission_required, redirect_to
 
 from .forms import CreateForm
-
-
-SERVER_LIMIT_PER_USER = 5
 
 
 blueprint = create_blueprint('guest_server', __name__)
@@ -147,10 +147,13 @@ def _current_user_uses_ticket_for_party(party_id: PartyID) -> bool:
 
 
 def _server_limit_reached(party_id: PartyID) -> bool:
-    count = guest_server_service.count_servers_for_owner_and_party(
+    quantity = guest_server_service.count_servers_for_owner_and_party(
         g.user.id, party_id
     )
-    return count >= SERVER_LIMIT_PER_USER
+
+    return guest_server_domain_service.is_server_quantity_limit_reached(
+        quantity
+    )
 
 
 def _sort_addresses(addresses: Iterable[Address]) -> list[Address]:
