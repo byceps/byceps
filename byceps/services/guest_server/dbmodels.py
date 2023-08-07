@@ -20,11 +20,11 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.typing import PartyID, UserID
 from byceps.util.instances import ReprBuilder
 
-from .models import IPAddress
+from .models import AddressID, IPAddress, ServerID
 
 
 class DbSetting(db.Model):
@@ -97,11 +97,11 @@ class DbServer(db.Model):
 
     __tablename__ = 'guest_servers'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
+    id = db.Column(db.Uuid, primary_key=True)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
     )
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     owner_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     notes_owner = db.Column(db.UnicodeText, nullable=True)
@@ -110,7 +110,9 @@ class DbServer(db.Model):
 
     def __init__(
         self,
+        server_id: ServerID,
         party_id: PartyID,
+        created_at: datetime,
         creator_id: UserID,
         owner_id: UserID,
         *,
@@ -118,7 +120,9 @@ class DbServer(db.Model):
         notes_admin: str | None = None,
         approved: bool = False,
     ) -> None:
+        self.id = server_id
         self.party_id = party_id
+        self.created_at = created_at
         self.creator_id = creator_id
         self.owner_id = owner_id
         self.notes_owner = notes_owner
@@ -134,12 +138,12 @@ class DbAddress(db.Model):
 
     __tablename__ = 'guest_server_addresses'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
+    id = db.Column(db.Uuid, primary_key=True)
     server_id = db.Column(
         db.Uuid, db.ForeignKey('guest_servers.id'), index=True, nullable=False
     )
     server = db.relationship(DbServer, backref='addresses')
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
     _ip_address = db.Column('ip_address', postgresql.INET, nullable=True)
     hostname = db.Column(db.UnicodeText, nullable=True)
     _netmask = db.Column('netmask', postgresql.INET, nullable=True)
@@ -147,14 +151,18 @@ class DbAddress(db.Model):
 
     def __init__(
         self,
-        server: DbServer,
+        address_id: AddressID,
+        server_id: ServerID,
+        created_at: datetime,
         *,
         ip_address: IPAddress | None = None,
         hostname: str | None = None,
         netmask: IPAddress | None = None,
         gateway: IPAddress | None = None,
     ) -> None:
-        self.server = server
+        self.id = address_id
+        self.server_id = server_id
+        self.created_at = created_at
         self.ip_address = ip_address
         self.hostname = hostname
         self.netmask = netmask

@@ -8,6 +8,8 @@ byceps.services.guest_server.guest_server_service
 
 from __future__ import annotations
 
+from datetime import datetime
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
@@ -17,6 +19,7 @@ from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
 from byceps.util.result import Err, Ok, Result
 
+from . import guest_server_domain_service
 from .dbmodels import DbAddress, DbServer, DbSetting
 from .models import (
     Address,
@@ -107,35 +110,48 @@ def create_server(
     gateway: IPAddress | None = None,
 ) -> tuple[Server, GuestServerRegisteredEvent]:
     """Create a server."""
-    db_server = DbServer(
-        party.id,
-        creator.id,
-        owner.id,
+    server, event = guest_server_domain_service.create_server(
+        party,
+        creator,
+        owner,
         notes_owner=notes_owner,
         notes_admin=notes_admin,
         approved=approved,
+        ip_address=ip_address,
+        hostname=hostname,
+        netmask=netmask,
+        gateway=gateway,
+    )
+
+    _persist_created_server(server)
+
+    return server, event
+
+
+def _persist_created_server(server: Server) -> None:
+    db_server = DbServer(
+        server.id,
+        server.party_id,
+        server.created_at,
+        server.creator_id,
+        server.owner_id,
+        notes_owner=server.notes_owner,
+        notes_admin=server.notes_admin,
+        approved=server.approved,
     )
     db.session.add(db_server)
 
-    db_address = DbAddress(db_server, ip_address=ip_address, hostname=hostname)
-    db.session.add(db_address)
+    for address in server.addresses:
+        db_address = DbAddress(
+            address.id,
+            server.id,
+            server.created_at,
+            ip_address=address.ip_address,
+            hostname=address.hostname,
+        )
+        db.session.add(db_address)
 
     db.session.commit()
-
-    server = _db_entity_to_server(db_server)
-
-    event = GuestServerRegisteredEvent(
-        occurred_at=server.created_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
-        party_id=party.id,
-        party_title=party.title,
-        owner_id=owner.id,
-        owner_screen_name=owner.screen_name,
-        server_id=server.id,
-    )
-
-    return server, event
 
 
 def update_server(
@@ -274,12 +290,25 @@ def create_address(
     """Append an address to a server."""
     db_server = _get_db_server(server_id)
 
-    db_address = DbAddress(
-        db_server,
+    created_at = datetime.utcnow()
+
+    address = guest_server_domain_service._build_address(
+        db_server.id,
+        created_at,
         ip_address=ip_address,
         hostname=hostname,
         netmask=netmask,
         gateway=gateway,
+    )
+
+    db_address = DbAddress(
+        address.id,
+        address.server_id,
+        address.created_at,
+        ip_address=address.ip_address,
+        hostname=address.hostname,
+        netmask=address.netmask,
+        gateway=address.gateway,
     )
     db.session.add(db_address)
 
