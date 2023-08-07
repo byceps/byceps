@@ -323,6 +323,7 @@ def _db_entity_to_address(db_address: DbAddress) -> Address:
     return Address(
         id=db_address.id,
         server_id=db_address.server_id,
+        created_at=db_address.created_at,
         ip_address=db_address.ip_address,
         hostname=db_address.hostname,
         netmask=db_address.netmask,

@@ -53,6 +53,7 @@ class Server:
 class Address:
     id: AddressID
     server_id: ServerID
+    created_at: datetime
     ip_address: IPAddress | None
     hostname: str | None
     netmask: IPAddress | None
