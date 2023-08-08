@@ -20,22 +20,23 @@ from byceps.typing import UserID
 
 
 @pytest.mark.parametrize(
-    ('created_at', 'payment_state', 'expected'),
+    ('checked_at', 'payment_state', 'expected'),
     [
-        (datetime(2021, 6, 3, 11, 59, 59), PaymentState.open,                 True ),
-        (datetime(2021, 6, 3, 12,  0,  0), PaymentState.open,                 True ),
-        (datetime(2021, 6, 3, 12,  0,  0), PaymentState.canceled_before_paid, False),
-        (datetime(2021, 6, 3, 12,  0,  0), PaymentState.paid,                 False),
-        (datetime(2021, 6, 3, 12,  0,  0), PaymentState.canceled_after_paid,  False),
-        (datetime(2021, 6, 3, 12,  0,  1), PaymentState.open,                 False),
+        (datetime(2021, 6, 25, 11, 59, 59), PaymentState.open,                 False ),
+        (datetime(2021, 6, 25, 12,  0,  0), PaymentState.open,                 True ),
+        (datetime(2021, 6, 25, 12,  0,  0), PaymentState.canceled_before_paid, False),
+        (datetime(2021, 6, 25, 12,  0,  0), PaymentState.paid,                 False),
+        (datetime(2021, 6, 25, 12,  0,  0), PaymentState.canceled_after_paid,  False),
+        (datetime(2021, 6, 25, 12,  0,  1), PaymentState.open,                 True ),
     ],
 )
 def test_is_overdue(
-    created_at: datetime, payment_state: PaymentState, expected: bool
+    checked_at: datetime, payment_state: PaymentState, expected: bool
 ):
+    created_at = datetime(2021, 6, 11, 11, 59, 59)
     db_order = create_db_order(created_at, payment_state)
 
-    with freeze_time(datetime(2021, 6, 17, 12, 0, 1)):
+    with freeze_time(checked_at):
         assert order_service._is_overdue(db_order) == expected
 
 
