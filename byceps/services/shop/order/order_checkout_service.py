@@ -21,8 +21,7 @@ from byceps.services.shop.article import article_service
 from byceps.services.shop.cart.models import Cart, CartItem
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import ShopID
-from byceps.services.shop.storefront import storefront_service
-from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.shop.storefront.models import Storefront, StorefrontID
 from byceps.util.result import Err, Ok, Result
 
 from . import (
@@ -44,14 +43,13 @@ log = structlog.get_logger()
 
 
 def place_order(
-    storefront_id: StorefrontID,
+    storefront: Storefront,
     orderer: Orderer,
     cart: Cart,
     *,
     created_at: datetime | None = None,
 ) -> Result[tuple[Order, ShopOrderPlacedEvent], None]:
     """Place an order for one or more articles."""
-    storefront = storefront_service.get_storefront(storefront_id)
     shop = shop_service.get_shop(storefront.shop_id)
 
     order_number_sequence = order_sequence_service.get_order_number_sequence(

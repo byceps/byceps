@@ -24,7 +24,7 @@ def orderer(make_user, make_orderer):
 @pytest.fixture()
 def order(admin_app, storefront, orderer, empty_cart):
     order, _ = order_checkout_service.place_order(
-        storefront.id, orderer, empty_cart
+        storefront, orderer, empty_cart
     ).unwrap()
     return order
 

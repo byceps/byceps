@@ -61,11 +61,11 @@ def test_get_orders_placed_by_user(
     orderer1: Orderer,
     orderer2: Orderer,
 ):
-    order1 = place_order(storefront1.id, orderer1)
-    order2 = place_order(storefront1.id, orderer2)  # different user
-    order3 = place_order(storefront1.id, orderer1)
-    order4 = place_order(storefront1.id, orderer1)
-    order5 = place_order(storefront2.id, orderer1)  # different storefront
+    order1 = place_order(storefront1, orderer1)
+    order2 = place_order(storefront1, orderer2)  # different user
+    order3 = place_order(storefront1, orderer1)
+    order4 = place_order(storefront1, orderer1)
+    order5 = place_order(storefront2, orderer1)  # different storefront
 
     assert get_order_ids_by_user(orderer1, storefront1.id) == {
         order4.id,
@@ -79,11 +79,11 @@ def test_get_orders_placed_by_user(
 # helpers
 
 
-def place_order(storefront_id: StorefrontID, orderer: Orderer) -> Order:
+def place_order(storefront: Storefront, orderer: Orderer) -> Order:
     cart = Cart(EUR)
 
     order, _ = order_checkout_service.place_order(
-        storefront_id, orderer, cart
+        storefront, orderer, cart
     ).unwrap()
 
     return order

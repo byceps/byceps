@@ -108,7 +108,7 @@ def order(storefront: Storefront, cart: Cart, orderer: Orderer):
     created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 
     order, _ = order_checkout_service.place_order(
-        storefront.id, orderer, cart, created_at=created_at
+        storefront, orderer, cart, created_at=created_at
     ).unwrap()
 
     return order

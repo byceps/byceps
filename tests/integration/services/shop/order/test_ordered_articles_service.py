@@ -19,7 +19,7 @@ from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import Order, Orderer, PaymentState
 from byceps.services.shop.shop.models import Shop
-from byceps.services.shop.storefront.models import Storefront, StorefrontID
+from byceps.services.shop.storefront.models import Storefront
 
 
 @pytest.fixture()
@@ -54,7 +54,7 @@ def test_count_ordered_articles(
         (7, PaymentState.open),
     ]:
         order = place_order(
-            storefront.id,
+            storefront,
             orderer,
             article,
             article_quantity,
@@ -71,7 +71,7 @@ def test_count_ordered_articles(
 
 
 def place_order(
-    storefront_id: StorefrontID,
+    storefront: Storefront,
     orderer: Orderer,
     article: Article,
     article_quantity: int,
@@ -80,7 +80,7 @@ def place_order(
     cart.add_item(article, article_quantity)
 
     order, _ = order_checkout_service.place_order(
-        storefront_id, orderer, cart
+        storefront, orderer, cart
     ).unwrap()
 
     return order

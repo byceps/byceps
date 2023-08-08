@@ -124,7 +124,7 @@ def order():
 
     orderer = form.get_orderer(g.user)
 
-    placement_result = _place_order(storefront.id, orderer, cart)
+    placement_result = _place_order(storefront, orderer, cart)
     if placement_result.is_err():
         flash_error(gettext('Placing the order has failed.'))
         return order_form(form)
@@ -239,7 +239,7 @@ def order_single(article_id):
         shop.currency, article_compilation
     )
 
-    placement_result = _place_order(storefront.id, orderer, cart)
+    placement_result = _place_order(storefront, orderer, cart)
     if placement_result.is_err():
         flash_error(gettext('Placing the order has failed.'))
         return order_form(form)
@@ -280,9 +280,9 @@ def _create_cart_from_article_compilation(
     return cart
 
 
-def _place_order(storefront_id, orderer, cart) -> Result[Order, None]:
+def _place_order(storefront, orderer, cart) -> Result[Order, None]:
     placement_result = order_checkout_service.place_order(
-        storefront_id, orderer, cart
+        storefront, orderer, cart
     )
     if placement_result.is_err():
         return Err(None)

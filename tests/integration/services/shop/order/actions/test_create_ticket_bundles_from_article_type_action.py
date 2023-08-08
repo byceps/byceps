@@ -51,7 +51,7 @@ def order(
     orderer: Orderer,
 ) -> Order:
     articles_with_quantity = [(article, bundle_quantity)]
-    return place_order(storefront.id, orderer, articles_with_quantity)
+    return place_order(storefront, orderer, articles_with_quantity)
 
 
 @patch('byceps.signals.ticketing.tickets_sold.send')

@@ -97,7 +97,7 @@ def order(make_orderer, storefront1, user1):
     cart = Cart(EUR)
 
     order, _ = order_checkout_service.place_order(
-        storefront1.id, orderer, cart
+        storefront1, orderer, cart
     ).unwrap()
 
     return order

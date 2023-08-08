@@ -10,7 +10,7 @@ from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.models.order import Order, Orderer, OrderID
-from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.user.models.user import User
@@ -21,7 +21,7 @@ def get_tickets_for_order(order: Order) -> list[DbTicket]:
 
 
 def place_order(
-    storefront_id: StorefrontID,
+    storefront: Storefront,
     orderer: Orderer,
     articles_with_quantity: list[tuple[Article, int]],
 ) -> Order:
@@ -30,7 +30,7 @@ def place_order(
         cart.add_item(article, quantity)
 
     order, _ = order_checkout_service.place_order(
-        storefront_id, orderer, cart
+        storefront, orderer, cart
     ).unwrap()
 
     return order

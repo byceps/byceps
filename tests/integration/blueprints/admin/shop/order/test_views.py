@@ -30,7 +30,7 @@ from byceps.services.shop.order.models.order import (
     PaymentState,
 )
 from byceps.services.shop.shop.models import Shop
-from byceps.services.shop.storefront.models import Storefront, StorefrontID
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
@@ -112,7 +112,7 @@ def test_cancel_before_paid(
 
     quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(
-        storefront.id, orderer, quantified_articles_to_order
+        storefront, orderer, quantified_articles_to_order
     )
     db_order_before = get_db_order(placed_order.id)
 
@@ -172,7 +172,7 @@ def test_cancel_before_paid_without_sending_email(
 
     quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(
-        storefront.id, orderer, quantified_articles_to_order
+        storefront, orderer, quantified_articles_to_order
     )
 
     url = f'/admin/shop/orders/{placed_order.id}/cancel'
@@ -211,7 +211,7 @@ def test_mark_order_as_paid(
     orderer: Orderer,
     shop_order_admin_client,
 ):
-    placed_order = place_order(storefront.id, orderer, [])
+    placed_order = place_order(storefront, orderer, [])
     db_order_before = get_db_order(placed_order.id)
 
     assert_payment_is_open(db_order_before)
@@ -266,7 +266,7 @@ def test_cancel_after_paid(
 
     quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(
-        storefront.id, orderer, quantified_articles_to_order
+        storefront, orderer, quantified_articles_to_order
     )
     db_order_before = get_db_order(placed_order.id)
 
@@ -323,7 +323,7 @@ def get_article_quantity(article_id: ArticleID) -> int:
 
 
 def place_order(
-    storefront_id: StorefrontID,
+    storefront: Storefront,
     orderer: Orderer,
     quantified_articles: Iterable[tuple[Article, int]],
 ) -> Order:
@@ -333,7 +333,7 @@ def place_order(
         cart.add_item(article, quantity_to_order)
 
     order, _ = order_checkout_service.place_order(
-        storefront_id, orderer, cart
+        storefront, orderer, cart
     ).unwrap()
 
     return order
