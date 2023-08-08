@@ -22,28 +22,26 @@ from byceps.typing import UserID
 @pytest.mark.parametrize(
     ('created_at', 'payment_state', 'expected'),
     [
-        (datetime(2021, 6, 12, 12, 0, 0), PaymentState.open,                 True),
-        (datetime(2021, 6, 12, 12, 0, 0), PaymentState.canceled_before_paid, True),
-        (datetime(2021, 6, 12, 12, 0, 0), PaymentState.paid,                 True),
-        (datetime(2021, 6, 12, 12, 0, 0), PaymentState.canceled_after_paid,  True),
-        (datetime(2021, 6, 13, 20, 0, 0), PaymentState.open,                 False),
-        (datetime(2021, 6, 13, 20, 0, 1), PaymentState.open,                 False),
-        (datetime(2021, 6, 14, 12, 0, 0), PaymentState.open,                 False),
-        (datetime(2021, 6, 14, 12, 0, 0), PaymentState.canceled_before_paid, False),
-        (datetime(2021, 6, 14, 12, 0, 0), PaymentState.paid,                 False),
-        (datetime(2021, 6, 14, 12, 0, 0), PaymentState.canceled_after_paid,  False),
+        (datetime(2021, 6, 3, 11, 59, 59), PaymentState.open,                 True ),
+        (datetime(2021, 6, 3, 12,  0,  0), PaymentState.open,                 True ),
+        (datetime(2021, 6, 3, 12,  0,  0), PaymentState.canceled_before_paid, False),
+        (datetime(2021, 6, 3, 12,  0,  0), PaymentState.paid,                 False),
+        (datetime(2021, 6, 3, 12,  0,  0), PaymentState.canceled_after_paid,  False),
+        (datetime(2021, 6, 3, 12,  0,  1), PaymentState.open,                 False),
     ],
 )
 def test_is_overdue(
     created_at: datetime, payment_state: PaymentState, expected: bool
 ):
-    db_order = create_db_order(created_at)
+    db_order = create_db_order(created_at, payment_state)
 
-    with freeze_time(datetime(2021, 6, 27, 20, 0, 0)):
+    with freeze_time(datetime(2021, 6, 17, 12, 0, 1)):
         assert order_service._is_overdue(db_order) == expected
 
 
-def create_db_order(created_at: datetime) -> DbOrder:
+def create_db_order(
+    created_at: datetime, payment_state: PaymentState
+) -> DbOrder:
     db_order = DbOrder(
         created_at=created_at,
         shop_id=ShopID('anyshop'),
@@ -61,6 +59,6 @@ def create_db_order(created_at: datetime) -> DbOrder:
         processing_required=False,
     )
 
-    db_order.payment_state = PaymentState.open
+    db_order.payment_state = payment_state
 
     return db_order
