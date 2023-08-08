@@ -800,7 +800,7 @@ def _is_overdue(db_order: DbOrder) -> bool:
     if db_order.payment_state != PaymentState.open:
         return False
 
-    return datetime.utcnow() > (db_order.created_at + OVERDUE_THRESHOLD)
+    return datetime.utcnow() >= (db_order.created_at + OVERDUE_THRESHOLD)
 
 
 def _line_item_to_transfer_object(

@@ -33,7 +33,7 @@ from byceps.typing import UserID
 def test_is_overdue(
     checked_at: datetime, payment_state: PaymentState, expected: bool
 ):
-    created_at = datetime(2021, 6, 11, 11, 59, 59)
+    created_at = datetime(2021, 6, 11, 12, 0, 0)
     db_order = create_db_order(created_at, payment_state)
 
     with freeze_time(checked_at):
