@@ -8,7 +8,7 @@ byceps.services.shop.order.order_domain_service
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from moneyed import Money
 
@@ -21,6 +21,9 @@ from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
 from .models.log import OrderLogEntry, OrderLogEntryData
 from .models.order import Order, OrderID, PaymentState
 from .models.payment import AdditionalPaymentData, Payment
+
+
+OVERDUE_THRESHOLD = timedelta(days=14)
 
 
 def add_note(order: Order, author: User, text: str) -> OrderLogEntry:
@@ -324,3 +327,11 @@ def _is_canceled(order: Order) -> bool:
         PaymentState.canceled_before_paid,
         PaymentState.canceled_after_paid,
     }
+
+
+def is_overdue(created_at: datetime, payment_state: PaymentState) -> bool:
+    """Return `True` if payment of the order is overdue."""
+    if payment_state != PaymentState.open:
+        return False
+
+    return datetime.utcnow() >= (created_at + OVERDUE_THRESHOLD)

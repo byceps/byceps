@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 import dataclasses
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any
 from uuid import UUID
 
@@ -63,9 +63,7 @@ from .models.order import (
     SiteOrderListItem,
 )
 from .models.payment import AdditionalPaymentData
-
-
-OVERDUE_THRESHOLD = timedelta(days=14)
+from .order_domain_service import OVERDUE_THRESHOLD
 
 
 log = structlog.get_logger()
@@ -797,10 +795,9 @@ def _get_line_items(db_order: DbOrder) -> list[LineItem]:
 
 def _is_overdue(db_order: DbOrder) -> bool:
     """Return `True` if payment of the order is overdue."""
-    if db_order.payment_state != PaymentState.open:
-        return False
-
-    return datetime.utcnow() >= (db_order.created_at + OVERDUE_THRESHOLD)
+    return order_domain_service.is_overdue(
+        db_order.created_at, db_order.payment_state
+    )
 
 
 def _line_item_to_transfer_object(
