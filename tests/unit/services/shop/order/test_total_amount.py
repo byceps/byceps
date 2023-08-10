@@ -5,17 +5,11 @@
 
 from collections.abc import Iterable
 from datetime import datetime
-from decimal import Decimal
 
 from moneyed import EUR, Money
 import pytest
 
-from byceps.services.shop.article.models import (
-    Article,
-    ArticleID,
-    ArticleNumber,
-    ArticleType,
-)
+from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service
 from byceps.services.shop.order.models.checkout import IncomingOrder
@@ -23,7 +17,7 @@ from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 
-from tests.helpers import generate_token, generate_uuid
+from tests.helpers import generate_token
 
 
 SHOP_ID = ShopID(generate_token())
@@ -31,18 +25,18 @@ STOREFRONT_ID = StorefrontID(generate_token())
 
 
 @pytest.fixture(scope='module')
-def article1() -> Article:
-    return build_article(ArticleNumber('LF-01-A00001'), 'Artikel #1', '49.95')
+def article1(make_article) -> Article:
+    return make_article(price=Money('49.95', EUR))
 
 
 @pytest.fixture(scope='module')
-def article2() -> Article:
-    return build_article(ArticleNumber('LF-01-A00002'), 'Artikel #2', '6.20')
+def article2(make_article) -> Article:
+    return make_article(price=Money('6.20', EUR))
 
 
 @pytest.fixture(scope='module')
-def article3() -> Article:
-    return build_article(ArticleNumber('LF-01-A00003'), 'Artikel #3', '12.53')
+def article3(make_article) -> Article:
+    return make_article(price=Money('12.53', EUR))
 
 
 def test_without_any_items(orderer: Orderer):
@@ -81,29 +75,6 @@ def test_with_multiple_items(
 
 
 # helpers
-
-
-def build_article(
-    article_number_str: str, description: str, price_amount_str: str
-) -> Article:
-    return Article(
-        id=ArticleID(generate_uuid()),
-        shop_id=SHOP_ID,
-        item_number=ArticleNumber(article_number_str),
-        type_=ArticleType.physical,
-        type_params={},
-        description=description,
-        price=Money(price_amount_str, EUR),
-        tax_rate=Decimal('0.19'),
-        available_from=None,
-        available_until=None,
-        total_quantity=999,
-        quantity=999,
-        max_quantity_per_order=99,
-        not_directly_orderable=False,
-        separate_order_required=False,
-        processing_required=False,
-    )
 
 
 def build_incoming_order(

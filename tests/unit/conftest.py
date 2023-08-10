@@ -6,15 +6,24 @@
 from __future__ import annotations
 
 from datetime import datetime
+from decimal import Decimal
 from typing import Any
 
 from flask import Flask
 from flask_babel import Babel
+from moneyed import EUR, Money
 import pytest
 
 from byceps.services.brand.models import Brand
 from byceps.services.party.models import Party
+from byceps.services.shop.article.models import (
+    Article,
+    ArticleID,
+    ArticleNumber,
+    ArticleType,
+)
 from byceps.services.shop.order.models.order import Orderer
+from byceps.services.shop.shop.models import ShopID
 from byceps.services.user.models.user import User
 from byceps.typing import BrandID, PartyID, UserID
 
@@ -128,6 +137,42 @@ def make_party(brand: Brand):
 @pytest.fixture(scope='session')
 def party(brand: Brand, make_party) -> Party:
     return make_party()
+
+
+@pytest.fixture(scope='session')
+def make_article():
+    def _wrapper(
+        *,
+        price: Money | None = None,
+        available_from: datetime | None = None,
+        available_until: datetime | None = None,
+        total_quantity: int = 100,
+        quantity: int = 1,
+        max_quantity_per_order: int = 10,
+    ) -> Article:
+        if price is None:
+            price = Money('1.99', EUR)
+
+        return Article(
+            id=ArticleID(generate_uuid()),
+            shop_id=ShopID(generate_token()),
+            item_number=ArticleNumber(generate_token()),
+            type_=ArticleType.other,
+            type_params={},
+            description=generate_token(),
+            price=price,
+            tax_rate=Decimal('0.19'),
+            available_from=available_from,
+            available_until=available_until,
+            total_quantity=total_quantity,
+            quantity=quantity,
+            max_quantity_per_order=max_quantity_per_order,
+            not_directly_orderable=False,
+            separate_order_required=False,
+            processing_required=False,
+        )
+
+    return _wrapper
 
 
 @pytest.fixture(scope='session')
