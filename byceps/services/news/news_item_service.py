@@ -341,6 +341,21 @@ def get_admin_list_items_paginated(
     return pagination
 
 
+def _get_items_stmt(channel_ids: set[NewsChannelID]) -> Select:
+    return (
+        select(DbNewsItem)
+        .filter(DbNewsItem.channel_id.in_(channel_ids))
+        .options(
+            db.joinedload(DbNewsItem.channel),
+            db.joinedload(DbNewsItem.current_version_association).joinedload(
+                DbCurrentNewsItemVersionAssociation.version
+            ),
+            db.joinedload(DbNewsItem.images),
+        )
+        .order_by(DbNewsItem.published_at.desc())
+    )
+
+
 def get_headlines_paginated(
     channel_ids: set[NewsChannelID],
     page: int,
@@ -391,21 +406,6 @@ def get_recent_headlines(
     )
 
     return [_db_entity_to_headline(db_item) for db_item in db_items]
-
-
-def _get_items_stmt(channel_ids: set[NewsChannelID]) -> Select:
-    return (
-        select(DbNewsItem)
-        .filter(DbNewsItem.channel_id.in_(channel_ids))
-        .options(
-            db.joinedload(DbNewsItem.channel),
-            db.joinedload(DbNewsItem.current_version_association).joinedload(
-                DbCurrentNewsItemVersionAssociation.version
-            ),
-            db.joinedload(DbNewsItem.images),
-        )
-        .order_by(DbNewsItem.published_at.desc())
-    )
 
 
 def get_item_versions(item_id: NewsItemID) -> Sequence[DbNewsItemVersion]:
