@@ -19,10 +19,6 @@ from byceps.services.shop.order.models.order import (
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
-
-from tests.helpers import generate_token, generate_uuid
 
 
 PROCESSING_REQUIRED = True
@@ -32,27 +28,83 @@ PROCESSED = True
 @pytest.mark.parametrize(
     ('payment_state', 'processing_required', 'processed', 'expected'),
     [
-        (PaymentState.open,                 not PROCESSING_REQUIRED,  not PROCESSED, OrderState.open    ),
-        (PaymentState.open,                     PROCESSING_REQUIRED,  not PROCESSED, OrderState.open    ),
-        (PaymentState.open,                     PROCESSING_REQUIRED,      PROCESSED, OrderState.open    ),
-        (PaymentState.canceled_before_paid, not PROCESSING_REQUIRED,  not PROCESSED, OrderState.canceled),
-        (PaymentState.canceled_before_paid,     PROCESSING_REQUIRED,  not PROCESSED, OrderState.canceled),
-        (PaymentState.canceled_before_paid,     PROCESSING_REQUIRED,      PROCESSED, OrderState.canceled),
-        (PaymentState.canceled_after_paid,  not PROCESSING_REQUIRED,  not PROCESSED, OrderState.canceled),
-        (PaymentState.canceled_after_paid,      PROCESSING_REQUIRED,  not PROCESSED, OrderState.canceled),
-        (PaymentState.canceled_after_paid,      PROCESSING_REQUIRED,      PROCESSED, OrderState.canceled),
-        (PaymentState.paid,                 not PROCESSING_REQUIRED,  not PROCESSED, OrderState.complete),
-        (PaymentState.paid,                     PROCESSING_REQUIRED,  not PROCESSED, OrderState.open    ),
-        (PaymentState.paid,                     PROCESSING_REQUIRED,      PROCESSED, OrderState.complete),
+        (
+            PaymentState.open,
+            not PROCESSING_REQUIRED,
+            not PROCESSED,
+            OrderState.open,
+        ),
+        (
+            PaymentState.open,
+            PROCESSING_REQUIRED,
+            not PROCESSED,
+            OrderState.open,
+        ),
+        (PaymentState.open, PROCESSING_REQUIRED, PROCESSED, OrderState.open),
+        (
+            PaymentState.canceled_before_paid,
+            not PROCESSING_REQUIRED,
+            not PROCESSED,
+            OrderState.canceled,
+        ),
+        (
+            PaymentState.canceled_before_paid,
+            PROCESSING_REQUIRED,
+            not PROCESSED,
+            OrderState.canceled,
+        ),
+        (
+            PaymentState.canceled_before_paid,
+            PROCESSING_REQUIRED,
+            PROCESSED,
+            OrderState.canceled,
+        ),
+        (
+            PaymentState.canceled_after_paid,
+            not PROCESSING_REQUIRED,
+            not PROCESSED,
+            OrderState.canceled,
+        ),
+        (
+            PaymentState.canceled_after_paid,
+            PROCESSING_REQUIRED,
+            not PROCESSED,
+            OrderState.canceled,
+        ),
+        (
+            PaymentState.canceled_after_paid,
+            PROCESSING_REQUIRED,
+            PROCESSED,
+            OrderState.canceled,
+        ),
+        (
+            PaymentState.paid,
+            not PROCESSING_REQUIRED,
+            not PROCESSED,
+            OrderState.complete,
+        ),
+        (
+            PaymentState.paid,
+            PROCESSING_REQUIRED,
+            not PROCESSED,
+            OrderState.open,
+        ),
+        (
+            PaymentState.paid,
+            PROCESSING_REQUIRED,
+            PROCESSED,
+            OrderState.complete,
+        ),
     ],
 )
 def test_order_state(
+    orderer: Orderer,
     payment_state: PaymentState,
     processing_required: bool,
     processed: bool,
     expected: OrderState,
 ):
-    order = create_order(payment_state, processing_required, processed)
+    order = create_order(orderer, payment_state, processing_required, processed)
     assert order.state == expected
 
 
@@ -60,10 +112,12 @@ def test_order_state(
 
 
 def create_order(
-    payment_state: PaymentState, processing_required: bool, processed: bool
+    orderer: Orderer,
+    payment_state: PaymentState,
+    processing_required: bool,
+    processed: bool,
 ) -> Order:
     order_number = OrderNumber('ORDER-42')
-    orderer = create_orderer()
     created_at = datetime.utcnow()
 
     incoming_order = IncomingOrder(
@@ -84,25 +138,3 @@ def create_order(
     db_order.processed_at = created_at if processed else None
 
     return order_service._order_to_transfer_object(db_order, orderer.user)
-
-
-def create_orderer() -> Orderer:
-    user = User(
-        id=UserID(generate_uuid()),
-        screen_name=generate_token(),
-        suspended=False,
-        deleted=False,
-        locale=None,
-        avatar_url=None,
-    )
-
-    return Orderer(
-        user=user,
-        company=None,
-        first_name='Burkhardt',
-        last_name='Playhardt',
-        country='Country',
-        zip_code='55555',
-        city='City',
-        street='Street',
-    )

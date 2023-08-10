@@ -93,25 +93,10 @@ def badge(make_badge):
 
 
 @pytest.fixture(scope='module')
-def build_user():
-    def _wrapper(*, suspended=False, deleted=False) -> User:
-        return User(
-            id=UserID(generate_uuid()),
-            screen_name=None,
-            suspended=suspended,
-            deleted=deleted,
-            locale=None,
-            avatar_url=None,
-        )
-
-    return _wrapper
+def awardee(make_user):
+    return make_user()
 
 
 @pytest.fixture(scope='module')
-def awardee(build_user):
-    return build_user()
-
-
-@pytest.fixture(scope='module')
-def initiator(build_user):
-    return build_user()
+def initiator(make_user):
+    return make_user()

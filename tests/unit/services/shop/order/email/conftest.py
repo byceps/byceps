@@ -33,8 +33,6 @@ from byceps.services.shop.order.models.order import (
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
 
 from tests.helpers import generate_token, generate_uuid
 
@@ -57,29 +55,6 @@ def app():
 
     with app.app_context():
         yield app
-
-
-@pytest.fixture(scope='package')
-def orderer():
-    user = User(
-        id=UserID(generate_uuid()),
-        screen_name=generate_token(),
-        suspended=False,
-        deleted=False,
-        locale=None,
-        avatar_url=None,
-    )
-
-    return Orderer(
-        user=user,
-        company=None,
-        first_name='John',
-        last_name='Wick',
-        country='Germany',
-        zip_code='22999',
-        city='Büttenwarder',
-        street='Deichweg 1',
-    )
 
 
 @pytest.fixture(scope='package')

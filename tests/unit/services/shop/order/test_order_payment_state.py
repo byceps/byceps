@@ -17,16 +17,12 @@ from byceps.services.shop.order.models.order import (
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
-
-from tests.helpers import generate_token, generate_uuid
 
 
-def test_is_open():
+def test_is_open(orderer):
     payment_state = PaymentState.open
 
-    order = create_order_with_payment_state(payment_state)
+    order = create_order_with_payment_state(orderer, payment_state)
 
     assert order.payment_state == payment_state
     assert order.is_open
@@ -34,10 +30,10 @@ def test_is_open():
     assert not order.is_paid
 
 
-def test_is_canceled():
+def test_is_canceled(orderer):
     payment_state = PaymentState.canceled_before_paid
 
-    order = create_order_with_payment_state(payment_state)
+    order = create_order_with_payment_state(orderer, payment_state)
 
     assert order.payment_state == payment_state
     assert not order.is_open
@@ -45,10 +41,10 @@ def test_is_canceled():
     assert not order.is_paid
 
 
-def test_is_paid():
+def test_is_paid(orderer):
     payment_state = PaymentState.paid
 
-    order = create_order_with_payment_state(payment_state)
+    order = create_order_with_payment_state(orderer, payment_state)
 
     assert order.payment_state == payment_state
     assert not order.is_open
@@ -56,10 +52,10 @@ def test_is_paid():
     assert order.is_paid
 
 
-def test_is_canceled_after_paid():
+def test_is_canceled_after_paid(orderer):
     payment_state = PaymentState.canceled_after_paid
 
-    order = create_order_with_payment_state(payment_state)
+    order = create_order_with_payment_state(orderer, payment_state)
 
     assert order.payment_state == payment_state
     assert not order.is_open
@@ -70,9 +66,10 @@ def test_is_canceled_after_paid():
 # helpers
 
 
-def create_order_with_payment_state(payment_state: PaymentState) -> Order:
+def create_order_with_payment_state(
+    orderer: Orderer, payment_state: PaymentState
+) -> Order:
     order_number = OrderNumber('AEC-03-B00074')
-    orderer = create_orderer()
     created_at = datetime.utcnow()
 
     incoming_order = IncomingOrder(
@@ -91,25 +88,3 @@ def create_order_with_payment_state(payment_state: PaymentState) -> Order:
     db_order.payment_state = payment_state
 
     return order_service._order_to_transfer_object(db_order, orderer.user)
-
-
-def create_orderer() -> Orderer:
-    user = User(
-        id=UserID(generate_uuid()),
-        screen_name=generate_token(),
-        suspended=False,
-        deleted=False,
-        locale=None,
-        avatar_url=None,
-    )
-
-    return Orderer(
-        user=user,
-        company='JJD, LLC',
-        first_name='John Joseph',
-        last_name='Doe',
-        country='State of Mind',
-        zip_code='31337',
-        city='Atrocity',
-        street='Elite Street 1337',
-    )

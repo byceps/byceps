@@ -9,6 +9,8 @@ import pytest
 
 from byceps.database import generate_uuid7
 from byceps.events.ticketing import TicketCheckedInEvent
+from byceps.services.brand.models import Brand
+from byceps.services.party.models import Party
 from byceps.services.ticketing import ticket_domain_service
 from byceps.services.ticketing.errors import (
     TicketBelongsToDifferentPartyError,
@@ -21,15 +23,15 @@ from byceps.services.ticketing.errors import (
 from byceps.services.ticketing.models.checkin import TicketForCheckIn
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID, UserID
+from byceps.typing import PartyID
 
 from tests.helpers import generate_token
 
 
-def test_check_in_user(party_id, build_ticket, ticket_user, initiator):
-    ticket = build_ticket(party_id, used_by=ticket_user)
+def test_check_in_user(party, build_ticket, ticket_user, initiator):
+    ticket = build_ticket(party.id, used_by=ticket_user)
 
-    actual = ticket_domain_service.check_in_user(party_id, ticket, initiator)
+    actual = ticket_domain_service.check_in_user(party.id, ticket, initiator)
     assert actual.is_ok()
 
     check_in, event, log_entry = actual.unwrap()
@@ -60,74 +62,65 @@ def test_check_in_user(party_id, build_ticket, ticket_user, initiator):
 
 
 def test_check_in_user_with_ticket_for_another_party(
-    build_party_id, party_id, build_ticket, ticket_user, initiator
+    other_party, party, build_ticket, ticket_user, initiator
 ):
-    other_party_id = build_party_id()
-    ticket = build_ticket(party_id, used_by=ticket_user)
+    ticket = build_ticket(party.id, used_by=ticket_user)
 
     actual = ticket_domain_service.check_in_user(
-        other_party_id, ticket, initiator
+        other_party.id, ticket, initiator
     )
     assert isinstance(actual.unwrap_err(), TicketBelongsToDifferentPartyError)
 
 
 def test_check_in_user_with_ticket_without_assigned_user(
-    party_id, build_ticket, ticket_user, initiator
+    party, build_ticket, ticket_user, initiator
 ):
-    ticket = build_ticket(party_id, used_by=None)
+    ticket = build_ticket(party.id, used_by=None)
 
-    actual = ticket_domain_service.check_in_user(party_id, ticket, initiator)
+    actual = ticket_domain_service.check_in_user(party.id, ticket, initiator)
     assert isinstance(actual.unwrap_err(), TicketLacksUserError)
 
 
 def test_check_in_user_with_revoked_ticket(
-    party_id, build_ticket, ticket_user, initiator
+    party, build_ticket, ticket_user, initiator
 ):
-    ticket = build_ticket(party_id, used_by=ticket_user, revoked=True)
+    ticket = build_ticket(party.id, used_by=ticket_user, revoked=True)
 
-    actual = ticket_domain_service.check_in_user(party_id, ticket, initiator)
+    actual = ticket_domain_service.check_in_user(party.id, ticket, initiator)
     assert isinstance(actual.unwrap_err(), TicketIsRevokedError)
 
 
 def test_check_in_user_with_ticket_user_already_checked_in(
-    party_id, build_ticket, ticket_user, initiator
+    party, build_ticket, ticket_user, initiator
 ):
-    ticket = build_ticket(party_id, used_by=ticket_user, user_checked_in=True)
+    ticket = build_ticket(party.id, used_by=ticket_user, user_checked_in=True)
 
-    actual = ticket_domain_service.check_in_user(party_id, ticket, initiator)
+    actual = ticket_domain_service.check_in_user(party.id, ticket, initiator)
     assert isinstance(actual.unwrap_err(), UserAlreadyCheckedInError)
 
 
-def test_check_in_deleted_user(party_id, build_ticket, deleted_user, initiator):
-    ticket = build_ticket(party_id, used_by=deleted_user)
+def test_check_in_deleted_user(party, build_ticket, deleted_user, initiator):
+    ticket = build_ticket(party.id, used_by=deleted_user)
 
-    actual = ticket_domain_service.check_in_user(party_id, ticket, initiator)
+    actual = ticket_domain_service.check_in_user(party.id, ticket, initiator)
     assert isinstance(actual.unwrap_err(), UserAccountDeletedError)
 
 
 def test_check_in_suspended_user(
-    party_id, build_ticket, suspended_user, initiator
+    party, build_ticket, suspended_user, initiator
 ):
-    ticket = build_ticket(party_id, used_by=suspended_user)
+    ticket = build_ticket(party.id, used_by=suspended_user)
 
-    actual = ticket_domain_service.check_in_user(party_id, ticket, initiator)
+    actual = ticket_domain_service.check_in_user(party.id, ticket, initiator)
     assert isinstance(actual.unwrap_err(), UserAccountSuspendedError)
 
 
 # helpers
 
 
-@pytest.fixture(scope='module')
-def build_party_id():
-    def _wrapper() -> PartyID:
-        return PartyID(generate_token())
-
-    return _wrapper
-
-
-@pytest.fixture(scope='module')
-def party_id(build_party_id):
-    return build_party_id()
+@pytest.fixture(scope='session')
+def other_party(brand: Brand, make_party) -> Party:
+    return make_party()
 
 
 @pytest.fixture(scope='module')
@@ -153,35 +146,10 @@ def build_ticket():
 
 
 @pytest.fixture(scope='module')
-def build_user():
-    def _wrapper(*, suspended=False, deleted=False) -> User:
-        return User(
-            id=UserID(generate_uuid7()),
-            screen_name=None,
-            suspended=suspended,
-            deleted=deleted,
-            locale=None,
-            avatar_url=None,
-        )
-
-    return _wrapper
+def ticket_user(make_user):
+    return make_user()
 
 
 @pytest.fixture(scope='module')
-def ticket_user(build_user):
-    return build_user()
-
-
-@pytest.fixture(scope='module')
-def deleted_user(build_user):
-    return build_user(deleted=True)
-
-
-@pytest.fixture(scope='module')
-def suspended_user(build_user):
-    return build_user(suspended=True)
-
-
-@pytest.fixture(scope='module')
-def initiator(build_user):
-    return build_user()
+def initiator(make_user):
+    return make_user()

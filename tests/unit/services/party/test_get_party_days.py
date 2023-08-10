@@ -8,8 +8,6 @@ from datetime import date, datetime
 import pytest
 
 from byceps.services.party import party_service
-from byceps.services.party.models import Party
-from byceps.typing import BrandID, PartyID
 
 
 @pytest.mark.parametrize(
@@ -43,24 +41,6 @@ from byceps.typing import BrandID, PartyID
         ),
     ],
 )
-def test_get_party_days(starts_at, ends_at, expected):
-    party = create_party(starts_at, ends_at)
+def test_get_party_days(make_party, starts_at, ends_at, expected):
+    party = make_party(starts_at=starts_at, ends_at=ends_at)
     assert party_service.get_party_days(party) == expected
-
-
-# helpers
-
-
-def create_party(starts_at: datetime, ends_at: datetime) -> Party:
-    return Party(
-        PartyID('anylan-20'),
-        BrandID('anylan'),
-        'AnyLAN #20',
-        starts_at,
-        ends_at,
-        0,
-        False,
-        False,
-        False,
-        False,
-    )
