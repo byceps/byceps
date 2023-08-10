@@ -8,8 +8,6 @@ from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 
-from flask import Flask
-from flask_babel import Babel
 from moneyed import Money
 import pytest
 
@@ -38,20 +36,16 @@ from tests.helpers import generate_token, generate_uuid
 
 
 @pytest.fixture(scope='package')
-def app():
-    app = Flask('byceps')
-
+def app(make_app):
     tz = 'Europe/Berlin'
 
-    app.config.update(
-        {
+    app = make_app(
+        additional_config={
             'LOCALE': 'de',
             'TIMEZONE': tz,
             'BABEL_DEFAULT_TIMEZONE': tz,
         }
     )
-
-    Babel(app)
 
     with app.app_context():
         yield app

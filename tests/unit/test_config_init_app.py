@@ -47,5 +47,5 @@ def test_init_app_error(app: Flask, value: str):
 
 
 @pytest.fixture(scope='module')
-def app() -> Flask:
-    return Flask(__name__)
+def app(make_app) -> Flask:
+    return make_app()

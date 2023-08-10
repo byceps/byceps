@@ -18,11 +18,8 @@ from byceps.blueprints.api.decorators import _extract_token_from_request
         ('Bearer 5TPHXNPKE', '5TPHXNPKE'),
     ],
 )
-def test_extract_token_from_request(app, header_value: str, expected: str):
+def test_extract_token_from_request(
+    app: Flask, header_value: str, expected: str
+):
     with app.test_request_context(headers=[('Authorization', header_value)]):
         assert _extract_token_from_request() == expected
-
-
-@pytest.fixture(scope='module')
-def app() -> Flask:
-    return Flask('byceps')

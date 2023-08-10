@@ -6,7 +6,10 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Any
 
+from flask import Flask
+from flask_babel import Babel
 import pytest
 
 from byceps.services.brand.models import Brand
@@ -16,6 +19,29 @@ from byceps.services.user.models.user import User
 from byceps.typing import BrandID, PartyID, UserID
 
 from tests.helpers import generate_token, generate_uuid
+
+
+@pytest.fixture(scope='session')
+def make_app():
+    def _wrapper(
+        *,
+        additional_config: dict[str, Any] | None = None,
+    ) -> Flask:
+        app = Flask('byceps')
+
+        if additional_config is not None:
+            app.config.update(additional_config)
+
+        Babel(app)
+
+        return app
+
+    return _wrapper
+
+
+@pytest.fixture(scope='session')
+def app(make_app):
+    return make_app()
 
 
 @pytest.fixture(scope='session')

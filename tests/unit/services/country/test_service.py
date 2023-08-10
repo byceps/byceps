@@ -13,8 +13,8 @@ from byceps.services.country.country_service import Country
 
 
 @pytest.fixture(scope='module')
-def app():
-    app = Flask('byceps')
+def app(make_app):
+    app = make_app()
     with app.app_context():
         yield app
 

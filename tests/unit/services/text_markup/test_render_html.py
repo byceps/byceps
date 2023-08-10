@@ -4,17 +4,14 @@
 """
 
 from flask import Flask
-from flask_babel import Babel
 import pytest
 
 from byceps.services.text_markup.text_markup_service import render_html
 
 
 @pytest.fixture(scope='module')
-def app():
-    app = Flask('byceps')
-    app.config['BABEL_DEFAULT_LOCALE'] = 'de'
-    Babel(app)
+def app(make_app):
+    app = make_app(additional_config={'BABEL_DEFAULT_LOCALE': 'de'})
 
     with app.app_context():
         yield app
