@@ -78,6 +78,7 @@ def _get_blueprints_site() -> Iterator[BlueprintReg]:
         ('site.core',                       '/'                             ),
         ('site.dashboard',                  '/dashboard'                    ),
         ('site.guest_server',               '/guest_servers'                ),
+        ('site.homepage',                   '/home'                         ),
         ('site.news',                       '/news'                         ),
         ('site.newsletter',                 '/newsletter'                   ),
         ('site.orga_team',                  '/orgas'                        ),
