@@ -86,9 +86,22 @@ def view(slug):
 
     external_item_url = _get_external_url(item)
 
+    if item.published_at:
+        older_headline = news_item_service.find_latest_headline_before(
+            channel_ids, item.published_at
+        )
+        newer_headline = news_item_service.find_oldest_headline_after(
+            channel_ids, item.published_at
+        )
+    else:
+        older_headline = None
+        newer_headline = None
+
     return {
         'item': item,
         'external_item_url': external_item_url,
+        'older_headline': older_headline,
+        'newer_headline': newer_headline,
     }
 
 

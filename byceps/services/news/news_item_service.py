@@ -408,6 +408,54 @@ def get_recent_headlines(
     return [_db_entity_to_headline(db_item) for db_item in db_items]
 
 
+def find_latest_headline_before(
+    channel_ids: frozenset[NewsChannelID] | set[NewsChannelID],
+    published_at: datetime,
+) -> NewsHeadline | None:
+    """Return the latest published headline before the given publication date."""
+    db_item = db.session.execute(
+        select(DbNewsItem)
+        .filter(DbNewsItem.channel_id.in_(channel_ids))
+        .options(
+            db.joinedload(DbNewsItem.current_version_association).joinedload(
+                DbCurrentNewsItemVersionAssociation.version
+            )
+        )
+        .filter(DbNewsItem.published_at < published_at)
+        .order_by(DbNewsItem.published_at.desc())
+        .limit(1)
+    ).scalar_one_or_none()
+
+    if db_item is None:
+        return None
+
+    return _db_entity_to_headline(db_item)
+
+
+def find_oldest_headline_after(
+    channel_ids: frozenset[NewsChannelID] | set[NewsChannelID],
+    published_at: datetime,
+) -> NewsHeadline | None:
+    """Return the oldest published headline after the given publication date."""
+    db_item = db.session.execute(
+        select(DbNewsItem)
+        .filter(DbNewsItem.channel_id.in_(channel_ids))
+        .options(
+            db.joinedload(DbNewsItem.current_version_association).joinedload(
+                DbCurrentNewsItemVersionAssociation.version
+            )
+        )
+        .filter(DbNewsItem.published_at > published_at)
+        .order_by(DbNewsItem.published_at.asc())
+        .limit(1)
+    ).scalar_one_or_none()
+
+    if db_item is None:
+        return None
+
+    return _db_entity_to_headline(db_item)
+
+
 def get_item_versions(item_id: NewsItemID) -> Sequence[DbNewsItemVersion]:
     """Return all item versions, sorted from most recent to oldest."""
     return db.session.scalars(

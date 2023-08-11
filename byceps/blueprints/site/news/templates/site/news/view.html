@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/subnav.html' import render_subnav_for_menu_id %}
 {% set current_page = 'news' %}
 {% set page_title = [item.title, _('News')] %}
@@ -18,5 +19,39 @@
   </nav>
 
 {% include 'site/news/_item.html' %}
+
+  {%- if older_headline or newer_headline %}
+  <div class="row row--space-between" style="margin-top: 4rem;">
+
+    {%- if newer_headline %}
+    <a href="{{ url_for('.view', slug=newer_headline.slug) }}" class="row disguised">
+      <div>
+        {{ render_icon('arrow-left') }}
+      </div>
+      <div>
+        <div>{{ newer_headline.title }}</div>
+        <div class="dimmed" style="font-size: 0.6875rem;">{{ newer_headline.published_at|dateformat('medium') }}</div>
+      </div>
+    </a>
+    {%- else %}
+    <div></div>
+    {%- endif %}
+
+    {%- if older_headline %}
+    <a href="{{ url_for('.view', slug=older_headline.slug) }}" class="row disguised">
+      <div>
+        <div>{{ older_headline.title }}</div>
+        <div class="dimmed" style="font-size: 0.6875rem;">{{ older_headline.published_at|dateformat('medium') }}</div>
+      </div>
+      <div>
+        {{ render_icon('arrow-right') }}
+      </div>
+    </a>
+    {%- else %}
+    <div></div>
+    {%- endif %}
+
+  </div>
+  {%- endif %}
 
 {%- endblock %}
