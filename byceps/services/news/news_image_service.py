@@ -20,8 +20,7 @@ from byceps.util import upload
 from byceps.util.image.models import Dimensions, ImageType
 from byceps.util.result import Err, Ok, Result
 
-from .dbmodels.image import DbNewsImage
-from .dbmodels.item import DbNewsItem
+from .dbmodels.item import DbNewsImage, DbNewsItem
 from .models import NewsChannelID, NewsImage, NewsImageID, NewsItem, NewsItemID
 
 
