@@ -16,7 +16,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
 import structlog
 
-from byceps.database import db, paginate, Pagination
+from byceps.database import db, paginate, Pagination, execute_upsert
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
@@ -29,6 +29,7 @@ from . import news_channel_service, news_html_service, news_image_service
 from .dbmodels.channel import DbNewsChannel
 from .dbmodels.item import (
     DbCurrentNewsItemVersionAssociation,
+    DbFeaturedNewsImage,
     DbNewsItem,
     DbNewsItemVersion,
 )
@@ -143,6 +144,19 @@ def set_featured_image(item_id: NewsItemID, image_id: NewsImageID) -> None:
     db_item = _get_db_item(item_id)
 
     db_item.featured_image_id = image_id
+
+    if image_id is not None:
+        table = DbFeaturedNewsImage.__table__
+        identifier = {'item_id': db_item.id, 'image_id': image_id}
+        replacement = {'image_id': image_id}
+        execute_upsert(table, identifier, replacement)
+    else:
+        db.session.execute(
+            delete(DbFeaturedNewsImage).where(
+                DbFeaturedNewsImage.item_id == item_id
+            )
+        )
+
     db.session.commit()
 
 

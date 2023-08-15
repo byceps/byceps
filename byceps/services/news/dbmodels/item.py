@@ -212,3 +212,16 @@ class DbNewsImage(db.Model):
             .add_with_lookup('number')
             .build()
         )
+
+
+class DbFeaturedNewsImage(db.Model):
+    __tablename__ = 'news_featured_images'
+
+    item_id = db.Column(
+        db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
+    )
+    image_id = db.Column(db.Uuid, db.ForeignKey('news_images.id'), unique=True)
+
+    def __init__(self, item_id: NewsItemID, image_id: NewsImageID) -> None:
+        self.item_id = item_id
+        self.image_id = image_id
