@@ -531,6 +531,12 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
         for image in db_item.images
     ]
 
+    featured_image_id = db_item.featured_image_id
+    if featured_image_id:
+        featured_image = _find_featured_image(images, featured_image_id)
+    else:
+        featured_image = None
+
     return NewsItem(
         id=db_item.id,
         channel=channel,
@@ -542,7 +548,7 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
         body_format=db_item.current_version.body_format,
         image_url_path=image_url_path,
         images=images,
-        featured_image_id=db_item.featured_image_id,
+        featured_image=featured_image,
     )
 
 
@@ -570,11 +576,10 @@ def render_html(item: NewsItem) -> RenderedNewsItem:
 
 
 def _render_featured_image_html(item: NewsItem) -> Result[str | None, str]:
-    featured_image = _find_featured_image(item)
-    if not featured_image:
+    if not item.featured_image:
         return Ok(None)
 
-    result = news_html_service.render_featured_image_html(featured_image)
+    result = news_html_service.render_featured_image_html(item.featured_image)
 
     if result.is_err():
         # Log, but do not return error.
@@ -601,11 +606,10 @@ def _render_body_html(item: NewsItem) -> Result[str, str]:
     return result
 
 
-def _find_featured_image(item: NewsItem) -> NewsImage | None:
-    if not item.featured_image_id:
-        return None
-
-    return find(item.images, lambda image: image.id == item.featured_image_id)
+def _find_featured_image(
+    images: list[NewsImage], featured_image_id: NewsImageID
+) -> NewsImage | None:
+    return find(images, lambda image: image.id == featured_image_id)
 
 
 def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:

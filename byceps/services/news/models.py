@@ -70,7 +70,7 @@ class NewsItem:
     body_format: BodyFormat
     image_url_path: str | None
     images: list[NewsImage]
-    featured_image_id: NewsImageID | None
+    featured_image: NewsImage | None
 
 
 @dataclass(frozen=True)

@@ -117,7 +117,7 @@
         <div class="dropdown">
           <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            {%- if item.featured_image_id is not none %}
+            {%- if item.featured_image is not none %}
             <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}">{{ _('Unset featured image') }}</a></li>
             {%- else %}
             <li><span class="dropdown-label dimmed">{{ _('Unset featured image') }}</span></li>
@@ -136,7 +136,7 @@
     <div>
       <div class="box">
         <details class="newspost-images">
-          <summary>#{{ image.number }}{% if image.id == item.featured_image_id %} {{ render_tag('featured') }}{% endif %}</summary>
+          <summary>#{{ image.number }}{% if (item.featured_image is not none) and (image.id == item.featured_image.id) %} {{ render_tag('featured') }}{% endif %}</summary>
           <div class="row row--space-between mb" style="margin-top: 0;">
             <div>
 
@@ -164,7 +164,7 @@
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
                   <ol class="dropdown-menu dropdown-menu--right">
-                    {%- if image.id == item.featured_image_id %}
+                    {%- if (item.featured_image is not none) and (image.id == item.featured_image.id) %}
                     <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}">{{ _('Unset image as featured') }}</a></li>
                     {%- else %}
                     <li><a class="dropdown-item" data-action="image-set-featured" href="{{ url_for('.image_set_featured', image_id=image.id) }}">{{ _('Set image as featured') }}</a></li>
