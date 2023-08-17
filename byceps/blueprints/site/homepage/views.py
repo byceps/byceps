@@ -41,24 +41,33 @@ def index():
     }
 
 
-def _get_news_teasers() -> list[NewsTeaser]:
+def _get_news_teasers() -> list[NewsTeaser] | None:
+    """Return the most recent news teasers.
+
+    Returns `None` if no news channels are configured for this site.
+    """
     channel_ids = g.site.news_channel_ids
     if not channel_ids:
-        return []
+        return None
 
     return news_item_service.get_recent_teasers(channel_ids, limit=3)
 
 
-def _get_board_topics(current_user: CurrentUser) -> Sequence[DbTopic]:
+def _get_board_topics(current_user: CurrentUser) -> Sequence[DbTopic] | None:
+    """Return the most recently active board topics.
+
+    Returns `None` if no board is configured for this site or the
+    current user does not have access to the configured board.
+    """
     board_id = g.site.board_id
     if board_id is None:
-        return []
+        return None
 
     has_access = board_access_control_service.has_user_access_to_board(
         current_user.id, board_id
     )
     if not has_access:
-        return []
+        return None
 
     include_hidden = board_helper_service.may_current_user_view_hidden()
     topics = board_topic_query_service.get_recent_topics(

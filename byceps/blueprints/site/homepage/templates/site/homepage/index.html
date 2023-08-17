@@ -54,12 +54,16 @@
 
 {{ render_snippet('homepage', ignore_if_unknown=True)|safe }}
 
+{%- if news_teasers is not none %}
   <div class="homepage-block homepage-block--news">
 {% include 'site/homepage/_news.html' %}
   </div>
+{%- endif %}
 
+{%- if board_topics is not none %}
   <div class="homepage-block homepage-block--board">
 {% include 'site/homepage/_board.html' %}
   </div>
+{%- endif %}
 
 {%- endblock %}
