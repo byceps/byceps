@@ -59,7 +59,7 @@ class DbNewsItem(db.Model):
     current_version = association_proxy(
         'current_version_association', 'version'
     )
-    featured_image_id = db.Column(db.Uuid, nullable=True)
+    featured_image = association_proxy('featured_image_association', 'image')
 
     def __init__(self, channel_id: NewsChannelID, slug: str) -> None:
         self.channel_id = channel_id
@@ -220,7 +220,12 @@ class DbFeaturedNewsImage(db.Model):
     item_id = db.Column(
         db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
     )
+    item = db.relationship(
+        DbNewsItem,
+        backref=db.backref('featured_image_association', uselist=False),
+    )
     image_id = db.Column(db.Uuid, db.ForeignKey('news_images.id'), unique=True)
+    image = db.relationship(DbNewsImage)
 
     def __init__(self, item_id: NewsItemID, image_id: NewsImageID) -> None:
         self.item_id = item_id

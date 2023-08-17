@@ -22,7 +22,6 @@ from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.util.iterables import find
 from byceps.util.result import Err, Ok, Result
 
 from . import news_channel_service, news_html_service, news_image_service
@@ -38,7 +37,6 @@ from .models import (
     BodyFormat,
     NewsChannelID,
     NewsHeadline,
-    NewsImage,
     NewsImageID,
     NewsItem,
     NewsItemID,
@@ -142,8 +140,6 @@ def _create_version(
 def set_featured_image(item_id: NewsItemID, image_id: NewsImageID) -> None:
     """Set an image as featured image."""
     db_item = _get_db_item(item_id)
-
-    db_item.featured_image_id = image_id
 
     if image_id is not None:
         table = DbFeaturedNewsImage.__table__
@@ -250,6 +246,9 @@ def _find_db_item(item_id: NewsItemID) -> DbNewsItem | None:
             .filter(DbNewsItem.id == item_id)
             .options(
                 db.joinedload(DbNewsItem.channel),
+                db.joinedload(DbNewsItem.featured_image_association).joinedload(
+                    DbFeaturedNewsImage.image
+                ),
                 db.joinedload(DbNewsItem.images),
             )
         )
@@ -282,6 +281,9 @@ def find_rendered_item_by_slug(
             db.joinedload(DbNewsItem.channel),
             db.joinedload(DbNewsItem.current_version_association).joinedload(
                 DbCurrentNewsItemVersionAssociation.version
+            ),
+            db.joinedload(DbNewsItem.featured_image_association).joinedload(
+                DbFeaturedNewsImage.image
             ),
             db.joinedload(DbNewsItem.images),
         )
@@ -363,6 +365,9 @@ def _get_items_stmt(channel_ids: set[NewsChannelID]) -> Select:
             db.joinedload(DbNewsItem.channel),
             db.joinedload(DbNewsItem.current_version_association).joinedload(
                 DbCurrentNewsItemVersionAssociation.version
+            ),
+            db.joinedload(DbNewsItem.featured_image_association).joinedload(
+                DbFeaturedNewsImage.image
             ),
             db.joinedload(DbNewsItem.images),
         )
@@ -527,13 +532,15 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
 
     image_url_path = _assemble_image_url_path(db_item)
     images = [
-        news_image_service._db_entity_to_image(image, channel.id)
-        for image in db_item.images
+        news_image_service._db_entity_to_image(db_image, channel.id)
+        for db_image in db_item.images
     ]
 
-    featured_image_id = db_item.featured_image_id
-    if featured_image_id:
-        featured_image = _find_featured_image(images, featured_image_id)
+    db_featured_image = db_item.featured_image
+    if db_featured_image:
+        featured_image = news_image_service._db_entity_to_image(
+            db_featured_image, channel.id
+        )
     else:
         featured_image = None
 
@@ -604,12 +611,6 @@ def _render_body_html(item: NewsItem) -> Result[str, str]:
         )
 
     return result
-
-
-def _find_featured_image(
-    images: list[NewsImage], featured_image_id: NewsImageID
-) -> NewsImage | None:
-    return find(images, lambda image: image.id == featured_image_id)
 
 
 def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:
