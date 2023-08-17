@@ -20,7 +20,7 @@ from byceps.services.board import (
 )
 from byceps.services.board.dbmodels.topic import DbTopic
 from byceps.services.news import news_item_service
-from byceps.services.news.models import NewsHeadline
+from byceps.services.news.models import NewsTeaser
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 
@@ -32,21 +32,21 @@ blueprint = create_blueprint('homepage', __name__)
 @templated
 def index():
     """Show homepage."""
-    news_headlines = _get_news_headlines()
+    news_teasers = _get_news_teasers()
     board_topics = _get_board_topics(g.user)
 
     return {
-        'news_headlines': news_headlines,
+        'news_teasers': news_teasers,
         'board_topics': board_topics,
     }
 
 
-def _get_news_headlines() -> list[NewsHeadline]:
+def _get_news_teasers() -> list[NewsTeaser]:
     channel_ids = g.site.news_channel_ids
     if not channel_ids:
         return []
 
-    return news_item_service.get_recent_headlines(channel_ids, limit=3)
+    return news_item_service.get_recent_teasers(channel_ids, limit=3)
 
 
 def _get_board_topics(current_user: CurrentUser) -> Sequence[DbTopic]:

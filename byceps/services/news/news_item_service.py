@@ -41,6 +41,7 @@ from .models import (
     NewsItem,
     NewsItemID,
     NewsItemVersionID,
+    NewsTeaser,
     RenderedNewsItem,
 )
 
@@ -432,6 +433,33 @@ def get_recent_headlines(
     return [_db_entity_to_headline(db_item) for db_item in db_items]
 
 
+def get_recent_teasers(
+    channel_ids: frozenset[NewsChannelID] | set[NewsChannelID], limit: int
+) -> list[NewsTeaser]:
+    """Return the most recent teasers."""
+    db_items = (
+        db.session.scalars(
+            select(DbNewsItem)
+            .filter(DbNewsItem.channel_id.in_(channel_ids))
+            .options(
+                db.joinedload(
+                    DbNewsItem.current_version_association
+                ).joinedload(DbCurrentNewsItemVersionAssociation.version),
+                db.joinedload(DbNewsItem.featured_image_association).joinedload(
+                    DbFeaturedNewsImage.image
+                ),
+            )
+            .filter(DbNewsItem.published_at <= datetime.utcnow())
+            .order_by(DbNewsItem.published_at.desc())
+            .limit(limit)
+        )
+        .unique()
+        .all()
+    )
+
+    return [_db_entity_to_teaser(db_item) for db_item in db_items]
+
+
 def find_latest_headline_before(
     channel_ids: frozenset[NewsChannelID] | set[NewsChannelID],
     published_at: datetime,
@@ -624,4 +652,16 @@ def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:
         published_at=db_item.published_at,
         published=db_item.published_at is not None,
         title=db_item.current_version.title,
+    )
+
+
+def _db_entity_to_teaser(db_item: DbNewsItem) -> NewsHeadline:
+    return NewsTeaser(
+        slug=db_item.slug,
+        published_at=db_item.published_at,
+        published=db_item.published_at is not None,
+        title=db_item.current_version.title,
+        featured_image=news_image_service._db_entity_to_image(
+            db_item.featured_image, db_item.channel_id
+        ),
     )

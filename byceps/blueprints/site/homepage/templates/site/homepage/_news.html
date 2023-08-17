@@ -3,12 +3,17 @@
 <h2>{{ _('News') }}</h2>
 
 <div class="main-body-box">
-{%- if news_headlines %}
+{%- if news_teasers %}
   <ol class="items">
-    {%- for headline in news_headlines %}
+    {%- for teaser in news_teasers %}
     <li>
-      <a class="disguised" href="{{ url_for('news.view', slug=headline.slug) }}">{{ headline.title }}</a>
-      <div class="item-meta">{{ headline.published_at|dateformat('full') }}</div>
+      {%- if teaser.featured_image %}
+        {%- with featured_image = teaser.featured_image %}
+      <img src="{{ featured_image.url_path }}"{% if featured_image.alt_text %} alt="{{ featured_image.alt_text }}"{% endif %}>
+        {%- endwith %}
+      {%- endif %}
+      <a class="disguised" href="{{ url_for('news.view', slug=teaser.slug) }}">{{ teaser.title }}</a>
+      <div class="item-meta">{{ teaser.published_at|dateformat('full') }}</div>
     </li>
     {%- endfor %}
   </ol>

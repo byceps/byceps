@@ -94,6 +94,11 @@ class NewsHeadline:
 
 
 @dataclass(frozen=True)
+class NewsTeaser(NewsHeadline):
+    featured_image: NewsImage | None
+
+
+@dataclass(frozen=True)
 class AdminListNewsItem:
     id: NewsItemID
     created_at: datetime
