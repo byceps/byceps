@@ -141,18 +141,23 @@ def set_featured_image(item_id: NewsItemID, image_id: NewsImageID) -> None:
     """Set an image as featured image."""
     db_item = _get_db_item(item_id)
 
-    if image_id is not None:
-        table = DbFeaturedNewsImage.__table__
-        identifier = {'item_id': db_item.id, 'image_id': image_id}
-        replacement = {'image_id': image_id}
-        execute_upsert(table, identifier, replacement)
-    else:
-        db.session.execute(
-            delete(DbFeaturedNewsImage).where(
-                DbFeaturedNewsImage.item_id == item_id
-            )
-        )
+    table = DbFeaturedNewsImage.__table__
+    identifier = {'item_id': db_item.id, 'image_id': image_id}
+    replacement = {'image_id': image_id}
+    execute_upsert(table, identifier, replacement)
 
+    db.session.commit()
+
+
+def unset_featured_image(item_id: NewsItemID) -> None:
+    """Unset a featured image."""
+    db_item = _get_db_item(item_id)
+
+    db.session.execute(
+        delete(DbFeaturedNewsImage).where(
+            DbFeaturedNewsImage.item_id == db_item.id
+        )
+    )
     db.session.commit()
 
 

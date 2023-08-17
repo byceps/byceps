@@ -380,7 +380,7 @@ def image_unset_featured(item_id):
     """Unset the item's featured image."""
     item = _get_item_or_404(item_id)
 
-    news_item_service.set_featured_image(item.id, image_id=None)
+    news_item_service.unset_featured_image(item.id)
 
     flash_success(gettext('Featured image has been unset.'))
 
