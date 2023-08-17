@@ -9,7 +9,7 @@
     <li>
       {%- if teaser.featured_image %}
         {%- with featured_image = teaser.featured_image %}
-      <img src="{{ featured_image.url_path }}"{% if featured_image.alt_text %} alt="{{ featured_image.alt_text }}"{% endif %}>
+      <img class="item-image" src="{{ featured_image.url_path }}"{% if featured_image.alt_text %} alt="{{ featured_image.alt_text }}"{% endif %}>
         {%- endwith %}
       {%- endif %}
       <a class="disguised" href="{{ url_for('news.view', slug=teaser.slug) }}">{{ teaser.title }}</a>
