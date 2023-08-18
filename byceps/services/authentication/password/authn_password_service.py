@@ -8,41 +8,31 @@ byceps.services.authentication.password.authn_password_service
 
 from __future__ import annotations
 
-from datetime import datetime
-
 from sqlalchemy import delete
-from werkzeug.security import (
-    check_password_hash as _check_password_hash,
-    generate_password_hash as _generate_password_hash,
-)
 
 from byceps.database import db
 from byceps.events.auth import PasswordUpdatedEvent
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.user import user_log_service
+from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
+from . import authn_password_domain_service
 from .dbmodels import DbCredential
-
-
-# https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2
-PASSWORD_HASH_ITERATIONS = 600000
-PASSWORD_HASH_METHOD = 'pbkdf2:sha256:%d' % PASSWORD_HASH_ITERATIONS
-
-
-def generate_password_hash(password: str) -> str:
-    """Generate a salted hash value based on the password."""
-    return _generate_password_hash(password, method=PASSWORD_HASH_METHOD)
+from .models import Credential
 
 
 def create_password_hash(user_id: UserID, password: str) -> None:
     """Create a password-based credential and a session token for the user."""
-    password_hash = generate_password_hash(password)
-    now = datetime.utcnow()
+    credential = authn_password_domain_service.create_password_hash(
+        user_id, password
+    )
 
-    credential = DbCredential(user_id, password_hash, now)
-    db.session.add(credential)
+    db_credential = DbCredential(
+        credential.user_id, credential.password_hash, credential.updated_at
+    )
+    db.session.add(db_credential)
     db.session.commit()
 
 
@@ -52,77 +42,66 @@ def update_password_hash(
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """
-    credential = _get_credential_for_user(user.id)
-
-    credential.password_hash = generate_password_hash(password)
-    credential.updated_at = datetime.utcnow()
-
-    occurred_at = datetime.utcnow()
-
-    event = PasswordUpdatedEvent(
-        occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+    (
+        credential,
+        event,
+        log_entry,
+    ) = authn_password_domain_service.update_password_hash(
+        user, password, initiator
     )
 
-    log_entry = user_log_service.build_entry(
-        'password-updated',
-        user.id,
-        {
-            'initiator_id': str(initiator.id),
-        },
-        occurred_at=occurred_at,
-    )
-    db.session.add(log_entry)
-
-    db.session.commit()
+    _persist_password_hash_update(credential, log_entry)
 
     authn_session_service.delete_session_tokens_for_user(user.id)
 
     return event
 
 
+def _persist_password_hash_update(
+    credential: Credential, log_entry: UserLogEntry
+) -> None:
+    db_credential = _get_credential_for_user(credential.user_id)
+
+    db_credential.password_hash = credential.password_hash
+    db_credential.updated_at = credential.updated_at
+
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+
 def is_password_valid_for_user(user_id: UserID, password: str) -> bool:
     """Return `True` if the password is valid for the user, or `False`
     otherwise.
     """
-    credential = _find_credential_for_user(user_id)
+    db_credential = _find_credential_for_user(user_id)
 
-    if credential is None:
+    if db_credential is None:
         # no password stored for user
         return False
 
-    return check_password_hash(credential.password_hash, password)
-
-
-def check_password_hash(password_hash: str, password: str) -> bool:
-    """Hash the password and return `True` if the result matches the
-    given hash, `False` otherwise.
-    """
-    return (password_hash is not None) and _check_password_hash(
-        password_hash, password
+    return authn_password_domain_service.check_password_hash(
+        db_credential.password_hash, password
     )
 
 
 def migrate_password_hash_if_outdated(user_id: UserID, password: str) -> None:
     """Recreate the password hash with the current algorithm and parameters."""
-    credential = _get_credential_for_user(user_id)
+    db_credential = _get_credential_for_user(user_id)
 
-    if is_password_hash_current(credential.password_hash):
+    if authn_password_domain_service.is_password_hash_current(
+        db_credential.password_hash
+    ):
         return
 
-    credential.password_hash = generate_password_hash(password)
-    credential.updated_at = datetime.utcnow()
+    credential = authn_password_domain_service.create_password_hash(
+        user_id, password
+    )
+
+    db_credential.password_hash = credential.password_hash
+    db_credential.updated_at = credential.updated_at
     db.session.commit()
-
-
-def is_password_hash_current(password_hash: str) -> bool:
-    """Return `True` if the password hash was created with the currently
-    configured method (algorithm and parameters).
-    """
-    return password_hash.startswith(PASSWORD_HASH_METHOD + '$')
 
 
 def _find_credential_for_user(user_id: UserID) -> DbCredential | None:
@@ -132,12 +111,12 @@ def _find_credential_for_user(user_id: UserID) -> DbCredential | None:
 
 def _get_credential_for_user(user_id: UserID) -> DbCredential:
     """Return the credential for the user, or raise exception if not found."""
-    credential = _find_credential_for_user(user_id)
+    db_credential = _find_credential_for_user(user_id)
 
-    if credential is None:
+    if db_credential is None:
         raise Exception(f'No credential found for user ID "{user_id}"')
 
-    return credential
+    return db_credential
 
 
 def delete_password_hash(user_id: UserID) -> None:
