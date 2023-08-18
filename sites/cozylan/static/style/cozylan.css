@@ -215,6 +215,21 @@ body {
 }
 
 
+/* homepage */
+
+.homepage-block h2 {
+  border-bottom: var(--border-color) solid 1px;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+}
+
+.homepage-block .continuative-link {
+  border-top: var(--border-color) solid 1px;
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+}
+
+
 /* board */
 
 .board-index-item-link {
