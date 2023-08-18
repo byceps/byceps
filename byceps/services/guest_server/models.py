@@ -43,6 +43,7 @@ class Server:
     created_at: datetime
     creator_id: UserID
     owner_id: UserID
+    description: str | None
     notes_owner: str | None
     notes_admin: str | None
     approved: bool

@@ -104,10 +104,16 @@ def create():
         return create_form(form)
 
     hostname = form.hostname.data.strip().lower()
+    description = form.description.data.strip()
     notes = form.notes.data.strip()
 
     server, event = guest_server_service.create_server(
-        party, g.user, g.user, notes_owner=notes, hostname=hostname
+        party,
+        g.user,
+        g.user,
+        description=description,
+        notes_owner=notes,
+        hostname=hostname,
     )
 
     flash_success(gettext('The server has been registered.'))

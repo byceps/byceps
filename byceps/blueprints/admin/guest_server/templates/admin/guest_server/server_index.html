@@ -36,11 +36,14 @@
       </div>
       <div style="flex-basis: 33%;">
 
-        <div class="data-label">{{ _('Status') }}</div>
-        <div class="data-value">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</div>
+        <div class="data-label">{{ _('Description') }}</div>
+        <div class="data-value">{{ server.description|fallback }}</div>
 
       </div>
       <div style="flex-basis: 33%;">
+
+        <div class="data-label">{{ _('Status') }}</div>
+        <div class="data-value">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</div>
 
       </div>
     </div>

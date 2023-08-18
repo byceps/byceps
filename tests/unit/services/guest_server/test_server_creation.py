@@ -15,6 +15,7 @@ def test_create_server(party, admin_user, user):
         party,
         admin_user,
         owner,
+        description='2U, spray-painted in pink',
         notes_owner='I need two ports.',
         notes_admin='Request denied.',
         ip_address=IPv4Address('10.0.100.104'),
@@ -28,6 +29,7 @@ def test_create_server(party, admin_user, user):
     assert server.created_at is not None
     assert server.creator_id == admin_user.id
     assert server.owner_id == owner.id
+    assert server.description == '2U, spray-painted in pink'
     assert server.notes_owner == 'I need two ports.'
     assert server.notes_admin == 'Request denied.'
     assert not server.approved

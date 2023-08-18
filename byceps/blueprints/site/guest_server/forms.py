@@ -23,6 +23,9 @@ class CreateForm(LocalizedForm):
         lazy_gettext('Hostname'),
         validators=[Optional(), Length(max=20), Regexp(HOSTNAME_REGEX)],
     )
+    description = StringField(
+        lazy_gettext('Description'), validators=[Optional(), Length(max=100)]
+    )
     notes = TextAreaField(
         lazy_gettext('Notes'), validators=[Optional(), Length(max=1000)]
     )

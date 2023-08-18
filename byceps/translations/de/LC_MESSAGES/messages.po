@@ -2247,6 +2247,11 @@ msgstr "Es sind keine Adressen registriert."
 msgid "Register guest server"
 msgstr "Gastserver anmelden"
 
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:19
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:18
+msgid "Vendor, model number, what does it look like?"
+msgstr "Hersteller, Modellnummer, wie sieht er aus?"
+
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:20
 #: byceps/blueprints/admin/language/templates/admin/language/create_form.html:20
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:31

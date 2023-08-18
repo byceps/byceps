@@ -104,6 +104,7 @@ class DbServer(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     owner_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
+    description = db.Column(db.UnicodeText, nullable=True)
     notes_owner = db.Column(db.UnicodeText, nullable=True)
     notes_admin = db.Column(db.UnicodeText, nullable=True)
     approved = db.Column(db.Boolean, default=False, nullable=False)
@@ -116,6 +117,7 @@ class DbServer(db.Model):
         creator_id: UserID,
         owner_id: UserID,
         *,
+        description: str | None = None,
         notes_owner: str | None = None,
         notes_admin: str | None = None,
         approved: bool = False,
@@ -125,6 +127,7 @@ class DbServer(db.Model):
         self.created_at = created_at
         self.creator_id = creator_id
         self.owner_id = owner_id
+        self.description = description
         self.notes_owner = notes_owner
         self.notes_admin = notes_admin
         self.approved = approved

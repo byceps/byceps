@@ -121,6 +121,7 @@ def server_create(party_id):
 
     creator = g.user
     owner = form.owner.data
+    description = form.description.data.strip()
     notes_admin = form.notes_admin.data.strip()
     approved = form.approved.data
     ip_address = _to_ip_address(form.ip_address.data.strip())
@@ -132,6 +133,7 @@ def server_create(party_id):
         party,
         creator,
         owner,
+        description=description,
         notes_admin=notes_admin,
         approved=approved,
         ip_address=ip_address,
