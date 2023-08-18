@@ -47,7 +47,7 @@ def get_topic(topic_id: TopicID) -> DbTopic:
 
 
 def find_topic_visible_for_user(
-    topic_id: TopicID, include_hidden: bool
+    topic_id: TopicID, *, include_hidden: bool = False
 ) -> DbTopic | None:
     """Return the topic with that id, or `None` if not found or
     invisible for the user.
@@ -67,12 +67,12 @@ def find_topic_visible_for_user(
 
 
 def get_recent_topics(
-    board_id: BoardID, include_hidden: bool, limit: int
+    board_id: BoardID, limit: int, *, include_hidden: bool = False
 ) -> Sequence[DbTopic]:
     """Return recent topics in that board."""
     return (
         db.session.scalars(
-            _select_topics(include_hidden)
+            _select_topics(include_hidden=include_hidden)
             .join(DbBoardCategory)
             .filter(DbBoardCategory.board_id == board_id)
             .filter(DbBoardCategory.hidden == False)  # noqa: E712
@@ -85,11 +85,11 @@ def get_recent_topics(
 
 
 def paginate_topics(
-    board_id: BoardID, include_hidden: bool, page: int, per_page: int
+    board_id: BoardID, page: int, per_page: int, *, include_hidden: bool = False
 ) -> Pagination:
     """Paginate topics in that board."""
     stmt = (
-        _select_topics(include_hidden)
+        _select_topics(include_hidden=include_hidden)
         .join(DbBoardCategory)
         .filter(DbBoardCategory.board_id == board_id)
         .filter(DbBoardCategory.hidden == False)  # noqa: E712
@@ -110,16 +110,17 @@ def get_all_topic_ids_in_category(category_id: BoardCategoryID) -> set[TopicID]:
 
 def paginate_topics_of_category(
     category_id: BoardCategoryID,
-    include_hidden: bool,
     page: int,
     per_page: int,
+    *,
+    include_hidden: bool = False,
 ) -> Pagination:
     """Paginate topics in that category, as visible for the user.
 
     Pinned topics are returned first.
     """
     stmt = (
-        _select_topics(include_hidden)
+        _select_topics(include_hidden=include_hidden)
         .filter_by(category_id=category_id)
         .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc())
     )
@@ -127,7 +128,7 @@ def paginate_topics_of_category(
     return paginate(stmt, page, per_page)
 
 
-def _select_topics(include_hidden: bool) -> Select:
+def _select_topics(*, include_hidden: bool = False) -> Select:
     stmt = select(DbTopic).options(
         db.joinedload(DbTopic.category),
         db.joinedload(DbTopic.last_updated_by),
@@ -143,7 +144,7 @@ def _select_topics(include_hidden: bool) -> Select:
 
 
 def find_default_posting_to_jump_to(
-    topic_id: TopicID, include_hidden: bool, last_viewed_at: datetime
+    topic_id: TopicID, last_viewed_at: datetime, *, include_hidden: bool = False
 ) -> DbPosting | None:
     """Return the posting of the topic to show by default, or `None`."""
     postings_stmt = select(DbPosting).filter_by(topic_id=topic_id)

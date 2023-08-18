@@ -71,7 +71,7 @@ def _get_board_topics(current_user: CurrentUser) -> Sequence[DbTopic] | None:
 
     include_hidden = board_helper_service.may_current_user_view_hidden()
     topics = board_topic_query_service.get_recent_topics(
-        board_id, include_hidden, limit=6
+        board_id, limit=6, include_hidden=include_hidden
     )
 
     board_helper_service.add_topic_unseen_flag(topics, current_user)

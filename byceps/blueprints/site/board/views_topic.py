@@ -55,7 +55,7 @@ def topic_index(page):
     topics_per_page = service.get_topics_per_page_value()
 
     topics = board_topic_query_service.paginate_topics(
-        board_id, include_hidden, page, topics_per_page
+        board_id, page, topics_per_page, include_hidden=include_hidden
     )
 
     service.add_topic_creators(topics.items)
@@ -77,7 +77,7 @@ def topic_view(topic_id, page):
     include_hidden = service.may_current_user_view_hidden()
 
     topic = board_topic_query_service.find_topic_visible_for_user(
-        topic_id, include_hidden
+        topic_id, include_hidden=include_hidden
     )
 
     if topic is None:
@@ -164,7 +164,7 @@ def _find_posting_url_to_redirect_to(
         return None
 
     posting = board_topic_query_service.find_default_posting_to_jump_to(
-        topic_id, include_hidden, last_viewed_at
+        topic_id, last_viewed_at, include_hidden=include_hidden
     )
 
     if posting is None:
