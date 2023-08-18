@@ -273,30 +273,30 @@ def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
     return {_db_entity_to_user_for_admin(user) for user in users}
 
 
-def _db_entity_to_user(user: DbUser) -> User:
+def _db_entity_to_user(db_user: DbUser) -> User:
     return User(
-        id=user.id,
-        screen_name=user.screen_name,
-        suspended=user.suspended,
-        deleted=user.deleted,
-        locale=user.locale,
+        id=db_user.id,
+        screen_name=db_user.screen_name,
+        suspended=db_user.suspended,
+        deleted=db_user.deleted,
+        locale=db_user.locale,
         avatar_url=None,
     )
 
 
-def _db_entity_to_user_for_admin(user: DbUser) -> UserForAdmin:
-    full_name = user.detail.full_name if user.detail is not None else None
+def _db_entity_to_user_for_admin(db_user: DbUser) -> UserForAdmin:
+    full_name = db_user.detail.full_name if db_user.detail is not None else None
     detail = UserForAdminDetail(full_name=full_name)
 
     return UserForAdmin(
-        id=user.id,
-        screen_name=user.screen_name,
-        suspended=user.suspended,
-        deleted=user.deleted,
-        locale=user.locale,
-        avatar_url=user.avatar.url if user.avatar else None,
-        created_at=user.created_at,
-        initialized=user.initialized,
+        id=db_user.id,
+        screen_name=db_user.screen_name,
+        suspended=db_user.suspended,
+        deleted=db_user.deleted,
+        locale=db_user.locale,
+        avatar_url=db_user.avatar.url if db_user.avatar else None,
+        created_at=db_user.created_at,
+        initialized=db_user.initialized,
         detail=detail,
     )
 
@@ -366,22 +366,22 @@ def get_email_addresses(user_ids: set[UserID]) -> set[tuple[UserID, str]]:
 
 def get_detail(user_id: UserID) -> UserDetail:
     """Return the user's details."""
-    detail = db.session.get(DbUserDetail, user_id)
+    db_detail = db.session.get(DbUserDetail, user_id)
 
-    if detail is None:
+    if db_detail is None:
         raise ValueError(f"Unknown user ID '{user_id}'")
 
     return UserDetail(
-        first_name=detail.first_name,
-        last_name=detail.last_name,
-        date_of_birth=detail.date_of_birth,
-        country=detail.country,
-        zip_code=detail.zip_code,
-        city=detail.city,
-        street=detail.street,
-        phone_number=detail.phone_number,
-        internal_comment=detail.internal_comment,
-        extras=detail.extras,
+        first_name=db_detail.first_name,
+        last_name=db_detail.last_name,
+        date_of_birth=db_detail.date_of_birth,
+        country=db_detail.country,
+        zip_code=db_detail.zip_code,
+        city=db_detail.city,
+        street=db_detail.street,
+        phone_number=db_detail.phone_number,
+        internal_comment=db_detail.internal_comment,
+        extras=db_detail.extras,
     )
 
 
