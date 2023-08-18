@@ -7,13 +7,15 @@
   <ol class="items">
     {%- for teaser in news_teasers %}
     <li>
-      {%- if teaser.featured_image %}
-        {%- with featured_image = teaser.featured_image %}
-      <img class="item-image" src="{{ featured_image.url_path }}"{% if featured_image.alt_text %} alt="{{ featured_image.alt_text }}"{% endif %}>
-        {%- endwith %}
-      {%- endif %}
-      <a class="disguised" href="{{ url_for('news.view', slug=teaser.slug) }}">{{ teaser.title }}</a>
-      <div class="item-meta">{{ teaser.published_at|dateformat('full') }}</div>
+      <a class="item-link" href="{{ url_for('news.view', slug=teaser.slug) }}">
+        {%- if teaser.featured_image %}
+          {%- with featured_image = teaser.featured_image %}
+        <img class="item-image" src="{{ featured_image.url_path }}"{% if featured_image.alt_text %} alt="{{ featured_image.alt_text }}"{% endif %}>
+          {%- endwith %}
+        {%- endif %}
+        <div class="item-title">{{ teaser.title }}</div>
+        <div class="item-meta">{{ teaser.published_at|dateformat('full') }}</div>
+      </a>
     </li>
     {%- endfor %}
   </ol>
