@@ -35,7 +35,7 @@ from .models.user import User
 
 
 def initialize_account(
-    user_id: UserID,
+    user: User,
     *,
     initiator: User | None = None,
     assign_roles: bool = True,
@@ -44,10 +44,10 @@ def initialize_account(
 
     This is meant to happen only once at most, and can not be undone.
     """
-    db_user = _get_db_user(user_id)
-
-    if db_user.initialized:
+    if user.initialized:
         raise ValueError('Account is already initialized.')
+
+    db_user = _get_db_user(user.id)
 
     db_user.initialized = True
 

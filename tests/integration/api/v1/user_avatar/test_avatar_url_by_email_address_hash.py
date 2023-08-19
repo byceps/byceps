@@ -52,7 +52,7 @@ def create_initialized_user(screen_name, email_address):
     user, _ = user_creation_service.create_user(
         screen_name, email_address, password
     ).unwrap()
-    user_command_service.initialize_account(user.id, assign_roles=False)
+    user_command_service.initialize_account(user, assign_roles=False)
     return user
 
 

@@ -146,7 +146,7 @@ def create_user(
     ).unwrap()
 
     if initialized:
-        user_command_service.initialize_account(user.id, assign_roles=False)
+        user_command_service.initialize_account(user, assign_roles=False)
 
     if email_address_verified or suspended or deleted:
         db_user = user_service.get_db_user(user.id)

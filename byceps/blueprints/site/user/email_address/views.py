@@ -136,7 +136,7 @@ def confirm(token):
     flash_success(gettext('Email address has been verified.'))
 
     if not user.initialized:
-        user_command_service.initialize_account(user.id)
+        user_command_service.initialize_account(user)
         flash_success(
             gettext(
                 'User "%(screen_name)s" has been activated.',

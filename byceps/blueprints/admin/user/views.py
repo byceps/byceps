@@ -251,7 +251,7 @@ def initialize_account(user_id):
 
     initiator = g.user
 
-    user_command_service.initialize_account(user.id, initiator=initiator)
+    user_command_service.initialize_account(user, initiator=initiator)
 
     flash_success(
         gettext(

@@ -49,7 +49,7 @@ def test_initialize_account_as_user(
 
     # -------------------------------- #
 
-    user_command_service.initialize_account(user.id)
+    user_command_service.initialize_account(user)
 
     # -------------------------------- #
 
@@ -91,7 +91,7 @@ def test_initialize_account_as_admin(
 
     # -------------------------------- #
 
-    user_command_service.initialize_account(user.id, initiator=admin_user)
+    user_command_service.initialize_account(user, initiator=admin_user)
 
     # -------------------------------- #
 
@@ -132,7 +132,7 @@ def test_initialize_already_initialized_account(
     # -------------------------------- #
 
     with pytest.raises(ValueError):
-        user_command_service.initialize_account(user.id, initiator=admin_user)
+        user_command_service.initialize_account(user, initiator=admin_user)
 
     # -------------------------------- #
 

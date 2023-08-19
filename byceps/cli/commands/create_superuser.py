@@ -34,7 +34,7 @@ def create_superuser(screen_name, email_address, password) -> None:
     click.secho('done.', fg='green')
 
     click.echo(f'Initializing user "{screen_name}" ... ', nl=False)
-    user_command_service.initialize_account(user.id)
+    user_command_service.initialize_account(user)
     click.secho('done.', fg='green')
 
     user_email_address_service.confirm_email_address(
