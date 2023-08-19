@@ -66,6 +66,7 @@ class Creator(User):
         return cls(
             id=user.id,
             screen_name=user.screen_name,
+            initialized=user.initialized,
             suspended=user.suspended,
             deleted=user.deleted,
             locale=user.locale,

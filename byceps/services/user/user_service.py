@@ -130,6 +130,7 @@ def _get_user_stmt(include_avatar: bool) -> Select:
     stmt = select(
         DbUser.id,
         DbUser.screen_name,
+        DbUser.initialized,
         DbUser.suspended,
         DbUser.deleted,
         DbUser.locale,
@@ -143,14 +144,15 @@ def _get_user_stmt(include_avatar: bool) -> Select:
 
 
 def _user_row_to_dto(
-    row: tuple[UserID, str, bool, bool, str | None, DbUserAvatar | None]
+    row: tuple[UserID, str, bool, bool, bool, str | None, DbUserAvatar | None]
 ) -> User:
-    user_id, screen_name, suspended, deleted, locale, avatar = row
+    user_id, screen_name, initialized, suspended, deleted, locale, avatar = row
     avatar_url = avatar.url if (avatar is not None) else None
 
     return User(
         id=user_id,
         screen_name=screen_name,
+        initialized=initialized,
         suspended=suspended,
         deleted=deleted,
         locale=locale,
@@ -277,6 +279,7 @@ def _db_entity_to_user(db_user: DbUser) -> User:
     return User(
         id=db_user.id,
         screen_name=db_user.screen_name,
+        initialized=db_user.initialized,
         suspended=db_user.suspended,
         deleted=db_user.deleted,
         locale=db_user.locale,
@@ -291,12 +294,12 @@ def _db_entity_to_user_for_admin(db_user: DbUser) -> UserForAdmin:
     return UserForAdmin(
         id=db_user.id,
         screen_name=db_user.screen_name,
+        initialized=db_user.initialized,
         suspended=db_user.suspended,
         deleted=db_user.deleted,
         locale=db_user.locale,
         avatar_url=db_user.avatar.url if db_user.avatar else None,
         created_at=db_user.created_at,
-        initialized=db_user.initialized,
         detail=detail,
     )
 

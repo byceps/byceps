@@ -24,6 +24,7 @@ UserAvatarID = NewType('UserAvatarID', UUID)
 class User:
     id: UserID
     screen_name: str | None
+    initialized: bool
     suspended: bool
     deleted: bool
     locale: str | None
@@ -58,7 +59,6 @@ class UserDetail:
 @dataclass(frozen=True)
 class UserForAdmin(User):
     created_at: datetime
-    initialized: bool
     detail: UserForAdminDetail
 
 

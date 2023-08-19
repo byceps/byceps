@@ -182,6 +182,7 @@ def get_anonymous_current_user(locale: str | None) -> CurrentUser:
     return CurrentUser(
         id=ANONYMOUS_USER_ID,
         screen_name=None,
+        initialized=True,
         suspended=False,
         deleted=False,
         locale=locale,
@@ -200,6 +201,7 @@ def get_authenticated_current_user(
     return CurrentUser(
         id=user.id,
         screen_name=user.screen_name,
+        initialized=True,  # Current user has to be initialized.
         suspended=False,  # Current user cannot be suspended.
         deleted=False,  # Current user cannot be deleted.
         locale=locale,

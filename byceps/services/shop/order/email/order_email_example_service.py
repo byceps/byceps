@@ -123,6 +123,7 @@ def _build_order(
     placed_by = User(
         id=UserID(generate_uuid4()),
         screen_name='Orderer',
+        initialized=True,
         suspended=False,
         deleted=False,
         locale=None,

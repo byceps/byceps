@@ -123,6 +123,7 @@ def _generate_attendees(
         user = User(
             id=db_user.id,
             screen_name=db_user.screen_name,
+            initialized=db_user.initialized,
             suspended=db_user.suspended,
             deleted=db_user.deleted,
             locale=db_user.locale,

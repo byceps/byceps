@@ -151,7 +151,6 @@ def create_user(
     if email_address_verified or suspended or deleted:
         db_user = user_service.get_db_user(user.id)
         db_user.email_address_verified = email_address_verified
-        db_user.initialized = initialized
         db_user.suspended = suspended
         db_user.deleted = deleted
         db.session.commit()

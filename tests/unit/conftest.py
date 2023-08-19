@@ -58,6 +58,7 @@ def make_user():
     def _wrapper(
         *,
         screen_name: str | None = '__random__',
+        initialized: bool = True,
         suspended: bool = False,
         deleted: bool = False,
     ) -> User:
@@ -67,6 +68,7 @@ def make_user():
         return User(
             id=UserID(generate_uuid()),
             screen_name=screen_name,
+            initialized=initialized,
             suspended=suspended,
             deleted=deleted,
             locale=None,
