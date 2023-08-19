@@ -19,7 +19,7 @@ def test_update_password_hash(site_app, admin_user, make_user):
     assert password_hash_before is not None
 
     log_entries_before = user_log_service.get_entries_for_user(user_id)
-    assert len(log_entries_before) == 1  # user creation
+    assert len(log_entries_before) == 2  # user creation
 
     # -------------------------------- #
 
@@ -39,9 +39,9 @@ def test_update_password_hash(site_app, admin_user, make_user):
     assert event.initiator_screen_name == admin_user.screen_name
 
     log_entries_after = user_log_service.get_entries_for_user(user_id)
-    assert len(log_entries_after) == 2
+    assert len(log_entries_after) == 3
 
-    password_updated_log_entry = log_entries_after[1]
+    password_updated_log_entry = log_entries_after[-1]
     assert password_updated_log_entry.event_type == 'password-updated'
     assert password_updated_log_entry.data == {
         'initiator_id': str(admin_id),

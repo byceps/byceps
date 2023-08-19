@@ -56,8 +56,8 @@ def test_delete_account(admin_app, role, make_user):
 
     # log entries
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
-    assert len(log_entries_before) == 2
-    assert log_entries_before[1].event_type == 'role-assigned'
+    assert len(log_entries_before) == 3
+    assert log_entries_before[-1].event_type == 'role-assigned'
 
     # authorization
     assert authz_service.find_role_ids_for_user(user_id) == {role.id}
@@ -92,9 +92,9 @@ def test_delete_account(admin_app, role, make_user):
 
     # log entries
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
-    assert len(log_entries_after) == 3
+    assert len(log_entries_after) == 4
 
-    user_enabled_log_entry = log_entries_after[2]
+    user_enabled_log_entry = log_entries_after[-1]
     assert user_enabled_log_entry.event_type == 'user-deleted'
     assert user_enabled_log_entry.data == {
         'initiator_id': str(admin_user.id),

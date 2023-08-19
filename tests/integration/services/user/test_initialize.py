@@ -59,11 +59,11 @@ def test_initialize_account_as_user(
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 3
 
-    user_enabled_log_entry = log_entries_after[1]
+    user_enabled_log_entry = log_entries_after[-2]
     assert user_enabled_log_entry.event_type == 'user-initialized'
     assert user_enabled_log_entry.data == {}
 
-    role_assigned_log_entry = log_entries_after[2]
+    role_assigned_log_entry = log_entries_after[-1]
     assert role_assigned_log_entry.event_type == 'role-assigned'
     assert role_assigned_log_entry.data == {
         'role_id': 'board_user',
@@ -101,13 +101,13 @@ def test_initialize_account_as_admin(
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 3
 
-    user_enabled_log_entry = log_entries_after[1]
+    user_enabled_log_entry = log_entries_after[-2]
     assert user_enabled_log_entry.event_type == 'user-initialized'
     assert user_enabled_log_entry.data == {
         'initiator_id': str(admin_user.id),
     }
 
-    role_assigned_log_entry = log_entries_after[2]
+    role_assigned_log_entry = log_entries_after[-1]
     assert role_assigned_log_entry.event_type == 'role-assigned'
     assert role_assigned_log_entry.data == {
         'initiator_id': str(admin_user.id),
@@ -127,7 +127,7 @@ def test_initialize_already_initialized_account(
     assert user_before.initialized
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
-    assert len(log_entries_before) == 1  # user creation
+    assert len(log_entries_before) == 2  # user creation
 
     # -------------------------------- #
 
@@ -140,4 +140,4 @@ def test_initialize_already_initialized_account(
     assert user_after.initialized  # still initialized
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
-    assert len(log_entries_after) == 1  # no additional user log entries
+    assert len(log_entries_after) == 2  # no additional user log entries

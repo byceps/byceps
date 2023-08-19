@@ -44,7 +44,7 @@ def test_update_user_address(site_app, make_user):
     )
 
     log_entries_before = user_log_service.get_entries_for_user(user.id)
-    assert len(log_entries_before) == 1  # user creation
+    assert len(log_entries_before) == 2  # user creation
 
     # -------------------------------- #
 
@@ -80,9 +80,9 @@ def test_update_user_address(site_app, make_user):
     assert user_after.detail.phone_number == new_phone_number
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
-    assert len(log_entries_after) == 2
+    assert len(log_entries_after) == 3
 
-    details_updated_log_entry = log_entries_after[1]
+    details_updated_log_entry = log_entries_after[-1]
     assert details_updated_log_entry.event_type == 'user-details-updated'
     assert details_updated_log_entry.data == {
         'initiator_id': str(user.id),
@@ -109,7 +109,7 @@ def test_update_user_real_name(site_app, make_user):
     user_detail = user_service.get_detail(user.id)
 
     log_entries_before = user_log_service.get_entries_for_user(user.id)
-    assert len(log_entries_before) == 1  # user creation
+    assert len(log_entries_before) == 2  # user creation
 
     # -------------------------------- #
 
@@ -133,9 +133,9 @@ def test_update_user_real_name(site_app, make_user):
     assert user_after.detail.last_name == new_last_name
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
-    assert len(log_entries_after) == 2
+    assert len(log_entries_after) == 3
 
-    details_updated_log_entry = log_entries_after[1]
+    details_updated_log_entry = log_entries_after[-1]
     assert details_updated_log_entry.event_type == 'user-details-updated'
     assert details_updated_log_entry.data == {
         'initiator_id': str(user.id),
@@ -157,7 +157,7 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
     user_detail = user_service.get_detail(user.id)
 
     log_entries_before = user_log_service.get_entries_for_user(user.id)
-    assert len(log_entries_before) == 1  # user creation
+    assert len(log_entries_before) == 2  # user creation
 
     # -------------------------------- #
 
@@ -181,9 +181,9 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
     assert user_after.detail.phone_number == ''
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
-    assert len(log_entries_after) == 2
+    assert len(log_entries_after) == 3
 
-    details_updated_log_entry = log_entries_after[1]
+    details_updated_log_entry = log_entries_after[-1]
     assert details_updated_log_entry.event_type == 'user-details-updated'
     assert details_updated_log_entry.data == {
         'initiator_id': str(user.id),

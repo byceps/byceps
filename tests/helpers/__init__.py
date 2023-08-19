@@ -34,7 +34,11 @@ from byceps.services.party.models import Party
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
-from byceps.services.user import user_creation_service, user_service
+from byceps.services.user import (
+    user_command_service,
+    user_creation_service,
+    user_service,
+)
 from byceps.services.user.models.user import User
 from byceps.typing import BrandID, PartyID, UserID
 
@@ -141,7 +145,10 @@ def create_user(
         phone_number=phone_number,
     ).unwrap()
 
-    if email_address_verified or initialized or suspended or deleted:
+    if initialized:
+        user_command_service.initialize_account(user.id, assign_roles=False)
+
+    if email_address_verified or suspended or deleted:
         db_user = user_service.get_db_user(user.id)
         db_user.email_address_verified = email_address_verified
         db_user.initialized = initialized
@@ -149,7 +156,9 @@ def create_user(
         db_user.deleted = deleted
         db.session.commit()
 
-    return user
+    updated_user = user_service.get_user(user.id)
+
+    return updated_user
 
 
 def create_role_with_permissions_assigned(

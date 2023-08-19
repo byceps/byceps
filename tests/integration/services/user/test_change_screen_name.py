@@ -29,7 +29,7 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     assert user_before.screen_name == old_screen_name
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
-    assert len(log_entries_before) == 1  # user creation
+    assert len(log_entries_before) == 2  # user creation
 
     # -------------------------------- #
 
@@ -50,9 +50,9 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     assert user_after.screen_name == new_screen_name
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
-    assert len(log_entries_after) == 2
+    assert len(log_entries_after) == 3
 
-    user_enabled_log_entry = log_entries_after[1]
+    user_enabled_log_entry = log_entries_after[-1]
     assert user_enabled_log_entry.event_type == 'user-screen-name-changed'
     assert user_enabled_log_entry.data == {
         'old_screen_name': old_screen_name,
@@ -80,7 +80,7 @@ def test_change_screen_name_without_reason(admin_app, make_user, admin_user):
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
 
-    user_enabled_log_entry = log_entries_after[1]
+    user_enabled_log_entry = log_entries_after[-1]
     assert user_enabled_log_entry.event_type == 'user-screen-name-changed'
     assert user_enabled_log_entry.data == {
         'old_screen_name': old_screen_name,

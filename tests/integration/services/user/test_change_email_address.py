@@ -34,7 +34,7 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     assert user_before.email_address_verified
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
-    assert len(log_entries_before) == 1  # user creation
+    assert len(log_entries_before) == 2  # user creation
 
     # -------------------------------- #
 
@@ -55,9 +55,9 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     assert not user_after.email_address_verified
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
-    assert len(log_entries_after) == 2
+    assert len(log_entries_after) == 3
 
-    user_enabled_log_entry = log_entries_after[1]
+    user_enabled_log_entry = log_entries_after[-1]
     assert user_enabled_log_entry.event_type == 'user-email-address-changed'
     assert user_enabled_log_entry.data == {
         'old_email_address': old_email_address,
@@ -89,7 +89,7 @@ def test_change_email_address_without_reason(admin_app, make_user, admin_user):
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
 
-    user_enabled_log_entry = log_entries_after[1]
+    user_enabled_log_entry = log_entries_after[-1]
     assert user_enabled_log_entry.event_type == 'user-email-address-changed'
     assert user_enabled_log_entry.data == {
         'old_email_address': old_email_address,
