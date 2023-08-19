@@ -38,24 +38,14 @@ def user5(make_user):
     return make_user(email_address='user5@mail.test', initialized=True)
 
 
-@pytest.fixture()
-def role(admin_app, site, user1, user2):
-    role = authz_service.create_role('board_user', 'Board User').unwrap()
-
-    yield role
-
-    for user in user1, user2:
-        authz_service.deassign_all_roles_from_user(user.id)
-
-    authz_service.delete_role(role.id)
-
-
-def test_valid_token(site_app, user1, role):
+@pytest.fixture(scope='module')
+def test_valid_token(site_app, user1):
     user_id = user1.id
 
     user_before = user_service.get_db_user(user_id)
     assert not user_before.email_address_verified
     assert not user_before.initialized
+    assert 'board_user' not in get_role_ids(user_id)
 
     token = create_verification_token(user_id, 'user1@mail.test')
 
@@ -70,11 +60,10 @@ def test_valid_token(site_app, user1, role):
     user_after = user_service.get_db_user(user_id)
     assert user_after.email_address_verified
     assert user_after.initialized
+    assert 'board_user' in get_role_ids(user_id)
 
-    assert get_role_ids(user_id) == {'board_user'}
 
-
-def test_unknown_token(site_app, site, user2, role):
+def test_unknown_token(site_app, site, user2):
     user_id = user2.id
 
     user_before = user_service.get_db_user(user_id)
@@ -96,7 +85,7 @@ def test_unknown_token(site_app, site, user2, role):
     assert get_role_ids(user_id) == set()
 
 
-def test_initialized_user(site_app, user3, role):
+def test_initialized_user(site_app, user3):
     user_id = user3.id
 
     user_before = user_service.get_db_user(user_id)
@@ -118,7 +107,7 @@ def test_initialized_user(site_app, user3, role):
     assert user_after.initialized
 
 
-def test_account_without_email_address(site_app, site, user4, role):
+def test_account_without_email_address(site_app, site, user4):
     user_id = user4.id
 
     user_with_email_address = user_service.get_db_user(user_id)
@@ -144,7 +133,7 @@ def test_account_without_email_address(site_app, site, user4, role):
     assert not user_after.email_address_verified
 
 
-def test_different_user_and_token_email_addresses(site_app, site, user5, role):
+def test_different_user_and_token_email_addresses(site_app, site, user5):
     user_id = user5.id
 
     user_before = user_service.get_db_user(user_id)

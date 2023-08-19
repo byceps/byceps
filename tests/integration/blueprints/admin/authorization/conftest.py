@@ -5,8 +5,6 @@
 
 import pytest
 
-from byceps.services.authorization import authz_service
-
 from tests.helpers import log_in_user
 
 
@@ -27,13 +25,6 @@ def role_admin_client(make_client, admin_app, role_admin):
     return make_client(admin_app, user_id=role_admin.id)
 
 
-@pytest.fixture(scope='module')
-def role():
-    role_id = 'spin_doctor'
-    title = 'Dr. Spin'
-
-    role = authz_service.create_role(role_id, title).unwrap()
-
-    yield role
-
-    authz_service.delete_role(role.id)
+@pytest.fixture(scope='package')
+def role(make_role):
+    return make_role()

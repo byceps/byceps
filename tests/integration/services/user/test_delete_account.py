@@ -14,13 +14,10 @@ from byceps.services.user import (
 
 
 @pytest.fixture()
-def role():
-    role = authz_service.create_role('demigod', 'Demigod').unwrap()
+def role(make_role):
+    role = make_role()
     authz_service.assign_permission_to_role('board.view_hidden', role.id)
-
-    yield role
-
-    authz_service.delete_role(role.id)
+    return role
 
 
 def test_delete_account(admin_app, role, make_user):
@@ -63,7 +60,7 @@ def test_delete_account(admin_app, role, make_user):
     assert log_entries_before[1].event_type == 'role-assigned'
 
     # authorization
-    assert authz_service.find_role_ids_for_user(user_id) == {'demigod'}
+    assert authz_service.find_role_ids_for_user(user_id) == {role.id}
     assert authz_service.get_permission_ids_for_user(user_id) == {
         'board.view_hidden'
     }

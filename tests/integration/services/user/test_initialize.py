@@ -33,29 +33,8 @@ def already_initialized_user(make_user):
     return make_user('AlreadyInitialized')
 
 
-@pytest.fixture()
-def role(
-    admin_app,
-    uninitialized_user_created_online,
-    uninitialized_user_created_at_party_checkin_by_admin,
-    already_initialized_user,
-):
-    role = authz_service.create_role('board_user', 'Board User').unwrap()
-
-    yield role
-
-    for user in {
-        uninitialized_user_created_online,
-        uninitialized_user_created_at_party_checkin_by_admin,
-        already_initialized_user,
-    }:
-        authz_service.deassign_all_roles_from_user(user.id)
-
-    authz_service.delete_role(role.id)
-
-
 def test_initialize_account_as_user(
-    admin_app, role, uninitialized_user_created_online
+    admin_app, uninitialized_user_created_online
 ):
     user = uninitialized_user_created_online
 
@@ -96,7 +75,6 @@ def test_initialize_account_as_user(
 
 def test_initialize_account_as_admin(
     admin_app,
-    role,
     uninitialized_user_created_at_party_checkin_by_admin,
     admin_user,
 ):
@@ -141,7 +119,7 @@ def test_initialize_account_as_admin(
 
 
 def test_initialize_already_initialized_account(
-    admin_app, role, already_initialized_user, admin_user
+    admin_app, already_initialized_user, admin_user
 ):
     user = already_initialized_user
 

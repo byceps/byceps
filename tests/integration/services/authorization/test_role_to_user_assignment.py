@@ -7,22 +7,24 @@ import pytest
 
 from byceps.services.authorization import authz_service
 
-
-PERMISSION_ID = 'board.view_hidden'
+from tests.helpers import generate_token
 
 
 def test_assign_role_to_user(admin_app, user, admin_user, role):
+    permission_id = generate_token()
+    authz_service.assign_permission_to_role(permission_id, role.id)
+
     user_permission_ids_before = authz_service.get_permission_ids_for_user(
         user.id
     )
-    assert PERMISSION_ID not in user_permission_ids_before
+    assert permission_id not in user_permission_ids_before
 
     authz_service.assign_role_to_user(role.id, user.id, initiator=admin_user)
 
     user_permission_ids_after = authz_service.get_permission_ids_for_user(
         user.id
     )
-    assert PERMISSION_ID in user_permission_ids_after
+    assert permission_id in user_permission_ids_after
 
     # Expect attempt to assign that role again to that user to have no
     # effect and to not raise an exception.
@@ -30,12 +32,15 @@ def test_assign_role_to_user(admin_app, user, admin_user, role):
 
 
 def test_deassign_role_from_user(admin_app, user, admin_user, role):
+    permission_id = generate_token()
+    authz_service.assign_permission_to_role(permission_id, role.id)
+
     authz_service.assign_role_to_user(role.id, user.id, initiator=admin_user)
 
     user_permission_ids_before = authz_service.get_permission_ids_for_user(
         user.id
     )
-    assert PERMISSION_ID in user_permission_ids_before
+    assert permission_id in user_permission_ids_before
 
     deassign_result = authz_service.deassign_role_from_user(
         role.id, user.id, initiator=admin_user
@@ -45,15 +50,9 @@ def test_deassign_role_from_user(admin_app, user, admin_user, role):
     user_permission_ids_after = authz_service.get_permission_ids_for_user(
         user.id
     )
-    assert PERMISSION_ID not in user_permission_ids_after
+    assert permission_id not in user_permission_ids_after
 
 
 @pytest.fixture()
-def role(user):
-    role = authz_service.create_role('demigod', 'Demigod').unwrap()
-    authz_service.assign_permission_to_role(PERMISSION_ID, role.id)
-
-    yield role
-
-    authz_service.deassign_all_roles_from_user(user.id)
-    authz_service.delete_role(role.id)
+def role(make_role):
+    return make_role()

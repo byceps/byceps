@@ -15,7 +15,7 @@ from moneyed import EUR
 import pytest
 
 from byceps.services.authorization import authz_service
-from byceps.services.authorization.models import PermissionID, RoleID
+from byceps.services.authorization.models import PermissionID, Role, RoleID
 from byceps.services.board import board_service
 from byceps.services.board.models import Board, BoardID
 from byceps.services.brand import brand_service
@@ -87,6 +87,8 @@ def admin_app(make_admin_app) -> Iterator[Flask]:
         for code in 'en', 'de':
             language_service.create_language(code)
 
+        authz_service.create_role(RoleID('board_user'), 'Board User')
+
         yield app
 
 
@@ -123,6 +125,15 @@ def make_client():
     def _wrapper(app: Flask, *, user_id: UserID | None = None):
         with http_client(app, user_id=user_id) as client:
             return client
+
+    return _wrapper
+
+
+@pytest.fixture(scope='session')
+def make_role(admin_app: Flask):
+    def _wrapper() -> Role:
+        role_id = generate_token()
+        return authz_service.create_role(role_id, role_id).unwrap()
 
     return _wrapper
 
