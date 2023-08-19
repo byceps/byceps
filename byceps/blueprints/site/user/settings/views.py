@@ -141,7 +141,7 @@ def change_screen_name():
     initiator = current_user
 
     event = user_command_service.change_screen_name(
-        current_user.id, new_screen_name, initiator
+        current_user, new_screen_name, initiator
     )
 
     user_signals.screen_name_changed.send(None, event=event)

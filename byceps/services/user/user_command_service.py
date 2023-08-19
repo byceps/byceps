@@ -82,17 +82,17 @@ def _assign_roles(user_id: UserID, *, initiator: User | None = None) -> None:
 
 
 def suspend_account(
-    user_id: UserID, initiator: User, reason: str
+    user: User, initiator: User, reason: str
 ) -> UserAccountSuspendedEvent:
     """Suspend the user account."""
-    db_user = _get_db_user(user_id)
+    db_user = _get_db_user(user.id)
     occurred_at = datetime.utcnow()
 
     db_user.suspended = True
 
     log_entry = user_log_service.build_entry(
         'user-suspended',
-        db_user.id,
+        user.id,
         {
             'initiator_id': str(initiator.id),
             'reason': reason,
@@ -107,23 +107,23 @@ def suspend_account(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=db_user.id,
-        user_screen_name=db_user.screen_name,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
 
 def unsuspend_account(
-    user_id: UserID, initiator: User, reason: str
+    user: User, initiator: User, reason: str
 ) -> UserAccountUnsuspendedEvent:
     """Unsuspend the user account."""
-    db_user = _get_db_user(user_id)
+    db_user = _get_db_user(user.id)
     occurred_at = datetime.utcnow()
 
     db_user.suspended = False
 
     log_entry = user_log_service.build_entry(
         'user-unsuspended',
-        db_user.id,
+        user.id,
         {
             'initiator_id': str(initiator.id),
             'reason': reason,
@@ -138,20 +138,20 @@ def unsuspend_account(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=db_user.id,
-        user_screen_name=db_user.screen_name,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
 
 def change_screen_name(
-    user_id: UserID,
+    user: User,
     new_screen_name: str,
     initiator: User,
     *,
     reason: str | None = None,
 ) -> UserScreenNameChangedEvent:
     """Change the user's screen name."""
-    db_user = _get_db_user(user_id)
+    db_user = _get_db_user(user.id)
     occurred_at = datetime.utcnow()
 
     old_screen_name = db_user.screen_name
@@ -168,7 +168,7 @@ def change_screen_name(
 
     log_entry = user_log_service.build_entry(
         'user-screen-name-changed',
-        db_user.id,
+        user.id,
         log_entry_data,
         occurred_at=occurred_at,
     )
@@ -180,14 +180,14 @@ def change_screen_name(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=db_user.id,
+        user_id=user.id,
         old_screen_name=old_screen_name,
         new_screen_name=new_screen_name,
     )
 
 
 def change_email_address(
-    user_id: UserID,
+    user: User,
     new_email_address: str | None,
     verified: bool,
     initiator: User,
@@ -195,7 +195,7 @@ def change_email_address(
     reason: str | None = None,
 ) -> UserEmailAddressChangedEvent:
     """Change the user's e-mail address."""
-    db_user = _get_db_user(user_id)
+    db_user = _get_db_user(user.id)
     occurred_at = datetime.utcnow()
 
     old_email_address = db_user.email_address
@@ -213,7 +213,7 @@ def change_email_address(
 
     log_entry = user_log_service.build_entry(
         'user-email-address-changed',
-        db_user.id,
+        user.id,
         log_entry_data,
         occurred_at=occurred_at,
     )
@@ -225,8 +225,8 @@ def change_email_address(
         occurred_at=occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=db_user.id,
-        user_screen_name=db_user.screen_name,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
 

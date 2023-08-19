@@ -23,9 +23,9 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     new_screen_name = 'Crash_Override'
     reason = 'Do not reveal to Acid Burn.'
 
-    user_id = make_user(old_screen_name).id
+    user = make_user(old_screen_name)
 
-    user_before = user_service.get_db_user(user_id)
+    user_before = user_service.get_db_user(user.id)
     assert user_before.screen_name == old_screen_name
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
@@ -34,19 +34,19 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     # -------------------------------- #
 
     event = user_command_service.change_screen_name(
-        user_id, new_screen_name, admin_user, reason=reason
+        user, new_screen_name, admin_user, reason=reason
     )
 
     # -------------------------------- #
 
     assert isinstance(event, UserScreenNameChangedEvent)
-    assert event.user_id == user_id
+    assert event.user_id == user.id
     assert event.initiator_id == admin_user.id
     assert event.initiator_screen_name == admin_user.screen_name
     assert event.old_screen_name == old_screen_name
     assert event.new_screen_name == new_screen_name
 
-    user_after = user_service.get_db_user(user_id)
+    user_after = user_service.get_db_user(user.id)
     assert user_after.screen_name == new_screen_name
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
@@ -66,17 +66,15 @@ def test_change_screen_name_without_reason(admin_app, make_user, admin_user):
     old_screen_name = 'NameWithTyop'
     new_screen_name = 'NameWithoutTypo'
 
-    user_id = make_user(old_screen_name).id
+    user = make_user(old_screen_name)
 
     # -------------------------------- #
 
-    user_command_service.change_screen_name(
-        user_id, new_screen_name, admin_user
-    )
+    user_command_service.change_screen_name(user, new_screen_name, admin_user)
 
     # -------------------------------- #
 
-    user_after = user_service.get_db_user(user_id)
+    user_after = user_service.get_db_user(user.id)
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
 

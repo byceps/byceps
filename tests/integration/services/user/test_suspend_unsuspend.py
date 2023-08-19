@@ -28,11 +28,11 @@ def remorseful_user(make_user):
 
 
 def test_suspend(admin_app, cheater, admin_user):
-    user_id = cheater.id
+    user = cheater
 
     reason = 'User has been caught cheating.'
 
-    user_before = user_service.get_user(user_id)
+    user_before = user_service.get_user(user.id)
     assert not user_before.suspended
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
@@ -40,11 +40,11 @@ def test_suspend(admin_app, cheater, admin_user):
 
     # -------------------------------- #
 
-    user_command_service.suspend_account(user_id, admin_user, reason)
+    user_command_service.suspend_account(user, admin_user, reason)
 
     # -------------------------------- #
 
-    user_after = user_service.get_user(user_id)
+    user_after = user_service.get_user(user.id)
     assert user_after.suspended
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
@@ -59,13 +59,13 @@ def test_suspend(admin_app, cheater, admin_user):
 
 
 def test_unsuspend(admin_app, remorseful_user, admin_user):
-    user_id = remorseful_user.id
+    user = remorseful_user
 
-    user_command_service.suspend_account(user_id, admin_user, 'Annoying')
+    user_command_service.suspend_account(user, admin_user, 'Annoying')
 
     reason = 'User showed penitence. Drop the ban.'
 
-    user_before = user_service.get_user(user_id)
+    user_before = user_service.get_user(user.id)
     assert user_before.suspended
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
@@ -73,11 +73,11 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
 
     # -------------------------------- #
 
-    user_command_service.unsuspend_account(user_id, admin_user, reason)
+    user_command_service.unsuspend_account(user, admin_user, reason)
 
     # -------------------------------- #
 
-    user_after = user_service.get_user(user_id)
+    user_after = user_service.get_user(user.id)
     assert not user_after.suspended
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)

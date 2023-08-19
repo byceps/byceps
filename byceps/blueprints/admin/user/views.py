@@ -308,7 +308,7 @@ def suspend_account(user_id):
     initiator = g.user
     reason = form.reason.data.strip()
 
-    event = user_command_service.suspend_account(user.id, initiator, reason)
+    event = user_command_service.suspend_account(user, initiator, reason)
 
     user_signals.account_suspended.send(None, event=event)
 
@@ -369,7 +369,7 @@ def unsuspend_account(user_id):
     initiator = g.user
     reason = form.reason.data.strip()
 
-    event = user_command_service.unsuspend_account(user.id, initiator, reason)
+    event = user_command_service.unsuspend_account(user, initiator, reason)
 
     user_signals.account_unsuspended.send(None, event=event)
 
@@ -481,7 +481,7 @@ def change_screen_name(user_id):
     reason = form.reason.data.strip()
 
     event = user_command_service.change_screen_name(
-        user.id, new_screen_name, initiator, reason=reason
+        user, new_screen_name, initiator, reason=reason
     )
 
     user_signals.screen_name_changed.send(None, event=event)
@@ -533,7 +533,7 @@ def change_email_address(user_id):
     reason = form.reason.data.strip()
 
     event = user_command_service.change_email_address(
-        user.id, new_email_address, verified, initiator, reason=reason
+        user, new_email_address, verified, initiator, reason=reason
     )
 
     user_signals.email_address_changed.send(None, event=event)
