@@ -38,7 +38,7 @@ def test_initialize_account_as_user(
 ):
     user = uninitialized_user_created_online
 
-    user_before = user_service.get_db_user(user.id)
+    user_before = user_service.get_user(user.id)
     assert not user_before.initialized
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
@@ -53,7 +53,7 @@ def test_initialize_account_as_user(
 
     # -------------------------------- #
 
-    user_after = user_service.get_db_user(user.id)
+    user_after = user_service.get_user(user.id)
     assert user_after.initialized
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
@@ -80,7 +80,7 @@ def test_initialize_account_as_admin(
 ):
     user = uninitialized_user_created_at_party_checkin_by_admin
 
-    user_before = user_service.get_db_user(user.id)
+    user_before = user_service.get_user(user.id)
     assert not user_before.initialized
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
@@ -95,7 +95,7 @@ def test_initialize_account_as_admin(
 
     # -------------------------------- #
 
-    user_after = user_service.get_db_user(user.id)
+    user_after = user_service.get_user(user.id)
     assert user_after.initialized
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
@@ -123,7 +123,7 @@ def test_initialize_already_initialized_account(
 ):
     user = already_initialized_user
 
-    user_before = user_service.get_db_user(user.id)
+    user_before = user_service.get_user(user.id)
     assert user_before.initialized
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
@@ -136,7 +136,7 @@ def test_initialize_already_initialized_account(
 
     # -------------------------------- #
 
-    user_after = user_service.get_db_user(user.id)
+    user_after = user_service.get_user(user.id)
     assert user_after.initialized  # still initialized
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)

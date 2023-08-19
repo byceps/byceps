@@ -31,8 +31,7 @@ def authenticate(
         # Screen name/email address is unknown.
         return Err(AuthenticationFailedError.UsernameUnknown)
 
-    db_user = user_service.get_db_user(user.id)
-    if not db_user.initialized:
+    if not user.initialized:
         return Err(AuthenticationFailedError.AccountNotInitialized)
 
     if user.suspended:

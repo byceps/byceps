@@ -26,10 +26,10 @@ def validate_user(form, field):
     if db_user is None:
         raise ValidationError(gettext('Unknown username'))
 
-    if not db_user.initialized:
-        raise ValidationError(gettext('The user account is not active.'))
-
     user = user_service.get_user(db_user.id)
+
+    if not user.initialized:
+        raise ValidationError(gettext('The user account is not active.'))
 
     if user.suspended or user.deleted:
         raise ValidationError(gettext('The user account is not active.'))
