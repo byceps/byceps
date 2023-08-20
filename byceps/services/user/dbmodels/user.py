@@ -10,7 +10,8 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from byceps.database import db, generate_uuid4
+from byceps.database import db
+from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 
 from .avatar import DbUserAvatar
@@ -21,7 +22,7 @@ class DbUser(db.Model):
 
     __tablename__ = 'users'
 
-    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
+    id = db.Column(db.Uuid, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False)
     screen_name = db.Column(db.UnicodeText, unique=True, nullable=True)
     email_address = db.Column(db.UnicodeText, unique=True, nullable=True)
@@ -40,6 +41,7 @@ class DbUser(db.Model):
 
     def __init__(
         self,
+        user_id: UserID,
         created_at: datetime,
         screen_name: str | None,
         email_address: str | None,
@@ -47,6 +49,7 @@ class DbUser(db.Model):
         locale: str | None = None,
         legacy_id: str | None = None,
     ) -> None:
+        self.id = user_id
         self.created_at = created_at
         self.screen_name = screen_name
         self.email_address = email_address

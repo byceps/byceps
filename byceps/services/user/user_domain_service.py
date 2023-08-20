@@ -11,19 +11,139 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Any
 
-from byceps.database import generate_uuid7
+from byceps.database import generate_uuid4, generate_uuid7
 from byceps.events.user import (
+    UserAccountCreatedEvent,
     UserAccountSuspendedEvent,
     UserAccountUnsuspendedEvent,
     UserDetailsUpdatedEvent,
     UserEmailAddressChangedEvent,
     UserScreenNameChangedEvent,
 )
+from byceps.services.site.models import SiteID
 from byceps.services.user.models.log import UserLogEntry, UserLogEntryData
+from byceps.typing import UserID
 from byceps.util.result import Err, Ok, Result
 
-from .errors import AccountAlreadyInitializedError
+from .errors import (
+    AccountAlreadyInitializedError,
+    InvalidEmailAddressError,
+    InvalidScreenNameError,
+)
 from .models.user import User
+
+
+def create_account(
+    screen_name: str | None,
+    email_address: str | None,
+    password: str,
+    *,
+    locale: str | None = None,
+    creation_method: str | None = None,
+    site_id: SiteID | None = None,
+    site_title: str | None = None,
+    ip_address: str | None = None,
+    initiator: User | None = None,
+) -> Result[
+    tuple[User, str | None, UserAccountCreatedEvent, UserLogEntry],
+    InvalidScreenNameError | InvalidEmailAddressError,
+]:
+    """Create a user account."""
+    occurred_at = datetime.utcnow()
+    user_id = UserID(generate_uuid4())
+
+    normalized_screen_name: str | None
+    if screen_name is not None:
+        screen_name_normalization_result = normalize_screen_name(screen_name)
+
+        if screen_name_normalization_result.is_err():
+            return Err(screen_name_normalization_result.unwrap_err())
+
+        normalized_screen_name = screen_name_normalization_result.unwrap()
+    else:
+        normalized_screen_name = None
+
+    normalized_email_address: str | None
+    if email_address is not None:
+        email_address_normalization_result = normalize_email_address(
+            email_address
+        )
+
+        if email_address_normalization_result.is_err():
+            return Err(email_address_normalization_result.unwrap_err())
+
+        normalized_email_address = email_address_normalization_result.unwrap()
+    else:
+        normalized_email_address = None
+
+    user = User(
+        id=user_id,
+        screen_name=normalized_screen_name,
+        initialized=False,
+        suspended=False,
+        deleted=False,
+        locale=locale,
+        avatar_url=None,
+    )
+
+    event = _build_account_created_event(
+        occurred_at, initiator, user, site_id, site_title
+    )
+
+    log_entry = _build_account_created_log_entry(
+        occurred_at, initiator, user, creation_method, site_id, ip_address
+    )
+
+    return Ok((user, normalized_email_address, event, log_entry))
+
+
+def _build_account_created_event(
+    occurred_at: datetime,
+    initiator: User | None,
+    user: User,
+    site_id: SiteID | None = None,
+    site_title: str | None = None,
+) -> UserAccountCreatedEvent:
+    return UserAccountCreatedEvent(
+        occurred_at=occurred_at,
+        initiator_id=initiator.id if initiator else None,
+        initiator_screen_name=initiator.screen_name if initiator else None,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+        site_id=site_id,
+        site_title=site_title,
+    )
+
+
+def _build_account_created_log_entry(
+    occurred_at: datetime,
+    initiator: User | None,
+    user: User,
+    creation_method: str | None,
+    site_id: SiteID | None,
+    ip_address: str | None,
+) -> UserLogEntry:
+    data = {}
+
+    if initiator is not None:
+        data['initiator_id'] = str(initiator.id)
+
+    if creation_method:
+        data['creation_method'] = creation_method
+
+    if site_id:
+        data['site_id'] = site_id
+
+    if ip_address:
+        data['ip_address'] = ip_address
+
+    return UserLogEntry(
+        id=generate_uuid7(),
+        occurred_at=occurred_at,
+        event_type='user-created',
+        user_id=user.id,
+        data=data,
+    )
 
 
 def initialize_account(
@@ -398,3 +518,27 @@ def _add_if_different(
 
 def _to_str_if_not_none(value: Any) -> str | None:
     return str(value) if (value is not None) else None
+
+
+def normalize_screen_name(
+    screen_name: str,
+) -> Result[str, InvalidScreenNameError]:
+    """Normalize the screen name."""
+    normalized = screen_name.strip()
+
+    if not normalized or (' ' in normalized) or ('@' in normalized):
+        return Err(InvalidScreenNameError(value=screen_name))
+
+    return Ok(normalized)
+
+
+def normalize_email_address(
+    email_address: str,
+) -> Result[str, InvalidEmailAddressError]:
+    """Normalize the e-mail address."""
+    normalized = email_address.strip().lower()
+
+    if not normalized or (' ' in normalized) or ('@' not in normalized):
+        return Err(InvalidEmailAddressError(value=email_address))
+
+    return Ok(normalized)

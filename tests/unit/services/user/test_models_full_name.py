@@ -7,8 +7,10 @@ from datetime import datetime
 
 import pytest
 
+from byceps.database import generate_uuid4
 from byceps.services.user.dbmodels.detail import DbUserDetail
 from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
 
 
 @pytest.mark.parametrize(
@@ -27,11 +29,12 @@ def test_full_name(first_name, last_name, expected):
 
 
 def create_user(first_name: str, last_name: str) -> DbUser:
+    user_id = UserID(generate_uuid4())
     created_at = datetime.utcnow()
     screen_name = 'Anyone'
     email_address = 'anyone@example.test'
 
-    user = DbUser(created_at, screen_name, email_address)
+    user = DbUser(user_id, created_at, screen_name, email_address)
 
     detail = DbUserDetail(user=user)
     detail.first_name = first_name

@@ -8,7 +8,7 @@ byceps.services.user.user_creation_service
 
 from __future__ import annotations
 
-from datetime import date, datetime
+from datetime import date
 from typing import Any
 
 from flask import current_app
@@ -19,7 +19,12 @@ from byceps.services.authentication.password import authn_password_service
 from byceps.services.site.models import SiteID
 from byceps.util.result import Err, Ok, Result
 
-from . import user_email_address_service, user_log_service, user_service
+from . import (
+    user_domain_service,
+    user_email_address_service,
+    user_log_service,
+    user_service,
+)
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
 from .errors import InvalidEmailAddressError, InvalidScreenNameError
@@ -53,39 +58,32 @@ def create_user(
     InvalidScreenNameError | InvalidEmailAddressError | None,
 ]:
     """Create a user account and related records."""
-    created_at = datetime.utcnow()
+    result = user_domain_service.create_account(
+        screen_name,
+        email_address,
+        password,
+        locale=locale,
+        creation_method=creation_method,
+        site_id=site_id,
+        site_title=site_title,
+        ip_address=ip_address,
+        initiator=creator,
+    )
 
-    normalized_screen_name: str | None
-    if screen_name is not None:
-        screen_name_normalization_result = _normalize_screen_name(screen_name)
+    if result.is_err():
+        return Err(result.unwrap_err())
 
-        if screen_name_normalization_result.is_err():
-            return Err(screen_name_normalization_result.unwrap_err())
-
-        normalized_screen_name = screen_name_normalization_result.unwrap()
-    else:
-        normalized_screen_name = None
-
-    normalized_email_address: str | None
-    if email_address is not None:
-        email_address_normalization_result = _normalize_email_address(
-            email_address
-        )
-
-        if email_address_normalization_result.is_err():
-            return Err(email_address_normalization_result.unwrap_err())
-
-        normalized_email_address = email_address_normalization_result.unwrap()
-    else:
-        normalized_email_address = None
+    user, normalized_email_address, event, log_entry = result.unwrap()
 
     db_user = DbUser(
-        created_at,
-        normalized_screen_name,
+        user.id,
+        event.occurred_at,
+        user.screen_name,
         normalized_email_address,
-        locale=locale,
+        locale=user.locale,
         legacy_id=legacy_id,
     )
+    db.session.add(db_user)
 
     db_detail = DbUserDetail(
         user=db_user,
@@ -100,8 +98,6 @@ def create_user(
         internal_comment=internal_comment,
         extras=extras,
     )
-
-    db.session.add(db_user)
     db.session.add(db_detail)
 
     try:
@@ -111,59 +107,16 @@ def create_user(
         db.session.rollback()
         return Err(None)
 
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+    db.session.commit()
+
     user = user_service._db_entity_to_user(db_user)
-
-    # Create log entry in separate step as user ID is not available earlier.
-    _create_user_created_log_entry(
-        user,
-        db_user.created_at,
-        creation_method,
-        creator,
-        site_id,
-        ip_address,
-    )
-
-    event = UserAccountCreatedEvent(
-        occurred_at=db_user.created_at,
-        initiator_id=creator.id if creator else None,
-        initiator_screen_name=creator.screen_name if creator else None,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
-        site_id=site_id,
-        site_title=site_title,
-    )
 
     # password
     authn_password_service.create_password_hash(user.id, password)
 
     return Ok((user, event))
-
-
-def _create_user_created_log_entry(
-    user: User,
-    created_at: datetime,
-    creation_method: str | None,
-    creator: User | None,
-    site_id: SiteID | None,
-    ip_address: str | None,
-) -> None:
-    log_entry_data = {}
-
-    if creation_method:
-        log_entry_data['creation_method'] = creation_method
-
-    if creator is not None:
-        log_entry_data['initiator_id'] = str(creator.id)
-
-    if site_id:
-        log_entry_data['site_id'] = site_id
-
-    if ip_address:
-        log_entry_data['ip_address'] = ip_address
-
-    user_log_service.create_entry(
-        'user-created', user.id, log_entry_data, occurred_at=created_at
-    )
 
 
 def request_email_address_confirmation(
@@ -172,7 +125,9 @@ def request_email_address_confirmation(
     """Send an e-mail to the user to request confirmation of the e-mail
     address.
     """
-    normalization_result = _normalize_email_address(email_address)
+    normalization_result = user_domain_service.normalize_email_address(
+        email_address
+    )
 
     if normalization_result.is_err():
         return Err(normalization_result.unwrap_err())
@@ -184,27 +139,3 @@ def request_email_address_confirmation(
     )
 
     return Ok(None)
-
-
-def _normalize_screen_name(
-    screen_name: str,
-) -> Result[str, InvalidScreenNameError]:
-    """Normalize the screen name."""
-    normalized = screen_name.strip()
-
-    if not normalized or (' ' in normalized) or ('@' in normalized):
-        return Err(InvalidScreenNameError(value=screen_name))
-
-    return Ok(normalized)
-
-
-def _normalize_email_address(
-    email_address: str,
-) -> Result[str, InvalidEmailAddressError]:
-    """Normalize the e-mail address."""
-    normalized = email_address.strip().lower()
-
-    if not normalized or (' ' in normalized) or ('@' not in normalized):
-        return Err(InvalidEmailAddressError(value=email_address))
-
-    return Ok(normalized)
