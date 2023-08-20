@@ -231,7 +231,7 @@ def create_account():
     if site_for_email:
         user_creation_service.request_email_address_confirmation(
             user, email_address, site_for_email.id
-        )
+        ).unwrap()
         flash_success(
             gettext('An email has been sent to the corresponding address.'),
             icon='email',

@@ -118,7 +118,7 @@ def create():
 
     user_creation_service.request_email_address_confirmation(
         user, email_address, g.site_id
-    )
+    ).unwrap()
 
     subject_ids = {subject.id for subject in required_consent_subjects}
     consent_service.consent_to_subjects(user.id, subject_ids, now_utc)

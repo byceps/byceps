@@ -22,6 +22,7 @@ from byceps.util.result import Err, Ok, Result
 from . import user_email_address_service, user_log_service, user_service
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
+from .errors import InvalidEmailAddressError, InvalidScreenNameError
 from .models.user import User
 
 
@@ -47,19 +48,34 @@ def create_user(
     site_id: SiteID | None = None,
     site_title: str | None = None,
     ip_address: str | None = None,
-) -> Result[tuple[User, UserAccountCreatedEvent], None]:
+) -> Result[
+    tuple[User, UserAccountCreatedEvent],
+    InvalidScreenNameError | InvalidEmailAddressError | None,
+]:
     """Create a user account and related records."""
     created_at = datetime.utcnow()
 
     normalized_screen_name: str | None
     if screen_name is not None:
-        normalized_screen_name = _normalize_screen_name(screen_name)
+        screen_name_normalization_result = _normalize_screen_name(screen_name)
+
+        if screen_name_normalization_result.is_err():
+            return Err(screen_name_normalization_result.unwrap_err())
+
+        normalized_screen_name = screen_name_normalization_result.unwrap()
     else:
         normalized_screen_name = None
 
     normalized_email_address: str | None
     if email_address is not None:
-        normalized_email_address = _normalize_email_address(email_address)
+        email_address_normalization_result = _normalize_email_address(
+            email_address
+        )
+
+        if email_address_normalization_result.is_err():
+            return Err(email_address_normalization_result.unwrap_err())
+
+        normalized_email_address = email_address_normalization_result.unwrap()
     else:
         normalized_email_address = None
 
@@ -152,32 +168,43 @@ def _create_user_created_log_entry(
 
 def request_email_address_confirmation(
     user: User, email_address: str, site_id: SiteID
-) -> None:
+) -> Result[None, InvalidEmailAddressError]:
     """Send an e-mail to the user to request confirmation of the e-mail
     address.
     """
-    normalized_email_address = _normalize_email_address(email_address)
+    normalization_result = _normalize_email_address(email_address)
+
+    if normalization_result.is_err():
+        return Err(normalization_result.unwrap_err())
+
+    normalized_email_address = normalization_result.unwrap()
 
     user_email_address_service.send_email_address_confirmation_email_for_site(
         user, normalized_email_address, site_id
     )
 
+    return Ok(None)
 
-def _normalize_screen_name(screen_name: str) -> str:
-    """Normalize the screen name, or raise an exception if invalid."""
+
+def _normalize_screen_name(
+    screen_name: str,
+) -> Result[str, InvalidScreenNameError]:
+    """Normalize the screen name."""
     normalized = screen_name.strip()
 
     if not normalized or (' ' in normalized) or ('@' in normalized):
-        raise ValueError(f"Invalid screen name: '{screen_name}'")
+        return Err(InvalidScreenNameError(value=screen_name))
 
-    return normalized
+    return Ok(normalized)
 
 
-def _normalize_email_address(email_address: str) -> str:
-    """Normalize the e-mail address, or raise an exception if invalid."""
+def _normalize_email_address(
+    email_address: str,
+) -> Result[str, InvalidEmailAddressError]:
+    """Normalize the e-mail address."""
     normalized = email_address.strip().lower()
 
     if not normalized or (' ' in normalized) or ('@' not in normalized):
-        raise ValueError(f"Invalid email address: '{email_address}'")
+        return Err(InvalidEmailAddressError(value=email_address))
 
-    return normalized
+    return Ok(normalized)
