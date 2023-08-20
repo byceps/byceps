@@ -38,7 +38,7 @@ def update_avatar_image(
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> Result[UserAvatarID, str]:
     """Set a new avatar image for the user."""
-    user = user_service.get_db_user(user_id)
+    db_user = user_service.get_db_user(user_id)
 
     image_type_result = image_service.determine_image_type(
         stream, allowed_types
@@ -62,11 +62,11 @@ def update_avatar_image(
     # Might raise `FileExistsError`.
     upload.store(stream, avatar.path, create_parent_path_if_nonexistent=True)
 
-    user.avatar_id = avatar.id
+    db_user.avatar_id = avatar.id
 
     log_entry = user_log_service.build_entry(
         'user-avatar-updated',
-        user.id,
+        db_user.id,
         {
             'avatar_id': str(avatar.id),
             'filename': str(avatar.filename),
@@ -86,24 +86,24 @@ def remove_avatar_image(user_id: UserID, initiator: User) -> None:
     The avatar will be unlinked from the user, but the database record
     as well as the image file itself won't be removed, though.
     """
-    user = user_service.get_db_user(user_id)
+    db_user = user_service.get_db_user(user_id)
 
-    if user.avatar_id is None:
+    if db_user.avatar_id is None:
         return
 
     log_entry = user_log_service.build_entry(
         'user-avatar-removed',
-        user.id,
+        db_user.id,
         {
-            'avatar_id': str(user.avatar_id),
-            'filename': str(user.avatar.filename),
+            'avatar_id': str(db_user.avatar_id),
+            'filename': str(db_user.avatar.filename),
             'initiator_id': str(initiator.id),
         },
     )
     db.session.add(log_entry)
 
     # Remove avatar reference *after* collecting values for log entry.
-    user.avatar_id = None
+    db_user.avatar_id = None
 
     db.session.commit()
 

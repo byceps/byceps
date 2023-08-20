@@ -111,22 +111,22 @@ def confirm_email_address(
     user_id: UserID, email_address_to_confirm: str
 ) -> Result[UserEmailAddressConfirmedEvent, str]:
     """Confirm the email address of the user account."""
-    user = user_service.get_db_user(user_id)
+    db_user = user_service.get_db_user(user_id)
 
-    if user.email_address is None:
+    if db_user.email_address is None:
         return Err('Account has no email address assigned.')
 
-    if user.email_address != email_address_to_confirm:
+    if db_user.email_address != email_address_to_confirm:
         return Err('Email addresses do not match.')
 
     occurred_at = datetime.utcnow()
 
-    user.email_address_verified = True
+    db_user.email_address_verified = True
 
-    log_entry_data = {'email_address': user.email_address}
+    log_entry_data = {'email_address': db_user.email_address}
     log_entry = user_log_service.build_entry(
         'user-email-address-confirmed',
-        user.id,
+        db_user.id,
         log_entry_data,
         occurred_at=occurred_at,
     )
@@ -136,10 +136,10 @@ def confirm_email_address(
 
     event = UserEmailAddressConfirmedEvent(
         occurred_at=occurred_at,
-        initiator_id=user.id,
-        initiator_screen_name=user.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        initiator_id=db_user.id,
+        initiator_screen_name=db_user.screen_name,
+        user_id=db_user.id,
+        user_screen_name=db_user.screen_name,
     )
 
     return Ok(event)
@@ -154,21 +154,21 @@ def invalidate_email_address(
     because of a permanent issue (unknown mailbox, unknown domain, etc.)
     but not a temporary one (for example: mailbox full).
     """
-    user = user_service.get_db_user(user_id)
+    db_user = user_service.get_db_user(user_id)
 
     occurred_at = datetime.utcnow()
 
-    user.email_address_verified = False
+    db_user.email_address_verified = False
 
     log_entry_data = {
-        'email_address': user.email_address,
+        'email_address': db_user.email_address,
         'reason': reason,
     }
     if initiator:
         log_entry_data['initiator_id'] = str(initiator.id)
     log_entry = user_log_service.build_entry(
         'user-email-address-invalidated',
-        user.id,
+        db_user.id,
         log_entry_data,
         occurred_at=occurred_at,
     )
@@ -180,8 +180,8 @@ def invalidate_email_address(
         occurred_at=occurred_at,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        user_id=db_user.id,
+        user_screen_name=db_user.screen_name,
     )
 
 
@@ -246,12 +246,12 @@ def change_email_address(
     if not new_email_address:
         return Err('Token contains no email address.')
 
-    user = user_service.get_db_user(verification_token.user_id)
+    db_user = user_service.get_db_user(verification_token.user_id)
     verified = True
-    initiator = user
+    initiator = db_user
 
     event = user_command_service.change_email_address(
-        user, new_email_address, verified, initiator
+        db_user, new_email_address, verified, initiator
     )
 
     verification_token_service.delete_token(verification_token.token)
