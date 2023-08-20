@@ -21,3 +21,8 @@ class InvalidEmailAddressError:
     """E-mail address is invalid."""
 
     value: str
+
+
+@dataclass(frozen=True)
+class AccountAlreadyInitializedError:
+    """User account cannot be initialized as it has already been."""

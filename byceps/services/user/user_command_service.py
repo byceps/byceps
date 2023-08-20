@@ -8,8 +8,7 @@ byceps.services.user.user_command_service
 
 from __future__ import annotations
 
-from datetime import date, datetime
-from typing import Any
+from datetime import date
 from warnings import warn
 
 from babel import Locale
@@ -27,10 +26,10 @@ from byceps.services.authorization import authz_service
 from byceps.services.authorization.models import RoleID
 from byceps.typing import UserID
 
-from . import user_log_service, user_service
+from . import user_domain_service, user_log_service, user_service
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
-from .models.log import UserLogEntryData
+from .models.log import UserLogEntry
 from .models.user import User
 
 
@@ -44,25 +43,30 @@ def initialize_account(
 
     This is meant to happen only once at most, and can not be undone.
     """
-    if user.initialized:
+    result = user_domain_service.initialize_account(user, initiator=initiator)
+
+    if result.is_err():
         raise ValueError('Account is already initialized.')
 
-    db_user = _get_db_user(user.id)
+    log_entry = result.unwrap()
+
+    _persist_account_initialization(user.id, log_entry)
+
+    if assign_roles:
+        _assign_roles(user.id, initiator=initiator)
+
+
+def _persist_account_initialization(
+    user_id: UserID, log_entry: UserLogEntry
+) -> None:
+    db_user = _get_db_user(user_id)
 
     db_user.initialized = True
 
-    log_entry_data = {}
-    if initiator:
-        log_entry_data['initiator_id'] = str(initiator.id)
-    log_entry = user_log_service.build_entry(
-        'user-initialized', db_user.id, log_entry_data
-    )
-    db.session.add(log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
-
-    if assign_roles:
-        _assign_roles(db_user.id, initiator=initiator)
 
 
 def _assign_roles(user_id: UserID, *, initiator: User | None = None) -> None:
@@ -85,62 +89,52 @@ def suspend_account(
     user: User, initiator: User, reason: str
 ) -> UserAccountSuspendedEvent:
     """Suspend the user account."""
-    db_user = _get_db_user(user.id)
-    occurred_at = datetime.utcnow()
+    event, log_entry = user_domain_service.suspend_account(
+        user, initiator, reason
+    )
+
+    _persist_account_suspension(event, log_entry)
+
+    return event
+
+
+def _persist_account_suspension(
+    event: UserAccountSuspendedEvent, log_entry: UserLogEntry
+) -> None:
+    db_user = _get_db_user(event.user_id)
 
     db_user.suspended = True
 
-    log_entry = user_log_service.build_entry(
-        'user-suspended',
-        user.id,
-        {
-            'initiator_id': str(initiator.id),
-            'reason': reason,
-        },
-        occurred_at=occurred_at,
-    )
-    db.session.add(log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
-
-    return UserAccountSuspendedEvent(
-        occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
-    )
 
 
 def unsuspend_account(
     user: User, initiator: User, reason: str
 ) -> UserAccountUnsuspendedEvent:
     """Unsuspend the user account."""
-    db_user = _get_db_user(user.id)
-    occurred_at = datetime.utcnow()
+    event, log_entry = user_domain_service.unsuspend_account(
+        user, initiator, reason
+    )
+
+    _persist_account_unsuspension(event, log_entry)
+
+    return event
+
+
+def _persist_account_unsuspension(
+    event: UserAccountUnsuspendedEvent, log_entry: UserLogEntry
+) -> None:
+    db_user = _get_db_user(event.user_id)
 
     db_user.suspended = False
 
-    log_entry = user_log_service.build_entry(
-        'user-unsuspended',
-        user.id,
-        {
-            'initiator_id': str(initiator.id),
-            'reason': reason,
-        },
-        occurred_at=occurred_at,
-    )
-    db.session.add(log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
-
-    return UserAccountUnsuspendedEvent(
-        occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
-    )
 
 
 def change_screen_name(
@@ -151,39 +145,26 @@ def change_screen_name(
     reason: str | None = None,
 ) -> UserScreenNameChangedEvent:
     """Change the user's screen name."""
-    db_user = _get_db_user(user.id)
-    occurred_at = datetime.utcnow()
-
-    old_screen_name = db_user.screen_name
-
-    db_user.screen_name = new_screen_name
-
-    log_entry_data = {
-        'old_screen_name': old_screen_name,
-        'new_screen_name': new_screen_name,
-        'initiator_id': str(initiator.id),
-    }
-    if reason:
-        log_entry_data['reason'] = reason
-
-    log_entry = user_log_service.build_entry(
-        'user-screen-name-changed',
-        user.id,
-        log_entry_data,
-        occurred_at=occurred_at,
+    event, log_entry = user_domain_service.change_screen_name(
+        user, new_screen_name, initiator, reason=reason
     )
-    db.session.add(log_entry)
+
+    _persist_screen_name_change(event, log_entry)
+
+    return event
+
+
+def _persist_screen_name_change(
+    event: UserScreenNameChangedEvent, log_entry: UserLogEntry
+) -> None:
+    db_user = _get_db_user(event.user_id)
+
+    db_user.screen_name = event.new_screen_name
+
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
-
-    return UserScreenNameChangedEvent(
-        occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        old_screen_name=old_screen_name,
-        new_screen_name=new_screen_name,
-    )
 
 
 def change_email_address(
@@ -196,38 +177,37 @@ def change_email_address(
 ) -> UserEmailAddressChangedEvent:
     """Change the user's e-mail address."""
     db_user = _get_db_user(user.id)
-    occurred_at = datetime.utcnow()
-
     old_email_address = db_user.email_address
+
+    event, log_entry = user_domain_service.change_email_address(
+        user,
+        old_email_address,
+        new_email_address,
+        verified,
+        initiator,
+        reason=reason,
+    )
+
+    _persist_email_address_change(event, new_email_address, verified, log_entry)
+
+    return event
+
+
+def _persist_email_address_change(
+    event: UserEmailAddressChangedEvent,
+    new_email_address: str | None,
+    verified: bool,
+    log_entry: UserLogEntry,
+) -> None:
+    db_user = _get_db_user(event.user_id)
 
     db_user.email_address = new_email_address
     db_user.email_address_verified = verified
 
-    log_entry_data = {
-        'old_email_address': old_email_address,
-        'new_email_address': new_email_address,
-        'initiator_id': str(initiator.id),
-    }
-    if reason:
-        log_entry_data['reason'] = reason
-
-    log_entry = user_log_service.build_entry(
-        'user-email-address-changed',
-        user.id,
-        log_entry_data,
-        occurred_at=occurred_at,
-    )
-    db.session.add(log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
-
-    return UserEmailAddressChangedEvent(
-        occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
-    )
 
 
 def update_locale(user_id: UserID, locale: Locale | None) -> None:
@@ -240,91 +220,98 @@ def update_locale(user_id: UserID, locale: Locale | None) -> None:
 
 def update_user_details(
     user_id: UserID,
-    first_name: str,
-    last_name: str,
-    date_of_birth: date,
-    country: str,
-    zip_code,
-    city: str,
-    street: str,
-    phone_number: str,
+    new_first_name: str | None,
+    new_last_name: str | None,
+    new_date_of_birth: date | None,
+    new_country: str | None,
+    new_zip_code: str | None,
+    new_city: str | None,
+    new_street: str | None,
+    new_phone_number: str | None,
     initiator: User,
 ) -> UserDetailsUpdatedEvent:
     """Update the user's details."""
-    detail = _get_user_detail(user_id)
-    occurred_at = datetime.utcnow()
+    db_detail = _get_db_user_detail(user_id)
 
-    old_first_name = detail.first_name
-    old_last_name = detail.last_name
-    old_date_of_birth = detail.date_of_birth
-    old_country = detail.country
-    old_zip_code = detail.zip_code
-    old_city = detail.city
-    old_street = detail.street
-    old_phone_number = detail.phone_number
+    old_first_name = db_detail.first_name
+    old_last_name = db_detail.last_name
+    old_date_of_birth = db_detail.date_of_birth
+    old_country = db_detail.country
+    old_zip_code = db_detail.zip_code
+    old_city = db_detail.city
+    old_street = db_detail.street
+    old_phone_number = db_detail.phone_number
 
-    detail.first_name = first_name
-    detail.last_name = last_name
-    detail.date_of_birth = date_of_birth
-    detail.country = country
-    detail.zip_code = zip_code
-    detail.city = city
-    detail.street = street
-    detail.phone_number = phone_number
+    user = user_service.get_user(user_id)
+    event, log_entry = user_domain_service.update_details(
+        user,
+        old_first_name,
+        new_first_name,
+        old_last_name,
+        new_last_name,
+        old_date_of_birth,
+        new_date_of_birth,
+        old_country,
+        new_country,
+        old_zip_code,
+        new_zip_code,
+        old_city,
+        new_city,
+        old_street,
+        new_street,
+        old_phone_number,
+        new_phone_number,
+        initiator,
+    )
 
-    log_entry_data = {
-        'initiator_id': str(initiator.id),
-    }
-    _add_if_different(log_entry_data, 'first_name', old_first_name, first_name)
-    _add_if_different(log_entry_data, 'last_name', old_last_name, last_name)
-    _add_if_different(
-        log_entry_data, 'date_of_birth', old_date_of_birth, date_of_birth
+    _persist_details_update(
+        event,
+        log_entry,
+        db_detail,
+        new_first_name,
+        new_last_name,
+        new_date_of_birth,
+        new_country,
+        new_zip_code,
+        new_city,
+        new_street,
+        new_phone_number,
     )
-    _add_if_different(log_entry_data, 'country', old_country, country)
-    _add_if_different(log_entry_data, 'zip_code', old_zip_code, zip_code)
-    _add_if_different(log_entry_data, 'city', old_city, city)
-    _add_if_different(log_entry_data, 'street', old_street, street)
-    _add_if_different(
-        log_entry_data, 'phone_number', old_phone_number, phone_number
-    )
-    log_entry = user_log_service.build_entry(
-        'user-details-updated',
-        user_id,
-        log_entry_data,
-        occurred_at=occurred_at,
-    )
-    db.session.add(log_entry)
+
+    return event
+
+
+def _persist_details_update(
+    event: UserDetailsUpdatedEvent,
+    log_entry: UserLogEntry,
+    db_detail: DbUserDetail,
+    new_first_name: str | None,
+    new_last_name: str | None,
+    new_date_of_birth: date | None,
+    new_country: str | None,
+    new_zip_code: str | None,
+    new_city: str | None,
+    new_street: str | None,
+    new_phone_number: str | None,
+) -> None:
+    db_detail.first_name = new_first_name
+    db_detail.last_name = new_last_name
+    db_detail.date_of_birth = new_date_of_birth
+    db_detail.country = new_country
+    db_detail.zip_code = new_zip_code
+    db_detail.city = new_city
+    db_detail.street = new_street
+    db_detail.phone_number = new_phone_number
+
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
-
-    user = user_service.get_user(detail.user_id)
-    return UserDetailsUpdatedEvent(
-        occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
-    )
-
-
-def _add_if_different(
-    log_entry_data: UserLogEntryData,
-    base_key_name: str,
-    old_value: str,
-    new_value,
-) -> None:
-    if old_value != new_value:
-        log_entry_data[f'old_{base_key_name}'] = _to_str_if_not_none(old_value)
-        log_entry_data[f'new_{base_key_name}'] = _to_str_if_not_none(new_value)
-
-
-def _to_str_if_not_none(value: Any) -> str | None:
-    return str(value) if (value is not None) else None
 
 
 def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:
     """Set a value for a key in the user's detail extras map."""
-    detail = _get_user_detail(user_id)
+    detail = _get_db_user_detail(user_id)
 
     if detail.extras is None:
         detail.extras = {}
@@ -336,7 +323,7 @@ def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:
 
 def remove_user_detail_extra(user_id: UserID, key: str) -> None:
     """Remove the entry with that key from the user's detail extras map."""
-    detail = _get_user_detail(user_id)
+    detail = _get_db_user_detail(user_id)
 
     if (detail.extras is None) or (key not in detail.extras):
         return
@@ -350,7 +337,7 @@ def _get_db_user(user_id: UserID) -> DbUser:
     return user_service.get_db_user(user_id)
 
 
-def _get_user_detail(user_id: UserID) -> DbUserDetail:
+def _get_db_user_detail(user_id: UserID) -> DbUserDetail:
     """Return the user's details, or raise an exception."""
     detail = db.session.scalars(
         select(DbUserDetail).filter_by(user_id=user_id)
