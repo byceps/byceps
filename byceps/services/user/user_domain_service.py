@@ -14,6 +14,7 @@ from typing import Any
 from byceps.database import generate_uuid4, generate_uuid7
 from byceps.events.user import (
     UserAccountCreatedEvent,
+    UserAccountDeletedEvent,
     UserAccountSuspendedEvent,
     UserAccountUnsuspendedEvent,
     UserDetailsUpdatedEvent,
@@ -259,6 +260,55 @@ def _build_account_unsuspended_log_entry(
         id=generate_uuid7(),
         occurred_at=occurred_at,
         event_type='user-unsuspended',
+        user_id=user.id,
+        data={
+            'initiator_id': str(initiator.id),
+            'reason': reason,
+        },
+    )
+
+
+def delete_account(
+    user: User,
+    initiator: User,
+    reason: str,
+) -> tuple[UserAccountDeletedEvent, UserLogEntry]:
+    """Delete the user account."""
+    occurred_at = datetime.utcnow()
+
+    event = _build_account_deleted_event(occurred_at, initiator, user)
+
+    log_entry = _build_account_deleted_log_entry(
+        occurred_at, initiator, user, reason
+    )
+
+    return event, log_entry
+
+
+def _build_account_deleted_event(
+    occurred_at: datetime,
+    initiator: User,
+    user: User,
+) -> UserAccountDeletedEvent:
+    return UserAccountDeletedEvent(
+        occurred_at=occurred_at,
+        initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+    )
+
+
+def _build_account_deleted_log_entry(
+    occurred_at: datetime,
+    initiator: User,
+    user: User,
+    reason: str,
+) -> UserLogEntry:
+    return UserLogEntry(
+        id=generate_uuid7(),
+        occurred_at=occurred_at,
+        event_type='user-deleted',
         user_id=user.id,
         data={
             'initiator_id': str(initiator.id),
