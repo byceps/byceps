@@ -45,12 +45,12 @@ def create_for_consent(user: User) -> VerificationToken:
 def _create_token(
     user: User, purpose: Purpose, *, data: dict[str, str] | None = None
 ) -> VerificationToken:
-    token = DbVerificationToken(user.id, purpose, data=data)
+    db_token = DbVerificationToken(user.id, purpose, data=data)
 
-    db.session.add(token)
+    db.session.add(db_token)
     db.session.commit()
 
-    return _db_entity_to_token(token)
+    return _db_entity_to_token(db_token)
 
 
 def delete_token(token: str) -> None:
@@ -116,25 +116,25 @@ def find_for_consent_by_token(token_value: str) -> VerificationToken | None:
 def _find_for_purpose_by_token(
     token_value: str, purpose: Purpose
 ) -> VerificationToken | None:
-    token = db.session.scalars(
+    db_token = db.session.scalars(
         select(DbVerificationToken)
         .filter_by(token=token_value)
         .filter_by(_purpose=purpose.name)
     ).first()
 
-    if token is None:
+    if db_token is None:
         return None
 
-    return _db_entity_to_token(token)
+    return _db_entity_to_token(db_token)
 
 
-def _db_entity_to_token(token: DbVerificationToken) -> VerificationToken:
+def _db_entity_to_token(db_token: DbVerificationToken) -> VerificationToken:
     return VerificationToken(
-        token=token.token,
-        created_at=token.created_at,
-        user_id=token.user_id,
-        purpose=token.purpose,
-        data=token.data if token.data is not None else {},
+        token=db_token.token,
+        created_at=db_token.created_at,
+        user_id=db_token.user_id,
+        purpose=db_token.purpose,
+        data=db_token.data if db_token.data is not None else {},
     )
 
 
