@@ -54,7 +54,7 @@ def invalidate_email_address():
         abort(404, 'Unknown email address')
 
     event = user_email_address_service.invalidate_email_address(
-        user.id, req.reason
+        user, req.reason
     )
 
     user_signals.email_address_invalidated.send(None, event=event)

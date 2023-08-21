@@ -92,11 +92,15 @@ def confirm_email_address_via_verification_token(
     """
     user_id = verification_token.user_id
 
+    user = user_service.find_user(user_id)
+    if not user:
+        return Err('Unknown user ID in verification token')
+
     token_email_address = verification_token.data.get('email_address')
     if not token_email_address:
-        return Err('Token contains no email address.')
+        return Err('Verification token contains no email address.')
 
-    confirmation_result = confirm_email_address(user_id, token_email_address)
+    confirmation_result = confirm_email_address(user, token_email_address)
     if confirmation_result.is_err():
         return Err(confirmation_result.unwrap_err())
 
@@ -108,10 +112,10 @@ def confirm_email_address_via_verification_token(
 
 
 def confirm_email_address(
-    user_id: UserID, email_address_to_confirm: str
+    user: User, email_address_to_confirm: str
 ) -> Result[UserEmailAddressConfirmedEvent, str]:
     """Confirm the email address of the user account."""
-    db_user = user_service.get_db_user(user_id)
+    db_user = user_service.get_db_user(user.id)
 
     if db_user.email_address is None:
         return Err('Account has no email address assigned.')
@@ -126,7 +130,7 @@ def confirm_email_address(
     log_entry_data = {'email_address': db_user.email_address}
     log_entry = user_log_service.build_entry(
         'user-email-address-confirmed',
-        db_user.id,
+        user.id,
         log_entry_data,
         occurred_at=occurred_at,
     )
@@ -138,15 +142,15 @@ def confirm_email_address(
         occurred_at=occurred_at,
         initiator_id=db_user.id,
         initiator_screen_name=db_user.screen_name,
-        user_id=db_user.id,
-        user_screen_name=db_user.screen_name,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
     return Ok(event)
 
 
 def invalidate_email_address(
-    user_id: UserID, reason: str, *, initiator: User | None = None
+    user: User, reason: str, *, initiator: User | None = None
 ) -> UserEmailAddressInvalidatedEvent:
     """Invalidate the user's email address by marking it as unverified.
 
@@ -154,7 +158,7 @@ def invalidate_email_address(
     because of a permanent issue (unknown mailbox, unknown domain, etc.)
     but not a temporary one (for example: mailbox full).
     """
-    db_user = user_service.get_db_user(user_id)
+    db_user = user_service.get_db_user(user.id)
 
     occurred_at = datetime.utcnow()
 
@@ -168,7 +172,7 @@ def invalidate_email_address(
         log_entry_data['initiator_id'] = str(initiator.id)
     log_entry = user_log_service.build_entry(
         'user-email-address-invalidated',
-        db_user.id,
+        user.id,
         log_entry_data,
         occurred_at=occurred_at,
     )
@@ -180,8 +184,8 @@ def invalidate_email_address(
         occurred_at=occurred_at,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,
-        user_id=db_user.id,
-        user_screen_name=db_user.screen_name,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
 
