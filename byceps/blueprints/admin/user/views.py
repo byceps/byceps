@@ -431,7 +431,7 @@ def delete_account(user_id):
     initiator = g.user
     reason = form.reason.data.strip()
 
-    event = user_deletion_service.delete_account(user.id, initiator, reason)
+    event = user_deletion_service.delete_account(user, initiator, reason)
 
     user_signals.account_deleted.send(None, event=event)
 

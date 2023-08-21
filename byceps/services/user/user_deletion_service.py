@@ -13,19 +13,18 @@ from byceps.events.user import UserAccountDeletedEvent
 from byceps.services.authentication.password import authn_password_service
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authorization import authz_service
+from byceps.services.user.models.user import User
 from byceps.services.verification_token import verification_token_service
-from byceps.typing import UserID
 
 from . import user_log_service, user_service
 from .dbmodels.user import DbUser
-from .models.user import User
 
 
 def delete_account(
-    user_id: UserID, initiator: User, reason: str
+    user: User, initiator: User, reason: str
 ) -> UserAccountDeletedEvent:
     """Delete the user account."""
-    db_user = user_service.get_db_user(user_id)
+    db_user = user_service.get_db_user(user.id)
 
     user_screen_name_before_anonymization = db_user.screen_name
 
@@ -34,7 +33,7 @@ def delete_account(
 
     log_entry = user_log_service.build_entry(
         'user-deleted',
-        db_user.id,
+        user.id,
         {
             'initiator_id': str(initiator.id),
             'reason': reason,
@@ -44,20 +43,20 @@ def delete_account(
 
     # Deassign authorization roles.
     authz_service.deassign_all_roles_from_user(
-        db_user.id, initiator=initiator, commit=False
+        user.id, initiator=initiator, commit=False
     )
 
     db.session.commit()
 
-    authn_session_service.delete_session_tokens_for_user(db_user.id)
-    authn_password_service.delete_password_hash(db_user.id)
-    verification_token_service.delete_tokens_for_user(db_user.id)
+    authn_session_service.delete_session_tokens_for_user(user.id)
+    authn_password_service.delete_password_hash(user.id)
+    verification_token_service.delete_tokens_for_user(user.id)
 
     return UserAccountDeletedEvent(
         occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=db_user.id,
+        user_id=user.id,
         user_screen_name=user_screen_name_before_anonymization,
     )
 

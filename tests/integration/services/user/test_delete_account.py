@@ -67,7 +67,7 @@ def test_delete_account(admin_app, role, make_user):
 
     # -------------------------------- #
 
-    user_deletion_service.delete_account(user_id, admin_user, reason=reason)
+    user_deletion_service.delete_account(user, admin_user, reason=reason)
 
     # -------------------------------- #
 
