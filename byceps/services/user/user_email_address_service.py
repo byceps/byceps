@@ -8,8 +8,6 @@ byceps.services.user.user_email_address_service
 
 from __future__ import annotations
 
-from datetime import datetime
-
 from flask_babel import gettext
 
 from byceps.database import db
@@ -157,35 +155,28 @@ def invalidate_email_address(
     because of a permanent issue (unknown mailbox, unknown domain, etc.)
     but not a temporary one (for example: mailbox full).
     """
-    db_user = user_service.get_db_user(user.id)
+    email_address = user_service.get_email_address_data(user.id).address
 
-    occurred_at = datetime.utcnow()
+    event, log_entry = user_domain_service.invalidate_email_address(
+        user, email_address, reason, initiator=initiator
+    )
+
+    _persist_email_address_invalidation(user.id, log_entry)
+
+    return event
+
+
+def _persist_email_address_invalidation(
+    user_id: UserID, log_entry: UserLogEntry
+) -> None:
+    db_user = user_service.get_db_user(user_id)
 
     db_user.email_address_verified = False
 
-    log_entry_data = {
-        'email_address': db_user.email_address,
-        'reason': reason,
-    }
-    if initiator:
-        log_entry_data['initiator_id'] = str(initiator.id)
-    log_entry = user_log_service.build_entry(
-        'user-email-address-invalidated',
-        user.id,
-        log_entry_data,
-        occurred_at=occurred_at,
-    )
-    db.session.add(log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
-
-    return UserEmailAddressInvalidatedEvent(
-        occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
-        initiator_screen_name=initiator.screen_name if initiator else None,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
-    )
 
 
 def send_email_address_change_email_for_site(

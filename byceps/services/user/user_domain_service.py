@@ -19,6 +19,7 @@ from byceps.events.user import (
     UserDetailsUpdatedEvent,
     UserEmailAddressChangedEvent,
     UserEmailAddressConfirmedEvent,
+    UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
 from byceps.services.site.models import SiteID
@@ -447,6 +448,63 @@ def _build_email_address_confirmed_log_entry(
         event_type='user-email-address-confirmed',
         user_id=user.id,
         data={'email_address': email_address},
+    )
+
+
+def invalidate_email_address(
+    user: User,
+    email_address: str | None,
+    reason: str,
+    *,
+    initiator: User | None = None,
+) -> tuple[UserEmailAddressInvalidatedEvent, UserLogEntry]:
+    """Invalidate the user's email address."""
+    occurred_at = datetime.utcnow()
+
+    event = _build_email_address_invalidated_event(occurred_at, initiator, user)
+
+    log_entry = _build_email_address_invalidated_log_entry(
+        occurred_at, initiator, user, email_address, reason
+    )
+
+    return event, log_entry
+
+
+def _build_email_address_invalidated_event(
+    occurred_at: datetime,
+    initiator: User | None,
+    user: User,
+) -> UserEmailAddressInvalidatedEvent:
+    return UserEmailAddressInvalidatedEvent(
+        occurred_at=occurred_at,
+        initiator_id=initiator.id if initiator else None,
+        initiator_screen_name=initiator.screen_name if initiator else None,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+    )
+
+
+def _build_email_address_invalidated_log_entry(
+    occurred_at: datetime,
+    initiator: User | None,
+    user: User,
+    email_address: str,
+    reason: str,
+) -> UserLogEntry:
+    data = {
+        'email_address': email_address,
+        'reason': reason,
+    }
+
+    if initiator:
+        data['initiator_id'] = str(initiator.id)
+
+    return UserLogEntry(
+        id=generate_uuid7(),
+        occurred_at=occurred_at,
+        event_type='user-email-address-invalidated',
+        user_id=user.id,
+        data=data,
     )
 
 
