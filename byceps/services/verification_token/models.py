@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
-from byceps.typing import UserID
+from byceps.services.user.models.user import User
 
 
 Purpose = Enum(
@@ -28,6 +28,6 @@ Purpose = Enum(
 class VerificationToken:
     token: str
     created_at: datetime
-    user_id: UserID
+    user: User
     purpose: Purpose
     data: dict[str, str]

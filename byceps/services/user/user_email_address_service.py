@@ -92,11 +92,7 @@ def confirm_email_address_via_verification_token(
     """Confirm the email address of the user account assigned with that
     verification token.
     """
-    user_id = verification_token.user_id
-
-    user = user_service.find_user(user_id)
-    if not user:
-        return Err('Unknown user ID in verification token')
+    user = verification_token.user
 
     token_email_address = verification_token.data.get('email_address')
     if not token_email_address:
@@ -240,7 +236,7 @@ def change_email_address(
     if not new_email_address:
         return Err('Token contains no email address.')
 
-    user = user_service.get_user(verification_token.user_id)
+    user = verification_token.user
     verified = True
     initiator = user
 

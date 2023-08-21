@@ -117,8 +117,8 @@ def confirm(token):
     if verification_token is None:
         abort(404)
 
-    user = user_service.find_user(verification_token.user_id)
-    if (user is None) or user.suspended or user.deleted:
+    user = verification_token.user
+    if user.suspended or user.deleted:
         flash_error(gettext('No valid token specified.'))
         abort(404)
 
@@ -160,8 +160,8 @@ def change(token):
     if verification_token is None:
         abort(404)
 
-    user = user_service.find_user(verification_token.user_id)
-    if (user is None) or user.suspended or user.deleted:
+    user = verification_token.user
+    if user.suspended or user.deleted:
         flash_error(gettext('No valid token specified.'))
         abort(404)
 

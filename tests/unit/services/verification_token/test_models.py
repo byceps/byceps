@@ -4,7 +4,6 @@
 """
 
 from datetime import datetime
-from uuid import UUID
 
 from freezegun import freeze_time
 import pytest
@@ -48,11 +47,11 @@ from byceps.services.verification_token.models import Purpose, VerificationToken
         ),
     ],
 )
-def test_is_expired(purpose, now, expected):
+def test_is_expired(user, purpose, now, expected):
     token = VerificationToken(
         token='fake',
         created_at=datetime(2014, 11, 26, 17, 44, 53),
-        user_id=UUID('b57acf68-c258-4b0a-9f00-bb989b36de8a'),
+        user=user,
         purpose=purpose,
         data={},
     )

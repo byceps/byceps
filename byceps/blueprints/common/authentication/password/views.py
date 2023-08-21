@@ -221,8 +221,8 @@ def _verify_reset_token(token: str) -> VerificationToken:
         )
         abort(404)
 
-    user = user_service.find_active_user(verification_token.user_id)
-    if user is None:
+    user = verification_token.user
+    if user.suspended or user.deleted:
         flash_error(gettext('No valid token specified.'))
         abort(404)
 

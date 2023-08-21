@@ -11,7 +11,6 @@ from flask_babel import gettext
 from byceps.events.auth import PasswordUpdatedEvent
 from byceps.services.email import email_service
 from byceps.services.email.models import NameAndAddress
-from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import VerificationToken
@@ -58,7 +57,7 @@ def reset_password(
     verification_token: VerificationToken, password: str
 ) -> PasswordUpdatedEvent:
     """Reset the user's password."""
-    user = user_service.get_user(verification_token.user_id)
+    user = verification_token.user
 
     verification_token_service.delete_token(verification_token.token)
 

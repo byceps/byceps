@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
@@ -50,7 +51,7 @@ def _create_token(
     db.session.add(db_token)
     db.session.commit()
 
-    return _db_entity_to_token(db_token)
+    return _db_entity_to_token(db_token, user)
 
 
 def delete_token(token: str) -> None:
@@ -125,14 +126,18 @@ def _find_for_purpose_by_token(
     if db_token is None:
         return None
 
-    return _db_entity_to_token(db_token)
+    user = user_service.get_user(db_token.user_id)
+
+    return _db_entity_to_token(db_token, user)
 
 
-def _db_entity_to_token(db_token: DbVerificationToken) -> VerificationToken:
+def _db_entity_to_token(
+    db_token: DbVerificationToken, user: User
+) -> VerificationToken:
     return VerificationToken(
         token=db_token.token,
         created_at=db_token.created_at,
-        user_id=db_token.user_id,
+        user=user,
         purpose=db_token.purpose,
         data=db_token.data if db_token.data is not None else {},
     )

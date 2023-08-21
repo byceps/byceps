@@ -34,9 +34,9 @@ def consent_form(token, *, erroneous_form=None):
     """
     verification_token = _get_verification_token_or_404(token)
 
-    user_id = verification_token.user_id
+    user = verification_token.user
 
-    unconsented_subjects = _get_unconsented_subjects_for_user(user_id)
+    unconsented_subjects = _get_unconsented_subjects_for_user(user.id)
 
     ConsentForm = create_consent_form(unconsented_subjects)
     form = erroneous_form if erroneous_form else ConsentForm()
@@ -61,9 +61,9 @@ def consent(token):
     """Consent to the specified subjects."""
     verification_token = _get_verification_token_or_404(token)
 
-    user_id = verification_token.user_id
+    user = verification_token.user
 
-    unconsented_subjects = _get_unconsented_subjects_for_user(user_id)
+    unconsented_subjects = _get_unconsented_subjects_for_user(user.id)
 
     ConsentForm = create_consent_form(unconsented_subjects)
     form = ConsentForm(request.form)
@@ -80,7 +80,7 @@ def consent(token):
 
     expressed_at = datetime.utcnow()
     consent_service.consent_to_subjects(
-        user_id, subject_ids_from_form, expressed_at
+        user.id, subject_ids_from_form, expressed_at
     )
     verification_token_service.delete_token(verification_token.token)
 
