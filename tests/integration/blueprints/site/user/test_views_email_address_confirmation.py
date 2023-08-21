@@ -40,14 +40,15 @@ def user5(make_user):
 
 @pytest.fixture(scope='module')
 def test_valid_token(site_app, user1):
-    user_id = user1.id
+    user = user1
+    user_id = user.id
 
     user_before = user_service.get_db_user(user_id)
     assert not user_before.email_address_verified
     assert not user_before.initialized
     assert 'board_user' not in get_role_ids(user_id)
 
-    token = create_verification_token(user_id, 'user1@mail.test')
+    token = create_verification_token(user, 'user1@mail.test')
 
     # -------------------------------- #
 
@@ -86,13 +87,14 @@ def test_unknown_token(site_app, site, user2):
 
 
 def test_initialized_user(site_app, user3):
-    user_id = user3.id
+    user = user3
+    user_id = user.id
 
     user_before = user_service.get_db_user(user_id)
     assert not user_before.email_address_verified
     assert user_before.initialized
 
-    token = create_verification_token(user_id, 'user3@mail.test')
+    token = create_verification_token(user, 'user3@mail.test')
 
     # -------------------------------- #
 
@@ -108,7 +110,8 @@ def test_initialized_user(site_app, user3):
 
 
 def test_account_without_email_address(site_app, site, user4):
-    user_id = user4.id
+    user = user4
+    user_id = user.id
 
     user_with_email_address = user_service.get_db_user(user_id)
     user_with_email_address.email_address = None
@@ -119,7 +122,7 @@ def test_account_without_email_address(site_app, site, user4):
     assert not user_before.email_address_verified
     assert user_before.initialized
 
-    token = create_verification_token(user_id, 'user4@mail.test')
+    token = create_verification_token(user, 'user4@mail.test')
 
     # -------------------------------- #
 
@@ -134,13 +137,14 @@ def test_account_without_email_address(site_app, site, user4):
 
 
 def test_different_user_and_token_email_addresses(site_app, site, user5):
-    user_id = user5.id
+    user = user5
+    user_id = user.id
 
     user_before = user_service.get_db_user(user_id)
     assert not user_before.email_address_verified
     assert user_before.initialized
 
-    token = create_verification_token(user_id, 'user5@mail-other.test')
+    token = create_verification_token(user, 'user5@mail-other.test')
 
     # -------------------------------- #
 
@@ -167,8 +171,8 @@ def get_role_ids(user_id):
     return authz_service.find_role_ids_for_user(user_id)
 
 
-def create_verification_token(user_id, email_address):
+def create_verification_token(user, email_address):
     token = verification_token_service.create_for_email_address_confirmation(
-        user_id, email_address
+        user, email_address
     )
     return token.token

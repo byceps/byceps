@@ -60,7 +60,7 @@ def send_email_address_confirmation_email(
 
     verification_token = (
         verification_token_service.create_for_email_address_confirmation(
-            user.id, email_address
+            user, email_address
         )
     )
     confirmation_url = (
@@ -204,7 +204,7 @@ def send_email_address_change_email(
 
     verification_token = (
         verification_token_service.create_for_email_address_change(
-            user.id, new_email_address
+            user, new_email_address
         )
     )
     confirmation_url = (

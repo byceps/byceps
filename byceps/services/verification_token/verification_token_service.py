@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 from .dbmodels import DbVerificationToken
@@ -20,31 +21,31 @@ from .models import Purpose, VerificationToken
 
 
 def create_for_email_address_change(
-    user_id: UserID, new_email_address: str
+    user: User, new_email_address: str
 ) -> VerificationToken:
     data = {'new_email_address': new_email_address}
-    return _create_token(user_id, Purpose.email_address_change, data=data)
+    return _create_token(user, Purpose.email_address_change, data=data)
 
 
 def create_for_email_address_confirmation(
-    user_id: UserID, email_address: str
+    user: User, email_address: str
 ) -> VerificationToken:
     data = {'email_address': email_address}
-    return _create_token(user_id, Purpose.email_address_confirmation, data=data)
+    return _create_token(user, Purpose.email_address_confirmation, data=data)
 
 
-def create_for_password_reset(user_id: UserID) -> VerificationToken:
-    return _create_token(user_id, Purpose.password_reset)
+def create_for_password_reset(user: User) -> VerificationToken:
+    return _create_token(user, Purpose.password_reset)
 
 
-def create_for_consent(user_id: UserID) -> VerificationToken:
-    return _create_token(user_id, Purpose.consent)
+def create_for_consent(user: User) -> VerificationToken:
+    return _create_token(user, Purpose.consent)
 
 
 def _create_token(
-    user_id: UserID, purpose: Purpose, *, data: dict[str, str] | None = None
+    user: User, purpose: Purpose, *, data: dict[str, str] | None = None
 ) -> VerificationToken:
-    token = DbVerificationToken(user_id, purpose, data=data)
+    token = DbVerificationToken(user.id, purpose, data=data)
 
     db.session.add(token)
     db.session.commit()

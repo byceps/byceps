@@ -32,7 +32,7 @@ def prepare_password_reset(
     recipients = [email_address]
 
     verification_token = verification_token_service.create_for_password_reset(
-        user.id
+        user
     )
     confirmation_url = f'{url_root}authentication/password/reset/token/{verification_token.token}'
 

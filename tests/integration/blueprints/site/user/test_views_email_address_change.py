@@ -19,7 +19,7 @@ def test_valid_token(site_app, site, make_user):
     assert user_before.email_address == 'change-success-before@mail.test'
     assert user_before.email_address_verified
 
-    token = create_verification_token(user.id, 'change-success-after@mail.test')
+    token = create_verification_token(user, 'change-success-after@mail.test')
 
     # -------------------------------- #
 
@@ -68,8 +68,8 @@ def change(app, token):
         return client.get(url)
 
 
-def create_verification_token(user_id, new_email_address):
+def create_verification_token(user, new_email_address):
     token = verification_token_service.create_for_email_address_change(
-        user_id, new_email_address
+        user, new_email_address
     )
     return token.token
