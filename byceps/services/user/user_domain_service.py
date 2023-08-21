@@ -18,10 +18,10 @@ from byceps.events.user import (
     UserAccountUnsuspendedEvent,
     UserDetailsUpdatedEvent,
     UserEmailAddressChangedEvent,
+    UserEmailAddressConfirmedEvent,
     UserScreenNameChangedEvent,
 )
 from byceps.services.site.models import SiteID
-from byceps.services.user.models.log import UserLogEntry, UserLogEntryData
 from byceps.typing import UserID
 from byceps.util.result import Err, Ok, Result
 
@@ -30,7 +30,8 @@ from .errors import (
     InvalidEmailAddressError,
     InvalidScreenNameError,
 )
-from .models.user import User
+from .models.log import UserLogEntry, UserLogEntryData
+from .models.user import User, UserEmailAddress
 
 
 def create_account(
@@ -393,6 +394,59 @@ def _build_email_address_changed_log_entry(
         event_type='user-email-address-changed',
         user_id=user.id,
         data=data,
+    )
+
+
+def confirm_email_address(
+    user: User,
+    current_email_address: UserEmailAddress,
+    email_address_to_confirm: str,
+) -> Result[tuple[UserEmailAddressConfirmedEvent, UserLogEntry], str]:
+    """Confirm the e-mail address of the user account."""
+    if current_email_address.address is None:
+        return Err('Account has no email address assigned.')
+
+    if current_email_address.address != email_address_to_confirm:
+        return Err('Email addresses do not match.')
+
+    if current_email_address.verified:
+        return Err('Email address is already verified.')
+
+    occurred_at = datetime.utcnow()
+
+    event = _build_email_address_confirmed_event(occurred_at, user)
+
+    log_entry = _build_email_address_confirmed_log_entry(
+        occurred_at, user, email_address_to_confirm
+    )
+
+    return Ok((event, log_entry))
+
+
+def _build_email_address_confirmed_event(
+    occurred_at: datetime,
+    user: User,
+) -> UserEmailAddressConfirmedEvent:
+    return UserEmailAddressConfirmedEvent(
+        occurred_at=occurred_at,
+        initiator_id=user.id,
+        initiator_screen_name=user.screen_name,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+    )
+
+
+def _build_email_address_confirmed_log_entry(
+    occurred_at: datetime,
+    user: User,
+    email_address: str,
+) -> UserLogEntry:
+    return UserLogEntry(
+        id=generate_uuid7(),
+        occurred_at=occurred_at,
+        event_type='user-email-address-confirmed',
+        user_id=user.id,
+        data={'email_address': email_address},
     )
 
 

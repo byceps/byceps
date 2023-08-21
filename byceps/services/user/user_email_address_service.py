@@ -22,15 +22,19 @@ from byceps.services.email import email_config_service, email_service
 from byceps.services.email.models import NameAndAddress
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
-from byceps.services.user import user_command_service, user_service
+from byceps.services.user import (
+    user_command_service,
+    user_domain_service,
+    user_log_service,
+    user_service,
+)
+from byceps.services.user.models.log import UserLogEntry
+from byceps.services.user.models.user import User
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import VerificationToken
 from byceps.typing import UserID
 from byceps.util.l10n import force_user_locale
 from byceps.util.result import Err, Ok, Result
-
-from . import user_log_service
-from .models.user import User
 
 
 def send_email_address_confirmation_email_for_site(
@@ -115,38 +119,33 @@ def confirm_email_address(
     user: User, email_address_to_confirm: str
 ) -> Result[UserEmailAddressConfirmedEvent, str]:
     """Confirm the email address of the user account."""
-    db_user = user_service.get_db_user(user.id)
+    current_email_address = user_service.get_email_address_data(user.id)
 
-    if db_user.email_address is None:
-        return Err('Account has no email address assigned.')
+    result = user_domain_service.confirm_email_address(
+        user, current_email_address, email_address_to_confirm
+    )
 
-    if db_user.email_address != email_address_to_confirm:
-        return Err('Email addresses do not match.')
+    if result.is_err():
+        return Err(result.unwrap_err())
 
-    occurred_at = datetime.utcnow()
+    event, log_entry = result.unwrap()
+
+    _persist_email_address_confirmation(user.id, log_entry)
+
+    return Ok(event)
+
+
+def _persist_email_address_confirmation(
+    user_id: UserID, log_entry: UserLogEntry
+) -> None:
+    db_user = user_service.get_db_user(user_id)
 
     db_user.email_address_verified = True
 
-    log_entry_data = {'email_address': db_user.email_address}
-    log_entry = user_log_service.build_entry(
-        'user-email-address-confirmed',
-        user.id,
-        log_entry_data,
-        occurred_at=occurred_at,
-    )
-    db.session.add(log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
-
-    event = UserEmailAddressConfirmedEvent(
-        occurred_at=occurred_at,
-        initiator_id=db_user.id,
-        initiator_screen_name=db_user.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
-    )
-
-    return Ok(event)
 
 
 def invalidate_email_address(
