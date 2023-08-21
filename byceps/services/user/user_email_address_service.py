@@ -240,12 +240,12 @@ def change_email_address(
     if not new_email_address:
         return Err('Token contains no email address.')
 
-    db_user = user_service.get_db_user(verification_token.user_id)
+    user = user_service.get_user(verification_token.user_id)
     verified = True
-    initiator = db_user
+    initiator = user
 
     event = user_command_service.change_email_address(
-        db_user, new_email_address, verified, initiator
+        user, new_email_address, verified, initiator
     )
 
     verification_token_service.delete_token(verification_token.token)

@@ -58,10 +58,8 @@ def reset_password(
     verification_token: VerificationToken, password: str
 ) -> PasswordUpdatedEvent:
     """Reset the user's password."""
-    db_user = user_service.get_db_user(verification_token.user_id)
+    user = user_service.get_user(verification_token.user_id)
 
     verification_token_service.delete_token(verification_token.token)
 
-    return authn_password_service.update_password_hash(
-        db_user, password, db_user
-    )
+    return authn_password_service.update_password_hash(user, password, user)
