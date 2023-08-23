@@ -181,7 +181,10 @@ def _configure(
 def _get_config_from_environment() -> Iterator[tuple[str, str]]:
     """Obtain selected config values from environment variables."""
     for key in (
+        'API_ENABLED',
         'APP_MODE',
+        'DEBUG',
+        'DEBUG_TOOLBAR_ENABLED',
         'MAIL_HOST',
         'MAIL_PASSWORD',
         'MAIL_PORT',
@@ -190,10 +193,13 @@ def _get_config_from_environment() -> Iterator[tuple[str, str]]:
         'MAIL_USE_SSL',
         'MAIL_USERNAME',
         'METRICS_ENABLED',
+        'PROPAGATE_EXCEPTIONS',
         'REDIS_URL',
         'SECRET_KEY',
+        'SESSION_COOKIE_SECURE',
         'SITE_ID',
         'SQLALCHEMY_DATABASE_URI',
+        'STYLE_GUIDE_ENABLED',
     ):
         value = os.environ.get(key)
         if value:
