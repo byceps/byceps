@@ -5,7 +5,6 @@ Create and initialize the site application.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-
 from byceps.application import create_site_app
 from byceps.util.sentry import configure_sentry_from_env
 
