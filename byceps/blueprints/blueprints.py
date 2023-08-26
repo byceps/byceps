@@ -31,6 +31,9 @@ def register_blueprints(app: Flask) -> None:
 
     if app.config['API_ENABLED']:
         register_api_blueprints(app)
+        log.info('API: enabled')
+    else:
+        log.info('API: disabled')
 
 
 def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
@@ -42,21 +45,31 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
 
     if app_mode.is_admin():
         yield from _get_blueprints_admin()
-        log.info('Admin blueprints enabled')
-    elif app_mode.is_site():
+        log.info('Admin blueprints: enabled')
+    else:
+        log.info('Admin blueprints: disabled')
+
+    if app_mode.is_site():
         yield from _get_blueprints_site()
-        log.info('Site blueprints enabled')
+        log.info('Site blueprints: enabled')
+    else:
+        log.info('Site blueprints: disabled')
 
     yield ('monitoring.healthcheck', '/health')
 
     if app.config['METRICS_ENABLED']:
         yield ('monitoring.metrics', '/metrics')
-        log.info('Metrics enabled')
+        log.info('Metrics: enabled')
+    else:
+        log.info('Metrics: disabled')
 
-    if app_mode.is_admin() or app_mode.is_site():
-        if app.config.get('STYLE_GUIDE_ENABLED', False):
-            yield ('common.style_guide', '/style_guide')
-            log.info('Style guide enabled')
+    if (app_mode.is_admin() or app_mode.is_site()) and app.config.get(
+        'STYLE_GUIDE_ENABLED', False
+    ):
+        yield ('common.style_guide', '/style_guide')
+        log.info('Style guide: enabled')
+    else:
+        log.info('Style guide: disabled')
 
 
 def _get_blueprints_common() -> Iterator[BlueprintReg]:
@@ -171,5 +184,3 @@ def register_api_blueprints(app: Flask) -> None:
 
     api.register_blueprint(api_v1, url_prefix='/v1')
     app.register_blueprint(api, url_prefix='/api')
-
-    log.info('API enabled')

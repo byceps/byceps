@@ -38,13 +38,13 @@ def configure_sentry_from_env() -> None:
     """Initialize and configure the Sentry SDK based on the environment."""
     config = get_sentry_app_config_from_env()
     if config is None:
-        log.info('Sentry integration disabled (no DSN configured)')
+        log.info('Sentry integration: disabled (no DSN configured)')
         return None
 
     configure_sentry(config)
 
     log.info(
-        'Sentry integration enabled',
+        'Sentry integration: enabled',
         environment=config.environment,
         app_mode=config.app_mode,
         site_id=config.site_id,

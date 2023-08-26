@@ -137,6 +137,9 @@ def _create_app(
 
     if app.debug and app.config.get('DEBUG_TOOLBAR_ENABLED', False):
         _enable_debug_toolbar(app)
+        log.info('Debug toolbar: enabled')
+    else:
+        log.info('Debug toolbar: disabled')
 
     log.info(
         'Application created',
@@ -248,7 +251,6 @@ def _enable_debug_toolbar(app: Flask) -> None:
 
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     DebugToolbarExtension(app)
-    log.info('Debug toolbar enabled')
 
 
 def _enable_rq_dashboard(app: Flask) -> None:
@@ -261,4 +263,4 @@ def _enable_rq_dashboard(app: Flask) -> None:
 
     app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
 
-    log.info('RQ dashboard enabled')
+    log.info('RQ dashboard: enabled')
