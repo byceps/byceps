@@ -165,10 +165,7 @@ def _configure(
         if isinstance(config_filename, str):
             config_filename = Path(config_filename)
 
-        if config_filename.suffix == '.py':
-            app.config.from_pyfile(str(config_filename))
-        else:
-            app.config.from_file(str(config_filename), load=rtoml.load)
+        app.config.from_file(str(config_filename), load=rtoml.load)
 
     if config_overrides is not None:
         app.config.from_mapping(config_overrides)
