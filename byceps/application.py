@@ -38,39 +38,27 @@ log = structlog.get_logger()
 
 
 def create_admin_app(
-    *,
-    config_filename: Path | str | None = None,
-    config_overrides: dict[str, Any] | None = None,
+    *, config_overrides: dict[str, Any] | None = None
 ) -> Flask:
     if config_overrides is None:
         config_overrides = {}
 
     config_overrides['APP_MODE'] = 'admin'
 
-    app = _create_app(
-        config_filename=config_filename,
-        config_overrides=config_overrides,
-    )
+    app = _create_app(config_overrides=config_overrides)
 
     _enable_rq_dashboard(app)
 
     return app
 
 
-def create_site_app(
-    *,
-    config_filename: Path | str | None = None,
-    config_overrides: dict[str, Any] | None = None,
-) -> Flask:
+def create_site_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
     if config_overrides is None:
         config_overrides = {}
 
     config_overrides['APP_MODE'] = 'site'
 
-    app = _create_app(
-        config_filename=config_filename,
-        config_overrides=config_overrides,
-    )
+    app = _create_app(config_overrides=config_overrides)
 
     _init_site_app(app)
 
@@ -101,15 +89,11 @@ def create_worker_app() -> Flask:
     return _create_app(config_overrides=config_overrides)
 
 
-def _create_app(
-    *,
-    config_filename: Path | str | None = None,
-    config_overrides: dict[str, Any] | None = None,
-) -> Flask:
+def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
     """Create the actual Flask application."""
     app = Flask('byceps')
 
-    _configure(app, config_filename, config_overrides)
+    _configure(app, config_overrides)
 
     # Throw an exception when an undefined name is referenced in a template.
     # NB: Set via `app.jinja_options['undefined'] = ` instead of
@@ -151,19 +135,15 @@ def _create_app(
 
 
 def _configure(
-    app: Flask,
-    config_filename: Path | str | None = None,
-    config_overrides: dict[str, Any] | None = None,
+    app: Flask, config_overrides: dict[str, Any] | None = None
 ) -> None:
     """Configure application from file, environment variables, and defaults."""
     app.config.from_object(config_defaults)
 
-    if config_filename is None:
-        config_filename = os.environ.get('BYCEPS_CONFIG')
-
-    if config_filename is not None:
-        if isinstance(config_filename, str):
-            config_filename = Path(config_filename)
+    config_filename_str = os.environ.get('BYCEPS_CONFIG')
+    if config_filename_str is not None:
+        if isinstance(config_filename_str, str):
+            config_filename = Path(config_filename_str)
 
         app.config.from_file(str(config_filename), load=rtoml.load)
 
