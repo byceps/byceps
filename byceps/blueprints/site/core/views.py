@@ -8,10 +8,9 @@ byceps.blueprints.site.core.views
 
 from __future__ import annotations
 
-from http import HTTPStatus
 from typing import Any
 
-from flask import current_app, g, redirect, request, url_for
+from flask import current_app, g, request, url_for
 from flask_babel import get_locale
 
 from byceps.services.party import party_service
@@ -72,13 +71,3 @@ def inject_remote_addr() -> dict[str, Any]:
     return {
         'remote_addr': request.remote_addr,
     }
-
-
-@blueprint.get('/')
-def homepage():
-    """Set an optional URL path to redirect to from the root URL path (`/`).
-
-    Important: Don't specify the target with a leading slash unless you
-    really mean the root of the host.
-    """
-    return redirect(url_for('news.index'), code=HTTPStatus.TEMPORARY_REDIRECT)
