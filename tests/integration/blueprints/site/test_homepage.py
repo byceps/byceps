@@ -10,5 +10,6 @@ def test_homepage(site_app):
     with http_client(site_app) as client:
         response = client.get('/')
 
-    assert response.status_code == 307
-    assert response.location == '/news/'
+    # no redirect
+    assert response.status_code == 200
+    assert response.location is None
