@@ -11,7 +11,6 @@ from __future__ import annotations
 from collections.abc import Iterable
 from contextlib import contextmanager
 from datetime import date, datetime
-from pathlib import Path
 from secrets import token_hex
 from typing import Any
 from uuid import UUID
@@ -43,7 +42,14 @@ from byceps.services.user.models.user import User
 from byceps.typing import BrandID, PartyID, UserID
 
 
-CONFIG_FILENAME_TESTING = Path('..') / 'config' / 'testing.toml'
+CONFIG_OVERRIDES_FOR_TESTS = {
+    'MAIL_SUPPRESS_SEND': True,
+    'JOBS_ASYNC': False,
+    'REDIS_URL': 'redis://127.0.0.1:6379/0',
+    'SECRET_KEY': 'secret-key-for-testing-ONLY',
+    'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg2://byceps_test:test@127.0.0.1/byceps_test',
+    'TESTING': True,
+}
 
 
 def create_admin_app(config_overrides: dict[str, Any] | None = None) -> Flask:
@@ -52,10 +58,9 @@ def create_admin_app(config_overrides: dict[str, Any] | None = None) -> Flask:
 
     config_overrides['SERVER_NAME'] = 'admin.acmecon.test'
 
-    return _create_admin_app(
-        config_filename=CONFIG_FILENAME_TESTING,
-        config_overrides=config_overrides,
-    )
+    config_overrides.update(CONFIG_OVERRIDES_FOR_TESTS)
+
+    return _create_admin_app(config_overrides=config_overrides)
 
 
 def create_site_app(
@@ -67,10 +72,9 @@ def create_site_app(
     config_overrides['SERVER_NAME'] = 'www.acmecon.test'
     config_overrides['SITE_ID'] = site_id
 
-    return _create_site_app(
-        config_filename=CONFIG_FILENAME_TESTING,
-        config_overrides=config_overrides,
-    )
+    config_overrides.update(CONFIG_OVERRIDES_FOR_TESTS)
+
+    return _create_site_app(config_overrides=config_overrides)
 
 
 def generate_token(n: int = 4) -> str:
