@@ -23,7 +23,7 @@ SQLALCHEMY_ENGINE_OPTIONS = {'pool_pre_ping': True}
 JOBS_ASYNC = True
 
 # REST API
-API_ENABLED = True
+API_ENABLED = False
 
 # metrics
 METRICS_ENABLED = False

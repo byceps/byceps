@@ -10,5 +10,3 @@ REDIS_URL = "redis://127.0.0.1:6379/0"
 MAIL_SUPPRESS_SEND = true
 
 JOBS_ASYNC = false
-
-API_ENABLED = false
