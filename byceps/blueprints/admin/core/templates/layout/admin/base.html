@@ -16,9 +16,11 @@
 
     <div class="page-layout">
 
+      {%- if show_admin_top_bar|default(true) %}
       <section class="page-header">
 {% include 'layout/admin/_header.html' %}
       </section>
+      {%- endif %}
 
       {%- if has_current_user_permission('admin.access') %}
       <section class="page-header-nav">
