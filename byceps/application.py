@@ -238,6 +238,9 @@ def _enable_rq_dashboard(app: Flask) -> None:
         if not has_current_user_permission('jobs.view'):
             abort(403)
 
+    app.config['RQ_DASHBOARD_REDIS_URL'] = app.config['REDIS_URL']
+
+    rq_dashboard.web.setup_rq_connection(app)
     app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
 
     log.info('RQ dashboard: enabled')
