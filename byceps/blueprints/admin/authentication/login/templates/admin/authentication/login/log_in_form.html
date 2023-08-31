@@ -11,6 +11,13 @@
   align-items: center;
 }
 
+.login-component-hero {
+  color: #33aa88;
+  font-size: clamp(3rem, 10vw, 7rem);
+  margin-bottom: 3rem;
+  text-shadow: 0 2px 2px #444444;
+}
+
 .login-component {
   margin: 0 auto;
   max-width: 24rem;
@@ -18,7 +25,8 @@
 }
 
 .login-component h1,
-.login-component-help {
+.login-component-help,
+.login-component-hero {
   text-align: center;
 }
 
@@ -29,6 +37,9 @@
 {%- endblock %}
 
 {% block body %}
+
+<div class="login-component-hero">BYCEPS</div>
+
 <div class="login-component">
 
   <h1>{{ page_title }}</h1>
@@ -50,4 +61,5 @@
   </div>
 
 </div>
+
 {%- endblock %}
