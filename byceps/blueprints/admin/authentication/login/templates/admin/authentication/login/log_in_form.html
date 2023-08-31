@@ -15,6 +15,15 @@
   max-width: 24rem;
   width: 100%;
 }
+
+.login-component h1,
+.login-component-help {
+  text-align: center;
+}
+
+.login-component-help {
+  margin-top: 2rem;
+}
 </style>
 {%- endblock %}
 
@@ -35,7 +44,7 @@
     {{ form_buttons(_('Log in')) }}
   </form>
 
-  <div style="margin-top: 3rem;">
+  <div class="login-component-help">
     <p>{{ _('Forgot password?') }} <a href="{{ url_for('authentication_password.request_reset_form') }}">{{ _('Set new password') }}</a></p>
   </div>
 
