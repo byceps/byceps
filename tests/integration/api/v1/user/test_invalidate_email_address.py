@@ -45,7 +45,7 @@ def test_invalidation_of_unknown_email_address(
     response = send_request(
         api_client, api_client_authz_header, 'unknown_mailbox@mailhost.example'
     )
-    assert response.status_code == 404
+    assert response.status_code == 400
 
 
 def send_request(api_client, api_client_authz_header, email_address):

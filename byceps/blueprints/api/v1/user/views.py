@@ -51,7 +51,7 @@ def invalidate_email_address():
     user = user_service.find_user_by_email_address(req.email_address)
 
     if user is None:
-        abort(404, 'Unknown email address')
+        abort(400, 'Unknown email address')
 
     event = user_email_address_service.invalidate_email_address(
         user, req.reason
