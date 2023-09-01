@@ -353,8 +353,9 @@ def get_admin_list_items_paginated(
     )
 
     user_ids = {item.creator for item in pagination.items}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
     pagination.items = [
         dataclasses.replace(item, creator=users_by_id[item.creator])
         for item in pagination.items

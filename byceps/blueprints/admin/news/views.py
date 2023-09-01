@@ -463,8 +463,9 @@ def item_list_versions(item_id):
     versions_pairwise = list(pairwise(versions + [None]))
 
     user_ids = {version.creator_id for version in versions}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
 
     return {
         'item': item,

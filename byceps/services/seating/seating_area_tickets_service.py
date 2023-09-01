@@ -49,8 +49,7 @@ def _get_seat_tickets(
 
 def _get_ticket_users_by_id(tickets: Iterable[DbTicket]) -> dict[UserID, User]:
     user_ids = set(_get_ticket_user_ids(tickets))
-    users = user_service.get_users(user_ids, include_avatars=True)
-    return user_service.index_users_by_id(users)
+    return user_service.get_users_indexed_by_id(user_ids, include_avatars=True)
 
 
 def _get_ticket_user_ids(tickets: Iterable[DbTicket]) -> Iterator[UserID]:

@@ -60,8 +60,9 @@ def server_index(party_id):
     creator_ids = {server.creator_id for server in servers}
     owner_ids = {server.owner_id for server in servers}
     user_ids = creator_ids.union(owner_ids)
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
 
     return {
         'party': party,
@@ -220,8 +221,9 @@ def address_index(party_id):
         addresses.extend(server.addresses)
 
     user_ids = {server.owner_id for server in servers}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
     owners_by_server_id = {
         server.id: users_by_id[server.owner_id] for server in servers
     }
@@ -254,8 +256,9 @@ def address_export_netbox(party_id):
     approved_servers = [server for server in all_servers if server.approved]
 
     owner_ids = {server.owner_id for server in approved_servers}
-    owners = user_service.get_users(owner_ids, include_avatars=False)
-    owners_by_id = user_service.index_users_by_id(owners)
+    owners_by_id = user_service.get_users_indexed_by_id(
+        owner_ids, include_avatars=False
+    )
 
     # field names as defined by NetBox
     field_names = ('address', 'status', 'dns_name', 'description')

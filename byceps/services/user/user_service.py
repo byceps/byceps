@@ -126,6 +126,19 @@ def get_users(
     return {_user_row_to_dto(row) for row in rows}
 
 
+def get_users_indexed_by_id(
+    user_ids: set[UserID],
+    *,
+    include_avatars: bool = False,
+) -> dict[UserID, User]:
+    """Return the users with those IDs, indexed by ID.
+
+    Their respective avatars' URLs are included, if requested.
+    """
+    users = get_users(user_ids, include_avatars=include_avatars)
+    return {user.id: user for user in users}
+
+
 def _get_user_stmt(include_avatar: bool) -> Select:
     stmt = select(
         DbUser.id,

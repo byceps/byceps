@@ -599,8 +599,9 @@ def get_orders_for_shop_paginated(
     paginated_orders = paginate(stmt, page, per_page)
 
     orderer_ids = {db_order.placed_by_id for db_order in paginated_orders.items}
-    orderers = user_service.get_users(orderer_ids, include_avatars=True)
-    orderers_by_id = user_service.index_users_by_id(orderers)
+    orderers_by_id = user_service.get_users_indexed_by_id(
+        orderer_ids, include_avatars=True
+    )
 
     def to_admin_order_list_item(db_order: DbOrder) -> AdminOrderListItem:
         placed_by = orderers_by_id[db_order.placed_by_id]
@@ -668,8 +669,7 @@ def get_orders_placed_by_user_for_storefront(
     )
 
     orderer_ids = {db_order.placed_by_id for db_order in db_orders}
-    orderers = user_service.get_users(orderer_ids)
-    orderers_by_id = user_service.index_users_by_id(orderers)
+    orderers_by_id = user_service.get_users_indexed_by_id(orderer_ids)
 
     def to_site_order_list_item(db_order: DbOrder) -> SiteOrderListItem:
         placed_by = orderers_by_id[db_order.placed_by_id]
@@ -758,8 +758,9 @@ def _db_orders_to_transfer_objects_with_orderer_users(
     db_orders: Sequence[DbOrder], *, include_avatars=False
 ) -> list[Order]:
     orderer_ids = {db_order.placed_by_id for db_order in db_orders}
-    orderers = user_service.get_users(orderer_ids, include_avatars=True)
-    orderers_by_id = user_service.index_users_by_id(orderers)
+    orderers_by_id = user_service.get_users_indexed_by_id(
+        orderer_ids, include_avatars=True
+    )
 
     return [
         _order_to_transfer_object(

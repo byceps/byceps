@@ -46,8 +46,9 @@ def index_for_site(site_id):
     pages = page_service.get_pages_for_site_with_current_versions(site.id)
 
     user_ids = {page.current_version.creator_id for page in pages}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
 
     return {
         'pages': pages,
@@ -131,8 +132,9 @@ def history(page_id):
     versions_pairwise = list(pairwise(versions + [None]))
 
     user_ids = {version.creator_id for version in versions}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
 
     site = site_service.get_site(page.site_id)
 

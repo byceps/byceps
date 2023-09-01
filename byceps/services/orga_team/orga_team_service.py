@@ -120,8 +120,9 @@ def get_teams_and_members_for_party(
     user_ids = {
         db_ms.user_id for db_team in db_teams for db_ms in db_team.memberships
     }
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
 
     def to_member(db_membership: DbMembership) -> Member:
         membership = _db_entity_to_membership(db_membership)
@@ -330,8 +331,7 @@ def _get_public_orga_users_by_id(
     db_memberships: Iterable[DbMembership],
 ) -> dict[UserID, User]:
     user_ids = {db_ms.user_id for db_ms in db_memberships}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    return user_service.index_users_by_id(users)
+    return user_service.get_users_indexed_by_id(user_ids, include_avatars=True)
 
 
 def has_team_memberships(team_id: OrgaTeamID) -> bool:

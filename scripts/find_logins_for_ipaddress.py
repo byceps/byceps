@@ -51,8 +51,7 @@ def get_users_by_id(
     occurred_at_and_user_ids: list[tuple[datetime, UserID]]
 ) -> dict[UserID, User]:
     user_ids = {user_id for _, user_id in occurred_at_and_user_ids}
-    users = user_service.get_users(user_ids)
-    return user_service.index_users_by_id(users)
+    return user_service.get_users_indexed_by_id(user_ids)
 
 
 if __name__ == '__main__':

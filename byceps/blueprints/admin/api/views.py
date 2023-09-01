@@ -35,8 +35,9 @@ def index():
     api_tokens = authn_api_service.get_all_api_tokens()
 
     user_ids = {api_token.creator_id for api_token in api_tokens}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
 
     return {
         'api_enabled': api_enabled,
