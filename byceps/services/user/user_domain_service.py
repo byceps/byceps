@@ -503,7 +503,7 @@ def _build_email_address_confirmed_log_entry(
 
 def invalidate_email_address(
     user: User,
-    email_address: str | None,
+    email_address: UserEmailAddress,
     reason: str,
     *,
     initiator: User | None = None,
@@ -514,7 +514,7 @@ def invalidate_email_address(
     event = _build_email_address_invalidated_event(occurred_at, initiator, user)
 
     log_entry = _build_email_address_invalidated_log_entry(
-        occurred_at, initiator, user, email_address, reason
+        occurred_at, initiator, user, email_address.address, reason
     )
 
     return event, log_entry

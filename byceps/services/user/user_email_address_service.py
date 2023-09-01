@@ -151,7 +151,7 @@ def invalidate_email_address(
     because of a permanent issue (unknown mailbox, unknown domain, etc.)
     but not a temporary one (for example: mailbox full).
     """
-    email_address = user_service.get_email_address_data(user.id).address
+    email_address = user_service.get_email_address_data(user.id)
 
     event, log_entry = user_domain_service.invalidate_email_address(
         user, email_address, reason, initiator=initiator
