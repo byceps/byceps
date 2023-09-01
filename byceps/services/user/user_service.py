@@ -288,6 +288,14 @@ def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
     return {_db_entity_to_user_for_admin(user) for user in users}
 
 
+def get_users_for_admin_indexed_by_id(
+    user_ids: set[UserID],
+) -> dict[UserID, UserForAdmin]:
+    """Return the users with those IDs, indexed by ID."""
+    users = get_users_for_admin(user_ids)
+    return {user.id: user for user in users}
+
+
 def _db_entity_to_user(db_user: DbUser) -> User:
     return User(
         id=db_user.id,

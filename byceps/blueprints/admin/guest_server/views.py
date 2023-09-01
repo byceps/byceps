@@ -83,8 +83,7 @@ def server_view(server_id):
     setting = guest_server_service.get_setting_for_party(party.id)
 
     user_ids = {server.creator_id, server.owner_id}
-    users = user_service.get_users_for_admin(user_ids)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = user_service.get_users_for_admin_indexed_by_id(user_ids)
 
     return {
         'party': party,

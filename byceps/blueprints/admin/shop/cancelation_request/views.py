@@ -42,8 +42,7 @@ def index(shop_id, page):
     orders_by_order_number = {order.order_number: order for order in orders}
 
     orderer_ids = {order.placed_by.id for order in orders}
-    orderers = user_service.get_users_for_admin(orderer_ids)
-    orderers_by_id = user_service.index_users_by_id(orderers)
+    orderers_by_id = user_service.get_users_for_admin_indexed_by_id(orderer_ids)
 
     donation_extent_totals = {
         de.name: count
