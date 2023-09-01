@@ -575,11 +575,6 @@ def invalidate_email_address(user_id):
     """Invalidate the email address assigned with the account."""
     user = _get_user_or_404(user_id)
 
-    email_address = user_service.get_email_address_data(user_id)
-    if not email_address.verified:
-        flash_error(gettext('Email address is already invalidated.'))
-        return redirect_to('.view', user_id=user.id)
-
     form = InvalidateEmailAddressForm(request.form)
     if not form.validate():
         return invalidate_email_address_form(user.id, form)
@@ -587,9 +582,15 @@ def invalidate_email_address(user_id):
     initiator = g.user
     reason = form.reason.data.strip()
 
-    event = user_email_address_service.invalidate_email_address(
+    invalidation_result = user_email_address_service.invalidate_email_address(
         user, reason, initiator=initiator
     )
+
+    if invalidation_result.is_err():
+        flash_error(invalidation_result.unwrap_err())
+        return redirect_to('.view', user_id=user.id)
+
+    event = invalidation_result.unwrap()
 
     user_signals.email_address_invalidated.send(None, event=event)
 

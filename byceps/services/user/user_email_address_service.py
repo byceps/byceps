@@ -144,7 +144,7 @@ def _persist_email_address_confirmation(
 
 def invalidate_email_address(
     user: User, reason: str, *, initiator: User | None = None
-) -> UserEmailAddressInvalidatedEvent:
+) -> Result[UserEmailAddressInvalidatedEvent, str]:
     """Invalidate the user's email address by marking it as unverified.
 
     This might be appropriate if an email to the user's address bounced
@@ -153,13 +153,18 @@ def invalidate_email_address(
     """
     email_address = user_service.get_email_address_data(user.id)
 
-    event, log_entry = user_domain_service.invalidate_email_address(
+    invalidation_result = user_domain_service.invalidate_email_address(
         user, email_address, reason, initiator=initiator
     )
 
+    if invalidation_result.is_err():
+        return Err(invalidation_result.unwrap_err())
+
+    event, log_entry = invalidation_result.unwrap()
+
     _persist_email_address_invalidation(user.id, log_entry)
 
-    return event
+    return Ok(event)
 
 
 def _persist_email_address_invalidation(

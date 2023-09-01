@@ -53,8 +53,13 @@ def invalidate_email_address():
     if user is None:
         abort(400, 'Unknown email address')
 
-    event = user_email_address_service.invalidate_email_address(
+    invalidation_result = user_email_address_service.invalidate_email_address(
         user, req.reason
     )
+
+    if invalidation_result.is_err():
+        abort(400, invalidation_result.unwrap_err())
+
+    event = invalidation_result.unwrap()
 
     user_signals.email_address_invalidated.send(None, event=event)

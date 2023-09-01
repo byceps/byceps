@@ -507,8 +507,14 @@ def invalidate_email_address(
     reason: str,
     *,
     initiator: User | None = None,
-) -> tuple[UserEmailAddressInvalidatedEvent, UserLogEntry]:
+) -> Result[tuple[UserEmailAddressInvalidatedEvent, UserLogEntry], str]:
     """Invalidate the user's email address."""
+    if email_address.address is None:
+        return Err('Account has no email address assigned.')
+
+    if not email_address.verified:
+        return Err('Email address is not verified.')
+
     occurred_at = datetime.utcnow()
 
     event = _build_email_address_invalidated_event(occurred_at, initiator, user)
@@ -517,7 +523,7 @@ def invalidate_email_address(
         occurred_at, initiator, user, email_address.address, reason
     )
 
-    return event, log_entry
+    return Ok((event, log_entry))
 
 
 def _build_email_address_invalidated_event(
