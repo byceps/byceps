@@ -421,11 +421,6 @@ def get_sort_key_for_screen_name(user: User) -> tuple[bool, str]:
     return not has_screen_name, normalized_screen_name
 
 
-def index_users_by_id(users: set[User]) -> dict[UserID, User]:
-    """Map the users' IDs to the corresponding user objects."""
-    return {user.id: user for user in users}
-
-
 def is_screen_name_already_assigned(screen_name: str) -> bool:
     """Return `True` if a user with that screen name exists."""
     return _do_users_matching_filter_exist(DbUser.screen_name, screen_name)
