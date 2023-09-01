@@ -538,7 +538,7 @@ def _build_email_address_invalidated_log_entry(
     occurred_at: datetime,
     initiator: User | None,
     user: User,
-    email_address: str,
+    email_address: str | None,
     reason: str,
 ) -> UserLogEntry:
     data = {
