@@ -61,14 +61,12 @@ def _get_top_attendees(brand_id):
 
 
 def _replace_user_ids_with_users(attendee_ids):
-    users_by_id = _get_users_by_id(attendee_ids)
+    user_ids = {user_id for user_id, attendance_count in attendee_ids}
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=False
+    )
 
     return [
         (users_by_id[user_id], attendance_count)
         for user_id, attendance_count in attendee_ids
     ]
-
-
-def _get_users_by_id(attendee_ids):
-    user_ids = {user_id for user_id, attendance_count in attendee_ids}
-    return user_service.get_users_indexed_by_id(user_ids, include_avatars=False)

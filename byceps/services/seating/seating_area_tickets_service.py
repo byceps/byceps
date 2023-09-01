@@ -35,8 +35,8 @@ def get_users(
 ) -> dict[UserID, User]:
     seat_tickets = _get_seat_tickets(seats_with_tickets)
     tickets = chain(seat_tickets, managed_tickets)
-
-    return _get_ticket_users_by_id(tickets)
+    user_ids = set(_get_ticket_user_ids(tickets))
+    return user_service.get_users_indexed_by_id(user_ids, include_avatars=True)
 
 
 def _get_seat_tickets(
@@ -45,11 +45,6 @@ def _get_seat_tickets(
     for _, ticket in seats_with_tickets:
         if (ticket is not None) and (ticket.used_by_id is not None):
             yield ticket
-
-
-def _get_ticket_users_by_id(tickets: Iterable[DbTicket]) -> dict[UserID, User]:
-    user_ids = set(_get_ticket_user_ids(tickets))
-    return user_service.get_users_indexed_by_id(user_ids, include_avatars=True)
 
 
 def _get_ticket_user_ids(tickets: Iterable[DbTicket]) -> Iterator[UserID]:

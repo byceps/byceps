@@ -309,7 +309,10 @@ def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
         .all()
     )
 
-    users_by_id = _get_public_orga_users_by_id(db_memberships)
+    user_ids = {db_ms.user_id for db_ms in db_memberships}
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
 
     def to_orga(db_membership: DbMembership) -> PublicOrga:
         user = users_by_id[db_membership.user_id]
@@ -325,13 +328,6 @@ def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
     orgas = {orga for orga in orgas if not orga.user.deleted}
 
     return orgas
-
-
-def _get_public_orga_users_by_id(
-    db_memberships: Iterable[DbMembership],
-) -> dict[UserID, User]:
-    user_ids = {db_ms.user_id for db_ms in db_memberships}
-    return user_service.get_users_indexed_by_id(user_ids, include_avatars=True)
 
 
 def has_team_memberships(team_id: OrgaTeamID) -> bool:

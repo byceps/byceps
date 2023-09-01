@@ -14,7 +14,6 @@ from sqlalchemy import select
 from byceps.database import db
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.log import DbUserLogEntry
-from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 from _util import call_with_app_context
@@ -25,7 +24,9 @@ from _util import call_with_app_context
 def execute(ip_address: str) -> None:
     occurred_at_and_user_ids = find_log_entries(ip_address)
 
-    users_by_id = get_users_by_id(occurred_at_and_user_ids)
+    user_ids = {user_id for _, user_id in occurred_at_and_user_ids}
+    users_by_id = user_service.get_users_indexed_by_id(user_ids)
+
     occurred_at_and_users = [
         (occurred_at, users_by_id[user_id])
         for occurred_at, user_id in occurred_at_and_user_ids
@@ -45,13 +46,6 @@ def find_log_entries(ip_address: str) -> list[tuple[datetime, UserID]]:
         .filter(DbUserLogEntry.data['ip_address'].astext == ip_address)
         .order_by(DbUserLogEntry.occurred_at)
     ).all()
-
-
-def get_users_by_id(
-    occurred_at_and_user_ids: list[tuple[datetime, UserID]]
-) -> dict[UserID, User]:
-    user_ids = {user_id for _, user_id in occurred_at_and_user_ids}
-    return user_service.get_users_indexed_by_id(user_ids)
 
 
 if __name__ == '__main__':

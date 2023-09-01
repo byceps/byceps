@@ -13,8 +13,6 @@ from sqlalchemy import select
 from byceps.database import db, paginate, Pagination
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
 from byceps.util.iterables import index_of
 
 from .dbmodels.category import DbBoardCategory
@@ -74,16 +72,14 @@ def paginate_postings(
     postings = paginate(stmt, page, per_page)
 
     creator_ids = {posting.creator_id for posting in postings.items}
-    creators_by_id = _get_users_by_id(creator_ids)
+    creators_by_id = user_service.get_users_indexed_by_id(
+        creator_ids, include_avatars=True
+    )
 
     for posting in postings.items:
         posting.creator = creators_by_id[posting.creator_id]
 
     return postings
-
-
-def _get_users_by_id(user_ids: set[UserID]) -> dict[UserID, User]:
-    return user_service.get_users_indexed_by_id(user_ids, include_avatars=True)
 
 
 def calculate_posting_page_number(
