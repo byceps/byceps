@@ -12,7 +12,6 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
-from byceps.services.party import party_service
 from byceps.services.seating import (
     seat_service,
     seating_area_service,

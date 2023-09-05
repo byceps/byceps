@@ -22,7 +22,6 @@ from byceps.services.board.models import (
     TopicID,
 )
 from byceps.services.user.models.user import User
-from byceps.typing import UserID
 
 from tests.helpers import generate_token
 

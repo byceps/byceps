@@ -8,7 +8,6 @@ from unittest.mock import patch
 import pytest
 
 from byceps.services.ticketing import (
-    ticket_code_service,
     ticket_creation_service,
     ticket_log_service,
 )

@@ -11,7 +11,6 @@ from typing import Any
 
 from flask import current_app, g, render_template
 
-from byceps import config
 from byceps.util.authorization import (
     has_current_user_any_permission,
     has_current_user_permission,
