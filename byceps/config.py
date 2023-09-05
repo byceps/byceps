@@ -9,6 +9,8 @@ byceps.config
 from __future__ import annotations
 
 from enum import Enum
+import json
+import os
 
 from flask import Flask
 
@@ -60,3 +62,16 @@ def _determine_app_mode(app: Flask) -> AppMode:
         raise ConfigurationError(
             f'Invalid app mode "{value}" configured.'
         ) from exc
+
+
+def parse_value_from_environment(
+    key: str,
+) -> bool | dict | float | int | list | str | None:
+    value = os.environ.get(key)
+    if value is None:
+        return None
+
+    try:
+        return json.loads(value)
+    except Exception:
+        return None

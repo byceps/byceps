@@ -23,7 +23,7 @@ import structlog
 from byceps import config, config_defaults
 from byceps.announce.announce import enable_announcements
 from byceps.blueprints.blueprints import register_blueprints
-from byceps.config import ConfigurationError
+from byceps.config import ConfigurationError, parse_value_from_environment
 from byceps.database import db
 from byceps.util import templatefilters
 from byceps.util.authorization import (
@@ -158,7 +158,7 @@ def _configure(
     config.init_app(app)
 
 
-def _get_config_from_environment() -> Iterator[tuple[str, str]]:
+def _get_config_from_environment() -> Iterator[tuple[str, Any]]:
     """Obtain selected config values from environment variables."""
     for key in (
         'API_ENABLED',
@@ -181,8 +181,8 @@ def _get_config_from_environment() -> Iterator[tuple[str, str]]:
         'SQLALCHEMY_DATABASE_URI',
         'STYLE_GUIDE_ENABLED',
     ):
-        value = os.environ.get(key)
-        if value:
+        value = parse_value_from_environment(key)
+        if value is not None:
             yield key, value
 
 
