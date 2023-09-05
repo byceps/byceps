@@ -11,8 +11,9 @@ from typing import NamedTuple
 from typing_extensions import Self
 
 
-class MonthDay(NamedTuple('MonthDay', ['month', 'day'])):
-    __slots__ = ()
+class MonthDay(NamedTuple):
+    month: int
+    day: int
 
     @classmethod
     def of(cls, date) -> Self:

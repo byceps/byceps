@@ -25,7 +25,9 @@ from byceps.util.instances import ReprBuilder
 from .area import DbSeatingArea
 
 
-Point = NamedTuple('Point', ['x', 'y'])
+class Point(NamedTuple):
+    x: int
+    y: int
 
 
 class DbSeat(db.Model):

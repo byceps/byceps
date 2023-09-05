@@ -10,10 +10,11 @@ from enum import Enum
 from typing import NamedTuple
 
 
-class Dimensions(NamedTuple('Dimensions', ['width', 'height'])):
+class Dimensions(NamedTuple):
     """A 2D image's width and height."""
 
-    __slots__ = ()
+    width: int
+    height: int
 
     @property
     def is_square(self) -> bool:
