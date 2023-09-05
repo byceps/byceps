@@ -6,12 +6,12 @@ byceps.util.datetime.monthday
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections import namedtuple
+from typing import NamedTuple
 
 from typing_extensions import Self
 
 
-class MonthDay(namedtuple('MonthDay', ['month', 'day'])):
+class MonthDay(NamedTuple('MonthDay', ['month', 'day'])):
     __slots__ = ()
 
     @classmethod

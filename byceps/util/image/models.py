@@ -6,11 +6,11 @@ byceps.util.image.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections import namedtuple
 from enum import Enum
+from typing import NamedTuple
 
 
-class Dimensions(namedtuple('Dimensions', ['width', 'height'])):
+class Dimensions(NamedTuple('Dimensions', ['width', 'height'])):
     """A 2D image's width and height."""
 
     __slots__ = ()

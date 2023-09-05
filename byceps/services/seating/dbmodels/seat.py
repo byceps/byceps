@@ -8,8 +8,7 @@ byceps.services.seating.dbmodels.seat
 
 from __future__ import annotations
 
-from collections import namedtuple
-from typing import TYPE_CHECKING
+from typing import NamedTuple, TYPE_CHECKING
 
 
 if TYPE_CHECKING:
@@ -26,7 +25,7 @@ from byceps.util.instances import ReprBuilder
 from .area import DbSeatingArea
 
 
-Point = namedtuple('Point', ['x', 'y'])
+Point = NamedTuple('Point', ['x', 'y'])
 
 
 class DbSeat(db.Model):
