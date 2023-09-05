@@ -72,6 +72,8 @@ def parse_value_from_environment(
         return None
 
     try:
+        # Detect booleans, numbers, collections, `null`/`None`.
         return json.loads(value)
     except Exception:
-        return None
+        # Leave it as a string.
+        return value

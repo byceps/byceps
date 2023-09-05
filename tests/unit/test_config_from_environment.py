@@ -18,12 +18,12 @@ from byceps.config import parse_value_from_environment
         ('BOOLEAN_FALSE', 'false', False),
         ('DICT', '{"one": 1, "two": 2}', {'one': 1, 'two': 2}),
         ('FLOAT', '3.14', 3.14),
+        ('FLOAT_INVALID', '3.14P', '3.14P'),
         ('INTEGER', '42', 42),
-        ('INTEGER_INVALID', '12xy', None),
+        ('INTEGER_INVALID', '12xy', '12xy'),
         ('LIST', '[4, 8, 15, 16, 23, 42]', [4, 8, 15, 16, 23, 42]),
         ('NONE', 'null', None),
         ('STRING', '"hello world"', 'hello world'),
-        ('STRING_INVALID', '"hello', None),  # missing string delimiter
     ],
 )
 def test_parse_value_from_environment(key: str, value: str, expected: Any):
