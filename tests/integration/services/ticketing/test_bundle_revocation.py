@@ -36,7 +36,7 @@ def test_revoke_bundle(admin_app, bundle, ticketing_admin):
     # -------------------------------- #
 
     bundle_after = bundle_service.get_bundle(bundle.id)
-    assert bundle.revoked
+    assert bundle_after.revoked
 
     tickets_after = bundle_service.get_tickets_for_bundle(bundle.id)
     assert len(tickets_after) == expected_quantity
