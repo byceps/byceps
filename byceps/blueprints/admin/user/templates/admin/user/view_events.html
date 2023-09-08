@@ -154,7 +154,7 @@
         {%- elif log_entry.event_type == 'user-details-updated' %}
           {%- call render_log_entry('edit', log_entry.occurred_at) %}
             {{ _(
-              '%(initiator)s has <strong>changed personal data</strong> of "%(user)s".',
+              '%(initiator)s has <strong>changed personal data</strong> of %(user)s.',
               initiator=render_log_user(log_entry.initiator),
               user=render_log_user(user),
             ) }}
@@ -244,7 +244,7 @@
         {%- elif log_entry.event_type == 'orgaflag-added' %}
           {%- call render_log_entry('enabled', log_entry.occurred_at) %}
             {{ _(
-              '%(initiator)s has <strong>given orga status</strong> for brand %(brand)s to %(user)s".',
+              '%(initiator)s has <strong>given orga status</strong> for brand %(brand)s to %(user)s.',
               initiator=render_log_user(log_entry.initiator),
               brand=log_entry.data.brand_id,
               user=render_log_user(user),
@@ -253,7 +253,7 @@
         {%- elif log_entry.event_type == 'orgaflag-removed' %}
           {%- call render_log_entry('disabled', log_entry.occurred_at) %}
             {{ _(
-              '%(initiator)s has <strong>removed orga status</strong> for brand %(brand)s from %(user)s".',
+              '%(initiator)s has <strong>removed orga status</strong> for brand %(brand)s from %(user)s.',
               initiator=render_log_user(log_entry.initiator),
               brand=log_entry.data.brand_id,
               user=render_log_user(user),
@@ -280,7 +280,7 @@
         {%- elif log_entry.event_type == 'user-badge-awarded' %}
           {%- call render_log_entry('badge', log_entry.occurred_at) %}
             {{ _(
-              '%(initiator)s has <strong>awarded badge</strong> %(badge_image)s "%(badge_label)s" to "%(user)s".',
+              '%(initiator)s has <strong>awarded badge</strong> %(badge_image)s "%(badge_label)s" to %(user)s.',
               initiator=(render_log_user(log_entry.initiator) if (log_entry.initiator is defined) else _('Someone')),
               badge_image=render_user_badge_linked(log_entry.badge, 24),
               badge_label=log_entry.badge.label,

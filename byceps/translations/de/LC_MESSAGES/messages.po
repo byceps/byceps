@@ -5936,9 +5936,9 @@ msgstr ""
 
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:156
 #, python-format
-msgid "%(initiator)s has <strong>changed personal data</strong> of \"%(user)s\"."
+msgid "%(initiator)s has <strong>changed personal data</strong> of %(user)s."
 msgstr ""
-"%(initiator)s hat die persönlichen Daten des Benutzerkontos \"%(user)s\" "
+"%(initiator)s hat die persönlichen Daten des Benutzerkontos %(user)s "
 "<strong>geändert</strong>."
 
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:172
@@ -6008,18 +6008,18 @@ msgstr ""
 #, python-format
 msgid ""
 "%(initiator)s has <strong>given orga status</strong> for brand %(brand)s "
-"to %(user)s\"."
+"to %(user)s."
 msgstr ""
-"%(initiator)s hat an %(user)s\" für die Marke %(brand)s den <strong>Orga-"
+"%(initiator)s hat an %(user)s für die Marke %(brand)s den <strong>Orga-"
 "Status verliehen</strong>."
 
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:255
 #, python-format
 msgid ""
 "%(initiator)s has <strong>removed orga status</strong> for brand "
-"%(brand)s from %(user)s\"."
+"%(brand)s from %(user)s."
 msgstr ""
-"%(initiator)s hat %(user)s\" für die Marke %(brand)s den <strong>Orga-"
+"%(initiator)s hat %(user)s für die Marke %(brand)s den <strong>Orga-"
 "Status entzogen</strong>."
 
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:264
@@ -6040,10 +6040,10 @@ msgstr ""
 #, python-format
 msgid ""
 "%(initiator)s has <strong>awarded badge</strong> %(badge_image)s "
-"\"%(badge_label)s\" to \"%(user)s\"."
+"\"%(badge_label)s\" to %(user)s."
 msgstr ""
 "%(initiator)s hat das Badge %(badge_image)s \"%(badge_label)s\" an "
-"\"%(user)s\" <strong>verliehen</strong>."
+"%(user)s <strong>verliehen</strong>."
 
 #: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:29
 msgid "Manage roles"
