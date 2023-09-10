@@ -13,16 +13,17 @@ from tests.helpers import generate_token
 
 
 def test_image_url_without_image(news_item_without_image):
-    assert news_item_without_image.image_url_path is None
+    item = news_item_without_image
+
+    assert item.image_url_path is None
 
 
 def test_image_url_with_image(news_item_with_image):
-    channel = news_item_with_image.channel
+    item = news_item_with_image
 
-    assert (
-        news_item_with_image.image_url_path
-        == f'/data/global/news_channels/{channel.id}/breaking.png'
-    )
+    expected = f'/data/global/news_channels/{item.channel.id}/breaking.png'
+
+    assert item.image_url_path == expected
 
 
 # helpers
@@ -59,7 +60,7 @@ def create_item(channel_id, editor: User, *, image_url_path=None) -> NewsItem:
     body = 'the body'
     body_format = BodyFormat.html
 
-    item = news_item_service.create_item(
+    return news_item_service.create_item(
         channel_id,
         slug,
         editor,
@@ -68,5 +69,3 @@ def create_item(channel_id, editor: User, *, image_url_path=None) -> NewsItem:
         body_format,
         image_url_path=image_url_path,
     )
-
-    return news_item_service.find_item(item.id)
