@@ -16,7 +16,7 @@ from jinja2 import Template
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet.models import SnippetScope
-from byceps.util.l10n import get_user_locale
+from byceps.util.l10n import get_current_user_locale, get_default_locale
 from byceps.util.templating import load_template
 
 
@@ -40,7 +40,7 @@ def render_snippet_as_partial_from_template(
 
     This function is meant to be made available in templates.
     """
-    language_code = get_user_locale(g.user)
+    language_code = get_current_user_locale() or get_default_locale()
     scope_obj = _parse_scope_string(scope) if (scope is not None) else None
 
     return render_snippet_as_partial(
