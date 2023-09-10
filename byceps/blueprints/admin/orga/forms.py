@@ -25,15 +25,17 @@ def validate_user_screen_name(form, field):
     if user is None:
         raise ValidationError(lazy_gettext('Unknown username'))
 
-    if orga_service.has_orga_flag(user.id, form.brand_id):
+    if orga_service.has_orga_status(user.id, form.brand_id):
         raise ValidationError(
-            lazy_gettext('The user already is an organizer for this brand.')
+            lazy_gettext(
+                'The user already has organizer status for this brand.'
+            )
         )
 
     field.data = user
 
 
-class OrgaFlagCreateForm(LocalizedForm):
+class GrantOrgaStatusForm(LocalizedForm):
     def __init__(self, *args, brand_id=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.brand_id = brand_id

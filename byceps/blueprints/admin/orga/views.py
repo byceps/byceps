@@ -26,7 +26,7 @@ from byceps.util.views import (
     textified,
 )
 
-from .forms import OrgaFlagCreateForm
+from .forms import GrantOrgaStatusForm
 
 
 blueprint = create_blueprint('orga_admin', __name__)
@@ -62,11 +62,11 @@ def _to_birthday(user) -> Birthday | None:
 @blueprint.get('/persons/<brand_id>/create')
 @permission_required('orga_team.administrate_memberships')
 @templated
-def create_orgaflag_form(brand_id, erroneous_form=None):
-    """Show form to give the organizer flag to a user."""
+def grant_orga_status_form(brand_id, erroneous_form=None):
+    """Show form to grant organizer status to a user for the brand."""
     brand = _get_brand_or_404(brand_id)
 
-    form = erroneous_form if erroneous_form else OrgaFlagCreateForm()
+    form = erroneous_form if erroneous_form else GrantOrgaStatusForm()
 
     return {
         'brand': brand,
@@ -76,23 +76,22 @@ def create_orgaflag_form(brand_id, erroneous_form=None):
 
 @blueprint.post('/persons/<brand_id>')
 @permission_required('orga_team.administrate_memberships')
-def create_orgaflag(brand_id):
-    """Give the organizer flag to a user."""
+def grant_orga_status(brand_id):
+    """Grant organizer status to the user for the brand."""
     brand = _get_brand_or_404(brand_id)
 
-    form = OrgaFlagCreateForm(request.form, brand_id=brand.id)
+    form = GrantOrgaStatusForm(request.form, brand_id=brand.id)
     if not form.validate():
-        return create_orgaflag_form(brand.id, form)
+        return grant_orga_status_form(brand.id, form)
 
     user = form.user.data
     initiator = g.user
 
-    orga_flag = orga_service.add_orga_flag(user.id, brand.id, initiator)
+    orga_flag = orga_service.grant_orga_status(user.id, brand.id, initiator)
 
     flash_success(
         gettext(
-            '%(screen_name)s has received the orga flag '
-            'for brand %(brand_title)s.',
+            'Organizer status was granted to %(screen_name)s for brand %(brand_title)s.',
             screen_name=orga_flag.user.screen_name,
             brand_title=orga_flag.brand.title,
         )
@@ -103,8 +102,8 @@ def create_orgaflag(brand_id):
 @blueprint.delete('/persons/<brand_id>/<uuid:user_id>')
 @permission_required('orga_team.administrate_memberships')
 @respond_no_content
-def remove_orgaflag(brand_id, user_id):
-    """Remove the organizer flag for a brand from a person."""
+def revoke_orga_status(brand_id, user_id):
+    """Revoke the user's organizer status for the brand."""
     orga_flag = orga_service.find_orga_flag(user_id, brand_id)
 
     if orga_flag is None:
@@ -114,12 +113,11 @@ def remove_orgaflag(brand_id, user_id):
     brand = orga_flag.brand
     initiator = g.user
 
-    orga_service.remove_orga_flag(user.id, brand.id, initiator)
+    orga_service.revoke_orga_status(user.id, brand.id, initiator)
 
     flash_success(
         gettext(
-            '%(screen_name)s has lost the orga flag '
-            'for brand %(brand_title)s.',
+            'Organizer status was revoked for %(screen_name)s for brand %(brand_title)s.',
             screen_name=user.screen_name,
             brand_title=brand.title,
         )

@@ -38,7 +38,7 @@ def get_person_count_by_brand_id() -> dict[BrandID, int]:
 
 
 def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
-    """Return all users flagged as organizers for the brand."""
+    """Return all users with organizer status for the brand."""
     return (
         db.session.scalars(
             select(DbUser)
@@ -52,9 +52,7 @@ def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
 
 
 def count_orgas_for_brand(brand_id: BrandID) -> int:
-    """Return the number of organizers with the organizer flag set for
-    that brand.
-    """
+    """Return the number of users with organizer status for the brand."""
     return db.session.scalar(
         select(db.func.count(DbUser.id))
         .distinct(DbUser.id)
@@ -63,10 +61,10 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
     )
 
 
-def add_orga_flag(
+def grant_orga_status(
     user_id: UserID, brand_id: BrandID, initiator: User
 ) -> DbOrgaFlag:
-    """Add an orga flag for a user for that brand."""
+    """Grant organizer status to the user for the brand."""
     orga_flag = DbOrgaFlag(user_id, brand_id)
     db.session.add(orga_flag)
 
@@ -85,10 +83,10 @@ def add_orga_flag(
     return orga_flag
 
 
-def remove_orga_flag(
+def revoke_orga_status(
     user_id: UserID, brand_id: BrandID, initiator: User
 ) -> None:
-    """Remove the orga flag."""
+    """Revoke the user's organizer status for the brand."""
     db.session.execute(
         delete(DbOrgaFlag)
         .filter_by(user_id=user_id)
@@ -117,6 +115,6 @@ def find_orga_flag(user_id: UserID, brand_id: BrandID) -> DbOrgaFlag | None:
     ).first()
 
 
-def has_orga_flag(user_id: UserID, brand_id: BrandID) -> bool:
-    """Tell if the user has the orga flag for that brand."""
+def has_orga_status(user_id: UserID, brand_id: BrandID) -> bool:
+    """Tell if the user has orga status for the brand."""
     return find_orga_flag(user_id, brand_id) is not None

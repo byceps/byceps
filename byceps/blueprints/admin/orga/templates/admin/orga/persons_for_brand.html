@@ -29,13 +29,13 @@
 
       <div class="button-row button-row--right">
         {%- if has_current_user_permission('orga_team.administrate_memberships') %}
-        <a class="button" href="{{ url_for('.create_orgaflag_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Person zum Orga ernennen</span></a>
+        <a class="button" href="{{ url_for('.grant_orga_status_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Grant organizer status') }}</span></a>
         {%- endif %}
 
         {%- if orgas_with_birthdays %}
-        <a class="button" href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} <span>{{ _('Export') }} <small>{{ 'als Excel-CSV'|dim }}</small></span></a>
+        <a class="button" href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} <span>{{ _('Export') }} <small>{{ _('as Excel CSV')|dim }}</small></span></a>
         {%- else %}
-        <button class="button" disabled>{{ render_icon('download') }} <span>{{ _('Export') }} <small>{{ 'als Excel-CSV'|dim }}</small></span></button>
+        <button class="button" disabled>{{ render_icon('download') }} <span>{{ _('Export') }} <small>{{ _('as Excel CSV')|dim }}</small></span></button>
         {%- endif %}
       </div>
 
@@ -103,7 +103,7 @@
             <div class="dropdown">
               <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
               <ol class="dropdown-menu dropdown-menu--right">
-                <li><a class="dropdown-item" data-action="orgaflag-remove" href="{{ url_for('.remove_orgaflag', brand_id=brand.id, user_id=user.id) }}">{{ render_icon('remove') }} Orga-Status entziehen</a></li>
+                <li><a class="dropdown-item" data-action="orga-status-revoke" href="{{ url_for('.revoke_orga_status', brand_id=brand.id, user_id=user.id) }}">{{ render_icon('remove') }} {{ _('Revoke organizer status') }}</a></li>
               </ol>
             </div>
             {%- endif %}
@@ -114,7 +114,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine Organisatoren hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No users have organizer status.') }}</div>
     {%- endif %}
   </div>
 
@@ -123,7 +123,7 @@
 {% block scripts %}
     <script>
       onDomReady(() => {
-        confirmed_delete_on_click_then_reload('[data-action="orgaflag-remove"]', 'Person den Orga-Status entziehen?');
+        confirmed_delete_on_click_then_reload('[data-action="orga-status-revoke"]', '{{ _('Revoke organizer status?') }}');
       });
     </script>
 {%- endblock %}
