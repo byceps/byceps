@@ -16,4 +16,6 @@ def now() -> datetime:
 
 def assert_text(actual: AnnouncementRequest | None, expected_text: str) -> None:
     assert actual is not None
-    assert actual.data == {'channel': '#eventlog', 'text': expected_text}
+    assert set(actual.data.keys()) == {'channel', 'text'}
+    assert actual.data['channel'] == '#eventlog'
+    assert actual.data['text'] == expected_text
