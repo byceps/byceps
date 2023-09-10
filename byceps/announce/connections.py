@@ -31,6 +31,7 @@ from byceps.events.board import (
 )
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.events.news import NewsItemPublishedEvent
+from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.events.page import (
     PageCreatedEvent,
     PageDeletedEvent,
@@ -79,6 +80,7 @@ from byceps.signals import (
     board as board_signals,
     guest_server as guest_server_signals,
     news as news_signals,
+    orga as orga_signals,
     page as page_signals,
     shop as shop_signals,
     snippet as snippet_signals,
@@ -93,6 +95,7 @@ from .handlers import (
     board as board_handlers,
     guest_server as guest_server_handlers,
     news as news_handlers,
+    orga as orga_handlers,
     page as page_handlers,
     shop_order as shop_order_handlers,
     snippet as snippet_handlers,
@@ -216,6 +219,16 @@ for event, name, handler in [
         NewsItemPublishedEvent,
         'news-item-published',
         news_handlers.announce_news_item_published,
+    ),
+    (
+        OrgaStatusGrantedEvent,
+        'orga-status-granted',
+        orga_handlers.announce_orga_status_granted,
+    ),
+    (
+        OrgaStatusRevokedEvent,
+        'orga-status-revoked',
+        orga_handlers.announce_orga_status_revoked,
     ),
     (PageCreatedEvent, 'page-created', page_handlers.announce_page_created),
     (PageDeletedEvent, 'page-deleted', page_handlers.announce_page_deleted),
@@ -390,6 +403,8 @@ _SIGNALS: list[NamedSignal] = [
     board_signals.topic_unpinned,
     guest_server_signals.guest_server_registered,
     news_signals.item_published,
+    orga_signals.orga_status_granted,
+    orga_signals.orga_status_revoked,
     page_signals.page_created,
     page_signals.page_deleted,
     page_signals.page_updated,

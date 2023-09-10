@@ -183,6 +183,24 @@ msgstr ""
 msgid "The news \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
+#: byceps/announce/handlers/orga.py:33
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has granted orga status for brand "
+"%(brand_title)s to %(user_screen_name)s."
+msgstr ""
+"%(initiator_screen_name)s hat %(user_screen_name)s den Orga-Status für "
+"die Marke %(brand_title)s verliehen."
+
+#: byceps/announce/handlers/orga.py:53
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has revoked orga status for brand "
+"%(brand_title)s for %(user_screen_name)s."
+msgstr ""
+"%(initiator_screen_name)s hat %(user_screen_name)s den Orga-Status für "
+"die Marke %(brand_title)s entzogen."
+
 #: byceps/announce/handlers/page.py:36
 #, python-format
 msgid ""
@@ -711,7 +729,7 @@ msgstr "Keine Teilnahmen an Partys dieser Marke gefunden."
 #: byceps/blueprints/admin/authentication/login/forms.py:17
 #: byceps/blueprints/admin/orga/forms.py:44
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:53
-#: byceps/blueprints/admin/orga/views.py:136
+#: byceps/blueprints/admin/orga/views.py:138
 #: byceps/blueprints/admin/ticketing/forms.py:28
 #: byceps/blueprints/admin/user/forms.py:53
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:7
@@ -3006,12 +3024,12 @@ msgstr "Unbekannter Benutzername"
 msgid "The user already has organizer status for this brand."
 msgstr "Der Benutzer ist bereits Orga für diese Marke."
 
-#: byceps/blueprints/admin/orga/views.py:93
+#: byceps/blueprints/admin/orga/views.py:95
 #, python-format
 msgid "Organizer status was granted to %(screen_name)s for brand %(brand_title)s."
 msgstr "%(screen_name)s hat Orga-Status für die Marke %(brand_title)s erhalten."
 
-#: byceps/blueprints/admin/orga/views.py:119
+#: byceps/blueprints/admin/orga/views.py:121
 #, python-format
 msgid ""
 "Organizer status was revoked for %(screen_name)s for brand "
@@ -3020,7 +3038,7 @@ msgstr ""
 "%(screen_name)s wurde der Orga-Status für die Marke %(brand_title)s "
 "entzogen."
 
-#: byceps/blueprints/admin/orga/views.py:137
+#: byceps/blueprints/admin/orga/views.py:139
 #: byceps/blueprints/admin/user/forms.py:65
 #: byceps/blueprints/admin/user/forms.py:154
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:8
@@ -3030,7 +3048,7 @@ msgstr ""
 msgid "First name"
 msgstr "Vorname"
 
-#: byceps/blueprints/admin/orga/views.py:138
+#: byceps/blueprints/admin/orga/views.py:140
 #: byceps/blueprints/admin/user/forms.py:68
 #: byceps/blueprints/admin/user/forms.py:157
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:12
@@ -3041,7 +3059,7 @@ msgid "Last name"
 msgstr "Nachname"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:54
-#: byceps/blueprints/admin/orga/views.py:139
+#: byceps/blueprints/admin/orga/views.py:141
 #: byceps/blueprints/admin/user/forms.py:159
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:17
 #: byceps/blueprints/site/user/settings/forms.py:102
@@ -3049,14 +3067,14 @@ msgstr "Nachname"
 msgid "Date of birth"
 msgstr "Geburtsdatum"
 
-#: byceps/blueprints/admin/orga/views.py:140
+#: byceps/blueprints/admin/orga/views.py:142
 #: byceps/blueprints/admin/user/forms.py:163
 #: byceps/blueprints/site/shop/order/forms.py:36
 #: byceps/blueprints/site/user/settings/forms.py:106
 msgid "Street"
 msgstr "Straße"
 
-#: byceps/blueprints/admin/orga/views.py:141
+#: byceps/blueprints/admin/orga/views.py:143
 #: byceps/blueprints/admin/user/forms.py:161
 #: byceps/blueprints/site/shop/order/forms.py:32
 #: byceps/blueprints/site/user/settings/forms.py:104
@@ -3064,14 +3082,14 @@ msgid "Zip code"
 msgstr "PLZ"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:57
-#: byceps/blueprints/admin/orga/views.py:142
+#: byceps/blueprints/admin/orga/views.py:144
 #: byceps/blueprints/admin/user/forms.py:162
 #: byceps/blueprints/site/shop/order/forms.py:35
 #: byceps/blueprints/site/user/settings/forms.py:105
 msgid "City"
 msgstr "Stadt"
 
-#: byceps/blueprints/admin/orga/views.py:143
+#: byceps/blueprints/admin/orga/views.py:145
 #: byceps/blueprints/admin/user/forms.py:160
 #: byceps/blueprints/site/shop/order/forms.py:29
 #: byceps/blueprints/site/user/settings/forms.py:103
@@ -3079,7 +3097,7 @@ msgid "Country"
 msgstr "Land"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:58
-#: byceps/blueprints/admin/orga/views.py:144
+#: byceps/blueprints/admin/orga/views.py:146
 #: byceps/blueprints/admin/user/forms.py:71
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:45
 #: byceps/blueprints/site/user/creation/forms.py:53
@@ -3088,7 +3106,7 @@ msgid "Email address"
 msgstr "E-Mail-Adresse"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:59
-#: byceps/blueprints/admin/orga/views.py:145
+#: byceps/blueprints/admin/orga/views.py:147
 #: byceps/blueprints/admin/user/forms.py:165
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:35
 #: byceps/blueprints/site/user/settings/forms.py:108
