@@ -3,9 +3,11 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from io import BytesIO
+
 import pytest
 
-from byceps.services.news import news_item_service
+from byceps.services.news import news_image_service, news_item_service
 from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 from byceps.services.user.models.user import User
 
@@ -24,6 +26,15 @@ def test_image_url_with_image(news_item_with_image):
     expected = f'/data/global/news_channels/{item.channel.id}/breaking.png'
 
     assert item.image_url_path == expected
+
+
+def test_image_url_with_featured_image(news_item_with_featured_image):
+    item = news_item_with_featured_image
+
+    filename = item.featured_image.filename
+    expected = f'/data/global/news_channels/{item.channel.id}/{filename}'
+
+    assert item.featured_image.url_path == expected
 
 
 # helpers
@@ -52,6 +63,20 @@ def news_item_without_image(channel: NewsChannel, editor: User) -> NewsItem:
 @pytest.fixture()
 def news_item_with_image(channel: NewsChannel, editor: User) -> NewsItem:
     return create_item(channel.id, editor, image_url_path='breaking.png')
+
+
+@pytest.fixture()
+def news_item_with_featured_image(
+    channel: NewsChannel, editor: User
+) -> NewsItem:
+    item = create_item(channel.id, editor)
+
+    image_bytes = BytesIO(b'<svg/')
+    image = news_image_service.create_image(editor, item, image_bytes).unwrap()
+
+    news_item_service.set_featured_image(item.id, image.id)
+
+    return news_item_service.find_item(item.id)
 
 
 def create_item(channel_id, editor: User, *, image_url_path=None) -> NewsItem:
