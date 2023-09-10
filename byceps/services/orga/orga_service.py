@@ -14,8 +14,10 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.services.orga import orga_domain_service
 from byceps.services.user import user_log_service
 from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.typing import BrandID, UserID
 
@@ -65,41 +67,49 @@ def grant_orga_status(
     user: User, brand_id: BrandID, initiator: User
 ) -> DbOrgaFlag:
     """Grant organizer status to the user for the brand."""
-    orga_flag = DbOrgaFlag(user.id, brand_id)
-    db.session.add(orga_flag)
+    log_entry = orga_domain_service.grant_orga_status(user, brand_id, initiator)
 
-    log_entry = user_log_service.build_entry(
-        'orgaflag-added',
-        user.id,
-        {
-            'brand_id': str(brand_id),
-            'initiator_id': str(initiator.id),
-        },
-    )
-    db.session.add(log_entry)
+    return _persist_orga_status_grant(user, brand_id, log_entry)
+
+
+def _persist_orga_status_grant(
+    user: User,
+    brand_id: BrandID,
+    log_entry: UserLogEntry,
+) -> DbOrgaFlag:
+    db_orga_flag = DbOrgaFlag(user.id, brand_id)
+    db.session.add(db_orga_flag)
+
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
-    return orga_flag
+    return db_orga_flag
 
 
 def revoke_orga_status(user: User, brand_id: BrandID, initiator: User) -> None:
     """Revoke the user's organizer status for the brand."""
+    log_entry = orga_domain_service.revoke_orga_status(
+        user, brand_id, initiator
+    )
+
+    _persist_orga_status_revocation(user, brand_id, log_entry)
+
+
+def _persist_orga_status_revocation(
+    user: User,
+    brand_id: BrandID,
+    log_entry: UserLogEntry,
+) -> None:
     db.session.execute(
         delete(DbOrgaFlag)
         .filter_by(user_id=user.id)
         .filter_by(brand_id=brand_id)
     )
 
-    log_entry = user_log_service.build_entry(
-        'orgaflag-removed',
-        user.id,
-        {
-            'brand_id': str(brand_id),
-            'initiator_id': str(initiator.id),
-        },
-    )
-    db.session.add(log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
