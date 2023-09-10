@@ -62,15 +62,15 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
 
 
 def grant_orga_status(
-    user_id: UserID, brand_id: BrandID, initiator: User
+    user: User, brand_id: BrandID, initiator: User
 ) -> DbOrgaFlag:
     """Grant organizer status to the user for the brand."""
-    orga_flag = DbOrgaFlag(user_id, brand_id)
+    orga_flag = DbOrgaFlag(user.id, brand_id)
     db.session.add(orga_flag)
 
     log_entry = user_log_service.build_entry(
         'orgaflag-added',
-        user_id,
+        user.id,
         {
             'brand_id': str(brand_id),
             'initiator_id': str(initiator.id),
@@ -83,19 +83,17 @@ def grant_orga_status(
     return orga_flag
 
 
-def revoke_orga_status(
-    user_id: UserID, brand_id: BrandID, initiator: User
-) -> None:
+def revoke_orga_status(user: User, brand_id: BrandID, initiator: User) -> None:
     """Revoke the user's organizer status for the brand."""
     db.session.execute(
         delete(DbOrgaFlag)
-        .filter_by(user_id=user_id)
+        .filter_by(user_id=user.id)
         .filter_by(brand_id=brand_id)
     )
 
     log_entry = user_log_service.build_entry(
         'orgaflag-removed',
-        user_id,
+        user.id,
         {
             'brand_id': str(brand_id),
             'initiator_id': str(initiator.id),
