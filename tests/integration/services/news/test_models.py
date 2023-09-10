@@ -12,6 +12,22 @@ from byceps.services.user.models.user import User
 from tests.helpers import generate_token
 
 
+def test_image_url_without_image(news_item_without_image):
+    assert news_item_without_image.image_url_path is None
+
+
+def test_image_url_with_image(news_item_with_image):
+    channel = news_item_with_image.channel
+
+    assert (
+        news_item_with_image.image_url_path
+        == f'/data/global/news_channels/{channel.id}/breaking.png'
+    )
+
+
+# helpers
+
+
 @pytest.fixture(scope='module')
 def editor(make_user):
     return make_user()
@@ -28,29 +44,13 @@ def channel(brand, make_news_channel) -> NewsChannel:
 
 
 @pytest.fixture()
-def news_item_with_image(channel: NewsChannel, editor: User) -> NewsItem:
-    return create_item(channel.id, editor, image_url_path='breaking.png')
-
-
-@pytest.fixture()
 def news_item_without_image(channel: NewsChannel, editor: User) -> NewsItem:
     return create_item(channel.id, editor)
 
 
-def test_image_url_with_image(news_item_with_image):
-    channel = news_item_with_image.channel
-
-    assert (
-        news_item_with_image.image_url_path
-        == f'/data/global/news_channels/{channel.id}/breaking.png'
-    )
-
-
-def test_image_url_without_image(news_item_without_image):
-    assert news_item_without_image.image_url_path is None
-
-
-# helpers
+@pytest.fixture()
+def news_item_with_image(channel: NewsChannel, editor: User) -> NewsItem:
+    return create_item(channel.id, editor, image_url_path='breaking.png')
 
 
 def create_item(channel_id, editor: User, *, image_url_path=None) -> NewsItem:
