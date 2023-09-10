@@ -15,6 +15,7 @@ from byceps.services.brand import brand_service
 from byceps.services.orga import orga_birthday_service, orga_service
 from byceps.services.orga.models import Birthday
 from byceps.services.user import user_service
+from byceps.signals import orga as orga_signals
 from byceps.util.export import serialize_dicts_to_csv
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
@@ -89,6 +90,8 @@ def grant_orga_status(brand_id):
 
     event = orga_service.grant_orga_status(user, brand, initiator)
 
+    orga_signals.orga_status_granted.send(None, event=event)
+
     flash_success(
         gettext(
             'Organizer status was granted to %(screen_name)s for brand %(brand_title)s.',
@@ -115,6 +118,8 @@ def revoke_orga_status(brand_id, user_id):
     initiator = g.user
 
     event = orga_service.revoke_orga_status(user, brand, initiator)
+
+    orga_signals.orga_status_revoked.send(None, event=event)
 
     flash_success(
         gettext(
