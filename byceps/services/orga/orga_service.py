@@ -13,6 +13,7 @@ from collections.abc import Sequence
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.brand.dbmodels.brand import DbBrand
 from byceps.services.brand.models import Brand
 from byceps.services.orga import orga_domain_service
@@ -64,19 +65,24 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
     )
 
 
-def grant_orga_status(user: User, brand: Brand, initiator: User) -> DbOrgaFlag:
+def grant_orga_status(
+    user: User, brand: Brand, initiator: User
+) -> OrgaStatusGrantedEvent:
     """Grant organizer status to the user for the brand."""
-    log_entry = orga_domain_service.grant_orga_status(user, brand, initiator)
+    event, log_entry = orga_domain_service.grant_orga_status(
+        user, brand, initiator
+    )
 
-    return _persist_orga_status_grant(user, brand, log_entry)
+    _persist_orga_status_grant(event, log_entry)
+
+    return event
 
 
 def _persist_orga_status_grant(
-    user: User,
-    brand: Brand,
+    event: OrgaStatusGrantedEvent,
     log_entry: UserLogEntry,
-) -> DbOrgaFlag:
-    db_orga_flag = DbOrgaFlag(user.id, brand.id)
+) -> None:
+    db_orga_flag = DbOrgaFlag(event.user_id, event.brand_id)
     db.session.add(db_orga_flag)
 
     db_log_entry = user_log_service.to_db_entry(log_entry)
@@ -84,25 +90,28 @@ def _persist_orga_status_grant(
 
     db.session.commit()
 
-    return db_orga_flag
 
-
-def revoke_orga_status(user: User, brand: Brand, initiator: User) -> None:
+def revoke_orga_status(
+    user: User, brand: Brand, initiator: User
+) -> OrgaStatusRevokedEvent:
     """Revoke the user's organizer status for the brand."""
-    log_entry = orga_domain_service.revoke_orga_status(user, brand, initiator)
+    event, log_entry = orga_domain_service.revoke_orga_status(
+        user, brand, initiator
+    )
 
-    _persist_orga_status_revocation(user, brand, log_entry)
+    _persist_orga_status_revocation(event, log_entry)
+
+    return event
 
 
 def _persist_orga_status_revocation(
-    user: User,
-    brand: Brand,
+    event: OrgaStatusRevokedEvent,
     log_entry: UserLogEntry,
 ) -> None:
     db.session.execute(
         delete(DbOrgaFlag)
-        .filter_by(user_id=user.id)
-        .filter_by(brand_id=brand.id)
+        .filter_by(user_id=event.user_id)
+        .filter_by(brand_id=event.brand_id)
     )
 
     db_log_entry = user_log_service.to_db_entry(log_entry)

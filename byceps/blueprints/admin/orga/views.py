@@ -87,16 +87,17 @@ def grant_orga_status(brand_id):
     user = form.user.data
     initiator = g.user
 
-    orga_flag = orga_service.grant_orga_status(user, brand, initiator)
+    event = orga_service.grant_orga_status(user, brand, initiator)
 
     flash_success(
         gettext(
             'Organizer status was granted to %(screen_name)s for brand %(brand_title)s.',
-            screen_name=orga_flag.user.screen_name,
-            brand_title=orga_flag.brand.title,
+            screen_name=event.user_screen_name,
+            brand_title=event.brand_title,
         )
     )
-    return redirect_to('.persons_for_brand', brand_id=orga_flag.brand.id)
+
+    return redirect_to('.persons_for_brand', brand_id=event.brand_id)
 
 
 @blueprint.delete('/persons/<brand_id>/<uuid:user_id>')
@@ -113,13 +114,13 @@ def revoke_orga_status(brand_id, user_id):
     brand = orga_flag.brand
     initiator = g.user
 
-    orga_service.revoke_orga_status(user, brand, initiator)
+    event = orga_service.revoke_orga_status(user, brand, initiator)
 
     flash_success(
         gettext(
             'Organizer status was revoked for %(screen_name)s for brand %(brand_title)s.',
-            screen_name=user.screen_name,
-            brand_title=brand.title,
+            screen_name=event.user_screen_name,
+            brand_title=event.brand_title,
         )
     )
 
