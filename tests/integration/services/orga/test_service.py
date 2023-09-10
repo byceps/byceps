@@ -19,4 +19,4 @@ def test_flag_changes(brand, admin_user, user):
 
 
 def is_orga_for_brand(user_id, brand_id) -> bool:
-    return orga_service.find_orga_flag(user_id, brand_id) is not None
+    return orga_service.has_orga_flag(user_id, brand_id)

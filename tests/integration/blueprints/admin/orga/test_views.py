@@ -49,4 +49,4 @@ def test_birthdays(orga_admin_client, brand):
 
 
 def is_orga_for_brand(user_id, brand_id) -> bool:
-    return orga_service.find_orga_flag(user_id, brand_id) is not None
+    return orga_service.has_orga_flag(user_id, brand_id)

@@ -115,3 +115,8 @@ def find_orga_flag(user_id: UserID, brand_id: BrandID) -> DbOrgaFlag | None:
         .filter_by(user_id=user_id)
         .filter_by(brand_id=brand_id)
     ).first()
+
+
+def has_orga_flag(user_id: UserID, brand_id: BrandID) -> bool:
+    """Tell if the user has the orga flag for that brand."""
+    return find_orga_flag(user_id, brand_id) is not None
