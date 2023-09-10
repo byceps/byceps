@@ -37,6 +37,7 @@ from .models import (
     BodyFormat,
     NewsChannelID,
     NewsHeadline,
+    NewsImage,
     NewsImageID,
     NewsItem,
     NewsItemID,
@@ -570,13 +571,7 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
         for db_image in db_item.images
     ]
 
-    db_featured_image = db_item.featured_image
-    if db_featured_image:
-        featured_image = news_image_service._db_entity_to_image(
-            db_featured_image, channel.id
-        )
-    else:
-        featured_image = None
+    featured_image = _find_featured_image(db_item)
 
     return NewsItem(
         id=db_item.id,
@@ -657,12 +652,7 @@ def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:
 
 
 def _db_entity_to_teaser(db_item: DbNewsItem) -> NewsTeaser:
-    if db_item.featured_image:
-        featured_image = news_image_service._db_entity_to_image(
-            db_item.featured_image, db_item.channel_id
-        )
-    else:
-        featured_image = None
+    featured_image = _find_featured_image(db_item)
 
     return NewsTeaser(
         slug=db_item.slug,
@@ -670,4 +660,14 @@ def _db_entity_to_teaser(db_item: DbNewsItem) -> NewsTeaser:
         published=db_item.published_at is not None,
         title=db_item.current_version.title,
         featured_image=featured_image,
+    )
+
+
+def _find_featured_image(db_item: DbNewsItem) -> NewsImage | None:
+    db_featured_image = db_item.featured_image
+    if not db_featured_image:
+        return None
+
+    return news_image_service._db_entity_to_image(
+        db_featured_image, db_item.channel_id
     )
