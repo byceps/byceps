@@ -64,10 +64,10 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
 
 
 def add_orga_flag(
-    brand_id: BrandID, user_id: UserID, initiator: User
+    user_id: UserID, brand_id: BrandID, initiator: User
 ) -> DbOrgaFlag:
     """Add an orga flag for a user for that brand."""
-    orga_flag = DbOrgaFlag(brand_id, user_id)
+    orga_flag = DbOrgaFlag(user_id, brand_id)
     db.session.add(orga_flag)
 
     log_entry = user_log_service.build_entry(
@@ -86,13 +86,13 @@ def add_orga_flag(
 
 
 def remove_orga_flag(
-    brand_id: BrandID, user_id: UserID, initiator: User
+    user_id: UserID, brand_id: BrandID, initiator: User
 ) -> None:
     """Remove the orga flag."""
     db.session.execute(
         delete(DbOrgaFlag)
-        .filter_by(brand_id=brand_id)
         .filter_by(user_id=user_id)
+        .filter_by(brand_id=brand_id)
     )
 
     log_entry = user_log_service.build_entry(
@@ -108,10 +108,10 @@ def remove_orga_flag(
     db.session.commit()
 
 
-def find_orga_flag(brand_id: BrandID, user_id: UserID) -> DbOrgaFlag | None:
+def find_orga_flag(user_id: UserID, brand_id: BrandID) -> DbOrgaFlag | None:
     """Return the orga flag for that brand and user, or `None` if not found."""
     return db.session.scalars(
         select(DbOrgaFlag)
-        .filter_by(brand_id=brand_id)
         .filter_by(user_id=user_id)
+        .filter_by(brand_id=brand_id)
     ).first()

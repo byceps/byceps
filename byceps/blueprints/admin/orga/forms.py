@@ -25,7 +25,7 @@ def validate_user_screen_name(form, field):
     if user is None:
         raise ValidationError(lazy_gettext('Unknown username'))
 
-    orga_flag = orga_service.find_orga_flag(form.brand_id, user.id)
+    orga_flag = orga_service.find_orga_flag(user.id, form.brand_id)
     if orga_flag is not None:
         raise ValidationError(
             lazy_gettext('The user already is an organizer for this brand.')

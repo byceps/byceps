@@ -87,7 +87,7 @@ def create_orgaflag(brand_id):
     user = form.user.data
     initiator = g.user
 
-    orga_flag = orga_service.add_orga_flag(brand.id, user.id, initiator)
+    orga_flag = orga_service.add_orga_flag(user.id, brand.id, initiator)
 
     flash_success(
         gettext(
@@ -105,16 +105,16 @@ def create_orgaflag(brand_id):
 @respond_no_content
 def remove_orgaflag(brand_id, user_id):
     """Remove the organizer flag for a brand from a person."""
-    orga_flag = orga_service.find_orga_flag(brand_id, user_id)
+    orga_flag = orga_service.find_orga_flag(user_id, brand_id)
 
     if orga_flag is None:
         abort(404)
 
-    brand = orga_flag.brand
     user = orga_flag.user
+    brand = orga_flag.brand
     initiator = g.user
 
-    orga_service.remove_orga_flag(brand.id, user.id, initiator)
+    orga_service.remove_orga_flag(user.id, brand.id, initiator)
 
     flash_success(
         gettext(
