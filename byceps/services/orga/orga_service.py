@@ -14,6 +14,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.services.brand.models import Brand
 from byceps.services.orga import orga_domain_service
 from byceps.services.user import user_log_service
 from byceps.services.user.dbmodels.user import DbUser
@@ -63,21 +64,19 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
     )
 
 
-def grant_orga_status(
-    user: User, brand_id: BrandID, initiator: User
-) -> DbOrgaFlag:
+def grant_orga_status(user: User, brand: Brand, initiator: User) -> DbOrgaFlag:
     """Grant organizer status to the user for the brand."""
-    log_entry = orga_domain_service.grant_orga_status(user, brand_id, initiator)
+    log_entry = orga_domain_service.grant_orga_status(user, brand, initiator)
 
-    return _persist_orga_status_grant(user, brand_id, log_entry)
+    return _persist_orga_status_grant(user, brand, log_entry)
 
 
 def _persist_orga_status_grant(
     user: User,
-    brand_id: BrandID,
+    brand: Brand,
     log_entry: UserLogEntry,
 ) -> DbOrgaFlag:
-    db_orga_flag = DbOrgaFlag(user.id, brand_id)
+    db_orga_flag = DbOrgaFlag(user.id, brand.id)
     db.session.add(db_orga_flag)
 
     db_log_entry = user_log_service.to_db_entry(log_entry)
@@ -88,24 +87,22 @@ def _persist_orga_status_grant(
     return db_orga_flag
 
 
-def revoke_orga_status(user: User, brand_id: BrandID, initiator: User) -> None:
+def revoke_orga_status(user: User, brand: Brand, initiator: User) -> None:
     """Revoke the user's organizer status for the brand."""
-    log_entry = orga_domain_service.revoke_orga_status(
-        user, brand_id, initiator
-    )
+    log_entry = orga_domain_service.revoke_orga_status(user, brand, initiator)
 
-    _persist_orga_status_revocation(user, brand_id, log_entry)
+    _persist_orga_status_revocation(user, brand, log_entry)
 
 
 def _persist_orga_status_revocation(
     user: User,
-    brand_id: BrandID,
+    brand: Brand,
     log_entry: UserLogEntry,
 ) -> None:
     db.session.execute(
         delete(DbOrgaFlag)
         .filter_by(user_id=user.id)
-        .filter_by(brand_id=brand_id)
+        .filter_by(brand_id=brand.id)
     )
 
     db_log_entry = user_log_service.to_db_entry(log_entry)

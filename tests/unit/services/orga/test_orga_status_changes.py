@@ -9,7 +9,7 @@ from byceps.services.orga import orga_domain_service
 
 
 def test_grant_orga_status(user, brand, initiator):
-    log_entry = orga_domain_service.grant_orga_status(user, brand.id, initiator)
+    log_entry = orga_domain_service.grant_orga_status(user, brand, initiator)
 
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None
@@ -22,9 +22,7 @@ def test_grant_orga_status(user, brand, initiator):
 
 
 def test_revoke_orga_status(user, brand, initiator):
-    log_entry = orga_domain_service.revoke_orga_status(
-        user, brand.id, initiator
-    )
+    log_entry = orga_domain_service.revoke_orga_status(user, brand, initiator)
 
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None
