@@ -42,7 +42,6 @@ def test_create(news_admin_client, channel, news_admin):
     slug = 'what-a-blast'
     title = 'Wow, That Party was a Blast!'
     body = 'So many cool memories.'
-    image_url_path = 'party-action.jpeg'
 
     url = f'/admin/news/for_channel/{channel.id}'
     form_data = {
@@ -50,7 +49,6 @@ def test_create(news_admin_client, channel, news_admin):
         'title': title,
         'body_format': 'html',
         'body': body,
-        'image_url_path': image_url_path,
     }
     response = news_admin_client.post(url, data=form_data)
 
@@ -66,10 +64,6 @@ def test_create(news_admin_client, channel, news_admin):
     assert not item.published
     assert item.title == title
     assert item.body == body
-    assert (
-        item.image_url_path
-        == f'/data/global/news_channels/{channel.id}/party-action.jpeg'
-    )
     assert item.images == []
 
 

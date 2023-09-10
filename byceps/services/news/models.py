@@ -68,7 +68,6 @@ class NewsItem:
     title: str
     body: str
     body_format: BodyFormat
-    image_url_path: str | None
     images: list[NewsImage]
     featured_image: NewsImage | None
 
@@ -82,7 +81,6 @@ class RenderedNewsItem:
     title: str
     featured_image_html: Result[str | None, str]
     body_html: Result[str, str]
-    image_url_path: str | None
 
 
 @dataclass(frozen=True)
@@ -105,7 +103,6 @@ class AdminListNewsItem:
     creator: User
     slug: str
     title: str
-    image_url_path: str | None
     image_total: int
     featured_image: NewsImage | None
     published: bool

@@ -98,9 +98,6 @@ class _ItemBaseForm(LocalizedForm):
         validators=[InputRequired()],
     )
     body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
-    image_url_path = StringField(
-        lazy_gettext('Image URL path'), [Optional(), Length(max=100)]
-    )
 
 
 class ItemCreateForm(_ItemBaseForm):

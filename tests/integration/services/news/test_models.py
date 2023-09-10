@@ -14,20 +14,6 @@ from byceps.services.user.models.user import User
 from tests.helpers import generate_token
 
 
-def test_image_url_without_image(news_item_without_image):
-    item = news_item_without_image
-
-    assert item.image_url_path is None
-
-
-def test_image_url_with_image(news_item_with_image):
-    item = news_item_with_image
-
-    expected = f'/data/global/news_channels/{item.channel.id}/breaking.png'
-
-    assert item.image_url_path == expected
-
-
 def test_image_url_with_featured_image(news_item_with_featured_image):
     item = news_item_with_featured_image
 
@@ -56,16 +42,6 @@ def channel(brand, make_news_channel) -> NewsChannel:
 
 
 @pytest.fixture()
-def news_item_without_image(channel: NewsChannel, editor: User) -> NewsItem:
-    return create_item(channel.id, editor)
-
-
-@pytest.fixture()
-def news_item_with_image(channel: NewsChannel, editor: User) -> NewsItem:
-    return create_item(channel.id, editor, image_url_path='breaking.png')
-
-
-@pytest.fixture()
 def news_item_with_featured_image(
     channel: NewsChannel, editor: User
 ) -> NewsItem:
@@ -79,7 +55,7 @@ def news_item_with_featured_image(
     return news_item_service.find_item(item.id)
 
 
-def create_item(channel_id, editor: User, *, image_url_path=None) -> NewsItem:
+def create_item(channel_id, editor: User) -> NewsItem:
     slug = generate_token()
     title = 'the title'
     body = 'the body'
@@ -92,5 +68,4 @@ def create_item(channel_id, editor: User, *, image_url_path=None) -> NewsItem:
         title,
         body,
         body_format,
-        image_url_path=image_url_path,
     )

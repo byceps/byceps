@@ -100,7 +100,6 @@ class DbNewsItemVersion(db.Model):
     title = db.Column(db.UnicodeText, nullable=False)
     body = db.Column(db.UnicodeText, nullable=False)
     _body_format = db.Column('body_format', db.UnicodeText, nullable=False)
-    image_url_path = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(
         self,

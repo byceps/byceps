@@ -499,16 +499,12 @@ def item_compare_versions(from_version_id, to_version_id):
     html_diff_body_format = _create_html_diff(
         from_version, to_version, lambda version: version.body_format.name
     )
-    html_diff_image_url_path = _create_html_diff(
-        from_version, to_version, lambda version: version.image_url_path
-    )
 
     return {
         'brand': brand,
         'diff_title': html_diff_title,
         'diff_body': html_diff_body,
         'diff_body_format': html_diff_body_format,
-        'diff_image_url_path': html_diff_image_url_path,
     }
 
 
@@ -546,7 +542,6 @@ def item_create(channel_id):
     title = form.title.data.strip()
     body = form.body.data.strip()
     body_format = form.body_format.data
-    image_url_path = form.image_url_path.data.strip()
 
     item = news_item_service.create_item(
         channel.id,
@@ -555,7 +550,6 @@ def item_create(channel_id):
         title,
         body,
         body_format,
-        image_url_path=image_url_path,
     )
 
     flash_success(
@@ -579,7 +573,6 @@ def item_update_form(item_id, erroneous_form=None):
         'title': current_version.title,
         'body_format': current_version.body_format.name,
         'body': current_version.body,
-        'image_url_path': current_version.image_url_path,
     }
     form = erroneous_form if erroneous_form else ItemUpdateForm(data=data)
 
@@ -604,7 +597,6 @@ def item_update(item_id):
     title = form.title.data.strip()
     body = form.body.data.strip()
     body_format = form.body_format.data
-    image_url_path = form.image_url_path.data.strip()
 
     item = news_item_service.update_item(
         item.id,
@@ -613,7 +605,6 @@ def item_update(item_id):
         title,
         body,
         body_format,
-        image_url_path=image_url_path,
     )
 
     flash_success(

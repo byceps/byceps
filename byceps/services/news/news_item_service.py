@@ -57,8 +57,6 @@ def create_item(
     title: str,
     body: str,
     body_format: BodyFormat,
-    *,
-    image_url_path: str | None = None,
 ) -> NewsItem:
     """Create a news item, a version, and set the version as the item's
     current one.
@@ -72,7 +70,6 @@ def create_item(
         title,
         body,
         body_format,
-        image_url_path=image_url_path,
     )
     db.session.add(db_version)
 
@@ -93,8 +90,6 @@ def update_item(
     title: str,
     body: str,
     body_format: BodyFormat,
-    *,
-    image_url_path: str | None = None,
 ) -> NewsItem:
     """Update a news item by creating a new version of it and setting
     the new version as the current one.
@@ -109,7 +104,6 @@ def update_item(
         title,
         body,
         body_format,
-        image_url_path=image_url_path,
     )
     db.session.add(db_version)
 
@@ -126,17 +120,8 @@ def _create_version(
     title: str,
     body: str,
     body_format: BodyFormat,
-    *,
-    image_url_path: str | None = None,
 ) -> DbNewsItemVersion:
-    db_version = DbNewsItemVersion(
-        db_item, creator.id, title, body, body_format
-    )
-
-    if image_url_path:
-        db_version.image_url_path = image_url_path
-
-    return db_version
+    return DbNewsItemVersion(db_item, creator.id, title, body, body_format)
 
 
 def set_featured_image(item_id: NewsItemID, image_id: NewsImageID) -> None:
@@ -346,7 +331,6 @@ def get_admin_list_items_paginated(
             creator=db_version.creator_id,
             slug=db_item.slug,
             title=db_version.title,
-            image_url_path=db_version.image_url_path,
             image_total=len(db_item.images),
             featured_image=featured_image,
             published=db_item.published,
@@ -568,7 +552,6 @@ def get_item_count_by_channel_id() -> dict[NewsChannelID, int]:
 def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
     channel = news_channel_service._db_entity_to_channel(db_item.channel)
 
-    image_url_path = _assemble_image_url_path(db_item)
     images = [
         news_image_service._db_entity_to_image(db_image, channel.id)
         for db_image in db_item.images
@@ -585,19 +568,9 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
         title=db_item.current_version.title,
         body=db_item.current_version.body,
         body_format=db_item.current_version.body_format,
-        image_url_path=image_url_path,
         images=images,
         featured_image=featured_image,
     )
-
-
-def _assemble_image_url_path(db_item: DbNewsItem) -> str | None:
-    url_path = db_item.current_version.image_url_path
-
-    if not url_path:
-        return None
-
-    return f'/data/global/news_channels/{db_item.channel_id}/{url_path}'
 
 
 def render_html(item: NewsItem) -> RenderedNewsItem:
@@ -610,7 +583,6 @@ def render_html(item: NewsItem) -> RenderedNewsItem:
         title=item.title,
         featured_image_html=_render_featured_image_html(item),
         body_html=_render_body_html(item),
-        image_url_path=item.image_url_path,
     )
 
 

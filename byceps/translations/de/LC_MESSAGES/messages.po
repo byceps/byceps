@@ -729,7 +729,7 @@ msgstr "Keine Teilnahmen an Partys dieser Marke gefunden."
 #: byceps/blueprints/admin/authentication/login/forms.py:17
 #: byceps/blueprints/admin/orga/forms.py:44
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:53
-#: byceps/blueprints/admin/orga/views.py:138
+#: byceps/blueprints/admin/orga/views.py:142
 #: byceps/blueprints/admin/ticketing/forms.py:28
 #: byceps/blueprints/admin/user/forms.py:53
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:7
@@ -1268,7 +1268,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_update_form.html:45
 #: byceps/blueprints/admin/news/templates/admin/news/channel_update_form.html:22
 #: byceps/blueprints/admin/news/templates/admin/news/image_update_form.html:27
-#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:38
+#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:36
 #: byceps/blueprints/admin/orga/templates/admin/orga/grant_orga_status_form.html:21
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_create_form.html:24
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_update_form.html:30
@@ -1941,7 +1941,7 @@ msgstr[0] "noch nicht aktivierter Benutzer"
 msgstr[1] "noch nicht aktivierte Benutzer"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:17
-#: byceps/blueprints/admin/news/forms.py:115
+#: byceps/blueprints/admin/news/forms.py:112
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:28
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:28
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
@@ -2563,12 +2563,7 @@ msgstr "Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt."
 msgid "Text format"
 msgstr "Textformat"
 
-#: byceps/blueprints/admin/news/forms.py:102
-#: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:30
-msgid "Image URL path"
-msgstr "Bild-URL-Pfad"
-
-#: byceps/blueprints/admin/news/forms.py:116
+#: byceps/blueprints/admin/news/forms.py:113
 msgid "Time"
 msgstr "Uhrzeit"
 
@@ -2618,27 +2613,27 @@ msgstr "Das Titelbild wurde gesetzt."
 msgid "Featured image has been unset."
 msgstr "Das Titelbild wurde entfernt."
 
-#: byceps/blueprints/admin/news/views.py:562
+#: byceps/blueprints/admin/news/views.py:556
 #, python-format
 msgid "News item \"%(title)s\" has been created."
 msgstr "Die News \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/news/views.py:620
+#: byceps/blueprints/admin/news/views.py:611
 #, python-format
 msgid "News item \"%(title)s\" has been updated."
 msgstr "Die News \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/news/views.py:668
+#: byceps/blueprints/admin/news/views.py:659
 #, python-format
 msgid "News item \"%(title)s\" will be published later."
 msgstr "Die News \"%(title)s\" wird später veröffentlicht."
 
-#: byceps/blueprints/admin/news/views.py:694
+#: byceps/blueprints/admin/news/views.py:685
 #, python-format
 msgid "News item \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
-#: byceps/blueprints/admin/news/views.py:712
+#: byceps/blueprints/admin/news/views.py:703
 #, python-format
 msgid "News item \"%(title)s\" has been unpublished."
 msgstr "Die Veröffentlichung der News \"%(title)s\" wurde zurückgezogen."
@@ -2813,7 +2808,7 @@ msgstr "Bild bearbeiten"
 msgid "View changes"
 msgstr "Änderungen ansehen"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_create_form.html:25
+#: byceps/blueprints/admin/news/templates/admin/news/item_create_form.html:24
 msgid "Create draft"
 msgstr "Entwurf erstellen"
 
@@ -3024,12 +3019,12 @@ msgstr "Unbekannter Benutzername"
 msgid "The user already has organizer status for this brand."
 msgstr "Der Benutzer ist bereits Orga für diese Marke."
 
-#: byceps/blueprints/admin/orga/views.py:95
+#: byceps/blueprints/admin/orga/views.py:96
 #, python-format
 msgid "Organizer status was granted to %(screen_name)s for brand %(brand_title)s."
 msgstr "%(screen_name)s hat Orga-Status für die Marke %(brand_title)s erhalten."
 
-#: byceps/blueprints/admin/orga/views.py:121
+#: byceps/blueprints/admin/orga/views.py:125
 #, python-format
 msgid ""
 "Organizer status was revoked for %(screen_name)s for brand "
@@ -3038,7 +3033,7 @@ msgstr ""
 "%(screen_name)s wurde der Orga-Status für die Marke %(brand_title)s "
 "entzogen."
 
-#: byceps/blueprints/admin/orga/views.py:139
+#: byceps/blueprints/admin/orga/views.py:143
 #: byceps/blueprints/admin/user/forms.py:65
 #: byceps/blueprints/admin/user/forms.py:154
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:8
@@ -3048,7 +3043,7 @@ msgstr ""
 msgid "First name"
 msgstr "Vorname"
 
-#: byceps/blueprints/admin/orga/views.py:140
+#: byceps/blueprints/admin/orga/views.py:144
 #: byceps/blueprints/admin/user/forms.py:68
 #: byceps/blueprints/admin/user/forms.py:157
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:12
@@ -3059,7 +3054,7 @@ msgid "Last name"
 msgstr "Nachname"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:54
-#: byceps/blueprints/admin/orga/views.py:141
+#: byceps/blueprints/admin/orga/views.py:145
 #: byceps/blueprints/admin/user/forms.py:159
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:17
 #: byceps/blueprints/site/user/settings/forms.py:102
@@ -3067,14 +3062,14 @@ msgstr "Nachname"
 msgid "Date of birth"
 msgstr "Geburtsdatum"
 
-#: byceps/blueprints/admin/orga/views.py:142
+#: byceps/blueprints/admin/orga/views.py:146
 #: byceps/blueprints/admin/user/forms.py:163
 #: byceps/blueprints/site/shop/order/forms.py:36
 #: byceps/blueprints/site/user/settings/forms.py:106
 msgid "Street"
 msgstr "Straße"
 
-#: byceps/blueprints/admin/orga/views.py:143
+#: byceps/blueprints/admin/orga/views.py:147
 #: byceps/blueprints/admin/user/forms.py:161
 #: byceps/blueprints/site/shop/order/forms.py:32
 #: byceps/blueprints/site/user/settings/forms.py:104
@@ -3082,14 +3077,14 @@ msgid "Zip code"
 msgstr "PLZ"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:57
-#: byceps/blueprints/admin/orga/views.py:144
+#: byceps/blueprints/admin/orga/views.py:148
 #: byceps/blueprints/admin/user/forms.py:162
 #: byceps/blueprints/site/shop/order/forms.py:35
 #: byceps/blueprints/site/user/settings/forms.py:105
 msgid "City"
 msgstr "Stadt"
 
-#: byceps/blueprints/admin/orga/views.py:145
+#: byceps/blueprints/admin/orga/views.py:149
 #: byceps/blueprints/admin/user/forms.py:160
 #: byceps/blueprints/site/shop/order/forms.py:29
 #: byceps/blueprints/site/user/settings/forms.py:103
@@ -3097,7 +3092,7 @@ msgid "Country"
 msgstr "Land"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:58
-#: byceps/blueprints/admin/orga/views.py:146
+#: byceps/blueprints/admin/orga/views.py:150
 #: byceps/blueprints/admin/user/forms.py:71
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:45
 #: byceps/blueprints/site/user/creation/forms.py:53
@@ -3106,7 +3101,7 @@ msgid "Email address"
 msgstr "E-Mail-Adresse"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:59
-#: byceps/blueprints/admin/orga/views.py:147
+#: byceps/blueprints/admin/orga/views.py:151
 #: byceps/blueprints/admin/user/forms.py:165
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:35
 #: byceps/blueprints/site/user/settings/forms.py:108
