@@ -656,7 +656,7 @@ def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:
     )
 
 
-def _db_entity_to_teaser(db_item: DbNewsItem) -> NewsHeadline:
+def _db_entity_to_teaser(db_item: DbNewsItem) -> NewsTeaser:
     if db_item.featured_image:
         featured_image = news_image_service._db_entity_to_image(
             db_item.featured_image, db_item.channel_id
