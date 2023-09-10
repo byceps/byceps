@@ -78,7 +78,7 @@
             <a href="{{ url_for('.item_view', item_id=item.id) }}"><strong>{{ item.title|fallback('&lt;' ~ _('untitled') ~ '&gt;') }}</strong></a><br>
             {{ item.slug|dim }}
           </td>
-          <td>{% if item.image_url_path %} {{ render_icon('image', title=_('Image defined')) }}{% endif %}</td>
+          <td>{% if item.featured_image %} {{ render_icon('image', title=_('Image defined')) }}{% endif %}</td>
           <td class="nowrap">
             {%- if has_current_user_permission('news_item.view') %}
             <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="{{ _('View change history') }}">{{ item.created_at|datetimeformat }}</a>

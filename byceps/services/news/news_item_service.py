@@ -338,6 +338,8 @@ def get_admin_list_items_paginated(
     def to_admin_list_item(db_item: DbNewsItem) -> AdminListNewsItem:
         db_version = db_item.current_version
 
+        featured_image = _find_featured_image(db_item)
+
         return AdminListNewsItem(
             id=db_item.id,
             created_at=db_version.created_at,
@@ -346,6 +348,7 @@ def get_admin_list_items_paginated(
             title=db_version.title,
             image_url_path=db_version.image_url_path,
             image_total=len(db_item.images),
+            featured_image=featured_image,
             published=db_item.published,
         )
 

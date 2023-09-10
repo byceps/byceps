@@ -107,4 +107,5 @@ class AdminListNewsItem:
     title: str
     image_url_path: str | None
     image_total: int
+    featured_image: NewsImage | None
     published: bool
