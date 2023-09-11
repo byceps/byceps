@@ -79,6 +79,7 @@ class RenderedNewsItem:
     published_at: datetime | None
     published: bool
     title: str
+    featured_image: NewsImage | None
     featured_image_html: Result[str | None, str]
     body_html: Result[str, str]
 

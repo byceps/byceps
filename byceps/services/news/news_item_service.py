@@ -581,6 +581,7 @@ def render_html(item: NewsItem) -> RenderedNewsItem:
         published_at=item.published_at,
         published=item.published,
         title=item.title,
+        featured_image=item.featured_image,
         featured_image_html=_render_featured_image_html(item),
         body_html=_render_body_html(item),
     )
