@@ -22,7 +22,7 @@
       <div style="flex-basis: 33%;">
 
         <div class="data-label">{{ _('Owner') }}</div>
-        <div class="data-value">{{ render_user_microcard(users_by_id[server.owner_id]) }}</div>
+        <div class="data-value">{{ render_user_microcard(owners_by_id[server.owner.id]) }}</div>
 
       </div>
       <div style="flex-basis: 33%;">
@@ -56,7 +56,7 @@
         <div style="flex-basis: 33%;">
 
           <div class="data-label">{{ _('Created by') }}</div>
-          <div class="data-value">{{ render_user_avatar_and_name(users_by_id[server.creator_id], size=20) }}</div>
+          <div class="data-value">{{ render_user_avatar_and_name(server.creator, size=20) }}</div>
 
         </div>
         <div style="flex-basis: 33%;">

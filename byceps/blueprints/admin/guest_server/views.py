@@ -57,18 +57,10 @@ def server_index(party_id):
 
     servers = guest_server_service.get_all_servers_for_party(party.id)
 
-    creator_ids = {server.creator_id for server in servers}
-    owner_ids = {server.owner_id for server in servers}
-    user_ids = creator_ids.union(owner_ids)
-    users_by_id = user_service.get_users_indexed_by_id(
-        user_ids, include_avatars=True
-    )
-
     return {
         'party': party,
         'setting': setting,
         'servers': servers,
-        'users_by_id': users_by_id,
         'sort_addresses': _sort_addresses,
     }
 
@@ -82,14 +74,14 @@ def server_view(server_id):
     party = party_service.get_party(server.party_id)
     setting = guest_server_service.get_setting_for_party(party.id)
 
-    user_ids = {server.creator_id, server.owner_id}
-    users_by_id = user_service.get_users_for_admin_indexed_by_id(user_ids)
+    owner_ids = {server.creator.id, server.owner.id}
+    owners_by_id = user_service.get_users_for_admin_indexed_by_id(owner_ids)
 
     return {
         'party': party,
         'server': server,
         'setting': setting,
-        'users_by_id': users_by_id,
+        'owners_by_id': owners_by_id,
         'sort_addresses': _sort_addresses,
     }
 
@@ -219,12 +211,12 @@ def address_index(party_id):
     for server in servers:
         addresses.extend(server.addresses)
 
-    user_ids = {server.owner_id for server in servers}
-    users_by_id = user_service.get_users_indexed_by_id(
-        user_ids, include_avatars=True
+    owner_ids = {server.owner.id for server in servers}
+    owners_by_id = user_service.get_users_indexed_by_id(
+        owner_ids, include_avatars=True
     )
     owners_by_server_id = {
-        server.id: users_by_id[server.owner_id] for server in servers
+        server.id: owners_by_id[server.owner.id] for server in servers
     }
 
     setting = guest_server_service.get_setting_for_party(party.id)
@@ -254,11 +246,6 @@ def address_export_netbox(party_id):
     all_servers = guest_server_service.get_all_servers_for_party(party.id)
     approved_servers = [server for server in all_servers if server.approved]
 
-    owner_ids = {server.owner_id for server in approved_servers}
-    owners_by_id = user_service.get_users_indexed_by_id(
-        owner_ids, include_avatars=False
-    )
-
     # field names as defined by NetBox
     field_names = ('address', 'status', 'dns_name', 'description')
 
@@ -272,7 +259,7 @@ def address_export_netbox(party_id):
                         f'{str(address.ip_address)}/24',
                         'active',
                         _get_full_hostname(address.hostname, setting),
-                        owners_by_id[server.owner_id].screen_name or 'unknown',
+                        server.owner.screen_name or 'unknown',
                     )
                 )
 

@@ -15,6 +15,7 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.party.models import Party
+from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import PartyID, UserID
 from byceps.util.result import Err, Ok, Result
@@ -135,8 +136,8 @@ def _persist_created_server(server: Server) -> None:
         server.id,
         server.party_id,
         server.created_at,
-        server.creator_id,
-        server.owner_id,
+        server.creator.id,
+        server.owner.id,
         description=server.description,
         notes_owner=server.notes_owner,
         notes_admin=server.notes_admin,
@@ -170,7 +171,10 @@ def update_server(
 
     db.session.commit()
 
-    return _db_entity_to_server(db_server)
+    creator = user_service.get_user(db_server.creator_id)
+    owner = user_service.get_user(db_server.owner_id)
+
+    return _db_entity_to_server(db_server, creator, owner)
 
 
 def find_server(server_id: ServerID) -> Server | None:
@@ -180,7 +184,10 @@ def find_server(server_id: ServerID) -> Server | None:
     if db_server is None:
         return None
 
-    return _db_entity_to_server(db_server)
+    creator = user_service.get_user(db_server.creator_id)
+    owner = user_service.get_user(db_server.owner_id)
+
+    return _db_entity_to_server(db_server, creator, owner)
 
 
 def get_all_servers_for_party(party_id: PartyID) -> list[Server]:
@@ -193,7 +200,24 @@ def get_all_servers_for_party(party_id: PartyID) -> list[Server]:
         .all()
     )
 
-    return [_db_entity_to_server(db_server) for db_server in db_servers]
+    creator_ids = {db_server.creator_id for db_server in db_servers}
+    creators_by_id = user_service.get_users_indexed_by_id(
+        creator_ids, include_avatars=True
+    )
+
+    owner_ids = {db_server.owner_id for db_server in db_servers}
+    owners_by_id = user_service.get_users_indexed_by_id(
+        owner_ids, include_avatars=True
+    )
+
+    return [
+        _db_entity_to_server(
+            db_server,
+            creators_by_id[db_server.creator_id],
+            owners_by_id[db_server.owner_id],
+        )
+        for db_server in db_servers
+    ]
 
 
 def get_servers_for_owner_and_party(
@@ -211,7 +235,24 @@ def get_servers_for_owner_and_party(
         .all()
     )
 
-    return [_db_entity_to_server(db_server) for db_server in db_servers]
+    creator_ids = {db_server.creator_id for db_server in db_servers}
+    creators_by_id = user_service.get_users_indexed_by_id(
+        creator_ids, include_avatars=True
+    )
+
+    owner_ids = {db_server.owner_id for db_server in db_servers}
+    owners_by_id = user_service.get_users_indexed_by_id(
+        owner_ids, include_avatars=True
+    )
+
+    return [
+        _db_entity_to_server(
+            db_server,
+            creators_by_id[db_server.creator_id],
+            owners_by_id[db_server.owner_id],
+        )
+        for db_server in db_servers
+    ]
 
 
 def count_servers_for_owner_and_party(
@@ -251,7 +292,9 @@ def _get_db_server(server_id: ServerID) -> DbServer:
     return db_server
 
 
-def _db_entity_to_server(db_server: DbServer) -> Server:
+def _db_entity_to_server(
+    db_server: DbServer, creator: User, owner: User
+) -> Server:
     addresses = {
         _db_entity_to_address(db_address) for db_address in db_server.addresses
     }
@@ -260,8 +303,8 @@ def _db_entity_to_server(db_server: DbServer) -> Server:
         id=db_server.id,
         party_id=db_server.party_id,
         created_at=db_server.created_at,
-        creator_id=db_server.creator_id,
-        owner_id=db_server.owner_id,
+        creator=creator,
+        owner=owner,
         description=db_server.description,
         notes_owner=db_server.notes_owner,
         notes_admin=db_server.notes_admin,

@@ -14,7 +14,8 @@ from ipaddress import IPv4Address, IPv6Address
 from typing import NewType, Union
 from uuid import UUID
 
-from byceps.typing import PartyID, UserID
+from byceps.services.user.models.user import User
+from byceps.typing import PartyID
 
 
 IPAddress = Union[IPv4Address, IPv6Address]
@@ -41,8 +42,8 @@ class Server:
     id: ServerID
     party_id: PartyID
     created_at: datetime
-    creator_id: UserID
-    owner_id: UserID
+    creator: User
+    owner: User
     description: str | None
     notes_owner: str | None
     notes_admin: str | None

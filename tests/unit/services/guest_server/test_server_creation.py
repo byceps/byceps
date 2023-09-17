@@ -27,8 +27,8 @@ def test_create_server(party, admin_user, user):
     assert server.id is not None
     assert server.party_id == party.id
     assert server.created_at is not None
-    assert server.creator_id == admin_user.id
-    assert server.owner_id == owner.id
+    assert server.creator.id == admin_user.id
+    assert server.owner.id == owner.id
     assert server.description == '2U, spray-painted in pink'
     assert server.notes_owner == 'I need two ports.'
     assert server.notes_admin == 'Request denied.'
