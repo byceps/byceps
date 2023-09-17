@@ -9,6 +9,9 @@ byceps.services.webhooks.dbmodels
 from __future__ import annotations
 
 from typing import Any, TYPE_CHECKING
+from uuid import UUID
+
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 if TYPE_CHECKING:
@@ -27,17 +30,23 @@ class DbOutgoingWebhook(db.Model):
 
     __tablename__ = 'outgoing_webhooks'
 
-    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
-    _event_types = db.Column(
-        'event_types', MutableList.as_mutable(db.JSONB), nullable=False
+    id: Mapped[UUID] = mapped_column(
+        db.Uuid, default=generate_uuid4, primary_key=True
     )
-    event_filters = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
-    format = db.Column(db.UnicodeText, nullable=False)
-    text_prefix = db.Column(db.UnicodeText, nullable=True)
-    extra_fields = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
-    url = db.Column(db.UnicodeText, nullable=False)
-    description = db.Column(db.UnicodeText, nullable=True)
-    enabled = db.Column(db.Boolean, nullable=False)
+    _event_types: Mapped[list[str]] = mapped_column(
+        'event_types', MutableList.as_mutable(db.JSONB)
+    )
+    event_filters: Mapped[Any | None] = mapped_column(
+        MutableDict.as_mutable(db.JSONB)
+    )
+    format: Mapped[str] = mapped_column(db.UnicodeText)
+    text_prefix: Mapped[str | None] = mapped_column(db.UnicodeText)
+    extra_fields: Mapped[Any | None] = mapped_column(
+        MutableDict.as_mutable(db.JSONB)
+    )
+    url: Mapped[str] = mapped_column(db.UnicodeText)
+    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    enabled: Mapped[bool]
 
     def __init__(
         self,

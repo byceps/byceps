@@ -13,6 +13,7 @@ from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 if TYPE_CHECKING:
@@ -22,6 +23,7 @@ else:
 
 from byceps.database import db, generate_uuid7
 from byceps.services.shop.article.models import (
+    ArticleID,
     ArticleNumber,
     ArticleType,
     ArticleTypeParams,
@@ -39,33 +41,31 @@ class DbArticle(db.Model):
         db.CheckConstraint('available_from < available_until'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    shop_id = db.Column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    id: Mapped[ArticleID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    item_number = db.Column(db.UnicodeText, unique=True, nullable=False)
-    _type = db.Column('type', db.UnicodeText, nullable=False)
-    type_params = db.Column(db.JSONB, nullable=True)
-    description = db.Column(db.UnicodeText, nullable=False)
-    price_amount = db.Column(db.Numeric(6, 2), nullable=False)
-    _price_currency = db.Column(
-        'price_currency', db.UnicodeText, nullable=False
+    shop_id: Mapped[ShopID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True
     )
-    tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
-    available_from = db.Column(db.DateTime, nullable=True)
-    available_until = db.Column(db.DateTime, nullable=True)
-    total_quantity = db.Column(db.Integer, nullable=False)
-    quantity = db.Column(
-        db.Integer, db.CheckConstraint('quantity >= 0'), nullable=False
+    item_number: Mapped[ArticleNumber] = mapped_column(
+        db.UnicodeText, unique=True
     )
-    max_quantity_per_order = db.Column(db.Integer, nullable=False)
-    not_directly_orderable = db.Column(
-        db.Boolean, default=False, nullable=False
+    _type: Mapped[str] = mapped_column('type', db.UnicodeText)
+    type_params: Mapped[ArticleTypeParams | None] = mapped_column(db.JSONB)
+    description: Mapped[str] = mapped_column(db.UnicodeText)
+    price_amount: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))
+    _price_currency: Mapped[str] = mapped_column(
+        'price_currency', db.UnicodeText
     )
-    separate_order_required = db.Column(
-        db.Boolean, default=False, nullable=False
-    )
-    processing_required = db.Column(db.Boolean, nullable=False)
+    tax_rate: Mapped[Decimal] = mapped_column(db.Numeric(3, 3))
+    available_from: Mapped[datetime | None]
+    available_until: Mapped[datetime | None]
+    total_quantity: Mapped[int]
+    quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity >= 0'))
+    max_quantity_per_order: Mapped[int]
+    not_directly_orderable: Mapped[bool] = mapped_column(default=False)
+    separate_order_required: Mapped[bool] = mapped_column(default=False)
+    processing_required: Mapped[bool]
 
     def __init__(
         self,

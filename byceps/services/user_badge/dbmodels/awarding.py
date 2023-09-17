@@ -9,6 +9,8 @@ byceps.services.user_badge.dbmodels.awarding
 from datetime import datetime
 from uuid import UUID
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.services.user_badge.models import BadgeID
 from byceps.typing import UserID
@@ -19,12 +21,12 @@ class DbBadgeAwarding(db.Model):
 
     __tablename__ = 'user_badge_awardings'
 
-    id = db.Column(db.Uuid, primary_key=True)
-    badge_id = db.Column(
-        db.Uuid, db.ForeignKey('user_badges.id'), nullable=False
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    badge_id: Mapped[UUID] = mapped_column(
+        db.Uuid, db.ForeignKey('user_badges.id')
     )
-    awardee_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    awarded_at = db.Column(db.DateTime, nullable=False)
+    awardee_id: Mapped[UUID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    awarded_at: Mapped[datetime]
 
     def __init__(
         self,

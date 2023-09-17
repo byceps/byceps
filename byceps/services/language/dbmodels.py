@@ -6,6 +6,8 @@ byceps.services.language.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 
 
@@ -17,7 +19,7 @@ class DbLanguage(db.Model):
 
     __tablename__ = 'languages'
 
-    code = db.Column(db.UnicodeText, primary_key=True)
+    code: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
 
     def __init__(self, code: str) -> None:
         self.code = code

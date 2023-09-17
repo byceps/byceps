@@ -6,12 +6,15 @@ byceps.services.board.dbmodels.topic
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db, generate_uuid7
-from byceps.services.board.models import BoardCategoryID
+from byceps.services.board.models import BoardCategoryID, TopicID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
@@ -24,40 +27,62 @@ class DbTopic(db.Model):
 
     __tablename__ = 'board_topics'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    category_id = db.Column(
+    id: Mapped[TopicID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
+    )
+    category_id: Mapped[BoardCategoryID] = mapped_column(
         db.Uuid,
         db.ForeignKey('board_categories.id'),
         index=True,
         nullable=False,
     )
-    category = db.relationship(DbBoardCategory)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    title = db.Column(db.UnicodeText, nullable=False)
-    posting_count = db.Column(db.Integer, default=0, nullable=False)
-    last_updated_at = db.Column(db.DateTime, default=datetime.utcnow)
-    last_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_updated_by = db.relationship(DbUser, foreign_keys=[last_updated_by_id])
-    hidden = db.Column(db.Boolean, default=False, nullable=False)
-    hidden_at = db.Column(db.DateTime)
-    hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    hidden_by = db.relationship(DbUser, foreign_keys=[hidden_by_id])
-    locked = db.Column(db.Boolean, default=False, nullable=False)
-    locked_at = db.Column(db.DateTime)
-    locked_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    locked_by = db.relationship(DbUser, foreign_keys=[locked_by_id])
-    pinned = db.Column(db.Boolean, default=False, nullable=False)
-    pinned_at = db.Column(db.DateTime)
-    pinned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    pinned_by = db.relationship(DbUser, foreign_keys=[pinned_by_id])
+    category: Mapped[DbBoardCategory] = relationship(DbBoardCategory)
+    created_at: Mapped[datetime] = mapped_column(
+        db.DateTime, default=datetime.utcnow
+    )
+    creator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    title: Mapped[str] = mapped_column(db.UnicodeText)
+    posting_count: Mapped[int] = mapped_column(default=0)
+    last_updated_at: Mapped[datetime | None] = mapped_column(
+        default=datetime.utcnow
+    )
+    last_updated_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    last_updated_by: Mapped[DbUser | None] = relationship(
+        DbUser, foreign_keys=[last_updated_by_id]
+    )
+    hidden: Mapped[bool] = mapped_column(default=False)
+    hidden_at: Mapped[datetime | None]
+    hidden_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    hidden_by: Mapped[DbUser | None] = relationship(
+        DbUser, foreign_keys=[hidden_by_id]
+    )
+    locked: Mapped[bool] = mapped_column(default=False)
+    locked_at: Mapped[datetime | None]
+    locked_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    locked_by: Mapped[DbUser | None] = relationship(
+        DbUser, foreign_keys=[locked_by_id]
+    )
+    pinned: Mapped[bool] = mapped_column(default=False)
+    pinned_at: Mapped[datetime | None]
+    pinned_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    pinned_by: Mapped[DbUser | None] = relationship(
+        DbUser, foreign_keys=[pinned_by_id]
+    )
     initial_posting = association_proxy(
         'initial_topic_posting_association', 'posting'
     )
-    posting_limited_to_moderators = db.Column(
-        db.Boolean, default=False, nullable=False
-    )
-    muted = db.Column(db.Boolean, default=False, nullable=False)
+    posting_limited_to_moderators: Mapped[bool] = mapped_column(default=False)
+    muted: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
         self, category_id: BoardCategoryID, creator_id: UserID, title: str
@@ -91,13 +116,13 @@ class DbTopic(db.Model):
             .add_with_lookup('title')
         )
 
-        if self.hidden:
+        if self.hidden_by:
             builder.add_custom(f'hidden by {self.hidden_by.screen_name}')
 
-        if self.locked:
+        if self.locked_by:
             builder.add_custom(f'locked by {self.locked_by.screen_name}')
 
-        if self.pinned:
+        if self.pinned_by:
             builder.add_custom(f'pinned by {self.pinned_by.screen_name}')
 
         return builder.build()

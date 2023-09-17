@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db
 from byceps.services.brand.dbmodels.brand import DbBrand
 from byceps.typing import BrandID, PartyID
@@ -21,19 +23,19 @@ class DbParty(db.Model):
 
     __tablename__ = 'parties'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    brand_id = db.Column(
-        db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False
+    id: Mapped[PartyID] = mapped_column(db.UnicodeText, primary_key=True)
+    brand_id: Mapped[BrandID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    brand = db.relationship(DbBrand, backref='parties')
-    title = db.Column(db.UnicodeText, unique=True, nullable=False)
-    starts_at = db.Column(db.DateTime, nullable=False)
-    ends_at = db.Column(db.DateTime, nullable=False)
-    max_ticket_quantity = db.Column(db.Integer, nullable=True)
-    ticket_management_enabled = db.Column(db.Boolean, nullable=False)
-    seat_management_enabled = db.Column(db.Boolean, nullable=False)
-    canceled = db.Column(db.Boolean, default=False, nullable=False)
-    archived = db.Column(db.Boolean, default=False, nullable=False)
+    brand: Mapped[DbBrand] = relationship(DbBrand, backref='parties')
+    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    starts_at: Mapped[datetime]
+    ends_at: Mapped[datetime]
+    max_ticket_quantity: Mapped[int | None]
+    ticket_management_enabled: Mapped[bool]
+    seat_management_enabled: Mapped[bool]
+    canceled: Mapped[bool] = mapped_column(default=False)
+    archived: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
         self,

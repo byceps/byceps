@@ -9,6 +9,8 @@ byceps.services.user.dbmodels.log
 from datetime import datetime
 from uuid import UUID
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.services.user.models.log import UserLogEntryData
 from byceps.typing import UserID
@@ -20,13 +22,13 @@ class DbUserLogEntry(db.Model):
 
     __tablename__ = 'user_log_entries'
 
-    id = db.Column(db.Uuid, primary_key=True)
-    occurred_at = db.Column(db.DateTime, nullable=False)
-    event_type = db.Column(db.UnicodeText, index=True, nullable=False)
-    user_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    occurred_at: Mapped[datetime]
+    event_type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    data = db.Column(db.JSONB)
+    data: Mapped[UserLogEntryData] = mapped_column(db.JSONB)
 
     def __init__(
         self,

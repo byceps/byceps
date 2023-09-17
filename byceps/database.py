@@ -17,6 +17,7 @@ import uuid
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy.pagination import Pagination
 from sqlalchemy.dialects.postgresql import insert, JSONB, UUID
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.sql import Select
 from sqlalchemy.sql.dml import Insert
 from sqlalchemy.sql.schema import Table
@@ -29,7 +30,11 @@ T = TypeVar('T')
 Mapper = Callable[[F], T]
 
 
-db = SQLAlchemy()
+class Base(DeclarativeBase):
+    pass
+
+
+db = SQLAlchemy(model_class=Base)
 
 
 db.JSONB = JSONB

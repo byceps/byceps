@@ -9,6 +9,8 @@ byceps.services.shop.order.dbmodels.log
 from datetime import datetime
 from uuid import UUID
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.services.shop.order.models.log import OrderLogEntryData
 from byceps.services.shop.order.models.order import OrderID
@@ -20,13 +22,13 @@ class DbOrderLogEntry(db.Model):
 
     __tablename__ = 'shop_order_log_entries'
 
-    id = db.Column(db.Uuid, primary_key=True)
-    occurred_at = db.Column(db.DateTime, nullable=False)
-    event_type = db.Column(db.UnicodeText, index=True, nullable=False)
-    order_id = db.Column(
-        db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    occurred_at: Mapped[datetime]
+    event_type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    order_id: Mapped[OrderID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_orders.id'), index=True
     )
-    data = db.Column(db.JSONB)
+    data: Mapped[OrderLogEntryData] = mapped_column(db.JSONB)
 
     def __init__(
         self,

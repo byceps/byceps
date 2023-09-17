@@ -8,6 +8,8 @@ byceps.services.board.dbmodels.last_category_view
 
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db
 from byceps.services.board.models import BoardCategoryID
 from byceps.typing import UserID
@@ -21,12 +23,14 @@ class DbLastCategoryView(db.Model):
 
     __tablename__ = 'board_categories_lastviews'
 
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    category_id = db.Column(
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    category_id: Mapped[BoardCategoryID] = mapped_column(
         db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True
     )
-    category = db.relationship(DbBoardCategory)
-    occurred_at = db.Column(db.DateTime, nullable=False)
+    category: Mapped[DbBoardCategory] = relationship(DbBoardCategory)
+    occurred_at: Mapped[datetime]
 
     def __init__(
         self,

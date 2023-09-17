@@ -7,13 +7,14 @@ byceps.services.shop.catalog.dbmodels
 """
 
 from sqlalchemy.ext.orderinglist import ordering_list
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db, generate_uuid7
 from byceps.services.shop.article.models import ArticleID
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
 
-from .models import CatalogID, CollectionID
+from .models import CatalogArticleID, CatalogID, CollectionID
 
 
 class DbCatalog(db.Model):
@@ -21,11 +22,13 @@ class DbCatalog(db.Model):
 
     __tablename__ = 'shop_catalogs'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    shop_id = db.Column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    id: Mapped[CatalogID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    title = db.Column(db.UnicodeText, unique=True, nullable=False)
+    shop_id: Mapped[ShopID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True
+    )
+    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
 
     def __init__(self, shop_id: ShopID, title: str) -> None:
         self.shop_id = shop_id
@@ -41,14 +44,16 @@ class DbCollection(db.Model):
     __tablename__ = 'shop_catalog_collections'
     __table_args__ = (db.UniqueConstraint('catalog_id', 'title'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    catalog_id = db.Column(
-        db.Uuid, db.ForeignKey('shop_catalogs.id'), index=True, nullable=False
+    id: Mapped[CollectionID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    title = db.Column(db.UnicodeText, nullable=False)
-    position = db.Column(db.Integer, nullable=False)
+    catalog_id: Mapped[CatalogID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_catalogs.id'), index=True
+    )
+    title: Mapped[str] = mapped_column(db.UnicodeText)
+    position: Mapped[int] = mapped_column(db.Integer)
 
-    catalog = db.relationship(
+    catalog: Mapped[DbCatalog] = relationship(
         DbCatalog,
         backref=db.backref(
             'collections',
@@ -76,19 +81,21 @@ class DbCatalogArticle(db.Model):
     __tablename__ = 'shop_catalog_articles'
     __table_args__ = (db.UniqueConstraint('collection_id', 'article_id'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    collection_id = db.Column(
+    id: Mapped[CatalogArticleID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
+    )
+    collection_id: Mapped[CollectionID] = mapped_column(
         db.Uuid,
         db.ForeignKey('shop_catalog_collections.id'),
         index=True,
         nullable=False,
     )
-    article_id = db.Column(
-        db.Uuid, db.ForeignKey('shop_articles.id'), index=True, nullable=False
+    article_id: Mapped[ArticleID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_articles.id'), index=True
     )
-    position = db.Column(db.Integer, nullable=False)
+    position: Mapped[int] = mapped_column(db.Integer)
 
-    collection = db.relationship(
+    collection: Mapped[DbCollection] = relationship(
         DbCollection,
         backref=db.backref(
             'catalog_articles',

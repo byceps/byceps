@@ -10,7 +10,9 @@ from __future__ import annotations
 
 from datetime import datetime
 import secrets
-from typing import TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
+
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 if TYPE_CHECKING:
@@ -37,15 +39,15 @@ class DbVerificationToken(db.Model):
 
     __tablename__ = 'verification_tokens'
 
-    token = db.Column(
+    token: Mapped[str] = mapped_column(
         db.UnicodeText, default=_generate_token_value, primary_key=True
     )
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    user_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    _purpose = db.Column('purpose', db.UnicodeText, index=True, nullable=False)
-    data = db.Column(db.JSONB, nullable=True)
+    _purpose: Mapped[str] = mapped_column('purpose', db.UnicodeText, index=True)
+    data: Mapped[Any | None] = mapped_column(db.JSONB)
 
     def __init__(
         self,

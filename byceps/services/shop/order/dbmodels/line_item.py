@@ -6,8 +6,13 @@ byceps.services.shop.order.dbmodels.line_item
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
+from datetime import datetime
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
+
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 if TYPE_CHECKING:
@@ -22,6 +27,8 @@ from byceps.services.shop.article.models import (
     ArticleNumber,
     ArticleType,
 )
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import LineItemID
 
 from .order import DbOrder
 
@@ -31,35 +38,35 @@ class DbLineItem(db.Model):
 
     __tablename__ = 'shop_order_line_items'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    order_number = db.Column(
+    id: Mapped[LineItemID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
+    )
+    order_number: Mapped[OrderNumber] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_orders.order_number'),
         index=True,
-        nullable=False,
     )
-    order = db.relationship(DbOrder, backref='line_items')
-    article_id = db.Column(
-        db.Uuid, db.ForeignKey('shop_articles.id'), index=True, nullable=False
+    order: Mapped[DbOrder] = relationship(DbOrder, backref='line_items')
+    article_id: Mapped[ArticleID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_articles.id'), index=True
     )
-    article_number = db.Column(
+    article_number: Mapped[ArticleNumber] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_articles.item_number'),
         index=True,
-        nullable=False,
     )
-    article = db.relationship(DbArticle, foreign_keys=[article_id])
-    _article_type = db.Column('article_type', db.UnicodeText, nullable=False)
-    description = db.Column(db.UnicodeText, nullable=False)
-    unit_price = db.Column(db.Numeric(6, 2), nullable=False)
-    tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
-    quantity = db.Column(
-        db.Integer, db.CheckConstraint('quantity > 0'), nullable=False
+    article: Mapped[DbArticle] = relationship(
+        DbArticle, foreign_keys=[article_id]
     )
-    line_amount = db.Column(db.Numeric(7, 2), nullable=False)
-    processing_required = db.Column(db.Boolean, nullable=False)
-    processing_result = db.Column(db.JSONB, nullable=True)
-    processed_at = db.Column(db.DateTime, nullable=True)
+    _article_type: Mapped[str] = mapped_column('article_type', db.UnicodeText)
+    description: Mapped[str] = mapped_column(db.UnicodeText)
+    unit_price: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))
+    tax_rate: Mapped[Decimal] = mapped_column(db.Numeric(3, 3))
+    quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity > 0'))
+    line_amount: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
+    processing_required: Mapped[bool]
+    processing_result: Mapped[Any | None] = mapped_column(db.JSONB)
+    processed_at: Mapped[datetime | None]
 
     def __init__(
         self,

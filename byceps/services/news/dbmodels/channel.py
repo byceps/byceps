@@ -8,6 +8,8 @@ byceps.services.news.dbmodels.channel
 
 from __future__ import annotations
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.services.news.models import NewsChannelID
 from byceps.services.site.models import SiteID
@@ -20,14 +22,14 @@ class DbNewsChannel(db.Model):
 
     __tablename__ = 'news_channels'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    brand_id = db.Column(
-        db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False
+    id: Mapped[NewsChannelID] = mapped_column(db.UnicodeText, primary_key=True)
+    brand_id: Mapped[BrandID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    announcement_site_id = db.Column(
-        db.UnicodeText, db.ForeignKey('sites.id'), nullable=True
+    announcement_site_id: Mapped[SiteID | None] = mapped_column(
+        db.UnicodeText, db.ForeignKey('sites.id')
     )
-    archived = db.Column(db.Boolean, default=False, nullable=False)
+    archived: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
         self,

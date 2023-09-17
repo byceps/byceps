@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -31,21 +33,22 @@ class DbNavMenu(db.Model):
     __tablename__ = 'site_nav_menus'
     __table_args__ = (db.UniqueConstraint('site_id', 'name', 'language_code'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    site_id = db.Column(
-        db.UnicodeText, db.ForeignKey('sites.id'), index=True, nullable=False
+    id: Mapped[NavMenuID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    name = db.Column(db.UnicodeText, index=True, nullable=False)
-    language_code = db.Column(
+    site_id: Mapped[SiteID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('sites.id'), index=True
+    )
+    name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    language_code: Mapped[str] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('languages.code'),
         index=True,
-        nullable=False,
     )
-    language = db.relationship(DbLanguage)
-    hidden = db.Column(db.Boolean, nullable=False)
-    parent_menu_id = db.Column(
-        db.Uuid, db.ForeignKey('site_nav_menus.id'), nullable=True
+    language: Mapped[DbLanguage] = relationship(DbLanguage)
+    hidden: Mapped[bool]
+    parent_menu_id: Mapped[NavMenuID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('site_nav_menus.id')
     )
 
     def __init__(
@@ -72,11 +75,13 @@ class DbNavItem(db.Model):
         db.UniqueConstraint('menu_id', 'parent_item_id', 'position'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    menu_id = db.Column(
-        db.Uuid, db.ForeignKey('site_nav_menus.id'), index=True, nullable=False
+    id: Mapped[NavItemID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    menu = db.relationship(
+    menu_id: Mapped[NavMenuID] = mapped_column(
+        db.Uuid, db.ForeignKey('site_nav_menus.id'), index=True
+    )
+    menu: Mapped[DbNavMenu] = relationship(
         DbNavMenu,
         backref=db.backref(
             'items',
@@ -84,18 +89,17 @@ class DbNavItem(db.Model):
             collection_class=ordering_list('position', count_from=1),
         ),
     )
-    parent_item_id = db.Column(
+    parent_item_id: Mapped[NavMenuID | None] = mapped_column(
         db.Uuid,
         db.ForeignKey('site_nav_menu_items.id'),
         index=True,
-        nullable=True,
     )
-    position = db.Column(db.Integer, nullable=False)
-    _target_type = db.Column('target_type', db.UnicodeText, nullable=False)
-    target = db.Column(db.UnicodeText, nullable=False)
-    label = db.Column(db.UnicodeText, nullable=False)
-    current_page_id = db.Column(db.UnicodeText, nullable=False)
-    hidden = db.Column(db.Boolean, nullable=False)
+    position: Mapped[int]
+    _target_type: Mapped[str] = mapped_column('target_type', db.UnicodeText)
+    target: Mapped[str] = mapped_column(db.UnicodeText)
+    label: Mapped[str] = mapped_column(db.UnicodeText)
+    current_page_id: Mapped[str] = mapped_column(db.UnicodeText)
+    hidden: Mapped[bool]
 
     def __init__(
         self,

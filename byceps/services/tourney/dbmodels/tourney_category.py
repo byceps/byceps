@@ -7,9 +7,11 @@ byceps.services.tourney.dbmodels.tourney_category
 """
 
 from sqlalchemy.ext.orderinglist import ordering_list
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db, generate_uuid4
 from byceps.services.party.dbmodels.party import DbParty
+from byceps.services.tourney.models import TourneyCategoryID
 from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
 
@@ -20,11 +22,13 @@ class DbTourneyCategory(db.Model):
     __tablename__ = 'tourney_categories'
     __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[TourneyCategoryID] = mapped_column(
+        db.Uuid, default=generate_uuid4, primary_key=True
     )
-    party = db.relationship(
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+    )
+    party: Mapped[DbParty] = relationship(
         DbParty,
         backref=db.backref(
             'tourney_categories',
@@ -32,8 +36,8 @@ class DbTourneyCategory(db.Model):
             collection_class=ordering_list('position', count_from=1),
         ),
     )
-    position = db.Column(db.Integer, nullable=False)
-    title = db.Column(db.UnicodeText, nullable=False)
+    position: Mapped[int]
+    title: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(self, party_id: PartyID, title: str) -> None:
         self.party_id = party_id

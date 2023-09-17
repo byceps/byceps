@@ -7,6 +7,7 @@ byceps.services.authorization.dbmodels
 """
 
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.user.dbmodels.user import DbUser
@@ -26,8 +27,10 @@ class DbRole(db.Model):
 
     __tablename__ = 'authz_roles'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    title = db.deferred(db.Column(db.UnicodeText, unique=True, nullable=False))
+    id: Mapped[RoleID] = mapped_column(db.UnicodeText, primary_key=True)
+    title: Mapped[str] = db.deferred(
+        mapped_column(db.UnicodeText, unique=True, nullable=False)
+    )
 
     users = association_proxy('user_roles', 'user')
 
@@ -44,17 +47,19 @@ class DbRolePermission(db.Model):
 
     __tablename__ = 'authz_role_permissions'
 
-    role_id = db.Column(
+    role_id: Mapped[RoleID] = mapped_column(
         db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
     )
-    role = db.relationship(
+    role: Mapped[DbRole] = relationship(
         DbRole,
         backref=db.backref(
             'role_permissions', collection_class=set, lazy='joined'
         ),
         collection_class=set,
     )
-    permission_id = db.Column(db.UnicodeText, primary_key=True)
+    permission_id: Mapped[PermissionID] = mapped_column(
+        db.UnicodeText, primary_key=True
+    )
 
     def __init__(self, role_id: RoleID, permission_id: PermissionID) -> None:
         self.role_id = role_id
@@ -74,16 +79,18 @@ class DbUserRole(db.Model):
 
     __tablename__ = 'authz_user_roles'
 
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    user: Mapped[DbUser] = relationship(
         DbUser,
         backref=db.backref('user_roles', collection_class=set),
         collection_class=set,
     )
-    role_id = db.Column(
+    role_id: Mapped[RoleID] = mapped_column(
         db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
     )
-    role = db.relationship(
+    role: Mapped[DbRole] = relationship(
         DbRole,
         backref=db.backref('user_roles', collection_class=set),
         collection_class=set,

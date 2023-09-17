@@ -8,6 +8,8 @@ byceps.services.board.dbmodels.last_topic_view
 
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db
 from byceps.services.board.models import TopicID
 from byceps.typing import UserID
@@ -21,12 +23,14 @@ class DbLastTopicView(db.Model):
 
     __tablename__ = 'board_topics_lastviews'
 
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    topic_id = db.Column(
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    topic_id: Mapped[TopicID] = mapped_column(
         db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True
     )
-    topic = db.relationship(DbTopic)
-    occurred_at = db.Column(db.DateTime, nullable=False)
+    topic: Mapped[DbTopic] = relationship(DbTopic)
+    occurred_at: Mapped[datetime]
 
     def __init__(
         self, user_id: UserID, topic_id: TopicID, occurred_at: datetime

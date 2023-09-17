@@ -8,7 +8,10 @@ byceps.services.seating.dbmodels.area
 
 from __future__ import annotations
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db, generate_uuid4
+from byceps.services.seating.models import SeatingAreaID
 from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
 
@@ -26,15 +29,17 @@ class DbSeatingArea(db.Model):
         db.UniqueConstraint('party_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[SeatingAreaID] = mapped_column(
+        db.Uuid, default=generate_uuid4, primary_key=True
     )
-    slug = db.Column(db.UnicodeText, nullable=False)
-    title = db.Column(db.UnicodeText, nullable=False)
-    image_filename = db.Column(db.UnicodeText, nullable=True)
-    image_width = db.Column(db.Integer, nullable=True)
-    image_height = db.Column(db.Integer, nullable=True)
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+    )
+    slug: Mapped[str] = mapped_column(db.UnicodeText)
+    title: Mapped[str] = mapped_column(db.UnicodeText)
+    image_filename: Mapped[str | None] = mapped_column(db.UnicodeText)
+    image_width: Mapped[int | None]
+    image_height: Mapped[int | None]
 
     def __init__(
         self,

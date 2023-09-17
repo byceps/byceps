@@ -8,13 +8,15 @@ byceps.services.orga_team.dbmodels
 
 from __future__ import annotations
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db, generate_uuid7
 from byceps.services.party.dbmodels.party import DbParty
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import PartyID, UserID
 from byceps.util.instances import ReprBuilder
 
-from .models import OrgaTeamID
+from .models import MembershipID, OrgaTeamID
 
 
 class DbOrgaTeam(db.Model):
@@ -23,12 +25,14 @@ class DbOrgaTeam(db.Model):
     __tablename__ = 'orga_teams'
     __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[OrgaTeamID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    party = db.relationship(DbParty)
-    title = db.Column(db.UnicodeText, nullable=False)
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+    )
+    party: Mapped[DbParty] = relationship(DbParty)
+    title: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(self, party_id: PartyID, title: str) -> None:
         self.party_id = party_id
@@ -50,20 +54,22 @@ class DbMembership(db.Model):
     __tablename__ = 'orga_team_memberships'
     __table_args__ = (db.UniqueConstraint('orga_team_id', 'user_id'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    orga_team_id = db.Column(
-        db.Uuid, db.ForeignKey('orga_teams.id'), index=True, nullable=False
+    id: Mapped[MembershipID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    orga_team = db.relationship(
+    orga_team_id: Mapped[OrgaTeamID] = mapped_column(
+        db.Uuid, db.ForeignKey('orga_teams.id'), index=True
+    )
+    orga_team: Mapped[DbOrgaTeam] = relationship(
         DbOrgaTeam, collection_class=set, backref='memberships'
     )
-    user_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    user = db.relationship(
+    user: Mapped[DbUser] = relationship(
         DbUser, collection_class=set, backref='orga_team_memberships'
     )
-    duties = db.Column(db.UnicodeText, nullable=True)
+    duties: Mapped[str | None] = mapped_column(db.UnicodeText)
 
     def __init__(
         self,

@@ -6,6 +6,8 @@ byceps.services.board.dbmodels.board
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.services.board.models import BoardID
 from byceps.typing import BrandID
@@ -17,11 +19,11 @@ class DbBoard(db.Model):
 
     __tablename__ = 'boards'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    brand_id = db.Column(
-        db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False
+    id: Mapped[BoardID] = mapped_column(db.UnicodeText, primary_key=True)
+    brand_id: Mapped[BrandID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    access_restricted = db.Column(db.Boolean, default=False, nullable=False)
+    access_restricted: Mapped[bool] = mapped_column(default=False)
 
     def __init__(self, board_id: BoardID, brand_id: BrandID) -> None:
         self.id = board_id

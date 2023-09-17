@@ -7,6 +7,9 @@ byceps.services.ticketing.dbmodels.checkin
 """
 
 from datetime import datetime
+from uuid import UUID
+
+from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db, generate_uuid7
 from byceps.services.ticketing.models.ticket import TicketID
@@ -18,12 +21,16 @@ class DbTicketCheckIn(db.Model):
 
     __tablename__ = 'ticket_checkins'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    occurred_at = db.Column(db.DateTime, nullable=False)
-    ticket_id = db.Column(
-        db.Uuid, db.ForeignKey('tickets.id'), index=True, nullable=False
+    id: Mapped[UUID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    initiator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
+    occurred_at: Mapped[datetime]
+    ticket_id: Mapped[TicketID] = mapped_column(
+        db.Uuid, db.ForeignKey('tickets.id'), index=True
+    )
+    initiator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
 
     def __init__(
         self,

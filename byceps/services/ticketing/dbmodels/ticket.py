@@ -10,10 +10,18 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db, generate_uuid7
 from byceps.services.seating.dbmodels.seat import DbSeat
+from byceps.services.seating.models import SeatID
 from byceps.services.shop.order.models.number import OrderNumber
-from byceps.services.ticketing.models.ticket import TicketCategoryID, TicketCode
+from byceps.services.ticketing.models.ticket import (
+    TicketBundleID,
+    TicketCategoryID,
+    TicketCode,
+    TicketID,
+)
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import PartyID, UserID
 from byceps.util.instances import ReprBuilder
@@ -35,57 +43,64 @@ class DbTicket(db.Model):
     __tablename__ = 'tickets'
     __table_args__ = (db.UniqueConstraint('party_id', 'code'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[TicketID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    code = db.Column(db.UnicodeText, index=True, nullable=False)
-    bundle_id = db.Column(
-        db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True, nullable=True
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
-    bundle = db.relationship(DbTicketBundle, backref='tickets')
-    category_id = db.Column(
+    code: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    bundle_id: Mapped[TicketBundleID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True
+    )
+    bundle: Mapped[DbTicketBundle | None] = relationship(
+        DbTicketBundle, backref='tickets'
+    )
+    category_id: Mapped[TicketCategoryID] = mapped_column(
         db.Uuid,
         db.ForeignKey('ticket_categories.id'),
         index=True,
-        nullable=False,
     )
-    category = db.relationship(DbTicketCategory)
-    owned_by_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False
+    category: Mapped[DbTicketCategory] = relationship(DbTicketCategory)
+    owned_by_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    owned_by = db.relationship(DbUser, foreign_keys=[owned_by_id])
-    order_number = db.Column(
+    owned_by: Mapped[DbUser] = relationship(DbUser, foreign_keys=[owned_by_id])
+    order_number: Mapped[OrderNumber | None] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_orders.order_number'),
         index=True,
-        nullable=True,
     )
-    seat_managed_by_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True
+    seat_managed_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    seat_managed_by = db.relationship(DbUser, foreign_keys=[seat_managed_by_id])
-    user_managed_by_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True
+    seat_managed_by: Mapped[DbUser | None] = relationship(
+        DbUser, foreign_keys=[seat_managed_by_id]
     )
-    user_managed_by = db.relationship(DbUser, foreign_keys=[user_managed_by_id])
-    occupied_seat_id = db.Column(
+    user_managed_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
+    )
+    user_managed_by: Mapped[DbUser | None] = relationship(
+        DbUser, foreign_keys=[user_managed_by_id]
+    )
+    occupied_seat_id: Mapped[SeatID | None] = mapped_column(
         db.Uuid,
         db.ForeignKey('seats.id'),
         index=True,
-        nullable=True,
         unique=True,
     )
-    occupied_seat = db.relationship(
+    occupied_seat: Mapped[DbSeat | None] = relationship(
         DbSeat, backref=db.backref('occupied_by_ticket', uselist=False)
     )
-    used_by_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True
+    used_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    used_by = db.relationship(DbUser, foreign_keys=[used_by_id])
-    revoked = db.Column(db.Boolean, default=False, nullable=False)
-    user_checked_in = db.Column(db.Boolean, default=False, nullable=False)
+    used_by: Mapped[DbUser | None] = relationship(
+        DbUser, foreign_keys=[used_by_id]
+    )
+    revoked: Mapped[bool] = mapped_column(default=False)
+    user_checked_in: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
         self,
@@ -146,7 +161,7 @@ class DbTicket(db.Model):
         ) or (self.user_managed_by_id == user_id)
 
     def __repr__(self) -> str:
-        def user(user: DbUser) -> str | None:
+        def user(user: DbUser | None) -> str | None:
             return user.screen_name if (user is not None) else None
 
         def occupied_seat() -> str | None:

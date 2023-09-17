@@ -11,6 +11,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -25,6 +27,7 @@ from byceps.services.news.models import (
     NewsChannelID,
     NewsImageID,
     NewsItemID,
+    NewsItemVersionID,
 )
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import UserID
@@ -45,17 +48,18 @@ class DbNewsItem(db.Model):
 
     __tablename__ = 'news_items'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    channel_id = db.Column(
+    id: Mapped[NewsItemID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
+    )
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    channel_id: Mapped[NewsChannelID] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('news_channels.id'),
         index=True,
-        nullable=False,
     )
-    channel = db.relationship(DbNewsChannel)
-    slug = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
-    published_at = db.Column(db.DateTime, nullable=True)
+    channel: Mapped[DbNewsChannel] = relationship(DbNewsChannel)
+    slug: Mapped[str] = mapped_column(db.UnicodeText, unique=True, index=True)
+    published_at: Mapped[datetime | None]
     current_version = association_proxy(
         'current_version_association', 'version'
     )
@@ -89,17 +93,21 @@ class DbNewsItemVersion(db.Model):
 
     __tablename__ = 'news_item_versions'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    item_id = db.Column(
-        db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False
+    id: Mapped[NewsItemVersionID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    item = db.relationship(DbNewsItem)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    creator = db.relationship(DbUser)
-    title = db.Column(db.UnicodeText, nullable=False)
-    body = db.Column(db.UnicodeText, nullable=False)
-    _body_format = db.Column('body_format', db.UnicodeText, nullable=False)
+    item_id: Mapped[NewsItemID] = mapped_column(
+        db.Uuid, db.ForeignKey('news_items.id'), index=True
+    )
+    item: Mapped[DbNewsItem] = relationship(DbNewsItem)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    creator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    creator: Mapped[DbUser] = relationship(DbUser)
+    title: Mapped[str] = mapped_column(db.UnicodeText)
+    body: Mapped[str] = mapped_column(db.UnicodeText)
+    _body_format: Mapped[str] = mapped_column('body_format', db.UnicodeText)
 
     def __init__(
         self,
@@ -143,20 +151,20 @@ class DbNewsItemVersion(db.Model):
 class DbCurrentNewsItemVersionAssociation(db.Model):
     __tablename__ = 'news_item_current_versions'
 
-    item_id = db.Column(
+    item_id: Mapped[NewsItemID] = mapped_column(
         db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
     )
-    item = db.relationship(
+    item: Mapped[DbNewsItem] = relationship(
         DbNewsItem,
         backref=db.backref('current_version_association', uselist=False),
     )
-    version_id = db.Column(
+    version_id: Mapped[NewsItemVersionID] = mapped_column(
         db.Uuid,
         db.ForeignKey('news_item_versions.id'),
         unique=True,
         nullable=False,
     )
-    version = db.relationship(DbNewsItemVersion)
+    version: Mapped[DbNewsItemVersion] = relationship(DbNewsItemVersion)
 
     def __init__(self, item: DbNewsItem, version: DbNewsItemVersion) -> None:
         self.item = item
@@ -169,18 +177,20 @@ class DbNewsImage(db.Model):
     __tablename__ = 'news_images'
     __table_args__ = (db.UniqueConstraint('item_id', 'number'),)
 
-    id = db.Column(db.Uuid, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    item_id = db.Column(
-        db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False
+    id: Mapped[NewsImageID] = mapped_column(db.Uuid, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    creator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
     )
-    item = db.relationship(DbNewsItem, backref='images')
-    number = db.Column(db.Integer, nullable=False)
-    filename = db.Column(db.UnicodeText, nullable=False)
-    alt_text = db.Column(db.UnicodeText, nullable=True)
-    caption = db.Column(db.UnicodeText, nullable=True)
-    attribution = db.Column(db.UnicodeText, nullable=True)
+    item_id: Mapped[NewsItemID] = mapped_column(
+        db.Uuid, db.ForeignKey('news_items.id'), index=True
+    )
+    item: Mapped[DbNewsItem] = relationship(DbNewsItem, backref='images')
+    number: Mapped[int]
+    filename: Mapped[str] = mapped_column(db.UnicodeText)
+    alt_text: Mapped[str | None] = mapped_column(db.UnicodeText)
+    caption: Mapped[str | None] = mapped_column(db.UnicodeText)
+    attribution: Mapped[str | None] = mapped_column(db.UnicodeText)
 
     def __init__(
         self,
@@ -216,15 +226,17 @@ class DbNewsImage(db.Model):
 class DbFeaturedNewsImage(db.Model):
     __tablename__ = 'news_featured_images'
 
-    item_id = db.Column(
+    item_id: Mapped[NewsItemID] = mapped_column(
         db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
     )
-    item = db.relationship(
+    item: Mapped[DbNewsItem] = relationship(
         DbNewsItem,
         backref=db.backref('featured_image_association', uselist=False),
     )
-    image_id = db.Column(db.Uuid, db.ForeignKey('news_images.id'), unique=True)
-    image = db.relationship(DbNewsImage)
+    image_id: Mapped[NewsImageID] = mapped_column(
+        db.Uuid, db.ForeignKey('news_images.id'), unique=True
+    )
+    image: Mapped[DbNewsImage] = relationship(DbNewsImage)
 
     def __init__(self, item_id: NewsItemID, image_id: NewsImageID) -> None:
         self.item_id = item_id

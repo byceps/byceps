@@ -10,7 +10,10 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db
+from byceps.services.user.models.user import UserAvatarID
 from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 
@@ -22,22 +25,24 @@ class DbUser(db.Model):
 
     __tablename__ = 'users'
 
-    id = db.Column(db.Uuid, primary_key=True)
-    created_at = db.Column(db.DateTime, nullable=False)
-    screen_name = db.Column(db.UnicodeText, unique=True, nullable=True)
-    email_address = db.Column(db.UnicodeText, unique=True, nullable=True)
-    email_address_verified = db.Column(
-        db.Boolean, default=False, nullable=False
+    id: Mapped[UserID] = mapped_column(db.Uuid, primary_key=True)
+    created_at: Mapped[datetime]
+    screen_name: Mapped[str | None] = mapped_column(db.UnicodeText, unique=True)
+    email_address: Mapped[str | None] = mapped_column(
+        db.UnicodeText, unique=True
     )
-    avatar_id = db.Column(
-        db.Uuid, db.ForeignKey('user_avatars.id'), nullable=True
+    email_address_verified: Mapped[bool] = mapped_column(default=False)
+    avatar_id: Mapped[UserAvatarID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('user_avatars.id')
     )
-    avatar = db.relationship(DbUserAvatar, foreign_keys=[avatar_id])
-    initialized = db.Column(db.Boolean, default=False, nullable=False)
-    suspended = db.Column(db.Boolean, default=False, nullable=False)
-    deleted = db.Column(db.Boolean, default=False, nullable=False)
-    locale = db.Column(db.UnicodeText, nullable=True)
-    legacy_id = db.Column(db.UnicodeText, nullable=True)
+    avatar: Mapped[DbUserAvatar] = relationship(
+        DbUserAvatar, foreign_keys=[avatar_id]
+    )
+    initialized: Mapped[bool] = mapped_column(default=False)
+    suspended: Mapped[bool] = mapped_column(default=False)
+    deleted: Mapped[bool] = mapped_column(default=False)
+    locale: Mapped[str | None] = mapped_column(db.UnicodeText)
+    legacy_id: Mapped[str | None] = mapped_column(db.UnicodeText)
 
     def __init__(
         self,

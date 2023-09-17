@@ -10,8 +10,10 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db, generate_uuid7
-from byceps.services.tourney.models import TourneyCategoryID
+from byceps.services.tourney.models import TourneyCategoryID, TourneyID
 from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
 
@@ -24,22 +26,24 @@ class DbTourney(db.Model):
     __tablename__ = 'tourneys'
     __table_args__ = (db.UniqueConstraint('category_id', 'title'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[TourneyID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    title = db.Column(db.UnicodeText, nullable=False)
-    subtitle = db.Column(db.UnicodeText, nullable=True)
-    logo_url = db.Column(db.UnicodeText, nullable=True)
-    category_id = db.Column(
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+    )
+    title: Mapped[str] = mapped_column(db.UnicodeText)
+    subtitle: Mapped[str | None] = mapped_column(db.UnicodeText)
+    logo_url: Mapped[str | None] = mapped_column(db.UnicodeText)
+    category_id: Mapped[TourneyCategoryID] = mapped_column(
         db.Uuid,
         db.ForeignKey('tourney_categories.id'),
         index=True,
         nullable=False,
     )
-    category = db.relationship(DbTourneyCategory)
-    max_participant_count = db.Column(db.Integer, nullable=False)
-    starts_at = db.Column(db.DateTime, nullable=False)
+    category: Mapped[DbTourneyCategory] = relationship(DbTourneyCategory)
+    max_participant_count: Mapped[int]
+    starts_at: Mapped[datetime]
 
     def __init__(
         self,

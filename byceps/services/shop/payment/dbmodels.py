@@ -6,6 +6,8 @@ byceps.services.shop.payment.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.services.shop.storefront.models import StorefrontID
 
@@ -18,9 +20,9 @@ class DbPaymentGateway(db.Model):
 
     __tablename__ = 'shop_payment_gateways'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    name = db.Column(db.UnicodeText, unique=True)
-    enabled = db.Column(db.Boolean, nullable=False)
+    id: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
+    name: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    enabled: Mapped[bool]
 
     def __init__(
         self,
@@ -38,10 +40,10 @@ class DbStorefrontPaymentGateway(db.Model):
 
     __tablename__ = 'shop_storefront_payment_gateways'
 
-    storefront_id = db.Column(
+    storefront_id: Mapped[StorefrontID] = mapped_column(
         db.UnicodeText, db.ForeignKey('shop_storefronts.id'), primary_key=True
     )
-    payment_gateway_id = db.Column(
+    payment_gateway_id: Mapped[str] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_payment_gateways.id'),
         primary_key=True,

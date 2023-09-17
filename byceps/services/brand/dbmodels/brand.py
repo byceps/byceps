@@ -8,6 +8,8 @@ byceps.services.brand.dbmodels.brand
 
 from __future__ import annotations
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.typing import BrandID
 from byceps.util.instances import ReprBuilder
@@ -18,10 +20,10 @@ class DbBrand(db.Model):
 
     __tablename__ = 'brands'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    title = db.Column(db.UnicodeText, unique=True, nullable=False)
-    image_filename = db.Column(db.UnicodeText, nullable=True)
-    archived = db.Column(db.Boolean, default=False, nullable=False)
+    id: Mapped[BrandID] = mapped_column(db.UnicodeText, primary_key=True)
+    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    image_filename: Mapped[str | None] = mapped_column(db.UnicodeText)
+    archived: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
         self,

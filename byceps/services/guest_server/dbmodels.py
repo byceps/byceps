@@ -13,6 +13,7 @@ import ipaddress
 from typing import TYPE_CHECKING
 
 from sqlalchemy.dialects import postgresql
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 if TYPE_CHECKING:
@@ -32,14 +33,18 @@ class DbSetting(db.Model):
 
     __tablename__ = 'guest_server_settings'
 
-    party_id = db.Column(
+    party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
     )
-    _netmask = db.Column('netmask', postgresql.INET, nullable=True)
-    _gateway = db.Column('gateway', postgresql.INET, nullable=True)
-    _dns_server1 = db.Column('dns_server1', postgresql.INET, nullable=True)
-    _dns_server2 = db.Column('dns_server2', postgresql.INET, nullable=True)
-    domain = db.Column(db.UnicodeText, nullable=True)
+    _netmask: Mapped[str | None] = mapped_column('netmask', postgresql.INET)
+    _gateway: Mapped[str | None] = mapped_column('gateway', postgresql.INET)
+    _dns_server1: Mapped[str | None] = mapped_column(
+        'dns_server1', postgresql.INET
+    )
+    _dns_server2: Mapped[str | None] = mapped_column(
+        'dns_server2', postgresql.INET
+    )
+    domain: Mapped[str | None] = mapped_column(db.UnicodeText)
 
     def __init__(self, party_id: PartyID) -> None:
         self.party_id = party_id
@@ -97,17 +102,19 @@ class DbServer(db.Model):
 
     __tablename__ = 'guest_servers'
 
-    id = db.Column(db.Uuid, primary_key=True)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[ServerID] = mapped_column(db.Uuid, primary_key=True)
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
-    created_at = db.Column(db.DateTime, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    owner_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    description = db.Column(db.UnicodeText, nullable=True)
-    notes_owner = db.Column(db.UnicodeText, nullable=True)
-    notes_admin = db.Column(db.UnicodeText, nullable=True)
-    approved = db.Column(db.Boolean, default=False, nullable=False)
+    created_at: Mapped[datetime]
+    creator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    owner_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    notes_owner: Mapped[str | None] = mapped_column(db.UnicodeText)
+    notes_admin: Mapped[str | None] = mapped_column(db.UnicodeText)
+    approved: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
         self,
@@ -141,16 +148,18 @@ class DbAddress(db.Model):
 
     __tablename__ = 'guest_server_addresses'
 
-    id = db.Column(db.Uuid, primary_key=True)
-    server_id = db.Column(
-        db.Uuid, db.ForeignKey('guest_servers.id'), index=True, nullable=False
+    id: Mapped[AddressID] = mapped_column(db.Uuid, primary_key=True)
+    server_id: Mapped[ServerID] = mapped_column(
+        db.Uuid, db.ForeignKey('guest_servers.id'), index=True
     )
-    server = db.relationship(DbServer, backref='addresses')
-    created_at = db.Column(db.DateTime, nullable=False)
-    _ip_address = db.Column('ip_address', postgresql.INET, nullable=True)
-    hostname = db.Column(db.UnicodeText, nullable=True)
-    _netmask = db.Column('netmask', postgresql.INET, nullable=True)
-    _gateway = db.Column('gateway', postgresql.INET, nullable=True)
+    server: Mapped[DbServer] = relationship(DbServer, backref='addresses')
+    created_at: Mapped[datetime] = mapped_column(db.DateTime)
+    _ip_address: Mapped[str | None] = mapped_column(
+        'ip_address', postgresql.INET
+    )
+    hostname: Mapped[str | None] = mapped_column(db.UnicodeText)
+    _netmask: Mapped[str | None] = mapped_column('netmask', postgresql.INET)
+    _gateway: Mapped[str | None] = mapped_column('gateway', postgresql.INET)
 
     def __init__(
         self,

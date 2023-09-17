@@ -7,10 +7,12 @@ byceps.services.shop.order.dbmodels.payment
 """
 
 from datetime import datetime
+from decimal import Decimal
 from typing import TYPE_CHECKING
 from uuid import UUID
 
 from moneyed import Currency, get_currency, Money
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 if TYPE_CHECKING:
@@ -28,15 +30,15 @@ class DbPayment(db.Model):
 
     __tablename__ = 'shop_payments'
 
-    id = db.Column(db.Uuid, primary_key=True)
-    order_id = db.Column(
-        db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    order_id: Mapped[OrderID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_orders.id'), index=True
     )
-    created_at = db.Column(db.DateTime, nullable=False)
-    method = db.Column(db.UnicodeText, nullable=True)
-    amount = db.Column(db.Numeric(7, 2), nullable=False)
-    _currency = db.Column('currency', db.UnicodeText, nullable=False)
-    additional_data = db.Column(db.JSONB)
+    created_at: Mapped[datetime] = mapped_column(db.DateTime)
+    method: Mapped[str | None] = mapped_column(db.UnicodeText)
+    amount: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
+    _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
+    additional_data: Mapped[AdditionalPaymentData] = mapped_column(db.JSONB)
 
     def __init__(
         self,

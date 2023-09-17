@@ -8,6 +8,8 @@ byceps.services.site.dbmodels.site
 
 from __future__ import annotations
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db
 from byceps.services.board.models import BoardID
 from byceps.services.brand.dbmodels.brand import DbBrand
@@ -37,33 +39,32 @@ class DbSite(db.Model):
 
     __tablename__ = 'sites'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    title = db.Column(db.UnicodeText, unique=True, nullable=False)
-    server_name = db.Column(db.UnicodeText, unique=True, nullable=False)
-    brand_id = db.Column(
-        db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False
+    id: Mapped[SiteID] = mapped_column(db.UnicodeText, primary_key=True)
+    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    server_name: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    brand_id: Mapped[BrandID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    brand = db.relationship(DbBrand, backref='sites')
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=True
+    brand: Mapped[DbBrand] = relationship(DbBrand, backref='sites')
+    party_id: Mapped[PartyID | None] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
-    enabled = db.Column(db.Boolean, nullable=False)
-    user_account_creation_enabled = db.Column(db.Boolean, nullable=False)
-    login_enabled = db.Column(db.Boolean, nullable=False)
-    board_id = db.Column(
-        db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=True
+    enabled: Mapped[bool]
+    user_account_creation_enabled: Mapped[bool]
+    login_enabled: Mapped[bool]
+    board_id: Mapped[BoardID | None] = mapped_column(
+        db.UnicodeText, db.ForeignKey('boards.id'), index=True
     )
-    storefront_id = db.Column(
+    storefront_id: Mapped[StorefrontID | None] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_storefronts.id'),
         index=True,
-        nullable=True,
     )
-    is_intranet = db.Column(db.Boolean, nullable=False)
-    check_in_on_login = db.Column(db.Boolean, nullable=False)
-    archived = db.Column(db.Boolean, default=False, nullable=False)
+    is_intranet: Mapped[bool]
+    check_in_on_login: Mapped[bool]
+    archived: Mapped[bool] = mapped_column(default=False)
 
-    news_channels = db.relationship(
+    news_channels: Mapped[list[DbNewsChannel]] = relationship(
         DbNewsChannel,
         secondary=site_news_channels,
         lazy='subquery',

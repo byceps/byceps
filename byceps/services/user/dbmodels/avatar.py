@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from flask import current_app
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 if TYPE_CHECKING:
@@ -19,6 +20,7 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from byceps.database import db, generate_uuid7
+from byceps.services.user.models.user import UserAvatarID
 from byceps.util.image.models import ImageType
 from byceps.util.instances import ReprBuilder
 
@@ -33,9 +35,11 @@ class DbUserAvatar(db.Model):
 
     __tablename__ = 'user_avatars'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    _image_type = db.Column('image_type', db.UnicodeText, nullable=False)
+    id: Mapped[UserAvatarID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
+    )
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    _image_type: Mapped[str] = mapped_column('image_type', db.UnicodeText)
 
     def __init__(self, image_type: ImageType) -> None:
         self.image_type = image_type

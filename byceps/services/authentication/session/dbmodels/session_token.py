@@ -8,6 +8,8 @@ byceps.services.authentication.session.dbmodels.session_token
 
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.typing import UserID
 
@@ -17,9 +19,11 @@ class DbSessionToken(db.Model):
 
     __tablename__ = 'authn_session_tokens'
 
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    token = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    token: Mapped[str] = mapped_column(db.UnicodeText, unique=True, index=True)
+    created_at: Mapped[datetime]
 
     def __init__(
         self, user_id: UserID, token: str, created_at: datetime

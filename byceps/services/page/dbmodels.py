@@ -14,13 +14,17 @@ from __future__ import annotations
 from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db, generate_uuid7
 from byceps.services.language.dbmodels import DbLanguage
 from byceps.services.site.models import SiteID
+from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.site_navigation.dbmodels import DbNavMenu
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import UserID
+
+from .models import PageID, PageVersionID
 
 
 class DbPage(db.Model):
@@ -35,24 +39,25 @@ class DbPage(db.Model):
         db.UniqueConstraint('site_id', 'language_code', 'url_path'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    site_id = db.Column(
-        db.UnicodeText, db.ForeignKey('sites.id'), index=True, nullable=False
+    id: Mapped[PageID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    name = db.Column(db.UnicodeText, index=True, nullable=False)
-    language_code = db.Column(
+    site_id: Mapped[SiteID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('sites.id'), index=True
+    )
+    name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    language_code: Mapped[str] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('languages.code'),
         index=True,
-        nullable=False,
     )
-    language = db.relationship(DbLanguage)
-    url_path = db.Column(db.UnicodeText, index=True, nullable=False)
-    published = db.Column(db.Boolean, nullable=False)
-    nav_menu_id = db.Column(
-        db.Uuid, db.ForeignKey('site_nav_menus.id'), nullable=True
+    language: Mapped[DbLanguage] = relationship(DbLanguage)
+    url_path: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    published: Mapped[bool]
+    nav_menu_id: Mapped[NavMenuID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('site_nav_menus.id')
     )
-    nav_menu = db.relationship(DbNavMenu)
+    nav_menu: Mapped[DbNavMenu] = relationship(DbNavMenu)
 
     current_version = association_proxy(
         'current_version_association', 'version'
@@ -73,17 +78,21 @@ class DbPageVersion(db.Model):
 
     __tablename__ = 'page_versions'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    page_id = db.Column(
-        db.Uuid, db.ForeignKey('pages.id'), index=True, nullable=False
+    id: Mapped[PageVersionID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    page = db.relationship(DbPage)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    creator = db.relationship(DbUser)
-    title = db.Column(db.UnicodeText, nullable=False)
-    head = db.Column(db.UnicodeText, nullable=True)
-    body = db.Column(db.UnicodeText, nullable=False)
+    page_id: Mapped[PageID] = mapped_column(
+        db.Uuid, db.ForeignKey('pages.id'), index=True
+    )
+    page: Mapped[DbPage] = relationship(DbPage)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    creator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    creator: Mapped[DbUser] = relationship(DbUser)
+    title: Mapped[str] = mapped_column(db.UnicodeText)
+    head: Mapped[str | None] = mapped_column(db.UnicodeText)
+    body: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(
         self,
@@ -110,14 +119,16 @@ class DbPageVersion(db.Model):
 class DbCurrentPageVersionAssociation(db.Model):
     __tablename__ = 'page_current_versions'
 
-    page_id = db.Column(db.Uuid, db.ForeignKey('pages.id'), primary_key=True)
-    page = db.relationship(
+    page_id: Mapped[PageID] = mapped_column(
+        db.Uuid, db.ForeignKey('pages.id'), primary_key=True
+    )
+    page: Mapped[DbPage] = relationship(
         DbPage, backref=db.backref('current_version_association', uselist=False)
     )
-    version_id = db.Column(
-        db.Uuid, db.ForeignKey('page_versions.id'), unique=True, nullable=False
+    version_id: Mapped[PageVersionID] = mapped_column(
+        db.Uuid, db.ForeignKey('page_versions.id'), unique=True
     )
-    version = db.relationship(DbPageVersion)
+    version: Mapped[DbPageVersion] = relationship(DbPageVersion)
 
     def __init__(self, page: DbPage, version: DbPageVersion) -> None:
         self.page = page

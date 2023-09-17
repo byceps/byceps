@@ -6,6 +6,8 @@ byceps.services.party.dbmodels.setting
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
@@ -16,11 +18,11 @@ class DbSetting(db.Model):
 
     __tablename__ = 'party_settings'
 
-    party_id = db.Column(
+    party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
     )
-    name = db.Column(db.UnicodeText, primary_key=True)
-    value = db.Column(db.UnicodeText)
+    name: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
+    value: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(self, party_id: PartyID, name: str, value: str) -> None:
         self.party_id = party_id

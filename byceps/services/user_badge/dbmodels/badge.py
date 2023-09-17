@@ -8,7 +8,10 @@ byceps.services.user_badge.dbmodels.badge
 
 from __future__ import annotations
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db, generate_uuid4
+from byceps.services.user_badge.models import BadgeID
 from byceps.typing import BrandID
 from byceps.util.instances import ReprBuilder
 
@@ -18,15 +21,17 @@ class DbBadge(db.Model):
 
     __tablename__ = 'user_badges'
 
-    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
-    slug = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
-    label = db.Column(db.UnicodeText, unique=True, nullable=False)
-    description = db.Column(db.UnicodeText, nullable=True)
-    image_filename = db.Column(db.UnicodeText, nullable=False)
-    brand_id = db.Column(
-        db.UnicodeText, db.ForeignKey('brands.id'), nullable=True
+    id: Mapped[BadgeID] = mapped_column(
+        db.Uuid, default=generate_uuid4, primary_key=True
     )
-    featured = db.Column(db.Boolean, default=False, nullable=False)
+    slug: Mapped[str] = mapped_column(db.UnicodeText, unique=True, index=True)
+    label: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    image_filename: Mapped[str] = mapped_column(db.UnicodeText)
+    brand_id: Mapped[str | None] = mapped_column(
+        db.UnicodeText, db.ForeignKey('brands.id')
+    )
+    featured: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
         self,

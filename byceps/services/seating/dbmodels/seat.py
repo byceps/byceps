@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from typing import NamedTuple, TYPE_CHECKING
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -17,7 +19,7 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from byceps.database import db, generate_uuid7
-from byceps.services.seating.models import SeatingAreaID
+from byceps.services.seating.models import SeatID, SeatingAreaID
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.util.instances import ReprBuilder
@@ -35,23 +37,24 @@ class DbSeat(db.Model):
 
     __tablename__ = 'seats'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    area_id = db.Column(
-        db.Uuid, db.ForeignKey('seating_areas.id'), index=True, nullable=False
+    id: Mapped[SeatID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    area = db.relationship(DbSeatingArea, backref='seats')
-    coord_x = db.Column(db.Integer, nullable=False)
-    coord_y = db.Column(db.Integer, nullable=False)
-    rotation = db.Column(db.SmallInteger, nullable=True)
-    category_id = db.Column(
+    area_id: Mapped[SeatingAreaID] = mapped_column(
+        db.Uuid, db.ForeignKey('seating_areas.id'), index=True
+    )
+    area: Mapped[DbSeatingArea] = relationship(DbSeatingArea, backref='seats')
+    coord_x: Mapped[int]
+    coord_y: Mapped[int]
+    rotation: Mapped[int | None]
+    category_id: Mapped[TicketCategoryID] = mapped_column(
         db.Uuid,
         db.ForeignKey('ticket_categories.id'),
         index=True,
-        nullable=False,
     )
-    category = db.relationship(DbTicketCategory)
-    label = db.Column(db.UnicodeText, nullable=True)
-    type_ = db.Column('type', db.UnicodeText, nullable=True)
+    category: Mapped[DbTicketCategory] = relationship(DbTicketCategory)
+    label: Mapped[str | None] = mapped_column(db.UnicodeText)
+    type_: Mapped[str | None] = mapped_column('type', db.UnicodeText)
 
     def __init__(
         self,

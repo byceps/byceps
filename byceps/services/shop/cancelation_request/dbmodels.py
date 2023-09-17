@@ -11,6 +11,9 @@ from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 from typing import TYPE_CHECKING
+from uuid import UUID
+
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 if TYPE_CHECKING:
@@ -35,25 +38,27 @@ class DbCancelationRequest(db.Model):
 
     __tablename__ = 'shop_order_cancelation_requests'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    created_at = db.Column(db.DateTime, nullable=False)
-    shop_id = db.Column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    id: Mapped[UUID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    order_number = db.Column(
+    created_at: Mapped[datetime]
+    shop_id: Mapped[ShopID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True
+    )
+    order_number: Mapped[OrderNumber] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_orders.order_number'),
         unique=True,
         nullable=False,
     )
-    _donation_extent = db.Column(
-        'donation_extent', db.UnicodeText, index=True, nullable=False
+    _donation_extent: Mapped[str] = mapped_column(
+        'donation_extent', db.UnicodeText, index=True
     )
-    amount_refund = db.Column(db.Numeric(7, 2), nullable=False)
-    amount_donation = db.Column(db.Numeric(7, 2), nullable=False)
-    recipient_name = db.Column(db.UnicodeText, nullable=True)
-    recipient_iban = db.Column(db.UnicodeText, nullable=True)
-    _state = db.Column('state', db.UnicodeText, index=True, nullable=False)
+    amount_refund: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
+    amount_donation: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
+    recipient_name: Mapped[str | None] = mapped_column(db.UnicodeText)
+    recipient_iban: Mapped[str | None] = mapped_column(db.UnicodeText)
+    _state: Mapped[str] = mapped_column('state', db.UnicodeText, index=True)
 
     def __init__(
         self,

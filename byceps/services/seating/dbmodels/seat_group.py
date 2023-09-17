@@ -6,10 +6,13 @@ byceps.services.seating.dbmodels.seat_group
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db, generate_uuid7
-from byceps.services.seating.models import SeatID
+from byceps.services.seating.models import SeatGroupID, SeatID
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from byceps.services.ticketing.models.ticket import (
@@ -28,16 +31,18 @@ class DbSeatGroup(db.Model):
     __tablename__ = 'seat_groups'
     __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[SeatGroupID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    ticket_category_id = db.Column(
-        db.Uuid, db.ForeignKey('ticket_categories.id'), nullable=False
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
-    ticket_category = db.relationship(DbTicketCategory)
-    seat_quantity = db.Column(db.Integer, nullable=False)
-    title = db.Column(db.UnicodeText, nullable=False)
+    ticket_category_id: Mapped[TicketCategoryID] = mapped_column(
+        db.Uuid, db.ForeignKey('ticket_categories.id')
+    )
+    ticket_category: Mapped[DbTicketCategory] = relationship(DbTicketCategory)
+    seat_quantity: Mapped[int] = mapped_column(db.Integer)
+    title: Mapped[str] = mapped_column(db.UnicodeText)
 
     seats = association_proxy('assignments', 'seat')
 
@@ -70,21 +75,22 @@ class DbSeatGroupAssignment(db.Model):
 
     __tablename__ = 'seat_group_assignments'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    group_id = db.Column(
-        db.Uuid, db.ForeignKey('seat_groups.id'), index=True, nullable=False
+    id: Mapped[UUID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    group = db.relationship(
+    group_id: Mapped[SeatGroupID] = mapped_column(
+        db.Uuid, db.ForeignKey('seat_groups.id'), index=True
+    )
+    group: Mapped[DbSeatGroup] = relationship(
         DbSeatGroup, collection_class=set, backref='assignments'
     )
-    seat_id = db.Column(
+    seat_id: Mapped[SeatID] = mapped_column(
         db.Uuid,
         db.ForeignKey('seats.id'),
         unique=True,
         index=True,
-        nullable=False,
     )
-    seat = db.relationship(
+    seat: Mapped[DbSeat] = relationship(
         DbSeat, backref=db.backref('assignment', uselist=False)
     )
 
@@ -107,25 +113,25 @@ class DbSeatGroupOccupancy(db.Model):
 
     __tablename__ = 'seat_group_occupancies'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    seat_group_id = db.Column(
+    id: Mapped[UUID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
+    )
+    seat_group_id: Mapped[SeatGroupID] = mapped_column(
         db.Uuid,
         db.ForeignKey('seat_groups.id'),
         unique=True,
         index=True,
-        nullable=False,
     )
-    seat_group = db.relationship(
+    seat_group: Mapped[DbSeatGroup] = relationship(
         DbSeatGroup, backref=db.backref('occupancy', uselist=False)
     )
-    ticket_bundle_id = db.Column(
+    ticket_bundle_id: Mapped[TicketBundleID] = mapped_column(
         db.Uuid,
         db.ForeignKey('ticket_bundles.id'),
         unique=True,
         index=True,
-        nullable=False,
     )
-    ticket_bundle = db.relationship(
+    ticket_bundle: Mapped[DbTicketBundle] = relationship(
         DbTicketBundle, backref=db.backref('occupied_seat_group', uselist=False)
     )
 

@@ -6,8 +6,14 @@ byceps.services.orga_presence.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+from uuid import UUID
+
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db, generate_uuid7
 from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import PartyID, UserID
 
 
 class DbTimeSlot(db.Model):
@@ -19,13 +25,15 @@ class DbTimeSlot(db.Model):
         'polymorphic_identity': 'time_slot',
     }
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[UUID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    type = db.Column(db.UnicodeText, index=True, nullable=False)
-    starts_at = db.Column(db.DateTime, nullable=False)
-    ends_at = db.Column(db.DateTime, nullable=False)
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+    )
+    type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    starts_at: Mapped[datetime]
+    ends_at: Mapped[datetime]
 
 
 class DbPresence(DbTimeSlot):
@@ -35,8 +43,10 @@ class DbPresence(DbTimeSlot):
         'polymorphic_identity': 'orga_presence',
     }
 
-    orga_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    orga = db.relationship(DbUser)
+    orga_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), nullable=True
+    )
+    orga: Mapped[DbUser] = relationship(DbUser)
 
 
 class DbTask(DbTimeSlot):
@@ -46,4 +56,4 @@ class DbTask(DbTimeSlot):
         'polymorphic_identity': 'task',
     }
 
-    title = db.Column(db.UnicodeText)
+    title: Mapped[str] = mapped_column(db.UnicodeText, nullable=True)

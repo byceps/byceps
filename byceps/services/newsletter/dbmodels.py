@@ -9,6 +9,8 @@ byceps.services.newsletter.dbmodels
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -28,8 +30,8 @@ class DbList(db.Model):
 
     __tablename__ = 'newsletter_lists'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    title = db.Column(db.UnicodeText, nullable=False)
+    id: Mapped[ListID] = mapped_column(db.UnicodeText, primary_key=True)
+    title: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(self, list_id: ListID, title: str) -> None:
         self.id = list_id
@@ -44,8 +46,10 @@ class DbSubscription(db.Model):
 
     __tablename__ = 'newsletter_subscriptions'
 
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    list_id = db.Column(
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    list_id: Mapped[ListID] = mapped_column(
         db.UnicodeText, db.ForeignKey('newsletter_lists.id'), primary_key=True
     )
 
@@ -57,12 +61,14 @@ class DbSubscriptionUpdate(db.Model):
 
     __tablename__ = 'newsletter_subscription_updates'
 
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    list_id = db.Column(
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    list_id: Mapped[ListID] = mapped_column(
         db.UnicodeText, db.ForeignKey('newsletter_lists.id'), primary_key=True
     )
-    expressed_at = db.Column(db.DateTime, primary_key=True)
-    _state = db.Column('state', db.UnicodeText, nullable=False)
+    expressed_at: Mapped[datetime] = mapped_column(primary_key=True)
+    _state: Mapped[str] = mapped_column('state', db.UnicodeText)
 
     def __init__(
         self,

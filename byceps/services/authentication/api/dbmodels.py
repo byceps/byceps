@@ -12,6 +12,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.ext.mutable import MutableList
+from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
 from byceps.services.authorization.models import PermissionID
@@ -23,13 +24,17 @@ class DbApiToken(db.Model):
 
     __tablename__ = 'api_tokens'
 
-    id = db.Column(db.Uuid, primary_key=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    token = db.Column(db.UnicodeText, nullable=False)
-    permissions = db.Column(MutableList.as_mutable(db.JSONB), nullable=False)
-    description = db.Column(db.UnicodeText, nullable=True)
-    suspended = db.Column(db.Boolean, nullable=False)
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    creator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    token: Mapped[str] = mapped_column(db.UnicodeText)
+    permissions: Mapped[list[PermissionID]] = mapped_column(
+        MutableList.as_mutable(db.JSONB)
+    )
+    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    suspended: Mapped[bool]
 
     def __init__(
         self,

@@ -7,6 +7,9 @@ byceps.services.shop.order.dbmodels.order_action
 """
 
 from typing import TYPE_CHECKING
+from uuid import UUID
+
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 if TYPE_CHECKING:
@@ -28,16 +31,20 @@ class DbOrderAction(db.Model):
 
     __tablename__ = 'shop_order_actions'
 
-    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
-    article_id = db.Column(
-        db.Uuid, db.ForeignKey('shop_articles.id'), index=True, nullable=False
+    id: Mapped[UUID] = mapped_column(
+        db.Uuid, default=generate_uuid4, primary_key=True
     )
-    article = db.relationship(DbArticle, backref='order_actions')
-    _payment_state = db.Column(
-        'payment_state', db.UnicodeText, index=True, nullable=False
+    article_id: Mapped[ArticleID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_articles.id'), index=True
     )
-    procedure = db.Column(db.UnicodeText, nullable=False)
-    parameters = db.Column(db.JSONB, nullable=False)
+    article: Mapped[DbArticle] = relationship(
+        DbArticle, backref='order_actions'
+    )
+    _payment_state: Mapped[str] = mapped_column(
+        'payment_state', db.UnicodeText, index=True
+    )
+    procedure: Mapped[str] = mapped_column(db.UnicodeText)
+    parameters: Mapped[ActionParameters] = mapped_column(db.JSONB)
 
     def __init__(
         self,

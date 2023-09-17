@@ -9,8 +9,10 @@ byceps.services.user_group.dbmodels
 from __future__ import annotations
 
 from datetime import datetime
+from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db, generate_uuid7
 from byceps.services.user.dbmodels.user import DbUser
@@ -24,17 +26,19 @@ class DbUserGroup(db.Model):
     __tablename__ = 'user_groups'
     __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[UUID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    creator_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), unique=True, nullable=False
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
-    creator = db.relationship(DbUser)
-    title = db.Column(db.UnicodeText, unique=True, nullable=False)
-    description = db.Column(db.UnicodeText, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    creator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), unique=True
+    )
+    creator: Mapped[DbUser] = relationship(DbUser)
+    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    description: Mapped[str | None] = mapped_column(db.UnicodeText)
 
     members = association_proxy('memberships', 'user')
 
@@ -71,14 +75,18 @@ class DbMembership(db.Model):
 
     __tablename__ = 'user_group_memberships'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    group_id = db.Column(db.Uuid, db.ForeignKey('user_groups.id'))
-    group = db.relationship(
+    id: Mapped[UUID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
+    )
+    group_id: Mapped[UUID] = mapped_column(
+        db.Uuid, db.ForeignKey('user_groups.id')
+    )
+    group: Mapped[DbUserGroup] = relationship(
         DbUserGroup, collection_class=set, backref='memberships'
     )
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    user = db.relationship(DbUser, backref='group_membership')
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    user: Mapped[DbUser] = relationship(DbUser, backref='group_membership')
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
     def __repr__(self) -> str:
         return (

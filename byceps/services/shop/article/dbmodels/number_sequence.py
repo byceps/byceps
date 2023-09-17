@@ -8,7 +8,10 @@ byceps.services.shop.article.dbmodels.sequence
 
 from __future__ import annotations
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db, generate_uuid4
+from byceps.services.shop.article.models import ArticleNumberSequenceID
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
 
@@ -18,13 +21,15 @@ class DbArticleNumberSequence(db.Model):
 
     __tablename__ = 'shop_article_number_sequences'
 
-    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
-    shop_id = db.Column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    id: Mapped[ArticleNumberSequenceID] = mapped_column(
+        db.Uuid, default=generate_uuid4, primary_key=True
     )
-    prefix = db.Column(db.UnicodeText, unique=True, nullable=False)
-    value = db.Column(db.Integer, default=0, nullable=False)
-    archived = db.Column(db.Boolean, default=False, nullable=False)
+    shop_id: Mapped[ShopID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True
+    )
+    prefix: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    value: Mapped[int] = mapped_column(default=0)
+    archived: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
         self,

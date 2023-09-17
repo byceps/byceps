@@ -6,6 +6,8 @@ byceps.services.orga.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db
 from byceps.services.brand.dbmodels.brand import DbBrand
 from byceps.services.user.dbmodels.user import DbUser
@@ -18,12 +20,14 @@ class DbOrgaFlag(db.Model):
 
     __tablename__ = 'orga_flags'
 
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(DbUser)
-    brand_id = db.Column(
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    user: Mapped[DbUser] = relationship(DbUser)
+    brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
     )
-    brand = db.relationship(DbBrand)
+    brand: Mapped[DbBrand] = relationship(DbBrand)
 
     def __init__(self, user_id: UserID, brand_id: BrandID) -> None:
         self.user_id = user_id

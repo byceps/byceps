@@ -6,6 +6,8 @@ byceps.services.brand.dbmodels.setting
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
 from byceps.typing import BrandID
 from byceps.util.instances import ReprBuilder
@@ -16,11 +18,11 @@ class DbSetting(db.Model):
 
     __tablename__ = 'brand_settings'
 
-    brand_id = db.Column(
+    brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
     )
-    name = db.Column(db.UnicodeText, primary_key=True)
-    value = db.Column(db.UnicodeText)
+    name: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
+    value: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(self, brand_id: BrandID, name: str, value: str) -> None:
         self.brand_id = brand_id

@@ -6,7 +6,10 @@ byceps.services.tourney.dbmodels.match
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db, generate_uuid7
+from byceps.services.tourney.models import MatchID
 
 
 class DbMatch(db.Model):
@@ -14,4 +17,6 @@ class DbMatch(db.Model):
 
     __tablename__ = 'tourney_matches'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
+    id: Mapped[MatchID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
+    )

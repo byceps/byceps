@@ -6,9 +6,12 @@ byceps.services.shop.shop.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import TYPE_CHECKING
+from __future__ import annotations
+
+from typing import Any, TYPE_CHECKING
 
 from moneyed import Currency, get_currency
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 if TYPE_CHECKING:
@@ -29,18 +32,19 @@ class DbShop(db.Model):
 
     __tablename__ = 'shops'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    brand_id = db.Column(
+    id: Mapped[ShopID] = mapped_column(db.UnicodeText, primary_key=True)
+    brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('brands.id'),
         unique=True,
         index=True,
-        nullable=False,
     )
-    title = db.Column(db.UnicodeText, unique=True, nullable=False)
-    _currency = db.Column('currency', db.UnicodeText, nullable=False)
-    archived = db.Column(db.Boolean, default=False, nullable=False)
-    extra_settings = db.Column(MutableDict.as_mutable(db.JSONB))
+    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
+    archived: Mapped[bool] = mapped_column(db.Boolean, default=False)
+    extra_settings: Mapped[Any | None] = mapped_column(
+        MutableDict.as_mutable(db.JSONB)
+    )
 
     def __init__(
         self, shop_id: ShopID, brand_id: BrandID, title: str, currency: Currency

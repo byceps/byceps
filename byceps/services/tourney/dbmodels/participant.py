@@ -6,11 +6,16 @@ byceps.services.tourney.dbmodels.participant
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db, generate_uuid7
-from byceps.services.tourney.models import TourneyID
+from byceps.services.tourney.models import ParticipantID, TourneyID
 from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 
 from .tourney import DbTourney
@@ -21,18 +26,20 @@ class DbParticipant(db.Model):
 
     __tablename__ = 'tourney_participants'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    tourney_id = db.Column(
-        db.Uuid, db.ForeignKey('tourneys.id'), index=True, nullable=False
+    id: Mapped[ParticipantID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    tourney = db.relationship(DbTourney)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    created_by_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), nullable=False
+    tourney_id: Mapped[TourneyID] = mapped_column(
+        db.Uuid, db.ForeignKey('tourneys.id'), index=True
     )
-    created_by = db.relationship(DbUser)
-    title = db.Column(db.UnicodeText, nullable=False)
-    max_size = db.Column(db.Integer, nullable=True)
+    tourney: Mapped[DbTourney] = relationship(DbTourney)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_by_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    created_by: Mapped[DbUser] = relationship(DbUser)
+    title: Mapped[str] = mapped_column(db.UnicodeText)
+    max_size: Mapped[int | None]
 
     def __init__(
         self, tourney_id: TourneyID, title: str, max_size: int

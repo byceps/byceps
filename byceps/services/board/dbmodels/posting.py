@@ -8,7 +8,10 @@ byceps.services.board.dbmodels.posting
 
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db, generate_uuid7
+from byceps.services.board.models import PostingID, TopicID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
@@ -21,22 +24,34 @@ class DbPosting(db.Model):
 
     __tablename__ = 'board_postings'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    topic_id = db.Column(
-        db.Uuid, db.ForeignKey('board_topics.id'), index=True, nullable=False
+    id: Mapped[PostingID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    topic = db.relationship(DbTopic, backref='postings')
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    body = db.Column(db.UnicodeText, nullable=False)
-    last_edited_at = db.Column(db.DateTime)
-    last_edited_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_edited_by = db.relationship(DbUser, foreign_keys=[last_edited_by_id])
-    edit_count = db.Column(db.Integer, default=0, nullable=False)
-    hidden = db.Column(db.Boolean, default=False, nullable=False)
-    hidden_at = db.Column(db.DateTime)
-    hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    hidden_by = db.relationship(DbUser, foreign_keys=[hidden_by_id])
+    topic_id: Mapped[TopicID] = mapped_column(
+        db.Uuid, db.ForeignKey('board_topics.id'), index=True
+    )
+    topic: Mapped[DbTopic] = relationship(DbTopic, backref='postings')
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    creator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    body: Mapped[str] = mapped_column(db.UnicodeText)
+    last_edited_at: Mapped[datetime | None]
+    last_edited_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    last_edited_by: Mapped[DbUser | None] = relationship(
+        DbUser, foreign_keys=[last_edited_by_id]
+    )
+    edit_count: Mapped[int] = mapped_column(default=0)
+    hidden: Mapped[bool] = mapped_column(default=False)
+    hidden_at: Mapped[datetime | None]
+    hidden_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    hidden_by: Mapped[DbUser | None] = relationship(
+        DbUser, foreign_keys=[hidden_by_id]
+    )
 
     def __init__(self, topic: DbTopic, creator_id: UserID, body: str) -> None:
         self.topic = topic
@@ -65,17 +80,17 @@ class DbPosting(db.Model):
 class DbInitialTopicPostingAssociation(db.Model):
     __tablename__ = 'board_initial_topic_postings'
 
-    topic_id = db.Column(
+    topic_id: Mapped[TopicID] = mapped_column(
         db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True
     )
-    topic = db.relationship(
+    topic: Mapped[DbTopic] = relationship(
         DbTopic,
         backref=db.backref('initial_topic_posting_association', uselist=False),
     )
-    posting_id = db.Column(
-        db.Uuid, db.ForeignKey('board_postings.id'), unique=True, nullable=False
+    posting_id: Mapped[PostingID] = mapped_column(
+        db.Uuid, db.ForeignKey('board_postings.id'), unique=True
     )
-    posting = db.relationship(DbPosting)
+    posting: Mapped[DbPosting] = relationship(DbPosting)
 
     def __init__(self, topic: DbTopic, posting: DbPosting) -> None:
         self.topic = topic

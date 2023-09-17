@@ -6,11 +6,17 @@ byceps.services.board.dbmodels.category
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
+from datetime import datetime
+
 from sqlalchemy.ext.orderinglist import ordering_list
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db, generate_uuid4
-from byceps.services.board.models import BoardID
+from byceps.services.board.models import BoardCategoryID, BoardID
 from byceps.services.user.dbmodels.user import DbUser
+from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 
 from .board import DbBoard
@@ -25,22 +31,26 @@ class DbBoardCategory(db.Model):
         db.UniqueConstraint('board_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
-    board_id = db.Column(
-        db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=False
+    id: Mapped[BoardCategoryID] = mapped_column(
+        db.Uuid, default=generate_uuid4, primary_key=True
     )
-    position = db.Column(db.Integer, nullable=False)
-    slug = db.Column(db.UnicodeText, nullable=False)
-    title = db.Column(db.UnicodeText, nullable=False)
-    description = db.Column(db.UnicodeText)
-    topic_count = db.Column(db.Integer, default=0, nullable=False)
-    posting_count = db.Column(db.Integer, default=0, nullable=False)
-    last_posting_updated_at = db.Column(db.DateTime)
-    last_posting_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_posting_updated_by = db.relationship(DbUser)
-    hidden = db.Column(db.Boolean, default=False, nullable=False)
+    board_id: Mapped[BoardID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('boards.id'), index=True
+    )
+    position: Mapped[int] = mapped_column(db.Integer)
+    slug: Mapped[str] = mapped_column(db.UnicodeText)
+    title: Mapped[str] = mapped_column(db.UnicodeText)
+    description: Mapped[str] = mapped_column(db.UnicodeText)
+    topic_count: Mapped[int] = mapped_column(default=0)
+    posting_count: Mapped[int] = mapped_column(default=0)
+    last_posting_updated_at: Mapped[datetime | None]
+    last_posting_updated_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    last_posting_updated_by: Mapped[DbUser | None] = relationship(DbUser)
+    hidden: Mapped[bool] = mapped_column(default=False)
 
-    board = db.relationship(
+    board: Mapped[DbBoard] = relationship(
         DbBoard,
         backref=db.backref(
             'categories',

@@ -12,6 +12,7 @@ from typing import NewType, TYPE_CHECKING
 from uuid import UUID
 
 from flask import current_app
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 if TYPE_CHECKING:
@@ -33,13 +34,17 @@ class DbTourneyAvatar(db.Model):
 
     __tablename__ = 'tourney_avatars'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    party_id = db.Column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    id: Mapped[AvatarID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    _image_type = db.Column('image_type', db.UnicodeText, nullable=False)
+    party_id: Mapped[PartyID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+    )
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    creator_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    _image_type: Mapped[str] = mapped_column('image_type', db.UnicodeText)
 
     def __init__(
         self, party_id: PartyID, creator_id: UserID, image_type: ImageType

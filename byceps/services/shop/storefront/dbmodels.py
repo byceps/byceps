@@ -8,7 +8,10 @@ byceps.services.shop.storefront.dbmodels
 
 from __future__ import annotations
 
+from sqlalchemy.orm import Mapped, mapped_column
+
 from byceps.database import db
+
 # Make shop catalog tables available for database creation.
 from byceps.services.shop.catalog.dbmodels import DbCatalog  # noqa: F401
 from byceps.services.shop.catalog.models import CatalogID
@@ -27,17 +30,17 @@ class DbStorefront(db.Model):
 
     __tablename__ = 'shop_storefronts'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    shop_id = db.Column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    id: Mapped[StorefrontID] = mapped_column(db.UnicodeText, primary_key=True)
+    shop_id: Mapped[ShopID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True
     )
-    catalog_id = db.Column(
-        db.Uuid, db.ForeignKey('shop_catalogs.id'), nullable=True
+    catalog_id: Mapped[CatalogID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_catalogs.id')
     )
-    order_number_sequence_id = db.Column(
-        db.Uuid, db.ForeignKey('shop_order_number_sequences.id'), nullable=False
+    order_number_sequence_id: Mapped[OrderNumberSequenceID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_order_number_sequences.id')
     )
-    closed = db.Column(db.Boolean, nullable=False)
+    closed: Mapped[bool]
 
     def __init__(
         self,

@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from byceps.database import db, generate_uuid4
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import BrandID, UserID
@@ -23,11 +25,13 @@ class DbConsentSubject(db.Model):
 
     __tablename__ = 'consent_subjects'
 
-    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
-    name = db.Column(db.UnicodeText, unique=True, nullable=False)
-    title = db.Column(db.UnicodeText, unique=True, nullable=False)
-    checkbox_label = db.Column(db.UnicodeText, nullable=False)
-    checkbox_link_target = db.Column(db.UnicodeText, nullable=True)
+    id: Mapped[ConsentSubjectID] = mapped_column(
+        db.Uuid, default=generate_uuid4, primary_key=True
+    )
+    name: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    checkbox_label: Mapped[str] = mapped_column(db.UnicodeText)
+    checkbox_link_target: Mapped[str | None] = mapped_column(db.UnicodeText)
 
     def __init__(
         self,
@@ -56,10 +60,10 @@ class DbConsentBrandRequirement(db.Model):
 
     __tablename__ = 'consent_brand_requirements'
 
-    brand_id = db.Column(
+    brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
     )
-    subject_id = db.Column(
+    subject_id: Mapped[ConsentSubjectID] = mapped_column(
         db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True
     )
 
@@ -73,13 +77,15 @@ class DbConsent(db.Model):
 
     __tablename__ = 'consents'
 
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(DbUser)
-    subject_id = db.Column(
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    user: Mapped[DbUser] = relationship(DbUser)
+    subject_id: Mapped[ConsentSubjectID] = mapped_column(
         db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True
     )
-    subject = db.relationship(DbConsentSubject)
-    expressed_at = db.Column(db.DateTime, nullable=False)
+    subject: Mapped[DbConsentSubject] = relationship(DbConsentSubject)
+    expressed_at: Mapped[datetime]
 
     def __init__(
         self,

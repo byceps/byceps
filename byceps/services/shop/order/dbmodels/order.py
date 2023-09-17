@@ -9,9 +9,11 @@ byceps.services.shop.order.dbmodels.order
 from __future__ import annotations
 
 from datetime import datetime
+from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 if TYPE_CHECKING:
@@ -21,7 +23,7 @@ else:
 
 from byceps.database import db, generate_uuid7
 from byceps.services.shop.order.models.number import OrderNumber
-from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.order.models.order import OrderID, PaymentState
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.dbmodels.user import DbUser
@@ -34,46 +36,53 @@ class DbOrder(db.Model):
 
     __tablename__ = 'shop_orders'
 
-    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
-    created_at = db.Column(db.DateTime, nullable=False)
-    shop_id = db.Column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    id: Mapped[OrderID] = mapped_column(
+        db.Uuid, default=generate_uuid7, primary_key=True
     )
-    storefront_id = db.Column(
+    created_at: Mapped[datetime]
+    shop_id: Mapped[ShopID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True
+    )
+    storefront_id: Mapped[StorefrontID] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_storefronts.id'),
         index=True,
-        nullable=False,
     )
-    order_number = db.Column(db.UnicodeText, unique=True, nullable=False)
-    placed_by_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False
+    order_number: Mapped[OrderNumber] = mapped_column(
+        db.UnicodeText, unique=True
     )
-    placed_by = db.relationship(DbUser, foreign_keys=[placed_by_id])
-    company = db.Column(db.UnicodeText, nullable=True)
-    first_name = db.Column(db.UnicodeText, nullable=False)
-    last_name = db.Column(db.UnicodeText, nullable=False)
-    country = db.Column(db.UnicodeText, nullable=False)
-    zip_code = db.Column(db.UnicodeText, nullable=False)
-    city = db.Column(db.UnicodeText, nullable=False)
-    street = db.Column(db.UnicodeText, nullable=False)
-    _currency = db.Column('currency', db.UnicodeText, nullable=False)
-    _total_amount = db.Column('total_amount', db.Numeric(7, 2), nullable=False)
-    invoice_created_at = db.Column(db.DateTime, nullable=True)
-    payment_method = db.Column(db.UnicodeText, nullable=True)
-    _payment_state = db.Column(
-        'payment_state', db.UnicodeText, index=True, nullable=False
+    placed_by_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    payment_state_updated_at = db.Column(db.DateTime, nullable=True)
-    payment_state_updated_by_id = db.Column(
-        db.Uuid, db.ForeignKey('users.id'), nullable=True
+    placed_by: Mapped[DbUser] = relationship(
+        DbUser, foreign_keys=[placed_by_id]
     )
-    payment_state_updated_by = db.relationship(
+    company: Mapped[str | None] = mapped_column(db.UnicodeText)
+    first_name: Mapped[str] = mapped_column(db.UnicodeText)
+    last_name: Mapped[str] = mapped_column(db.UnicodeText)
+    country: Mapped[str] = mapped_column(db.UnicodeText)
+    zip_code: Mapped[str] = mapped_column(db.UnicodeText)
+    city: Mapped[str] = mapped_column(db.UnicodeText)
+    street: Mapped[str] = mapped_column(db.UnicodeText)
+    _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
+    _total_amount: Mapped[Decimal] = mapped_column(
+        'total_amount', db.Numeric(7, 2)
+    )
+    invoice_created_at: Mapped[datetime | None]
+    payment_method: Mapped[str | None] = mapped_column(db.UnicodeText)
+    _payment_state: Mapped[str] = mapped_column(
+        'payment_state', db.UnicodeText, index=True
+    )
+    payment_state_updated_at: Mapped[datetime | None]
+    payment_state_updated_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    payment_state_updated_by: Mapped[DbUser] = relationship(
         DbUser, foreign_keys=[payment_state_updated_by_id]
     )
-    cancelation_reason = db.Column(db.UnicodeText, nullable=True)
-    processing_required = db.Column(db.Boolean, nullable=False)
-    processed_at = db.Column(db.DateTime, nullable=True)
+    cancelation_reason: Mapped[str | None] = mapped_column(db.UnicodeText)
+    processing_required: Mapped[bool]
+    processed_at: Mapped[datetime | None]
 
     def __init__(
         self,

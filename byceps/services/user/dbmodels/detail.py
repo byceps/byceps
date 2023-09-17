@@ -8,9 +8,14 @@ byceps.services.user.dbmodels.detail
 
 from __future__ import annotations
 
+from datetime import date
+from typing import Any
+
 from sqlalchemy.ext.mutable import MutableDict
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
+from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 
 
@@ -19,20 +24,22 @@ class DbUserDetail(db.Model):
 
     __tablename__ = 'user_details'
 
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    user: Mapped['DbUser'] = relationship(
         'DbUser', backref=db.backref('detail', uselist=False)
     )
-    first_name = db.Column(db.UnicodeText, nullable=True)
-    last_name = db.Column(db.UnicodeText, nullable=True)
-    date_of_birth = db.Column(db.Date, nullable=True)
-    country = db.Column(db.UnicodeText, nullable=True)
-    zip_code = db.Column(db.UnicodeText, nullable=True)
-    city = db.Column(db.UnicodeText, nullable=True)
-    street = db.Column(db.UnicodeText, nullable=True)
-    phone_number = db.Column(db.UnicodeText, nullable=True)
-    internal_comment = db.Column(db.UnicodeText, nullable=True)
-    extras = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
+    first_name: Mapped[str | None] = mapped_column(db.UnicodeText)
+    last_name: Mapped[str | None] = mapped_column(db.UnicodeText)
+    date_of_birth: Mapped[date | None]
+    country: Mapped[str | None] = mapped_column(db.UnicodeText)
+    zip_code: Mapped[str | None] = mapped_column(db.UnicodeText)
+    city: Mapped[str | None] = mapped_column(db.UnicodeText)
+    street: Mapped[str | None] = mapped_column(db.UnicodeText)
+    phone_number: Mapped[str | None] = mapped_column(db.UnicodeText)
+    internal_comment: Mapped[str | None] = mapped_column(db.UnicodeText)
+    extras: Mapped[Any | None] = mapped_column(MutableDict.as_mutable(db.JSONB))
 
     @property
     def full_name(self) -> str | None:
