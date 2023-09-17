@@ -24,8 +24,6 @@ from tests.helpers import generate_uuid
 
 
 def test_export_addresses_for_netbox(party, make_user, make_server):
-    created_at = datetime.utcnow()
-
     owner1 = make_user(screen_name='Owner A')
     owner2 = make_user(screen_name='Owner B')
 
@@ -60,19 +58,14 @@ def test_export_addresses_for_netbox(party, make_user, make_server):
 
 
 @pytest.fixture(scope='module')
-def created_at():
-    return datetime.utcnow()
-
-
-@pytest.fixture(scope='module')
-def make_server(party: Party, created_at: datetime):
+def make_server(party: Party):
     def _wrapper(
         owner: User,
     ) -> Server:
         return Server(
             id=ServerID(generate_uuid()),
             party_id=party.id,
-            created_at=created_at,
+            created_at=datetime.utcnow(),
             creator=owner,
             owner=owner,
             description=None,
