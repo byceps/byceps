@@ -66,7 +66,7 @@ class DbLineItem(db.Model):
     quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity > 0'))
     line_amount: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
     processing_required: Mapped[bool]
-    processing_result: Mapped[Any | None] = mapped_column(db.JSONB)
+    processing_result: Mapped[Any] = mapped_column(db.JSONB)
     processed_at: Mapped[datetime | None]
 
     def __init__(

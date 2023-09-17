@@ -42,7 +42,7 @@ class DbShop(db.Model):
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
     archived: Mapped[bool] = mapped_column(db.Boolean, default=False)
-    extra_settings: Mapped[Any | None] = mapped_column(
+    extra_settings: Mapped[Any] = mapped_column(
         MutableDict.as_mutable(db.JSONB)
     )
 

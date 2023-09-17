@@ -37,14 +37,10 @@ class DbOutgoingWebhook(db.Model):
     _event_types: Mapped[list[str]] = mapped_column(
         'event_types', MutableList.as_mutable(db.JSONB)
     )
-    event_filters: Mapped[Any | None] = mapped_column(
-        MutableDict.as_mutable(db.JSONB)
-    )
+    event_filters: Mapped[Any] = mapped_column(MutableDict.as_mutable(db.JSONB))
     format: Mapped[str] = mapped_column(db.UnicodeText)
     text_prefix: Mapped[str | None] = mapped_column(db.UnicodeText)
-    extra_fields: Mapped[Any | None] = mapped_column(
-        MutableDict.as_mutable(db.JSONB)
-    )
+    extra_fields: Mapped[Any] = mapped_column(MutableDict.as_mutable(db.JSONB))
     url: Mapped[str] = mapped_column(db.UnicodeText)
     description: Mapped[str | None] = mapped_column(db.UnicodeText)
     enabled: Mapped[bool]

@@ -47,7 +47,7 @@ class DbVerificationToken(db.Model):
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     _purpose: Mapped[str] = mapped_column('purpose', db.UnicodeText, index=True)
-    data: Mapped[Any | None] = mapped_column(db.JSONB)
+    data: Mapped[Any] = mapped_column(db.JSONB)
 
     def __init__(
         self,
