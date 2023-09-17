@@ -17,6 +17,7 @@ from flask import (
     g,
     jsonify,
     redirect,
+    request,
     Response,
     stream_with_context,
     url_for,
@@ -36,9 +37,9 @@ def login_required(func):
             flash_notice(gettext('Please log in.'))
 
             if g.app_mode.is_admin():
-                return redirect_to('authn_login_admin.log_in_form')
+                return redirect_to('authn_login_admin.log_in_form', next=request.full_path)
             else:
-                return redirect_to('authn_login.log_in_form')
+                return redirect_to('authn_login.log_in_form', next=request.full_path)
         return func(*args, **kwargs)
 
     return wrapper
