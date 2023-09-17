@@ -20,6 +20,17 @@ onDomReady(() => {
             return;
           }
 
+          // extract 'next' parameter from location.search, if available
+          const searchObject = new URLSearchParams(location.search);
+          const nextParam = searchObject.get('next');
+          if (nextParam !== null) {
+            const nextLocation = new URL(nextParam, location.href);
+            if (nextLocation.hostname == location.hostname) {
+              location.href = nextLocation.pathname;
+              return;
+            }
+          }
+
           // Redirect to location specified via header.
           const redirectUrl = response.headers.get('Location');
           if (redirectUrl !== null) {
@@ -27,14 +38,8 @@ onDomReady(() => {
             return;
           }
 
-          // Redirect to referrer if available.
-          const referrer = document.createElement('a');
-          referrer.href = document.referrer;
-          // Exclude selected referrer paths.
-          if (/^\/(authentication|consent)\//.test(referrer.pathname)) {
-            referrer.pathname = '/';
-          }
-          location.href = (referrer.hostname == location.hostname) ? referrer.pathname : '/';
+          // fallback: redirect to /
+          location.href = '/';
         });
     });
   }
