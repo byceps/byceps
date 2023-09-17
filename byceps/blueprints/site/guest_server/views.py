@@ -22,7 +22,7 @@ from byceps.services.ticketing import ticket_service
 from byceps.signals import guest_server as guest_server_signals
 from byceps.typing import PartyID
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_success
+from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import login_required, permission_required, redirect_to
 
@@ -60,11 +60,11 @@ def create_form(erroneous_form=None):
     party = _get_current_party_or_404()
 
     if not _current_user_uses_ticket_for_party(party.id):
-        flash_success(gettext('Using a ticket for this party is required.'))
+        flash_notice(gettext('Using a ticket for this party is required.'))
         return redirect_to('.index')
 
     if _server_limit_reached(party.id):
-        flash_success(
+        flash_notice(
             gettext(
                 'You have already registered the maximum number of servers allowed.'
             )
@@ -88,11 +88,11 @@ def create():
     party = _get_current_party_or_404()
 
     if not _current_user_uses_ticket_for_party(party.id):
-        flash_success(gettext('Using a ticket for this party is required.'))
+        flash_notice(gettext('Using a ticket for this party is required.'))
         return redirect_to('.index')
 
     if _server_limit_reached(party.id):
-        flash_success(
+        flash_notice(
             gettext(
                 'You have already registered the maximum number of servers allowed.'
             )
