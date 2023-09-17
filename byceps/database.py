@@ -16,7 +16,7 @@ import uuid
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy.pagination import Pagination
-from sqlalchemy.dialects.postgresql import insert, JSONB, UUID
+from sqlalchemy.dialects.postgresql import insert, JSONB
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.sql import Select
 from sqlalchemy.sql.dml import Insert
@@ -38,14 +38,6 @@ db = SQLAlchemy(model_class=Base)
 
 
 db.JSONB = JSONB
-
-
-class Uuid(UUID):
-    def __init__(self):
-        super().__init__(as_uuid=True)
-
-
-db.Uuid = Uuid
 
 
 def generate_uuid4() -> uuid.UUID:
