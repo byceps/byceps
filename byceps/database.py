@@ -12,7 +12,6 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from typing import Any, Callable, TypeVar
-import uuid
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy.pagination import Pagination
@@ -21,7 +20,6 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.sql import Select
 from sqlalchemy.sql.dml import Insert
 from sqlalchemy.sql.schema import Table
-from uuid6 import uuid7
 
 
 F = TypeVar('F')
@@ -38,16 +36,6 @@ db = SQLAlchemy(model_class=Base)
 
 
 db.JSONB = JSONB
-
-
-def generate_uuid4() -> uuid.UUID:
-    """Generate a random UUID (Universally Unique IDentifier), version 4."""
-    return uuid.uuid4()
-
-
-def generate_uuid7() -> uuid.UUID:
-    """Generate a random UUID (Universally Unique IDentifier), version 7."""
-    return uuid7()
 
 
 def paginate(

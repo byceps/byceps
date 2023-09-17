@@ -7,10 +7,10 @@ from datetime import datetime
 
 import pytest
 
-from byceps.database import generate_uuid4
 from byceps.services.user.dbmodels.detail import DbUserDetail
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import UserID
+from byceps.util.uuid import generate_uuid4
 
 
 @pytest.mark.parametrize(

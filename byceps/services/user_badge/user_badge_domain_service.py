@@ -11,10 +11,10 @@ from __future__ import annotations
 from datetime import datetime
 from uuid import UUID
 
-from byceps.database import generate_uuid7
 from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
+from byceps.util.uuid import generate_uuid7
 
 from .models import Badge, BadgeAwarding
 

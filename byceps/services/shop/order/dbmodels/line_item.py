@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.shop.article.dbmodels.article import DbArticle
 from byceps.services.shop.article.models import (
     ArticleID,
@@ -29,6 +29,7 @@ from byceps.services.shop.article.models import (
 )
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import LineItemID
+from byceps.util.uuid import generate_uuid7
 
 from .order import DbOrder
 

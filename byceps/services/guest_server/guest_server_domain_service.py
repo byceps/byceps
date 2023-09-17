@@ -10,10 +10,10 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from byceps.database import generate_uuid7
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
+from byceps.util.uuid import generate_uuid7
 
 from .models import (
     Address,

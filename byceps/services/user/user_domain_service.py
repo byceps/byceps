@@ -11,7 +11,6 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Any
 
-from byceps.database import generate_uuid4, generate_uuid7
 from byceps.events.user import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,
@@ -26,6 +25,7 @@ from byceps.events.user import (
 from byceps.services.site.models import SiteID
 from byceps.typing import UserID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid4, generate_uuid7
 
 from .errors import (
     AccountAlreadyInitializedError,

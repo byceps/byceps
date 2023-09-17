@@ -16,13 +16,14 @@ from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.language.dbmodels import DbLanguage
 from byceps.services.site.models import SiteID
 from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.site_navigation.dbmodels import DbNavMenu
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import UserID
+from byceps.util.uuid import generate_uuid7
 
 from .models import PageID, PageVersionID
 

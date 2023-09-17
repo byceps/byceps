@@ -11,9 +11,10 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import PartyID, UserID
+from byceps.util.uuid import generate_uuid7
 
 
 class DbTimeSlot(db.Model):

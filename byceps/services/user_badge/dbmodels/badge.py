@@ -10,10 +10,11 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from byceps.database import db, generate_uuid4
+from byceps.database import db
 from byceps.services.user_badge.models import BadgeID
 from byceps.typing import BrandID
 from byceps.util.instances import ReprBuilder
+from byceps.util.uuid import generate_uuid4
 
 
 class DbBadge(db.Model):

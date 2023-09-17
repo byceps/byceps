@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import pytest
 
-from byceps.database import generate_uuid7
 from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.brand.models import Brand
 from byceps.services.party.models import Party
@@ -24,6 +23,7 @@ from byceps.services.ticketing.models.checkin import TicketForCheckIn
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
 from byceps.services.user.models.user import User
 from byceps.typing import PartyID
+from byceps.util.uuid import generate_uuid7
 
 from tests.helpers import generate_token
 

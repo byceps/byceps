@@ -21,7 +21,7 @@ else:
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.news.models import (
     BodyFormat,
     NewsChannelID,
@@ -32,6 +32,7 @@ from byceps.services.news.models import (
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
+from byceps.util.uuid import generate_uuid7
 
 from .channel import DbNewsChannel
 

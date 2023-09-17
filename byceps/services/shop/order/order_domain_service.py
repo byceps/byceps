@@ -12,10 +12,10 @@ from datetime import datetime, timedelta
 
 from moneyed import Money
 
-from byceps.database import generate_uuid7
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
 from .models.log import OrderLogEntry, OrderLogEntryData

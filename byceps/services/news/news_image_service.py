@@ -13,12 +13,13 @@ from typing import BinaryIO
 from flask import current_app
 from sqlalchemy import select
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.image import image_service
 from byceps.services.user.models.user import User
 from byceps.util import upload
 from byceps.util.image.models import Dimensions, ImageType
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.item import DbNewsImage, DbNewsItem
 from .models import NewsChannelID, NewsImage, NewsImageID, NewsItem, NewsItemID

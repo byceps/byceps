@@ -12,8 +12,9 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from byceps.database import db, generate_uuid4
+from byceps.database import db
 from byceps.services.shop.order.models.order import OrderID
+from byceps.util.uuid import generate_uuid4
 
 
 class DbInvoice(db.Model):

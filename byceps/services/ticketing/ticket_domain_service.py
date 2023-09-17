@@ -10,11 +10,11 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from byceps.database import generate_uuid7
 from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.user.models.user import User
 from byceps.typing import PartyID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .errors import (
     TicketBelongsToDifferentPartyError,

@@ -10,10 +10,11 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from byceps.database import db, generate_uuid4
+from byceps.database import db
 from byceps.services.shop.article.models import ArticleNumberSequenceID
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
+from byceps.util.uuid import generate_uuid4
 
 
 class DbArticleNumberSequence(db.Model):

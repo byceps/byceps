@@ -17,11 +17,12 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from byceps.database import db, generate_uuid4
+from byceps.database import db
 from byceps.services.shop.article.dbmodels.article import DbArticle
 from byceps.services.shop.article.models import ArticleID
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import PaymentState
+from byceps.util.uuid import generate_uuid4
 
 
 class DbOrderAction(db.Model):

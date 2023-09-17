@@ -12,10 +12,11 @@ from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.tourney.models import TourneyCategoryID, TourneyID
 from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
+from byceps.util.uuid import generate_uuid7
 
 from .tourney_category import DbTourneyCategory
 

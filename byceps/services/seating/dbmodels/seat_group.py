@@ -11,7 +11,7 @@ from uuid import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.seating.models import SeatGroupID, SeatID
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
@@ -21,6 +21,7 @@ from byceps.services.ticketing.models.ticket import (
 )
 from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
+from byceps.util.uuid import generate_uuid7
 
 from .seat import DbSeat
 

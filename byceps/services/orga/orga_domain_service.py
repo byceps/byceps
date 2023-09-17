@@ -10,11 +10,11 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from byceps.database import generate_uuid7
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.brand.models import Brand
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
+from byceps.util.uuid import generate_uuid7
 
 
 def grant_orga_status(

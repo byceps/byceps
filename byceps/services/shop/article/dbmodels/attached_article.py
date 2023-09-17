@@ -8,8 +8,9 @@ byceps.services.shop.article.dbmodels.attached_article
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.shop.article.models import ArticleID, AttachedArticleID
+from byceps.util.uuid import generate_uuid7
 
 from .article import DbArticle
 

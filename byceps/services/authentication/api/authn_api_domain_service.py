@@ -11,9 +11,9 @@ from __future__ import annotations
 from datetime import datetime
 from secrets import token_urlsafe
 
-from byceps.database import generate_uuid7
 from byceps.services.authorization.models import PermissionID
 from byceps.typing import UserID
+from byceps.util.uuid import generate_uuid7
 
 from .models import ApiToken
 

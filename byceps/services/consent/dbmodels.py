@@ -12,10 +12,11 @@ from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from byceps.database import db, generate_uuid4
+from byceps.database import db
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import BrandID, UserID
 from byceps.util.instances import ReprBuilder
+from byceps.util.uuid import generate_uuid4
 
 from .models import ConsentSubjectID
 

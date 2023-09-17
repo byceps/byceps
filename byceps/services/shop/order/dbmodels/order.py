@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID, PaymentState
 from byceps.services.shop.shop.models import ShopID
@@ -29,6 +29,7 @@ from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
+from byceps.util.uuid import generate_uuid7
 
 
 class DbOrder(db.Model):

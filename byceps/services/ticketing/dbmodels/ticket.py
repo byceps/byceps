@@ -12,7 +12,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.seating.models import SeatID
 from byceps.services.shop.order.models.number import OrderNumber
@@ -25,6 +25,7 @@ from byceps.services.ticketing.models.ticket import (
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import PartyID, UserID
 from byceps.util.instances import ReprBuilder
+from byceps.util.uuid import generate_uuid7
 
 from .category import DbTicketCategory
 from .ticket_bundle import DbTicketBundle

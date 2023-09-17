@@ -9,10 +9,11 @@ byceps.services.shop.catalog.dbmodels
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.shop.article.models import ArticleID
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
+from byceps.util.uuid import generate_uuid7
 
 from .models import CatalogArticleID, CatalogID, CollectionID
 

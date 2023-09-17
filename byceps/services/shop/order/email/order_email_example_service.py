@@ -14,7 +14,6 @@ from flask_babel import gettext
 from moneyed import EUR, Money
 
 from byceps.config import ConfigurationError
-from byceps.database import generate_uuid4
 from byceps.services.brand.models import Brand
 from byceps.services.email.models import Message, NameAndAddress
 from byceps.services.shop.order.models.number import OrderNumber
@@ -31,6 +30,7 @@ from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid4
 
 from . import order_email_service
 from .order_email_service import OrderEmailData

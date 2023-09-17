@@ -12,7 +12,8 @@ from datetime import datetime
 
 from sqlalchemy import select
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.log import DbTicketLogEntry
 from .models.log import TicketLogEntry, TicketLogEntryData

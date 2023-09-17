@@ -8,8 +8,9 @@ byceps.services.tourney.dbmodels.match
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from byceps.database import db, generate_uuid7
+from byceps.database import db
 from byceps.services.tourney.models import MatchID
+from byceps.util.uuid import generate_uuid7
 
 
 class DbMatch(db.Model):
