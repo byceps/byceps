@@ -9,6 +9,7 @@ byceps.services.party.dbmodels.party
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -31,7 +32,7 @@ class DbParty(db.Model):
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     starts_at: Mapped[datetime]
     ends_at: Mapped[datetime]
-    max_ticket_quantity: Mapped[int | None]
+    max_ticket_quantity: Mapped[Optional[int]]  # noqa: UP007
     ticket_management_enabled: Mapped[bool]
     seat_management_enabled: Mapped[bool]
     canceled: Mapped[bool] = mapped_column(default=False)

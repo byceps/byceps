@@ -9,6 +9,7 @@ byceps.services.tourney.dbmodels.tourney
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -34,8 +35,12 @@ class DbTourney(db.Model):
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
     title: Mapped[str] = mapped_column(db.UnicodeText)
-    subtitle: Mapped[str | None] = mapped_column(db.UnicodeText)
-    logo_url: Mapped[str | None] = mapped_column(db.UnicodeText)
+    subtitle: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
+    logo_url: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
     category_id: Mapped[TourneyCategoryID] = mapped_column(
         db.Uuid,
         db.ForeignKey('tourney_categories.id'),

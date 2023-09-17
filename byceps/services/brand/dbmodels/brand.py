@@ -8,6 +8,8 @@ byceps.services.brand.dbmodels.brand
 
 from __future__ import annotations
 
+from typing import Optional
+
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
@@ -22,7 +24,9 @@ class DbBrand(db.Model):
 
     id: Mapped[BrandID] = mapped_column(db.UnicodeText, primary_key=True)
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    image_filename: Mapped[str | None] = mapped_column(db.UnicodeText)
+    image_filename: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
     archived: Mapped[bool] = mapped_column(default=False)
 
     def __init__(

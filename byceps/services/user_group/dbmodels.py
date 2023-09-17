@@ -9,6 +9,7 @@ byceps.services.user_group.dbmodels
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -39,7 +40,9 @@ class DbUserGroup(db.Model):
     )
     creator: Mapped[DbUser] = relationship(DbUser)
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    description: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
 
     members = association_proxy('memberships', 'user')
 

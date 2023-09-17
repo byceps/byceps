@@ -9,7 +9,7 @@ byceps.services.news.dbmodels.item
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -60,7 +60,7 @@ class DbNewsItem(db.Model):
     )
     channel: Mapped[DbNewsChannel] = relationship(DbNewsChannel)
     slug: Mapped[str] = mapped_column(db.UnicodeText, unique=True, index=True)
-    published_at: Mapped[datetime | None]
+    published_at: Mapped[Optional[datetime]]  # noqa: UP007
     current_version = association_proxy(
         'current_version_association', 'version'
     )
@@ -189,9 +189,15 @@ class DbNewsImage(db.Model):
     item: Mapped[DbNewsItem] = relationship(DbNewsItem, backref='images')
     number: Mapped[int]
     filename: Mapped[str] = mapped_column(db.UnicodeText)
-    alt_text: Mapped[str | None] = mapped_column(db.UnicodeText)
-    caption: Mapped[str | None] = mapped_column(db.UnicodeText)
-    attribution: Mapped[str | None] = mapped_column(db.UnicodeText)
+    alt_text: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
+    caption: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
+    attribution: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
 
     def __init__(
         self,

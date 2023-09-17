@@ -8,6 +8,8 @@ byceps.services.seating.dbmodels.area
 
 from __future__ import annotations
 
+from typing import Optional
+
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
@@ -38,9 +40,11 @@ class DbSeatingArea(db.Model):
     )
     slug: Mapped[str] = mapped_column(db.UnicodeText)
     title: Mapped[str] = mapped_column(db.UnicodeText)
-    image_filename: Mapped[str | None] = mapped_column(db.UnicodeText)
-    image_width: Mapped[int | None]
-    image_height: Mapped[int | None]
+    image_filename: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
+    image_width: Mapped[Optional[int]]  # noqa: UP007
+    image_height: Mapped[Optional[int]]  # noqa: UP007
 
     def __init__(
         self,

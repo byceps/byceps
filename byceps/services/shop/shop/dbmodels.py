@@ -8,7 +8,7 @@ byceps.services.shop.shop.dbmodels
 
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 
 from moneyed import Currency, get_currency
 from sqlalchemy.orm import Mapped, mapped_column
@@ -42,7 +42,7 @@ class DbShop(db.Model):
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
     archived: Mapped[bool] = mapped_column(db.Boolean, default=False)
-    extra_settings: Mapped[Any] = mapped_column(
+    extra_settings: Mapped[Optional[Any]] = mapped_column(  # noqa: UP007
         MutableDict.as_mutable(db.JSONB)
     )
 

@@ -9,6 +9,7 @@ byceps.services.tourney.dbmodels.participant
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -40,7 +41,7 @@ class DbParticipant(db.Model):
     )
     created_by: Mapped[DbUser] = relationship(DbUser)
     title: Mapped[str] = mapped_column(db.UnicodeText)
-    max_size: Mapped[int | None]
+    max_size: Mapped[Optional[int]]  # noqa: UP007
 
     def __init__(
         self, tourney_id: TourneyID, title: str, max_size: int

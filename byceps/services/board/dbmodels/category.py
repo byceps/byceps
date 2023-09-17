@@ -9,6 +9,7 @@ byceps.services.board.dbmodels.category
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -44,11 +45,13 @@ class DbBoardCategory(db.Model):
     description: Mapped[str] = mapped_column(db.UnicodeText)
     topic_count: Mapped[int] = mapped_column(default=0)
     posting_count: Mapped[int] = mapped_column(default=0)
-    last_posting_updated_at: Mapped[datetime | None]
-    last_posting_updated_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
-    last_posting_updated_by: Mapped[DbUser | None] = relationship(DbUser)
+    last_posting_updated_at: Mapped[Optional[datetime]]  # noqa: UP007
+    last_posting_updated_by_id: Mapped[
+        Optional[UserID]  # noqa: UP007
+    ] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    last_posting_updated_by: Mapped[
+        Optional[DbUser]  # noqa: UP007
+    ] = relationship(DbUser)
     hidden: Mapped[bool] = mapped_column(default=False)
 
     board: Mapped[DbBoard] = relationship(

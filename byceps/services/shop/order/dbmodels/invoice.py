@@ -8,6 +8,7 @@ byceps.services.shop.order.dbmodels.invoice
 
 from __future__ import annotations
 
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -34,7 +35,7 @@ class DbInvoice(db.Model):
         db.Uuid, db.ForeignKey('shop_orders.id'), index=True
     )
     number: Mapped[str] = mapped_column(db.UnicodeText, index=True)
-    url: Mapped[str | None] = mapped_column(db.UnicodeText)
+    url: Mapped[Optional[str]] = mapped_column(db.UnicodeText)  # noqa: UP007
 
     def __init__(
         self,

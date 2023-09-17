@@ -9,6 +9,7 @@ byceps.services.ticketing.dbmodels.ticket
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -52,10 +53,10 @@ class DbTicket(db.Model):
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
     code: Mapped[str] = mapped_column(db.UnicodeText, index=True)
-    bundle_id: Mapped[TicketBundleID | None] = mapped_column(
+    bundle_id: Mapped[Optional[TicketBundleID]] = mapped_column(  # noqa: UP007
         db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True
     )
-    bundle: Mapped[DbTicketBundle | None] = relationship(
+    bundle: Mapped[Optional[DbTicketBundle]] = relationship(  # noqa: UP007
         DbTicketBundle, backref='tickets'
     )
     category_id: Mapped[TicketCategoryID] = mapped_column(
@@ -68,36 +69,36 @@ class DbTicket(db.Model):
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     owned_by: Mapped[DbUser] = relationship(DbUser, foreign_keys=[owned_by_id])
-    order_number: Mapped[OrderNumber | None] = mapped_column(
+    order_number: Mapped[Optional[OrderNumber]] = mapped_column(  # noqa: UP007
         db.UnicodeText,
         db.ForeignKey('shop_orders.order_number'),
         index=True,
     )
-    seat_managed_by_id: Mapped[UserID | None] = mapped_column(
+    seat_managed_by_id: Mapped[Optional[UserID]] = mapped_column(  # noqa: UP007
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    seat_managed_by: Mapped[DbUser | None] = relationship(
+    seat_managed_by: Mapped[Optional[DbUser]] = relationship(  # noqa: UP007
         DbUser, foreign_keys=[seat_managed_by_id]
     )
-    user_managed_by_id: Mapped[UserID | None] = mapped_column(
+    user_managed_by_id: Mapped[Optional[UserID]] = mapped_column(  # noqa: UP007
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    user_managed_by: Mapped[DbUser | None] = relationship(
+    user_managed_by: Mapped[Optional[DbUser]] = relationship(  # noqa: UP007
         DbUser, foreign_keys=[user_managed_by_id]
     )
-    occupied_seat_id: Mapped[SeatID | None] = mapped_column(
+    occupied_seat_id: Mapped[Optional[SeatID]] = mapped_column(  # noqa: UP007
         db.Uuid,
         db.ForeignKey('seats.id'),
         index=True,
         unique=True,
     )
-    occupied_seat: Mapped[DbSeat | None] = relationship(
+    occupied_seat: Mapped[Optional[DbSeat]] = relationship(  # noqa: UP007
         DbSeat, backref=db.backref('occupied_by_ticket', uselist=False)
     )
-    used_by_id: Mapped[UserID | None] = mapped_column(
+    used_by_id: Mapped[Optional[UserID]] = mapped_column(  # noqa: UP007
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    used_by: Mapped[DbUser | None] = relationship(
+    used_by: Mapped[Optional[DbUser]] = relationship(  # noqa: UP007
         DbUser, foreign_keys=[used_by_id]
     )
     revoked: Mapped[bool] = mapped_column(default=False)

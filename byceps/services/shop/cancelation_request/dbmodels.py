@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -57,8 +57,12 @@ class DbCancelationRequest(db.Model):
     )
     amount_refund: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
     amount_donation: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
-    recipient_name: Mapped[str | None] = mapped_column(db.UnicodeText)
-    recipient_iban: Mapped[str | None] = mapped_column(db.UnicodeText)
+    recipient_name: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
+    recipient_iban: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
     _state: Mapped[str] = mapped_column('state', db.UnicodeText, index=True)
 
     def __init__(

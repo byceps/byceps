@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
 from sqlalchemy.orm import Mapped, mapped_column
@@ -52,15 +52,17 @@ class DbArticle(db.Model):
         db.UnicodeText, unique=True
     )
     _type: Mapped[str] = mapped_column('type', db.UnicodeText)
-    type_params: Mapped[ArticleTypeParams | None] = mapped_column(db.JSONB)
+    type_params: Mapped[
+        Optional[ArticleTypeParams]  # noqa: UP007
+    ] = mapped_column(db.JSONB)
     description: Mapped[str] = mapped_column(db.UnicodeText)
     price_amount: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))
     _price_currency: Mapped[str] = mapped_column(
         'price_currency', db.UnicodeText
     )
     tax_rate: Mapped[Decimal] = mapped_column(db.Numeric(3, 3))
-    available_from: Mapped[datetime | None]
-    available_until: Mapped[datetime | None]
+    available_from: Mapped[Optional[datetime]]  # noqa: UP007
+    available_until: Mapped[Optional[datetime]]  # noqa: UP007
     total_quantity: Mapped[int]
     quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity >= 0'))
     max_quantity_per_order: Mapped[int]

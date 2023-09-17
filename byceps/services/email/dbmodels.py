@@ -8,6 +8,8 @@ byceps.services.email.dbmodels
 
 from __future__ import annotations
 
+from typing import Optional
+
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
@@ -24,8 +26,12 @@ class DbEmailConfig(db.Model):
         db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
     )
     sender_address: Mapped[str] = mapped_column(db.UnicodeText)
-    sender_name: Mapped[str | None] = mapped_column(db.UnicodeText)
-    contact_address: Mapped[str | None] = mapped_column(db.UnicodeText)
+    sender_name: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
+    contact_address: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
 
     def __init__(
         self,

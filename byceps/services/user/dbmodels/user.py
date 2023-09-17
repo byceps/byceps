@@ -9,6 +9,7 @@ byceps.services.user.dbmodels.user
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -27,12 +28,14 @@ class DbUser(db.Model):
 
     id: Mapped[UserID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
-    screen_name: Mapped[str | None] = mapped_column(db.UnicodeText, unique=True)
-    email_address: Mapped[str | None] = mapped_column(
+    screen_name: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText, unique=True
+    )
+    email_address: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
         db.UnicodeText, unique=True
     )
     email_address_verified: Mapped[bool] = mapped_column(default=False)
-    avatar_id: Mapped[UserAvatarID | None] = mapped_column(
+    avatar_id: Mapped[Optional[UserAvatarID]] = mapped_column(  # noqa: UP007
         db.Uuid, db.ForeignKey('user_avatars.id')
     )
     avatar: Mapped[DbUserAvatar] = relationship(
@@ -41,8 +44,10 @@ class DbUser(db.Model):
     initialized: Mapped[bool] = mapped_column(default=False)
     suspended: Mapped[bool] = mapped_column(default=False)
     deleted: Mapped[bool] = mapped_column(default=False)
-    locale: Mapped[str | None] = mapped_column(db.UnicodeText)
-    legacy_id: Mapped[str | None] = mapped_column(db.UnicodeText)
+    locale: Mapped[Optional[str]] = mapped_column(db.UnicodeText)  # noqa: UP007
+    legacy_id: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
 
     def __init__(
         self,

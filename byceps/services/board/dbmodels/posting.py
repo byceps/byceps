@@ -8,6 +8,8 @@ byceps.services.board.dbmodels.posting
 
 from datetime import datetime
 
+from typing import Optional
+
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
@@ -37,20 +39,20 @@ class DbPosting(db.Model):
         db.Uuid, db.ForeignKey('users.id')
     )
     body: Mapped[str] = mapped_column(db.UnicodeText)
-    last_edited_at: Mapped[datetime | None]
-    last_edited_by_id: Mapped[UserID | None] = mapped_column(
+    last_edited_at: Mapped[Optional[datetime]]
+    last_edited_by_id: Mapped[Optional[UserID]] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    last_edited_by: Mapped[DbUser | None] = relationship(
+    last_edited_by: Mapped[Optional[DbUser]] = relationship(
         DbUser, foreign_keys=[last_edited_by_id]
     )
     edit_count: Mapped[int] = mapped_column(default=0)
     hidden: Mapped[bool] = mapped_column(default=False)
-    hidden_at: Mapped[datetime | None]
-    hidden_by_id: Mapped[UserID | None] = mapped_column(
+    hidden_at: Mapped[Optional[datetime]]
+    hidden_by_id: Mapped[Optional[UserID]] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    hidden_by: Mapped[DbUser | None] = relationship(
+    hidden_by: Mapped[Optional[DbUser]] = relationship(
         DbUser, foreign_keys=[hidden_by_id]
     )
 

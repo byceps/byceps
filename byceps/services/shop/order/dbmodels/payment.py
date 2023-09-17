@@ -8,7 +8,7 @@ byceps.services.shop.order.dbmodels.payment
 
 from datetime import datetime
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 from uuid import UUID
 
 from moneyed import Currency, get_currency, Money
@@ -35,7 +35,7 @@ class DbPayment(db.Model):
         db.Uuid, db.ForeignKey('shop_orders.id'), index=True
     )
     created_at: Mapped[datetime] = mapped_column(db.DateTime)
-    method: Mapped[str | None] = mapped_column(db.UnicodeText)
+    method: Mapped[Optional[str]] = mapped_column(db.UnicodeText)
     amount: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
     _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
     additional_data: Mapped[AdditionalPaymentData] = mapped_column(db.JSONB)

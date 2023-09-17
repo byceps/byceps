@@ -9,6 +9,7 @@ byceps.services.connected_external_accounts.dbmodels
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -36,8 +37,12 @@ class DbConnectedExternalAccount(db.Model):
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     service: Mapped[str] = mapped_column(db.UnicodeText)
-    external_id: Mapped[str | None] = mapped_column(db.UnicodeText)
-    external_name: Mapped[str | None] = mapped_column(db.UnicodeText)
+    external_id: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
+    external_name: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
 
     def __init__(
         self,

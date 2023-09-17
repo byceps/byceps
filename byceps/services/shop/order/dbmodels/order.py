@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -58,7 +58,9 @@ class DbOrder(db.Model):
     placed_by: Mapped[DbUser] = relationship(
         DbUser, foreign_keys=[placed_by_id]
     )
-    company: Mapped[str | None] = mapped_column(db.UnicodeText)
+    company: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
     first_name: Mapped[str] = mapped_column(db.UnicodeText)
     last_name: Mapped[str] = mapped_column(db.UnicodeText)
     country: Mapped[str] = mapped_column(db.UnicodeText)
@@ -69,21 +71,25 @@ class DbOrder(db.Model):
     _total_amount: Mapped[Decimal] = mapped_column(
         'total_amount', db.Numeric(7, 2)
     )
-    invoice_created_at: Mapped[datetime | None]
-    payment_method: Mapped[str | None] = mapped_column(db.UnicodeText)
+    invoice_created_at: Mapped[Optional[datetime]]  # noqa: UP007
+    payment_method: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
     _payment_state: Mapped[str] = mapped_column(
         'payment_state', db.UnicodeText, index=True
     )
-    payment_state_updated_at: Mapped[datetime | None]
-    payment_state_updated_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    payment_state_updated_at: Mapped[Optional[datetime]]  # noqa: UP007
+    payment_state_updated_by_id: Mapped[
+        Optional[UserID]  # noqa: UP007
+    ] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
     payment_state_updated_by: Mapped[DbUser] = relationship(
         DbUser, foreign_keys=[payment_state_updated_by_id]
     )
-    cancelation_reason: Mapped[str | None] = mapped_column(db.UnicodeText)
+    cancelation_reason: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
     processing_required: Mapped[bool]
-    processed_at: Mapped[datetime | None]
+    processed_at: Mapped[Optional[datetime]]  # noqa: UP007
 
     def __init__(
         self,

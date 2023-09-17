@@ -8,6 +8,8 @@ byceps.services.user_badge.dbmodels.badge
 
 from __future__ import annotations
 
+from typing import Optional
+
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
@@ -27,9 +29,11 @@ class DbBadge(db.Model):
     )
     slug: Mapped[str] = mapped_column(db.UnicodeText, unique=True, index=True)
     label: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    description: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+        db.UnicodeText
+    )
     image_filename: Mapped[str] = mapped_column(db.UnicodeText)
-    brand_id: Mapped[str | None] = mapped_column(
+    brand_id: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
         db.UnicodeText, db.ForeignKey('brands.id')
     )
     featured: Mapped[bool] = mapped_column(default=False)
