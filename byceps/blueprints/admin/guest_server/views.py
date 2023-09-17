@@ -14,12 +14,14 @@ import ipaddress
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
-from byceps.services.guest_server import guest_server_service
-from byceps.services.guest_server.models import Address, IPAddress, Setting
+from byceps.services.guest_server import (
+    guest_server_export_service,
+    guest_server_service,
+)
+from byceps.services.guest_server.models import Address, IPAddress
 from byceps.services.party import party_service
 from byceps.services.user import user_service
 from byceps.signals import guest_server as guest_server_signals
-from byceps.util.export import serialize_tuples_to_csv
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -241,36 +243,12 @@ def address_export_netbox(party_id):
     """
     party = _get_party_or_404(party_id)
 
+    servers = guest_server_service.get_all_servers_for_party(party.id)
     setting = guest_server_service.get_setting_for_party(party.id)
 
-    all_servers = guest_server_service.get_all_servers_for_party(party.id)
-    approved_servers = [server for server in all_servers if server.approved]
-
-    # field names as defined by NetBox
-    field_names = ('address', 'status', 'dns_name', 'description')
-
-    rows = []
-
-    for server in approved_servers:
-        for address in server.addresses:
-            if address.ip_address and address.hostname:
-                rows.append(
-                    (
-                        f'{str(address.ip_address)}/24',
-                        'active',
-                        _get_full_hostname(address.hostname, setting),
-                        server.owner.screen_name or 'unknown',
-                    )
-                )
-
-    rows.sort()
-
-    return serialize_tuples_to_csv([field_names] + rows)
-
-
-def _get_full_hostname(hostname: str, setting: Setting) -> str:
-    """Return the hostname with the domain (if configured) appended."""
-    return hostname + '.' + setting.domain if setting.domain else hostname
+    return guest_server_export_service.export_addresses_for_netbox(
+        servers, setting
+    )
 
 
 @blueprint.get('/servers/<uuid:server_id>/addresses/create')
