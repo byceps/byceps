@@ -60,7 +60,11 @@ def create_form(erroneous_form=None):
     party = _get_current_party_or_404()
 
     if not _current_user_uses_ticket_for_party(party.id):
-        flash_notice(gettext('Using a ticket for this party is required.'))
+        flash_notice(
+            gettext(
+                'Using a ticket for this party is required to register servers.'
+            )
+        )
         return redirect_to('.index')
 
     if _server_limit_reached(party.id):
@@ -88,7 +92,11 @@ def create():
     party = _get_current_party_or_404()
 
     if not _current_user_uses_ticket_for_party(party.id):
-        flash_notice(gettext('Using a ticket for this party is required.'))
+        flash_notice(
+            gettext(
+                'Using a ticket for this party is required to register servers.'
+            )
+        )
         return redirect_to('.index')
 
     if _server_limit_reached(party.id):

@@ -2206,24 +2206,24 @@ msgstr "Anmerkungen des Admins"
 msgid "Provide at least an IP address or a hostname."
 msgstr "Mindestens eine IP-Adresse oder ein Hostname muss angegeben werden."
 
-#: byceps/blueprints/admin/guest_server/views.py:145
-#: byceps/blueprints/site/guest_server/views.py:119
+#: byceps/blueprints/admin/guest_server/views.py:139
+#: byceps/blueprints/site/guest_server/views.py:127
 msgid "The server has been registered."
 msgstr "Der Server wurde registriert."
 
-#: byceps/blueprints/admin/guest_server/views.py:184
-#: byceps/blueprints/admin/guest_server/views.py:371
-#: byceps/blueprints/admin/guest_server/views.py:432
+#: byceps/blueprints/admin/guest_server/views.py:178
+#: byceps/blueprints/admin/guest_server/views.py:336
+#: byceps/blueprints/admin/guest_server/views.py:397
 #: byceps/blueprints/admin/news/views.py:196
 #: byceps/blueprints/admin/user/views.py:664
 msgid "Changes have been saved."
 msgstr "Die Änderungen wurden gespeichert."
 
-#: byceps/blueprints/admin/guest_server/views.py:200
+#: byceps/blueprints/admin/guest_server/views.py:194
 msgid "Server has been deleted."
 msgstr "Der Server wurde gelöscht."
 
-#: byceps/blueprints/admin/guest_server/views.py:325
+#: byceps/blueprints/admin/guest_server/views.py:290
 msgid "The address has been added."
 msgstr "Die Adresse wurde hinzugefügt."
 
@@ -6949,13 +6949,15 @@ msgstr "Du nutzt noch kein Ticket."
 msgid "Notes"
 msgstr "Anmerkungen"
 
-#: byceps/blueprints/site/guest_server/views.py:63
-#: byceps/blueprints/site/guest_server/views.py:91
-msgid "Using a ticket for this party is required."
-msgstr "Die Nutzung eines Tickets für diese Party ist erforderlich."
-
-#: byceps/blueprints/site/guest_server/views.py:68
+#: byceps/blueprints/site/guest_server/views.py:64
 #: byceps/blueprints/site/guest_server/views.py:96
+msgid "Using a ticket for this party is required to register servers."
+msgstr ""
+"Die Nutzung eines Tickets für diese Party ist erforderlich, um Gastserver"
+" registrieren zu können."
+
+#: byceps/blueprints/site/guest_server/views.py:72
+#: byceps/blueprints/site/guest_server/views.py:104
 msgid "You have already registered the maximum number of servers allowed."
 msgstr "Du hast bereits die maximal erlaubte Anzahl an Gastservern registriert."
 
