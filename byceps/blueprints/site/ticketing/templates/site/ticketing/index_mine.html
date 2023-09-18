@@ -9,7 +9,6 @@
 {% block body %}
 
   <h1>{{ render_icon('ticket') }} {{ page_title }}</h1>
-  <p>Dies sind die für dich relevanten (d.h. gekauften, verwalteten und/oder genutzten) Tickets für die Party <strong>{{ party_title }}</strong>.</p>
 
   {%- if not current_user_uses_any_ticket %}
   <div class="notifications">
@@ -17,13 +16,14 @@
   </div>
   {%- endif %}
 
-  <div class="main-body-box">
   {%- if tickets %}
+  <p>Dies sind die für dich relevanten (d.h. gekauften, verwalteten und/oder genutzten) Tickets für die Party <strong>{{ party_title }}</strong>.</p>
+  <div class="main-body-box">
 {{ render_tickets(tickets) }}
-  {%- else %}
-    <p><em>{{ _('none') }}</em></p>
-  {%- endif %}
   </div>
+  {%- else %}
+  <p>Du besitzt, verwaltest und/oder nutzt <em>keine</em> Tickets für die Party <strong>{{ party_title }}</strong>.</p>
+  {%- endif %}
 
 {%- endblock %}
 
