@@ -863,7 +863,6 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:59
 #: byceps/blueprints/admin/user/templates/macros/admin/user.html:74
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:90
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:24
 msgid "none"
 msgstr "keine"
 
@@ -7382,15 +7381,73 @@ msgstr "Tickets können derzeit nicht verändert werden."
 msgid "Somebody has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
 
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:15
+msgid "You currently do not use a ticket."
+msgstr "Du nutzt derzeit kein Ticket."
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:20
+#, python-format
+msgid ""
+"These are the tickets for party <strong>%(party_title)s</strong> relevant"
+" to (i.e. owned, managed, and/or used by) you."
+msgstr ""
+"Dies sind die für dich relevanten (d.h. gekauften, verwalteten und/oder "
+"genutzten) Tickets für die Party <strong>%(party_title)s</strong>."
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:25
+#, python-format
+msgid ""
+"You do now own, manage, or use any tickets for party "
+"<strong>%(party_title)s</strong>."
+msgstr ""
+"Du besitzt, verwaltest und/oder nutzt <em>keine</em> Tickets für die "
+"Party <strong>%(party_title)s</strong>."
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:33
+msgid "Use this ticket yourself?"
+msgstr "Dieses Ticket selbst nutzen?"
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:34
+msgid "Take back user management?"
+msgstr "Nutzer-Verwaltung zurückholen?"
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:35
+msgid "Take back seat management?"
+msgstr "Sitzplatz-Verwaltung zurückholen?"
+
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:105
 msgctxt "ticket"
 msgid "User"
 msgstr "Nutzer/in"
 
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:112
+msgid "Appoint user"
+msgstr "Nutzer/in zuweisen"
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:114
+msgid "Use yourself"
+msgstr "selbst nutzen"
+
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:136
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:175
 msgid "Manager"
 msgstr "Verwalter/in"
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:143
+msgid "Transfer user management"
+msgstr "Nutzer-Verwaltung übertragen"
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:145
+msgid "Take back user management"
+msgstr "Nutzer-Verwaltung zurückholen"
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:182
+msgid "Transfer seat management"
+msgstr "Sitzplatz-Verwaltung übertragen"
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:184
+msgid "Take back seat management"
+msgstr "Sitzplatz-Verwaltung zurückholen"
 
 #: byceps/blueprints/site/tourney/templates/site/tourney/tourney_index.html:75
 msgid "No tourneys found."
