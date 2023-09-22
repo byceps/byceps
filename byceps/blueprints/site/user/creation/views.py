@@ -137,7 +137,7 @@ def create():
         subscribe_to_newsletter = form.subscribe_to_newsletter.data
         if subscribe_to_newsletter:
             newsletter_command_service.subscribe(
-                user.id, newsletter_list_id, now_utc
+                user, newsletter_list_id, now_utc
             ).unwrap()
 
     return redirect_to('authentication_login.log_in_form')

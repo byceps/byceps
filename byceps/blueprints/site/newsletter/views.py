@@ -31,7 +31,7 @@ def subscribe(list_id):
     expressed_at = datetime.utcnow()
 
     result = newsletter_command_service.subscribe(
-        g.user.id, list_.id, expressed_at
+        g.user, list_.id, expressed_at
     )
 
     if result.is_err():
@@ -53,7 +53,7 @@ def unsubscribe(list_id):
     expressed_at = datetime.utcnow()
 
     result = newsletter_command_service.unsubscribe(
-        g.user.id, list_.id, expressed_at
+        g.user, list_.id, expressed_at
     )
 
     if result.is_err():

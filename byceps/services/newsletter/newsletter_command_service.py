@@ -13,7 +13,7 @@ from sqlalchemy import delete
 from sqlalchemy.dialects.postgresql import insert
 
 from byceps.database import db
-from byceps.typing import UserID
+from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
 from . import newsletter_service
@@ -44,11 +44,11 @@ def delete_list(list_id: ListID) -> None:
 
 
 def subscribe(
-    user_id: UserID, list_id: ListID, expressed_at: datetime
+    user: User, list_id: ListID, expressed_at: datetime
 ) -> Result[None, UnknownListIdError]:
     """Subscribe the user to that list."""
     update_subscription_state_result = _update_subscription_state(
-        user_id, list_id, expressed_at, SubscriptionState.requested
+        user, list_id, expressed_at, SubscriptionState.requested
     )
     if update_subscription_state_result.is_err():
         return Err(update_subscription_state_result.unwrap_err())
@@ -58,7 +58,7 @@ def subscribe(
         insert(table)
         .values(
             {
-                'user_id': str(user_id),
+                'user_id': str(user.id),
                 'list_id': str(list_id),
             }
         )
@@ -71,18 +71,18 @@ def subscribe(
 
 
 def unsubscribe(
-    user_id: UserID, list_id: ListID, expressed_at: datetime
+    user: User, list_id: ListID, expressed_at: datetime
 ) -> Result[None, UnknownListIdError]:
     """Unsubscribe the user from that list."""
     update_subscription_state_result = _update_subscription_state(
-        user_id, list_id, expressed_at, SubscriptionState.declined
+        user, list_id, expressed_at, SubscriptionState.declined
     )
     if update_subscription_state_result.is_err():
         return Err(update_subscription_state_result.unwrap_err())
 
     db.session.execute(
         delete(DbSubscription)
-        .where(DbSubscription.user_id == user_id)
+        .where(DbSubscription.user_id == user.id)
         .where(DbSubscription.list_id == list_id)
     )
     db.session.commit()
@@ -91,7 +91,7 @@ def unsubscribe(
 
 
 def _update_subscription_state(
-    user_id: UserID,
+    user: User,
     list_id: ListID,
     expressed_at: datetime,
     state: SubscriptionState,
@@ -102,7 +102,7 @@ def _update_subscription_state(
         return Err(UnknownListIdError(list_id))
 
     subscription_update = DbSubscriptionUpdate(
-        user_id, list_.id, expressed_at, state
+        user.id, list_.id, expressed_at, state
     )
 
     db.session.add(subscription_update)
