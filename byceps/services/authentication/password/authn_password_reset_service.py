@@ -8,7 +8,7 @@ byceps.services.authentication.password.authn_password_reset_service
 
 from flask_babel import gettext
 
-from byceps.events.auth import PasswordUpdatedEvent
+from byceps.events.authn import PasswordUpdatedEvent
 from byceps.services.email import email_service
 from byceps.services.email.models import NameAndAddress
 from byceps.services.user.models.user import User

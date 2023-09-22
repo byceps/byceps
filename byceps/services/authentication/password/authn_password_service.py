@@ -11,7 +11,7 @@ from __future__ import annotations
 from sqlalchemy import delete
 
 from byceps.database import db
-from byceps.events.auth import PasswordUpdatedEvent
+from byceps.events.authn import PasswordUpdatedEvent
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.user import user_log_service
 from byceps.services.user.models.log import UserLogEntry

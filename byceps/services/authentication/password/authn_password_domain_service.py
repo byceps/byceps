@@ -15,7 +15,7 @@ from werkzeug.security import (
     generate_password_hash as _werkzeug_generate_password_hash,
 )
 
-from byceps.events.auth import PasswordUpdatedEvent
+from byceps.events.authn import PasswordUpdatedEvent
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.typing import UserID

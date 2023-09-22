@@ -14,7 +14,7 @@ from typing import Callable, Optional
 
 from blinker import NamedSignal
 
-from byceps.events.auth import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.events.authn import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.events.base import _BaseEvent
 from byceps.events.board import (
     BoardPostingCreatedEvent,

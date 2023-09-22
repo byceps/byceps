@@ -11,7 +11,7 @@ check-in at the door.
 :Copyright: 2014-2023 Jochen Kupperschmidt
 """
 
-from byceps.events.auth import UserLoggedInEvent
+from byceps.events.authn import UserLoggedInEvent
 from byceps.services.site import site_service
 from byceps.services.ticketing import (
     ticket_service,
