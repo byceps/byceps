@@ -9,7 +9,7 @@ byceps.blueprints.site.authentication.login.views
 from flask import abort, g, redirect, request, url_for
 from flask_babel import gettext
 
-from byceps.signals import auth as auth_signals
+from byceps.signals import authn as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated
@@ -94,7 +94,7 @@ def log_in():
         )
     )
 
-    auth_signals.user_logged_in.send(None, event=logged_in_event)
+    authn_signals.user_logged_in.send(None, event=logged_in_event)
 
     return [('Location', url_for('dashboard.index'))]
 

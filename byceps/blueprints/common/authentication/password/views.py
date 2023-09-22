@@ -19,7 +19,7 @@ from byceps.services.global_setting import global_setting_service
 from byceps.services.user import user_service
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import VerificationToken
-from byceps.signals import auth as auth_signals
+from byceps.signals import authn as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -60,7 +60,7 @@ def update():
 
     event = authn_password_service.update_password_hash(user, password, user)
 
-    auth_signals.password_updated.send(None, event=event)
+    authn_signals.password_updated.send(None, event=event)
 
     flash_success(gettext('Password has been updated. Please log in again.'))
 
@@ -198,7 +198,7 @@ def reset(token):
         verification_token, password
     )
 
-    auth_signals.password_updated.send(None, event=event)
+    authn_signals.password_updated.send(None, event=event)
 
     flash_success(gettext('Password has been updated.'))
 

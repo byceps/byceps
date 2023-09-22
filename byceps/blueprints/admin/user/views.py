@@ -32,7 +32,7 @@ from byceps.services.user import (
 )
 from byceps.services.user.models.user import UserForAdmin, UserStateFilter
 from byceps.services.user_badge import user_badge_awarding_service
-from byceps.signals import auth as auth_signals
+from byceps.signals import authn as authn_signals
 from byceps.signals import user as user_signals
 from byceps.util.authorization import permission_registry
 from byceps.util.framework.blueprint import create_blueprint
@@ -705,7 +705,7 @@ def set_password(user_id):
         user, new_password, initiator
     )
 
-    auth_signals.password_updated.send(None, event=event)
+    authn_signals.password_updated.send(None, event=event)
 
     flash_success(
         gettext(

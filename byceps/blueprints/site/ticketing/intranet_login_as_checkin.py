@@ -19,7 +19,7 @@ from byceps.services.ticketing import (
 )
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.signals.auth import user_logged_in
+from byceps.signals.authn import user_logged_in
 from byceps.typing import PartyID
 from byceps.util.jobqueue import enqueue
 
