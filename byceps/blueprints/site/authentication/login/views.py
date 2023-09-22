@@ -83,7 +83,7 @@ def log_in():
             )
             return [('Location', consent_form_url)]
         else:
-            abort(403)
+            abort(401)
 
     user, logged_in_event = log_in_result.unwrap()
 
