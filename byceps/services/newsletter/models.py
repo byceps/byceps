@@ -7,6 +7,7 @@ byceps.services.newsletter.models
 """
 
 from dataclasses import dataclass
+from enum import Enum
 from typing import NewType
 
 
@@ -23,3 +24,6 @@ class List:
 class Subscriber:
     screen_name: str
     email_address: str
+
+
+SubscriptionState = Enum('SubscriptionState', ['requested', 'declined'])

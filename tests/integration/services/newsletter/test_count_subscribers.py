@@ -11,7 +11,7 @@ from byceps.services.newsletter import (
     newsletter_command_service,
     newsletter_service,
 )
-from byceps.services.newsletter.types import SubscriptionState
+from byceps.services.newsletter.models import SubscriptionState
 
 from tests.helpers import generate_token
 

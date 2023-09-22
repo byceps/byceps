@@ -21,8 +21,7 @@ from byceps.database import db
 from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 
-from .models import ListID
-from .types import SubscriptionState
+from .models import ListID, SubscriptionState
 
 
 class DbList(db.Model):

@@ -18,8 +18,7 @@ from byceps.util.result import Err, Ok, Result
 from . import newsletter_service
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
 from .errors import UnknownListIdError
-from .models import List, ListID
-from .types import SubscriptionState
+from .models import List, ListID, SubscriptionState
 
 
 def create_list(list_id: ListID, title: str) -> List:

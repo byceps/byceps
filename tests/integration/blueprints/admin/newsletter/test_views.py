@@ -8,7 +8,7 @@ from datetime import datetime
 import pytest
 
 from byceps.services.newsletter import newsletter_command_service
-from byceps.services.newsletter.types import SubscriptionState
+from byceps.services.newsletter.models import SubscriptionState
 
 from tests.helpers import log_in_user
 
