@@ -20,7 +20,7 @@ def test_deassign_all_roles_from_user(
         role3.id,
     }
 
-    authz_service.deassign_all_roles_from_user(user1.id)
+    authz_service.deassign_all_roles_from_user(user1)
 
     # Targeted user's roles should have been deassigned.
     assert authz_service.find_role_ids_for_user(user1.id) == set()

@@ -54,7 +54,7 @@ def _persist_account_deletion(
     db.session.add(db_log_entry)
 
     authz_service.deassign_all_roles_from_user(
-        user.id, initiator=initiator, commit=False
+        user, initiator=initiator, commit=False
     )
 
     db.session.commit()
