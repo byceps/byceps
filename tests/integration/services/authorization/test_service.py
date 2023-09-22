@@ -21,7 +21,7 @@ def test_get_permission_ids_for_user_with_user_permissions(
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def user(make_user):
     return make_user()
 
