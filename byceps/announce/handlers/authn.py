@@ -1,8 +1,8 @@
 """
-byceps.announce.handlers.auth
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.handlers.authn
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce auth events.
+Announce authentication events.
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

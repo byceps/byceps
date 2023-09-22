@@ -96,7 +96,7 @@ from byceps.signals import (
 )
 
 from .handlers import (
-    auth as auth_handlers,
+    authn as authn_handlers,
     board as board_handlers,
     guest_server as guest_server_handlers,
     news as news_handlers,
@@ -154,12 +154,12 @@ for event, name, handler in [
     (
         PasswordUpdatedEvent,
         'password-updated',
-        auth_handlers.announce_password_updated,
+        authn_handlers.announce_password_updated,
     ),
     (
         UserLoggedInEvent,
         'user-logged-in',
-        auth_handlers.announce_user_logged_in,
+        authn_handlers.announce_user_logged_in,
     ),
     (
         BoardPostingCreatedEvent,
