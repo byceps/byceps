@@ -7,7 +7,6 @@ byceps.services.newsletter.newsletter_command_service
 """
 
 from datetime import datetime
-from dataclasses import dataclass
 
 from sqlalchemy import delete
 from sqlalchemy.dialects.postgresql import insert
@@ -18,13 +17,9 @@ from byceps.util.result import Err, Ok, Result
 
 from . import newsletter_service
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
+from .errors import UnknownListIdError
 from .models import List, ListID
 from .types import SubscriptionState
-
-
-@dataclass(frozen=True)
-class UnknownListIdError:
-    list_id: ListID
 
 
 def create_list(list_id: ListID, title: str) -> List:
