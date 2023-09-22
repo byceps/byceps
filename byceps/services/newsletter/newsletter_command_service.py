@@ -83,7 +83,7 @@ def unsubscribe(
     UnknownListIdError,
 ]:
     """Unsubscribe the user from that list."""
-    subscription_update, event = newsletter_domain_service.subscribe(
+    subscription_update, event = newsletter_domain_service.unsubscribe(
         user, list_, expressed_at
     )
 
