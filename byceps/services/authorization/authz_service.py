@@ -15,6 +15,10 @@ from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from byceps.database import db
+from byceps.events.authz import (
+    RoleAssignedToUserEvent,
+    RoleDeassignedFromUserEvent,
+)
 from byceps.services.user import user_log_service, user_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
@@ -113,17 +117,19 @@ def deassign_permission_from_role(
 
 def assign_role_to_user(
     role_id: RoleID, user: User, *, initiator: User | None = None
-) -> None:
+) -> RoleAssignedToUserEvent | None:
     """Assign the role to the user."""
     if _is_role_assigned_to_user(role_id, user.id):
         # Role is already assigned to user. Nothing to do.
-        return
+        return None
 
-    log_entry = authz_domain_service.assign_role_to_user(
+    event, log_entry = authz_domain_service.assign_role_to_user(
         role_id, user, initiator=initiator
     )
 
     _persist_role_assignment_to_user(role_id, user, log_entry)
+
+    return event
 
 
 def _persist_role_assignment_to_user(
@@ -140,20 +146,20 @@ def _persist_role_assignment_to_user(
 
 def deassign_role_from_user(
     role_id: RoleID, user: User, *, initiator: User | None = None
-) -> Result[None, str]:
+) -> Result[RoleDeassignedFromUserEvent, str]:
     """Deassign the role from the user."""
     db_user_role = db.session.get(DbUserRole, (user.id, role_id))
 
     if db_user_role is None:
         return Err(f'Unknown role ID "{role_id}" and/or user ID "{user.id}"')
 
-    log_entry = authz_domain_service.deassign_role_from_user(
+    event, log_entry = authz_domain_service.deassign_role_from_user(
         role_id, user, initiator=initiator
     )
 
     _persist_role_deassignment_from_user(db_user_role, log_entry)
 
-    return Ok(None)
+    return Ok(event)
 
 
 def _persist_role_deassignment_from_user(

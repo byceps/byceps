@@ -10,6 +10,10 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from byceps.events.authz import (
+    RoleAssignedToUserEvent,
+    RoleDeassignedFromUserEvent,
+)
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
@@ -19,15 +23,31 @@ from .models import RoleID
 
 def assign_role_to_user(
     role_id: RoleID, user: User, *, initiator: User | None = None
-) -> UserLogEntry:
+) -> tuple[RoleAssignedToUserEvent, UserLogEntry]:
     """Assign the role to the user."""
     occurred_at = datetime.utcnow()
 
+    event = _build_role_assigned_to_user_event(
+        occurred_at, user, role_id, initiator
+    )
     log_entry = _build_role_assigned_log_entry(
         occurred_at, user, role_id, initiator
     )
 
-    return log_entry
+    return event, log_entry
+
+
+def _build_role_assigned_to_user_event(
+    occurred_at: datetime, user: User, role_id: RoleID, initiator: User | None
+) -> RoleAssignedToUserEvent:
+    return RoleAssignedToUserEvent(
+        occurred_at=occurred_at,
+        initiator_id=initiator.id if initiator else None,
+        initiator_screen_name=initiator.screen_name if initiator else None,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+        role_id=role_id,
+    )
 
 
 def _build_role_assigned_log_entry(
@@ -48,15 +68,31 @@ def _build_role_assigned_log_entry(
 
 def deassign_role_from_user(
     role_id: RoleID, user: User, *, initiator: User | None = None
-) -> UserLogEntry:
+) -> tuple[RoleDeassignedFromUserEvent, UserLogEntry]:
     """Deassign the role from the user."""
     occurred_at = datetime.utcnow()
 
+    event = _build_role_deassigned_from_user_event(
+        occurred_at, user, role_id, initiator
+    )
     log_entry = _build_role_deassigned_log_entry(
         occurred_at, user, role_id, initiator
     )
 
-    return log_entry
+    return event, log_entry
+
+
+def _build_role_deassigned_from_user_event(
+    occurred_at: datetime, user: User, role_id: RoleID, initiator: User | None
+) -> RoleDeassignedFromUserEvent:
+    return RoleDeassignedFromUserEvent(
+        occurred_at=occurred_at,
+        initiator_id=initiator.id if initiator else None,
+        initiator_screen_name=initiator.screen_name if initiator else None,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+        role_id=role_id,
+    )
 
 
 def _build_role_deassigned_log_entry(
