@@ -812,7 +812,7 @@ def role_deassign(user_id, role_id):
     initiator = g.user
 
     authz_service.deassign_role_from_user(
-        role.id, user.id, initiator=initiator
+        role.id, user, initiator=initiator
     ).unwrap()
 
     flash_success(

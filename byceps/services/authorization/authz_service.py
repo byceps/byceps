@@ -132,13 +132,13 @@ def assign_role_to_user(
 
 
 def deassign_role_from_user(
-    role_id: RoleID, user_id: UserID, *, initiator: User | None = None
+    role_id: RoleID, user: User, *, initiator: User | None = None
 ) -> Result[None, str]:
     """Deassign the role from the user."""
-    db_user_role = db.session.get(DbUserRole, (user_id, role_id))
+    db_user_role = db.session.get(DbUserRole, (user.id, role_id))
 
     if db_user_role is None:
-        return Err(f'Unknown role ID "{role_id}" and/or user ID "{user_id}"')
+        return Err(f'Unknown role ID "{role_id}" and/or user ID "{user.id}"')
 
     db.session.delete(db_user_role)
 
@@ -146,7 +146,7 @@ def deassign_role_from_user(
     if initiator is not None:
         log_entry_data['initiator_id'] = str(initiator.id)
     log_entry = user_log_service.build_entry(
-        'role-deassigned', user_id, log_entry_data
+        'role-deassigned', user.id, log_entry_data
     )
     db.session.add(log_entry)
 

@@ -43,7 +43,7 @@ def test_deassign_role_from_user(admin_app, user, admin_user, role):
     assert permission_id in user_permission_ids_before
 
     deassign_result = authz_service.deassign_role_from_user(
-        role.id, user.id, initiator=admin_user
+        role.id, user, initiator=admin_user
     )
     assert deassign_result.is_ok()
 
