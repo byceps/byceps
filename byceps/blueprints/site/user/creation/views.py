@@ -16,8 +16,14 @@ from flask_babel import gettext
 from byceps.services.brand import brand_setting_service
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.consent.models import ConsentSubject
-from byceps.services.newsletter import newsletter_command_service
-from byceps.services.newsletter.models import ListID as NewsletterListID
+from byceps.services.newsletter import (
+    newsletter_command_service,
+    newsletter_service,
+)
+from byceps.services.newsletter.models import (
+    List as NewsletterList,
+    ListID as NewsletterListID,
+)
 from byceps.services.site import site_setting_service
 from byceps.services.user import user_creation_service
 from byceps.signals import user as user_signals
@@ -39,10 +45,10 @@ def create_form(erroneous_form=None):
     _abort_if_user_account_creation_disabled()
 
     required_consent_subjects = _get_required_consent_subjects()
-    newsletter_list_id = _find_newsletter_list_for_brand()
+    newsletter_list = _find_newsletter_list_for_brand()
 
     real_name_required = _is_real_name_required()
-    newsletter_offered = newsletter_list_id is not None
+    newsletter_offered = newsletter_list is not None
 
     if erroneous_form:
         form = erroneous_form
@@ -66,10 +72,10 @@ def create():
     _abort_if_user_account_creation_disabled()
 
     required_consent_subjects = _get_required_consent_subjects()
-    newsletter_list_id = _find_newsletter_list_for_brand()
+    newsletter_list = _find_newsletter_list_for_brand()
 
     real_name_required = _is_real_name_required()
-    newsletter_offered = newsletter_list_id is not None
+    newsletter_offered = newsletter_list is not None
 
     UserCreateForm = assemble_user_create_form(
         real_name_required=real_name_required,
@@ -137,7 +143,7 @@ def create():
         subscribe_to_newsletter = form.subscribe_to_newsletter.data
         if subscribe_to_newsletter:
             newsletter_command_service.subscribe(
-                user, newsletter_list_id, now_utc
+                user, newsletter_list.id, now_utc
             ).unwrap()
 
     return redirect_to('authentication_login.log_in_form')
@@ -165,16 +171,16 @@ def _get_required_consent_subjects() -> set[ConsentSubject]:
     return consent_subject_service.get_subjects_required_for_brand(g.brand_id)
 
 
-def _find_newsletter_list_for_brand() -> NewsletterListID | None:
+def _find_newsletter_list_for_brand() -> NewsletterList | None:
     """Return the newsletter list configured for this brand, or `None`
     if none is configured.
     """
-    value = _find_brand_setting_value('newsletter_list_id')
+    list_id = _find_brand_setting_value('newsletter_list_id')
 
-    if not value:
+    if not list_id:
         return None
 
-    return NewsletterListID(value)
+    return newsletter_service.get_list(NewsletterListID(list_id)).unwrap()
 
 
 def _find_brand_setting_value(setting_name: str) -> str | None:
