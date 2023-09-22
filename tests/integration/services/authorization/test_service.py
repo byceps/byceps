@@ -38,9 +38,7 @@ def permissions(user, admin_user):
         role_id_demigod, {'tickle_mere_mortals'}
     )
 
+    authz_service.assign_role_to_user(role_id_god, user, initiator=admin_user)
     authz_service.assign_role_to_user(
-        role_id_god, user.id, initiator=admin_user
-    )
-    authz_service.assign_role_to_user(
-        role_id_demigod, user.id, initiator=admin_user
+        role_id_demigod, user, initiator=admin_user
     )

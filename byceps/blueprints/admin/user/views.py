@@ -791,7 +791,7 @@ def role_assign(user_id, role_id):
     role = _get_role_or_404(role_id)
     initiator = g.user
 
-    authz_service.assign_role_to_user(role.id, user.id, initiator=initiator)
+    authz_service.assign_role_to_user(role.id, user, initiator=initiator)
 
     flash_success(
         gettext(

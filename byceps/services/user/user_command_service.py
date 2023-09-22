@@ -53,7 +53,7 @@ def initialize_account(
     _persist_account_initialization(user.id, log_entry)
 
     if assign_roles:
-        _assign_roles(user.id, initiator=initiator)
+        _assign_roles(user, initiator=initiator)
 
 
 def _persist_account_initialization(
@@ -69,19 +69,19 @@ def _persist_account_initialization(
     db.session.commit()
 
 
-def _assign_roles(user_id: UserID, *, initiator: User | None = None) -> None:
+def _assign_roles(user: User, *, initiator: User | None = None) -> None:
     board_user_role_name = 'board_user'
     board_user_role = authz_service.find_role(RoleID(board_user_role_name))
     if board_user_role is None:
         warn(
             f'Role "{board_user_role_name}" not found; '
-            f'not assigning it to user "{user_id}".',
+            f'not assigning it to user "{user.id}".',
             stacklevel=2,
         )
         return
 
     authz_service.assign_role_to_user(
-        board_user_role.id, user_id, initiator=initiator
+        board_user_role.id, user, initiator=initiator
     )
 
 

@@ -33,7 +33,7 @@ def test_delete_account(admin_app, role, make_user):
 
     user_id = user.id
 
-    authz_service.assign_role_to_user(role.id, user_id)
+    authz_service.assign_role_to_user(role.id, user)
 
     reason = 'duplicate'
 

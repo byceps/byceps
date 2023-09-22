@@ -157,7 +157,7 @@ def make_admin(make_user):
         create_role_with_permissions_assigned(role_id, permission_ids)
 
         # Assign role to user.
-        authz_service.assign_role_to_user(role_id, admin.id)
+        authz_service.assign_role_to_user(role_id, admin)
 
         return admin
 

@@ -110,21 +110,21 @@ def deassign_permission_from_role(
 
 
 def assign_role_to_user(
-    role_id: RoleID, user_id: UserID, *, initiator: User | None = None
+    role_id: RoleID, user: User, *, initiator: User | None = None
 ) -> None:
     """Assign the role to the user."""
-    if _is_role_assigned_to_user(role_id, user_id):
+    if _is_role_assigned_to_user(role_id, user.id):
         # Role is already assigned to user. Nothing to do.
         return
 
-    db_user_role = DbUserRole(user_id, role_id)
+    db_user_role = DbUserRole(user.id, role_id)
     db.session.add(db_user_role)
 
     log_entry_data = {'role_id': str(role_id)}
     if initiator is not None:
         log_entry_data['initiator_id'] = str(initiator.id)
     log_entry = user_log_service.build_entry(
-        'role-assigned', user_id, log_entry_data
+        'role-assigned', user.id, log_entry_data
     )
     db.session.add(log_entry)
 

@@ -45,8 +45,8 @@ def user2(make_user):
 def role1(make_role, user1, user2, admin_user):
     role = make_role()
 
-    authz_service.assign_role_to_user(role.id, user1.id, initiator=admin_user)
-    authz_service.assign_role_to_user(role.id, user2.id, initiator=admin_user)
+    authz_service.assign_role_to_user(role.id, user1, initiator=admin_user)
+    authz_service.assign_role_to_user(role.id, user2, initiator=admin_user)
 
     return role
 
@@ -55,7 +55,7 @@ def role1(make_role, user1, user2, admin_user):
 def role2(make_role, user1, admin_user):
     role = make_role()
 
-    authz_service.assign_role_to_user(role.id, user1.id, initiator=admin_user)
+    authz_service.assign_role_to_user(role.id, user1, initiator=admin_user)
 
     return role
 
@@ -64,6 +64,6 @@ def role2(make_role, user1, admin_user):
 def role3(make_role, user2, admin_user):
     role = make_role()
 
-    authz_service.assign_role_to_user(role.id, user2.id, initiator=admin_user)
+    authz_service.assign_role_to_user(role.id, user2, initiator=admin_user)
 
     return role

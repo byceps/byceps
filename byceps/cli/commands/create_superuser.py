@@ -19,7 +19,6 @@ from byceps.services.user import (
     user_email_address_service,
 )
 from byceps.services.user.models.user import User
-from byceps.typing import UserID
 
 
 @click.command()
@@ -46,7 +45,7 @@ def create_superuser(screen_name, email_address, password) -> None:
         f'Assigning {len(role_ids)} roles to user "{screen_name}" ... ',
         nl=False,
     )
-    _assign_roles_to_user(role_ids, user.id)
+    _assign_roles_to_user(role_ids, user)
     click.secho('done.', fg='green')
 
 
@@ -70,6 +69,6 @@ def _get_role_ids() -> set[RoleID]:
     return authz_service.get_all_role_ids()
 
 
-def _assign_roles_to_user(role_ids: set[RoleID], user_id: UserID) -> None:
+def _assign_roles_to_user(role_ids: set[RoleID], user: User) -> None:
     for role_id in role_ids:
-        authz_service.assign_role_to_user(role_id, user_id)
+        authz_service.assign_role_to_user(role_id, user)
