@@ -16,10 +16,12 @@ from sqlalchemy.exc import IntegrityError
 
 from byceps.database import db
 from byceps.services.user import user_log_service, user_service
+from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 from byceps.util.result import Err, Ok, Result
 
+from . import authz_domain_service
 from .dbmodels import DbRole, DbRolePermission, DbUserRole
 from .models import PermissionID, Role, RoleID
 
@@ -117,16 +119,21 @@ def assign_role_to_user(
         # Role is already assigned to user. Nothing to do.
         return
 
+    log_entry = authz_domain_service.assign_role_to_user(
+        role_id, user, initiator=initiator
+    )
+
+    _persist_role_assignment_to_user(role_id, user, log_entry)
+
+
+def _persist_role_assignment_to_user(
+    role_id: RoleID, user: User, log_entry: UserLogEntry
+) -> None:
     db_user_role = DbUserRole(user.id, role_id)
     db.session.add(db_user_role)
 
-    log_entry_data = {'role_id': str(role_id)}
-    if initiator is not None:
-        log_entry_data['initiator_id'] = str(initiator.id)
-    log_entry = user_log_service.build_entry(
-        'role-assigned', user.id, log_entry_data
-    )
-    db.session.add(log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
@@ -140,19 +147,24 @@ def deassign_role_from_user(
     if db_user_role is None:
         return Err(f'Unknown role ID "{role_id}" and/or user ID "{user.id}"')
 
-    db.session.delete(db_user_role)
-
-    log_entry_data = {'role_id': str(role_id)}
-    if initiator is not None:
-        log_entry_data['initiator_id'] = str(initiator.id)
-    log_entry = user_log_service.build_entry(
-        'role-deassigned', user.id, log_entry_data
+    log_entry = authz_domain_service.deassign_role_from_user(
+        role_id, user, initiator=initiator
     )
-    db.session.add(log_entry)
 
-    db.session.commit()
+    _persist_role_deassignment_from_user(db_user_role, log_entry)
 
     return Ok(None)
+
+
+def _persist_role_deassignment_from_user(
+    db_user_role: DbUserRole, log_entry: UserLogEntry
+) -> None:
+    db.session.delete(db_user_role)
+
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+
+    db.session.commit()
 
 
 def deassign_all_roles_from_user(
