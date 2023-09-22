@@ -124,7 +124,9 @@ def view_brand(brand_id):
     )
     newsletter_list = None
     if newsletter_list_id:
-        newsletter_list = newsletter_service.find_list(newsletter_list_id)
+        newsletter_list = newsletter_service.get_list(
+            newsletter_list_id
+        ).unwrap()
         newsletter_subscriber_count = newsletter_service.count_subscribers(
             newsletter_list.id
         )
