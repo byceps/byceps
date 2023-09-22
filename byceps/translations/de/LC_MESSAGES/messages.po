@@ -183,6 +183,16 @@ msgstr ""
 msgid "The news \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
+#: byceps/announce/handlers/newsletter.py:35
+#, python-format
+msgid "%(user_screen_name)s has subscribed to newsletter \"%(list_title)s\"."
+msgstr "%(user_screen_name)s hat den Newsletter \"%(list_title)s\" abonniert."
+
+#: byceps/announce/handlers/newsletter.py:53
+#, python-format
+msgid "%(user_screen_name)s has unsubscribed from newsletter \"%(list_title)s\"."
+msgstr "%(user_screen_name)s hat den Newsletter \"%(list_title)s\" abbestellt."
+
 #: byceps/announce/handlers/orga.py:33
 #, python-format
 msgid ""
@@ -5569,7 +5579,7 @@ msgid "New email address"
 msgstr "Neue E-Mail-Adresse"
 
 #: byceps/blueprints/admin/user/views.py:215
-#: byceps/blueprints/site/user/creation/views.py:110
+#: byceps/blueprints/site/user/creation/views.py:116
 #, python-format
 msgid "User \"%(screen_name)s\" could not be created."
 msgstr "Das Benutzerkonto für \"%(screen_name)s\" konnte nicht angelegt werden."
@@ -6991,12 +7001,12 @@ msgstr "News-Archiv"
 msgid "Archive"
 msgstr "Archiv"
 
-#: byceps/blueprints/site/newsletter/views.py:41
+#: byceps/blueprints/site/newsletter/views.py:43
 #, python-format
 msgid "You have subscribed to newsletter \"%(title)s\"."
 msgstr "Du hast dich zum Newsletter \"%(title)s\" angemeldet."
 
-#: byceps/blueprints/site/newsletter/views.py:63
+#: byceps/blueprints/site/newsletter/views.py:68
 #, python-format
 msgid "You have unsubscribed from newsletter \"%(title)s\"."
 msgstr "Du hast dich vom Newsletter \"%(title)s\" abgemeldet."
@@ -7490,7 +7500,7 @@ msgstr "Bot"
 msgid "Bots are not permitted."
 msgstr "Bots sind nicht erlaubt."
 
-#: byceps/blueprints/site/user/creation/views.py:127
+#: byceps/blueprints/site/user/creation/views.py:133
 #, python-format
 msgid ""
 "User \"%(screen_name)s\" has been created. Before you can log in, please "
@@ -7500,7 +7510,7 @@ msgstr ""
 "damit anmelden kannst, muss zunächst der Link in der an die angegebene "
 "Adresse verschickten E-Mail besucht werden."
 
-#: byceps/blueprints/site/user/creation/views.py:148
+#: byceps/blueprints/site/user/creation/views.py:154
 msgid "User account creation is disabled."
 msgstr "Das Erstellen von Benutzerkonten ist deaktiviert."
 

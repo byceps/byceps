@@ -15,6 +15,7 @@ from byceps.services.newsletter import (
     newsletter_command_service,
     newsletter_service,
 )
+from byceps.signals import newsletter as newsletter_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.views import login_required, respond_no_content
@@ -34,13 +35,18 @@ def subscribe(list_id):
 
     if result.is_err():
         flash_error(result.unwrap_err())
-    else:
-        flash_success(
-            gettext(
-                'You have subscribed to newsletter "%(title)s".',
-                title=list_.title,
-            )
+        return
+
+    _, event = result.unwrap()
+
+    flash_success(
+        gettext(
+            'You have subscribed to newsletter "%(title)s".',
+            title=list_.title,
         )
+    )
+
+    newsletter_signals.newsletter_subscribed.send(None, event=event)
 
 
 @blueprint.delete('/lists/<list_id>/subscription')
@@ -54,13 +60,18 @@ def unsubscribe(list_id):
 
     if result.is_err():
         flash_error(result.unwrap_err())
-    else:
-        flash_success(
-            gettext(
-                'You have unsubscribed from newsletter "%(title)s".',
-                title=list_.title,
-            )
+        return
+
+    _, event = result.unwrap()
+
+    flash_success(
+        gettext(
+            'You have unsubscribed from newsletter "%(title)s".',
+            title=list_.title,
         )
+    )
+
+    newsletter_signals.newsletter_unsubscribed.send(None, event=event)
 
 
 def _get_list_or_404(list_id):

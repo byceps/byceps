@@ -31,6 +31,10 @@ from byceps.events.board import (
 )
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.events.news import NewsItemPublishedEvent
+from byceps.events.newsletter import (
+    SubscribedToNewsletterEvent,
+    UnsubscribedFromNewsletterEvent,
+)
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.events.page import (
     PageCreatedEvent,
@@ -80,6 +84,7 @@ from byceps.signals import (
     board as board_signals,
     guest_server as guest_server_signals,
     news as news_signals,
+    newsletter as newsletter_signals,
     orga as orga_signals,
     page as page_signals,
     shop as shop_signals,
@@ -95,6 +100,7 @@ from .handlers import (
     board as board_handlers,
     guest_server as guest_server_handlers,
     news as news_handlers,
+    newsletter as newsletter_handler,
     orga as orga_handlers,
     page as page_handlers,
     shop_order as shop_order_handlers,
@@ -219,6 +225,16 @@ for event, name, handler in [
         NewsItemPublishedEvent,
         'news-item-published',
         news_handlers.announce_news_item_published,
+    ),
+    (
+        SubscribedToNewsletterEvent,
+        'newsletter-subscribed',
+        newsletter_handler.announce_subscribed_to_newsletter,
+    ),
+    (
+        UnsubscribedFromNewsletterEvent,
+        'newsletter-unsubscribed',
+        newsletter_handler.announce_unsubscribed_from_newsletter,
     ),
     (
         OrgaStatusGrantedEvent,
@@ -403,6 +419,8 @@ _SIGNALS: list[NamedSignal] = [
     board_signals.topic_unpinned,
     guest_server_signals.guest_server_registered,
     news_signals.item_published,
+    newsletter_signals.newsletter_subscribed,
+    newsletter_signals.newsletter_unsubscribed,
     orga_signals.orga_status_granted,
     orga_signals.orga_status_revoked,
     page_signals.page_created,
