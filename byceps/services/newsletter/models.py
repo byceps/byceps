@@ -7,8 +7,11 @@ byceps.services.newsletter.models
 """
 
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
 from typing import NewType
+
+from byceps.typing import UserID
 
 
 ListID = NewType('ListID', str)
@@ -27,3 +30,11 @@ class Subscriber:
 
 
 SubscriptionState = Enum('SubscriptionState', ['requested', 'declined'])
+
+
+@dataclass(frozen=True)
+class SubscriptionUpdate:
+    user_id: UserID
+    list_id: ListID
+    expressed_at: datetime
+    state: SubscriptionState
