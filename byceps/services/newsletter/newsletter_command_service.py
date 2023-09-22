@@ -39,11 +39,11 @@ def delete_list(list_id: ListID) -> None:
 
 
 def subscribe(
-    user: User, list_id: ListID, expressed_at: datetime
+    user: User, list_: List, expressed_at: datetime
 ) -> Result[None, UnknownListIdError]:
     """Subscribe the user to that list."""
     update_subscription_state_result = _update_subscription_state(
-        user, list_id, expressed_at, SubscriptionState.requested
+        user, list_, expressed_at, SubscriptionState.requested
     )
     if update_subscription_state_result.is_err():
         return Err(update_subscription_state_result.unwrap_err())
@@ -54,7 +54,7 @@ def subscribe(
         .values(
             {
                 'user_id': str(user.id),
-                'list_id': str(list_id),
+                'list_id': str(list_.id),
             }
         )
         .on_conflict_do_nothing(constraint=table.primary_key)
@@ -66,11 +66,11 @@ def subscribe(
 
 
 def unsubscribe(
-    user: User, list_id: ListID, expressed_at: datetime
+    user: User, list_: List, expressed_at: datetime
 ) -> Result[None, UnknownListIdError]:
     """Unsubscribe the user from that list."""
     update_subscription_state_result = _update_subscription_state(
-        user, list_id, expressed_at, SubscriptionState.declined
+        user, list_, expressed_at, SubscriptionState.declined
     )
     if update_subscription_state_result.is_err():
         return Err(update_subscription_state_result.unwrap_err())
@@ -78,7 +78,7 @@ def unsubscribe(
     db.session.execute(
         delete(DbSubscription)
         .where(DbSubscription.user_id == user.id)
-        .where(DbSubscription.list_id == list_id)
+        .where(DbSubscription.list_id == list_.id)
     )
     db.session.commit()
 
@@ -87,16 +87,14 @@ def unsubscribe(
 
 def _update_subscription_state(
     user: User,
-    list_id: ListID,
+    list_: List,
     expressed_at: datetime,
     state: SubscriptionState,
 ) -> Result[None, UnknownListIdError]:
     """Update the user's subscription state for that list."""
-    list_result = newsletter_service.get_list(list_id)
+    list_result = newsletter_service.get_list(list_.id)
     if list_result.is_err():
         return Err(list_result.unwrap_err())
-
-    list_ = list_result.unwrap()
 
     subscription_update = DbSubscriptionUpdate(
         user.id, list_.id, expressed_at, state

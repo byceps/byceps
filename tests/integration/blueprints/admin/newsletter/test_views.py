@@ -136,8 +136,6 @@ def subscribers(make_user, newsletter_list):
             deleted=deleted,
         )
 
-        list_id = newsletter_list.id
-
         for state in states:
             # Timestamp must not be identical for multiple
             # `(user_id, list_id)` pairs.
@@ -145,11 +143,11 @@ def subscribers(make_user, newsletter_list):
 
             if state == SubscriptionState.requested:
                 newsletter_command_service.subscribe(
-                    user, list_id, expressed_at
+                    user, newsletter_list, expressed_at
                 ).unwrap()
             elif state == SubscriptionState.declined:
                 newsletter_command_service.unsubscribe(
-                    user, list_id, expressed_at
+                    user, newsletter_list, expressed_at
                 ).unwrap()
 
 
