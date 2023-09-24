@@ -28,7 +28,7 @@ PAGE_VERSION_ID = PageVersionID(generate_uuid())
 
 def test_announce_page_created(app: Flask, webhook_for_irc):
     expected_text = (
-        'PageEditor hat die Seite "overview" '
+        'PageEditor hat die Seite "overview" (de) '
         'in Site "acmecon-2014-website" angelegt.'
     )
 
@@ -39,6 +39,7 @@ def test_announce_page_created(app: Flask, webhook_for_irc):
         page_id=PAGE_ID,
         site_id=SiteID('acmecon-2014-website'),
         page_name='overview',
+        language_code='de',
         page_version_id=PAGE_VERSION_ID,
     )
 
@@ -49,7 +50,7 @@ def test_announce_page_created(app: Flask, webhook_for_irc):
 
 def test_announce_page_updated(app: Flask, webhook_for_irc):
     expected_text = (
-        'PageEditor hat die Seite "overview" '
+        'PageEditor hat die Seite "overview" (en) '
         'in Site "acmecon-2014-website" aktualisiert.'
     )
 
@@ -60,6 +61,7 @@ def test_announce_page_updated(app: Flask, webhook_for_irc):
         page_id=PAGE_ID,
         site_id=SiteID('acmecon-2014-website'),
         page_name='overview',
+        language_code='en',
         page_version_id=PAGE_VERSION_ID,
     )
 
@@ -70,7 +72,7 @@ def test_announce_page_updated(app: Flask, webhook_for_irc):
 
 def test_announce_page_deleted(app: Flask, webhook_for_irc):
     expected_text = (
-        'PageEditor hat die Seite "old_page" '
+        'PageEditor hat die Seite "old_page" (en) '
         'in Site "acmecon-2014-website" gelöscht.'
     )
 
@@ -81,6 +83,7 @@ def test_announce_page_deleted(app: Flask, webhook_for_irc):
         page_id=PAGE_ID,
         site_id=SiteID('acmecon-2014-website'),
         page_name='old_page',
+        language_code='en',
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

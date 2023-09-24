@@ -65,6 +65,7 @@ def create_page(
         page_id=db_page.id,
         site_id=db_page.site_id,
         page_name=db_page.name,
+        language_code=db_page.language_code,
         page_version_id=db_version.id,
     )
 
@@ -100,6 +101,7 @@ def update_page(
         page_id=db_page.id,
         site_id=db_page.site_id,
         page_name=db_page.name,
+        language_code=db_page.language_code,
         page_version_id=db_version.id,
     )
 
@@ -149,6 +151,7 @@ def delete_page(
         page_id=page_id,
         site_id=site_id,
         page_name=page_name,
+        language_code=db_page.language_code,
     )
 
     return True, event

@@ -19,6 +19,7 @@ class _PageEvent(_BaseEvent):
     page_id: PageID
     site_id: SiteID
     page_name: str
+    language_code: str
 
 
 @dataclass(frozen=True)

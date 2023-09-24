@@ -34,9 +34,10 @@ def announce_page_created(
     )
 
     text = gettext(
-        '%(initiator_screen_name)s has created page "%(page_name)s" in site "%(site_id)s".',
+        '%(initiator_screen_name)s has created page "%(page_name)s" (%(language_code)s) in site "%(site_id)s".',
         initiator_screen_name=initiator_screen_name,
         page_name=event.page_name,
+        language_code=event.language_code,
         site_id=event.site_id,
     )
 
@@ -53,9 +54,10 @@ def announce_page_updated(
     )
 
     text = gettext(
-        '%(initiator_screen_name)s has updated page "%(page_name)s" in site "%(site_id)s".',
+        '%(initiator_screen_name)s has updated page "%(page_name)s" (%(language_code)s) in site "%(site_id)s".',
         initiator_screen_name=initiator_screen_name,
         page_name=event.page_name,
+        language_code=event.language_code,
         site_id=event.site_id,
     )
 
@@ -72,9 +74,10 @@ def announce_page_deleted(
     )
 
     text = gettext(
-        '%(initiator_screen_name)s has deleted page "%(page_name)s" in site "%(site_id)s".',
+        '%(initiator_screen_name)s has deleted page "%(page_name)s" (%(language_code)s) in site "%(site_id)s".',
         initiator_screen_name=initiator_screen_name,
         page_name=event.page_name,
+        language_code=event.language_code,
         site_id=event.site_id,
     )
 

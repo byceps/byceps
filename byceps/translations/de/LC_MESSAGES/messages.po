@@ -30,7 +30,7 @@ msgstr ""
 msgid "Someone"
 msgstr "Jemand"
 
-#: byceps/announce/handlers/auth.py:33
+#: byceps/announce/handlers/authn.py:33
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has updated the password for "
@@ -39,12 +39,12 @@ msgstr ""
 "%(initiator_screen_name)s hat ein neues Passwort für %(user_screen_name)s"
 " gesetzt."
 
-#: byceps/announce/handlers/auth.py:50
+#: byceps/announce/handlers/authn.py:50
 #, python-format
 msgid "%(screen_name)s has logged in on site \"%(site_title)s\"."
 msgstr "%(screen_name)s hat sich auf Site \"%(site_title)s\" eingeloggt."
 
-#: byceps/announce/handlers/auth.py:56
+#: byceps/announce/handlers/authn.py:56
 #, python-format
 msgid "%(screen_name)s has logged in."
 msgstr "%(screen_name)s hat sich eingeloggt."
@@ -214,29 +214,29 @@ msgstr ""
 #: byceps/announce/handlers/page.py:36
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has created page \"%(page_name)s\" in site "
-"\"%(site_id)s\"."
+"%(initiator_screen_name)s has created page \"%(page_name)s\" "
+"(%(language_code)s) in site \"%(site_id)s\"."
 msgstr ""
-"%(initiator_screen_name)s hat die Seite \"%(page_name)s\" in Site "
-"\"%(site_id)s\" angelegt."
+"%(initiator_screen_name)s hat die Seite \"%(page_name)s\" "
+"(%(language_code)s) in Site \"%(site_id)s\" angelegt."
 
-#: byceps/announce/handlers/page.py:55
+#: byceps/announce/handlers/page.py:56
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has updated page \"%(page_name)s\" in site "
-"\"%(site_id)s\"."
+"%(initiator_screen_name)s has updated page \"%(page_name)s\" "
+"(%(language_code)s) in site \"%(site_id)s\"."
 msgstr ""
-"%(initiator_screen_name)s hat die Seite \"%(page_name)s\" in Site "
-"\"%(site_id)s\" aktualisiert."
+"%(initiator_screen_name)s hat die Seite \"%(page_name)s\" "
+"(%(language_code)s) in Site \"%(site_id)s\" aktualisiert."
 
-#: byceps/announce/handlers/page.py:74
+#: byceps/announce/handlers/page.py:76
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has deleted page \"%(page_name)s\" in site "
-"\"%(site_id)s\"."
+"%(initiator_screen_name)s has deleted page \"%(page_name)s\" "
+"(%(language_code)s) in site \"%(site_id)s\"."
 msgstr ""
-"%(initiator_screen_name)s hat die Seite \"%(page_name)s\" in Site "
-"\"%(site_id)s\" gelöscht."
+"%(initiator_screen_name)s hat die Seite \"%(page_name)s\" "
+"(%(language_code)s) in Site \"%(site_id)s\" gelöscht."
 
 #: byceps/announce/handlers/shop_order.py:35
 #, python-format
