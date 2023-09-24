@@ -78,7 +78,8 @@ def create_api_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
         config_overrides = {}
 
     config_overrides['APP_MODE'] = 'api'
-    del config_overrides['API_ENABLED']
+    if 'API_ENABLED' in config_overrides:
+        del config_overrides['API_ENABLED']
 
     app = _create_app(config_overrides=config_overrides)
 
