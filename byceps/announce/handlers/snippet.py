@@ -35,9 +35,10 @@ def announce_snippet_created(
     )
 
     text = gettext(
-        '%(initiator_screen_name)s has created snippet "%(snippet_name)s" in scope "%(scope)s".',
+        '%(initiator_screen_name)s has created snippet "%(snippet_name)s" (%(language_code)s) in scope "%(scope)s".',
         initiator_screen_name=initiator_screen_name,
         snippet_name=event.snippet_name,
+        language_code=event.language_code,
         scope=_get_scope_label(event.scope),
     )
 
@@ -54,9 +55,10 @@ def announce_snippet_updated(
     )
 
     text = gettext(
-        '%(initiator_screen_name)s has updated snippet "%(snippet_name)s" in scope "%(scope)s".',
+        '%(initiator_screen_name)s has updated snippet "%(snippet_name)s" (%(language_code)s) in scope "%(scope)s".',
         initiator_screen_name=initiator_screen_name,
         snippet_name=event.snippet_name,
+        language_code=event.language_code,
         scope=_get_scope_label(event.scope),
     )
 
@@ -73,9 +75,10 @@ def announce_snippet_deleted(
     )
 
     text = gettext(
-        '%(initiator_screen_name)s has deleted snippet "%(snippet_name)s" in scope "%(scope)s".',
+        '%(initiator_screen_name)s has deleted snippet "%(snippet_name)s" (%(language_code)s) in scope "%(scope)s".',
         initiator_screen_name=initiator_screen_name,
         snippet_name=event.snippet_name,
+        language_code=event.language_code,
         scope=_get_scope_label(event.scope),
     )
 

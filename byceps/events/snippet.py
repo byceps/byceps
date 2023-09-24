@@ -22,6 +22,7 @@ class _SnippetEvent(_BaseEvent):
     snippet_id: SnippetID
     scope: SnippetScope
     snippet_name: str
+    language_code: str
 
 
 @dataclass(frozen=True)

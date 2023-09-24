@@ -262,32 +262,32 @@ msgstr ""
 "%(initiator_screen_name)s hat Bestellung %(order_number)s von "
 "%(orderer_screen_name)s storniert."
 
-#: byceps/announce/handlers/snippet.py:41
+#: byceps/announce/handlers/snippet.py:42
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has created snippet \"%(snippet_name)s\" in "
-"scope \"%(scope)s\"."
+"%(initiator_screen_name)s has created snippet \"%(snippet_name)s\" "
+"(%(language_code)s) in scope \"%(scope)s\"."
 msgstr ""
-"%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" im Scope "
-"\"%(scope)s\" angelegt."
+"%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" "
+"(%(language_code)s) im Scope \"%(scope)s\" angelegt."
 
-#: byceps/announce/handlers/snippet.py:60
+#: byceps/announce/handlers/snippet.py:62
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has updated snippet \"%(snippet_name)s\" in "
-"scope \"%(scope)s\"."
+"%(initiator_screen_name)s has updated snippet \"%(snippet_name)s\" "
+"(%(language_code)s) in scope \"%(scope)s\"."
 msgstr ""
-"%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" im Scope "
-"\"%(scope)s\" aktualisiert."
+"%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" "
+"(%(language_code)s) im Scope \"%(scope)s\" aktualisiert."
 
-#: byceps/announce/handlers/snippet.py:79
+#: byceps/announce/handlers/snippet.py:82
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has deleted snippet \"%(snippet_name)s\" in "
-"scope \"%(scope)s\"."
+"%(initiator_screen_name)s has deleted snippet \"%(snippet_name)s\" "
+"(%(language_code)s) in scope \"%(scope)s\"."
 msgstr ""
-"%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" im Scope "
-"\"%(scope)s\" gelöscht."
+"%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" "
+"(%(language_code)s) im Scope \"%(scope)s\" gelöscht."
 
 #: byceps/announce/handlers/ticketing.py:34
 #, python-format

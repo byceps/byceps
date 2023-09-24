@@ -57,6 +57,7 @@ def create_snippet(
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
+        language_code=snippet.language_code,
         snippet_version_id=version.id,
     )
 
@@ -85,6 +86,7 @@ def update_snippet(
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
+        language_code=snippet.language_code,
         snippet_version_id=version.id,
     )
 
@@ -137,6 +139,7 @@ def delete_snippet(
         snippet_id=snippet_id,
         scope=scope,
         snippet_name=snippet_name,
+        language_code=snippet.language_code,
     )
 
     return True, event
