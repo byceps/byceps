@@ -19,10 +19,12 @@ import jinja2
 from redis import Redis
 import rtoml
 import structlog
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from byceps import config, config_defaults
 from byceps.announce.announce import enable_announcements
 from byceps.blueprints.blueprints import register_blueprints
+from byceps.blueprints.api.blueprints import register_api_blueprints
 from byceps.config import ConfigurationError, parse_value_from_environment
 from byceps.database import db
 from byceps.util import templatefilters
@@ -49,6 +51,9 @@ def create_admin_app(
 
     _enable_rq_dashboard(app)
 
+    if app.config['API_ENABLED']:
+        _enable_api(app, config_overrides)
+
     return app
 
 
@@ -60,7 +65,24 @@ def create_site_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     app = _create_app(config_overrides=config_overrides)
 
+    if app.config['API_ENABLED']:
+        _enable_api(app, config_overrides)
+
     _init_site_app(app)
+
+    return app
+
+
+def create_api_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
+    if config_overrides is None:
+        config_overrides = {}
+
+    config_overrides['APP_MODE'] = 'api'
+    del config_overrides['API_ENABLED']
+
+    app = _create_app(config_overrides=config_overrides)
+
+    register_api_blueprints(app)
 
     return app
 
@@ -214,6 +236,20 @@ def _init_site_app(app: Flask) -> None:
     """Initialize site application."""
     # Incorporate site-specific template overrides.
     app.jinja_loader = SiteTemplateOverridesLoader()
+
+
+def _enable_api(
+    app: Flask,
+    config_overrides: dict[str, Any] | None,
+) -> None:
+    api_app = create_api_app(config_overrides=config_overrides)
+
+    app.wsgi_app = DispatcherMiddleware(
+        app,
+        {
+            '/api': api_app,
+        },
+    )
 
 
 def _enable_debug_toolbar(app: Flask) -> None:
