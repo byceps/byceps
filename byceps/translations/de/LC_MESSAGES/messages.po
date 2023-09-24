@@ -49,6 +49,24 @@ msgstr "%(screen_name)s hat sich auf Site \"%(site_title)s\" eingeloggt."
 msgid "%(screen_name)s has logged in."
 msgstr "%(screen_name)s hat sich eingeloggt."
 
+#: byceps/announce/handlers/authz.py:36
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has assigned role \"%(role_id)s\" to "
+"%(user_screen_name)s."
+msgstr ""
+"%(initiator_screen_name)s hat %(user_screen_name)s die Rolle "
+"\"%(role_id)s\" zugewiesen."
+
+#: byceps/announce/handlers/authz.py:58
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has deassigned role \"%(role_id)s\" from "
+"%(user_screen_name)s."
+msgstr ""
+"%(initiator_screen_name)s hat %(user_screen_name)s die Rolle "
+"\"%(role_id)s\" genommen."
+
 #: byceps/announce/handlers/board.py:67
 #, python-format
 msgid ""
@@ -2224,7 +2242,7 @@ msgstr "Der Server wurde registriert."
 #: byceps/blueprints/admin/guest_server/views.py:336
 #: byceps/blueprints/admin/guest_server/views.py:397
 #: byceps/blueprints/admin/news/views.py:196
-#: byceps/blueprints/admin/user/views.py:664
+#: byceps/blueprints/admin/user/views.py:665
 msgid "Changes have been saved."
 msgstr "Die Änderungen wurden gespeichert."
 
@@ -5578,91 +5596,91 @@ msgstr "Neuer Benutzername"
 msgid "New email address"
 msgstr "Neue E-Mail-Adresse"
 
-#: byceps/blueprints/admin/user/views.py:215
+#: byceps/blueprints/admin/user/views.py:216
 #: byceps/blueprints/site/user/creation/views.py:116
 #, python-format
 msgid "User \"%(screen_name)s\" could not be created."
 msgstr "Das Benutzerkonto für \"%(screen_name)s\" konnte nicht angelegt werden."
 
-#: byceps/blueprints/admin/user/views.py:225
+#: byceps/blueprints/admin/user/views.py:226
 #, python-format
 msgid "User \"%(screen_name)s\" has been created."
 msgstr "Das Benutzerkonto \"%(screen_name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/user/views.py:236
+#: byceps/blueprints/admin/user/views.py:237
 msgid "An email has been sent to the corresponding address."
 msgstr "Eine E-Mail wurde an die hinterlegte Adresse versendet."
 
-#: byceps/blueprints/admin/user/views.py:257
+#: byceps/blueprints/admin/user/views.py:258
 #, python-format
 msgid "User '%(screen_name)s' has been initialized."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde initialisiert."
 
-#: byceps/blueprints/admin/user/views.py:273
-#: byceps/blueprints/admin/user/views.py:297
+#: byceps/blueprints/admin/user/views.py:274
+#: byceps/blueprints/admin/user/views.py:298
 #, python-format
 msgid "User '%(screen_name)s' is already suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist bereits gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:316
+#: byceps/blueprints/admin/user/views.py:317
 #, python-format
 msgid "User '%(screen_name)s' has been suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:334
-#: byceps/blueprints/admin/user/views.py:358
+#: byceps/blueprints/admin/user/views.py:335
+#: byceps/blueprints/admin/user/views.py:359
 #, python-format
 msgid "User '%(screen_name)s' is not suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist nicht gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:377
+#: byceps/blueprints/admin/user/views.py:378
 #, python-format
 msgid "User '%(screen_name)s' has been unsuspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde entsperrt."
 
-#: byceps/blueprints/admin/user/views.py:395
-#: byceps/blueprints/admin/user/views.py:420
+#: byceps/blueprints/admin/user/views.py:396
+#: byceps/blueprints/admin/user/views.py:421
 #, python-format
 msgid "User '%(screen_name)s' has already been deleted."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist bereits gelöscht worden."
 
-#: byceps/blueprints/admin/user/views.py:439
+#: byceps/blueprints/admin/user/views.py:440
 #, python-format
 msgid "User '%(screen_name)s' has been deleted."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde gelöscht."
 
-#: byceps/blueprints/admin/user/views.py:490
+#: byceps/blueprints/admin/user/views.py:491
 #, python-format
 msgid "User '%(old_screen_name)s' has been renamed to '%(new_screen_name)s'."
 msgstr ""
 "Das Benutzerkonto '%(old_screen_name)s' wurde umbenannt in "
 "'%(new_screen_name)s'."
 
-#: byceps/blueprints/admin/user/views.py:542
+#: byceps/blueprints/admin/user/views.py:543
 #, python-format
 msgid "Email address for user '%(screen_name)s' has been updated."
 msgstr "Die E-Mail-Adresse des Benutzerkontos '%(screen_name)s' wurde geändert."
 
-#: byceps/blueprints/admin/user/views.py:560
+#: byceps/blueprints/admin/user/views.py:561
 msgid "Email address is already invalidated."
 msgstr "Diese E-Mail-Adresse ist bereits als nicht validiert markiert."
 
-#: byceps/blueprints/admin/user/views.py:598
+#: byceps/blueprints/admin/user/views.py:599
 #, python-format
 msgid "The email address of user '%(screen_name)s' has been invalidated."
 msgstr "Die E-Mail-Adresse des Benutzerkontos '%(screen_name)s' wurde invalidiert."
 
-#: byceps/blueprints/admin/user/views.py:711
+#: byceps/blueprints/admin/user/views.py:712
 #, python-format
 msgid "New password has been set for user '%(screen_name)s'."
 msgstr "Für Benutzerkonto '%(screen_name)s' wurde ein neues Passwort gesetzt."
 
-#: byceps/blueprints/admin/user/views.py:797
+#: byceps/blueprints/admin/user/views.py:803
 #, python-format
 msgid "%(role_title)s has been assigned to \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" zugewiesen."
 
-#: byceps/blueprints/admin/user/views.py:819
+#: byceps/blueprints/admin/user/views.py:827
 #, python-format
 msgid "%(role_title)s has been withdrawn from \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."

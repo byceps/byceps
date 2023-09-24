@@ -33,6 +33,7 @@ from byceps.services.user import (
 from byceps.services.user.models.user import UserForAdmin, UserStateFilter
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.signals import authn as authn_signals
+from byceps.signals import authz as authz_signals
 from byceps.signals import user as user_signals
 from byceps.util.authorization import permission_registry
 from byceps.util.framework.blueprint import create_blueprint
@@ -791,7 +792,12 @@ def role_assign(user_id, role_id):
     role = _get_role_or_404(role_id)
     initiator = g.user
 
-    authz_service.assign_role_to_user(role.id, user, initiator=initiator)
+    event = authz_service.assign_role_to_user(
+        role.id, user, initiator=initiator
+    )
+
+    if event is not None:
+        authz_signals.role_assigned_to_user.send(None, event=event)
 
     flash_success(
         gettext(
@@ -811,9 +817,11 @@ def role_deassign(user_id, role_id):
     role = _get_role_or_404(role_id)
     initiator = g.user
 
-    authz_service.deassign_role_from_user(
+    event = authz_service.deassign_role_from_user(
         role.id, user, initiator=initiator
     ).unwrap()
+
+    authz_signals.role_deassigned_from_user.send(None, event=event)
 
     flash_success(
         gettext(

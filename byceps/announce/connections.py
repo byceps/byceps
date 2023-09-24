@@ -15,6 +15,10 @@ from typing import Callable, Optional
 from blinker import NamedSignal
 
 from byceps.events.authn import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.events.authz import (
+    RoleAssignedToUserEvent,
+    RoleDeassignedFromUserEvent,
+)
 from byceps.events.base import _BaseEvent
 from byceps.events.board import (
     BoardPostingCreatedEvent,
@@ -81,6 +85,7 @@ from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
     authn as authn_signals,
+    authz as authz_signals,
     board as board_signals,
     guest_server as guest_server_signals,
     news as news_signals,
@@ -97,6 +102,7 @@ from byceps.signals import (
 
 from .handlers import (
     authn as authn_handlers,
+    authz as authz_handlers,
     board as board_handlers,
     guest_server as guest_server_handlers,
     news as news_handlers,
@@ -160,6 +166,16 @@ for event, name, handler in [
         UserLoggedInEvent,
         'user-logged-in',
         authn_handlers.announce_user_logged_in,
+    ),
+    (
+        RoleAssignedToUserEvent,
+        'role-assigned-to-user',
+        authz_handlers.announce_role_assigned_to_user,
+    ),
+    (
+        RoleDeassignedFromUserEvent,
+        'role-deassigned-from-user',
+        authz_handlers.announce_role_deassigned_from_user,
     ),
     (
         BoardPostingCreatedEvent,
@@ -406,6 +422,8 @@ for event, name, handler in [
 _SIGNALS: list[NamedSignal] = [
     authn_signals.password_updated,
     authn_signals.user_logged_in,
+    authz_signals.role_assigned_to_user,
+    authz_signals.role_deassigned_from_user,
     board_signals.posting_created,
     board_signals.posting_hidden,
     board_signals.posting_unhidden,
