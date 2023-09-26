@@ -164,7 +164,7 @@ def test_different_user_and_token_email_addresses(site_app, site, user5):
 def confirm(app, token):
     url = f'/users/email_address/confirmation/{token}'
     with http_client(app) as client:
-        return client.get(url)
+        return client.post(url)
 
 
 def get_role_ids(user_id):

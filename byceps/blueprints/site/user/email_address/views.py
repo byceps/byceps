@@ -109,6 +109,20 @@ def request_confirmation_email():
 
 
 @blueprint.get('/confirmation/<token>')
+@templated
+def confirm_form(token):
+    """Show form to confirm e-mail address of the user account assigned
+    with the verification token.
+    """
+    confirmation_token = _get_valid_confirmation_token_or_404(token)
+
+    return {
+        'token': confirmation_token.token,
+        'email_address': confirmation_token.email_address,
+    }
+
+
+@blueprint.post('/confirmation/<token>')
 def confirm(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
