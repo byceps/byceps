@@ -15,6 +15,7 @@ from byceps.services.user import (
     user_service,
 )
 from byceps.services.verification_token import verification_token_service
+from byceps.services.verification_token.models import VerificationToken
 from byceps.signals import user as user_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
@@ -109,18 +110,7 @@ def confirm(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
     """
-    verification_token = (
-        verification_token_service.find_for_email_address_confirmation_by_token(
-            token
-        )
-    )
-    if verification_token is None:
-        abort(404)
-
-    user = verification_token.user
-    if user.suspended or user.deleted:
-        flash_error(gettext('No valid token specified.'))
-        abort(404)
+    verification_token = _get_valid_confirmation_token_or_404(token)
 
     confirmation_result = (
         user_email_address_service.confirm_email_address_via_verification_token(
@@ -135,6 +125,7 @@ def confirm(token):
 
     flash_success(gettext('Email address has been verified.'))
 
+    user = verification_token.user
     if not user.initialized:
         user_command_service.initialize_account(user)
         flash_success(
@@ -149,13 +140,11 @@ def confirm(token):
     return redirect_to('authentication_login.log_in_form')
 
 
-@blueprint.get('/change/<token>')
-def change(token):
-    """Confirm and change e-mail address of the user account assigned
-    with the verification token.
-    """
+def _get_valid_confirmation_token_or_404(token: str) -> VerificationToken:
     verification_token = (
-        verification_token_service.find_for_email_address_change_by_token(token)
+        verification_token_service.find_for_email_address_confirmation_by_token(
+            token
+        )
     )
     if verification_token is None:
         abort(404)
@@ -164,6 +153,16 @@ def change(token):
     if user.suspended or user.deleted:
         flash_error(gettext('No valid token specified.'))
         abort(404)
+
+    return verification_token
+
+
+@blueprint.get('/change/<token>')
+def change(token):
+    """Confirm and change e-mail address of the user account assigned
+    with the verification token.
+    """
+    verification_token = _get_valid_change_token_or_404(token)
 
     change_result = user_email_address_service.change_email_address(
         verification_token
@@ -182,3 +181,18 @@ def change(token):
         return redirect_to('user_settings.view')
     else:
         return redirect_to('authentication_login.log_in_form')
+
+
+def _get_valid_change_token_or_404(token: str) -> VerificationToken:
+    verification_token = (
+        verification_token_service.find_for_email_address_change_by_token(token)
+    )
+    if verification_token is None:
+        abort(404)
+
+    user = verification_token.user
+    if user.suspended or user.deleted:
+        flash_error(gettext('No valid token specified.'))
+        abort(404)
+
+    return verification_token
