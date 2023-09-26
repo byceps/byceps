@@ -13,7 +13,7 @@ from byceps.services.email import email_service
 from byceps.services.email.models import NameAndAddress
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import verification_token_service
-from byceps.services.verification_token.models import VerificationToken
+from byceps.services.verification_token.models import PasswordResetToken
 from byceps.util.l10n import force_user_locale
 
 from . import authn_password_service
@@ -30,10 +30,10 @@ def prepare_password_reset(
     """
     recipients = [email_address]
 
-    verification_token = verification_token_service.create_for_password_reset(
-        user
+    reset_token = verification_token_service.create_for_password_reset(user)
+    confirmation_url = (
+        f'{url_root}authentication/password/reset/token/{reset_token.token}'
     )
-    confirmation_url = f'{url_root}authentication/password/reset/token/{verification_token.token}'
 
     screen_name = user.screen_name or f'user-{user.id}'
 
@@ -54,11 +54,11 @@ def prepare_password_reset(
 
 
 def reset_password(
-    verification_token: VerificationToken, password: str
+    reset_token: PasswordResetToken, password: str
 ) -> PasswordUpdatedEvent:
     """Reset the user's password."""
-    user = verification_token.user
+    user = reset_token.user
 
-    verification_token_service.delete_token(verification_token.token)
+    verification_token_service.delete_token(reset_token.token)
 
     return authn_password_service.update_password_hash(user, password, user)

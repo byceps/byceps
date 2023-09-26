@@ -50,3 +50,8 @@ class EmailAddressChangeToken(_BaseVerificationToken):
 @dataclass(frozen=True)
 class EmailAddressConfirmationToken(_BaseVerificationToken):
     email_address: str
+
+
+@dataclass(frozen=True)
+class PasswordResetToken(_BaseVerificationToken):
+    pass

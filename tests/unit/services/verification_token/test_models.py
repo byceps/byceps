@@ -9,52 +9,24 @@ from freezegun import freeze_time
 import pytest
 
 from byceps.services.verification_token import verification_token_service
-from byceps.services.verification_token.models import Purpose, VerificationToken
+from byceps.services.verification_token.models import PasswordResetToken
 
 
 @pytest.mark.parametrize(
-    ('purpose', 'now', 'expected'),
+    ('now', 'expected'),
     [
-        (
-            Purpose.email_address_confirmation,
-            datetime(2014, 11, 26, 19, 54, 38),
-            False,
-        ),
-        (
-            Purpose.email_address_confirmation,
-            datetime(2014, 11, 27, 19, 54, 38),
-            False,  # Never expires.
-        ),
-        (
-            Purpose.password_reset,
-            datetime(2014, 11, 26, 19, 54, 38),
-            False,
-        ),
-        (
-            Purpose.password_reset,
-            datetime(2014, 11, 27, 17, 44, 52),
-            False,  # Almost, but not yet.
-        ),
-        (
-            Purpose.password_reset,
-            datetime(2014, 11, 27, 17, 44, 53),
-            True,  # Just now.
-        ),
-        (
-            Purpose.password_reset,
-            datetime(2014, 11, 27, 19, 54, 38),
-            True,
-        ),
+        (datetime(2014, 11, 26, 19, 54, 38), False),
+        (datetime(2014, 11, 27, 17, 44, 52), False),  # Almost, but not yet.
+        (datetime(2014, 11, 27, 17, 44, 53), True),  # Just now.
+        (datetime(2014, 11, 27, 19, 54, 38), True),
     ],
 )
-def test_is_expired(user, purpose, now, expected):
-    token = VerificationToken(
-        token='fake',
+def test_is_expired(user, now, expected):
+    reset_token = PasswordResetToken(
+        token='fake',  # noqa: S106
         created_at=datetime(2014, 11, 26, 17, 44, 53),
         user=user,
-        purpose=purpose,
-        data={},
     )
 
     with freeze_time(now):
-        assert verification_token_service.is_expired(token) == expected
+        assert verification_token_service.is_expired(reset_token) == expected

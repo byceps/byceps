@@ -18,7 +18,7 @@ from byceps.services.email.models import NameAndAddress
 from byceps.services.global_setting import global_setting_service
 from byceps.services.user import user_service
 from byceps.services.verification_token import verification_token_service
-from byceps.services.verification_token.models import VerificationToken
+from byceps.services.verification_token.models import PasswordResetToken
 from byceps.signals import authn as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
@@ -186,7 +186,7 @@ def reset_form(token, erroneous_form=None):
 @blueprint.post('/reset/token/<token>')
 def reset(token):
     """Reset the current user's password."""
-    verification_token = _verify_reset_token(token)
+    reset_token = _verify_reset_token(token)
 
     form = ResetForm(request.form)
     if not form.validate():
@@ -194,9 +194,7 @@ def reset(token):
 
     password = form.new_password.data
 
-    event = authn_password_reset_service.reset_password(
-        verification_token, password
-    )
+    event = authn_password_reset_service.reset_password(reset_token, password)
 
     authn_signals.password_updated.send(None, event=event)
 
@@ -205,13 +203,13 @@ def reset(token):
     return _redirect_to_login_form()
 
 
-def _verify_reset_token(token: str) -> VerificationToken:
-    verification_token = (
-        verification_token_service.find_for_password_reset_by_token(token)
+def _verify_reset_token(token: str) -> PasswordResetToken:
+    reset_token = verification_token_service.find_for_password_reset_by_token(
+        token
     )
 
-    if (verification_token is None) or verification_token_service.is_expired(
-        verification_token
+    if (reset_token is None) or verification_token_service.is_expired(
+        reset_token
     ):
         flash_error(
             gettext(
@@ -221,12 +219,12 @@ def _verify_reset_token(token: str) -> VerificationToken:
         )
         abort(404)
 
-    user = verification_token.user
+    user = reset_token.user
     if user.suspended or user.deleted:
         flash_error(gettext('No valid token specified.'))
         abort(404)
 
-    return verification_token
+    return reset_token
 
 
 # -------------------------------------------------------------------- #

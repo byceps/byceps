@@ -22,6 +22,7 @@ from .models import (
     ConsentToken,
     EmailAddressChangeToken,
     EmailAddressConfirmationToken,
+    PasswordResetToken,
     Purpose,
     VerificationToken,
 )
@@ -48,8 +49,9 @@ def create_for_email_address_confirmation(
     return _to_email_address_confirmation_token(vt)
 
 
-def create_for_password_reset(user: User) -> VerificationToken:
-    return _create_token(user, Purpose.password_reset)
+def create_for_password_reset(user: User) -> PasswordResetToken:
+    vt = _create_token(user, Purpose.password_reset)
+    return _to_password_reset_token(vt)
 
 
 def _create_token(
@@ -129,9 +131,12 @@ def find_for_email_address_confirmation_by_token(
 
 def find_for_password_reset_by_token(
     token_value: str,
-) -> VerificationToken | None:
-    purpose = Purpose.password_reset
-    return _find_for_purpose_by_token(token_value, purpose)
+) -> PasswordResetToken | None:
+    vt = _find_for_purpose_by_token(token_value, Purpose.password_reset)
+    if vt is None:
+        return None
+
+    return _to_password_reset_token(vt)
 
 
 def _find_for_purpose_by_token(
@@ -193,6 +198,14 @@ def _to_email_address_confirmation_token(
     )
 
 
+def _to_password_reset_token(vt: VerificationToken) -> PasswordResetToken:
+    return PasswordResetToken(
+        token=vt.token,
+        created_at=vt.created_at,
+        user=vt.user,
+    )
+
+
 def count_tokens_by_purpose() -> dict[Purpose, int]:
     """Count verification tokens, grouped by purpose."""
     rows = (
@@ -211,11 +224,8 @@ def count_tokens_by_purpose() -> dict[Purpose, int]:
     return {purpose: counts_by_name.get(purpose.name, 0) for purpose in Purpose}
 
 
-def is_expired(token: VerificationToken) -> bool:
+def is_expired(token: PasswordResetToken) -> bool:
     """Return `True` if the token has expired, i.e. it is no longer valid."""
-    if token.purpose != Purpose.password_reset:
-        return False
-
     now = datetime.utcnow()
     expires_after = timedelta(hours=24)
     return now >= (token.created_at + expires_after)
