@@ -31,7 +31,7 @@ from byceps.services.user.models.user import User
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import (
     EmailAddressChangeToken,
-    VerificationToken,
+    EmailAddressConfirmationToken,
 )
 from byceps.typing import UserID
 from byceps.util.l10n import force_user_locale
@@ -61,14 +61,14 @@ def send_email_address_confirmation_email(
 ) -> None:
     recipients = [email_address]
 
-    verification_token = (
+    confirmation_token = (
         verification_token_service.create_for_email_address_confirmation(
             user, email_address
         )
     )
     confirmation_url = (
         f'https://{server_name}/users/email_address/'
-        f'confirmation/{verification_token.token}'
+        f'confirmation/{confirmation_token.token}'
     )
 
     with force_user_locale(user):
@@ -90,14 +90,14 @@ def send_email_address_confirmation_email(
 
 
 def confirm_email_address_via_verification_token(
-    verification_token: VerificationToken,
+    confirmation_token: EmailAddressConfirmationToken,
 ) -> Result[UserEmailAddressConfirmedEvent, str]:
     """Confirm the email address of the user account assigned with that
     verification token.
     """
-    user = verification_token.user
+    user = confirmation_token.user
 
-    token_email_address = verification_token.data.get('email_address')
+    token_email_address = confirmation_token.email_address
     if not token_email_address:
         return Err('Verification token contains no email address.')
 
@@ -107,7 +107,7 @@ def confirm_email_address_via_verification_token(
 
     event = confirmation_result.unwrap()
 
-    verification_token_service.delete_token(verification_token.token)
+    verification_token_service.delete_token(confirmation_token.token)
 
     return Ok(event)
 

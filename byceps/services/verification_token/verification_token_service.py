@@ -21,6 +21,7 @@ from .dbmodels import DbVerificationToken
 from .models import (
     ConsentToken,
     EmailAddressChangeToken,
+    EmailAddressConfirmationToken,
     Purpose,
     VerificationToken,
 )
@@ -41,9 +42,10 @@ def create_for_email_address_change(
 
 def create_for_email_address_confirmation(
     user: User, email_address: str
-) -> VerificationToken:
+) -> EmailAddressConfirmationToken:
     data = {'email_address': email_address}
-    return _create_token(user, Purpose.email_address_confirmation, data=data)
+    vt = _create_token(user, Purpose.email_address_confirmation, data=data)
+    return _to_email_address_confirmation_token(vt)
 
 
 def create_for_password_reset(user: User) -> VerificationToken:
@@ -115,9 +117,14 @@ def find_for_email_address_change_by_token(
 
 def find_for_email_address_confirmation_by_token(
     token_value: str,
-) -> VerificationToken | None:
-    purpose = Purpose.email_address_confirmation
-    return _find_for_purpose_by_token(token_value, purpose)
+) -> EmailAddressConfirmationToken | None:
+    vt = _find_for_purpose_by_token(
+        token_value, Purpose.email_address_confirmation
+    )
+    if vt is None:
+        return None
+
+    return _to_email_address_confirmation_token(vt)
 
 
 def find_for_password_reset_by_token(
@@ -172,6 +179,17 @@ def _to_email_address_change_token(
         created_at=vt.created_at,
         user=vt.user,
         new_email_address=vt.data['new_email_address'],
+    )
+
+
+def _to_email_address_confirmation_token(
+    vt: VerificationToken,
+) -> EmailAddressConfirmationToken:
+    return EmailAddressConfirmationToken(
+        token=vt.token,
+        created_at=vt.created_at,
+        user=vt.user,
+        email_address=vt.data['email_address'],
     )
 
 

@@ -17,7 +17,7 @@ from byceps.services.user import (
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import (
     EmailAddressChangeToken,
-    VerificationToken,
+    EmailAddressConfirmationToken,
 )
 from byceps.signals import user as user_signals
 from byceps.util.framework.blueprint import create_blueprint
@@ -113,11 +113,11 @@ def confirm(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
     """
-    verification_token = _get_valid_confirmation_token_or_404(token)
+    confirmation_token = _get_valid_confirmation_token_or_404(token)
 
     confirmation_result = (
         user_email_address_service.confirm_email_address_via_verification_token(
-            verification_token
+            confirmation_token
         )
     )
     if confirmation_result.is_err():
@@ -128,7 +128,7 @@ def confirm(token):
 
     flash_success(gettext('Email address has been verified.'))
 
-    user = verification_token.user
+    user = confirmation_token.user
     if not user.initialized:
         user_command_service.initialize_account(user)
         flash_success(
@@ -143,21 +143,23 @@ def confirm(token):
     return redirect_to('authentication_login.log_in_form')
 
 
-def _get_valid_confirmation_token_or_404(token: str) -> VerificationToken:
-    verification_token = (
+def _get_valid_confirmation_token_or_404(
+    token: str,
+) -> EmailAddressConfirmationToken:
+    confirmation_token = (
         verification_token_service.find_for_email_address_confirmation_by_token(
             token
         )
     )
-    if verification_token is None:
+    if confirmation_token is None:
         abort(404)
 
-    user = verification_token.user
+    user = confirmation_token.user
     if user.suspended or user.deleted:
         flash_error(gettext('No valid token specified.'))
         abort(404)
 
-    return verification_token
+    return confirmation_token
 
 
 @blueprint.get('/change/<token>')

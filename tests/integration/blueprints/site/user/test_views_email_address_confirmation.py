@@ -172,7 +172,7 @@ def get_role_ids(user_id):
 
 
 def create_verification_token(user, email_address):
-    token = verification_token_service.create_for_email_address_confirmation(
+    confirmation_token = verification_token_service.create_for_email_address_confirmation(
         user, email_address
     )
-    return token.token
+    return confirmation_token.token
