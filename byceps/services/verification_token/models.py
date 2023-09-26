@@ -40,3 +40,8 @@ class VerificationToken(_BaseVerificationToken):
 @dataclass(frozen=True)
 class ConsentToken(_BaseVerificationToken):
     pass
+
+
+@dataclass(frozen=True)
+class EmailAddressChangeToken(_BaseVerificationToken):
+    new_email_address: str

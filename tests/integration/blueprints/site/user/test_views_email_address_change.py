@@ -69,7 +69,7 @@ def change(app, token):
 
 
 def create_verification_token(user, new_email_address):
-    token = verification_token_service.create_for_email_address_change(
+    change_token = verification_token_service.create_for_email_address_change(
         user, new_email_address
     )
-    return token.token
+    return change_token.token

@@ -15,7 +15,10 @@ from byceps.services.user import (
     user_service,
 )
 from byceps.services.verification_token import verification_token_service
-from byceps.services.verification_token.models import VerificationToken
+from byceps.services.verification_token.models import (
+    EmailAddressChangeToken,
+    VerificationToken,
+)
 from byceps.signals import user as user_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
@@ -162,10 +165,10 @@ def change(token):
     """Confirm and change e-mail address of the user account assigned
     with the verification token.
     """
-    verification_token = _get_valid_change_token_or_404(token)
+    change_token = _get_valid_change_token_or_404(token)
 
     change_result = user_email_address_service.change_email_address(
-        verification_token
+        change_token
     )
     if change_result.is_err():
         flash_error(gettext('Email address change failed.'))
@@ -183,16 +186,16 @@ def change(token):
         return redirect_to('authentication_login.log_in_form')
 
 
-def _get_valid_change_token_or_404(token: str) -> VerificationToken:
-    verification_token = (
+def _get_valid_change_token_or_404(token: str) -> EmailAddressChangeToken:
+    change_token = (
         verification_token_service.find_for_email_address_change_by_token(token)
     )
-    if verification_token is None:
+    if change_token is None:
         abort(404)
 
-    user = verification_token.user
+    user = change_token.user
     if user.suspended or user.deleted:
         flash_error(gettext('No valid token specified.'))
         abort(404)
 
-    return verification_token
+    return change_token

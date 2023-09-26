@@ -18,7 +18,12 @@ from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 from .dbmodels import DbVerificationToken
-from .models import ConsentToken, Purpose, VerificationToken
+from .models import (
+    ConsentToken,
+    EmailAddressChangeToken,
+    Purpose,
+    VerificationToken,
+)
 
 
 def create_for_consent(user: User) -> ConsentToken:
@@ -28,9 +33,10 @@ def create_for_consent(user: User) -> ConsentToken:
 
 def create_for_email_address_change(
     user: User, new_email_address: str
-) -> VerificationToken:
+) -> EmailAddressChangeToken:
     data = {'new_email_address': new_email_address}
-    return _create_token(user, Purpose.email_address_change, data=data)
+    vt = _create_token(user, Purpose.email_address_change, data=data)
+    return _to_email_address_change_token(vt)
 
 
 def create_for_email_address_confirmation(
@@ -99,9 +105,12 @@ def find_for_consent_by_token(token_value: str) -> ConsentToken | None:
 
 def find_for_email_address_change_by_token(
     token_value: str,
-) -> VerificationToken | None:
-    purpose = Purpose.email_address_change
-    return _find_for_purpose_by_token(token_value, purpose)
+) -> EmailAddressChangeToken | None:
+    vt = _find_for_purpose_by_token(token_value, Purpose.email_address_change)
+    if vt is None:
+        return None
+
+    return _to_email_address_change_token(vt)
 
 
 def find_for_email_address_confirmation_by_token(
@@ -152,6 +161,17 @@ def _to_consent_token(vt: VerificationToken) -> ConsentToken:
         token=vt.token,
         created_at=vt.created_at,
         user=vt.user,
+    )
+
+
+def _to_email_address_change_token(
+    vt: VerificationToken,
+) -> EmailAddressChangeToken:
+    return EmailAddressChangeToken(
+        token=vt.token,
+        created_at=vt.created_at,
+        user=vt.user,
+        new_email_address=vt.data['new_email_address'],
     )
 
 

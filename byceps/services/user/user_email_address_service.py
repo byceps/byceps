@@ -29,7 +29,10 @@ from byceps.services.user import (
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import verification_token_service
-from byceps.services.verification_token.models import VerificationToken
+from byceps.services.verification_token.models import (
+    EmailAddressChangeToken,
+    VerificationToken,
+)
 from byceps.typing import UserID
 from byceps.util.l10n import force_user_locale
 from byceps.util.result import Err, Ok, Result
@@ -203,14 +206,12 @@ def send_email_address_change_email(
 ) -> None:
     recipients = [new_email_address]
 
-    verification_token = (
-        verification_token_service.create_for_email_address_change(
-            user, new_email_address
-        )
+    change_token = verification_token_service.create_for_email_address_change(
+        user, new_email_address
     )
     confirmation_url = (
         f'https://{server_name}/users/email_address/'
-        f'change/{verification_token.token}'
+        f'change/{change_token.token}'
     )
 
     with force_user_locale(user):
@@ -232,16 +233,16 @@ def send_email_address_change_email(
 
 
 def change_email_address(
-    verification_token: VerificationToken,
+    change_token: EmailAddressChangeToken,
 ) -> Result[UserEmailAddressChangedEvent, str]:
     """Change the email address of the user account assigned with that
     verification token.
     """
-    new_email_address = verification_token.data.get('new_email_address')
+    new_email_address = change_token.new_email_address
     if not new_email_address:
         return Err('Token contains no email address.')
 
-    user = verification_token.user
+    user = change_token.user
     verified = True
     initiator = user
 
@@ -249,7 +250,7 @@ def change_email_address(
         user, new_email_address, verified, initiator
     )
 
-    verification_token_service.delete_token(verification_token.token)
+    verification_token_service.delete_token(change_token.token)
 
     return Ok(event)
 
