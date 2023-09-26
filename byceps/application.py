@@ -246,7 +246,7 @@ def _enable_api(
     api_app = create_api_app(config_overrides=config_overrides)
 
     app.wsgi_app = DispatcherMiddleware(
-        app,
+        app.wsgi_app,
         {
             '/api': api_app,
         },
