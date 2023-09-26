@@ -62,8 +62,8 @@ def log_in_user(
     # Authentication succeeded.
 
     if _is_consent_required(user.id, brand_id):
-        verification_token = verification_token_service.create_for_consent(user)
-        return Err(ConsentRequiredError(verification_token.token))
+        consent_token = verification_token_service.create_for_consent(user)
+        return Err(ConsentRequiredError(consent_token.token))
 
     auth_token, logged_in_event = authn_session_service.log_in_user(
         user, ip_address=ip_address, site=site

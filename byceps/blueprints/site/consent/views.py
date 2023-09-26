@@ -14,7 +14,7 @@ from flask_babel import gettext
 
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.verification_token import verification_token_service
-from byceps.services.verification_token.models import VerificationToken
+from byceps.services.verification_token.models import ConsentToken
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -32,9 +32,9 @@ def consent_form(token, *, erroneous_form=None):
     """Show form requiring consent to required subjects to which the
     user did not consent yet.
     """
-    verification_token = _get_verification_token_or_404(token)
+    consent_token = _get_consent_token_or_404(token)
 
-    user = verification_token.user
+    user = consent_token.user
 
     unconsented_subjects = _get_unconsented_subjects_for_user(user.id)
 
@@ -59,9 +59,9 @@ def _get_subjects_and_fields(subjects, form):
 @blueprint.post('/consent/<token>')
 def consent(token):
     """Consent to the specified subjects."""
-    verification_token = _get_verification_token_or_404(token)
+    consent_token = _get_consent_token_or_404(token)
 
-    user = verification_token.user
+    user = consent_token.user
 
     unconsented_subjects = _get_unconsented_subjects_for_user(user.id)
 
@@ -82,7 +82,7 @@ def consent(token):
     consent_service.consent_to_subjects(
         user.id, subject_ids_from_form, expressed_at
     )
-    verification_token_service.delete_token(verification_token.token)
+    verification_token_service.delete_token(consent_token.token)
 
     flash_success(gettext('Thank you for your consent. Please log in again.'))
     return redirect_to('authentication_login.log_in_form')
@@ -100,13 +100,13 @@ def _get_unconsented_subjects_for_user(user_id):
     return consent_subject_service.get_subjects(unconsented_subject_ids)
 
 
-def _get_verification_token_or_404(token_value: str) -> VerificationToken:
-    verification_token = verification_token_service.find_for_consent_by_token(
+def _get_consent_token_or_404(token_value: str) -> ConsentToken:
+    consent_token = verification_token_service.find_for_consent_by_token(
         token_value
     )
 
-    if verification_token is None:
+    if consent_token is None:
         flash_error(gettext('Invalid verification token'))
         abort(404)
 
-    return verification_token
+    return consent_token

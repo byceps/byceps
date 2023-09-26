@@ -18,7 +18,12 @@ from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 from .dbmodels import DbVerificationToken
-from .models import Purpose, VerificationToken
+from .models import ConsentToken, Purpose, VerificationToken
+
+
+def create_for_consent(user: User) -> ConsentToken:
+    vt = _create_token(user, Purpose.consent)
+    return _to_consent_token(vt)
 
 
 def create_for_email_address_change(
@@ -37,10 +42,6 @@ def create_for_email_address_confirmation(
 
 def create_for_password_reset(user: User) -> VerificationToken:
     return _create_token(user, Purpose.password_reset)
-
-
-def create_for_consent(user: User) -> VerificationToken:
-    return _create_token(user, Purpose.consent)
 
 
 def _create_token(
@@ -88,6 +89,14 @@ def delete_old_tokens(created_before: datetime) -> int:
     return num_deleted
 
 
+def find_for_consent_by_token(token_value: str) -> ConsentToken | None:
+    vt = _find_for_purpose_by_token(token_value, Purpose.consent)
+    if vt is None:
+        return None
+
+    return _to_consent_token(vt)
+
+
 def find_for_email_address_change_by_token(
     token_value: str,
 ) -> VerificationToken | None:
@@ -106,11 +115,6 @@ def find_for_password_reset_by_token(
     token_value: str,
 ) -> VerificationToken | None:
     purpose = Purpose.password_reset
-    return _find_for_purpose_by_token(token_value, purpose)
-
-
-def find_for_consent_by_token(token_value: str) -> VerificationToken | None:
-    purpose = Purpose.consent
     return _find_for_purpose_by_token(token_value, purpose)
 
 
@@ -140,6 +144,14 @@ def _db_entity_to_token(
         user=user,
         purpose=db_token.purpose,
         data=db_token.data if db_token.data is not None else {},
+    )
+
+
+def _to_consent_token(vt: VerificationToken) -> ConsentToken:
+    return ConsentToken(
+        token=vt.token,
+        created_at=vt.created_at,
+        user=vt.user,
     )
 
 

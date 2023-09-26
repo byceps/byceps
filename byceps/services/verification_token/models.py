@@ -25,9 +25,18 @@ Purpose = Enum(
 
 
 @dataclass(frozen=True)
-class VerificationToken:
+class _BaseVerificationToken:
     token: str
     created_at: datetime
     user: User
+
+
+@dataclass(frozen=True)
+class VerificationToken(_BaseVerificationToken):
     purpose: Purpose
     data: dict[str, str]
+
+
+@dataclass(frozen=True)
+class ConsentToken(_BaseVerificationToken):
+    pass
