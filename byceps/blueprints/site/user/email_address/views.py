@@ -177,6 +177,20 @@ def _get_valid_confirmation_token_or_404(
 
 
 @blueprint.get('/change/<token>')
+@templated
+def change_form(token):
+    """Show form to confirm and change e-mail address of the user
+    account assigned with the verification token.
+    """
+    change_token = _get_valid_change_token_or_404(token)
+
+    return {
+        'token': change_token.token,
+        'new_email_address': change_token.new_email_address,
+    }
+
+
+@blueprint.post('/change/<token>')
 def change(token):
     """Confirm and change e-mail address of the user account assigned
     with the verification token.

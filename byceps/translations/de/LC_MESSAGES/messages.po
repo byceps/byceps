@@ -5428,6 +5428,7 @@ msgstr "Ticket-Code ändern"
 #: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:17
 #: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:17
 #: byceps/blueprints/common/authentication/password/templates/common/authentication/password/update_form.html:17
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:14
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:16
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:16
 msgid "Change"
@@ -6363,7 +6364,7 @@ msgstr ""
 
 #: byceps/blueprints/common/authentication/password/views.py:224
 #: byceps/blueprints/site/user/email_address/views.py:173
-#: byceps/blueprints/site/user/email_address/views.py:214
+#: byceps/blueprints/site/user/email_address/views.py:228
 msgid "No valid token specified."
 msgstr "Es wurde kein gültiges Token angegeben."
 
@@ -7573,13 +7574,21 @@ msgstr "Die E-Mail-Adresse wurde bestätigt."
 msgid "User \"%(screen_name)s\" has been activated."
 msgstr "Das Benutzerkonto \"%(screen_name)s\" wurde aktiviert."
 
-#: byceps/blueprints/site/user/email_address/views.py:190
+#: byceps/blueprints/site/user/email_address/views.py:204
 msgid "Email address change failed."
 msgstr "Die Änderung der E-Mail-Adresse ist fehlgeschlagen."
 
-#: byceps/blueprints/site/user/email_address/views.py:195
+#: byceps/blueprints/site/user/email_address/views.py:209
 msgid "Email address has been changed."
 msgstr "Die E-Mail-Adresse wurde geändert."
+
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:4
+msgid "Confirm new email address"
+msgstr "Neue E-Mail-Adresse bestätigen"
+
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:12
+msgid "Please confirm that this is your new email address:"
+msgstr "Bitte bestätige, dass dies deine neue E-Mail-Adresse ist:"
 
 #: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:4
 msgid "Confirm email address"

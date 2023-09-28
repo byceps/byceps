@@ -65,7 +65,7 @@ def test_unknown_token(site_app, site, make_user):
 def change(app, token):
     url = f'/users/email_address/change/{token}'
     with http_client(app) as client:
-        return client.get(url)
+        return client.post(url)
 
 
 def create_verification_token(user, new_email_address):
