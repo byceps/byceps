@@ -49,7 +49,7 @@
       {{ form_form_errors(form) }}
 
       {{ form_field(form.username, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.password, maxlength=40) }}
+      {{ form_field(form.password, maxlength=100) }}
       {{ form_field_check(form.permanent, _('permanently stay logged in')) }}
     </div>
 

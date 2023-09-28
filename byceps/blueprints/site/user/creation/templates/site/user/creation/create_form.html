@@ -28,7 +28,7 @@
       {%- endif %}
 
       {{ form_field(form.email_address, type='email', maxlength=120) }}
-      {{ form_field(form.password, maxlength=40) }}
+      {{ form_field(form.password, maxlength=100) }}
 
       {%- for subject in required_consent_subjects %}
         {%- with field = form.get_field_for_consent_subject_id(subject.id) %}
