@@ -164,7 +164,8 @@ def test_create(
     expected_body = f'''
 Hallo Hiro,
 
-bitte bestätige deine E-Mail-Adresse indem du diese URL aufrufst: https://www.acmecon.test/users/email_address/confirmation/{verification_token.token}
+bitte bestätige deine E-Mail-Adresse hier:
+https://www.acmecon.test/users/email_address/confirmation/{verification_token.token}
     '''.strip()
 
     assert_email(

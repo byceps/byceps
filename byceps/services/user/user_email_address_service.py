@@ -80,10 +80,9 @@ def send_email_address_confirmation_email(
         body = (
             gettext('Hello %(screen_name)s,', screen_name=recipient_screen_name)
             + '\n\n'
-            + gettext(
-                'please verify your email address by accessing this URL: %(url)s',
-                url=confirmation_url,
-            )
+            + gettext('please verify your email address here:')
+            + '\n'
+            + confirmation_url
         )
 
     email_service.enqueue_email(sender, recipients, subject, body)
@@ -223,10 +222,9 @@ def send_email_address_change_email(
         body = (
             gettext('Hello %(screen_name)s,', screen_name=recipient_screen_name)
             + '\n\n'
-            + gettext(
-                'please verify your email address by accessing this URL: %(url)s',
-                url=confirmation_url,
-            )
+            + gettext('please verify your email address here:')
+            + '\n'
+            + confirmation_url
         )
 
     email_service.enqueue_email(sender, recipients, subject, body)

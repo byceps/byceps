@@ -45,9 +45,9 @@ def prepare_password_reset(
         body = (
             gettext('Hello %(screen_name)s,', screen_name=screen_name)
             + '\n\n'
-            + gettext(
-                'you can set a new password here: %(url)s', url=confirmation_url
-            )
+            + gettext('you can set a new password here:')
+            + '\n'
+            + confirmation_url
         )
 
     email_service.enqueue_email(sender, recipients, subject, body)
