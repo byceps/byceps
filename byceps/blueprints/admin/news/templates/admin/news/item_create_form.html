@@ -15,8 +15,8 @@
 
   <form action="{{ url_for('.item_create', channel_id=channel.id) }}" method="post">
     <div class="box">
-      {{ form_field(form.slug, maxlength=80, autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=80) }}
+      {{ form_field(form.slug, autofocus='autofocus') }}
+      {{ form_field(form.title) }}
       {{ form_field_radio(form.body_format) }}
       {{ form_field(form.body, class='monospace') }}
     </div>

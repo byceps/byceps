@@ -10,7 +10,7 @@
 
   <div class="main-body-box">
     <form action="{{ url_for('.change_screen_name') }}" method="post">
-      {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}
+      {{ form_field(form.screen_name, autofocus='autofocus') }}
       {{ form_field(form.password) }}
 
       {{ form_buttons(_('Change'), cancel_url=url_for('.view')) }}

@@ -16,8 +16,8 @@
   <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
     <div class="box">
 
-      {{ form_field(form.id, maxlength=40, placeholder='%s-42'|format(brand.id), autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=40, placeholder='%s 42'|format(brand.title)) }}
+      {{ form_field(form.id, placeholder='%s-42'|format(brand.id), autofocus='autofocus') }}
+      {{ form_field(form.title, placeholder='%s 42'|format(brand.title)) }}
 
       <div class="row">
         <div>

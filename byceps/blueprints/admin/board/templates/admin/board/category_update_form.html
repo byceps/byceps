@@ -15,9 +15,9 @@
 
   <form action="{{ url_for('.category_update', category_id=category.id) }}" method="post">
     <div class="box">
-      {{ form_field(form.slug, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=40) }}
-      {{ form_field(form.description, maxlength=80) }}
+      {{ form_field(form.slug, autofocus='autofocus') }}
+      {{ form_field(form.title) }}
+      {{ form_field(form.description) }}
     </div>
 
     {{ form_buttons(_('Save')) }}

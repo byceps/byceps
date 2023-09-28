@@ -14,8 +14,8 @@
 
   <form action="{{ url_for('.create') }}" method="post">
     <div class="box">
-      {{ form_field(form.id, maxlength=40, placeholder='superlan', autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=40, placeholder='SuperLAN') }}
+      {{ form_field(form.id, placeholder='superlan', autofocus='autofocus') }}
+      {{ form_field(form.title, placeholder='SuperLAN') }}
     </div>
 
     {{ form_buttons(_('Create')) }}

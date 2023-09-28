@@ -15,7 +15,7 @@
 
   <form action="{{ url_for('.delete_account', user_id=user.id) }}" method="post">
     <div class="box">
-      {{ form_field(form.reason, maxlength=1000, caption=_('The reason will be saved as <em>internal</em> remark.')|safe, autofocus='autofocus') }}
+      {{ form_field(form.reason, caption=_('The reason will be saved as <em>internal</em> remark.')|safe, autofocus='autofocus') }}
       {{ form_field(form.verification, caption=_('Please enter "%(verification_text)s" to confirm deletion.', verification_text=verification_text)) }}
     </div>
 

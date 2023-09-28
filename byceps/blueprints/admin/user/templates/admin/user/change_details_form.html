@@ -18,7 +18,7 @@
           {{ form_field(form.first_name, maxlength=40, autofocus='autofocus') }}
         </div>
         <div class="column--grow">
-          {{ form_field(form.last_name, maxlength=80) }}
+          {{ form_field(form.last_name) }}
         </div>
       </div>
 
@@ -34,8 +34,8 @@
         </div>
       </div>
 
-      {{ form_field(form.country, list='countries', maxlength=60) }}
-      {{ form_field(form.phone_number, maxlength=20) }}
+      {{ form_field(form.country, list='countries') }}
+      {{ form_field(form.phone_number) }}
 
     </div>
 

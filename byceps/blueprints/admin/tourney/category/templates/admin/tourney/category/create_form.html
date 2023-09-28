@@ -15,7 +15,7 @@
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
     <div class="box">
-      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.title, autofocus='autofocus') }}
     </div>
 
     {{ form_buttons(_('Create')) }}
