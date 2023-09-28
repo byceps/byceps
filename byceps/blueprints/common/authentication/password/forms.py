@@ -15,7 +15,7 @@ from byceps.services.authentication.password import authn_password_service
 from byceps.util.l10n import LocalizedForm
 
 
-MINIMUM_PASSWORD_LENGTH = 8
+MINIMUM_PASSWORD_LENGTH = 10
 MAXIMUM_PASSWORD_LENGTH = 100
 
 

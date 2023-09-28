@@ -54,7 +54,7 @@ class UserCreateForm(LocalizedForm):
         [InputRequired(), Length(min=6, max=120), validate_email_address],
     )
     password = PasswordField(
-        lazy_gettext('Password'), [InputRequired(), Length(min=8)]
+        lazy_gettext('Password'), [InputRequired(), Length(min=10)]
     )
     is_bot = BooleanField(lazy_gettext('Bot'))
 
