@@ -5428,7 +5428,7 @@ msgstr "Ticket-Code ändern"
 #: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:17
 #: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:17
 #: byceps/blueprints/common/authentication/password/templates/common/authentication/password/update_form.html:17
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:14
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:15
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:16
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:16
 msgid "Change"
@@ -6316,13 +6316,13 @@ msgid "Password has been updated. Please log in again."
 msgstr "Dein Passwort wurde geändert. Bitte melde dich erneut an."
 
 #: byceps/blueprints/common/authentication/password/views.py:97
-#: byceps/blueprints/site/user/email_address/views.py:60
+#: byceps/blueprints/site/user/email_address/views.py:62
 #, python-format
 msgid "Username \"%(screen_name)s\" is unknown."
 msgstr "Der Benutzername \"%(screen_name)s\" ist unbekannt."
 
 #: byceps/blueprints/common/authentication/password/views.py:108
-#: byceps/blueprints/site/user/email_address/views.py:71
+#: byceps/blueprints/site/user/email_address/views.py:73
 #, python-format
 msgid "No email address is set for user \"%(screen_name)s\"."
 msgstr ""
@@ -6337,7 +6337,7 @@ msgstr ""
 "nicht bestätigt."
 
 #: byceps/blueprints/common/authentication/password/views.py:129
-#: byceps/blueprints/site/user/email_address/views.py:89
+#: byceps/blueprints/site/user/email_address/views.py:91
 #, python-format
 msgid "User \"%(screen_name)s\" has been suspended."
 msgstr "Das Benutzerkonto \"%(screen_name)s\" ist gesperrt."
@@ -6363,8 +6363,10 @@ msgstr ""
 "Stunden lang gültig."
 
 #: byceps/blueprints/common/authentication/password/views.py:224
-#: byceps/blueprints/site/user/email_address/views.py:173
-#: byceps/blueprints/site/user/email_address/views.py:228
+#: byceps/blueprints/site/user/email_address/views.py:121
+#: byceps/blueprints/site/user/email_address/views.py:137
+#: byceps/blueprints/site/user/email_address/views.py:194
+#: byceps/blueprints/site/user/email_address/views.py:210
 msgid "No valid token specified."
 msgstr "Es wurde kein gültiges Token angegeben."
 
@@ -7545,14 +7547,14 @@ msgstr "Ich möchte den Newsletter erhalten."
 msgid "I am a bot."
 msgstr "Ich bin ein Bot."
 
-#: byceps/blueprints/site/user/email_address/views.py:80
+#: byceps/blueprints/site/user/email_address/views.py:82
 #, python-format
 msgid "The email address for user \"%(screen_name)s\" has already been verified."
 msgstr ""
 "Die E-Mail-Adresse für den Benutzernamen \"%(screen_name)s\" wurde "
 "bereits bestätigt."
 
-#: byceps/blueprints/site/user/email_address/views.py:101
+#: byceps/blueprints/site/user/email_address/views.py:103
 #, python-format
 msgid ""
 "The link to verify the email address for user \"%(screen_name)s\" has "
@@ -7561,24 +7563,24 @@ msgstr ""
 "Der Link zur Bestätigung der für den Benutzernamen \"%(screen_name)s\" "
 "hinterlegten E-Mail-Adresse wurde erneut versendet."
 
-#: byceps/blueprints/site/user/email_address/views.py:138
+#: byceps/blueprints/site/user/email_address/views.py:146
 msgid "Email address verification failed."
 msgstr "Die Verifikation der E-Mail-Adresse ist fehlgeschlagen."
 
-#: byceps/blueprints/site/user/email_address/views.py:143
+#: byceps/blueprints/site/user/email_address/views.py:151
 msgid "Email address has been verified."
 msgstr "Die E-Mail-Adresse wurde bestätigt."
 
-#: byceps/blueprints/site/user/email_address/views.py:149
+#: byceps/blueprints/site/user/email_address/views.py:157
 #, python-format
 msgid "User \"%(screen_name)s\" has been activated."
 msgstr "Das Benutzerkonto \"%(screen_name)s\" wurde aktiviert."
 
-#: byceps/blueprints/site/user/email_address/views.py:204
+#: byceps/blueprints/site/user/email_address/views.py:217
 msgid "Email address change failed."
 msgstr "Die Änderung der E-Mail-Adresse ist fehlgeschlagen."
 
-#: byceps/blueprints/site/user/email_address/views.py:209
+#: byceps/blueprints/site/user/email_address/views.py:222
 msgid "Email address has been changed."
 msgstr "Die E-Mail-Adresse wurde geändert."
 
@@ -7586,7 +7588,7 @@ msgstr "Die E-Mail-Adresse wurde geändert."
 msgid "Confirm new email address"
 msgstr "Neue E-Mail-Adresse bestätigen"
 
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:12
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:13
 msgid "Please confirm that this is your new email address:"
 msgstr "Bitte bestätige, dass dies deine neue E-Mail-Adresse ist:"
 
@@ -7594,11 +7596,11 @@ msgstr "Bitte bestätige, dass dies deine neue E-Mail-Adresse ist:"
 msgid "Confirm email address"
 msgstr "E-Mail-Adresse bestätigen"
 
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:12
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:13
 msgid "Please confirm that this is your email address:"
 msgstr "Bitte bestätige, dass dies deine E-Mail-Adresse ist:"
 
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:14
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:15
 msgid "Confirm"
 msgstr "Bestätigen"
 

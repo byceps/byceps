@@ -78,7 +78,7 @@ def test_unknown_token(site_app, site, user2):
 
     # -------------------------------- #
 
-    assert response.status_code == 404
+    assert response.status_code == 200
 
     user_after = user_service.get_db_user(user_id)
     assert not user_after.initialized

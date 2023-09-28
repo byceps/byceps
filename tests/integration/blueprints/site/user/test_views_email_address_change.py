@@ -52,7 +52,7 @@ def test_unknown_token(site_app, site, make_user):
 
     # -------------------------------- #
 
-    assert response.status_code == 404
+    assert response.status_code == 200
 
     user_after = user_service.get_db_user(user.id)
     assert user_after.email_address == 'change-fail@mail.test'

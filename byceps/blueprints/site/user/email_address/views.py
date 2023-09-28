@@ -6,7 +6,9 @@ byceps.blueprints.site.user.email_address.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, request
+from __future__ import annotations
+
+from flask import g, request
 from flask_babel import gettext
 
 from byceps.services.user import (
@@ -114,7 +116,10 @@ def confirm_form(token):
     """Show form to confirm e-mail address of the user account assigned
     with the verification token.
     """
-    confirmation_token = _get_valid_confirmation_token_or_404(token)
+    confirmation_token = _find_valid_confirmation_token(token)
+    if not confirmation_token:
+        flash_error(gettext('No valid token specified.'))
+        return
 
     return {
         'token': confirmation_token.token,
@@ -127,7 +132,9 @@ def confirm(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
     """
-    confirmation_token = _get_valid_confirmation_token_or_404(token)
+    confirmation_token = _find_valid_confirmation_token(token)
+    if not confirmation_token:
+        return confirm_form(token)
 
     confirmation_result = (
         user_email_address_service.confirm_email_address_via_verification_token(
@@ -157,21 +164,20 @@ def confirm(token):
     return redirect_to('authentication_login.log_in_form')
 
 
-def _get_valid_confirmation_token_or_404(
+def _find_valid_confirmation_token(
     token: str,
-) -> EmailAddressConfirmationToken:
+) -> EmailAddressConfirmationToken | None:
     confirmation_token = (
         verification_token_service.find_for_email_address_confirmation_by_token(
             token
         )
     )
     if confirmation_token is None:
-        abort(404)
+        return None
 
     user = confirmation_token.user
     if user.suspended or user.deleted:
-        flash_error(gettext('No valid token specified.'))
-        abort(404)
+        return None
 
     return confirmation_token
 
@@ -182,7 +188,10 @@ def change_form(token):
     """Show form to confirm and change e-mail address of the user
     account assigned with the verification token.
     """
-    change_token = _get_valid_change_token_or_404(token)
+    change_token = _find_valid_change_token(token)
+    if not change_token:
+        flash_error(gettext('No valid token specified.'))
+        return
 
     return {
         'token': change_token.token,
@@ -195,7 +204,9 @@ def change(token):
     """Confirm and change e-mail address of the user account assigned
     with the verification token.
     """
-    change_token = _get_valid_change_token_or_404(token)
+    change_token = _find_valid_change_token(token)
+    if not change_token:
+        return change_form(token)
 
     change_result = user_email_address_service.change_email_address(
         change_token
@@ -216,16 +227,15 @@ def change(token):
         return redirect_to('authentication_login.log_in_form')
 
 
-def _get_valid_change_token_or_404(token: str) -> EmailAddressChangeToken:
+def _find_valid_change_token(token: str) -> EmailAddressChangeToken | None:
     change_token = (
         verification_token_service.find_for_email_address_change_by_token(token)
     )
     if change_token is None:
-        abort(404)
+        return None
 
     user = change_token.user
     if user.suspended or user.deleted:
-        flash_error(gettext('No valid token specified.'))
-        abort(404)
+        return None
 
     return change_token
