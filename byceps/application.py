@@ -51,8 +51,7 @@ def create_admin_app(
 
     _enable_rq_dashboard(app)
 
-    if app.config['API_ENABLED']:
-        _enable_api(app, config_overrides)
+    _dispatch_apps_by_url_path(app, config_overrides)
 
     return app
 
@@ -65,8 +64,7 @@ def create_site_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     app = _create_app(config_overrides=config_overrides)
 
-    if app.config['API_ENABLED']:
-        _enable_api(app, config_overrides)
+    _dispatch_apps_by_url_path(app, config_overrides)
 
     _init_site_app(app)
 
@@ -239,18 +237,17 @@ def _init_site_app(app: Flask) -> None:
     app.jinja_loader = SiteTemplateOverridesLoader()
 
 
-def _enable_api(
+def _dispatch_apps_by_url_path(
     app: Flask,
     config_overrides: dict[str, Any] | None,
 ) -> None:
-    api_app = create_api_app(config_overrides=config_overrides)
+    mounts = {}
 
-    app.wsgi_app = DispatcherMiddleware(
-        app.wsgi_app,
-        {
-            '/api': api_app,
-        },
-    )
+    if app.config['API_ENABLED']:
+        api_app = create_api_app(config_overrides=config_overrides)
+        mounts['/api'] = api_app
+
+    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
 
 
 def _enable_debug_toolbar(app: Flask) -> None:
