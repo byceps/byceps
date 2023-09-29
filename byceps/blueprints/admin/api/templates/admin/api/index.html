@@ -46,12 +46,30 @@ code {
     {%- for api_token in api_tokens|sort(attribute='created_at', reverse=True) %}
   <div class="box box--marked {{ 'color-danger' if api_token.suspended else 'color-success' }}">
 
-    <div class="mb">{{ render_tag(_('suspended'), class='color-danger') if api_token.suspended else render_tag(_('enabled'), class='color-success') }}</div>
-
     <div class="row row--space-between">
+      <div>
+
+        {{ render_tag(_('suspended'), class='color-danger') if api_token.suspended else render_tag(_('enabled'), class='color-success') }}
+
+      </div>
+      <div>
+
+        <div class="button-row button-row--compact button-row--right">
+          {%- if api_token.suspended %}
+          <a class="button button--compact" href="{{ url_for('.unsuspend_api_token', api_token_id=api_token.id) }}" data-action="unsuspend-api-token" title="{{ _('Unsuspend API token') }}">{{ render_icon('enabled') }}</a>
+          {%- else %}
+          <a class="button button--compact" href="{{ url_for('.suspend_api_token', api_token_id=api_token.id) }}" data-action="suspend-api-token" title="{{ _('Suspend API token') }}">{{ render_icon('disabled') }}</a>
+          {%- endif %}
+          <a class="button button--compact" href="{{ url_for('.delete_api_token', api_token_id=api_token.id) }}" data-action="delete-api-token" title="{{ _('Delete API token') }}">{{ render_icon('delete') }}</a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row row--space-between mt">
       <div class="column--grow">
 
-        <div class="row mb">
+        <div class="row">
           <div style="flex-basis: 50%;">
 
             <div class="data-label">{{ _('Description') }}</div>
@@ -78,7 +96,7 @@ code {
           </div>
         </div>
 
-        <div class="row">
+        <div class="row mt">
           <div style="flex-basis: 50%;">
 
             <div class="data-label">{{ _('Permissions') }}</div>
@@ -109,18 +127,6 @@ code {
             </div>
 
           </div>
-        </div>
-
-      </div>
-      <div>
-
-        <div class="button-row button-row--compact button-row--right">
-          {%- if api_token.suspended %}
-          <a class="button button--compact" href="{{ url_for('.unsuspend_api_token', api_token_id=api_token.id) }}" data-action="unsuspend-api-token" title="{{ _('Unsuspend API token') }}">{{ render_icon('enabled') }}</a>
-          {%- else %}
-          <a class="button button--compact" href="{{ url_for('.suspend_api_token', api_token_id=api_token.id) }}" data-action="suspend-api-token" title="{{ _('Suspend API token') }}">{{ render_icon('disabled') }}</a>
-          {%- endif %}
-          <a class="button button--compact" href="{{ url_for('.delete_api_token', api_token_id=api_token.id) }}" data-action="delete-api-token" title="{{ _('Delete API token') }}">{{ render_icon('delete') }}</a>
         </div>
 
       </div>
