@@ -483,10 +483,6 @@ form .invalid {
   padding: var(--padding);
 }
 
-form .form-form-errors {
-  display: inline-block;
-}
-
 form .invalid {
   margin: calc(var(--padding) * -1 - 1px);
 }
