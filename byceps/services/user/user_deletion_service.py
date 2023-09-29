@@ -12,7 +12,7 @@ from byceps.database import db
 from byceps.events.user import UserAccountDeletedEvent
 from byceps.services.authentication.password import authn_password_service
 from byceps.services.authentication.session import authn_session_service
-from byceps.services.authorization import authz_service
+from byceps.services.authz import authz_service
 from byceps.services.user import (
     user_domain_service,
     user_log_service,

@@ -14,8 +14,8 @@ from flask import Flask
 from moneyed import EUR
 import pytest
 
-from byceps.services.authorization import authz_service
-from byceps.services.authorization.models import PermissionID, Role, RoleID
+from byceps.services.authz import authz_service
+from byceps.services.authz.models import PermissionID, Role, RoleID
 from byceps.services.board import board_service
 from byceps.services.board.models import Board, BoardID
 from byceps.services.brand import brand_service

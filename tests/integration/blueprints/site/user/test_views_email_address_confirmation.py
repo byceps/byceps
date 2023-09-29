@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.database import db
-from byceps.services.authorization import authz_service
+from byceps.services.authz import authz_service
 from byceps.services.user import user_service
 from byceps.services.verification_token import verification_token_service
 

@@ -12,8 +12,8 @@ import pkgutil
 from flask import g
 from flask_babel import LazyString
 
-from byceps.services.authorization import authz_service
-from byceps.services.authorization.models import Permission, PermissionID
+from byceps.services.authz import authz_service
+from byceps.services.authz.models import Permission, PermissionID
 from byceps.typing import UserID
 
 

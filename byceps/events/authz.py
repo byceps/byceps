@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.services.authorization.models import RoleID
+from byceps.services.authz.models import RoleID
 from byceps.typing import UserID
 
 from .base import _BaseEvent

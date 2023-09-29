@@ -13,7 +13,7 @@ from pathlib import Path
 import click
 from flask.cli import with_appcontext
 
-from byceps.services.authorization import impex_service
+from byceps.services.authz import impex_service
 
 
 _DEFAULT_DATA_FILE = Path('scripts') / 'data' / 'roles.toml'

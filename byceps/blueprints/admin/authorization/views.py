@@ -8,7 +8,7 @@ byceps.blueprints.admin.authorization.views
 
 from flask import abort
 
-from byceps.services.authorization import authz_service
+from byceps.services.authz import authz_service
 from byceps.services.user import user_service
 from byceps.util.authorization import permission_registry
 from byceps.util.framework.blueprint import create_blueprint

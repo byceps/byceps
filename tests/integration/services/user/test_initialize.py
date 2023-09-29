@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.authorization import authz_service
+from byceps.services.authz import authz_service
 from byceps.services.user import (
     user_command_service,
     user_log_service,

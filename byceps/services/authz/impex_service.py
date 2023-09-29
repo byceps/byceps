@@ -1,6 +1,6 @@
 """
-byceps.services.authorization.impex_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authz.impex_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Import/export
 

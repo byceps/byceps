@@ -9,7 +9,7 @@ import pytest
 
 from byceps.services.authentication.api import authn_api_service
 from byceps.services.authentication.api.models import ApiToken
-from byceps.services.authorization.models import PermissionID
+from byceps.services.authz.models import PermissionID
 
 
 @pytest.fixture(scope='package')

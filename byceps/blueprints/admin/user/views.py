@@ -15,8 +15,8 @@ from flask_babel import gettext
 
 from byceps.services.authentication.password import authn_password_service
 from byceps.services.authentication.session import authn_session_service
-from byceps.services.authorization import authz_service
-from byceps.services.authorization.models import Permission, PermissionID, Role
+from byceps.services.authz import authz_service
+from byceps.services.authz.models import Permission, PermissionID, Role
 from byceps.services.country import country_service
 from byceps.services.orga_team import orga_team_service
 from byceps.services.shop.order import order_service

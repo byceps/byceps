@@ -15,7 +15,7 @@ import click
 from flask.cli import with_appcontext
 from moneyed import EUR, Money
 
-from byceps.services.authorization import authz_service
+from byceps.services.authz import authz_service
 from byceps.services.board import board_category_command_service, board_service
 from byceps.services.board.models import Board, BoardID
 from byceps.services.brand import brand_service

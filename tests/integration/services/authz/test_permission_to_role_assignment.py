@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.authorization import authz_service
+from byceps.services.authz import authz_service
 
 from tests.helpers import generate_token
 

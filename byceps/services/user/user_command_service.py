@@ -22,8 +22,8 @@ from byceps.events.user import (
     UserEmailAddressChangedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.services.authorization import authz_service
-from byceps.services.authorization.models import RoleID
+from byceps.services.authz import authz_service
+from byceps.services.authz.models import RoleID
 from byceps.typing import UserID
 
 from . import user_domain_service, user_log_service, user_service

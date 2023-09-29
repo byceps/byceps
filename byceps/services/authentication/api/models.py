@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
-from byceps.services.authorization.models import PermissionID
+from byceps.services.authz.models import PermissionID
 from byceps.typing import UserID
 
 

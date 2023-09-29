@@ -13,7 +13,7 @@ from uuid import UUID
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.authorization.models import PermissionID
+from byceps.services.authz.models import PermissionID
 from byceps.typing import UserID
 
 from . import authn_api_domain_service

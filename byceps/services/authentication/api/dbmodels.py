@@ -16,7 +16,7 @@ from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.services.authorization.models import PermissionID
+from byceps.services.authz.models import PermissionID
 from byceps.typing import UserID
 
 

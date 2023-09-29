@@ -11,8 +11,8 @@ Create a superuser with admin privileges.
 import click
 from flask.cli import with_appcontext
 
-from byceps.services.authorization import authz_service
-from byceps.services.authorization.models import RoleID
+from byceps.services.authz import authz_service
+from byceps.services.authz.models import RoleID
 from byceps.services.user import (
     user_command_service,
     user_creation_service,

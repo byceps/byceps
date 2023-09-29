@@ -4,7 +4,7 @@
 """
 
 from byceps.services.authentication.api import authn_api_domain_service
-from byceps.services.authorization.models import PermissionID
+from byceps.services.authz.models import PermissionID
 from byceps.typing import UserID
 
 from tests.helpers import generate_uuid

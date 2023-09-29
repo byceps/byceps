@@ -19,7 +19,7 @@ from byceps.services.authentication.session.dbmodels.recent_login import (
 from byceps.services.authentication.session.dbmodels.session_token import (
     DbSessionToken,
 )
-from byceps.services.authorization.dbmodels import DbUserRole
+from byceps.services.authz.dbmodels import DbUserRole
 from byceps.services.board.dbmodels.last_category_view import (
     DbLastCategoryView as DbBoardLastCategoryView,
 )
