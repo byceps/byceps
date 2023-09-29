@@ -26,7 +26,7 @@ sentry-sdk==1.31.0
 sqlalchemy==2.0.21
 structlog==23.1.0
 tenacity==8.2.3
-typing-extensions==4.7.1
+typing-extensions==4.8.0
 uuid6==2023.5.2
 werkzeug==2.3.7
 wtforms==3.0.1
