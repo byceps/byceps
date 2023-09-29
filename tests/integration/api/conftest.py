@@ -7,8 +7,8 @@ API-specific fixtures
 
 import pytest
 
-from byceps.services.authentication.api import authn_api_service
-from byceps.services.authentication.api.models import ApiToken
+from byceps.services.authn.api import authn_api_service
+from byceps.services.authn.api.models import ApiToken
 from byceps.services.authz.models import PermissionID
 
 

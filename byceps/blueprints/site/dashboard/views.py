@@ -12,7 +12,7 @@ from flask import abort, g
 
 from byceps.blueprints.site.board import service as board_helper_service
 from byceps.blueprints.site.guest_server.views import _sort_addresses
-from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
     board_access_control_service,
     board_topic_query_service,

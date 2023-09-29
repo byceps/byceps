@@ -10,10 +10,10 @@ from __future__ import annotations
 
 import structlog
 
-from byceps.services.authentication import authn_service
-from byceps.services.authentication.errors import AuthenticationFailedError
-from byceps.services.authentication.session import authn_session_service
-from byceps.services.authentication.session.authn_session_service import (
+from byceps.services.authn import authn_service
+from byceps.services.authn.errors import AuthenticationFailedError
+from byceps.services.authn.session import authn_session_service
+from byceps.services.authn.session.authn_session_service import (
     UserLoggedInEvent,
 )
 from byceps.services.user.models.user import User

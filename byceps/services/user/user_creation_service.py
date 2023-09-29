@@ -15,7 +15,7 @@ from flask import current_app
 
 from byceps.database import db
 from byceps.events.user import UserAccountCreatedEvent
-from byceps.services.authentication.password import authn_password_service
+from byceps.services.authn.password import authn_password_service
 from byceps.services.site.models import SiteID
 from byceps.util.result import Err, Ok, Result
 

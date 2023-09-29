@@ -9,7 +9,7 @@ byceps.blueprints.common.authentication.password.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from byceps.services.authentication.password import (
+from byceps.services.authn.password import (
     authn_password_reset_service,
     authn_password_service,
 )

@@ -13,7 +13,7 @@ from functools import wraps
 from flask import abort, request
 from werkzeug.datastructures import WWWAuthenticate
 
-from byceps.services.authentication.api import authn_api_service
+from byceps.services.authn.api import authn_api_service
 
 
 def api_token_required(func):

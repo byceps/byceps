@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.authentication.session import authn_session_service
+from byceps.services.authn.session import authn_session_service
 from byceps.services.user import user_log_service
 
 

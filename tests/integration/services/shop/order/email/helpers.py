@@ -3,8 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.authentication.session import authn_session_service
-from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.authn.session import authn_session_service
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.user.models.user import User
 
 

@@ -13,7 +13,7 @@ from collections.abc import Sequence
 from flask import g
 
 from byceps.blueprints.site.board import service as board_helper_service
-from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
     board_access_control_service,
     board_topic_query_service,

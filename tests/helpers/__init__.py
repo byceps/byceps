@@ -23,8 +23,8 @@ from byceps.application import (
     create_site_app as _create_site_app,
 )
 from byceps.database import db
-from byceps.services.authentication.session import authn_session_service
-from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.authn.session import authn_session_service
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, RoleID
 from byceps.services.board.models import BoardID

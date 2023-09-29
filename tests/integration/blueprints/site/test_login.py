@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.authentication.session import authn_session_service
+from byceps.services.authn.session import authn_session_service
 from byceps.services.consent import (
     brand_requirements_service,
     consent_subject_service,

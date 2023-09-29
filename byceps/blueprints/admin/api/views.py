@@ -9,7 +9,7 @@ byceps.blueprints.admin.api.views
 from flask import current_app, g, request
 from flask_babel import gettext
 
-from byceps.services.authentication.api import authn_api_service
+from byceps.services.authn.api import authn_api_service
 from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success

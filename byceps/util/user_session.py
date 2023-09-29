@@ -13,8 +13,8 @@ from uuid import UUID
 from babel import parse_locale
 from flask import session
 
-from byceps.services.authentication.session import authn_session_service
-from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.authn.session import authn_session_service
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID

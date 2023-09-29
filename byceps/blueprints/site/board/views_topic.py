@@ -16,7 +16,7 @@ from flask_babel import gettext
 
 from byceps.blueprints.site.orga_team.service import is_orga_for_current_party
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
-from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
     board_category_query_service,
     board_last_view_service,

@@ -13,8 +13,8 @@ from datetime import datetime
 from flask import abort, g, request
 from flask_babel import gettext
 
-from byceps.services.authentication.password import authn_password_service
-from byceps.services.authentication.session import authn_session_service
+from byceps.services.authn.password import authn_password_service
+from byceps.services.authn.session import authn_session_service
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import Permission, PermissionID, Role
 from byceps.services.country import country_service

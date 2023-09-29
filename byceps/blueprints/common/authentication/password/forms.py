@@ -11,7 +11,7 @@ from flask_babel import lazy_gettext
 from wtforms import PasswordField, StringField
 from wtforms.validators import EqualTo, InputRequired, Length, ValidationError
 
-from byceps.services.authentication.password import authn_password_service
+from byceps.services.authn.password import authn_password_service
 from byceps.util.l10n import LocalizedForm
 
 

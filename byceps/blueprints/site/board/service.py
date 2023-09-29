@@ -13,7 +13,7 @@ from datetime import datetime
 
 from flask import g
 
-from byceps.services.authentication.session.models import CurrentUser
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
     board_last_view_service,
     board_posting_query_service,

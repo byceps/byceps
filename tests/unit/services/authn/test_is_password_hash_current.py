@@ -5,9 +5,7 @@
 
 import pytest
 
-from byceps.services.authentication.password import (
-    authn_password_domain_service,
-)
+from byceps.services.authn.password import authn_password_domain_service
 
 
 @pytest.mark.parametrize(

@@ -1,6 +1,6 @@
 """
-byceps.services.authentication.password.authn_password_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authn.password.authn_password_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,7 +12,7 @@ from sqlalchemy import delete
 
 from byceps.database import db
 from byceps.events.authn import PasswordUpdatedEvent
-from byceps.services.authentication.session import authn_session_service
+from byceps.services.authn.session import authn_session_service
 from byceps.services.user import user_log_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User

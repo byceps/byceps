@@ -3,8 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.authentication import authn_service
-from byceps.services.authentication.errors import AuthenticationFailedError
+from byceps.services.authn import authn_service
+from byceps.services.authn.errors import AuthenticationFailedError
 from byceps.util.result import Err, Ok
 
 

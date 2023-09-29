@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 from flask_babel import gettext
 
-from byceps.services.authentication.session import authn_session_service
+from byceps.services.authn.session import authn_session_service
 from byceps.services.user import user_log_service
 from byceps.services.verification_token import verification_token_service
 from byceps.util.framework.blueprint import create_blueprint

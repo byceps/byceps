@@ -7,7 +7,7 @@ from uuid import UUID
 
 from flask_babel import lazy_gettext
 
-from byceps.services.authentication.session import authn_session_service
+from byceps.services.authn.session import authn_session_service
 from byceps.util.authz import register_permissions
 
 
