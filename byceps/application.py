@@ -32,6 +32,7 @@ from byceps.util.authorization import (
     has_current_user_permission,
     load_permissions,
 )
+from byceps.util.framework.blueprint import get_blueprint
 from byceps.util.l10n import get_current_user_locale
 from byceps.util.templating import SiteTemplateOverridesLoader
 
@@ -96,6 +97,19 @@ def create_cli_app() -> Flask:
     }
 
     return _create_app(config_overrides=config_overrides)
+
+
+def create_metrics_app(database_uri: str) -> Flask:
+    app = Flask(__name__)
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
+
+    db.init_app(app)
+
+    blueprint = get_blueprint('monitoring.metrics')
+    app.register_blueprint(blueprint, url_prefix='/metrics')
+
+    return app
 
 
 def create_worker_app() -> Flask:
@@ -249,6 +263,19 @@ def _dispatch_apps_by_url_path(
         log.info('API: enabled')
     else:
         log.info('API: disabled')
+
+    if app.config['METRICS_ENABLED']:
+        metrics_app = create_metrics_app(app.config['SQLALCHEMY_DATABASE_URI'])
+
+        # WARNING: This is a deliberate hack to make `/metrics` and not
+        # `/metrics/` work. It does, however, block similar routing to
+        # other apps as the empty mount path must only appear once in
+        # the mount paths mapping.
+        mounts[''] = metrics_app
+
+        log.info('Metrics: enabled')
+    else:
+        log.info('Metrics: disabled')
 
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
 

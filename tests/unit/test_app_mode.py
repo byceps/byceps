@@ -13,6 +13,7 @@ def test_is_admin():
     assert not app_mode.is_api()
     assert not app_mode.is_base()
     assert not app_mode.is_cli()
+    assert not app_mode.is_metrics()
     assert not app_mode.is_site()
     assert not app_mode.is_worker()
 
@@ -24,6 +25,7 @@ def test_is_api():
     assert app_mode.is_api()
     assert not app_mode.is_base()
     assert not app_mode.is_cli()
+    assert not app_mode.is_metrics()
     assert not app_mode.is_site()
     assert not app_mode.is_worker()
 
@@ -35,6 +37,7 @@ def test_is_base():
     assert not app_mode.is_api()
     assert app_mode.is_base()
     assert not app_mode.is_cli()
+    assert not app_mode.is_metrics()
     assert not app_mode.is_site()
     assert not app_mode.is_worker()
 
@@ -46,6 +49,19 @@ def test_is_cli():
     assert not app_mode.is_api()
     assert not app_mode.is_base()
     assert app_mode.is_cli()
+    assert not app_mode.is_metrics()
+    assert not app_mode.is_site()
+    assert not app_mode.is_worker()
+
+
+def test_is_metrics():
+    app_mode = AppMode.metrics
+
+    assert not app_mode.is_admin()
+    assert not app_mode.is_api()
+    assert not app_mode.is_base()
+    assert not app_mode.is_cli()
+    assert app_mode.is_metrics()
     assert not app_mode.is_site()
     assert not app_mode.is_worker()
 
@@ -57,6 +73,7 @@ def test_is_site():
     assert not app_mode.is_api()
     assert not app_mode.is_base()
     assert not app_mode.is_cli()
+    assert not app_mode.is_metrics()
     assert app_mode.is_site()
     assert not app_mode.is_worker()
 
@@ -68,5 +85,6 @@ def test_is_worker():
     assert not app_mode.is_api()
     assert not app_mode.is_base()
     assert not app_mode.is_cli()
+    assert not app_mode.is_metrics()
     assert not app_mode.is_site()
     assert app_mode.is_worker()

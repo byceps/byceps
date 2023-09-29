@@ -51,12 +51,6 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
 
     yield ('monitoring.healthcheck', '/health')
 
-    if app.config['METRICS_ENABLED']:
-        yield ('monitoring.metrics', '/metrics')
-        log.info('Metrics: enabled')
-    else:
-        log.info('Metrics: disabled')
-
     if (app_mode.is_admin() or app_mode.is_site()) and app.config.get(
         'STYLE_GUIDE_ENABLED', False
     ):
