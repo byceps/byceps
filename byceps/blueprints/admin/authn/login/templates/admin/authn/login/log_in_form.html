@@ -1,0 +1,65 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field_check, form_field, form_form_errors %}
+{% set current_page = 'authn_login' %}
+{% set page_title = _('Log in') %}
+{% set show_admin_top_bar = false %}
+
+{% block head %}
+<style>
+.page-body {
+  display: grid;
+  align-items: center;
+}
+
+.login-component-hero {
+  color: #33aa88;
+  font-size: clamp(3rem, 10vw, 7rem);
+  margin-bottom: 3rem;
+  text-shadow: 0 2px 2px #444444;
+}
+
+.login-component {
+  margin: 0 auto;
+  max-width: 24rem;
+  width: 100%;
+}
+
+.login-component h1,
+.login-component-help,
+.login-component-hero {
+  text-align: center;
+}
+
+.login-component-help {
+  margin-top: 2rem;
+}
+</style>
+{%- endblock %}
+
+{% block body %}
+
+<div class="login-component-hero">BYCEPS</div>
+
+<div class="login-component">
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.log_in') }}" method="post">
+    <div class="box">
+      {{ form_form_errors(form) }}
+
+      {{ form_field(form.username, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.password, maxlength=100) }}
+      {{ form_field_check(form.permanent, _('permanently stay logged in')) }}
+    </div>
+
+    {{ form_buttons(_('Log in')) }}
+  </form>
+
+  <div class="login-component-help">
+    <p>{{ _('Forgot password?') }} <a href="{{ url_for('authn_password.request_reset_form') }}">{{ _('Set new password') }}</a></p>
+  </div>
+
+</div>
+
+{%- endblock %}

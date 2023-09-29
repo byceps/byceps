@@ -15,7 +15,7 @@
   <h1>{{ page_title }}</h1>
 
   <div class="notifications">
-{{ render_notification(_('You have to be <a href="%(url)s">logged in</a> to order something.', url=url_for('authentication_login.log_in_form')), category='info', icon='info') }}
+{{ render_notification(_('You have to be <a href="%(url)s">logged in</a> to order something.', url=url_for('authn_login.log_in_form')), category='info', icon='info') }}
   </div>
 
 {{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}

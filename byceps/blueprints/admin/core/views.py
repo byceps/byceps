@@ -51,6 +51,6 @@ def homepage():
     if g.user.authenticated:
         url = url_for('admin_dashboard.view_global')
     else:
-        url = url_for('authentication_login_admin.log_in_form')
+        url = url_for('authn_login_admin.log_in_form')
 
     return redirect(url, code=HTTPStatus.TEMPORARY_REDIRECT)

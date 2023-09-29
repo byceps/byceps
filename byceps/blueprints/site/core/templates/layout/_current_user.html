@@ -28,12 +28,12 @@
       </li>
       {%- endif %}
       <li class="dropdown-divider"></li>
-      <li><a class="dropdown-item" data-action="log-out" href="{{ url_for('authentication_login.log_out', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
+      <li><a class="dropdown-item" data-action="log-out" href="{{ url_for('authn_login.log_out', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
     </ol>
   </div>
   {%- else %}
   <div>
-    <a href="{{ url_for('authentication_login.log_in_form') }}" class="button">{{ render_icon('log-in') }} <span>{{ _('Log in') }}</span></a>
+    <a href="{{ url_for('authn_login.log_in_form') }}" class="button">{{ render_icon('log-in') }} <span>{{ _('Log in') }}</span></a>
   </div>
   {%- endif %}
 </div>

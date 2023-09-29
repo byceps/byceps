@@ -143,7 +143,7 @@ def confirm(token):
     )
     if confirmation_result.is_err():
         flash_error(gettext('Email address verification failed.'))
-        return redirect_to('authentication_login.log_in_form')
+        return redirect_to('authn_login.log_in_form')
 
     event = confirmation_result.unwrap()
 
@@ -161,7 +161,7 @@ def confirm(token):
 
     user_signals.email_address_confirmed.send(None, event=event)
 
-    return redirect_to('authentication_login.log_in_form')
+    return redirect_to('authn_login.log_in_form')
 
 
 def _find_valid_confirmation_token(
@@ -213,7 +213,7 @@ def change(token):
     )
     if change_result.is_err():
         flash_error(gettext('Email address change failed.'))
-        return redirect_to('authentication_login.log_in_form')
+        return redirect_to('authn_login.log_in_form')
 
     event = change_result.unwrap()
 
@@ -224,7 +224,7 @@ def change(token):
     if g.user.authenticated:
         return redirect_to('user_settings.view')
     else:
-        return redirect_to('authentication_login.log_in_form')
+        return redirect_to('authn_login.log_in_form')
 
 
 def _find_valid_change_token(token: str) -> EmailAddressChangeToken | None:

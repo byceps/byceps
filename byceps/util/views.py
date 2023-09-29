@@ -36,9 +36,9 @@ def login_required(func):
             flash_notice(gettext('Please log in.'))
 
             if g.app_mode.is_admin():
-                return redirect_to('authentication_login_admin.log_in_form')
+                return redirect_to('authn_login_admin.log_in_form')
             else:
-                return redirect_to('authentication_login.log_in_form')
+                return redirect_to('authn_login.log_in_form')
         return func(*args, **kwargs)
 
     return wrapper

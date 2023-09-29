@@ -146,7 +146,7 @@ def create():
                 user, newsletter_list, now_utc
             ).unwrap()
 
-    return redirect_to('authentication_login.log_in_form')
+    return redirect_to('authn_login.log_in_form')
 
 
 def _abort_if_user_account_creation_disabled():
