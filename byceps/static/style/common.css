@@ -678,9 +678,14 @@ button.button[disabled],
 }
 
 .dropdown-divider,
-.dropdown-item,
 .dropdown-label {
   display: block;
+}
+
+.dropdown-item {
+  align-items: center;
+  display: flex;
+  gap: 0.4rem;
 }
 
 .dropdown-item,
