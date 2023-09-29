@@ -264,7 +264,7 @@ def _dispatch_apps_by_url_path(
     else:
         log.info('API: disabled')
 
-    if app.config['METRICS_ENABLED']:
+    if app.config['METRICS_ENABLED'] and app.byceps_app_mode.is_metrics():
         metrics_app = create_metrics_app(app.config['SQLALCHEMY_DATABASE_URI'])
 
         # WARNING: This is a deliberate hack to make `/metrics` and not
