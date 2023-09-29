@@ -19,7 +19,7 @@ from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
-from .authorization import get_permissions_for_user
+from .authz import get_permissions_for_user
 
 
 KEY_LOCALE = 'locale'

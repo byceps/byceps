@@ -8,7 +8,7 @@ from uuid import UUID
 from flask_babel import lazy_gettext
 
 from byceps.services.authentication.session import authn_session_service
-from byceps.util.authorization import register_permissions
+from byceps.util.authz import register_permissions
 
 
 def test_get_anonymous_current_user():

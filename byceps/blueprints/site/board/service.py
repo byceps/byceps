@@ -30,7 +30,7 @@ from byceps.services.user import user_service
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.services.user_badge.models import Badge
 from byceps.typing import BrandID, PartyID, UserID
-from byceps.util.authorization import has_current_user_permission
+from byceps.util.authz import has_current_user_permission
 
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 

@@ -10,7 +10,7 @@ from flask_babel import lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, Optional
 
-from byceps.util.authorization import permission_registry
+from byceps.util.authz import permission_registry
 from byceps.util.forms import MultiCheckboxField
 from byceps.util.l10n import LocalizedForm
 

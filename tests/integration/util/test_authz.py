@@ -7,7 +7,7 @@ from flask import g
 from flask_babel import lazy_gettext
 import pytest
 
-from byceps.util.authorization import (
+from byceps.util.authz import (
     has_current_user_any_permission,
     has_current_user_permission,
     register_permissions,

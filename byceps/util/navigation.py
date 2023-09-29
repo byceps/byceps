@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 from typing_extensions import Self
 
-from .authorization import has_current_user_permission
+from .authz import has_current_user_permission
 
 
 @dataclass(frozen=True)

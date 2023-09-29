@@ -15,7 +15,7 @@ from byceps.services.news import news_item_service
 from byceps.services.news.models import NewsChannelID, RenderedNewsItem
 from byceps.services.site import site_service, site_setting_service
 from byceps.services.site.models import SiteID
-from byceps.util.authorization import has_current_user_permission
+from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 

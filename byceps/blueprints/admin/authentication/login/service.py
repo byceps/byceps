@@ -18,7 +18,7 @@ from byceps.services.authentication.session.authn_session_service import (
 )
 from byceps.services.user.models.user import User
 from byceps.util import user_session
-from byceps.util.authorization import get_permissions_for_user
+from byceps.util.authz import get_permissions_for_user
 from byceps.util.result import Err, Ok, Result
 
 

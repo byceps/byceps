@@ -28,7 +28,7 @@ from byceps.blueprints.api.blueprints import register_api_blueprints
 from byceps.config import ConfigurationError, parse_value_from_environment
 from byceps.database import db
 from byceps.util import templatefilters
-from byceps.util.authorization import (
+from byceps.util.authz import (
     has_current_user_permission,
     load_permissions,
 )

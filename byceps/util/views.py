@@ -23,7 +23,7 @@ from flask import (
 )
 from flask_babel import gettext
 
-from .authorization import has_current_user_permission
+from .authz import has_current_user_permission
 from .framework.flash import flash_notice
 
 
