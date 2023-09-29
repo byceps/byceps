@@ -112,7 +112,7 @@ def _get_blueprints_admin() -> Iterator[BlueprintReg]:
         ('admin.api', '/admin/api'),
         ('admin.attendance', '/admin/attendance'),
         ('admin.authentication.login', '/authentication'),
-        ('admin.authorization', '/admin/authorization'),
+        ('admin.authz', '/admin/authorization'),
         ('admin.board', '/admin/boards'),
         ('admin.brand', '/admin/brands'),
         ('admin.consent', '/admin/consent'),

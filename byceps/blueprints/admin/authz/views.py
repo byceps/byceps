@@ -1,6 +1,6 @@
 """
-byceps.blueprints.admin.authorization.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.admin.authz.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -16,7 +16,7 @@ from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required
 
 
-blueprint = create_blueprint('authorization_admin', __name__)
+blueprint = create_blueprint('authz_admin', __name__)
 
 
 @blueprint.get('/permissions')
