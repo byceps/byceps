@@ -246,6 +246,9 @@ def _dispatch_apps_by_url_path(
     if app.config['API_ENABLED']:
         api_app = create_api_app(config_overrides=config_overrides)
         mounts['/api'] = api_app
+        log.info('API: enabled')
+    else:
+        log.info('API: disabled')
 
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
 
