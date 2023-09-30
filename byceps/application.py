@@ -130,6 +130,8 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     _configure(app, config_overrides)
 
+    app_mode = app.byceps_app_mode
+
     # Throw an exception when an undefined name is referenced in a template.
     # NB: Set via `app.jinja_options['undefined'] = ` instead of
     #     `app.jinja_env.undefined = ` as that would create the Jinja
@@ -157,7 +159,7 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
     if (
         app.debug
         and app.config.get('DEBUG_TOOLBAR_ENABLED', False)
-        and (app.byceps_app_mode.is_admin() or app.byceps_app_mode.is_site())
+        and (app_mode.is_admin() or app_mode.is_site())
     ):
         _enable_debug_toolbar(app)
         log.info('Debug toolbar: enabled')
@@ -166,7 +168,7 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     log.info(
         'Application created',
-        app_mode=app.byceps_app_mode.name,
+        app_mode=app_mode.name,
         debug=app.debug,
     )
 
