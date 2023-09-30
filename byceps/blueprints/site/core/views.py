@@ -12,6 +12,7 @@ from typing import Any
 
 from flask import current_app, g, request, url_for
 from flask_babel import get_locale
+import sentry_sdk
 
 from byceps.services.party import party_service
 from byceps.services.site import site_service
@@ -44,8 +45,10 @@ def prepare_request_globals() -> None:
     site = site_service.get_site(site_id)
     g.site = site
     g.site_id = site.id
+    sentry_sdk.set_tag('site_id', g.site_id)
 
     g.brand_id = site.brand_id
+    sentry_sdk.set_tag('brand_id', g.brand_id)
 
     party = None
     party_id = site.party_id
@@ -54,9 +57,11 @@ def prepare_request_globals() -> None:
         party_id = party.id
     g.party = party
     g.party_id = party_id
+    sentry_sdk.set_tag('party_id', g.party_id)
 
     required_permissions: set[str] = set()
     g.user = get_current_user(required_permissions)
+    sentry_sdk.set_user({'id': str(g.user.id), 'username': g.user.screen_name})
 
     g.locales = get_locales()
     # Must only be called *after* `g.user` is set.

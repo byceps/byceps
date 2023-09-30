@@ -10,6 +10,7 @@ from http import HTTPStatus
 from typing import Any
 
 from flask import g, redirect, url_for
+import sentry_sdk
 
 from byceps.services.brand import brand_service
 from byceps.services.text_markup import text_markup_service
@@ -42,6 +43,7 @@ def inject_template_variables() -> dict[str, Any]:
 def prepare_request_globals() -> None:
     required_permissions = {'admin.access'}
     g.user = get_current_user(required_permissions)
+    sentry_sdk.set_user({'id': str(g.user.id), 'username': g.user.screen_name})
 
     g.locales = get_locales()
 
