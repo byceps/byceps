@@ -23,6 +23,13 @@ class PasswordUpdatedEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
+class UserIdentityTagCreatedEvent(_BaseEvent):
+    identifier: str
+    user_id: UserID
+    user_screen_name: str | None
+
+
+@dataclass(frozen=True)
 class UserLoggedInEvent(_BaseEvent):
     site_id: SiteID | None
     site_title: str | None
