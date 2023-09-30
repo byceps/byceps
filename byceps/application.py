@@ -154,7 +154,11 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     enable_announcements()
 
-    if app.debug and app.config.get('DEBUG_TOOLBAR_ENABLED', False):
+    if (
+        app.debug
+        and app.config.get('DEBUG_TOOLBAR_ENABLED', False)
+        and (app.byceps_app_mode.is_admin() or app.byceps_app_mode.is_site())
+    ):
         _enable_debug_toolbar(app)
         log.info('Debug toolbar: enabled')
     else:
@@ -257,7 +261,9 @@ def _dispatch_apps_by_url_path(
 ) -> None:
     mounts = {}
 
-    if app.config['API_ENABLED']:
+    if app.config['API_ENABLED'] and (
+        app.byceps_app_mode.is_admin() or app.byceps_app_mode.is_site()
+    ):
         api_app = create_api_app(config_overrides=config_overrides)
         mounts['/api'] = api_app
         log.info('API: enabled')
