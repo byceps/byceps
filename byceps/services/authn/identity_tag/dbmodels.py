@@ -32,7 +32,7 @@ class DbUserIdentityTag(db.Model):
     password-based authentication, but still needs to be kept in mind.
     """
 
-    __tablename__ = 'user_identity_tags'
+    __tablename__ = 'authn_identity_tags'
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
