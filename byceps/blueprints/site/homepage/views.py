@@ -69,7 +69,7 @@ def _get_board_topics(current_user: CurrentUser) -> Sequence[DbTopic] | None:
     if not has_access:
         return None
 
-    topics = board_topic_query_service.get_recent_topics(board_id, limit=6)
+    topics = board_topic_query_service.get_recent_topics(board_id, limit=5)
 
     board_helper_service.add_topic_unseen_flag(topics, current_user)
 
