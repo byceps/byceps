@@ -23,7 +23,7 @@ def client(admin_app, config_overrides, make_admin_app):
 
 @pytest.mark.parametrize('config_overrides', [{'METRICS_ENABLED': True}])
 def test_metrics(client):
-    response = client.get('/metrics')
+    response = client.get('/metrics/')
 
     assert response.status_code == 200
     assert response.content_type == 'text/plain; version=0.0.4; charset=utf-8'
@@ -42,6 +42,6 @@ def test_metrics(client):
 
 @pytest.mark.parametrize('config_overrides', [{'METRICS_ENABLED': False}])
 def test_disabled_metrics(client):
-    response = client.get('/metrics')
+    response = client.get('/metrics/')
 
     assert response.status_code == 404

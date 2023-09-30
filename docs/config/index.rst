@@ -94,7 +94,7 @@ Supported Configuration Values
 
 .. py:data:: METRICS_ENABLED
 
-    Enable the Prometheus_-compatible metrics endpoint at ``/metrics``.
+    Enable the Prometheus_-compatible metrics endpoint at ``/metrics/``.
 
     Only available on admin application.
 

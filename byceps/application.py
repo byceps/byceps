@@ -110,7 +110,7 @@ def create_metrics_app(database_uri: str) -> Flask:
     db.init_app(app)
 
     blueprint = get_blueprint('monitoring.metrics')
-    app.register_blueprint(blueprint, url_prefix='/metrics')
+    app.register_blueprint(blueprint)
 
     return app
 
@@ -280,13 +280,7 @@ def _dispatch_apps_by_url_path(
 
     if app.config['METRICS_ENABLED'] and app.byceps_app_mode.is_admin():
         metrics_app = create_metrics_app(app.config['SQLALCHEMY_DATABASE_URI'])
-
-        # WARNING: This is a deliberate hack to make `/metrics` and not
-        # `/metrics/` work. It does, however, block similar routing to
-        # other apps as the empty mount path must only appear once in
-        # the mount paths mapping.
-        mounts[''] = metrics_app
-
+        mounts['/metrics'] = metrics_app
         log.info('Metrics: enabled')
     else:
         log.info('Metrics: disabled')
