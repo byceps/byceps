@@ -292,7 +292,11 @@ assigned_permissions = [
 [[roles]]
 id = 'user_authn_admin'
 title = 'Benutzer-Authentifizierung verwalten'
-assigned_permissions = ['user.set_password']
+assigned_permissions = [
+    'authn_identity_tag.administrate',
+    'authn_identity_tag.view',
+    'user.set_password',
+]
 
 [[roles]]
 id = 'user_badge_admin'

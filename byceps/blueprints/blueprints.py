@@ -111,6 +111,7 @@ def _get_blueprints_admin() -> Iterator[BlueprintReg]:
     yield from [
         ('admin.api', '/admin/api'),
         ('admin.attendance', '/admin/attendance'),
+        ('admin.authn.identity_tag', '/admin/authentication/identity_tags'),
         ('admin.authn.login', '/authentication'),
         ('admin.authz', '/admin/authorization'),
         ('admin.board', '/admin/boards'),
