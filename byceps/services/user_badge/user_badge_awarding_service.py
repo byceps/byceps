@@ -39,14 +39,13 @@ def award_badge_to_user(
         badge, awardee, initiator=initiator
     )
 
-    _persist_awarding(awarding, event, log_entry)
+    _persist_awarding(awarding, log_entry)
 
     return awarding, event
 
 
 def _persist_awarding(
     awarding: BadgeAwarding,
-    event: UserBadgeAwardedEvent,
     log_entry: UserLogEntry,
 ) -> None:
     db_awarding = DbBadgeAwarding(
