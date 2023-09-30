@@ -82,6 +82,7 @@ def _build_password_updated_log_entry(
         occurred_at=occurred_at,
         event_type='password-updated',
         user_id=user.id,
+        initiator_id=initiator.id,
         data={'initiator_id': str(initiator.id)},
     )
 

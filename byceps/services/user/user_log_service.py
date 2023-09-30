@@ -40,6 +40,7 @@ def build_entry(
     data: UserLogEntryData,
     *,
     occurred_at: datetime | None = None,
+    initiator_id: UserID | None = None,
 ) -> DbUserLogEntry:
     """Assemble, but not persist, a user log entry."""
     entry_id = generate_uuid7()
@@ -47,7 +48,9 @@ def build_entry(
     if occurred_at is None:
         occurred_at = datetime.utcnow()
 
-    return DbUserLogEntry(entry_id, occurred_at, event_type, user_id, data)
+    return DbUserLogEntry(
+        entry_id, occurred_at, event_type, user_id, initiator_id, data
+    )
 
 
 def to_db_entry(entry: UserLogEntry) -> DbUserLogEntry:
@@ -57,6 +60,7 @@ def to_db_entry(entry: UserLogEntry) -> DbUserLogEntry:
         entry.occurred_at,
         entry.event_type,
         entry.user_id,
+        entry.initiator_id,
         entry.data,
     )
 
@@ -108,5 +112,6 @@ def _db_entity_to_entry(db_entry: DbUserLogEntry) -> UserLogEntry:
         occurred_at=db_entry.occurred_at,
         event_type=db_entry.event_type,
         user_id=db_entry.user_id,
+        initiator_id=db_entry.initiator_id,
         data=db_entry.data.copy(),
     )

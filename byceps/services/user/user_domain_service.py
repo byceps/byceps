@@ -145,6 +145,7 @@ def _build_account_created_log_entry(
         occurred_at=occurred_at,
         event_type='user-created',
         user_id=user.id,
+        initiator_id=initiator.id if initiator else None,
         data=data,
     )
 
@@ -180,6 +181,7 @@ def _build_account_initialized_log_entry(
         occurred_at=occurred_at,
         event_type='user-initialized',
         user_id=user.id,
+        initiator_id=initiator.id if initiator else None,
         data=data,
     )
 
@@ -219,6 +221,7 @@ def _build_account_suspended_log_entry(
         occurred_at=occurred_at,
         event_type='user-suspended',
         user_id=user.id,
+        initiator_id=initiator.id,
         data={
             'initiator_id': str(initiator.id),
             'reason': reason,
@@ -261,6 +264,7 @@ def _build_account_unsuspended_log_entry(
         occurred_at=occurred_at,
         event_type='user-unsuspended',
         user_id=user.id,
+        initiator_id=initiator.id,
         data={
             'initiator_id': str(initiator.id),
             'reason': reason,
@@ -310,6 +314,7 @@ def _build_account_deleted_log_entry(
         occurred_at=occurred_at,
         event_type='user-deleted',
         user_id=user.id,
+        initiator_id=initiator.id,
         data={
             'initiator_id': str(initiator.id),
             'reason': reason,
@@ -378,6 +383,7 @@ def _build_screen_name_changed_log_entry(
         occurred_at=occurred_at,
         event_type='user-screen-name-changed',
         user_id=user.id,
+        initiator_id=initiator.id,
         data=data,
     )
 
@@ -444,6 +450,7 @@ def _build_email_address_changed_log_entry(
         occurred_at=occurred_at,
         event_type='user-email-address-changed',
         user_id=user.id,
+        initiator_id=initiator.id,
         data=data,
     )
 
@@ -497,6 +504,7 @@ def _build_email_address_confirmed_log_entry(
         occurred_at=occurred_at,
         event_type='user-email-address-confirmed',
         user_id=user.id,
+        initiator_id=user.id,
         data={'email_address': email_address},
     )
 
@@ -560,6 +568,7 @@ def _build_email_address_invalidated_log_entry(
         occurred_at=occurred_at,
         event_type='user-email-address-invalidated',
         user_id=user.id,
+        initiator_id=initiator.id if initiator else None,
         data=data,
     )
 
@@ -669,6 +678,7 @@ def _build_details_updated_log_entry(
         occurred_at=occurred_at,
         event_type='user-details-updated',
         user_id=user.id,
+        initiator_id=initiator.id,
         data=data,
     )
 

@@ -60,6 +60,7 @@ def _build_orga_status_granted_log_entry(
         occurred_at=occurred_at,
         event_type='orgaflag-added',
         user_id=user.id,
+        initiator_id=initiator.id,
         data=data,
     )
 
@@ -107,5 +108,6 @@ def _build_orga_status_revoked_log_entry(
         occurred_at=occurred_at,
         event_type='orgaflag-removed',
         user_id=user.id,
+        initiator_id=initiator.id,
         data=data,
     )

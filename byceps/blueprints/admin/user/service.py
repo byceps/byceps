@@ -132,6 +132,7 @@ def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
             occurred_at=consent.expressed_at,
             event_type='consent-expressed',
             user_id=user_id,
+            initiator_id=user_id,
             data=data,
         )
 
@@ -160,6 +161,7 @@ def _fake_newsletter_subscription_update_log_entries(
             occurred_at=update.expressed_at,
             event_type=event_type,
             user_id=user_id,
+            initiator_id=user_id,
             data=data,
         )
 
@@ -195,6 +197,7 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
             occurred_at=entry.occurred_at,
             event_type=entry.event_type,
             user_id=initiator_id,
+            initiator_id=initiator_id,
             data=data,
         )
 

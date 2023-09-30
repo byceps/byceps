@@ -71,5 +71,6 @@ def _build_awarding_log_entry(
         occurred_at=occurred_at,
         event_type='user-badge-awarded',
         user_id=awardee.id,
+        initiator_id=initiator.id if initiator else None,
         data=data,
     )

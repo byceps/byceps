@@ -6,6 +6,8 @@ byceps.services.user.models.log
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
@@ -23,4 +25,5 @@ class UserLogEntry:
     occurred_at: datetime
     event_type: str
     user_id: UserID
+    initiator_id: UserID | None
     data: UserLogEntryData

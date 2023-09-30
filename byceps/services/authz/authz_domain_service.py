@@ -62,6 +62,7 @@ def _build_role_assigned_log_entry(
         occurred_at=occurred_at,
         event_type='role-assigned',
         user_id=user.id,
+        initiator_id=initiator.id if initiator else None,
         data=data,
     )
 
@@ -107,5 +108,6 @@ def _build_role_deassigned_log_entry(
         occurred_at=occurred_at,
         event_type='role-deassigned',
         user_id=user.id,
+        initiator_id=initiator.id if initiator else None,
         data=data,
     )

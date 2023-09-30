@@ -6,7 +6,10 @@ byceps.services.user.dbmodels.log
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from datetime import datetime
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -28,6 +31,9 @@ class DbUserLogEntry(db.Model):
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
+    initiator_id: Mapped[Optional[UserID]] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
+    )
     data: Mapped[UserLogEntryData] = mapped_column(db.JSONB)
 
     def __init__(
@@ -36,12 +42,14 @@ class DbUserLogEntry(db.Model):
         occurred_at: datetime,
         event_type: str,
         user_id: UserID,
+        initiator_id: UserID | None,
         data: UserLogEntryData,
     ) -> None:
         self.id = entry_id
         self.occurred_at = occurred_at
         self.event_type = event_type
         self.user_id = user_id
+        self.initiator_id = initiator_id
         self.data = data
 
     def __repr__(self) -> str:
