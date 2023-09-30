@@ -38,19 +38,26 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     if not app_mode.is_admin() and not app_mode.is_site():
         return
 
+    if app_mode.is_admin():
+        yield from _get_admin_blueprints(app)
+    elif app_mode.is_site():
+        yield from _get_site_blueprints(app)
+
+
+def _get_admin_blueprints(app: Flask) -> Iterator[BlueprintReg]:
+    """Yield blueprints to register on the application."""
     yield from _get_blueprints_common(app)
 
-    if app_mode.is_admin():
-        yield from _get_blueprints_admin()
-        log.info('Admin blueprints: enabled')
-    else:
-        log.info('Admin blueprints: disabled')
+    yield from _get_blueprints_admin()
+    log.info('Admin blueprints: enabled')
 
-    if app_mode.is_site():
-        yield from _get_blueprints_site()
-        log.info('Site blueprints: enabled')
-    else:
-        log.info('Site blueprints: disabled')
+
+def _get_site_blueprints(app: Flask) -> Iterator[BlueprintReg]:
+    """Yield blueprints to register on the application."""
+    yield from _get_blueprints_common(app)
+
+    yield from _get_blueprints_site()
+    log.info('Site blueprints: enabled')
 
 
 def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
