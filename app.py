@@ -27,4 +27,5 @@ def extend_shell_context():
         'OrderPaymentState': OrderPaymentState,
         'find_ticket_by_code': find_ticket_by_code,
         'find_db_user_by_screen_name': user_service.find_db_user_by_screen_name,
+        'find_user_by_screen_name': user_service.find_user_by_screen_name,
     }
