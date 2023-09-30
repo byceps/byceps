@@ -38,7 +38,7 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     if not app_mode.is_admin() and not app_mode.is_site():
         return
 
-    yield from _get_blueprints_common()
+    yield from _get_blueprints_common(app)
 
     if app_mode.is_admin():
         yield from _get_blueprints_admin()
@@ -52,6 +52,15 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     else:
         log.info('Site blueprints: disabled')
 
+
+def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
+    yield from [
+        ('common.authn.password', '/authentication/password'),
+        ('common.core', None),
+        ('common.guest_server', None),
+        ('common.locale', '/locale'),
+    ]
+
     yield ('monitoring.healthcheck', '/health')
 
     if app.config.get('STYLE_GUIDE_ENABLED', False):
@@ -59,15 +68,6 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
         log.info('Style guide: enabled')
     else:
         log.info('Style guide: disabled')
-
-
-def _get_blueprints_common() -> Iterator[BlueprintReg]:
-    yield from [
-        ('common.authn.password', '/authentication/password'),
-        ('common.core', None),
-        ('common.guest_server', None),
-        ('common.locale', '/locale'),
-    ]
 
 
 def _get_blueprints_site() -> Iterator[BlueprintReg]:
