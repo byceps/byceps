@@ -34,8 +34,11 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
     app_mode = app.byceps_app_mode
 
-    if app_mode.is_admin() or app_mode.is_site():
-        yield from _get_blueprints_common()
+    # Do not register blueprints here for app types other than admin and site.
+    if not app_mode.is_admin() and not app_mode.is_site():
+        return
+
+    yield from _get_blueprints_common()
 
     if app_mode.is_admin():
         yield from _get_blueprints_admin()
@@ -51,9 +54,7 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
 
     yield ('monitoring.healthcheck', '/health')
 
-    if (app_mode.is_admin() or app_mode.is_site()) and app.config.get(
-        'STYLE_GUIDE_ENABLED', False
-    ):
+    if app.config.get('STYLE_GUIDE_ENABLED', False):
         yield ('common.style_guide', '/style_guide')
         log.info('Style guide: enabled')
     else:
