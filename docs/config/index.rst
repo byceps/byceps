@@ -96,6 +96,8 @@ Supported Configuration Values
 
     Enable the Prometheus_-compatible metrics endpoint at ``/metrics``.
 
+    Only available on admin application.
+
     Default: ``False``
 
     .. _Prometheus: https://prometheus.io/
