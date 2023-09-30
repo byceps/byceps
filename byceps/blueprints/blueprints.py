@@ -13,33 +13,22 @@ from collections.abc import Iterator
 from flask import Flask
 import structlog
 
-from byceps.util.framework.blueprint import (
-    BlueprintReg,
-    register_blueprints as _register_blueprints,
-)
+from byceps.util.framework.blueprint import BlueprintReg, register_blueprints
 
 
 log = structlog.get_logger()
 
 
-def register_blueprints(app: Flask) -> None:
-    """Register blueprints depending on the configuration."""
-    blueprints = _get_blueprints(app)
-    _register_blueprints(app, blueprints)
+def register_admin_blueprints(app: Flask) -> None:
+    blueprints = _get_admin_blueprints(app)
+    register_blueprints(app, blueprints)
+    log.info('Admin blueprints: enabled')
 
 
-def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
-    """Yield blueprints to register on the application."""
-    app_mode = app.byceps_app_mode
-
-    # Do not register blueprints here for app types other than admin and site.
-    if not app_mode.is_admin() and not app_mode.is_site():
-        return
-
-    if app_mode.is_admin():
-        yield from _get_admin_blueprints(app)
-    elif app_mode.is_site():
-        yield from _get_site_blueprints(app)
+def register_site_blueprints(app: Flask) -> None:
+    blueprints = _get_site_blueprints(app)
+    register_blueprints(app, blueprints)
+    log.info('Site blueprints: enabled')
 
 
 def _get_admin_blueprints(app: Flask) -> Iterator[BlueprintReg]:
@@ -47,7 +36,6 @@ def _get_admin_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     yield from _get_blueprints_common(app)
 
     yield from _get_blueprints_admin()
-    log.info('Admin blueprints: enabled')
 
 
 def _get_site_blueprints(app: Flask) -> Iterator[BlueprintReg]:
@@ -55,7 +43,6 @@ def _get_site_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     yield from _get_blueprints_common(app)
 
     yield from _get_blueprints_site()
-    log.info('Site blueprints: enabled')
 
 
 def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
