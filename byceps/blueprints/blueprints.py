@@ -9,25 +9,23 @@ byceps.application.blueprints.blueprints
 from __future__ import annotations
 
 from collections.abc import Iterator
-from typing import Optional
 
 from flask import Flask
 import structlog
 
-from byceps.util.framework.blueprint import get_blueprint
+from byceps.util.framework.blueprint import (
+    BlueprintReg,
+    register_blueprints as _register_blueprints,
+)
 
 
 log = structlog.get_logger()
 
 
-BlueprintReg = tuple[str, Optional[str]]
-
-
 def register_blueprints(app: Flask) -> None:
     """Register blueprints depending on the configuration."""
-    for name, url_prefix in _get_blueprints(app):
-        blueprint = get_blueprint(name)
-        app.register_blueprint(blueprint, url_prefix=url_prefix)
+    blueprints = _get_blueprints(app)
+    _register_blueprints(app, blueprints)
 
 
 def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:

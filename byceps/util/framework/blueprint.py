@@ -8,10 +8,15 @@ Blueprint utilities
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
 from importlib import import_module
 from types import ModuleType
+from typing import Optional
 
-from flask import Blueprint
+from flask import Blueprint, Flask
+
+
+BlueprintReg = tuple[str, Optional[str]]
 
 
 def create_blueprint(name: str, import_name: str) -> Blueprint:
@@ -36,3 +41,10 @@ def _get_blueprint_views_module(name: str) -> ModuleType:
     blueprint package.
     """
     return import_module(f'byceps.blueprints.{name}.views')
+
+
+def register_blueprints(app: Flask, blueprints: Iterable[BlueprintReg]) -> None:
+    """Register blueprints on the application."""
+    for name, url_prefix in blueprints:
+        blueprint = get_blueprint(name)
+        app.register_blueprint(blueprint, url_prefix=url_prefix)
