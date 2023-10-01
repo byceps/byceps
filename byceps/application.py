@@ -156,10 +156,7 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
     style_guide_enabled = app.config.get('STYLE_GUIDE_ENABLED', False) and (
         app_mode.is_admin() or app_mode.is_site()
     )
-    if style_guide_enabled:
-        log.info('Style guide: enabled')
-    else:
-        log.info('Style guide: disabled')
+    app.byceps_feature_states['style_guide'] = style_guide_enabled
 
     if app_mode.is_admin():
         register_admin_blueprints(app, style_guide_enabled=style_guide_enabled)
@@ -172,15 +169,14 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     enable_announcements()
 
-    if (
-        app.debug
-        and app.config.get('DEBUG_TOOLBAR_ENABLED', False)
+    debug_toolbar_enabled = (
+        app.config.get('DEBUG_TOOLBAR_ENABLED', False)
         and (app_mode.is_admin() or app_mode.is_site())
-    ):
+        and app.debug
+    )
+    if debug_toolbar_enabled:
         _enable_debug_toolbar(app)
-        log.info('Debug toolbar: enabled')
-    else:
-        log.info('Debug toolbar: disabled')
+    app.byceps_feature_states['debug_toolbar'] = debug_toolbar_enabled
 
     _log_app_state(app)
 
