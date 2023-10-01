@@ -1,20 +1,16 @@
 """
-byceps.application.blueprints.blueprints
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.application.blueprints.site.blueprints
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
-from collections.abc import Iterator
-
 from flask import Flask
 import structlog
 
 from byceps.blueprints.common.blueprints import register_common_blueprints
-from byceps.util.framework.blueprint import BlueprintReg, register_blueprints
+from byceps.util.framework.blueprint import register_blueprints
 
 
 log = structlog.get_logger()
@@ -23,14 +19,7 @@ log = structlog.get_logger()
 def register_site_blueprints(app: Flask) -> None:
     register_common_blueprints(app)
 
-    blueprints = _get_site_blueprints(app)
-    register_blueprints(app, blueprints)
-    log.info('Site blueprints: enabled')
-
-
-def _get_site_blueprints(app: Flask) -> Iterator[BlueprintReg]:
-    """Yield blueprints to register on the application."""
-    yield from [
+    blueprints = [
         ('site.attendance', '/attendance'),
         ('site.authn.login', '/authentication'),
         ('site.board', '/board'),
@@ -65,3 +54,6 @@ def _get_site_blueprints(app: Flask) -> Iterator[BlueprintReg]:
         ('site.user_group', '/user_groups'),
         ('site.user_message', '/user_messages'),
     ]
+
+    register_blueprints(app, blueprints)
+    log.info('Site blueprints: enabled')
