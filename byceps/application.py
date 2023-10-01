@@ -23,11 +23,9 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from byceps import config, config_defaults
 from byceps.announce.announce import enable_announcements
-from byceps.blueprints.blueprints import (
-    register_admin_blueprints,
-    register_site_blueprints,
-)
+from byceps.blueprints.admin.blueprints import register_admin_blueprints
 from byceps.blueprints.api.blueprints import register_api_blueprints
+from byceps.blueprints.blueprints import register_site_blueprints
 from byceps.config import ConfigurationError, parse_value_from_environment
 from byceps.database import db
 from byceps.util import templatefilters
