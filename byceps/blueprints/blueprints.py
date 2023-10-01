@@ -13,6 +13,7 @@ from collections.abc import Iterator
 from flask import Flask
 import structlog
 
+from byceps.blueprints.common.blueprints import register_common_blueprints
 from byceps.util.framework.blueprint import BlueprintReg, register_blueprints
 
 
@@ -20,12 +21,16 @@ log = structlog.get_logger()
 
 
 def register_admin_blueprints(app: Flask) -> None:
+    register_common_blueprints(app)
+
     blueprints = _get_admin_blueprints(app)
     register_blueprints(app, blueprints)
     log.info('Admin blueprints: enabled')
 
 
 def register_site_blueprints(app: Flask) -> None:
+    register_common_blueprints(app)
+
     blueprints = _get_site_blueprints(app)
     register_blueprints(app, blueprints)
     log.info('Site blueprints: enabled')
@@ -33,8 +38,6 @@ def register_site_blueprints(app: Flask) -> None:
 
 def _get_admin_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
-    yield from _get_blueprints_common(app)
-
     yield from [
         ('admin.api', '/admin/api'),
         ('admin.attendance', '/admin/attendance'),
@@ -85,8 +88,6 @@ def _get_admin_blueprints(app: Flask) -> Iterator[BlueprintReg]:
 
 def _get_site_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
-    yield from _get_blueprints_common(app)
-
     yield from [
         ('site.attendance', '/attendance'),
         ('site.authn.login', '/authentication'),
@@ -122,20 +123,3 @@ def _get_site_blueprints(app: Flask) -> Iterator[BlueprintReg]:
         ('site.user_group', '/user_groups'),
         ('site.user_message', '/user_messages'),
     ]
-
-
-def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
-    yield from [
-        ('common.authn.password', '/authentication/password'),
-        ('common.core', None),
-        ('common.guest_server', None),
-        ('common.locale', '/locale'),
-    ]
-
-    yield ('monitoring.healthcheck', '/health')
-
-    if app.config.get('STYLE_GUIDE_ENABLED', False):
-        yield ('common.style_guide', '/style_guide')
-        log.info('Style guide: enabled')
-    else:
-        log.info('Style guide: disabled')
