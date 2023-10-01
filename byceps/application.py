@@ -149,10 +149,18 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     load_permissions()
 
+    style_guide_enabled = app.config.get('STYLE_GUIDE_ENABLED', False) and (
+        app_mode.is_admin() or app_mode.is_site()
+    )
+    if style_guide_enabled:
+        log.info('Style guide: enabled')
+    else:
+        log.info('Style guide: disabled')
+
     if app_mode.is_admin():
-        register_admin_blueprints(app)
+        register_admin_blueprints(app, style_guide_enabled=style_guide_enabled)
     elif app_mode.is_site():
-        register_site_blueprints(app)
+        register_site_blueprints(app, style_guide_enabled=style_guide_enabled)
 
     templatefilters.register(app)
 

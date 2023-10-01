@@ -16,8 +16,10 @@ from byceps.util.framework.blueprint import register_blueprints
 log = structlog.get_logger()
 
 
-def register_admin_blueprints(app: Flask) -> None:
-    register_common_blueprints(app)
+def register_admin_blueprints(
+    app: Flask, *, style_guide_enabled: bool = False
+) -> None:
+    register_common_blueprints(app, style_guide_enabled=style_guide_enabled)
 
     blueprints = [
         ('admin.api', '/admin/api'),

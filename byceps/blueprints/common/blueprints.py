@@ -7,15 +7,13 @@ byceps.application.blueprints.common.blueprints
 """
 
 from flask import Flask
-import structlog
 
 from byceps.util.framework.blueprint import register_blueprints
 
 
-log = structlog.get_logger()
-
-
-def register_common_blueprints(app: Flask) -> None:
+def register_common_blueprints(
+    app: Flask, *, style_guide_enabled: bool = False
+) -> None:
     blueprints = [
         ('common.authn.password', '/authentication/password'),
         ('common.core', None),
@@ -24,10 +22,7 @@ def register_common_blueprints(app: Flask) -> None:
         ('monitoring.healthcheck', '/health'),
     ]
 
-    if app.config.get('STYLE_GUIDE_ENABLED', False):
+    if style_guide_enabled:
         blueprints.append(('common.style_guide', '/style_guide'))
-        log.info('Style guide: enabled')
-    else:
-        log.info('Style guide: disabled')
 
     register_blueprints(app, blueprints)
