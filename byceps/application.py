@@ -149,6 +149,10 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     load_permissions()
 
+    app.byceps_feature_states: dict[str, bool] = {
+        'debug': app.debug,
+    }
+
     style_guide_enabled = app.config.get('STYLE_GUIDE_ENABLED', False) and (
         app_mode.is_admin() or app_mode.is_site()
     )
@@ -178,11 +182,7 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
     else:
         log.info('Debug toolbar: disabled')
 
-    log.info(
-        'Application created',
-        app_mode=app_mode.name,
-        debug=app.debug,
-    )
+    _log_app_state(app)
 
     return app
 
@@ -322,3 +322,14 @@ def _enable_rq_dashboard(app: Flask) -> None:
     app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
 
     log.info('RQ dashboard: enabled')
+
+
+def _log_app_state(app: Flask) -> None:
+    features = {
+        name: (enabled and 'enabled' or 'disabled')
+        for name, enabled in app.byceps_feature_states.items()
+    }
+
+    log.info(
+        'Application created', app_mode=app.byceps_app_mode.name, **features
+    )
