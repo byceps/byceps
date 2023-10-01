@@ -9,7 +9,7 @@ byceps.application.blueprints.admin.blueprints
 from flask import Flask
 import structlog
 
-from byceps.blueprints.common.blueprints import register_common_blueprints
+from byceps.blueprints.common.blueprints import get_common_blueprints
 from byceps.util.framework.blueprint import register_blueprints
 
 
@@ -19,9 +19,11 @@ log = structlog.get_logger()
 def register_admin_blueprints(
     app: Flask, *, style_guide_enabled: bool = False
 ) -> None:
-    register_common_blueprints(app, style_guide_enabled=style_guide_enabled)
+    common_blueprints = get_common_blueprints(
+        style_guide_enabled=style_guide_enabled
+    )
 
-    blueprints = [
+    blueprints = common_blueprints + [
         ('admin.api', '/admin/api'),
         ('admin.attendance', '/admin/attendance'),
         ('admin.authn.identity_tag', '/admin/authentication/identity_tags'),

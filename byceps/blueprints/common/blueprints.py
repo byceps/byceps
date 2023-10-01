@@ -6,14 +6,14 @@ byceps.application.blueprints.common.blueprints
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import Flask
+from __future__ import annotations
 
-from byceps.util.framework.blueprint import register_blueprints
+from byceps.util.framework.blueprint import BlueprintReg
 
 
-def register_common_blueprints(
-    app: Flask, *, style_guide_enabled: bool = False
-) -> None:
+def get_common_blueprints(
+    *, style_guide_enabled: bool = False
+) -> list[BlueprintReg]:
     blueprints = [
         ('common.authn.password', '/authentication/password'),
         ('common.core', None),
@@ -25,4 +25,4 @@ def register_common_blueprints(
     if style_guide_enabled:
         blueprints.append(('common.style_guide', '/style_guide'))
 
-    register_blueprints(app, blueprints)
+    return blueprints
