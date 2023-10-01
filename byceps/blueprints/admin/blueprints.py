@@ -7,13 +7,9 @@ byceps.application.blueprints.admin.blueprints
 """
 
 from flask import Flask
-import structlog
 
 from byceps.blueprints.common.blueprints import get_common_blueprints
 from byceps.util.framework.blueprint import register_blueprints
-
-
-log = structlog.get_logger()
 
 
 def register_admin_blueprints(
@@ -71,4 +67,3 @@ def register_admin_blueprints(
     ]
 
     register_blueprints(app, blueprints)
-    log.info('Admin blueprints: enabled')

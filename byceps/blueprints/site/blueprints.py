@@ -7,13 +7,9 @@ byceps.application.blueprints.site.blueprints
 """
 
 from flask import Flask
-import structlog
 
 from byceps.blueprints.common.blueprints import get_common_blueprints
 from byceps.util.framework.blueprint import register_blueprints
-
-
-log = structlog.get_logger()
 
 
 def register_site_blueprints(
@@ -60,4 +56,3 @@ def register_site_blueprints(
     ]
 
     register_blueprints(app, blueprints)
-    log.info('Site blueprints: enabled')
