@@ -21,7 +21,7 @@ from byceps.util.image.models import Dimensions, ImageType
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from .dbmodels.item import DbNewsImage, DbNewsItem
+from .dbmodels import DbNewsImage, DbNewsItem
 from .models import NewsChannelID, NewsImage, NewsImageID, NewsItem, NewsItemID
 
 

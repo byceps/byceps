@@ -25,10 +25,10 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
 from . import news_channel_service, news_html_service, news_image_service
-from .dbmodels.channel import DbNewsChannel
-from .dbmodels.item import (
+from .dbmodels import (
     DbCurrentNewsItemVersionAssociation,
     DbFeaturedNewsImage,
+    DbNewsChannel,
     DbNewsItem,
     DbNewsItemVersion,
 )

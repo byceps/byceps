@@ -1,6 +1,6 @@
 """
-byceps.services.news.dbmodels.item
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.news.dbmodels
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,15 +11,13 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-
 if TYPE_CHECKING:
     hybrid_property = property
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.news.models import (
@@ -29,12 +27,45 @@ from byceps.services.news.models import (
     NewsItemID,
     NewsItemVersionID,
 )
+from byceps.services.site.models import SiteID
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.typing import UserID
+from byceps.typing import BrandID, UserID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 
-from .channel import DbNewsChannel
+
+class DbNewsChannel(db.Model):
+    """A channel to which news items can be published."""
+
+    __tablename__ = 'news_channels'
+
+    id: Mapped[NewsChannelID] = mapped_column(db.UnicodeText, primary_key=True)
+    brand_id: Mapped[BrandID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('brands.id'), index=True
+    )
+    announcement_site_id: Mapped[
+        Optional[SiteID]  # noqa: UP007
+    ] = mapped_column(db.UnicodeText, db.ForeignKey('sites.id'))
+    archived: Mapped[bool] = mapped_column(default=False)
+
+    def __init__(
+        self,
+        channel_id: NewsChannelID,
+        brand_id: BrandID,
+        *,
+        announcement_site_id: SiteID | None = None,
+    ) -> None:
+        self.id = channel_id
+        self.brand_id = brand_id
+        self.announcement_site_id = announcement_site_id
+
+    def __repr__(self) -> str:
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add('brand', self.brand_id)
+            .build()
+        )
 
 
 class DbNewsItem(db.Model):

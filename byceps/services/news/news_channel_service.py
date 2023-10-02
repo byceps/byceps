@@ -15,7 +15,7 @@ from byceps.services.brand.models import Brand
 from byceps.services.site.models import SiteID
 from byceps.typing import BrandID
 
-from .dbmodels.channel import DbNewsChannel
+from .dbmodels import DbNewsChannel
 from .models import NewsChannel, NewsChannelID
 
 
