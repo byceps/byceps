@@ -17,6 +17,7 @@ from byceps.services.guest_server import (
     guest_server_service,
 )
 from byceps.services.guest_server.models import Address
+from byceps.services.orga_team import orga_team_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing import ticket_service
 from byceps.signals import guest_server as guest_server_signals
@@ -58,7 +59,9 @@ def create_form(erroneous_form=None):
     """Show a form to create a guest server."""
     party = _get_current_party_or_404()
 
-    if not _current_user_uses_ticket_for_party(party.id):
+    if not _current_user_uses_ticket_for_party(
+        party.id
+    ) and not _current_user_is_orga(party.id):
         flash_notice(
             gettext(
                 'Using a ticket for this party is required to register servers.'
@@ -90,7 +93,9 @@ def create():
     """Create a guest server."""
     party = _get_current_party_or_404()
 
-    if not _current_user_uses_ticket_for_party(party.id):
+    if not _current_user_uses_ticket_for_party(
+        party.id
+    ) and not _current_user_is_orga(party.id):
         flash_notice(
             gettext(
                 'Using a ticket for this party is required to register servers.'
@@ -157,6 +162,10 @@ def _get_current_party_or_404() -> Party:
 
 def _current_user_uses_ticket_for_party(party_id: PartyID) -> bool:
     return ticket_service.uses_any_ticket_for_party(g.user.id, party_id)
+
+
+def _current_user_is_orga(party_id: PartyID) -> bool:
+    return orga_team_service.is_orga_for_party(g.user.id, party_id)
 
 
 def _server_limit_reached(party_id: PartyID) -> bool:
