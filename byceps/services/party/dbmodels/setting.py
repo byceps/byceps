@@ -13,7 +13,7 @@ from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
 
 
-class DbSetting(db.Model):
+class DbPartySetting(db.Model):
     """A party-specific setting."""
 
     __tablename__ = 'party_settings'

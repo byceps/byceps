@@ -20,7 +20,7 @@ from byceps.services.brand.dbmodels.brand import DbBrand
 from byceps.typing import BrandID, PartyID
 
 from .dbmodels.party import DbParty
-from .dbmodels.setting import DbSetting
+from .dbmodels.setting import DbPartySetting
 from .models import Party, PartyWithBrand
 
 
@@ -90,7 +90,9 @@ def update_party(
 
 def delete_party(party_id: PartyID) -> None:
     """Delete a party."""
-    db.session.execute(delete(DbSetting).where(DbSetting.party_id == party_id))
+    db.session.execute(
+        delete(DbPartySetting).where(DbPartySetting.party_id == party_id)
+    )
     db.session.execute(delete(DbParty).where(DbParty.id == party_id))
     db.session.commit()
 
