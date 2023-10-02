@@ -273,21 +273,21 @@ def _dispatch_apps_by_url_path(
 ) -> None:
     mounts = {}
 
-    if app.config['API_ENABLED'] and (
+    api_enabled = app.config['API_ENABLED'] and (
         app.byceps_app_mode.is_admin() or app.byceps_app_mode.is_site()
-    ):
+    )
+    if api_enabled:
         api_app = create_api_app(config_overrides=config_overrides)
         mounts['/api'] = api_app
-        log.info('API: enabled')
-    else:
-        log.info('API: disabled')
+    app.byceps_feature_states['api'] = api_enabled
 
-    if app.config['METRICS_ENABLED'] and app.byceps_app_mode.is_admin():
+    metrics_enabled = (
+        app.config['METRICS_ENABLED'] and app.byceps_app_mode.is_admin()
+    )
+    if metrics_enabled:
         metrics_app = create_metrics_app(app.config['SQLALCHEMY_DATABASE_URI'])
         mounts['/metrics'] = metrics_app
-        log.info('Metrics: enabled')
-    else:
-        log.info('Metrics: disabled')
+    app.byceps_feature_states['metrics'] = metrics_enabled
 
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
 
