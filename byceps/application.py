@@ -319,7 +319,7 @@ def _enable_rq_dashboard(app: Flask) -> None:
     rq_dashboard.web.setup_rq_connection(app)
     app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
 
-    log.info('RQ dashboard: enabled')
+    app.byceps_feature_states['rq_dashboard'] = True
 
 
 def _log_app_state(app: Flask) -> None:
