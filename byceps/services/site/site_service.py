@@ -21,7 +21,7 @@ from byceps.services.news.models import NewsChannelID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.typing import BrandID, PartyID
 
-from .dbmodels.setting import DbSetting
+from .dbmodels.setting import DbSiteSetting
 from .dbmodels.site import DbSite
 from .models import Site, SiteID, SiteWithBrand
 
@@ -105,7 +105,7 @@ def update_site(
 
 def delete_site(site_id: SiteID) -> None:
     """Delete a site."""
-    db.session.execute(delete(DbSetting).filter_by(site_id=site_id))
+    db.session.execute(delete(DbSiteSetting).filter_by(site_id=site_id))
     db.session.execute(delete(DbSite).filter_by(id=site_id))
     db.session.commit()
 

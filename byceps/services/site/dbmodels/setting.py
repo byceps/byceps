@@ -13,7 +13,7 @@ from byceps.services.site.models import SiteID
 from byceps.util.instances import ReprBuilder
 
 
-class DbSetting(db.Model):
+class DbSiteSetting(db.Model):
     """A site-specific setting."""
 
     __tablename__ = 'site_settings'

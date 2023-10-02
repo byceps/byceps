@@ -12,13 +12,13 @@ from sqlalchemy import delete, select
 
 from byceps.database import db, upsert
 
-from .dbmodels.setting import DbSetting
+from .dbmodels.setting import DbSiteSetting
 from .models import SiteID, SiteSetting
 
 
 def create_setting(site_id: SiteID, name: str, value: str) -> SiteSetting:
     """Create a setting for that site."""
-    db_setting = DbSetting(site_id, name, value)
+    db_setting = DbSiteSetting(site_id, name, value)
 
     db.session.add(db_setting)
     db.session.commit()
@@ -32,7 +32,7 @@ def create_or_update_setting(
     """Create or update a setting for that site, depending on whether
     it already exists or not.
     """
-    table = DbSetting.__table__
+    table = DbSiteSetting.__table__
     identifier = {
         'site_id': site_id,
         'name': name,
@@ -52,9 +52,9 @@ def remove_setting(site_id: SiteID, name: str) -> None:
     Do nothing if no setting with that name exists for the site.
     """
     db.session.execute(
-        delete(DbSetting)
-        .where(DbSetting.site_id == site_id)
-        .where(DbSetting.name == name)
+        delete(DbSiteSetting)
+        .where(DbSiteSetting.site_id == site_id)
+        .where(DbSiteSetting.name == name)
     )
     db.session.commit()
 
@@ -63,7 +63,7 @@ def find_setting(site_id: SiteID, name: str) -> SiteSetting | None:
     """Return the setting for that site and with that name, or `None`
     if not found.
     """
-    db_setting = db.session.get(DbSetting, (site_id, name))
+    db_setting = db.session.get(DbSiteSetting, (site_id, name))
 
     if db_setting is None:
         return None
@@ -86,7 +86,7 @@ def find_setting_value(site_id: SiteID, name: str) -> str | None:
 def get_settings(site_id: SiteID) -> set[SiteSetting]:
     """Return all settings for that site."""
     db_settings = db.session.scalars(
-        select(DbSetting).filter_by(site_id=site_id)
+        select(DbSiteSetting).filter_by(site_id=site_id)
     ).all()
 
     return {
@@ -94,7 +94,7 @@ def get_settings(site_id: SiteID) -> set[SiteSetting]:
     }
 
 
-def _db_entity_to_site_setting(db_setting: DbSetting) -> SiteSetting:
+def _db_entity_to_site_setting(db_setting: DbSiteSetting) -> SiteSetting:
     return SiteSetting(
         db_setting.site_id,
         db_setting.name,
