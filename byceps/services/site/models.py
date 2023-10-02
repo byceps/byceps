@@ -14,8 +14,8 @@ from typing import NewType
 from byceps.services.board.models import BoardID
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.news.models import NewsChannelID
+from byceps.services.party.models import PartyID
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.typing import PartyID
 
 
 SiteID = NewType('SiteID', str)

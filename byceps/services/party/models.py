@@ -10,9 +10,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
+from typing import NewType
 
 from byceps.services.brand.models import Brand, BrandID
-from byceps.typing import PartyID
+
+
+PartyID = NewType('PartyID', str)
 
 
 @dataclass(frozen=True)

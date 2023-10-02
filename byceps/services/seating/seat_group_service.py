@@ -13,13 +13,13 @@ from collections.abc import Sequence
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
     TicketCategoryID,
 )
-from byceps.typing import PartyID
 
 from .dbmodels.seat import DbSeat
 from .dbmodels.seat_group import (

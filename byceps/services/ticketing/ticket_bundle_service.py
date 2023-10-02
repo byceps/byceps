@@ -14,10 +14,10 @@ from sqlalchemy import delete, select
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
 from byceps.database import db, paginate, Pagination
+from byceps.services.party.models import PartyID
 from byceps.services.seating import seat_group_service
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID
 
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket

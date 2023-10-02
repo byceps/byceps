@@ -14,9 +14,9 @@ from flask_babel import gettext, to_user_timezone, to_utc
 
 from byceps.services.brand import brand_service
 from byceps.services.party import party_service, party_setting_service
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.models.ticket import TicketSaleStats
-from byceps.typing import PartyID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated

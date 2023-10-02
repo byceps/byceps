@@ -8,7 +8,8 @@ from flask import Flask
 from byceps.announce.announce import build_announcement_request
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.guest_server.models import ServerID
-from byceps.typing import PartyID, UserID
+from byceps.services.party.models import PartyID
+from byceps.typing import UserID
 
 from tests.helpers import generate_uuid
 

@@ -15,13 +15,14 @@ from sqlalchemy import select
 
 from byceps.database import db, paginate, Pagination
 from byceps.services.orga_team import orga_team_service
+from byceps.services.party.models import PartyID
 from byceps.services.seating import seating_area_service
 from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID, UserID
+from byceps.typing import UserID
 
 from .models import Attendee, AttendeeSeat, AttendeeTicket
 

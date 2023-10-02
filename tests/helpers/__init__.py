@@ -30,7 +30,7 @@ from byceps.services.authz.models import PermissionID, RoleID
 from byceps.services.board.models import BoardID
 from byceps.services.brand.models import BrandID
 from byceps.services.party import party_service
-from byceps.services.party.models import Party
+from byceps.services.party.models import Party, PartyID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
@@ -40,7 +40,7 @@ from byceps.services.user import (
     user_service,
 )
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID, UserID
+from byceps.typing import UserID
 
 
 CONFIG_OVERRIDES_FOR_TESTS = {

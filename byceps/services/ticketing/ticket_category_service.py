@@ -11,7 +11,7 @@ from __future__ import annotations
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.typing import PartyID
+from byceps.services.party.models import PartyID
 
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket

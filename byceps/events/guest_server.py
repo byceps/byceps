@@ -11,7 +11,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from byceps.services.guest_server.models import ServerID
-from byceps.typing import PartyID, UserID
+from byceps.services.party.models import PartyID
+from byceps.typing import UserID
 
 from .base import _BaseEvent
 

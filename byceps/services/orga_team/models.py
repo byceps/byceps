@@ -12,9 +12,9 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from byceps.services.party.models import Party
+from byceps.services.party.models import Party, PartyID
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID, UserID
+from byceps.typing import UserID
 
 
 OrgaTeamID = NewType('OrgaTeamID', UUID)

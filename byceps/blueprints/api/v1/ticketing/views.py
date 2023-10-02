@@ -10,9 +10,8 @@ from flask import abort, jsonify
 
 from byceps.blueprints.api.decorators import api_token_required
 from byceps.services.party import party_service
-from byceps.services.party.models import Party
+from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing import ticket_service
-from byceps.typing import PartyID
 from byceps.util.framework.blueprint import create_blueprint
 
 

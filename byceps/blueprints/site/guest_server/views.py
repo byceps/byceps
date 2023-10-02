@@ -17,10 +17,9 @@ from byceps.services.guest_server import (
     guest_server_service,
 )
 from byceps.services.guest_server.models import Address
-from byceps.services.party.models import Party
+from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing import ticket_service
 from byceps.signals import guest_server as guest_server_signals
-from byceps.typing import PartyID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated

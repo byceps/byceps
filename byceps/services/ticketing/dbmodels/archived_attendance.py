@@ -11,7 +11,8 @@ from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.typing import PartyID, UserID
+from byceps.services.party.models import PartyID
+from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 
 

@@ -11,8 +11,8 @@ from __future__ import annotations
 from datetime import datetime
 
 from byceps.events.ticketing import TicketCheckedInEvent
+from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

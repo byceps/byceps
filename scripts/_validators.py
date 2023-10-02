@@ -17,12 +17,12 @@ import click
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party import party_service
-from byceps.services.party.models import Party
+from byceps.services.party.models import Party, PartyID
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID, UserID
+from byceps.typing import UserID
 
 
 def validate_brand(ctx, param, brand_id: BrandID) -> Brand:

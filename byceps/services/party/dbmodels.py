@@ -16,7 +16,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
 from byceps.services.brand.models import BrandID
-from byceps.typing import PartyID
+from byceps.services.party.models import PartyID
 from byceps.util.instances import ReprBuilder
 
 

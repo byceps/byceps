@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from byceps.typing import PartyID
+from byceps.services.party.models import PartyID
 
 
 TicketCategoryID = NewType('TicketCategoryID', UUID)

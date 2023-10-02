@@ -12,7 +12,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.party.dbmodels import DbParty
-from byceps.typing import PartyID
+from byceps.services.party.models import PartyID
 
 from .dbmodels.tourney_category import DbTourneyCategory
 from .models import TourneyCategory, TourneyCategoryID

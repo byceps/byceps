@@ -9,8 +9,9 @@ from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
 from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketSaleStats
-from byceps.typing import PartyID, UserID
+from byceps.typing import UserID
 
 from tests.helpers import generate_uuid
 

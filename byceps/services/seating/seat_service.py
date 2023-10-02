@@ -13,13 +13,13 @@ from collections.abc import Iterable, Iterator
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import (
     TicketCategory,
     TicketCategoryID,
 )
-from byceps.typing import PartyID
 
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat

@@ -9,8 +9,8 @@ byceps.services.ticketing.dbmodels.category
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import TicketCategoryID
-from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid4
 

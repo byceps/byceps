@@ -10,8 +10,8 @@ from flask_babel import lazy_gettext
 from wtforms import DateField, IntegerField, SelectField, StringField, TimeField
 from wtforms.validators import InputRequired, Length, Optional
 
+from byceps.services.party.models import PartyID
 from byceps.services.tourney import tourney_category_service
-from byceps.typing import PartyID
 from byceps.util.l10n import LocalizedForm
 
 

@@ -14,8 +14,8 @@ from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
+from byceps.services.party.models import PartyID
 from byceps.services.tourney.models import TourneyCategoryID, TourneyID
-from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 

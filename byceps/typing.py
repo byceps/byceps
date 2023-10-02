@@ -13,5 +13,3 @@ from uuid import UUID
 
 
 UserID = NewType('UserID', UUID)
-
-PartyID = NewType('PartyID', str)

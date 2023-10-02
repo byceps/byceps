@@ -12,9 +12,10 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
+from byceps.services.party.models import PartyID
 from byceps.services.seating.models import SeatID
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID, UserID
+from byceps.typing import UserID
 
 from .ticket import TicketCode, TicketID
 

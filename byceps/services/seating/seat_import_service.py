@@ -13,9 +13,9 @@ import json
 
 from pydantic import ValidationError
 
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.models.ticket import TicketCategoryID
-from byceps.typing import PartyID
 from byceps.util.result import Err, Ok, Result
 
 from . import seat_group_service, seat_service, seating_area_service

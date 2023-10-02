@@ -12,10 +12,10 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.events.ticketing import TicketCheckedInEvent
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID
 from byceps.util.result import Err, Ok, Result
 
 from . import ticket_domain_service, ticket_log_service, ticket_service

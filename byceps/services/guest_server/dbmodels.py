@@ -22,7 +22,8 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from byceps.database import db
-from byceps.typing import PartyID, UserID
+from byceps.services.party.models import PartyID
+from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 
 from .models import AddressID, IPAddress, ServerID

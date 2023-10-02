@@ -15,8 +15,8 @@ from uuid import UUID
 
 from typing_extensions import Self
 
+from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID
 
 
 TourneyCategoryID = NewType('TourneyCategoryID', UUID)

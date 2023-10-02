@@ -14,7 +14,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.party import party_service
-from byceps.typing import PartyID
+from byceps.services.party.models import PartyID
 
 from . import tourney_category_service
 from .dbmodels.participant import DbParticipant

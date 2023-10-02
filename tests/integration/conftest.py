@@ -25,7 +25,7 @@ from byceps.services.email.models import EmailConfig
 from byceps.services.language import language_service
 from byceps.services.news import news_channel_service
 from byceps.services.news.models import NewsChannel, NewsChannelID
-from byceps.services.party.models import Party
+from byceps.services.party.models import Party, PartyID
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.order import order_sequence_service
 from byceps.services.shop.order.models.number import (
@@ -44,7 +44,7 @@ from byceps.services.site.models import Site, SiteID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID, UserID
+from byceps.typing import UserID
 
 from tests.helpers import (
     create_admin_app,

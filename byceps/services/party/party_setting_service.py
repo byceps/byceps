@@ -11,7 +11,7 @@ from __future__ import annotations
 from sqlalchemy import delete, select
 
 from byceps.database import db, upsert
-from byceps.typing import PartyID
+from byceps.services.party.models import PartyID
 
 from .dbmodels import DbPartySetting
 from .models import PartySetting

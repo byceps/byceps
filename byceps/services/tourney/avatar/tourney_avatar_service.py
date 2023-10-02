@@ -11,8 +11,8 @@ from uuid import UUID
 
 from byceps.database import db
 from byceps.services.image import image_service
+from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
 from byceps.util.image.models import Dimensions, ImageType

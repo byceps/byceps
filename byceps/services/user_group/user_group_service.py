@@ -13,8 +13,8 @@ from collections.abc import Sequence
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
-from byceps.typing import PartyID
 
 from .dbmodels import DbUserGroup
 

@@ -14,12 +14,13 @@ from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
     TicketCategoryID,
 )
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.typing import PartyID, UserID
+from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 
