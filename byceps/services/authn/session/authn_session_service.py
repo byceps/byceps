@@ -20,8 +20,7 @@ from byceps.services.user import user_log_service
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
-from .dbmodels.recent_login import DbRecentLogin
-from .dbmodels.session_token import DbSessionToken
+from .dbmodels import DbRecentLogin, DbSessionToken
 from .models import CurrentUser
 
 

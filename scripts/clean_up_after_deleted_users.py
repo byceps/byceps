@@ -13,8 +13,7 @@ from sqlalchemy import delete
 
 from byceps.database import db
 from byceps.services.authn.password.dbmodels import DbCredential
-from byceps.services.authn.session.dbmodels.recent_login import DbRecentLogin
-from byceps.services.authn.session.dbmodels.session_token import DbSessionToken
+from byceps.services.authn.session.dbmodels import DbRecentLogin, DbSessionToken
 from byceps.services.authz.dbmodels import DbUserRole
 from byceps.services.board.dbmodels.last_category_view import (
     DbLastCategoryView as DbBoardLastCategoryView,
