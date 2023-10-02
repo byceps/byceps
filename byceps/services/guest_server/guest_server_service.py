@@ -21,7 +21,7 @@ from byceps.typing import PartyID, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import guest_server_domain_service
-from .dbmodels import DbAddress, DbServer, DbSetting
+from .dbmodels import DbGuestServer, DbGuestServerAddress, DbGuestServerSetting
 from .models import (
     Address,
     AddressID,
@@ -62,7 +62,7 @@ def update_setting(
     domain: str | None,
 ) -> Setting:
     """Update the setting for the party."""
-    db_setting = _get_db_setting(party.id) or DbSetting(party.id)
+    db_setting = _get_db_setting(party.id) or DbGuestServerSetting(party.id)
 
     db_setting.netmask = netmask
     db_setting.gateway = gateway
@@ -76,13 +76,13 @@ def update_setting(
     return _db_entity_to_setting(db_setting)
 
 
-def _get_db_setting(party_id: PartyID) -> DbSetting | None:
+def _get_db_setting(party_id: PartyID) -> DbGuestServerSetting | None:
     return db.session.execute(
-        select(DbSetting).filter_by(party_id=party_id)
+        select(DbGuestServerSetting).filter_by(party_id=party_id)
     ).scalar_one_or_none()
 
 
-def _db_entity_to_setting(db_setting: DbSetting) -> Setting:
+def _db_entity_to_setting(db_setting: DbGuestServerSetting) -> Setting:
     return Setting(
         party_id=db_setting.party_id,
         netmask=db_setting.netmask,
@@ -132,7 +132,7 @@ def create_server(
 
 
 def _persist_created_server(server: Server) -> None:
-    db_server = DbServer(
+    db_server = DbGuestServer(
         server.id,
         server.party_id,
         server.created_at,
@@ -146,7 +146,7 @@ def _persist_created_server(server: Server) -> None:
     db.session.add(db_server)
 
     for address in server.addresses:
-        db_address = DbAddress(
+        db_address = DbGuestServerAddress(
             address.id,
             server.id,
             server.created_at,
@@ -194,7 +194,9 @@ def get_all_servers_for_party(party_id: PartyID) -> list[Server]:
     """Return all servers for the party."""
     db_servers = (
         db.session.scalars(
-            select(DbServer).filter_by(party_id=party_id).join(DbAddress)
+            select(DbGuestServer)
+            .filter_by(party_id=party_id)
+            .join(DbGuestServerAddress)
         )
         .unique()
         .all()
@@ -226,10 +228,10 @@ def get_servers_for_owner_and_party(
     """Return the servers owned by the user for the party."""
     db_servers = (
         db.session.scalars(
-            select(DbServer)
+            select(DbGuestServer)
             .filter_by(owner_id=owner_id)
             .filter_by(party_id=party_id)
-            .join(DbAddress)
+            .join(DbGuestServerAddress)
         )
         .unique()
         .all()
@@ -260,7 +262,7 @@ def count_servers_for_owner_and_party(
 ) -> int:
     """Return the number of servers owned by the user for the party."""
     return db.session.scalar(
-        select(db.func.count(DbServer.id))
+        select(db.func.count(DbGuestServer.id))
         .filter_by(owner_id=owner_id)
         .filter_by(party_id=party_id)
     )
@@ -269,21 +271,25 @@ def count_servers_for_owner_and_party(
 def delete_server(server_id: ServerID) -> None:
     """Delete a server and its addresses."""
     db.session.execute(
-        delete(DbAddress).where(DbAddress.server_id == server_id)
+        delete(DbGuestServerAddress).where(
+            DbGuestServerAddress.server_id == server_id
+        )
     )
 
-    db.session.execute(delete(DbServer).where(DbServer.id == server_id))
+    db.session.execute(
+        delete(DbGuestServer).where(DbGuestServer.id == server_id)
+    )
 
     db.session.commit()
 
 
-def _find_db_server(server_id: ServerID) -> DbServer | None:
+def _find_db_server(server_id: ServerID) -> DbGuestServer | None:
     return db.session.execute(
-        select(DbServer).filter_by(id=server_id)
+        select(DbGuestServer).filter_by(id=server_id)
     ).scalar_one_or_none()
 
 
-def _get_db_server(server_id: ServerID) -> DbServer:
+def _get_db_server(server_id: ServerID) -> DbGuestServer:
     db_server = _find_db_server(server_id)
 
     if db_server is None:
@@ -293,7 +299,7 @@ def _get_db_server(server_id: ServerID) -> DbServer:
 
 
 def _db_entity_to_server(
-    db_server: DbServer, creator: User, owner: User
+    db_server: DbGuestServer, creator: User, owner: User
 ) -> Server:
     addresses = {
         _db_entity_to_address(db_address) for db_address in db_server.addresses
@@ -348,7 +354,7 @@ def create_address(
         gateway=gateway,
     )
 
-    db_address = DbAddress(
+    db_address = DbGuestServerAddress(
         address.id,
         address.server_id,
         address.created_at,
@@ -389,13 +395,13 @@ def update_address(
     return Ok(address)
 
 
-def _find_db_address(address_id: AddressID) -> DbAddress | None:
+def _find_db_address(address_id: AddressID) -> DbGuestServerAddress | None:
     return db.session.execute(
-        select(DbAddress).filter_by(id=address_id)
+        select(DbGuestServerAddress).filter_by(id=address_id)
     ).scalar_one_or_none()
 
 
-def _db_entity_to_address(db_address: DbAddress) -> Address:
+def _db_entity_to_address(db_address: DbGuestServerAddress) -> Address:
     return Address(
         id=db_address.id,
         server_id=db_address.server_id,

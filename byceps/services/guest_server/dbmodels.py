@@ -28,7 +28,7 @@ from byceps.util.instances import ReprBuilder
 from .models import AddressID, IPAddress, ServerID
 
 
-class DbSetting(db.Model):
+class DbGuestServerSetting(db.Model):
     """A party-specific setting for guest servers."""
 
     __tablename__ = 'guest_server_settings'
@@ -101,7 +101,7 @@ class DbSetting(db.Model):
         return ReprBuilder(self).add_with_lookup('party_id').build()
 
 
-class DbServer(db.Model):
+class DbGuestServer(db.Model):
     """A guest server."""
 
     __tablename__ = 'guest_servers'
@@ -153,7 +153,7 @@ class DbServer(db.Model):
         return ReprBuilder(self).add_with_lookup('id').build()
 
 
-class DbAddress(db.Model):
+class DbGuestServerAddress(db.Model):
     """An guest server's IPv4 address and optional DNS name."""
 
     __tablename__ = 'guest_server_addresses'
@@ -162,7 +162,9 @@ class DbAddress(db.Model):
     server_id: Mapped[ServerID] = mapped_column(
         db.Uuid, db.ForeignKey('guest_servers.id'), index=True
     )
-    server: Mapped[DbServer] = relationship(DbServer, backref='addresses')
+    server: Mapped[DbGuestServer] = relationship(
+        DbGuestServer, backref='addresses'
+    )
     created_at: Mapped[datetime] = mapped_column(db.DateTime)
     _ip_address: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
         'ip_address', postgresql.INET
