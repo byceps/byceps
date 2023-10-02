@@ -12,13 +12,13 @@ from sqlalchemy import delete, select
 
 from byceps.database import db, upsert
 
-from .dbmodels import DbSetting
+from .dbmodels import DbGlobalSetting
 from .models import GlobalSetting
 
 
 def create_setting(name: str, value: str) -> GlobalSetting:
     """Create a global setting."""
-    db_setting = DbSetting(name, value)
+    db_setting = DbGlobalSetting(name, value)
 
     db.session.add(db_setting)
     db.session.commit()
@@ -30,7 +30,7 @@ def create_or_update_setting(name: str, value: str) -> GlobalSetting:
     """Create or update a global setting, depending on whether it
     already exists or not.
     """
-    table = DbSetting.__table__
+    table = DbGlobalSetting.__table__
     identifier = {'name': name}
     replacement = {'value': value}
 
@@ -44,13 +44,15 @@ def remove_setting(name: str) -> None:
 
     Do nothing if no global setting with that name exists.
     """
-    db.session.execute(delete(DbSetting).where(DbSetting.name == name))
+    db.session.execute(
+        delete(DbGlobalSetting).where(DbGlobalSetting.name == name)
+    )
     db.session.commit()
 
 
 def find_setting(name: str) -> GlobalSetting | None:
     """Return the global setting with that name, or `None` if not found."""
-    db_setting = db.session.get(DbSetting, name)
+    db_setting = db.session.get(DbGlobalSetting, name)
 
     if db_setting is None:
         return None
@@ -72,14 +74,14 @@ def find_setting_value(name: str) -> str | None:
 
 def get_settings() -> set[GlobalSetting]:
     """Return all global settings."""
-    db_settings = db.session.scalars(select(DbSetting)).all()
+    db_settings = db.session.scalars(select(DbGlobalSetting)).all()
 
     return {
         _db_entity_to_global_setting(db_setting) for db_setting in db_settings
     }
 
 
-def _db_entity_to_global_setting(db_setting: DbSetting) -> GlobalSetting:
+def _db_entity_to_global_setting(db_setting: DbGlobalSetting) -> GlobalSetting:
     return GlobalSetting(
         db_setting.name,
         db_setting.value,

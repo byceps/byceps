@@ -12,7 +12,7 @@ from byceps.database import db
 from byceps.util.instances import ReprBuilder
 
 
-class DbSetting(db.Model):
+class DbGlobalSetting(db.Model):
     """A global setting."""
 
     __tablename__ = 'global_settings'
