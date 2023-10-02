@@ -55,6 +55,8 @@ def create_admin_app(
 
     _dispatch_apps_by_url_path(app, config_overrides)
 
+    _log_app_state(app)
+
     return app
 
 
@@ -69,6 +71,8 @@ def create_site_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
     _dispatch_apps_by_url_path(app, config_overrides)
 
     _init_site_app(app)
+
+    _log_app_state(app)
 
     return app
 
@@ -177,8 +181,6 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
     if debug_toolbar_enabled:
         _enable_debug_toolbar(app)
     app.byceps_feature_states['debug_toolbar'] = debug_toolbar_enabled
-
-    _log_app_state(app)
 
     return app
 
