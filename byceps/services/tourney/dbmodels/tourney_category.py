@@ -10,7 +10,7 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
-from byceps.services.party.dbmodels.party import DbParty
+from byceps.services.party.dbmodels import DbParty
 from byceps.services.tourney.models import TourneyCategoryID
 from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder

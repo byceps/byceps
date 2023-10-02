@@ -13,7 +13,7 @@ from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
-from byceps.services.party.dbmodels.party import DbParty
+from byceps.services.party.dbmodels import DbParty
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import PartyID, UserID
 from byceps.util.instances import ReprBuilder

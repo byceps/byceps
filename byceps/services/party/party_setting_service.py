@@ -13,7 +13,7 @@ from sqlalchemy import delete, select
 from byceps.database import db, upsert
 from byceps.typing import PartyID
 
-from .dbmodels.setting import DbPartySetting
+from .dbmodels import DbPartySetting
 from .models import PartySetting
 
 
