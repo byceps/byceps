@@ -13,7 +13,7 @@ from byceps.typing import BrandID
 from byceps.util.instances import ReprBuilder
 
 
-class DbSetting(db.Model):
+class DbBrandSetting(db.Model):
     """A brand-specific setting."""
 
     __tablename__ = 'brand_settings'

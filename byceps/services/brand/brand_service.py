@@ -14,7 +14,7 @@ from byceps.database import db
 from byceps.typing import BrandID
 
 from .dbmodels.brand import DbBrand
-from .dbmodels.setting import DbSetting
+from .dbmodels.setting import DbBrandSetting
 from .models import Brand
 
 
@@ -48,7 +48,9 @@ def update_brand(
 
 def delete_brand(brand_id: BrandID) -> None:
     """Delete a brand."""
-    db.session.execute(delete(DbSetting).where(DbSetting.brand_id == brand_id))
+    db.session.execute(
+        delete(DbBrandSetting).where(DbBrandSetting.brand_id == brand_id)
+    )
     db.session.execute(delete(DbBrand).where(DbBrand.id == brand_id))
     db.session.commit()
 
