@@ -13,7 +13,7 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db, upsert, upsert_many
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from . import board_topic_query_service
 from .dbmodels.last_category_view import DbLastCategoryView

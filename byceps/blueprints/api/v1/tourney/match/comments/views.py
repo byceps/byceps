@@ -29,9 +29,8 @@ from byceps.services.tourney.models import (
     MatchID,
 )
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User, UserID
 from byceps.signals import tourney as tourney_signals
-from byceps.typing import UserID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import respond_created, respond_no_content
 

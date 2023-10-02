@@ -8,8 +8,8 @@ from flask import Flask
 from byceps.announce.announce import build_announcement_request
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
+from byceps.services.user.models.user import UserID
 from byceps.services.webhooks.models import OutgoingWebhook
-from byceps.typing import UserID
 
 from tests.helpers import generate_token, generate_uuid
 

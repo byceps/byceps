@@ -17,7 +17,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from byceps.database import db
 from byceps.services.board.models import BoardCategoryID, BoardID
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid4
 

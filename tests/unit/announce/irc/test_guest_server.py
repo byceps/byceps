@@ -9,7 +9,7 @@ from byceps.announce.announce import build_announcement_request
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.guest_server.models import ServerID
 from byceps.services.party.models import PartyID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from tests.helpers import generate_uuid
 

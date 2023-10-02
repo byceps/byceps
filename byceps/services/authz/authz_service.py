@@ -21,8 +21,7 @@ from byceps.events.authz import (
 )
 from byceps.services.user import user_log_service, user_service
 from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import authz_domain_service

@@ -27,13 +27,12 @@ from byceps.services.user import (
     user_service,
 )
 from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User, UserID
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import (
     EmailAddressChangeToken,
     EmailAddressConfirmationToken,
 )
-from byceps.typing import UserID
 from byceps.util.l10n import force_user_locale
 from byceps.util.result import Err, Ok, Result
 

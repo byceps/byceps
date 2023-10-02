@@ -14,7 +14,6 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.image import image_service
-from byceps.typing import UserID
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
 from byceps.util.image.models import Dimensions, ImageType
@@ -23,7 +22,7 @@ from byceps.util.result import Err, Ok, Result
 from . import user_log_service, user_service
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.user import DbUser
-from .models.user import User, UserAvatarID
+from .models.user import User, UserAvatarID, UserID
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)

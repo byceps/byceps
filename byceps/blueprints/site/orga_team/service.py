@@ -9,7 +9,7 @@ byceps.blueprints.site.orga_team.service
 from flask import g
 
 from byceps.services.orga_team import orga_team_service
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 
 def is_orga_for_current_party(user_id: UserID) -> bool:

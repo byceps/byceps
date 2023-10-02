@@ -23,7 +23,6 @@ from byceps.events.user import (
     UserScreenNameChangedEvent,
 )
 from byceps.services.site.models import SiteID
-from byceps.typing import UserID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid4, generate_uuid7
 
@@ -33,7 +32,7 @@ from .errors import (
     InvalidScreenNameError,
 )
 from .models.log import UserLogEntry, UserLogEntryData
-from .models.user import User, UserEmailAddress
+from .models.user import User, UserEmailAddress, UserID
 
 
 def create_account(

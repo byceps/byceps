@@ -20,8 +20,7 @@ from byceps.services.party.models import PartyID
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.detail import DbUserDetail
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 from .dbmodels import DbMembership, DbOrgaTeam
 from .models import (

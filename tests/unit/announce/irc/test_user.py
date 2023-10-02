@@ -17,7 +17,7 @@ from byceps.events.user import (
     UserScreenNameChangedEvent,
 )
 from byceps.services.site.models import SiteID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from tests.helpers import generate_uuid
 

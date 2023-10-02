@@ -25,8 +25,7 @@ from byceps.services.shop.order.models.order import LineItem, Order
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 from tests.helpers import create_site, http_client, log_in_user
 from tests.helpers.shop import create_shop_snippet

@@ -14,8 +14,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 from .dbmodels import DbVerificationToken
 from .models import (

@@ -16,7 +16,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from byceps.database import db
 from byceps.services.tourney.models import MatchCommentID, MatchID
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 from byceps.util.uuid import generate_uuid7
 
 from .match import DbMatch

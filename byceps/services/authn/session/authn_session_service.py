@@ -17,8 +17,7 @@ from byceps.database import db, insert_ignore_on_conflict, upsert
 from byceps.events.authn import UserLoggedInEvent
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user import user_log_service
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 from .dbmodels import DbRecentLogin, DbSessionToken
 from .models import CurrentUser

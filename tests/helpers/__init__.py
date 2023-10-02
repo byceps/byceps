@@ -39,8 +39,7 @@ from byceps.services.user import (
     user_creation_service,
     user_service,
 )
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 
 CONFIG_OVERRIDES_FOR_TESTS = {

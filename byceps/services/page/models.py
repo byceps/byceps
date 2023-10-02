@@ -15,7 +15,7 @@ from uuid import UUID
 
 from byceps.services.site.models import SiteID
 from byceps.services.site_navigation.models import NavMenuID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 
 PageID = NewType('PageID', UUID)

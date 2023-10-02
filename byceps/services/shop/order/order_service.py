@@ -28,8 +28,7 @@ from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import (

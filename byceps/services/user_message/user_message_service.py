@@ -19,8 +19,7 @@ from byceps.services.email.models import Message
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 from byceps.util.l10n import force_user_locale
 
 

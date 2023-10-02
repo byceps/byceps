@@ -43,8 +43,7 @@ from byceps.services.shop.storefront.models import (
 from byceps.services.site.models import Site, SiteID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.models.ticket import TicketCategory
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 from tests.helpers import (
     create_admin_app,

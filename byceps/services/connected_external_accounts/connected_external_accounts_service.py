@@ -15,7 +15,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.user import user_service
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbConnectedExternalAccount

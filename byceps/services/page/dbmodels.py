@@ -23,7 +23,7 @@ from byceps.services.site.models import SiteID
 from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.site_navigation.dbmodels import DbNavMenu
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 from byceps.util.uuid import generate_uuid7
 
 from .models import PageID, PageVersionID

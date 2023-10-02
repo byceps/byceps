@@ -12,7 +12,7 @@ from byceps.events.shop import (
     ShopOrderPlacedEvent,
 )
 from byceps.services.shop.order.models.order import OrderID, OrderNumber
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from tests.helpers import generate_uuid
 

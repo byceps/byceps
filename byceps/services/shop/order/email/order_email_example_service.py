@@ -27,8 +27,7 @@ from byceps.services.shop.order.models.order import (
 )
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid4
 

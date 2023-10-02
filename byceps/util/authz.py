@@ -14,7 +14,7 @@ from flask_babel import LazyString
 
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import Permission, PermissionID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 
 def load_permissions() -> None:

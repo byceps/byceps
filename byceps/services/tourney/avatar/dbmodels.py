@@ -22,7 +22,7 @@ else:
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 from byceps.util.image.models import ImageType
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7

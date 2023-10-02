@@ -12,7 +12,7 @@ from datetime import datetime
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from .dbmodels import DbConsent, DbConsentSubject
 from .models import Consent, ConsentSubjectID

@@ -24,13 +24,12 @@ from byceps.events.user import (
 )
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import RoleID
-from byceps.typing import UserID
 
 from . import user_domain_service, user_log_service, user_service
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
 from .models.log import UserLogEntry
-from .models.user import User
+from .models.user import User, UserID
 
 
 def initialize_account(

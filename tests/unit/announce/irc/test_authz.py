@@ -11,7 +11,7 @@ from byceps.events.authz import (
     RoleDeassignedFromUserEvent,
 )
 from byceps.services.authz.models import RoleID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from tests.helpers import generate_uuid
 

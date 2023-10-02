@@ -18,7 +18,7 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.party import party_service
 from byceps.services.party.models import PartyID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 from byceps.util.datetime.range import create_adjacent_ranges, DateTimeRange
 
 from .dbmodels import DbPresence, DbTask, DbTimeSlot

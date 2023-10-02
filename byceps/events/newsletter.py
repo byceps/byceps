@@ -11,7 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from byceps.services.newsletter.models import ListID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from .base import _BaseEvent
 

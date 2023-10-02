@@ -7,8 +7,8 @@ from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
 from byceps.events.user_badge import UserBadgeAwardedEvent
+from byceps.services.user.models.user import UserID
 from byceps.services.user_badge.models import BadgeID
-from byceps.typing import UserID
 
 from tests.helpers import generate_uuid
 

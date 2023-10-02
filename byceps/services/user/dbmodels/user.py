@@ -14,8 +14,7 @@ from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
-from byceps.services.user.models.user import UserAvatarID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserAvatarID, UserID
 from byceps.util.instances import ReprBuilder
 
 from .avatar import DbUserAvatar

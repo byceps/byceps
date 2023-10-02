@@ -11,7 +11,7 @@ from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 
 class DbRecentLogin(db.Model):

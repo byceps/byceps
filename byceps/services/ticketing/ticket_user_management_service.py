@@ -8,7 +8,7 @@ byceps.services.ticketing.ticket_user_management_service
 
 from byceps.database import db
 from byceps.services.user import user_service
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import ticket_log_service, ticket_service

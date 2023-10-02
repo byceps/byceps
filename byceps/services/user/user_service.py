@@ -14,7 +14,7 @@ from sqlalchemy import select
 from sqlalchemy.sql import Select
 
 from byceps.database import db, paginate, Pagination
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.detail import DbUserDetail

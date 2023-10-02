@@ -8,7 +8,7 @@ from flask import Flask
 from byceps.announce.announce import build_announcement_request
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.brand.models import BrandID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from tests.helpers import generate_uuid
 

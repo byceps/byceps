@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from .base import _BaseEvent
 

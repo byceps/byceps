@@ -20,7 +20,7 @@ from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.seating.models import SeatID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from . import ticket_code_service, ticket_log_service
 from .dbmodels.category import DbTicketCategory

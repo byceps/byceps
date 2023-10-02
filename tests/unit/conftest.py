@@ -24,8 +24,7 @@ from byceps.services.shop.article.models import (
 )
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.shop.models import ShopID
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 from tests.helpers import generate_token, generate_uuid
 

@@ -26,9 +26,8 @@ from byceps.services.user.dbmodels.avatar import (
     get_absolute_url_path as get_absolute_url_path_for_avatar,
 )
 from byceps.services.user.models.log import UserLogEntry, UserLogEntryData
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User, UserID
 from byceps.services.user_badge import user_badge_service
-from byceps.typing import UserID
 
 
 def get_parties_and_tickets(

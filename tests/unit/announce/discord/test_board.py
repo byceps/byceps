@@ -14,8 +14,8 @@ from byceps.services.board.models import (
     TopicID,
 )
 from byceps.services.brand.models import BrandID
+from byceps.services.user.models.user import UserID
 from byceps.services.webhooks.models import OutgoingWebhook
-from byceps.typing import UserID
 
 from tests.helpers import generate_token, generate_uuid
 

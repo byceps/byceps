@@ -28,8 +28,8 @@ from byceps.services.newsletter.dbmodels import (
 )
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.log import DbUserLogEntry
+from byceps.services.user.models.user import UserID
 from byceps.services.verification_token.dbmodels import DbVerificationToken
-from byceps.typing import UserID
 
 from _util import call_with_app_context
 

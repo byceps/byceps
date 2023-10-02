@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 from byceps.services.guest_server.models import ServerID
 from byceps.services.party.models import PartyID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from .base import _BaseEvent
 

@@ -19,8 +19,7 @@ from byceps.events.board import (
 )
 from byceps.services.brand import brand_service
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 from . import (
     board_aggregation_service,

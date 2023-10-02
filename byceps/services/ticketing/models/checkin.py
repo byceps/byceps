@@ -14,8 +14,7 @@ from uuid import UUID
 
 from byceps.services.party.models import PartyID
 from byceps.services.seating.models import SeatID
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 from .ticket import TicketCode, TicketID
 

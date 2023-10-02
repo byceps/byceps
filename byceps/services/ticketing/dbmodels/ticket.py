@@ -25,7 +25,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketID,
 )
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 

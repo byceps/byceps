@@ -15,7 +15,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.shop.shop.models import ShopID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.log import DbOrderLogEntry

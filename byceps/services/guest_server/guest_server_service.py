@@ -16,8 +16,7 @@ from byceps.database import db
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.party.models import Party, PartyID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import guest_server_domain_service

@@ -13,9 +13,8 @@ from dataclasses import dataclass
 from typing_extensions import Self
 
 from byceps.services.board.models import BoardCategoryWithLastUpdate
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User, UserID
 from byceps.services.user_badge.models import Badge
-from byceps.typing import UserID
 
 
 @dataclass(frozen=True)

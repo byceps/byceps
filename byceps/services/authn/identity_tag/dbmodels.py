@@ -15,7 +15,7 @@ from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 
 class DbUserIdentityTag(db.Model):

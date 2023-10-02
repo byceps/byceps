@@ -17,7 +17,7 @@ from byceps.services.board.models import (
     TopicID,
 )
 from byceps.services.brand.models import BrandID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from .base import _BaseEvent
 

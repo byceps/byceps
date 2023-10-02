@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from byceps.services.party.models import PartyID
 from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from .base import _BaseEvent
 

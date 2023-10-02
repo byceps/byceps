@@ -11,7 +11,7 @@ from datetime import datetime
 from enum import Enum
 from typing import NewType
 
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 
 ListID = NewType('ListID', str)

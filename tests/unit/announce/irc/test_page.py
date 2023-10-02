@@ -13,7 +13,7 @@ from byceps.events.page import (
 )
 from byceps.services.page.models import PageID, PageVersionID
 from byceps.services.site.models import SiteID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from tests.helpers import generate_uuid
 

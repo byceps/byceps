@@ -21,8 +21,7 @@ from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 
 from .models import Attendee, AttendeeSeat, AttendeeTicket
 

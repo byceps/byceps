@@ -8,7 +8,7 @@ from flask import Flask
 from byceps.announce.announce import build_announcement_request
 from byceps.events.authn import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.services.site.models import SiteID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from tests.helpers import generate_uuid
 

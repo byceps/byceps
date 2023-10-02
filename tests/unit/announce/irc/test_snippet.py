@@ -18,7 +18,7 @@ from byceps.services.snippet.models import (
     SnippetScope,
     SnippetVersionID,
 )
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from tests.helpers import generate_uuid
 

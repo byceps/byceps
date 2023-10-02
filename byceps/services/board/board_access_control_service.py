@@ -9,7 +9,7 @@ byceps.services.board.board_access_control_service
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from .dbmodels.board import DbBoard
 from .dbmodels.board_access_grant import BoardAccessGrantID, DbBoardAccessGrant

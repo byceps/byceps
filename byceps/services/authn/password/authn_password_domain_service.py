@@ -17,8 +17,7 @@ from werkzeug.security import (
 
 from byceps.events.authn import PasswordUpdatedEvent
 from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User
-from byceps.typing import UserID
+from byceps.services.user.models.user import User, UserID
 from byceps.util.uuid import generate_uuid7
 
 from .models import Credential

@@ -11,7 +11,7 @@ from byceps.events.newsletter import (
     UnsubscribedFromNewsletterEvent,
 )
 from byceps.services.newsletter.models import ListID
-from byceps.typing import UserID
+from byceps.services.user.models.user import UserID
 
 from tests.helpers import generate_uuid
 
