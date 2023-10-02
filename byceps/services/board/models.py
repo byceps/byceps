@@ -11,8 +11,8 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
+from byceps.services.brand.models import BrandID
 from byceps.services.user.models.user import User
-from byceps.typing import BrandID
 
 
 BoardID = NewType('BoardID', str)

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 from byceps.util.uuid import generate_uuid4, generate_uuid7
 
 from .models import (

@@ -11,7 +11,7 @@ from __future__ import annotations
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 
 from .dbmodels import DbConsent, DbConsentBrandRequirement, DbConsentSubject
 from .models import ConsentSubject, ConsentSubjectID

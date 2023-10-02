@@ -11,7 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from email.utils import formataddr
 
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 
 
 @dataclass(frozen=True)

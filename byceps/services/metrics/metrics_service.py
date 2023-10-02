@@ -14,6 +14,7 @@ from byceps.services.board import (
     board_topic_query_service,
 )
 from byceps.services.brand import brand_service
+from byceps.services.brand.models import BrandID
 from byceps.services.consent import consent_service
 from byceps.services.metrics.models import Label, Metric
 from byceps.services.party import party_service
@@ -25,7 +26,7 @@ from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.ticketing import ticket_service
 from byceps.services.user import user_stats_service
-from byceps.typing import BrandID, PartyID
+from byceps.typing import PartyID
 
 
 def serialize(metrics: Iterator[Metric]) -> Iterator[str]:

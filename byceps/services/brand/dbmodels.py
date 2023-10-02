@@ -13,7 +13,7 @@ from typing import Optional
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 from byceps.util.instances import ReprBuilder
 
 

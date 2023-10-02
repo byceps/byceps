@@ -14,6 +14,4 @@ from uuid import UUID
 
 UserID = NewType('UserID', UUID)
 
-BrandID = NewType('BrandID', str)
-
 PartyID = NewType('PartyID', str)

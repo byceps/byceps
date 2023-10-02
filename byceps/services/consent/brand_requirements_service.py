@@ -9,7 +9,7 @@ byceps.services.consent.brand_requirements_service
 from sqlalchemy import delete
 
 from byceps.database import db
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 
 from .dbmodels import DbConsentBrandRequirement
 from .models import ConsentSubjectID

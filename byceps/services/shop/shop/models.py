@@ -11,7 +11,7 @@ from typing import Any, NewType
 
 from moneyed import Currency
 
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 
 
 ShopID = NewType('ShopID', str)

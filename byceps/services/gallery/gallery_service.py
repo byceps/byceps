@@ -12,7 +12,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.brand import brand_service
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 
 from . import gallery_domain_service
 from .dbmodels import DbGallery, DbGalleryImage

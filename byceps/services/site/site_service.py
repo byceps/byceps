@@ -16,10 +16,11 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.board.models import BoardID
 from byceps.services.brand import brand_service
+from byceps.services.brand.models import BrandID
 from byceps.services.news import news_channel_service
 from byceps.services.news.models import NewsChannelID
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.typing import BrandID, PartyID
+from byceps.typing import PartyID
 
 from .dbmodels import DbSite, DbSiteSetting
 from .models import Site, SiteID, SiteWithBrand

@@ -11,7 +11,7 @@ from __future__ import annotations
 from flask import abort
 
 from byceps.services.brand import brand_service
-from byceps.services.brand.models import Brand
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
 from byceps.services.snippet import snippet_service
@@ -21,7 +21,6 @@ from byceps.services.snippet.models import (
     SnippetScope,
     SnippetVersionID,
 )
-from byceps.typing import BrandID
 
 
 def find_brand_for_scope(scope: SnippetScope) -> Brand | None:

@@ -11,9 +11,8 @@ from __future__ import annotations
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.brand.models import Brand
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.site.models import SiteID
-from byceps.typing import BrandID
 
 from .dbmodels import DbNewsChannel
 from .models import NewsChannel, NewsChannelID

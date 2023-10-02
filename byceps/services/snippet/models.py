@@ -12,8 +12,8 @@ from uuid import UUID
 
 from typing_extensions import Self
 
+from byceps.services.brand.models import BrandID
 from byceps.services.site.models import SiteID
-from byceps.typing import BrandID
 
 
 @dataclass(frozen=True)

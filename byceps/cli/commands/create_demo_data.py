@@ -19,7 +19,7 @@ from byceps.services.authz import authz_service
 from byceps.services.board import board_category_command_service, board_service
 from byceps.services.board.models import Board, BoardID
 from byceps.services.brand import brand_service
-from byceps.services.brand.models import Brand
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.email import email_config_service, email_footer_service
 from byceps.services.page import page_service
 from byceps.services.party import party_service
@@ -42,7 +42,7 @@ from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user import user_command_service, user_creation_service
 from byceps.services.user.models.user import User
-from byceps.typing import BrandID, PartyID
+from byceps.typing import PartyID
 
 
 @click.command()

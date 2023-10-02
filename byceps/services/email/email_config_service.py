@@ -12,7 +12,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from byceps.database import db, upsert
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbEmailConfig

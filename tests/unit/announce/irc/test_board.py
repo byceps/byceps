@@ -25,7 +25,8 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
-from byceps.typing import BrandID, UserID
+from byceps.services.brand.models import BrandID
+from byceps.typing import UserID
 
 from tests.helpers import generate_token, generate_uuid
 

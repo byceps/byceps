@@ -21,7 +21,7 @@ else:
 from sqlalchemy.ext.mutable import MutableDict
 
 from byceps.database import db
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 from byceps.util.instances import ReprBuilder
 
 from .models import ShopID

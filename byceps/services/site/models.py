@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from typing import NewType
 
 from byceps.services.board.models import BoardID
-from byceps.services.brand.models import Brand
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.news.models import NewsChannelID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.typing import BrandID, PartyID

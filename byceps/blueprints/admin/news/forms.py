@@ -21,9 +21,9 @@ from wtforms import (
 )
 from wtforms.validators import InputRequired, Length, Optional, Regexp
 
+from byceps.services.brand.models import BrandID
 from byceps.services.news.models import BodyFormat
 from byceps.services.site import site_service
-from byceps.typing import BrandID
 from byceps.util.l10n import LocalizedForm
 
 

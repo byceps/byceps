@@ -21,6 +21,7 @@ from byceps.services.board import (
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
 from byceps.services.board.models import BoardCategoryWithLastUpdate
+from byceps.services.brand.models import BrandID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
@@ -29,7 +30,7 @@ from byceps.services.ticketing import ticket_service
 from byceps.services.user import user_service
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.services.user_badge.models import Badge
-from byceps.typing import BrandID, PartyID, UserID
+from byceps.typing import PartyID, UserID
 from byceps.util.authz import has_current_user_permission
 
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket

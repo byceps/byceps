@@ -10,8 +10,8 @@ from flask_babel import lazy_gettext
 from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
+from byceps.services.brand.models import BrandID
 from byceps.services.consent import consent_subject_service
-from byceps.typing import BrandID
 from byceps.util.l10n import LocalizedForm
 
 

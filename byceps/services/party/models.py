@@ -11,8 +11,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
-from byceps.services.brand.models import Brand
-from byceps.typing import BrandID, PartyID
+from byceps.services.brand.models import Brand, BrandID
+from byceps.typing import PartyID
 
 
 @dataclass(frozen=True)

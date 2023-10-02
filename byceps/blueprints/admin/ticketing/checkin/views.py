@@ -12,6 +12,7 @@ from datetime import date
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
+from byceps.services.brand.models import BrandID
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
 from byceps.services.shop.order import order_service
@@ -27,7 +28,7 @@ from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.signals import ticketing as ticketing_signals
-from byceps.typing import BrandID, PartyID
+from byceps.typing import PartyID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated

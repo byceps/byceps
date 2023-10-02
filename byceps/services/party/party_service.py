@@ -17,7 +17,8 @@ from sqlalchemy import delete, select
 from byceps.database import db, paginate, Pagination
 from byceps.services.brand import brand_service
 from byceps.services.brand.dbmodels import DbBrand
-from byceps.typing import BrandID, PartyID
+from byceps.services.brand.models import BrandID
+from byceps.typing import PartyID
 
 from .dbmodels import DbParty, DbPartySetting
 from .models import Party, PartyWithBrand

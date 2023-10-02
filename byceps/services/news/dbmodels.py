@@ -20,6 +20,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
+from byceps.services.brand.models import BrandID
 from byceps.services.news.models import (
     BodyFormat,
     NewsChannelID,
@@ -29,7 +30,7 @@ from byceps.services.news.models import (
 )
 from byceps.services.site.models import SiteID
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.typing import BrandID, UserID
+from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 

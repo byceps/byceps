@@ -19,7 +19,7 @@ from byceps.services.authz.models import PermissionID, Role, RoleID
 from byceps.services.board import board_service
 from byceps.services.board.models import Board, BoardID
 from byceps.services.brand import brand_service
-from byceps.services.brand.models import Brand
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.email import email_config_service
 from byceps.services.email.models import EmailConfig
 from byceps.services.language import language_service
@@ -44,7 +44,7 @@ from byceps.services.site.models import Site, SiteID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User
-from byceps.typing import BrandID, PartyID, UserID
+from byceps.typing import PartyID, UserID
 
 from tests.helpers import (
     create_admin_app,

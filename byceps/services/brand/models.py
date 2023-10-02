@@ -9,8 +9,10 @@ byceps.services.brand.models
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import NewType
 
-from byceps.typing import BrandID
+
+BrandID = NewType('BrandID', str)
 
 
 @dataclass(frozen=True)

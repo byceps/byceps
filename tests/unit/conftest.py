@@ -14,7 +14,7 @@ from flask_babel import Babel
 from moneyed import EUR, Money
 import pytest
 
-from byceps.services.brand.models import Brand
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import Party
 from byceps.services.shop.article.models import (
     Article,
@@ -25,7 +25,7 @@ from byceps.services.shop.article.models import (
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.user.models.user import User
-from byceps.typing import BrandID, PartyID, UserID
+from byceps.typing import PartyID, UserID
 
 from tests.helpers import generate_token, generate_uuid
 

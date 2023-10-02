@@ -17,7 +17,7 @@ from sqlalchemy.ext.orderinglist import ordering_list
 
 from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
-from byceps.typing import BrandID
+from byceps.services.brand.models import BrandID
 
 from .models import GalleryID, GalleryImageID
 

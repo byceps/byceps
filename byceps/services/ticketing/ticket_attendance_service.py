@@ -16,10 +16,11 @@ from itertools import chain
 from sqlalchemy import delete, select
 
 from byceps.database import db, insert_ignore_on_conflict
+from byceps.services.brand.models import BrandID
 from byceps.services.party import party_service
 from byceps.services.party.dbmodels import DbParty
 from byceps.services.party.models import Party
-from byceps.typing import BrandID, PartyID, UserID
+from byceps.typing import PartyID, UserID
 
 from .dbmodels.archived_attendance import DbArchivedAttendance
 from .dbmodels.category import DbTicketCategory

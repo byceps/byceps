@@ -15,8 +15,9 @@ from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
+from byceps.services.brand.models import BrandID
 from byceps.services.user_badge.models import BadgeID
-from byceps.typing import BrandID, UserID
+from byceps.typing import UserID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid4
 

@@ -15,7 +15,7 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.brand.dbmodels import DbBrand
-from byceps.services.brand.models import Brand
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.orga import orga_domain_service
 from byceps.services.user import user_log_service
 from byceps.services.user.dbmodels.user import DbUser
