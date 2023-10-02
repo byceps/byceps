@@ -15,10 +15,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from byceps.database import db
 from byceps.services.board.models import BoardID
 from byceps.services.brand.dbmodels import DbBrand
+from byceps.services.brand.models import BrandID
 from byceps.services.news.dbmodels import DbNewsChannel
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.site.models import SiteID
-from byceps.typing import BrandID, PartyID
+from byceps.typing import PartyID
 from byceps.util.instances import ReprBuilder
 
 

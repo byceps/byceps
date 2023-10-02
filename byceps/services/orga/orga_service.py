@@ -21,7 +21,7 @@ from byceps.services.user import user_log_service
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
-from byceps.typing import BrandID, UserID
+from byceps.typing import UserID
 
 from .dbmodels import DbOrgaFlag
 
