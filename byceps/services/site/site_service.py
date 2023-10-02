@@ -21,8 +21,7 @@ from byceps.services.news.models import NewsChannelID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.typing import BrandID, PartyID
 
-from .dbmodels.setting import DbSiteSetting
-from .dbmodels.site import DbSite
+from .dbmodels import DbSite, DbSiteSetting
 from .models import Site, SiteID, SiteWithBrand
 
 

@@ -12,7 +12,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db, upsert
 
-from .dbmodels.setting import DbSiteSetting
+from .dbmodels import DbSiteSetting
 from .models import SiteID, SiteSetting
 
 
