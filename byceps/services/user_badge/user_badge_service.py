@@ -13,7 +13,7 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.typing import BrandID
 
-from .dbmodels.badge import DbBadge
+from .dbmodels import DbBadge
 from .models import Badge, BadgeID
 
 

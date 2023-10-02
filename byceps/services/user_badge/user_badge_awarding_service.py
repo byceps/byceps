@@ -20,8 +20,7 @@ from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 from . import user_badge_domain_service
-from .dbmodels.awarding import DbBadgeAwarding
-from .dbmodels.badge import DbBadge
+from .dbmodels import DbBadge, DbBadgeAwarding
 from .models import (
     Badge,
     BadgeAwarding,

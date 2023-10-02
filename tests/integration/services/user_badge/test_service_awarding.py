@@ -11,7 +11,7 @@ from byceps.services.user_badge import (
     user_badge_awarding_service,
     user_badge_service,
 )
-from byceps.services.user_badge.dbmodels.awarding import DbBadgeAwarding
+from byceps.services.user_badge.dbmodels import DbBadgeAwarding
 from byceps.services.user_badge.models import QuantifiedBadgeAwarding
 
 
