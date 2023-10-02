@@ -13,7 +13,7 @@ from sqlalchemy import delete, select
 from byceps.database import db, upsert
 from byceps.typing import BrandID
 
-from .dbmodels.setting import DbBrandSetting
+from .dbmodels import DbBrandSetting
 from .models import BrandSetting
 
 

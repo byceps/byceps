@@ -16,7 +16,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.orderinglist import ordering_list
 
 from byceps.database import db
-from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.services.brand.dbmodels import DbBrand
 from byceps.typing import BrandID
 
 from .models import GalleryID, GalleryImageID

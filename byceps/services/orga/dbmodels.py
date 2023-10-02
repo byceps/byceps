@@ -9,7 +9,7 @@ byceps.services.orga.dbmodels
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
-from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.services.brand.dbmodels import DbBrand
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.typing import BrandID, UserID
 from byceps.util.instances import ReprBuilder
