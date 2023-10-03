@@ -18,7 +18,7 @@ from byceps.services.guest_server import (
     guest_server_export_service,
     guest_server_service,
 )
-from byceps.services.guest_server.models import Address, IPAddress
+from byceps.services.guest_server.models import Address, AddressData, IPAddress
 from byceps.services.party import party_service
 from byceps.services.user import user_service
 from byceps.signals import guest_server as guest_server_signals
@@ -115,25 +115,24 @@ def server_create(party_id):
 
     creator = g.user
     owner = form.owner.data
+    address_data = AddressData(
+        ip_address=_to_ip_address(form.ip_address.data.strip()),
+        hostname=form.hostname.data.strip().lower() or None,
+        netmask=_to_ip_address(form.netmask.data.strip()),
+        gateway=_to_ip_address(form.gateway.data.strip()),
+    )
     description = form.description.data.strip()
     notes_admin = form.notes_admin.data.strip()
     approved = form.approved.data
-    ip_address = _to_ip_address(form.ip_address.data.strip())
-    hostname = form.hostname.data.strip() or None
-    netmask = _to_ip_address(form.netmask.data.strip())
-    gateway = _to_ip_address(form.gateway.data.strip())
 
     server, event = guest_server_service.register_server(
         party,
         creator,
         owner,
+        address_data,
         description=description,
         notes_admin=notes_admin,
         approved=approved,
-        ip_address=ip_address,
-        hostname=hostname,
-        netmask=netmask,
-        gateway=gateway,
     )
 
     flash_success(gettext('The server has been registered.'))

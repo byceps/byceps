@@ -17,13 +17,7 @@ from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from .errors import QuantityLimitReachedError, UserUsesNoTicketError
-from .models import (
-    Address,
-    AddressID,
-    IPAddress,
-    Server,
-    ServerID,
-)
+from .models import Address, AddressData, AddressID, Server, ServerID
 
 
 def ensure_user_may_register_server(
@@ -51,27 +45,17 @@ def register_server(
     party: Party,
     creator: User,
     owner: User,
+    address_data: AddressData,
     *,
     description: str | None = None,
     notes_owner: str | None = None,
     notes_admin: str | None = None,
     approved: bool = False,
-    ip_address: IPAddress | None = None,
-    hostname: str | None = None,
-    netmask: IPAddress | None = None,
-    gateway: IPAddress | None = None,
 ) -> tuple[Server, GuestServerRegisteredEvent]:
     """Register a guest server for a party."""
     server_id = ServerID(generate_uuid7())
     occurred_at = datetime.utcnow()
-    address = _build_address(
-        server_id,
-        occurred_at,
-        ip_address=ip_address,
-        hostname=hostname,
-        netmask=netmask,
-        gateway=gateway,
-    )
+    address = _build_address(server_id, occurred_at, address_data)
     addresses = {address}
 
     server = _build_server(
@@ -93,22 +77,16 @@ def register_server(
 
 
 def _build_address(
-    server_id: ServerID,
-    created_at: datetime,
-    *,
-    ip_address: IPAddress | None = None,
-    hostname: str | None = None,
-    netmask: IPAddress | None = None,
-    gateway: IPAddress | None = None,
+    server_id: ServerID, created_at: datetime, address_data: AddressData
 ) -> Address:
     return Address(
         id=AddressID(generate_uuid7()),
         created_at=created_at,
         server_id=server_id,
-        ip_address=ip_address,
-        hostname=hostname,
-        netmask=netmask,
-        gateway=gateway,
+        ip_address=address_data.ip_address,
+        hostname=address_data.hostname,
+        netmask=address_data.netmask,
+        gateway=address_data.gateway,
     )
 
 

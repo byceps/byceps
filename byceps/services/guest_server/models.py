@@ -60,3 +60,11 @@ class Address:
     hostname: str | None
     netmask: IPAddress | None
     gateway: IPAddress | None
+
+
+@dataclass(frozen=True)
+class AddressData:
+    ip_address: IPAddress | None
+    hostname: str | None
+    netmask: IPAddress | None
+    gateway: IPAddress | None

@@ -26,6 +26,7 @@ from .dbmodels import DbGuestServer, DbGuestServerAddress, DbGuestServerSetting
 from .errors import QuantityLimitReachedError, UserUsesNoTicketError
 from .models import (
     Address,
+    AddressData,
     AddressID,
     IPAddress,
     Server,
@@ -128,29 +129,23 @@ def register_server(
     party: Party,
     creator: User,
     owner: User,
+    address_data: AddressData,
     *,
     description: str | None = None,
     notes_owner: str | None = None,
     notes_admin: str | None = None,
     approved: bool = False,
-    ip_address: IPAddress | None = None,
-    hostname: str | None = None,
-    netmask: IPAddress | None = None,
-    gateway: IPAddress | None = None,
 ) -> tuple[Server, GuestServerRegisteredEvent]:
     """Register a server for a party."""
     server, event = guest_server_domain_service.register_server(
         party,
         creator,
         owner,
+        address_data,
         description=description,
         notes_owner=notes_owner,
         notes_admin=notes_admin,
         approved=approved,
-        ip_address=ip_address,
-        hostname=hostname,
-        netmask=netmask,
-        gateway=gateway,
     )
 
     _persist_server_registration(server)
