@@ -43,7 +43,7 @@ class SettingUpdateForm(LocalizedForm):
 HOSTNAME_REGEX = re.compile('^[A-Za-z][A-Za-z0-9-]+$')
 
 
-class ServerCreateForm(LocalizedForm):
+class ServerRegisterForm(LocalizedForm):
     owner = UserScreenNameField(lazy_gettext('Owner'), [InputRequired()])
     description = StringField(
         lazy_gettext('Description'), validators=[Optional(), Length(max=100)]

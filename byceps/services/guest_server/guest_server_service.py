@@ -96,7 +96,7 @@ def _db_entity_to_setting(db_setting: DbGuestServerSetting) -> Setting:
 # server
 
 
-def create_server(
+def register_server(
     party: Party,
     creator: User,
     owner: User,
@@ -110,8 +110,8 @@ def create_server(
     netmask: IPAddress | None = None,
     gateway: IPAddress | None = None,
 ) -> tuple[Server, GuestServerRegisteredEvent]:
-    """Create a server."""
-    server, event = guest_server_domain_service.create_server(
+    """Register a server for a party."""
+    server, event = guest_server_domain_service.register_server(
         party,
         creator,
         owner,
@@ -125,12 +125,12 @@ def create_server(
         gateway=gateway,
     )
 
-    _persist_created_server(server)
+    _persist_server_registration(server)
 
     return server, event
 
 
-def _persist_created_server(server: Server) -> None:
+def _persist_server_registration(server: Server) -> None:
     db_server = DbGuestServer(
         server.id,
         server.party_id,

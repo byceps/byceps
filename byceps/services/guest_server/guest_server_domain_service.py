@@ -24,7 +24,7 @@ from .models import (
 )
 
 
-def create_server(
+def register_server(
     party: Party,
     creator: User,
     owner: User,
@@ -38,7 +38,7 @@ def create_server(
     netmask: IPAddress | None = None,
     gateway: IPAddress | None = None,
 ) -> tuple[Server, GuestServerRegisteredEvent]:
-    """Create a server."""
+    """Register a guest server for a party."""
     server_id = ServerID(generate_uuid7())
     occurred_at = datetime.utcnow()
     address = _build_address(

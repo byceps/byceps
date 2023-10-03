@@ -35,7 +35,7 @@ from byceps.util.views import (
 from .forms import (
     AddressCreateForm,
     AddressUpdateForm,
-    ServerCreateForm,
+    ServerRegisterForm,
     ServerUpdateForm,
     SettingUpdateForm,
 )
@@ -92,10 +92,10 @@ def server_view(server_id):
 @permission_required('guest_server.administrate')
 @templated
 def server_create_form(party_id, erroneous_form=None):
-    """Show a form to create a server."""
+    """Show a form to register a guest server."""
     party = _get_party_or_404(party_id)
 
-    form = erroneous_form if erroneous_form else ServerCreateForm()
+    form = erroneous_form if erroneous_form else ServerRegisterForm()
 
     return {
         'party': party,
@@ -106,10 +106,10 @@ def server_create_form(party_id, erroneous_form=None):
 @blueprint.post('/for_party/<party_id>/servers')
 @permission_required('guest_server.administrate')
 def server_create(party_id):
-    """Create a server."""
+    """Register a guest server."""
     party = _get_party_or_404(party_id)
 
-    form = ServerCreateForm(request.form)
+    form = ServerRegisterForm(request.form)
     if not form.validate():
         return server_create_form(party_id, form)
 
@@ -123,7 +123,7 @@ def server_create(party_id):
     netmask = _to_ip_address(form.netmask.data.strip())
     gateway = _to_ip_address(form.gateway.data.strip())
 
-    server, event = guest_server_service.create_server(
+    server, event = guest_server_service.register_server(
         party,
         creator,
         owner,
@@ -147,7 +147,7 @@ def server_create(party_id):
 @permission_required('guest_server.administrate')
 @templated
 def server_update_form(server_id, erroneous_form=None):
-    """Show form to update a server."""
+    """Show form to update a guest server."""
     server = _get_server_or_404(server_id)
     party = party_service.get_party(server.party_id)
 
@@ -163,7 +163,7 @@ def server_update_form(server_id, erroneous_form=None):
 @blueprint.post('/servers/<uuid:server_id>')
 @permission_required('guest_server.administrate')
 def server_update(server_id):
-    """Update a server."""
+    """Update a guest server."""
     server = _get_server_or_404(server_id)
 
     form = ServerUpdateForm(request.form)
@@ -255,7 +255,7 @@ def address_export_netbox(party_id):
 @permission_required('guest_server.administrate')
 @templated
 def address_create_form(server_id, erroneous_form=None):
-    """Show a form to add an address to a server."""
+    """Show a form to add an address to a guest server."""
     server = _get_server_or_404(server_id)
     party = party_service.get_party(server.party_id)
 
@@ -271,7 +271,7 @@ def address_create_form(server_id, erroneous_form=None):
 @blueprint.post('/servers/<uuid:server_id>/addresses')
 @permission_required('guest_server.administrate')
 def address_create(server_id):
-    """Add an address to a server."""
+    """Add an address to a guest server."""
     server = _get_server_or_404(server_id)
 
     form = AddressCreateForm(request.form)

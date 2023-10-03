@@ -8,10 +8,10 @@ from ipaddress import IPv4Address
 from byceps.services.guest_server import guest_server_domain_service
 
 
-def test_create_server(party, admin_user, user):
+def test_register_server(party, admin_user, user):
     owner = user
 
-    server, event = guest_server_domain_service.create_server(
+    server, event = guest_server_domain_service.register_server(
         party,
         admin_user,
         owner,

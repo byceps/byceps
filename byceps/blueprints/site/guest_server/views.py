@@ -26,7 +26,7 @@ from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import login_required, permission_required, redirect_to
 
-from .forms import CreateForm
+from .forms import RegisterForm
 
 
 blueprint = create_blueprint('guest_server', __name__)
@@ -36,7 +36,7 @@ blueprint = create_blueprint('guest_server', __name__)
 @login_required
 @templated
 def index():
-    """List current user's guest servers."""
+    """List current user's registered guest servers."""
     party = _get_current_party_or_404()
 
     servers = guest_server_service.get_servers_for_owner_and_party(
@@ -56,7 +56,7 @@ def index():
 @login_required
 @templated
 def create_form(erroneous_form=None):
-    """Show a form to create a guest server."""
+    """Show a form to register a guest server."""
     party = _get_current_party_or_404()
 
     if not _current_user_uses_ticket_for_party(
@@ -79,7 +79,7 @@ def create_form(erroneous_form=None):
 
     setting = guest_server_service.get_setting_for_party(party.id)
 
-    form = erroneous_form if erroneous_form else CreateForm()
+    form = erroneous_form if erroneous_form else RegisterForm()
 
     return {
         'form': form,
@@ -90,7 +90,7 @@ def create_form(erroneous_form=None):
 @blueprint.post('/create')
 @login_required
 def create():
-    """Create a guest server."""
+    """Register a guest server."""
     party = _get_current_party_or_404()
 
     if not _current_user_uses_ticket_for_party(
@@ -111,7 +111,7 @@ def create():
         )
         return redirect_to('.index')
 
-    form = CreateForm(request.form)
+    form = RegisterForm(request.form)
     if not form.validate():
         return create_form(form)
 
@@ -119,7 +119,7 @@ def create():
     description = form.description.data.strip()
     notes = form.notes.data.strip()
 
-    server, event = guest_server_service.create_server(
+    server, event = guest_server_service.register_server(
         party,
         g.user,
         g.user,

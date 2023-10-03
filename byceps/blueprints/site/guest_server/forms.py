@@ -18,7 +18,7 @@ from byceps.util.l10n import LocalizedForm
 HOSTNAME_REGEX = re.compile('^[A-Za-z][A-Za-z0-9-]+$')
 
 
-class CreateForm(LocalizedForm):
+class RegisterForm(LocalizedForm):
     hostname = StringField(
         lazy_gettext('Hostname'),
         validators=[Optional(), Length(max=20), Regexp(HOSTNAME_REGEX)],
