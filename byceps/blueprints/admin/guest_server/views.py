@@ -115,12 +115,14 @@ def server_create(party_id):
 
     creator = g.user
     owner = form.owner.data
-    address_data = AddressData(
-        ip_address=_to_ip_address(form.ip_address.data.strip()),
-        hostname=form.hostname.data.strip().lower() or None,
-        netmask=_to_ip_address(form.netmask.data.strip()),
-        gateway=_to_ip_address(form.gateway.data.strip()),
-    )
+    address_datas = {
+        AddressData(
+            ip_address=_to_ip_address(form.ip_address.data.strip()),
+            hostname=form.hostname.data.strip().lower() or None,
+            netmask=_to_ip_address(form.netmask.data.strip()),
+            gateway=_to_ip_address(form.gateway.data.strip()),
+        ),
+    }
     description = form.description.data.strip()
     notes_admin = form.notes_admin.data.strip()
     approved = form.approved.data
@@ -129,7 +131,7 @@ def server_create(party_id):
         party,
         creator,
         owner,
-        address_data,
+        address_datas,
         description=description,
         notes_admin=notes_admin,
         approved=approved,

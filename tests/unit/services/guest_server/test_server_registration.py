@@ -11,18 +11,20 @@ from byceps.services.guest_server.models import AddressData
 
 def test_register_server(party, admin_user, user):
     owner = user
-    address_data = AddressData(
-        ip_address=IPv4Address('10.0.100.104'),
-        hostname='bluebox',
-        netmask=IPv4Address('255.255.255.0'),
-        gateway=IPv4Address('10.0.100.1'),
-    )
+    address_datas = {
+        AddressData(
+            ip_address=IPv4Address('10.0.100.104'),
+            hostname='bluebox',
+            netmask=IPv4Address('255.255.255.0'),
+            gateway=IPv4Address('10.0.100.1'),
+        ),
+    }
 
     server, event = guest_server_domain_service.register_server(
         party,
         admin_user,
         owner,
-        address_data,
+        address_datas,
         description='2U, spray-painted in pink',
         notes_owner='I need two ports.',
         notes_admin='Request denied.',

@@ -85,12 +85,14 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    address_data = AddressData(
-        ip_address=None,
-        hostname=form.hostname.data.strip().lower() or None,
-        netmask=None,
-        gateway=None,
-    )
+    address_datas = {
+        AddressData(
+            ip_address=None,
+            hostname=form.hostname.data.strip().lower() or None,
+            netmask=None,
+            gateway=None,
+        ),
+    }
     description = form.description.data.strip()
     notes = form.notes.data.strip()
 
@@ -98,7 +100,7 @@ def create():
         party,
         g.user,
         g.user,
-        address_data,
+        address_datas,
         description=description,
         notes_owner=notes,
     )

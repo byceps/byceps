@@ -45,7 +45,7 @@ def register_server(
     party: Party,
     creator: User,
     owner: User,
-    address_data: AddressData,
+    address_datas: set[AddressData],
     *,
     description: str | None = None,
     notes_owner: str | None = None,
@@ -55,8 +55,10 @@ def register_server(
     """Register a guest server for a party."""
     server_id = ServerID(generate_uuid7())
     occurred_at = datetime.utcnow()
-    address = _build_address(server_id, occurred_at, address_data)
-    addresses = {address}
+    addresses = {
+        _build_address(server_id, occurred_at, address_data)
+        for address_data in address_datas
+    }
 
     server = _build_server(
         server_id,
