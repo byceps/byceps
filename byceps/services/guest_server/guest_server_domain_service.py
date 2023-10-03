@@ -13,8 +13,10 @@ from datetime import datetime
 from byceps.events.guest_server import GuestServerRegisteredEvent
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
+from .errors import QuantityLimitReachedError, UserUsesNoTicketError
 from .models import (
     Address,
     AddressID,
@@ -22,6 +24,27 @@ from .models import (
     Server,
     ServerID,
 )
+
+
+def ensure_user_may_register_server(
+    user_uses_ticket_for_party: bool,
+    user_is_orga_for_party: bool,
+    already_registered_server_quantity: int,
+) -> Result[None, QuantityLimitReachedError | UserUsesNoTicketError]:
+    """Return an error if the user is not allowed to register a(nother)
+    guest server for a party.
+    """
+    if user_is_orga_for_party:
+        # Orga needs no ticket and is not bound to quantity limit.
+        return Ok(None)
+
+    if not user_uses_ticket_for_party:
+        return Err(UserUsesNoTicketError())
+
+    if already_registered_server_quantity >= 5:
+        return Err(QuantityLimitReachedError())
+
+    return Ok(None)
 
 
 def register_server(
@@ -128,7 +151,3 @@ def _build_guest_server_registered_event(
         owner_screen_name=owner.screen_name,
         server_id=server.id,
     )
-
-
-def is_server_quantity_limit_reached(quantity: int) -> bool:
-    return quantity >= 5

@@ -14,13 +14,16 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.events.guest_server import GuestServerRegisteredEvent
+from byceps.services.orga_team import orga_team_service
 from byceps.services.party.models import Party, PartyID
+from byceps.services.ticketing import ticket_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import guest_server_domain_service
 from .dbmodels import DbGuestServer, DbGuestServerAddress, DbGuestServerSetting
+from .errors import QuantityLimitReachedError, UserUsesNoTicketError
 from .models import (
     Address,
     AddressID,
@@ -94,6 +97,31 @@ def _db_entity_to_setting(db_setting: DbGuestServerSetting) -> Setting:
 
 # -------------------------------------------------------------------- #
 # server
+
+
+def ensure_user_may_register_server(
+    party: Party, user: User
+) -> Result[None, QuantityLimitReachedError | UserUsesNoTicketError]:
+    """Return an error if the user is not allowed to register a(nother)
+    guest server for a party.
+    """
+    user_uses_ticket_for_party = ticket_service.uses_any_ticket_for_party(
+        user.id, party.id
+    )
+
+    user_is_orga_for_party = orga_team_service.is_orga_for_party(
+        user.id, party.id
+    )
+
+    already_registered_server_quantity = count_servers_for_owner_and_party(
+        user.id, party.id
+    )
+
+    return guest_server_domain_service.ensure_user_may_register_server(
+        user_uses_ticket_for_party,
+        user_is_orga_for_party,
+        already_registered_server_quantity,
+    )
 
 
 def register_server(
