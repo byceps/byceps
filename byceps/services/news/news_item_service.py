@@ -639,6 +639,15 @@ def _db_entity_to_teaser(db_item: DbNewsItem) -> NewsTeaser:
     )
 
 
+def is_slug_available(slug: str) -> bool:
+    """Check if the slug is yet unused."""
+    return not db.session.scalar(
+        select(
+            db.exists().where(db.func.lower(DbNewsItem.slug) == slug.lower())
+        )
+    )
+
+
 def _find_featured_image(db_item: DbNewsItem) -> NewsImage | None:
     db_featured_image = db_item.featured_image
     if not db_featured_image:

@@ -19,9 +19,16 @@ from wtforms import (
     TextAreaField,
     TimeField,
 )
-from wtforms.validators import InputRequired, Length, Optional, Regexp
+from wtforms.validators import (
+    InputRequired,
+    Length,
+    Optional,
+    Regexp,
+    ValidationError,
+)
 
 from byceps.services.brand.models import BrandID
+from byceps.services.news import news_item_service
 from byceps.services.news.models import BodyFormat
 from byceps.services.site import site_service
 from byceps.util.l10n import LocalizedForm
@@ -98,6 +105,17 @@ class _ItemBaseForm(LocalizedForm):
         validators=[InputRequired()],
     )
     body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
+
+    @staticmethod
+    def validate_slug(form, field):
+        slug = field.data.strip()
+
+        if not news_item_service.is_slug_available(slug):
+            raise ValidationError(
+                lazy_gettext(
+                    'This value is not available. Please choose another.'
+                )
+            )
 
 
 class ItemCreateForm(_ItemBaseForm):
