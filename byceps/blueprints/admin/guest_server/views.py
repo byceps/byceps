@@ -118,7 +118,7 @@ def server_create(party_id):
     address_datas = {
         AddressData(
             ip_address=_to_ip_address(form.ip_address.data.strip()),
-            hostname=form.hostname.data.strip().lower() or None,
+            hostname=form.hostname.data.strip().lower(),
             netmask=_to_ip_address(form.netmask.data.strip()),
             gateway=_to_ip_address(form.gateway.data.strip()),
         ),

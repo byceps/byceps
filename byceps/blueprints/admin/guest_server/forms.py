@@ -54,7 +54,7 @@ class ServerRegisterForm(LocalizedForm):
     )
     hostname = StringField(
         lazy_gettext('Hostname'),
-        validators=[Optional(), Length(max=20), Regexp(HOSTNAME_REGEX)],
+        validators=[InputRequired(), Length(max=20), Regexp(HOSTNAME_REGEX)],
     )
     netmask = StringField(
         lazy_gettext('Netmask'), validators=[Optional(), IPAddress(ipv6=True)]

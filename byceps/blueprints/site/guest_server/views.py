@@ -88,7 +88,7 @@ def create():
     address_datas = {
         AddressData(
             ip_address=None,
-            hostname=form.hostname.data.strip().lower() or None,
+            hostname=form.hostname.data.strip().lower(),
             netmask=None,
             gateway=None,
         ),
