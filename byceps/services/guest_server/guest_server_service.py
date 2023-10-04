@@ -367,13 +367,14 @@ def create_address(
 
     created_at = datetime.utcnow()
 
-    address = guest_server_domain_service._build_address(
-        db_server.id,
-        created_at,
+    address_data = AddressData(
         ip_address=ip_address,
         hostname=hostname,
         netmask=netmask,
         gateway=gateway,
+    )
+    address = guest_server_domain_service._build_address(
+        db_server.id, created_at, address_data
     )
 
     db_address = DbGuestServerAddress(
