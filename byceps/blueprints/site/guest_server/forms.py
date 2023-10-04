@@ -19,12 +19,17 @@ HOSTNAME_REGEX = re.compile('^[A-Za-z][A-Za-z0-9-]+$')
 
 
 class RegisterForm(LocalizedForm):
+    description = StringField(
+        lazy_gettext('Description'),
+        validators=[InputRequired(), Length(max=100)],
+    )
     hostname = StringField(
         lazy_gettext('Hostname'),
-        validators=[InputRequired(), Length(max=20), Regexp(HOSTNAME_REGEX)],
-    )
-    description = StringField(
-        lazy_gettext('Description'), validators=[Optional(), Length(max=100)]
+        validators=[
+            InputRequired(),
+            Length(min=2, max=20),
+            Regexp(HOSTNAME_REGEX),
+        ],
     )
     notes = TextAreaField(
         lazy_gettext('Notes'), validators=[Optional(), Length(max=1000)]

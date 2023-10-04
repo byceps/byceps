@@ -24,8 +24,8 @@ def test_register_server(party, admin_user, user):
         party,
         admin_user,
         owner,
+        '2U, spray-painted in pink',
         address_datas,
-        description='2U, spray-painted in pink',
         notes_owner='I need two ports.',
         notes_admin='Request denied.',
     )

@@ -46,7 +46,8 @@ HOSTNAME_REGEX = re.compile('^[A-Za-z][A-Za-z0-9-]+$')
 class ServerRegisterForm(LocalizedForm):
     owner = UserScreenNameField(lazy_gettext('Owner'), [InputRequired()])
     description = StringField(
-        lazy_gettext('Description'), validators=[Optional(), Length(max=100)]
+        lazy_gettext('Description'),
+        validators=[InputRequired(), Length(max=100)],
     )
     ip_address = StringField(
         lazy_gettext('IP address'),
@@ -54,7 +55,11 @@ class ServerRegisterForm(LocalizedForm):
     )
     hostname = StringField(
         lazy_gettext('Hostname'),
-        validators=[InputRequired(), Length(max=20), Regexp(HOSTNAME_REGEX)],
+        validators=[
+            InputRequired(),
+            Length(min=2, max=20),
+            Regexp(HOSTNAME_REGEX),
+        ],
     )
     netmask = StringField(
         lazy_gettext('Netmask'), validators=[Optional(), IPAddress(ipv6=True)]

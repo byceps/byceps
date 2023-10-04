@@ -85,6 +85,7 @@ def create():
     if not form.validate():
         return create_form(form)
 
+    description = form.description.data.strip()
     address_datas = {
         AddressData(
             ip_address=None,
@@ -93,15 +94,14 @@ def create():
             gateway=None,
         ),
     }
-    description = form.description.data.strip()
     notes = form.notes.data.strip()
 
     server, event = guest_server_service.register_server(
         party,
         g.user,
         g.user,
+        description,
         address_datas,
-        description=description,
         notes_owner=notes,
     )
 
