@@ -434,3 +434,16 @@ def _db_entity_to_address(db_address: DbGuestServerAddress) -> Address:
         netmask=db_address.netmask,
         gateway=db_address.gateway,
     )
+
+
+def is_hostname_registered(party_id: PartyID, hostname: str) -> bool:
+    """Check if the hostname is registered."""
+    return db.session.scalar(
+        select(
+            select(DbGuestServerAddress)
+            .join(DbGuestServer)
+            .filter(DbGuestServer.party_id == str(party_id))
+            .filter(DbGuestServerAddress.hostname == hostname.lower())
+            .exists()
+        )
+    )

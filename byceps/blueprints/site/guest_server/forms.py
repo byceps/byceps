@@ -10,10 +10,18 @@ from __future__ import annotations
 
 import re
 
+from flask import g
 from flask_babel import lazy_gettext
 from wtforms import SelectField, StringField, TextAreaField
-from wtforms.validators import InputRequired, Length, Optional, Regexp
+from wtforms.validators import (
+    InputRequired,
+    Length,
+    Optional,
+    Regexp,
+    ValidationError,
+)
 
+from byceps.services.guest_server import guest_server_service
 from byceps.util.l10n import LocalizedForm
 
 
@@ -31,6 +39,15 @@ def generate_address_indexes(quantity: int) -> list[int]:
 
 def generate_hostname_field_name(address_index: int) -> str:
     return f'hostname{address_index}'
+
+
+def validate_hostname(form, field):
+    hostname = field.data.strip()
+
+    if guest_server_service.is_hostname_registered(g.party.id, hostname):
+        raise ValidationError(
+            lazy_gettext('This value is not available. Please choose another.')
+        )
 
 
 class AddressQuantityForRegistrationForm(LocalizedForm):
@@ -71,6 +88,7 @@ def generate_register_form_with_variable_address_quantity(
         InputRequired(),
         Length(min=2, max=20),
         Regexp(HOSTNAME_REGEX),
+        validate_hostname,
     ]
 
     for address_index in generate_address_indexes(address_quantity):
