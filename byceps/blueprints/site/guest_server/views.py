@@ -26,7 +26,12 @@ from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import login_required, permission_required, redirect_to
 
-from .forms import RegisterForm
+from .forms import (
+    generate_address_indexes,
+    generate_hostname_field_name,
+    generate_register_form_with_variable_address_quantity,
+    AddressQuantityForRegistrationForm,
+)
 
 
 blueprint = create_blueprint('guest_server', __name__)
@@ -64,11 +69,36 @@ def create_form(erroneous_form=None):
 
     setting = guest_server_service.get_setting_for_party(party.id)
 
-    form = erroneous_form if erroneous_form else RegisterForm()
+    address_quantity = request.args.get(
+        'address_quantity', type=int, default=None
+    )
+
+    if address_quantity is None:
+        address_indexes = []
+
+        form = (
+            erroneous_form
+            if erroneous_form
+            else AddressQuantityForRegistrationForm()
+        )
+    else:
+        address_indexes = generate_address_indexes(address_quantity)
+
+        if erroneous_form:
+            form = erroneous_form
+        else:
+            RegisterForm = (
+                generate_register_form_with_variable_address_quantity(
+                    address_quantity
+                )
+            )
+            form = RegisterForm()
 
     return {
+        'address_quantity': address_quantity,
         'form': form,
         'domain': setting.domain,
+        'address_indexes': address_indexes,
     }
 
 
@@ -81,18 +111,35 @@ def create():
     if not may_user_register_server(party, g.user):
         return redirect_to('.index')
 
+    address_quantity = request.args.get(
+        'address_quantity', type=int, default=None
+    )
+    if not address_quantity:
+        return create_form()
+
+    RegisterForm = generate_register_form_with_variable_address_quantity(
+        address_quantity
+    )
     form = RegisterForm(request.form)
     if not form.validate():
         return create_form(form)
+
+    address_indexes = generate_address_indexes(address_quantity)
+
+    def get_hostname(address_index: int) -> str:
+        field_name = generate_hostname_field_name(address_index)
+        field = getattr(form, field_name)
+        return field.data.strip().lower()
 
     description = form.description.data.strip()
     address_datas = {
         AddressData(
             ip_address=None,
-            hostname=form.hostname.data.strip().lower(),
+            hostname=get_hostname(address_index),
             netmask=None,
             gateway=None,
-        ),
+        )
+        for address_index in address_indexes
     }
     notes = form.notes.data.strip()
 

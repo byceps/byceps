@@ -13,15 +13,25 @@
   <h1>{{ page_title }}</h1>
 
   <div class="main-body-box">
-    <form action="{{ url_for('.create') }}" method="post">
+    {%- if address_quantity is none %}
+    <form action="{{ url_for('.create') }}" method="get">
+      {{ form_field(form.address_quantity) }}
+
+      {{ form_buttons(_('Continue')) }}
+    </form>
+    {%- else %}
+    <form action="{{ url_for('.create', address_quantity=address_quantity) }}" method="post">
       {{ form_field(form.description, caption=_('Vendor, model number, what does it look like?'), autofocus=true) }}
       {%- with suffix = ('.' + domain) if domain else '' %}
-      {{ form_field(form.hostname, size=20, placeholder='myserver', suffix=suffix, caption=_('Just the hostname. The suffix <code>%(suffix)s</code> will be added automatically.', suffix=suffix)) }}
+        {%- for address_index in address_indexes %}
+      {{ form_field(form|attr('hostname' ~ address_index), size=20, placeholder='myserver%d'|format(address_index), suffix=suffix, caption=_('Just the hostname. The suffix <code>%(suffix)s</code> will be added automatically.', suffix=suffix), autofocus=loop.first) }}
+        {%- endfor %}
       {%- endwith %}
       {{ form_field(form.notes, style='height: 8rem;') }}
 
       {{ form_buttons(_('Register guest server')) }}
     </form>
+    {%- endif %}
   </div>
 
 {%- endblock %}
