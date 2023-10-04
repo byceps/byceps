@@ -14,7 +14,6 @@ from datetime import datetime
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
-from byceps.blueprints.site.orga_team.service import is_orga_for_current_party
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
@@ -25,6 +24,7 @@ from byceps.services.board import (
     board_topic_query_service,
 )
 from byceps.services.board.models import TopicID
+from byceps.services.orga_team import orga_team_service
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service
 from byceps.signals import board as board_signals
@@ -123,8 +123,9 @@ def topic_view(topic_id, page):
 
     service.enrich_creators(postings.items, g.brand_id, g.party_id)
 
-    is_current_user_orga = user.authenticated and is_orga_for_current_party(
-        g.user.id
+    is_current_user_orga = (
+        user.authenticated
+        and orga_team_service.is_orga_for_party(g.user.id, g.party_id)
     )
 
     context = {

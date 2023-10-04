@@ -12,7 +12,6 @@ from babel import Locale
 from flask import abort, g, request
 from flask_babel import force_locale, gettext
 
-from byceps.blueprints.site.orga_team import service as orga_team_service
 from byceps.services.brand import brand_setting_service
 from byceps.services.connected_external_accounts import (
     connected_external_accounts_service,
@@ -20,6 +19,7 @@ from byceps.services.connected_external_accounts import (
 from byceps.services.country import country_service
 from byceps.services.newsletter import newsletter_service
 from byceps.services.newsletter.models import ListID as NewsletterListID
+from byceps.services.orga_team import orga_team_service
 from byceps.services.user import (
     user_command_service,
     user_email_address_service,
@@ -50,7 +50,7 @@ def view():
     user_locale = Locale.parse(user.locale) if user.locale else None
     detail = user_service.get_detail(user.id)
 
-    is_orga = orga_team_service.is_orga_for_current_party(user.id)
+    is_orga = orga_team_service.is_orga_for_party(user.id, g.party_id)
 
     newsletter_list_id = _find_newsletter_list_for_brand()
     newsletter_offered = newsletter_list_id is not None
