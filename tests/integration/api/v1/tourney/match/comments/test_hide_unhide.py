@@ -17,7 +17,7 @@ def test_hide_comment(api_client, api_client_authz_header, admin_user, comment):
     assert comment_before.hidden_at is None
     assert comment_before.hidden_by is None
 
-    url = f'/api/v1/tourney/match_comments/{comment.id}/flags/hidden'
+    url = f'/v1/tourney/match_comments/{comment.id}/flags/hidden'
     headers = [api_client_authz_header]
     json_data = {'initiator_id': str(admin_user.id)}
 
@@ -41,7 +41,7 @@ def test_unhide_comment(
     assert comment_before.hidden_at is not None
     assert comment_before.hidden_by is not None
 
-    url = f'/api/v1/tourney/match_comments/{comment.id}/flags/hidden'
+    url = f'/v1/tourney/match_comments/{comment.id}/flags/hidden'
     headers = [api_client_authz_header]
     json_data = {'initiator_id': str(admin_user.id)}
 

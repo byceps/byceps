@@ -9,7 +9,7 @@ from byceps.services.ticketing import ticket_creation_service
 
 
 def test_get_sale_stats(party, tickets, api_client, api_client_authz_header):
-    url = f'/api/v1/ticketing/sale_stats/{party.id}'
+    url = f'/v1/ticketing/sale_stats/{party.id}'
     headers = [api_client_authz_header]
 
     response = api_client.get(url, headers=headers)

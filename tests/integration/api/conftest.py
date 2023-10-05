@@ -11,10 +11,12 @@ from byceps.services.authn.api import authn_api_service
 from byceps.services.authn.api.models import ApiToken
 from byceps.services.authz.models import PermissionID
 
+from tests.helpers import create_api_app
+
 
 @pytest.fixture(scope='package')
-def api_app(make_admin_app):
-    return make_admin_app(API_ENABLED=True)
+def api_app():
+    return create_api_app()
 
 
 @pytest.fixture(scope='package')

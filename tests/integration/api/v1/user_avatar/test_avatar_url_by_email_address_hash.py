@@ -69,7 +69,7 @@ def hash_email_address(email_address):
 
 
 def send_request(api_client, email_address_hash):
-    url = f'/api/v1/user_avatars/by_email_hash/{email_address_hash}'
+    url = f'/v1/user_avatars/by_email_hash/{email_address_hash}'
     return api_client.get(url)
 
 

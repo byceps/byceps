@@ -60,7 +60,7 @@ def comment(match, user):
 def request_comment_update(
     api_client, api_client_authz_header, comment_id, editor_id
 ):
-    url = f'/api/v1/tourney/match_comments/{comment_id}'
+    url = f'/v1/tourney/match_comments/{comment_id}'
 
     headers = [api_client_authz_header]
     json_data = {

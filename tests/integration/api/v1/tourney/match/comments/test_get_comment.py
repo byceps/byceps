@@ -12,7 +12,7 @@ from byceps.services.tourney import (
 
 
 def test_get_comment(api_client, api_client_authz_header, comment):
-    url = f'/api/v1/tourney/match_comments/{comment.id}'
+    url = f'/v1/tourney/match_comments/{comment.id}'
     headers = [api_client_authz_header]
 
     response = api_client.get(url, headers=headers)
@@ -43,7 +43,7 @@ def test_get_comment(api_client, api_client_authz_header, comment):
 def test_get_comment_with_party_id(
     api_client, api_client_authz_header, comment, party
 ):
-    url = f'/api/v1/tourney/match_comments/{comment.id}?party_id={party.id}'
+    url = f'/v1/tourney/match_comments/{comment.id}?party_id={party.id}'
     headers = [api_client_authz_header]
 
     response = api_client.get(url, headers=headers)
@@ -76,7 +76,7 @@ def test_get_comment_with_edited_comment(
 ):
     comment = edited_comment
 
-    url = f'/api/v1/tourney/match_comments/{comment.id}'
+    url = f'/v1/tourney/match_comments/{comment.id}'
     headers = [api_client_authz_header]
 
     response = api_client.get(url, headers=headers)

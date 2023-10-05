@@ -54,7 +54,7 @@ def test_create_archived_attendance_idempotency(
 
 
 def send_request(api_client, api_client_authz_header, user_id, party_id):
-    url = '/api/v1/attendances/archived_attendances'
+    url = '/v1/attendances/archived_attendances'
     headers = [api_client_authz_header]
     json_data = {
         'user_id': str(user_id),

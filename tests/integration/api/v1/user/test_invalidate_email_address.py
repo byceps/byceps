@@ -49,7 +49,7 @@ def test_invalidation_of_unknown_email_address(
 
 
 def send_request(api_client, api_client_authz_header, email_address):
-    url = '/api/v1/users/invalidate_email_address'
+    url = '/v1/users/invalidate_email_address'
     headers = [api_client_authz_header]
     data = {
         'email_address': email_address,
