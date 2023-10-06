@@ -574,7 +574,11 @@ def item_update_form(item_id, erroneous_form=None):
         'body_format': current_version.body_format.name,
         'body': current_version.body,
     }
-    form = erroneous_form if erroneous_form else ItemUpdateForm(data=data)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else ItemUpdateForm(item.slug, data=data)
+    )
 
     return {
         'item': item,
@@ -588,7 +592,7 @@ def item_update(item_id):
     """Update a news item."""
     item = _get_item_or_404(item_id)
 
-    form = ItemUpdateForm(request.form)
+    form = ItemUpdateForm(item.slug, request.form)
     if not form.validate():
         return item_update_form(item.id, form)
 

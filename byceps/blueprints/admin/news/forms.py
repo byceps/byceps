@@ -106,6 +106,8 @@ class _ItemBaseForm(LocalizedForm):
     )
     body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
 
+
+class ItemCreateForm(_ItemBaseForm):
     @staticmethod
     def validate_slug(form, field):
         slug = field.data.strip()
@@ -118,12 +120,24 @@ class _ItemBaseForm(LocalizedForm):
             )
 
 
-class ItemCreateForm(_ItemBaseForm):
-    pass
-
-
 class ItemUpdateForm(_ItemBaseForm):
-    pass
+    def __init__(self, current_slug: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._current_slug = current_slug
+
+    @staticmethod
+    def validate_slug(form, field):
+        slug = field.data.strip()
+
+        if (
+            slug != form._current_slug
+            and not news_item_service.is_slug_available(slug)
+        ):
+            raise ValidationError(
+                lazy_gettext(
+                    'This value is not available. Please choose another.'
+                )
+            )
 
 
 class ItemPublishLaterForm(LocalizedForm):
