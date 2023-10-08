@@ -11,7 +11,7 @@ def test_homepage_unauthenticated(admin_app):
         response = client.get('/')
 
     assert response.status_code == 307
-    assert response.location == '/authentication/log_in'
+    assert response.location == '/admin/authentication/log_in'
 
 
 def test_homepage_authenticated(admin_app, admin_user):

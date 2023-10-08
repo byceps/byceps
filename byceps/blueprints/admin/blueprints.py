@@ -23,7 +23,7 @@ def register_admin_blueprints(
         ('admin.api', '/admin/api'),
         ('admin.attendance', '/admin/attendance'),
         ('admin.authn.identity_tag', '/admin/authentication/identity_tags'),
-        ('admin.authn.login', '/authentication'),
+        ('admin.authn.login', '/admin/authentication'),
         ('admin.authz', '/admin/authorization'),
         ('admin.board', '/admin/boards'),
         ('admin.brand', '/admin/brands'),
