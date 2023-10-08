@@ -57,7 +57,7 @@ from tests.helpers import (
 )
 from tests.helpers.shop import create_article, create_orderer
 
-from .database import set_up_database, tear_down_database  # noqa: F401
+from .database import populate_database, set_up_database, tear_down_database
 
 
 _CONFIG_PATH_DATA_KEY = 'PATH_DATA'
@@ -82,11 +82,7 @@ def admin_app(make_admin_app) -> Iterator[Flask]:
     with app.app_context():
         tear_down_database()
         set_up_database()
-
-        for code in 'en', 'de':
-            language_service.create_language(code)
-
-        authz_service.create_role(RoleID('board_user'), 'Board User')
+        populate_database()
 
         yield app
 
