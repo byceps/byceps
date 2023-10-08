@@ -8,13 +8,13 @@ byceps.application.blueprints.api.blueprints
 
 from flask import Flask
 
-from byceps.util.framework.blueprint import get_blueprint
+from byceps.util.framework.blueprint import get_blueprint, register_blueprints
 
 
 def register_api_blueprints(app: Flask) -> None:
     api_v1 = get_blueprint('api.v1')
 
-    for name, url_prefix in [
+    blueprints = [
         ('attendance', '/attendances'),
         ('snippet', '/snippets'),
         ('tourney.avatar', '/tourney/avatars'),
@@ -23,9 +23,11 @@ def register_api_blueprints(app: Flask) -> None:
         ('user', '/users'),
         ('user_avatar', '/user_avatars'),
         ('user_badge', '/user_badges'),
-    ]:
-        package = f'api.v1.{name}'
-        blueprint = get_blueprint(package)
-        api_v1.register_blueprint(blueprint, url_prefix=url_prefix)
+    ]
+    blueprints = [
+        (f'api.v1.{name}', url_prefix) for name, url_prefix in blueprints
+    ]
+
+    register_blueprints(api_v1, blueprints)
 
     app.register_blueprint(api_v1, url_prefix='/v1')

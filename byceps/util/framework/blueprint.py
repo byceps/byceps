@@ -8,6 +8,8 @@ Blueprint utilities
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterable
 from importlib import import_module
 from types import ModuleType
@@ -43,7 +45,9 @@ def _get_blueprint_views_module(name: str) -> ModuleType:
     return import_module(f'byceps.blueprints.{name}.views')
 
 
-def register_blueprints(app: Flask, blueprints: Iterable[BlueprintReg]) -> None:
+def register_blueprints(
+    app: Flask | Blueprint, blueprints: Iterable[BlueprintReg]
+) -> None:
     """Register blueprints on the application."""
     for name, url_prefix in blueprints:
         blueprint = get_blueprint(name)
