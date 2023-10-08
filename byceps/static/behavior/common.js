@@ -220,7 +220,7 @@ onDomReady(() => {
         if (confirm('Wirklich abmelden?')) {
           const href = anchor.getAttribute('href');
           fetch(href, {method: 'POST'})
-            .then(response => location.href = '/authentication/log_in');
+            .then(response => location.href = anchor.dataset.redirectTarget);
         };
 
         event.preventDefault();
