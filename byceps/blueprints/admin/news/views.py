@@ -19,7 +19,7 @@ from byceps.services.news import (
     news_image_service,
     news_item_service,
 )
-from byceps.services.news.models import NewsChannel
+from byceps.services.news.models import BodyFormat, NewsChannel
 from byceps.services.site import site_service
 from byceps.services.text_diff import text_diff_service
 from byceps.services.user import user_service
@@ -518,7 +518,9 @@ def item_create_form(channel_id, erroneous_form=None):
     if erroneous_form:
         form = erroneous_form
     else:
-        form = ItemCreateForm(channel.brand_id)
+        form = ItemCreateForm(
+            channel.brand_id, body_format=BodyFormat.markdown.name
+        )
 
     return {
         'channel': channel,
