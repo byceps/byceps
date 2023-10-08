@@ -28,6 +28,11 @@ class _TourneyEvent(_BaseTourneyEvent):
 
 
 @dataclass(frozen=True)
+class TourneyCreatedEvent(_TourneyEvent):
+    pass
+
+
+@dataclass(frozen=True)
 class TourneyStartedEvent(_TourneyEvent):
     pass
 

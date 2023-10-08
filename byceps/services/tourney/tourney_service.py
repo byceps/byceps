@@ -13,9 +13,11 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.events.tourney import TourneyCreatedEvent
 from byceps.services.party.models import Party, PartyID
+from byceps.services.user.models.user import User
 
-from . import tourney_category_service
+from . import tourney_category_service, tourney_domain_service
 from .dbmodels.participant import DbParticipant
 from .dbmodels.tourney import DbTourney
 from .dbmodels.tourney_category import DbTourneyCategory
@@ -30,6 +32,7 @@ from .models import (
 
 def create_tourney(
     party: Party,
+    creator: User,
     title: str,
     category: TourneyCategory,
     max_participant_count: int,
@@ -37,22 +40,37 @@ def create_tourney(
     *,
     subtitle: str | None = None,
     logo_url: str | None = None,
-) -> Tourney:
+) -> tuple[Tourney, TourneyCreatedEvent]:
     """Create a tourney."""
-    db_tourney = DbTourney(
-        party.id,
+    tourney, event = tourney_domain_service.create_tourney(
+        party,
+        creator,
         title,
-        category.id,
+        category,
         max_participant_count,
         starts_at,
         subtitle=subtitle,
         logo_url=logo_url,
     )
 
+    _persist_tourney_creation(tourney)
+
+    return tourney, event
+
+
+def _persist_tourney_creation(tourney: Tourney) -> None:
+    db_tourney = DbTourney(
+        tourney.party_id,
+        tourney.title,
+        tourney.category_id,
+        tourney.max_participant_count,
+        tourney.starts_at,
+        subtitle=tourney.subtitle,
+        logo_url=tourney.logo_url,
+    )
+
     db.session.add(db_tourney)
     db.session.commit()
-
-    return _db_entity_to_tourney(db_tourney)
 
 
 def update_tourney(

@@ -9,7 +9,7 @@ byceps.blueprints.admin.tourney.tourney.views
 import dataclasses
 from datetime import datetime
 
-from flask import abort, request
+from flask import abort, g, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
 from byceps.services.party import party_service
@@ -76,10 +76,12 @@ def create(party_id):
     starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
     starts_at_utc = to_utc(starts_at_local)
 
+    creator = g.user
     category = tourney_category_service.get_category(category_id)
 
-    tourney = tourney_service.create_tourney(
+    tourney, event = tourney_service.create_tourney(
         party,
+        creator,
         title,
         category,
         max_participant_count,
