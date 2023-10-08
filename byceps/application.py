@@ -51,8 +51,6 @@ def create_admin_app(
 
     app = _create_app(config_overrides=config_overrides)
 
-    _enable_rq_dashboard(app)
-
     _dispatch_apps_by_url_path(app, config_overrides)
 
     _log_app_state(app)
@@ -162,6 +160,7 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     if app_mode.is_admin():
         register_admin_blueprints(app, style_guide_enabled=style_guide_enabled)
+        _enable_rq_dashboard(app)
     elif app_mode.is_site():
         register_site_blueprints(app, style_guide_enabled=style_guide_enabled)
 
