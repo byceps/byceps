@@ -68,8 +68,6 @@ def create_site_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     app = _create_app(config_overrides=config_overrides)
 
-    _dispatch_apps_by_url_path(app, config_overrides)
-
     _init_site_app(app)
 
     _log_app_state(app)
