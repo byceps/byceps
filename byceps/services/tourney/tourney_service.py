@@ -179,9 +179,9 @@ def _to_tourney_with_category(
     db_category: DbTourneyCategory,
     current_participant_count: int = -1,
 ) -> TourneyWithCategory:
-    db_tourney = _db_entity_to_tourney(db_tourney, current_participant_count)
+    tourney = _db_entity_to_tourney(db_tourney, current_participant_count)
     category = tourney_category_service._db_entity_to_category(db_category)
 
     return TourneyWithCategory.from_tourney_and_category(
-        db_tourney, category, current_participant_count
+        tourney, category, current_participant_count
     )
