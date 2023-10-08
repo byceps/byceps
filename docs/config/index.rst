@@ -13,6 +13,8 @@ Supported Configuration Values
 
     Enable the REST API.
 
+    Only available on admin application.
+
     Default: ``True``
 
 .. py:data:: DEBUG

@@ -273,9 +273,7 @@ def _dispatch_apps_by_url_path(
 ) -> None:
     mounts = {}
 
-    api_enabled = app.config['API_ENABLED'] and (
-        app.byceps_app_mode.is_admin() or app.byceps_app_mode.is_site()
-    )
+    api_enabled = app.config['API_ENABLED'] and app.byceps_app_mode.is_admin()
     if api_enabled:
         api_app = create_api_app(config_overrides=config_overrides)
         mounts['/api'] = api_app
