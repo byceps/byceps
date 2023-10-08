@@ -35,6 +35,7 @@ from .dbmodels import (
 from .models import (
     AdminListNewsItem,
     BodyFormat,
+    NewsChannel,
     NewsChannelID,
     NewsHeadline,
     NewsImage,
@@ -51,7 +52,7 @@ log = structlog.get_logger()
 
 
 def create_item(
-    channel_id: NewsChannelID,
+    channel: NewsChannel,
     slug: str,
     creator: User,
     title: str,
@@ -61,7 +62,7 @@ def create_item(
     """Create a news item, a version, and set the version as the item's
     current one.
     """
-    db_item = DbNewsItem(channel_id, slug)
+    db_item = DbNewsItem(channel.id, slug)
     db.session.add(db_item)
 
     db_version = _create_version(

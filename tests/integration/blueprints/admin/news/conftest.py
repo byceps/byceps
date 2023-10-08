@@ -41,7 +41,7 @@ def channel(brand: Brand, make_news_channel) -> NewsChannel:
 @pytest.fixture()
 def item(channel: NewsChannel, news_admin) -> NewsItem:
     return news_item_service.create_item(
-        channel.id,
+        channel,
         f'save-the-date-{generate_token()}',
         news_admin,
         'Save the Date!',

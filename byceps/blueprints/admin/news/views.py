@@ -544,7 +544,7 @@ def item_create(channel_id):
     body_format = form.body_format.data
 
     item = news_item_service.create_item(
-        channel.id,
+        channel,
         slug,
         creator,
         title,

@@ -45,7 +45,7 @@ def channel(brand, make_news_channel) -> NewsChannel:
 def news_item_with_featured_image(
     channel: NewsChannel, editor: User
 ) -> NewsItem:
-    item = create_item(channel.id, editor)
+    item = create_item(channel, editor)
 
     image_bytes = BytesIO(b'<svg/')
     image = news_image_service.create_image(editor, item, image_bytes).unwrap()
@@ -55,14 +55,14 @@ def news_item_with_featured_image(
     return news_item_service.find_item(item.id)
 
 
-def create_item(channel_id, editor: User) -> NewsItem:
+def create_item(channel: NewsChannel, editor: User) -> NewsItem:
     slug = generate_token()
     title = 'the title'
     body = 'the body'
     body_format = BodyFormat.html
 
     return news_item_service.create_item(
-        channel_id,
+        channel,
         slug,
         editor,
         title,
