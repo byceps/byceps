@@ -7,7 +7,7 @@ byceps.blueprints.admin.news.views
 """
 
 import dataclasses
-from datetime import date, datetime
+from datetime import datetime
 
 from flask import abort, g, request
 from flask_babel import format_datetime, gettext, to_utc
@@ -518,8 +518,7 @@ def item_create_form(channel_id, erroneous_form=None):
     if erroneous_form:
         form = erroneous_form
     else:
-        slug_prefix = date.today().strftime('%Y-%m-%d-')
-        form = ItemCreateForm(channel.brand_id, slug=slug_prefix)
+        form = ItemCreateForm(channel.brand_id)
 
     return {
         'channel': channel,
