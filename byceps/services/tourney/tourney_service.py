@@ -13,20 +13,25 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.party import party_service
-from byceps.services.party.models import PartyID
+from byceps.services.party.models import Party, PartyID
 
 from . import tourney_category_service
 from .dbmodels.participant import DbParticipant
 from .dbmodels.tourney import DbTourney
 from .dbmodels.tourney_category import DbTourneyCategory
-from .models import Tourney, TourneyCategoryID, TourneyID, TourneyWithCategory
+from .models import (
+    Tourney,
+    TourneyCategory,
+    TourneyCategoryID,
+    TourneyID,
+    TourneyWithCategory,
+)
 
 
 def create_tourney(
-    party_id: PartyID,
+    party: Party,
     title: str,
-    category_id: TourneyCategoryID,
+    category: TourneyCategory,
     max_participant_count: int,
     starts_at: datetime,
     *,
@@ -34,9 +39,6 @@ def create_tourney(
     logo_url: str | None = None,
 ) -> Tourney:
     """Create a tourney."""
-    party = party_service.get_party(party_id)
-    category = tourney_category_service.get_category(category_id)
-
     db_tourney = DbTourney(
         party.id,
         title,

@@ -13,7 +13,7 @@ from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
 from byceps.services.party import party_service
-from byceps.services.tourney import tourney_service
+from byceps.services.tourney import tourney_category_service, tourney_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
@@ -76,10 +76,12 @@ def create(party_id):
     starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
     starts_at_utc = to_utc(starts_at_local)
 
+    category = tourney_category_service.get_category(category_id)
+
     tourney = tourney_service.create_tourney(
-        party.id,
+        party,
         title,
-        category_id,
+        category,
         max_participant_count,
         starts_at_utc,
         subtitle=subtitle,
