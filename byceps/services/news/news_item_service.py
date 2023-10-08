@@ -18,6 +18,7 @@ import structlog
 
 from byceps.database import db, paginate, Pagination, execute_upsert
 from byceps.events.news import NewsItemPublishedEvent
+from byceps.services.brand.models import BrandID
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
@@ -62,7 +63,7 @@ def create_item(
     """Create a news item, a version, and set the version as the item's
     current one.
     """
-    db_item = DbNewsItem(channel.id, slug)
+    db_item = DbNewsItem(channel.brand_id, channel.id, slug)
     db.session.add(db_item)
 
     db_version = _create_version(
@@ -562,6 +563,7 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
 
     return NewsItem(
         id=db_item.id,
+        brand_id=db_item.brand_id,
         channel=channel,
         slug=db_item.slug,
         published_at=db_item.published_at,
@@ -640,11 +642,13 @@ def _db_entity_to_teaser(db_item: DbNewsItem) -> NewsTeaser:
     )
 
 
-def is_slug_available(slug: str) -> bool:
+def is_slug_available(brand_id: BrandID, slug: str) -> bool:
     """Check if the slug is yet unused."""
     return not db.session.scalar(
         select(
-            db.exists().where(db.func.lower(DbNewsItem.slug) == slug.lower())
+            db.exists()
+            .where(DbNewsItem.brand_id == brand_id)
+            .where(db.func.lower(DbNewsItem.slug) == slug.lower())
         )
     )
 

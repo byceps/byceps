@@ -108,11 +108,15 @@ class _ItemBaseForm(LocalizedForm):
 
 
 class ItemCreateForm(_ItemBaseForm):
+    def __init__(self, brand_id: BrandID, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._brand_id = brand_id
+
     @staticmethod
     def validate_slug(form, field):
         slug = field.data.strip()
 
-        if not news_item_service.is_slug_available(slug):
+        if not news_item_service.is_slug_available(form._brand_id, slug):
             raise ValidationError(
                 lazy_gettext(
                     'This value is not available. Please choose another.'
@@ -121,8 +125,9 @@ class ItemCreateForm(_ItemBaseForm):
 
 
 class ItemUpdateForm(_ItemBaseForm):
-    def __init__(self, current_slug: str, *args, **kwargs):
+    def __init__(self, brand_id: BrandID, current_slug: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._brand_id = brand_id
         self._current_slug = current_slug
 
     @staticmethod
@@ -131,7 +136,7 @@ class ItemUpdateForm(_ItemBaseForm):
 
         if (
             slug != form._current_slug
-            and not news_item_service.is_slug_available(slug)
+            and not news_item_service.is_slug_available(form._brand_id, slug)
         ):
             raise ValidationError(
                 lazy_gettext(

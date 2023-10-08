@@ -80,25 +80,32 @@ class DbNewsItem(db.Model):
     """
 
     __tablename__ = 'news_items'
+    __table_args__ = (db.UniqueConstraint('brand_id', 'slug'),)
 
     id: Mapped[NewsItemID] = mapped_column(
         db.Uuid, default=generate_uuid7, primary_key=True
     )
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    brand_id: Mapped[BrandID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('brands.id')
+    )
     channel_id: Mapped[NewsChannelID] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('news_channels.id'),
         index=True,
     )
     channel: Mapped[DbNewsChannel] = relationship(DbNewsChannel)
-    slug: Mapped[str] = mapped_column(db.UnicodeText, unique=True, index=True)
+    slug: Mapped[str] = mapped_column(db.UnicodeText)
     published_at: Mapped[Optional[datetime]]  # noqa: UP007
     current_version = association_proxy(
         'current_version_association', 'version'
     )
     featured_image = association_proxy('featured_image_association', 'image')
 
-    def __init__(self, channel_id: NewsChannelID, slug: str) -> None:
+    def __init__(
+        self, brand_id: BrandID, channel_id: NewsChannelID, slug: str
+    ) -> None:
+        self.brand_id = brand_id
         self.channel_id = channel_id
         self.slug = slug
 

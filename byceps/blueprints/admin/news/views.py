@@ -519,7 +519,7 @@ def item_create_form(channel_id, erroneous_form=None):
         form = erroneous_form
     else:
         slug_prefix = date.today().strftime('%Y-%m-%d-')
-        form = ItemCreateForm(slug=slug_prefix)
+        form = ItemCreateForm(channel.brand_id, slug=slug_prefix)
 
     return {
         'channel': channel,
@@ -533,7 +533,7 @@ def item_create(channel_id):
     """Create a news item."""
     channel = _get_channel_or_404(channel_id)
 
-    form = ItemCreateForm(request.form)
+    form = ItemCreateForm(channel.brand_id, request.form)
     if not form.validate():
         return item_create_form(channel.id, form)
 
@@ -577,7 +577,7 @@ def item_update_form(item_id, erroneous_form=None):
     form = (
         erroneous_form
         if erroneous_form
-        else ItemUpdateForm(item.slug, data=data)
+        else ItemUpdateForm(item.brand_id, item.slug, data=data)
     )
 
     return {
@@ -592,7 +592,7 @@ def item_update(item_id):
     """Update a news item."""
     item = _get_item_or_404(item_id)
 
-    form = ItemUpdateForm(item.slug, request.form)
+    form = ItemUpdateForm(item.brand_id, item.slug, request.form)
     if not form.validate():
         return item_update_form(item.id, form)
 
