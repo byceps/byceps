@@ -14,6 +14,7 @@ from flask_babel import gettext
 from byceps.services.global_setting import global_setting_service
 from byceps.services.guest_server import guest_server_service
 from byceps.services.guest_server.errors import (
+    PartyIsOverError,
     QuantityLimitReachedError,
     UserUsesNoTicketError,
 )
@@ -189,7 +190,10 @@ def may_user_register_server(party: Party, user: User) -> None:
 
     if result.is_err():
         err = result.unwrap_err()
-        if isinstance(err, UserUsesNoTicketError):
+        if isinstance(err, PartyIsOverError):
+            flash_notice(gettext('Server registration is closed.'))
+            return False
+        elif isinstance(err, UserUsesNoTicketError):
             flash_notice(
                 gettext(
                     'Using a ticket for this party is required to register servers.'

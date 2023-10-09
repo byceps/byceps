@@ -10,6 +10,11 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
+class PartyIsOverError:
+    """The party over, servers are no longer allowed to be registered."""
+
+
+@dataclass(frozen=True)
 class UserUsesNoTicketError:
     """The user uses no ticket for the party for which they want to
     register a guest server.

@@ -23,7 +23,11 @@ from byceps.util.result import Err, Ok, Result
 
 from . import guest_server_domain_service
 from .dbmodels import DbGuestServer, DbGuestServerAddress, DbGuestServerSetting
-from .errors import QuantityLimitReachedError, UserUsesNoTicketError
+from .errors import (
+    PartyIsOverError,
+    QuantityLimitReachedError,
+    UserUsesNoTicketError,
+)
 from .models import (
     Address,
     AddressData,
@@ -102,7 +106,9 @@ def _db_entity_to_setting(db_setting: DbGuestServerSetting) -> Setting:
 
 def ensure_user_may_register_server(
     party: Party, user: User
-) -> Result[None, QuantityLimitReachedError | UserUsesNoTicketError]:
+) -> Result[
+    None, PartyIsOverError | QuantityLimitReachedError | UserUsesNoTicketError
+]:
     """Return an error if the user is not allowed to register a(nother)
     guest server for a party.
     """
@@ -119,6 +125,7 @@ def ensure_user_may_register_server(
     )
 
     return guest_server_domain_service.ensure_user_may_register_server(
+        party,
         user_uses_ticket_for_party,
         user_is_orga_for_party,
         already_registered_server_quantity,

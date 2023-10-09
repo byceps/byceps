@@ -16,18 +16,28 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from .errors import QuantityLimitReachedError, UserUsesNoTicketError
+from .errors import (
+    PartyIsOverError,
+    QuantityLimitReachedError,
+    UserUsesNoTicketError,
+)
 from .models import Address, AddressData, AddressID, Server, ServerID
 
 
 def ensure_user_may_register_server(
+    party: Party,
     user_uses_ticket_for_party: bool,
     user_is_orga_for_party: bool,
     already_registered_server_quantity: int,
-) -> Result[None, QuantityLimitReachedError | UserUsesNoTicketError]:
+) -> Result[
+    None, PartyIsOverError | QuantityLimitReachedError | UserUsesNoTicketError
+]:
     """Return an error if the user is not allowed to register a(nother)
     guest server for a party.
     """
+    if party.is_over:
+        return Err(PartyIsOverError())
+
     if user_is_orga_for_party:
         # Orga needs no ticket and is not bound to quantity limit.
         return Ok(None)

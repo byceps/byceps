@@ -780,7 +780,8 @@ msgid "Note"
 msgstr "Anmerkung"
 
 #: byceps/blueprints/admin/authn/identity_tag/forms.py:47
-#: byceps/blueprints/admin/news/forms.py:115
+#: byceps/blueprints/admin/news/forms.py:121
+#: byceps/blueprints/admin/news/forms.py:142
 #: byceps/blueprints/site/guest_server/forms.py:49
 msgid "This value is not available. Please choose another."
 msgstr "Dieser Wert kann nicht verwendet werden. Bitte einen anderen wählen."
@@ -2012,7 +2013,7 @@ msgstr[0] "noch nicht aktivierter Benutzer"
 msgstr[1] "noch nicht aktivierte Benutzer"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:17
-#: byceps/blueprints/admin/news/forms.py:130
+#: byceps/blueprints/admin/news/forms.py:149
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:28
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:28
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
@@ -2278,7 +2279,7 @@ msgid "Provide at least an IP address or a hostname."
 msgstr "Mindestens eine IP-Adresse oder ein Hostname muss angegeben werden."
 
 #: byceps/blueprints/admin/guest_server/views.py:140
-#: byceps/blueprints/site/guest_server/views.py:155
+#: byceps/blueprints/site/guest_server/views.py:156
 msgid "The server has been registered."
 msgstr "Der Server wurde registriert."
 
@@ -2638,7 +2639,7 @@ msgstr "Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt."
 msgid "Text format"
 msgstr "Textformat"
 
-#: byceps/blueprints/admin/news/forms.py:131
+#: byceps/blueprints/admin/news/forms.py:150
 msgid "Time"
 msgstr "Uhrzeit"
 
@@ -2688,27 +2689,27 @@ msgstr "Das Titelbild wurde gesetzt."
 msgid "Featured image has been unset."
 msgstr "Das Titelbild wurde entfernt."
 
-#: byceps/blueprints/admin/news/views.py:556
+#: byceps/blueprints/admin/news/views.py:557
 #, python-format
 msgid "News item \"%(title)s\" has been created."
 msgstr "Die News \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/news/views.py:611
+#: byceps/blueprints/admin/news/views.py:616
 #, python-format
 msgid "News item \"%(title)s\" has been updated."
 msgstr "Die News \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/news/views.py:659
+#: byceps/blueprints/admin/news/views.py:664
 #, python-format
 msgid "News item \"%(title)s\" will be published later."
 msgstr "Die News \"%(title)s\" wird später veröffentlicht."
 
-#: byceps/blueprints/admin/news/views.py:685
+#: byceps/blueprints/admin/news/views.py:690
 #, python-format
 msgid "News item \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
-#: byceps/blueprints/admin/news/views.py:703
+#: byceps/blueprints/admin/news/views.py:708
 #, python-format
 msgid "News item \"%(title)s\" has been unpublished."
 msgstr "Die Veröffentlichung der News \"%(title)s\" wurde zurückgezogen."
@@ -5569,12 +5570,12 @@ msgstr "Beginn (Datum)"
 msgid "Start (time)"
 msgstr "Beginn (Uhrzeit)"
 
-#: byceps/blueprints/admin/tourney/tourney/views.py:90
+#: byceps/blueprints/admin/tourney/tourney/views.py:94
 #, python-format
 msgid "Tourney \"%(title)s\" has been created."
 msgstr "Das Turnier \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/tourney/tourney/views.py:151
+#: byceps/blueprints/admin/tourney/tourney/views.py:155
 #, python-format
 msgid "Tourney \"%(title)s\" has been updated."
 msgstr "Das Turnier \"%(title)s\" wurde aktualisiert."
@@ -7024,16 +7025,20 @@ msgid "Notes"
 msgstr "Anmerkungen"
 
 #: byceps/blueprints/site/guest_server/views.py:194
+msgid "Server registration is closed."
+msgstr "Die Serverregistrierung ist geschlossen."
+
+#: byceps/blueprints/site/guest_server/views.py:198
 msgid "Using a ticket for this party is required to register servers."
 msgstr ""
 "Die Nutzung eines Tickets für diese Party ist erforderlich, um Gastserver"
 " registrieren zu können."
 
-#: byceps/blueprints/site/guest_server/views.py:201
+#: byceps/blueprints/site/guest_server/views.py:205
 msgid "You have already registered the maximum number of servers allowed."
 msgstr "Du hast bereits die maximal erlaubte Anzahl an Gastservern registriert."
 
-#: byceps/blueprints/site/guest_server/views.py:207
+#: byceps/blueprints/site/guest_server/views.py:211
 msgid "An unknown error has occurred."
 msgstr "Ein unbekannter Fehler ist aufgetreten."
 
