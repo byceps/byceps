@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import delete, select
+from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.user.models.user import UserID
@@ -88,22 +88,6 @@ def get_entries_of_type_for_user(
     ).all()
 
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
-
-
-def delete_login_entries(occurred_before: datetime) -> int:
-    """Delete login log entries which occurred before the given date.
-
-    Return the number of deleted log entries.
-    """
-    result = db.session.execute(
-        delete(DbUserLogEntry)
-        .filter_by(event_type='user-logged-in')
-        .filter(DbUserLogEntry.occurred_at < occurred_before)
-    )
-    db.session.commit()
-
-    num_deleted = result.rowcount
-    return num_deleted
 
 
 def _db_entity_to_entry(db_entry: DbUserLogEntry) -> UserLogEntry:

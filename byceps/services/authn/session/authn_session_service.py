@@ -17,6 +17,7 @@ from byceps.database import db, insert_ignore_on_conflict, upsert
 from byceps.events.authn import UserLoggedInEvent
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user import user_log_service
+from byceps.services.user.dbmodels.log import DbUserLogEntry
 from byceps.services.user.models.user import User, UserID
 
 from .dbmodels import DbRecentLogin, DbSessionToken
@@ -170,6 +171,22 @@ def _record_recent_login(user_id: UserID, occurred_at: datetime) -> None:
     replacement = {'occurred_at': occurred_at}
 
     upsert(table, identifier, replacement)
+
+
+def delete_login_entries(occurred_before: datetime) -> int:
+    """Delete login log entries which occurred before the given date.
+
+    Return the number of deleted log entries.
+    """
+    result = db.session.execute(
+        delete(DbUserLogEntry)
+        .filter_by(event_type='user-logged-in')
+        .filter(DbUserLogEntry.occurred_at < occurred_before)
+    )
+    db.session.commit()
+
+    num_deleted = result.rowcount
+    return num_deleted
 
 
 ANONYMOUS_USER_ID = UserID(UUID('00000000-0000-0000-0000-000000000000'))

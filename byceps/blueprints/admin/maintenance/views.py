@@ -11,7 +11,6 @@ from datetime import datetime, timedelta
 from flask_babel import gettext
 
 from byceps.services.authn.session import authn_session_service
-from byceps.services.user import user_log_service
 from byceps.services.verification_token import verification_token_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
@@ -55,7 +54,7 @@ def delete_old_login_log_entries():
     minimum_age_in_days = 90
     occurred_before = now - timedelta(days=minimum_age_in_days)
 
-    num_deleted = user_log_service.delete_login_entries(occurred_before)
+    num_deleted = authn_session_service.delete_login_entries(occurred_before)
 
     flash_success(
         gettext(
