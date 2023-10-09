@@ -152,6 +152,15 @@ def _create_login_log_entry(
     )
 
 
+def _record_recent_login(user_id: UserID, occurred_at: datetime) -> None:
+    """Store the time of the user's most recent login."""
+    table = DbRecentLogin.__table__
+    identifier = {'user_id': user_id}
+    replacement = {'occurred_at': occurred_at}
+
+    upsert(table, identifier, replacement)
+
+
 def find_recent_login(user_id: UserID) -> datetime | None:
     """Return the time of the user's most recent login, if found."""
     recent_login = db.session.execute(
@@ -162,15 +171,6 @@ def find_recent_login(user_id: UserID) -> datetime | None:
         return None
 
     return recent_login.occurred_at
-
-
-def _record_recent_login(user_id: UserID, occurred_at: datetime) -> None:
-    """Store the time of the user's most recent login."""
-    table = DbRecentLogin.__table__
-    identifier = {'user_id': user_id}
-    replacement = {'occurred_at': occurred_at}
-
-    upsert(table, identifier, replacement)
 
 
 def delete_login_entries(occurred_before: datetime) -> int:
