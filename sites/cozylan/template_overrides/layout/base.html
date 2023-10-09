@@ -1,4 +1,5 @@
 {%- from 'macros/page.html' import render_page_title %}
+{%- set simple_layout = simple_layout|default(false) %}
 {%- set current_page = current_page|default -%}
 
 
@@ -30,7 +31,9 @@
           <div class="page-body-grid">
 
             <aside class="page-sidebar-left">
+            {%- if not simple_layout %}
 {% include 'layout/_sidebar_left.html' with context %}
+            {%- endif %}
             </aside>
 
             <section class="page-main">
@@ -42,7 +45,9 @@
             </section>
 
             <aside class="page-sidebar-right">
+            {%- if not simple_layout %}
 {% include 'layout/_sidebar_right.html' %}
+            {%- endif %}
             </aside>
 
           </div>{# .page-body-grid #}
