@@ -173,6 +173,23 @@ def find_recent_login(user_id: UserID) -> datetime | None:
     return recent_login.occurred_at
 
 
+def find_logins_for_ip_address(
+    ip_address: str,
+) -> list[tuple[datetime, UserID]]:
+    """Return login timestamp and user ID for logins from the given IP
+    address.
+    """
+    return db.session.execute(
+        select(
+            DbUserLogEntry.occurred_at,
+            DbUserLogEntry.user_id,
+        )
+        .filter_by(event_type='user-logged-in')
+        .filter(DbUserLogEntry.data['ip_address'].astext == ip_address)
+        .order_by(DbUserLogEntry.occurred_at)
+    ).all()
+
+
 def delete_login_entries(occurred_before: datetime) -> int:
     """Delete login log entries which occurred before the given date.
 

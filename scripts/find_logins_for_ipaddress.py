@@ -6,15 +6,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime
-
 import click
-from sqlalchemy import select
 
-from byceps.database import db
+from byceps.services.authn.session import authn_session_service
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.log import DbUserLogEntry
-from byceps.services.user.models.user import UserID
 
 from _util import call_with_app_context
 
@@ -22,7 +17,9 @@ from _util import call_with_app_context
 @click.command()
 @click.argument('ip_address')
 def execute(ip_address: str) -> None:
-    occurred_at_and_user_ids = find_log_entries(ip_address)
+    occurred_at_and_user_ids = authn_session_service.find_logins_for_ip_address(
+        ip_address
+    )
 
     user_ids = {user_id for _, user_id in occurred_at_and_user_ids}
     users_by_id = user_service.get_users_indexed_by_id(user_ids)
@@ -34,18 +31,6 @@ def execute(ip_address: str) -> None:
 
     for occurred_at, user in occurred_at_and_users:
         click.echo(f'{occurred_at}\t{ip_address}\t{user.screen_name}')
-
-
-def find_log_entries(ip_address: str) -> list[tuple[datetime, UserID]]:
-    return db.session.execute(
-        select(
-            DbUserLogEntry.occurred_at,
-            DbUserLogEntry.user_id,
-        )
-        .filter_by(event_type='user-logged-in')
-        .filter(DbUserLogEntry.data['ip_address'].astext == ip_address)
-        .order_by(DbUserLogEntry.occurred_at)
-    ).all()
 
 
 if __name__ == '__main__':
