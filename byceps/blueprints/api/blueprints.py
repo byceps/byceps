@@ -15,6 +15,7 @@ def register_api_blueprints(app: Flask) -> None:
     api_v1 = get_blueprint('api.v1')
 
     blueprints = [
+        ('authn', '/authentication'),
         ('attendance', '/attendances'),
         ('snippet', '/snippets'),
         ('tourney.avatar', '/tourney/avatars'),
