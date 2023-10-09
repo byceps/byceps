@@ -69,33 +69,33 @@ def paginate_postings(
     if not include_hidden:
         stmt = stmt.filter_by(hidden=False)
 
-    postings = paginate(stmt, page, per_page)
+    db_postings = paginate(stmt, page, per_page)
 
-    creator_ids = {posting.creator_id for posting in postings.items}
+    creator_ids = {db_posting.creator_id for db_posting in db_postings.items}
     creators_by_id = user_service.get_users_indexed_by_id(
         creator_ids, include_avatars=True
     )
 
-    for posting in postings.items:
-        posting.creator = creators_by_id[posting.creator_id]
+    for db_posting in db_postings.items:
+        db_posting.creator = creators_by_id[db_posting.creator_id]
 
-    return postings
+    return db_postings
 
 
 def calculate_posting_page_number(
-    posting: DbPosting, include_hidden: bool, postings_per_page: int
+    db_posting: DbPosting, include_hidden: bool, postings_per_page: int
 ) -> int:
     """Return the number of the page the posting should appear on."""
-    stmt = select(DbPosting).filter_by(topic_id=posting.topic_id)
+    stmt = select(DbPosting).filter_by(topic_id=db_posting.topic_id)
 
     if not include_hidden:
         stmt = stmt.filter_by(hidden=False)
 
     stmt = stmt.order_by(DbPosting.created_at.asc())
 
-    topic_postings = db.session.scalars(stmt).all()
+    db_topic_postings = db.session.scalars(stmt).all()
 
-    index = index_of(topic_postings, lambda p: p == posting)
+    index = index_of(db_topic_postings, lambda p: p == db_posting)
     if index is None:
         return 1  # Shouldn't happen.
 
