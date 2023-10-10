@@ -8,17 +8,20 @@ byceps.services.board.board_posting_query_service
 
 from __future__ import annotations
 
+from collections import defaultdict
+
 from sqlalchemy import select
 
 from byceps.database import db, paginate, Pagination
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.models.user import UserID
 from byceps.util.iterables import index_of
 
 from .dbmodels.category import DbBoardCategory
-from .dbmodels.posting import DbPosting
+from .dbmodels.posting import DbPosting, DbPostingReaction
 from .dbmodels.topic import DbTopic
-from .models import BoardID, PostingID, TopicID
+from .models import BoardID, PostingID, PostingReactionUser, TopicID
 
 
 def count_postings_for_board(board_id: BoardID) -> int:
@@ -61,6 +64,9 @@ def paginate_postings(
                 DbUser.screen_name
             ),
             db.joinedload(DbPosting.hidden_by).load_only(DbUser.screen_name),
+            db.joinedload(DbPosting.reactions)
+            .joinedload(DbPostingReaction.user)
+            .load_only(DbUser.id, DbUser.screen_name),
         )
         .filter_by(topic_id=topic_id)
         .order_by(DbPosting.created_at.asc())
@@ -78,8 +84,27 @@ def paginate_postings(
 
     for db_posting in db_postings.items:
         db_posting.creator = creators_by_id[db_posting.creator_id]
+        db_posting.reactions_by_kind = _get_reactions_by_kind(
+            db_posting.reactions
+        )
 
     return db_postings
+
+
+def _get_reactions_by_kind(
+    db_reactions: list[DbPostingReaction],
+) -> dict[str, list[PostingReactionUser]]:
+    reactions_by_kind = defaultdict(list)
+
+    for db_reaction in db_reactions:
+        reactions_by_kind[db_reaction.kind].append(
+            PostingReactionUser(
+                id=db_reaction.user.id,
+                screen_name=db_reaction.user.screen_name,
+            )
+        )
+
+    return dict(reactions_by_kind)
 
 
 def calculate_posting_page_number(

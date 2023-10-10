@@ -6,13 +6,15 @@ byceps.services.board.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User, UserID
 
 
 BoardID = NewType('BoardID', str)
@@ -51,3 +53,9 @@ class BoardCategory:
 class BoardCategoryWithLastUpdate(BoardCategory):
     last_posting_updated_at: datetime
     last_posting_updated_by: User
+
+
+@dataclass(frozen=True)
+class PostingReactionUser:
+    id: UserID
+    screen_name: str | None

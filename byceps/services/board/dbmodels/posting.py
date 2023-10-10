@@ -7,6 +7,7 @@ byceps.services.board.dbmodels.posting
 """
 
 from datetime import datetime
+from uuid import UUID
 
 from typing import Optional
 
@@ -98,3 +99,36 @@ class DbInitialTopicPostingAssociation(db.Model):
     def __init__(self, topic: DbTopic, posting: DbPosting) -> None:
         self.topic = topic
         self.posting = posting
+
+
+class DbPostingReaction(db.Model):
+    """A user reaction to a posting."""
+
+    __tablename__ = 'board_posting_reactions'
+    __table_args__ = (db.UniqueConstraint('user_id', 'posting_id', 'kind'),)
+
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    created_at: Mapped[datetime]
+    posting_id: Mapped[PostingID] = mapped_column(
+        db.Uuid, db.ForeignKey('board_postings.id')
+    )
+    posting: Mapped[DbPosting] = relationship(
+        DbPosting, backref=db.backref('reactions')
+    )
+    user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    user: Mapped[DbUser] = relationship(DbUser)
+    kind: Mapped[str] = mapped_column(db.UnicodeText)
+
+    def __init__(
+        self,
+        reaction_id: UUID,
+        created_at: datetime,
+        posting_id: PostingID,
+        user_id: UserID,
+        kind: str,
+    ) -> None:
+        self.id = reaction_id
+        self.created_at = created_at
+        self.posting_id = posting_id
+        self.user_id = user_id
+        self.kind = kind

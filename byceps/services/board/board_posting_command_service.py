@@ -8,7 +8,7 @@ byceps.services.board.board_posting_command_service
 
 from datetime import datetime
 
-from sqlalchemy import delete
+from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.events.board import (
@@ -20,13 +20,15 @@ from byceps.events.board import (
 from byceps.services.brand import brand_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
+from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from . import (
     board_aggregation_service,
     board_posting_query_service,
     board_topic_query_service,
 )
-from .dbmodels.posting import DbPosting
+from .dbmodels.posting import DbPosting, DbPostingReaction
 from .models import PostingID, TopicID
 
 
@@ -177,6 +179,59 @@ def delete_posting(posting_id: PostingID) -> None:
     """Delete a posting."""
     db.session.execute(delete(DbPosting).filter_by(id=posting_id))
     db.session.commit()
+
+
+def add_reaction(
+    posting_id: PostingID, user: User, kind: str
+) -> Result[None, None]:
+    """Add user reaction to the posting."""
+    reaction_exists = _is_reaction_existing(posting_id, user.id, kind)
+    if reaction_exists:
+        return Err(None)
+
+    reaction_id = generate_uuid7()
+    created_at = datetime.utcnow()
+
+    db_reaction = DbPostingReaction(
+        reaction_id, created_at, posting_id, user.id, kind
+    )
+    db.session.add(db_reaction)
+    db.session.commit()
+
+    return Ok(None)
+
+
+def remove_reaction(
+    posting_id: PostingID, user: User, kind: str
+) -> Result[None, None]:
+    """Remove user reaction from the posting."""
+    reaction_exists = _is_reaction_existing(posting_id, user.id, kind)
+    if not reaction_exists:
+        return Err(None)
+
+    db.session.execute(
+        delete(DbPostingReaction)
+        .filter_by(posting_id=posting_id)
+        .filter_by(user_id=user.id)
+        .filter_by(kind=kind)
+    )
+    db.session.commit()
+
+    return Ok(None)
+
+
+def _is_reaction_existing(
+    posting_id: PostingID, user_id: UserID, kind: str
+) -> bool:
+    return db.session.scalar(
+        select(
+            select(DbPostingReaction)
+            .filter_by(posting_id=posting_id)
+            .filter_by(user_id=user_id)
+            .filter_by(kind=kind)
+            .exists()
+        )
+    )
 
 
 def _get_posting(posting_id: PostingID) -> DbPosting:
