@@ -8,7 +8,7 @@ byceps.blueprints.site.board.views_posting
 
 import dataclasses
 
-from flask import g, redirect, request
+from flask import abort, g, redirect, request
 from flask_babel import gettext
 
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
@@ -25,6 +25,7 @@ from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import (
     permission_required,
+    respond_no_content,
     respond_no_content_with_location,
 )
 
@@ -276,3 +277,31 @@ def posting_unhide(posting_id):
     board_signals.posting_unhidden.send(None, event=event)
 
     return h.build_url_for_posting_in_topic_view(posting, page)
+
+
+@blueprint.post('/postings/<uuid:posting_id>/reactions/<kind>')
+@permission_required('board_posting.create')
+@respond_no_content
+def add_reaction(posting_id, kind):
+    """Add a reaction to a post."""
+    posting = h.get_posting_or_404(posting_id)
+
+    result = board_posting_command_service.add_reaction(
+        posting.id, g.user, kind
+    )
+    if result.is_err():
+        abort(409)
+
+
+@blueprint.delete('/postings/<uuid:posting_id>/reactions/<kind>')
+@permission_required('board_posting.create')
+@respond_no_content
+def remove_reaction(posting_id, kind):
+    """Remove a reaction from a post."""
+    posting = h.get_posting_or_404(posting_id)
+
+    result = board_posting_command_service.remove_reaction(
+        posting.id, g.user, kind
+    )
+    if result.is_err():
+        abort(409)

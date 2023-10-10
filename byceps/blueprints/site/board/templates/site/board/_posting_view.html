@@ -20,6 +20,9 @@
         <button
           class="button button--reaction{% if has_reacted %} button--reaction-active{% endif %} reaction-count"
           data-count="{{ reactions|length }}"
+          data-action="posting-react"
+          data-url-add="{{ url_for('.add_reaction', posting_id=posting.id, kind=kind) }}"
+          data-url-remove="{{ url_for('.remove_reaction', posting_id=posting.id, kind=kind) }}"
           title="{{ reactions|select|join(', ') }}"
           ><span class="symbol">{{ reaction_kinds_to_symbols[kind] }}</span></button>
             {%- endwith %}
