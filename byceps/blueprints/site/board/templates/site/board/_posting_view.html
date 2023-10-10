@@ -12,6 +12,20 @@
     </header>
     <div class="body">
 {{ posting.body|bbcode|safe }}
+
+      <div class="reactions mt">
+        {%- for kind in reaction_kinds_in_order %}
+          {%- with reactions = posting.reactions_by_kind.get(kind, []) %}
+            {%- with has_reacted = g.user.id in reactions|map(attribute='id') %}
+        <button
+          class="button button--reaction{% if has_reacted %} button--reaction-active{% endif %} reaction-count"
+          data-count="{{ reactions|length }}"
+          title="{{ reactions|select|join(', ') }}"
+          ><span class="symbol">{{ reaction_kinds_to_symbols[kind] }}</span></button>
+            {%- endwith %}
+          {%- endwith %}
+        {%- endfor %}
+      </div>
     </div>
     {%- if posting.edit_count %}
     <footer>
