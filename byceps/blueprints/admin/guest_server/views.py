@@ -59,6 +59,8 @@ def server_index(party_id):
     setting = guest_server_service.get_setting_for_party(party.id)
 
     servers = guest_server_service.get_all_servers_for_party(party.id)
+    servers.sort(key=lambda server: server.created_at, reverse=True)
+    servers.sort(key=_get_sort_value_for_server_state)
 
     return {
         'party': party,
@@ -66,6 +68,17 @@ def server_index(party_id):
         'servers': servers,
         'sort_addresses': _sort_addresses,
     }
+
+
+def _get_sort_value_for_server_state(server):
+    if server.checked_out:
+        return 4
+    elif server.checked_in:
+        return 3
+    elif server.approved:
+        return 2
+    else:
+        return 1
 
 
 @blueprint.get('/servers/<server_id>')

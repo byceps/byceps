@@ -23,7 +23,7 @@
   </div>
 
   {%- if servers %}
-    {%- for server in servers|sort(attribute='created_at', reverse=True) %}
+    {%- for server in servers %}
   <a href="{{ url_for('.server_view', server_id=server.id) }}" class="box box--marked {{ get_server_state_color_name(server) }}">
 
     <div class="row">
