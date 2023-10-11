@@ -488,15 +488,15 @@ def _to_ip_address(value: str) -> IPAddress | None:
 def _sort_addresses(addresses: Iterable[Address]) -> list[Address]:
     """Sort addresses.
 
-    By IP address first, hostname second. `None` at the end.
+    By IP address first, hostname second. `None` at the beginning.
     """
     return list(
         sorted(
             addresses,
             key=lambda addr: (
-                addr.ip_address is None,
+                addr.ip_address is not None,
                 addr.ip_address,
-                addr.hostname is None,
+                addr.hostname is not None,
                 addr.hostname,
             ),
         )
