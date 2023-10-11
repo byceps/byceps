@@ -31,6 +31,12 @@ services:
       <<: *byceps-base-env
       APP_MODE: admin
 
+  byceps-api:
+    <<: *byceps-base
+    environment:
+      <<: *byceps-base-env
+      APP_MODE: api
+
   byceps-site:
     <<: *byceps-base
     environment:
