@@ -200,9 +200,15 @@ def server_approve(server_id):
     server = _get_server_or_404(server_id)
     initiator = g.user
 
-    guest_server_service.approve_server(server, initiator)
+    result = guest_server_service.approve_server(server, initiator)
+    if result.is_err():
+        flash_error(result.unwrap_err())
+    else:
+        flash_success(gettext('Server has been approved.'))
 
-    flash_success(gettext('Server has been approved.'))
+    _, event = result.unwrap()
+
+    guest_server_signals.guest_server_approved.send(None, event=event)
 
 
 @blueprint.post('/guest_servers/<uuid:server_id>/checkin')
@@ -213,9 +219,15 @@ def server_check_in(server_id):
     server = _get_server_or_404(server_id)
     initiator = g.user
 
-    guest_server_service.check_in_server(server, initiator)
+    result = guest_server_service.check_in_server(server, initiator)
+    if result.is_err():
+        flash_error(result.unwrap_err())
+    else:
+        flash_success(gettext('Server has been checked in.'))
 
-    flash_success(gettext('Server has been checked in.'))
+    _, event = result.unwrap()
+
+    guest_server_signals.guest_server_checked_in.send(None, event=event)
 
 
 @blueprint.post('/guest_servers/<uuid:server_id>/checkout')
@@ -226,9 +238,15 @@ def server_check_out(server_id):
     server = _get_server_or_404(server_id)
     initiator = g.user
 
-    guest_server_service.check_out_server(server, initiator)
+    result = guest_server_service.check_out_server(server, initiator)
+    if result.is_err():
+        flash_error(result.unwrap_err())
+    else:
+        flash_success(gettext('Server has been checked out.'))
 
-    flash_success(gettext('Server has been checked out.'))
+    _, event = result.unwrap()
+
+    guest_server_signals.guest_server_checked_out.send(None, event=event)
 
 
 @blueprint.delete('/guest_servers/<uuid:server_id>')
