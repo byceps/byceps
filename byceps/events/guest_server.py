@@ -18,9 +18,28 @@ from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
-class GuestServerRegisteredEvent(_BaseEvent):
-    party_id: PartyID
-    party_title: str
+class _GuestServerEvent(_BaseEvent):
     owner_id: UserID
     owner_screen_name: str | None
     server_id: ServerID
+
+
+@dataclass(frozen=True)
+class GuestServerRegisteredEvent(_GuestServerEvent):
+    party_id: PartyID
+    party_title: str
+
+
+@dataclass(frozen=True)
+class GuestServerApprovedEvent(_GuestServerEvent):
+    pass
+
+
+@dataclass(frozen=True)
+class GuestServerCheckedInEvent(_GuestServerEvent):
+    pass
+
+
+@dataclass(frozen=True)
+class GuestServerCheckedOutEvent(_GuestServerEvent):
+    pass

@@ -6,7 +6,12 @@
 from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
-from byceps.events.guest_server import GuestServerRegisteredEvent
+from byceps.events.guest_server import (
+    GuestServerApprovedEvent,
+    GuestServerCheckedInEvent,
+    GuestServerCheckedOutEvent,
+    GuestServerRegisteredEvent,
+)
 from byceps.services.guest_server.models import ServerID
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import UserID
@@ -30,6 +35,57 @@ def test_guest_server_registered(app: Flask, webhook_for_irc):
         initiator_screen_name='Admin',
         party_id=PartyID('acmecon-2014'),
         party_title='ACMECon 2014',
+        owner_id=USER_ID,
+        owner_screen_name='User',
+        server_id=ServerID(generate_uuid()),
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
+
+
+def test_guest_server_approved(app: Flask, webhook_for_irc):
+    expected_text = 'Admin hat einen Gastserver von User genehmigt.'
+
+    event = GuestServerApprovedEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=ADMIN_ID,
+        initiator_screen_name='Admin',
+        owner_id=USER_ID,
+        owner_screen_name='User',
+        server_id=ServerID(generate_uuid()),
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
+
+
+def test_guest_server_checked_in(app: Flask, webhook_for_irc):
+    expected_text = 'Admin hat einen Gastserver von User eingecheckt.'
+
+    event = GuestServerCheckedInEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=ADMIN_ID,
+        initiator_screen_name='Admin',
+        owner_id=USER_ID,
+        owner_screen_name='User',
+        server_id=ServerID(generate_uuid()),
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
+
+
+def test_guest_server_checked_out(app: Flask, webhook_for_irc):
+    expected_text = 'Admin hat einen Gastserver von User ausgecheckt.'
+
+    event = GuestServerCheckedOutEvent(
+        occurred_at=OCCURRED_AT,
+        initiator_id=ADMIN_ID,
+        initiator_screen_name='Admin',
         owner_id=USER_ID,
         owner_screen_name='User',
         server_id=ServerID(generate_uuid()),

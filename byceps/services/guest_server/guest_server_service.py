@@ -13,7 +13,12 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.guest_server import GuestServerRegisteredEvent
+from byceps.events.guest_server import (
+    GuestServerApprovedEvent,
+    GuestServerCheckedInEvent,
+    GuestServerCheckedOutEvent,
+    GuestServerRegisteredEvent,
+)
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing import ticket_service
@@ -24,6 +29,11 @@ from byceps.util.result import Err, Ok, Result
 from . import guest_server_domain_service
 from .dbmodels import DbGuestServer, DbGuestServerAddress, DbGuestServerSetting
 from .errors import (
+    AlreadyApprovedError,
+    AlreadyCheckedInError,
+    AlreadyCheckedOutError,
+    NotApprovedError,
+    NotCheckedInError,
     PartyIsOverError,
     QuantityLimitReachedError,
     UserUsesNoTicketError,
@@ -141,7 +151,6 @@ def register_server(
     *,
     notes_owner: str | None = None,
     notes_admin: str | None = None,
-    approved: bool = False,
 ) -> tuple[Server, GuestServerRegisteredEvent]:
     """Register a server for a party."""
     server, event = guest_server_domain_service.register_server(
@@ -152,7 +161,6 @@ def register_server(
         address_datas,
         notes_owner=notes_owner,
         notes_admin=notes_admin,
-        approved=approved,
     )
 
     _persist_server_registration(server)
@@ -170,7 +178,6 @@ def _persist_server_registration(server: Server) -> None:
         server.description,
         notes_owner=server.notes_owner,
         notes_admin=server.notes_admin,
-        approved=server.approved,
     )
     db.session.add(db_server)
 
@@ -187,16 +194,11 @@ def _persist_server_registration(server: Server) -> None:
     db.session.commit()
 
 
-def update_server(
-    server_id: ServerID,
-    notes_admin: str | None,
-    approved: bool,
-) -> Server:
+def update_server(server_id: ServerID, notes_admin: str | None) -> Server:
     """Update the server."""
     db_server = _get_db_server(server_id)
 
     db_server.notes_admin = notes_admin
-    db_server.approved = approved
 
     db.session.commit()
 
@@ -204,6 +206,63 @@ def update_server(
     owner = user_service.get_user(db_server.owner_id)
 
     return _db_entity_to_server(db_server, creator, owner)
+
+
+def approve_server(
+    pending_server: Server, initiator: User
+) -> Result[tuple[Server, GuestServerApprovedEvent], AlreadyApprovedError]:
+    """Approve a guest server."""
+    result = guest_server_domain_service.approve_server(
+        pending_server, initiator
+    )
+    if result.is_err():
+        return result
+
+    approved_server, event = result.unwrap()
+
+    db_server = _get_db_server(approved_server.id)
+    db_server.approved = True
+    db.session.commit()
+
+
+def check_in_server(
+    approved_server: Server, initiator: User
+) -> Result[
+    tuple[Server, GuestServerCheckedInEvent],
+    AlreadyCheckedInError | AlreadyCheckedOutError | NotApprovedError,
+]:
+    """Check in a guest server."""
+    result = guest_server_domain_service.check_in_server(
+        approved_server, initiator
+    )
+    if result.is_err():
+        return result
+
+    checked_in_server, event = result.unwrap()
+
+    db_server = _get_db_server(checked_in_server.id)
+    db_server.checked_in_at = checked_in_server.checked_in_at
+    db.session.commit()
+
+
+def check_out_server(
+    checked_in_server: Server, initiator: User
+) -> Result[
+    tuple[Server, GuestServerCheckedOutEvent],
+    AlreadyCheckedOutError | NotCheckedInError,
+]:
+    """Check out a guest server."""
+    result = guest_server_domain_service.check_out_server(
+        checked_in_server, initiator
+    )
+    if result.is_err():
+        return result
+
+    checked_out_server, event = result.unwrap()
+
+    db_server = _get_db_server(checked_out_server.id)
+    db_server.checked_out_at = checked_out_server.checked_out_at
+    db.session.commit()
 
 
 def find_server(server_id: ServerID) -> Server | None:
@@ -344,6 +403,10 @@ def _db_entity_to_server(
         notes_owner=db_server.notes_owner,
         notes_admin=db_server.notes_admin,
         approved=db_server.approved,
+        checked_in=db_server.checked_in_at is not None,
+        checked_in_at=db_server.checked_in_at,
+        checked_out=db_server.checked_out_at is not None,
+        checked_out_at=db_server.checked_out_at,
         addresses=addresses,
     )
 

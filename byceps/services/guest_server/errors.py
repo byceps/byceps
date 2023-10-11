@@ -26,3 +26,28 @@ class QuantityLimitReachedError:
     """The user has already reached the maximum number of guest
     servers allowed to be registered for a party.
     """
+
+
+@dataclass(frozen=True)
+class AlreadyApprovedError:
+    """The server has already been approved."""
+
+
+@dataclass(frozen=True)
+class NotApprovedError:
+    """The server has not been approved."""
+
+
+@dataclass(frozen=True)
+class AlreadyCheckedInError:
+    """The server has already been checked in."""
+
+
+@dataclass(frozen=True)
+class NotCheckedInError:
+    """The server has not been checked in."""
+
+
+@dataclass(frozen=True)
+class AlreadyCheckedOutError:
+    """The server has already been checked in."""

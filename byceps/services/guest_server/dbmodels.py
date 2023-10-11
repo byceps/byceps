@@ -125,7 +125,9 @@ class DbGuestServer(db.Model):
     notes_admin: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
         db.UnicodeText
     )
-    approved: Mapped[bool] = mapped_column(default=False)
+    approved: Mapped[bool]
+    checked_in_at: Mapped[Optional[datetime]]  # noqa: UP007
+    checked_out_at: Mapped[Optional[datetime]]  # noqa: UP007
 
     def __init__(
         self,
@@ -138,7 +140,6 @@ class DbGuestServer(db.Model):
         *,
         notes_owner: str | None = None,
         notes_admin: str | None = None,
-        approved: bool = False,
     ) -> None:
         self.id = server_id
         self.party_id = party_id
@@ -148,7 +149,9 @@ class DbGuestServer(db.Model):
         self.description = description
         self.notes_owner = notes_owner
         self.notes_admin = notes_admin
-        self.approved = approved
+        self.approved = False
+        self.checked_in_at = None
+        self.checked_out_at = None
 
     def __repr__(self) -> str:
         return ReprBuilder(self).add_with_lookup('id').build()

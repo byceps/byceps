@@ -33,7 +33,12 @@ from byceps.events.board import (
     BoardTopicUnlockedEvent,
     BoardTopicUnpinnedEvent,
 )
-from byceps.events.guest_server import GuestServerRegisteredEvent
+from byceps.events.guest_server import (
+    GuestServerApprovedEvent,
+    GuestServerCheckedInEvent,
+    GuestServerCheckedOutEvent,
+    GuestServerRegisteredEvent,
+)
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.events.newsletter import (
     SubscribedToNewsletterEvent,
@@ -231,6 +236,21 @@ for event, name, handler in [
         BoardTopicUnpinnedEvent,
         'board-topic-unpinned',
         board_handlers.announce_board_topic_unpinned,
+    ),
+    (
+        GuestServerApprovedEvent,
+        'guest-server-approved',
+        guest_server_handlers.announce_guest_server_approved,
+    ),
+    (
+        GuestServerCheckedInEvent,
+        'guest-server-checked-in',
+        guest_server_handlers.announce_guest_server_checked_in,
+    ),
+    (
+        GuestServerCheckedOutEvent,
+        'guest-server-checked-out',
+        guest_server_handlers.announce_guest_server_checked_out,
     ),
     (
         GuestServerRegisteredEvent,
@@ -435,6 +455,9 @@ _SIGNALS: list[NamedSignal] = [
     board_signals.topic_unhidden,
     board_signals.topic_unlocked,
     board_signals.topic_unpinned,
+    guest_server_signals.guest_server_approved,
+    guest_server_signals.guest_server_checked_in,
+    guest_server_signals.guest_server_checked_out,
     guest_server_signals.guest_server_registered,
     news_signals.item_published,
     newsletter_signals.newsletter_subscribed,

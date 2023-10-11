@@ -71,14 +71,12 @@ class ServerRegisterForm(LocalizedForm):
         lazy_gettext('Notes by admin'),
         validators=[Optional(), Length(max=1000)],
     )
-    approved = BooleanField(lazy_gettext('approved'), validators=[Optional()])
 
 
 class ServerUpdateForm(LocalizedForm):
     notes_admin = TextAreaField(
         lazy_gettext('Notes by admin'), validators=[Optional()]
     )
-    approved = BooleanField(lazy_gettext('approved'), validators=[Optional()])
 
 
 class _AddressBaseForm(LocalizedForm):

@@ -28,6 +28,7 @@ from byceps.util.framework.templating import templated
 from byceps.util.views import (
     permission_required,
     redirect_to,
+    respond_no_content,
     respond_no_content_with_location,
     textified,
 )
@@ -125,7 +126,6 @@ def server_create(party_id):
         ),
     }
     notes_admin = form.notes_admin.data.strip()
-    approved = form.approved.data
 
     server, event = guest_server_service.register_server(
         party,
@@ -134,7 +134,6 @@ def server_create(party_id):
         description,
         address_datas,
         notes_admin=notes_admin,
-        approved=approved,
     )
 
     flash_success(gettext('The server has been registered.'))
@@ -172,13 +171,51 @@ def server_update(server_id):
         return server_update_form(server.id, form)
 
     notes_admin = form.notes_admin.data.strip() or None
-    approved = form.approved.data
 
-    guest_server_service.update_server(server.id, notes_admin, approved)
+    guest_server_service.update_server(server.id, notes_admin)
 
     flash_success(gettext('Changes have been saved.'))
 
     return redirect_to('.server_view', server_id=server.id)
+
+
+@blueprint.post('/guest_servers/<uuid:server_id>/approve')
+@permission_required('guest_server.administrate')
+@respond_no_content
+def server_approve(server_id):
+    """Approve a guest server."""
+    server = _get_server_or_404(server_id)
+    initiator = g.user
+
+    guest_server_service.approve_server(server, initiator)
+
+    flash_success(gettext('Server has been approved.'))
+
+
+@blueprint.post('/guest_servers/<uuid:server_id>/checkin')
+@permission_required('guest_server.administrate')
+@respond_no_content
+def server_check_in(server_id):
+    """Check in a guest server."""
+    server = _get_server_or_404(server_id)
+    initiator = g.user
+
+    guest_server_service.check_in_server(server, initiator)
+
+    flash_success(gettext('Server has been checked in.'))
+
+
+@blueprint.post('/guest_servers/<uuid:server_id>/checkout')
+@permission_required('guest_server.administrate')
+@respond_no_content
+def server_check_out(server_id):
+    """Check out a guest server."""
+    server = _get_server_or_404(server_id)
+    initiator = g.user
+
+    guest_server_service.check_out_server(server, initiator)
+
+    flash_success(gettext('Server has been checked out.'))
 
 
 @blueprint.delete('/guest_servers/<uuid:server_id>')

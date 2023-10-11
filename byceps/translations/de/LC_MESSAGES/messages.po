@@ -187,7 +187,7 @@ msgstr "\"%(brand_title)s\"-Forum"
 msgid " in %(board_label)s"
 msgstr " im %(board_label)s"
 
-#: byceps/announce/handlers/guest_server.py:33
+#: byceps/announce/handlers/guest_server.py:38
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has registered a guest server owned by "
@@ -195,6 +195,33 @@ msgid ""
 msgstr ""
 "%(initiator_screen_name)s hat einen Gastserver von %(owner_screen_name)s "
 "für die Party \"%(party_title)s\" registriert."
+
+#: byceps/announce/handlers/guest_server.py:59
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has approved a guest server owned by "
+"\"%(owner_screen_name)s."
+msgstr ""
+"%(initiator_screen_name)s hat einen Gastserver von %(owner_screen_name)s "
+"genehmigt."
+
+#: byceps/announce/handlers/guest_server.py:78
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has checked in a guest server owned by "
+"\"%(owner_screen_name)s."
+msgstr ""
+"%(initiator_screen_name)s hat einen Gastserver von %(owner_screen_name)s "
+"eingecheckt."
+
+#: byceps/announce/handlers/guest_server.py:97
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has checked out a guest server owned by "
+"\"%(owner_screen_name)s."
+msgstr ""
+"%(initiator_screen_name)s hat einen Gastserver von %(owner_screen_name)s "
+"ausgecheckt."
 
 #: byceps/announce/handlers/news.py:42
 #, python-format
@@ -534,8 +561,8 @@ msgstr "Berechtigungen"
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:35
 #: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:22
 #: byceps/blueprints/admin/guest_server/forms.py:49
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:39
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:30
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:38
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:29
 #: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:17
 #: byceps/blueprints/admin/shop/article/forms.py:39
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:61
@@ -612,9 +639,9 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:35
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:25
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:23
-#: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:30
-#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:45
-#: byceps/blueprints/site/user_group/templates/site/user_group/create_form.html:15
+#: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:31
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:46
+#: byceps/blueprints/site/user_group/templates/site/user_group/create_form.html:16
 msgid "Create"
 msgstr "Erstellen"
 
@@ -663,13 +690,13 @@ msgstr "API-Token löschen"
 
 #: byceps/blueprints/admin/api/templates/admin/api/index.html:86
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:31
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:64
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:71
 msgid "Created at"
 msgstr "Erstellt um"
 
 #: byceps/blueprints/admin/api/templates/admin/api/index.html:92
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:32
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:58
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:65
 msgid "Created by"
 msgstr "Erstellt von"
 
@@ -805,7 +832,7 @@ msgid "optional"
 msgstr "optional"
 
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:18
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:20
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:19
 #: byceps/blueprints/admin/language/templates/admin/language/create_form.html:20
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:31
 #: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/create_form.html:39
@@ -813,7 +840,7 @@ msgstr "optional"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/add_note_form.html:19
 #: byceps/blueprints/admin/site/templates/admin/site/add_news_channel_form.html:20
 #: byceps/blueprints/site/board/templates/site/board/_posting_inline_create_form.html:16
-#: byceps/blueprints/site/board/templates/site/board/posting_create_form.html:30
+#: byceps/blueprints/site/board/templates/site/board/posting_create_form.html:31
 msgid "Add"
 msgstr "Hinzufügen"
 
@@ -840,7 +867,7 @@ msgid "You are already logged in as \"%(screen_name)s\"."
 msgstr "Du bist bereits als Benutzer \"%(screen_name)s\" angemeldet."
 
 #: byceps/blueprints/admin/authn/login/views.py:65
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:36
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:43
 msgid "Login failed."
 msgstr "Die Anmeldung ist fehlgeschlagen."
 
@@ -858,14 +885,14 @@ msgstr "Erfolgreich ausgeloggt."
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:4
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:56
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:26
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:5
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:39
-#: byceps/blueprints/site/core/templates/layout/_current_user.html:36
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:6
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:46
+#: byceps/blueprints/site/core/templates/layout/_current_user.html:18
 msgid "Log in"
 msgstr "Anmelden"
 
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:53
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:33
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:40
 msgid "permanently stay logged in"
 msgstr "dauerhaft eingeloggt bleiben"
 
@@ -876,16 +903,16 @@ msgstr "Passwort vergessen?"
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:60
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:9
 #: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:5
-#: byceps/blueprints/common/authn/password/templates/common/authn/password/reset_form.html:5
+#: byceps/blueprints/common/authn/password/templates/common/authn/password/reset_form.html:6
 msgid "Set new password"
 msgstr "Neues Passwort setzen"
 
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_out_form.html:4
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_out_form.html:11
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:22
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_out_form.html:4
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_out_form.html:13
-#: byceps/blueprints/site/core/templates/layout/_current_user.html:31
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_out_form.html:5
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_out_form.html:14
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:26
 msgid "Log out"
 msgstr "Abmelden"
 
@@ -907,11 +934,11 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/authz/templates/admin/authz/role_index.html:41
 #: byceps/blueprints/admin/authz/templates/admin/authz/role_view.html:37
 #: byceps/blueprints/admin/authz/templates/admin/authz/role_view.html:50
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:76
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:82
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:105
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:111
-#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:8
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:75
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:81
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:112
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:118
+#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:34
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:191
 #: byceps/blueprints/admin/page/forms.py:62
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:163
@@ -1183,14 +1210,14 @@ msgstr "Für diese Marke sind keine Foren vorhanden."
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:16
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:8
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:20
-#: byceps/blueprints/site/board/templates/site/board/posting_create_form.html:18
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:18
-#: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:19
-#: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:18
+#: byceps/blueprints/site/board/templates/site/board/posting_create_form.html:19
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:19
+#: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:20
+#: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:19
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:8
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:27
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:18
-#: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:19
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:19
+#: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:20
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:8
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:20
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:86
@@ -1227,7 +1254,7 @@ msgid "hidden"
 msgstr "versteckt"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:60
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:45
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:44
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:16
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:57
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:25
@@ -1263,23 +1290,24 @@ msgid "Move down"
 msgstr "Nach unten verschieben"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:64
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:39
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:42
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:40
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:43
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:40
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:43
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:41
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:44
 msgid "Make visible"
 msgstr "Sichtbar machen"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:66
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:38
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:41
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:39
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:42
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:39
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:42
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:40
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:43
 msgid "Hide"
 msgstr "Verstecken"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:69
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:41
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:52
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:59
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:22
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:102
@@ -1362,10 +1390,10 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:16
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/update_form.html:25
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:26
-#: byceps/blueprints/common/authn/password/templates/common/authn/password/reset_form.html:16
-#: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:37
-#: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:38
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/details_update_form.html:35
+#: byceps/blueprints/common/authn/password/templates/common/authn/password/reset_form.html:17
+#: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:38
+#: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:39
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/details_update_form.html:36
 msgid "Save"
 msgstr "Speichern"
 
@@ -1516,7 +1544,7 @@ msgstr "Avatar"
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:88
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:60
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:132
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:13
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:3
 msgid "Settings"
 msgstr "Einstellungen"
@@ -1610,17 +1638,17 @@ msgid "Create consent subject"
 msgstr "Zustimmungsthema erstellen"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:14
-#: byceps/blueprints/site/core/templates/layout/_current_user.html:15
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
 msgid "Logged in as"
 msgstr "Eingeloggt als"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:19
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:5
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:12
 msgid "Profile"
 msgstr "Profil"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:20
-#: byceps/blueprints/common/authn/password/templates/common/authn/password/update_form.html:5
+#: byceps/blueprints/common/authn/password/templates/common/authn/password/update_form.html:6
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:58
 msgid "Change password"
 msgstr "Passwort ändern"
@@ -1696,7 +1724,7 @@ msgstr "Site"
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:23
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:12
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_request_cancelation_head.html:3
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:10
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:11
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:9
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:11
 #: byceps/services/site_navigation/models.py:86
@@ -1713,7 +1741,7 @@ msgstr "Shop"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:6
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:6
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:8
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:4
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:11
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:2
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:36
 msgid "Dashboard"
@@ -1780,7 +1808,7 @@ msgstr "Benutzer"
 #: byceps/blueprints/admin/ticketing/templates/layout/admin/ticketing.html:12
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:4
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:76
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:7
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:14
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:5
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:7
 #: sites/cozylan/template_overrides/layout/_sidebar_right.html:13
@@ -1832,7 +1860,7 @@ msgstr "Artikel"
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:49
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:4
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:75
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:8
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:15
 msgid "Orders"
 msgstr "Bestellungen"
 
@@ -2100,32 +2128,28 @@ msgstr "Tickets eingecheckt"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:8
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_update_form.html:9
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:9
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:9
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:8
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_update_form.html:9
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:9
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:8
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_update_form.html:9
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:5
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:16
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:4
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:31
-#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:10
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:11
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:5
 msgid "Guest Servers"
 msgstr "Gastserver"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:96
-#: byceps/blueprints/admin/guest_server/forms.py:74
-#: byceps/blueprints/admin/guest_server/forms.py:81
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:46
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:38
+#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:23
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:21
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:121
 msgid "approved"
 msgstr "genehmigt"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:97
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:46
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:38
+#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:25
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:9
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:13
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:123
@@ -2203,9 +2227,9 @@ msgstr "Newskanäle"
 
 #: byceps/blueprints/admin/guest_server/forms.py:27
 #: byceps/blueprints/admin/guest_server/forms.py:65
-#: byceps/blueprints/admin/guest_server/forms.py:94
+#: byceps/blueprints/admin/guest_server/forms.py:92
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:30
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:79
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:86
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:26
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:65
 msgid "Netmask"
@@ -2213,9 +2237,9 @@ msgstr "Netzmaske"
 
 #: byceps/blueprints/admin/guest_server/forms.py:30
 #: byceps/blueprints/admin/guest_server/forms.py:68
-#: byceps/blueprints/admin/guest_server/forms.py:97
+#: byceps/blueprints/admin/guest_server/forms.py:95
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:31
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:80
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:87
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:38
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:66
 msgid "Gateway"
@@ -2234,8 +2258,8 @@ msgstr "Domäne"
 
 #: byceps/blueprints/admin/guest_server/forms.py:47
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:33
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:33
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:24
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:32
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:23
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:22
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:11
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:21
@@ -2246,21 +2270,21 @@ msgid "Owner"
 msgstr "Besitzer/in"
 
 #: byceps/blueprints/admin/guest_server/forms.py:53
-#: byceps/blueprints/admin/guest_server/forms.py:86
+#: byceps/blueprints/admin/guest_server/forms.py:84
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:28
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:58
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:77
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:57
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:84
 #: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:107
-#: byceps/blueprints/site/core/templates/layout/_current_user.html:25
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:20
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:64
 msgid "IP address"
 msgstr "IP-Adresse"
 
 #: byceps/blueprints/admin/guest_server/forms.py:57
-#: byceps/blueprints/admin/guest_server/forms.py:90
+#: byceps/blueprints/admin/guest_server/forms.py:88
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:29
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:59
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:78
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:58
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:85
 #: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:108
 #: byceps/blueprints/site/guest_server/forms.py:96
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:62
@@ -2268,39 +2292,51 @@ msgid "Hostname"
 msgstr "Hostname"
 
 #: byceps/blueprints/admin/guest_server/forms.py:71
-#: byceps/blueprints/admin/guest_server/forms.py:79
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:81
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:110
+#: byceps/blueprints/admin/guest_server/forms.py:78
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:80
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:117
 msgid "Notes by admin"
 msgstr "Anmerkungen des Admins"
 
-#: byceps/blueprints/admin/guest_server/forms.py:108
+#: byceps/blueprints/admin/guest_server/forms.py:106
 msgid "Provide at least an IP address or a hostname."
 msgstr "Mindestens eine IP-Adresse oder ein Hostname muss angegeben werden."
 
-#: byceps/blueprints/admin/guest_server/views.py:140
+#: byceps/blueprints/admin/guest_server/views.py:139
 #: byceps/blueprints/site/guest_server/views.py:156
 msgid "The server has been registered."
 msgstr "Der Server wurde registriert."
 
-#: byceps/blueprints/admin/guest_server/views.py:179
-#: byceps/blueprints/admin/guest_server/views.py:337
-#: byceps/blueprints/admin/guest_server/views.py:398
+#: byceps/blueprints/admin/guest_server/views.py:177
+#: byceps/blueprints/admin/guest_server/views.py:374
+#: byceps/blueprints/admin/guest_server/views.py:435
 #: byceps/blueprints/admin/news/views.py:196
 #: byceps/blueprints/admin/user/views.py:665
 msgid "Changes have been saved."
 msgstr "Die Änderungen wurden gespeichert."
 
-#: byceps/blueprints/admin/guest_server/views.py:195
+#: byceps/blueprints/admin/guest_server/views.py:192
+msgid "Server has been approved."
+msgstr "Der Server wurde genehmigt."
+
+#: byceps/blueprints/admin/guest_server/views.py:205
+msgid "Server has been checked in."
+msgstr "Der Server wurde eingecheckt."
+
+#: byceps/blueprints/admin/guest_server/views.py:218
+msgid "Server has been checked out."
+msgstr "Der Server wurde ausgecheckt."
+
+#: byceps/blueprints/admin/guest_server/views.py:232
 msgid "Server has been deleted."
 msgstr "Der Server wurde gelöscht."
 
-#: byceps/blueprints/admin/guest_server/views.py:291
+#: byceps/blueprints/admin/guest_server/views.py:328
 msgid "The address has been added."
 msgstr "Die Adresse wurde hinzugefügt."
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_create_form.html:6
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:82
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:89
 msgid "Add server address"
 msgstr "Server-Adresse hinzufügen"
 
@@ -2327,7 +2363,7 @@ msgstr "Anzeigen"
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:48
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_update_form.html:6
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:94
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:101
 msgid "Update server address"
 msgstr "Server-Adresse bearbeiten"
 
@@ -2336,20 +2372,20 @@ msgid "No addresses registered."
 msgstr "Es sind keine Adressen registriert."
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:6
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:20
-#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:4
-#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:32
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:19
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:5
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:33
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:45
 msgid "Register guest server"
 msgstr "Gastserver anmelden"
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:19
-#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:24
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:25
 msgid "Vendor, model number, what does it look like?"
 msgstr "Hersteller, Modellnummer, wie sieht er aus?"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:45
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:37
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:44
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:36
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:30
 #: byceps/blueprints/admin/shop/cancelation_request/templates/admin/shop/cancelation_request/index.html:88
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:14
@@ -2365,31 +2401,52 @@ msgstr "Hersteller, Modellnummer, wie sieht er aus?"
 msgid "Status"
 msgstr "Status"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:75
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:104
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:74
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:111
 msgid "Notes by owner"
 msgstr "Anmerkungen des Besitzers"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:92
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:91
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:27
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:180
 msgid "No servers registered."
 msgstr "Es sind keine Server registriert."
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_update_form.html:6
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:45
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:44
 msgid "Update server"
 msgstr "Server bearbeiten"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:44
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:43
 msgid "View printable server card"
 msgstr "Druckbare Gastserver-Card ansehen"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:46
-msgid "Delete server"
-msgstr "Server löschen"
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:47
+msgid "Check out"
+msgstr "Auschecken"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:123
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:49
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:58
+msgid "Check in"
+msgstr "Einchecken"
+
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:51
+msgid "Approve"
+msgstr "Genehmigen"
+
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:130
+msgid "Approve server?"
+msgstr "Server genehmigen?"
+
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:131
+msgid "Check in server?"
+msgstr "Server einchecken?"
+
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:132
+msgid "Check out server?"
+msgstr "Server auschecken?"
+
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:133
 msgid "Delete server?"
 msgstr "Server löschen?"
 
@@ -2402,9 +2459,9 @@ msgstr "Einstellungen bearbeiten"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:43
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:58
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:71
-#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:17
-#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:28
-#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:39
+#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:43
+#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:54
+#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:65
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:48
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:85
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:75
@@ -2424,6 +2481,20 @@ msgstr "DNS-Server"
 #: byceps/blueprints/admin/guest_server/templates/layout/admin/guest_server.html:12
 msgid "Servers"
 msgstr "Server"
+
+#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:19
+msgid "checked out"
+msgstr "ausgecheckt"
+
+#: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:21
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:80
+#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:10
+#: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:96
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:30
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:64
+#: byceps/blueprints/site/user_profile/templates/site/user_profile/_current_party_attendance.html:11
+msgid "checked in"
+msgstr "eingecheckt"
 
 #: byceps/blueprints/admin/jobs/templates/admin/jobs/index.html:4
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:24
@@ -2480,7 +2551,7 @@ msgstr "unbekannt"
 msgid "No languages defined."
 msgstr "Es sind keine Sprachen definiert."
 
-#: byceps/blueprints/admin/maintenance/views.py:61
+#: byceps/blueprints/admin/maintenance/views.py:60
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s login log entries older than "
@@ -2489,7 +2560,7 @@ msgstr ""
 "%(num_deleted)s Login-Einträge älter als %(minimum_age_in_days)s Tage "
 "wurden gelöscht."
 
-#: byceps/blueprints/admin/maintenance/views.py:81
+#: byceps/blueprints/admin/maintenance/views.py:80
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s verification tokens older than "
@@ -2498,7 +2569,7 @@ msgstr ""
 "%(num_deleted)s Verification Tokens älter als %(minimum_age_in_days)s "
 "Tage wurden gelöscht."
 
-#: byceps/blueprints/admin/maintenance/views.py:104
+#: byceps/blueprints/admin/maintenance/views.py:103
 #, python-format
 msgid "Deleted %(num_deleted)s authentication tokens."
 msgstr "%(num_deleted)s Authentifizierungs-Token wurden gelöscht."
@@ -2821,7 +2892,7 @@ msgstr "Änderungshistorie ansehen"
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:32
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:58
 #: byceps/blueprints/site/board/templates/macros/board.html:5
-#: byceps/blueprints/site/board/templates/site/board/_posting_view.html:18
+#: byceps/blueprints/site/board/templates/site/board/_posting_view.html:35
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:45
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:43
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:54
@@ -2847,12 +2918,12 @@ msgid "News post"
 msgstr "Newspost"
 
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:20
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:15
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:16
 msgid "Allowed formats"
 msgstr "Erlaubte Formate"
 
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:21
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:16
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:17
 msgid "Maximum image dimensions"
 msgstr "Maximale Bildgröße"
 
@@ -2862,12 +2933,12 @@ msgstr "Maximale Bildgröße"
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:46
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_update_form.html:25
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_update_form.html:28
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:16
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:17
 msgid "pixels"
 msgstr "Pixel"
 
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:22
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:17
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:18
 msgid "Maximum file size"
 msgstr "Maximale Dateigröße"
 
@@ -4360,9 +4431,9 @@ msgstr "E-Mail-Bestätigung erneut senden"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:22
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:5
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:33
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:4
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:15
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:21
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:5
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:16
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:22
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:55
 msgid "Cancel order"
 msgstr "Bestellung stornieren"
@@ -5264,10 +5335,6 @@ msgstr "Account wurde gelöscht."
 msgid "Account is suspended."
 msgstr "Account ist gesperrt."
 
-#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:58
-msgid "Check in"
-msgstr "Einchecken"
-
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:19
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:29
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:17
@@ -5429,9 +5496,9 @@ msgid "Assign to user"
 msgstr "Nutzer/in zuweisen"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/appoint_user_form.html:17
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_seat_manager_form.html:14
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_user_form.html:14
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_user_manager_form.html:14
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_seat_manager_form.html:15
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_user_form.html:15
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_user_manager_form.html:15
 msgid "Assign"
 msgstr "Zuweisen"
 
@@ -5454,15 +5521,6 @@ msgstr "widerrufen"
 msgid "unfiltered"
 msgstr "ungefiltert"
 
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:80
-#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:10
-#: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:96
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:30
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:64
-#: byceps/blueprints/site/user_profile/templates/site/user_profile/_current_party_attendance.html:11
-msgid "checked in"
-msgstr "eingecheckt"
-
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/update_code_form.html:6
 msgid "Change ticket code"
 msgstr "Ticket-Code ändern"
@@ -5470,10 +5528,10 @@ msgstr "Ticket-Code ändern"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/update_code_form.html:17
 #: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:17
 #: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:17
-#: byceps/blueprints/common/authn/password/templates/common/authn/password/update_form.html:17
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:15
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:16
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:16
+#: byceps/blueprints/common/authn/password/templates/common/authn/password/update_form.html:18
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:16
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:17
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:17
 msgid "Change"
 msgstr "Ändern"
 
@@ -5771,14 +5829,14 @@ msgstr "Entsperren"
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:23
 #: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:5
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:38
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:5
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:6
 msgid "Change username"
 msgstr "Benutzername ändern"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:24
 #: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:5
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:48
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:5
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:6
 msgid "Change email address"
 msgstr "E-Mail-Adresse ändern"
 
@@ -5790,7 +5848,7 @@ msgstr "E-Mail-Adresse als ungültig markieren"
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:26
 #: byceps/blueprints/admin/user/templates/admin/user/change_details_form.html:5
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:4
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/details_update_form.html:4
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/details_update_form.html:5
 msgid "Change personal data"
 msgstr "Persönliche Daten ändern"
 
@@ -5852,7 +5910,7 @@ msgid "The reason will be saved as <em>internal</em> remark."
 msgstr "Der Grund wird als <em>interner Vermerk</em> gespeichert."
 
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:5
-#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:4
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:5
 msgid "Create user account"
 msgstr "Benutzerkonto erstellen"
 
@@ -5920,8 +5978,8 @@ msgid "Suspend user account"
 msgstr "Benutzerkonto sperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/suspend_account_form.html:16
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:62
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:65
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:63
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:66
 msgid "Lock"
 msgstr "Sperren"
 
@@ -5930,8 +5988,8 @@ msgid "Unsuspend user account"
 msgstr "Benutzerkonto entsperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/unsuspend_account_form.html:16
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:63
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:66
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:64
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:67
 msgid "Unlock"
 msgstr "Entsperren"
 
@@ -6411,12 +6469,12 @@ msgstr ""
 msgid "No valid token specified."
 msgstr "Es wurde kein gültiges Token angegeben."
 
-#: byceps/blueprints/common/authn/password/templates/common/authn/password/request_reset_form.html:4
+#: byceps/blueprints/common/authn/password/templates/common/authn/password/request_reset_form.html:5
 msgid "Request password reset"
 msgstr "Zurücksetzen deines Passworts anfordern"
 
-#: byceps/blueprints/common/authn/password/templates/common/authn/password/request_reset_form.html:14
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/request_confirmation_email_form.html:14
+#: byceps/blueprints/common/authn/password/templates/common/authn/password/request_reset_form.html:15
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/request_confirmation_email_form.html:15
 msgid "Request"
 msgstr "Anfordern"
 
@@ -6474,7 +6532,7 @@ msgstr "Gastserver-Card anzeigen"
 msgid "Guest server"
 msgstr "Gastserver"
 
-#: byceps/blueprints/common/style_guide/templates/common/style_guide/index.html:2
+#: byceps/blueprints/common/style_guide/templates/common/style_guide/index.html:3
 msgid "Style Guide"
 msgstr "Style Guide"
 
@@ -6502,31 +6560,31 @@ msgstr "nicht ausgewählt"
 msgid "No attendees found."
 msgstr "Keine Teilnehmer gefunden."
 
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:45
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:52
 msgid "Not registered yet?"
 msgstr "Noch nicht registriert?"
 
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:45
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:52
 msgid "Create an account."
 msgstr "Erstelle ein Benutzerkonto."
 
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:46
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:53
 msgid "Confirmation email not received yet?"
 msgstr "Bestätigungs-E-Mail noch nicht erhalten?"
 
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:46
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:53
 msgid "Request it again."
 msgstr "Erneut anfordern."
 
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:48
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:55
 msgid "Forgot your password?"
 msgstr "Passwort vergessen?"
 
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:48
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:55
 msgid "Set new password."
 msgstr "Setze ein neues Passwort."
 
-#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:51
+#: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:58
 msgid "Login is disabled."
 msgstr "Die Anmeldung ist deaktiviert."
 
@@ -6534,109 +6592,109 @@ msgstr "Die Anmeldung ist deaktiviert."
 msgid "All topics in this category have been marked as read."
 msgstr "Alle Themen in dieser Kategorie wurden als gelesen markiert."
 
-#: byceps/blueprints/site/board/views_posting.py:78
+#: byceps/blueprints/site/board/views_posting.py:79
 msgid "The post to quote has not been found."
 msgstr "Der zu zitierende Beitrag wurde nicht gefunden."
 
-#: byceps/blueprints/site/board/views_posting.py:101
+#: byceps/blueprints/site/board/views_posting.py:102
 msgid "This topic is locked. It cannot be replied to."
 msgstr ""
 "Das Thema ist geschlossen. Es können keine Beiträge mehr hinzugefügt "
 "werden."
 
-#: byceps/blueprints/site/board/views_posting.py:110
+#: byceps/blueprints/site/board/views_posting.py:111
 msgid "Only moderators are allowed to reply in this topic."
 msgstr "In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen."
 
-#: byceps/blueprints/site/board/views_posting.py:124
+#: byceps/blueprints/site/board/views_posting.py:125
 msgid "Your reply has been added."
 msgstr "Deine Antwort wurde hinzugefügt."
 
-#: byceps/blueprints/site/board/views_posting.py:152
-#: byceps/blueprints/site/board/views_posting.py:189
+#: byceps/blueprints/site/board/views_posting.py:153
+#: byceps/blueprints/site/board/views_posting.py:190
 msgid "The post must not be edited because the topic it belongs to is locked."
 msgstr ""
 "Der Beitrag darf nicht bearbeitet werden weil das Thema, zu dem dieser "
 "Beitrag gehört, gesperrt ist."
 
-#: byceps/blueprints/site/board/views_posting.py:160
-#: byceps/blueprints/site/board/views_posting.py:197
+#: byceps/blueprints/site/board/views_posting.py:161
+#: byceps/blueprints/site/board/views_posting.py:198
 msgid "The post must not be edited."
 msgstr "Der Beitrag darf nicht bearbeitet werden."
 
-#: byceps/blueprints/site/board/views_posting.py:164
-#: byceps/blueprints/site/board/views_posting.py:201
+#: byceps/blueprints/site/board/views_posting.py:165
+#: byceps/blueprints/site/board/views_posting.py:202
 msgid "You are not allowed to edit this post."
 msgstr "Du darfst diesen Beitrag nicht bearbeiten."
 
-#: byceps/blueprints/site/board/views_posting.py:212
+#: byceps/blueprints/site/board/views_posting.py:213
 msgid "The post has been updated."
 msgstr "Der Beitrag wurde aktualisiert."
 
-#: byceps/blueprints/site/board/views_posting.py:249
+#: byceps/blueprints/site/board/views_posting.py:250
 msgid "The post has been hidden."
 msgstr "Der Beitrag wurde versteckt."
 
-#: byceps/blueprints/site/board/views_posting.py:271
+#: byceps/blueprints/site/board/views_posting.py:272
 msgid "The post has been made visible again."
 msgstr "Der Beitrag wurde wieder sichtbar gemacht."
 
-#: byceps/blueprints/site/board/views_topic.py:216
+#: byceps/blueprints/site/board/views_topic.py:230
 #, python-format
 msgid "Topic \"%(title)s\" has been created."
 msgstr "Das Thema \"%(title)s\" wurde hinzugefügt."
 
-#: byceps/blueprints/site/board/views_topic.py:238
-#: byceps/blueprints/site/board/views_topic.py:274
+#: byceps/blueprints/site/board/views_topic.py:252
+#: byceps/blueprints/site/board/views_topic.py:288
 msgid "The topic must not be updated because it is locked."
 msgstr "Das Thema darf nicht bearbeitet werden weil es gesperrt ist."
 
-#: byceps/blueprints/site/board/views_topic.py:243
-#: byceps/blueprints/site/board/views_topic.py:279
+#: byceps/blueprints/site/board/views_topic.py:257
+#: byceps/blueprints/site/board/views_topic.py:293
 msgid "The topic must not be updated."
 msgstr "Das Thema darf nicht bearbeitet werden."
 
-#: byceps/blueprints/site/board/views_topic.py:247
-#: byceps/blueprints/site/board/views_topic.py:283
+#: byceps/blueprints/site/board/views_topic.py:261
+#: byceps/blueprints/site/board/views_topic.py:297
 msgid "You are not allowed to update this topic."
 msgstr "Du darfst dieses Thema nicht bearbeiten."
 
-#: byceps/blueprints/site/board/views_topic.py:295
+#: byceps/blueprints/site/board/views_topic.py:309
 #, python-format
 msgid "Topic \"%(title)s\" has been updated."
 msgstr "Das Thema \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/site/board/views_topic.py:332
+#: byceps/blueprints/site/board/views_topic.py:346
 #, python-format
 msgid "Topic \"%(title)s\" has been hidden."
 msgstr "Das Thema \"%(title)s\" wurde versteckt."
 
-#: byceps/blueprints/site/board/views_topic.py:355
+#: byceps/blueprints/site/board/views_topic.py:369
 #, python-format
 msgid "Topic \"%(title)s\" has been made visible again."
 msgstr "Das Thema \"%(title)s\" wurde wieder sichtbar gemacht."
 
-#: byceps/blueprints/site/board/views_topic.py:381
+#: byceps/blueprints/site/board/views_topic.py:395
 #, python-format
 msgid "Topic \"%(title)s\" has been locked."
 msgstr "Das Thema \"%(title)s\" wurde geschlossen."
 
-#: byceps/blueprints/site/board/views_topic.py:404
+#: byceps/blueprints/site/board/views_topic.py:418
 #, python-format
 msgid "Topic \"%(title)s\" has been unlocked."
 msgstr "Das Thema \"%(title)s\" wurde wieder geöffnet."
 
-#: byceps/blueprints/site/board/views_topic.py:427
+#: byceps/blueprints/site/board/views_topic.py:441
 #, python-format
 msgid "Topic \"%(title)s\" has been pinned."
 msgstr "Das Thema \"%(title)s\" wurde angepinnt."
 
-#: byceps/blueprints/site/board/views_topic.py:450
+#: byceps/blueprints/site/board/views_topic.py:464
 #, python-format
 msgid "Topic \"%(title)s\" has been unpinned."
 msgstr "Das Thema \"%(title)s\" wurde wieder gelöst."
 
-#: byceps/blueprints/site/board/views_topic.py:481
+#: byceps/blueprints/site/board/views_topic.py:495
 #, python-format
 msgid ""
 "Topic \"%(topic_title)s\" has been moved from category "
@@ -6646,12 +6704,12 @@ msgstr ""
 "\"%(old_category_title)s\" in die Kategorie \"%(new_category_title)s\" "
 "verschoben."
 
-#: byceps/blueprints/site/board/views_topic.py:509
+#: byceps/blueprints/site/board/views_topic.py:523
 #, python-format
 msgid "Topic \"%(title)s\" has been limited to announcements."
 msgstr "Das Thema \"%(title)s\" wurde auf Ankündigungen beschränkt."
 
-#: byceps/blueprints/site/board/views_topic.py:529
+#: byceps/blueprints/site/board/views_topic.py:543
 #, python-format
 msgid "Topic \"%(title)s\" has been reopened for regular replies."
 msgstr "Das Thema \"%(title)s\" wurde für normale Beiträge geöffnet."
@@ -6664,11 +6722,11 @@ msgstr "neu"
 msgid "is supported"
 msgstr "wird unterstützt"
 
-#: byceps/blueprints/site/board/templates/site/board/_posting_view.html:18
+#: byceps/blueprints/site/board/templates/site/board/_posting_view.html:35
 msgid "times edited"
 msgstr "mal bearbeitet"
 
-#: byceps/blueprints/site/board/templates/site/board/_posting_view.html:18
+#: byceps/blueprints/site/board/templates/site/board/_posting_view.html:35
 msgid "lastly"
 msgstr "zuletzt"
 
@@ -6685,7 +6743,7 @@ msgid "Edit this topic"
 msgstr "Dieses Thema bearbeiten"
 
 #: byceps/blueprints/site/board/templates/site/board/_posting_view_actions.html:21
-#: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:7
+#: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:8
 msgid "Edit topic"
 msgstr "Thema bearbeiten"
 
@@ -6694,7 +6752,7 @@ msgid "Edit this post"
 msgstr "Diesen Beitrag bearbeiten"
 
 #: byceps/blueprints/site/board/templates/site/board/_posting_view_actions.html:23
-#: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:7
+#: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:8
 msgid "Edit post"
 msgstr "Beitrag bearbeiten"
 
@@ -6744,7 +6802,7 @@ msgid "Replies"
 msgstr "Antworten"
 
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:42
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:124
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:125
 msgid "Announcements"
 msgstr "Ankündigungen"
 
@@ -6770,7 +6828,7 @@ msgstr "In dieser Kategorie gibt es noch keine Themen."
 
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:71
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:73
-#: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:6
+#: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:7
 msgid "Create topic"
 msgstr "Thema erstellen"
 
@@ -6791,115 +6849,115 @@ msgstr ""
 msgid "Mark all topics in this category as unread?"
 msgstr "Alle Themen in dieser Kategorie als gelesen markieren?"
 
-#: byceps/blueprints/site/board/templates/site/board/posting_create_form.html:6
+#: byceps/blueprints/site/board/templates/site/board/posting_create_form.html:7
 msgid "Create post"
 msgstr "Beitrag hinzufügen"
 
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:6
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:7
 msgid "Moderate post"
 msgstr "Beitrag moderieren"
 
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:25
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:26
 #, python-format
 msgid "Posting by %(creator)s in topic &quot;%(topic)s&quot;"
 msgstr "Beitrag von %(creator)s im Thema &quot;%(topic)s&quot;"
 
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:27
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:28
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:28
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:29
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:31
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:32
 #, python-format
 msgid "The posting is <strong>hidden</strong> (%(timestamp)s by %(moderator)s)."
 msgstr ""
 "Der Beitrag ist <strong>versteckt</strong> (%(timestamp)s von "
 "%(moderator)s)."
 
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:33
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:34
 msgid "The posting is <strong>visible</strong>."
 msgstr "Der Beitrag ist <strong>sichtbar</strong>."
 
-#: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:28
+#: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:29
 msgid "You are about to modify a post created by someone else."
 msgstr "Du bist im Begriff, einen Beitrag von jemand anderem zu verändern."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:6
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:7
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:38
 msgid "Moderate topic"
 msgstr "Thema moderieren"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:25
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:26
 #, python-format
 msgid "Topic &quot;%(topic)s&quot; by %(creator)s"
 msgstr "Thema &quot;%(topic)s&quot; von %(creator)s"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:32
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:33
 #, python-format
 msgid "The topic is <strong>hidden</strong> (%(timestamp)s by %(moderator)s)."
 msgstr ""
 "Das Thema ist <strong>versteckt</strong> (%(timestamp)s von "
 "%(moderator)s)."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:34
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:35
 msgid "The topic is <strong>visible</strong>."
 msgstr "Das Thema ist <strong>sichtbar</strong>."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:51
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:52
 msgid "Write lock"
 msgstr "Schreibschutz"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:55
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:56
 #, python-format
 msgid "The topic is <strong>locked</strong> (%(timestamp)s by %(moderator)s)."
 msgstr ""
 "Das Thema ist <strong>geschlossen</strong> (%(timestamp)s von "
 "%(moderator)s)."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:57
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:58
 msgid "The topic is <strong>not locked</strong>."
 msgstr "Das Thema ist <strong>offen</strong>."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:74
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:75
 msgid "Pinning"
 msgstr "Anheften"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:78
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:79
 #, python-format
 msgid "The topic is <strong>pinned</strong> (%(timestamp)s by %(moderator)s)."
 msgstr ""
 "Das Thema ist <strong>angeheftet</strong> (%(timestamp)s von "
 "%(moderator)s)."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:80
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:81
 msgid "The topic is <strong>not pinned</strong>."
 msgstr "Das Thema ist <strong>nicht angeheftet</strong>."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:85
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:88
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:86
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:89
 msgid "Pin"
 msgstr "Anheften"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:86
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:89
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:87
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:90
 msgid "Unpin"
 msgstr "Lösen"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:97
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:111
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:98
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:112
 msgid "Move"
 msgstr "Verschieben"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:100
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:101
 #, python-format
 msgid "This topic is in category &quot;%(category)s&quot;."
 msgstr "Dieses Thema befindet sich in der Kategorie &quot;%(category)s&quot;."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:105
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:106
 msgid "New category"
 msgstr "Neue Kategorie"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:116
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:117
 msgid ""
 "There are no other categories in this board. Thus, this topic cannot be "
 "moved."
@@ -6907,29 +6965,29 @@ msgstr ""
 "Es gibt keine anderen Kategorien in diesem Forum, daher kann das Thema "
 "nicht verschoben werden."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:128
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:129
 msgid "The topic is <strong>not limited</strong> to announcements by moderators."
 msgstr ""
 "Das Thema ist <strong>nicht beschränkt</strong> auf Ankündigungen von "
 "Moderatoren."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:130
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:131
 msgid "The topic is <strong>limited to announcements</strong> by moderators."
 msgstr ""
 "Das Thema ist <strong>beschränkt auf Ankündigungen</strong> von "
 "Moderatoren."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:135
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:138
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:136
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:139
 msgid "Limit to announcements"
 msgstr "Auf Ankündigungen beschränken"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:136
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:139
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:137
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:140
 msgid "Open for all postings"
 msgstr "Für alle Beiträge öffnen"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:28
+#: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:29
 msgid "You are about to modify a topic created by someone else."
 msgstr "Du bist im Begriff, ein Thema von jemand anderem zu verändern."
 
@@ -6973,15 +7031,15 @@ msgstr "Vielen Dank für deine Zustimmung. Bitte melde dich erneut an."
 msgid "Invalid verification token"
 msgstr "Unbekannter Bestätigungscode"
 
-#: byceps/blueprints/site/consent/templates/site/consent/consent_form.html:4
+#: byceps/blueprints/site/consent/templates/site/consent/consent_form.html:5
 msgid "Consent required"
 msgstr "Zustimmung erforderlich"
 
-#: byceps/blueprints/site/consent/templates/site/consent/consent_form.html:11
+#: byceps/blueprints/site/consent/templates/site/consent/consent_form.html:12
 msgid "Please consent to the updated terms to be able to continue."
 msgstr "Bitte stimme den aktualisierten Bedingungen zu, um fortfahren zu können."
 
-#: byceps/blueprints/site/consent/templates/site/consent/consent_form.html:21
+#: byceps/blueprints/site/consent/templates/site/consent/consent_form.html:22
 msgid "I consent"
 msgstr "Ich stimme zu"
 
@@ -7042,11 +7100,11 @@ msgstr "Du hast bereits die maximal erlaubte Anzahl an Gastservern registriert."
 msgid "An unknown error has occurred."
 msgstr "Ein unbekannter Fehler ist aufgetreten."
 
-#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:20
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:21
 msgid "Continue"
 msgstr "Weiter"
 
-#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:27
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:28
 #, python-format
 msgid ""
 "Just the hostname. The suffix <code>%(suffix)s</code> will be added "
@@ -7245,8 +7303,8 @@ msgid "Billing and shipping address"
 msgstr "Rechnungs- und Lieferadresse"
 
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:5
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_form.html:5
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_single_form.html:5
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_form.html:6
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_single_form.html:6
 msgctxt "verb"
 msgid "Order"
 msgstr "Bestellen"
@@ -7258,12 +7316,12 @@ msgstr ""
 "Du musst <a href=\"%(url)s\">angemeldet</a> sein, um etwas bestellen zu "
 "können."
 
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_form.html:25
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_single_form.html:23
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_form.html:26
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_single_form.html:24
 msgid "Place binding order now"
 msgstr "Jetzt kostenpflichtig bestellen"
 
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_form.html:28
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_form.html:29
 msgid "No articles are available at this time."
 msgstr "Es sind derzeit keine Artikel verfügbar."
 
@@ -7297,7 +7355,7 @@ msgid "canceled"
 msgstr "storniert"
 
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_request_cancelation_head.html:4
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:11
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:12
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:4
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:12
 msgid "Your orders"
@@ -7560,15 +7618,15 @@ msgstr "Es ist kein Avatarbild gesetzt, das entfernt werden könnte."
 msgid "Avatar image has been removed."
 msgstr "Dein Avatarbild wurde entfernt."
 
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:5
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:6
 msgid "Upload avatar image"
 msgstr "Avatarbild hochladen"
 
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:18
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:19
 msgid "If the image is not square it will be cropped."
 msgstr "Falls das Bild nicht quadratisch ist, wird es zugeschnitten."
 
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:23
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:24
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:20
 msgid "Upload"
 msgstr "Hochladen"
@@ -7595,15 +7653,15 @@ msgstr ""
 msgid "User account creation is disabled."
 msgstr "Das Erstellen von Benutzerkonten ist deaktiviert."
 
-#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:13
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:14
 msgid "publicly visible"
 msgstr "öffentlich sichtbar"
 
-#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:40
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:41
 msgid "I like to subscribe to the newsletter."
 msgstr "Ich möchte den Newsletter erhalten."
 
-#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:43
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:44
 msgid "I am a bot."
 msgstr "Ich bin ein Bot."
 
@@ -7644,27 +7702,27 @@ msgstr "Die Änderung der E-Mail-Adresse ist fehlgeschlagen."
 msgid "Email address has been changed."
 msgstr "Die E-Mail-Adresse wurde geändert."
 
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:4
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:5
 msgid "Confirm new email address"
 msgstr "Neue E-Mail-Adresse bestätigen"
 
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:13
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/change_form.html:14
 msgid "Please confirm that this is your new email address:"
 msgstr "Bitte bestätige, dass dies deine neue E-Mail-Adresse ist:"
 
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:4
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:5
 msgid "Confirm email address"
 msgstr "E-Mail-Adresse bestätigen"
 
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:13
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:14
 msgid "Please confirm that this is your email address:"
 msgstr "Bitte bestätige, dass dies deine E-Mail-Adresse ist:"
 
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:15
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/confirm_form.html:16
 msgid "Confirm"
 msgstr "Bestätigen"
 
-#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/request_confirmation_email_form.html:4
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/request_confirmation_email_form.html:5
 msgid "Request verification email again"
 msgstr "Bestätigungs-E-Mail erneut anfordern"
 
@@ -7743,17 +7801,17 @@ msgstr "Die Gruppe \"%(group_title)s\" wurde erstellt."
 msgid "Your message to %(screen_name)s has been sent."
 msgstr "Deine Nachricht an %(screen_name)s wurde versendet."
 
-#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:5
-#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:9
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:6
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:10
 #: byceps/blueprints/site/user_profile/templates/site/user_profile/_contact.html:7
 msgid "Send message"
 msgstr "Mitteilung senden"
 
-#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:11
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:12
 msgid "You can send a message to the person using this form."
 msgstr "Über dieses Formular kannst du der Person eine Nachricht zukommen lassen."
 
-#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:12
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:13
 msgid ""
 "They will get an email with your message text. Your email address will "
 "<em>not</em> be exposed, though."
@@ -7761,7 +7819,7 @@ msgstr ""
 "Dazu senden wir ihr eine E-Mail mit deinem Text. Deine E-Mail-Adresse "
 "geben wir dabei <em>nicht</em> weiter."
 
-#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:13
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:14
 msgid ""
 "The person can reply to you using the contact form linked on your profile"
 " page."
@@ -7769,11 +7827,11 @@ msgstr ""
 "Die Person kann dir über das Kontaktformular auf deiner Profilseite "
 "antworten."
 
-#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:17
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:18
 msgid "Recipient"
 msgstr "Empfänger/in"
 
-#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:23
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:24
 msgid "Send"
 msgstr "Senden"
 

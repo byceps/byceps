@@ -48,6 +48,10 @@ class Server:
     notes_owner: str | None
     notes_admin: str | None
     approved: bool
+    checked_in: bool
+    checked_in_at: datetime | None
+    checked_out: bool
+    checked_out_at: datetime | None
     addresses: set[Address]
 
 

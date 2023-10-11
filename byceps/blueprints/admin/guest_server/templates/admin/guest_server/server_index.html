@@ -1,8 +1,7 @@
 {% extends 'layout/admin/guest_server.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/guest_server.html' import render_hostname, render_ip_address %}
+{% from 'macros/admin/guest_server.html' import get_server_state_color_name, render_hostname, render_ip_address, render_server_state %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user.html' import render_user_avatar_and_name %}
 {% set current_page_party = party %}
 {% set current_tab = 'servers' %}
@@ -25,7 +24,7 @@
 
   {%- if servers %}
     {%- for server in servers|sort(attribute='created_at', reverse=True) %}
-  <a href="{{ url_for('.server_view', server_id=server.id) }}" class="box box--marked {{ 'color-success' if server.approved else 'color-warning' }}">
+  <a href="{{ url_for('.server_view', server_id=server.id) }}" class="box box--marked {{ get_server_state_color_name(server) }}">
 
     <div class="row">
       <div style="flex-basis: 33%;">
@@ -43,7 +42,7 @@
       <div style="flex-basis: 33%;">
 
         <div class="data-label">{{ _('Status') }}</div>
-        <div class="data-value">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</div>
+        <div class="data-value">{{ render_server_state(server) }}</div>
 
       </div>
     </div>
