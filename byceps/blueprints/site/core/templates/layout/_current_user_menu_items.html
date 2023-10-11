@@ -1,8 +1,26 @@
 {%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/user.html' import render_user_screen_name %}
 
-
+      <li>
+        <span class="dropdown-label label-and-name">
+          <span class="label">{{ _('Logged in as') }}</span>
+          <span class="name">{{ render_user_screen_name(g.user) }}</span>
+        </span>
+      </li>
+      <li class="dropdown-divider"></li>
       <li><a class="dropdown-item" href="{{ url_for('dashboard.index') }}">{{ render_icon('dashboard') }} {{ _('Dashboard') }}</a></li>
       <li><a class="dropdown-item" href="{{ url_for('user_profile.view', user_id=g.user.id) }}">{{ render_icon('user-profile') }} {{ _('Profile') }}</a></li>
       <li><a class="dropdown-item" href="{{ url_for('user_settings.view') }}">{{ render_icon('settings') }} {{ _('Settings') }}</a></li>
       <li><a class="dropdown-item" href="{{ url_for('ticketing.index_mine') }}">{{ render_icon('ticket') }} {{ _('Tickets') }}</a></li>
       <li><a class="dropdown-item" href="{{ url_for('shop_orders.index') }}">{{ render_icon('invoice') }} {{ _('Orders') }}</a></li>
+      {%- if g.site.is_intranet %}
+      <li class="dropdown-divider"></li>
+      <li>
+        <span class="dropdown-label label-and-name">
+          <span class="label">{{ _('IP address') }}</span>
+          <span class="name">{{ remote_addr }}</span>
+        </span>
+      </li>
+      {%- endif %}
+      <li class="dropdown-divider"></li>
+      <li><a class="dropdown-item" data-action="log-out" data-redirect-target="{{ url_for('authn_login.log_in') }}" href="{{ url_for('authn_login.log_out', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>

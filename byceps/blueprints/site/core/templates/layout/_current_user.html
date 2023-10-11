@@ -1,5 +1,5 @@
 {%- from 'macros/icons.html' import render_icon %}
-{%- from 'macros/user.html' import render_user_avatar, render_user_screen_name %}
+{%- from 'macros/user.html' import render_user_avatar %}
 
 
 <div class="current-user">
@@ -10,25 +10,7 @@
       {{ render_icon('chevron-down') }}
     </a>
     <ol class="dropdown-menu dropdown-menu--right">
-      <li>
-        <span class="dropdown-label label-and-name">
-          <span class="label">{{ _('Logged in as') }}</span>
-          <span class="name">{{ render_user_screen_name(g.user) }}</span>
-        </span>
-      </li>
-      <li class="dropdown-divider"></li>
 {% include 'layout/_current_user_menu_items.html' %}
-      {%- if g.site.is_intranet %}
-      <li class="dropdown-divider"></li>
-      <li>
-        <span class="dropdown-label label-and-name">
-          <span class="label">{{ _('IP address') }}</span>
-          <span class="name">{{ remote_addr }}</span>
-        </span>
-      </li>
-      {%- endif %}
-      <li class="dropdown-divider"></li>
-      <li><a class="dropdown-item" data-action="log-out" data-redirect-target="{{ url_for('authn_login.log_in') }}" href="{{ url_for('authn_login.log_out', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
     </ol>
   </div>
   {%- else %}
