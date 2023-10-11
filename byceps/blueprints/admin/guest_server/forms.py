@@ -9,7 +9,7 @@ byceps.blueprints.admin.guest_server.forms
 import re
 
 from flask_babel import gettext, lazy_gettext
-from wtforms import BooleanField, StringField, TextAreaField
+from wtforms import StringField, TextAreaField
 from wtforms.validators import (
     InputRequired,
     IPAddress,
