@@ -703,6 +703,10 @@ button.button[disabled],
   background-color: #eeeeee;
 }
 
+.dropdown-item .icon {
+  opacity: 0.9;
+}
+
 .dropdown-divider {
   border-top: #dddddd solid 1px;
   margin-top: 0.4rem;
