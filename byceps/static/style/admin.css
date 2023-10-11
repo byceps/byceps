@@ -181,10 +181,10 @@ a.box:hover {
 }
 
 #header-content .label-and-name .label {
+  color: var(--dimmed-color);
   display: block;
   font-size: 0.6875rem; /* 11px / 16px */
   margin-bottom: 0.25rem;
-  opacity: 0.5;
 }
 
 #header-content .label-and-name .name {
