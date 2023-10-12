@@ -39,6 +39,7 @@ EXPOSE 8080
 
 CMD [ "uwsgi", \
       "--callable", "app", \
+      "--enable-threads", \
       "--http-socket", "0.0.0.0:8080", \
       "--lazy-apps", \
       "--uwsgi-socket", "0.0.0.0:5000", \
