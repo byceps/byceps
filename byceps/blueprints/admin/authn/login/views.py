@@ -48,7 +48,7 @@ def log_in_form(erroneous_form=None):
 def log_in():
     """Allow the user to authenticate with e-mail address and password."""
     if g.user.authenticated:
-        return
+        return redirect_to('core_admin.homepage')
 
     form = LogInForm(request.form)
     if not form.validate():
