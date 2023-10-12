@@ -224,6 +224,8 @@ def approve_server(
     db_server.approved = True
     db.session.commit()
 
+    return Ok((approved_server, event))
+
 
 def check_in_server(
     approved_server: Server, initiator: User
@@ -244,6 +246,8 @@ def check_in_server(
     db_server.checked_in_at = checked_in_server.checked_in_at
     db.session.commit()
 
+    return Ok((checked_in_server, event))
+
 
 def check_out_server(
     checked_in_server: Server, initiator: User
@@ -263,6 +267,8 @@ def check_out_server(
     db_server = _get_db_server(checked_out_server.id)
     db_server.checked_out_at = checked_out_server.checked_out_at
     db.session.commit()
+
+    return Ok((checked_out_server, event))
 
 
 def find_server(server_id: ServerID) -> Server | None:
