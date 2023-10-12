@@ -9,14 +9,6 @@ be set as environment variables.
 Supported Configuration Values
 ==============================
 
-.. py:data:: API_ENABLED
-
-    Enable the REST API.
-
-    Only available on admin application.
-
-    Default: ``True``
-
 .. py:data:: DEBUG
 
     Enable debug mode.

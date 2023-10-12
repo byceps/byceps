@@ -6,7 +6,7 @@ byceps.blueprints.admin.api.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import current_app, g, request
+from flask import g, request
 from flask_babel import gettext
 
 from byceps.services.authn.api import authn_api_service
@@ -31,7 +31,6 @@ blueprint = create_blueprint('api_admin', __name__)
 @templated
 def index():
     """Show API access status and issued API tokens."""
-    api_enabled = current_app.config['API_ENABLED']
     api_tokens = authn_api_service.get_all_api_tokens()
 
     user_ids = {api_token.creator_id for api_token in api_tokens}
@@ -40,7 +39,6 @@ def index():
     )
 
     return {
-        'api_enabled': api_enabled,
         'api_tokens': api_tokens,
         'users_by_id': users_by_id,
     }

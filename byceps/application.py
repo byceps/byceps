@@ -78,8 +78,6 @@ def create_api_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
         config_overrides = {}
 
     config_overrides['APP_MODE'] = 'api'
-    if 'API_ENABLED' in config_overrides:
-        del config_overrides['API_ENABLED']
 
     app = _create_app(config_overrides=config_overrides)
 
@@ -90,7 +88,6 @@ def create_api_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
 def create_cli_app() -> Flask:
     config_overrides = {
-        'API_ENABLED': False,
         'APP_MODE': 'cli',
         'DEBUG_TOOLBAR_ENABLED': False,
         'METRICS_ENABLED': False,
@@ -115,7 +112,6 @@ def create_metrics_app(database_uri: str) -> Flask:
 
 def create_worker_app() -> Flask:
     config_overrides = {
-        'API_ENABLED': False,
         'APP_MODE': 'worker',
         'DEBUG_TOOLBAR_ENABLED': False,
         'METRICS_ENABLED': False,
@@ -209,7 +205,6 @@ def _configure(
 def _get_config_from_environment() -> Iterator[tuple[str, Any]]:
     """Obtain selected config values from environment variables."""
     for key in (
-        'API_ENABLED',
         'APP_MODE',
         'DEBUG',
         'DEBUG_TOOLBAR_ENABLED',
@@ -269,12 +264,6 @@ def _dispatch_apps_by_url_path(
     config_overrides: dict[str, Any] | None,
 ) -> None:
     mounts = {}
-
-    api_enabled = app.config['API_ENABLED'] and app.byceps_app_mode.is_admin()
-    if api_enabled:
-        api_app = create_api_app(config_overrides=config_overrides)
-        mounts['/api'] = api_app
-    app.byceps_feature_states['api'] = api_enabled
 
     metrics_enabled = (
         app.config['METRICS_ENABLED'] and app.byceps_app_mode.is_admin()
