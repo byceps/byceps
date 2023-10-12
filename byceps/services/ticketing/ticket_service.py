@@ -294,7 +294,8 @@ def get_tickets_with_details_for_party_paginated(
 ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
     stmt = (
-        select(DbTicket.distinct())
+        select(DbTicket)
+        .distinct()
         .filter(DbTicket.party_id == party_id)
         .join(DbTicketCategory)
         .options(
