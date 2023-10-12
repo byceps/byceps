@@ -124,7 +124,7 @@ def test_serialize_existing_order(
     log_in_user(shop_order_admin.id)
     client = make_client(admin_app, user_id=shop_order_admin.id)
 
-    url = f'/admin/shop/orders/{order.id}/export'
+    url = f'/shop/orders/{order.id}/export'
     response = client.get(url)
 
     assert response.status_code == 200
@@ -143,7 +143,7 @@ def test_serialize_unknown_order(
     log_in_user(shop_order_admin.id)
     client = make_client(admin_app, user_id=shop_order_admin.id)
 
-    url = f'/admin/shop/orders/{unknown_order_id}/export'
+    url = f'/shop/orders/{unknown_order_id}/export'
     response = client.get(url)
 
     assert response.status_code == 404

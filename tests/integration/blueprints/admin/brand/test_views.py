@@ -8,19 +8,19 @@ from byceps.services.email import email_config_service
 
 
 def test_index(brand_admin_client, brand):
-    url = '/admin/brands/'
+    url = '/brands/'
     response = brand_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_view(brand_admin_client, brand):
-    url = f'/admin/brands/brands/{brand.id}'
+    url = f'/brands/brands/{brand.id}'
     response = brand_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_create_form(brand_admin_client):
-    url = '/admin/brands/create'
+    url = '/brands/create'
     response = brand_admin_client.get(url)
     assert response.status_code == 200
 
@@ -31,7 +31,7 @@ def test_create(brand_admin_client):
 
     assert brand_service.find_brand(brand_id) is None
 
-    url = '/admin/brands/'
+    url = '/brands/'
     form_data = {
         'id': brand_id,
         'title': title,
@@ -52,12 +52,12 @@ def test_create(brand_admin_client):
 
 
 def test_update_form(brand_admin_client, brand):
-    url = f'/admin/brands/brands/{brand.id}/update'
+    url = f'/brands/brands/{brand.id}/update'
     response = brand_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_email_config_update_form(brand_admin_client, email_config):
-    url = f'/admin/brands/brands/{email_config.brand_id}/email_config/update'
+    url = f'/brands/brands/{email_config.brand_id}/email_config/update'
     response = brand_admin_client.get(url)
     assert response.status_code == 200

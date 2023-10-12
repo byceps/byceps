@@ -7,7 +7,7 @@ from byceps.services.board import board_category_query_service
 
 
 def test_create_form(board_admin_client, board):
-    url = f'/admin/boards/categories/for_board/{board.id}/create'
+    url = f'/boards/categories/for_board/{board.id}/create'
     response = board_admin_client.get(url)
     assert response.status_code == 200
 
@@ -22,7 +22,7 @@ def test_create(board_admin_client, board):
         is None
     )
 
-    url = f'/admin/boards/categories/for_board/{board.id}'
+    url = f'/boards/categories/for_board/{board.id}'
     form_data = {
         'slug': slug,
         'title': title,
@@ -42,6 +42,6 @@ def test_create(board_admin_client, board):
 
 
 def test_update_form(board_admin_client, category):
-    url = f'/admin/boards/categories/{category.id}/update'
+    url = f'/boards/categories/{category.id}/update'
     response = board_admin_client.get(url)
     assert response.status_code == 200

@@ -31,7 +31,7 @@ def test_create_shop(make_brand, shop_admin_client):
 
     assert shop_service.find_shop_for_brand(brand.id) is None
 
-    url = f'/admin/shop/shop/for_brand/{brand.id}'
+    url = f'/shop/shop/for_brand/{brand.id}'
     form_data = {'currency': 'EUR'}
     response = shop_admin_client.post(url, data=form_data)
     assert response.status_code == 302

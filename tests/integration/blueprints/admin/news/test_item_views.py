@@ -7,33 +7,33 @@ from byceps.services.news import news_item_service
 
 
 def test_view(news_admin_client, item):
-    url = f'/admin/news/items/{item.id}'
+    url = f'/news/items/{item.id}'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_view_version(news_admin_client, item):
     version = news_item_service.get_current_item_version(item.id)
-    url = f'/admin/news/versions/{version.id}'
+    url = f'/news/versions/{version.id}'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_list_versions(news_admin_client, item):
-    url = f'/admin/news/items/{item.id}/versions'
+    url = f'/news/items/{item.id}/versions'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_compare_versions(news_admin_client, item):
     version = news_item_service.get_current_item_version(item.id)
-    url = f'/admin/news/items/{version.id}/compare_to/{version.id}'
+    url = f'/news/items/{version.id}/compare_to/{version.id}'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_create_form(news_admin_client, channel):
-    url = f'/admin/news/for_channel/{channel.id}/create'
+    url = f'/news/for_channel/{channel.id}/create'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
@@ -43,7 +43,7 @@ def test_create(news_admin_client, channel, news_admin):
     title = 'Wow, That Party was a Blast!'
     body = 'So many cool memories.'
 
-    url = f'/admin/news/for_channel/{channel.id}'
+    url = f'/news/for_channel/{channel.id}'
     form_data = {
         'slug': slug,
         'title': title,
@@ -68,13 +68,13 @@ def test_create(news_admin_client, channel, news_admin):
 
 
 def test_update_form(news_admin_client, item):
-    url = f'/admin/news/items/{item.id}/update'
+    url = f'/news/items/{item.id}/update'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_publish_later_form(news_admin_client, item):
-    url = f'/admin/news/items/{item.id}/publish_later'
+    url = f'/news/items/{item.id}/publish_later'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
@@ -84,7 +84,7 @@ def test_publish_later(news_admin_client, item):
     assert item_before.published_at is None
     assert not item_before.published
 
-    url = f'/admin/news/items/{item.id}/publish_later'
+    url = f'/news/items/{item.id}/publish_later'
     form_data = {
         'publish_on': '2021-01-23',
         'publish_at': '23:42',
@@ -102,7 +102,7 @@ def test_publish_now(news_admin_client, item):
     assert item_before.published_at is None
     assert not item_before.published
 
-    url = f'/admin/news/items/{item.id}/publish_now'
+    url = f'/news/items/{item.id}/publish_now'
     response = news_admin_client.post(url)
     assert response.status_code == 204
 
@@ -118,7 +118,7 @@ def test_unpublish(news_admin_client, item):
     assert item_before.published_at is not None
     assert item_before.published
 
-    url = f'/admin/news/items/{item.id}/unpublish'
+    url = f'/news/items/{item.id}/unpublish'
     response = news_admin_client.post(url)
     assert response.status_code == 204
 

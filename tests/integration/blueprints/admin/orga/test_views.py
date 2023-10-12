@@ -7,13 +7,13 @@ from byceps.services.orga import orga_service
 
 
 def test_persons_for_brand(orga_admin_client, brand):
-    url = f'/admin/orgas/persons/{brand.id}'
+    url = f'/orgas/persons/{brand.id}'
     response = orga_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_grant_orga_status_form(orga_admin_client, brand):
-    url = f'/admin/orgas/persons/{brand.id}/create'
+    url = f'/orgas/persons/{brand.id}/create'
     response = orga_admin_client.get(url)
     assert response.status_code == 200
 
@@ -22,7 +22,7 @@ def test_grant_and_revoke_orga_status(orga_admin_client, brand, make_user):
     user = make_user()
     assert not has_orga_status(user.id, brand.id)
 
-    url = f'/admin/orgas/persons/{brand.id}'
+    url = f'/orgas/persons/{brand.id}'
     form_data = {
         'user': user.screen_name,
     }
@@ -30,20 +30,20 @@ def test_grant_and_revoke_orga_status(orga_admin_client, brand, make_user):
     assert response.status_code == 302
     assert has_orga_status(user.id, brand.id)
 
-    url = f'/admin/orgas/persons/{brand.id}/{user.id}'
+    url = f'/orgas/persons/{brand.id}/{user.id}'
     response = orga_admin_client.delete(url)
     assert response.status_code == 204
     assert not has_orga_status(user.id, brand.id)
 
 
 def test_export_persons(orga_admin_client, brand):
-    url = f'/admin/orgas/persons/{brand.id}/export'
+    url = f'/orgas/persons/{brand.id}/export'
     response = orga_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_birthdays(orga_admin_client, brand):
-    url = '/admin/orgas/birthdays'
+    url = '/orgas/birthdays'
     response = orga_admin_client.get(url)
     assert response.status_code == 200
 

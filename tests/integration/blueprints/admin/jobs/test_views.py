@@ -9,7 +9,7 @@ from tests.helpers import log_in_user
 
 
 def test_view_for_brand(jobs_admin_client):
-    url = '/admin/jobs/'
+    url = '/jobs/'
     response = jobs_admin_client.get(url)
     assert response.status_code == 200
 

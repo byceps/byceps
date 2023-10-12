@@ -119,7 +119,7 @@ def test_cancel_before_paid(
 
     assert_payment_is_open(db_order_before)
 
-    url = f'/admin/shop/orders/{db_order_before.id}/cancel'
+    url = f'/shop/orders/{db_order_before.id}/cancel'
     form_data = {
         'reason': 'Dein Vorname ist albern!',
         'send_email': 'y',
@@ -174,7 +174,7 @@ def test_cancel_before_paid_without_sending_email(
         storefront, orderer, quantified_articles_to_order
     )
 
-    url = f'/admin/shop/orders/{placed_order.id}/cancel'
+    url = f'/shop/orders/{placed_order.id}/cancel'
     form_data = {
         'reason': 'Dein Vorname ist albern!',
         # Sending e-mail is not requested.
@@ -215,7 +215,7 @@ def test_mark_order_as_paid(
 
     assert_payment_is_open(db_order_before)
 
-    url = f'/admin/shop/orders/{db_order_before.id}/mark_as_paid'
+    url = f'/shop/orders/{db_order_before.id}/mark_as_paid'
     form_data = {'payment_method': 'direct_debit'}
     response = shop_order_admin_client.post(url, data=form_data)
 
@@ -273,11 +273,11 @@ def test_cancel_after_paid(
 
     assert_payment_is_open(db_order_before)
 
-    url = f'/admin/shop/orders/{db_order_before.id}/mark_as_paid'
+    url = f'/shop/orders/{db_order_before.id}/mark_as_paid'
     form_data = {'payment_method': 'bank_transfer'}
     response = shop_order_admin_client.post(url, data=form_data)
 
-    url = f'/admin/shop/orders/{db_order_before.id}/cancel'
+    url = f'/shop/orders/{db_order_before.id}/cancel'
     form_data = {
         'reason': 'Dein Vorname ist albern!',
         'send_email': 'n',
