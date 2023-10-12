@@ -146,7 +146,7 @@ def update(webhook_id):
     return redirect_to('.index')
 
 
-@blueprint.delete('/webhooks/<uuid:webhook_id>/test')
+@blueprint.delete('/webhooks/<uuid:webhook_id>')
 @permission_required('webhook.administrate')
 @respond_no_content
 def delete(webhook_id):
