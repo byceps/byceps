@@ -18,7 +18,7 @@ configure_sentry_from_env()
 app_mode = os.environ.get('APP_MODE')
 if app_mode == 'admin':
     app = create_admin_app()
-if app_mode == 'api':
+elif app_mode == 'api':
     app = create_api_app()
 elif app_mode == 'site':
     app = create_site_app()
