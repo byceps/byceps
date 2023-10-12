@@ -42,6 +42,7 @@ CMD [ "uwsgi", \
       "--enable-threads", \
       "--http-socket", "0.0.0.0:8080", \
       "--lazy-apps", \
+      "--processes", "8", \
       "--uwsgi-socket", "0.0.0.0:5000", \
       "--wsgi-file", "serve.py" \
     ]
