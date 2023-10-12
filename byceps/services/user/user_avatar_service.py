@@ -54,29 +54,29 @@ def update_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    avatar = DbUserAvatar(image_type)
-    db.session.add(avatar)
+    db_avatar = DbUserAvatar(image_type)
+    db.session.add(db_avatar)
     db.session.commit()
 
     # Might raise `FileExistsError`.
-    upload.store(stream, avatar.path, create_parent_path_if_nonexistent=True)
+    upload.store(stream, db_avatar.path, create_parent_path_if_nonexistent=True)
 
-    db_user.avatar_id = avatar.id
+    db_user.avatar_id = db_avatar.id
 
-    log_entry = user_log_service.build_entry(
+    db_log_entry = user_log_service.build_entry(
         'user-avatar-updated',
         db_user.id,
         {
-            'avatar_id': str(avatar.id),
-            'filename': str(avatar.filename),
+            'avatar_id': str(db_avatar.id),
+            'filename': str(db_avatar.filename),
             'initiator_id': str(initiator.id),
         },
     )
-    db.session.add(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
-    return Ok(avatar.id)
+    return Ok(db_avatar.id)
 
 
 def remove_avatar_image(user_id: UserID, initiator: User) -> None:
@@ -90,7 +90,7 @@ def remove_avatar_image(user_id: UserID, initiator: User) -> None:
     if db_user.avatar_id is None:
         return
 
-    log_entry = user_log_service.build_entry(
+    db_log_entry = user_log_service.build_entry(
         'user-avatar-removed',
         db_user.id,
         {
@@ -99,7 +99,7 @@ def remove_avatar_image(user_id: UserID, initiator: User) -> None:
             'initiator_id': str(initiator.id),
         },
     )
-    db.session.add(log_entry)
+    db.session.add(db_log_entry)
 
     # Remove avatar reference *after* collecting values for log entry.
     db_user.avatar_id = None
@@ -127,7 +127,7 @@ def get_avatar_urls_for_users(
     if not user_ids:
         return {}
 
-    user_ids_and_avatars = db.session.execute(
+    user_ids_and_db_avatars = db.session.execute(
         select(
             DbUser.id,
             DbUserAvatar,
@@ -137,7 +137,7 @@ def get_avatar_urls_for_users(
     ).all()
 
     urls_by_user_id = {
-        user_id: avatar.url for user_id, avatar in user_ids_and_avatars
+        user_id: db_avatar.url for user_id, db_avatar in user_ids_and_db_avatars
     }
 
     # Include all user IDs in result.
@@ -148,13 +148,13 @@ def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> str | None:
     """Return the URL of the current avatar of the user with that hashed
     email address, or `None` if not set.
     """
-    avatar = db.session.execute(
+    db_avatar = db.session.execute(
         select(DbUserAvatar)
         .join(DbUser)
         .filter(db.func.md5(DbUser.email_address) == md5_hash)
     ).scalar_one_or_none()
 
-    if avatar is None:
+    if db_avatar is None:
         return None
 
-    return avatar.url
+    return db_avatar.url
