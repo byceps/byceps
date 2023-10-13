@@ -544,7 +544,7 @@ msgstr ""
 "%(awardee_screen_name)s verliehen."
 
 #: byceps/blueprints/admin/api/forms.py:28
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:104
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:93
 #: byceps/blueprints/admin/authz/templates/admin/authz/permission_index.html:4
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:15
 #: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:23
@@ -557,7 +557,7 @@ msgid "Permissions"
 msgstr "Berechtigungen"
 
 #: byceps/blueprints/admin/api/forms.py:33
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:77
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:66
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:35
 #: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:22
 #: byceps/blueprints/admin/guest_server/forms.py:49
@@ -583,29 +583,29 @@ msgstr "Berechtigungen"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: byceps/blueprints/admin/api/views.py:78
+#: byceps/blueprints/admin/api/views.py:76
 msgid "API token has been created."
 msgstr "API-Token wurde angelegt."
 
-#: byceps/blueprints/admin/api/views.py:90
+#: byceps/blueprints/admin/api/views.py:88
 msgid "API token has been suspended."
 msgstr "API-Token wurde gesperrt."
 
-#: byceps/blueprints/admin/api/views.py:100
+#: byceps/blueprints/admin/api/views.py:98
 msgid "API token has been unsuspended."
 msgstr "API-Token wurde entgesperrt."
 
-#: byceps/blueprints/admin/api/views.py:110
+#: byceps/blueprints/admin/api/views.py:108
 msgid "API token has been deleted."
 msgstr "API-Token wurde gelöscht."
 
 #: byceps/blueprints/admin/api/templates/admin/api/create_api_token_form.html:5
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:42
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:31
 msgid "Create API token"
 msgstr "API-Token erstellen"
 
 #: byceps/blueprints/admin/api/templates/admin/api/create_api_token_form.html:8
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:38
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:27
 msgid "API Tokens"
 msgstr "API-Tokens"
 
@@ -616,7 +616,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:21
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_create_form.html:21
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:23
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:40
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:39
 #: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:25
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/create_brand_list_form.html:16
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:21
@@ -646,12 +646,19 @@ msgid "Create"
 msgstr "Erstellen"
 
 #: byceps/blueprints/admin/api/templates/admin/api/index.html:7
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:21
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
 msgid "API"
 msgstr "API"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:28
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:54
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:43
+#: byceps/blueprints/admin/authn/identity_tag/forms.py:38
+#: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:41
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:43
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:70
+msgid "suspended"
+msgstr "gesperrt"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:43
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:47
 #: byceps/blueprints/admin/site/forms.py:30
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:38
@@ -659,78 +666,61 @@ msgstr "API"
 msgid "enabled"
 msgstr "aktiv"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:30
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:16
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:47
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:17
-#: byceps/blueprints/admin/site/templates/macros/admin/site.html:40
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:29
-msgid "disabled"
-msgstr "deaktiviert"
-
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:54
-#: byceps/blueprints/admin/authn/identity_tag/forms.py:38
-#: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:40
-#: byceps/blueprints/admin/user/templates/macros/admin/user.html:43
-#: byceps/blueprints/admin/user/templates/macros/admin/user.html:70
-msgid "suspended"
-msgstr "gesperrt"
-
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:61
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:50
 msgid "Unsuspend API token"
 msgstr "API-Token entsperren"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:63
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:52
 msgid "Suspend API token"
 msgstr "API-Token sperren"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:65
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:54
 msgid "Delete API token"
 msgstr "API-Token löschen"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:86
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:75
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:31
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:71
 msgid "Created at"
 msgstr "Erstellt um"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:92
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:81
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:32
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:65
 msgid "Created by"
 msgstr "Erstellt von"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:107
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:96
 msgid "permissions"
 msgstr "Berechtigungen"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:119
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:108
 msgid "Token"
 msgstr "Token"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:122
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:111
 msgid "Reveal"
 msgstr "Anzeigen"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:126
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:115
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:66
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:26
 msgid "Copy to clipboard"
 msgstr "In Zwischenablage kopieren"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:141
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:130
 msgid "No API tokens defined."
 msgstr "Es sind keine API-Tokens konfiguriert."
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:154
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:143
 msgid "Suspend API token?"
 msgstr "API-Token sperren?"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:155
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:144
 msgid "Unsuspend API token?"
 msgstr "API-Token entsperren?"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:156
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:145
 msgid "Delete API token?"
 msgstr "API-Token löschen?"
 
@@ -813,9 +803,13 @@ msgstr "Anmerkung"
 msgid "This value is not available. Please choose another."
 msgstr "Dieser Wert kann nicht verwendet werden. Bitte einen anderen wählen."
 
-#: byceps/blueprints/admin/authn/identity_tag/views.py:64
+#: byceps/blueprints/admin/authn/identity_tag/views.py:68
 msgid "The object has been created."
 msgstr "Das Objekt wurde angelegt."
+
+#: byceps/blueprints/admin/authn/identity_tag/views.py:83
+msgid "The object has been deleted."
+msgstr "Das Objekt wurde gelöscht."
 
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/create_form.html:5
 msgid "Add identity tag"
@@ -823,6 +817,7 @@ msgstr "Benutzerkennzeichen hinzufügen"
 
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/create_form.html:8
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:8
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:21
 msgid "Identity Tags"
 msgstr "Benutzerkennzeichen"
 
@@ -844,12 +839,30 @@ msgstr "optional"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:54
+#: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:50
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:69
+#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:41
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:52
+#: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:59
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:22
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:102
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:33
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:27
+#: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:22
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
+msgid "Delete"
+msgstr "Löschen"
+
+#: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:56
 #: byceps/blueprints/admin/board/templates/admin/board/category_copy_from_form.html:40
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:50
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:41
 msgid "None defined"
 msgstr "Keine festgelegt"
+
+#: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:65
+msgid "Really delete it?"
+msgstr "Wirklich löschen?"
 
 #: byceps/blueprints/admin/authn/login/forms.py:18
 #: byceps/blueprints/admin/user/forms.py:75
@@ -1305,19 +1318,6 @@ msgstr "Sichtbar machen"
 msgid "Hide"
 msgstr "Verstecken"
 
-#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:69
-#: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:41
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:52
-#: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:59
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:22
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:102
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:33
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:27
-#: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:22
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
-msgid "Delete"
-msgstr "Löschen"
-
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:80
 msgid "This board contains no categories."
 msgstr "Das Forum enthält keine Kategorien."
@@ -1364,7 +1364,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:23
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_create_form.html:36
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_update_form.html:34
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_update_form.html:22
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_update_form.html:21
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_update_form.html:45
 #: byceps/blueprints/admin/news/templates/admin/news/channel_update_form.html:22
 #: byceps/blueprints/admin/news/templates/admin/news/image_update_form.html:27
@@ -2156,6 +2156,14 @@ msgstr "genehmigt"
 msgid "pending"
 msgstr "wartend"
 
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:16
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:47
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:17
+#: byceps/blueprints/admin/site/templates/macros/admin/site.html:40
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:29
+msgid "disabled"
+msgstr "deaktiviert"
+
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:31
 #: byceps/blueprints/admin/site/forms.py:27
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:41
@@ -2302,36 +2310,36 @@ msgstr "Anmerkungen des Admins"
 msgid "Provide at least an IP address or a hostname."
 msgstr "Mindestens eine IP-Adresse oder ein Hostname muss angegeben werden."
 
-#: byceps/blueprints/admin/guest_server/views.py:139
+#: byceps/blueprints/admin/guest_server/views.py:152
 #: byceps/blueprints/site/guest_server/views.py:156
 msgid "The server has been registered."
 msgstr "Der Server wurde registriert."
 
-#: byceps/blueprints/admin/guest_server/views.py:177
-#: byceps/blueprints/admin/guest_server/views.py:374
-#: byceps/blueprints/admin/guest_server/views.py:435
+#: byceps/blueprints/admin/guest_server/views.py:190
+#: byceps/blueprints/admin/guest_server/views.py:405
+#: byceps/blueprints/admin/guest_server/views.py:466
 #: byceps/blueprints/admin/news/views.py:196
 #: byceps/blueprints/admin/user/views.py:665
 msgid "Changes have been saved."
 msgstr "Die Änderungen wurden gespeichert."
 
-#: byceps/blueprints/admin/guest_server/views.py:192
+#: byceps/blueprints/admin/guest_server/views.py:207
 msgid "Server has been approved."
 msgstr "Der Server wurde genehmigt."
 
-#: byceps/blueprints/admin/guest_server/views.py:205
+#: byceps/blueprints/admin/guest_server/views.py:226
 msgid "Server has been checked in."
 msgstr "Der Server wurde eingecheckt."
 
-#: byceps/blueprints/admin/guest_server/views.py:218
+#: byceps/blueprints/admin/guest_server/views.py:245
 msgid "Server has been checked out."
 msgstr "Der Server wurde ausgecheckt."
 
-#: byceps/blueprints/admin/guest_server/views.py:232
+#: byceps/blueprints/admin/guest_server/views.py:263
 msgid "Server has been deleted."
 msgstr "Der Server wurde gelöscht."
 
-#: byceps/blueprints/admin/guest_server/views.py:328
+#: byceps/blueprints/admin/guest_server/views.py:359
 msgid "The address has been added."
 msgstr "Die Adresse wurde hinzugefügt."
 
@@ -2503,7 +2511,7 @@ msgstr "Hintergrundjobs"
 
 #: byceps/blueprints/admin/jobs/templates/admin/jobs/index.html:7
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:5
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:23
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:24
 msgid "Maintenance"
 msgstr "Wartung"
 
@@ -2640,7 +2648,7 @@ msgstr "Newsletter"
 msgid "User Badges"
 msgstr "Benutzer-Abzeichen"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:23
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:8
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:6
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:8
