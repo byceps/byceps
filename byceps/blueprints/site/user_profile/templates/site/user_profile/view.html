@@ -56,9 +56,7 @@
 
       <div class="user-profile-detail-blocks">
 {% include 'site/user_profile/_current_party_attendance.html' %}
-{%- if not g.site.is_intranet %}
 {% include 'site/user_profile/_contact.html' %}
-{%- endif %}
 {% include 'site/user_profile/_attended_parties.html' %}
 {% include 'site/user_profile/_badges.html' %}
       </div>
