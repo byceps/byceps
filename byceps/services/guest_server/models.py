@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
 from ipaddress import IPv4Address, IPv6Address
 from typing import NewType, Union
 from uuid import UUID
@@ -22,6 +23,11 @@ IPAddress = Union[IPv4Address, IPv6Address]
 
 
 ServerID = NewType('ServerID', UUID)
+
+
+ServerState = Enum(
+    'ServerState', ['pending', 'approved', 'checked_in', 'checked_out']
+)
 
 
 AddressID = NewType('AddressID', UUID)
@@ -53,6 +59,17 @@ class Server:
     checked_out: bool
     checked_out_at: datetime | None
     addresses: set[Address]
+
+    @property
+    def state(self) -> ServerState:
+        if self.checked_out:
+            return ServerState.checked_out
+        elif self.checked_in:
+            return ServerState.checked_in
+        elif self.approved:
+            return ServerState.approved
+        else:
+            return ServerState.pending
 
 
 @dataclass(frozen=True)
