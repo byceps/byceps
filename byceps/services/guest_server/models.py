@@ -73,6 +73,15 @@ class Server:
 
 
 @dataclass(frozen=True)
+class ServerQuantitiesByState:
+    pending: int
+    approved: int
+    checked_in: int
+    checked_out: int
+    total: int
+
+
+@dataclass(frozen=True)
 class Address:
     id: AddressID
     server_id: ServerID

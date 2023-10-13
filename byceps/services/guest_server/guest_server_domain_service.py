@@ -32,7 +32,15 @@ from .errors import (
     QuantityLimitReachedError,
     UserUsesNoTicketError,
 )
-from .models import Address, AddressData, AddressID, Server, ServerID
+from .models import (
+    Address,
+    AddressData,
+    AddressID,
+    Server,
+    ServerID,
+    ServerQuantitiesByState,
+    ServerState,
+)
 
 
 def ensure_user_may_register_server(
@@ -261,3 +269,35 @@ def _build_guest_server_checked_out_event(
         owner_screen_name=server.owner.screen_name,
         server_id=server.id,
     )
+
+
+def get_server_quantities_by_state(
+    servers: list[Server],
+) -> ServerQuantitiesByState:
+    pending_quantity = _get_quantity_for_state(servers, ServerState.pending)
+    approved_quantity = _get_quantity_for_state(servers, ServerState.approved)
+    checked_in_quantity = _get_quantity_for_state(
+        servers, ServerState.checked_in
+    )
+    checked_out_quantity = _get_quantity_for_state(
+        servers, ServerState.checked_out
+    )
+
+    total = (
+        pending_quantity
+        + approved_quantity
+        + checked_in_quantity
+        + checked_out_quantity
+    )
+
+    return ServerQuantitiesByState(
+        pending=pending_quantity,
+        approved=approved_quantity,
+        checked_in=checked_in_quantity,
+        checked_out=checked_out_quantity,
+        total=total,
+    )
+
+
+def _get_quantity_for_state(servers: list[Server], state: ServerState) -> int:
+    return sum(1 for s in servers if s.state == state)

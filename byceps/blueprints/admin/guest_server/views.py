@@ -15,10 +15,16 @@ from flask import abort, g, request, url_for
 from flask_babel import gettext
 
 from byceps.services.guest_server import (
+    guest_server_domain_service,
     guest_server_export_service,
     guest_server_service,
 )
-from byceps.services.guest_server.models import Address, AddressData, IPAddress
+from byceps.services.guest_server.models import (
+    Address,
+    AddressData,
+    IPAddress,
+    ServerQuantitiesByState,
+)
 from byceps.services.party import party_service
 from byceps.services.user import user_service
 from byceps.signals import guest_server as guest_server_signals
@@ -62,11 +68,16 @@ def server_index(party_id):
     servers.sort(key=lambda server: server.created_at, reverse=True)
     servers.sort(key=_get_sort_value_for_server_state)
 
+    server_quantities_by_state = (
+        guest_server_domain_service.get_server_quantities_by_state(servers)
+    )
+
     return {
         'party': party,
         'setting': setting,
         'servers': servers,
         'sort_addresses': _sort_addresses,
+        'server_quantities_by_state': server_quantities_by_state,
     }
 
 
