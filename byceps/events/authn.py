@@ -23,10 +23,20 @@ class PasswordUpdatedEvent(_BaseEvent):
 
 
 @dataclass(frozen=True)
-class UserIdentityTagCreatedEvent(_BaseEvent):
+class _UserIdentityTagEvent(_BaseEvent):
     identifier: str
     user_id: UserID
     user_screen_name: str | None
+
+
+@dataclass(frozen=True)
+class UserIdentityTagCreatedEvent(_UserIdentityTagEvent):
+    pass
+
+
+@dataclass(frozen=True)
+class UserIdentityTagDeletedEvent(_UserIdentityTagEvent):
+    pass
 
 
 @dataclass(frozen=True)

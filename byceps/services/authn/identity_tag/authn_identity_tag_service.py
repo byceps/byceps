@@ -8,7 +8,9 @@ byceps.services.authn.identity_tag.authn_identity_tag_service
 
 from __future__ import annotations
 
-from sqlalchemy import select
+from uuid import UUID
+
+from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.user import user_log_service, user_service
@@ -56,6 +58,37 @@ def _persist_tag_creation(
     db.session.add(db_log_entry)
 
     db.session.commit()
+
+
+def delete_tag(tag: UserIdentityTag, initiator: User) -> None:
+    """Delete a tag."""
+    event, log_entry = authn_identity_tag_domain_service.delete_tag(
+        tag, initiator
+    )
+
+    db.session.execute(
+        delete(DbUserIdentityTag).where(DbUserIdentityTag.id == tag.id)
+    )
+
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+
+def find_tag(tag_id: UUID) -> UserIdentityTag | None:
+    """Return the tag, if found."""
+    db_tag = db.session.execute(
+        select(DbUserIdentityTag).filter_by(id=tag_id)
+    ).scalar_one_or_none()
+
+    if db_tag is None:
+        return None
+
+    creator = user_service.get_user(db_tag.creator_id, include_avatar=True)
+    user = user_service.get_user(db_tag.user_id, include_avatar=True)
+
+    return _db_entity_to_tag(db_tag, creator, user)
 
 
 def find_tag_by_identifier(identifier: str) -> UserIdentityTag | None:

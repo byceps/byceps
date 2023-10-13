@@ -6,14 +6,18 @@ byceps.blueprints.admin.authn.identity_tag.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import g, request
+from flask import abort, g, request
 from flask_babel import gettext
 
 from byceps.services.authn.identity_tag import authn_identity_tag_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import permission_required, redirect_to
+from byceps.util.views import (
+    permission_required,
+    redirect_to,
+    respond_no_content,
+)
 
 from .forms import CreateForm
 
@@ -64,3 +68,25 @@ def create():
     flash_success(gettext('The object has been created.'))
 
     return redirect_to('.index')
+
+
+@blueprint.delete('/tags/<uuid:tag_id>')
+@permission_required('authn_identity_tag.administrate')
+@respond_no_content
+def delete(tag_id):
+    """Delete an identity tag."""
+    tag = _get_tag_or_404(tag_id)
+    initiator = g.user
+
+    authn_identity_tag_service.delete_tag(tag, initiator)
+
+    flash_success(gettext('The object has been deleted.'))
+
+
+def _get_tag_or_404(tag_id):
+    tag = authn_identity_tag_service.find_tag(tag_id)
+
+    if tag is None:
+        abort(404)
+
+    return tag

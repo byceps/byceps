@@ -10,7 +10,10 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from byceps.events.authn import UserIdentityTagCreatedEvent
+from byceps.events.authn import (
+    UserIdentityTagCreatedEvent,
+    UserIdentityTagDeletedEvent,
+)
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
@@ -72,5 +75,43 @@ def _build_tag_created_log_entry(tag: UserIdentityTag) -> UserLogEntry:
         event_type='user-identity-tag-created',
         user_id=tag.user.id,
         initiator_id=tag.creator.id,
+        data={'tag_id': str(tag.id)},
+    )
+
+
+def delete_tag(
+    tag: UserIdentityTag, initiator: User
+) -> tuple[UserIdentityTagDeletedEvent, UserLogEntry]:
+    """Delete a tag."""
+    occurred_at = datetime.utcnow()
+
+    event = _build_tag_deleted_event(tag, occurred_at, initiator)
+    log_entry = _build_tag_deleted_log_entry(tag, occurred_at, initiator)
+
+    return event, log_entry
+
+
+def _build_tag_deleted_event(
+    tag: UserIdentityTag, occurred_at: datetime, initiator: User
+) -> UserIdentityTagDeletedEvent:
+    return UserIdentityTagDeletedEvent(
+        occurred_at=occurred_at,
+        initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
+        identifier=tag.identifier,
+        user_id=tag.user.id,
+        user_screen_name=tag.user.screen_name,
+    )
+
+
+def _build_tag_deleted_log_entry(
+    tag: UserIdentityTag, occurred_at: datetime, initiator: User
+) -> UserLogEntry:
+    return UserLogEntry(
+        id=generate_uuid7(),
+        occurred_at=occurred_at,
+        event_type='user-identity-tag-deleted',
+        user_id=tag.user.id,
+        initiator_id=initiator.id,
         data={'tag_id': str(tag.id)},
     )
