@@ -355,7 +355,7 @@ def _is_seat_management_enabled():
 
 
 def _is_current_user_seating_admin() -> bool:
-    return has_current_user_permission('seating.administrate')
+    return has_current_user_permission('ticketing.administrate_seat_occupancy')
 
 
 def _get_ticket_or_404(ticket_id: TicketID) -> DbTicket:
