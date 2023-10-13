@@ -32,6 +32,7 @@ def get_rendered_snippet_body(version: DbSnippetVersion) -> str:
 def render_snippet_as_partial_from_template(
     name: str,
     *,
+    language_code: str | None = None,
     scope: str | None = None,
     ignore_if_unknown: bool = False,
 ) -> str:
@@ -40,7 +41,9 @@ def render_snippet_as_partial_from_template(
 
     This function is meant to be made available in templates.
     """
-    language_code = get_current_user_locale() or get_default_locale()
+    language_code = (
+        language_code or get_current_user_locale() or get_default_locale()
+    )
     scope_obj = _parse_scope_string(scope) if (scope is not None) else None
 
     return render_snippet_as_partial(
