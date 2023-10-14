@@ -23,7 +23,7 @@ from byceps.util.uuid import generate_uuid7
 from .models import Credential
 
 
-_PASSWORD_HASH_METHOD = 'scrypt'
+_PASSWORD_HASH_METHOD = 'scrypt:32768:8:1'  # noqa: S105
 
 
 def _generate_password_hash(password: str) -> str:
