@@ -28,7 +28,6 @@ from byceps.services.user import (
     user_deletion_service,
     user_email_address_service,
     user_service,
-    user_stats_service,
 )
 from byceps.services.user.models.user import UserForAdmin, UserStateFilter
 from byceps.services.user_badge import user_badge_awarding_service
@@ -80,23 +79,15 @@ def index(page):
         page, per_page, search_term=search_term, state_filter=user_state_filter
     )
 
-    total_active = user_stats_service.count_active_users()
-    total_uninitialized = user_stats_service.count_uninitialized_users()
-    total_suspended = user_stats_service.count_suspended_users()
-    total_deleted = user_stats_service.count_deleted_users()
-    total_overall = user_stats_service.count_users()
+    user_quantities_by_state = service.get_user_quantities_by_state()
 
     return {
         'users': users,
-        'total_active': total_active,
-        'total_uninitialized': total_uninitialized,
-        'total_suspended': total_suspended,
-        'total_deleted': total_deleted,
-        'total_overall': total_overall,
         'search_term': search_term,
         'only': only,
         'UserStateFilter': UserStateFilter,
         'user_state_filter': user_state_filter,
+        'user_quantities_by_state': user_quantities_by_state,
     }
 
 
