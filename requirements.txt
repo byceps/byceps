@@ -28,5 +28,5 @@ structlog==23.1.0
 tenacity==8.2.3
 typing-extensions==4.8.0
 uuid6==2023.5.2
-werkzeug==2.3.7
+werkzeug==3.0.0
 wtforms==3.0.1
