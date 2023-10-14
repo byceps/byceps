@@ -23,9 +23,7 @@ from byceps.util.uuid import generate_uuid7
 from .models import Credential
 
 
-# https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2
-_PASSWORD_HASH_ITERATIONS = 600000
-_PASSWORD_HASH_METHOD = 'pbkdf2:sha256:%d' % _PASSWORD_HASH_ITERATIONS
+_PASSWORD_HASH_METHOD = 'scrypt'
 
 
 def _generate_password_hash(password: str) -> str:
