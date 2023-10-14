@@ -79,7 +79,10 @@ def index(page):
         page, per_page, search_term=search_term, state_filter=user_state_filter
     )
 
-    user_quantities_by_state = service.get_user_quantities_by_state()
+    if search_term:
+        user_quantities_by_state = None
+    else:
+        user_quantities_by_state = service.get_user_quantities_by_state()
 
     return {
         'users': users,
