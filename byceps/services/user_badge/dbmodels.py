@@ -28,10 +28,12 @@ class DbBadgeAwarding(db.Model):
     __tablename__ = 'user_badge_awardings'
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
-    badge_id: Mapped[UUID] = mapped_column(
+    badge_id: Mapped[BadgeID] = mapped_column(
         db.Uuid, db.ForeignKey('user_badges.id')
     )
-    awardee_id: Mapped[UUID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    awardee_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
     awarded_at: Mapped[datetime]
 
     def __init__(
@@ -61,7 +63,7 @@ class DbBadge(db.Model):
         db.UnicodeText
     )
     image_filename: Mapped[str] = mapped_column(db.UnicodeText)
-    brand_id: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+    brand_id: Mapped[Optional[BrandID]] = mapped_column(  # noqa: UP007
         db.UnicodeText, db.ForeignKey('brands.id')
     )
     featured: Mapped[bool] = mapped_column(default=False)
