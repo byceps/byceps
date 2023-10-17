@@ -38,6 +38,8 @@ class GalleryImage:
     id: GalleryImageID
     created_at: datetime
     gallery_id: GalleryID
+    filename_full: str
+    filename_preview: str
     caption: str | None
     position: int
     hidden: bool

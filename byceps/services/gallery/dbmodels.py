@@ -84,6 +84,8 @@ class DbGalleryImage(db.Model):
         ),
     )
     position: Mapped[int]
+    filename_full: Mapped[str] = mapped_column(db.UnicodeText)
+    filename_preview: Mapped[str] = mapped_column(db.UnicodeText)
     caption: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
         db.UnicodeText
     )
@@ -94,12 +96,16 @@ class DbGalleryImage(db.Model):
         gallery_image_id: GalleryImageID,
         created_at: datetime,
         gallery_id: GalleryID,
+        filename_full: str,
+        filename_preview: str,
         caption: str | None,
         hidden: bool,
     ) -> None:
         self.id = gallery_image_id
         self.created_at = created_at
         self.gallery_id = gallery_id
+        self.filename_full = filename_full
+        self.filename_preview = filename_preview
         self.caption = caption
         self.hidden = hidden
 

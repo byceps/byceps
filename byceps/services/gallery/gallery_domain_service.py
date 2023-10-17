@@ -44,6 +44,8 @@ def create_gallery(
 
 def create_image(
     gallery_id: GalleryID,
+    filename_full: str,
+    filename_preview: str,
     caption: str | None,
     hidden: bool,
 ) -> GalleryImage:
@@ -54,6 +56,8 @@ def create_image(
         id=image_id,
         created_at=datetime.utcnow(),
         gallery_id=gallery_id,
+        filename_full=filename_full,
+        filename_preview=filename_preview,
         caption=caption,
         position=0,
         hidden=hidden,
