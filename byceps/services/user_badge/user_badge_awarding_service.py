@@ -112,16 +112,16 @@ def get_badges_awarded_to_user(awardee_id: UserID) -> dict[Badge, int]:
     badge_ids = set(badge_ids_with_awarding_quantity.keys())
 
     if badge_ids:
-        badges = db.session.scalars(
+        db_badges = db.session.scalars(
             select(DbBadge).filter(DbBadge.id.in_(badge_ids))
         ).all()
     else:
-        badges = []
+        db_badges = []
 
     badges_with_awarding_quantity = {}
-    for badge in badges:
-        quantity = badge_ids_with_awarding_quantity[badge.id]
-        badges_with_awarding_quantity[_db_entity_to_badge(badge)] = quantity
+    for db_badge in db_badges:
+        quantity = badge_ids_with_awarding_quantity[db_badge.id]
+        badges_with_awarding_quantity[_db_entity_to_badge(db_badge)] = quantity
 
     return badges_with_awarding_quantity
 
