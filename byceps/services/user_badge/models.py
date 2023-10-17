@@ -6,6 +6,8 @@ byceps.services.user_badge.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType
@@ -23,10 +25,10 @@ class Badge:
     id: BadgeID
     slug: str
     label: str
-    description: str
+    description: str | None
     image_filename: str
     image_url_path: str
-    brand_id: BrandID
+    brand_id: BrandID | None
     featured: bool
 
 
