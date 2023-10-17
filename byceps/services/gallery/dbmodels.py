@@ -26,6 +26,7 @@ class DbGallery(db.Model):
     """An image gallery."""
 
     __tablename__ = 'galleries'
+    __table_args__ = (db.UniqueConstraint('brand_id', 'slug'),)
 
     id: Mapped[GalleryID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]

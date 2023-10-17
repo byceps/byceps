@@ -77,6 +77,18 @@ def _get_db_gallery(gallery_id: GalleryID) -> DbGallery:
     return db_gallery
 
 
+def find_gallery_by_slug(brand_id: BrandID, slug: str) -> Gallery | None:
+    """Return the gallery of that brand and with that slug, if found."""
+    db_gallery = db.session.scalars(
+        select(DbGallery).filter_by(brand_id=brand_id).filter_by(slug=slug)
+    ).one_or_none()
+
+    if db_gallery is None:
+        return None
+
+    return _db_entity_to_gallery(db_gallery)
+
+
 def get_galleries_for_brand(brand_id: BrandID) -> list[Gallery]:
     """Return all galeries for the brand."""
     db_galleries = (
