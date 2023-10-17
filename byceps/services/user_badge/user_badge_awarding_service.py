@@ -154,12 +154,3 @@ def get_badges_awarded_to_users(
             badges_by_awardee_id[awarding.awardee_id].add(badge)
 
     return dict(badges_by_awardee_id)
-
-
-def _db_entity_to_badge_awarding(entity: DbBadgeAwarding) -> BadgeAwarding:
-    return BadgeAwarding(
-        id=entity.id,
-        badge_id=entity.badge_id,
-        awardee_id=entity.awardee_id,
-        awarded_at=entity.awarded_at,
-    )
