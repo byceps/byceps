@@ -73,6 +73,14 @@ title = 'Zustimmungen verwalten'
 assigned_permissions = ['consent.administrate']
 
 [[roles]]
+id = 'gallery_admin'
+title = 'Galerien verwalten'
+assigned_permissions = [
+    'gallery.administrate',
+    'gallery.view_hidden',
+]
+
+[[roles]]
 id = 'guest_server_admin'
 title = 'Gastserver verwalten'
 assigned_permissions = [
