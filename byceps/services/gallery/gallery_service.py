@@ -77,16 +77,24 @@ def _get_db_gallery(gallery_id: GalleryID) -> DbGallery:
     return db_gallery
 
 
-def find_gallery_by_slug(brand_id: BrandID, slug: str) -> Gallery | None:
-    """Return the gallery of that brand and with that slug, if found."""
-    db_gallery = db.session.scalars(
-        select(DbGallery).filter_by(brand_id=brand_id).filter_by(slug=slug)
-    ).one_or_none()
+def find_gallery_by_slug_with_images(
+    brand_id: BrandID, slug: str
+) -> GalleryWithImages | None:
+    """Return the gallery of that brand and with that slug, if found,
+    with images.
+    """
+    db_gallery = (
+        db.session.scalars(
+            select(DbGallery).options(db.joinedload(DbGallery.images))
+        )
+        .unique()
+        .one_or_none()
+    )
 
     if db_gallery is None:
         return None
 
-    return _db_entity_to_gallery(db_gallery)
+    return _db_entity_to_gallery_with_images(db_gallery)
 
 
 def is_slug_available(brand_id: BrandID, slug: str) -> bool:
