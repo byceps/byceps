@@ -1,0 +1,50 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page = 'gallery_admin' %}
+{% set page_title = _('Galleries') %}
+
+{% block body %}
+
+  <div class="row row--space-between">
+    <div>
+      <h1>{{ page_title }} {{ render_extra_in_heading(galleries|length) }}</h1>
+    </div>
+  {%- if has_current_user_permission('gallery.administrate') %}
+    <div>
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.gallery_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
+      </div>
+    </div>
+  {%- endif %}
+  </div>
+
+  {%- if galleries %}
+  <div class="box">
+
+    <table class="index">
+      <thead>
+        <tr>
+          <th>{{ _('Slug') }}</th>
+          <th>{{ _('Title') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for gallery in galleries|sort(attribute='position') %}
+        <tr>
+          <td>{{ gallery.slug }}</td>
+          <td>{{ gallery.title }}</td>
+          <td>{% if gallery.hidden %}{{ render_tag(_('hidden')) }}{% endif %}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  {%- else %}
+  <div class="box">
+    <div class="dimmed-box centered">{{ _('None defined') }}</div>
+  </div>
+  {%- endif %}
+
+{%- endblock %}

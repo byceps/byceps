@@ -89,6 +89,17 @@ def find_gallery_by_slug(brand_id: BrandID, slug: str) -> Gallery | None:
     return _db_entity_to_gallery(db_gallery)
 
 
+def is_slug_available(brand_id: BrandID, slug: str) -> bool:
+    """Check if the slug is yet unused."""
+    return not db.session.scalar(
+        select(
+            db.exists()
+            .where(DbGallery.brand_id == brand_id)
+            .where(db.func.lower(DbGallery.slug) == slug.lower())
+        )
+    )
+
+
 def get_galleries_for_brand(brand_id: BrandID) -> list[Gallery]:
     """Return all galeries for the brand."""
     db_galleries = (
