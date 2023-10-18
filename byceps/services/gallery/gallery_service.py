@@ -117,7 +117,9 @@ def get_galleries_for_brand_with_images(
     """Return all galeries for the brand, with images."""
     db_galleries = (
         db.session.scalars(
-            select(DbGallery).filter_by(brand_id=brand_id).join(DbGalleryImage)
+            select(DbGallery)
+            .options(db.joinedload(DbGallery.images))
+            .filter(DbGallery.brand_id == brand_id)
         )
         .unique()
         .all()
