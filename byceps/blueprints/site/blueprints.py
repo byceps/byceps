@@ -30,6 +30,7 @@ def register_site_blueprints(
         ('site.consent', '/consent'),
         ('site.core', None),
         ('site.dashboard', '/dashboard'),
+        ('site.gallery', '/galleries'),
         ('site.guest_server', '/guest_servers'),
         ('site.homepage', '/'),
         ('site.news', '/news'),

@@ -1,0 +1,52 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
+{% set current_page = 'galleries' %}
+{% set page_title = [gallery.title, _('Galleries')] %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
+
+{% block head %}
+  <style>
+    .gallery-images {
+      --column-min-width: 270px;
+      display: grid;
+      grid-gap: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
+    }
+
+    .gallery-images li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+{%- endblock %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">{{ _('Galleries') }}</a></li>
+    </ol>
+  </nav>
+
+  <h1>{{ gallery.title }}{% if gallery.hidden %} {{ render_tag(_('hidden')) }}{% endif %}</h1>
+
+  <div class="main-body-box">
+    {%- if gallery.images %}
+    <ol class="gallery-images">
+      {%- for image in gallery.images|sort(attribute='position') %}
+      <li><a data-fslightbox="gallery-images" data-href="{{ image.filename_full }}"><img src="{{ image.filename_preview }}"></a></li>
+      {%- endfor %}
+    </ol>
+    {%- else %}
+    <p class="dimmed">{{ _('No images available.') }}</p>
+    {%- endif %}
+  </div>
+
+{%- endblock %}
