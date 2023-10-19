@@ -180,7 +180,7 @@ def _db_entity_to_gallery_with_images(
 
 
 def create_image(
-    gallery_id: GalleryID,
+    gallery: Gallery,
     filename_full: str,
     filename_preview: str,
     *,
@@ -188,16 +188,16 @@ def create_image(
     hidden: bool = False,
 ) -> GalleryImage:
     """Add an image to a gallery."""
-    db_gallery = _get_db_gallery(gallery_id)
+    db_gallery = _get_db_gallery(gallery.id)
 
     image = gallery_domain_service.create_image(
-        gallery_id, filename_full, filename_preview, caption, hidden
+        gallery, filename_full, filename_preview, caption, hidden
     )
 
     db_image = DbGalleryImage(
         image.id,
         image.created_at,
-        image.gallery_id,
+        image.gallery.id,
         image.filename_full,
         image.filename_preview,
         image.caption,
