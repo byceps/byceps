@@ -19,6 +19,8 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Topic :: Communications",
     "Topic :: Games/Entertainment",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Content Management System",
@@ -41,7 +43,7 @@ build-backend = "setuptools.build_meta"
 [tool.black]
 line-length = 80
 skip-string-normalization = true
-target-version = [ "py39" ]
+target-version = [ "py39", "py310", "py311" ]
 
 [tool.mypy]
 python_version = "3.9"
