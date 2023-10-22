@@ -209,8 +209,9 @@ def server_approve(server_id):
     result = guest_server_service.approve_server(server, initiator)
     if result.is_err():
         flash_error(result.unwrap_err())
-    else:
-        flash_success(gettext('Server has been approved.'))
+        return
+
+    flash_success(gettext('Server has been approved.'))
 
     _, event = result.unwrap()
 
@@ -228,8 +229,9 @@ def server_check_in(server_id):
     result = guest_server_service.check_in_server(server, initiator)
     if result.is_err():
         flash_error(result.unwrap_err())
-    else:
-        flash_success(gettext('Server has been checked in.'))
+        return
+
+    flash_success(gettext('Server has been checked in.'))
 
     _, event = result.unwrap()
 
@@ -247,8 +249,9 @@ def server_check_out(server_id):
     result = guest_server_service.check_out_server(server, initiator)
     if result.is_err():
         flash_error(result.unwrap_err())
-    else:
-        flash_success(gettext('Server has been checked out.'))
+        return
+
+    flash_success(gettext('Server has been checked out.'))
 
     _, event = result.unwrap()
 
