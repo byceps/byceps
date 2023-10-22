@@ -507,24 +507,25 @@ def get_users_paginated(
 def _filter_by_status(
     stmt: Select, status_filter: UserStatusFilter | None = None
 ) -> Select:
-    if status_filter == UserStatusFilter.active:
-        return (
-            stmt.filter_by(initialized=True)
-            .filter_by(suspended=False)
-            .filter_by(deleted=False)
-        )
-    elif status_filter == UserStatusFilter.uninitialized:
-        return (
-            stmt.filter_by(initialized=False)
-            .filter_by(suspended=False)
-            .filter_by(deleted=False)
-        )
-    elif status_filter == UserStatusFilter.suspended:
-        return stmt.filter_by(suspended=True).filter_by(deleted=False)
-    elif status_filter == UserStatusFilter.deleted:
-        return stmt.filter_by(deleted=True)
-    else:
-        return stmt
+    match status_filter:
+        case UserStatusFilter.active:
+            return (
+                stmt.filter_by(initialized=True)
+                .filter_by(suspended=False)
+                .filter_by(deleted=False)
+            )
+        case UserStatusFilter.uninitialized:
+            return (
+                stmt.filter_by(initialized=False)
+                .filter_by(suspended=False)
+                .filter_by(deleted=False)
+            )
+        case UserStatusFilter.suspended:
+            return stmt.filter_by(suspended=True).filter_by(deleted=False)
+        case UserStatusFilter.deleted:
+            return stmt.filter_by(deleted=True)
+        case _:
+            return stmt
 
 
 def _filter_by_search_term(stmt: Select, search_term: str) -> Select:
