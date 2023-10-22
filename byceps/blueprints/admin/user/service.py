@@ -38,7 +38,7 @@ from byceps.services.user_badge import user_badge_service
 
 
 @dataclass(frozen=True)
-class UserQuantitiesByState:
+class UserQuantitiesByStatus:
     active: int
     uninitialized: int
     suspended: int
@@ -46,9 +46,9 @@ class UserQuantitiesByState:
     total: int
 
 
-def get_user_quantities_by_state() -> UserQuantitiesByState:
-    """Return the quantities of users, grouped by account state."""
-    return UserQuantitiesByState(
+def get_user_quantities_by_status() -> UserQuantitiesByStatus:
+    """Return the quantities of users, grouped by account status."""
+    return UserQuantitiesByStatus(
         active=user_stats_service.count_active_users(),
         uninitialized=user_stats_service.count_uninitialized_users(),
         suspended=user_stats_service.count_suspended_users(),
