@@ -41,7 +41,7 @@ Make sure the correct version of Python is used:
 .. code-block:: sh
 
     (venv)$ python -V
-    Python 3.9.2
+    Python 3.11.2
 
 It's probably a good idea to update pip_ to the current version:
 

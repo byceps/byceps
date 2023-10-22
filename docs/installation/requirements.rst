@@ -1,7 +1,7 @@
 Requirements
 ============
 
-* Python_ 3.9 or higher
+* Python_ 3.10 or higher
 * PostgreSQL_ 13 or higher (for data persistence)
 * Redis_ 5.0 or higher (for the background job queue)
 * uWSGI_, Gunicorn_, *or* Waitress_ (as WSGI_ server)

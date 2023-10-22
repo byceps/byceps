@@ -3,7 +3,7 @@ name = "BYCEPS"
 version = "0.0"
 description = "LAN party web platform"
 readme = "README.rst"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { text = "Revised BSD License" }
 authors = [ { name = "Jochen \"Y0Gi\" Kupperschmidt", email = "homework@nwsnet.de" } ]
 keywords = [ "lanparty" ]
@@ -18,7 +18,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Topic :: Communications",
@@ -43,10 +42,10 @@ build-backend = "setuptools.build_meta"
 [tool.black]
 line-length = 80
 skip-string-normalization = true
-target-version = [ "py39", "py310", "py311" ]
+target-version = [ "py310", "py311" ]
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.10"
 plugins = "sqlalchemy.ext.mypy.plugin"
 ignore_missing_imports = true
 no_implicit_optional = true
