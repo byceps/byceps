@@ -35,6 +35,26 @@ BodyFormat = Enum('BodyFormat', ['html', 'markdown'])
 
 
 @dataclass(frozen=True)
+class PublicationStatus:
+    pass
+
+
+@dataclass(frozen=True)
+class PublicationStatusDraft(PublicationStatus):
+    pass
+
+
+@dataclass(frozen=True)
+class PublicationStatusScheduledForPublication(PublicationStatus):
+    pass
+
+
+@dataclass(frozen=True)
+class PublicationStatusPublished(PublicationStatus):
+    pass
+
+
+@dataclass(frozen=True)
 class NewsChannel:
     id: NewsChannelID
     brand_id: BrandID
@@ -71,6 +91,27 @@ class NewsItem:
     body_format: BodyFormat
     images: list[NewsImage]
     featured_image: NewsImage | None
+
+    @property
+    def publication_status(self) -> PublicationStatus:
+        if self.published_at is None:
+            return PublicationStatusDraft()
+        elif self.published_at > datetime.utcnow():
+            return PublicationStatusScheduledForPublication()
+        else:
+            return PublicationStatusPublished()
+
+    @property
+    def publication_status_name(self) -> str:
+        match self.publication_status:
+            case PublicationStatusDraft():
+                return 'draft'
+            case PublicationStatusScheduledForPublication():
+                return 'scheduled_for_publication'
+            case PublicationStatusPublished():
+                return 'published'
+            case _:
+                raise ValueError('unknown publication status')
 
 
 @dataclass(frozen=True)
