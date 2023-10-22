@@ -13,12 +13,11 @@ from __future__ import annotations
 from collections.abc import Iterable
 from importlib import import_module
 from types import ModuleType
-from typing import Optional
 
 from flask import Blueprint, Flask
 
 
-BlueprintReg = tuple[str, Optional[str]]
+BlueprintReg = tuple[str, str | None]
 
 
 def create_blueprint(name: str, import_name: str) -> Blueprint:

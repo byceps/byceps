@@ -10,7 +10,7 @@ Connect event signals to announcement handlers.
 
 from __future__ import annotations
 
-from typing import Callable, Optional
+from typing import Callable
 
 from blinker import NamedSignal
 
@@ -125,7 +125,7 @@ from .handlers import (
 
 AnnouncementEvent = type[_BaseEvent]
 AnnouncementEventHandler = Callable[
-    [str, _BaseEvent, OutgoingWebhook], Optional[Announcement]
+    [str, _BaseEvent, OutgoingWebhook], Announcement | None
 ]
 
 

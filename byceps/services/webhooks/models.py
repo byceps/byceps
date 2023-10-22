@@ -10,14 +10,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, NewType, Optional
+from typing import Any, NewType
 from uuid import UUID
 
 
 WebhookID = NewType('WebhookID', UUID)
 
 
-EventFilters = dict[str, Optional[dict[str, list[str]]]]
+EventFilters = dict[str, dict[str, list[str]] | None]
 
 
 @dataclass(frozen=True)
