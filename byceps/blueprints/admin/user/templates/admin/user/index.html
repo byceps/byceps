@@ -1,5 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/user.html' import render_user_flag_deleted, render_user_flag_suspended, render_user_flag_uninitialized, render_user_state_filter %}
+{% from 'macros/admin/user.html' import render_user_flag_deleted, render_user_flag_suspended, render_user_flag_uninitialized, render_user_status_filter %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
@@ -22,32 +22,32 @@
     {%- endif %}
   </div>
 
-  {%- if user_quantities_by_state %}
+  {%- if user_quantities_by_status %}
   <div class="box mb">
     <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
       <div>
         <a class="button button--clear" href="{{ url_for('.index') }}">
-          {{- render_bigstats_item(user_quantities_by_state.total|numberformat, '&sum; '|safe ~ _('total')) -}}
+          {{- render_bigstats_item(user_quantities_by_status.total|numberformat, '&sum; '|safe ~ _('total')) -}}
         </a>
       </div>
       <div>
         <a class="button button--clear" href="{{ url_for('.index', only='active') }}">
-          {{- render_bigstats_item(user_quantities_by_state.active|numberformat, render_tag(_('active'), class='color-success', icon='enabled')) -}}
+          {{- render_bigstats_item(user_quantities_by_status.active|numberformat, render_tag(_('active'), class='color-success', icon='enabled')) -}}
         </a>
       </div>
       <div>
         <a class="button button--clear" href="{{ url_for('.index', only='uninitialized') }}">
-          {{- render_bigstats_item(user_quantities_by_state.uninitialized|numberformat, render_user_flag_uninitialized()) -}}
+          {{- render_bigstats_item(user_quantities_by_status.uninitialized|numberformat, render_user_flag_uninitialized()) -}}
         </a>
       </div>
       <div>
         <a class="button button--clear" href="{{ url_for('.index', only='suspended') }}">
-          {{- render_bigstats_item(user_quantities_by_state.suspended|numberformat, render_user_flag_suspended()) -}}
+          {{- render_bigstats_item(user_quantities_by_status.suspended|numberformat, render_user_flag_suspended()) -}}
         </a>
       </div>
       <div>
         <a class="button button--clear" href="{{ url_for('.index', only='deleted') }}">
-          {{- render_bigstats_item(user_quantities_by_state.deleted|numberformat, render_user_flag_deleted()) -}}
+          {{- render_bigstats_item(user_quantities_by_status.deleted|numberformat, render_user_flag_deleted()) -}}
         </a>
       </div>
     </div>
@@ -69,13 +69,13 @@
       <div class="filter">
         <span>{{ render_icon('filter') }} {{ _('Filter') }}:</span>
         <div class="dropdown">
-          <button class="dropdown-toggle button button--clear">{{ render_user_state_filter(user_state_filter) }} {{ render_icon('chevron-down') }}</button>
+          <button class="dropdown-toggle button button--clear">{{ render_user_status_filter(user_status_filter) }} {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.index') }}">{{ render_user_state_filter(UserStateFilter.none) }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.index', only='active') }}">{{ render_user_state_filter(UserStateFilter.active) }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.index', only='uninitialized') }}">{{ render_user_state_filter(UserStateFilter.uninitialized) }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.index', only='suspended') }}">{{ render_user_state_filter(UserStateFilter.suspended) }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.index', only='deleted') }}">{{ render_user_state_filter(UserStateFilter.deleted) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index') }}">{{ render_user_status_filter(UserStatusFilter.none) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='active') }}">{{ render_user_status_filter(UserStatusFilter.active) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='uninitialized') }}">{{ render_user_status_filter(UserStatusFilter.uninitialized) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='suspended') }}">{{ render_user_status_filter(UserStatusFilter.suspended) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='deleted') }}">{{ render_user_status_filter(UserStatusFilter.deleted) }}</a></li>
           </ol>
         </div>
       </div>

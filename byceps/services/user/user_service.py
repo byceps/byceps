@@ -25,7 +25,7 @@ from .models.user import (
     UserEmailAddress,
     UserForAdmin,
     UserForAdminDetail,
-    UserStateFilter,
+    UserStatusFilter,
 )
 
 
@@ -478,7 +478,7 @@ def get_users_paginated(
     per_page: int,
     *,
     search_term: str | None = None,
-    state_filter: UserStateFilter | None = None,
+    status_filter: UserStatusFilter | None = None,
 ) -> Pagination:
     """Return the users to show on the specified page, optionally
     filtered by search term or flags.
@@ -494,7 +494,7 @@ def get_users_paginated(
         .order_by(DbUser.created_at.desc())
     )
 
-    stmt = _filter_by_state(stmt, state_filter)
+    stmt = _filter_by_status(stmt, status_filter)
 
     if search_term:
         stmt = _filter_by_search_term(stmt, search_term)
@@ -504,24 +504,24 @@ def get_users_paginated(
     )
 
 
-def _filter_by_state(
-    stmt: Select, state_filter: UserStateFilter | None = None
+def _filter_by_status(
+    stmt: Select, status_filter: UserStatusFilter | None = None
 ) -> Select:
-    if state_filter == UserStateFilter.active:
+    if status_filter == UserStatusFilter.active:
         return (
             stmt.filter_by(initialized=True)
             .filter_by(suspended=False)
             .filter_by(deleted=False)
         )
-    elif state_filter == UserStateFilter.uninitialized:
+    elif status_filter == UserStatusFilter.uninitialized:
         return (
             stmt.filter_by(initialized=False)
             .filter_by(suspended=False)
             .filter_by(deleted=False)
         )
-    elif state_filter == UserStateFilter.suspended:
+    elif status_filter == UserStatusFilter.suspended:
         return stmt.filter_by(suspended=True).filter_by(deleted=False)
-    elif state_filter == UserStateFilter.deleted:
+    elif status_filter == UserStatusFilter.deleted:
         return stmt.filter_by(deleted=True)
     else:
         return stmt

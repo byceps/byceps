@@ -29,7 +29,7 @@ from byceps.services.user import (
     user_email_address_service,
     user_service,
 )
-from byceps.services.user.models.user import UserForAdmin, UserStateFilter
+from byceps.services.user.models.user import UserForAdmin, UserStatusFilter
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.signals import authn as authn_signals
 from byceps.signals import authz as authz_signals
@@ -71,26 +71,29 @@ def index(page):
     search_term = request.args.get('search_term', default='').strip()
     only = request.args.get('only')
 
-    user_state_filter = UserStateFilter.__members__.get(
-        only, UserStateFilter.none
+    user_status_filter = UserStatusFilter.__members__.get(
+        only, UserStatusFilter.none
     )
 
     users = user_service.get_users_paginated(
-        page, per_page, search_term=search_term, state_filter=user_state_filter
+        page,
+        per_page,
+        search_term=search_term,
+        status_filter=user_status_filter,
     )
 
     if search_term:
-        user_quantities_by_state = None
+        user_quantities_by_status = None
     else:
-        user_quantities_by_state = service.get_user_quantities_by_state()
+        user_quantities_by_status = service.get_user_quantities_by_status()
 
     return {
         'users': users,
         'search_term': search_term,
         'only': only,
-        'UserStateFilter': UserStateFilter,
-        'user_state_filter': user_state_filter,
-        'user_quantities_by_state': user_quantities_by_state,
+        'UserStatusFilter': UserStatusFilter,
+        'user_status_filter': user_status_filter,
+        'user_quantities_by_status': user_quantities_by_status,
     }
 
 
