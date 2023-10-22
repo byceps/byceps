@@ -92,26 +92,36 @@ def enrich_log_entry_data(
 def _get_additional_data(
     log_entry: OrderLogEntry, users_by_id: dict[str, User]
 ) -> OrderLogEntryData:
-    if log_entry.event_type == 'badge-awarded':
-        return _get_additional_data_for_badge_awarded(log_entry)
-    elif log_entry.event_type == 'order-invoice-created':
-        return {}
-    elif log_entry.event_type == 'order-note-added':
-        return _get_additional_data_for_order_note_added(log_entry)
-    elif log_entry.event_type == 'ticket-bundle-created':
-        return _get_additional_data_for_ticket_bundle_created(log_entry)
-    elif log_entry.event_type == 'ticket-bundle-revoked':
-        return _get_additional_data_for_ticket_bundle_revoked(
-            log_entry, users_by_id
-        )
-    elif log_entry.event_type == 'ticket-created':
-        return _get_additional_data_for_ticket_created(log_entry)
-    elif log_entry.event_type == 'ticket-revoked':
-        return _get_additional_data_for_ticket_revoked(log_entry, users_by_id)
-    else:
-        return _get_additional_data_for_standard_log_entry(
-            log_entry, users_by_id
-        )
+    match log_entry.event_type:
+        case 'badge-awarded':
+            return _get_additional_data_for_badge_awarded(log_entry)
+
+        case 'order-invoice-created':
+            return {}
+
+        case 'order-note-added':
+            return _get_additional_data_for_order_note_added(log_entry)
+
+        case 'ticket-bundle-created':
+            return _get_additional_data_for_ticket_bundle_created(log_entry)
+
+        case 'ticket-bundle-revoked':
+            return _get_additional_data_for_ticket_bundle_revoked(
+                log_entry, users_by_id
+            )
+
+        case 'ticket-created':
+            return _get_additional_data_for_ticket_created(log_entry)
+
+        case 'ticket-revoked':
+            return _get_additional_data_for_ticket_revoked(
+                log_entry, users_by_id
+            )
+
+        case _:
+            return _get_additional_data_for_standard_log_entry(
+                log_entry, users_by_id
+            )
 
 
 def _get_additional_data_for_standard_log_entry(

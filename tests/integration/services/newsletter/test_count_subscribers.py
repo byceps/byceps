@@ -66,11 +66,12 @@ def subscribers(make_user, newsletter_list):
             # `(user_id, list_id)` pairs.
             expressed_at = datetime.utcnow()
 
-            if state == SubscriptionState.requested:
-                newsletter_command_service.subscribe(
-                    user, newsletter_list, expressed_at
-                ).unwrap()
-            elif state == SubscriptionState.declined:
-                newsletter_command_service.unsubscribe(
-                    user, newsletter_list, expressed_at
-                ).unwrap()
+            match state:
+                case SubscriptionState.requested:
+                    newsletter_command_service.subscribe(
+                        user, newsletter_list, expressed_at
+                    ).unwrap()
+                case SubscriptionState.declined:
+                    newsletter_command_service.unsubscribe(
+                        user, newsletter_list, expressed_at
+                    ).unwrap()

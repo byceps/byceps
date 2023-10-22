@@ -21,14 +21,15 @@ class Label:
 
 def _escape_label_value(value: str) -> str:
     def escape(char):
-        if char == '\\':
-            return r'\\'
-        elif char == '"':
-            return r'\"'
-        elif char == '\n':
-            return r'\n'
-        else:
-            return char
+        match char:
+            case '\\':
+                return r'\\'
+            case '"':
+                return r'\"'
+            case '\n':
+                return r'\n'
+            case _:
+                return char
 
     return ''.join(map(escape, value))
 

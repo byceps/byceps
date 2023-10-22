@@ -15,14 +15,14 @@ from byceps.util.sentry import configure_sentry_from_env
 
 configure_sentry_from_env()
 
-app_mode = os.environ.get('APP_MODE')
-if app_mode == 'admin':
-    app = create_admin_app()
-elif app_mode == 'api':
-    app = create_api_app()
-elif app_mode == 'site':
-    app = create_site_app()
-else:
-    raise ConfigurationError(
-        'Unknown or no app mode configured for configuration key "APP_MODE".'
-    )
+match os.environ.get('APP_MODE'):
+    case 'admin':
+        app = create_admin_app()
+    case 'api':
+        app = create_api_app()
+    case 'site':
+        app = create_site_app()
+    case _:
+        raise ConfigurationError(
+            'Unknown or no app mode configured for configuration key "APP_MODE".'
+        )

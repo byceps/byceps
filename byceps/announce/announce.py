@@ -118,36 +118,39 @@ def _assemble_request_data(
     if text_prefix:
         text = text_prefix + text
 
-    if webhook.format == 'discord':
-        return {'content': text}
+    match webhook.format:
+        case 'discord':
+            return {'content': text}
 
-    elif webhook.format == 'weitersager':
-        channel = webhook.extra_fields.get('channel')
-        if not channel:
-            current_app.logger.warning('No channel specified with IRC webhook.')
+        case 'weitersager':
+            channel = webhook.extra_fields.get('channel')
+            if not channel:
+                current_app.logger.warning(
+                    'No channel specified with IRC webhook.'
+                )
 
-        return {'channel': channel, 'text': text}
+            return {'channel': channel, 'text': text}
 
-    elif webhook.format == 'mattermost':
-        return {'text': text}
+        case 'mattermost':
+            return {'text': text}
 
-    elif webhook.format == 'matrix':
-        key = webhook.extra_fields.get('key')
-        if not key:
-            current_app.logger.warning(
-                'No API key specified with Matrix webhook.'
-            )
+        case 'matrix':
+            key = webhook.extra_fields.get('key')
+            if not key:
+                current_app.logger.warning(
+                    'No API key specified with Matrix webhook.'
+                )
 
-        room_id = webhook.extra_fields.get('room_id')
-        if not room_id:
-            current_app.logger.warning(
-                'No room ID specified with Matrix webhook.'
-            )
+            room_id = webhook.extra_fields.get('room_id')
+            if not room_id:
+                current_app.logger.warning(
+                    'No room ID specified with Matrix webhook.'
+                )
 
-        return {'key': key, 'room_id': room_id, 'text': text}
+            return {'key': key, 'room_id': room_id, 'text': text}
 
-    else:
-        return {}
+        case _:
+            return {}
 
 
 def announce(announcement_request: AnnouncementRequest) -> None:

@@ -63,18 +63,24 @@ def _to_item_for_rendering(site_id: str, item: NavItem) -> NavItemForRendering:
 
 
 def _assemble_target(site_id: str, item: NavItem) -> str:
-    target_type = item.target_type
-    if target_type == NavItemTargetType.endpoint:
-        return url_for(item.target)
-    elif target_type == NavItemTargetType.page:
-        return url_for_site_page(site_id, item.target)
-    elif target_type == NavItemTargetType.url:
-        return item.target
-    elif target_type == NavItemTargetType.view:
-        view_type = site_navigation_service.find_view_type_by_name(item.target)
-        if not view_type:
-            raise ValueError('Unknown view type')
+    match item.target_type:
+        case NavItemTargetType.endpoint:
+            return url_for(item.target)
 
-        return url_for(view_type.endpoint)
-    else:
-        raise ValueError('Unknown target type')
+        case NavItemTargetType.page:
+            return url_for_site_page(site_id, item.target)
+
+        case NavItemTargetType.url:
+            return item.target
+
+        case NavItemTargetType.view:
+            view_type = site_navigation_service.find_view_type_by_name(
+                item.target
+            )
+            if not view_type:
+                raise ValueError('Unknown view type')
+
+            return url_for(view_type.endpoint)
+
+        case _:
+            raise ValueError('Unknown target type')
