@@ -9,7 +9,7 @@ byceps.services.seating.models
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import NewType, Optional
+from typing import NewType
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -61,11 +61,10 @@ class SerializableSeatToImport(BaseModel):
     coord_x: int
     coord_y: int
     category_title: str
-    # Use `Optional` instead of `| None` for pydantic on Python 3.9.
-    rotation: Optional[int] = None  # noqa: UP007
-    label: Optional[str] = None  # noqa: UP007
-    type_: Optional[str] = None  # noqa: UP007
-    group_title: Optional[str] = None  # noqa: UP007
+    rotation: int | None = None
+    label: str | None = None
+    type_: str | None = None
+    group_title: str | None = None
 
 
 @dataclass(frozen=True)
