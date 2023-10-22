@@ -8,9 +8,9 @@ byceps.services.party.party_service
 
 from __future__ import annotations
 
+from collections.abc import Callable
 import dataclasses
 from datetime import date, datetime, timedelta
-from typing import Callable
 
 from sqlalchemy import delete, select
 

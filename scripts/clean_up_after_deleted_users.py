@@ -6,7 +6,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Callable
+from collections.abc import Callable
 
 import click
 from sqlalchemy import delete

@@ -10,7 +10,7 @@ Connect event signals to announcement handlers.
 
 from __future__ import annotations
 
-from typing import Callable
+from collections.abc import Callable
 
 from blinker import NamedSignal
 

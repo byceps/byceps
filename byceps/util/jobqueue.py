@@ -11,9 +11,9 @@ An asynchronously processed job queue based on Redis_ and RQ_.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Callable
 from contextlib import contextmanager
 from datetime import datetime, timezone
-from typing import Callable
 
 from flask import current_app
 from rq import Connection, Queue

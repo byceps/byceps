@@ -8,9 +8,9 @@ byceps.util.iterables
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator
+from collections.abc import Callable, Iterable, Iterator
 from itertools import tee
-from typing import Callable, TypeVar
+from typing import TypeVar
 
 
 T = TypeVar('T')

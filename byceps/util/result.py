@@ -10,8 +10,9 @@ A result wrapper that represents either the result value or an error.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Generic, Literal, TypeVar
+from typing import Generic, Literal, TypeVar
 from typing_extensions import Never
 
 

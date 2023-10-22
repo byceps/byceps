@@ -8,7 +8,7 @@ Utilities for scripts
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Callable
+from collections.abc import Callable
 
 from byceps.application import create_cli_app
 

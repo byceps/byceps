@@ -8,9 +8,9 @@ Notification e-mails about shop orders
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from functools import partial
-from typing import Callable
 
 from flask_babel import force_locale, format_date, gettext
 
