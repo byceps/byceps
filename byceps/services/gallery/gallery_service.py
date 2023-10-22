@@ -85,7 +85,10 @@ def find_gallery_by_slug_with_images(
     """
     db_gallery = (
         db.session.scalars(
-            select(DbGallery).options(db.joinedload(DbGallery.images))
+            select(DbGallery)
+            .options(db.joinedload(DbGallery.images))
+            .filter_by(brand_id=brand_id)
+            .filter_by(slug=slug)
         )
         .unique()
         .one_or_none()
