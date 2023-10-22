@@ -1,5 +1,5 @@
 {% extends 'layout/admin/guest_server.html' %}
-{% from 'macros/admin/guest_server.html' import get_server_state_color_name, render_gateway, render_hostname, render_ip_address, render_netmask, render_server_state %}
+{% from 'macros/admin/guest_server.html' import get_server_status_color_name, render_gateway, render_hostname, render_ip_address, render_netmask, render_server_status %}
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_avatar_and_name %}
@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div class="box box--marked {{ get_server_state_color_name(server) }}">
+  <div class="box box--marked {{ get_server_status_color_name(server) }}">
 
     <div class="row">
       <div style="flex-basis: 33%;">
@@ -34,7 +34,7 @@
 
         <div>
           <div class="data-label">{{ _('Status') }}</div>
-          <div class="data-value">{{ render_server_state(server) }}</div>
+          <div class="data-value">{{ render_server_status(server) }}</div>
         </div>
 
         {%- if has_current_user_permission('guest_server.administrate') %}

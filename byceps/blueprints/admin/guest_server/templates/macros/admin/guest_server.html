@@ -1,7 +1,7 @@
 {% from 'macros/misc.html' import render_tag %}
 
 
-{% macro get_server_state_color_name(server) %}
+{% macro get_server_status_color_name(server) %}
   {%- if server.checked_out -%}
     color-disabled
   {%- elif server.checked_in -%}
@@ -14,15 +14,15 @@
 {%- endmacro %}
 
 
-{% macro render_server_state(server) %}
+{% macro render_server_status(server) %}
   {%- if server.checked_out %}
-    {{ render_tag(_('checked out'), class=get_server_state_color_name(server)) }}
+    {{ render_tag(_('checked out'), class=get_server_status_color_name(server)) }}
   {%- elif server.checked_in %}
-    {{ render_tag(_('checked in'), class=get_server_state_color_name(server)) }}
+    {{ render_tag(_('checked in'), class=get_server_status_color_name(server)) }}
   {%- elif server.approved %}
-    {{ render_tag(_('approved'), class=get_server_state_color_name(server)) }}
+    {{ render_tag(_('approved'), class=get_server_status_color_name(server)) }}
   {%- else %}
-    {{ render_tag(_('pending'), class=get_server_state_color_name(server)) }}
+    {{ render_tag(_('pending'), class=get_server_status_color_name(server)) }}
   {%- endif -%}
 {%- endmacro %}
 

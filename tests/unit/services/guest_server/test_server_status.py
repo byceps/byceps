@@ -9,7 +9,7 @@ from datetime import datetime
 
 import pytest
 
-from byceps.services.guest_server.models import ServerState
+from byceps.services.guest_server.models import ServerStatus
 
 
 DATETIME = datetime.utcnow()
@@ -18,12 +18,12 @@ DATETIME = datetime.utcnow()
 @pytest.mark.parametrize(
     ('approved', 'checked_in_at', 'checked_out_at', 'expected'),
     [
-        (False, None, None, ServerState.pending),
-        (True, None, None, ServerState.approved),
-        (False, DATETIME, None, ServerState.checked_in),
-        (True, DATETIME, None, ServerState.checked_in),
-        (False, DATETIME, DATETIME, ServerState.checked_out),
-        (True, DATETIME, DATETIME, ServerState.checked_out),
+        (False, None, None, ServerStatus.pending),
+        (True, None, None, ServerStatus.approved),
+        (False, DATETIME, None, ServerStatus.checked_in),
+        (True, DATETIME, None, ServerStatus.checked_in),
+        (False, DATETIME, DATETIME, ServerStatus.checked_out),
+        (True, DATETIME, DATETIME, ServerStatus.checked_out),
     ],
 )
 def test_server_status(
@@ -31,7 +31,7 @@ def test_server_status(
     approved: bool,
     checked_in_at: datetime | None,
     checked_out_at: datetime | None,
-    expected: ServerState,
+    expected: ServerStatus,
 ):
     server = make_server(
         approved=approved,
@@ -39,4 +39,4 @@ def test_server_status(
         checked_out_at=checked_out_at,
     )
 
-    assert server.state == expected
+    assert server.status == expected

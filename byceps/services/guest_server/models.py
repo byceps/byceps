@@ -25,8 +25,8 @@ IPAddress = IPv4Address | IPv6Address
 ServerID = NewType('ServerID', UUID)
 
 
-ServerState = Enum(
-    'ServerState', ['pending', 'approved', 'checked_in', 'checked_out']
+ServerStatus = Enum(
+    'ServerStatus', ['pending', 'approved', 'checked_in', 'checked_out']
 )
 
 
@@ -61,19 +61,19 @@ class Server:
     addresses: set[Address]
 
     @property
-    def state(self) -> ServerState:
+    def status(self) -> ServerStatus:
         if self.checked_out:
-            return ServerState.checked_out
+            return ServerStatus.checked_out
         elif self.checked_in:
-            return ServerState.checked_in
+            return ServerStatus.checked_in
         elif self.approved:
-            return ServerState.approved
+            return ServerStatus.approved
         else:
-            return ServerState.pending
+            return ServerStatus.pending
 
 
 @dataclass(frozen=True)
-class ServerQuantitiesByState:
+class ServerQuantitiesByStatus:
     pending: int
     approved: int
     checked_in: int

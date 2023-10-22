@@ -38,8 +38,8 @@ from .models import (
     AddressID,
     Server,
     ServerID,
-    ServerQuantitiesByState,
-    ServerState,
+    ServerQuantitiesByStatus,
+    ServerStatus,
 )
 
 
@@ -271,16 +271,16 @@ def _build_guest_server_checked_out_event(
     )
 
 
-def get_server_quantities_by_state(
+def get_server_quantities_by_status(
     servers: list[Server],
-) -> ServerQuantitiesByState:
-    pending_quantity = _get_quantity_for_state(servers, ServerState.pending)
-    approved_quantity = _get_quantity_for_state(servers, ServerState.approved)
-    checked_in_quantity = _get_quantity_for_state(
-        servers, ServerState.checked_in
+) -> ServerQuantitiesByStatus:
+    pending_quantity = _get_quantity_for_status(servers, ServerStatus.pending)
+    approved_quantity = _get_quantity_for_status(servers, ServerStatus.approved)
+    checked_in_quantity = _get_quantity_for_status(
+        servers, ServerStatus.checked_in
     )
-    checked_out_quantity = _get_quantity_for_state(
-        servers, ServerState.checked_out
+    checked_out_quantity = _get_quantity_for_status(
+        servers, ServerStatus.checked_out
     )
 
     total = (
@@ -290,7 +290,7 @@ def get_server_quantities_by_state(
         + checked_out_quantity
     )
 
-    return ServerQuantitiesByState(
+    return ServerQuantitiesByStatus(
         pending=pending_quantity,
         approved=approved_quantity,
         checked_in=checked_in_quantity,
@@ -299,5 +299,7 @@ def get_server_quantities_by_state(
     )
 
 
-def _get_quantity_for_state(servers: list[Server], state: ServerState) -> int:
-    return sum(1 for s in servers if s.state == state)
+def _get_quantity_for_status(
+    servers: list[Server], status: ServerStatus
+) -> int:
+    return sum(1 for s in servers if s.status == status)

@@ -1,6 +1,6 @@
 {% extends 'layout/admin/guest_server.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/guest_server.html' import get_server_state_color_name, render_hostname, render_ip_address, render_server_state %}
+{% from 'macros/admin/guest_server.html' import get_server_status_color_name, render_hostname, render_ip_address, render_server_status %}
 {% from 'macros/misc.html' import render_distribution_bar, render_tag %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_avatar_and_name %}
@@ -28,28 +28,28 @@
   <div class="box">
 
     <div class="row row--equal-sized-centered-columns">
-      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_state.pending }}</strong><div>{{ render_tag(_('pending'), class='color-info') }}</div></div>
-      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_state.approved }}</strong><div>{{ render_tag(_('approved'), class='color-warning') }}</div></div>
-      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_state.checked_in }}</strong><div>{{ render_tag(_('checked in'), class='color-success') }}</div></div>
-      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_state.checked_out }}</strong><div>{{ render_tag(_('checked out'), class='color-disabled') }}</div></div>
+      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_status.pending }}</strong><div>{{ render_tag(_('pending'), class='color-info') }}</div></div>
+      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_status.approved }}</strong><div>{{ render_tag(_('approved'), class='color-warning') }}</div></div>
+      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_status.checked_in }}</strong><div>{{ render_tag(_('checked in'), class='color-success') }}</div></div>
+      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_status.checked_out }}</strong><div>{{ render_tag(_('checked out'), class='color-disabled') }}</div></div>
     </div>
 
     <div class="mt">
 {{ render_distribution_bar(
   [
-    (server_quantities_by_state.pending, 'color-info'),
-    (server_quantities_by_state.approved, 'color-warning'),
-    (server_quantities_by_state.checked_in, 'color-success'),
-    (server_quantities_by_state.checked_out, 'color-disabled'),
+    (server_quantities_by_status.pending, 'color-info'),
+    (server_quantities_by_status.approved, 'color-warning'),
+    (server_quantities_by_status.checked_in, 'color-success'),
+    (server_quantities_by_status.checked_out, 'color-disabled'),
   ],
-  server_quantities_by_state.total,
+  server_quantities_by_status.total,
 ) }}
     </div>
 
   </div>
 
     {%- for server in servers %}
-  <a href="{{ url_for('.server_view', server_id=server.id) }}" class="box box--marked {{ get_server_state_color_name(server) }}">
+  <a href="{{ url_for('.server_view', server_id=server.id) }}" class="box box--marked {{ get_server_status_color_name(server) }}">
 
     <div class="row">
       <div style="flex-basis: 33%;">
@@ -67,7 +67,7 @@
       <div style="flex-basis: 33%;">
 
         <div class="data-label">{{ _('Status') }}</div>
-        <div class="data-value">{{ render_server_state(server) }}</div>
+        <div class="data-value">{{ render_server_status(server) }}</div>
 
       </div>
     </div>
