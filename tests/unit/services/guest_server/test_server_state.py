@@ -9,8 +9,6 @@ from datetime import datetime
 
 import pytest
 
-from byceps.services.guest_server import guest_server_domain_service
-from byceps.services.guest_server.errors import AlreadyApprovedError
 from byceps.services.guest_server.models import ServerState
 
 
