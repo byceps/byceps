@@ -17,7 +17,7 @@ build:
         variables:
           SQLALCHEMY_DATABASE_URI: 'postgresql+psycopg2://scrutinizer:scrutinizer@127.0.0.1/scrutinizer'
       services:
-        postgres: 13
+        postgres: 15
       tests:
         override:
           - command: 'pytest --cov=byceps tests'
