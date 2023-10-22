@@ -7,14 +7,14 @@ byceps.util.image
 """
 
 from io import BytesIO
-from typing import BinaryIO, Union
+from typing import BinaryIO
 
 from PIL import Image, ImageFile
 
 from .models import Dimensions
 
 
-FilenameOrStream = Union[str, BinaryIO]
+FilenameOrStream = str | BinaryIO
 
 
 def read_dimensions(filename_or_stream: FilenameOrStream) -> Dimensions:

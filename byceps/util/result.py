@@ -11,7 +11,7 @@ A result wrapper that represents either the result value or an error.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Generic, Literal, TypeVar, Union
+from typing import Callable, Generic, Literal, TypeVar
 from typing_extensions import Never
 
 
@@ -90,7 +90,7 @@ class Err(Generic[E]):
         return f'Err({self._error})'
 
 
-Result = Union[Ok[T], Err[E]]
+Result = Ok[T] | Err[E]
 
 
 class UnwrapError(Exception):

@@ -12,14 +12,14 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from ipaddress import IPv4Address, IPv6Address
-from typing import NewType, Union
+from typing import NewType
 from uuid import UUID
 
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
 
 
-IPAddress = Union[IPv4Address, IPv6Address]
+IPAddress = IPv4Address | IPv6Address
 
 
 ServerID = NewType('ServerID', UUID)
