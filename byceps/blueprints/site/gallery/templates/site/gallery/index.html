@@ -4,6 +4,39 @@
 {% set current_page = 'galleries' %}
 {% set page_title = _('Galleries') %}
 
+{% block head %}
+<style>
+.gallery-covers {
+  --column-min-width: 270px;
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
+}
+
+.gallery-covers li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gallery-cover-image,
+.gallery-cover-text {
+  display: grid;
+  height: 100%;
+  place-items: center;
+}
+
+.gallery-cover-image img {
+  display: block;
+}
+
+.gallery-title {
+  margin-top: 0.25rem;
+  text-align: center;
+}
+</style>
+{%- endblock %}
+
 {% block subnav %}
   {%- if subnav_menu_id|default %}
 {{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
@@ -16,9 +49,18 @@
 
   <div class="main-body-box">
     {%- if galleries %}
-    <ol class="bare bare--spaced">
+    <ol class="gallery-covers">
       {%- for gallery in galleries %}
-        <li><a href="{{ url_for('.view', slug=gallery.slug) }}">{{ gallery.title }}</a>{% if gallery.hidden %} {{ render_tag(_('hidden')) }}{% endif %}</li>
+        <li>
+          <a href="{{ url_for('.view', slug=gallery.slug) }}" class="disguised">
+            {%- if gallery.title_image %}
+            <div class="gallery-cover-image"><img src="{{ gallery.title_image.url_path_preview }}"></div>
+            {%- else %}
+            <div class="gallery-cover-text">{{ _('No preview image')|dim }}</div>
+            {%- endif %}
+            <div class="gallery-title">{{ gallery.title }}{% if gallery.hidden %} {{ render_tag(_('hidden')) }}{% endif %}</div>
+          </a>
+        </li>
       {%- endfor %}
     </ol>
     {%- else %}
