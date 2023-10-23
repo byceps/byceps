@@ -34,13 +34,7 @@ def calculate_article_compilation_total_amount(
     the compilation.
     """
     cart = Cart(compilation._items[0].article.price.currency)
-    _copy_article_compilation_to_cart(compilation, cart)
-    return cart.calculate_total_amount()
 
-
-def _copy_article_compilation_to_cart(
-    compilation: ArticleCompilation, cart: Cart
-) -> None:
     for compilation_item in compilation:
         if compilation_item.fixed_quantity is None:
             raise ValueError(
@@ -48,3 +42,5 @@ def _copy_article_compilation_to_cart(
             )
 
         cart.add_item(compilation_item.article, compilation_item.fixed_quantity)
+
+    return cart.calculate_total_amount()
