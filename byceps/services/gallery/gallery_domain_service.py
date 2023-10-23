@@ -55,7 +55,9 @@ def create_image(
     return GalleryImage(
         id=image_id,
         created_at=datetime.utcnow(),
+        brand_id=gallery.brand_id,
         gallery_id=gallery.id,
+        gallery_slug=gallery.slug,
         filename_full=filename_full,
         filename_preview=filename_preview,
         caption=caption,

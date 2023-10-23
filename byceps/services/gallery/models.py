@@ -37,7 +37,9 @@ class Gallery:
 class GalleryImage:
     id: GalleryImageID
     created_at: datetime
+    brand_id: BrandID
     gallery_id: GalleryID
+    gallery_slug: str
     filename_full: str
     filename_preview: str
     caption: str | None

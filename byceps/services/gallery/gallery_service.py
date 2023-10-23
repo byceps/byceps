@@ -162,7 +162,10 @@ def _db_entity_to_gallery_with_images(
 ) -> GalleryWithImages:
     title_image = _find_title_image(db_gallery)
 
-    images = [_db_entity_to_image(db_image) for db_image in db_gallery.images]
+    images = [
+        _db_entity_to_image(db_image, db_gallery)
+        for db_image in db_gallery.images
+    ]
     images.sort(key=lambda image: image.position)
 
     return GalleryWithImages(
@@ -210,14 +213,18 @@ def create_image(
 
     db.session.commit()
 
-    return _db_entity_to_image(db_image)
+    return _db_entity_to_image(db_image, db_gallery)
 
 
-def _db_entity_to_image(db_image: DbGalleryImage) -> GalleryImage:
+def _db_entity_to_image(
+    db_image: DbGalleryImage, db_gallery: DbGallery
+) -> GalleryImage:
     return GalleryImage(
         id=db_image.id,
         created_at=db_image.created_at,
+        brand_id=db_gallery.brand_id,
         gallery_id=db_image.gallery_id,
+        gallery_slug=db_gallery.slug,
         position=db_image.position,
         filename_full=db_image.filename_full,
         filename_preview=db_image.filename_preview,
@@ -231,4 +238,4 @@ def _find_title_image(db_gallery: DbGallery) -> GalleryImage | None:
     if not db_title_image:
         return None
 
-    return _db_entity_to_image(db_title_image)
+    return _db_entity_to_image(db_title_image, db_gallery)
