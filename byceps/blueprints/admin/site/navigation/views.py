@@ -297,42 +297,51 @@ def item_create(menu_id, target_type_name):
     except KeyError:
         abort(400, f'Unknown target type "{target_type_name}"')
 
-    if target_type == NavItemTargetType.page:
-        form = ItemCreatePageForm(request.form)
-        form.set_page_choices(menu.site_id)
-    elif target_type == NavItemTargetType.url:
-        form = ItemCreateUrlForm(request.form)
-    elif target_type == NavItemTargetType.view:
-        form = ItemCreateViewForm(request.form)
-        form.set_view_type_choices()
+    match target_type:
+        case NavItemTargetType.page:
+            form = ItemCreatePageForm(request.form)
+            form.set_page_choices(menu.site_id)
+
+        case NavItemTargetType.url:
+            form = ItemCreateUrlForm(request.form)
+
+        case NavItemTargetType.view:
+            form = ItemCreateViewForm(request.form)
+            form.set_view_type_choices()
 
     if not form.validate():
-        if target_type == NavItemTargetType.page:
-            form_view = item_create_page_form
-        elif target_type == NavItemTargetType.url:
-            form_view = item_create_url_form
-        elif target_type == NavItemTargetType.view:
-            form_view = item_create_view_form
+        match target_type:
+            case NavItemTargetType.page:
+                form_view = item_create_page_form
+
+            case NavItemTargetType.url:
+                form_view = item_create_url_form
+
+            case NavItemTargetType.view:
+                form_view = item_create_view_form
 
         return form_view(menu.id, form)
 
-    if target_type == NavItemTargetType.page:
-        page = page_service.get_page(form.target_page_id.data)
-        target = page.name
-        current_page_id = page.current_page_id
-    elif target_type == NavItemTargetType.url:
-        target = form.target_url.data.strip()
-        current_page_id = form.current_page_id.data.strip()
-    elif target_type == NavItemTargetType.view:
-        view_type_name = form.target_view_type.data
-        view_type = site_navigation_service.find_view_type_by_name(
-            view_type_name
-        )
-        if not view_type:
-            abort(400, f'Unknown view type "{view_type_name}"')
+    match target_type:
+        case NavItemTargetType.page:
+            page = page_service.get_page(form.target_page_id.data)
+            target = page.name
+            current_page_id = page.current_page_id
 
-        target = view_type.name
-        current_page_id = view_type.current_page_id
+        case NavItemTargetType.url:
+            target = form.target_url.data.strip()
+            current_page_id = form.current_page_id.data.strip()
+
+        case NavItemTargetType.view:
+            view_type_name = form.target_view_type.data
+            view_type = site_navigation_service.find_view_type_by_name(
+                view_type_name
+            )
+            if not view_type:
+                abort(400, f'Unknown view type "{view_type_name}"')
+
+            target = view_type.name
+            current_page_id = view_type.current_page_id
 
     label = form.label.data.strip()
     hidden = form.hidden.data
