@@ -46,6 +46,18 @@ class GalleryImage:
     position: int
     hidden: bool
 
+    @property
+    def _url_path_base(self) -> str:
+        return f'/data/brands/{self.brand_id}/galleries/{self.gallery_slug}'
+
+    @property
+    def url_path_full(self) -> str:
+        return f'{self._url_path_base}/{self.filename_full}'
+
+    @property
+    def url_path_preview(self) -> str:
+        return f'{self._url_path_base}/{self.filename_preview}'
+
 
 @dataclass(frozen=True)
 class GalleryWithImages(Gallery):
