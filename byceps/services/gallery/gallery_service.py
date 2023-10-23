@@ -200,7 +200,7 @@ def create_image(
     db_image = DbGalleryImage(
         image.id,
         image.created_at,
-        image.gallery.id,
+        image.gallery_id,
         image.filename_full,
         image.filename_preview,
         image.caption,
