@@ -54,7 +54,7 @@
         <li>
           <a href="{{ url_for('.view', slug=gallery.slug) }}" class="disguised">
             {%- if gallery.title_image %}
-            <div class="gallery-cover-image"><img src="{{ gallery.title_image.url_path_preview }}"></div>
+            <div class="gallery-cover-image"><img src="{{ gallery.title_image.url_path_preview }}" loading="lazy"></div>
             {%- else %}
             <div class="gallery-cover-text">{{ _('No preview image')|dim }}</div>
             {%- endif %}
