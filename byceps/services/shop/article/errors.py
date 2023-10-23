@@ -7,5 +7,9 @@ byceps.services.shop.article.errors
 """
 
 
+class NoArticlesAvailableError:
+    pass
+
+
 class SomeArticlesLackFixedQuantityError:
     pass

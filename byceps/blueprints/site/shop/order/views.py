@@ -13,6 +13,7 @@ from moneyed import Currency
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.country import country_service
 from byceps.services.shop.article import article_domain_service, article_service
+from byceps.services.shop.article.errors import NoArticlesAvailableError
 from byceps.services.shop.article.models import ArticleCompilation
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
@@ -53,13 +54,21 @@ def order_form(erroneous_form=None):
         flash_notice(gettext('The shop is closed.'))
         return {'article_compilation': None}
 
-    article_compilation = (
+    article_compilation_result = (
         article_service.get_article_compilation_for_orderable_articles(shop.id)
     )
 
-    if article_compilation.is_empty():
-        flash_error(gettext('No articles are available.'))
-        return {'article_compilation': None}
+    match article_compilation_result:
+        case Err(e):
+            if isinstance(e, NoArticlesAvailableError):
+                error_message = gettext('No articles are available.')
+            else:
+                error_message = gettext('An unknown error has occurred.')
+
+            flash_error(error_message)
+            return {'article_compilation': None}
+
+    article_compilation = article_compilation_result.unwrap()
 
     if not g.user.authenticated:
         return list_articles(article_compilation)
@@ -102,13 +111,21 @@ def order():
         flash_notice(gettext('The shop is closed.'))
         return order_form()
 
-    article_compilation = (
+    article_compilation_result = (
         article_service.get_article_compilation_for_orderable_articles(shop.id)
     )
 
-    if article_compilation.is_empty():
-        flash_error(gettext('No articles are available.'))
-        return order_form()
+    match article_compilation_result:
+        case Err(e):
+            if isinstance(e, NoArticlesAvailableError):
+                error_message = gettext('No articles are available.')
+            else:
+                error_message = gettext('An unknown error has occurred.')
+
+            flash_error(error_message)
+            return order_form()
+
+    article_compilation = article_compilation_result.unwrap()
 
     ArticlesOrderForm = assemble_articles_order_form(article_compilation)
     form = ArticlesOrderForm(request.form)

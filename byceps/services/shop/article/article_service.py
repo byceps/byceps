@@ -23,9 +23,11 @@ from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels.article import DbArticle
 from .dbmodels.attached_article import DbAttachedArticle
+from .errors import NoArticlesAvailableError
 from .models import (
     Article,
     ArticleCompilation,
@@ -415,7 +417,7 @@ def _generate_search_clauses_for_term(search_term: str) -> Select:
 
 def get_article_compilation_for_orderable_articles(
     shop_id: ShopID,
-) -> ArticleCompilation:
+) -> Result[ArticleCompilation, NoArticlesAvailableError]:
     """Return a compilation of the articles which can be ordered from
     that shop, less the ones that are only orderable in a dedicated
     order.
@@ -455,7 +457,10 @@ def get_article_compilation_for_orderable_articles(
             compilation, db_article.attached_articles
         )
 
-    return compilation
+    if compilation.is_empty():
+        return Err(NoArticlesAvailableError())
+
+    return Ok(compilation)
 
 
 def get_article_compilation_for_single_article(
