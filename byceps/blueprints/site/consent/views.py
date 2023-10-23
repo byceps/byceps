@@ -53,7 +53,7 @@ def consent_form(token, *, erroneous_form=None):
 def _get_subjects_and_fields(subjects, form):
     field_names = [get_subject_field_name(subject) for subject in subjects]
     fields = [getattr(form, field_name) for field_name in field_names]
-    return list(zip(subjects, fields))
+    return list(zip(subjects, fields, strict=True))
 
 
 @blueprint.post('/consent/<token>')

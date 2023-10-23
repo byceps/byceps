@@ -145,7 +145,7 @@ def _occupy_seats(
     db_seats = _sort_seats(db_seats)
     db_tickets = _sort_tickets(db_tickets)
 
-    for seat, ticket in zip(db_seats, db_tickets):
+    for seat, ticket in zip(db_seats, db_tickets, strict=True):
         ticket.occupied_seat = seat
 
 

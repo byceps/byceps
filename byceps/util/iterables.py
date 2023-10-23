@@ -56,7 +56,7 @@ def pairwise(iterable: Iterable[T]) -> Iterator[tuple[T, T]]:
     """
     a, b = tee(iterable)
     next(b, None)
-    return zip(a, b)
+    return zip(a, b, strict=False)
 
 
 def partition(

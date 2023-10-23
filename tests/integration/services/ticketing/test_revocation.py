@@ -166,7 +166,7 @@ def test_revoke_tickets_with_seats(
 ):
     ticket_ids = {ticket.id for ticket in tickets}
 
-    for ticket, seat in zip(tickets, seats):
+    for ticket, seat in zip(tickets, seats, strict=True):
         ticket_seat_management_service.occupy_seat(
             ticket.id, seat.id, ticket.owned_by_id
         ).unwrap()
