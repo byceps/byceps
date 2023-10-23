@@ -10,7 +10,7 @@ from datetime import datetime
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.shop.article import article_service
+from byceps.services.shop.article import article_domain_service
 
 
 @pytest.mark.parametrize(
@@ -32,7 +32,9 @@ def test_is_available_with_start_and_end(make_article, now, expected):
     )
 
     with freeze_time(now):
-        assert article_service.is_article_available_now(article) == expected
+        assert (
+            article_domain_service.is_article_available_now(article) == expected
+        )
 
 
 @pytest.mark.parametrize(
@@ -53,7 +55,9 @@ def test_is_available_with_start_and_without_end(make_article, now, expected):
     )
 
     with freeze_time(now):
-        assert article_service.is_article_available_now(article) == expected
+        assert (
+            article_domain_service.is_article_available_now(article) == expected
+        )
 
 
 @pytest.mark.parametrize(
@@ -74,7 +78,9 @@ def test_is_available_without_start_and_with_end(make_article, now, expected):
     )
 
     with freeze_time(now):
-        assert article_service.is_article_available_now(article) == expected
+        assert (
+            article_domain_service.is_article_available_now(article) == expected
+        )
 
 
 @pytest.mark.parametrize(
@@ -95,4 +101,6 @@ def test_is_available_without_start_and_without_end(
     article = make_article()
 
     with freeze_time(now):
-        assert article_service.is_article_available_now(article) == expected
+        assert (
+            article_domain_service.is_article_available_now(article) == expected
+        )

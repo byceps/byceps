@@ -12,7 +12,7 @@ from moneyed import Currency
 
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.country import country_service
-from byceps.services.shop.article import article_service
+from byceps.services.shop.article import article_domain_service, article_service
 from byceps.services.shop.article.models import ArticleCompilation
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
@@ -179,8 +179,9 @@ def order_single_form(article_id, erroneous_form=None):
             'article': None,
         }
 
-    if article.quantity < 1 or not article_service.is_article_available_now(
-        article
+    if (
+        article.quantity < 1
+        or not article_domain_service.is_article_available_now(article)
     ):
         flash_error(gettext('The article is not available.'))
         return {
@@ -223,8 +224,9 @@ def order_single(article_id):
         flash_error(gettext('You cannot place another order.'))
         return order_single_form(article.id)
 
-    if article.quantity < 1 or not article_service.is_article_available_now(
-        article
+    if (
+        article.quantity < 1
+        or not article_domain_service.is_article_available_now(article)
     ):
         flash_error(gettext('The article is not available.'))
         return order_single_form(article.id)
