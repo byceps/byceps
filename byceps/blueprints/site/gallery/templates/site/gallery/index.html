@@ -4,36 +4,6 @@
 {% set current_page = 'galleries' %}
 {% set page_title = _('Galleries') %}
 
-{% block head %}
-<style>
-.gallery-covers {
-  --column-min-width: 240px;
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.gallery-cover-image,
-.gallery-cover-text {
-  display: grid;
-  height: 100%;
-  place-items: center;
-}
-
-.gallery-cover-image img {
-  display: block;
-}
-
-.gallery-title {
-  margin-top: 0.25rem;
-  text-align: center;
-}
-</style>
-{%- endblock %}
-
 {% block subnav %}
   {%- if subnav_menu_id|default %}
 {{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
