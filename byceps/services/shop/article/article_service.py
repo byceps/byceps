@@ -454,10 +454,8 @@ def get_article_compilation_for_orderable_articles(
         article = _db_entity_to_article(db_article)
         compilation_builder.append_article(article)
 
-        for db_attached_article in db_article.attached_articles:
-            attached_article = _db_entity_to_article(
-                db_attached_article.article
-            )
+        attached_articles = _get_attached_articles(db_article)
+        for attached_article in attached_articles:
             compilation_builder.append_article(
                 attached_article, fixed_quantity=attached_article.quantity
             )
@@ -480,8 +478,8 @@ def get_article_compilation_for_single_article(
     article = _db_entity_to_article(db_article)
     compilation_builder.append_article(article, fixed_quantity=1)
 
-    for db_attached_article in db_article.attached_articles:
-        attached_article = _db_entity_to_article(db_attached_article.article)
+    attached_articles = _get_attached_articles(db_article)
+    for attached_article in attached_articles:
         compilation_builder.append_article(
             attached_article, fixed_quantity=attached_article.quantity
         )
@@ -517,10 +515,11 @@ def get_article_compilations_for_single_articles(
         db_attached_articles = attached_articles_by_attached_to_article_id[
             db_article.id
         ]
-        for db_attached_article in db_attached_articles:
-            attached_article = _db_entity_to_article(
-                db_attached_article.article
-            )
+        attached_articles = [
+            _db_entity_to_article(db_attached_article.article)
+            for db_attached_article in db_attached_articles
+        ]
+        for attached_article in attached_articles:
             compilation_builder.append_article(
                 attached_article, fixed_quantity=attached_article.quantity
             )
@@ -640,3 +639,10 @@ def _db_entity_to_article(db_article: DbArticle) -> Article:
         separate_order_required=db_article.separate_order_required,
         processing_required=db_article.processing_required,
     )
+
+
+def _get_attached_articles(db_article: DbArticle) -> list[Article]:
+    return [
+        _db_entity_to_article(db_attached_article.article)
+        for db_attached_article in db_article.attached_articles
+    ]
