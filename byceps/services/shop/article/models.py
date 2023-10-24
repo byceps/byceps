@@ -100,16 +100,11 @@ class ArticleCompilationItem:
 
 
 class ArticleCompilation:
-    def __init__(
-        self, items: list[ArticleCompilationItem] | None = None
-    ) -> None:
+    def __init__(self, items: list[ArticleCompilationItem]) -> None:
         self._items: list[ArticleCompilationItem] = []
 
         if items is not None:
             self._items.extend(items)
-
-    def append(self, item: ArticleCompilationItem) -> ArticleCompilation:
-        return ArticleCompilation(self._items + [item])
 
     def __iter__(self) -> Iterator[ArticleCompilationItem]:
         return iter(self._items)
