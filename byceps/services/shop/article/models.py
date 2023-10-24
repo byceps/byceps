@@ -101,10 +101,10 @@ class ArticleCompilationItem:
 
 class ArticleCompilation:
     def __init__(self, items: list[ArticleCompilationItem]) -> None:
-        self._items: list[ArticleCompilationItem] = []
+        if not items:
+            raise ValueError('Article compilation must not be empty')
 
-        if items is not None:
-            self._items.extend(items)
+        self._items = list(items)
 
     def __iter__(self) -> Iterator[ArticleCompilationItem]:
         return iter(self._items)
