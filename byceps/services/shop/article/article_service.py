@@ -445,6 +445,9 @@ def get_article_compilation_for_orderable_articles(
         .order_by(DbArticle.description)
     ).all()
 
+    if not db_orderable_articles:
+        return Err(NoArticlesAvailableError())
+
     compilation_builder = ArticleCompilationBuilder()
 
     for db_article in db_orderable_articles:
@@ -460,9 +463,6 @@ def get_article_compilation_for_orderable_articles(
             )
 
     compilation = compilation_builder.build()
-
-    if compilation.is_empty():
-        return Err(NoArticlesAvailableError())
 
     return Ok(compilation)
 

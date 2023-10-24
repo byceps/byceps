@@ -109,9 +109,6 @@ class ArticleCompilation:
     def __iter__(self) -> Iterator[ArticleCompilationItem]:
         return iter(self._items)
 
-    def is_empty(self) -> bool:
-        return not self._items
-
 
 class ArticleCompilationBuilder:
     def __init__(self) -> None:
