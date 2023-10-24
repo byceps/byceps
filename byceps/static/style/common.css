@@ -1045,6 +1045,11 @@ img {
   max-width: 100%;
 }
 
+img.framed {
+  border: var(--dimmed-color) solid 1px;
+  box-sizing: content-box;
+}
+
 ol.bare,
 ul.bare {
   list-style: none;
