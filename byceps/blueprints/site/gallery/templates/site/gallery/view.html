@@ -13,13 +13,10 @@
 {% block head %}
 <style>
 .gallery-images {
-  --column-min-width: 270px;
+  --column-min-width: 240px;
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
-}
-
-.gallery-images li {
   list-style: none;
   margin: 0;
   padding: 0;
