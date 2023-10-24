@@ -116,3 +116,17 @@ class ArticleCompilation:
 
     def is_empty(self) -> bool:
         return not self._items
+
+
+class ArticleCompilationBuilder:
+    def __init__(self) -> None:
+        self._items: list[ArticleCompilationItem] = []
+
+    def append_article(
+        self, article: Article, *, fixed_quantity: int | None = None
+    ) -> None:
+        item = ArticleCompilationItem(article, fixed_quantity=fixed_quantity)
+        self._items.append(item)
+
+    def build(self) -> ArticleCompilation:
+        return ArticleCompilation(self._items)

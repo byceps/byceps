@@ -9,7 +9,6 @@ byceps.services.shop.article.article_service
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Iterable
 from datetime import datetime
 from decimal import Decimal
 
@@ -31,7 +30,7 @@ from .errors import NoArticlesAvailableError
 from .models import (
     Article,
     ArticleCompilation,
-    ArticleCompilationItem,
+    ArticleCompilationBuilder,
     ArticleID,
     ArticleNumber,
     ArticleType,
@@ -446,16 +445,21 @@ def get_article_compilation_for_orderable_articles(
         .order_by(DbArticle.description)
     ).all()
 
-    compilation = ArticleCompilation()
+    compilation_builder = ArticleCompilationBuilder()
 
     for db_article in db_orderable_articles:
-        compilation = compilation.append(
-            ArticleCompilationItem(_db_entity_to_article(db_article))
-        )
+        article = _db_entity_to_article(db_article)
+        compilation_builder.append_article(article)
 
-        compilation = _add_attached_articles(
-            compilation, db_article.attached_articles
-        )
+        for db_attached_article in db_article.attached_articles:
+            attached_article = _db_entity_to_article(
+                db_attached_article.article
+            )
+            compilation_builder.append_article(
+                attached_article, fixed_quantity=attached_article.quantity
+            )
+
+    compilation = compilation_builder.build()
 
     if compilation.is_empty():
         return Err(NoArticlesAvailableError())
@@ -471,19 +475,18 @@ def get_article_compilation_for_single_article(
     """
     db_article = _get_db_article(article_id)
 
-    compilation = ArticleCompilation()
+    compilation_builder = ArticleCompilationBuilder()
 
-    compilation = compilation.append(
-        ArticleCompilationItem(
-            _db_entity_to_article(db_article), fixed_quantity=1
+    article = _db_entity_to_article(db_article)
+    compilation_builder.append_article(article, fixed_quantity=1)
+
+    for db_attached_article in db_article.attached_articles:
+        attached_article = _db_entity_to_article(db_attached_article.article)
+        compilation_builder.append_article(
+            attached_article, fixed_quantity=attached_article.quantity
         )
-    )
 
-    compilation = _add_attached_articles(
-        compilation, db_article.attached_articles
-    )
-
-    return compilation
+    return compilation_builder.build()
 
 
 def get_article_compilations_for_single_articles(
@@ -506,38 +509,27 @@ def get_article_compilations_for_single_articles(
     )
 
     for db_article in db_articles:
+        compilation_builder = ArticleCompilationBuilder()
+
         article = _db_entity_to_article(db_article)
-
-        compilation = ArticleCompilation()
-
-        compilation = compilation.append(
-            ArticleCompilationItem(article, fixed_quantity=1)
-        )
+        compilation_builder.append_article(article, fixed_quantity=1)
 
         db_attached_articles = attached_articles_by_attached_to_article_id[
             db_article.id
         ]
-        compilation = _add_attached_articles(compilation, db_attached_articles)
+        for db_attached_article in db_attached_articles:
+            attached_article = _db_entity_to_article(
+                db_attached_article.article
+            )
+            compilation_builder.append_article(
+                attached_article, fixed_quantity=attached_article.quantity
+            )
+
+        compilation = compilation_builder.build()
 
         compilations_by_article_id[article.id] = compilation
 
     return compilations_by_article_id
-
-
-def _add_attached_articles(
-    compilation: ArticleCompilation,
-    attached_articles: Iterable[DbAttachedArticle],
-) -> ArticleCompilation:
-    """Add the attached articles to the compilation."""
-    for attached_article in attached_articles:
-        compilation = compilation.append(
-            ArticleCompilationItem(
-                _db_entity_to_article(attached_article.article),
-                fixed_quantity=attached_article.quantity,
-            )
-        )
-
-    return compilation
 
 
 def get_attachable_articles(article_id: ArticleID) -> list[Article]:
