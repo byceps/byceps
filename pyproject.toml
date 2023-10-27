@@ -55,6 +55,7 @@ addopts = "-vv -ra"
 testpaths = [ "tests/unit", "tests/integration" ]
 
 [tool.ruff]
+line-length = 80
 select = [
     "B",
     "E",
@@ -77,12 +78,18 @@ select = [
 ]
 ignore = [
     "E501",  # Line too long
+    "ISC001",  # Conflict with Ruff's formatter
+    "Q001",  # Conflict with Ruff's formatter
     "W291",  # Trailing whitespace (because of email signature, `-- `)
 ]
 
 [tool.ruff.flake8-quotes]
 inline-quotes = "single"
 multiline-quotes = "single"
+
+[tool.ruff.format]
+quote-style = "single"
+line-ending = "lf"
 
 [tool.ruff.isort]
 combine-as-imports = true
