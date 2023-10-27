@@ -643,14 +643,18 @@ form.board-posting-create-form-inline .label {
 
 /* gallery */
 
-.gallery-covers {
-  --column-min-width: 240px;
+.gallery-covers,
+.gallery-images {
   display: grid;
-  grid-gap: 2rem;
+  grid-gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.gallery-covers {
+  --column-min-width: 240px;
 }
 
 .gallery-cover-image,
@@ -660,23 +664,18 @@ form.board-posting-create-form-inline .label {
   place-items: center;
 }
 
-.gallery-cover-image img {
-  display: block;
-}
-
 .gallery-title {
   margin-top: 0.25rem;
   text-align: center;
 }
 
 .gallery-images {
-  --column-min-width: 240px;
-  display: grid;
-  grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  --column-min-width: 135px;
+}
+
+.gallery-cover-image img,
+.gallery-images img {
+  display: block;
 }
 
 
