@@ -132,14 +132,14 @@ CHARS_TO_VALUES = {char: value for value, char, _ in VALUES_CHARS_WIDTHS}
 
 
 SVG_TEMPLATE = Template(
-    '''
+    """
 <svg xmlns="http://www.w3.org/2000/svg" width="{{ image_width }}" height="{{ image_height }}" viewBox="0 0 {{ image_width }} {{ image_height }}">
   <rect width="{{ image_width }}" height="{{ image_height }}" fill="white"/>
   {%- for bar_x, bar_width in bars %}
   <rect x="{{ bar_x }}" width="{{ bar_width }}" height="{{ image_height }}"/>
   {%- endfor %}
 </svg>
-'''.strip()
+""".strip()
 )
 
 

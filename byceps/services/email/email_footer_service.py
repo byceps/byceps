@@ -28,7 +28,7 @@ def create_footers(
     language_codes_and_bodies = [
         (
             'en',
-            f'''
+            f"""
 We are happy to answer your questions.
 
 Have a nice day,
@@ -38,11 +38,11 @@ the team of {brand.title}
 {brand.title}
 
 Email: {contact_address}
-        '''.strip(),
+        """.strip(),
         ),
         (
             'de',
-            f'''
+            f"""
 Für Fragen stehen wir gerne zur Verfügung.
 
 Viele Grüße,
@@ -52,7 +52,7 @@ das Team der {brand.title}
 {brand.title}
 
 E-Mail: {contact_address}
-        '''.strip(),
+        """.strip(),
         ),
     ]
 

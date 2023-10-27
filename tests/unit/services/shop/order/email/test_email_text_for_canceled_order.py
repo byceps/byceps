@@ -41,9 +41,9 @@ def test_assemble_text_for_canceled_order_to_orderer(
     )
     assert (
         actual.body_main_part
-        == '''
+        == """
 deine Bestellung mit der Nummer CD-22-B00017 vom 06.11.2014 wurde von uns aus folgendem Grund storniert:
 
 Du hast nicht rechtzeitig bezahlt.
-    '''.strip()
+    """.strip()
     )

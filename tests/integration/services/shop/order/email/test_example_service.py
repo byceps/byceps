@@ -24,7 +24,7 @@ SENDER = NameAndAddress(None, 'noreply@acmecon.test')
     [
         (
             'de',
-            '''\
+            """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: Deine Bestellung (AWSM-ORDR-9247) ist eingegangen.
@@ -59,11 +59,11 @@ das Team der {brand_title}
 {brand_title}
 
 E-Mail: info@acmecon.test
-''',
+""",
         ),
         (
             'en',
-            '''\
+            """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: Your order (AWSM-ORDR-9247) has been received.
@@ -98,7 +98,7 @@ the team of {brand_title}
 {brand_title}
 
 Email: info@acmecon.test
-''',
+""",
         ),
     ],
 )
@@ -131,7 +131,7 @@ def test_example_placed_order_message_text(
     [
         (
             'de',
-            '''\
+            """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: ✅ Deine Bestellung (AWSM-ORDR-9247) ist bezahlt worden.
@@ -152,11 +152,11 @@ das Team der {brand_title}
 {brand_title}
 
 E-Mail: info@acmecon.test
-''',
+""",
         ),
         (
             'en',
-            '''\
+            """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: ✅ Your order (AWSM-ORDR-9247) has been paid.
@@ -177,7 +177,7 @@ the team of {brand_title}
 {brand_title}
 
 Email: info@acmecon.test
-''',
+""",
         ),
     ],
 )
@@ -210,7 +210,7 @@ def test_example_paid_order_message_text(
     [
         (
             'de',
-            '''\
+            """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: ❌ Deine Bestellung (AWSM-ORDR-9247) ist storniert worden.
@@ -231,11 +231,11 @@ das Team der {brand_title}
 {brand_title}
 
 E-Mail: info@acmecon.test
-''',
+""",
         ),
         (
             'en',
-            '''\
+            """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
 Subject: ❌ Your order (AWSM-ORDR-9247) has been canceled.
@@ -256,7 +256,7 @@ the team of {brand_title}
 {brand_title}
 
 Email: info@acmecon.test
-''',
+""",
         ),
     ],
 )

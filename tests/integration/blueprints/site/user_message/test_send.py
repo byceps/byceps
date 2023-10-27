@@ -26,14 +26,14 @@ def test_send_when_logged_in_without_brand_contact_address(
 ):
     sender_id = user_alice.id
     recipient_id = user_bob.id
-    text = '''\
+    text = """\
 Hi Bob,
 
 please don't forget to take out the trash.
 
 kthxbye,
 Alice
-'''
+"""
 
     expected_response_location = f'/users/{recipient_id}'
 
@@ -42,7 +42,7 @@ Alice
     )
     expected_email_recipients = ['Bob <bob@users.test>']
     expected_email_subject = 'Message from Alice (via www.acmecon.test)'
-    expected_email_body = f'''\
+    expected_email_body = f"""\
 Hello Bob,
 
 Alice has sent you the following message.
@@ -65,7 +65,7 @@ Alice
 --\x20
 This message was sent via website www.acmecon.test.
 If you have any questions, please contact us via email to: help@acmecon.test\
-'''
+"""
 
     response = send_request(
         site_app, recipient_id, text, current_user_id=sender_id
@@ -92,14 +92,14 @@ def test_send_when_logged_in_with_brand_contact_address(
 ):
     sender_id = user_bob.id
     recipient_id = user_alice.id
-    text = '''\
+    text = """\
 Hey Alice,
 
 nice to hear from you.
 
 Best,
 Bob
-'''
+"""
 
     expected_response_location = f'/users/{recipient_id}'
 
@@ -108,7 +108,7 @@ Bob
     )
     expected_email_recipients = ['Alice <alice@users.test>']
     expected_email_subject = 'Mitteilung von Bob (über www.acmecon.test)'
-    expected_email_body = f'''\
+    expected_email_body = f"""\
 Hallo Alice,
 
 Bob möchte dir die folgende Mitteilung zukommen lassen.
@@ -131,7 +131,7 @@ Bob
 --\x20
 Diese Mitteilung wurde über die Website www.acmecon.test gesendet.
 Bei Fragen kontaktiere uns bitte per E-Mail an: help@acmecon.test\
-'''
+"""
 
     response = send_request(
         site_app, recipient_id, text, current_user_id=sender_id

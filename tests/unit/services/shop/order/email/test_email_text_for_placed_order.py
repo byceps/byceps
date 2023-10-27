@@ -47,7 +47,7 @@ def test_assemble_text_for_incoming_order_to_orderer(
         total_amount=Money('524.90', EUR),
     )
 
-    payment_instructions = '''
+    payment_instructions = """
 Bitte überweise den Gesamtbetrag auf dieses Konto:
 
   Zahlungsempfänger: <Name>
@@ -59,7 +59,7 @@ Bitte überweise den Gesamtbetrag auf dieses Konto:
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
 Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/orders
-    '''.strip()
+    """.strip()
 
     with force_locale(language_code):
         actual = (
@@ -71,7 +71,7 @@ Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/o
     assert actual.subject == 'Deine Bestellung (AB-11-B00253) ist eingegangen.'
     assert (
         actual.body_main_part
-        == '''
+        == """
 vielen Dank für deine Bestellung mit der Nummer AB-11-B00253 am 15.08.2014 über unsere Website.
 
 Folgende Artikel hast du bestellt:
@@ -99,5 +99,5 @@ Bitte überweise den Gesamtbetrag auf dieses Konto:
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
 Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/orders
-    '''.strip()
+    """.strip()
     )

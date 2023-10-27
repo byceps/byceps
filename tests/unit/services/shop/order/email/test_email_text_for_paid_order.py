@@ -36,9 +36,9 @@ def test_assemble_text_for_paid_order_to_orderer(app: Flask, build_paid_order):
     )
     assert (
         actual.body_main_part
-        == '''
+        == """
 vielen Dank für deine Bestellung mit der Nummer EF-33-B00022 am 23.09.2014 über unsere Website.
 
 Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt markiert.
-    '''.strip()
+    """.strip()
     )

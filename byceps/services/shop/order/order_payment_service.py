@@ -98,7 +98,7 @@ def create_email_payment_instructions(shop_id: ShopID, creator: User) -> None:
     language_codes_and_bodies = [
         (
             'en',
-            '''
+            """
 Please transfer the total amount to this bank account:
 
   Recipient: <name>
@@ -110,11 +110,11 @@ Please transfer the total amount to this bank account:
 We will let you know once we have received your payment.
 
 You can view your orders here: https://www.yourparty.example/shop/orders
-        '''.strip(),
+        """.strip(),
         ),
         (
             'de',
-            '''
+            """
 Bitte überweise den Gesamtbetrag auf dieses Konto:
 
   Zahlungsempfänger: <Name>
@@ -126,7 +126,7 @@ Bitte überweise den Gesamtbetrag auf dieses Konto:
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 
 Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/orders
-        '''.strip(),
+        """.strip(),
         ),
     ]
 
@@ -162,7 +162,7 @@ def create_html_payment_instructions(shop_id: ShopID, creator: User) -> None:
     language_codes_and_bodies = [
         (
             'en',
-            '''
+            """
 <p>Please transfer the total amount to this bank account:</p>
 
 <table class="index" style="margin: 0 auto;">
@@ -191,11 +191,11 @@ def create_html_payment_instructions(shop_id: ShopID, creator: User) -> None:
     <td>{{ order_number }}</td>
   </tr>
 </table>
-        '''.strip(),
+        """.strip(),
         ),
         (
             'de',
-            '''
+            """
 <p>Bitte überweise den Gesamtbetrag auf dieses Konto:</p>
 
 <table class="index" style="margin: 0 auto;">
@@ -224,7 +224,7 @@ def create_html_payment_instructions(shop_id: ShopID, creator: User) -> None:
     <td>{{ order_number }}</td>
   </tr>
 </table>
-        '''.strip(),
+        """.strip(),
         ),
     ]
 

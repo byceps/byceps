@@ -161,12 +161,12 @@ def test_create(
     expected_sender = 'ACME Entertainment Convention <noreply@acmecon.test>'
     expected_recipients = ['hiro@metaverse.org']
     expected_subject = 'Hiro, bitte bestätige deine E-Mail-Adresse'
-    expected_body = f'''
+    expected_body = f"""
 Hallo Hiro,
 
 bitte bestätige deine E-Mail-Adresse hier:
 https://www.acmecon.test/users/email_address/confirmation/{verification_token.token}
-    '''.strip()
+    """.strip()
 
     assert_email(
         send_email_mock,
