@@ -20,38 +20,23 @@ def test_export_subscribers(newsletter_list, subscribers, client):
                 'screen_name': 'User-1',
                 'email_address': 'user001@users.test',
             },
-
-            # User #2 has declined a subscription, and thus should be
-            # excluded.
-
+            # User #2 has declined a subscription, and thus should be excluded.
             # User #3 is not initialized, and thus should be excluded.
-
-            # User #4 was initialized, but has its email address marked
-            # as unverified later on, so it should be excluded.
-
-            # User #5 has initially declined, but later requested a
-            # subscription, so it should be included.
+            # User #4 was initialized, but has its email address marked as unverified later on, so it should be excluded.
             {
+                # User #5 has initially declined, but later requested a subscription, so it should be included.
                 'screen_name': 'User-5',
                 'email_address': 'user005@users.test',
             },
-
-            # User #6 has initially requested, but later declined a
-            # subscription, so it should be excluded.
-
+            # User #6 has initially requested, but later declined a subscription, so it should be excluded.
             {
                 'screen_name': 'User-7',
                 'email_address': 'user007@users.test',
             },
-
-            # User #8 has been suspended and should be excluded, regardless
-            # of subscription state.
-
-            # User #9 has been deleted and should be excluded, regardless
-            # of subscription state.
-
-            # Just another user to ensure the list hasn't been truncated early.
+            # User #8 has been suspended and should be excluded, regardless of subscription state.
+            # User #9 has been deleted and should be excluded, regardless of subscription state.
             {
+                # User #10 is just another user to ensure the list hasn't been truncated early.
                 'screen_name': 'User-10',
                 'email_address': 'user010@users.test',
             },

@@ -8,6 +8,7 @@ byceps.services.ticketing.ticket_seat_management_service
 
 from byceps.database import db
 from byceps.services.seating import seat_group_service, seat_service
+
 # Load `Seat.assignment` backref.
 from byceps.services.seating.dbmodels.seat_group import DbSeatGroup  # noqa: F401
 from byceps.services.seating.models import Seat, SeatID

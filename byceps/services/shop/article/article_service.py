@@ -615,7 +615,13 @@ def sum_ordered_articles_by_payment_state(
                 key = (shop_id, article_number, description, payment_state)
                 quantity = quantities.get(key, 0)
 
-                yield shop_id, article_number, description, payment_state, quantity
+                yield (
+                    shop_id,
+                    article_number,
+                    description,
+                    payment_state,
+                    quantity,
+                )
 
     return list(generate())
 

@@ -81,12 +81,32 @@ _VIEW_TYPES = [
     )
     for name, endpoint, label, current_page_id in [
         ('news', 'news.index', lazy_gettext('News'), 'news'),
-        ('seating_plan', 'seating.index', lazy_gettext('Seating plan'), 'seating'),
-        ('attendees', 'attendance.attendees', lazy_gettext('Attendees'), 'attendees'),
+        (
+            'seating_plan',
+            'seating.index',
+            lazy_gettext('Seating plan'),
+            'seating',
+        ),
+        (
+            'attendees',
+            'attendance.attendees',
+            lazy_gettext('Attendees'),
+            'attendees',
+        ),
         ('shop', 'shop_order.order_form', lazy_gettext('Shop'), 'shop_order'),
         ('board', 'board.category_index', lazy_gettext('Board'), 'board'),
-        ('orga_team', 'orga_team.index', lazy_gettext('Orga team'), 'orga_team'),
-        ('party_history', 'party_history.index', lazy_gettext('Party history'), 'party_history'),
+        (
+            'orga_team',
+            'orga_team.index',
+            lazy_gettext('Orga team'),
+            'orga_team',
+        ),
+        (
+            'party_history',
+            'party_history.index',
+            lazy_gettext('Party history'),
+            'party_history',
+        ),
         ('gallery', 'gallery.index', lazy_gettext('Galleries'), 'gallery'),
     ]
 ]
