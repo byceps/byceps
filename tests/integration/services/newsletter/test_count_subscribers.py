@@ -43,6 +43,7 @@ def newsletter_list(admin_app):
 
 @pytest.fixture(scope='module')
 def subscribers(make_user, newsletter_list):
+    # fmt: off
     for initialized, email_address_verified, suspended, deleted, states in [
         (True , True , False, False, [SubscriptionState.requested                             ]),  # 1
         (True , True , False, False, [SubscriptionState.declined                              ]),  # 2
@@ -54,6 +55,7 @@ def subscribers(make_user, newsletter_list):
         (True , True , True , False, [SubscriptionState.requested                             ]),  # 8
         (True , True , False, True , [SubscriptionState.requested                             ]),  # 9
     ]:
+    # fmt: on
         user = make_user(
             email_address_verified=email_address_verified,
             initialized=initialized,

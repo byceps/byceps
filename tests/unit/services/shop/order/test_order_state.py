@@ -25,6 +25,7 @@ PROCESSING_REQUIRED = True
 PROCESSED = True
 
 
+# fmt: off
 @pytest.mark.parametrize(
     ('payment_state', 'processing_required', 'processed', 'expected'),
     [
@@ -42,6 +43,7 @@ PROCESSED = True
         (PaymentState.paid                ,     PROCESSING_REQUIRED,     PROCESSED, OrderState.complete),
     ],
 )
+# fmt: on
 def test_order_state(
     orderer: Orderer,
     payment_state: PaymentState,

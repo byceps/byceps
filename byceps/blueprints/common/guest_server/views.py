@@ -119,6 +119,7 @@ def _inline_svg(svg: str) -> str:
     See https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
     for details.
     """
+    # fmt: off
     replaced = (
         svg
         .replace('\n', '%0A')
@@ -127,5 +128,6 @@ def _inline_svg(svg: str) -> str:
         .replace('>', '%3E')
         .replace('"', "'")
     )
+    # fmt: on
 
     return 'data:image/svg+xml,' + replaced

@@ -30,6 +30,7 @@ def test_belongs_to_bundle(bundle_id, expected):
     assert ticket.belongs_to_bundle == expected
 
 
+# fmt: off
 @pytest.mark.parametrize(
     (
         'owned_by_id',
@@ -54,6 +55,7 @@ def test_belongs_to_bundle(bundle_id, expected):
         (user_id2, user_id1, user_id1, user_id1, True ),
     ],
 )
+# fmt: on
 def test_is_managed_by(
     owned_by_id, seat_managed_by_id, user_managed_by_id, user_id, expected
 ):
@@ -66,6 +68,7 @@ def test_is_managed_by(
     assert ticket.is_managed_by(user_id) == expected
 
 
+# fmt: off
 @pytest.mark.parametrize(
     ('owned_by_id', 'seat_managed_by_id', 'user_id', 'expected'),
     [
@@ -79,12 +82,14 @@ def test_is_managed_by(
         (user_id2, user_id1, user_id1, True ),
     ],
 )
+# fmt: on
 def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
     ticket = create_ticket(owned_by_id, seat_managed_by_id=seat_managed_by_id)
 
     assert ticket.is_seat_managed_by(user_id) == expected
 
 
+# fmt: off
 @pytest.mark.parametrize(
     ('owned_by_id', 'user_managed_by_id', 'user_id', 'expected'),
     [
@@ -98,6 +103,7 @@ def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
         (user_id2, user_id1, user_id1, True ),
     ],
 )
+# fmt: on
 def test_is_user_managed_by(owned_by_id, user_managed_by_id, user_id, expected):
     ticket = create_ticket(owned_by_id, user_managed_by_id=user_managed_by_id)
 

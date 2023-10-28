@@ -8,6 +8,7 @@ import pytest
 from byceps.services.email.models import NameAndAddress
 
 
+# fmt: off
 @pytest.mark.parametrize(
     ('name', 'address', 'expected'),
     [
@@ -16,6 +17,7 @@ from byceps.services.email.models import NameAndAddress
         ('Mr. Pink', 'mr.pink@users.test', '"Mr. Pink" <mr.pink@users.test>'),  # quotes name
     ],
 )
+# fmt: on
 def test_name_and_address_format(name, address, expected):
     name_and_address = NameAndAddress(name, address)
     assert name_and_address.format() == expected

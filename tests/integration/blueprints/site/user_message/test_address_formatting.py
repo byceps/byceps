@@ -20,10 +20,14 @@ def test_recipient_formatting(make_user, site, params):
     assert message.recipients == [expected]
 
 
-@pytest.fixture(params=[
-    ('Alicia', 'alicia@users.test', 'Alicia <alicia@users.test>'),
-    ('<AngleInvestor>', 'angleinvestor@users.test', '"<AngleInvestor>" <angleinvestor@users.test>'),
-    ('-=]YOLO[=-', 'yolo@users.test', '"-=]YOLO[=-" <yolo@users.test>'),
-])
+# fmt: off
+@pytest.fixture(
+    params=[
+        ('Alicia', 'alicia@users.test', 'Alicia <alicia@users.test>'),
+        ('<AngleInvestor>', 'angleinvestor@users.test', '"<AngleInvestor>" <angleinvestor@users.test>'),
+        ('-=]YOLO[=-', 'yolo@users.test', '"-=]YOLO[=-" <yolo@users.test>'),
+    ]
+)
+# fmt: on
 def params(request):
     return request.param

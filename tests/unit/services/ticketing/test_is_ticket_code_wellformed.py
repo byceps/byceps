@@ -8,6 +8,7 @@ import pytest
 from byceps.services.ticketing import ticket_code_service
 
 
+# fmt: off
 @pytest.mark.parametrize(
     ('code', 'expected'),
     [
@@ -20,5 +21,6 @@ from byceps.services.ticketing import ticket_code_service
         ('ZWXLNG', False),  # denied: too long
     ],
 )
+# fmt: on
 def test_is_ticket_code_wellformed(code, expected):
     assert ticket_code_service.is_ticket_code_wellformed(code) == expected

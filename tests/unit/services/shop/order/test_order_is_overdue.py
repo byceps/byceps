@@ -12,6 +12,7 @@ from byceps.services.shop.order import order_domain_service
 from byceps.services.shop.order.models.order import PaymentState
 
 
+# fmt: off
 @pytest.mark.parametrize(
     ('checked_at', 'payment_state', 'expected'),
     [
@@ -23,6 +24,7 @@ from byceps.services.shop.order.models.order import PaymentState
         (datetime(2021, 6, 25, 12,  0,  1), PaymentState.open,                 True ),
     ],
 )
+# fmt: on
 def test_is_overdue(
     checked_at: datetime, payment_state: PaymentState, expected: bool
 ):

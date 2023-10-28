@@ -9,6 +9,7 @@ from byceps.blueprints.admin.shop.order.models import OrderStateFilter
 from byceps.services.shop.order.models.order import PaymentState
 
 
+# fmt: off
 @pytest.mark.parametrize(
     ('only_payment_state', 'only_overdue', 'only_processed', 'expected'),
     [
@@ -23,6 +24,7 @@ from byceps.services.shop.order.models.order import PaymentState
         (PaymentState.paid,                 None,  True,  OrderStateFilter.none),
     ],
 )
+# fmt: on
 def test_find(only_payment_state, only_overdue, only_processed, expected):
     assert (
         OrderStateFilter.find(only_payment_state, only_overdue, only_processed)

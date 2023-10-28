@@ -121,12 +121,16 @@ def view_printable_html(ticket_id):
     #
     # See https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
     # for details.
-    barcode_svg_inline = barcode_svg \
-            .replace('\n', '%0A') \
-            .replace('#', '%23') \
-            .replace('<', '%3C') \
-            .replace('>', '%3E') \
-            .replace('"', "'")
+    # fmt: off
+    barcode_svg_inline = (
+        barcode_svg
+        .replace('\n', '%0A')
+        .replace('#', '%23')
+        .replace('<', '%3C')
+        .replace('>', '%3E')
+        .replace('"', "'")
+    )
+    # fmt: on
 
     return {
         'party_title': party.title,

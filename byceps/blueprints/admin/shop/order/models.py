@@ -21,7 +21,7 @@ PROCESSED = True
 
 
 class OrderStateFilter(Enum):
-
+    # fmt: off
     none                               = (None,                              IGNORED, IGNORED)
     payment_state_open_and_overdue     = (PaymentState.open,                 OVERDUE, IGNORED)
     payment_state_open                 = (PaymentState.open,                 IGNORED, IGNORED)
@@ -29,6 +29,7 @@ class OrderStateFilter(Enum):
     payment_state_paid                 = (PaymentState.paid,                 IGNORED, IGNORED)
     payment_state_canceled_after_paid  = (PaymentState.canceled_after_paid,  IGNORED, IGNORED)
     waiting_for_processing             = (None,                              IGNORED, NOT_YET_PROCESSED)
+    # fmt: on
 
     def __init__(
         self,

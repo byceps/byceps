@@ -108,6 +108,7 @@ def newsletter_list(admin_app):
 
 @pytest.fixture(scope='module')
 def subscribers(make_user, newsletter_list):
+    # fmt: off
     for (
         number,
         initialized,
@@ -127,6 +128,7 @@ def subscribers(make_user, newsletter_list):
         ( 9, True , True , False, True , [SubscriptionState.requested                             ]),
         (10, True , True , False, False, [SubscriptionState.requested                             ]),
     ]:
+    # fmt: on
         user = make_user(
             screen_name=f'User-{number:d}',
             email_address=f'user{number:03d}@users.test',

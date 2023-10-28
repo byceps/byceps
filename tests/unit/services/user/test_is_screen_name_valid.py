@@ -8,6 +8,7 @@ import pytest
 from byceps.services.user import screen_name_validator
 
 
+# fmt: off
 @pytest.mark.parametrize(
     ('screen_name', 'expected'),
     [
@@ -48,5 +49,6 @@ from byceps.services.user import screen_name_validator
         ('Быцепс'                   , False),  # denied: Cyrillic/non-latin letters
     ],
 )
+# fmt: on
 def test_is_screen_name_valid(screen_name, expected):
     assert screen_name_validator.is_screen_name_valid(screen_name) == expected

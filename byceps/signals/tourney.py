@@ -12,6 +12,7 @@ from blinker import Namespace
 tourney_signals = Namespace()
 
 
+# fmt: off
 tourney_started  = tourney_signals.signal('tourney-started')
 tourney_paused   = tourney_signals.signal('tourney-paused')
 tourney_canceled = tourney_signals.signal('tourney-canceled')
@@ -28,3 +29,4 @@ participant_ready        = tourney_signals.signal('tourney-participant-ready')
 participant_eliminated   = tourney_signals.signal('tourney-participant-eliminated')
 participant_warned       = tourney_signals.signal('tourney-participant-warned')
 participant_disqualified = tourney_signals.signal('tourney-participant-disqualified')
+# fmt: on
