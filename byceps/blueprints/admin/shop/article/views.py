@@ -895,7 +895,7 @@ def _get_article_type_or_400(value: str) -> ArticleType:
     try:
         return ArticleType[value]
     except KeyError:
-        abort(400, 'Unknown article type')
+        abort(400, f'Unknown article type "{value}"')
 
 
 def _get_active_article_number_sequences_for_shop(
