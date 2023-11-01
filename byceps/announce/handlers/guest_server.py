@@ -37,7 +37,7 @@ def announce_guest_server_registered(
 
     text = gettext(
         '%(initiator_screen_name)s has registered a guest server '
-        'owned by "%(owner_screen_name)s for party "%(party_title)s".',
+        'owned by %(owner_screen_name)s for party %(party_title)s.',
         initiator_screen_name=initiator_screen_name,
         owner_screen_name=owner_screen_name,
         party_title=event.party_title,
@@ -57,7 +57,7 @@ def announce_guest_server_approved(
     owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
 
     text = gettext(
-        '%(initiator_screen_name)s has approved a guest server owned by "%(owner_screen_name)s.',
+        '%(initiator_screen_name)s has approved a guest server owned by %(owner_screen_name)s.',
         initiator_screen_name=initiator_screen_name,
         owner_screen_name=owner_screen_name,
     )
@@ -76,7 +76,7 @@ def announce_guest_server_checked_in(
     owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
 
     text = gettext(
-        '%(initiator_screen_name)s has checked in a guest server owned by "%(owner_screen_name)s.',
+        '%(initiator_screen_name)s has checked in a guest server owned by %(owner_screen_name)s.',
         initiator_screen_name=initiator_screen_name,
         owner_screen_name=owner_screen_name,
     )
@@ -95,7 +95,7 @@ def announce_guest_server_checked_out(
     owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
 
     text = gettext(
-        '%(initiator_screen_name)s has checked out a guest server owned by "%(owner_screen_name)s.',
+        '%(initiator_screen_name)s has checked out a guest server owned by %(owner_screen_name)s.',
         initiator_screen_name=initiator_screen_name,
         owner_screen_name=owner_screen_name,
     )
