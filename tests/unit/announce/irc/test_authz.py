@@ -24,14 +24,14 @@ USER_ID = UserID(generate_uuid())
 
 
 def test_role_assigned_to_user_announced(app: Flask, webhook_for_irc):
-    expected_text = 'AuthzAdmin hat NeuerOrga die Rolle "orga" zugewiesen.'
+    expected_text = 'AuthzAdmin has assigned role "orga" to FreshOrga.'
 
     event = RoleAssignedToUserEvent(
         occurred_at=OCCURRED_AT,
         initiator_id=ADMIN_ID,
         initiator_screen_name='AuthzAdmin',
         user_id=USER_ID,
-        user_screen_name='NeuerOrga',
+        user_screen_name='FreshOrga',
         role_id=RoleID('orga'),
     )
 
@@ -42,7 +42,7 @@ def test_role_assigned_to_user_announced(app: Flask, webhook_for_irc):
 
 def test_role_deassigned_from_user_announced(app: Flask, webhook_for_irc):
     expected_text = (
-        'AuthzAdmin hat EhemaligerOrga die Rolle "board_moderator" genommen.'
+        'AuthzAdmin has deassigned role "board_moderator" from FormerOrga.'
     )
 
     event = RoleDeassignedFromUserEvent(
@@ -50,7 +50,7 @@ def test_role_deassigned_from_user_announced(app: Flask, webhook_for_irc):
         initiator_id=USER_ID,
         initiator_screen_name='AuthzAdmin',
         user_id=USER_ID,
-        user_screen_name='EhemaligerOrga',
+        user_screen_name='FormerOrga',
         role_id=RoleID('board_moderator'),
     )
 

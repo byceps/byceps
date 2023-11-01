@@ -8,6 +8,6 @@ import pytest
 
 @pytest.fixture(scope='package')
 def app(make_app):
-    app = make_app(additional_config={'LOCALE': 'de'})
+    app = make_app(additional_config={'LOCALE': 'en'})
     with app.app_context():
         yield app

@@ -24,9 +24,7 @@ AWARDEE_ID = UserID(generate_uuid())
 def test_user_badge_awarding_announced_without_initiator(
     app: Flask, webhook_for_irc
 ):
-    expected_text = (
-        'Jemand hat das Abzeichen "First Post!" an Erster verliehen.'
-    )
+    expected_text = 'Someone has awarded badge "First Post!" to Erster.'
 
     event = UserBadgeAwardedEvent(
         occurred_at=OCCURRED_AT,
@@ -46,9 +44,7 @@ def test_user_badge_awarding_announced_without_initiator(
 def test_user_badge_awarding_announced_with_initiator(
     app: Flask, webhook_for_irc
 ):
-    expected_text = (
-        'Admin hat das Abzeichen "Glanzleistung" an PathFinder verliehen.'
-    )
+    expected_text = 'Admin has awarded badge "Glanzleistung" to PathFinder.'
 
     event = UserBadgeAwardedEvent(
         occurred_at=OCCURRED_AT,

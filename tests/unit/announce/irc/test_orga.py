@@ -22,7 +22,7 @@ USER_ID = UserID(generate_uuid())
 
 def test_orga_status_granted_announced(app: Flask, webhook_for_irc):
     expected_text = (
-        'Admin hat Trainee den Orga-Status für die Marke CozyLAN verliehen.'
+        'Admin has granted orga status for brand CozyLAN to Trainee.'
     )
 
     event = OrgaStatusGrantedEvent(
@@ -42,7 +42,7 @@ def test_orga_status_granted_announced(app: Flask, webhook_for_irc):
 
 def test_orga_status_revoked_announced(app: Flask, webhook_for_irc):
     expected_text = (
-        'Admin hat Trainee den Orga-Status für die Marke CozyLAN entzogen.'
+        'Admin has revoked orga status for brand CozyLAN for Trainee.'
     )
 
     event = OrgaStatusRevokedEvent(

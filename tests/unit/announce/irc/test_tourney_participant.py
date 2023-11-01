@@ -27,7 +27,7 @@ PARTICIPANT_NAME = 'Le Supern00bs'
 
 def test_announce_participant_ready(app: Flask, webhook_for_irc):
     expected_text = (
-        '"Le Supern00bs" im Turnier Burrito Blaster (3on3) ist spielbereit.'
+        '"Le Supern00bs" in tourney Burrito Blaster (3on3) is ready to play.'
     )
 
     event = TourneyParticipantReadyEvent(
@@ -47,7 +47,10 @@ def test_announce_participant_ready(app: Flask, webhook_for_irc):
 
 
 def test_announce_participant_eliminated(app: Flask, webhook_for_irc):
-    expected_text = '"Le Supern00bs" ist aus dem Turnier Burrito Blaster (3on3) ausgeschieden.'
+    expected_text = (
+        '"Le Supern00bs" has been eliminated '
+        'from tourney Burrito Blaster (3on3).'
+    )
 
     event = TourneyParticipantEliminatedEvent(
         occurred_at=now(),
@@ -67,8 +70,8 @@ def test_announce_participant_eliminated(app: Flask, webhook_for_irc):
 
 def test_announce_participant_warned(app: Flask, webhook_for_irc):
     expected_text = (
-        '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
-        'wurde verwarnt. \x038,8 \x03'
+        '"Le Supern00bs" in tourney Burrito Blaster (3on3) '
+        'has been warned. \x038,8 \x03'
     )
 
     event = TourneyParticipantWarnedEvent(
@@ -89,8 +92,8 @@ def test_announce_participant_warned(app: Flask, webhook_for_irc):
 
 def test_announce_participant_disqualified(app: Flask, webhook_for_irc):
     expected_text = (
-        '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
-        'wurde disqualifiziert. \x034,4 \x03'
+        '"Le Supern00bs" in tourney Burrito Blaster (3on3) '
+        'has been disqualified. \x034,4 \x03'
     )
 
     event = TourneyParticipantDisqualifiedEvent(

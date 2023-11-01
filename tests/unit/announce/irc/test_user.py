@@ -30,7 +30,7 @@ USER_ID = UserID(generate_uuid())
 
 
 def test_account_created_announced(app: Flask, webhook_for_irc):
-    expected_text = 'Jemand hat das Benutzerkonto "JaneDoe" angelegt.'
+    expected_text = 'Someone has created user account "JaneDoe".'
 
     event = UserAccountCreatedEvent(
         occurred_at=OCCURRED_AT,
@@ -49,8 +49,8 @@ def test_account_created_announced(app: Flask, webhook_for_irc):
 
 def test_account_created_announced_on_site(app: Flask, webhook_for_irc):
     expected_text = (
-        'Jemand hat das Benutzerkonto "JaneDoeOnSite" '
-        'auf Site "ACMECon 2014 website" angelegt.'
+        'Someone has created user account "JaneDoeOnSite" '
+        'on site "ACMECon 2014 website".'
     )
 
     event = UserAccountCreatedEvent(
@@ -69,7 +69,7 @@ def test_account_created_announced_on_site(app: Flask, webhook_for_irc):
 
 
 def test_account_created_by_admin_announced(app: Flask, webhook_for_irc):
-    expected_text = 'EinAdmin hat das Benutzerkonto "EinUser" angelegt.'
+    expected_text = 'EinAdmin has created user account "EinUser".'
 
     event = UserAccountCreatedEvent(
         occurred_at=OCCURRED_AT,
@@ -87,9 +87,7 @@ def test_account_created_by_admin_announced(app: Flask, webhook_for_irc):
 
 
 def test_screen_name_change_announced(app: Flask, webhook_for_irc):
-    expected_text = (
-        'ElAdmin hat das Benutzerkonto "DrJekyll" in "MrHyde" umbenannt.'
-    )
+    expected_text = 'ElAdmin has renamed user account "DrJekyll" to "MrHyde".'
 
     event = UserScreenNameChangedEvent(
         occurred_at=OCCURRED_AT,
@@ -107,8 +105,8 @@ def test_screen_name_change_announced(app: Flask, webhook_for_irc):
 
 def test_email_address_changed_announced(app: Flask, webhook_for_irc):
     expected_text = (
-        'UserSupporter hat die E-Mail-Adresse '
-        'des Benutzerkontos "MailboxHopper" geändert.'
+        'UserSupporter has changed the email address '
+        'of user account "MailboxHopper".'
     )
 
     event = UserEmailAddressChangedEvent(
@@ -126,8 +124,8 @@ def test_email_address_changed_announced(app: Flask, webhook_for_irc):
 
 def test_email_address_invalidated_announced(app: Flask, webhook_for_irc):
     expected_text = (
-        'BounceWatchman hat die E-Mail-Adresse '
-        'des Benutzerkontos "Faker" invalidiert.'
+        'BounceWatchman has invalidated the email address '
+        'of user account "Faker".'
     )
 
     event = UserEmailAddressInvalidatedEvent(
@@ -145,8 +143,7 @@ def test_email_address_invalidated_announced(app: Flask, webhook_for_irc):
 
 def test_user_details_updated_announced(app: Flask, webhook_for_irc):
     expected_text = (
-        'Chameleon hat die persönlichen Daten '
-        'des Benutzerkontos "Chameleon" geändert.'
+        'Chameleon has changed personal data ' 'of user account "Chameleon".'
     )
 
     event = UserDetailsUpdatedEvent(
@@ -163,7 +160,7 @@ def test_user_details_updated_announced(app: Flask, webhook_for_irc):
 
 
 def test_suspended_account_announced(app: Flask, webhook_for_irc):
-    expected_text = 'She-Ra hat das Benutzerkonto "Skeletor" gesperrt.'
+    expected_text = 'She-Ra has suspended user account "Skeletor".'
 
     event = UserAccountSuspendedEvent(
         occurred_at=OCCURRED_AT,
@@ -179,7 +176,7 @@ def test_suspended_account_announced(app: Flask, webhook_for_irc):
 
 
 def test_unsuspended_account_announced(app: Flask, webhook_for_irc):
-    expected_text = 'TheBoss hat das Benutzerkonto "RambaZamba" entsperrt.'
+    expected_text = 'TheBoss has unsuspended user account "RambaZamba".'
 
     event = UserAccountUnsuspendedEvent(
         occurred_at=OCCURRED_AT,
@@ -196,7 +193,7 @@ def test_unsuspended_account_announced(app: Flask, webhook_for_irc):
 
 def test_deleted_account_announced(app: Flask, webhook_for_irc):
     expected_text = (
-        f'UberDude hat das Benutzerkonto "Snake" (ID "{USER_ID}") gelöscht.'
+        f'UberDude has deleted user account "Snake" (ID "{USER_ID}").'
     )
 
     event = UserAccountDeletedEvent(

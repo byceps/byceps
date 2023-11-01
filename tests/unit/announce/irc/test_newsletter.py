@@ -23,7 +23,7 @@ USER_ID = UserID(generate_uuid())
 
 
 def test_subscribed_to_newsletter_announced(app: Flask, webhook_for_irc):
-    expected_text = 'Gast hat den Newsletter "CozyLAN-Updates" abonniert.'
+    expected_text = 'Gast has subscribed to newsletter "CozyLAN-Updates".'
 
     event = SubscribedToNewsletterEvent(
         occurred_at=OCCURRED_AT,
@@ -41,7 +41,7 @@ def test_subscribed_to_newsletter_announced(app: Flask, webhook_for_irc):
 
 
 def test_unsubscribed_from_newsletter_announced(app: Flask, webhook_for_irc):
-    expected_text = 'Gast hat den Newsletter "CozyLAN-Updates" abbestellt.'
+    expected_text = 'Gast has unsubscribed from newsletter "CozyLAN-Updates".'
 
     event = UnsubscribedFromNewsletterEvent(
         occurred_at=OCCURRED_AT,

@@ -38,9 +38,9 @@ BRAND_ID = BrandID('acmecon')
 BRAND_TITLE = 'ACME Entertainment Convention'
 BOARD_ID = BoardID(generate_token())
 CATEGORY_1_ID = BoardCategoryID(generate_uuid())
-CATEGORY_1_TITLE = 'Kategorie 1'
+CATEGORY_1_TITLE = 'Category 1'
 CATEGORY_2_ID = BoardCategoryID(generate_uuid())
-CATEGORY_2_TITLE = 'Kategorie 2'
+CATEGORY_2_TITLE = 'Category 2'
 TOPIC_ID = TopicID(generate_uuid())
 POSTING_ID = PostingID(generate_uuid())
 MODERATOR_ID = UserID(generate_uuid())
@@ -51,8 +51,8 @@ USER_ID = UserID(generate_uuid())
 def test_announce_topic_created(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
-        'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
-        f'das Thema "Brötchen zum Frühstück" erstellt: {expected_link}'
+        'TheShadow999 has created topic "Brötchen zum Frühstück" '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardTopicCreatedEvent(
@@ -77,9 +77,9 @@ def test_announce_topic_created(app: Flask, webhook_for_irc):
 def test_announce_topic_hidden(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
-        'TheModerator hat im "ACME Entertainment Convention"-Forum das Thema '
-        '"Brötchen zum Frühstück" von TheShadow999 '
-        f'versteckt: {expected_link}'
+        'TheModerator has hidden topic "Brötchen zum Frühstück" '
+        'by TheShadow999 '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardTopicHiddenEvent(
@@ -106,9 +106,9 @@ def test_announce_topic_hidden(app: Flask, webhook_for_irc):
 def test_announce_topic_unhidden(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
-        'TheModerator hat im "ACME Entertainment Convention"-Forum das Thema '
-        '"Brötchen zum Frühstück" von TheShadow999 '
-        f'wieder sichtbar gemacht: {expected_link}'
+        'TheModerator has unhidden topic "Brötchen zum Frühstück" '
+        'by TheShadow999 '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardTopicUnhiddenEvent(
@@ -135,9 +135,9 @@ def test_announce_topic_unhidden(app: Flask, webhook_for_irc):
 def test_announce_topic_locked(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
-        'TheModerator hat im "ACME Entertainment Convention"-Forum das Thema '
-        '"Brötchen zum Frühstück" von TheShadow999 '
-        f'geschlossen: {expected_link}'
+        'TheModerator has closed topic "Brötchen zum Frühstück" '
+        'by TheShadow999 '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardTopicLockedEvent(
@@ -164,9 +164,9 @@ def test_announce_topic_locked(app: Flask, webhook_for_irc):
 def test_announce_topic_unlocked(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
-        'TheModerator hat im "ACME Entertainment Convention"-Forum '
-        'das Thema "Brötchen zum Frühstück" von TheShadow999 '
-        f'wieder geöffnet: {expected_link}'
+        'TheModerator has reopened topic "Brötchen zum Frühstück" '
+        'by TheShadow999 '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardTopicUnlockedEvent(
@@ -193,9 +193,9 @@ def test_announce_topic_unlocked(app: Flask, webhook_for_irc):
 def test_announce_topic_pinned(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
-        'TheModerator hat im "ACME Entertainment Convention"-Forum '
-        'das Thema "Brötchen zum Frühstück" von TheShadow999 '
-        f'angepinnt: {expected_link}'
+        'TheModerator has pinned topic "Brötchen zum Frühstück" '
+        'by TheShadow999 '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardTopicPinnedEvent(
@@ -222,9 +222,9 @@ def test_announce_topic_pinned(app: Flask, webhook_for_irc):
 def test_announce_topic_unpinned(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
-        'TheModerator hat im "ACME Entertainment Convention"-Forum '
-        'das Thema "Brötchen zum Frühstück" von TheShadow999 '
-        f'wieder gelöst: {expected_link}'
+        'TheModerator has unpinned topic "Brötchen zum Frühstück" '
+        'by TheShadow999 '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardTopicUnpinnedEvent(
@@ -251,9 +251,10 @@ def test_announce_topic_unpinned(app: Flask, webhook_for_irc):
 def test_announce_topic_moved(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
-        'TheModerator hat im "ACME Entertainment Convention"-Forum '
-        'das Thema "Brötchen zum Frühstück" von TheShadow999 '
-        f'aus "Kategorie 1" in "Kategorie 2" verschoben: {expected_link}'
+        'TheModerator has moved topic "Brötchen zum Frühstück" '
+        'by TheShadow999 '
+        'from "Category 1" to "Category 2" '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardTopicMovedEvent(
@@ -284,9 +285,8 @@ def test_announce_topic_moved(app: Flask, webhook_for_irc):
 def test_announce_posting_created(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
-        'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
-        'auf das Thema "Brötchen zum Frühstück" '
-        f'geantwortet: {expected_link}'
+        'TheShadow999 replied in topic "Brötchen zum Frühstück" '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardPostingCreatedEvent(
@@ -337,10 +337,9 @@ def test_announce_posting_created_on_muted_topic(app: Flask, webhook_for_irc):
 def test_announce_posting_hidden(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
-        'TheModerator hat im "ACME Entertainment Convention"-Forum '
-        'eine Antwort von TheShadow999 '
-        'im Thema "Brötchen zum Frühstück" '
-        f'versteckt: {expected_link}'
+        'TheModerator has hidden a reply by TheShadow999 in topic '
+        '"Brötchen zum Frühstück" '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardPostingHiddenEvent(
@@ -368,10 +367,9 @@ def test_announce_posting_hidden(app: Flask, webhook_for_irc):
 def test_announce_posting_unhidden(app: Flask, webhook_for_irc):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
-        'TheModerator hat im "ACME Entertainment Convention"-Forum '
-        'eine Antwort von TheShadow999 '
-        'im Thema "Brötchen zum Frühstück" '
-        f'wieder sichtbar gemacht: {expected_link}'
+        'TheModerator has unhidden a reply by TheShadow999 in topic '
+        '"Brötchen zum Frühstück" '
+        f'in "ACME Entertainment Convention" board: {expected_link}'
     )
 
     event = BoardPostingUnhiddenEvent(

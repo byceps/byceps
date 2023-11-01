@@ -34,8 +34,8 @@ SNIPPET_VERSION_ID = SnippetVersionID(generate_uuid())
 
 def test_announce_snippet_created(app: Flask, webhook_for_irc):
     expected_text = (
-        'Dr.Schnipsel hat das Snippet "team_intro" (de) '
-        'im Scope "site/acme-2019-website" angelegt.'
+        'Dr.Schnipsel has created snippet "team_intro" (de) '
+        'in scope "site/acme-2019-website".'
     )
 
     event = SnippetCreatedEvent(
@@ -56,8 +56,8 @@ def test_announce_snippet_created(app: Flask, webhook_for_irc):
 
 def test_announce_snippet_updated(app: Flask, webhook_for_irc):
     expected_text = (
-        'Dr.Schnipsel hat das Snippet "team_intro" (de) '
-        'im Scope "site/acme-2019-website" aktualisiert.'
+        'Dr.Schnipsel has updated snippet "team_intro" (de) '
+        'in scope "site/acme-2019-website".'
     )
 
     event = SnippetUpdatedEvent(
@@ -78,8 +78,8 @@ def test_announce_snippet_updated(app: Flask, webhook_for_irc):
 
 def test_announce_snippet_deleted(app: Flask, webhook_for_irc):
     expected_text = (
-        'Dr.Schnipsel hat das Snippet "outdated_info" (de) '
-        'im Scope "site/acme-2019-website" gelöscht.'
+        'Dr.Schnipsel has deleted snippet "outdated_info" (de) '
+        'in scope "site/acme-2019-website".'
     )
 
     event = SnippetDeletedEvent(

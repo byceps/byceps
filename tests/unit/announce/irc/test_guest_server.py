@@ -27,7 +27,10 @@ USER_ID = UserID(generate_uuid())
 
 
 def test_guest_server_registered(app: Flask, webhook_for_irc):
-    expected_text = 'Admin hat einen Gastserver von User für die Party "ACMECon 2014" registriert.'
+    expected_text = (
+        'Admin has registered a guest server owned by User '
+        'for party ACMECon 2014.'
+    )
 
     event = GuestServerRegisteredEvent(
         occurred_at=OCCURRED_AT,
@@ -46,7 +49,7 @@ def test_guest_server_registered(app: Flask, webhook_for_irc):
 
 
 def test_guest_server_approved(app: Flask, webhook_for_irc):
-    expected_text = 'Admin hat einen Gastserver von User genehmigt.'
+    expected_text = 'Admin has approved a guest server owned by User.'
 
     event = GuestServerApprovedEvent(
         occurred_at=OCCURRED_AT,
@@ -63,7 +66,7 @@ def test_guest_server_approved(app: Flask, webhook_for_irc):
 
 
 def test_guest_server_checked_in(app: Flask, webhook_for_irc):
-    expected_text = 'Admin hat einen Gastserver von User eingecheckt.'
+    expected_text = 'Admin has checked in a guest server owned by User.'
 
     event = GuestServerCheckedInEvent(
         occurred_at=OCCURRED_AT,
@@ -80,7 +83,7 @@ def test_guest_server_checked_in(app: Flask, webhook_for_irc):
 
 
 def test_guest_server_checked_out(app: Flask, webhook_for_irc):
-    expected_text = 'Admin hat einen Gastserver von User ausgecheckt.'
+    expected_text = 'Admin has checked out a guest server owned by User.'
 
     event = GuestServerCheckedOutEvent(
         occurred_at=OCCURRED_AT,

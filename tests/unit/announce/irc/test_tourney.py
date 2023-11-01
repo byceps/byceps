@@ -23,7 +23,7 @@ TOURNEY_ID = str(generate_uuid())
 
 
 def test_announce_tourney_started(app: Flask, webhook_for_irc):
-    expected_text = 'Das Turnier Taco Arena (1on1) wurde gestartet.'
+    expected_text = 'Tourney Taco Arena (1on1) has been started.'
 
     event = TourneyStartedEvent(
         occurred_at=OCCURRED_AT,
@@ -39,7 +39,7 @@ def test_announce_tourney_started(app: Flask, webhook_for_irc):
 
 
 def test_announce_tourney_paused(app: Flask, webhook_for_irc):
-    expected_text = 'Das Turnier Taco Arena (1on1) wurde unterbrochen.'
+    expected_text = 'Tourney Taco Arena (1on1) has been paused.'
 
     event = TourneyPausedEvent(
         occurred_at=OCCURRED_AT,
@@ -55,7 +55,7 @@ def test_announce_tourney_paused(app: Flask, webhook_for_irc):
 
 
 def test_announce_tourney_canceled(app: Flask, webhook_for_irc):
-    expected_text = 'Das Turnier Taco Arena (1on1) wurde abgesagt.'
+    expected_text = 'Tourney Taco Arena (1on1) has been canceled.'
 
     event = TourneyCanceledEvent(
         occurred_at=OCCURRED_AT,
@@ -71,7 +71,7 @@ def test_announce_tourney_canceled(app: Flask, webhook_for_irc):
 
 
 def test_announce_tourney_finished(app: Flask, webhook_for_irc):
-    expected_text = 'Das Turnier Taco Arena (1on1) wurde beendet.'
+    expected_text = 'Tourney Taco Arena (1on1) has been finished.'
 
     event = TourneyFinishedEvent(
         occurred_at=OCCURRED_AT,

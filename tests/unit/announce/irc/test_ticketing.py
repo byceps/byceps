@@ -24,7 +24,9 @@ USER_ID = UserID(generate_uuid())
 
 
 def test_ticket_checked_in(app: Flask, webhook_for_irc):
-    expected_text = 'TicketingAdmin hat Ticket "GTFIN", genutzt von Teilnehmer, eingecheckt.'
+    expected_text = (
+        'TicketingAdmin has checked in ticket "GTFIN", used by Teilnehmer.'
+    )
 
     event = TicketCheckedInEvent(
         occurred_at=OCCURRED_AT,
@@ -47,8 +49,8 @@ def test_single_ticket_sold(
     get_ticket_sale_stats_mock, app: Flask, webhook_for_irc
 ):
     expected_text = (
-        'Neuling hat 1 Ticket bezahlt. '
-        'Aktuell sind 772 von 1001 Tickets bezahlt.'
+        'Neuling has paid 1 ticket. '
+        'Currently 772 of 1001 tickets have been paid.'
     )
 
     get_ticket_sale_stats_mock.return_value = TicketSaleStats(
@@ -76,8 +78,8 @@ def test_multiple_tickets_sold(
     get_ticket_sale_stats_mock, app: Flask, webhook_for_irc
 ):
     expected_text = (
-        'TreuerKäufer hat 3 Tickets bezahlt. '
-        'Aktuell sind 775 von 1001 Tickets bezahlt.'
+        'TreuerKäufer has paid 3 tickets. '
+        'Currently 775 of 1001 tickets have been paid.'
     )
 
     get_ticket_sale_stats_mock.return_value = TicketSaleStats(

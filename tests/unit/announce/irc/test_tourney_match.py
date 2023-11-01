@@ -30,9 +30,9 @@ PARTICIPANT_2_NAME = 'Die Anderen'
 
 def test_announce_match_ready(app: Flask, webhook_for_irc):
     expected_text = (
-        'Das Match "Die Einen" vs. "Die Anderen" '
-        'im Turnier Octo-Highlander (8on8) '
-        'kann gespielt werden.'
+        'Match "Die Einen" vs. "Die Anderen" '
+        'in tourney Octo-Highlander (8on8) '
+        'is ready to be played.'
     )
 
     event = TourneyMatchReadyEvent(
@@ -55,9 +55,9 @@ def test_announce_match_ready(app: Flask, webhook_for_irc):
 
 def test_announce_match_reset(app: Flask, webhook_for_irc):
     expected_text = (
-        'Das Match "Die Einen" vs. "Die Anderen" '
-        'im Turnier Octo-Highlander (8on8) '
-        'wurde zurückgesetzt.'
+        'Match "Die Einen" vs. "Die Anderen" '
+        'in tourney Octo-Highlander (8on8) '
+        'has been reset.'
     )
 
     event = TourneyMatchResetEvent(
@@ -80,9 +80,9 @@ def test_announce_match_reset(app: Flask, webhook_for_irc):
 
 def test_announce_match_score_submitted(app: Flask, webhook_for_irc):
     expected_text = (
-        'Für das Match "Die Einen" vs. "Die Anderen" '
-        'im Turnier Octo-Highlander (8on8) '
-        'wurde ein Ergebnis eingetragen.'
+        'A result has been entered '
+        'for match "Die Einen" vs. "Die Anderen" '
+        'in tourney Octo-Highlander (8on8).'
     )
 
     event = TourneyMatchScoreSubmittedEvent(
@@ -105,9 +105,10 @@ def test_announce_match_score_submitted(app: Flask, webhook_for_irc):
 
 def test_announce_match_score_confirmed(app: Flask, webhook_for_irc):
     expected_text = (
-        'Für das Match "Die Einen" vs. "Die Anderen" '
-        'im Turnier Octo-Highlander (8on8) '
-        'wurde das eingetragene Ergebnis bestätigt.'
+        'The result '
+        'for match "Die Einen" vs. "Die Anderen" '
+        'in tourney Octo-Highlander (8on8) '
+        'has been confirmed.'
     )
 
     event = TourneyMatchScoreConfirmedEvent(
@@ -130,9 +131,9 @@ def test_announce_match_score_confirmed(app: Flask, webhook_for_irc):
 
 def test_announce_match_score_randomized(app: Flask, webhook_for_irc):
     expected_text = (
-        'Für das Match "Die Einen" vs. "Die Anderen" '
-        'im Turnier Octo-Highlander (8on8) '
-        'wurde ein zufälliges Ergebnis eingetragen.'
+        'A random result has been entered '
+        'for match "Die Einen" vs. "Die Anderen" '
+        'in tourney Octo-Highlander (8on8).'
     )
 
     event = TourneyMatchScoreRandomizedEvent(

@@ -27,9 +27,9 @@ BRAND_ID = BrandID('acmecon')
 BRAND_TITLE = 'ACME Entertainment Convention'
 BOARD_ID = BoardID(generate_token())
 CATEGORY_1_ID = BoardCategoryID(generate_uuid())
-CATEGORY_1_TITLE = 'Kategorie 1'
+CATEGORY_1_TITLE = 'Category 1'
 CATEGORY_2_ID = BoardCategoryID(generate_uuid())
-CATEGORY_2_TITLE = 'Kategorie 2'
+CATEGORY_2_TITLE = 'Category 2'
 TOPIC_ID = TopicID(generate_uuid())
 POSTING_ID = PostingID(generate_uuid())
 MODERATOR_ID = UserID(generate_uuid())
@@ -40,8 +40,8 @@ USER_ID = UserID(generate_uuid())
 def test_announce_topic_created(app: Flask):
     expected_url = f'https://website.test/board/topics/{TOPIC_ID}'
     expected_text = (
-        '[Forum] RocketRandy hat das Thema '
-        '"Cannot connect to the party network :(" erstellt: '
+        '[Forum] RocketRandy has created topic '
+        '"Cannot connect to the party network :(": '
         f'<{expected_url}>'
     )
 
@@ -69,8 +69,8 @@ def test_announce_topic_created(app: Flask):
 def test_announce_posting_created(app: Flask):
     expected_url = f'https://website.test/board/postings/{POSTING_ID}'
     expected_text = (
-        '[Forum] RocketRandy hat auf das Thema '
-        '"Cannot connect to the party network :(" geantwortet: '
+        '[Forum] RocketRandy replied in topic '
+        '"Cannot connect to the party network :(": '
         f'<{expected_url}>'
     )
 

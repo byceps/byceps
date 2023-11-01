@@ -21,9 +21,7 @@ USER_ID = UserID(generate_uuid())
 
 
 def test_password_updated_announced(app: Flask, webhook_for_irc):
-    expected_text = (
-        'AuthAdmin hat ein neues Passwort für ForgetfulFred gesetzt.'
-    )
+    expected_text = 'AuthAdmin has updated the password for ForgetfulFred.'
 
     event = PasswordUpdatedEvent(
         occurred_at=OCCURRED_AT,
@@ -39,7 +37,7 @@ def test_password_updated_announced(app: Flask, webhook_for_irc):
 
 
 def test_user_logged_in_into_admin_app_announced(app: Flask, webhook_for_irc):
-    expected_text = 'Logvogel hat sich eingeloggt.'
+    expected_text = 'Logvogel has logged in.'
 
     event = UserLoggedInEvent(
         occurred_at=OCCURRED_AT,
@@ -55,9 +53,7 @@ def test_user_logged_in_into_admin_app_announced(app: Flask, webhook_for_irc):
 
 
 def test_user_logged_in_into_site_app_announced(app: Flask, webhook_for_irc):
-    expected_text = (
-        'Logvogel hat sich auf Site "ACMECon 2014 website" eingeloggt.'
-    )
+    expected_text = 'Logvogel has logged in on site "ACMECon 2014 website".'
 
     event = UserLoggedInEvent(
         occurred_at=OCCURRED_AT,

@@ -24,8 +24,8 @@ NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
 def test_published_news_item_announced_with_url(app: Flask) -> None:
     expected_text = (
-        '[News] Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
-        'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
+        '[News] The news "Check this out!" has been published. '
+        'https://www.acmecon.test/news/check-this-out'
     )
 
     event = NewsItemPublishedEvent(
@@ -35,8 +35,8 @@ def test_published_news_item_announced_with_url(app: Flask) -> None:
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,
-        title='Zieh dir das mal rein!',
-        external_url='https://www.acmecon.test/news/zieh-dir-das-mal-rein',
+        title='Check this out!',
+        external_url='https://www.acmecon.test/news/check-this-out',
     )
 
     webhook = build_news_webhook()
@@ -47,9 +47,7 @@ def test_published_news_item_announced_with_url(app: Flask) -> None:
 
 
 def test_published_news_item_announced_without_url(app: Flask) -> None:
-    expected_text = (
-        '[News] Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
-    )
+    expected_text = '[News] The news "Check this out, too!" has been published.'
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
@@ -58,7 +56,7 @@ def test_published_news_item_announced_without_url(app: Flask) -> None:
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,
-        title='Zieh dir auch das rein!',
+        title='Check this out, too!',
         external_url=None,
     )
 
