@@ -9,7 +9,6 @@ byceps.services.tourney.dbmodels.match_comment
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -42,19 +41,19 @@ class DbMatchComment(db.Model):
         DbUser, foreign_keys=[created_by_id]
     )
     body: Mapped[str] = mapped_column(db.UnicodeText)
-    last_edited_at: Mapped[Optional[datetime]]  # noqa: UP007
-    last_edited_by_id: Mapped[Optional[UserID]] = mapped_column(  # noqa: UP007
+    last_edited_at: Mapped[datetime | None]
+    last_edited_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    last_edited_by: Mapped[Optional[DbUser]] = relationship(  # noqa: UP007
+    last_edited_by: Mapped[DbUser | None] = relationship(
         DbUser, foreign_keys=[last_edited_by_id]
     )
     hidden: Mapped[bool] = mapped_column(default=False)
-    hidden_at: Mapped[Optional[datetime]]  # noqa: UP007
-    hidden_by_id: Mapped[Optional[UserID]] = mapped_column(  # noqa: UP007
+    hidden_at: Mapped[datetime | None]
+    hidden_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    hidden_by: Mapped[Optional[DbUser]] = relationship(  # noqa: UP007
+    hidden_by: Mapped[DbUser | None] = relationship(
         DbUser, foreign_keys=[hidden_by_id]
     )
 

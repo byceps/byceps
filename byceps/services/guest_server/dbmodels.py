@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 import ipaddress
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -37,19 +37,15 @@ class DbGuestServerSetting(db.Model):
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
     )
-    _netmask: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        'netmask', postgresql.INET
-    )
-    _gateway: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        'gateway', postgresql.INET
-    )
-    _dns_server1: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+    _netmask: Mapped[str | None] = mapped_column('netmask', postgresql.INET)
+    _gateway: Mapped[str | None] = mapped_column('gateway', postgresql.INET)
+    _dns_server1: Mapped[str | None] = mapped_column(
         'dns_server1', postgresql.INET
     )
-    _dns_server2: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+    _dns_server2: Mapped[str | None] = mapped_column(
         'dns_server2', postgresql.INET
     )
-    domain: Mapped[Optional[str]] = mapped_column(db.UnicodeText)  # noqa: UP007
+    domain: Mapped[str | None] = mapped_column(db.UnicodeText)
 
     def __init__(self, party_id: PartyID) -> None:
         self.party_id = party_id
@@ -116,18 +112,12 @@ class DbGuestServer(db.Model):
         db.Uuid, db.ForeignKey('users.id')
     )
     owner_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
-    description: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
-    notes_owner: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
-    notes_admin: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
+    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    notes_owner: Mapped[str | None] = mapped_column(db.UnicodeText)
+    notes_admin: Mapped[str | None] = mapped_column(db.UnicodeText)
     approved: Mapped[bool]
-    checked_in_at: Mapped[Optional[datetime]]  # noqa: UP007
-    checked_out_at: Mapped[Optional[datetime]]  # noqa: UP007
+    checked_in_at: Mapped[datetime | None]
+    checked_out_at: Mapped[datetime | None]
 
     def __init__(
         self,
@@ -170,18 +160,12 @@ class DbGuestServerAddress(db.Model):
         DbGuestServer, backref='addresses'
     )
     created_at: Mapped[datetime] = mapped_column(db.DateTime)
-    _ip_address: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
+    _ip_address: Mapped[str | None] = mapped_column(
         'ip_address', postgresql.INET
     )
-    hostname: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
-    _netmask: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        'netmask', postgresql.INET
-    )
-    _gateway: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        'gateway', postgresql.INET
-    )
+    hostname: Mapped[str | None] = mapped_column(db.UnicodeText)
+    _netmask: Mapped[str | None] = mapped_column('netmask', postgresql.INET)
+    _gateway: Mapped[str | None] = mapped_column('gateway', postgresql.INET)
 
     def __init__(
         self,

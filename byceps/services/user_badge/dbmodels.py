@@ -9,7 +9,6 @@ byceps.services.user_badge.dbmodels
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -59,11 +58,9 @@ class DbBadge(db.Model):
     )
     slug: Mapped[str] = mapped_column(db.UnicodeText, unique=True, index=True)
     label: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    description: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
+    description: Mapped[str | None] = mapped_column(db.UnicodeText)
     image_filename: Mapped[str] = mapped_column(db.UnicodeText)
-    brand_id: Mapped[Optional[BrandID]] = mapped_column(  # noqa: UP007
+    brand_id: Mapped[BrandID | None] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id')
     )
     featured: Mapped[bool] = mapped_column(default=False)

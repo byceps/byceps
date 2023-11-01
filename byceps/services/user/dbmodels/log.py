@@ -9,7 +9,6 @@ byceps.services.user.dbmodels.log
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -31,7 +30,7 @@ class DbUserLogEntry(db.Model):
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    initiator_id: Mapped[Optional[UserID]] = mapped_column(
+    initiator_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     data: Mapped[UserLogEntryData] = mapped_column(db.JSONB)

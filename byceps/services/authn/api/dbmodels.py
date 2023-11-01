@@ -9,7 +9,6 @@ byceps.services.authn.api.dbmodels
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.ext.mutable import MutableList
@@ -34,9 +33,7 @@ class DbApiToken(db.Model):
     permissions: Mapped[list[PermissionID]] = mapped_column(
         MutableList.as_mutable(db.JSONB)
     )
-    description: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
+    description: Mapped[str | None] = mapped_column(db.UnicodeText)
     suspended: Mapped[bool]
 
     def __init__(

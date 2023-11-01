@@ -12,7 +12,6 @@ syntax.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -56,7 +55,7 @@ class DbPage(db.Model):
     language: Mapped[DbLanguage] = relationship(DbLanguage)
     url_path: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     published: Mapped[bool]
-    nav_menu_id: Mapped[Optional[NavMenuID]] = mapped_column(  # noqa: UP007
+    nav_menu_id: Mapped[NavMenuID | None] = mapped_column(
         db.Uuid, db.ForeignKey('site_nav_menus.id')
     )
     nav_menu: Mapped[DbNavMenu] = relationship(DbNavMenu)
@@ -93,7 +92,7 @@ class DbPageVersion(db.Model):
     )
     creator: Mapped[DbUser] = relationship(DbUser)
     title: Mapped[str] = mapped_column(db.UnicodeText)
-    head: Mapped[Optional[str]] = mapped_column(db.UnicodeText)  # noqa: UP007
+    head: Mapped[str | None] = mapped_column(db.UnicodeText)
     body: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(

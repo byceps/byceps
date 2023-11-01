@@ -8,7 +8,7 @@ byceps.services.seating.dbmodels.seat
 
 from __future__ import annotations
 
-from typing import NamedTuple, Optional, TYPE_CHECKING
+from typing import NamedTuple, TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -47,17 +47,15 @@ class DbSeat(db.Model):
     area: Mapped[DbSeatingArea] = relationship(DbSeatingArea, backref='seats')
     coord_x: Mapped[int]
     coord_y: Mapped[int]
-    rotation: Mapped[Optional[int]]  # noqa: UP007
+    rotation: Mapped[int | None]
     category_id: Mapped[TicketCategoryID] = mapped_column(
         db.Uuid,
         db.ForeignKey('ticket_categories.id'),
         index=True,
     )
     category: Mapped[DbTicketCategory] = relationship(DbTicketCategory)
-    label: Mapped[Optional[str]] = mapped_column(db.UnicodeText)  # noqa: UP007
-    type_: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        'type', db.UnicodeText
-    )
+    label: Mapped[str | None] = mapped_column(db.UnicodeText)
+    type_: Mapped[str | None] = mapped_column('type', db.UnicodeText)
 
     def __init__(
         self,

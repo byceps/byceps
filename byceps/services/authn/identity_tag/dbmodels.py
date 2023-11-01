@@ -9,7 +9,6 @@ byceps.services.authn.identity_tag.dbmodels
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -41,7 +40,7 @@ class DbUserIdentityTag(db.Model):
     )
     identifier: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
-    note: Mapped[Optional[str]] = mapped_column(db.UnicodeText)  # noqa: UP007
+    note: Mapped[str | None] = mapped_column(db.UnicodeText)
     suspended: Mapped[bool]
 
     def __init__(

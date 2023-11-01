@@ -9,7 +9,6 @@ byceps.services.gallery.models
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -86,9 +85,7 @@ class DbGalleryImage(db.Model):
     position: Mapped[int]
     filename_full: Mapped[str] = mapped_column(db.UnicodeText)
     filename_preview: Mapped[str] = mapped_column(db.UnicodeText)
-    caption: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
+    caption: Mapped[str | None] = mapped_column(db.UnicodeText)
     hidden: Mapped[bool]
 
     def __init__(

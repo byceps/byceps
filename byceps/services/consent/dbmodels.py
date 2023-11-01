@@ -9,7 +9,6 @@ byceps.services.consent.dbmodels
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -34,9 +33,7 @@ class DbConsentSubject(db.Model):
     name: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     checkbox_label: Mapped[str] = mapped_column(db.UnicodeText)
-    checkbox_link_target: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
+    checkbox_link_target: Mapped[str | None] = mapped_column(db.UnicodeText)
 
     def __init__(
         self,

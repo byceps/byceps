@@ -9,7 +9,7 @@ byceps.services.user.dbmodels.detail
 from __future__ import annotations
 
 from datetime import date
-from typing import Any, Optional
+from typing import Any
 
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -30,30 +30,16 @@ class DbUserDetail(db.Model):
     user: Mapped['DbUser'] = relationship(  # noqa: F821, UP037
         'DbUser', backref=db.backref('detail', uselist=False)
     )
-    first_name: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
-    last_name: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
-    date_of_birth: Mapped[Optional[date]]  # noqa: UP007
-    country: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
-    zip_code: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
-    city: Mapped[Optional[str]] = mapped_column(db.UnicodeText)  # noqa: UP007
-    street: Mapped[Optional[str]] = mapped_column(db.UnicodeText)  # noqa: UP007
-    phone_number: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
-    internal_comment: Mapped[Optional[str]] = mapped_column(  # noqa: UP007
-        db.UnicodeText
-    )
-    extras: Mapped[Optional[Any]] = mapped_column(  # noqa: UP007
-        MutableDict.as_mutable(db.JSONB)
-    )
+    first_name: Mapped[str | None] = mapped_column(db.UnicodeText)
+    last_name: Mapped[str | None] = mapped_column(db.UnicodeText)
+    date_of_birth: Mapped[date | None]
+    country: Mapped[str | None] = mapped_column(db.UnicodeText)
+    zip_code: Mapped[str | None] = mapped_column(db.UnicodeText)
+    city: Mapped[str | None] = mapped_column(db.UnicodeText)
+    street: Mapped[str | None] = mapped_column(db.UnicodeText)
+    phone_number: Mapped[str | None] = mapped_column(db.UnicodeText)
+    internal_comment: Mapped[str | None] = mapped_column(db.UnicodeText)
+    extras: Mapped[Any | None] = mapped_column(MutableDict.as_mutable(db.JSONB))
 
     @property
     def full_name(self) -> str | None:

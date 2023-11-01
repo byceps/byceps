@@ -8,8 +8,6 @@ byceps.services.orga_team.dbmodels
 
 from __future__ import annotations
 
-from typing import Optional
-
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
@@ -73,7 +71,7 @@ class DbMembership(db.Model):
     user: Mapped[DbUser] = relationship(
         DbUser, collection_class=set, backref='orga_team_memberships'
     )
-    duties: Mapped[Optional[str]] = mapped_column(db.UnicodeText)  # noqa: UP007
+    duties: Mapped[str | None] = mapped_column(db.UnicodeText)
 
     def __init__(
         self,

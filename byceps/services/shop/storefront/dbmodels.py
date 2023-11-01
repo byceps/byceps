@@ -8,8 +8,6 @@ byceps.services.shop.storefront.dbmodels
 
 from __future__ import annotations
 
-from typing import Optional
-
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
@@ -36,7 +34,7 @@ class DbStorefront(db.Model):
     shop_id: Mapped[ShopID] = mapped_column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True
     )
-    catalog_id: Mapped[Optional[CatalogID]] = mapped_column(  # noqa: UP007
+    catalog_id: Mapped[CatalogID | None] = mapped_column(
         db.Uuid, db.ForeignKey('shop_catalogs.id')
     )
     order_number_sequence_id: Mapped[OrderNumberSequenceID] = mapped_column(

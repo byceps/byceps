@@ -9,7 +9,6 @@ byceps.services.board.dbmodels.topic
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -47,37 +46,37 @@ class DbTopic(db.Model):
     )
     title: Mapped[str] = mapped_column(db.UnicodeText)
     posting_count: Mapped[int] = mapped_column(default=0)
-    last_updated_at: Mapped[Optional[datetime]] = mapped_column(  # noqa: UP007
+    last_updated_at: Mapped[datetime | None] = mapped_column(
         default=datetime.utcnow
     )
-    last_updated_by_id: Mapped[Optional[UserID]] = mapped_column(  # noqa: UP007
+    last_updated_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    last_updated_by: Mapped[Optional[DbUser]] = relationship(  # noqa: UP007
+    last_updated_by: Mapped[DbUser | None] = relationship(
         DbUser, foreign_keys=[last_updated_by_id]
     )
     hidden: Mapped[bool] = mapped_column(default=False)
-    hidden_at: Mapped[Optional[datetime]]  # noqa: UP007
-    hidden_by_id: Mapped[Optional[UserID]] = mapped_column(  # noqa: UP007
+    hidden_at: Mapped[datetime | None]
+    hidden_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    hidden_by: Mapped[Optional[DbUser]] = relationship(  # noqa: UP007
+    hidden_by: Mapped[DbUser | None] = relationship(
         DbUser, foreign_keys=[hidden_by_id]
     )
     locked: Mapped[bool] = mapped_column(default=False)
-    locked_at: Mapped[Optional[datetime]]  # noqa: UP007
-    locked_by_id: Mapped[Optional[UserID]] = mapped_column(  # noqa: UP007
+    locked_at: Mapped[datetime | None]
+    locked_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    locked_by: Mapped[Optional[DbUser]] = relationship(  # noqa: UP007
+    locked_by: Mapped[DbUser | None] = relationship(
         DbUser, foreign_keys=[locked_by_id]
     )
     pinned: Mapped[bool] = mapped_column(default=False)
-    pinned_at: Mapped[Optional[datetime]]  # noqa: UP007
-    pinned_by_id: Mapped[Optional[UserID]] = mapped_column(  # noqa: UP007
+    pinned_at: Mapped[datetime | None]
+    pinned_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    pinned_by: Mapped[Optional[DbUser]] = relationship(  # noqa: UP007
+    pinned_by: Mapped[DbUser | None] = relationship(
         DbUser, foreign_keys=[pinned_by_id]
     )
     initial_posting = association_proxy(

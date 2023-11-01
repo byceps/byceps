@@ -8,7 +8,7 @@ byceps.services.site_navigation.dbmodels
 
 from __future__ import annotations
 
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -48,7 +48,7 @@ class DbNavMenu(db.Model):
     )
     language: Mapped[DbLanguage] = relationship(DbLanguage)
     hidden: Mapped[bool]
-    parent_menu_id: Mapped[Optional[NavMenuID]] = mapped_column(  # noqa: UP007
+    parent_menu_id: Mapped[NavMenuID | None] = mapped_column(
         db.Uuid, db.ForeignKey('site_nav_menus.id')
     )
 
@@ -90,7 +90,7 @@ class DbNavItem(db.Model):
             collection_class=ordering_list('position', count_from=1),
         ),
     )
-    parent_item_id: Mapped[Optional[NavMenuID]] = mapped_column(  # noqa: UP007
+    parent_item_id: Mapped[NavMenuID | None] = mapped_column(
         db.Uuid,
         db.ForeignKey('site_nav_menu_items.id'),
         index=True,

@@ -9,7 +9,6 @@ byceps.services.ticketing.dbmodels.ticket_bundle
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -52,19 +51,19 @@ class DbTicketBundle(db.Model):
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     owned_by: Mapped[DbUser] = relationship(DbUser, foreign_keys=[owned_by_id])
-    seats_managed_by_id: Mapped[
-        Optional[UserID]  # noqa: F821, UP007
-    ] = mapped_column(db.Uuid, db.ForeignKey('users.id'), index=True)
+    seats_managed_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
+    )
     seats_managed_by: Mapped[DbUser] = relationship(
         DbUser, foreign_keys=[seats_managed_by_id]
     )
-    users_managed_by_id: Mapped[
-        Optional[UserID]  # noqa: F821, UP007
-    ] = mapped_column(db.Uuid, db.ForeignKey('users.id'), index=True)
+    users_managed_by_id: Mapped[UserID | None] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), index=True
+    )
     users_managed_by: Mapped[DbUser] = relationship(
         DbUser, foreign_keys=[users_managed_by_id]
     )
-    label: Mapped[Optional[str]] = mapped_column(  # noqa: F821, UP007
+    label: Mapped[str | None] = mapped_column(  # noqa: F821, UP007
         db.UnicodeText
     )
     revoked: Mapped[bool] = mapped_column(default=False)

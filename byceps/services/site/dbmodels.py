@@ -8,8 +8,6 @@ byceps.services.site.dbmodels
 
 from __future__ import annotations
 
-from typing import Optional
-
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
@@ -49,18 +47,16 @@ class DbSite(db.Model):
         db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
     brand: Mapped[DbBrand] = relationship(DbBrand, backref='sites')
-    party_id: Mapped[Optional[PartyID]] = mapped_column(  # noqa: UP007
+    party_id: Mapped[PartyID | None] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
     enabled: Mapped[bool]
     user_account_creation_enabled: Mapped[bool]
     login_enabled: Mapped[bool]
-    board_id: Mapped[Optional[BoardID]] = mapped_column(  # noqa: UP007
+    board_id: Mapped[BoardID | None] = mapped_column(
         db.UnicodeText, db.ForeignKey('boards.id'), index=True
     )
-    storefront_id: Mapped[
-        Optional[StorefrontID]  # noqa: UP007
-    ] = mapped_column(
+    storefront_id: Mapped[StorefrontID | None] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_storefronts.id'),
         index=True,
