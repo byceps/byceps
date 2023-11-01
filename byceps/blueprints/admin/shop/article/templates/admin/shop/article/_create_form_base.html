@@ -17,7 +17,7 @@
     <a class="button color-primary" href="{{ url_for('shop_article_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ _('Create article number sequence') }}</a>
   </div>
   {%- else %}
-  <form action="{{ url_for('.create', shop_id=shop.id, type=article_type_name) }}" method="post">
+  <form action="{{ url_for('.create', shop_id=shop.id, type_name=article_type_name) }}" method="post">
     <div class="box">
 
       <div class="mb">

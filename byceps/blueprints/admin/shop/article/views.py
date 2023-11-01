@@ -232,13 +232,13 @@ def view_purchases(article_id):
 # create
 
 
-@blueprint.get('/for_shop/<shop_id>/create/<type>')
+@blueprint.get('/for_shop/<shop_id>/create/<type_name>')
 @permission_required('shop_article.create')
 @templated
-def create_form(shop_id, type, erroneous_form=None):
+def create_form(shop_id, type_name, erroneous_form=None):
     """Show form to create an article."""
     shop = _get_shop_or_404(shop_id)
-    type_ = _get_article_type_or_400(type)
+    type_ = _get_article_type_or_400(type_name)
 
     brand = brand_service.get_brand(shop.brand_id)
 
@@ -336,12 +336,12 @@ def create_ticket_bundle_form(shop_id, erroneous_form=None):
     }
 
 
-@blueprint.post('/for_shop/<shop_id>/<type>')
+@blueprint.post('/for_shop/<shop_id>/<type_name>')
 @permission_required('shop_article.create')
-def create(shop_id, type):
+def create(shop_id, type_name):
     """Create an article."""
     shop = _get_shop_or_404(shop_id)
-    type_ = _get_article_type_or_400(type)
+    type_ = _get_article_type_or_400(type_name)
 
     if type_ == ArticleType.ticket:
         form = TicketArticleCreateForm(request.form)
