@@ -85,6 +85,12 @@ class Article:
 
 
 @dataclass(frozen=True)
+class ArticleAttachment:
+    attached_article: Article
+    attached_quantity: int
+
+
+@dataclass(frozen=True)
 class ArticleCompilationItem:
     article: Article
     fixed_quantity: int | None = None

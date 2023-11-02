@@ -29,6 +29,7 @@ from .dbmodels.attached_article import DbAttachedArticle
 from .errors import NoArticlesAvailableError
 from .models import (
     Article,
+    ArticleAttachment,
     ArticleCompilation,
     ArticleCompilationBuilder,
     ArticleID,
@@ -454,10 +455,13 @@ def get_article_compilation_for_orderable_articles(
         article = _db_entity_to_article(db_article)
         compilation_builder.append_article(article)
 
-        attached_articles = _get_attached_articles(db_article.attached_articles)
-        for attached_article in attached_articles:
+        article_attachments = _get_article_attachments(
+            db_article.attached_articles
+        )
+        for article_attachment in article_attachments:
             compilation_builder.append_article(
-                attached_article, fixed_quantity=attached_article.quantity
+                article_attachment.attached_article,
+                fixed_quantity=article_attachment.attached_quantity,
             )
 
     compilation = compilation_builder.build()
@@ -478,10 +482,11 @@ def get_article_compilation_for_single_article(
     article = _db_entity_to_article(db_article)
     compilation_builder.append_article(article, fixed_quantity=1)
 
-    attached_articles = _get_attached_articles(db_article.attached_articles)
-    for attached_article in attached_articles:
+    article_attachments = _get_article_attachments(db_article.attached_articles)
+    for article_attachment in article_attachments:
         compilation_builder.append_article(
-            attached_article, fixed_quantity=attached_article.quantity
+            article_attachment.attached_article,
+            fixed_quantity=article_attachment.attached_quantity,
         )
 
     return compilation_builder.build()
@@ -515,10 +520,11 @@ def get_article_compilations_for_single_articles(
         db_attached_articles = attached_articles_by_attached_to_article_id[
             db_article.id
         ]
-        attached_articles = _get_attached_articles(db_attached_articles)
-        for attached_article in attached_articles:
+        article_attachments = _get_article_attachments(db_attached_articles)
+        for article_attachment in article_attachments:
             compilation_builder.append_article(
-                attached_article, fixed_quantity=attached_article.quantity
+                article_attachment.attached_article,
+                fixed_quantity=article_attachment.attached_quantity,
             )
 
         compilation = compilation_builder.build()
@@ -644,10 +650,13 @@ def _db_entity_to_article(db_article: DbArticle) -> Article:
     )
 
 
-def _get_attached_articles(
+def _get_article_attachments(
     db_attached_articles: list[DbArticle]
-) -> list[Article]:
+) -> list[ArticleAttachment]:
     return [
-        _db_entity_to_article(db_attached_article.article)
+        ArticleAttachment(
+            attached_article=_db_entity_to_article(db_attached_article.article),
+            attached_quantity=db_attached_article.quantity,
+        )
         for db_attached_article in db_attached_articles
     ]
