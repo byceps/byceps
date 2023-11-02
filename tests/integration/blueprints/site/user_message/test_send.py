@@ -156,7 +156,10 @@ def test_send_when_not_logged_in(site_app):
     response = send_request(site_app, recipient_id, text)
 
     assert response.status_code == 302
-    assert response.location == '/authentication/log_in'
+    assert (
+        response.location
+        == '/authentication/log_in?next=/user_messages/to/8e5037f6-3ca1-4981-b1e4-1998cbdf58e2'
+    )
 
 
 # helpers
