@@ -1,5 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/user.html' import render_user_flag_deleted, render_user_flag_suspended, render_user_flag_uninitialized, render_user_status_filter %}
+{% from 'macros/admin/user.html' import render_user_filter, render_user_flag_deleted, render_user_flag_suspended, render_user_flag_uninitialized %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
@@ -69,13 +69,13 @@
       <div class="filter">
         <span>{{ render_icon('filter') }} {{ _('Filter') }}:</span>
         <div class="dropdown">
-          <button class="dropdown-toggle button button--clear">{{ render_user_status_filter(user_status_filter) }} {{ render_icon('chevron-down') }}</button>
+          <button class="dropdown-toggle button button--clear">{{ render_user_filter(user_filter) }} {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.index') }}">{{ render_user_status_filter(UserStatusFilter.none) }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.index', only='active') }}">{{ render_user_status_filter(UserStatusFilter.active) }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.index', only='uninitialized') }}">{{ render_user_status_filter(UserStatusFilter.uninitialized) }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.index', only='suspended') }}">{{ render_user_status_filter(UserStatusFilter.suspended) }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.index', only='deleted') }}">{{ render_user_status_filter(UserStatusFilter.deleted) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index') }}">{{ render_user_filter(UserFilter.none) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='active') }}">{{ render_user_filter(UserFilter.active) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='uninitialized') }}">{{ render_user_filter(UserFilter.uninitialized) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='suspended') }}">{{ render_user_filter(UserFilter.suspended) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='deleted') }}">{{ render_user_filter(UserFilter.deleted) }}</a></li>
           </ol>
         </div>
       </div>

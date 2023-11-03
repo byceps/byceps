@@ -68,8 +68,8 @@ class UserForAdminDetail:
     full_name: str | None
 
 
-UserStatusFilter = Enum(
-    'UserStatusFilter',
+UserFilter = Enum(
+    'UserFilter',
     [
         'none',
         'active',

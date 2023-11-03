@@ -29,7 +29,7 @@ from byceps.services.user import (
     user_email_address_service,
     user_service,
 )
-from byceps.services.user.models.user import UserForAdmin, UserStatusFilter
+from byceps.services.user.models.user import UserFilter, UserForAdmin
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.signals import authn as authn_signals
 from byceps.signals import authz as authz_signals
@@ -71,15 +71,13 @@ def index(page):
     search_term = request.args.get('search_term', default='').strip()
     only = request.args.get('only')
 
-    user_status_filter = UserStatusFilter.__members__.get(
-        only, UserStatusFilter.none
-    )
+    user_filter = UserFilter.__members__.get(only, UserFilter.none)
 
     users = user_service.get_users_paginated(
         page,
         per_page,
         search_term=search_term,
-        status_filter=user_status_filter,
+        user_filter=user_filter,
     )
 
     if search_term:
@@ -91,8 +89,8 @@ def index(page):
         'users': users,
         'search_term': search_term,
         'only': only,
-        'UserStatusFilter': UserStatusFilter,
-        'user_status_filter': user_status_filter,
+        'UserFilter': UserFilter,
+        'user_filter': user_filter,
         'user_quantities_by_status': user_quantities_by_status,
     }
 

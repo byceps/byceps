@@ -61,14 +61,14 @@
 {%- endmacro %}
 
 
-{% macro render_user_status_filter(user_status_filter) %}
-  {%- if user_status_filter.name == 'active' -%}
+{% macro render_user_filter(user_filter) %}
+  {%- if user_filter.name == 'active' -%}
     {{ render_tag(_('active'), class='color-success') }}
-  {%- elif user_status_filter.name == 'uninitialized' -%}
+  {%- elif user_filter.name == 'uninitialized' -%}
     {{ render_tag(_('not initialized'), class='color-warning') }}
-  {%- elif user_status_filter.name == 'suspended' -%}
+  {%- elif user_filter.name == 'suspended' -%}
     {{ render_tag(_('suspended'), class='color-danger') }}
-  {%- elif user_status_filter.name == 'deleted' -%}
+  {%- elif user_filter.name == 'deleted' -%}
     {{ render_tag(_('deleted'), class='color-disabled') }}
   {%- else -%}
     {{ render_tag(_('none'), class='color-none') }}
