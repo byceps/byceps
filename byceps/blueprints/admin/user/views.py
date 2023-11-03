@@ -80,6 +80,15 @@ def index(page):
         user_filter=user_filter,
     )
 
+    user_ids = {user.id for user in users.items}
+    recent_login_datetimes_by_user_id = (
+        authn_session_service.find_recent_logins_for_users(user_ids)
+    )
+
+    users.items = [
+        (user, recent_login_datetimes_by_user_id.get(user.id)) for user in users
+    ]
+
     return {
         'users': users,
         'search_term': search_term,

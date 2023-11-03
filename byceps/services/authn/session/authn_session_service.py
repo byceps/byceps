@@ -173,6 +173,20 @@ def find_recent_login(user_id: UserID) -> datetime | None:
     return db_recent_login.occurred_at
 
 
+def find_recent_logins_for_users(
+    user_ids: set[UserID]
+) -> dict[UserID, datetime]:
+    """Return the time of the users' most recent logins, if found."""
+    db_recent_logins = db.session.scalars(
+        select(DbRecentLogin).filter(DbRecentLogin.user_id.in_(user_ids))
+    ).all()
+
+    return {
+        db_recent_login.user_id: db_recent_login.occurred_at
+        for db_recent_login in db_recent_logins
+    }
+
+
 def find_logins_for_ip_address(
     ip_address: str,
 ) -> list[tuple[datetime, UserID]]:
