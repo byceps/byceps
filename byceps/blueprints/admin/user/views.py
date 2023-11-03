@@ -80,18 +80,12 @@ def index(page):
         user_filter=user_filter,
     )
 
-    if search_term:
-        user_quantities_by_status = None
-    else:
-        user_quantities_by_status = service.get_user_quantities_by_status()
-
     return {
         'users': users,
         'search_term': search_term,
         'only': only,
         'UserFilter': UserFilter,
         'user_filter': user_filter,
-        'user_quantities_by_status': user_quantities_by_status,
     }
 
 

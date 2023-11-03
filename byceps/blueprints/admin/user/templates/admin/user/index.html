@@ -1,10 +1,8 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_main_tabs %}
-{% from 'macros/admin/user.html' import render_user_flag_deleted, render_user_flag_suspended, render_user_flag_uninitialized %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page = 'user_admin' %}
 {% set page_title = _('Users') %}
 
@@ -22,38 +20,6 @@
     </div>
     {%- endif %}
   </div>
-
-  {%- if user_quantities_by_status %}
-  <div class="box mb">
-    <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
-      <div>
-        <a class="button button--clear" href="{{ url_for('.index') }}">
-          {{- render_bigstats_item(user_quantities_by_status.total|numberformat, '&sum; '|safe ~ _('total')) -}}
-        </a>
-      </div>
-      <div>
-        <a class="button button--clear" href="{{ url_for('.index', only='active') }}">
-          {{- render_bigstats_item(user_quantities_by_status.active|numberformat, render_tag(_('active'), class='color-success', icon='enabled')) -}}
-        </a>
-      </div>
-      <div>
-        <a class="button button--clear" href="{{ url_for('.index', only='uninitialized') }}">
-          {{- render_bigstats_item(user_quantities_by_status.uninitialized|numberformat, render_user_flag_uninitialized()) -}}
-        </a>
-      </div>
-      <div>
-        <a class="button button--clear" href="{{ url_for('.index', only='suspended') }}">
-          {{- render_bigstats_item(user_quantities_by_status.suspended|numberformat, render_user_flag_suspended()) -}}
-        </a>
-      </div>
-      <div>
-        <a class="button button--clear" href="{{ url_for('.index', only='deleted') }}">
-          {{- render_bigstats_item(user_quantities_by_status.deleted|numberformat, render_user_flag_deleted()) -}}
-        </a>
-      </div>
-    </div>
-  </div>
-  {%- endif %}
 
   <div class="row row--space-between row--wrap mb">
     <div>

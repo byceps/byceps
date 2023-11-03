@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from collections import defaultdict
 from collections.abc import Iterable, Iterator
-from dataclasses import dataclass
 from operator import attrgetter
 from typing import Any
 from uuid import UUID
@@ -24,37 +23,13 @@ from byceps.services.shop.order import order_log_service, order_service
 from byceps.services.site import site_service
 from byceps.services.ticketing import ticket_attendance_service, ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.services.user import (
-    user_log_service,
-    user_service,
-    user_stats_service,
-)
+from byceps.services.user import user_log_service, user_service
 from byceps.services.user.dbmodels.avatar import (
     get_absolute_url_path as get_absolute_url_path_for_avatar,
 )
 from byceps.services.user.models.log import UserLogEntry, UserLogEntryData
 from byceps.services.user.models.user import User, UserID
 from byceps.services.user_badge import user_badge_service
-
-
-@dataclass(frozen=True)
-class UserQuantitiesByStatus:
-    active: int
-    uninitialized: int
-    suspended: int
-    deleted: int
-    total: int
-
-
-def get_user_quantities_by_status() -> UserQuantitiesByStatus:
-    """Return the quantities of users, grouped by account status."""
-    return UserQuantitiesByStatus(
-        active=user_stats_service.count_active_users(),
-        uninitialized=user_stats_service.count_uninitialized_users(),
-        suspended=user_stats_service.count_suspended_users(),
-        deleted=user_stats_service.count_deleted_users(),
-        total=user_stats_service.count_users(),
-    )
 
 
 def get_parties_and_tickets(
