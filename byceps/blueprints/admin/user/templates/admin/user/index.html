@@ -89,13 +89,13 @@
   </div>
   {%- endwith %}
 
+  <div class="centered mt" style="margin-bottom: -0.75rem;">
+    <small><strong>{{ users.total }}</strong> {{ ngettext('result', 'results', users.total) }}</small>
+  </div>
+
   {{ render_pagination_nav(users, '.index', {
       'only': only if only else None,
       'search_term': search_term if search_term else None,
   }) }}
-
-  <small>
-    <p class="centered">{{ users.total }} {{ ngettext('result', 'results', users.total) }}</p>
-  </small>
 
 {%- endblock %}
