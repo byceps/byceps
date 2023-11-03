@@ -59,18 +59,3 @@
     {{ render_user_flag_uninitialized(show_label=show_label) }}
   {%- endif -%}
 {%- endmacro %}
-
-
-{% macro render_user_filter(user_filter) %}
-  {%- if user_filter.name == 'active' -%}
-    {{ render_tag(_('active'), class='color-success') }}
-  {%- elif user_filter.name == 'uninitialized' -%}
-    {{ render_tag(_('not initialized'), class='color-warning') }}
-  {%- elif user_filter.name == 'suspended' -%}
-    {{ render_tag(_('suspended'), class='color-danger') }}
-  {%- elif user_filter.name == 'deleted' -%}
-    {{ render_tag(_('deleted'), class='color-disabled') }}
-  {%- else -%}
-    {{ render_tag(_('none'), class='color-none') }}
-  {%- endif -%}
-{%- endmacro %}
