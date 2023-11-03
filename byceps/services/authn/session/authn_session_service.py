@@ -163,14 +163,14 @@ def _record_recent_login(user_id: UserID, occurred_at: datetime) -> None:
 
 def find_recent_login(user_id: UserID) -> datetime | None:
     """Return the time of the user's most recent login, if found."""
-    recent_login = db.session.execute(
+    db_recent_login = db.session.execute(
         select(DbRecentLogin).filter_by(user_id=user_id)
     ).scalar_one_or_none()
 
-    if recent_login is None:
+    if db_recent_login is None:
         return None
 
-    return recent_login.occurred_at
+    return db_recent_login.occurred_at
 
 
 def find_logins_for_ip_address(
