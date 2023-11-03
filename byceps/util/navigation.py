@@ -30,7 +30,7 @@ class Navigation:
     The order of items is the order in which they are added.
     """
 
-    def __init__(self, title: str) -> None:
+    def __init__(self, title: str | None = None) -> None:
         self.title = title
         self.items: list[NavigationItem] = []
 

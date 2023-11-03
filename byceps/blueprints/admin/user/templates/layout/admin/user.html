@@ -47,7 +47,7 @@
   {%- with party = current_page_party, user_id = current_tab_user_id %}
 {{
   render_main_tabs(
-    Navigation(None)
+    Navigation()
       .add_item(
         url_for('.view', user_id=user_id),
         _('Overview'),

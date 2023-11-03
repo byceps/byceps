@@ -6,7 +6,7 @@
   {%- with party = current_page_party %}
 {{
   render_main_tabs(
-    Navigation(None)
+    Navigation()
       .add_item(
         url_for('ticketing_admin.index_for_party', party_id=party.id),
         _('Tickets'),

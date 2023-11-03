@@ -6,7 +6,7 @@
   {%- with party = current_page_party %}
 {{
   render_main_tabs(
-    Navigation(None)
+    Navigation()
       .add_item(
         url_for('tourney_tourney_admin.index', party_id=party.id),
         _('Tourneys'),
