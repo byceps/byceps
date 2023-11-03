@@ -160,7 +160,7 @@ def test_send_when_not_logged_in(site_app):
         response.location
         # No idea where the trailing question mark is coming
         # from, but let's just accept it for now.
-        == '/authentication/log_in?next=/user_messages/to/8e5037f6-3ca1-4981-b1e4-1998cbdf58e2?'
+        == '/authentication/log_in?next=/user_messages/to/8e5037f6-3ca1-4981-b1e4-1998cbdf58e2'
     )
 
 

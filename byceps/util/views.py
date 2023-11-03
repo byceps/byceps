@@ -41,7 +41,9 @@ def login_required(func):
             else:
                 form_view = 'authn_login.log_in_form'
 
-            next_location = request.full_path
+            # Remove trailing question mark unnecessarily added/left
+            # by Flask/Werkzeug when there are no query parameters.
+            next_location = request.full_path.rstrip('?')
 
             return redirect_to(form_view, next=next_location)
         return func(*args, **kwargs)
