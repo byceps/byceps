@@ -8,6 +8,14 @@
 {% set current_tab = 'servers' %}
 {% set page_title = _('Guest Servers') %}
 
+{% block head %}
+<style>
+.progress {
+  height: 0.25rem;
+}
+</style>
+{%- endblock %}
+
 {% block body %}
 
   <div class="row row--space-between">
