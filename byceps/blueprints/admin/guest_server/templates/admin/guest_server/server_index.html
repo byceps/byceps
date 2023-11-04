@@ -1,7 +1,7 @@
 {% extends 'layout/admin/guest_server.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading, render_main_tabs %}
 {% from 'macros/admin/guest_server.html' import get_server_status_color_name, render_hostname, render_ip_address, render_server_status %}
-{% from 'macros/misc.html' import render_distribution_bar, render_tag %}
+{% from 'macros/misc.html' import render_distribution_bar %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_avatar_and_name %}
 {% set current_page_party = party %}
@@ -25,16 +25,6 @@
 
   {%- if servers %}
 
-  <div class="box">
-
-    <div class="row row--equal-sized-centered-columns">
-      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_status.pending }}</strong><div>{{ render_tag(_('pending'), class='color-info') }}</div></div>
-      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_status.approved }}</strong><div>{{ render_tag(_('approved'), class='color-warning') }}</div></div>
-      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_status.checked_in }}</strong><div>{{ render_tag(_('checked in'), class='color-success') }}</div></div>
-      <div><strong style="font-size: 1.5rem;">{{ server_quantities_by_status.checked_out }}</strong><div>{{ render_tag(_('checked out'), class='color-disabled') }}</div></div>
-    </div>
-
-    <div class="mt">
 {{ render_distribution_bar(
   [
     (server_quantities_by_status.pending, 'color-info'),
@@ -44,9 +34,6 @@
   ],
   server_quantities_by_status.total,
 ) }}
-    </div>
-
-  </div>
 
   <div class="mb mt">
 {{
