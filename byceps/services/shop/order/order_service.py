@@ -450,6 +450,7 @@ def find_order_with_details_for_admin(
 
     detailed_order_attributes = dataclasses.asdict(detailed_order)
     # Replace `dict`s with original type after applying `dataclasses.asdict()`.
+    detailed_order_attributes['placed_by'] = detailed_order.placed_by
     detailed_order_attributes['address'] = detailed_order.address
     detailed_order_attributes['line_items'] = detailed_order.line_items
 
