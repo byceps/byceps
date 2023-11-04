@@ -19,7 +19,12 @@ from byceps.services.guest_server import (
     guest_server_export_service,
     guest_server_service,
 )
-from byceps.services.guest_server.models import Address, AddressData, IPAddress
+from byceps.services.guest_server.models import (
+    Address,
+    AddressData,
+    IPAddress,
+    ServerStatus,
+)
 from byceps.services.party import party_service
 from byceps.services.user import user_service
 from byceps.signals import guest_server as guest_server_signals
@@ -59,20 +64,30 @@ def server_index(party_id):
 
     setting = guest_server_service.get_setting_for_party(party.id)
 
-    servers = guest_server_service.get_all_servers_for_party(party.id)
-    servers.sort(key=lambda server: server.created_at, reverse=True)
-    servers.sort(key=_get_sort_value_for_server_status)
+    only_status_str = request.args.get('only_status')
+    only_status = ServerStatus.__members__.get(only_status_str)
 
+    servers = guest_server_service.get_all_servers_for_party(party.id)
+
+    # Do this before filtering!
     server_quantities_by_status = (
         guest_server_domain_service.get_server_quantities_by_status(servers)
     )
 
+    if only_status:
+        servers = guest_server_domain_service.filter_servers_by_status(
+            servers, only_status
+        )
+    servers.sort(key=lambda server: server.created_at, reverse=True)
+    servers.sort(key=_get_sort_value_for_server_status)
+
     return {
         'party': party,
         'setting': setting,
+        'only_status': only_status,
+        'server_quantities_by_status': server_quantities_by_status,
         'servers': servers,
         'sort_addresses': _sort_addresses,
-        'server_quantities_by_status': server_quantities_by_status,
     }
 
 

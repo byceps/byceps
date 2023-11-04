@@ -271,6 +271,12 @@ def _build_guest_server_checked_out_event(
     )
 
 
+def filter_servers_by_status(
+    servers: list[Server], only_status: ServerStatus
+) -> list[Server]:
+    return [server for server in servers if server.status == only_status]
+
+
 def get_server_quantities_by_status(
     servers: list[Server],
 ) -> ServerQuantitiesByStatus:

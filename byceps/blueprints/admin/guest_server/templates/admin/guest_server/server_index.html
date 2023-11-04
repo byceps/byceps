@@ -1,5 +1,5 @@
 {% extends 'layout/admin/guest_server.html' %}
-{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin.html' import render_extra_in_heading, render_main_tabs %}
 {% from 'macros/admin/guest_server.html' import get_server_status_color_name, render_hostname, render_ip_address, render_server_status %}
 {% from 'macros/misc.html' import render_distribution_bar, render_tag %}
 {% from 'macros/icons.html' import render_icon %}
@@ -12,7 +12,7 @@
 
   <div class="row row--space-between">
     <div>
-      <h1>{{ page_title }} {{ render_extra_in_heading(servers|length) }}</h1>
+      <h1>{{ page_title }} {{ render_extra_in_heading(server_quantities_by_status.total) }}</h1>
     </div>
     {%- if has_current_user_permission('guest_server.administrate') %}
     <div class="column--align-bottom">
@@ -46,6 +46,20 @@
 ) }}
     </div>
 
+  </div>
+
+  <div class="mb mt">
+{{
+  render_main_tabs(
+    Navigation()
+      .add_item(url_for('.server_index', party_id=party.id), _('all') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.total|dim)|safe, id='all', icon='server')
+      .add_item(url_for('.server_index', party_id=party.id, only_status='pending'), _('pending') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.pending|dim)|safe, id='pending', icon='pending')
+      .add_item(url_for('.server_index', party_id=party.id, only_status='approved'), _('approved') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.approved|dim)|safe, id='approved', icon='success')
+      .add_item(url_for('.server_index', party_id=party.id, only_status='checked_in'), _('checked_in') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.checked_in|dim)|safe, id='checked_in', icon='log-in')
+      .add_item(url_for('.server_index', party_id=party.id, only_status='checked_out'), _('checked_out') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.checked_out|dim)|safe, id='checked_out', icon='log-out')
+    , only_status.name if only_status else 'all'
+  )
+}}
   </div>
 
     {%- for server in servers %}
