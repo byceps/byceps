@@ -13,7 +13,10 @@ from flask import abort
 from byceps.services.board import board_service
 from byceps.services.brand import brand_service, brand_setting_service
 from byceps.services.consent import consent_subject_service
-from byceps.services.guest_server import guest_server_service
+from byceps.services.guest_server import (
+    guest_server_domain_service,
+    guest_server_service,
+)
 from byceps.services.news import news_channel_service
 from byceps.services.newsletter import newsletter_service
 from byceps.services.orga import orga_birthday_service
@@ -191,6 +194,11 @@ def view_party(party_id):
     seat_utilization = seat_service.get_seat_utilization(party.id)
 
     guest_servers = guest_server_service.get_all_servers_for_party(party.id)
+    guest_server_quantities_by_status = (
+        guest_server_domain_service.get_server_quantities_by_status(
+            guest_servers
+        )
+    )
 
     return {
         'party': party,
@@ -203,7 +211,7 @@ def view_party(party_id):
         'ticket_sale_stats': ticket_sale_stats,
         'tickets_checked_in': tickets_checked_in,
         'seat_utilization': seat_utilization,
-        'guest_servers': guest_servers,
+        'guest_server_quantities_by_status': guest_server_quantities_by_status,
     }
 
 

@@ -83,22 +83,26 @@
     {%- call render_cell('server', href=url_for('guest_server_admin.server_index', party_id=party.id)) %}
       <div class="cell-label">{{ _('Guest Servers') }}</div>
       <div class="mt">
-        {%- with approved_count = guest_servers|selectattr('approved')|list|length,
-                 pending_count = guest_servers|rejectattr('approved')|list|length %}
 {{ render_distribution_bar(
   [
-    (approved_count, 'color-success'),
-    (pending_count, 'color-warning'),
+    (guest_server_quantities_by_status.pending, 'color-info'),
+    (guest_server_quantities_by_status.approved, 'color-warning'),
+    (guest_server_quantities_by_status.checked_in, 'color-success'),
+    (guest_server_quantities_by_status.checked_out, 'color-disabled'),
   ],
-  approved_count + pending_count
+  guest_server_quantities_by_status.total,
 ) }}
-        <div class="row row--space-between small">
-          <div><strong>{{ approved_count }}</strong> {{ _('approved') }}</div>
-          <div><strong>{{ pending_count }}</strong> {{ _('pending') }}</div>
-        </div>
-        {%- endwith %}
       </div>
-
+      <div class="mt">
+        <ol class="bare small">
+          {%- if guest_server_quantities_by_status.pending %}
+          <li><strong>{{ guest_server_quantities_by_status.pending }}</strong> {{ _('pending') }}</li>
+          {%- endif %}
+          {%- if guest_server_quantities_by_status.checked_in %}
+          <li><strong>{{ guest_server_quantities_by_status.checked_in }}</strong> {{ _('checked in') }}</li>
+          {%- endif %}
+        </ol>
+      </div>
     {%- endcall %}
   {%- endif %}
 
