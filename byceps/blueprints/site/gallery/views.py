@@ -20,7 +20,7 @@ blueprint = create_blueprint('gallery', __name__)
 
 @blueprint.get('/')
 @templated
-@subnavigation_for_view('party_history')
+@subnavigation_for_view('gallery')
 def index():
     """List all galleries for this brand."""
     galleries = gallery_service.get_galleries_for_brand(g.brand_id)
@@ -33,7 +33,7 @@ def index():
 
 @blueprint.get('/<slug>')
 @templated
-@subnavigation_for_view('party_history')
+@subnavigation_for_view('gallery')
 def view(slug):
     """Show gallery for this brand with that slug."""
     gallery = gallery_service.find_gallery_by_slug_with_images(g.brand_id, slug)
