@@ -17,12 +17,14 @@ from byceps.services.board import (
     board_posting_command_service,
     board_posting_query_service,
 )
+from byceps.services.board.errors import ReactionExistsError
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service
 from byceps.signals import board as board_signals
 from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err
 from byceps.util.views import (
     permission_required,
     respond_no_content,
@@ -289,8 +291,13 @@ def add_reaction(posting_id, kind):
     result = board_posting_command_service.add_reaction(
         posting.id, g.user, kind
     )
-    if result.is_err():
-        abort(409)
+
+    match result:
+        case Err(e):
+            if isinstance(e, ReactionExistsError):
+                abort(409)
+            else:
+                abort(500)
 
 
 @blueprint.delete('/postings/<uuid:posting_id>/reactions/<kind>')
@@ -303,5 +310,10 @@ def remove_reaction(posting_id, kind):
     result = board_posting_command_service.remove_reaction(
         posting.id, g.user, kind
     )
-    if result.is_err():
-        abort(409)
+
+    match result:
+        case Err(e):
+            if isinstance(e, ReactionExistsError):
+                abort(409)
+            else:
+                abort(500)
