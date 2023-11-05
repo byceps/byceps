@@ -12,12 +12,6 @@ a.dashboard-section-link:hover {
   color: currentColor;
 }
 
-.flex-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--inner-gutter);
-}
-
 .grid .cell--fitted {
   align-self: start;
 }
@@ -43,11 +37,6 @@ a.dashboard-section-link:hover {
   height: 100%;
   position: relative;
   overflow: hidden;
-}
-
-.cell.less-padding .box {
-  height: auto;
-  padding: 0.25rem;
 }
 
 .cell-icon {
