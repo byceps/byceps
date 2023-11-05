@@ -652,14 +652,13 @@ form.board-posting-create-form-inline .label {
 
 .gallery-covers {
   --column-min-width: 240px;
-  a_lign-items: stretch;
 }
 
 .gallery-cover {
   align-items: center;
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
+  row-gap: 0.5rem;
 }
 
 .gallery-cover-text {
