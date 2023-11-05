@@ -16,7 +16,8 @@
 {% include 'admin/dashboard/_active_shops.html' %}
   {%- endwith %}
 
-<div class="dashboard-section-title">{{ _('Users') }}</div>
+
+<h2>{{ _('Users') }}</h2>
 
   <div class="grid dashboard">
     {{ render_bigstats_cell(user_count|numberformat, ngettext('user', 'users', user_count), href=url_for('user_admin.index'), icon_name='users') }}

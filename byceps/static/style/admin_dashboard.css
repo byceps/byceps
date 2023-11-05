@@ -1,12 +1,7 @@
-.dashboard-section-title,
 a.dashboard-section-link {
   color: #666666;
   font-size: 0.75rem; /* 12px / 16px */
   margin: 0 0.5rem 1rem 0.5rem;
-}
-
-.dashboard-section-title {
-  text-transform: uppercase;
 }
 
 a.dashboard-section-link:not(:hover) {

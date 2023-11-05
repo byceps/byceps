@@ -1062,16 +1062,28 @@ ul.bare.bare--spaced li + li {
   margin-top: 0.5rem;
 }
 
+.centered {
+  text-align: center;
+}
+
 .mb {
   margin-bottom: 1rem;
+}
+
+.mb0 {
+  margin-bottom: 0;
 }
 
 .mt {
   margin-top: 1rem;
 }
 
-.centered {
-  text-align: center;
+.mt0 {
+  margin-top: 0;
+}
+
+.mt2 {
+  margin-top: 2rem;
 }
 
 .nowrap {

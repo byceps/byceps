@@ -1,16 +1,16 @@
 {% from 'macros/admin/dashboard.html' import render_cell, render_party_cell %}
 
 
-<div class="row row--space-between">
+<div class="row row--space-between mb mt2">
   <div>
-    <div class="dashboard-section-title">{{ _('Active Parties') }}</div>
+    <h2 class="mb0 mt0">{{ _('Active Parties') }}</h2>
   </div>
-  <div>
+  <div class="column--align-bottom">
     <a class="dashboard-section-link" href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) if brand|default else url_for('party_admin.index') }}">{{ _('All parties') }} &rarr;</a>
   </div>
 </div>
 
-<div class="grid mb">
+<div class="grid">
 
 {%- if active_parties_with_stats %}
   {%- for party, ticket_sale_stats, seat_utilization in active_parties_with_stats %}
