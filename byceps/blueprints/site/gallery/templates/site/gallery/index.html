@@ -18,7 +18,7 @@
     {%- if galleries %}
     <div class="gallery-covers">
       {%- for gallery in galleries %}
-      <a href="{{ url_for('.view', slug=gallery.slug) }}" class="disguised">
+      <a href="{{ url_for('.view', slug=gallery.slug) }}" class="gallery-cover disguised">
         {%- if gallery.title_image %}
         <div class="gallery-cover-image"><img src="{{ gallery.title_image.url_path_preview }}" class="framed" loading="lazy"></div>
         {%- else %}

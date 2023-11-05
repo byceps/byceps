@@ -652,18 +652,20 @@ form.board-posting-create-form-inline .label {
 
 .gallery-covers {
   --column-min-width: 240px;
+  a_lign-items: stretch;
 }
 
-.gallery-cover-image,
+.gallery-cover {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
 .gallery-cover-text {
   display: grid;
-  height: 100%;
+  flex-grow: 1;
   place-items: center;
-}
-
-.gallery-title {
-  margin-top: 0.25rem;
-  text-align: center;
 }
 
 .gallery-images {
