@@ -7,5 +7,13 @@ byceps.services.shop.order.errors
 """
 
 
+class ReactionDeniedError:
+    """User's reaction to a posting has been denied.
+
+    Reasons include not being logged in and being the author of the
+    posting.
+    """
+
+
 class ReactionExistsError:
     pass

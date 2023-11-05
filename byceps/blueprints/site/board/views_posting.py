@@ -17,7 +17,10 @@ from byceps.services.board import (
     board_posting_command_service,
     board_posting_query_service,
 )
-from byceps.services.board.errors import ReactionExistsError
+from byceps.services.board.errors import (
+    ReactionDeniedError,
+    ReactionExistsError,
+)
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service
 from byceps.signals import board as board_signals
@@ -288,13 +291,13 @@ def add_reaction(posting_id, kind):
     """Add a reaction to a post."""
     posting = h.get_posting_or_404(posting_id)
 
-    result = board_posting_command_service.add_reaction(
-        posting.id, g.user, kind
-    )
+    result = board_posting_command_service.add_reaction(posting, g.user, kind)
 
     match result:
         case Err(e):
-            if isinstance(e, ReactionExistsError):
+            if isinstance(e, ReactionDeniedError):
+                abort(403)
+            elif isinstance(e, ReactionExistsError):
                 abort(409)
             else:
                 abort(500)
@@ -308,12 +311,14 @@ def remove_reaction(posting_id, kind):
     posting = h.get_posting_or_404(posting_id)
 
     result = board_posting_command_service.remove_reaction(
-        posting.id, g.user, kind
+        posting, g.user, kind
     )
 
     match result:
         case Err(e):
-            if isinstance(e, ReactionExistsError):
+            if isinstance(e, ReactionDeniedError):
+                abort(403)
+            elif isinstance(e, ReactionExistsError):
                 abort(409)
             else:
                 abort(500)

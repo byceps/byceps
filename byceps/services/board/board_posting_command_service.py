@@ -29,7 +29,7 @@ from . import (
     board_topic_query_service,
 )
 from .dbmodels.posting import DbPosting, DbPostingReaction
-from .errors import ReactionExistsError
+from .errors import ReactionDeniedError, ReactionExistsError
 from .models import PostingID, TopicID
 
 
@@ -183,10 +183,13 @@ def delete_posting(posting_id: PostingID) -> None:
 
 
 def add_reaction(
-    posting_id: PostingID, user: User, kind: str
-) -> Result[None, ReactionExistsError]:
+    posting: DbPosting, user: User, kind: str
+) -> Result[None, ReactionDeniedError | ReactionExistsError]:
     """Add user reaction to the posting."""
-    reaction_exists = _is_reaction_existing(posting_id, user.id, kind)
+    if user.id == posting.creator_id:
+        return Err(ReactionDeniedError())
+
+    reaction_exists = _is_reaction_existing(posting.id, user.id, kind)
     if reaction_exists:
         return Err(ReactionExistsError())
 
@@ -194,7 +197,7 @@ def add_reaction(
     created_at = datetime.utcnow()
 
     db_reaction = DbPostingReaction(
-        reaction_id, created_at, posting_id, user.id, kind
+        reaction_id, created_at, posting.id, user.id, kind
     )
     db.session.add(db_reaction)
     db.session.commit()
@@ -203,16 +206,19 @@ def add_reaction(
 
 
 def remove_reaction(
-    posting_id: PostingID, user: User, kind: str
-) -> Result[None, ReactionExistsError]:
+    posting: DbPosting, user: User, kind: str
+) -> Result[None, ReactionDeniedError | ReactionExistsError]:
     """Remove user reaction from the posting."""
-    reaction_exists = _is_reaction_existing(posting_id, user.id, kind)
+    if user.id == posting.creator_id:
+        return Err(ReactionDeniedError())
+
+    reaction_exists = _is_reaction_existing(posting.id, user.id, kind)
     if not reaction_exists:
         return Err(ReactionExistsError())
 
     db.session.execute(
         delete(DbPostingReaction)
-        .filter_by(posting_id=posting_id)
+        .filter_by(posting_id=posting.id)
         .filter_by(user_id=user.id)
         .filter_by(kind=kind)
     )
