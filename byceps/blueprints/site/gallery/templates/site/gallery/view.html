@@ -22,11 +22,11 @@
 
   <div class="main-body-box">
     {%- if gallery.images %}
-    <ol class="gallery-images">
+    <div class="gallery-images">
       {%- for image in gallery.images|sort(attribute='position') %}
-      <li><a data-fslightbox="gallery-images" href="{{ image.url_path_full }}"><img src="{{ image.url_path_preview }}" class="framed" loading="lazy"></a></li>
+      <a data-fslightbox="gallery-images" href="{{ image.url_path_full }}"><img src="{{ image.url_path_preview }}" class="framed" loading="lazy"></a>
       {%- endfor %}
-    </ol>
+    </div>
     {%- else %}
     <p class="dimmed">{{ _('No images available.') }}</p>
     {%- endif %}
