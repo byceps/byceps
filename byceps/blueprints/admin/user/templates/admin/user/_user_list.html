@@ -1,11 +1,11 @@
-{%- from 'macros/admin/user.html' import render_most_important_user_flag, render_user_avatar_and_admin_link %}
+{%- from 'macros/admin/user.html' import render_most_important_user_flag, render_user_microcard %}
 
 {%- if users %}
 <table class="index index--v-centered index--wide">
   <thead>
     <tr>
-      <th colspan="2">{{ _('Username') }}</th>
-      <th>{{ _('Full name') }}</th>
+      <th>{{ _('Username') }}<br>{{ _('Full name') }}</th>
+      <th>{{ _('Status') }}</th>
       <th>{{ _('Created') }}</th>
       <th>{{ _('Last login') }}</th>
     </tr>
@@ -13,9 +13,8 @@
   <tbody>
     {%- for user, recent_login in users %}
     <tr>
-      <td><strong>{{ render_user_avatar_and_admin_link(user, size=16) }}</strong></td>
+      <td>{{ render_user_microcard(user, show_flags=False) }}</td>
       <td>{{ render_most_important_user_flag(user, show_label=False) }}</td>
-      <td>{{ user.detail.full_name|fallback }}</td>
       <td>{{ user.created_at|datetimeformat }}</td>
       <td>
         {%- if recent_login %}

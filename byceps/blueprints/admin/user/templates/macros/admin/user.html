@@ -12,7 +12,7 @@
 {%- endmacro %}
 
 
-{% macro render_user_microcard(user, full_name=None, tiny_avatar=False) -%}
+{% macro render_user_microcard(user, full_name=None, tiny_avatar=False, show_flags=True) -%}
 <div class="user-microcard{% if tiny_avatar %} user-microcard--tiny-avatar{% endif %}{% if user.deleted %} dimmed{% endif %}">
   <div class="user-microcard-avatar">
     <div class="avatar">{{ render_user_avatar_image_with_fallback(user) }}</div>
@@ -20,8 +20,10 @@
   <div class="user-microcard-names">
     <div class="user-microcard-screen-name">
       {{- render_user_admin_link(user) -}}
+      {%- if show_flags -%}
       {%- if user.deleted %} {{ render_user_flag_deleted(show_label=False) }}{% endif -%}
       {%- if user.suspended %} {{ render_user_flag_suspended(show_label=False) }}{% endif -%}
+      {%- endif -%}
     </div>
     <div class="user-microcard-full-name">
       {%- if not user.deleted -%}
