@@ -1,18 +1,24 @@
+    {%- with may_react = g.user.authenticated and g.user.id != posting.creator_id %}
+      {%- with reaction_tag = 'button' if may_react else 'span' %}
       <div class="reactions mt">
         {%- for kind in reaction_kinds_in_order %}
           {%- with reactions = posting.reactions_by_kind.get(kind, []) %}
-            {%- with has_reacted = g.user.id in reactions|map(attribute='id') %}
-        <button
+            {%- if reactions or may_react %}
+              {%- with has_reacted = g.user.id in reactions|map(attribute='id') %}
+        <{{ reaction_tag }}
           class="button button--reaction{% if has_reacted %} button--reaction-active{% endif %} reaction-count"
           data-count="{{ reactions|length }}"
-          {%- if g.user.authenticated and g.user.id != posting.creator_id %}
+          {%- if may_react %}
           data-action="posting-react"
           data-url-add="{{ url_for('.add_reaction', posting_id=posting.id, kind=kind) }}"
           data-url-remove="{{ url_for('.remove_reaction', posting_id=posting.id, kind=kind) }}"
           {%- endif %}
           title="{{ reactions|map(attribute='screen_name')|select|join(', ') }}"
-          ><span class="symbol">{{ reaction_kinds_to_symbols[kind] }}</span></button>
-            {%- endwith %}
+          ><span class="symbol">{{ reaction_kinds_to_symbols[kind] }}</span></{{ reaction_tag }}>
+              {%- endwith %}
+            {%- endif %}
           {%- endwith %}
         {%- endfor %}
       </div>
+      {%- endwith %}
+    {%- endwith %}
