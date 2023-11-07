@@ -29,7 +29,11 @@ from . import (
     board_topic_query_service,
 )
 from .dbmodels.posting import DbPosting, DbPostingReaction
-from .errors import ReactionDeniedError, ReactionExistsError
+from .errors import (
+    ReactionDeniedError,
+    ReactionDoesNotExistError,
+    ReactionExistsError,
+)
 from .models import PostingID, TopicID
 
 
@@ -207,14 +211,14 @@ def add_reaction(
 
 def remove_reaction(
     posting: DbPosting, user: User, kind: str
-) -> Result[None, ReactionDeniedError | ReactionExistsError]:
+) -> Result[None, ReactionDeniedError | ReactionDoesNotExistError]:
     """Remove user reaction from the posting."""
     if user.id == posting.creator_id:
         return Err(ReactionDeniedError())
 
     reaction_exists = _is_reaction_existing(posting.id, user.id, kind)
     if not reaction_exists:
-        return Err(ReactionExistsError())
+        return Err(ReactionDoesNotExistError())
 
     db.session.execute(
         delete(DbPostingReaction)

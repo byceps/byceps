@@ -17,3 +17,7 @@ class ReactionDeniedError:
 
 class ReactionExistsError:
     pass
+
+
+class ReactionDoesNotExistError:
+    pass
