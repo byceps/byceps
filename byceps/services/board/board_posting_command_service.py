@@ -21,10 +21,10 @@ from byceps.services.brand import brand_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid7
 
 from . import (
     board_aggregation_service,
+    board_posting_domain_service,
     board_posting_query_service,
     board_topic_query_service,
 )
@@ -34,7 +34,7 @@ from .errors import (
     ReactionDoesNotExistError,
     ReactionExistsError,
 )
-from .models import PostingID, TopicID
+from .models import PostingID, PostingReaction, TopicID
 
 
 def create_posting(
@@ -188,37 +188,44 @@ def delete_posting(posting_id: PostingID) -> None:
 
 def add_reaction(
     posting: DbPosting, user: User, kind: str
-) -> Result[None, ReactionDeniedError | ReactionExistsError]:
+) -> Result[PostingReaction, ReactionDeniedError | ReactionExistsError]:
     """Add user reaction to the posting."""
-    if user.id == posting.creator_id:
-        return Err(ReactionDeniedError())
-
     reaction_exists = _is_reaction_existing(posting.id, user.id, kind)
-    if reaction_exists:
-        return Err(ReactionExistsError())
 
-    reaction_id = generate_uuid7()
-    created_at = datetime.utcnow()
+    result = board_posting_domain_service.add_reaction(
+        posting.id, posting.creator_id, user, kind, reaction_exists
+    )
+
+    if result.is_err():
+        return Err(result.unwrap_err())
+
+    reaction = result.unwrap()
 
     db_reaction = DbPostingReaction(
-        reaction_id, created_at, posting.id, user.id, kind
+        reaction.id,
+        reaction.created_at,
+        reaction.posting_id,
+        reaction.user_id,
+        reaction.kind,
     )
     db.session.add(db_reaction)
     db.session.commit()
 
-    return Ok(None)
+    return Ok(reaction)
 
 
 def remove_reaction(
     posting: DbPosting, user: User, kind: str
 ) -> Result[None, ReactionDeniedError | ReactionDoesNotExistError]:
     """Remove user reaction from the posting."""
-    if user.id == posting.creator_id:
-        return Err(ReactionDeniedError())
-
     reaction_exists = _is_reaction_existing(posting.id, user.id, kind)
-    if not reaction_exists:
-        return Err(ReactionDoesNotExistError())
+
+    result = board_posting_domain_service.remove_reaction(
+        posting.id, posting.creator_id, user, kind, reaction_exists
+    )
+
+    if result.is_err():
+        return Err(result.unwrap_err())
 
     db.session.execute(
         delete(DbPostingReaction)

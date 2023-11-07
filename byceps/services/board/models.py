@@ -56,6 +56,15 @@ class BoardCategoryWithLastUpdate(BoardCategory):
 
 
 @dataclass(frozen=True)
+class PostingReaction:
+    id: UUID
+    created_at: datetime
+    posting_id: PostingID
+    user_id: UserID
+    kind: str
+
+
+@dataclass(frozen=True)
 class PostingReactionUser:
     id: UserID
     screen_name: str | None
