@@ -96,22 +96,16 @@ def contains_topic_unseen_postings(db_topic: DbTopic, user_id: UserID) -> bool:
     )
 
 
-def find_last_topic_view(
-    user_id: UserID, topic_id: TopicID
-) -> DbLastTopicView | None:
-    """Return the user's last view of the topic, or `None` if not found."""
-    return db.session.scalars(
-        select(DbLastTopicView).filter_by(user_id=user_id, topic_id=topic_id)
-    ).first()
-
-
 def find_topic_last_viewed_at(
     topic_id: TopicID, user_id: UserID
 ) -> datetime | None:
     """Return the time the topic was last viewed by the user (or
     nothing, if it hasn't been viewed by the user yet).
     """
-    db_last_view = find_last_topic_view(user_id, topic_id)
+    db_last_view = db.session.scalars(
+        select(DbLastTopicView).filter_by(user_id=user_id, topic_id=topic_id)
+    ).first()
+
     return db_last_view.occurred_at if (db_last_view is not None) else None
 
 
