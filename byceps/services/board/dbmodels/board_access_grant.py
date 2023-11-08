@@ -8,6 +8,7 @@ byceps.services.board.dbmodels.board_access_grant
 
 from datetime import datetime
 from typing import NewType
+from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -18,7 +19,7 @@ from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 
 
-BoardAccessGrantID = NewType('BoardAccessGrantID', str)
+BoardAccessGrantID = NewType('BoardAccessGrantID', UUID)
 
 
 class DbBoardAccessGrant(db.Model):
