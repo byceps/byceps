@@ -19,6 +19,7 @@ from byceps.services.board.models import (
     BoardCategoryID,
     BoardID,
     PostingID,
+    Topic,
     TopicID,
 )
 from byceps.services.user.models.user import User
@@ -86,8 +87,8 @@ def create_posting(
     return posting
 
 
-def find_topic(topic_id: TopicID) -> DbTopic | None:
-    return board_topic_query_service.find_db_topic(topic_id)
+def find_topic(topic_id: TopicID) -> Topic | None:
+    return board_topic_query_service.find_topic(topic_id)
 
 
 def find_posting(posting_id: PostingID) -> DbPosting | None:

@@ -46,10 +46,10 @@ def test_unhide_topic(site_app, moderator, moderator_client, topic):
 def assert_topic_is_hidden(topic, moderator_id):
     assert topic.hidden
     assert topic.hidden_at is not None
-    assert topic.hidden_by_id == moderator_id
+    assert topic.hidden_by.id == moderator_id
 
 
 def assert_topic_is_not_hidden(topic):
     assert not topic.hidden
     assert topic.hidden_at is None
-    assert topic.hidden_by_id is None
+    assert topic.hidden_by is None

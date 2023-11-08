@@ -15,11 +15,14 @@ from sqlalchemy import select
 from sqlalchemy.sql import Select
 
 from byceps.database import db, paginate, Pagination
+from byceps.services.user import user_service
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.models.user import User
 
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
 from .dbmodels.topic import DbTopic
-from .models import BoardCategoryID, BoardID, TopicID
+from .models import BoardCategoryID, BoardID, Topic, TopicID
 
 
 def count_topics_for_board(board_id: BoardID) -> int:
@@ -29,6 +32,16 @@ def count_topics_for_board(board_id: BoardID) -> int:
         .join(DbBoardCategory)
         .filter(DbBoardCategory.board_id == board_id)
     )
+
+
+def find_topic(topic_id: TopicID) -> Topic | None:
+    """Return the topic with that id, or `None` if not found."""
+    db_topic = find_db_topic(topic_id)
+
+    if db_topic is None:
+        return None
+
+    return _db_entity_to_topic(db_topic)
 
 
 def find_db_topic(topic_id: TopicID) -> DbTopic | None:
@@ -165,3 +178,36 @@ def find_default_posting_to_jump_to(
         ).first()
 
     return first_new_posting
+
+
+def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
+    def to_user(db_user: DbUser | None) -> User | None:
+        if db_user is None:
+            return None
+
+        return user_service._db_entity_to_user(db_user)
+
+    creator = user_service.get_user(db_topic.creator_id)
+
+    return Topic(
+        id=db_topic.id,
+        category_id=db_topic.category_id,
+        created_at=db_topic.created_at,
+        creator=creator,
+        title=db_topic.title,
+        posting_count=db_topic.posting_count,
+        last_updated_at=db_topic.last_updated_at,
+        last_updated_by=to_user(db_topic.last_updated_by),
+        hidden=db_topic.hidden,
+        hidden_at=db_topic.hidden_at,
+        hidden_by=to_user(db_topic.hidden_by),
+        locked=db_topic.locked,
+        locked_at=db_topic.locked_at,
+        locked_by=to_user(db_topic.locked_by),
+        pinned=db_topic.pinned,
+        pinned_at=db_topic.pinned_at,
+        pinned_by=to_user(db_topic.pinned_by),
+        initial_posting_id=db_topic.initial_posting.id,
+        posting_limited_to_moderators=db_topic.posting_limited_to_moderators,
+        muted=db_topic.muted,
+    )

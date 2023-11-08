@@ -56,6 +56,30 @@ class BoardCategoryWithLastUpdate(BoardCategory):
 
 
 @dataclass(frozen=True)
+class Topic:
+    id: TopicID
+    category_id: BoardCategoryID
+    created_at: datetime
+    creator: User
+    title: str
+    posting_count: int
+    last_updated_at: datetime | None
+    last_updated_by: User | None
+    hidden: bool
+    hidden_at: datetime | None
+    hidden_by: User | None
+    locked: bool
+    locked_at: datetime | None
+    locked_by: User | None
+    pinned: bool
+    pinned_at: datetime | None
+    pinned_by: User | None
+    initial_posting_id: PostingID
+    posting_limited_to_moderators: bool
+    muted: bool
+
+
+@dataclass(frozen=True)
 class PostingReaction:
     id: UUID
     created_at: datetime

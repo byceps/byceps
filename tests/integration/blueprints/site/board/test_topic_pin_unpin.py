@@ -45,10 +45,10 @@ def test_unpin_topic(site_app, moderator, moderator_client, topic):
 def assert_topic_is_pinned(topic, moderator_id):
     assert topic.pinned
     assert topic.pinned_at is not None
-    assert topic.pinned_by_id == moderator_id
+    assert topic.pinned_by.id == moderator_id
 
 
 def assert_topic_is_not_pinned(topic):
     assert not topic.pinned
     assert topic.pinned_at is None
-    assert topic.pinned_by_id is None
+    assert topic.pinned_by is None

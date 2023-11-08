@@ -48,10 +48,10 @@ def test_unlock_topic(site_app, moderator, moderator_client, topic):
 def assert_topic_is_locked(topic, moderator_id):
     assert topic.locked
     assert topic.locked_at is not None
-    assert topic.locked_by_id == moderator_id
+    assert topic.locked_by.id == moderator_id
 
 
 def assert_topic_is_not_locked(topic):
     assert not topic.locked
     assert topic.locked_at is None
-    assert topic.locked_by_id is None
+    assert topic.locked_by is None
