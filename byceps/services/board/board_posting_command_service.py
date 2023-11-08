@@ -52,14 +52,15 @@ def create_posting(
 
     board_aggregation_service.aggregate_topic(db_topic)
 
-    brand = brand_service.get_brand(db_posting.topic.category.board.brand_id)
+    db_category = db_topic.category
+    brand = brand_service.get_brand(db_category.board.brand_id)
     event = BoardPostingCreatedEvent(
         occurred_at=db_posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
         brand_id=brand.id,
         brand_title=brand.title,
-        board_id=db_topic.category.board_id,
+        board_id=db_category.board_id,
         posting_id=db_posting.id,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,
