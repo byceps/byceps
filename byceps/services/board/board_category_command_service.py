@@ -8,6 +8,7 @@ byceps.services.board.board_category_command_service
 
 from byceps.database import db
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid4
 
 from . import board_topic_query_service
 from .dbmodels.board import DbBoard
@@ -23,7 +24,11 @@ def create_category(
     if db_board is None:
         raise ValueError(f'Unknown board ID "{board_id}"')
 
-    db_category = DbBoardCategory(db_board.id, slug, title, description)
+    category_id = BoardCategoryID(generate_uuid4())
+
+    db_category = DbBoardCategory(
+        category_id, db_board.id, slug, title, description
+    )
     db_board.categories.append(db_category)
 
     db.session.commit()

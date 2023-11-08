@@ -21,6 +21,7 @@ from byceps.services.brand import brand_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from . import (
     board_aggregation_service,
@@ -43,7 +44,9 @@ def create_posting(
     """Create a posting in that topic."""
     db_topic = board_topic_query_service.get_db_topic(topic_id)
 
-    db_posting = DbPosting(db_topic, creator.id, body)
+    posting_id = PostingID(generate_uuid7())
+
+    db_posting = DbPosting(posting_id, db_topic, creator.id, body)
     db.session.add(db_posting)
     db.session.commit()
 

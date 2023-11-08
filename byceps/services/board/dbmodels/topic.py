@@ -18,7 +18,6 @@ from byceps.services.board.models import BoardCategoryID, TopicID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 from .category import DbBoardCategory
 
@@ -28,9 +27,7 @@ class DbTopic(db.Model):
 
     __tablename__ = 'board_topics'
 
-    id: Mapped[TopicID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[TopicID] = mapped_column(db.Uuid, primary_key=True)
     category_id: Mapped[BoardCategoryID] = mapped_column(
         db.Uuid,
         db.ForeignKey('board_categories.id'),
@@ -86,8 +83,13 @@ class DbTopic(db.Model):
     muted: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
-        self, category_id: BoardCategoryID, creator_id: UserID, title: str
+        self,
+        topic_id: TopicID,
+        category_id: BoardCategoryID,
+        creator_id: UserID,
+        title: str,
     ) -> None:
+        self.id = topic_id
         self.category_id = category_id
         self.creator_id = creator_id
         self.title = title

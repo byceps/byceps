@@ -25,6 +25,7 @@ from byceps.events.board import (
 from byceps.services.brand import brand_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
+from byceps.util.uuid import generate_uuid7
 
 from . import (
     board_aggregation_service,
@@ -34,15 +35,18 @@ from . import (
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbInitialTopicPostingAssociation, DbPosting
 from .dbmodels.topic import DbTopic
-from .models import BoardCategoryID, TopicID
+from .models import BoardCategoryID, PostingID, TopicID
 
 
 def create_topic(
     category_id: BoardCategoryID, creator: User, title: str, body: str
 ) -> tuple[DbTopic, BoardTopicCreatedEvent]:
     """Create a topic with an initial posting in that category."""
-    db_topic = DbTopic(category_id, creator.id, title)
-    db_posting = DbPosting(db_topic, creator.id, body)
+    topic_id = TopicID(generate_uuid7())
+    posting_id = PostingID(generate_uuid7())
+
+    db_topic = DbTopic(topic_id, category_id, creator.id, title)
+    db_posting = DbPosting(posting_id, db_topic, creator.id, body)
     db_initial_topic_posting_association = DbInitialTopicPostingAssociation(
         db_topic, db_posting
     )

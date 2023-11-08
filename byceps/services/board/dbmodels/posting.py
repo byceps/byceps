@@ -16,7 +16,6 @@ from byceps.services.board.models import PostingID, TopicID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 from .topic import DbTopic
 
@@ -26,9 +25,7 @@ class DbPosting(db.Model):
 
     __tablename__ = 'board_postings'
 
-    id: Mapped[PostingID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[PostingID] = mapped_column(db.Uuid, primary_key=True)
     topic_id: Mapped[TopicID] = mapped_column(
         db.Uuid, db.ForeignKey('board_topics.id'), index=True
     )
@@ -55,7 +52,14 @@ class DbPosting(db.Model):
         DbUser, foreign_keys=[hidden_by_id]
     )
 
-    def __init__(self, topic: DbTopic, creator_id: UserID, body: str) -> None:
+    def __init__(
+        self,
+        posting_id: PostingID,
+        topic: DbTopic,
+        creator_id: UserID,
+        body: str,
+    ) -> None:
+        self.id = posting_id
         self.topic = topic
         self.creator_id = creator_id
         self.body = body

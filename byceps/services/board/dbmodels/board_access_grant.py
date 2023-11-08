@@ -16,7 +16,6 @@ from byceps.database import db
 from byceps.services.board.models import BoardID
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 
 BoardAccessGrantID = NewType('BoardAccessGrantID', UUID)
@@ -27,9 +26,7 @@ class DbBoardAccessGrant(db.Model):
 
     __tablename__ = 'board_access_grants'
 
-    id: Mapped[BoardAccessGrantID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[BoardAccessGrantID] = mapped_column(db.Uuid, primary_key=True)
     board_id: Mapped[BoardID] = mapped_column(
         db.UnicodeText, db.ForeignKey('boards.id'), index=True
     )
@@ -38,7 +35,10 @@ class DbBoardAccessGrant(db.Model):
     )
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
-    def __init__(self, board_id: BoardID, user_id: UserID) -> None:
+    def __init__(
+        self, grant_id: BoardAccessGrantID, board_id: BoardID, user_id: UserID
+    ) -> None:
+        self.id = grant_id
         self.board_id = board_id
         self.user_id = user_id
 

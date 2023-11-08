@@ -18,7 +18,6 @@ from byceps.services.board.models import BoardCategoryID, BoardID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid4
 
 from .board import DbBoard
 
@@ -32,9 +31,7 @@ class DbBoardCategory(db.Model):
         db.UniqueConstraint('board_id', 'title'),
     )
 
-    id: Mapped[BoardCategoryID] = mapped_column(
-        db.Uuid, default=generate_uuid4, primary_key=True
-    )
+    id: Mapped[BoardCategoryID] = mapped_column(db.Uuid, primary_key=True)
     board_id: Mapped[BoardID] = mapped_column(
         db.UnicodeText, db.ForeignKey('boards.id'), index=True
     )
@@ -61,8 +58,14 @@ class DbBoardCategory(db.Model):
     )
 
     def __init__(
-        self, board_id: BoardID, slug: str, title: str, description: str
+        self,
+        category_id: BoardCategoryID,
+        board_id: BoardID,
+        slug: str,
+        title: str,
+        description: str,
     ) -> None:
+        self.id = category_id
         self.board_id = board_id
         self.slug = slug
         self.title = title

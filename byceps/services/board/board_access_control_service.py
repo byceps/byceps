@@ -10,6 +10,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.user.models.user import UserID
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.board import DbBoard
 from .dbmodels.board_access_grant import BoardAccessGrantID, DbBoardAccessGrant
@@ -20,7 +21,9 @@ def grant_access_to_board(
     board_id: BoardID, user_id: UserID
 ) -> BoardAccessGrantID:
     """Grant the user access to the board."""
-    db_grant = DbBoardAccessGrant(board_id, user_id)
+    grant_id = BoardAccessGrantID(generate_uuid7())
+
+    db_grant = DbBoardAccessGrant(grant_id, board_id, user_id)
 
     db.session.add(db_grant)
     db.session.commit()
