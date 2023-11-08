@@ -19,59 +19,59 @@ def create_category(
     board_id: BoardID, slug: str, title: str, description: str
 ) -> BoardCategory:
     """Create a category in that board."""
-    board = db.session.get(DbBoard, board_id)
-    if board is None:
+    db_board = db.session.get(DbBoard, board_id)
+    if db_board is None:
         raise ValueError(f'Unknown board ID "{board_id}"')
 
-    category = DbBoardCategory(board.id, slug, title, description)
-    board.categories.append(category)
+    db_category = DbBoardCategory(db_board.id, slug, title, description)
+    db_board.categories.append(db_category)
 
     db.session.commit()
 
-    return _db_entity_to_category(category)
+    return _db_entity_to_category(db_category)
 
 
 def update_category(
     category_id: BoardCategoryID, slug: str, title: str, description: str
 ) -> BoardCategory:
     """Update the category."""
-    category = _get_category(category_id)
+    db_category = _get_db_category(category_id)
 
-    category.slug = slug.strip().lower()
-    category.title = title.strip()
-    category.description = description.strip()
+    db_category.slug = slug.strip().lower()
+    db_category.title = title.strip()
+    db_category.description = description.strip()
 
     db.session.commit()
 
-    return _db_entity_to_category(category)
+    return _db_entity_to_category(db_category)
 
 
 def hide_category(category_id: BoardCategoryID) -> None:
     """Hide the category."""
-    category = _get_category(category_id)
+    db_category = _get_db_category(category_id)
 
-    category.hidden = True
+    db_category.hidden = True
     db.session.commit()
 
 
 def unhide_category(category_id: BoardCategoryID) -> None:
     """Un-hide the category."""
-    category = _get_category(category_id)
+    db_category = _get_db_category(category_id)
 
-    category.hidden = False
+    db_category.hidden = False
     db.session.commit()
 
 
 def move_category_up(category_id: BoardCategoryID) -> Result[None, str]:
     """Move a category upwards by one position."""
-    category = _get_category(category_id)
+    db_category = _get_db_category(category_id)
 
-    category_list = category.board.categories
+    category_list = db_category.board.categories
 
-    if category.position == 1:
+    if db_category.position == 1:
         return Err('Category already is at the top.')
 
-    popped_category = category_list.pop(category.position - 1)
+    popped_category = category_list.pop(db_category.position - 1)
     category_list.insert(popped_category.position - 2, popped_category)
 
     db.session.commit()
@@ -81,14 +81,14 @@ def move_category_up(category_id: BoardCategoryID) -> Result[None, str]:
 
 def move_category_down(category_id: BoardCategoryID) -> Result[None, str]:
     """Move a category downwards by one position."""
-    category = _get_category(category_id)
+    db_category = _get_db_category(category_id)
 
-    category_list = category.board.categories
+    category_list = db_category.board.categories
 
-    if category.position == len(category_list):
+    if db_category.position == len(category_list):
         return Err('Category already is at the bottom.')
 
-    popped_category = category_list.pop(category.position - 1)
+    popped_category = category_list.pop(db_category.position - 1)
     category_list.insert(popped_category.position, popped_category)
 
     db.session.commit()
@@ -98,41 +98,41 @@ def move_category_down(category_id: BoardCategoryID) -> Result[None, str]:
 
 def delete_category(category_id: BoardCategoryID) -> Result[None, str]:
     """Delete category."""
-    category = _get_category(category_id)
+    db_category = _get_db_category(category_id)
 
     topic_ids = board_topic_query_service.get_all_topic_ids_in_category(
-        category.id
+        db_category.id
     )
     if topic_ids:
         return Err(
-            f'Category "{category.title}" in board "{category.board_id}" '
+            f'Category "{db_category.title}" in board "{db_category.board_id}" '
             'contains topics. It will not be deleted because of that.'
         )
 
-    db.session.delete(category)
+    db.session.delete(db_category)
     db.session.commit()
 
     return Ok(None)
 
 
-def _get_category(category_id: BoardCategoryID) -> DbBoardCategory:
-    category = db.session.get(DbBoardCategory, category_id)
+def _get_db_category(category_id: BoardCategoryID) -> DbBoardCategory:
+    db_category = db.session.get(DbBoardCategory, category_id)
 
-    if category is None:
+    if db_category is None:
         raise ValueError(f'Unknown category ID "{category_id}"')
 
-    return category
+    return db_category
 
 
-def _db_entity_to_category(category: DbBoardCategory) -> BoardCategory:
+def _db_entity_to_category(db_category: DbBoardCategory) -> BoardCategory:
     return BoardCategory(
-        category.id,
-        category.board_id,
-        category.position,
-        category.slug,
-        category.title,
-        category.description,
-        category.topic_count,
-        category.posting_count,
-        category.hidden,
+        id=db_category.id,
+        board_id=db_category.board_id,
+        position=db_category.position,
+        slug=db_category.slug,
+        title=db_category.title,
+        description=db_category.description,
+        topic_count=db_category.topic_count,
+        posting_count=db_category.posting_count,
+        hidden=db_category.hidden,
     )

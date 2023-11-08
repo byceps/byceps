@@ -87,8 +87,8 @@ def create_posting(
 
 
 def find_topic(topic_id: TopicID) -> DbTopic | None:
-    return board_topic_query_service.find_topic_by_id(topic_id)
+    return board_topic_query_service.find_db_topic(topic_id)
 
 
 def find_posting(posting_id: PostingID) -> DbPosting | None:
-    return board_posting_query_service.find_posting_by_id(posting_id)
+    return board_posting_query_service.find_db_posting(posting_id)

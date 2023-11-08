@@ -40,36 +40,36 @@ def get_category_or_404(category_id):
     return category
 
 
-def get_topic_or_404(topic_id):
-    topic = board_topic_query_service.find_topic_by_id(topic_id)
+def get_db_topic_or_404(topic_id):
+    db_topic = board_topic_query_service.find_db_topic(topic_id)
 
-    if topic is None:
+    if db_topic is None:
         abort(404)
 
     board_id = get_board_id()
 
-    if topic.category.board_id != board_id:
+    if db_topic.category.board_id != board_id:
         abort(404)
 
     require_board_access(board_id, g.user.id)
 
-    return topic
+    return db_topic
 
 
-def get_posting_or_404(posting_id):
-    posting = board_posting_query_service.find_posting_by_id(posting_id)
+def get_db_posting_or_404(posting_id):
+    db_posting = board_posting_query_service.find_db_posting(posting_id)
 
-    if posting is None:
+    if db_posting is None:
         abort(404)
 
     board_id = get_board_id()
 
-    if posting.topic.category.board_id != board_id:
+    if db_posting.topic.category.board_id != board_id:
         abort(404)
 
     require_board_access(board_id, g.user.id)
 
-    return posting
+    return db_posting
 
 
 def require_board_access(board_id, user_id):
@@ -88,11 +88,11 @@ def build_url_for_topic(topic_id, *, external=False):
     return url_for('board.topic_view', topic_id=topic_id, _external=external)
 
 
-def build_url_for_topic_in_category_view(topic):
+def build_url_for_topic_in_category_view(db_topic):
     return url_for(
         'board.category_view',
-        slug=topic.category.slug,
-        _anchor=f'topic-{topic.id}',
+        slug=db_topic.category.slug,
+        _anchor=f'topic-{db_topic.id}',
     )
 
 
@@ -106,11 +106,11 @@ def build_url_for_posting(posting_id, *, external=False):
     )
 
 
-def build_url_for_posting_in_topic_view(posting, page, **kwargs):
+def build_url_for_posting_in_topic_view(db_posting, page, **kwargs):
     return url_for(
         'board.topic_view',
-        topic_id=posting.topic.id,
+        topic_id=db_posting.topic.id,
         page=page,
-        _anchor=f'posting-{posting.id}',
+        _anchor=f'posting-{db_posting.id}',
         **kwargs,
     )

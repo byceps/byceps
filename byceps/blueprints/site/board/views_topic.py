@@ -242,18 +242,18 @@ def topic_create(category_id):
 @subnavigation_for_view('board')
 def topic_update_form(topic_id, erroneous_form=None):
     """Show form to update a topic."""
-    topic = h.get_topic_or_404(topic_id)
-    url = h.build_url_for_topic(topic.id)
+    db_topic = h.get_db_topic_or_404(topic_id)
+    url = h.build_url_for_topic(db_topic.id)
 
-    user_may_update = service.may_topic_be_updated_by_current_user(topic)
+    user_may_update = service.may_topic_be_updated_by_current_user(db_topic)
 
-    if topic.locked and not user_may_update:
+    if db_topic.locked and not user_may_update:
         flash_error(
             gettext('The topic must not be updated because it is locked.')
         )
         return redirect(url)
 
-    if topic.hidden:
+    if db_topic.hidden:
         flash_error(gettext('The topic must not be updated.'))
         return redirect(url)
 
@@ -264,12 +264,12 @@ def topic_update_form(topic_id, erroneous_form=None):
     form = (
         erroneous_form
         if erroneous_form
-        else TopicUpdateForm(obj=topic, body=topic.initial_posting.body)
+        else TopicUpdateForm(obj=db_topic, body=db_topic.initial_posting.body)
     )
 
     return {
         'form': form,
-        'topic': topic,
+        'topic': db_topic,
         'smileys': text_markup_service.get_smileys(),
     }
 
@@ -278,18 +278,18 @@ def topic_update_form(topic_id, erroneous_form=None):
 @permission_required('board_topic.update')
 def topic_update(topic_id):
     """Update a topic."""
-    topic = h.get_topic_or_404(topic_id)
-    url = h.build_url_for_topic(topic.id)
+    db_topic = h.get_db_topic_or_404(topic_id)
+    url = h.build_url_for_topic(db_topic.id)
 
-    user_may_update = service.may_topic_be_updated_by_current_user(topic)
+    user_may_update = service.may_topic_be_updated_by_current_user(db_topic)
 
-    if topic.locked and not user_may_update:
+    if db_topic.locked and not user_may_update:
         flash_error(
             gettext('The topic must not be updated because it is locked.')
         )
         return redirect(url)
 
-    if topic.hidden:
+    if db_topic.hidden:
         flash_error(gettext('The topic must not be updated.'))
         return redirect(url)
 
@@ -302,11 +302,11 @@ def topic_update(topic_id):
         return topic_update_form(topic_id, form)
 
     board_topic_command_service.update_topic(
-        topic.id, g.user, form.title.data, form.body.data
+        db_topic.id, g.user, form.title.data, form.body.data
     )
 
     flash_success(
-        gettext('Topic "%(title)s" has been updated.', title=topic.title)
+        gettext('Topic "%(title)s" has been updated.', title=db_topic.title)
     )
     return redirect(url)
 
@@ -318,16 +318,16 @@ def topic_update(topic_id):
 def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
     board_id = h.get_board_id()
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
 
-    topic.creator = user_service.get_user(topic.creator_id)
+    db_topic.creator = user_service.get_user(db_topic.creator_id)
 
     categories = board_category_query_service.get_categories_excluding(
-        board_id, topic.category_id
+        board_id, db_topic.category_id
     )
 
     return {
-        'topic': topic,
+        'topic': db_topic,
         'categories': categories,
     }
 
@@ -337,22 +337,22 @@ def topic_moderate_form(topic_id):
 @respond_no_content_with_location
 def topic_hide(topic_id):
     """Hide a topic."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
     moderator = g.user
 
-    event = board_topic_command_service.hide_topic(topic.id, moderator)
+    event = board_topic_command_service.hide_topic(db_topic.id, moderator)
 
     flash_success(
-        gettext('Topic "%(title)s" has been hidden.', title=topic.title),
+        gettext('Topic "%(title)s" has been hidden.', title=db_topic.title),
         icon='hidden',
     )
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_topic(topic.id)
+        event, url=h.build_external_url_for_topic(db_topic.id)
     )
     board_signals.topic_hidden.send(None, event=event)
 
-    return h.build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(db_topic)
 
 
 @blueprint.delete('/topics/<uuid:topic_id>/flags/hidden')
@@ -360,25 +360,25 @@ def topic_hide(topic_id):
 @respond_no_content_with_location
 def topic_unhide(topic_id):
     """Un-hide a topic."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
     moderator = g.user
 
-    event = board_topic_command_service.unhide_topic(topic.id, moderator)
+    event = board_topic_command_service.unhide_topic(db_topic.id, moderator)
 
     flash_success(
         gettext(
             'Topic "%(title)s" has been made visible again.',
-            title=topic.title,
+            title=db_topic.title,
         ),
         icon='view',
     )
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_topic(topic.id)
+        event, url=h.build_external_url_for_topic(db_topic.id)
     )
     board_signals.topic_unhidden.send(None, event=event)
 
-    return h.build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(db_topic)
 
 
 @blueprint.post('/topics/<uuid:topic_id>/flags/locked')
@@ -386,22 +386,22 @@ def topic_unhide(topic_id):
 @respond_no_content_with_location
 def topic_lock(topic_id):
     """Lock a topic."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
     moderator = g.user
 
-    event = board_topic_command_service.lock_topic(topic.id, moderator)
+    event = board_topic_command_service.lock_topic(db_topic.id, moderator)
 
     flash_success(
-        gettext('Topic "%(title)s" has been locked.', title=topic.title),
+        gettext('Topic "%(title)s" has been locked.', title=db_topic.title),
         icon='lock',
     )
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_topic(topic.id)
+        event, url=h.build_external_url_for_topic(db_topic.id)
     )
     board_signals.topic_locked.send(None, event=event)
 
-    return h.build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(db_topic)
 
 
 @blueprint.delete('/topics/<uuid:topic_id>/flags/locked')
@@ -409,22 +409,22 @@ def topic_lock(topic_id):
 @respond_no_content_with_location
 def topic_unlock(topic_id):
     """Unlock a topic."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
     moderator = g.user
 
-    event = board_topic_command_service.unlock_topic(topic.id, moderator)
+    event = board_topic_command_service.unlock_topic(db_topic.id, moderator)
 
     flash_success(
-        gettext('Topic "%(title)s" has been unlocked.', title=topic.title),
+        gettext('Topic "%(title)s" has been unlocked.', title=db_topic.title),
         icon='unlock',
     )
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_topic(topic.id)
+        event, url=h.build_external_url_for_topic(db_topic.id)
     )
     board_signals.topic_unlocked.send(None, event=event)
 
-    return h.build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(db_topic)
 
 
 @blueprint.post('/topics/<uuid:topic_id>/flags/pinned')
@@ -432,22 +432,22 @@ def topic_unlock(topic_id):
 @respond_no_content_with_location
 def topic_pin(topic_id):
     """Pin a topic."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
     moderator = g.user
 
-    event = board_topic_command_service.pin_topic(topic.id, moderator)
+    event = board_topic_command_service.pin_topic(db_topic.id, moderator)
 
     flash_success(
-        gettext('Topic "%(title)s" has been pinned.', title=topic.title),
+        gettext('Topic "%(title)s" has been pinned.', title=db_topic.title),
         icon='pin',
     )
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_topic(topic.id)
+        event, url=h.build_external_url_for_topic(db_topic.id)
     )
     board_signals.topic_pinned.send(None, event=event)
 
-    return h.build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(db_topic)
 
 
 @blueprint.delete('/topics/<uuid:topic_id>/flags/pinned')
@@ -455,28 +455,28 @@ def topic_pin(topic_id):
 @respond_no_content_with_location
 def topic_unpin(topic_id):
     """Unpin a topic."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
     moderator = g.user
 
-    event = board_topic_command_service.unpin_topic(topic.id, moderator)
+    event = board_topic_command_service.unpin_topic(db_topic.id, moderator)
 
     flash_success(
-        gettext('Topic "%(title)s" has been unpinned.', title=topic.title)
+        gettext('Topic "%(title)s" has been unpinned.', title=db_topic.title)
     )
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_topic(topic.id)
+        event, url=h.build_external_url_for_topic(db_topic.id)
     )
     board_signals.topic_unpinned.send(None, event=event)
 
-    return h.build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(db_topic)
 
 
 @blueprint.post('/topics/<uuid:topic_id>/move')
 @permission_required('board_topic.move')
 def topic_move(topic_id):
     """Move a topic from one category to another."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
     moderator = g.user
 
     new_category_id = request.form.get('category_id')
@@ -485,17 +485,17 @@ def topic_move(topic_id):
 
     new_category = h.get_category_or_404(new_category_id)
 
-    old_category = topic.category
+    old_category = db_topic.category
 
     event = board_topic_command_service.move_topic(
-        topic.id, new_category.id, moderator
+        db_topic.id, new_category.id, moderator
     )
 
     flash_success(
         gettext(
             'Topic "%(topic_title)s" has been moved from category '
             '"%(old_category_title)s" to category "%(new_category_title)s".',
-            topic_title=topic.title,
+            topic_title=db_topic.title,
             old_category_title=old_category.title,
             new_category_title=new_category.title,
         ),
@@ -503,11 +503,11 @@ def topic_move(topic_id):
     )
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_topic(topic.id)
+        event, url=h.build_external_url_for_topic(db_topic.id)
     )
     board_signals.topic_moved.send(None, event=event)
 
-    return redirect(h.build_url_for_topic_in_category_view(topic))
+    return redirect(h.build_url_for_topic_in_category_view(db_topic))
 
 
 @blueprint.post('/topics/<uuid:topic_id>/flags/announcements')
@@ -515,19 +515,19 @@ def topic_move(topic_id):
 @respond_no_content_with_location
 def topic_limit_to_announcements(topic_id):
     """Limit post in the topic to moderators."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
 
-    board_topic_command_service.limit_topic_to_announcements(topic.id)
+    board_topic_command_service.limit_topic_to_announcements(db_topic.id)
 
     flash_success(
         gettext(
             'Topic "%(title)s" has been limited to announcements.',
-            title=topic.title,
+            title=db_topic.title,
         ),
         icon='announce',
     )
 
-    return h.build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(db_topic)
 
 
 @blueprint.delete('/topics/<uuid:topic_id>/flags/announcements')
@@ -535,15 +535,17 @@ def topic_limit_to_announcements(topic_id):
 @respond_no_content_with_location
 def topic_remove_limit_to_announcements(topic_id):
     """Allow non-moderators to post in the topic again."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
 
-    board_topic_command_service.remove_limit_of_topic_to_announcements(topic.id)
+    board_topic_command_service.remove_limit_of_topic_to_announcements(
+        db_topic.id
+    )
 
     flash_success(
         gettext(
             'Topic "%(title)s" has been reopened for regular replies.',
-            title=topic.title,
+            title=db_topic.title,
         )
     )
 
-    return h.build_url_for_topic_in_category_view(topic)
+    return h.build_url_for_topic_in_category_view(db_topic)

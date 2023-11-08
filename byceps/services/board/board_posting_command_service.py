@@ -41,13 +41,13 @@ def create_posting(
     topic_id: TopicID, creator: User, body: str
 ) -> tuple[DbPosting, BoardPostingCreatedEvent]:
     """Create a posting in that topic."""
-    topic = board_topic_query_service.get_topic(topic_id)
+    db_topic = board_topic_query_service.get_db_topic(topic_id)
 
-    db_posting = DbPosting(topic, creator.id, body)
+    db_posting = DbPosting(db_topic, creator.id, body)
     db.session.add(db_posting)
     db.session.commit()
 
-    board_aggregation_service.aggregate_topic(topic)
+    board_aggregation_service.aggregate_topic(db_topic)
 
     brand = brand_service.get_brand(db_posting.topic.category.board.brand_id)
     event = BoardPostingCreatedEvent(
@@ -56,13 +56,13 @@ def create_posting(
         initiator_screen_name=creator.screen_name,
         brand_id=brand.id,
         brand_title=brand.title,
-        board_id=topic.category.board_id,
+        board_id=db_topic.category.board_id,
         posting_id=db_posting.id,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,
-        topic_id=topic.id,
-        topic_title=topic.title,
-        topic_muted=topic.muted,
+        topic_id=db_topic.id,
+        topic_title=db_topic.title,
+        topic_muted=db_topic.muted,
         url=None,
     )
 
@@ -73,7 +73,7 @@ def update_posting(
     posting_id: PostingID, editor: User, body: str, *, commit: bool = True
 ) -> BoardPostingUpdatedEvent:
     """Update the posting."""
-    db_posting = _get_posting(posting_id)
+    db_posting = _get_db_posting(posting_id)
 
     now = datetime.utcnow()
 
@@ -109,7 +109,7 @@ def hide_posting(
     posting_id: PostingID, moderator: User
 ) -> BoardPostingHiddenEvent:
     """Hide the posting."""
-    db_posting = _get_posting(posting_id)
+    db_posting = _get_db_posting(posting_id)
 
     now = datetime.utcnow()
 
@@ -146,7 +146,7 @@ def unhide_posting(
     posting_id: PostingID, moderator: User
 ) -> BoardPostingUnhiddenEvent:
     """Un-hide the posting."""
-    db_posting = _get_posting(posting_id)
+    db_posting = _get_db_posting(posting_id)
 
     now = datetime.utcnow()
 
@@ -187,13 +187,13 @@ def delete_posting(posting_id: PostingID) -> None:
 
 
 def add_reaction(
-    posting: DbPosting, user: User, kind: str
+    db_posting: DbPosting, user: User, kind: str
 ) -> Result[PostingReaction, ReactionDeniedError | ReactionExistsError]:
     """Add user reaction to the posting."""
-    reaction_exists = _is_reaction_existing(posting.id, user.id, kind)
+    reaction_exists = _is_reaction_existing(db_posting.id, user.id, kind)
 
     result = board_posting_domain_service.add_reaction(
-        posting.id, posting.creator_id, user, kind, reaction_exists
+        db_posting.id, db_posting.creator_id, user, kind, reaction_exists
     )
 
     if result.is_err():
@@ -215,13 +215,13 @@ def add_reaction(
 
 
 def remove_reaction(
-    posting: DbPosting, user: User, kind: str
+    db_posting: DbPosting, user: User, kind: str
 ) -> Result[None, ReactionDeniedError | ReactionDoesNotExistError]:
     """Remove user reaction from the posting."""
-    reaction_exists = _is_reaction_existing(posting.id, user.id, kind)
+    reaction_exists = _is_reaction_existing(db_posting.id, user.id, kind)
 
     result = board_posting_domain_service.remove_reaction(
-        posting.id, posting.creator_id, user, kind, reaction_exists
+        db_posting.id, db_posting.creator_id, user, kind, reaction_exists
     )
 
     if result.is_err():
@@ -229,7 +229,7 @@ def remove_reaction(
 
     db.session.execute(
         delete(DbPostingReaction)
-        .filter_by(posting_id=posting.id)
+        .filter_by(posting_id=db_posting.id)
         .filter_by(user_id=user.id)
         .filter_by(kind=kind)
     )
@@ -252,8 +252,8 @@ def _is_reaction_existing(
     )
 
 
-def _get_posting(posting_id: PostingID) -> DbPosting:
-    return board_posting_query_service.get_posting(posting_id)
+def _get_db_posting(posting_id: PostingID) -> DbPosting:
+    return board_posting_query_service.get_db_posting(posting_id)
 
 
 def _get_user(user_id: UserID) -> User:

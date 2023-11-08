@@ -34,14 +34,14 @@ def count_postings_for_board(board_id: BoardID) -> int:
     )
 
 
-def find_posting_by_id(posting_id: PostingID) -> DbPosting | None:
+def find_db_posting(posting_id: PostingID) -> DbPosting | None:
     """Return the posting with that id, or `None` if not found."""
     return db.session.get(DbPosting, posting_id)
 
 
-def get_posting(posting_id: PostingID) -> DbPosting:
+def get_db_posting(posting_id: PostingID) -> DbPosting:
     """Return the posting with that id."""
-    db_posting = find_posting_by_id(posting_id)
+    db_posting = find_db_posting(posting_id)
 
     if db_posting is None:
         raise ValueError(f'Unknown posting ID "{posting_id}"')

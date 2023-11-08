@@ -31,14 +31,14 @@ def count_topics_for_board(board_id: BoardID) -> int:
     )
 
 
-def find_topic_by_id(topic_id: TopicID) -> DbTopic | None:
+def find_db_topic(topic_id: TopicID) -> DbTopic | None:
     """Return the topic with that id, or `None` if not found."""
     return db.session.get(DbTopic, topic_id)
 
 
-def get_topic(topic_id: TopicID) -> DbTopic:
+def get_db_topic(topic_id: TopicID) -> DbTopic:
     """Return the topic with that id."""
-    db_topic = find_topic_by_id(topic_id)
+    db_topic = find_db_topic(topic_id)
 
     if db_topic is None:
         raise ValueError(f'Unknown topic ID "{topic_id}"')

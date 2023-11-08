@@ -84,14 +84,15 @@ def delete_last_category_views(category_id: BoardCategoryID) -> None:
 # topics
 
 
-def contains_topic_unseen_postings(topic: DbTopic, user_id: UserID) -> bool:
+def contains_topic_unseen_postings(db_topic: DbTopic, user_id: UserID) -> bool:
     """Return `True` if the topic contains postings created after the
     last time the user viewed it.
     """
-    db_last_viewed_at = find_topic_last_viewed_at(topic.id, user_id)
+    db_last_viewed_at = find_topic_last_viewed_at(db_topic.id, user_id)
 
     return (
-        db_last_viewed_at is None or topic.last_updated_at > db_last_viewed_at
+        db_last_viewed_at is None
+        or db_topic.last_updated_at > db_last_viewed_at
     )
 
 

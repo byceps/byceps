@@ -44,12 +44,12 @@ def posting_view(posting_id):
     """Show the page of the post's topic that contains the post, as seen
     by the current user.
     """
-    posting = h.get_posting_or_404(posting_id)
+    db_posting = h.get_db_posting_or_404(posting_id)
 
-    page = service.calculate_posting_page_number(posting)
+    page = service.calculate_posting_page_number(db_posting)
 
     return redirect(
-        h.build_url_for_posting_in_topic_view(posting, page, _external=True)
+        h.build_url_for_posting_in_topic_view(db_posting, page, _external=True)
     )
 
 
@@ -59,7 +59,7 @@ def posting_view(posting_id):
 @subnavigation_for_view('board')
 def posting_create_form(topic_id, erroneous_form=None):
     """Show a form to create a post to the topic."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
 
     form = erroneous_form if erroneous_form else PostingCreateForm()
 
@@ -68,7 +68,7 @@ def posting_create_form(topic_id, erroneous_form=None):
         form.body.data = quoted_posting_bbcode
 
     return {
-        'topic': topic,
+        'topic': db_topic,
         'form': form,
         'smileys': text_markup_service.get_smileys(),
     }
@@ -79,21 +79,21 @@ def quote_posting_as_bbcode():
     if not posting_id:
         return
 
-    posting = board_posting_query_service.find_posting_by_id(posting_id)
-    if posting is None:
+    db_posting = board_posting_query_service.find_db_posting(posting_id)
+    if db_posting is None:
         flash_error(gettext('The post to quote has not been found.'))
         return
 
-    creator = user_service.get_user(posting.creator_id)
+    creator = user_service.get_user(db_posting.creator_id)
 
-    return f'[quote author="{creator.screen_name}"]{posting.body}[/quote]'
+    return f'[quote author="{creator.screen_name}"]{db_posting.body}[/quote]'
 
 
 @blueprint.post('/topics/<uuid:topic_id>/create')
 @permission_required('board_posting.create')
 def posting_create(topic_id):
     """Create a post to the topic."""
-    topic = h.get_topic_or_404(topic_id)
+    db_topic = h.get_db_topic_or_404(topic_id)
 
     form = PostingCreateForm(request.form)
     if not form.validate():
@@ -102,42 +102,45 @@ def posting_create(topic_id):
     creator = g.user
     body = form.body.data.strip()
 
-    if topic.locked:
+    if db_topic.locked:
         flash_error(
             gettext('This topic is locked. It cannot be replied to.'),
             icon='lock',
         )
-        return redirect(h.build_url_for_topic(topic.id))
+        return redirect(h.build_url_for_topic(db_topic.id))
 
-    if topic.posting_limited_to_moderators and not has_current_user_permission(
-        'board.announce'
+    if (
+        db_topic.posting_limited_to_moderators
+        and not has_current_user_permission('board.announce')
     ):
         flash_error(
             gettext('Only moderators are allowed to reply in this topic.'),
             icon='announce',
         )
-        return redirect(h.build_url_for_topic(topic.id))
+        return redirect(h.build_url_for_topic(db_topic.id))
 
-    posting, event = board_posting_command_service.create_posting(
-        topic.id, creator, body
+    db_posting, event = board_posting_command_service.create_posting(
+        db_topic.id, creator, body
     )
 
     if g.user.authenticated:
         board_last_view_service.mark_category_as_just_viewed(
-            topic.category.id, g.user.id
+            db_topic.category.id, g.user.id
         )
 
     flash_success(gettext('Your reply has been added.'))
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_posting(posting.id)
+        event, url=h.build_external_url_for_posting(db_posting.id)
     )
     board_signals.posting_created.send(None, event=event)
 
     postings_per_page = service.get_postings_per_page_value()
-    page_count = topic.count_pages(postings_per_page)
+    page_count = db_topic.count_pages(postings_per_page)
 
-    return redirect(h.build_url_for_posting_in_topic_view(posting, page_count))
+    return redirect(
+        h.build_url_for_posting_in_topic_view(db_posting, page_count)
+    )
 
 
 @blueprint.get('/postings/<uuid:posting_id>/update')
@@ -146,14 +149,14 @@ def posting_create(topic_id):
 @subnavigation_for_view('board')
 def posting_update_form(posting_id, erroneous_form=None):
     """Show form to update a post."""
-    posting = h.get_posting_or_404(posting_id)
+    db_posting = h.get_db_posting_or_404(posting_id)
 
-    page = service.calculate_posting_page_number(posting)
-    url = h.build_url_for_posting_in_topic_view(posting, page)
+    page = service.calculate_posting_page_number(db_posting)
+    url = h.build_url_for_posting_in_topic_view(db_posting, page)
 
-    user_may_update = service.may_posting_be_updated_by_current_user(posting)
+    user_may_update = service.may_posting_be_updated_by_current_user(db_posting)
 
-    if posting.topic.locked and not user_may_update:
+    if db_posting.topic.locked and not user_may_update:
         flash_error(
             gettext(
                 'The post must not be edited because '
@@ -162,7 +165,7 @@ def posting_update_form(posting_id, erroneous_form=None):
         )
         return redirect(url)
 
-    if posting.topic.hidden or posting.hidden:
+    if db_posting.topic.hidden or db_posting.hidden:
         flash_error(gettext('The post must not be edited.'))
         return redirect(url)
 
@@ -170,11 +173,13 @@ def posting_update_form(posting_id, erroneous_form=None):
         flash_error(gettext('You are not allowed to edit this post.'))
         return redirect(url)
 
-    form = erroneous_form if erroneous_form else PostingUpdateForm(obj=posting)
+    form = (
+        erroneous_form if erroneous_form else PostingUpdateForm(obj=db_posting)
+    )
 
     return {
         'form': form,
-        'posting': posting,
+        'posting': db_posting,
         'smileys': text_markup_service.get_smileys(),
     }
 
@@ -183,14 +188,14 @@ def posting_update_form(posting_id, erroneous_form=None):
 @permission_required('board_posting.update')
 def posting_update(posting_id):
     """Update a post."""
-    posting = h.get_posting_or_404(posting_id)
+    db_posting = h.get_db_posting_or_404(posting_id)
 
-    page = service.calculate_posting_page_number(posting)
-    url = h.build_url_for_posting_in_topic_view(posting, page)
+    page = service.calculate_posting_page_number(db_posting)
+    url = h.build_url_for_posting_in_topic_view(db_posting, page)
 
-    user_may_update = service.may_posting_be_updated_by_current_user(posting)
+    user_may_update = service.may_posting_be_updated_by_current_user(db_posting)
 
-    if posting.topic.locked and not user_may_update:
+    if db_posting.topic.locked and not user_may_update:
         flash_error(
             gettext(
                 'The post must not be edited because '
@@ -199,7 +204,7 @@ def posting_update(posting_id):
         )
         return redirect(url)
 
-    if posting.topic.hidden or posting.hidden:
+    if db_posting.topic.hidden or db_posting.hidden:
         flash_error(gettext('The post must not be edited.'))
         return redirect(url)
 
@@ -212,13 +217,13 @@ def posting_update(posting_id):
         return posting_update_form(posting_id, form)
 
     event = board_posting_command_service.update_posting(
-        posting.id, g.user, form.body.data
+        db_posting.id, g.user, form.body.data
     )
 
     flash_success(gettext('The post has been updated.'))
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_posting(posting.id)
+        event, url=h.build_external_url_for_posting(db_posting.id)
     )
     board_signals.posting_updated.send(None, event=event)
 
@@ -231,12 +236,12 @@ def posting_update(posting_id):
 @subnavigation_for_view('board')
 def posting_moderate_form(posting_id):
     """Show a form to moderate the post."""
-    posting = h.get_posting_or_404(posting_id)
+    db_posting = h.get_db_posting_or_404(posting_id)
 
-    posting.creator = user_service.get_user(posting.creator_id)
+    db_posting.creator = user_service.get_user(db_posting.creator_id)
 
     return {
-        'posting': posting,
+        'posting': db_posting,
     }
 
 
@@ -245,21 +250,21 @@ def posting_moderate_form(posting_id):
 @respond_no_content_with_location
 def posting_hide(posting_id):
     """Hide a post."""
-    posting = h.get_posting_or_404(posting_id)
+    db_posting = h.get_db_posting_or_404(posting_id)
     moderator = g.user
 
-    event = board_posting_command_service.hide_posting(posting.id, moderator)
+    event = board_posting_command_service.hide_posting(db_posting.id, moderator)
 
-    page = service.calculate_posting_page_number(posting)
+    page = service.calculate_posting_page_number(db_posting)
 
     flash_success(gettext('The post has been hidden.'), icon='hidden')
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_posting(posting.id)
+        event, url=h.build_external_url_for_posting(db_posting.id)
     )
     board_signals.posting_hidden.send(None, event=event)
 
-    return h.build_url_for_posting_in_topic_view(posting, page)
+    return h.build_url_for_posting_in_topic_view(db_posting, page)
 
 
 @blueprint.delete('/postings/<uuid:posting_id>/flags/hidden')
@@ -267,21 +272,23 @@ def posting_hide(posting_id):
 @respond_no_content_with_location
 def posting_unhide(posting_id):
     """Un-hide a post."""
-    posting = h.get_posting_or_404(posting_id)
+    db_posting = h.get_db_posting_or_404(posting_id)
     moderator = g.user
 
-    event = board_posting_command_service.unhide_posting(posting.id, moderator)
+    event = board_posting_command_service.unhide_posting(
+        db_posting.id, moderator
+    )
 
-    page = service.calculate_posting_page_number(posting)
+    page = service.calculate_posting_page_number(db_posting)
 
     flash_success(gettext('The post has been made visible again.'), icon='view')
 
     event = dataclasses.replace(
-        event, url=h.build_external_url_for_posting(posting.id)
+        event, url=h.build_external_url_for_posting(db_posting.id)
     )
     board_signals.posting_unhidden.send(None, event=event)
 
-    return h.build_url_for_posting_in_topic_view(posting, page)
+    return h.build_url_for_posting_in_topic_view(db_posting, page)
 
 
 @blueprint.post('/postings/<uuid:posting_id>/reactions/<kind>')
@@ -289,9 +296,11 @@ def posting_unhide(posting_id):
 @respond_no_content
 def add_reaction(posting_id, kind):
     """Add a reaction to a post."""
-    posting = h.get_posting_or_404(posting_id)
+    db_posting = h.get_db_posting_or_404(posting_id)
 
-    result = board_posting_command_service.add_reaction(posting, g.user, kind)
+    result = board_posting_command_service.add_reaction(
+        db_posting, g.user, kind
+    )
 
     match result:
         case Err(e):
@@ -308,10 +317,10 @@ def add_reaction(posting_id, kind):
 @respond_no_content
 def remove_reaction(posting_id, kind):
     """Remove a reaction from a post."""
-    posting = h.get_posting_or_404(posting_id)
+    db_posting = h.get_db_posting_or_404(posting_id)
 
     result = board_posting_command_service.remove_reaction(
-        posting, g.user, kind
+        db_posting, g.user, kind
     )
 
     match result:

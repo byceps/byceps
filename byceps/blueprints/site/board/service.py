@@ -67,37 +67,39 @@ def add_unseen_postings_flag_to_categories(
     return categories_with_flag
 
 
-def add_topic_creators(topics: Iterable[DbTopic]) -> None:
+def add_topic_creators(db_topics: Iterable[DbTopic]) -> None:
     """Add each topic's creator as topic attribute."""
-    creator_ids = {t.creator_id for t in topics}
+    creator_ids = {t.creator_id for t in db_topics}
     creators_by_id = user_service.get_users_indexed_by_id(
         creator_ids, include_avatars=True
     )
 
-    for topic in topics:
-        topic.creator = creators_by_id[topic.creator_id]
+    for db_topic in db_topics:
+        db_topic.creator = creators_by_id[db_topic.creator_id]
 
 
-def add_topic_unseen_flag(topics: Iterable[DbTopic], user: CurrentUser) -> None:
+def add_topic_unseen_flag(
+    db_topics: Iterable[DbTopic], user: CurrentUser
+) -> None:
     """Add `unseen` flag to topics."""
-    for topic in topics:
-        topic.contains_unseen_postings = (
+    for db_topic in db_topics:
+        db_topic.contains_unseen_postings = (
             user.authenticated
             and board_last_view_service.contains_topic_unseen_postings(
-                topic, user.id
+                db_topic, user.id
             )
         )
 
 
 def add_unseen_flag_to_postings(
-    postings: Iterable[DbPosting], last_viewed_at: datetime
+    db_postings: Iterable[DbPosting], last_viewed_at: datetime
 ) -> None:
     """Add the attribute 'unseen' to each post."""
-    for posting in postings:
-        posting.unseen = is_posting_unseen(posting, last_viewed_at)
+    for db_posting in db_postings:
+        db_posting.unseen = is_posting_unseen(db_posting, last_viewed_at)
 
 
-def is_posting_unseen(posting: DbPosting, last_viewed_at: datetime) -> bool:
+def is_posting_unseen(db_posting: DbPosting, last_viewed_at: datetime) -> bool:
     """Return `True` if the posting has not yet been seen by the current
     user.
     """
@@ -106,19 +108,19 @@ def is_posting_unseen(posting: DbPosting, last_viewed_at: datetime) -> bool:
         return False
 
     # Don't display the author's own posting as new to them.
-    if posting.creator_id == g.user.id:
+    if db_posting.creator_id == g.user.id:
         return False
 
-    return (last_viewed_at is None) or (posting.created_at > last_viewed_at)
+    return (last_viewed_at is None) or (db_posting.created_at > last_viewed_at)
 
 
 def enrich_creators(
-    postings: Iterable[DbPosting],
+    db_postings: Iterable[DbPosting],
     brand_id: BrandID,
     party_id: PartyID | None,
 ) -> None:
     """Enrich creators with their orga status and badges."""
-    creator_ids = {posting.creator_id for posting in postings}
+    creator_ids = {db_posting.creator_id for db_posting in db_postings}
 
     badges_by_user_id = _get_badges_for_users(creator_ids, brand_id)
 
@@ -136,8 +138,8 @@ def enrich_creators(
         orga_ids = set()
         ticket_users = set()
 
-    for posting in postings:
-        user_id = posting.creator_id
+    for db_posting in db_postings:
+        user_id = db_posting.creator_id
 
         badges: set[Badge] = badges_by_user_id.get(user_id, set())
 
@@ -147,8 +149,8 @@ def enrich_creators(
         else:
             ticket = None
 
-        posting.creator = Creator.from_(
-            posting.creator, orga_ids, badges, ticket
+        db_posting.creator = Creator.from_(
+            db_posting.creator, orga_ids, badges, ticket
         )
 
 
@@ -170,13 +172,13 @@ def _get_badges_for_users(
     return dict(generate_items())
 
 
-def calculate_posting_page_number(posting: DbPosting) -> int:
+def calculate_posting_page_number(db_posting: DbPosting) -> int:
     """Calculate the number of postings to show per page."""
     include_hidden = may_current_user_view_hidden()
     postings_per_page = get_postings_per_page_value()
 
     return board_posting_query_service.calculate_posting_page_number(
-        posting, include_hidden, postings_per_page
+        db_posting, include_hidden, postings_per_page
     )
 
 
@@ -208,19 +210,19 @@ def may_current_user_view_hidden() -> bool:
     return has_current_user_permission('board.view_hidden')
 
 
-def may_topic_be_updated_by_current_user(topic: DbTopic) -> bool:
+def may_topic_be_updated_by_current_user(db_topic: DbTopic) -> bool:
     """Return `True` if the topic may be updated by the current user."""
     return (
-        not topic.locked
-        and g.user.id == topic.creator_id
+        not db_topic.locked
+        and g.user.id == db_topic.creator_id
         and has_current_user_permission('board_topic.update')
     ) or has_current_user_permission('board.update_of_others')
 
 
-def may_posting_be_updated_by_current_user(posting: DbPosting) -> bool:
+def may_posting_be_updated_by_current_user(db_posting: DbPosting) -> bool:
     """Return `True` if the post may be updated by the current user."""
     return (
-        not posting.topic.locked
-        and g.user.id == posting.creator_id
+        not db_posting.topic.locked
+        and g.user.id == db_posting.creator_id
         and has_current_user_permission('board_posting.update')
     ) or has_current_user_permission('board.update_of_others')

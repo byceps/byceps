@@ -76,7 +76,7 @@ def update_topic(
     topic_id: TopicID, editor: User, title: str, body: str
 ) -> BoardTopicUpdatedEvent:
     """Update the topic (and its initial posting)."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     db_topic.title = title.strip()
 
@@ -107,7 +107,7 @@ def update_topic(
 
 def hide_topic(topic_id: TopicID, moderator: User) -> BoardTopicHiddenEvent:
     """Hide the topic."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     now = datetime.utcnow()
 
@@ -139,7 +139,7 @@ def hide_topic(topic_id: TopicID, moderator: User) -> BoardTopicHiddenEvent:
 
 def unhide_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnhiddenEvent:
     """Un-hide the topic."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     now = datetime.utcnow()
 
@@ -172,7 +172,7 @@ def unhide_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnhiddenEvent:
 
 def lock_topic(topic_id: TopicID, moderator: User) -> BoardTopicLockedEvent:
     """Lock the topic."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     now = datetime.utcnow()
 
@@ -202,7 +202,7 @@ def lock_topic(topic_id: TopicID, moderator: User) -> BoardTopicLockedEvent:
 
 def unlock_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnlockedEvent:
     """Unlock the topic."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     now = datetime.utcnow()
 
@@ -233,7 +233,7 @@ def unlock_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnlockedEvent:
 
 def pin_topic(topic_id: TopicID, moderator: User) -> BoardTopicPinnedEvent:
     """Pin the topic."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     now = datetime.utcnow()
 
@@ -263,7 +263,7 @@ def pin_topic(topic_id: TopicID, moderator: User) -> BoardTopicPinnedEvent:
 
 def unpin_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnpinnedEvent:
     """Unpin the topic."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     now = datetime.utcnow()
 
@@ -296,7 +296,7 @@ def move_topic(
     topic_id: TopicID, new_category_id: BoardCategoryID, moderator: User
 ) -> BoardTopicMovedEvent:
     """Move the topic to another category."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     now = datetime.utcnow()
 
@@ -334,7 +334,7 @@ def move_topic(
 
 def limit_topic_to_announcements(topic_id: TopicID) -> None:
     """Limit posting in the topic to moderators."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     db_topic.posting_limited_to_moderators = True
     db.session.commit()
@@ -342,7 +342,7 @@ def limit_topic_to_announcements(topic_id: TopicID) -> None:
 
 def remove_limit_of_topic_to_announcements(topic_id: TopicID) -> None:
     """Allow non-moderators to post in the topic again."""
-    db_topic = _get_topic(topic_id)
+    db_topic = _get_db_topic(topic_id)
 
     db_topic.posting_limited_to_moderators = False
     db.session.commit()
@@ -358,8 +358,8 @@ def delete_topic(topic_id: TopicID) -> None:
     db.session.commit()
 
 
-def _get_topic(topic_id: TopicID) -> DbTopic:
-    return board_topic_query_service.get_topic(topic_id)
+def _get_db_topic(topic_id: TopicID) -> DbTopic:
+    return board_topic_query_service.get_db_topic(topic_id)
 
 
 def _get_user(user_id: UserID) -> User:
