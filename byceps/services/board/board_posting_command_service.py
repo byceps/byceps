@@ -46,7 +46,7 @@ def create_posting(
 
     posting_id = PostingID(generate_uuid7())
 
-    db_posting = DbPosting(posting_id, db_topic, creator.id, body)
+    db_posting = DbPosting(posting_id, db_topic.id, creator.id, body)
     db.session.add(db_posting)
     db.session.commit()
 

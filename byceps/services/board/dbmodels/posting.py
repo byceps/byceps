@@ -55,12 +55,12 @@ class DbPosting(db.Model):
     def __init__(
         self,
         posting_id: PostingID,
-        topic: DbTopic,
+        topic_id: TopicID,
         creator_id: UserID,
         body: str,
     ) -> None:
         self.id = posting_id
-        self.topic = topic
+        self.topic_id = topic_id
         self.creator_id = creator_id
         self.body = body
 
@@ -98,9 +98,9 @@ class DbInitialTopicPostingAssociation(db.Model):
     )
     posting: Mapped[DbPosting] = relationship(DbPosting)
 
-    def __init__(self, topic: DbTopic, posting: DbPosting) -> None:
-        self.topic = topic
-        self.posting = posting
+    def __init__(self, topic_id: TopicID, posting_id: PostingID) -> None:
+        self.topic_id = topic_id
+        self.posting_id = posting_id
 
 
 class DbPostingReaction(db.Model):

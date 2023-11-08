@@ -46,9 +46,9 @@ def create_topic(
     posting_id = PostingID(generate_uuid7())
 
     db_topic = DbTopic(topic_id, category_id, creator.id, title)
-    db_posting = DbPosting(posting_id, db_topic, creator.id, body)
+    db_posting = DbPosting(posting_id, topic_id, creator.id, body)
     db_initial_topic_posting_association = DbInitialTopicPostingAssociation(
-        db_topic, db_posting
+        topic_id, posting_id
     )
 
     db.session.add(db_topic)
