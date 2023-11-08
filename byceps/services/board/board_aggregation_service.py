@@ -90,9 +90,12 @@ def aggregate_topic(db_topic: DbTopic) -> None:
     latest_posting_info = _get_topic_latest_posting_info(db_topic.id)
 
     db_topic.posting_count = posting_count
-    if latest_posting_info:
-        db_topic.last_updated_at = latest_posting_info.created_at
-        db_topic.last_updated_by_id = latest_posting_info.creator_id
+    db_topic.last_updated_at = (
+        latest_posting_info.created_at if latest_posting_info else None
+    )
+    db_topic.last_updated_by_id = (
+        latest_posting_info.creator_id if latest_posting_info else None
+    )
 
     db.session.commit()
 
