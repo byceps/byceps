@@ -1,7 +1,7 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-{%- set is_initial_topic_posting = posting.is_initial_topic_posting(posting.topic) %}
+{%- set is_initial_topic_posting = posting.is_initial_topic_posting() %}
 
 {%- set user_may_reply = (not topic.locked and has_current_user_permission('board_posting.create')) %}
 {%- set user_may_update = (may_topic_be_updated_by_current_user(topic) if is_initial_topic_posting else may_posting_be_updated_by_current_user(posting)) %}

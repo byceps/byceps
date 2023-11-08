@@ -64,8 +64,8 @@ class DbPosting(db.Model):
         self.creator_id = creator_id
         self.body = body
 
-    def is_initial_topic_posting(self, topic: DbTopic) -> bool:
-        return self == topic.initial_posting
+    def is_initial_topic_posting(self) -> bool:
+        return self.id == self.topic.initial_posting.id
 
     def __eq__(self, other) -> bool:
         return self.id == other.id
