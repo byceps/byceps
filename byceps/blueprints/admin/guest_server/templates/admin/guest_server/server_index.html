@@ -48,8 +48,8 @@
       .add_item(url_for('.server_index', party_id=party.id), _('all') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.total|dim)|safe, id='all', icon='server')
       .add_item(url_for('.server_index', party_id=party.id, only_status='pending'), _('pending') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.pending|dim)|safe, id='pending', icon='pending')
       .add_item(url_for('.server_index', party_id=party.id, only_status='approved'), _('approved') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.approved|dim)|safe, id='approved', icon='success')
-      .add_item(url_for('.server_index', party_id=party.id, only_status='checked_in'), _('checked_in') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.checked_in|dim)|safe, id='checked_in', icon='log-in')
-      .add_item(url_for('.server_index', party_id=party.id, only_status='checked_out'), _('checked_out') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.checked_out|dim)|safe, id='checked_out', icon='log-out')
+      .add_item(url_for('.server_index', party_id=party.id, only_status='checked_in'), _('checked in') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.checked_in|dim)|safe, id='checked_in', icon='log-in')
+      .add_item(url_for('.server_index', party_id=party.id, only_status='checked_out'), _('checked out') ~ '<span style="margin-left: 0.4rem;">%s</span>'|format(server_quantities_by_status.checked_out|dim)|safe, id='checked_out', icon='log-out')
     , only_status.name if only_status else 'all'
   )
 }}
