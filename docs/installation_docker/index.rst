@@ -6,11 +6,25 @@ As an alternative to :doc:`installing directly on a system
 </installation/index>`, BYCEPS can be run from Docker_ containers,
 orchestrated by `Docker compose`_.
 
+Since there is no official Docker image for BYCEPS at this point, you
+have to build one yourself.
+
 .. _Docker: https://www.docker.com/
 .. _Docker Compose: https://docs.docker.com/compose/
 
-First, create the services (build images, create volumes, etc.). This
-might take a few minutes.
+First, clone BYCEPS' Git repository to your machine:
+
+.. code-block:: sh
+
+    $ git clone https://github.com/byceps/byceps.git
+
+A new directory, ``byceps``, should have been created. ``cd`` into it.
+
+Both a ``Dockerfile`` (to build a Docker image) and a ``compose.yml``
+(to run containers with Docker Compose) come with BYCEPS.
+
+Create the services (build images, create volumes, etc.). This might
+take a few minutes.
 
 .. code-block:: sh
 
