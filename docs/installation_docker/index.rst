@@ -64,3 +64,20 @@ Log in with user ``DemoAdmin`` and password ``demodemo``.
 The "CozyLAN" party site should be accessible at http://localhost:8082/.
 (If you logged in to the admin frontend just before, you might be logged
 in already as user ``DemoAdmin``.)
+
+.. attention:: For security reasons, BYCEPS only sends cookies back
+   after login over an HTTPS-secured connection by default.
+
+   It is expected that BYCEPS is run behind a reverse proxy that adds
+   TLS termination (e.g. nginx_ or Caddy_; often with a certificate from
+   `Let's Encrypt`_).
+
+   To be able to login without HTTPS using above links, you can
+   temporarily disable session cookie security by setting
+   :py:data:`SESSION_COOKIE_SECURE` to false: In ``compose.yaml`` add
+   ``SESSION_COOKIE_SECURE: false`` on a separate, indented line to the
+   section ``x-byceps-base-env``.
+
+.. _nginx: https://nginx.org/
+.. _Caddy: https://caddyserver.com/
+.. _Let's Encrypt: https://letsencrypt.org/
