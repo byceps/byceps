@@ -35,12 +35,12 @@ from . import (
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbInitialTopicPostingAssociation, DbPosting
 from .dbmodels.topic import DbTopic
-from .models import BoardCategoryID, PostingID, TopicID
+from .models import BoardCategoryID, PostingID, Topic, TopicID
 
 
 def create_topic(
     category_id: BoardCategoryID, creator: User, title: str, body: str
-) -> tuple[DbTopic, BoardTopicCreatedEvent]:
+) -> tuple[Topic, BoardTopicCreatedEvent]:
     """Create a topic with an initial posting in that category."""
     topic_id = TopicID(generate_uuid7())
     posting_id = PostingID(generate_uuid7())
@@ -60,21 +60,23 @@ def create_topic(
 
     db_category = db_topic.category
     brand = brand_service.get_brand(db_category.board.brand_id)
+    topic = board_topic_query_service._db_entity_to_topic(db_topic)
+
     event = BoardTopicCreatedEvent(
-        occurred_at=db_topic.created_at,
+        occurred_at=topic.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_category.board_id,
-        topic_id=db_topic.id,
+        topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
-        topic_title=db_topic.title,
+        topic_title=topic.title,
         url=None,
     )
 
-    return db_topic, event
+    return topic, event
 
 
 def update_topic(

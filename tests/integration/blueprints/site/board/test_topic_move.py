@@ -18,7 +18,7 @@ def test_move_topic(
     another_category,
 ):
     topic_before = create_topic(category.id, board_poster)
-    assert topic_before.category.id == category.id
+    assert topic_before.category_id == category.id
 
     url = f'/board/topics/{topic_before.id}/move'
     form_data = {'category_id': another_category.id}

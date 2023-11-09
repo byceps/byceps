@@ -13,7 +13,6 @@ from byceps.services.board import (
     board_topic_query_service,
 )
 from byceps.services.board.dbmodels.posting import DbPosting
-from byceps.services.board.dbmodels.topic import DbTopic
 from byceps.services.board.models import (
     BoardCategory,
     BoardCategoryID,
@@ -56,7 +55,7 @@ def create_topic(
     number: int = 1,
     title: str | None = None,
     body: str | None = None,
-) -> DbTopic:
+) -> Topic:
     if title is None:
         title = f'Thema {number}'
 

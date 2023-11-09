@@ -29,6 +29,7 @@ def test_unlock_topic(site_app, moderator, moderator_client, topic):
     topic_before = topic
 
     board_topic_command_service.lock_topic(topic_before.id, moderator)
+    topic_before = find_topic(topic_before.id)
 
     db.session.expire_all()
 

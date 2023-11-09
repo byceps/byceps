@@ -27,7 +27,9 @@ def test_pin_topic(site_app, moderator, moderator_client, topic):
 
 def test_unpin_topic(site_app, moderator, moderator_client, topic):
     topic_before = topic
+
     board_topic_command_service.pin_topic(topic_before.id, moderator)
+    topic_before = find_topic(topic_before.id)
 
     assert_topic_is_pinned(topic_before, moderator.id)
 
