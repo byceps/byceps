@@ -28,7 +28,7 @@ server {
         alias /var/www/byceps/data/;
     }
 
-    location ~ ^/sites/(.+?)/(.+)$ {
+    location ~ ^/static_sites/(.+?)/(.+)$ {
         alias /var/www/byceps/sites/$1/static/$2;
     }
 }
@@ -63,7 +63,7 @@ server {
         alias /var/www/byceps/data/;
     }
 
-    location ~ ^/sites/(.+?)/(.+)$ {
+    location ~ ^/static_sites/(.+?)/(.+)$ {
         alias /var/www/byceps/sites/$1/static/$2;
     }
 }
