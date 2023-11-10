@@ -10,8 +10,18 @@
 
 {% block head %}
 <style>
-.progress {
-  height: 0.25rem;
+.servers-bar {
+  margin-top: 0.5rem;
+}
+
+.servers-bar .progress {
+  height: 0.125rem;
+}
+
+@media (min-width: 48rem) { /* 768px / 16px */
+  .servers-bar {
+    margin-top: 0.75rem;
+  }
 }
 </style>
 {%- endblock %}
@@ -31,17 +41,8 @@
     {%- endif %}
   </div>
 
-{{ render_distribution_bar(
-  [
-    (server_quantities_by_status.pending, 'color-info'),
-    (server_quantities_by_status.approved, 'color-warning'),
-    (server_quantities_by_status.checked_in, 'color-success'),
-    (server_quantities_by_status.checked_out, 'color-disabled'),
-  ],
-  server_quantities_by_status.total,
-) }}
-
-  <div class="mb mt">
+  <div class="row row--space-between mb">
+    <div>
 {{
   render_main_tabs(
     Navigation()
@@ -53,6 +54,18 @@
     , only_status.name if only_status else 'all'
   )
 }}
+    </div>
+    <div class="column--grow servers-bar">
+{{ render_distribution_bar(
+  [
+    (server_quantities_by_status.pending, 'color-info'),
+    (server_quantities_by_status.approved, 'color-warning'),
+    (server_quantities_by_status.checked_in, 'color-success'),
+    (server_quantities_by_status.checked_out, 'color-disabled'),
+  ],
+  server_quantities_by_status.total,
+) }}
+    </div>
   </div>
 
   {%- if servers %}
