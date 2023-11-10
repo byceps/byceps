@@ -17,17 +17,29 @@
   {%- endwith %}
 
 
-<h2>{{ _('Users') }}</h2>
+  <div class="row row--space-between row--wrap">
+    <div style="flex: 1;">
 
-  <div class="grid dashboard">
-    {{ render_bigstats_cell(recent_users_count, ngettext('new user in the last 7 days', 'new users in the last 7 days', recent_users_count), href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
-    {{ render_bigstats_cell(uninitialized_user_count, ngettext('uninitialized user', 'uninitialized users', uninitialized_user_count), href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
-    {%- call render_cell('users', 'cell--fitted cell--higher') %}
+      <h2>{{ _('Users') }}</h2>
+      <div class="grid">
+        {{ render_bigstats_cell(recent_users_count, ngettext('new user in the last 7 days', 'new users in the last 7 days', recent_users_count), href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
+        {%- call render_cell('users', 'cell--higher') %}
 {% include 'admin/dashboard/_recent_users.html' %}
-    {%- endcall %}
-    {%- call render_cell('birthday', 'cell--wider') %}
+        {%- endcall %}
+        {{ render_bigstats_cell(uninitialized_user_count, ngettext('uninitialized user', 'uninitialized users', uninitialized_user_count), href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
+      </div>
+
+    </div>
+    <div style="flex: 1;">
+
+      <h2>{{ _('Upcoming Birthdays') }}</h2>
+      <div class="grid">
+        {%- call render_cell('birthday', 'cell--wider') %}
 {% include 'admin/dashboard/_birthdays.html' %}
-    {%- endcall %}
+        {%- endcall %}
+      </div>
+
+    </div>
   </div>
 
 {%- endblock %}
