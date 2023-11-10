@@ -93,15 +93,13 @@
   guest_server_quantities_by_status.total,
 ) }}
       </div>
-      <div class="mt">
-        <ol class="bare small">
-          {%- if guest_server_quantities_by_status.pending %}
-          <li><strong>{{ guest_server_quantities_by_status.pending }}</strong> {{ _('pending') }}</li>
-          {%- endif %}
-          {%- if guest_server_quantities_by_status.checked_in %}
-          <li><strong>{{ guest_server_quantities_by_status.checked_in }}</strong> {{ _('checked in') }}</li>
-          {%- endif %}
-        </ol>
+      <div class="row row--space-between small">
+        {%- if guest_server_quantities_by_status.pending %}
+        <div><strong>{{ guest_server_quantities_by_status.pending }}</strong> {{ _('pending') }}</div>
+        {%- endif %}
+        {%- if guest_server_quantities_by_status.checked_in %}
+        <div><strong>{{ guest_server_quantities_by_status.checked_in }}</strong> {{ _('checked in') }}</div>
+        {%- endif %}
       </div>
     {%- endcall %}
   {%- endif %}
