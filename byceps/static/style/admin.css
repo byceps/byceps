@@ -280,18 +280,16 @@ a.box:hover {
 }
 
 .header-nav .main-tabs ol {
-  border: 0;
-  margin: 0;
+  margin: 0.75rem 0;
 }
 
 
 /* tabs above main content area */
 
 .main-tabs ol {
-  border-bottom: #cccccc solid 1px;
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
+  gap: 0.75rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -306,7 +304,7 @@ a.box:hover {
   display: block;
   font-size: 0.75rem; /* 12px / 16px */
   height: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: 0.125rem 0.5rem;
   text-decoration: none;
   user-select: none;
 }
@@ -334,12 +332,17 @@ a.box:hover {
 
 @media (min-width: 48rem) { /* 768px / 16px */
 
+  .header-nav .main-tabs ol {
+    margin: 0;
+  }
+
   .main-tabs ol {
     flex-direction: row;
   }
 
   .main-tab {
     border-width: 0 0 var(--border-width) 0;
+    padding: 0.5rem 0.25rem;
   }
 
 }
