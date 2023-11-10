@@ -11,14 +11,13 @@ from datetime import date, timedelta
 from flask import abort
 
 from byceps.services.board import board_service
-from byceps.services.brand import brand_service, brand_setting_service
+from byceps.services.brand import brand_service
 from byceps.services.consent import consent_subject_service
 from byceps.services.guest_server import (
     guest_server_domain_service,
     guest_server_service,
 )
 from byceps.services.news import news_channel_service
-from byceps.services.newsletter import newsletter_service
 from byceps.services.orga import orga_birthday_service
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
@@ -119,20 +118,6 @@ def view_brand(brand_id):
         brand.id, only_non_archived=True
     )
 
-    newsletter_list_id = brand_setting_service.find_setting_value(
-        brand.id, 'newsletter_list_id'
-    )
-    newsletter_list = None
-    if newsletter_list_id:
-        newsletter_list = newsletter_service.get_list(
-            newsletter_list_id
-        ).unwrap()
-        newsletter_subscriber_count = newsletter_service.count_subscribers(
-            newsletter_list.id
-        )
-    else:
-        newsletter_subscriber_count = None
-
     consent_subject_ids = (
         consent_subject_service.get_subject_ids_required_for_brand(brand.id)
     )
@@ -156,8 +141,6 @@ def view_brand(brand_id):
         'current_sites': current_sites,
         'active_parties_with_stats': active_parties_with_stats,
         'active_news_channels': active_news_channels,
-        'newsletter_list': newsletter_list,
-        'newsletter_subscriber_count': newsletter_subscriber_count,
         'consent_subjects_with_consent_counts': consent_subjects_with_consent_counts,
         'shop': shop,
         'open_order_count': open_order_count,
