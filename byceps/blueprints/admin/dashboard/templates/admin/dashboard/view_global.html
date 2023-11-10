@@ -20,7 +20,6 @@
 <h2>{{ _('Users') }}</h2>
 
   <div class="grid dashboard">
-    {{ render_bigstats_cell(user_count|numberformat, ngettext('user', 'users', user_count), href=url_for('user_admin.index'), icon_name='users') }}
     {{ render_bigstats_cell(recent_users_count, ngettext('new user in the last 7 days', 'new users in the last 7 days', recent_users_count), href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
     {{ render_bigstats_cell(uninitialized_user_count, ngettext('uninitialized user', 'uninitialized users', uninitialized_user_count), href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
     {%- call render_cell('users', 'cell--fitted cell--higher') %}

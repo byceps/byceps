@@ -67,8 +67,6 @@ def view_global():
         for shop in active_shops
     ]
 
-    user_count = user_stats_service.count_users()
-
     one_week_ago = timedelta(days=7)
     recent_users = user_service.get_users_created_since(one_week_ago, limit=4)
     recent_users_count = user_stats_service.count_users_created_since(
@@ -85,7 +83,6 @@ def view_global():
         'active_brands': active_brands,
         'active_parties_with_stats': active_parties_with_stats,
         'active_shops_with_brands_and_open_orders_counts': active_shops_with_brands_and_open_orders_counts,
-        'user_count': user_count,
         'recent_users': recent_users,
         'recent_users_count': recent_users_count,
         'uninitialized_user_count': uninitialized_user_count,
