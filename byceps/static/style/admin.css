@@ -149,8 +149,7 @@ a.box:hover {
   align-self: center;
 }
 
-#header-content .column--brand,
-#header-content .column--user {
+#header-content :is(.column--brand, .column--user) {
   flex: 0 0 auto;
 }
 
@@ -163,9 +162,7 @@ a.box:hover {
   font-size: 1.75rem; /* 28px / 16px */
 }
 
-#header-content .current-user .button,
-#header-content .current-user .button:hover,
-#header-content .current-user .dropdown-toggle {
+#header-content .current-user :is(.button, .button:hover, .dropdown-toggle) {
   background-color: transparent;
   color: #eeeeee;
   display: block;
@@ -196,8 +193,7 @@ a.box:hover {
   text-decoration: none;
 }
 
-#header-content form button,
-#header-content form input {
+#header-content form :is(button, input) {
   border: none;
   border-radius: 7px;
   color: #444444;
@@ -219,8 +215,7 @@ a.box:hover {
   margin-left: -2.65rem;
 }
 
-#header-content form button:hover,
-#header-content form input:hover {
+#header-content form :is(button:hover, input:hover) {
   background-color: #eeeeee;
 }
 
@@ -392,8 +387,7 @@ h2 {
   margin-top: 2rem;
 }
 
-h1 small,
-h2 small {
+:is(h1, h2) small {
   font-weight: normal;
   opacity: 0.5;
 }

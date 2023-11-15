@@ -241,8 +241,7 @@ form.board-posting-create-form-inline .label {
   white-space: nowrap;
 }
 
-.user-comment-actions .dropdown:hover .dropdown-toggle,
-.user-comment-actions .dropdown.open .dropdown-toggle {
+.user-comment-actions :is(.dropdown:hover, .dropdown.open) .dropdown-toggle {
   background-color: #dddddd;
 }
 
@@ -307,8 +306,7 @@ form.board-posting-create-form-inline .label {
   font-weight: bold;
 }
 
-.user-comment blockquote,
-.user-comment pre code {
+.user-comment :is(blockquote, pre code) {
   background-color: #eeeeee;
   border: #dddddd solid 1px;
   display: block;
@@ -482,8 +480,7 @@ form.board-posting-create-form-inline .label {
   padding-top: 4px;
 }
 
-.user-profile .screenname,
-.user-profile .orgateam {
+.user-profile :is(.screenname, .orgateam) {
   font-weight: bold;
 }
 
@@ -495,8 +492,7 @@ form.board-posting-create-form-inline .label {
   font-size: 0.875rem; /* 14px / 16px */
 }
 
-.user-profile .stats,
-.user-profile .stats-label {
+.user-profile :is(.stats, .stats-label) {
   display: none;
   text-align: center;
 }
@@ -512,8 +508,7 @@ form.board-posting-create-form-inline .label {
 
 @media (min-width: 36rem) { /* 576px / 16px */
 
-  .user-profile .stats,
-  .user-profile .stats-label {
+  .user-profile :is(.stats, .stats-label) {
     display: block;
   }
 
@@ -671,8 +666,7 @@ form.board-posting-create-form-inline .label {
   --column-min-width: 135px;
 }
 
-.gallery-cover-image img,
-.gallery-images img {
+:is(.gallery-cover-image, .gallery-images) img {
   display: block;
 }
 

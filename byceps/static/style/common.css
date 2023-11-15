@@ -68,8 +68,7 @@ a {
   color: var(--link-color);
 }
 
-a:active,
-a:hover {
+a:is(:active, :hover) {
   outline: 0;
 }
 
@@ -312,8 +311,8 @@ table {
 }
 
 table.index {
-  --table-border-color: #dddddd;
   --cell-padding-vertical: 0.35rem;
+  --table-border-color: #dddddd;
 }
 
 th,
@@ -323,13 +322,11 @@ td {
   vertical-align: top;
 }
 
-th:last-child,
-td:last-child {
+:is(th, td):last-child {
   padding-right: 0;
 }
 
-th.number,
-td.number {
+:is(th, td).number {
   text-align: right;
 }
 
@@ -342,20 +339,17 @@ table.index td {
   font-size: 0.8125rem; /* 13px / 16px */
 }
 
-table.index > tbody > tr > th,
-table.index > tbody > tr > td {
+table.index > tbody > tr > :is(th, td) {
   border-color: var(--table-border-color);
   border-style: solid;
   border-width: 1px 0;
 }
 
-table.index.index--higher th,
-table.index.index--higher td {
+table.index.index--higher :is(th, td) {
   --cell-padding-vertical: 0.75rem;
 }
 
-table.index.index--v-centered th,
-table.index.index--v-centered td {
+table.index.index--v-centered :is(th, td) {
   vertical-align: middle;
 }
 
@@ -425,8 +419,7 @@ label {
   display: block;
 }
 
-.form-control-checkboxes ul,
-.form-control-radios ul {
+:is(.form-control-checkboxes, .form-control-radios) ul {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -524,18 +517,15 @@ form.single-row {
   gap: 0.25rem;
 }
 
-form.single-row .button,
-form.single-row input {
+form.single-row :is(.button, input) {
   font-size: 0.875rem; /* 14px / 16px */
 }
 
-form.unobtrusive .button,
-form.unobtrusive input {
+form.unobtrusive :is(.button, input) {
   opacity: 0.7;
 }
 
-form.unobtrusive:hover .button,
-form.unobtrusive:hover input,
+form.unobtrusive:hover :is(.button, input),
 form.unobtrusive input:focus ~ .button {
   opacity: 1;
 }
@@ -923,32 +913,27 @@ table.user-badges-list td {
   border-color: #66aa88;
 }
 
-.button.color-danger,
-.notification.color-danger {
+:is(.button, .notification).color-danger {
   background-color: #ff9999;
   border-color: var(--color-danger);
 }
 
-.button.color-info,
-.notification.color-info {
+:is(.button, .notification).color-info {
   background-color: #88ccff;
   border-color: var(--color-info);
 }
 
-.button.color-success,
-.notification.color-success {
+:is(.button, .notification).color-success {
   background-color: #99ee88;
   border-color: var(--color-success);
 }
 
-.button.color-warning,
-.notification.color-warning {
+:is(.button, .notification).color-warning {
   background-color: #ffe777;
   border-color: var(--color-warning);
 }
 
-.progress-bar.color-danger,
-.tag.color-danger {
+:is(.progress-bar, .tag).color-danger {
   background-color: var(--color-danger);
 }
 
@@ -956,8 +941,7 @@ table.user-badges-list td {
   background-color: var(--color-danger-light);
 }
 
-.progress-bar.color-disabled,
-.tag.color-disabled {
+:is(.progress-bar, .tag).color-disabled {
   background-color: var(--color-disabled);
 }
 
@@ -965,8 +949,7 @@ table.user-badges-list td {
   background-color: var(--color-disabled-light);
 }
 
-.progress-bar.color-info,
-.tag.color-info {
+:is(.progress-bar, .tag).color-info {
   background-color: var(--color-info);
 }
 
@@ -974,8 +957,7 @@ table.user-badges-list td {
   background-color: var(--color-info-light);
 }
 
-.progress-bar.color-success,
-.tag.color-success {
+:is(.progress-bar, .tag).color-success {
   background-color: var(--color-success);
 }
 
@@ -983,8 +965,7 @@ table.user-badges-list td {
   background-color: var(--color-success-light);
 }
 
-.progress-bar.color-warning,
-.tag.color-warning {
+:is(.progress-bar, .tag).color-warning {
   background-color: var(--color-warning);
 }
 
@@ -992,11 +973,13 @@ table.user-badges-list td {
   background-color: var(--color-warning-light);
 }
 
-.tag.color-danger--light,
-.tag.color-disabled--light,
-.tag.color-info--light,
-.tag.color-success--light,
-.tag.color-warning--light {
+.tag:is(
+  .color-danger--light,
+  .color-disabled--light,
+  .color-info--light,
+  .color-success--light,
+  .color-warning--light
+) {
   color: #333333;
   font-weight: normal;
   text-shadow: none;
@@ -1050,15 +1033,13 @@ img.framed {
   box-sizing: content-box;
 }
 
-ol.bare,
-ul.bare {
+:is(ol, ul).bare {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-ol.bare.bare--spaced li + li,
-ul.bare.bare--spaced li + li {
+:is(ol, ul).bare.bare--spaced li + li {
   margin-top: 0.5rem;
 }
 
