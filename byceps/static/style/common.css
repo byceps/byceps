@@ -306,30 +306,31 @@ nav.breadcrumbs + h1 {
 
 /* tables */
 
+table {
+  --cell-padding-horizontal: 1rem;
+  --cell-padding-vertical: 0.1rem;
+}
+
 table.index {
   --table-border-color: #dddddd;
+  --cell-padding-vertical: 0.35rem;
 }
 
 th,
 td {
-  padding: 0 1em 0 0;
+  padding: var(--cell-padding-vertical) var(--cell-padding-horizontal) var(--cell-padding-vertical) 0;
   text-align: left;
   vertical-align: top;
+}
+
+th:last-child,
+td:last-child {
+  padding-right: 0;
 }
 
 th.number,
 td.number {
   text-align: right;
-}
-
-table.index th,
-table.index td {
-  padding: 0.35rem 1rem 0.35rem 0;
-}
-
-table.index th:last-child,
-table.index td:last-child {
-  padding-right: 0;
 }
 
 table.index th {
@@ -350,8 +351,7 @@ table.index > tbody > tr > td {
 
 table.index.index--higher th,
 table.index.index--higher td {
-  padding-bottom: 0.75rem;
-  padding-top: 0.75rem;
+  --cell-padding-vertical: 0.75rem;
 }
 
 table.index.index--v-centered th,
