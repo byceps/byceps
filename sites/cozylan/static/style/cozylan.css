@@ -249,7 +249,7 @@ main h1 {
 }
 
 .avatar.orga {
-  --overlay-image: url(/sites/cozylan/style/avatar-orga-overlay.svg);
+  --overlay-image: url(/static_sites/cozylan/style/avatar-orga-overlay.svg);
 }
 
 .button,
