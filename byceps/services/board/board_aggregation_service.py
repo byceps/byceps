@@ -59,6 +59,7 @@ def _get_category_posting_count(category_id: BoardCategoryID) -> int:
         .filter(DbPosting.hidden == False)  # noqa: E712
         .join(DbTopic)
         .filter(DbTopic.category_id == category_id)
+        .filter(DbTopic.hidden == False)  # noqa: E712
     )
     return posting_count or 0
 
