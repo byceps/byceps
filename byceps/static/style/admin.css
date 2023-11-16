@@ -389,6 +389,7 @@ h2 {
 
 :is(h1, h2) small {
   font-weight: normal;
+  margin-left: 0.25em;
   opacity: 0.5;
 }
 

@@ -7,14 +7,6 @@
 {% set current_page_party = party %}
 {% set page_title = _('Orga teams') %}
 
-{% block head %}
-    <style>
-      .team h2 {
-        margin: 0;
-      }
-    </style>
-{%- endblock %}
-
 {% block body %}
 
   <div class="row row--space-between">
@@ -38,35 +30,33 @@
 
   {%- if teams_and_members %}
     {%- for team, members in teams_and_members %}
-  <div class="box team">
-      {%- set member_total = members|length %}
 
-    <div class="row row--space-between mb">
-      <div>
-        <h2>{{ team.title }}</h2>
-        {%- if members %}
-        <div>{% filter dim %}{{ member_total}} {{ ngettext('person', 'persons', member_total) }}{% endfilter %}</div>
-        {%- endif %}
-      </div>
-      {%- if has_current_user_permission('orga_team.administrate_memberships') %}
-      <div>
-        <div class="button-row button-row--compact button-row--right">
-          <a class="button button--compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="{{ _('Add orga') }}">{{ render_icon('add') }}</a>
-          <div class="dropdown">
-            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
-            <ol class="dropdown-menu dropdown-menu--right">
-              {%- if not members and has_current_user_permission('orga_team.delete') %}
-              <li><a class="dropdown-item" data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></a></li>
-              {%- else %}
-              <li><span class="dropdown-item button--disabled">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></span></li>
-              {%- endif %}
-            </ol>
-          </div>
+  <div class="row row--space-between mb mt2">
+    <div>
+      {%- with member_total = members|length %}
+      <h2 class="mb0 mt0">{{ team.title }} <small>{{ member_total}} {{ ngettext('person', 'persons', member_total) }}</small></h2>
+      {%- endwith %}
+    </div>
+    {%- if has_current_user_permission('orga_team.administrate_memberships') %}
+    <div>
+      <div class="button-row button-row--compact button-row--right">
+        <a class="button button--compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="{{ _('Add orga') }}">{{ render_icon('add') }}</a>
+        <div class="dropdown">
+          <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            {%- if not members and has_current_user_permission('orga_team.delete') %}
+            <li><a class="dropdown-item" data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></a></li>
+            {%- else %}
+            <li><span class="dropdown-item button--disabled">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></span></li>
+            {%- endif %}
+          </ol>
         </div>
       </div>
-      {%- endif %}
     </div>
+    {%- endif %}
+  </div>
 
+  <div class="box">
       {%- if members %}
     <div class="grid" style="--column-min-width: 240px; gap: 1rem 2rem;">
         {%- for member in members %}
@@ -97,8 +87,8 @@
       {%- else %}
     <div class="dimmed-box centered">{{ _('This team has no members.') }}</div>
       {%- endif %}
-
   </div>
+
     {%- endfor %}
   {%- else %}
   <div class="box">
