@@ -1,8 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/user.html' import render_user_admin_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user.html' import render_user_avatar %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
 {% set page_title = _('Orga teams') %}
@@ -56,38 +55,34 @@
     {%- endif %}
   </div>
 
-  <div class="box">
       {%- if members %}
-    <div class="grid" style="--column-min-width: 240px; gap: 1rem 2rem;">
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <colgroup>
+      <col style="width: 45%;"/>
+      <col/>
+      <col/>
+    </colgroup>
         {%- for member in members %}
-      <div class="row row--space-between">
-        <div>
-          <div class="row">
-            <div>
-              {{ render_user_avatar(member.user, size=48) }}
-            </div>
-            <div>
-              {{ render_user_admin_link(member.user) }}<br>
-              {{ member.membership.duties|fallback }}
-            </div>
-          </div>
+    <tr>
+      <td>{{ render_user_avatar_and_admin_link(member.user, size=24) }}</td>
+      <td>{{ member.membership.duties|fallback }}</td>
+      <td style="text-align: right;">
+        <div class="dropdown">
+          <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" href="{{ url_for('.membership_update_form', membership_id=member.membership.id) }}">{{ render_icon('edit') }} {{ _('Edit membership and duties') }}</a></li>
+            <li><a class="dropdown-item" data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=member.membership.id) }}">{{ render_icon('remove') }} {{ _('Remove person from team') }}</a></li>
+          </ol>
         </div>
-        <div>
-          <div class="dropdown">
-            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
-            <ol class="dropdown-menu dropdown-menu--right">
-              <li><a class="dropdown-item" href="{{ url_for('.membership_update_form', membership_id=member.membership.id) }}">{{ render_icon('edit') }} {{ _('Edit membership and duties') }}</a></li>
-              <li><a class="dropdown-item" data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=member.membership.id) }}">{{ render_icon('remove') }} {{ _('Remove person from team') }}</a></li>
-            </ol>
-          </div>
-        </div>
-      </div>
+      </td>
+    </tr>
         {%- endfor %}
-    </div>
+  </table>
       {%- else %}
+  <div class="box">
     <div class="dimmed-box centered">{{ _('This team has no members.') }}</div>
-      {%- endif %}
   </div>
+      {%- endif %}
 
     {%- endfor %}
   {%- else %}
