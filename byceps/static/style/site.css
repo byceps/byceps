@@ -331,6 +331,7 @@ form.board-posting-create-form-inline .label {
   border-radius: 1rem;
   font-size: 0.875rem; /* 14px / 16px */
   padding: 0.125rem 0.5rem;
+  user-select: none;
 }
 
 .button--reaction .symbol {
