@@ -21,26 +21,24 @@
   </div>
 
   {%- if galleries %}
-  <div class="box">
-
-    <table class="index">
-      <thead>
-        <tr>
-          <th>{{ _('Slug') }}</th>
-          <th>{{ _('Title') }}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for gallery in galleries|sort(attribute='position') %}
-        <tr>
-          <td>{{ gallery.slug }}</td>
-          <td>{{ gallery.title }}</td>
-          <td>{% if gallery.hidden %}{{ render_tag(_('hidden')) }}{% endif %}</td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Slug') }}</th>
+        <th>{{ _('Title') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for gallery in galleries|sort(attribute='position') %}
+      <tr>
+        <td>{{ gallery.slug }}</td>
+        <td>{{ gallery.title }}</td>
+        <td>{% if gallery.hidden %}{{ render_tag(_('hidden')) }}{% endif %}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
   {%- else %}
   <div class="box">
     <div class="dimmed-box centered">{{ _('None defined') }}</div>

@@ -20,24 +20,22 @@
   </div>
 
   {%- if languages_and_locales %}
-  <div class="box">
-
-    <table class="index">
-      <thead>
-        <tr>
-          <th>{{ _('Language code') }}</th>
-          <th>{{ _('Language') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for language, locale in languages_and_locales|sort(attribute='0.code') %}
-        <tr>
-          <td>{{ language.code }}</td>
-          <td>{{ locale.get_display_name(g.user.locale)|fallback(_('unknown')) }}</td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Language code') }}</th>
+        <th>{{ _('Language') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for language, locale in languages_and_locales|sort(attribute='0.code') %}
+      <tr>
+        <td>{{ language.code }}</td>
+        <td>{{ locale.get_display_name(g.user.locale)|fallback(_('unknown')) }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
   {%- else %}
   <div class="box">
     <div class="dimmed-box centered">{{ _('No languages defined.') }}</div>

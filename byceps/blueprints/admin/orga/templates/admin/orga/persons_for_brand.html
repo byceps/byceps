@@ -42,81 +42,81 @@
     </div>
   </div>
 
+  {%- if orgas_with_birthdays %}
+  <table class="itemlist itemlist--v-centered itemlist--wide orgas">
+    <thead>
+      <tr>
+        <th>{{ _('Avatar') }}</th>
+        <th>
+          {{ _('Full name') }}<br>
+          {{ _('Username') }}<br>
+          {{ _('Date of birth') }}, {{ _('Age') }}
+        </th>
+        <th>
+          {{ _('City') }}<br>
+          {{ _('Email address') }}<br>
+          {{ _('Phone number') }}
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for user, birthday in orgas_with_birthdays %}
+      <tr>
+        <td>{{ render_user_avatar(user, size=48) }}</td>
+        <td>
+          <strong>{{ render_user_admin_link(user) }}</strong><br>
+          {{ user.detail.full_name|fallback }}<br>
+          {%- if birthday %}
+            {{ render_icon('birthday') }}
+            {{ birthday.date_of_birth|dateformat }}
+            ({{ birthday.age }} {{ _('years') }})
+          {%- else %}
+            {{ (render_icon('birthday') ~ ' ' ~ _('not given'))|dim }}
+          {%- endif %}
+        </td>
+        <td>
+          {%- if user.email_address %}
+          {{ render_icon('email') }} <a href="mailto:{{- user.email_address }}">{{ user.email_address|truncate(36, killwords=True, end='…') }}</a>
+          {%- else %}
+          {{ (render_icon('email') ~ ' ' ~ _('not given'))|dim }}
+          {%- endif %}
+          <br>
+          {{ render_icon('location') }}
+          {{ user.detail.street|fallback }}
+          &middot;
+          {% if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif %}
+          {{ user.detail.city|fallback }}
+          &middot;
+          {{ user.detail.country|fallback }}
+          <br>
+          {%- if user.detail.phone_number %}
+            {{ render_icon('phone') }}
+            {{ user.detail.phone_number }}
+          {%- else %}
+            {{ (render_icon('phone') ~ ' ' ~ _('not given'))|dim }}
+          {%- endif %}
+        </td>
+        <td>
+          {%- if has_current_user_permission('orga_team.administrate_memberships') %}
+          <div class="dropdown">
+            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+            <ol class="dropdown-menu dropdown-menu--right">
+              <li><a class="dropdown-item" data-action="orga-status-revoke" href="{{ url_for('.revoke_orga_status', brand_id=brand.id, user_id=user.id) }}">{{ render_icon('remove') }} {{ _('Revoke organizer status') }}</a></li>
+            </ol>
+          </div>
+          {%- endif %}
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if orgas_with_birthdays %}
-    <table class="index index--v-centered index--wide orgas">
-      <thead>
-        <tr>
-          <th>{{ _('Avatar') }}</th>
-          <th>
-            {{ _('Full name') }}<br>
-            {{ _('Username') }}<br>
-            {{ _('Date of birth') }}, {{ _('Age') }}
-          </th>
-          <th>
-            {{ _('City') }}<br>
-            {{ _('Email address') }}<br>
-            {{ _('Phone number') }}
-          </th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for user, birthday in orgas_with_birthdays %}
-        <tr>
-          <td>{{ render_user_avatar(user, size=48) }}</td>
-          <td>
-            <strong>{{ render_user_admin_link(user) }}</strong><br>
-            {{ user.detail.full_name|fallback }}<br>
-            {%- if birthday %}
-              {{ render_icon('birthday') }}
-              {{ birthday.date_of_birth|dateformat }}
-              ({{ birthday.age }} {{ _('years') }})
-            {%- else %}
-              {{ (render_icon('birthday') ~ ' ' ~ _('not given'))|dim }}
-            {%- endif %}
-          </td>
-          <td>
-            {%- if user.email_address %}
-            {{ render_icon('email') }} <a href="mailto:{{- user.email_address }}">{{ user.email_address|truncate(36, killwords=True, end='…') }}</a>
-            {%- else %}
-            {{ (render_icon('email') ~ ' ' ~ _('not given'))|dim }}
-            {%- endif %}
-            <br>
-            {{ render_icon('location') }}
-            {{ user.detail.street|fallback }}
-            &middot;
-            {% if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif %}
-            {{ user.detail.city|fallback }}
-            &middot;
-            {{ user.detail.country|fallback }}
-            <br>
-            {%- if user.detail.phone_number %}
-              {{ render_icon('phone') }}
-              {{ user.detail.phone_number }}
-            {%- else %}
-              {{ (render_icon('phone') ~ ' ' ~ _('not given'))|dim }}
-            {%- endif %}
-          </td>
-          <td>
-            {%- if has_current_user_permission('orga_team.administrate_memberships') %}
-            <div class="dropdown">
-              <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
-              <ol class="dropdown-menu dropdown-menu--right">
-                <li><a class="dropdown-item" data-action="orga-status-revoke" href="{{ url_for('.revoke_orga_status', brand_id=brand.id, user_id=user.id) }}">{{ render_icon('remove') }} {{ _('Revoke organizer status') }}</a></li>
-              </ol>
-            </div>
-            {%- endif %}
-          </td>
-        </tr>
-        {%- endfor %}
-        <tr>
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No users have organizer status.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}
 

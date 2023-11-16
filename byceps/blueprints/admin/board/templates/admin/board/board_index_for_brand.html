@@ -21,38 +21,38 @@
   {%- endif %}
   </div>
 
+  {%- if boards %}
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('ID') }}</th>
+        <th class="centered">{{ _('Categories') }}</th>
+        <th class="centered">{{ _('Topics') }}</th>
+        <th class="centered">{{ _('Postings') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for board in boards|sort(attribute='id') %}
+      <tr>
+        <td>
+          <a href="{{ url_for('.board_view', board_id=board.id) }}"><strong>{{ board.id }}</strong></a>
+          {%- if board.access_restricted %}
+          <br>{{ render_tag(_('restricted access')) }}
+          {%- endif %}
+        </td>
+        {%- with stats = stats_by_board_id[board.id] %}
+        <td class="centered bignumber">{{ stats.category_count }}</td>
+        <td class="centered bignumber">{{ stats.topic_count|numberformat }}</td>
+        <td class="centered bignumber">{{ stats.posting_count|numberformat }}</td>
+        {%- endwith %}
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if boards %}
-    <table class="index index--v-centered index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('ID') }}</th>
-          <th class="centered">{{ _('Categories') }}</th>
-          <th class="centered">{{ _('Topics') }}</th>
-          <th class="centered">{{ _('Postings') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for board in boards|sort(attribute='id') %}
-        <tr>
-          <td>
-            <a href="{{ url_for('.board_view', board_id=board.id) }}"><strong>{{ board.id }}</strong></a>
-            {%- if board.access_restricted %}
-            <br>{{ render_tag(_('restricted access')) }}
-            {%- endif %}
-          </td>
-          {%- with stats = stats_by_board_id[board.id] %}
-          <td class="centered bignumber">{{ stats.category_count }}</td>
-          <td class="centered bignumber">{{ stats.topic_count|numberformat }}</td>
-          <td class="centered bignumber">{{ stats.posting_count|numberformat }}</td>
-          {%- endwith %}
-        </tr>
-      {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No boards exist for this brand.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}

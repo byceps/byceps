@@ -11,39 +11,39 @@
 
   <h1>{{ _('Ticket bundles') }} {{ render_extra_in_heading(bundles.total) }}</h1>
 
+  {%- if bundles.items %}
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Description') }}<br>{{ _('ID') }}</th>
+        <th>{{ _('Created') }}</th>
+        <th>{{ _('Owner') }}</th>
+        <th>{{ _('Category') }}</th>
+        <th class="number">{{ _('Tickets') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for bundle in bundles.items %}
+      <tr>
+        <td>
+          <a class="disguised" href="{{ url_for('.view_bundle', bundle_id=bundle.id) }}"><strong>{{ bundle.label|fallback(_('unnamed')) }}</strong></a>
+          {% if bundle.revoked %}{{ render_tag(_('revoked'), class='color-danger nowrap', icon='disabled') }}{% endif %}
+          <br>
+          <span class="monospace">{{ bundle.id }}</span>
+        </td>
+        <td>{{ bundle.created_at|datetimeformat }}</td>
+        <td>{{ render_user_avatar_and_admin_link(bundle.owned_by, size=20) }}</td>
+        <td>{{ bundle.ticket_category.title }}</td>
+        <td class="bignumber number">{{ bundle.ticket_quantity }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if bundles.items %}
-    <table class="index index--v-centered index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('Description') }}<br>{{ _('ID') }}</th>
-          <th>{{ _('Created') }}</th>
-          <th>{{ _('Owner') }}</th>
-          <th>{{ _('Category') }}</th>
-          <th class="number">{{ _('Tickets') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for bundle in bundles.items %}
-        <tr>
-          <td>
-            <a class="disguised" href="{{ url_for('.view_bundle', bundle_id=bundle.id) }}"><strong>{{ bundle.label|fallback(_('unnamed')) }}</strong></a>
-            {% if bundle.revoked %}{{ render_tag(_('revoked'), class='color-danger nowrap', icon='disabled') }}{% endif %}
-            <br>
-            <span class="monospace">{{ bundle.id }}</span>
-          </td>
-          <td>{{ bundle.created_at|datetimeformat }}</td>
-          <td>{{ render_user_avatar_and_admin_link(bundle.owned_by, size=20) }}</td>
-          <td>{{ bundle.ticket_category.title }}</td>
-          <td class="bignumber number">{{ bundle.ticket_quantity }}</td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('none') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {{ render_pagination_nav(bundles, '.index_bundle_for_party', {
   'party_id': party.id,

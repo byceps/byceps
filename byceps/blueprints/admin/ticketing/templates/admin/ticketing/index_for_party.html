@@ -107,9 +107,7 @@
   </div>
 
   {%- with tickets = tickets.items %}
-  <div class="box">
 {% include 'admin/ticketing/_ticket_list.html' %}
-  </div>
   {%- endwith %}
 
 {{ render_pagination_nav(tickets, '.index_for_party', {

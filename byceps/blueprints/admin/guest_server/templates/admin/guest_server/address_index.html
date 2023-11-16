@@ -20,41 +20,41 @@
     </div>
   </div>
 
+  {%- if addresses %}
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('IP address') }}</th>
+        <th>{{ _('Hostname') }}</th>
+        <th>{{ _('Netmask') }}</th>
+        <th>{{ _('Gateway') }}</th>
+        <th>{{ _('Server') }}</th>
+        <th>{{ _('Owner') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for address in sort_addresses(addresses) %}
+      <tr>
+        <td>{{ render_ip_address(address) }}</td>
+        <td>{{ render_hostname(address, setting) }}</td>
+        <td>{{ render_netmask(address, setting) }}</td>
+        <td>{{ render_gateway(address, setting) }}</td>
+        <td><a href="{{ url_for('.server_view', server_id=address.server_id) }}">{{ _('Show') }}</a></td>
+        <td>{{ render_user_avatar_and_name(owners_by_server_id[address.server_id], size=20) }}</td>
+        <td>
+          {%- if has_current_user_permission('guest_server.administrate') %}
+          <a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a>
+          {%- endif %}
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if addresses %}
-    <table class="index index--v-centered index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('IP address') }}</th>
-          <th>{{ _('Hostname') }}</th>
-          <th>{{ _('Netmask') }}</th>
-          <th>{{ _('Gateway') }}</th>
-          <th>{{ _('Server') }}</th>
-          <th>{{ _('Owner') }}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for address in sort_addresses(addresses) %}
-        <tr>
-          <td>{{ render_ip_address(address) }}</td>
-          <td>{{ render_hostname(address, setting) }}</td>
-          <td>{{ render_netmask(address, setting) }}</td>
-          <td>{{ render_gateway(address, setting) }}</td>
-          <td><a href="{{ url_for('.server_view', server_id=address.server_id) }}">{{ _('Show') }}</a></td>
-          <td>{{ render_user_avatar_and_name(owners_by_server_id[address.server_id], size=20) }}</td>
-          <td>
-            {%- if has_current_user_permission('guest_server.administrate') %}
-            <a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a>
-            {%- endif %}
-          </td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No addresses registered.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}

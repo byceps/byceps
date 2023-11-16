@@ -58,27 +58,27 @@
   </div>
 
   <h2>{{ _('Settings') }} {{ render_extra_in_heading(settings|length) }}</h2>
+  {%- if settings %}
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Value') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for key, value in settings|dictsort %}
+      <tr>
+        <td class="monospace">{{ key }}</td>
+        <td class="monospace">{{ value }}</td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if settings %}
-    <table class="index">
-      <thead>
-        <tr>
-          <th>{{ _('Name') }}</th>
-          <th>{{ _('Value') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for key, value in settings|dictsort %}
-        <tr>
-          <td class="monospace">{{ key }}</td>
-          <td class="monospace">{{ value }}</td>
-        </tr>
-      {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No settings defined.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}

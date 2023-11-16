@@ -32,40 +32,40 @@
     </div>
   </div>
 
+  {%- if permissions_by_role %}
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Role') }}</th>
+        <th>{{ _('Permissions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for role, permissions in permissions_by_role|items|sort(attribute='0.id') %}
+      <tr>
+        <td>
+          <strong>{{ role.title }}</strong><br>
+          <span class="monospace">{{ role.id|dim }}</span>
+        </td>
+        <td>
+          {%- if permissions %}
+          <ul class="permissions">
+            {%- for permission in permissions|sort(attribute='id') %}
+            <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
+            {%- endfor %}
+          </ul>
+          {%- else %}
+          <p class="dimmed">{{ _('none') }}</p>
+          {%- endif %}
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if permissions_by_role %}
-    <table class="index index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('Role') }}</th>
-          <th>{{ _('Permissions') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for role, permissions in permissions_by_role|items|sort(attribute='0.id') %}
-        <tr>
-          <td>
-            <strong>{{ role.title }}</strong><br>
-            <span class="monospace">{{ role.id|dim }}</span>
-          </td>
-          <td>
-            {%- if permissions %}
-            <ul class="permissions">
-              {%- for permission in permissions|sort(attribute='id') %}
-              <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
-              {%- endfor %}
-            </ul>
-            {%- else %}
-            <p class="dimmed">{{ _('none') }}</p>
-            {%- endif %}
-          </td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No permissions are assigned to the user.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}

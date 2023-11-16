@@ -6,27 +6,27 @@
 
   <h1>{{ page_title }}</h1>
 
-  <div class="box">
-    {%- if lists %}
-    <table class="index index--v-centered">
-      <thead>
+  {%- if lists %}
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Title') }}<br>{{ _('ID') }}</th>
+        <th class="number">{{ _('Subscribers') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for list in lists %}
         <tr>
-          <th>{{ _('Title') }}<br>{{ _('ID') }}</th>
-          <th class="number">{{ _('Subscribers') }}</th>
+          <td><a href="{{ url_for('.view_subscriptions', list_id=list.id) }}"><strong>{{ list.title }}</strong></a><div class="dimmed">{{ list.id }}</div></td>
+          <td class="bignumber number">{{ list.subscriber_count }}</td>
         </tr>
-      </thead>
-      <tbody>
-        {%- for list in lists %}
-          <tr>
-            <td><a href="{{ url_for('.view_subscriptions', list_id=list.id) }}"><strong>{{ list.title }}</strong></a><div class="dimmed">{{ list.id }}</div></td>
-            <td class="bignumber number">{{ list.subscriber_count }}</td>
-          </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="box">
     <div class="dimmed-box centered">{{ _('No subscription lists exist.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}

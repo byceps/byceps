@@ -18,49 +18,49 @@
     {%- endif %}
   </div>
 
-  <div class="box">
-    {%- if menu_trees %}
-    <table class="index index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('Name') }}</th>
-          <th>{{ _('Language') }}</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for menu_tree in menu_trees|sort(attribute='menu.name,menu.language_code') %}
+  {%- if menu_trees %}
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Language') }}</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for menu_tree in menu_trees|sort(attribute='menu.name,menu.language_code') %}
 {{ render_menu_table_row(menu_tree.menu) }}
-        {%- for menu in menu_tree.submenus|sort(attribute='name,language_code') %}
+      {%- for menu in menu_tree.submenus|sort(attribute='name,language_code') %}
 {{ render_menu_table_row(menu) }}
-        {%- endfor %}
       {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="box">
     <div class="dimmed-box centered">{{ _('No menus exist.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}
 
 {% macro render_menu_table_row(menu) -%}
-        <tr>
-          <td>
-            {% if menu.parent_menu_id %}&#x2ba1;{% endif %}
-            <a href="{{ url_for('.view', menu_id=menu.id) }}"><strong>{{ menu.name }}</strong></a>
-          </td>
-          <td>{{ menu.language_code }}</td>
-          <td>
-            {%- if menu.hidden -%}
-            {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
-            {%- endif -%}
-          </td>
-          <td style="text-align: right;">
-            {%- if not menu.parent_menu_id and has_current_user_permission('site_navigation.administrate') %}
-            <a class="button button--compact" href="{{ url_for('.submenu_create_form', site_id=site.id, parent_menu_id=menu.id) }}">{{ render_icon('add') }} <span>{{ _('Create submenu') }}</span></a>
-            {%- endif -%}
-          </td>
-        </tr>
+      <tr>
+        <td>
+          {% if menu.parent_menu_id %}&#x2ba1;{% endif %}
+          <a href="{{ url_for('.view', menu_id=menu.id) }}"><strong>{{ menu.name }}</strong></a>
+        </td>
+        <td>{{ menu.language_code }}</td>
+        <td>
+          {%- if menu.hidden -%}
+          {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+          {%- endif -%}
+        </td>
+        <td style="text-align: right;">
+          {%- if not menu.parent_menu_id and has_current_user_permission('site_navigation.administrate') %}
+          <a class="button button--compact" href="{{ url_for('.submenu_create_form', site_id=site.id, parent_menu_id=menu.id) }}">{{ render_icon('add') }} <span>{{ _('Create submenu') }}</span></a>
+          {%- endif -%}
+        </td>
+      </tr>
 {%- endmacro %}

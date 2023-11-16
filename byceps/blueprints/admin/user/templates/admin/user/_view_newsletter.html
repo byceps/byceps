@@ -2,17 +2,17 @@
 
 <h2>{{ _('Newsletter Subscriptions') }}</h2>
 
+{%- if newsletter_subscription_states %}
+<table class="itemlist">
+  {%- for list, subscribed in newsletter_subscription_states|sort(attribute='0.title') %}
+  <tr>
+    <td>{{ list.title }}</td>
+    <td>{{ render_tag(_('subscribed'), class='color-success', icon='success') if subscribed else render_tag(_('not subscribed'), class='color-disabled', icon='disabled') }}</td>
+  </tr>
+  {%- endfor %}
+</table>
+{%- else %}
 <div class="box">
-  {%- if newsletter_subscription_states %}
-  <table class="index">
-    {%- for list, subscribed in newsletter_subscription_states|sort(attribute='0.title') %}
-    <tr>
-      <td>{{ list.title }}</td>
-      <td>{{ render_tag(_('subscribed'), class='color-success', icon='success') if subscribed else render_tag(_('not subscribed'), class='color-disabled', icon='disabled') }}</td>
-    </tr>
-    {%- endfor %}
-  </table>
-  {%- else %}
   {{ _('none')|dim }}
-  {%- endif %}
 </div>
+{%- endif %}

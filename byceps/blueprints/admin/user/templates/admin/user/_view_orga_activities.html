@@ -2,35 +2,32 @@
 
 <h2>{{ _('Orga teams') }} {{ render_extra_in_heading(orga_activities|length) }}</h2>
 
-<div class="box">
-
-  {%- if orga_activities %}
-  <table class="index">
-    <thead>
-      <tr>
-        <th>{{ _('Party') }}</th>
-        <th>{{ _('Team') }}</th>
-        <th>{{ _('Function') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
-      {%- for team_and_duties in activity.teams_and_duties|sort(attribute='team_title') %}
-      <tr>
-        {%- if loop.first %}
-          {%- with team_count = activity.teams_and_duties|length %}
-        <td{% if team_count > 1 %} rowspan="{{ team_count }}"{% endif %}>{{ activity.party.title }}</td>
-          {%- endwith %}
-        {%- endif %}
-        <td>{{ team_and_duties.team_title }}</td>
-        <td>{{ team_and_duties.duties|fallback }}</td>
-      </tr>
-      {%- endfor %}
+{%- if orga_activities %}
+<table class="itemlist itemlist--wide">
+  <thead>
+    <tr>
+      <th>{{ _('Party') }}</th>
+      <th>{{ _('Team') }}</th>
+      <th>{{ _('Function') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
+    {%- for team_and_duties in activity.teams_and_duties|sort(attribute='team_title') %}
+    <tr>
+      <th colspan="3">{{ activity.party.title }}</th>
+    </tr>
+    <tr>
+      <td></td>
+      <td>{{ team_and_duties.team_title }}</td>
+      <td>{{ team_and_duties.duties|fallback }}</td>
+    </tr>
     {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
+  {%- endfor %}
+  </tbody>
+</table>
+{%- else %}
+<div class="box">
   <div class="dimmed-box centered">{{ _('none') }}</div>
-  {%- endif %}
-
 </div>
+{%- endif %}

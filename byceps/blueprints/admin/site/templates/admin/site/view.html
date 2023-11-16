@@ -106,52 +106,54 @@
     </div>
   {%- endif %}
   </div>
+
+  {%- if news_channels %}
+  <table class="itemlist">
+    <tbody>
+    {%- for channel in news_channels|sort(attribute='id') %}
+      <tr>
+        <td><a href="{{ url_for('news_admin.channel_view', channel_id=channel.id) }}">{{ channel.id }}</a></td>
+        {%- if has_current_user_permission('site.update') %}
+        <td>
+          <div class="button-row button-row--compact button-row--right">
+            <a href="{{ url_for('.remove_news_channel', site_id=site.id, news_channel_id=channel.id) }}" data-action="news-channel-remove" class="button button--compact" title="{{ _('Remove') }}">{{ render_icon('remove') }}</a>
+          </div>
+        </td>
+        {%- endif %}
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if news_channels %}
-    <table class="index">
-      <tbody>
-      {%- for channel in news_channels|sort(attribute='id') %}
-        <tr>
-          <td><a href="{{ url_for('news_admin.channel_view', channel_id=channel.id) }}">{{ channel.id }}</a></td>
-          {%- if has_current_user_permission('site.update') %}
-          <td>
-            <div class="button-row button-row--compact button-row--right">
-              <a href="{{ url_for('.remove_news_channel', site_id=site.id, news_channel_id=channel.id) }}" data-action="news-channel-remove" class="button button--compact" title="{{ _('Remove') }}">{{ render_icon('remove') }}</a>
-            </div>
-          </td>
-          {%- endif %}
-        </tr>
-      {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No news channels are assigned to this site.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
   <h2>{{ _('Settings') }} {{ render_extra_in_heading(settings|length) }}</h2>
+
+  {%- if settings %}
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Value') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for setting in settings|sort(attribute='name') %}
+      <tr>
+        <td class="monospace">{{ setting.name }}</td>
+        <td class="monospace">{{ setting.value }}</td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if settings %}
-    <table class="index">
-      <thead>
-        <tr>
-          <th>{{ _('Name') }}</th>
-          <th>{{ _('Value') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for setting in settings|sort(attribute='name') %}
-        <tr>
-          <td class="monospace">{{ setting.name }}</td>
-          <td class="monospace">{{ setting.value }}</td>
-        </tr>
-      {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No settings defined.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}
 

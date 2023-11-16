@@ -6,25 +6,25 @@
 
   <h1>{{ page_title }} {{ render_extra_in_heading(catalogs|length) }}</h1>
 
+  {%- if catalogs %}
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Title') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for catalog in catalogs|sort(attribute='id') %}
+      <tr>
+        <td><a href="{{ url_for('.view', catalog_id=catalog.id) }}"><strong>{{ catalog.title }}</strong></a></td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if catalogs %}
-    <table class="index index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('Title') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for catalog in catalogs|sort(attribute='id') %}
-        <tr>
-          <td><a href="{{ url_for('.view', catalog_id=catalog.id) }}"><strong>{{ catalog.title }}</strong></a></td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No catalogs exist.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}

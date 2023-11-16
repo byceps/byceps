@@ -3,51 +3,53 @@
 
 <h2>{{ _('Tickets') }}</h2>
 
-<div class="box">
-  {%- if parties_and_tickets %}
-  <table class="index index--v-centered index--wide">
-    <thead>
-      <tr>
-        <th colspan="2">{{ _('Code') }}</th>
-        <th>{{ _('Category') }}</th>
-        <th>{{ _('Seat') }}</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-    {%- for party, tickets in parties_and_tickets %}
-    <tbody>
-      <tr>
-        <th colspan="7"><h3>{{ party.title }}</h3></th>
-      </tr>
-      {%- for ticket in tickets|sort(attribute='created_at') %}
-      <tr>
-        <td>
-          {%- if ticket.used_by_id == user.id %}<strong>{% endif -%}
-          <a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}">{{ ticket.code }}</a>
-          {%- if ticket.used_by_id == user.id %}</strong>{% endif -%}
-        </td>
-        <td>
-          {%- if ticket.revoked %}{{ render_ticket_flag_revoked(hide_label=True) }}{% endif -%}
-          {%- if ticket.user_checked_in %}{{ render_ticket_flag_user_checked_in(hide_label=True) }}{% endif -%}
-        </td>
-        <td>{{ ticket.category.title }}</td>
-        <td>
-          {%- with seat = ticket.occupied_seat %}
-            {%- if seat %}
-          {{ seat.area.title }}<br>
-          <span title="{{ seat.id }}">{{ seat.label|fallback(seat.id|string|truncate(6, killwords=True, end='…')) }}</span>
-            {%- endif %}
-          {%- endwith %}
-        </td>
-        <td>{% if ticket.is_owned_by(user.id) %}{{ render_icon('payment', title=_('Buyer')) }}{% endif %}</td>
-        <td>{% if ticket.is_seat_managed_by(user.id) %}{{ render_icon('seating-area', title=_('manages seat')) }}{% endif %}</td>
-        <td>{% if ticket.is_user_managed_by(user.id) %}{{ render_icon('user', title=_('manages user')) }}{% endif %}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
+{%- if parties_and_tickets %}
+<table class="itemlist itemlist--v-centered itemlist--wide">
+  <thead>
+    <tr>
+      <th>{{ _('Party') }}</th>
+      <th>{{ _('Code') }}</th>
+      <th>{{ _('Category') }}</th>
+      <th>{{ _('Seat') }}</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  {%- for party, tickets in parties_and_tickets %}
+  <tbody>
+    <tr>
+      <th colspan="8">{{ party.title }}</th>
+    </tr>
+    {%- for ticket in tickets|sort(attribute='created_at') %}
+    <tr>
+      <td></td>
+      <td>
+        {%- if ticket.used_by_id == user.id %}<strong>{% endif -%}
+        <a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}">{{ ticket.code }}</a>
+        {%- if ticket.used_by_id == user.id %}</strong>{% endif -%}
+      </td>
+      <td>
+        {%- if ticket.revoked %}{{ render_ticket_flag_revoked(hide_label=True) }}{% endif -%}
+        {%- if ticket.user_checked_in %}{{ render_ticket_flag_user_checked_in(hide_label=True) }}{% endif -%}
+      </td>
+      <td>{{ ticket.category.title }}</td>
+      <td>
+        {%- with seat = ticket.occupied_seat %}
+          {%- if seat %}
+        {{ seat.area.title }}<br>
+        <span title="{{ seat.id }}">{{ seat.label|fallback(seat.id|string|truncate(6, killwords=True, end='…')) }}</span>
+          {%- endif %}
+        {%- endwith %}
+      </td>
+      <td>{% if ticket.is_owned_by(user.id) %}{{ render_icon('payment', title=_('Buyer')) }}{% endif %}</td>
+      <td>{% if ticket.is_seat_managed_by(user.id) %}{{ render_icon('seating-area', title=_('manages seat')) }}{% endif %}</td>
+      <td>{% if ticket.is_user_managed_by(user.id) %}{{ render_icon('user', title=_('manages user')) }}{% endif %}</td>
+    </tr>
     {%- endfor %}
-  </table>
-  {%- else %}
+  </tbody>
+  {%- endfor %}
+</table>
+{%- else %}
+<div class="box">
   {{ _('none')|dim }}
-  {%- endif %}
 </div>
+{%- endif %}

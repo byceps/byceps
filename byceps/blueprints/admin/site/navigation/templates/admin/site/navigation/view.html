@@ -50,69 +50,66 @@
     {%- endif %}
   </div>
 
-
+  {%- if menu.items %}
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Position') }}</th>
+        <th>{{ _('Label') }}</th>
+        <th>{{ _('Target type') }}</th>
+        <th>{{ _('Target') }}</th>
+        <th>{{ _('Current page ID') }}</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for item in menu.items|sort(attribute='position') %}
+      <tr>
+        <td>{{ item.position }}</td>
+        <td>{{ item.label }}</td>
+        <td>
+          {%- if item.target_type.name == 'endpoint' -%}
+          {{- _('Endpoint') -}}
+          {%- elif item.target_type.name == 'page' -%}
+          {{- _('Page') -}}
+          {%- elif item.target_type.name == 'url' -%}
+          {{- _('URL') -}}
+          {%- elif item.target_type.name == 'view' -%}
+          {{- _('View') -}}
+          {%- else -%}
+          {{- '?' -}}
+          {%- endif -%}
+        </td>
+        <td>{{ item.target }}</td>
+        <td>{{ item.current_page_id }}</td>
+        <td>
+          {%- if item.hidden -%}
+          {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+          {%- endif -%}
+        </td>
+        <td>
+          {%- if has_current_user_permission('site_navigation.administrate') -%}
+          <div class="dropdown">
+            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+            <ol class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
+              <li><a class="dropdown-item" data-action="item-move-up" href="{{ url_for('.item_move_up', item_id=item.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+              <li><a class="dropdown-item" data-action="item-move-down" href="{{ url_for('.item_move_down', item_id=item.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+              <li><a class="dropdown-item" data-action="item-delete" href="{{ url_for('.item_delete', item_id=item.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+            </ol>
+          </div>
+          {%- endif -%}
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-
-    {%- if menu.items %}
-    <table class="index index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('Position') }}</th>
-          <th>{{ _('Label') }}</th>
-          <th>{{ _('Target type') }}</th>
-          <th>{{ _('Target') }}</th>
-          <th>{{ _('Current page ID') }}</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for item in menu.items|sort(attribute='position') %}
-        <tr>
-          <td>{{ item.position }}</td>
-          <td>{{ item.label }}</td>
-          <td>
-            {%- if item.target_type.name == 'endpoint' -%}
-            {{- _('Endpoint') -}}
-            {%- elif item.target_type.name == 'page' -%}
-            {{- _('Page') -}}
-            {%- elif item.target_type.name == 'url' -%}
-            {{- _('URL') -}}
-            {%- elif item.target_type.name == 'view' -%}
-            {{- _('View') -}}
-            {%- else -%}
-            {{- '?' -}}
-            {%- endif -%}
-          </td>
-          <td>{{ item.target }}</td>
-          <td>{{ item.current_page_id }}</td>
-          <td>
-            {%- if item.hidden -%}
-            {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
-            {%- endif -%}
-          </td>
-          <td>
-            {%- if has_current_user_permission('site_navigation.administrate') -%}
-            <div class="dropdown">
-              <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
-              <ol class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
-                <li><a class="dropdown-item" data-action="item-move-up" href="{{ url_for('.item_move_up', item_id=item.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
-                <li><a class="dropdown-item" data-action="item-move-down" href="{{ url_for('.item_move_down', item_id=item.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
-                <li><a class="dropdown-item" data-action="item-delete" href="{{ url_for('.item_delete', item_id=item.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
-              </ol>
-            </div>
-            {%- endif -%}
-          </td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No menus exist.') }}</div>
-    {%- endif %}
-
   </div>
+  {%- endif %}
 
 {%- endblock %}
 

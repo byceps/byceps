@@ -14,84 +14,79 @@
 
   <h1>{{ page_title }}</h1>
 
-  <div class="box">
-    <table class="index">
-      <thead>
-        <tr>
-          <th colspan="3"></th>
-          {%- for day, hour_total in days_and_hour_totals %}
-          <th colspan="{{ hour_total }}">{{ day|dateformat('EEEE') }}</th>
-          {%- endfor %}
-        </tr>
-        <tr>
-          <th></th>
-          <th>{{ _('Start') }}</th>
-          <th>{{ _('End') }}</th>
-          {%- for hour_range in hour_ranges %}
-          <th class="bar-column">{{ hour_range.start|timeformat('short', rebase=False) }}</th>
-          {%- endfor %}
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="party">
-          <td class="nowrap"><strong>{{ party_time_slot.party.title }}</strong></td>
-          {{ render_range_columns(party_time_slot) }}
-          {{ render_bar_columns([party_time_slot]) }}
-        </tr>
-        {%- for task in tasks|sort(attribute='starts_at') %}
-        <tr class="task">
-          <td>{{ task.title }}</td>
-          {{ render_range_columns(task) }}
-          {{ render_bar_columns([task]) }}
-        </tr>
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <thead>
+      <tr>
+        <th colspan="3"></th>
+        {%- for day, hour_total in days_and_hour_totals %}
+        <th colspan="{{ hour_total }}">{{ day|dateformat('EEEE') }}</th>
         {%- endfor %}
-        {%- for orga, presences in presences_by_orga|items|sort(attribute='0.screen_name') %}
-        <tr class="presence">
-          <td>{{ render_user_avatar_and_admin_link(orga, size=16) }}</td>
-          <td colspan="2"></td>
-          {{ render_bar_columns(presences) }}
-        </tr>
+      </tr>
+      <tr>
+        <th></th>
+        <th>{{ _('Start') }}</th>
+        <th>{{ _('End') }}</th>
+        {%- for hour_range in hour_ranges %}
+        <th class="bar-column">{{ hour_range.start|timeformat('short', rebase=False) }}</th>
         {%- endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  <div class="box">
-
-    <div class="row">
-      <div>
-        <h2 style="margin-top: 0;">{{ _('My Presence') }} {{ render_extra_in_heading(current_user_presences|length) }}</h2>
-      </div>
-      {%- if has_current_user_permission('orga_presence.update') %}
-      <div>
-        <div class="button-row button-row--compact button-row--right">
-          <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
-        </div>
-      </div>
-      {%- endif %}
-    </div>
-
-    {%- if current_user_presences %}
-    <table class="index">
-      <thead>
-        <tr>
-          <th>{{ _('Start') }}</th>
-          <th>{{ _('End') }}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for presence in current_user_presences|sort(attribute='starts_at,ends_at') %}
-        <tr>
-          <td class="nowrap">{{ presence.starts_at|dateformat }}, {{ presence.starts_at|timeformat('short') }}</td>
-          <td class="nowrap">{{ presence.ends_at|dateformat }}, {{ presence.ends_at|timeformat('short') }}</td>
-          <td><a class="button button--compact" data-action="time-slot-delete" href="{{ url_for('.time_slot_delete', time_slot_id=presence.id) }}" title="{{ _('Remove presence') }}">{{ render_icon('remove') }}</a></td>
-        </tr>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="party">
+        <td class="nowrap"><strong>{{ party_time_slot.party.title }}</strong></td>
+        {{ render_range_columns(party_time_slot) }}
+        {{ render_bar_columns([party_time_slot]) }}
+      </tr>
+      {%- for task in tasks|sort(attribute='starts_at') %}
+      <tr class="task">
+        <td>{{ task.title }}</td>
+        {{ render_range_columns(task) }}
+        {{ render_bar_columns([task]) }}
+      </tr>
       {%- endfor %}
-      </tbody>
-    </table>
+      {%- for orga, presences in presences_by_orga|items|sort(attribute='0.screen_name') %}
+      <tr class="presence">
+        <td>{{ render_user_avatar_and_admin_link(orga, size=16) }}</td>
+        <td colspan="2"></td>
+        {{ render_bar_columns(presences) }}
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+
+  <div class="row mb mt">
+    <div>
+      <h2 class="mb0 mt0">{{ _('My Presence') }} {{ render_extra_in_heading(current_user_presences|length) }}</h2>
+    </div>
+    {%- if has_current_user_permission('orga_presence.update') %}
+    <div class="column--align-bottom">
+      <div class="button-row button-row--compact button-row--right">
+        <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
+      </div>
+    </div>
     {%- endif %}
   </div>
+
+  {%- if current_user_presences %}
+  <table class="itemlist">
+    <thead>
+      <tr>
+        <th>{{ _('Start') }}</th>
+        <th>{{ _('End') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for presence in current_user_presences|sort(attribute='starts_at,ends_at') %}
+      <tr>
+        <td class="nowrap">{{ presence.starts_at|dateformat }}, {{ presence.starts_at|timeformat('short') }}</td>
+        <td class="nowrap">{{ presence.ends_at|dateformat }}, {{ presence.ends_at|timeformat('short') }}</td>
+        <td><a class="button button--compact" data-action="time-slot-delete" href="{{ url_for('.time_slot_delete', time_slot_id=presence.id) }}" title="{{ _('Remove presence') }}">{{ render_icon('remove') }}</a></td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- endif %}
 
 {%- endblock %}
 

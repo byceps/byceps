@@ -52,70 +52,70 @@
     <a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
   </form>
 
+  {%- if articles.items %}
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Item number') }}</th>
+        <th>{{ _('Description') }}</th>
+        <th>{{ _('Type') }}</th>
+        <th class="hyphenate number" style="width: 15%;">{{ _('Unit price') }}<br>{{ _('Tax rate') }}</th>
+        <th class="hyphenate number" style="width: 11%;">{{ _('Quantity') }}<br>{{ _('available') }}</th>
+        <th class="number">{{ _('Total') }}</th>
+        <th>{{ _('Availability') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for article in articles.items %}
+      <tr>
+        <td class="nowrap">
+          <strong>{{ render_article_link(article) }}</strong>
+          {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
+            <div style="font-size: 0.625rem;">{{ render_icon('attached') }} {{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</div>
+          {%- endfor %}
+        </td>
+        <td>
+          {{ article.description }}
+
+          {%- if article.not_directly_orderable %}
+          <br>{{ render_icon('info') }} {{ _('can only be ordered indirectly')|dim }}
+          {%- endif %}
+
+          {%- if article.separate_order_required %}
+          <br>{{ render_icon('info') }} {{ _('must be ordered separately')|dim }}
+          {%- endif %}
+
+          {%- if article.available_from %}
+          <br>{{ render_icon('time') }} {% filter dim %}{{ _('from') }} {{ article.available_from|datetimeformat }}{% endfilter %}
+          {%- endif %}
+
+          {%- if article.available_until %}
+          <br>{{ render_icon('time') }} {% filter dim %}{{ _('until') }} {{ article.available_until|datetimeformat }}{% endfilter %}
+          {%- endif %}
+        </td>
+        <td>{{ article_type_labels_by_type[article.type_] }}</td>
+        <td class="nowrap number">
+          {{- article.price|moneyformat }}<br>
+          {{- article.tax_rate|tax_rate_as_percentage|dim -}}
+        </td>
+        <td class="number bignumber{% if article.quantity == 0 %} dimmed{% endif %}">{{ article.quantity }}</td>
+        <td class="number">{{ article.total_quantity }}</td>
+        <td>
+          <div class="progress">
+            {{ render_progress_bar(article.quantity, article.total_quantity, 'color--available') }}
+            {{ render_progress_bar(totals_by_article_number[article.item_number][PaymentState.open], article.total_quantity, 'color--ordered') }}
+          </div>
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if articles.items %}
-    <table class="index index--v-centered index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('Item number') }}</th>
-          <th>{{ _('Description') }}</th>
-          <th>{{ _('Type') }}</th>
-          <th class="hyphenate number" style="width: 15%;">{{ _('Unit price') }}<br>{{ _('Tax rate') }}</th>
-          <th class="hyphenate number" style="width: 11%;">{{ _('Quantity') }}<br>{{ _('available') }}</th>
-          <th class="number">{{ _('Total') }}</th>
-          <th>{{ _('Availability') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for article in articles.items %}
-        <tr>
-          <td class="nowrap">
-            <strong>{{ render_article_link(article) }}</strong>
-            {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
-              <div style="font-size: 0.625rem;">{{ render_icon('attached') }} {{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</div>
-            {%- endfor %}
-          </td>
-          <td>
-            {{ article.description }}
-
-            {%- if article.not_directly_orderable %}
-            <br>{{ render_icon('info') }} {{ _('can only be ordered indirectly')|dim }}
-            {%- endif %}
-
-            {%- if article.separate_order_required %}
-            <br>{{ render_icon('info') }} {{ _('must be ordered separately')|dim }}
-            {%- endif %}
-
-            {%- if article.available_from %}
-            <br>{{ render_icon('time') }} {% filter dim %}{{ _('from') }} {{ article.available_from|datetimeformat }}{% endfilter %}
-            {%- endif %}
-
-            {%- if article.available_until %}
-            <br>{{ render_icon('time') }} {% filter dim %}{{ _('until') }} {{ article.available_until|datetimeformat }}{% endfilter %}
-            {%- endif %}
-          </td>
-          <td>{{ article_type_labels_by_type[article.type_] }}</td>
-          <td class="nowrap number">
-            {{- article.price|moneyformat }}<br>
-            {{- article.tax_rate|tax_rate_as_percentage|dim -}}
-          </td>
-          <td class="number bignumber{% if article.quantity == 0 %} dimmed{% endif %}">{{ article.quantity }}</td>
-          <td class="number">{{ article.total_quantity }}</td>
-          <td>
-            <div class="progress">
-              {{ render_progress_bar(article.quantity, article.total_quantity, 'color--available') }}
-              {{ render_progress_bar(totals_by_article_number[article.item_number][PaymentState.open], article.total_quantity, 'color--ordered') }}
-            </div>
-          </td>
-        </tr>
-        {%- endfor %}
-        <tr>
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No articles exist.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {{ render_pagination_nav(articles, '.index_for_shop', {
   'shop_id': shop.id,

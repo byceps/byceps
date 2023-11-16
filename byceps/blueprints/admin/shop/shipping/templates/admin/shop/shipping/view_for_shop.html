@@ -6,35 +6,35 @@
 
   <h1>{{ page_title }}</h1>
 
+  {%- if articles_to_ship %}
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Article number') }}</th>
+        <th>{{ _('Description') }}</th>
+        <th class="number">{{ _('Paid') }}</th>
+        <th class="number">{{ _('Open') }}</th>
+        <th class="number">{{ _('Total') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for article_to_ship in articles_to_ship %}
+      <tr>
+        {%- with article = articles_by_id[article_to_ship.article_id] %}
+        <td>{{ article.item_number }}</td>
+        <td>{{ article_to_ship.description }}</td>
+        <td class="number">{{ article_to_ship.quantity_paid }}</td>
+        <td class="number">{{ article_to_ship.quantity_open }}</td>
+        <td class="number">{{ article_to_ship.quantity_total }}</td>
+        {%- endwith %}
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if articles_to_ship %}
-    <table class="index">
-      <thead>
-        <tr>
-          <th>{{ _('Article number') }}</th>
-          <th>{{ _('Description') }}</th>
-          <th class="number">{{ _('Paid') }}</th>
-          <th class="number">{{ _('Open') }}</th>
-          <th class="number">{{ _('Total') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for article_to_ship in articles_to_ship %}
-        <tr>
-          {%- with article = articles_by_id[article_to_ship.article_id] %}
-          <td>{{ article.item_number }}</td>
-          <td>{{ article_to_ship.description }}</td>
-          <td class="number">{{ article_to_ship.quantity_paid }}</td>
-          <td class="number">{{ article_to_ship.quantity_open }}</td>
-          <td class="number">{{ article_to_ship.quantity_total }}</td>
-          {%- endwith %}
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('Currently no articles that need to be shipped are ordered or paid.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}

@@ -21,45 +21,45 @@
 
   <div class="mb"><strong>{{ _('Scope') }}:</strong> {{ scope.type_ }}/{{ scope.name }}</div>
 
+  {%- if snippets %}
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Language') }}</th>
+        <th>{{ _('Latest change') }}</th>
+        <th>{{ _('by') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for snippet in snippets|sort(attribute='name') %}
+      <tr>
+        <td class="nowrap"><a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a></td>
+        <td>{{ snippet.language_code }}</td>
+        <td class="nowrap">
+          {%- if has_current_user_permission('snippet.view_history') %}
+          {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ snippet.current_version.created_at|datetimeformat }}</a>
+          {%- else %}
+          {{ snippet.current_version.created_at|datetimeformat }}
+          {%- endif %}
+        </td>
+        <td>{{ render_user_avatar_and_name(users_by_id[snippet.current_version.creator_id], size=20) }}</td>
+        <td>
+          {%- if has_current_user_permission('snippet.update') %}
+          <div class="button-row button-row--compact button-row--right">
+            <a href="{{ url_for('.update_form', snippet_id=snippet.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
+          </div>
+          {%- endif %}
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if snippets %}
-    <table class="index index--v-centered index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('Name') }}</th>
-          <th>{{ _('Language') }}</th>
-          <th>{{ _('Latest change') }}</th>
-          <th>{{ _('by') }}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for snippet in snippets|sort(attribute='name') %}
-        <tr>
-          <td class="nowrap"><a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a></td>
-          <td>{{ snippet.language_code }}</td>
-          <td class="nowrap">
-            {%- if has_current_user_permission('snippet.view_history') %}
-            {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ snippet.current_version.created_at|datetimeformat }}</a>
-            {%- else %}
-            {{ snippet.current_version.created_at|datetimeformat }}
-            {%- endif %}
-          </td>
-          <td>{{ render_user_avatar_and_name(users_by_id[snippet.current_version.creator_id], size=20) }}</td>
-          <td>
-            {%- if has_current_user_permission('snippet.update') %}
-            <div class="button-row button-row--compact button-row--right">
-              <a href="{{ url_for('.update_form', snippet_id=snippet.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
-            </div>
-            {%- endif %}
-          </td>
-        </tr>
-      {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No snippets exist in this scope.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}

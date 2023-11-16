@@ -20,41 +20,41 @@
     </div>
   </div>
 
+  {%- if categories %}
+  <table class="itemlist itemlist--v-centered">
+    <thead>
+      <tr>
+        <th>{{ _('Position') }}</th>
+        <th>{{ _('Title') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for category in categories|sort(attribute='position') %}
+      <tr>
+        <td class="number">{{ category.position }}</td>
+        <td><strong>{{ category.title }}</strong></td>
+        <td>
+          {%- if has_current_user_permission('tourney_category.administrate') -%}
+          <div class="dropdown">
+            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+            <ol class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('.update_form', category_id=category.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
+              <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+              <li><a class="dropdown-item" data-action="category-move-down" href="{{ url_for('.move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+            </ol>
+          </div>
+          {%- endif -%}
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    {%- if categories %}
-    <table class="index index--v-centered">
-      <thead>
-        <tr>
-          <th>{{ _('Position') }}</th>
-          <th>{{ _('Title') }}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-      {%- for category in categories|sort(attribute='position') %}
-        <tr>
-          <td class="number">{{ category.position }}</td>
-          <td><strong>{{ category.title }}</strong></td>
-          <td>
-            {%- if has_current_user_permission('tourney_category.administrate') -%}
-            <div class="dropdown">
-              <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
-              <ol class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ url_for('.update_form', category_id=category.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
-                <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
-                <li><a class="dropdown-item" data-action="category-move-down" href="{{ url_for('.move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
-              </ol>
-            </div>
-            {%- endif -%}
-          </td>
-        </tr>
-      {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No categories exist.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}
 

@@ -19,27 +19,27 @@
     {%- endif %}
   </div>
 
-  <div class="box">
-    {%- if subjects_with_consent_counts %}
-    <table class="index index--v-centered index--wide">
-      <thead>
+  {%- if subjects_with_consent_counts %}
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Title') }}<br>{{ _('Name') }}</th>
+        <th class="number">{{ _('Consents') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for subject, consent_count in subjects_with_consent_counts|sort(attribute='0.name') %}
         <tr>
-          <th>{{ _('Title') }}<br>{{ _('Name') }}</th>
-          <th class="number">{{ _('Consents') }}</th>
+          <td><strong>{{ subject.title }}</strong><br>{{ subject.name|dim }}</td>
+          <td class="bignumber number">{{ consent_count|numberformat }}</td>
         </tr>
-      </thead>
-      <tbody>
-        {%- for subject, consent_count in subjects_with_consent_counts|sort(attribute='0.name') %}
-          <tr>
-            <td><strong>{{ subject.title }}</strong><br>{{ subject.name|dim }}</td>
-            <td class="bignumber number">{{ consent_count|numberformat }}</td>
-          </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="box">
     <div class="dimmed-box centered">{{ _('None defined') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}

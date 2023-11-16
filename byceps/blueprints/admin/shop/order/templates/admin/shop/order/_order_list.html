@@ -4,7 +4,7 @@
 
 
 {%- if orders %}
-<table class="index index--v-centered index--wide">
+<table class="itemlist itemlist--v-centered itemlist--wide">
   <thead>
     <tr>
       <th>{{ _('Order number') }}<br>{{ _('Date') }}</th>
@@ -48,5 +48,7 @@
   </tbody>
 </table>
 {%- else %}
-<div class="dimmed-box centered">{{ _('none') }}</div>
+<div class="box">
+  <div class="dimmed-box centered">{{ _('none') }}</div>
+</div>
 {%- endif %}

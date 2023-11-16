@@ -308,11 +308,26 @@ nav.breadcrumbs + h1 {
 table {
   --cell-padding-horizontal: 1rem;
   --cell-padding-vertical: 0.1rem;
+  --row-padding-horizontal: 0;
 }
 
 table.index {
   --cell-padding-vertical: 0.35rem;
   --table-border-color: #dddddd;
+}
+
+table.itemlist {
+  --cell-padding-vertical: 0.75rem;
+  --row-padding-horizontal: 1.5rem;
+  --table-border-color: #dddddd;
+  background-color: #ffffff;
+  border-color: var(--table-border-color);
+  border-style: solid;
+  border-width: 1px;
+}
+
+table.itemlist thead {
+  background-color: #f8f8f8;
 }
 
 th,
@@ -322,8 +337,12 @@ td {
   vertical-align: top;
 }
 
+:is(th, td):first-child {
+  padding-left: var(--row-padding-horizontal);
+}
+
 :is(th, td):last-child {
-  padding-right: 0;
+  padding-right: var(--row-padding-horizontal);
 }
 
 :is(th, td).number {
@@ -335,11 +354,17 @@ table.index th {
   font-weight: bold;
 }
 
+table.itemlist thead th {
+  color: var(--dimmed-color);
+  font-size: 0.8125rem; /* 13px / 16px */
+  font-weight: normal;
+}
+
 table.index td {
   font-size: 0.8125rem; /* 13px / 16px */
 }
 
-table.index > tbody > tr > :is(th, td) {
+table:is(.index, .itemlist) > tbody > tr > :is(th, td) {
   border-color: var(--table-border-color);
   border-style: solid;
   border-width: 1px 0;
@@ -349,15 +374,16 @@ table.index.index--higher :is(th, td) {
   --cell-padding-vertical: 0.75rem;
 }
 
-table.index.index--v-centered :is(th, td) {
+table:is(.index.index--v-centered, .itemlist.itemlist--v-centered) :is(th, td) {
   vertical-align: middle;
 }
 
-table.index.index--wide {
+table.index.index--wide,
+table.itemlist.itemlist--wide {
   width: 100%;
 }
 
-table.index .bignumber {
+table:is(.index, .itemlist) .bignumber {
   font-size: 1.5rem;
 }
 

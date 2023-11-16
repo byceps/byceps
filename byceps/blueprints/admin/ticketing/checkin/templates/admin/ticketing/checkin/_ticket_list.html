@@ -14,13 +14,14 @@
   }
 </style>
 
-<table class="index index--v-centered index--wide">
+<table class="itemlist itemlist--v-centered itemlist--wide">
   <thead>
     <tr>
       <th>{{ _('Code') }}</th>
       <th>{{ _('User') }}</th>
       <th>{{ _('Owner') }}</th>
       <th>{{ _('Seat') }}</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -63,5 +64,7 @@
   </tbody>
 </table>
 {%- else %}
-<div class="dimmed-box centered">{{ _('none') }}</div>
+<div class="box">
+  <div class="dimmed-box centered">{{ _('none') }}</div>
+</div>
 {%- endif %}

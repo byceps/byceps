@@ -7,36 +7,34 @@
 
   <h1>{{ page_title }} {{ render_extra_in_heading(permissions_and_roles|length) }}</h1>
 
-  <div class="box">
-    <table class="index index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('Permission') }}</th>
-          <th>{{ _('Part of these roles') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for permission, role_ids in permissions_and_roles|sort(attribute='0.id') %}
-        <tr>
-          <td>
-            <strong class="monospace">{{ permission.id }}</strong><br>
-            {{ permission.title|fallback(_('no description available')) }}
-          </td>
-          <td>
-          {%- if role_ids %}
-            <ol class="bare">
-            {%- for role_id in role_ids|sort %}
-              <li class="monospace"><a href="{{ url_for('.role_view', role_id=role_id) }}">{{ role_id }}</a></li>
-            {%- endfor %}
-            </ol>
-          {%- else %}
-            {{ _('none')|dim }}
-          {%- endif %}
-          </td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-  </div>
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Permission') }}</th>
+        <th>{{ _('Part of these roles') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for permission, role_ids in permissions_and_roles|sort(attribute='0.id') %}
+      <tr>
+        <td>
+          <strong class="monospace">{{ permission.id }}</strong><br>
+          {{ permission.title|fallback(_('no description available')) }}
+        </td>
+        <td>
+        {%- if role_ids %}
+          <ol class="bare">
+          {%- for role_id in role_ids|sort %}
+            <li class="monospace"><a href="{{ url_for('.role_view', role_id=role_id) }}">{{ role_id }}</a></li>
+          {%- endfor %}
+          </ol>
+        {%- else %}
+          {{ _('none')|dim }}
+        {%- endif %}
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
 
 {%- endblock %}

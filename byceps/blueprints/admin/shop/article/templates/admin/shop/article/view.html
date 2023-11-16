@@ -212,37 +212,38 @@
     {%- endif %}
   </div>
 
+  <div class="mb">{{ _('An action will be executed if an order contains an article that has an action assigned and the order state is changed to one of the states listed for the article.') }}</div>
+
+  {%- if actions %}
+  <table class="itemlist itemlist--v-centered itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Payment state') }}</th>
+        <th>{{ _('Procedure') }}<br>{{ _('Parameters') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for action in actions %}
+      <tr>
+        <td>{{ render_order_payment_state(action.payment_state) }}</td>
+        <td class="monospace">{{ action.procedure_name }}<br>{{ action.parameters }}</td>
+        <td>
+          {%- if has_current_user_permission('shop_article.update') %}
+          <div class="button-row button-row--compact button-row--right">
+            <a data-action="action-remove" href="{{ url_for('.action_remove', action_id=action.id) }}" class="button button--compact" title="{{ _('Remove action') }}">{{ render_icon('remove') }}</a>
+          </div>
+          {%- endif %}
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
   <div class="box">
-    <p>{{ _('An action will be executed if an order contains an article that has an action assigned and the order state is changed to one of the states listed for the article.') }}</p>
-    {%- if actions %}
-    <table class="index index--wide">
-      <thead>
-        <tr>
-          <th>{{ _('Payment state') }}</th>
-          <th>{{ _('Procedure') }}<br>{{ _('Parameters') }}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for action in actions %}
-        <tr>
-          <td>{{ render_order_payment_state(action.payment_state) }}</td>
-          <td class="monospace">{{ action.procedure_name }}<br>{{ action.parameters }}</td>
-          <td>
-            {%- if has_current_user_permission('shop_article.update') %}
-            <div class="button-row button-row--compact button-row--right">
-              <a data-action="action-remove" href="{{ url_for('.action_remove', action_id=action.id) }}" class="button button--compact" title="{{ _('Remove action') }}">{{ render_icon('remove') }}</a>
-            </div>
-            {%- endif %}
-          </td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
     <div class="dimmed-box centered">{{ _('No actions are assigned for this article.') }}</div>
-    {%- endif %}
   </div>
+  {%- endif %}
 
 {%- endblock %}
 
