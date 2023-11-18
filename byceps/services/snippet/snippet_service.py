@@ -20,12 +20,14 @@ from byceps.events.snippet import (
     SnippetUpdatedEvent,
 )
 from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import (
     DbCurrentSnippetVersionAssociation,
     DbSnippet,
     DbSnippetVersion,
 )
+from .errors import SnippetNotFoundError
 from .models import SnippetID, SnippetScope, SnippetVersionID
 
 
@@ -212,20 +214,20 @@ def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
     ).all()
 
 
-def get_snippet_body(scope: SnippetScope, name: str, language_code: str) -> str:
+def get_snippet_body(
+    scope: SnippetScope, name: str, language_code: str
+) -> Result[str, SnippetNotFoundError]:
     """Return the body of the current version of the snippet in that
     scope with that name and language.
-
-    Raise an exception if not found.
     """
     version = find_current_version_of_snippet_with_name(
         scope, name, language_code
     )
 
     if not version:
-        raise SnippetNotFoundException(scope, name, language_code)
+        return Err(SnippetNotFoundError(scope, name, language_code))
 
-    return version.body.strip()
+    return Ok(version.body.strip())
 
 
 def search_snippets(

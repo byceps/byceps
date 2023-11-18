@@ -8,8 +8,10 @@ byceps.services.email.email_footer_service
 
 from byceps.services.brand.models import Brand
 from byceps.services.snippet import snippet_service
+from byceps.services.snippet.errors import SnippetNotFoundError
 from byceps.services.snippet.models import SnippetScope
 from byceps.services.user.models.user import User
+from byceps.util.result import Result
 
 
 SIGNATURE_SEPARATOR = '-- '
@@ -62,11 +64,10 @@ E-Mail: {contact_address}
         )
 
 
-def get_footer(brand: Brand, language_code: str) -> str:
-    """Return the email footer for that brand and language.
-
-    Raise error if not found.
-    """
+def get_footer(
+    brand: Brand, language_code: str
+) -> Result[str, SnippetNotFoundError]:
+    """Return the email footer for that brand and language."""
     scope = SnippetScope.for_brand(brand.id)
 
     return snippet_service.get_snippet_body(

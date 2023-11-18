@@ -27,6 +27,7 @@ from byceps.services.shop.order.models.order import (
 )
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import StorefrontID
+from byceps.services.snippet.errors import SnippetNotFoundError
 from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid4
@@ -46,7 +47,7 @@ def build_example_placed_order_message_text(
     data = _build_email_data(sender, order, brand)
 
     try:
-        message = (
+        message_result = (
             order_email_service.assemble_email_for_incoming_order_to_orderer(
                 data, locale
             )
@@ -54,7 +55,10 @@ def build_example_placed_order_message_text(
     except Exception as e:
         return Err(str(e))
 
-    return Ok(_render_message(message))
+    if message_result.is_err():
+        return _snippet_not_found_error_to_text(message_result.unwrap_err())
+
+    return Ok(_render_message(message_result.unwrap()))
 
 
 def build_example_paid_order_message_text(
@@ -68,13 +72,18 @@ def build_example_paid_order_message_text(
     data = _build_email_data(sender, order, brand)
 
     try:
-        message = order_email_service.assemble_email_for_paid_order_to_orderer(
-            data, locale
+        message_result = (
+            order_email_service.assemble_email_for_paid_order_to_orderer(
+                data, locale
+            )
         )
     except Exception as e:
         return Err(str(e))
 
-    return Ok(_render_message(message))
+    if message_result.is_err():
+        return _snippet_not_found_error_to_text(message_result.unwrap_err())
+
+    return Ok(_render_message(message_result.unwrap()))
 
 
 def build_example_canceled_order_message_text(
@@ -92,7 +101,7 @@ def build_example_canceled_order_message_text(
     data = _build_email_data(sender, order, brand)
 
     try:
-        message = (
+        message_result = (
             order_email_service.assemble_email_for_canceled_order_to_orderer(
                 data, locale
             )
@@ -100,7 +109,10 @@ def build_example_canceled_order_message_text(
     except Exception as e:
         return Err(str(e))
 
-    return Ok(_render_message(message))
+    if message_result.is_err():
+        return _snippet_not_found_error_to_text(message_result.unwrap_err())
+
+    return Ok(_render_message(message_result.unwrap()))
 
 
 def _build_order(
@@ -187,4 +199,12 @@ def _render_message(message: Message) -> str:
         f'To: {message.recipients}\n'
         f'Subject: {message.subject}\n'
         f'\n\n{message.body}\n'
+    )
+
+
+def _snippet_not_found_error_to_text(error: SnippetNotFoundError) -> Err[str]:
+    return Err(
+        f'Snippet "{error.name}" not found '
+        f'for language code "{error.language_code}" '
+        f'in scope "{error.scope.type_}/{error.scope.name}"'
     )

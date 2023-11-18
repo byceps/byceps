@@ -24,7 +24,6 @@ from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import OrderAlreadyCanceledError
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.storefront import storefront_service
-from byceps.services.snippet.snippet_service import SnippetNotFoundException
 from byceps.services.user import user_service
 from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
@@ -111,15 +110,17 @@ def _find_order_payment_method_label(payment_method):
 def _get_payment_instructions(order) -> str | None:
     language_code = get_user_locale(g.user)
 
-    try:
-        return order_payment_service.get_html_payment_instructions(
-            order, language_code
-        )
-    except SnippetNotFoundException as exc:
+    result = order_payment_service.get_html_payment_instructions(
+        order, language_code
+    )
+    if result.is_err():
         log.error(
-            'Sending refund request confirmation email failed', exc_info=exc
+            'Sending refund request confirmation email failed',
+            error=result.unwrap_err(),
         )
         return None
+
+    return result.unwrap()
 
 
 @blueprint.get('/<uuid:order_id>/cancel')
@@ -490,13 +491,16 @@ def _send_refund_request_confirmation_email(
 
     brand = brand_service.get_brand(g.brand_id)
     language_code = get_user_locale(g.user)
-    try:
-        footer = email_footer_service.get_footer(brand, language_code)
-    except SnippetNotFoundException as exc:
+
+    footer_result = email_footer_service.get_footer(brand, language_code)
+    if footer_result.is_err():
         log.error(
-            'Sending refund request confirmation email failed', exc_info=exc
+            'Sending refund request confirmation email failed',
+            error=footer_result.unwrap_err(),
         )
         return
+
+    footer = footer_result.unwrap()
 
     sender = email_config.sender
     recipients = [email_address.address]

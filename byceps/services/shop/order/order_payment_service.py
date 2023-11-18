@@ -15,9 +15,11 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.snippet import snippet_service
+from byceps.services.snippet.errors import SnippetNotFoundError
 from byceps.services.snippet.models import SnippetScope
 from byceps.services.user.models.user import User
 from byceps.util.l10n import format_money
+from byceps.util.result import Err, Ok, Result
 from byceps.util.templating import load_template
 
 from . import order_domain_service, order_log_service
@@ -136,21 +138,24 @@ Hier kannst du deine Bestellungen einsehen: https://www.yourparty.example/shop/o
         )
 
 
-def get_email_payment_instructions(order: Order, language_code: str) -> str:
-    """Return the email payment instructions for that order and language.
-
-    Raise error if not found.
-    """
+def get_email_payment_instructions(
+    order: Order, language_code: str
+) -> Result[str, SnippetNotFoundError]:
+    """Return the email payment instructions for that order and language."""
     scope = _build_shop_snippet_scope(order.shop_id)
-    snippet_content = snippet_service.get_snippet_body(
+
+    snippet_content_result = snippet_service.get_snippet_body(
         scope, 'email_payment_instructions', language_code
     )
+    if snippet_content_result.is_err():
+        return Err(snippet_content_result.unwrap_err())
 
-    template = load_template(snippet_content)
-    return template.render(
+    template = load_template(snippet_content_result.unwrap())
+    rendered = template.render(
         order_id=order.id,
         order_number=order.order_number,
     )
+    return Ok(rendered)
 
 
 def create_html_payment_instructions(shop_id: ShopID, creator: User) -> None:
@@ -234,21 +239,24 @@ def create_html_payment_instructions(shop_id: ShopID, creator: User) -> None:
         )
 
 
-def get_html_payment_instructions(order: Order, language_code: str) -> str:
-    """Return the HTML payment instructions for that order and language.
-
-    Raise error if not found.
-    """
+def get_html_payment_instructions(
+    order: Order, language_code: str
+) -> Result[str, SnippetNotFoundError]:
+    """Return the HTML payment instructions for that order and language."""
     scope = _build_shop_snippet_scope(order.shop_id)
-    snippet_content = snippet_service.get_snippet_body(
+
+    snippet_content_result = snippet_service.get_snippet_body(
         scope, 'payment_instructions', language_code
     )
+    if snippet_content_result.is_err():
+        return Err(snippet_content_result.unwrap_err())
 
-    template = load_template(snippet_content)
-    return template.render(
+    template = load_template(snippet_content_result.unwrap())
+    rendered = template.render(
         order_number=order.order_number,
         total_amount=format_money(order.total_amount),
     )
+    return Ok(rendered)
 
 
 def _build_shop_snippet_scope(shop_id: ShopID) -> SnippetScope:

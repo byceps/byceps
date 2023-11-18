@@ -26,10 +26,11 @@ from byceps.services.email.models import Message, NameAndAddress
 from byceps.services.shop.order import order_payment_service
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.shop import shop_service
-from byceps.services.snippet.snippet_service import SnippetNotFoundException
+from byceps.services.snippet.errors import SnippetNotFoundError
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.l10n import format_money, get_user_locale
+from byceps.util.result import Err, Ok, Result
 
 
 log = structlog.get_logger()
@@ -54,62 +55,72 @@ def send_email_for_incoming_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
-    try:
-        message = assemble_email_for_incoming_order_to_orderer(
-            data, language_code
-        )
-    except SnippetNotFoundException as exc:
+    message_result = assemble_email_for_incoming_order_to_orderer(
+        data, language_code
+    )
+    if message_result.is_err():
         log.error(
             'Assembling email for incoming order to orderer failed',
-            exc_info=exc,
+            error=message_result.unwrap_err(),
         )
         return
 
-    _send_email(message)
+    _send_email(message_result.unwrap())
 
 
 def send_email_for_canceled_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
-    try:
-        message = assemble_email_for_canceled_order_to_orderer(
-            data, language_code
-        )
-    except SnippetNotFoundException as exc:
+    message_result = assemble_email_for_canceled_order_to_orderer(
+        data, language_code
+    )
+    if message_result.is_err():
         log.error(
             'Assembling email for canceled order to orderer failed',
-            exc_info=exc,
+            error=message_result.unwrap_err(),
         )
         return
 
-    _send_email(message)
+    _send_email(message_result.unwrap())
 
 
 def send_email_for_paid_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
-    try:
-        message = assemble_email_for_paid_order_to_orderer(data, language_code)
-    except SnippetNotFoundException as exc:
+    message_result = assemble_email_for_paid_order_to_orderer(
+        data, language_code
+    )
+    if message_result.is_err():
         log.error(
-            'Assembling email for paid order to orderer failed', exc_info=exc
+            'Assembling email for paid order to orderer failed',
+            error=message_result.unwrap_err(),
         )
         return
 
-    _send_email(message)
+    _send_email(message_result.unwrap())
 
 
 def assemble_email_for_incoming_order_to_orderer(
     data: OrderEmailData,
     language_code: str,
-) -> Message:
-    footer = email_footer_service.get_footer(data.brand, language_code)
+) -> Result[Message, SnippetNotFoundError]:
+    footer_result = email_footer_service.get_footer(data.brand, language_code)
+    if footer_result.is_err():
+        return Err(footer_result.unwrap_err())
 
-    payment_instructions = order_payment_service.get_email_payment_instructions(
-        data.order, language_code
+    footer = footer_result.unwrap()
+
+    payment_instructions_result = (
+        order_payment_service.get_email_payment_instructions(
+            data.order, language_code
+        )
     )
+    if payment_instructions_result.is_err():
+        return Err(payment_instructions_result.unwrap_err())
+
+    payment_instructions = payment_instructions_result.unwrap()
 
     assemble_text_for_incoming_order_to_orderer_with_payment_instructions = (
         partial(
@@ -118,12 +129,13 @@ def assemble_email_for_incoming_order_to_orderer(
         )
     )
 
-    return _assemble_email(
+    assembled = _assemble_email(
         data,
         language_code,
         footer,
         assemble_text_for_incoming_order_to_orderer_with_payment_instructions,
     )
+    return Ok(assembled)
 
 
 def assemble_text_for_incoming_order_to_orderer(
@@ -184,12 +196,17 @@ def assemble_text_for_incoming_order_to_orderer(
 def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
     language_code: str,
-) -> Message:
-    footer = email_footer_service.get_footer(data.brand, language_code)
+) -> Result[Message, SnippetNotFoundError]:
+    footer_result = email_footer_service.get_footer(data.brand, language_code)
+    if footer_result.is_err():
+        return Err(footer_result.unwrap_err())
 
-    return _assemble_email(
+    footer = footer_result.unwrap()
+
+    assembled = _assemble_email(
         data, language_code, footer, assemble_text_for_canceled_order_to_orderer
     )
+    return Ok(assembled)
 
 
 def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
@@ -215,12 +232,17 @@ def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
 
 def assemble_email_for_paid_order_to_orderer(
     data: OrderEmailData, language_code: str
-) -> Message:
-    footer = email_footer_service.get_footer(data.brand, language_code)
+) -> Result[Message, SnippetNotFoundError]:
+    footer_result = email_footer_service.get_footer(data.brand, language_code)
+    if footer_result.is_err():
+        return Err(footer_result.unwrap_err())
 
-    return _assemble_email(
+    footer = footer_result.unwrap()
+
+    assembled = _assemble_email(
         data, language_code, footer, assemble_text_for_paid_order_to_orderer
     )
+    return Ok(assembled)
 
 
 def assemble_text_for_paid_order_to_orderer(order: Order) -> OrderEmailText:
