@@ -19,6 +19,7 @@ from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
+from byceps.util.l10n import get_user_locale
 from byceps.util.result import Result
 from byceps.util.views import permission_required
 
@@ -62,7 +63,7 @@ def _get_example_placed_order_message_text(
     shop: Shop, sender: NameAndAddress, brand: Brand
 ) -> Result[str, str]:
     return order_email_example_service.build_example_placed_order_message_text(
-        shop, sender, brand, g.user.locale
+        shop, sender, brand, get_user_locale(g.user)
     )
 
 
@@ -70,7 +71,7 @@ def _get_example_paid_order_message_text(
     shop: Shop, sender: NameAndAddress, brand: Brand
 ) -> Result[str, str]:
     return order_email_example_service.build_example_paid_order_message_text(
-        shop, sender, brand, g.user.locale
+        shop, sender, brand, get_user_locale(g.user)
     )
 
 
@@ -79,7 +80,7 @@ def _get_example_canceled_order_message_text(
 ) -> Result[str, str]:
     return (
         order_email_example_service.build_example_canceled_order_message_text(
-            shop, sender, brand, g.user.locale
+            shop, sender, brand, get_user_locale(g.user)
         )
     )
 
