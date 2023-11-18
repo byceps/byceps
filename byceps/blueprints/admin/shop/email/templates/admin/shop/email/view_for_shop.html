@@ -32,9 +32,9 @@
 
   <h2>{{ _('Examples') }}</h2>
 
-{{ render_example_email(_('Order confirmation'), placed_order_message_text) }}
-{{ render_example_email(_('Payment receipt'), paid_order_message_text) }}
-{{ render_example_email(_('Cancelation'), canceled_order_message_text) }}
+{{ render_example_email(_('Order confirmation'), placed_order_message_text_result) }}
+{{ render_example_email(_('Payment receipt'), paid_order_message_text_result) }}
+{{ render_example_email(_('Cancelation'), canceled_order_message_text_result) }}
 
   <h2>{{ _('Configuration') }}</h2>
   <div class="box">
@@ -61,16 +61,16 @@
 
 {%- endblock %}
 
-{% macro render_example_email(title, text) -%}
-    <details class="email-example"{% if not text %} open{% endif %}>
+{% macro render_example_email(title, text_result) -%}
+    <details class="email-example"{% if text_result.is_err() %} open{% endif %}>
       <summary class="mb">{{ title }}</summary>
-  {%- if text -%}
+  {%- if text_result.is_ok() -%}
       <div class="box email-example">
-        <pre><code>{{ text }}</code></pre>
+        <pre><code>{{ text_result.unwrap() }}</code></pre>
       </div>
   {%- else -%}
       <div class="mb">
-{{ render_notification('Could not assemble example email. Are all necessary templates defined?', category='danger') }}
+{{ render_notification(text_result.unwrap_err(), category='danger') }}
       </div>
   {%- endif -%}
     </details>
