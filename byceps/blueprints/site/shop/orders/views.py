@@ -10,6 +10,7 @@ from decimal import Decimal
 
 from flask import abort, g, request
 from flask_babel import gettext
+import structlog
 
 from byceps.services.brand import brand_service
 from byceps.services.email import (
@@ -23,6 +24,7 @@ from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import OrderAlreadyCanceledError
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.storefront import storefront_service
+from byceps.services.snippet.snippet_service import SnippetNotFoundError
 from byceps.services.user import user_service
 from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
@@ -32,6 +34,9 @@ from byceps.util.l10n import get_user_locale
 from byceps.util.views import login_required, redirect_to
 
 from .forms import CancelForm, RequestFullRefundForm, RequestPartialRefundForm
+
+
+log = structlog.get_logger()
 
 
 blueprint = create_blueprint('shop_orders', __name__)
@@ -479,7 +484,13 @@ def _send_refund_request_confirmation_email(
 
     brand = brand_service.get_brand(g.brand_id)
     language_code = get_user_locale(g.user)
-    footer = email_footer_service.get_footer(brand, language_code)
+    try:
+        footer = email_footer_service.get_footer(brand, language_code)
+    except SnippetNotFoundError as exc:
+        log.error(
+            'Sending refund request confirmation email failed', exc_info=exc
+        )
+        return
 
     sender = email_config.sender
     recipients = [email_address.address]
