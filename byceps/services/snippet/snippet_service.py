@@ -248,12 +248,3 @@ def search_snippets(
     stmt = stmt.filter(DbSnippetVersion.body.contains(search_term))
 
     return db.session.scalars(stmt).all()
-
-
-class SnippetNotFoundException(Exception):
-    def __init__(
-        self, scope: SnippetScope, name: str, language_code: str
-    ) -> None:
-        self.scope = scope
-        self.name = name
-        self.language_code = language_code

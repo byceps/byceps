@@ -82,9 +82,7 @@ def render_snippet_as_partial(
         if ignore_if_unknown:
             return ''
         else:
-            raise snippet_service.SnippetNotFoundException(
-                scope, name, language_code
-            )
+            raise SnippetNotFoundException(scope, name, language_code)
 
     if context is None:
         context = {}
@@ -107,3 +105,12 @@ def _load_template_with_globals(source: str) -> Template:
     }
 
     return load_template(source, template_globals=template_globals)
+
+
+class SnippetNotFoundException(Exception):
+    def __init__(
+        self, scope: SnippetScope, name: str, language_code: str
+    ) -> None:
+        self.scope = scope
+        self.name = name
+        self.language_code = language_code
