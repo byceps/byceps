@@ -108,12 +108,18 @@ def _find_order_payment_method_label(payment_method):
     return order_service.find_payment_method_label(payment_method)
 
 
-def _get_payment_instructions(order):
+def _get_payment_instructions(order) -> str | None:
     language_code = get_user_locale(g.user)
 
-    return order_payment_service.get_html_payment_instructions(
-        order, language_code
-    )
+    try:
+        return order_payment_service.get_html_payment_instructions(
+            order, language_code
+        )
+    except SnippetNotFoundError as exc:
+        log.error(
+            'Sending refund request confirmation email failed', exc_info=exc
+        )
+        return None
 
 
 @blueprint.get('/<uuid:order_id>/cancel')

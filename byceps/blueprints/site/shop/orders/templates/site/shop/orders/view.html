@@ -62,9 +62,13 @@
 
   {%- if order.is_open %}
   <h2>{{ _('Payment notes') }}</h2>
+    {%- if payment_instructions %}
   <div class="main-body-box">
 {{ payment_instructions|safe }}
   </div>
+    {%- else %}
+{{ render_notification(_('Payment instructions not found.'), category='danger', icon='warning') }}
+    {%- endif %}
   {%- endif %}
 
   <h2>{{ _('Billing and shipping address') }}</h2>
