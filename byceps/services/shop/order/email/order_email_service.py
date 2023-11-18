@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from functools import partial
 
 from flask_babel import force_locale, format_date, gettext
+import structlog
 
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import Brand
@@ -25,9 +26,13 @@ from byceps.services.email.models import Message, NameAndAddress
 from byceps.services.shop.order import order_payment_service
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.shop import shop_service
+from byceps.services.snippet.snippet_service import SnippetNotFoundError
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.l10n import format_money, get_user_locale
+
+
+log = structlog.get_logger()
 
 
 @dataclass(frozen=True)
@@ -49,7 +54,16 @@ def send_email_for_incoming_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
-    message = assemble_email_for_incoming_order_to_orderer(data, language_code)
+    try:
+        message = assemble_email_for_incoming_order_to_orderer(
+            data, language_code
+        )
+    except SnippetNotFoundError as exc:
+        log.error(
+            'Assembling email for incoming order to orderer failed',
+            exc_info=exc,
+        )
+        return
 
     _send_email(message)
 
@@ -58,7 +72,16 @@ def send_email_for_canceled_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
-    message = assemble_email_for_canceled_order_to_orderer(data, language_code)
+    try:
+        message = assemble_email_for_canceled_order_to_orderer(
+            data, language_code
+        )
+    except SnippetNotFoundError as exc:
+        log.error(
+            'Assembling email for canceled order to orderer failed',
+            exc_info=exc,
+        )
+        return
 
     _send_email(message)
 
@@ -67,7 +90,13 @@ def send_email_for_paid_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
-    message = assemble_email_for_paid_order_to_orderer(data, language_code)
+    try:
+        message = assemble_email_for_paid_order_to_orderer(data, language_code)
+    except SnippetNotFoundError as exc:
+        log.error(
+            'Assembling email for paid order to orderer failed', exc_info=exc
+        )
+        return
 
     _send_email(message)
 
