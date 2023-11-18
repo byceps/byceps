@@ -223,7 +223,7 @@ def get_snippet_body(scope: SnippetScope, name: str, language_code: str) -> str:
     )
 
     if not version:
-        raise SnippetNotFoundError(scope, name, language_code)
+        raise SnippetNotFoundException(scope, name, language_code)
 
     return version.body.strip()
 
@@ -248,7 +248,7 @@ def search_snippets(
     return db.session.scalars(stmt).all()
 
 
-class SnippetNotFoundError(Exception):
+class SnippetNotFoundException(Exception):
     def __init__(
         self, scope: SnippetScope, name: str, language_code: str
     ) -> None:

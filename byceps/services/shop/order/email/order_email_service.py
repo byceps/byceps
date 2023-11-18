@@ -26,7 +26,7 @@ from byceps.services.email.models import Message, NameAndAddress
 from byceps.services.shop.order import order_payment_service
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.shop import shop_service
-from byceps.services.snippet.snippet_service import SnippetNotFoundError
+from byceps.services.snippet.snippet_service import SnippetNotFoundException
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.l10n import format_money, get_user_locale
@@ -58,7 +58,7 @@ def send_email_for_incoming_order_to_orderer(order: Order) -> None:
         message = assemble_email_for_incoming_order_to_orderer(
             data, language_code
         )
-    except SnippetNotFoundError as exc:
+    except SnippetNotFoundException as exc:
         log.error(
             'Assembling email for incoming order to orderer failed',
             exc_info=exc,
@@ -76,7 +76,7 @@ def send_email_for_canceled_order_to_orderer(order: Order) -> None:
         message = assemble_email_for_canceled_order_to_orderer(
             data, language_code
         )
-    except SnippetNotFoundError as exc:
+    except SnippetNotFoundException as exc:
         log.error(
             'Assembling email for canceled order to orderer failed',
             exc_info=exc,
@@ -92,7 +92,7 @@ def send_email_for_paid_order_to_orderer(order: Order) -> None:
 
     try:
         message = assemble_email_for_paid_order_to_orderer(data, language_code)
-    except SnippetNotFoundError as exc:
+    except SnippetNotFoundException as exc:
         log.error(
             'Assembling email for paid order to orderer failed', exc_info=exc
         )

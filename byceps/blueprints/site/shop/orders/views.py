@@ -24,7 +24,7 @@ from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import OrderAlreadyCanceledError
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.storefront import storefront_service
-from byceps.services.snippet.snippet_service import SnippetNotFoundError
+from byceps.services.snippet.snippet_service import SnippetNotFoundException
 from byceps.services.user import user_service
 from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
@@ -115,7 +115,7 @@ def _get_payment_instructions(order) -> str | None:
         return order_payment_service.get_html_payment_instructions(
             order, language_code
         )
-    except SnippetNotFoundError as exc:
+    except SnippetNotFoundException as exc:
         log.error(
             'Sending refund request confirmation email failed', exc_info=exc
         )
@@ -492,7 +492,7 @@ def _send_refund_request_confirmation_email(
     language_code = get_user_locale(g.user)
     try:
         footer = email_footer_service.get_footer(brand, language_code)
-    except SnippetNotFoundError as exc:
+    except SnippetNotFoundException as exc:
         log.error(
             'Sending refund request confirmation email failed', exc_info=exc
         )

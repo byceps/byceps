@@ -82,7 +82,7 @@ def render_snippet_as_partial(
         if ignore_if_unknown:
             return ''
         else:
-            raise snippet_service.SnippetNotFoundError(
+            raise snippet_service.SnippetNotFoundException(
                 scope, name, language_code
             )
 
