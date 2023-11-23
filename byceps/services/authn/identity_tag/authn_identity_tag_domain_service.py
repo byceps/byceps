@@ -60,11 +60,9 @@ def _build_tag_created_event(
 ) -> UserIdentityTagCreatedEvent:
     return UserIdentityTagCreatedEvent(
         occurred_at=tag.created_at,
-        initiator_id=tag.creator.id,
-        initiator_screen_name=tag.creator.screen_name,
+        initiator=tag.creator,
         identifier=tag.identifier,
-        user_id=tag.user.id,
-        user_screen_name=tag.user.screen_name,
+        user=tag.user,
     )
 
 
@@ -96,11 +94,9 @@ def _build_tag_deleted_event(
 ) -> UserIdentityTagDeletedEvent:
     return UserIdentityTagDeletedEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
+        initiator=initiator,
         identifier=tag.identifier,
-        user_id=tag.user.id,
-        user_screen_name=tag.user.screen_name,
+        user=tag.user,
     )
 
 

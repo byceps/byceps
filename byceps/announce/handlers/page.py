@@ -29,9 +29,7 @@ def announce_page_created(
     event_name: str, event: PageCreatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a page has been created."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
 
     text = gettext(
         '%(initiator_screen_name)s has created page "%(page_name)s" (%(language_code)s) in site "%(site_id)s".',
@@ -49,9 +47,7 @@ def announce_page_updated(
     event_name: str, event: PageUpdatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a page has been updated."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
 
     text = gettext(
         '%(initiator_screen_name)s has updated page "%(page_name)s" (%(language_code)s) in site "%(site_id)s".',
@@ -69,9 +65,7 @@ def announce_page_deleted(
     event_name: str, event: PageDeletedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a page has been deleted."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
 
     text = gettext(
         '%(initiator_screen_name)s has deleted page "%(page_name)s" (%(language_code)s) in site "%(site_id)s".',

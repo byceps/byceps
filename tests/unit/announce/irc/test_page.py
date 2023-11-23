@@ -4,6 +4,7 @@
 """
 
 from flask import Flask
+import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.events.page import (
@@ -13,7 +14,7 @@ from byceps.events.page import (
 )
 from byceps.services.page.models import PageID, PageVersionID
 from byceps.services.site.models import SiteID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -21,12 +22,11 @@ from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
-EDITOR_ID = UserID(generate_uuid())
 PAGE_ID = PageID(generate_uuid())
 PAGE_VERSION_ID = PageVersionID(generate_uuid())
 
 
-def test_announce_page_created(app: Flask, webhook_for_irc):
+def test_announce_page_created(app: Flask, editor: User, webhook_for_irc):
     expected_text = (
         'PageEditor has created page "overview" (de) '
         'in site "acmecon-2014-website".'
@@ -34,8 +34,7 @@ def test_announce_page_created(app: Flask, webhook_for_irc):
 
     event = PageCreatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=EDITOR_ID,
-        initiator_screen_name='PageEditor',
+        initiator=editor,
         page_id=PAGE_ID,
         site_id=SiteID('acmecon-2014-website'),
         page_name='overview',
@@ -48,7 +47,7 @@ def test_announce_page_created(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_announce_page_updated(app: Flask, webhook_for_irc):
+def test_announce_page_updated(app: Flask, editor: User, webhook_for_irc):
     expected_text = (
         'PageEditor has updated page "overview" (en) '
         'in site "acmecon-2014-website".'
@@ -56,8 +55,7 @@ def test_announce_page_updated(app: Flask, webhook_for_irc):
 
     event = PageUpdatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=EDITOR_ID,
-        initiator_screen_name='PageEditor',
+        initiator=editor,
         page_id=PAGE_ID,
         site_id=SiteID('acmecon-2014-website'),
         page_name='overview',
@@ -70,7 +68,7 @@ def test_announce_page_updated(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_announce_page_deleted(app: Flask, webhook_for_irc):
+def test_announce_page_deleted(app: Flask, editor: User, webhook_for_irc):
     expected_text = (
         'PageEditor has deleted page "old_page" (en) '
         'in site "acmecon-2014-website".'
@@ -78,8 +76,7 @@ def test_announce_page_deleted(app: Flask, webhook_for_irc):
 
     event = PageDeletedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=EDITOR_ID,
-        initiator_screen_name='PageEditor',
+        initiator=editor,
         page_id=PAGE_ID,
         site_id=SiteID('acmecon-2014-website'),
         page_name='old_page',
@@ -89,3 +86,11 @@ def test_announce_page_deleted(app: Flask, webhook_for_irc):
     actual = build_announcement_request(event, webhook_for_irc)
 
     assert_text(actual, expected_text)
+
+
+# helpers
+
+
+@pytest.fixture(scope='module')
+def editor(make_user) -> User:
+    return make_user(screen_name='PageEditor')

@@ -122,8 +122,7 @@ def log_in_user(
 
     event = UserLoggedInEvent(
         occurred_at=occurred_at,
-        initiator_id=user.id,
-        initiator_screen_name=user.screen_name,
+        initiator=user,
         site_id=site.id if site else None,
         site_title=site.title if site else None,
     )

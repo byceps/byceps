@@ -4,6 +4,7 @@
 """
 
 from flask import Flask
+import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.events.newsletter import (
@@ -11,28 +12,25 @@ from byceps.events.newsletter import (
     UnsubscribedFromNewsletterEvent,
 )
 from byceps.services.newsletter.models import ListID
-from byceps.services.user.models.user import UserID
-
-from tests.helpers import generate_uuid
+from byceps.services.user.models.user import User
 
 from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
-USER_ID = UserID(generate_uuid())
 
 
-def test_subscribed_to_newsletter_announced(app: Flask, webhook_for_irc):
-    expected_text = 'Gast has subscribed to newsletter "CozyLAN-Updates".'
+def test_subscribed_to_newsletter_announced(
+    app: Flask, user: User, webhook_for_irc
+):
+    expected_text = 'User has subscribed to newsletter "CozyLAN Updates".'
 
     event = SubscribedToNewsletterEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=USER_ID,
-        initiator_screen_name='Gast',
-        user_id=USER_ID,
-        user_screen_name='Gast',
+        initiator=user,
+        user=user,
         list_id=ListID('cozylan-updates'),
-        list_title='CozyLAN-Updates',
+        list_title='CozyLAN Updates',
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -40,19 +38,27 @@ def test_subscribed_to_newsletter_announced(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_unsubscribed_from_newsletter_announced(app: Flask, webhook_for_irc):
-    expected_text = 'Gast has unsubscribed from newsletter "CozyLAN-Updates".'
+def test_unsubscribed_from_newsletter_announced(
+    app: Flask, user: User, webhook_for_irc
+):
+    expected_text = 'User has unsubscribed from newsletter "CozyLAN Updates".'
 
     event = UnsubscribedFromNewsletterEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=USER_ID,
-        initiator_screen_name='Gast',
-        user_id=USER_ID,
-        user_screen_name='Gast',
+        initiator=user,
+        user=user,
         list_id=ListID('cozylan-updates'),
-        list_title='CozyLAN-Updates',
+        list_title='CozyLAN Updates',
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
 
     assert_text(actual, expected_text)
+
+
+# helpers
+
+
+@pytest.fixture(scope='module')
+def user(make_user) -> User:
+    return make_user(screen_name='User')

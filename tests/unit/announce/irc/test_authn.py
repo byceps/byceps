@@ -8,27 +8,20 @@ from flask import Flask
 from byceps.announce.announce import build_announcement_request
 from byceps.events.authn import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.services.site.models import SiteID
-from byceps.services.user.models.user import UserID
-
-from tests.helpers import generate_uuid
 
 from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
-ADMIN_ID = UserID(generate_uuid())
-USER_ID = UserID(generate_uuid())
 
 
-def test_password_updated_announced(app: Flask, webhook_for_irc):
+def test_password_updated_announced(app: Flask, make_user, webhook_for_irc):
     expected_text = 'AuthAdmin has updated the password for ForgetfulFred.'
 
     event = PasswordUpdatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=ADMIN_ID,
-        initiator_screen_name='AuthAdmin',
-        user_id=USER_ID,
-        user_screen_name='ForgetfulFred',
+        initiator=make_user(screen_name='AuthAdmin'),
+        user=make_user(screen_name='ForgetfulFred'),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -36,13 +29,14 @@ def test_password_updated_announced(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_user_logged_in_into_admin_app_announced(app: Flask, webhook_for_irc):
+def test_user_logged_in_into_admin_app_announced(
+    app: Flask, make_user, webhook_for_irc
+):
     expected_text = 'Logvogel has logged in.'
 
     event = UserLoggedInEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=USER_ID,
-        initiator_screen_name='Logvogel',
+        initiator=make_user(screen_name='Logvogel'),
         site_id=None,
         site_title=None,
     )
@@ -52,13 +46,14 @@ def test_user_logged_in_into_admin_app_announced(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_user_logged_in_into_site_app_announced(app: Flask, webhook_for_irc):
+def test_user_logged_in_into_site_app_announced(
+    app: Flask, make_user, webhook_for_irc
+):
     expected_text = 'Logvogel has logged in on site "ACMECon 2014 website".'
 
     event = UserLoggedInEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=USER_ID,
-        initiator_screen_name='Logvogel',
+        initiator=make_user(screen_name='Logvogel'),
         site_id=SiteID('acmecon-2014'),
         site_title='ACMECon 2014 website',
     )

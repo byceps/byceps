@@ -101,11 +101,9 @@ def test_create_ticket_bundles(
 
     tickets_sold_event = TicketsSoldEvent(
         occurred_at=shop_order_paid_event.occurred_at,
-        initiator_id=admin_user.id,
-        initiator_screen_name=admin_user.screen_name,
+        initiator=admin_user,
         party_id=ticket_category.party_id,
-        owner_id=orderer.user.id,
-        owner_screen_name=orderer.user.screen_name,
+        owner=orderer.user,
         quantity=expected_ticket_total,
     )
     tickets_sold_signal_send_mock.assert_called_once_with(

@@ -32,8 +32,7 @@ def test_announce_participant_ready(app: Flask, webhook_for_irc):
 
     event = TourneyParticipantReadyEvent(
         occurred_at=now(),
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Burrito Blaster (3on3)',
         match_id=MATCH_ID,
@@ -54,8 +53,7 @@ def test_announce_participant_eliminated(app: Flask, webhook_for_irc):
 
     event = TourneyParticipantEliminatedEvent(
         occurred_at=now(),
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Burrito Blaster (3on3)',
         match_id=MATCH_ID,
@@ -76,8 +74,7 @@ def test_announce_participant_warned(app: Flask, webhook_for_irc):
 
     event = TourneyParticipantWarnedEvent(
         occurred_at=now(),
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Burrito Blaster (3on3)',
         match_id=MATCH_ID,
@@ -98,8 +95,7 @@ def test_announce_participant_disqualified(app: Flask, webhook_for_irc):
 
     event = TourneyParticipantDisqualifiedEvent(
         occurred_at=now(),
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Burrito Blaster (3on3)',
         match_id=MATCH_ID,

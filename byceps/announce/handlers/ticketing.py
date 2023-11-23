@@ -26,10 +26,8 @@ def announce_ticket_checked_in(
     event_name: str, event: TicketCheckedInEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a ticket has been checked in."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
+    user_screen_name = get_screen_name_or_fallback(event.user)
 
     text = gettext(
         '%(initiator_screen_name)s has checked in ticket "%(ticket_code)s", used by %(user_screen_name)s.',
@@ -46,7 +44,7 @@ def announce_tickets_sold(
     event_name: str, event: TicketsSoldEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that tickets have been sold."""
-    owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
+    owner_screen_name = get_screen_name_or_fallback(event.owner)
     sale_stats = ticket_service.get_ticket_sale_stats(event.party_id)
 
     text = (

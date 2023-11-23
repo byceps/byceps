@@ -4,6 +4,7 @@
 """
 
 from flask import Flask
+import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.events.guest_server import (
@@ -14,7 +15,7 @@ from byceps.events.guest_server import (
 )
 from byceps.services.guest_server.models import ServerID
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -22,25 +23,24 @@ from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
-ADMIN_ID = UserID(generate_uuid())
-USER_ID = UserID(generate_uuid())
+SERVER_ID = ServerID(generate_uuid())
 
 
-def test_guest_server_registered(app: Flask, webhook_for_irc):
+def test_guest_server_registered(
+    app: Flask, admin: User, owner: User, webhook_for_irc
+):
     expected_text = (
-        'Admin has registered a guest server owned by User '
+        'Admin has registered a guest server owned by Owner '
         'for party ACMECon 2014.'
     )
 
     event = GuestServerRegisteredEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=ADMIN_ID,
-        initiator_screen_name='Admin',
+        initiator=admin,
         party_id=PartyID('acmecon-2014'),
         party_title='ACMECon 2014',
-        owner_id=USER_ID,
-        owner_screen_name='User',
-        server_id=ServerID(generate_uuid()),
+        owner=owner,
+        server_id=SERVER_ID,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -48,16 +48,16 @@ def test_guest_server_registered(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_guest_server_approved(app: Flask, webhook_for_irc):
-    expected_text = 'Admin has approved a guest server owned by User.'
+def test_guest_server_approved(
+    app: Flask, admin: User, owner: User, webhook_for_irc
+):
+    expected_text = 'Admin has approved a guest server owned by Owner.'
 
     event = GuestServerApprovedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=ADMIN_ID,
-        initiator_screen_name='Admin',
-        owner_id=USER_ID,
-        owner_screen_name='User',
-        server_id=ServerID(generate_uuid()),
+        initiator=admin,
+        owner=owner,
+        server_id=SERVER_ID,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -65,16 +65,16 @@ def test_guest_server_approved(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_guest_server_checked_in(app: Flask, webhook_for_irc):
-    expected_text = 'Admin has checked in a guest server owned by User.'
+def test_guest_server_checked_in(
+    app: Flask, admin: User, owner: User, webhook_for_irc
+):
+    expected_text = 'Admin has checked in a guest server owned by Owner.'
 
     event = GuestServerCheckedInEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=ADMIN_ID,
-        initiator_screen_name='Admin',
-        owner_id=USER_ID,
-        owner_screen_name='User',
-        server_id=ServerID(generate_uuid()),
+        initiator=admin,
+        owner=owner,
+        server_id=SERVER_ID,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -82,18 +82,31 @@ def test_guest_server_checked_in(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_guest_server_checked_out(app: Flask, webhook_for_irc):
-    expected_text = 'Admin has checked out a guest server owned by User.'
+def test_guest_server_checked_out(
+    app: Flask, admin: User, owner: User, webhook_for_irc
+):
+    expected_text = 'Admin has checked out a guest server owned by Owner.'
 
     event = GuestServerCheckedOutEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=ADMIN_ID,
-        initiator_screen_name='Admin',
-        owner_id=USER_ID,
-        owner_screen_name='User',
-        server_id=ServerID(generate_uuid()),
+        initiator=admin,
+        owner=owner,
+        server_id=SERVER_ID,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
 
     assert_text(actual, expected_text)
+
+
+# helpers
+
+
+@pytest.fixture(scope='module')
+def admin(make_user) -> User:
+    return make_user(screen_name='Admin')
+
+
+@pytest.fixture(scope='module')
+def owner(make_user) -> User:
+    return make_user(screen_name='Owner')

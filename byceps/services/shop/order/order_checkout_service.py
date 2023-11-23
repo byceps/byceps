@@ -102,12 +102,10 @@ def place_order(
 
     event = ShopOrderPlacedEvent(
         occurred_at=occurred_at,
-        initiator_id=orderer.user.id,
-        initiator_screen_name=orderer.user.screen_name,
+        initiator=orderer.user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=orderer.user.id,
-        orderer_screen_name=orderer.user.screen_name,
+        orderer=orderer.user,
     )
 
     log.info('Order placed', shop_order_placed_event=event)

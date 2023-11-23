@@ -11,11 +11,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True)
 class _BaseEvent:
     occurred_at: datetime
-    initiator_id: UserID | None
-    initiator_screen_name: str | None
+    initiator: User | None

@@ -44,10 +44,8 @@ def _build_subscribed_to_newsletter_event(
 ) -> SubscribedToNewsletterEvent:
     return SubscribedToNewsletterEvent(
         occurred_at=expressed_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        initiator=initiator,
+        user=user,
         list_id=list_.id,
         list_title=list_.title,
     )
@@ -78,10 +76,8 @@ def _build_unsubscribed_from_newsletter_event(
 ) -> UnsubscribedFromNewsletterEvent:
     return UnsubscribedFromNewsletterEvent(
         occurred_at=expressed_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        initiator=initiator,
+        user=user,
         list_id=list_.id,
         list_title=list_.title,
     )

@@ -50,12 +50,10 @@ def _build_awarding_event(
 ) -> UserBadgeAwardedEvent:
     return UserBadgeAwardedEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
-        initiator_screen_name=initiator.screen_name if initiator else None,
+        initiator=initiator,
         badge_id=badge.id,
         badge_label=badge.label,
-        awardee_id=awardee.id,
-        awardee_screen_name=awardee.screen_name,
+        awardee=awardee,
     )
 
 

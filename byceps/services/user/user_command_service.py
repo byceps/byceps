@@ -100,7 +100,7 @@ def suspend_account(
 def _persist_account_suspension(
     event: UserAccountSuspendedEvent, log_entry: UserLogEntry
 ) -> None:
-    db_user = _get_db_user(event.user_id)
+    db_user = _get_db_user(event.user.id)
 
     db_user.suspended = True
 
@@ -126,7 +126,7 @@ def unsuspend_account(
 def _persist_account_unsuspension(
     event: UserAccountUnsuspendedEvent, log_entry: UserLogEntry
 ) -> None:
-    db_user = _get_db_user(event.user_id)
+    db_user = _get_db_user(event.user.id)
 
     db_user.suspended = False
 
@@ -198,7 +198,7 @@ def _persist_email_address_change(
     verified: bool,
     log_entry: UserLogEntry,
 ) -> None:
-    db_user = _get_db_user(event.user_id)
+    db_user = _get_db_user(event.user.id)
 
     db_user.email_address = new_email_address
     db_user.email_address_verified = verified

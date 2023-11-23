@@ -28,10 +28,8 @@ def announce_role_assigned_to_user(
     event_name: str, event: RoleAssignedToUserEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a role has been assigned to a user."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
+    user_screen_name = get_screen_name_or_fallback(event.user)
 
     text = gettext(
         '%(initiator_screen_name)s has assigned role "%(role_id)s" to %(user_screen_name)s.',
@@ -50,10 +48,8 @@ def announce_role_deassigned_from_user(
     webhook: OutgoingWebhook,
 ) -> Announcement | None:
     """Announce that a role has been deassigned from a user."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
+    user_screen_name = get_screen_name_or_fallback(event.user)
 
     text = gettext(
         '%(initiator_screen_name)s has deassigned role "%(role_id)s" from %(user_screen_name)s.',

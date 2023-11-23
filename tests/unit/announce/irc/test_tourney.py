@@ -27,8 +27,7 @@ def test_announce_tourney_started(app: Flask, webhook_for_irc):
 
     event = TourneyStartedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Taco Arena (1on1)',
     )
@@ -43,8 +42,7 @@ def test_announce_tourney_paused(app: Flask, webhook_for_irc):
 
     event = TourneyPausedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Taco Arena (1on1)',
     )
@@ -59,8 +57,7 @@ def test_announce_tourney_canceled(app: Flask, webhook_for_irc):
 
     event = TourneyCanceledEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Taco Arena (1on1)',
     )
@@ -75,8 +72,7 @@ def test_announce_tourney_finished(app: Flask, webhook_for_irc):
 
     event = TourneyFinishedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Taco Arena (1on1)',
     )

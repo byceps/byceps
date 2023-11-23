@@ -25,10 +25,8 @@ def announce_user_badge_awarded(
     event_name: str, event: UserBadgeAwardedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a badge has been awarded to a user."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    awardee_screen_name = get_screen_name_or_fallback(event.awardee_screen_name)
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
+    awardee_screen_name = get_screen_name_or_fallback(event.awardee)
 
     text = gettext(
         '%(initiator_screen_name)s has awarded badge "%(badge_label)s" to %(awardee_screen_name)s.',

@@ -56,9 +56,7 @@ def announce_board_topic_created(
     event_name: str, event: BoardTopicCreatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that someone has created a board topic."""
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
+    topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
     )
@@ -81,12 +79,8 @@ def announce_board_topic_hidden(
     event_name: str, event: BoardTopicHiddenEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a moderator has hidden a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
+    moderator_screen_name = get_screen_name_or_fallback(event.moderator)
+    topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
     )
@@ -110,12 +104,8 @@ def announce_board_topic_unhidden(
     event_name: str, event: BoardTopicUnhiddenEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a moderator has made a board topic visible again."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
+    moderator_screen_name = get_screen_name_or_fallback(event.moderator)
+    topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
     )
@@ -139,12 +129,8 @@ def announce_board_topic_locked(
     event_name: str, event: BoardTopicLockedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a moderator has locked a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
+    moderator_screen_name = get_screen_name_or_fallback(event.moderator)
+    topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
     )
@@ -168,12 +154,8 @@ def announce_board_topic_unlocked(
     event_name: str, event: BoardTopicUnlockedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a moderator has unlocked a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
+    moderator_screen_name = get_screen_name_or_fallback(event.moderator)
+    topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
     )
@@ -197,12 +179,8 @@ def announce_board_topic_pinned(
     event_name: str, event: BoardTopicPinnedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a moderator has pinned a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
+    moderator_screen_name = get_screen_name_or_fallback(event.moderator)
+    topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
     )
@@ -226,12 +204,8 @@ def announce_board_topic_unpinned(
     event_name: str, event: BoardTopicUnpinnedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a moderator has unpinned a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
+    moderator_screen_name = get_screen_name_or_fallback(event.moderator)
+    topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
     )
@@ -255,12 +229,8 @@ def announce_board_topic_moved(
     event_name: str, event: BoardTopicMovedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a moderator has moved a board topic to another category."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
+    moderator_screen_name = get_screen_name_or_fallback(event.moderator)
+    topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
     )
@@ -290,7 +260,7 @@ def announce_board_posting_created(
         return None
 
     posting_creator_screen_name = get_screen_name_or_fallback(
-        event.posting_creator_screen_name
+        event.posting_creator
     )
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
@@ -314,11 +284,9 @@ def announce_board_posting_hidden(
     event_name: str, event: BoardPostingHiddenEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a moderator has hidden a board posting."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
+    moderator_screen_name = get_screen_name_or_fallback(event.moderator)
     posting_creator_screen_name = get_screen_name_or_fallback(
-        event.posting_creator_screen_name
+        event.posting_creator
     )
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format
@@ -343,11 +311,9 @@ def announce_board_posting_unhidden(
     event_name: str, event: BoardPostingUnhiddenEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a moderator has made a board posting visible again."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
+    moderator_screen_name = get_screen_name_or_fallback(event.moderator)
     posting_creator_screen_name = get_screen_name_or_fallback(
-        event.posting_creator_screen_name
+        event.posting_creator
     )
     board_label_segment = _get_board_label_segment(
         event.brand_title, webhook.format

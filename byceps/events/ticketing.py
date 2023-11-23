@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from byceps.services.party.models import PartyID
 from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from .base import _BaseEvent
 
@@ -27,13 +27,11 @@ class _TicketEvent(_BaseEvent):
 class TicketCheckedInEvent(_TicketEvent):
     ticket_code: TicketCode
     occupied_seat_id: SeatID | None
-    user_id: UserID | None
-    user_screen_name: str | None
+    user: User | None
 
 
 @dataclass(frozen=True)
 class TicketsSoldEvent(_BaseEvent):
     party_id: PartyID
-    owner_id: UserID | None
-    owner_screen_name: str | None
+    owner: User | None
     quantity: int

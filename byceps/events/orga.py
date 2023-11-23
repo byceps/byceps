@@ -11,15 +11,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
 class _OrgaEvent(_BaseEvent):
-    user_id: UserID
-    user_screen_name: str | None
+    user: User
     brand_id: BrandID
     brand_title: str
 

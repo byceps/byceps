@@ -12,6 +12,7 @@ from functools import wraps
 
 from flask_babel import force_locale, gettext
 
+from byceps.services.user.models.user import User
 from byceps.services.webhooks.models import OutgoingWebhook
 from byceps.util.l10n import get_default_locale
 
@@ -36,9 +37,12 @@ def matches_selectors(
     return (allowed_values is None) or (actual_value in allowed_values)
 
 
-def get_screen_name_or_fallback(screen_name: str | None) -> str:
-    """Return the screen name or a fallback value."""
-    return screen_name if screen_name else gettext('Someone')
+def get_screen_name_or_fallback(user: User | None) -> str:
+    """Return the user's screen name or a fallback value."""
+    if (user is None) or (user.screen_name is None):
+        return gettext('Someone')
+
+    return user.screen_name
 
 
 def with_locale(handler):

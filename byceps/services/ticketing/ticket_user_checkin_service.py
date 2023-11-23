@@ -72,8 +72,10 @@ def _persist_check_in(
 ) -> None:
     db_ticket.user_checked_in = True
 
+    initiator_id = event.initiator.id if event.initiator else None
+
     db_check_in = DbTicketCheckIn(
-        event.occurred_at, event.ticket_id, event.initiator_id
+        event.occurred_at, event.ticket_id, initiator_id
     )
     db.session.add(db_check_in)
 

@@ -26,11 +26,9 @@ def test_create_tag(user, admin_user):
 
     assert event.__class__ is UserIdentityTagCreatedEvent
     assert event.occurred_at == tag.created_at
-    assert event.initiator_id == initiator.id
-    assert event.initiator_screen_name == initiator.screen_name
+    assert event.initiator == initiator
     assert event.identifier == identifier
-    assert event.user_id == user.id
-    assert event.user_screen_name == user.screen_name
+    assert event.user == user
 
     assert log_entry.id is not None
     assert log_entry.occurred_at == tag.created_at

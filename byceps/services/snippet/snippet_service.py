@@ -54,8 +54,7 @@ def create_snippet(
 
     event = SnippetCreatedEvent(
         occurred_at=version.created_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
+        initiator=creator,
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
@@ -83,8 +82,7 @@ def update_snippet(
 
     event = SnippetUpdatedEvent(
         occurred_at=version.created_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
+        initiator=creator,
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
@@ -136,8 +134,7 @@ def delete_snippet(
 
     event = SnippetDeletedEvent(
         occurred_at=datetime.utcnow(),
-        initiator_id=initiator.id if initiator else None,
-        initiator_screen_name=initiator.screen_name if initiator else None,
+        initiator=initiator,
         snippet_id=snippet_id,
         scope=scope,
         snippet_name=snippet_name,

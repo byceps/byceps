@@ -196,12 +196,10 @@ def _build_order_paid_event(
 ) -> ShopOrderPaidEvent:
     return ShopOrderPaidEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
+        initiator=initiator,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
+        orderer=orderer_user,
         payment_method=payment_method,
     )
 
@@ -280,12 +278,10 @@ def _build_order_canceled_event(
 ) -> ShopOrderCanceledEvent:
     return ShopOrderCanceledEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
+        initiator=initiator,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
+        orderer=orderer_user,
     )
 
 

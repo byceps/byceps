@@ -30,7 +30,7 @@ def announce_order_placed(
     event_name: str, event: ShopOrderPlacedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that an order has been placed."""
-    orderer_screen_name = get_screen_name_or_fallback(event.orderer_screen_name)
+    orderer_screen_name = get_screen_name_or_fallback(event.orderer)
 
     text = gettext(
         '%(orderer_screen_name)s has placed order %(order_number)s.',
@@ -46,10 +46,8 @@ def announce_order_paid(
     event_name: str, event: ShopOrderPaidEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that an order has been paid."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    orderer_screen_name = get_screen_name_or_fallback(event.orderer_screen_name)
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
+    orderer_screen_name = get_screen_name_or_fallback(event.orderer)
     payment_method_label = order_service.find_payment_method_label(
         event.payment_method
     )
@@ -70,10 +68,8 @@ def announce_order_canceled(
     event_name: str, event: ShopOrderCanceledEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that an order has been canceled."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    orderer_screen_name = get_screen_name_or_fallback(event.orderer_screen_name)
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
+    orderer_screen_name = get_screen_name_or_fallback(event.orderer)
 
     text = gettext(
         '%(initiator_screen_name)s has canceled order %(order_number)s by %(orderer_screen_name)s.',

@@ -145,12 +145,10 @@ def test_cancel_before_paid(
 
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator_id=shop_order_admin.id,
-        initiator_screen_name=shop_order_admin.screen_name,
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
+        orderer=orderer_user,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -189,12 +187,10 @@ def test_cancel_before_paid_without_sending_email(
 
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator_id=shop_order_admin.id,
-        initiator_screen_name=shop_order_admin.screen_name,
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
+        orderer=orderer_user,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -236,12 +232,10 @@ def test_mark_order_as_paid(
 
     event = ShopOrderPaidEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator_id=shop_order_admin.id,
-        initiator_screen_name=shop_order_admin.screen_name,
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
+        orderer=orderer_user,
         payment_method='direct_debit',
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)
@@ -303,12 +297,10 @@ def test_cancel_after_paid(
 
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator_id=shop_order_admin.id,
-        initiator_screen_name=shop_order_admin.screen_name,
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
+        orderer=orderer_user,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 

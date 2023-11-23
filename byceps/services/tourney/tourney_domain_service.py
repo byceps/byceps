@@ -56,8 +56,7 @@ def _build_tourney_created_event(
 ) -> TourneyCreatedEvent:
     return TourneyCreatedEvent(
         occurred_at=occurred_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
+        initiator=creator,
         tourney_id=str(tourney.id),
         tourney_title=tourney.title,
     )

@@ -18,7 +18,6 @@ from byceps.services.ticketing import (
     ticket_service,
     ticket_user_checkin_service,
 )
-from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.signals.authn import user_logged_in
 from byceps.util.jobqueue import enqueue
@@ -29,7 +28,7 @@ def _on_user_logged_in(sender, *, event: UserLoggedInEvent) -> None:
     if event.site_id is None:
         return
 
-    user = user_service.get_user(event.initiator_id)
+    user = event.initiator
     site = site_service.get_site(event.site_id)
 
     if site.party_id and site.check_in_on_login:

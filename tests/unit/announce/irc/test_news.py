@@ -4,11 +4,12 @@
 """
 
 from flask import Flask
+import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token, generate_uuid
 
@@ -16,7 +17,6 @@ from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
-ADMIN_ID = UserID(generate_uuid())
 NEWS_CHANNEL_ID = NewsChannelID(generate_token())
 NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
@@ -31,8 +31,7 @@ def test_published_news_item_announced_with_url(
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=ADMIN_ID,
-        initiator_screen_name='Admin',
+        initiator=admin,
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,
@@ -52,8 +51,7 @@ def test_published_news_item_announced_without_url(
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=ADMIN_ID,
-        initiator_screen_name='Admin',
+        initiator=admin,
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,
@@ -64,3 +62,11 @@ def test_published_news_item_announced_without_url(
     actual = build_announcement_request(event, webhook_for_irc)
 
     assert_text(actual, expected_text)
+
+
+# helpers
+
+
+@pytest.fixture(scope='module')
+def admin(make_user) -> User:
+    return make_user(screen_name='Admin')

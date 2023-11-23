@@ -30,7 +30,7 @@ def announce_subscribed_to_newsletter(
     webhook: OutgoingWebhook,
 ) -> Announcement | None:
     """Announce that someone has subscribed to a newsletter."""
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+    user_screen_name = get_screen_name_or_fallback(event.user)
 
     text = gettext(
         '%(user_screen_name)s has subscribed to newsletter "%(list_title)s".',
@@ -48,7 +48,7 @@ def announce_unsubscribed_from_newsletter(
     webhook: OutgoingWebhook,
 ) -> Announcement | None:
     """Announce that someone has unsubscribed from a newsletter."""
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+    user_screen_name = get_screen_name_or_fallback(event.user)
 
     text = gettext(
         '%(user_screen_name)s has unsubscribed from newsletter "%(list_title)s".',

@@ -37,8 +37,7 @@ def test_announce_match_ready(app: Flask, webhook_for_irc):
 
     event = TourneyMatchReadyEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',
         match_id=MATCH_ID,
@@ -62,8 +61,7 @@ def test_announce_match_reset(app: Flask, webhook_for_irc):
 
     event = TourneyMatchResetEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',
         match_id=MATCH_ID,
@@ -87,8 +85,7 @@ def test_announce_match_score_submitted(app: Flask, webhook_for_irc):
 
     event = TourneyMatchScoreSubmittedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',
         match_id=MATCH_ID,
@@ -113,8 +110,7 @@ def test_announce_match_score_confirmed(app: Flask, webhook_for_irc):
 
     event = TourneyMatchScoreConfirmedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',
         match_id=MATCH_ID,
@@ -138,8 +134,7 @@ def test_announce_match_score_randomized(app: Flask, webhook_for_irc):
 
     event = TourneyMatchScoreRandomizedEvent(
         occurred_at=now(),
-        initiator_id=None,
-        initiator_screen_name=None,
+        initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',
         match_id=MATCH_ID,

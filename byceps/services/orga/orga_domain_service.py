@@ -38,10 +38,8 @@ def _build_orga_status_granted_event(
 ) -> OrgaStatusGrantedEvent:
     return OrgaStatusGrantedEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        initiator=initiator,
+        user=user,
         brand_id=brand.id,
         brand_title=brand.title,
     )
@@ -86,10 +84,8 @@ def _build_orga_status_revoked_event(
 ) -> OrgaStatusRevokedEvent:
     return OrgaStatusRevokedEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        initiator=initiator,
+        user=user,
         brand_id=brand.id,
         brand_title=brand.title,
     )

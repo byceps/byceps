@@ -60,8 +60,7 @@ def create_page(
 
     event = PageCreatedEvent(
         occurred_at=db_version.created_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
+        initiator=creator,
         page_id=db_page.id,
         site_id=db_page.site_id,
         page_name=db_page.name,
@@ -96,8 +95,7 @@ def update_page(
 
     event = PageUpdatedEvent(
         occurred_at=db_version.created_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
+        initiator=creator,
         page_id=db_page.id,
         site_id=db_page.site_id,
         page_name=db_page.name,
@@ -146,8 +144,7 @@ def delete_page(
 
     event = PageDeletedEvent(
         occurred_at=datetime.utcnow(),
-        initiator_id=initiator.id if initiator else None,
-        initiator_screen_name=initiator.screen_name if initiator else None,
+        initiator=initiator,
         page_id=page_id,
         site_id=site_id,
         page_name=page_name,

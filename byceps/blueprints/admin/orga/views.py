@@ -95,7 +95,7 @@ def grant_orga_status(brand_id):
     flash_success(
         gettext(
             'Organizer status was granted to %(screen_name)s for brand %(brand_title)s.',
-            screen_name=event.user_screen_name,
+            screen_name=event.user.screen_name,
             brand_title=event.brand_title,
         )
     )
@@ -124,7 +124,7 @@ def revoke_orga_status(brand_id, user_id):
     flash_success(
         gettext(
             'Organizer status was revoked for %(screen_name)s for brand %(brand_title)s.',
-            screen_name=event.user_screen_name,
+            screen_name=event.user.screen_name,
             brand_title=event.brand_title,
         )
     )

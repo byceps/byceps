@@ -121,13 +121,11 @@ def _build_check_in_event(
 ) -> TicketCheckedInEvent:
     return TicketCheckedInEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
+        initiator=initiator,
         ticket_id=ticket.id,
         ticket_code=ticket.code,
         occupied_seat_id=ticket.occupied_seat_id,
-        user_id=ticket.used_by.id,
-        user_screen_name=ticket.used_by.screen_name,
+        user=ticket.used_by,
     )
 
 

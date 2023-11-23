@@ -15,10 +15,8 @@ def test_grant_orga_status(user, brand, initiator):
     )
 
     assert event.__class__ is OrgaStatusGrantedEvent
-    assert event.initiator_id == initiator.id
-    assert event.initiator_screen_name == initiator.screen_name
-    assert event.user_id == user.id
-    assert event.user_screen_name == user.screen_name
+    assert event.initiator == initiator
+    assert event.user == user
     assert event.brand_id == brand.id
     assert event.brand_title == brand.title
 
@@ -38,10 +36,8 @@ def test_revoke_orga_status(user, brand, initiator):
     )
 
     assert event.__class__ is OrgaStatusRevokedEvent
-    assert event.initiator_id == initiator.id
-    assert event.initiator_screen_name == initiator.screen_name
-    assert event.user_id == user.id
-    assert event.user_screen_name == user.screen_name
+    assert event.initiator == initiator
+    assert event.user == user
     assert event.brand_id == brand.id
     assert event.brand_title == brand.title
 

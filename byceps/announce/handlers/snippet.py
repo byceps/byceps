@@ -30,9 +30,7 @@ def announce_snippet_created(
     event_name: str, event: SnippetCreatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a snippet has been created."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
 
     text = gettext(
         '%(initiator_screen_name)s has created snippet "%(snippet_name)s" (%(language_code)s) in scope "%(scope)s".',
@@ -50,9 +48,7 @@ def announce_snippet_updated(
     event_name: str, event: SnippetUpdatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a snippet has been updated."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
 
     text = gettext(
         '%(initiator_screen_name)s has updated snippet "%(snippet_name)s" (%(language_code)s) in scope "%(scope)s".',
@@ -70,9 +66,7 @@ def announce_snippet_deleted(
     event_name: str, event: SnippetDeletedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a snippet has been deleted."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
 
     text = gettext(
         '%(initiator_screen_name)s has deleted snippet "%(snippet_name)s" (%(language_code)s) in scope "%(scope)s".',

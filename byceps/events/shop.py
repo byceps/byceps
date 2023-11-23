@@ -12,7 +12,7 @@ from dataclasses import dataclass
 
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from .base import _BaseEvent
 
@@ -21,8 +21,7 @@ from .base import _BaseEvent
 class _ShopOrderEvent(_BaseEvent):
     order_id: OrderID
     order_number: OrderNumber
-    orderer_id: UserID
-    orderer_screen_name: str | None
+    orderer: User
 
 
 @dataclass(frozen=True)

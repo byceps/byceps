@@ -51,10 +51,8 @@ def test_register_server(party, admin_user, user):
     assert address.gateway == IPv4Address('10.0.100.1')
 
     assert event.occurred_at == server.created_at
-    assert event.initiator_id == admin_user.id
-    assert event.initiator_screen_name == admin_user.screen_name
+    assert event.initiator == admin_user
     assert event.party_id == party.id
     assert event.party_title == party.title
-    assert event.owner_id == owner.id
-    assert event.owner_screen_name == owner.screen_name
+    assert event.owner == owner
     assert event.server_id == server.id

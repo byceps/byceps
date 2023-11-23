@@ -24,11 +24,9 @@ def test_delete_tag(tag: UserIdentityTag, user: User, admin_user: User):
 
     assert event.__class__ is UserIdentityTagDeletedEvent
     assert event.occurred_at is not None
-    assert event.initiator_id == initiator.id
-    assert event.initiator_screen_name == initiator.screen_name
+    assert event.initiator == initiator
     assert event.identifier == tag.identifier
-    assert event.user_id == user.id
-    assert event.user_screen_name == user.screen_name
+    assert event.user == user
 
     assert log_entry.id is not None
     assert log_entry.occurred_at == event.occurred_at

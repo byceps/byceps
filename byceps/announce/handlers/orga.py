@@ -25,10 +25,8 @@ def announce_orga_status_granted(
     event_name: str, event: OrgaStatusGrantedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that the orga status been granted to a user."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
+    user_screen_name = get_screen_name_or_fallback(event.user)
 
     text = gettext(
         '%(initiator_screen_name)s has granted orga status for brand %(brand_title)s to %(user_screen_name)s.',
@@ -45,10 +43,8 @@ def announce_orga_status_revoked(
     event_name: str, event: OrgaStatusRevokedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that the orga status been revoked for a user."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
+    user_screen_name = get_screen_name_or_fallback(event.user)
 
     text = gettext(
         '%(initiator_screen_name)s has revoked orga status for brand %(brand_title)s for %(user_screen_name)s.',

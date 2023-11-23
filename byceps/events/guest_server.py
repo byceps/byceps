@@ -12,15 +12,14 @@ from dataclasses import dataclass
 
 from byceps.services.guest_server.models import ServerID
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
 class _GuestServerEvent(_BaseEvent):
-    owner_id: UserID
-    owner_screen_name: str | None
+    owner: User
     server_id: ServerID
 
 

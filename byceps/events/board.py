@@ -17,7 +17,7 @@ from byceps.services.board.models import (
     TopicID,
 )
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from .base import _BaseEvent
 
@@ -35,16 +35,14 @@ class _BoardEvent(_BaseEvent):
 @dataclass(frozen=True)
 class _BoardTopicEvent(_BoardEvent):
     topic_id: TopicID
-    topic_creator_id: UserID
-    topic_creator_screen_name: str | None
+    topic_creator: User
     topic_title: str
     url: str
 
 
 @dataclass(frozen=True)
 class _BoardTopicModerationEvent(_BoardTopicEvent):
-    moderator_id: UserID
-    moderator_screen_name: str | None
+    moderator: User
 
 
 @dataclass(frozen=True)
@@ -54,8 +52,7 @@ class BoardTopicCreatedEvent(_BoardTopicEvent):
 
 @dataclass(frozen=True)
 class BoardTopicUpdatedEvent(_BoardTopicEvent):
-    editor_id: UserID
-    editor_screen_name: str | None
+    editor: User
 
 
 @dataclass(frozen=True)
@@ -102,8 +99,7 @@ class BoardTopicMovedEvent(_BoardTopicModerationEvent):
 @dataclass(frozen=True)
 class _BoardPostingEvent(_BoardEvent):
     posting_id: PostingID
-    posting_creator_id: UserID
-    posting_creator_screen_name: str | None
+    posting_creator: User
     topic_id: TopicID
     topic_title: str
     url: str
@@ -111,8 +107,7 @@ class _BoardPostingEvent(_BoardEvent):
 
 @dataclass(frozen=True)
 class _BoardPostingModerationEvent(_BoardPostingEvent):
-    moderator_id: UserID
-    moderator_screen_name: str | None
+    moderator: User
 
 
 @dataclass(frozen=True)
@@ -122,8 +117,7 @@ class BoardPostingCreatedEvent(_BoardPostingEvent):
 
 @dataclass(frozen=True)
 class BoardPostingUpdatedEvent(_BoardPostingEvent):
-    editor_id: UserID
-    editor_screen_name: str | None
+    editor: User
 
 
 @dataclass(frozen=True)

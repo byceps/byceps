@@ -42,10 +42,8 @@ def _build_role_assigned_to_user_event(
 ) -> RoleAssignedToUserEvent:
     return RoleAssignedToUserEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
-        initiator_screen_name=initiator.screen_name if initiator else None,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        initiator=initiator,
+        user=user,
         role_id=role_id,
     )
 
@@ -88,10 +86,8 @@ def _build_role_deassigned_from_user_event(
 ) -> RoleDeassignedFromUserEvent:
     return RoleDeassignedFromUserEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
-        initiator_screen_name=initiator.screen_name if initiator else None,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        initiator=initiator,
+        user=user,
         role_id=role_id,
     )
 

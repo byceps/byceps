@@ -27,11 +27,9 @@ def create_tickets_sold_event(
 
     return TicketsSoldEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
+        initiator=initiator,
         party_id=category.party_id,
-        owner_id=owner.id,
-        owner_screen_name=owner.screen_name,
+        owner=owner,
         quantity=quantity,
     )
 

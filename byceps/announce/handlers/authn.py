@@ -25,10 +25,8 @@ def announce_password_updated(
     event_name: str, event: PasswordUpdatedEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that an account password was updated."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+    initiator_screen_name = get_screen_name_or_fallback(event.initiator)
+    user_screen_name = get_screen_name_or_fallback(event.user)
 
     text = gettext(
         '%(initiator_screen_name)s has updated the password for %(user_screen_name)s.',
@@ -44,7 +42,7 @@ def announce_user_logged_in(
     event_name: str, event: UserLoggedInEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user has logged in."""
-    screen_name = get_screen_name_or_fallback(event.initiator_screen_name)
+    screen_name = get_screen_name_or_fallback(event.initiator)
 
     if event.site_id:
         text = gettext(

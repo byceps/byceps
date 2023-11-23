@@ -11,15 +11,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from byceps.services.newsletter.models import ListID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
 class NewsletterEvent(_BaseEvent):
-    user_id: UserID
-    user_screen_name: str | None
+    user: User
     list_id: ListID
     list_title: str
 

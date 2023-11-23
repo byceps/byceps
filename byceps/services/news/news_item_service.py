@@ -179,8 +179,7 @@ def publish_item(
 
     event = NewsItemPublishedEvent(
         occurred_at=now,
-        initiator_id=initiator.id if initiator else None,
-        initiator_screen_name=initiator.screen_name if initiator else None,
+        initiator=initiator,
         item_id=item.id,
         channel_id=item.channel.id,
         published_at=publish_at,

@@ -64,14 +64,12 @@ def create_topic(
 
     event = BoardTopicCreatedEvent(
         occurred_at=topic.created_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
+        initiator=creator,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_category.board_id,
         topic_id=topic.id,
-        topic_creator_id=creator.id,
-        topic_creator_screen_name=creator.screen_name,
+        topic_creator=creator,
         topic_title=topic.title,
         url=None,
     )
@@ -97,17 +95,14 @@ def update_topic(
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUpdatedEvent(
         occurred_at=posting_event.occurred_at,
-        initiator_id=editor.id,
-        initiator_screen_name=editor.screen_name,
+        initiator=editor,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator_id=topic_creator.id,
-        topic_creator_screen_name=topic_creator.screen_name,
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        editor_id=editor.id,
-        editor_screen_name=editor.screen_name,
+        editor=editor,
         url=None,
     )
 
@@ -129,17 +124,14 @@ def hide_topic(topic_id: TopicID, moderator: User) -> BoardTopicHiddenEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicHiddenEvent(
         occurred_at=now,
-        initiator_id=moderator.id,
-        initiator_screen_name=moderator.screen_name,
+        initiator=moderator,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator_id=topic_creator.id,
-        topic_creator_screen_name=topic_creator.screen_name,
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator_id=moderator.id,
-        moderator_screen_name=moderator.screen_name,
+        moderator=moderator,
         url=None,
     )
 
@@ -162,17 +154,14 @@ def unhide_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnhiddenEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUnhiddenEvent(
         occurred_at=now,
-        initiator_id=moderator.id,
-        initiator_screen_name=moderator.screen_name,
+        initiator=moderator,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator_id=topic_creator.id,
-        topic_creator_screen_name=topic_creator.screen_name,
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator_id=moderator.id,
-        moderator_screen_name=moderator.screen_name,
+        moderator=moderator,
         url=None,
     )
 
@@ -192,17 +181,14 @@ def lock_topic(topic_id: TopicID, moderator: User) -> BoardTopicLockedEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicLockedEvent(
         occurred_at=now,
-        initiator_id=moderator.id,
-        initiator_screen_name=moderator.screen_name,
+        initiator=moderator,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator_id=topic_creator.id,
-        topic_creator_screen_name=topic_creator.screen_name,
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator_id=moderator.id,
-        moderator_screen_name=moderator.screen_name,
+        moderator=moderator,
         url=None,
     )
 
@@ -223,17 +209,14 @@ def unlock_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnlockedEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUnlockedEvent(
         occurred_at=now,
-        initiator_id=moderator.id,
-        initiator_screen_name=moderator.screen_name,
+        initiator=moderator,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator_id=topic_creator.id,
-        topic_creator_screen_name=topic_creator.screen_name,
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator_id=moderator.id,
-        moderator_screen_name=moderator.screen_name,
+        moderator=moderator,
         url=None,
     )
 
@@ -253,17 +236,14 @@ def pin_topic(topic_id: TopicID, moderator: User) -> BoardTopicPinnedEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicPinnedEvent(
         occurred_at=now,
-        initiator_id=moderator.id,
-        initiator_screen_name=moderator.screen_name,
+        initiator=moderator,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator_id=topic_creator.id,
-        topic_creator_screen_name=topic_creator.screen_name,
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator_id=moderator.id,
-        moderator_screen_name=moderator.screen_name,
+        moderator=moderator,
         url=None,
     )
 
@@ -284,17 +264,14 @@ def unpin_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnpinnedEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUnpinnedEvent(
         occurred_at=now,
-        initiator_id=moderator.id,
-        initiator_screen_name=moderator.screen_name,
+        initiator=moderator,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator_id=topic_creator.id,
-        topic_creator_screen_name=topic_creator.screen_name,
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator_id=moderator.id,
-        moderator_screen_name=moderator.screen_name,
+        moderator=moderator,
         url=None,
     )
 
@@ -320,21 +297,18 @@ def move_topic(
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicMovedEvent(
         occurred_at=now,
-        initiator_id=moderator.id,
-        initiator_screen_name=moderator.screen_name,
+        initiator=moderator,
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator_id=topic_creator.id,
-        topic_creator_screen_name=topic_creator.screen_name,
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
         old_category_id=db_old_category.id,
         old_category_title=db_old_category.title,
         new_category_id=db_new_category.id,
         new_category_title=db_new_category.title,
-        moderator_id=moderator.id,
-        moderator_screen_name=moderator.screen_name,
+        moderator=moderator,
         url=None,
     )
 

@@ -64,10 +64,8 @@ def _build_password_updated_event(
 ) -> PasswordUpdatedEvent:
     return PasswordUpdatedEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        initiator=initiator,
+        user=user,
     )
 
 

@@ -136,12 +136,10 @@ def test_order(
 
     event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
-        initiator_id=orderer_user.id,
-        initiator_screen_name=orderer_user.screen_name,
+        initiator=orderer_user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
+        orderer=orderer_user,
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
@@ -200,12 +198,10 @@ def test_order_single(
 
     event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
-        initiator_id=orderer_user.id,
-        initiator_screen_name=orderer_user.screen_name,
+        initiator=orderer_user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=orderer_user.id,
-        orderer_screen_name=orderer_user.screen_name,
+        orderer=orderer_user,
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 

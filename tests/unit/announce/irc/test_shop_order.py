@@ -4,6 +4,7 @@
 """
 
 from flask import Flask
+import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.events.shop import (
@@ -12,7 +13,7 @@ from byceps.events.shop import (
     ShopOrderPlacedEvent,
 )
 from byceps.services.shop.order.models.order import OrderID, OrderNumber
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -20,22 +21,20 @@ from .helpers import assert_text, now
 
 
 OCCURRED_AT = now()
-SHOP_ADMIN_ID = UserID(generate_uuid())
 ORDER_ID = OrderID(generate_uuid())
-ORDERER_ID = UserID(generate_uuid())
 
 
-def test_shop_order_placed_announced(app: Flask, webhook_for_irc):
+def test_shop_order_placed_announced(
+    app: Flask, orderer_user: User, webhook_for_irc
+):
     expected_text = 'Ken_von_Kaufkraft has placed order ORDER-00001.'
 
     event = ShopOrderPlacedEvent(
         occurred_at=OCCURRED_AT,
-        initiator_id=ORDERER_ID,
-        initiator_screen_name='Ken_von_Kaufkraft',
+        initiator=orderer_user,
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00001'),
-        orderer_id=ORDERER_ID,
-        orderer_screen_name='Ken_von_Kaufkraft',
+        orderer=orderer_user,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -43,19 +42,19 @@ def test_shop_order_placed_announced(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_shop_order_canceled_announced(app: Flask, webhook_for_irc):
+def test_shop_order_canceled_announced(
+    app: Flask, shop_admin: User, orderer_user: User, webhook_for_irc
+):
     expected_text = (
         'ShoppingSheriff has canceled order ORDER-00002 by Ken_von_Kaufkraft.'
     )
 
     event = ShopOrderCanceledEvent(
         occurred_at=now(),
-        initiator_id=SHOP_ADMIN_ID,
-        initiator_screen_name='ShoppingSheriff',
+        initiator=shop_admin,
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00002'),
-        orderer_id=ORDERER_ID,
-        orderer_screen_name='Ken_von_Kaufkraft',
+        orderer=orderer_user,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -63,7 +62,9 @@ def test_shop_order_canceled_announced(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_shop_order_paid_announced(app: Flask, webhook_for_irc):
+def test_shop_order_paid_announced(
+    app: Flask, shop_admin: User, orderer_user: User, webhook_for_irc
+):
     expected_text = (
         'ShoppingSheriff marked order ORDER-00003 by Ken_von_Kaufkraft '
         'as paid via bank transfer.'
@@ -71,15 +72,26 @@ def test_shop_order_paid_announced(app: Flask, webhook_for_irc):
 
     event = ShopOrderPaidEvent(
         occurred_at=now(),
-        initiator_id=SHOP_ADMIN_ID,
-        initiator_screen_name='ShoppingSheriff',
+        initiator=shop_admin,
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00003'),
-        orderer_id=ORDERER_ID,
-        orderer_screen_name='Ken_von_Kaufkraft',
+        orderer=orderer_user,
         payment_method='bank_transfer',
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
 
     assert_text(actual, expected_text)
+
+
+# helpers
+
+
+@pytest.fixture(scope='module')
+def shop_admin(make_user) -> User:
+    return make_user(screen_name='ShoppingSheriff')
+
+
+@pytest.fixture(scope='module')
+def orderer_user(make_user) -> User:
+    return make_user(screen_name='Ken_von_Kaufkraft')

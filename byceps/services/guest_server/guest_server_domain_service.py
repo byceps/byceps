@@ -153,12 +153,10 @@ def _build_guest_server_registered_event(
 ) -> GuestServerRegisteredEvent:
     return GuestServerRegisteredEvent(
         occurred_at=server.created_at,
-        initiator_id=creator.id,
-        initiator_screen_name=creator.screen_name,
+        initiator=creator,
         party_id=party.id,
         party_title=party.title,
-        owner_id=owner.id,
-        owner_screen_name=owner.screen_name,
+        owner=owner,
         server_id=server.id,
     )
 
@@ -184,10 +182,8 @@ def _build_guest_server_approved_event(
 ) -> GuestServerApprovedEvent:
     return GuestServerApprovedEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        owner_id=server.owner.id,
-        owner_screen_name=server.owner.screen_name,
+        initiator=initiator,
+        owner=server.owner,
         server_id=server.id,
     )
 
@@ -224,10 +220,8 @@ def _build_guest_server_checked_in_event(
 ) -> GuestServerCheckedInEvent:
     return GuestServerCheckedInEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        owner_id=server.owner.id,
-        owner_screen_name=server.owner.screen_name,
+        initiator=initiator,
+        owner=server.owner,
         server_id=server.id,
     )
 
@@ -263,10 +257,8 @@ def _build_guest_server_checked_out_event(
 ) -> GuestServerCheckedOutEvent:
     return GuestServerCheckedOutEvent(
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        owner_id=server.owner.id,
-        owner_screen_name=server.owner.screen_name,
+        initiator=initiator,
+        owner=server.owner,
         server_id=server.id,
     )
 
