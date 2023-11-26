@@ -5,14 +5,9 @@
 
 from __future__ import annotations
 
-from datetime import datetime
 from typing import Any
 
 from byceps.services.webhooks.models import AnnouncementRequest
-
-
-def now() -> datetime:
-    return datetime.utcnow()
 
 
 def assert_text(actual: AnnouncementRequest | None, expected_text: str) -> None:

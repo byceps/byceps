@@ -5,8 +5,6 @@
 
 from __future__ import annotations
 
-from datetime import datetime
-
 from byceps.services.webhooks.models import (
     AnnouncementRequest,
     OutgoingWebhook,
@@ -14,10 +12,6 @@ from byceps.services.webhooks.models import (
 )
 
 from tests.helpers import generate_uuid
-
-
-def now() -> datetime:
-    return datetime.utcnow()
 
 
 def build_webhook(
