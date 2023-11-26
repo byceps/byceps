@@ -22,7 +22,7 @@ NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
 
 def test_published_news_item_announced_with_url(
-    app: Flask, webhook_for_irc
+    app: Flask, admin: User, webhook_for_irc
 ) -> None:
     expected_text = (
         'The news "Check this out!" has been published. '
@@ -45,7 +45,7 @@ def test_published_news_item_announced_with_url(
 
 
 def test_published_news_item_announced_without_url(
-    app: Flask, webhook_for_irc
+    app: Flask, admin: User, webhook_for_irc
 ) -> None:
     expected_text = 'The news "Check this out, too!" has been published.'
 

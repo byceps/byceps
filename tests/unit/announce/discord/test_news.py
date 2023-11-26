@@ -22,7 +22,9 @@ NEWS_CHANNEL_ID = NewsChannelID(generate_token())
 NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
 
-def test_published_news_item_announced_with_url(app: Flask) -> None:
+def test_published_news_item_announced_with_url(
+    app: Flask, admin: User
+) -> None:
     expected_text = (
         '[News] The news "Check this out!" has been published. '
         'https://www.acmecon.test/news/check-this-out'
@@ -45,7 +47,9 @@ def test_published_news_item_announced_with_url(app: Flask) -> None:
     assert_text(actual, expected_text)
 
 
-def test_published_news_item_announced_without_url(app: Flask) -> None:
+def test_published_news_item_announced_without_url(
+    app: Flask, admin: User
+) -> None:
     expected_text = '[News] The news "Check this out, too!" has been published.'
 
     event = NewsItemPublishedEvent(
