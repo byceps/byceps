@@ -27,10 +27,13 @@ from .models import BoardCategoryID, BoardID, Topic, TopicID
 
 def count_topics_for_board(board_id: BoardID) -> int:
     """Return the number of topics for that board."""
-    return db.session.scalar(
-        select(db.func.count(DbTopic.id))
-        .join(DbBoardCategory)
-        .filter(DbBoardCategory.board_id == board_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbTopic.id))
+            .join(DbBoardCategory)
+            .filter(DbBoardCategory.board_id == board_id)
+        )
+        or 0
     )
 
 

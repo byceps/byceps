@@ -184,12 +184,15 @@ def deassign_all_roles_from_user(
 
 def _is_role_assigned_to_user(role_id: RoleID, user_id: UserID) -> bool:
     """Determine if the role is assigned to the user or not."""
-    return db.session.scalar(
-        select(
-            db.exists()
-            .where(DbUserRole.role_id == role_id)
-            .where(DbUserRole.user_id == user_id)
+    return (
+        db.session.scalar(
+            select(
+                db.exists()
+                .where(DbUserRole.role_id == role_id)
+                .where(DbUserRole.user_id == user_id)
+            )
         )
+        or False
     )
 
 

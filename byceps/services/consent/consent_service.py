@@ -95,10 +95,13 @@ def has_user_consented_to_subject(
     user_id: UserID, subject_id: ConsentSubjectID
 ) -> bool:
     """Determine if the user has consented to the subject."""
-    return db.session.scalar(
-        select(
-            db.exists()
-            .where(DbConsent.user_id == user_id)
-            .where(DbConsent.subject_id == subject_id)
+    return (
+        db.session.scalar(
+            select(
+                db.exists()
+                .where(DbConsent.user_id == user_id)
+                .where(DbConsent.subject_id == subject_id)
+            )
         )
+        or False
     )

@@ -52,8 +52,13 @@ def delete_category(category_id: TicketCategoryID) -> None:
 
 def count_categories_for_party(party_id: PartyID) -> int:
     """Return the number of categories for that party."""
-    return db.session.scalar(
-        select(db.func.count(DbTicketCategory.id)).filter_by(party_id=party_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbTicketCategory.id)).filter_by(
+                party_id=party_id
+            )
+        )
+        or 0
     )
 
 

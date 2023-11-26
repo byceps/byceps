@@ -72,8 +72,11 @@ def count_teams_for_parties(party_ids: set[PartyID]) -> dict[PartyID, int]:
 
 def count_teams_for_party(party_id: PartyID) -> int:
     """Return the number of orga teams for that party."""
-    return db.session.scalar(
-        select(db.func.count(DbOrgaTeam.id)).filter_by(party_id=party_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbOrgaTeam.id)).filter_by(party_id=party_id)
+        )
+        or 0
     )
 
 
@@ -190,10 +193,13 @@ def delete_membership(membership_id: MembershipID) -> None:
 
 def count_memberships_for_party(party_id: PartyID) -> int:
     """Return the number of memberships the party's teams have in total."""
-    return db.session.scalar(
-        select(db.func.count(DbMembership.id))
-        .join(DbOrgaTeam)
-        .filter(DbOrgaTeam.party_id == party_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbMembership.id))
+            .join(DbOrgaTeam)
+            .filter(DbOrgaTeam.party_id == party_id)
+        )
+        or 0
     )
 
 
@@ -332,8 +338,11 @@ def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
 
 def has_team_memberships(team_id: OrgaTeamID) -> bool:
     """Return `True` if the team has memberships."""
-    return db.session.scalar(
-        select(db.exists().where(DbMembership.orga_team_id == team_id))
+    return (
+        db.session.scalar(
+            select(db.exists().where(DbMembership.orga_team_id == team_id))
+        )
+        or False
     )
 
 
@@ -409,14 +418,17 @@ def is_orga_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user is an organizer (i.e. is member of an
     organizer team) of that party.
     """
-    return db.session.scalar(
-        select(
-            select(DbMembership)
-            .join(DbOrgaTeam)
-            .filter(DbMembership.user_id == user_id)
-            .filter(DbOrgaTeam.party_id == party_id)
-            .exists()
+    return (
+        db.session.scalar(
+            select(
+                select(DbMembership)
+                .join(DbOrgaTeam)
+                .filter(DbMembership.user_id == user_id)
+                .filter(DbOrgaTeam.party_id == party_id)
+                .exists()
+            )
         )
+        or False
     )
 
 

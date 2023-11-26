@@ -200,11 +200,11 @@ def get_donation_extent_totals_for_shop(
 
 def get_donation_sum_for_shop(shop_id: ShopID) -> Decimal:
     """Return donation total for that shop."""
-    return db.session.execute(
+    return db.session.scalar(
         select(db.func.sum(DbCancelationRequest.amount_donation)).filter_by(
             shop_id=shop_id
         )
-    ).scalar()
+    ) or Decimal('0.00')
 
 
 def get_request_quantities_by_state(

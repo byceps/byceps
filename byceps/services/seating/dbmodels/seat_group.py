@@ -137,7 +137,7 @@ class DbSeatGroupOccupancy(db.Model):
     )
 
     def __init__(
-        self, seat_group_id: DbSeatGroup, ticket_bundle_id: TicketBundleID
+        self, seat_group_id: SeatGroupID, ticket_bundle_id: TicketBundleID
     ) -> None:
         self.seat_group_id = seat_group_id
         self.ticket_bundle_id = ticket_bundle_id

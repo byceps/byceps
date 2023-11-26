@@ -23,8 +23,13 @@ from .models import (
 
 def count_categories_for_board(board_id: BoardID) -> int:
     """Return the number of categories for that board."""
-    return db.session.scalar(
-        select(db.func.count(DbBoardCategory.id)).filter_by(board_id=board_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbBoardCategory.id)).filter_by(
+                board_id=board_id
+            )
+        )
+        or 0
     )
 
 

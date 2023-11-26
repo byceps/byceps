@@ -51,8 +51,8 @@ class BoardCategory:
 
 @dataclass(frozen=True)
 class BoardCategoryWithLastUpdate(BoardCategory):
-    last_posting_updated_at: datetime
-    last_posting_updated_by: User
+    last_posting_updated_at: datetime | None
+    last_posting_updated_by: User | None
 
 
 @dataclass(frozen=True)

@@ -175,7 +175,7 @@ def _persist_server_registration(server: Server) -> None:
         server.created_at,
         server.creator.id,
         server.owner.id,
-        server.description,
+        description=server.description,
         notes_owner=server.notes_owner,
         notes_admin=server.notes_admin,
     )
@@ -355,10 +355,13 @@ def count_servers_for_owner_and_party(
     owner_id: UserID, party_id: PartyID
 ) -> int:
     """Return the number of servers owned by the user for the party."""
-    return db.session.scalar(
-        select(db.func.count(DbGuestServer.id))
-        .filter_by(owner_id=owner_id)
-        .filter_by(party_id=party_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbGuestServer.id))
+            .filter_by(owner_id=owner_id)
+            .filter_by(party_id=party_id)
+        )
+        or 0
     )
 
 
@@ -514,12 +517,15 @@ def _db_entity_to_address(db_address: DbGuestServerAddress) -> Address:
 
 def is_hostname_registered(party_id: PartyID, hostname: str) -> bool:
     """Check if the hostname is registered."""
-    return db.session.scalar(
-        select(
-            select(DbGuestServerAddress)
-            .join(DbGuestServer)
-            .filter(DbGuestServer.party_id == str(party_id))
-            .filter(DbGuestServerAddress.hostname == hostname.lower())
-            .exists()
+    return (
+        db.session.scalar(
+            select(
+                select(DbGuestServerAddress)
+                .join(DbGuestServer)
+                .filter(DbGuestServer.party_id == str(party_id))
+                .filter(DbGuestServerAddress.hostname == hostname.lower())
+                .exists()
+            )
         )
+        or False
     )

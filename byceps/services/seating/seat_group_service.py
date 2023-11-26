@@ -175,8 +175,11 @@ def release_seat_group(seat_group_id: SeatGroupID) -> None:
 
 def count_seat_groups_for_party(party_id: PartyID) -> int:
     """Return the number of seat groups for that party."""
-    return db.session.scalar(
-        select(db.func.count(DbSeatGroup.id)).filter_by(party_id=party_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbSeatGroup.id)).filter_by(party_id=party_id)
+        )
+        or 0
     )
 
 
@@ -216,8 +219,13 @@ def get_all_seat_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
 
 def is_seat_part_of_a_group(seat_id: SeatID) -> bool:
     """Return whether or not the seat is part of a seat group."""
-    return db.session.scalar(
-        select(
-            select(DbSeatGroupAssignment).filter_by(seat_id=seat_id).exists()
+    return (
+        db.session.scalar(
+            select(
+                select(DbSeatGroupAssignment)
+                .filter_by(seat_id=seat_id)
+                .exists()
+            )
         )
+        or False
     )

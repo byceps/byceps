@@ -9,6 +9,7 @@ byceps.blueprints.admin.board.views
 from __future__ import annotations
 
 from dataclasses import dataclass
+from uuid import UUID
 
 from flask import abort, request
 from flask_babel import gettext
@@ -20,7 +21,7 @@ from byceps.services.board import (
     board_service,
     board_topic_query_service,
 )
-from byceps.services.board.models import Board, BoardCategory
+from byceps.services.board.models import Board, BoardCategory, BoardCategoryID
 from byceps.services.brand import brand_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
@@ -187,7 +188,9 @@ def _get_source_category() -> BoardCategory | None:
     if not source_category_id:
         return None
 
-    return board_category_query_service.find_category_by_id(source_category_id)
+    return board_category_query_service.find_category_by_id(
+        BoardCategoryID(UUID(source_category_id))
+    )
 
 
 @blueprint.post('/categories/for_board/<board_id>')
@@ -386,8 +389,10 @@ def _get_board_or_404(board_id) -> Board:
     return board
 
 
-def _get_category_or_404(category_id) -> BoardCategory:
-    category = board_category_query_service.find_category_by_id(category_id)
+def _get_category_or_404(category_id: str) -> BoardCategory:
+    category = board_category_query_service.find_category_by_id(
+        BoardCategoryID(UUID(category_id))
+    )
 
     if category is None:
         abort(404)

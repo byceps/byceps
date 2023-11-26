@@ -26,11 +26,14 @@ from .models import BoardID, PostingID, PostingReactionUser, TopicID
 
 def count_postings_for_board(board_id: BoardID) -> int:
     """Return the number of postings for that board."""
-    return db.session.scalar(
-        select(db.func.count(DbPosting.id))
-        .join(DbTopic)
-        .join(DbBoardCategory)
-        .filter(DbBoardCategory.board_id == board_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbPosting.id))
+            .join(DbTopic)
+            .join(DbBoardCategory)
+            .filter(DbBoardCategory.board_id == board_id)
+        )
+        or 0
     )
 
 

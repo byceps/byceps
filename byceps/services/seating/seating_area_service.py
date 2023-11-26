@@ -77,8 +77,11 @@ def delete_area(area_id: SeatingAreaID) -> None:
 
 def count_areas_for_party(party_id: PartyID) -> int:
     """Return the number of seating areas for that party."""
-    return db.session.scalar(
-        select(db.func.count(DbSeatingArea.id)).filter_by(party_id=party_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbSeatingArea.id)).filter_by(party_id=party_id)
+        )
+        or 0
     )
 
 

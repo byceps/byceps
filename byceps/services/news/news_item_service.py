@@ -524,13 +524,16 @@ def find_item_version(
 
 def has_channel_items(channel_id: NewsChannelID) -> bool:
     """Return `True` if the channel contains items."""
-    return db.session.scalar(
-        select(
-            select(DbNewsItem)
-            .join(DbNewsChannel)
-            .filter(DbNewsChannel.id == channel_id)
-            .exists()
+    return (
+        db.session.scalar(
+            select(
+                select(DbNewsItem)
+                .join(DbNewsChannel)
+                .filter(DbNewsChannel.id == channel_id)
+                .exists()
+            )
         )
+        or False
     )
 
 

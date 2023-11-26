@@ -126,8 +126,8 @@ class DbGuestServer(db.Model):
         created_at: datetime,
         creator_id: UserID,
         owner_id: UserID,
-        description: str,
         *,
+        description: str | None = None,
         notes_owner: str | None = None,
         notes_admin: str | None = None,
     ) -> None:

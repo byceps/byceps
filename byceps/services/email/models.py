@@ -30,7 +30,7 @@ class NameAndAddress:
 class EmailConfig:
     brand_id: BrandID
     sender: NameAndAddress
-    contact_address: str
+    contact_address: str | None
 
 
 @dataclass(frozen=True)

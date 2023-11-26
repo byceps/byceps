@@ -77,7 +77,7 @@ class DbPosting(db.Model):
             .add('topic', self.topic.title)
         )
 
-        if self.hidden:
+        if self.hidden_by:
             builder.add_custom(f'hidden by {self.hidden_by.screen_name}')
 
         return builder.build()
