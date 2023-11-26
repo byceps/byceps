@@ -16,7 +16,7 @@ from flask import current_app
 from byceps.database import db
 from byceps.events.user import UserAccountCreatedEvent
 from byceps.services.authn.password import authn_password_service
-from byceps.services.site.models import SiteID
+from byceps.services.site.models import Site, SiteID
 from byceps.util.result import Err, Ok, Result
 
 from . import (
@@ -50,8 +50,7 @@ def create_user(
     extras: dict[str, Any] | None = None,
     creation_method: str | None = None,
     creator: User | None = None,
-    site_id: SiteID | None = None,
-    site_title: str | None = None,
+    site: Site | None = None,
     ip_address: str | None = None,
 ) -> Result[
     tuple[User, UserAccountCreatedEvent],
@@ -64,8 +63,7 @@ def create_user(
         password,
         locale=locale,
         creation_method=creation_method,
-        site_id=site_id,
-        site_title=site_title,
+        site=site,
         ip_address=ip_address,
         initiator=creator,
     )

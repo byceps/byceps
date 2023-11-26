@@ -23,7 +23,7 @@ from byceps.events.user import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.services.site.models import SiteID
+from byceps.services.site.models import Site
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid4, generate_uuid7
 
@@ -43,8 +43,7 @@ def create_account(
     *,
     locale: str | None = None,
     creation_method: str | None = None,
-    site_id: SiteID | None = None,
-    site_title: str | None = None,
+    site: Site | None = None,
     ip_address: str | None = None,
     initiator: User | None = None,
 ) -> Result[
@@ -89,12 +88,10 @@ def create_account(
         avatar_url=None,
     )
 
-    event = _build_account_created_event(
-        occurred_at, initiator, user, site_id, site_title
-    )
+    event = _build_account_created_event(occurred_at, initiator, user, site)
 
     log_entry = _build_account_created_log_entry(
-        occurred_at, initiator, user, creation_method, site_id, ip_address
+        occurred_at, initiator, user, creation_method, site, ip_address
     )
 
     return Ok((user, normalized_email_address, event, log_entry))
@@ -104,15 +101,14 @@ def _build_account_created_event(
     occurred_at: datetime,
     initiator: User | None,
     user: User,
-    site_id: SiteID | None = None,
-    site_title: str | None = None,
+    site: Site | None = None,
 ) -> UserAccountCreatedEvent:
     return UserAccountCreatedEvent(
         occurred_at=occurred_at,
         initiator=EventUser.from_user(initiator) if initiator else None,
         user=EventUser.from_user(user),
-        site_id=site_id,
-        site_title=site_title,
+        site_id=site.id if site else None,
+        site_title=site.title if site else None,
     )
 
 
@@ -121,7 +117,7 @@ def _build_account_created_log_entry(
     initiator: User | None,
     user: User,
     creation_method: str | None,
-    site_id: SiteID | None,
+    site: Site | None,
     ip_address: str | None,
 ) -> UserLogEntry:
     data = {}
@@ -132,8 +128,8 @@ def _build_account_created_log_entry(
     if creation_method:
         data['creation_method'] = creation_method
 
-    if site_id:
-        data['site_id'] = site_id
+    if site:
+        data['site_id'] = site.id
 
     if ip_address:
         data['ip_address'] = ip_address
