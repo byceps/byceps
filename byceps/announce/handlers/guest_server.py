@@ -38,7 +38,7 @@ def announce_guest_server_registered(
         'owned by %(owner_screen_name)s for party %(party_title)s.',
         initiator_screen_name=initiator_screen_name,
         owner_screen_name=owner_screen_name,
-        party_title=event.party_title,
+        party_title=event.party.title,
     )
 
     return Announcement(text)

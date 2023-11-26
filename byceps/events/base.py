@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from byceps.services.brand.models import Brand, BrandID
+from byceps.services.party.models import Party, PartyID
 from byceps.services.user.models.user import User, UserID
 
 
@@ -25,6 +26,19 @@ class EventBrand:
         return cls(
             id=brand.id,
             title=brand.title,
+        )
+
+
+@dataclass(frozen=True)
+class EventParty:
+    id: PartyID
+    title: str
+
+    @classmethod
+    def from_party(cls, party: Party) -> EventParty:
+        return cls(
+            id=party.id,
+            title=party.title,
         )
 
 

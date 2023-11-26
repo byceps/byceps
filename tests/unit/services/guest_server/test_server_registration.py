@@ -54,8 +54,8 @@ def test_register_server(party, admin_user, user):
     assert event.initiator is not None
     assert event.initiator.id == admin_user.id
     assert event.initiator.screen_name == admin_user.screen_name
-    assert event.party_id == party.id
-    assert event.party_title == party.title
+    assert event.party.id == party.id
+    assert event.party.title == party.title
     assert event.owner.id == owner.id
     assert event.owner.screen_name == owner.screen_name
     assert event.server_id == server.id

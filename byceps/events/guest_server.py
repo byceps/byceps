@@ -10,9 +10,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.events.base import EventUser
+from byceps.events.base import EventParty, EventUser
 from byceps.services.guest_server.models import ServerID
-from byceps.services.party.models import PartyID
 
 from .base import _BaseEvent
 
@@ -25,8 +24,7 @@ class _GuestServerEvent(_BaseEvent):
 
 @dataclass(frozen=True)
 class GuestServerRegisteredEvent(_GuestServerEvent):
-    party_id: PartyID
-    party_title: str
+    party: EventParty
 
 
 @dataclass(frozen=True)
