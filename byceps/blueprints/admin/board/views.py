@@ -389,9 +389,9 @@ def _get_board_or_404(board_id) -> Board:
     return board
 
 
-def _get_category_or_404(category_id: str) -> BoardCategory:
+def _get_category_or_404(category_id: UUID) -> BoardCategory:
     category = board_category_query_service.find_category_by_id(
-        BoardCategoryID(UUID(category_id))
+        BoardCategoryID(category_id)
     )
 
     if category is None:
