@@ -31,7 +31,7 @@ def create_outgoing_webhook(
     description: str | None = None,
 ) -> OutgoingWebhook:
     """Create an outgoing webhook."""
-    webhook = DbOutgoingWebhook(
+    db_webhook = DbOutgoingWebhook(
         event_types,
         event_filters,
         format,
@@ -42,10 +42,10 @@ def create_outgoing_webhook(
         description=description,
     )
 
-    db.session.add(webhook)
+    db.session.add(db_webhook)
     db.session.commit()
 
-    return _db_entity_to_outgoing_webhook(webhook)
+    return _db_entity_to_outgoing_webhook(db_webhook)
 
 
 def update_outgoing_webhook(
@@ -60,22 +60,22 @@ def update_outgoing_webhook(
     enabled: bool,
 ) -> Result[OutgoingWebhook, str]:
     """Update an outgoing webhook."""
-    webhook = _find_db_webhook(webhook_id)
-    if webhook is None:
+    db_webhook = _find_db_webhook(webhook_id)
+    if db_webhook is None:
         return Err(f'Unknown webhook ID "{webhook_id}"')
 
-    webhook.event_types = event_types
-    webhook.event_filters = event_filters
-    webhook.format = format
-    webhook.text_prefix = text_prefix
-    webhook.extra_fields = extra_fields
-    webhook.url = url
-    webhook.description = description
-    webhook.enabled = enabled
+    db_webhook.event_types = event_types
+    db_webhook.event_filters = event_filters
+    db_webhook.format = format
+    db_webhook.text_prefix = text_prefix
+    db_webhook.extra_fields = extra_fields
+    db_webhook.url = url
+    db_webhook.description = description
+    db_webhook.enabled = enabled
 
     db.session.commit()
 
-    return Ok(_db_entity_to_outgoing_webhook(webhook))
+    return Ok(_db_entity_to_outgoing_webhook(db_webhook))
 
 
 def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
@@ -88,12 +88,12 @@ def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
 
 def find_webhook(webhook_id: WebhookID) -> OutgoingWebhook | None:
     """Return the webhook with that ID, if found."""
-    webhook = _find_db_webhook(webhook_id)
+    db_webhook = _find_db_webhook(webhook_id)
 
-    if webhook is None:
+    if db_webhook is None:
         return None
 
-    return _db_entity_to_outgoing_webhook(webhook)
+    return _db_entity_to_outgoing_webhook(db_webhook)
 
 
 def _find_db_webhook(webhook_id: WebhookID) -> DbOutgoingWebhook | None:
@@ -103,45 +103,51 @@ def _find_db_webhook(webhook_id: WebhookID) -> DbOutgoingWebhook | None:
 
 def get_all_webhooks() -> list[OutgoingWebhook]:
     """Return all webhooks."""
-    webhooks = db.session.scalars(select(DbOutgoingWebhook)).all()
+    db_webhooks = db.session.scalars(select(DbOutgoingWebhook)).all()
 
-    return [_db_entity_to_outgoing_webhook(webhook) for webhook in webhooks]
+    return [
+        _db_entity_to_outgoing_webhook(db_webhook) for db_webhook in db_webhooks
+    ]
 
 
 def get_enabled_outgoing_webhooks(event_type: str) -> list[OutgoingWebhook]:
     """Return the configurations for enabled outgoing webhooks for that
     event type.
     """
-    webhooks = db.session.scalars(
+    db_webhooks = db.session.scalars(
         select(DbOutgoingWebhook)
         .filter(DbOutgoingWebhook._event_types.contains([event_type]))
         .filter_by(enabled=True)
     ).all()
 
-    return [_db_entity_to_outgoing_webhook(webhook) for webhook in webhooks]
+    return [
+        _db_entity_to_outgoing_webhook(db_webhook) for db_webhook in db_webhooks
+    ]
 
 
 def _db_entity_to_outgoing_webhook(
-    webhook: DbOutgoingWebhook,
+    db_webhook: DbOutgoingWebhook,
 ) -> OutgoingWebhook:
     event_filters = (
-        dict(webhook.event_filters)
-        if (webhook.event_filters is not None)
+        dict(db_webhook.event_filters)
+        if (db_webhook.event_filters is not None)
         else {}
     )
 
     extra_fields = (
-        dict(webhook.extra_fields) if (webhook.extra_fields is not None) else {}
+        dict(db_webhook.extra_fields)
+        if (db_webhook.extra_fields is not None)
+        else {}
     )
 
     return OutgoingWebhook(
-        id=webhook.id,
-        event_types=webhook.event_types,
+        id=db_webhook.id,
+        event_types=db_webhook.event_types,
         event_filters=event_filters,
-        format=webhook.format,
-        text_prefix=webhook.text_prefix,
+        format=db_webhook.format,
+        text_prefix=db_webhook.text_prefix,
         extra_fields=extra_fields,
-        url=webhook.url,
-        description=webhook.description,
-        enabled=webhook.enabled,
+        url=db_webhook.url,
+        description=db_webhook.description,
+        enabled=db_webhook.enabled,
     )
