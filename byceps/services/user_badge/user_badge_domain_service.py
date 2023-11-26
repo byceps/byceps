@@ -11,6 +11,7 @@ from __future__ import annotations
 from datetime import datetime
 from uuid import UUID
 
+from byceps.events.base import EventUser
 from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
@@ -50,10 +51,10 @@ def _build_awarding_event(
 ) -> UserBadgeAwardedEvent:
     return UserBadgeAwardedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
+        initiator=EventUser.from_user(initiator) if initiator else None,
         badge_id=badge.id,
         badge_label=badge.label,
-        awardee=awardee,
+        awardee=EventUser.from_user(awardee),
     )
 
 

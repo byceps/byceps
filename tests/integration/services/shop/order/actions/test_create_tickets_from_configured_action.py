@@ -8,6 +8,7 @@ from unittest.mock import patch
 from flask import Flask
 import pytest
 
+from byceps.events.base import EventUser
 from byceps.events.ticketing import TicketsSoldEvent
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.order import (
@@ -83,9 +84,9 @@ def test_create_tickets(
 
     tickets_sold_event = TicketsSoldEvent(
         occurred_at=shop_order_paid_event.occurred_at,
-        initiator=admin_user,
+        initiator=EventUser.from_user(admin_user),
         party_id=ticket_category.party_id,
-        owner=orderer.user,
+        owner=EventUser.from_user(orderer.user),
         quantity=ticket_quantity,
     )
     tickets_sold_signal_send_mock.assert_called_once_with(

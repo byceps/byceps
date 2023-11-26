@@ -27,7 +27,8 @@ def test_award_badge_without_initiator(badge, awardee):
     assert event.initiator is None
     assert event.badge_id == badge.id
     assert event.badge_label == badge.label
-    assert event.awardee == awardee
+    assert event.awardee.id == awardee.id
+    assert event.awardee.screen_name == awardee.screen_name
 
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None
@@ -49,10 +50,13 @@ def test_award_badge_with_initiator(badge, awardee, initiator):
     assert awarding.awarded_at is not None
 
     assert event.__class__ is UserBadgeAwardedEvent
-    assert event.initiator == initiator
+    assert event.initiator is not None
+    assert event.initiator.id == initiator.id
+    assert event.initiator.screen_name == initiator.screen_name
     assert event.badge_id == badge.id
     assert event.badge_label == badge.label
-    assert event.awardee == awardee
+    assert event.awardee.id == awardee.id
+    assert event.awardee.screen_name == awardee.screen_name
 
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None

@@ -18,8 +18,11 @@ def test_update_password_hash(admin_user, user):
     assert credential.user_id == user.id
     assert credential.password_hash is not None
 
-    assert event.initiator == admin_user
-    assert event.user == user
+    assert event.initiator is not None
+    assert event.initiator.id == admin_user.id
+    assert event.initiator.screen_name == admin_user.screen_name
+    assert event.user.id == user.id
+    assert event.user.screen_name == user.screen_name
 
     assert log_entry.event_type == 'password-updated'
     assert log_entry.data == {'initiator_id': str(admin_user.id)}

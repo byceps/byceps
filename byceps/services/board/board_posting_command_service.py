@@ -11,6 +11,7 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.events.base import EventUser
 from byceps.events.board import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -56,12 +57,12 @@ def create_posting(
     brand = brand_service.get_brand(db_category.board.brand_id)
     event = BoardPostingCreatedEvent(
         occurred_at=db_posting.created_at,
-        initiator=creator,
+        initiator=EventUser.from_user(creator),
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_category.board_id,
         posting_id=db_posting.id,
-        posting_creator=creator,
+        posting_creator=EventUser.from_user(creator),
         topic_id=db_topic.id,
         topic_title=db_topic.title,
         topic_muted=db_topic.muted,
@@ -91,15 +92,15 @@ def update_posting(
     posting_creator = _get_user(db_posting.creator_id)
     return BoardPostingUpdatedEvent(
         occurred_at=now,
-        initiator=editor,
+        initiator=EventUser.from_user(editor),
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
-        posting_creator=posting_creator,
+        posting_creator=EventUser.from_user(posting_creator),
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
-        editor=editor,
+        editor=EventUser.from_user(editor),
         url=None,
     )
 
@@ -123,15 +124,15 @@ def hide_posting(
     posting_creator = _get_user(db_posting.creator_id)
     event = BoardPostingHiddenEvent(
         occurred_at=now,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
-        posting_creator=posting_creator,
+        posting_creator=EventUser.from_user(posting_creator),
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=None,
     )
 
@@ -158,15 +159,15 @@ def unhide_posting(
     posting_creator = _get_user(db_posting.creator_id)
     event = BoardPostingUnhiddenEvent(
         occurred_at=now,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=brand.id,
         brand_title=brand.title,
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
-        posting_creator=posting_creator,
+        posting_creator=EventUser.from_user(posting_creator),
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=None,
     )
 

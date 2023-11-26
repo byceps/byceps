@@ -7,6 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.page import (
     PageCreatedEvent,
     PageDeletedEvent,
@@ -34,7 +35,7 @@ def test_announce_page_created(app: Flask, editor: User, webhook_for_irc):
 
     event = PageCreatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=editor,
+        initiator=EventUser.from_user(editor),
         page_id=PAGE_ID,
         site_id=SiteID('acmecon-2014-website'),
         page_name='overview',
@@ -55,7 +56,7 @@ def test_announce_page_updated(app: Flask, editor: User, webhook_for_irc):
 
     event = PageUpdatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=editor,
+        initiator=EventUser.from_user(editor),
         page_id=PAGE_ID,
         site_id=SiteID('acmecon-2014-website'),
         page_name='overview',
@@ -76,7 +77,7 @@ def test_announce_page_deleted(app: Flask, editor: User, webhook_for_irc):
 
     event = PageDeletedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=editor,
+        initiator=EventUser.from_user(editor),
         page_id=PAGE_ID,
         site_id=SiteID('acmecon-2014-website'),
         page_name='old_page',

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from byceps.events.base import EventUser
 from byceps.events.tourney import TourneyCreatedEvent
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
@@ -56,7 +57,7 @@ def _build_tourney_created_event(
 ) -> TourneyCreatedEvent:
     return TourneyCreatedEvent(
         occurred_at=occurred_at,
-        initiator=creator,
+        initiator=EventUser.from_user(creator),
         tourney_id=str(tourney.id),
         tourney_title=tourney.title,
     )

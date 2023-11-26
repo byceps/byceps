@@ -11,6 +11,7 @@ from __future__ import annotations
 from datetime import datetime
 import dataclasses
 
+from byceps.events.base import EventUser
 from byceps.events.guest_server import (
     GuestServerApprovedEvent,
     GuestServerCheckedInEvent,
@@ -153,10 +154,10 @@ def _build_guest_server_registered_event(
 ) -> GuestServerRegisteredEvent:
     return GuestServerRegisteredEvent(
         occurred_at=server.created_at,
-        initiator=creator,
+        initiator=EventUser.from_user(creator),
         party_id=party.id,
         party_title=party.title,
-        owner=owner,
+        owner=EventUser.from_user(owner),
         server_id=server.id,
     )
 
@@ -182,8 +183,8 @@ def _build_guest_server_approved_event(
 ) -> GuestServerApprovedEvent:
     return GuestServerApprovedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        owner=server.owner,
+        initiator=EventUser.from_user(initiator),
+        owner=EventUser.from_user(server.owner),
         server_id=server.id,
     )
 
@@ -220,8 +221,8 @@ def _build_guest_server_checked_in_event(
 ) -> GuestServerCheckedInEvent:
     return GuestServerCheckedInEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        owner=server.owner,
+        initiator=EventUser.from_user(initiator),
+        owner=EventUser.from_user(server.owner),
         server_id=server.id,
     )
 
@@ -257,8 +258,8 @@ def _build_guest_server_checked_out_event(
 ) -> GuestServerCheckedOutEvent:
     return GuestServerCheckedOutEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        owner=server.owner,
+        initiator=EventUser.from_user(initiator),
+        owner=EventUser.from_user(server.owner),
         server_id=server.id,
     )
 

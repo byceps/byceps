@@ -17,6 +17,7 @@ from sqlalchemy.sql import Select
 import structlog
 
 from byceps.database import db, paginate, Pagination, execute_upsert
+from byceps.events.base import EventUser
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.brand.models import BrandID
 from byceps.services.site import site_service
@@ -179,7 +180,7 @@ def publish_item(
 
     event = NewsItemPublishedEvent(
         occurred_at=now,
-        initiator=initiator,
+        initiator=EventUser.from_user(initiator) if initiator else None,
         item_id=item.id,
         channel_id=item.channel.id,
         published_at=publish_at,

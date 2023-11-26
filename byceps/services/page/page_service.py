@@ -14,6 +14,7 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.events.base import EventUser
 from byceps.events.page import (
     PageCreatedEvent,
     PageDeletedEvent,
@@ -60,7 +61,7 @@ def create_page(
 
     event = PageCreatedEvent(
         occurred_at=db_version.created_at,
-        initiator=creator,
+        initiator=EventUser.from_user(creator),
         page_id=db_page.id,
         site_id=db_page.site_id,
         page_name=db_page.name,
@@ -95,7 +96,7 @@ def update_page(
 
     event = PageUpdatedEvent(
         occurred_at=db_version.created_at,
-        initiator=creator,
+        initiator=EventUser.from_user(creator),
         page_id=db_page.id,
         site_id=db_page.site_id,
         page_name=db_page.name,
@@ -144,7 +145,7 @@ def delete_page(
 
     event = PageDeletedEvent(
         occurred_at=datetime.utcnow(),
-        initiator=initiator,
+        initiator=EventUser.from_user(initiator) if initiator else None,
         page_id=page_id,
         site_id=site_id,
         page_name=page_name,

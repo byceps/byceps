@@ -7,6 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.shop import (
     ShopOrderCanceledEvent,
     ShopOrderPaidEvent,
@@ -31,10 +32,10 @@ def test_shop_order_placed_announced(
 
     event = ShopOrderPlacedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=orderer_user,
+        initiator=EventUser.from_user(orderer_user),
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00001'),
-        orderer=orderer_user,
+        orderer=EventUser.from_user(orderer_user),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -51,10 +52,10 @@ def test_shop_order_canceled_announced(
 
     event = ShopOrderCanceledEvent(
         occurred_at=now(),
-        initiator=shop_admin,
+        initiator=EventUser.from_user(shop_admin),
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00002'),
-        orderer=orderer_user,
+        orderer=EventUser.from_user(orderer_user),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -72,10 +73,10 @@ def test_shop_order_paid_announced(
 
     event = ShopOrderPaidEvent(
         occurred_at=now(),
-        initiator=shop_admin,
+        initiator=EventUser.from_user(shop_admin),
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00003'),
-        orderer=orderer_user,
+        orderer=EventUser.from_user(orderer_user),
         payment_method='bank_transfer',
     )
 

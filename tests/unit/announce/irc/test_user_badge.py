@@ -6,6 +6,7 @@
 from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.user_badge.models import BadgeID
 
@@ -28,7 +29,7 @@ def test_user_badge_awarding_announced_without_initiator(
         initiator=None,
         badge_id=BADGE_ID,
         badge_label='First Post!',
-        awardee=make_user(screen_name='Erster'),
+        awardee=EventUser.from_user(make_user(screen_name='Erster')),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -43,10 +44,10 @@ def test_user_badge_awarding_announced_with_initiator(
 
     event = UserBadgeAwardedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=make_user(screen_name='Admin'),
+        initiator=EventUser.from_user(make_user(screen_name='Admin')),
         badge_id=BADGE_ID,
         badge_label='Glanzleistung',
-        awardee=make_user(screen_name='PathFinder'),
+        awardee=EventUser.from_user(make_user(screen_name='PathFinder')),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

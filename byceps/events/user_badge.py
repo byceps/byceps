@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.services.user.models.user import User
+from byceps.events.base import EventUser
 from byceps.services.user_badge.models import BadgeID
 
 from .base import _BaseEvent
@@ -20,4 +20,4 @@ from .base import _BaseEvent
 class UserBadgeAwardedEvent(_BaseEvent):
     badge_id: BadgeID
     badge_label: str
-    awardee: User
+    awardee: EventUser

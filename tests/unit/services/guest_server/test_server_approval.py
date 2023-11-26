@@ -24,8 +24,11 @@ def test_approved_server(make_server, admin_user):
     assert approved_server.approved
 
     assert event.occurred_at is not None
-    assert event.initiator == admin_user
-    assert event.owner == pending_server.owner
+    assert event.initiator is not None
+    assert event.initiator.id == admin_user.id
+    assert event.initiator.screen_name == admin_user.screen_name
+    assert event.owner.id == pending_server.owner.id
+    assert event.owner.screen_name == pending_server.owner.screen_name
     assert event.server_id == pending_server.id
 
 

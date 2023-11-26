@@ -7,6 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.newsletter import (
     SubscribedToNewsletterEvent,
     UnsubscribedFromNewsletterEvent,
@@ -27,8 +28,8 @@ def test_subscribed_to_newsletter_announced(
 
     event = SubscribedToNewsletterEvent(
         occurred_at=OCCURRED_AT,
-        initiator=user,
-        user=user,
+        initiator=EventUser.from_user(user),
+        user=EventUser.from_user(user),
         list_id=ListID('cozylan-updates'),
         list_title='CozyLAN Updates',
     )
@@ -45,8 +46,8 @@ def test_unsubscribed_from_newsletter_announced(
 
     event = UnsubscribedFromNewsletterEvent(
         occurred_at=OCCURRED_AT,
-        initiator=user,
-        user=user,
+        initiator=EventUser.from_user(user),
+        user=EventUser.from_user(user),
         list_id=ListID('cozylan-updates'),
         list_title='CozyLAN Updates',
     )

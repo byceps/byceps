@@ -6,6 +6,7 @@
 from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.user import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,
@@ -33,7 +34,7 @@ def test_account_created_announced(app: Flask, make_user, webhook_for_irc):
     event = UserAccountCreatedEvent(
         occurred_at=OCCURRED_AT,
         initiator=None,
-        user=make_user(screen_name='JaneDoe'),
+        user=EventUser.from_user(make_user(screen_name='JaneDoe')),
         site_id=None,
         site_title=None,
     )
@@ -54,7 +55,7 @@ def test_account_created_announced_on_site(
     event = UserAccountCreatedEvent(
         occurred_at=OCCURRED_AT,
         initiator=None,
-        user=make_user(screen_name='JaneDoeOnSite'),
+        user=EventUser.from_user(make_user(screen_name='JaneDoeOnSite')),
         site_id=SiteID('acmecon-2014'),
         site_title='ACMECon 2014 website',
     )
@@ -71,8 +72,8 @@ def test_account_created_by_admin_announced(
 
     event = UserAccountCreatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=make_user(screen_name='EinAdmin'),
-        user=make_user(screen_name='EinUser'),
+        initiator=EventUser.from_user(make_user(screen_name='EinAdmin')),
+        user=EventUser.from_user(make_user(screen_name='EinUser')),
         site_id=None,
         site_title=None,
     )
@@ -87,7 +88,7 @@ def test_screen_name_change_announced(app: Flask, make_user, webhook_for_irc):
 
     event = UserScreenNameChangedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=make_user(screen_name='ElAdmin'),
+        initiator=EventUser.from_user(make_user(screen_name='ElAdmin')),
         user_id=UserID(generate_uuid()),
         old_screen_name='DrJekyll',
         new_screen_name='MrHyde',
@@ -108,8 +109,8 @@ def test_email_address_changed_announced(
 
     event = UserEmailAddressChangedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=make_user(screen_name='UserSupporter'),
-        user=make_user(screen_name='MailboxHopper'),
+        initiator=EventUser.from_user(make_user(screen_name='UserSupporter')),
+        user=EventUser.from_user(make_user(screen_name='MailboxHopper')),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -127,8 +128,8 @@ def test_email_address_invalidated_announced(
 
     event = UserEmailAddressInvalidatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=make_user(screen_name='BounceWatchman'),
-        user=make_user(screen_name='Faker'),
+        initiator=EventUser.from_user(make_user(screen_name='BounceWatchman')),
+        user=EventUser.from_user(make_user(screen_name='Faker')),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -143,8 +144,8 @@ def test_user_details_updated_announced(app: Flask, make_user, webhook_for_irc):
 
     event = UserDetailsUpdatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=make_user(screen_name='Chameleon'),
-        user=make_user(screen_name='Chameleon'),
+        initiator=EventUser.from_user(make_user(screen_name='Chameleon')),
+        user=EventUser.from_user(make_user(screen_name='Chameleon')),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -157,8 +158,8 @@ def test_suspended_account_announced(app: Flask, make_user, webhook_for_irc):
 
     event = UserAccountSuspendedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=make_user(screen_name='She-Ra'),
-        user=make_user(screen_name='Skeletor'),
+        initiator=EventUser.from_user(make_user(screen_name='She-Ra')),
+        user=EventUser.from_user(make_user(screen_name='Skeletor')),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -171,8 +172,8 @@ def test_unsuspended_account_announced(app: Flask, make_user, webhook_for_irc):
 
     event = UserAccountUnsuspendedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=make_user(screen_name='TheBoss'),
-        user=make_user(screen_name='RambaZamba'),
+        initiator=EventUser.from_user(make_user(screen_name='TheBoss')),
+        user=EventUser.from_user(make_user(screen_name='RambaZamba')),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -189,8 +190,8 @@ def test_deleted_account_announced(app: Flask, make_user, webhook_for_irc):
 
     event = UserAccountDeletedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=make_user(screen_name='Uberino'),
-        user=user,
+        initiator=EventUser.from_user(make_user(screen_name='Uberino')),
+        user=EventUser.from_user(user),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

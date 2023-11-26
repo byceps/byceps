@@ -14,6 +14,7 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.events.base import EventUser
 from byceps.events.snippet import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
@@ -54,7 +55,7 @@ def create_snippet(
 
     event = SnippetCreatedEvent(
         occurred_at=version.created_at,
-        initiator=creator,
+        initiator=EventUser.from_user(creator),
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
@@ -82,7 +83,7 @@ def update_snippet(
 
     event = SnippetUpdatedEvent(
         occurred_at=version.created_at,
-        initiator=creator,
+        initiator=EventUser.from_user(creator),
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
@@ -134,7 +135,7 @@ def delete_snippet(
 
     event = SnippetDeletedEvent(
         occurred_at=datetime.utcnow(),
-        initiator=initiator,
+        initiator=EventUser.from_user(initiator) if initiator else None,
         snippet_id=snippet_id,
         scope=scope,
         snippet_name=snippet_name,

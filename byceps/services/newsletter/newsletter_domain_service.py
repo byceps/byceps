@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from byceps.events.base import EventUser
 from byceps.events.newsletter import (
     SubscribedToNewsletterEvent,
     UnsubscribedFromNewsletterEvent,
@@ -44,8 +45,8 @@ def _build_subscribed_to_newsletter_event(
 ) -> SubscribedToNewsletterEvent:
     return SubscribedToNewsletterEvent(
         occurred_at=expressed_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
         list_id=list_.id,
         list_title=list_.title,
     )
@@ -76,8 +77,8 @@ def _build_unsubscribed_from_newsletter_event(
 ) -> UnsubscribedFromNewsletterEvent:
     return UnsubscribedFromNewsletterEvent(
         occurred_at=expressed_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
         list_id=list_.id,
         list_title=list_.title,
     )

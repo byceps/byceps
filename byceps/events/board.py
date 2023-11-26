@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from byceps.events.base import EventUser
 from byceps.services.board.models import (
     BoardCategoryID,
     BoardID,
@@ -17,7 +18,6 @@ from byceps.services.board.models import (
     TopicID,
 )
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import User
 
 from .base import _BaseEvent
 
@@ -35,14 +35,14 @@ class _BoardEvent(_BaseEvent):
 @dataclass(frozen=True)
 class _BoardTopicEvent(_BoardEvent):
     topic_id: TopicID
-    topic_creator: User
+    topic_creator: EventUser
     topic_title: str
     url: str
 
 
 @dataclass(frozen=True)
 class _BoardTopicModerationEvent(_BoardTopicEvent):
-    moderator: User
+    moderator: EventUser
 
 
 @dataclass(frozen=True)
@@ -52,7 +52,7 @@ class BoardTopicCreatedEvent(_BoardTopicEvent):
 
 @dataclass(frozen=True)
 class BoardTopicUpdatedEvent(_BoardTopicEvent):
-    editor: User
+    editor: EventUser
 
 
 @dataclass(frozen=True)
@@ -99,7 +99,7 @@ class BoardTopicMovedEvent(_BoardTopicModerationEvent):
 @dataclass(frozen=True)
 class _BoardPostingEvent(_BoardEvent):
     posting_id: PostingID
-    posting_creator: User
+    posting_creator: EventUser
     topic_id: TopicID
     topic_title: str
     url: str
@@ -107,7 +107,7 @@ class _BoardPostingEvent(_BoardEvent):
 
 @dataclass(frozen=True)
 class _BoardPostingModerationEvent(_BoardPostingEvent):
-    moderator: User
+    moderator: EventUser
 
 
 @dataclass(frozen=True)
@@ -117,7 +117,7 @@ class BoardPostingCreatedEvent(_BoardPostingEvent):
 
 @dataclass(frozen=True)
 class BoardPostingUpdatedEvent(_BoardPostingEvent):
-    editor: User
+    editor: EventUser
 
 
 @dataclass(frozen=True)

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from byceps.events.base import EventUser
 from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
@@ -121,11 +122,11 @@ def _build_check_in_event(
 ) -> TicketCheckedInEvent:
     return TicketCheckedInEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
+        initiator=EventUser.from_user(initiator),
         ticket_id=ticket.id,
         ticket_code=ticket.code,
         occupied_seat_id=ticket.occupied_seat_id,
-        user=ticket.used_by,
+        user=EventUser.from_user(ticket.used_by),
     )
 
 

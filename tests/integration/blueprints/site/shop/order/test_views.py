@@ -12,6 +12,7 @@ from flask import Flask
 from moneyed import Money
 import pytest
 
+from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderPlacedEvent
 from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import (
@@ -136,10 +137,10 @@ def test_order(
 
     event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
-        initiator=orderer_user,
+        initiator=EventUser.from_user(orderer_user),
         order_id=order.id,
         order_number=order.order_number,
-        orderer=orderer_user,
+        orderer=EventUser.from_user(orderer_user),
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
@@ -198,10 +199,10 @@ def test_order_single(
 
     event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
-        initiator=orderer_user,
+        initiator=EventUser.from_user(orderer_user),
         order_id=order.id,
         order_number=order.order_number,
-        orderer=orderer_user,
+        orderer=EventUser.from_user(orderer_user),
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 

@@ -7,6 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.board import BoardPostingCreatedEvent, BoardTopicCreatedEvent
 from byceps.services.board.models import (
     BoardCategoryID,
@@ -45,12 +46,12 @@ def test_announce_topic_created(app: Flask, author: User):
 
     event = BoardTopicCreatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=author,
+        initiator=EventUser.from_user(author),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=author,
+        topic_creator=EventUser.from_user(author),
         topic_title='Cannot connect to the party network :(',
         url=expected_url,
     )
@@ -72,12 +73,12 @@ def test_announce_posting_created(app: Flask, author: User):
 
     event = BoardPostingCreatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=author,
+        initiator=EventUser.from_user(author),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=author,
+        posting_creator=EventUser.from_user(author),
         topic_id=TOPIC_ID,
         topic_title='Cannot connect to the party network :(',
         topic_muted=False,

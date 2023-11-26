@@ -7,6 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
 from byceps.services.user.models.user import User
@@ -31,7 +32,7 @@ def test_published_news_item_announced_with_url(
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=admin,
+        initiator=EventUser.from_user(admin),
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,
@@ -51,7 +52,7 @@ def test_published_news_item_announced_without_url(
 
     event = NewsItemPublishedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=admin,
+        initiator=EventUser.from_user(admin),
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=OCCURRED_AT,

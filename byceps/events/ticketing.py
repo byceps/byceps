@@ -10,10 +10,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from byceps.events.base import EventUser
 from byceps.services.party.models import PartyID
 from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
-from byceps.services.user.models.user import User
 
 from .base import _BaseEvent
 
@@ -27,11 +27,11 @@ class _TicketEvent(_BaseEvent):
 class TicketCheckedInEvent(_TicketEvent):
     ticket_code: TicketCode
     occupied_seat_id: SeatID | None
-    user: User | None
+    user: EventUser | None
 
 
 @dataclass(frozen=True)
 class TicketsSoldEvent(_BaseEvent):
     party_id: PartyID
-    owner: User | None
+    owner: EventUser | None
     quantity: int

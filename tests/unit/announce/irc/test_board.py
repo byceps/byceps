@@ -7,6 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.board import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -55,12 +56,12 @@ def test_announce_topic_created(app: Flask, author: User, webhook_for_irc):
 
     event = BoardTopicCreatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=author,
+        initiator=EventUser.from_user(author),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=author,
+        topic_creator=EventUser.from_user(author),
         topic_title='Brötchen zum Frühstück',
         url=expected_link,
     )
@@ -82,14 +83,14 @@ def test_announce_topic_hidden(
 
     event = BoardTopicHiddenEvent(
         occurred_at=OCCURRED_AT,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=author,
+        topic_creator=EventUser.from_user(author),
         topic_title='Brötchen zum Frühstück',
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=expected_link,
     )
 
@@ -110,14 +111,14 @@ def test_announce_topic_unhidden(
 
     event = BoardTopicUnhiddenEvent(
         occurred_at=OCCURRED_AT,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=author,
+        topic_creator=EventUser.from_user(author),
         topic_title='Brötchen zum Frühstück',
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=expected_link,
     )
 
@@ -138,14 +139,14 @@ def test_announce_topic_locked(
 
     event = BoardTopicLockedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=author,
+        topic_creator=EventUser.from_user(author),
         topic_title='Brötchen zum Frühstück',
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=expected_link,
     )
 
@@ -166,14 +167,14 @@ def test_announce_topic_unlocked(
 
     event = BoardTopicUnlockedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=author,
+        topic_creator=EventUser.from_user(author),
         topic_title='Brötchen zum Frühstück',
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=expected_link,
     )
 
@@ -194,14 +195,14 @@ def test_announce_topic_pinned(
 
     event = BoardTopicPinnedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=author,
+        topic_creator=EventUser.from_user(author),
         topic_title='Brötchen zum Frühstück',
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=expected_link,
     )
 
@@ -222,14 +223,14 @@ def test_announce_topic_unpinned(
 
     event = BoardTopicUnpinnedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=author,
+        topic_creator=EventUser.from_user(author),
         topic_title='Brötchen zum Frühstück',
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=expected_link,
     )
 
@@ -251,18 +252,18 @@ def test_announce_topic_moved(
 
     event = BoardTopicMovedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=author,
+        topic_creator=EventUser.from_user(author),
         topic_title='Brötchen zum Frühstück',
         old_category_id=CATEGORY_1_ID,
         old_category_title=CATEGORY_1_TITLE,
         new_category_id=CATEGORY_2_ID,
         new_category_title=CATEGORY_2_TITLE,
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=expected_link,
     )
 
@@ -280,12 +281,12 @@ def test_announce_posting_created(app: Flask, author: User, webhook_for_irc):
 
     event = BoardPostingCreatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=author,
+        initiator=EventUser.from_user(author),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=author,
+        posting_creator=EventUser.from_user(author),
         topic_id=TOPIC_ID,
         topic_title='Brötchen zum Frühstück',
         topic_muted=False,
@@ -304,12 +305,12 @@ def test_announce_posting_created_on_muted_topic(
 
     event = BoardPostingCreatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=author,
+        initiator=EventUser.from_user(author),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=author,
+        posting_creator=EventUser.from_user(author),
         topic_id=TOPIC_ID,
         topic_title='Brötchen zum Frühstück',
         topic_muted=True,
@@ -333,15 +334,15 @@ def test_announce_posting_hidden(
 
     event = BoardPostingHiddenEvent(
         occurred_at=OCCURRED_AT,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=author,
+        posting_creator=EventUser.from_user(author),
         topic_id=TOPIC_ID,
         topic_title='Brötchen zum Frühstück',
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=expected_link,
     )
 
@@ -362,15 +363,15 @@ def test_announce_posting_unhidden(
 
     event = BoardPostingUnhiddenEvent(
         occurred_at=OCCURRED_AT,
-        initiator=moderator,
+        initiator=EventUser.from_user(moderator),
         brand_id=BRAND_ID,
         brand_title=BRAND_TITLE,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=author,
+        posting_creator=EventUser.from_user(author),
         topic_id=TOPIC_ID,
         topic_title='Brötchen zum Frühstück',
-        moderator=moderator,
+        moderator=EventUser.from_user(moderator),
         url=expected_link,
     )
 

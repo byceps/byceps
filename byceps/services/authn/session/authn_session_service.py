@@ -15,6 +15,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db, insert_ignore_on_conflict, upsert
 from byceps.events.authn import UserLoggedInEvent
+from byceps.events.base import EventUser
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user import user_log_service
 from byceps.services.user.dbmodels.log import DbUserLogEntry
@@ -122,7 +123,7 @@ def log_in_user(
 
     event = UserLoggedInEvent(
         occurred_at=occurred_at,
-        initiator=user,
+        initiator=EventUser.from_user(user),
         site_id=site.id if site else None,
         site_title=site.title if site else None,
     )

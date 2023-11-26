@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 
 from moneyed import Money
 
+from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
@@ -196,10 +197,10 @@ def _build_order_paid_event(
 ) -> ShopOrderPaidEvent:
     return ShopOrderPaidEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
+        initiator=EventUser.from_user(initiator),
         order_id=order.id,
         order_number=order.order_number,
-        orderer=orderer_user,
+        orderer=EventUser.from_user(orderer_user),
         payment_method=payment_method,
     )
 
@@ -278,10 +279,10 @@ def _build_order_canceled_event(
 ) -> ShopOrderCanceledEvent:
     return ShopOrderCanceledEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
+        initiator=EventUser.from_user(initiator),
         order_id=order.id,
         order_number=order.order_number,
-        orderer=orderer_user,
+        orderer=EventUser.from_user(orderer_user),
     )
 
 

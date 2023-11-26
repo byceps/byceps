@@ -34,8 +34,11 @@ def test_check_in_server(make_server, admin_user):
     assert checked_in_server.checked_in_at is not None
 
     assert event.occurred_at is not None
-    assert event.initiator == admin_user
-    assert event.owner == approved_server.owner
+    assert event.initiator is not None
+    assert event.initiator.id == admin_user.id
+    assert event.initiator.screen_name == admin_user.screen_name
+    assert event.owner.id == approved_server.owner.id
+    assert event.owner.screen_name == approved_server.owner.screen_name
     assert event.server_id == approved_server.id
 
 

@@ -14,6 +14,7 @@ from byceps.events.authz import (
     RoleAssignedToUserEvent,
     RoleDeassignedFromUserEvent,
 )
+from byceps.events.base import EventUser
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
@@ -42,8 +43,8 @@ def _build_role_assigned_to_user_event(
 ) -> RoleAssignedToUserEvent:
     return RoleAssignedToUserEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator) if initiator else None,
+        user=EventUser.from_user(user),
         role_id=role_id,
     )
 
@@ -86,8 +87,8 @@ def _build_role_deassigned_from_user_event(
 ) -> RoleDeassignedFromUserEvent:
     return RoleDeassignedFromUserEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator) if initiator else None,
+        user=EventUser.from_user(user),
         role_id=role_id,
     )
 

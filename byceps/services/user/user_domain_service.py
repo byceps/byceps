@@ -11,6 +11,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Any
 
+from byceps.events.base import EventUser
 from byceps.events.user import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,
@@ -108,8 +109,8 @@ def _build_account_created_event(
 ) -> UserAccountCreatedEvent:
     return UserAccountCreatedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator) if initiator else None,
+        user=EventUser.from_user(user),
         site_id=site_id,
         site_title=site_title,
     )
@@ -203,8 +204,8 @@ def _build_account_suspended_event(
 ) -> UserAccountSuspendedEvent:
     return UserAccountSuspendedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
     )
 
 
@@ -244,8 +245,8 @@ def _build_account_unsuspended_event(
 ) -> UserAccountUnsuspendedEvent:
     return UserAccountUnsuspendedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
     )
 
 
@@ -289,8 +290,8 @@ def _build_account_deleted_event(
 ) -> UserAccountDeletedEvent:
     return UserAccountDeletedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
     )
 
 
@@ -344,7 +345,7 @@ def _build_screen_name_changed_event(
 ) -> UserScreenNameChangedEvent:
     return UserScreenNameChangedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
+        initiator=EventUser.from_user(initiator),
         user_id=user.id,
         old_screen_name=old_screen_name,
         new_screen_name=new_screen_name,
@@ -411,8 +412,8 @@ def _build_email_address_changed_event(
 ) -> UserEmailAddressChangedEvent:
     return UserEmailAddressChangedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
     )
 
 
@@ -475,8 +476,8 @@ def _build_email_address_confirmed_event(
 ) -> UserEmailAddressConfirmedEvent:
     return UserEmailAddressConfirmedEvent(
         occurred_at=occurred_at,
-        initiator=user,
-        user=user,
+        initiator=EventUser.from_user(user),
+        user=EventUser.from_user(user),
     )
 
 
@@ -527,8 +528,8 @@ def _build_email_address_invalidated_event(
 ) -> UserEmailAddressInvalidatedEvent:
     return UserEmailAddressInvalidatedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator) if initiator else None,
+        user=EventUser.from_user(user),
     )
 
 
@@ -614,8 +615,8 @@ def _build_details_updated_event(
 ) -> UserDetailsUpdatedEvent:
     return UserDetailsUpdatedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
     )
 
 

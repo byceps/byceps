@@ -9,6 +9,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketSaleStats
@@ -27,11 +28,11 @@ def test_ticket_checked_in(app: Flask, admin: User, make_user, webhook_for_irc):
 
     event = TicketCheckedInEvent(
         occurred_at=OCCURRED_AT,
-        initiator=admin,
+        initiator=EventUser.from_user(admin),
         ticket_id=None,
         ticket_code=TicketCode('GTFIN'),
         occupied_seat_id=None,
-        user=make_user(screen_name='Teilnehmer'),
+        user=EventUser.from_user(make_user(screen_name='Teilnehmer')),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -59,9 +60,9 @@ def test_single_ticket_sold(
 
     event = TicketsSoldEvent(
         occurred_at=OCCURRED_AT,
-        initiator=admin,
+        initiator=EventUser.from_user(admin),
         party_id=PartyID('popular-party'),
-        owner=make_user(screen_name='Neuling'),
+        owner=EventUser.from_user(make_user(screen_name='Neuling')),
         quantity=1,
     )
 
@@ -90,9 +91,9 @@ def test_multiple_tickets_sold(
 
     event = TicketsSoldEvent(
         occurred_at=OCCURRED_AT,
-        initiator=admin,
+        initiator=EventUser.from_user(admin),
         party_id=PartyID('popular-party'),
-        owner=make_user(screen_name='TreuerKäufer'),
+        owner=EventUser.from_user(make_user(screen_name='TreuerKäufer')),
         quantity=3,
     )
 

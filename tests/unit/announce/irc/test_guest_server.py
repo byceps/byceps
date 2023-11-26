@@ -7,6 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.events.base import EventUser
 from byceps.events.guest_server import (
     GuestServerApprovedEvent,
     GuestServerCheckedInEvent,
@@ -36,10 +37,10 @@ def test_guest_server_registered(
 
     event = GuestServerRegisteredEvent(
         occurred_at=OCCURRED_AT,
-        initiator=admin,
+        initiator=EventUser.from_user(admin),
         party_id=PartyID('acmecon-2014'),
         party_title='ACMECon 2014',
-        owner=owner,
+        owner=EventUser.from_user(owner),
         server_id=SERVER_ID,
     )
 
@@ -55,8 +56,8 @@ def test_guest_server_approved(
 
     event = GuestServerApprovedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=admin,
-        owner=owner,
+        initiator=EventUser.from_user(admin),
+        owner=EventUser.from_user(owner),
         server_id=SERVER_ID,
     )
 
@@ -72,8 +73,8 @@ def test_guest_server_checked_in(
 
     event = GuestServerCheckedInEvent(
         occurred_at=OCCURRED_AT,
-        initiator=admin,
-        owner=owner,
+        initiator=EventUser.from_user(admin),
+        owner=EventUser.from_user(owner),
         server_id=SERVER_ID,
     )
 
@@ -89,8 +90,8 @@ def test_guest_server_checked_out(
 
     event = GuestServerCheckedOutEvent(
         occurred_at=OCCURRED_AT,
-        initiator=admin,
-        owner=owner,
+        initiator=EventUser.from_user(admin),
+        owner=EventUser.from_user(owner),
         server_id=SERVER_ID,
     )
 

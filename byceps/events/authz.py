@@ -10,15 +10,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from byceps.events.base import EventUser
 from byceps.services.authz.models import RoleID
-from byceps.services.user.models.user import User
 
 from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
 class _AuthzUserRoleEvent(_BaseEvent):
-    user: User
+    user: EventUser
     role_id: RoleID
 
 

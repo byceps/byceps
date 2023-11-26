@@ -9,6 +9,7 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.services.site.models import SiteID
+from byceps.events.base import EventUser
 from byceps.events.snippet import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
@@ -40,7 +41,7 @@ def test_announce_snippet_created(app: Flask, editor: User, webhook_for_irc):
 
     event = SnippetCreatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=editor,
+        initiator=EventUser.from_user(editor),
         snippet_id=SNIPPET_ID,
         scope=SCOPE,
         snippet_name='team_intro',
@@ -61,7 +62,7 @@ def test_announce_snippet_updated(app: Flask, editor: User, webhook_for_irc):
 
     event = SnippetUpdatedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=editor,
+        initiator=EventUser.from_user(editor),
         snippet_id=SNIPPET_ID,
         scope=SCOPE,
         snippet_name='team_intro',
@@ -82,7 +83,7 @@ def test_announce_snippet_deleted(app: Flask, editor: User, webhook_for_irc):
 
     event = SnippetDeletedEvent(
         occurred_at=OCCURRED_AT,
-        initiator=editor,
+        initiator=EventUser.from_user(editor),
         snippet_id=SNIPPET_ID,
         scope=SCOPE,
         snippet_name='outdated_info',

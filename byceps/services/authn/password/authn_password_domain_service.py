@@ -16,6 +16,7 @@ from werkzeug.security import (
 )
 
 from byceps.events.authn import PasswordUpdatedEvent
+from byceps.events.base import EventUser
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User, UserID
 from byceps.util.uuid import generate_uuid7
@@ -64,8 +65,8 @@ def _build_password_updated_event(
 ) -> PasswordUpdatedEvent:
     return PasswordUpdatedEvent(
         occurred_at=occurred_at,
-        initiator=initiator,
-        user=user,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
     )
 
 
