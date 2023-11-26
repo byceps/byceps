@@ -20,7 +20,7 @@ from byceps.events.page import (
     PageDeletedEvent,
     PageUpdatedEvent,
 )
-from byceps.services.site.models import SiteID
+from byceps.services.site.models import Site, SiteID
 from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.user.models.user import User
 
@@ -35,7 +35,7 @@ from .models import (
 
 
 def create_page(
-    site_id: SiteID,
+    site: Site,
     name: str,
     language_code: str,
     url_path: str,
@@ -46,7 +46,7 @@ def create_page(
     head: str | None = None,
 ) -> tuple[DbPageVersion, PageCreatedEvent]:
     """Create a page and its initial version."""
-    db_page = DbPage(site_id, name, language_code, url_path)
+    db_page = DbPage(site.id, name, language_code, url_path)
     db.session.add(db_page)
 
     db_version = DbPageVersion(db_page, creator.id, title, head, body)

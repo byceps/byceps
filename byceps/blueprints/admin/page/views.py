@@ -231,7 +231,7 @@ def create(site_id):
     body = form.body.data.strip()
 
     version, event = page_service.create_page(
-        site.id,
+        site,
         name,
         language_code,
         url_path,

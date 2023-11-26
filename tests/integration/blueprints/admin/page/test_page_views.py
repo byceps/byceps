@@ -52,7 +52,7 @@ def make_page(site: Site, page_admin: User):
             url_path = f'/page-{generate_token()}'
 
         version, event = page_service.create_page(
-            site.id, name, language_code, url_path, page_admin, title, body
+            site, name, language_code, url_path, page_admin, title, body
         )
         return version, event
 

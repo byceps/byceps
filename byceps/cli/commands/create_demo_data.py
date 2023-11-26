@@ -59,7 +59,7 @@ def create_demo_data() -> None:
     _create_shop_articles(shop.id, ticket_category)
     storefront = _create_shop_storefront(shop.id)
     site = _create_site(brand.id, party.id, board.id, storefront.id)
-    _create_pages(site.id, admin)
+    _create_pages(site, admin)
 
 
 def _create_admin() -> User:
@@ -227,9 +227,9 @@ def _create_site(
     return site
 
 
-def _create_pages(site_id: SiteID, creator: User) -> None:
+def _create_pages(site: Site, creator: User) -> None:
     page_service.create_page(
-        site_id,
+        site,
         'imprint',
         'en',
         '/imprint',
@@ -239,7 +239,7 @@ def _create_pages(site_id: SiteID, creator: User) -> None:
     )
 
     page_service.create_page(
-        site_id,
+        site,
         'impressum',
         'de',
         '/impressum',
@@ -248,8 +248,8 @@ def _create_pages(site_id: SiteID, creator: User) -> None:
         'Hier kommt das Impressum hin.',
     )
 
-    nav_main_en = site_navigation_service.create_menu(site_id, 'main', 'en')
-    nav_main_de = site_navigation_service.create_menu(site_id, 'main', 'de')
+    nav_main_en = site_navigation_service.create_menu(site.id, 'main', 'en')
+    nav_main_de = site_navigation_service.create_menu(site.id, 'main', 'de')
 
     site_navigation_service.create_item(
         nav_main_en.id, NavItemTargetType.page, 'imprint', 'Imprint', 'imprint'
