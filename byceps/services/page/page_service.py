@@ -14,12 +14,13 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.base import EventUser
+from byceps.events.base import EventSite, EventUser
 from byceps.events.page import (
     PageCreatedEvent,
     PageDeletedEvent,
     PageUpdatedEvent,
 )
+from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
 from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.user.models.user import User
@@ -63,7 +64,7 @@ def create_page(
         occurred_at=db_version.created_at,
         initiator=EventUser.from_user(creator),
         page_id=db_page.id,
-        site_id=db_page.site_id,
+        site=EventSite.from_site(site),
         page_name=db_page.name,
         language_code=db_page.language_code,
         page_version_id=db_version.id,
@@ -94,11 +95,13 @@ def update_page(
 
     db.session.commit()
 
+    site = site_service.get_site(db_page.site_id)
+
     event = PageUpdatedEvent(
         occurred_at=db_version.created_at,
         initiator=EventUser.from_user(creator),
         page_id=db_page.id,
-        site_id=db_page.site_id,
+        site=EventSite.from_site(site),
         page_name=db_page.name,
         language_code=db_page.language_code,
         page_version_id=db_version.id,
@@ -119,7 +122,7 @@ def delete_page(
     db_page = _get_db_page(page_id)
 
     # Keep values for use after page is deleted.
-    site_id = db_page.site_id
+    site = site_service.get_site(db_page.site_id)
     page_name = db_page.name
 
     db_versions = _get_db_versions(page_id)
@@ -147,7 +150,7 @@ def delete_page(
         occurred_at=datetime.utcnow(),
         initiator=EventUser.from_user(initiator) if initiator else None,
         page_id=page_id,
-        site_id=site_id,
+        site=EventSite.from_site(site),
         page_name=page_name,
         language_code=db_page.language_code,
     )

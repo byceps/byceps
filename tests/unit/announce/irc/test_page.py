@@ -7,7 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
-from byceps.events.base import EventUser
+from byceps.events.base import EventSite, EventUser
 from byceps.events.page import (
     PageCreatedEvent,
     PageDeletedEvent,
@@ -37,7 +37,7 @@ def test_announce_page_created(app: Flask, editor: User, webhook_for_irc):
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(editor),
         page_id=PAGE_ID,
-        site_id=SiteID('acmecon-2014-website'),
+        site=EventSite(SiteID('acmecon-2014-website'), 'ACMECon 2014 Website'),
         page_name='overview',
         language_code='de',
         page_version_id=PAGE_VERSION_ID,
@@ -58,7 +58,7 @@ def test_announce_page_updated(app: Flask, editor: User, webhook_for_irc):
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(editor),
         page_id=PAGE_ID,
-        site_id=SiteID('acmecon-2014-website'),
+        site=EventSite(SiteID('acmecon-2014-website'), 'ACMECon 2014 Website'),
         page_name='overview',
         language_code='en',
         page_version_id=PAGE_VERSION_ID,
@@ -79,7 +79,7 @@ def test_announce_page_deleted(app: Flask, editor: User, webhook_for_irc):
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(editor),
         page_id=PAGE_ID,
-        site_id=SiteID('acmecon-2014-website'),
+        site=EventSite(SiteID('acmecon-2014-website'), 'ACMECon 2014 Website'),
         page_name='old_page',
         language_code='en',
     )

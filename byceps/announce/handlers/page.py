@@ -36,7 +36,7 @@ def announce_page_created(
         initiator_screen_name=initiator_screen_name,
         page_name=event.page_name,
         language_code=event.language_code,
-        site_id=event.site_id,
+        site_id=event.site.id,
     )
 
     return Announcement(text)
@@ -54,7 +54,7 @@ def announce_page_updated(
         initiator_screen_name=initiator_screen_name,
         page_name=event.page_name,
         language_code=event.language_code,
-        site_id=event.site_id,
+        site_id=event.site.id,
     )
 
     return Announcement(text)
@@ -72,7 +72,7 @@ def announce_page_deleted(
         initiator_screen_name=initiator_screen_name,
         page_name=event.page_name,
         language_code=event.language_code,
-        site_id=event.site_id,
+        site_id=event.site.id,
     )
 
     return Announcement(text)

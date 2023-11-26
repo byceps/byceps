@@ -8,8 +8,8 @@ byceps.events.page
 
 from dataclasses import dataclass
 
+from byceps.events.base import EventSite
 from byceps.services.page.models import PageID, PageVersionID
-from byceps.services.site.models import SiteID
 
 from .base import _BaseEvent
 
@@ -17,7 +17,7 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class _PageEvent(_BaseEvent):
     page_id: PageID
-    site_id: SiteID
+    site: EventSite
     page_name: str
     language_code: str
 
