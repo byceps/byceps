@@ -29,7 +29,7 @@ class OutgoingWebhook:
     text_prefix: str | None
     extra_fields: dict[str, Any]
     url: str
-    description: str
+    description: str | None
     enabled: bool
 
 

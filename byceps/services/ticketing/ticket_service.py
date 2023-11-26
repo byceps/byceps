@@ -220,14 +220,17 @@ def get_tickets_used_by_user(
 
 def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user uses any ticket for that party."""
-    return db.session.scalar(
-        select(
-            select(DbTicket)
-            .filter_by(party_id=party_id)
-            .filter_by(used_by_id=user_id)
-            .filter_by(revoked=False)
-            .exists()
+    return (
+        db.session.scalar(
+            select(
+                select(DbTicket)
+                .filter_by(party_id=party_id)
+                .filter_by(used_by_id=user_id)
+                .filter_by(revoked=False)
+                .exists()
+            )
         )
+        or False
     )
 
 
@@ -240,7 +243,7 @@ def get_ticket_users_for_party(party_id: PartyID) -> set[UserID]:
         .filter(DbTicket.used_by_id.is_not(None))
     ).all()
 
-    return set(user_ids)
+    return set(filter(None, user_ids))
 
 
 def select_ticket_users_for_party(
@@ -257,11 +260,11 @@ def select_ticket_users_for_party(
         .filter(DbTicket.revoked == False)  # noqa: E712
     )
 
-    user_ids = db.session.scalars(
+    ticket_user_ids = db.session.scalars(
         select(DbUser.id).filter(stmt.exists()).filter(DbUser.id.in_(user_ids))
     ).all()
 
-    return set(user_ids)
+    return set(ticket_user_ids)
 
 
 def get_ticket_with_details(ticket_id: TicketID) -> DbTicket | None:
@@ -328,10 +331,13 @@ def get_tickets_with_details_for_party_paginated(
 
 def count_revoked_tickets_for_party(party_id: PartyID) -> int:
     """Return the number of revoked tickets for that party."""
-    return db.session.scalar(
-        select(db.func.count(DbTicket.id))
-        .filter_by(party_id=party_id)
-        .filter_by(revoked=True)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbTicket.id))
+            .filter_by(party_id=party_id)
+            .filter_by(revoked=True)
+        )
+        or 0
     )
 
 
@@ -339,10 +345,13 @@ def count_sold_tickets_for_party(party_id: PartyID) -> int:
     """Return the number of "sold" (i.e. generated and not revoked)
     tickets for that party.
     """
-    return db.session.scalar(
-        select(db.func.count(DbTicket.id))
-        .filter_by(party_id=party_id)
-        .filter_by(revoked=False)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbTicket.id))
+            .filter_by(party_id=party_id)
+            .filter_by(revoked=False)
+        )
+        or 0
     )
 
 
@@ -350,10 +359,13 @@ def count_tickets_checked_in_for_party(party_id: PartyID) -> int:
     """Return the number tickets for that party that were used to check
     in their respective user.
     """
-    return db.session.scalar(
-        select(db.func.count(DbTicket.id))
-        .filter_by(party_id=party_id)
-        .filter_by(user_checked_in=True)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbTicket.id))
+            .filter_by(party_id=party_id)
+            .filter_by(user_checked_in=True)
+        )
+        or 0
     )
 
 
@@ -371,6 +383,6 @@ def get_ticket_sale_stats(party_id: PartyID) -> TicketSaleStats:
 
 def find_ticket_occupying_seat(seat_id: SeatID) -> DbTicket | None:
     """Return the ticket that occupies that seat, or `None` if not found."""
-    return db.session.execute(
+    return db.session.scalars(
         select(DbTicket).filter_by(occupied_seat_id=seat_id)
     ).one_or_none()

@@ -327,10 +327,13 @@ def delete_order(order: Order) -> None:
 
 def count_open_orders(shop_id: ShopID) -> int:
     """Return the number of open orders for the shop."""
-    return db.session.scalar(
-        select(db.func.count(DbOrder.id))
-        .filter_by(shop_id=shop_id)
-        .filter_by(_payment_state=PaymentState.open.name)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbOrder.id))
+            .filter_by(shop_id=shop_id)
+            .filter_by(_payment_state=PaymentState.open.name)
+        )
+        or 0
     )
 
 
@@ -693,10 +696,13 @@ def get_orders_placed_by_user_for_storefront(
 
 def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
     """Return `True` if the user has placed orders in that shop."""
-    orders_total = db.session.scalar(
-        select(db.func.count(DbOrder.id))
-        .filter_by(shop_id=shop_id)
-        .filter_by(placed_by_id=user_id)
+    orders_total = (
+        db.session.scalar(
+            select(db.func.count(DbOrder.id))
+            .filter_by(shop_id=shop_id)
+            .filter_by(placed_by_id=user_id)
+        )
+        or 0
     )
 
     return orders_total > 0

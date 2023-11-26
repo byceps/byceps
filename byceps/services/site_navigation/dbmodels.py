@@ -90,7 +90,7 @@ class DbNavItem(db.Model):
             collection_class=ordering_list('position', count_from=1),
         ),
     )
-    parent_item_id: Mapped[NavMenuID | None] = mapped_column(
+    parent_item_id: Mapped[NavItemID | None] = mapped_column(
         db.Uuid,
         db.ForeignKey('site_nav_menu_items.id'),
         index=True,

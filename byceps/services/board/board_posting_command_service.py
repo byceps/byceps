@@ -231,14 +231,17 @@ def remove_reaction(
 def _is_reaction_existing(
     posting_id: PostingID, user_id: UserID, kind: str
 ) -> bool:
-    return db.session.scalar(
-        select(
-            select(DbPostingReaction)
-            .filter_by(posting_id=posting_id)
-            .filter_by(user_id=user_id)
-            .filter_by(kind=kind)
-            .exists()
+    return (
+        db.session.scalar(
+            select(
+                select(DbPostingReaction)
+                .filter_by(posting_id=posting_id)
+                .filter_by(user_id=user_id)
+                .filter_by(kind=kind)
+                .exists()
+            )
         )
+        or False
     )
 
 

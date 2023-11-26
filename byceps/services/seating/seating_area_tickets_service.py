@@ -71,8 +71,12 @@ def get_managed_tickets(
 ) -> Iterator[tuple[SeatTicket, bool, str | None]]:
     for ticket in tickets:
         managed_ticket = _build_seat_ticket(ticket, users_by_id)
-        occupies_seat = ticket.occupied_seat_id is not None
-        seat_label = ticket.occupied_seat.label if occupies_seat else None
+        occupies_seat = ticket.occupied_seat is not None
+        seat_label = (
+            ticket.occupied_seat.label
+            if (ticket.occupied_seat is not None)
+            else None
+        )
 
         yield managed_ticket, occupies_seat, seat_label
 
@@ -88,7 +92,7 @@ def _build_seat_ticket(
 
     return SeatTicket(
         id=ticket.id,
-        code=ticket.code,
+        code=TicketCode(ticket.code),
         category_label=ticket.category.title,
         user=user,
     )

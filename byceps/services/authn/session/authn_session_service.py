@@ -8,6 +8,7 @@ byceps.services.authn.session.authn_session_service
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from datetime import datetime
 from uuid import UUID, uuid4
 
@@ -93,12 +94,15 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     Return `False` if the session token is unknown or the user ID
     provided by the client does not match the one stored on the server.
     """
-    return db.session.scalar(
-        select(
-            db.exists()
-            .where(DbSessionToken.token == token)
-            .where(DbSessionToken.user_id == user_id)
+    return (
+        db.session.scalar(
+            select(
+                db.exists()
+                .where(DbSessionToken.token == token)
+                .where(DbSessionToken.user_id == user_id)
+            )
         )
+        or False
     )
 
 
@@ -188,19 +192,23 @@ def find_recent_logins_for_users(
 
 def find_logins_for_ip_address(
     ip_address: str,
-) -> list[tuple[datetime, UserID]]:
+) -> Sequence[tuple[datetime, UserID]]:
     """Return login timestamp and user ID for logins from the given IP
     address.
     """
-    return db.session.execute(
-        select(
-            DbUserLogEntry.occurred_at,
-            DbUserLogEntry.user_id,
+    return (
+        db.session.execute(
+            select(
+                DbUserLogEntry.occurred_at,
+                DbUserLogEntry.user_id,
+            )
+            .filter_by(event_type='user-logged-in')
+            .filter(DbUserLogEntry.data['ip_address'].astext == ip_address)
+            .order_by(DbUserLogEntry.occurred_at)
         )
-        .filter_by(event_type='user-logged-in')
-        .filter(DbUserLogEntry.data['ip_address'].astext == ip_address)
-        .order_by(DbUserLogEntry.occurred_at)
-    ).all()
+        .tuples()
+        .all()
+    )
 
 
 def delete_login_entries(occurred_before: datetime) -> int:

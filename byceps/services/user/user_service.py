@@ -56,12 +56,16 @@ def find_active_user(
     """
     stmt = _get_user_stmt(include_avatar)
 
-    row = db.session.execute(
-        stmt.filter(DbUser.initialized == True)  # noqa: E712
-        .filter(DbUser.suspended == False)  # noqa: E712
-        .filter(DbUser.deleted == False)  # noqa: E712
-        .filter(DbUser.id == user_id)
-    ).one_or_none()
+    row = (
+        db.session.execute(
+            stmt.filter(DbUser.initialized == True)  # noqa: E712
+            .filter(DbUser.suspended == False)  # noqa: E712
+            .filter(DbUser.deleted == False)  # noqa: E712
+            .filter(DbUser.id == user_id)
+        )
+        .tuples()
+        .one_or_none()
+    )
 
     if row is None:
         return None
@@ -78,9 +82,13 @@ def find_user(
 
     Include avatar URL if requested.
     """
-    row = db.session.execute(
-        _get_user_stmt(include_avatar).filter(DbUser.id == user_id)
-    ).one_or_none()
+    row = (
+        db.session.execute(
+            _get_user_stmt(include_avatar).filter(DbUser.id == user_id)
+        )
+        .tuples()
+        .one_or_none()
+    )
 
     if row is None:
         return None
@@ -372,7 +380,9 @@ def get_email_address_data(user_id: UserID) -> UserEmailAddress:
     )
 
 
-def get_email_addresses(user_ids: set[UserID]) -> set[tuple[UserID, str]]:
+def get_email_addresses(
+    user_ids: set[UserID]
+) -> set[tuple[UserID, str | None]]:
     """Return the users' e-mail addresses."""
     rows = (
         db.session.execute(
@@ -438,12 +448,15 @@ def _do_users_matching_filter_exist(
 
     Comparison is done case-insensitively.
     """
-    return db.session.scalar(
-        select(
-            select(DbUser)
-            .filter(db.func.lower(model_attribute) == search_value.lower())
-            .exists()
+    return (
+        db.session.scalar(
+            select(
+                select(DbUser)
+                .filter(db.func.lower(model_attribute) == search_value.lower())
+                .exists()
+            )
         )
+        or False
     )
 
 

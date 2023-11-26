@@ -20,6 +20,7 @@ from byceps.services.seating import seating_area_service
 from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import User, UserID
 
@@ -177,12 +178,12 @@ def _to_attendee_seat(db_ticket: DbTicket) -> AttendeeSeat | None:
 
 def _get_attendee_ticket_sort_key(
     attendee_ticket: AttendeeTicket,
-) -> tuple[bool, str, bool]:
+) -> tuple[bool, str | None, bool, TicketID]:
     return (
         # List tickets with occupied seat first.
         attendee_ticket.seat is None,
         # Sort by seat label.
-        (attendee_ticket.seat.label if attendee_ticket.seat else None) or '',
+        (attendee_ticket.seat.label if attendee_ticket.seat else None) or None,
         # List checked in tickets first.
         not attendee_ticket.checked_in,
         # Sort by ticket ID to stabilize sort.

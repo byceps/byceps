@@ -23,7 +23,7 @@ from .dbmodels.ticket import DbTicket
 from .errors import TicketingError, UserIdUnknownError
 from .models.checkin import TicketCheckIn, TicketForCheckIn
 from .models.log import TicketLogEntry
-from .models.ticket import TicketID
+from .models.ticket import TicketCode, TicketID
 
 
 def check_in_user(
@@ -43,7 +43,7 @@ def check_in_user(
     ticket_for_check_in = TicketForCheckIn(
         id=db_ticket.id,
         party_id=db_ticket.party_id,
-        code=db_ticket.code,
+        code=TicketCode(db_ticket.code),
         occupied_seat_id=db_ticket.occupied_seat_id,
         used_by=used_by,
         revoked=db_ticket.revoked,

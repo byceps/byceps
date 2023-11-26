@@ -51,16 +51,19 @@ def get_all_lists() -> list[List]:
 
 def count_subscribers(list_id: ListID) -> int:
     """Return the number of users that are currently subscribed to that list."""
-    return db.session.scalar(
-        select(db.func.count())
-        .select_from(DbUser)
-        .join(DbSubscription)
-        .filter(DbSubscription.list_id == list_id)
-        .filter(DbUser.email_address.is_not(None))
-        .filter(DbUser.initialized == True)  # noqa: E712
-        .filter(DbUser.email_address_verified == True)  # noqa: E712
-        .filter(DbUser.suspended == False)  # noqa: E712
-        .filter(DbUser.deleted == False)  # noqa: E712
+    return (
+        db.session.scalar(
+            select(db.func.count())
+            .select_from(DbUser)
+            .join(DbSubscription)
+            .filter(DbSubscription.list_id == list_id)
+            .filter(DbUser.email_address.is_not(None))
+            .filter(DbUser.initialized == True)  # noqa: E712
+            .filter(DbUser.email_address_verified == True)  # noqa: E712
+            .filter(DbUser.suspended == False)  # noqa: E712
+            .filter(DbUser.deleted == False)  # noqa: E712
+        )
+        or 0
     )
 
 
@@ -106,12 +109,15 @@ def get_subscription_updates_for_user(
 
 def is_subscribed(user_id: UserID, list_id: ListID) -> bool:
     """Return if the user is subscribed to the list or not."""
-    return db.session.scalar(
-        select(
-            db.exists()
-            .where(DbSubscription.user_id == user_id)
-            .where(DbSubscription.list_id == list_id)
+    return (
+        db.session.scalar(
+            select(
+                db.exists()
+                .where(DbSubscription.user_id == user_id)
+                .where(DbSubscription.list_id == list_id)
+            )
         )
+        or False
     )
 
 

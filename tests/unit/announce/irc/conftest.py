@@ -68,6 +68,6 @@ def webhook_for_irc() -> OutgoingWebhook:
         text_prefix=None,
         extra_fields={'channel': '#eventlog'},
         url='http://127.0.0.1:12345/',
-        description='',
+        description=None,
         enabled=True,
     )

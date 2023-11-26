@@ -99,13 +99,16 @@ def delete_party(party_id: PartyID) -> None:
 
 def count_parties() -> int:
     """Return the number of parties (of all brands)."""
-    return db.session.scalar(select(db.func.count(DbParty.id)))
+    return db.session.scalar(select(db.func.count(DbParty.id))) or 0
 
 
 def count_parties_for_brand(brand_id: BrandID) -> int:
     """Return the number of parties for that brand."""
-    return db.session.scalar(
-        select(db.func.count(DbParty.id)).filter_by(brand_id=brand_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbParty.id)).filter_by(brand_id=brand_id)
+        )
+        or 0
     )
 
 

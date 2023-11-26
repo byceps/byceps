@@ -25,7 +25,7 @@ def build_webhook(
         text_prefix=text_prefix,
         extra_fields={},
         url=url,
-        description='',
+        description=None,
         enabled=True,
     )
 

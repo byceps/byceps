@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from moneyed import EUR
 
 from byceps.events.shop import ShopOrderPaidEvent
@@ -16,7 +18,7 @@ from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.user.models.user import User
 
 
-def get_tickets_for_order(order: Order) -> list[DbTicket]:
+def get_tickets_for_order(order: Order) -> Sequence[DbTicket]:
     return ticket_service.get_tickets_created_by_order(order.order_number)
 
 

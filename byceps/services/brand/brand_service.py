@@ -99,7 +99,7 @@ def get_active_brands() -> set[Brand]:
 
 def count_brands() -> int:
     """Return the number of brands."""
-    return db.session.scalar(select(db.func.count(DbBrand.id)))
+    return db.session.scalar(select(db.func.count(DbBrand.id))) or 0
 
 
 def _db_entity_to_brand(db_brand: DbBrand) -> Brand:

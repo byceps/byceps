@@ -9,7 +9,6 @@ byceps.services.webhooks.dbmodels
 from __future__ import annotations
 
 from typing import Any, TYPE_CHECKING
-from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -23,7 +22,7 @@ from sqlalchemy.ext.mutable import MutableDict, MutableList
 from byceps.database import db
 from byceps.util.uuid import generate_uuid4
 
-from .models import EventFilters
+from .models import EventFilters, WebhookID
 
 
 class DbOutgoingWebhook(db.Model):
@@ -31,7 +30,7 @@ class DbOutgoingWebhook(db.Model):
 
     __tablename__ = 'outgoing_webhooks'
 
-    id: Mapped[UUID] = mapped_column(
+    id: Mapped[WebhookID] = mapped_column(
         db.Uuid, default=generate_uuid4, primary_key=True
     )
     _event_types: Mapped[list[str]] = mapped_column(

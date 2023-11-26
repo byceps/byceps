@@ -8,6 +8,8 @@ Current user's dashboard
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from flask import abort, g
 
 from byceps.blueprints.site.board import service as board_helper_service
@@ -79,7 +81,7 @@ def _get_open_orders(user_id: UserID) -> list[SiteOrderListItem]:
     return orders
 
 
-def _get_tickets(user_id: UserID) -> list[DbTicket]:
+def _get_tickets(user_id: UserID) -> Sequence[DbTicket]:
     if g.party_id is None:
         return []
 
@@ -94,7 +96,7 @@ def _get_news_headlines() -> list[NewsHeadline]:
     return news_item_service.get_recent_headlines(channel_ids, limit=4)
 
 
-def _get_board_topics(current_user: CurrentUser) -> list[DbTopic]:
+def _get_board_topics(current_user: CurrentUser) -> Sequence[DbTopic]:
     board_id = g.site.board_id
     if board_id is None:
         return []

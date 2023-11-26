@@ -185,7 +185,7 @@ def _get_current_party_or_404() -> Party:
     return party
 
 
-def may_user_register_server(party: Party, user: User) -> None:
+def may_user_register_server(party: Party, user: User) -> bool:
     result = guest_server_service.ensure_user_may_register_server(party, user)
 
     if result.is_err():

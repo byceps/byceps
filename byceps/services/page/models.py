@@ -32,7 +32,7 @@ class Page:
     language_code: str
     url_path: str
     published: bool
-    nav_menu_id: NavMenuID
+    nav_menu_id: NavMenuID | None
 
     @property
     def current_page_id(self) -> str:

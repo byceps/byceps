@@ -258,12 +258,15 @@ def find_current_version_id(page_id: PageID) -> PageVersionID | None:
 
 def is_current_version(page_id: PageID, version_id: PageVersionID) -> bool:
     """Return `True` if the given version is the current version of the page."""
-    return db.session.scalar(
-        select(
-            db.exists()
-            .where(DbCurrentPageVersionAssociation.page_id == page_id)
-            .where(DbCurrentPageVersionAssociation.version_id == version_id)
+    return (
+        db.session.scalar(
+            select(
+                db.exists()
+                .where(DbCurrentPageVersionAssociation.page_id == page_id)
+                .where(DbCurrentPageVersionAssociation.version_id == version_id)
+            )
         )
+        or False
     )
 
 
@@ -301,9 +304,13 @@ def find_current_version_for_url_path(
 
 def get_url_paths_by_page_name_for_site(site_id: SiteID) -> dict[str, str]:
     """Return mapping from page names to URL paths for that site."""
-    rows = db.session.execute(
-        select(DbPage.name, DbPage.url_path).filter_by(site_id=site_id)
-    ).all()
+    rows = (
+        db.session.execute(
+            select(DbPage.name, DbPage.url_path).filter_by(site_id=site_id)
+        )
+        .tuples()
+        .all()
+    )
 
     return dict(rows)
 

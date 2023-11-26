@@ -63,11 +63,15 @@ def count_awardings() -> dict[BadgeID, int]:
     Because a badge can be awarded multiple times to a user, the number
     of awardings does not represent the number of awardees.
     """
-    rows = db.session.execute(
-        select(DbBadge.id, db.func.count(DbBadgeAwarding.id))
-        .outerjoin(DbBadgeAwarding)
-        .group_by(DbBadge.id)
-    ).all()
+    rows = (
+        db.session.execute(
+            select(DbBadge.id, db.func.count(DbBadgeAwarding.id))
+            .outerjoin(DbBadgeAwarding)
+            .group_by(DbBadge.id)
+        )
+        .tuples()
+        .all()
+    )
 
     return dict(rows)
 

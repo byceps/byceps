@@ -98,8 +98,18 @@ def get_comments(
     comments = []
     for db_comment in db_comments:
         creator = creators_by_id[db_comment.created_by_id]
-        last_editor = last_editors_by_id.get(db_comment.last_edited_by_id)
-        moderator = moderators_by_id.get(db_comment.hidden_by_id)
+
+        last_editor = (
+            last_editors_by_id.get(db_comment.last_edited_by_id)
+            if db_comment.last_edited_by_id
+            else None
+        )
+
+        moderator = (
+            moderators_by_id.get(db_comment.hidden_by_id)
+            if db_comment.hidden_by_id
+            else None
+        )
 
         comment = _db_entity_to_comment(
             db_comment,

@@ -113,21 +113,27 @@ def count_occupied_seats_by_category(
 
 def count_occupied_seats_for_party(party_id: PartyID) -> int:
     """Count occupied seats for the party."""
-    return db.session.scalar(
-        select(db.func.count(DbSeat.id))
-        .join(DbTicket)
-        .join(DbTicketCategory)
-        .filter(DbTicket.revoked == False)  # noqa: E712
-        .filter(DbTicketCategory.party_id == party_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbSeat.id))
+            .join(DbTicket)
+            .join(DbTicketCategory)
+            .filter(DbTicket.revoked == False)  # noqa: E712
+            .filter(DbTicketCategory.party_id == party_id)
+        )
+        or 0
     )
 
 
 def count_seats_for_party(party_id: PartyID) -> int:
     """Return the number of seats in seating areas for that party."""
-    return db.session.scalar(
-        select(db.func.count(DbSeat.id))
-        .join(DbSeatingArea)
-        .filter(DbSeatingArea.party_id == party_id)
+    return (
+        db.session.scalar(
+            select(db.func.count(DbSeat.id))
+            .join(DbSeatingArea)
+            .filter(DbSeatingArea.party_id == party_id)
+        )
+        or 0
     )
 
 
