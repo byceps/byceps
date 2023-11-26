@@ -20,8 +20,8 @@ def test_grant_orga_status(user, brand, initiator):
     assert event.initiator.screen_name == initiator.screen_name
     assert event.user.id == user.id
     assert event.user.screen_name == user.screen_name
-    assert event.brand_id == brand.id
-    assert event.brand_title == brand.title
+    assert event.brand.id == brand.id
+    assert event.brand.title == brand.title
 
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None
@@ -44,8 +44,8 @@ def test_revoke_orga_status(user, brand, initiator):
     assert event.initiator.screen_name == initiator.screen_name
     assert event.user.id == user.id
     assert event.user.screen_name == user.screen_name
-    assert event.brand_id == brand.id
-    assert event.brand_title == brand.title
+    assert event.brand.id == brand.id
+    assert event.brand.title == brand.title
 
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None

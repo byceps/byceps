@@ -10,22 +10,20 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.events.base import EventUser
+from byceps.events.base import EventBrand, EventUser
 from byceps.services.board.models import (
     BoardCategoryID,
     BoardID,
     PostingID,
     TopicID,
 )
-from byceps.services.brand.models import BrandID
 
 from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
 class _BoardEvent(_BaseEvent):
-    brand_id: BrandID
-    brand_title: str
+    brand: EventBrand
     board_id: BoardID
 
 

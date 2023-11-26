@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from byceps.events.base import EventUser
+from byceps.events.base import EventBrand, EventUser
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.brand.models import Brand
 from byceps.services.user.models.log import UserLogEntry
@@ -41,8 +41,7 @@ def _build_orga_status_granted_event(
         occurred_at=occurred_at,
         initiator=EventUser.from_user(initiator),
         user=EventUser.from_user(user),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
     )
 
 
@@ -87,8 +86,7 @@ def _build_orga_status_revoked_event(
         occurred_at=occurred_at,
         initiator=EventUser.from_user(initiator),
         user=EventUser.from_user(user),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
     )
 
 

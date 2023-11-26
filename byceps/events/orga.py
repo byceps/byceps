@@ -10,8 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.events.base import EventUser
-from byceps.services.brand.models import BrandID
+from byceps.events.base import EventBrand, EventUser
 
 from .base import _BaseEvent
 
@@ -19,8 +18,7 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class _OrgaEvent(_BaseEvent):
     user: EventUser
-    brand_id: BrandID
-    brand_title: str
+    brand: EventBrand
 
 
 @dataclass(frozen=True)

@@ -7,7 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
-from byceps.events.base import EventUser
+from byceps.events.base import EventBrand, EventUser
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.brand.models import BrandID
 from byceps.services.user.models.user import User
@@ -29,8 +29,7 @@ def test_orga_status_granted_announced(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(admin),
         user=EventUser.from_user(trainee),
-        brand_id=BrandID('cozylan'),
-        brand_title='CozyLAN',
+        brand=EventBrand(BrandID('cozylan'), 'CozyLAN'),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -49,8 +48,7 @@ def test_orga_status_revoked_announced(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(admin),
         user=EventUser.from_user(trainee),
-        brand_id=BrandID('cozylan'),
-        brand_title='CozyLAN',
+        brand=EventBrand(BrandID('cozylan'), 'CozyLAN'),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

@@ -81,7 +81,7 @@ def _persist_orga_status_grant(
     event: OrgaStatusGrantedEvent,
     log_entry: UserLogEntry,
 ) -> None:
-    db_orga_flag = DbOrgaFlag(event.user.id, event.brand_id)
+    db_orga_flag = DbOrgaFlag(event.user.id, event.brand.id)
     db.session.add(db_orga_flag)
 
     db_log_entry = user_log_service.to_db_entry(log_entry)
@@ -110,7 +110,7 @@ def _persist_orga_status_revocation(
     db.session.execute(
         delete(DbOrgaFlag)
         .filter_by(user_id=event.user.id)
-        .filter_by(brand_id=event.brand_id)
+        .filter_by(brand_id=event.brand.id)
     )
 
     db_log_entry = user_log_service.to_db_entry(log_entry)

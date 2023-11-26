@@ -11,7 +11,21 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.user.models.user import User, UserID
+
+
+@dataclass(frozen=True)
+class EventBrand:
+    id: BrandID
+    title: str
+
+    @classmethod
+    def from_brand(cls, brand: Brand) -> EventBrand:
+        return cls(
+            id=brand.id,
+            title=brand.title,
+        )
 
 
 @dataclass(frozen=True)

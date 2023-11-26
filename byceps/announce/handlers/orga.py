@@ -31,7 +31,7 @@ def announce_orga_status_granted(
     text = gettext(
         '%(initiator_screen_name)s has granted orga status for brand %(brand_title)s to %(user_screen_name)s.',
         initiator_screen_name=initiator_screen_name,
-        brand_title=event.brand_title,
+        brand_title=event.brand.title,
         user_screen_name=user_screen_name,
     )
 
@@ -49,7 +49,7 @@ def announce_orga_status_revoked(
     text = gettext(
         '%(initiator_screen_name)s has revoked orga status for brand %(brand_title)s for %(user_screen_name)s.',
         initiator_screen_name=initiator_screen_name,
-        brand_title=event.brand_title,
+        brand_title=event.brand.title,
         user_screen_name=user_screen_name,
     )
 

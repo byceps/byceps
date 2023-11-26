@@ -96,11 +96,11 @@ def grant_orga_status(brand_id):
         gettext(
             'Organizer status was granted to %(screen_name)s for brand %(brand_title)s.',
             screen_name=event.user.screen_name,
-            brand_title=event.brand_title,
+            brand_title=event.brand.title,
         )
     )
 
-    return redirect_to('.persons_for_brand', brand_id=event.brand_id)
+    return redirect_to('.persons_for_brand', brand_id=event.brand.id)
 
 
 @blueprint.delete('/persons/<brand_id>/<uuid:user_id>')
@@ -125,7 +125,7 @@ def revoke_orga_status(brand_id, user_id):
         gettext(
             'Organizer status was revoked for %(screen_name)s for brand %(brand_title)s.',
             screen_name=event.user.screen_name,
-            brand_title=event.brand_title,
+            brand_title=event.brand.title,
         )
     )
 

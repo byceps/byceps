@@ -11,7 +11,7 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.base import EventUser
+from byceps.events.base import EventBrand, EventUser
 from byceps.events.board import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -58,8 +58,7 @@ def create_posting(
     event = BoardPostingCreatedEvent(
         occurred_at=db_posting.created_at,
         initiator=EventUser.from_user(creator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_category.board_id,
         posting_id=db_posting.id,
         posting_creator=EventUser.from_user(creator),
@@ -93,8 +92,7 @@ def update_posting(
     return BoardPostingUpdatedEvent(
         occurred_at=now,
         initiator=EventUser.from_user(editor),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
         posting_creator=EventUser.from_user(posting_creator),
@@ -125,8 +123,7 @@ def hide_posting(
     event = BoardPostingHiddenEvent(
         occurred_at=now,
         initiator=EventUser.from_user(moderator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
         posting_creator=EventUser.from_user(posting_creator),
@@ -160,8 +157,7 @@ def unhide_posting(
     event = BoardPostingUnhiddenEvent(
         occurred_at=now,
         initiator=EventUser.from_user(moderator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
         posting_creator=EventUser.from_user(posting_creator),

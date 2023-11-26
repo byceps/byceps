@@ -11,7 +11,7 @@ from datetime import datetime
 from sqlalchemy import delete
 
 from byceps.database import db
-from byceps.events.base import EventUser
+from byceps.events.base import EventBrand, EventUser
 from byceps.events.board import (
     BoardTopicCreatedEvent,
     BoardTopicHiddenEvent,
@@ -66,8 +66,7 @@ def create_topic(
     event = BoardTopicCreatedEvent(
         occurred_at=topic.created_at,
         initiator=EventUser.from_user(creator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_category.board_id,
         topic_id=topic.id,
         topic_creator=EventUser.from_user(creator),
@@ -97,8 +96,7 @@ def update_topic(
     return BoardTopicUpdatedEvent(
         occurred_at=posting_event.occurred_at,
         initiator=EventUser.from_user(editor),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator=EventUser.from_user(topic_creator),
@@ -126,8 +124,7 @@ def hide_topic(topic_id: TopicID, moderator: User) -> BoardTopicHiddenEvent:
     return BoardTopicHiddenEvent(
         occurred_at=now,
         initiator=EventUser.from_user(moderator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator=EventUser.from_user(topic_creator),
@@ -156,8 +153,7 @@ def unhide_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnhiddenEvent:
     return BoardTopicUnhiddenEvent(
         occurred_at=now,
         initiator=EventUser.from_user(moderator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator=EventUser.from_user(topic_creator),
@@ -183,8 +179,7 @@ def lock_topic(topic_id: TopicID, moderator: User) -> BoardTopicLockedEvent:
     return BoardTopicLockedEvent(
         occurred_at=now,
         initiator=EventUser.from_user(moderator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator=EventUser.from_user(topic_creator),
@@ -211,8 +206,7 @@ def unlock_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnlockedEvent:
     return BoardTopicUnlockedEvent(
         occurred_at=now,
         initiator=EventUser.from_user(moderator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator=EventUser.from_user(topic_creator),
@@ -238,8 +232,7 @@ def pin_topic(topic_id: TopicID, moderator: User) -> BoardTopicPinnedEvent:
     return BoardTopicPinnedEvent(
         occurred_at=now,
         initiator=EventUser.from_user(moderator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator=EventUser.from_user(topic_creator),
@@ -266,8 +259,7 @@ def unpin_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnpinnedEvent:
     return BoardTopicUnpinnedEvent(
         occurred_at=now,
         initiator=EventUser.from_user(moderator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator=EventUser.from_user(topic_creator),
@@ -299,8 +291,7 @@ def move_topic(
     return BoardTopicMovedEvent(
         occurred_at=now,
         initiator=EventUser.from_user(moderator),
-        brand_id=brand.id,
-        brand_title=brand.title,
+        brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
         topic_creator=EventUser.from_user(topic_creator),

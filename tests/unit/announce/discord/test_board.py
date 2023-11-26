@@ -7,7 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
-from byceps.events.base import EventUser
+from byceps.events.base import EventBrand, EventUser
 from byceps.events.board import BoardPostingCreatedEvent, BoardTopicCreatedEvent
 from byceps.services.board.models import (
     BoardCategoryID,
@@ -47,8 +47,7 @@ def test_announce_topic_created(app: Flask, author: User):
     event = BoardTopicCreatedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(author),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
         topic_creator=EventUser.from_user(author),
@@ -74,8 +73,7 @@ def test_announce_posting_created(app: Flask, author: User):
     event = BoardPostingCreatedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(author),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
         posting_creator=EventUser.from_user(author),

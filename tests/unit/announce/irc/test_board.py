@@ -7,7 +7,7 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
-from byceps.events.base import EventUser
+from byceps.events.base import EventBrand, EventUser
 from byceps.events.board import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -57,8 +57,7 @@ def test_announce_topic_created(app: Flask, author: User, webhook_for_irc):
     event = BoardTopicCreatedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(author),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
         topic_creator=EventUser.from_user(author),
@@ -84,8 +83,7 @@ def test_announce_topic_hidden(
     event = BoardTopicHiddenEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(moderator),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
         topic_creator=EventUser.from_user(author),
@@ -112,8 +110,7 @@ def test_announce_topic_unhidden(
     event = BoardTopicUnhiddenEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(moderator),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
         topic_creator=EventUser.from_user(author),
@@ -140,8 +137,7 @@ def test_announce_topic_locked(
     event = BoardTopicLockedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(moderator),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
         topic_creator=EventUser.from_user(author),
@@ -168,8 +164,7 @@ def test_announce_topic_unlocked(
     event = BoardTopicUnlockedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(moderator),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
         topic_creator=EventUser.from_user(author),
@@ -196,8 +191,7 @@ def test_announce_topic_pinned(
     event = BoardTopicPinnedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(moderator),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
         topic_creator=EventUser.from_user(author),
@@ -224,8 +218,7 @@ def test_announce_topic_unpinned(
     event = BoardTopicUnpinnedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(moderator),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
         topic_creator=EventUser.from_user(author),
@@ -253,8 +246,7 @@ def test_announce_topic_moved(
     event = BoardTopicMovedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(moderator),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
         topic_creator=EventUser.from_user(author),
@@ -282,8 +274,7 @@ def test_announce_posting_created(app: Flask, author: User, webhook_for_irc):
     event = BoardPostingCreatedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(author),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
         posting_creator=EventUser.from_user(author),
@@ -306,8 +297,7 @@ def test_announce_posting_created_on_muted_topic(
     event = BoardPostingCreatedEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(author),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
         posting_creator=EventUser.from_user(author),
@@ -335,8 +325,7 @@ def test_announce_posting_hidden(
     event = BoardPostingHiddenEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(moderator),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
         posting_creator=EventUser.from_user(author),
@@ -364,8 +353,7 @@ def test_announce_posting_unhidden(
     event = BoardPostingUnhiddenEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(moderator),
-        brand_id=BRAND_ID,
-        brand_title=BRAND_TITLE,
+        brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
         posting_creator=EventUser.from_user(author),

@@ -58,7 +58,7 @@ def announce_board_topic_created(
     """Announce that someone has created a board topic."""
     topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -82,7 +82,7 @@ def announce_board_topic_hidden(
     moderator_screen_name = get_screen_name_or_fallback(event.moderator)
     topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -107,7 +107,7 @@ def announce_board_topic_unhidden(
     moderator_screen_name = get_screen_name_or_fallback(event.moderator)
     topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -132,7 +132,7 @@ def announce_board_topic_locked(
     moderator_screen_name = get_screen_name_or_fallback(event.moderator)
     topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -157,7 +157,7 @@ def announce_board_topic_unlocked(
     moderator_screen_name = get_screen_name_or_fallback(event.moderator)
     topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -182,7 +182,7 @@ def announce_board_topic_pinned(
     moderator_screen_name = get_screen_name_or_fallback(event.moderator)
     topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -207,7 +207,7 @@ def announce_board_topic_unpinned(
     moderator_screen_name = get_screen_name_or_fallback(event.moderator)
     topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -232,7 +232,7 @@ def announce_board_topic_moved(
     moderator_screen_name = get_screen_name_or_fallback(event.moderator)
     topic_creator_screen_name = get_screen_name_or_fallback(event.topic_creator)
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -263,7 +263,7 @@ def announce_board_posting_created(
         event.posting_creator
     )
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -289,7 +289,7 @@ def announce_board_posting_hidden(
         event.posting_creator
     )
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
@@ -316,7 +316,7 @@ def announce_board_posting_unhidden(
         event.posting_creator
     )
     board_label_segment = _get_board_label_segment(
-        event.brand_title, webhook.format
+        event.brand.title, webhook.format
     )
     url = _format_url(event.url, webhook.format)
 
