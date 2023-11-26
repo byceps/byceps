@@ -6,7 +6,7 @@
 from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
-from byceps.events.base import EventUser
+from byceps.events.base import EventSite, EventUser
 from byceps.events.user import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,
@@ -35,8 +35,7 @@ def test_account_created_announced(app: Flask, make_user, webhook_for_irc):
         occurred_at=OCCURRED_AT,
         initiator=None,
         user=EventUser.from_user(make_user(screen_name='JaneDoe')),
-        site_id=None,
-        site_title=None,
+        site=None,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -56,8 +55,7 @@ def test_account_created_announced_on_site(
         occurred_at=OCCURRED_AT,
         initiator=None,
         user=EventUser.from_user(make_user(screen_name='JaneDoeOnSite')),
-        site_id=SiteID('acmecon-2014'),
-        site_title='ACMECon 2014 website',
+        site=EventSite(SiteID('acmecon-2014'), 'ACMECon 2014 website'),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -74,8 +72,7 @@ def test_account_created_by_admin_announced(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(make_user(screen_name='EinAdmin')),
         user=EventUser.from_user(make_user(screen_name='EinUser')),
-        site_id=None,
-        site_title=None,
+        site=None,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

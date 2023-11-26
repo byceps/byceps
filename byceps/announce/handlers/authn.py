@@ -44,11 +44,11 @@ def announce_user_logged_in(
     """Announce that a user has logged in."""
     screen_name = get_screen_name_or_fallback(event.initiator)
 
-    if event.site_id:
+    if event.site:
         text = gettext(
             '%(screen_name)s has logged in on site "%(site_title)s".',
             screen_name=screen_name,
-            site_title=event.site_title,
+            site_title=event.site.title,
         )
     else:
         text = gettext(

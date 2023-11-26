@@ -10,8 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.events.base import EventUser
-from byceps.services.site.models import SiteID
+from byceps.events.base import EventSite, EventUser
 from byceps.services.user.models.user import UserID
 
 from .base import _BaseEvent
@@ -24,8 +23,7 @@ class _UserEvent(_BaseEvent):
 
 @dataclass(frozen=True)
 class UserAccountCreatedEvent(_UserEvent):
-    site_id: SiteID | None
-    site_title: str | None
+    site: EventSite | None
 
 
 @dataclass(frozen=True)

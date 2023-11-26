@@ -37,12 +37,12 @@ def announce_user_account_created(
     initiator_screen_name = get_screen_name_or_fallback(event.initiator)
     user_screen_name = get_screen_name_or_fallback(event.user)
 
-    if event.site_id:
+    if event.site:
         text = gettext(
             '%(initiator_screen_name)s has created user account "%(user_screen_name)s" on site "%(site_title)s".',
             initiator_screen_name=initiator_screen_name,
             user_screen_name=user_screen_name,
-            site_title=event.site_title,
+            site_title=event.site.title,
         )
     else:
         text = gettext(

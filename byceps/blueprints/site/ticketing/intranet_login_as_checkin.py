@@ -25,11 +25,11 @@ from byceps.util.jobqueue import enqueue
 
 @user_logged_in.connect
 def _on_user_logged_in(sender, *, event: UserLoggedInEvent) -> None:
-    if event.site_id is None:
+    if event.site is None:
         return
 
     user = event.initiator
-    site = site_service.get_site(event.site_id)
+    site = site_service.get_site(event.site.id)
 
     if site.party_id and site.check_in_on_login:
         enqueue(_check_in_users_tickets, user, site.party_id)

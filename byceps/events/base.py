@@ -13,6 +13,7 @@ from datetime import datetime
 
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import Party, PartyID
+from byceps.services.site.models import Site, SiteID
 from byceps.services.user.models.user import User, UserID
 
 
@@ -39,6 +40,19 @@ class EventParty:
         return cls(
             id=party.id,
             title=party.title,
+        )
+
+
+@dataclass(frozen=True)
+class EventSite:
+    id: SiteID
+    title: str
+
+    @classmethod
+    def from_site(cls, site: Site) -> EventSite:
+        return cls(
+            id=site.id,
+            title=site.title,
         )
 
 

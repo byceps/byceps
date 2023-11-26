@@ -10,8 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.events.base import EventUser
-from byceps.services.site.models import SiteID
+from byceps.events.base import EventSite, EventUser
 
 from .base import _BaseEvent
 
@@ -39,5 +38,4 @@ class UserIdentityTagDeletedEvent(_UserIdentityTagEvent):
 
 @dataclass(frozen=True)
 class UserLoggedInEvent(_BaseEvent):
-    site_id: SiteID | None
-    site_title: str | None
+    site: EventSite | None

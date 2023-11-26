@@ -7,7 +7,7 @@ from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
 from byceps.events.authn import PasswordUpdatedEvent, UserLoggedInEvent
-from byceps.events.base import EventUser
+from byceps.events.base import EventSite, EventUser
 from byceps.services.site.models import SiteID
 
 from .helpers import assert_text, now
@@ -38,8 +38,7 @@ def test_user_logged_in_into_admin_app_announced(
     event = UserLoggedInEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(make_user(screen_name='Logvogel')),
-        site_id=None,
-        site_title=None,
+        site=None,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -55,8 +54,7 @@ def test_user_logged_in_into_site_app_announced(
     event = UserLoggedInEvent(
         occurred_at=OCCURRED_AT,
         initiator=EventUser.from_user(make_user(screen_name='Logvogel')),
-        site_id=SiteID('acmecon-2014'),
-        site_title='ACMECon 2014 website',
+        site=EventSite(SiteID('acmecon-2014'), 'ACMECon 2014 website'),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

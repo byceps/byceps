@@ -11,7 +11,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Any
 
-from byceps.events.base import EventUser
+from byceps.events.base import EventSite, EventUser
 from byceps.events.user import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,
@@ -107,8 +107,7 @@ def _build_account_created_event(
         occurred_at=occurred_at,
         initiator=EventUser.from_user(initiator) if initiator else None,
         user=EventUser.from_user(user),
-        site_id=site.id if site else None,
-        site_title=site.title if site else None,
+        site=EventSite.from_site(site) if site else None,
     )
 
 
