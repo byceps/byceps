@@ -13,3 +13,7 @@ class OrderAlreadyCanceledError:
 
 class OrderAlreadyMarkedAsPaidError:
     pass
+
+
+class OrderNotPaidError:
+    pass

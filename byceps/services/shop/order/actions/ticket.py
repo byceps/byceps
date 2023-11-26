@@ -56,7 +56,7 @@ def create_tickets(
 
     tickets_sold_event = create_tickets_sold_event(
         order.id, initiator, ticket_category_id, owner, ticket_quantity
-    )
+    ).unwrap()
     send_tickets_sold_event(tickets_sold_event)
 
 

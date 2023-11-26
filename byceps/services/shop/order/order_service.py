@@ -45,7 +45,11 @@ from .actions import (
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
-from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
+from .errors import (
+    OrderAlreadyCanceledError,
+    OrderAlreadyMarkedAsPaidError,
+    OrderNotPaidError,
+)
 from .models.detailed_order import AdminDetailedOrder, DetailedOrder
 from .models.log import OrderLogEntry
 from .models.number import OrderNumber
@@ -722,13 +726,16 @@ def find_payment_method_label(payment_method: str) -> str | None:
     return label or payment_method
 
 
-def get_payment_date(order_id: OrderID) -> datetime | None:
-    """Return the date the order has been marked as paid, or `None` if
-    it has not been paid.
-    """
-    return db.session.scalar(
+def get_payment_date(order_id: OrderID) -> Result[datetime, OrderNotPaidError]:
+    """Return the date the order has been marked as paid."""
+    paid_at = db.session.scalar(
         select(DbOrder.payment_state_updated_at).filter_by(id=order_id)
     )
+
+    if not paid_at:
+        return Err(OrderNotPaidError())
+
+    return Ok(paid_at)
 
 
 def _order_to_transfer_object(db_order: DbOrder, placed_by: User) -> Order:
