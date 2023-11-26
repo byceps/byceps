@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 import pytest
 
@@ -15,19 +17,16 @@ from byceps.events.newsletter import (
 from byceps.services.newsletter.models import ListID
 from byceps.services.user.models.user import User
 
-from .helpers import assert_text, now
-
-
-OCCURRED_AT = now()
+from .helpers import assert_text
 
 
 def test_subscribed_to_newsletter_announced(
-    app: Flask, user: User, webhook_for_irc
+    app: Flask, now: datetime, user: User, webhook_for_irc
 ):
     expected_text = 'User has subscribed to newsletter "CozyLAN Updates".'
 
     event = SubscribedToNewsletterEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(user),
         user=EventUser.from_user(user),
         list_id=ListID('cozylan-updates'),
@@ -40,12 +39,12 @@ def test_subscribed_to_newsletter_announced(
 
 
 def test_unsubscribed_from_newsletter_announced(
-    app: Flask, user: User, webhook_for_irc
+    app: Flask, now: datetime, user: User, webhook_for_irc
 ):
     expected_text = 'User has unsubscribed from newsletter "CozyLAN Updates".'
 
     event = UnsubscribedFromNewsletterEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(user),
         user=EventUser.from_user(user),
         list_id=ListID('cozylan-updates'),

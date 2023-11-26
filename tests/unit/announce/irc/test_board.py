@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 import pytest
 
@@ -32,10 +34,9 @@ from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token, generate_uuid
 
-from .helpers import assert_text, now
+from .helpers import assert_text
 
 
-OCCURRED_AT = now()
 BRAND_ID = BrandID('acmecon')
 BRAND_TITLE = 'ACME Entertainment Convention'
 BOARD_ID = BoardID(generate_token())
@@ -47,7 +48,9 @@ TOPIC_ID = TopicID(generate_uuid())
 POSTING_ID = PostingID(generate_uuid())
 
 
-def test_announce_topic_created(app: Flask, author: User, webhook_for_irc):
+def test_announce_topic_created(
+    app: Flask, now: datetime, author: User, webhook_for_irc
+):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
         'TheShadow999 has created topic "Brötchen zum Frühstück" '
@@ -55,7 +58,7 @@ def test_announce_topic_created(app: Flask, author: User, webhook_for_irc):
     )
 
     event = BoardTopicCreatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(author),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -71,7 +74,7 @@ def test_announce_topic_created(app: Flask, author: User, webhook_for_irc):
 
 
 def test_announce_topic_hidden(
-    app: Flask, author: User, moderator: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -81,7 +84,7 @@ def test_announce_topic_hidden(
     )
 
     event = BoardTopicHiddenEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(moderator),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -98,7 +101,7 @@ def test_announce_topic_hidden(
 
 
 def test_announce_topic_unhidden(
-    app: Flask, author: User, moderator: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -108,7 +111,7 @@ def test_announce_topic_unhidden(
     )
 
     event = BoardTopicUnhiddenEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(moderator),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -125,7 +128,7 @@ def test_announce_topic_unhidden(
 
 
 def test_announce_topic_locked(
-    app: Flask, author: User, moderator: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -135,7 +138,7 @@ def test_announce_topic_locked(
     )
 
     event = BoardTopicLockedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(moderator),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -152,7 +155,7 @@ def test_announce_topic_locked(
 
 
 def test_announce_topic_unlocked(
-    app: Flask, author: User, moderator: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -162,7 +165,7 @@ def test_announce_topic_unlocked(
     )
 
     event = BoardTopicUnlockedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(moderator),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -179,7 +182,7 @@ def test_announce_topic_unlocked(
 
 
 def test_announce_topic_pinned(
-    app: Flask, author: User, moderator: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -189,7 +192,7 @@ def test_announce_topic_pinned(
     )
 
     event = BoardTopicPinnedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(moderator),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -206,7 +209,7 @@ def test_announce_topic_pinned(
 
 
 def test_announce_topic_unpinned(
-    app: Flask, author: User, moderator: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -216,7 +219,7 @@ def test_announce_topic_unpinned(
     )
 
     event = BoardTopicUnpinnedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(moderator),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -233,7 +236,7 @@ def test_announce_topic_unpinned(
 
 
 def test_announce_topic_moved(
-    app: Flask, author: User, moderator: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -244,7 +247,7 @@ def test_announce_topic_moved(
     )
 
     event = BoardTopicMovedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(moderator),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -264,7 +267,9 @@ def test_announce_topic_moved(
     assert_text(actual, expected_text)
 
 
-def test_announce_posting_created(app: Flask, author: User, webhook_for_irc):
+def test_announce_posting_created(
+    app: Flask, now: datetime, author: User, webhook_for_irc
+):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
         'TheShadow999 replied in topic "Brötchen zum Frühstück" '
@@ -272,7 +277,7 @@ def test_announce_posting_created(app: Flask, author: User, webhook_for_irc):
     )
 
     event = BoardPostingCreatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(author),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -290,12 +295,12 @@ def test_announce_posting_created(app: Flask, author: User, webhook_for_irc):
 
 
 def test_announce_posting_created_on_muted_topic(
-    app: Flask, author: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, webhook_for_irc
 ):
     link = f'http://example.com/board/postings/{POSTING_ID}'
 
     event = BoardPostingCreatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(author),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -313,7 +318,7 @@ def test_announce_posting_created_on_muted_topic(
 
 
 def test_announce_posting_hidden(
-    app: Flask, author: User, moderator: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
@@ -323,7 +328,7 @@ def test_announce_posting_hidden(
     )
 
     event = BoardPostingHiddenEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(moderator),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -341,7 +346,7 @@ def test_announce_posting_hidden(
 
 
 def test_announce_posting_unhidden(
-    app: Flask, author: User, moderator: User, webhook_for_irc
+    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
 ):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
@@ -351,7 +356,7 @@ def test_announce_posting_unhidden(
     )
 
     event = BoardPostingUnhiddenEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(moderator),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,

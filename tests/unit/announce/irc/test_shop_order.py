@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 import pytest
 
@@ -18,20 +20,19 @@ from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
-from .helpers import assert_text, now
+from .helpers import assert_text
 
 
-OCCURRED_AT = now()
 ORDER_ID = OrderID(generate_uuid())
 
 
 def test_shop_order_placed_announced(
-    app: Flask, orderer_user: User, webhook_for_irc
+    app: Flask, now: datetime, orderer_user: User, webhook_for_irc
 ):
     expected_text = 'Ken_von_Kaufkraft has placed order ORDER-00001.'
 
     event = ShopOrderPlacedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(orderer_user),
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00001'),
@@ -44,14 +45,18 @@ def test_shop_order_placed_announced(
 
 
 def test_shop_order_canceled_announced(
-    app: Flask, shop_admin: User, orderer_user: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    shop_admin: User,
+    orderer_user: User,
+    webhook_for_irc,
 ):
     expected_text = (
         'ShoppingSheriff has canceled order ORDER-00002 by Ken_von_Kaufkraft.'
     )
 
     event = ShopOrderCanceledEvent(
-        occurred_at=now(),
+        occurred_at=now,
         initiator=EventUser.from_user(shop_admin),
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00002'),
@@ -64,7 +69,11 @@ def test_shop_order_canceled_announced(
 
 
 def test_shop_order_paid_announced(
-    app: Flask, shop_admin: User, orderer_user: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    shop_admin: User,
+    orderer_user: User,
+    webhook_for_irc,
 ):
     expected_text = (
         'ShoppingSheriff marked order ORDER-00003 by Ken_von_Kaufkraft '
@@ -72,7 +81,7 @@ def test_shop_order_paid_announced(
     )
 
     event = ShopOrderPaidEvent(
-        occurred_at=now(),
+        occurred_at=now,
         initiator=EventUser.from_user(shop_admin),
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00003'),

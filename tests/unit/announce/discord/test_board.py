@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 import pytest
 
@@ -21,10 +23,9 @@ from byceps.services.webhooks.models import OutgoingWebhook
 
 from tests.helpers import generate_token, generate_uuid
 
-from .helpers import assert_text, build_webhook, now
+from .helpers import assert_text, build_webhook
 
 
-OCCURRED_AT = now()
 BRAND_ID = BrandID('acmecon')
 BRAND_TITLE = 'ACME Entertainment Convention'
 BOARD_ID = BoardID(generate_token())
@@ -36,7 +37,7 @@ TOPIC_ID = TopicID(generate_uuid())
 POSTING_ID = PostingID(generate_uuid())
 
 
-def test_announce_topic_created(app: Flask, author: User):
+def test_announce_topic_created(app: Flask, now: datetime, author: User):
     expected_url = f'https://website.test/board/topics/{TOPIC_ID}'
     expected_text = (
         '[Forum] RocketRandy has created topic '
@@ -45,7 +46,7 @@ def test_announce_topic_created(app: Flask, author: User):
     )
 
     event = BoardTopicCreatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(author),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,
@@ -62,7 +63,7 @@ def test_announce_topic_created(app: Flask, author: User):
     assert_text(actual, expected_text)
 
 
-def test_announce_posting_created(app: Flask, author: User):
+def test_announce_posting_created(app: Flask, now: datetime, author: User):
     expected_url = f'https://website.test/board/postings/{POSTING_ID}'
     expected_text = (
         '[Forum] RocketRandy replied in topic '
@@ -71,7 +72,7 @@ def test_announce_posting_created(app: Flask, author: User):
     )
 
     event = BoardPostingCreatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(author),
         brand=EventBrand(BRAND_ID, BRAND_TITLE),
         board_id=BOARD_ID,

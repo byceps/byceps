@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 import pytest
 
@@ -12,21 +14,18 @@ from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.brand.models import BrandID
 from byceps.services.user.models.user import User
 
-from .helpers import assert_text, now
-
-
-OCCURRED_AT = now()
+from .helpers import assert_text
 
 
 def test_orga_status_granted_announced(
-    app: Flask, admin: User, trainee: User, webhook_for_irc
+    app: Flask, now: datetime, admin: User, trainee: User, webhook_for_irc
 ):
     expected_text = (
         'Admin has granted orga status for brand CozyLAN to Trainee.'
     )
 
     event = OrgaStatusGrantedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         user=EventUser.from_user(trainee),
         brand=EventBrand(BrandID('cozylan'), 'CozyLAN'),
@@ -38,14 +37,14 @@ def test_orga_status_granted_announced(
 
 
 def test_orga_status_revoked_announced(
-    app: Flask, admin: User, trainee: User, webhook_for_irc
+    app: Flask, now: datetime, admin: User, trainee: User, webhook_for_irc
 ):
     expected_text = (
         'Admin has revoked orga status for brand CozyLAN for Trainee.'
     )
 
     event = OrgaStatusRevokedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         user=EventUser.from_user(trainee),
         brand=EventBrand(BrandID('cozylan'), 'CozyLAN'),

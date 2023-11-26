@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 import pytest
 
@@ -20,15 +22,14 @@ from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
-from .helpers import assert_text, now
+from .helpers import assert_text
 
 
-OCCURRED_AT = now()
 SERVER_ID = ServerID(generate_uuid())
 
 
 def test_guest_server_registered(
-    app: Flask, admin: User, owner: User, webhook_for_irc
+    app: Flask, now: datetime, admin: User, owner: User, webhook_for_irc
 ):
     expected_text = (
         'Admin has registered a guest server owned by Owner '
@@ -36,7 +37,7 @@ def test_guest_server_registered(
     )
 
     event = GuestServerRegisteredEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         party=EventParty(PartyID('acmecon-2014'), 'ACMECon 2014'),
         owner=EventUser.from_user(owner),
@@ -49,12 +50,12 @@ def test_guest_server_registered(
 
 
 def test_guest_server_approved(
-    app: Flask, admin: User, owner: User, webhook_for_irc
+    app: Flask, now: datetime, admin: User, owner: User, webhook_for_irc
 ):
     expected_text = 'Admin has approved a guest server owned by Owner.'
 
     event = GuestServerApprovedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         owner=EventUser.from_user(owner),
         server_id=SERVER_ID,
@@ -66,12 +67,12 @@ def test_guest_server_approved(
 
 
 def test_guest_server_checked_in(
-    app: Flask, admin: User, owner: User, webhook_for_irc
+    app: Flask, now: datetime, admin: User, owner: User, webhook_for_irc
 ):
     expected_text = 'Admin has checked in a guest server owned by Owner.'
 
     event = GuestServerCheckedInEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         owner=EventUser.from_user(owner),
         server_id=SERVER_ID,
@@ -83,12 +84,12 @@ def test_guest_server_checked_in(
 
 
 def test_guest_server_checked_out(
-    app: Flask, admin: User, owner: User, webhook_for_irc
+    app: Flask, now: datetime, admin: User, owner: User, webhook_for_irc
 ):
     expected_text = 'Admin has checked out a guest server owned by Owner.'
 
     event = GuestServerCheckedOutEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         owner=EventUser.from_user(owner),
         server_id=SERVER_ID,

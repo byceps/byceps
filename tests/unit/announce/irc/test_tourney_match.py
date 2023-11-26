@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
@@ -16,10 +18,9 @@ from byceps.events.tourney import (
 
 from tests.helpers import generate_token, generate_uuid
 
-from .helpers import assert_text, now
+from .helpers import assert_text
 
 
-OCCURRED_AT = now()
 TOURNEY_ID = str(generate_uuid())
 MATCH_ID = str(generate_uuid())
 PARTICIPANT_1_ID = generate_token()
@@ -28,7 +29,7 @@ PARTICIPANT_2_ID = generate_token()
 PARTICIPANT_2_NAME = 'Die Anderen'
 
 
-def test_announce_match_ready(app: Flask, webhook_for_irc):
+def test_announce_match_ready(app: Flask, now: datetime, webhook_for_irc):
     expected_text = (
         'Match "Die Einen" vs. "Die Anderen" '
         'in tourney Octo-Highlander (8on8) '
@@ -36,7 +37,7 @@ def test_announce_match_ready(app: Flask, webhook_for_irc):
     )
 
     event = TourneyMatchReadyEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',
@@ -52,7 +53,7 @@ def test_announce_match_ready(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_announce_match_reset(app: Flask, webhook_for_irc):
+def test_announce_match_reset(app: Flask, now: datetime, webhook_for_irc):
     expected_text = (
         'Match "Die Einen" vs. "Die Anderen" '
         'in tourney Octo-Highlander (8on8) '
@@ -60,7 +61,7 @@ def test_announce_match_reset(app: Flask, webhook_for_irc):
     )
 
     event = TourneyMatchResetEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',
@@ -76,7 +77,9 @@ def test_announce_match_reset(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_announce_match_score_submitted(app: Flask, webhook_for_irc):
+def test_announce_match_score_submitted(
+    app: Flask, now: datetime, webhook_for_irc
+):
     expected_text = (
         'A result has been entered '
         'for match "Die Einen" vs. "Die Anderen" '
@@ -84,7 +87,7 @@ def test_announce_match_score_submitted(app: Flask, webhook_for_irc):
     )
 
     event = TourneyMatchScoreSubmittedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',
@@ -100,7 +103,9 @@ def test_announce_match_score_submitted(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_announce_match_score_confirmed(app: Flask, webhook_for_irc):
+def test_announce_match_score_confirmed(
+    app: Flask, now: datetime, webhook_for_irc
+):
     expected_text = (
         'The result '
         'for match "Die Einen" vs. "Die Anderen" '
@@ -109,7 +114,7 @@ def test_announce_match_score_confirmed(app: Flask, webhook_for_irc):
     )
 
     event = TourneyMatchScoreConfirmedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',
@@ -125,7 +130,9 @@ def test_announce_match_score_confirmed(app: Flask, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_announce_match_score_randomized(app: Flask, webhook_for_irc):
+def test_announce_match_score_randomized(
+    app: Flask, now: datetime, webhook_for_irc
+):
     expected_text = (
         'A random result has been entered '
         'for match "Die Einen" vs. "Die Anderen" '
@@ -133,7 +140,7 @@ def test_announce_match_score_randomized(app: Flask, webhook_for_irc):
     )
 
     event = TourneyMatchScoreRandomizedEvent(
-        occurred_at=now(),
+        occurred_at=now,
         initiator=None,
         tourney_id=TOURNEY_ID,
         tourney_title='Octo-Highlander (8on8)',

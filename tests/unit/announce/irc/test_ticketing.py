@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
 from unittest.mock import patch
 
 from flask import Flask
@@ -15,19 +16,18 @@ from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketSaleStats
 from byceps.services.user.models.user import User
 
-from .helpers import assert_text, now
+from .helpers import assert_text
 
 
-OCCURRED_AT = now()
-
-
-def test_ticket_checked_in(app: Flask, admin: User, make_user, webhook_for_irc):
+def test_ticket_checked_in(
+    app: Flask, now: datetime, admin: User, make_user, webhook_for_irc
+):
     expected_text = (
         'TicketingAdmin has checked in ticket "GTFIN", used by Teilnehmer.'
     )
 
     event = TicketCheckedInEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         ticket_id=None,
         ticket_code=TicketCode('GTFIN'),
@@ -44,6 +44,7 @@ def test_ticket_checked_in(app: Flask, admin: User, make_user, webhook_for_irc):
 def test_single_ticket_sold(
     get_ticket_sale_stats_mock,
     app: Flask,
+    now: datetime,
     admin: User,
     make_user,
     webhook_for_irc,
@@ -59,7 +60,7 @@ def test_single_ticket_sold(
     )
 
     event = TicketsSoldEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         party_id=PartyID('popular-party'),
         owner=EventUser.from_user(make_user(screen_name='Neuling')),
@@ -75,6 +76,7 @@ def test_single_ticket_sold(
 def test_multiple_tickets_sold(
     get_ticket_sale_stats_mock,
     app: Flask,
+    now: datetime,
     admin: User,
     make_user,
     webhook_for_irc,
@@ -90,7 +92,7 @@ def test_multiple_tickets_sold(
     )
 
     event = TicketsSoldEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         party_id=PartyID('popular-party'),
         owner=EventUser.from_user(make_user(screen_name='TreuerKäufer')),

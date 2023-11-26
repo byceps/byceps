@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 import pytest
 
@@ -15,16 +17,15 @@ from byceps.services.webhooks.models import OutgoingWebhook
 
 from tests.helpers import generate_token, generate_uuid
 
-from .helpers import assert_text, build_webhook, now
+from .helpers import assert_text, build_webhook
 
 
-OCCURRED_AT = now()
 NEWS_CHANNEL_ID = NewsChannelID(generate_token())
 NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
 
 def test_published_news_item_announced_with_url(
-    app: Flask, admin: User
+    app: Flask, now: datetime, admin: User
 ) -> None:
     expected_text = (
         '[News] The news "Check this out!" has been published. '
@@ -32,11 +33,11 @@ def test_published_news_item_announced_with_url(
     )
 
     event = NewsItemPublishedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
-        published_at=OCCURRED_AT,
+        published_at=now,
         title='Check this out!',
         external_url='https://www.acmecon.test/news/check-this-out',
     )
@@ -49,16 +50,16 @@ def test_published_news_item_announced_with_url(
 
 
 def test_published_news_item_announced_without_url(
-    app: Flask, admin: User
+    app: Flask, now: datetime, admin: User
 ) -> None:
     expected_text = '[News] The news "Check this out, too!" has been published.'
 
     event = NewsItemPublishedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(admin),
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
-        published_at=OCCURRED_AT,
+        published_at=now,
         title='Check this out, too!',
         external_url=None,
     )

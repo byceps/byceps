@@ -15,5 +15,6 @@ def app(make_app):
         yield app
 
 
+@pytest.fixture(scope='module')
 def now() -> datetime:
     return datetime.utcnow()

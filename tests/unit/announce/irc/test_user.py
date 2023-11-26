@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
@@ -22,17 +24,16 @@ from byceps.services.user.models.user import User, UserID
 
 from tests.helpers import generate_uuid
 
-from .helpers import assert_text, now
+from .helpers import assert_text
 
 
-OCCURRED_AT = now()
-
-
-def test_account_created_announced(app: Flask, make_user, webhook_for_irc):
+def test_account_created_announced(
+    app: Flask, now: datetime, make_user, webhook_for_irc
+):
     expected_text = 'Someone has created user account "JaneDoe".'
 
     event = UserAccountCreatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=None,
         user=EventUser.from_user(make_user(screen_name='JaneDoe')),
         site=None,
@@ -44,7 +45,7 @@ def test_account_created_announced(app: Flask, make_user, webhook_for_irc):
 
 
 def test_account_created_announced_on_site(
-    app: Flask, make_user, webhook_for_irc
+    app: Flask, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = (
         'Someone has created user account "JaneDoeOnSite" '
@@ -52,7 +53,7 @@ def test_account_created_announced_on_site(
     )
 
     event = UserAccountCreatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=None,
         user=EventUser.from_user(make_user(screen_name='JaneDoeOnSite')),
         site=EventSite(SiteID('acmecon-2014'), 'ACMECon 2014 website'),
@@ -64,12 +65,12 @@ def test_account_created_announced_on_site(
 
 
 def test_account_created_by_admin_announced(
-    app: Flask, make_user, webhook_for_irc
+    app: Flask, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = 'EinAdmin has created user account "EinUser".'
 
     event = UserAccountCreatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(make_user(screen_name='EinAdmin')),
         user=EventUser.from_user(make_user(screen_name='EinUser')),
         site=None,
@@ -80,11 +81,13 @@ def test_account_created_by_admin_announced(
     assert_text(actual, expected_text)
 
 
-def test_screen_name_change_announced(app: Flask, make_user, webhook_for_irc):
+def test_screen_name_change_announced(
+    app: Flask, now: datetime, make_user, webhook_for_irc
+):
     expected_text = 'ElAdmin has renamed user account "DrJekyll" to "MrHyde".'
 
     event = UserScreenNameChangedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(make_user(screen_name='ElAdmin')),
         user_id=UserID(generate_uuid()),
         old_screen_name='DrJekyll',
@@ -97,7 +100,7 @@ def test_screen_name_change_announced(app: Flask, make_user, webhook_for_irc):
 
 
 def test_email_address_changed_announced(
-    app: Flask, make_user, webhook_for_irc
+    app: Flask, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = (
         'UserSupporter has changed the email address '
@@ -105,7 +108,7 @@ def test_email_address_changed_announced(
     )
 
     event = UserEmailAddressChangedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(make_user(screen_name='UserSupporter')),
         user=EventUser.from_user(make_user(screen_name='MailboxHopper')),
     )
@@ -116,7 +119,7 @@ def test_email_address_changed_announced(
 
 
 def test_email_address_invalidated_announced(
-    app: Flask, make_user, webhook_for_irc
+    app: Flask, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = (
         'BounceWatchman has invalidated the email address '
@@ -124,7 +127,7 @@ def test_email_address_invalidated_announced(
     )
 
     event = UserEmailAddressInvalidatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(make_user(screen_name='BounceWatchman')),
         user=EventUser.from_user(make_user(screen_name='Faker')),
     )
@@ -134,13 +137,15 @@ def test_email_address_invalidated_announced(
     assert_text(actual, expected_text)
 
 
-def test_user_details_updated_announced(app: Flask, make_user, webhook_for_irc):
+def test_user_details_updated_announced(
+    app: Flask, now: datetime, make_user, webhook_for_irc
+):
     expected_text = (
         'Chameleon has changed personal data of user account "Chameleon".'
     )
 
     event = UserDetailsUpdatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(make_user(screen_name='Chameleon')),
         user=EventUser.from_user(make_user(screen_name='Chameleon')),
     )
@@ -150,11 +155,13 @@ def test_user_details_updated_announced(app: Flask, make_user, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_suspended_account_announced(app: Flask, make_user, webhook_for_irc):
+def test_suspended_account_announced(
+    app: Flask, now: datetime, make_user, webhook_for_irc
+):
     expected_text = 'She-Ra has suspended user account "Skeletor".'
 
     event = UserAccountSuspendedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(make_user(screen_name='She-Ra')),
         user=EventUser.from_user(make_user(screen_name='Skeletor')),
     )
@@ -164,11 +171,13 @@ def test_suspended_account_announced(app: Flask, make_user, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_unsuspended_account_announced(app: Flask, make_user, webhook_for_irc):
+def test_unsuspended_account_announced(
+    app: Flask, now: datetime, make_user, webhook_for_irc
+):
     expected_text = 'TheBoss has unsuspended user account "RambaZamba".'
 
     event = UserAccountUnsuspendedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(make_user(screen_name='TheBoss')),
         user=EventUser.from_user(make_user(screen_name='RambaZamba')),
     )
@@ -178,7 +187,9 @@ def test_unsuspended_account_announced(app: Flask, make_user, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_deleted_account_announced(app: Flask, make_user, webhook_for_irc):
+def test_deleted_account_announced(
+    app: Flask, now: datetime, make_user, webhook_for_irc
+):
     user = make_user(screen_name='Snake')
 
     expected_text = (
@@ -186,7 +197,7 @@ def test_deleted_account_announced(app: Flask, make_user, webhook_for_irc):
     )
 
     event = UserAccountDeletedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(make_user(screen_name='Uberino')),
         user=EventUser.from_user(user),
     )

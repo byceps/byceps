@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from flask import Flask
 import pytest
 
@@ -19,22 +21,23 @@ from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
-from .helpers import assert_text, now
+from .helpers import assert_text
 
 
-OCCURRED_AT = now()
 PAGE_ID = PageID(generate_uuid())
 PAGE_VERSION_ID = PageVersionID(generate_uuid())
 
 
-def test_announce_page_created(app: Flask, editor: User, webhook_for_irc):
+def test_announce_page_created(
+    app: Flask, now: datetime, editor: User, webhook_for_irc
+):
     expected_text = (
         'PageEditor has created page "overview" (de) '
         'in site "acmecon-2014-website".'
     )
 
     event = PageCreatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(editor),
         page_id=PAGE_ID,
         site=EventSite(SiteID('acmecon-2014-website'), 'ACMECon 2014 Website'),
@@ -48,14 +51,16 @@ def test_announce_page_created(app: Flask, editor: User, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_announce_page_updated(app: Flask, editor: User, webhook_for_irc):
+def test_announce_page_updated(
+    app: Flask, now: datetime, editor: User, webhook_for_irc
+):
     expected_text = (
         'PageEditor has updated page "overview" (en) '
         'in site "acmecon-2014-website".'
     )
 
     event = PageUpdatedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(editor),
         page_id=PAGE_ID,
         site=EventSite(SiteID('acmecon-2014-website'), 'ACMECon 2014 Website'),
@@ -69,14 +74,16 @@ def test_announce_page_updated(app: Flask, editor: User, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_announce_page_deleted(app: Flask, editor: User, webhook_for_irc):
+def test_announce_page_deleted(
+    app: Flask, now: datetime, editor: User, webhook_for_irc
+):
     expected_text = (
         'PageEditor has deleted page "old_page" (en) '
         'in site "acmecon-2014-website".'
     )
 
     event = PageDeletedEvent(
-        occurred_at=OCCURRED_AT,
+        occurred_at=now,
         initiator=EventUser.from_user(editor),
         page_id=PAGE_ID,
         site=EventSite(SiteID('acmecon-2014-website'), 'ACMECon 2014 Website'),
