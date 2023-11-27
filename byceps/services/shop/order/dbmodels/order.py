@@ -29,7 +29,6 @@ from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 
 class DbOrder(db.Model):
@@ -37,9 +36,7 @@ class DbOrder(db.Model):
 
     __tablename__ = 'shop_orders'
 
-    id: Mapped[OrderID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[OrderID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     shop_id: Mapped[ShopID] = mapped_column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True
@@ -87,6 +84,7 @@ class DbOrder(db.Model):
 
     def __init__(
         self,
+        order_id: OrderID,
         created_at: datetime,
         shop_id: ShopID,
         storefront_id: StorefrontID,
@@ -102,6 +100,7 @@ class DbOrder(db.Model):
         total_amount: Money,
         processing_required: bool,
     ) -> None:
+        self.id = order_id
         self.created_at = created_at
         self.shop_id = shop_id
         self.storefront_id = storefront_id

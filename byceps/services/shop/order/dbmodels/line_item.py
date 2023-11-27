@@ -29,7 +29,6 @@ from byceps.services.shop.article.models import (
 )
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import LineItemID
-from byceps.util.uuid import generate_uuid7
 
 from .order import DbOrder
 
@@ -39,9 +38,7 @@ class DbLineItem(db.Model):
 
     __tablename__ = 'shop_order_line_items'
 
-    id: Mapped[LineItemID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[LineItemID] = mapped_column(db.Uuid, primary_key=True)
     order_number: Mapped[OrderNumber] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_orders.order_number'),
@@ -71,6 +68,7 @@ class DbLineItem(db.Model):
 
     def __init__(
         self,
+        line_item_id: LineItemID,
         order: DbOrder,
         article_id: ArticleID,
         article_number: ArticleNumber,
@@ -82,6 +80,7 @@ class DbLineItem(db.Model):
         line_amount: Decimal,
         processing_required: bool,
     ) -> None:
+        self.id = line_item_id
         # Require order instance rather than order number as argument
         # because line items are created together with the order – and
         # until the order is created, there is no order number assigned.

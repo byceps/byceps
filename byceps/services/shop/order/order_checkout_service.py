@@ -20,10 +20,12 @@ from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderPlacedEvent
 from byceps.services.shop.article import article_service
 from byceps.services.shop.cart.models import Cart, CartItem
+from byceps.services.shop.order.models.order import LineItemID, OrderID
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from . import (
     order_log_service,
@@ -171,6 +173,7 @@ def _build_db_order(
     orderer = incoming_order.orderer
 
     return DbOrder(
+        order_id=OrderID(generate_uuid7()),
         created_at=incoming_order.created_at,
         shop_id=incoming_order.shop_id,
         storefront_id=incoming_order.storefront_id,
@@ -194,6 +197,7 @@ def _build_db_line_items(
     """Build line items from the cart's content."""
     for incoming_line_item in incoming_line_items:
         yield DbLineItem(
+            line_item_id=LineItemID(generate_uuid7()),
             order=db_order,
             article_id=incoming_line_item.article_id,
             article_number=incoming_line_item.article_number,
