@@ -17,6 +17,7 @@ from sqlalchemy import select
 from byceps.database import db, paginate, Pagination
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
 
 from .dbmodels import DbCancelationRequest
@@ -30,6 +31,7 @@ from .models import (
 
 def create_request_for_full_donation(
     shop_id: ShopID,
+    order_id: OrderID,
     order_number: OrderNumber,
     amount_donation: Decimal,
 ) -> CancelationRequest:
@@ -40,6 +42,7 @@ def create_request_for_full_donation(
 
     return _create_request(
         shop_id,
+        order_id,
         order_number,
         DonationExtent.everything,
         amount_refund,
@@ -51,6 +54,7 @@ def create_request_for_full_donation(
 
 def create_request_for_partial_refund(
     shop_id: ShopID,
+    order_id: OrderID,
     order_number: OrderNumber,
     amount_refund: Decimal,
     amount_donation: Decimal,
@@ -60,6 +64,7 @@ def create_request_for_partial_refund(
     """Create a cancelation request for a partial refund an order."""
     return _create_request(
         shop_id,
+        order_id,
         order_number,
         DonationExtent.part,
         amount_refund,
@@ -71,6 +76,7 @@ def create_request_for_partial_refund(
 
 def create_request_for_full_refund(
     shop_id: ShopID,
+    order_id: OrderID,
     order_number: OrderNumber,
     amount_refund: Decimal,
     recipient_name: str,
@@ -81,6 +87,7 @@ def create_request_for_full_refund(
 
     return _create_request(
         shop_id,
+        order_id,
         order_number,
         DonationExtent.nothing,
         amount_refund,
@@ -92,6 +99,7 @@ def create_request_for_full_refund(
 
 def _create_request(
     shop_id: ShopID,
+    order_id: OrderID,
     order_number: OrderNumber,
     donation_extent: DonationExtent,
     amount_refund: Decimal,
@@ -105,6 +113,7 @@ def _create_request(
     db_request = DbCancelationRequest(
         now,
         shop_id,
+        order_id,
         order_number,
         donation_extent,
         amount_refund,
@@ -248,6 +257,7 @@ def _db_entity_to_request(
         id=db_request.id,
         created_at=db_request.created_at,
         shop_id=db_request.shop_id,
+        order_id=db_request.order_id,
         order_number=db_request.order_number,
         donation_extent=db_request.donation_extent,
         amount_refund=db_request.amount_refund,

@@ -23,6 +23,7 @@ else:
 
 from byceps.database import db
 from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
@@ -46,6 +47,9 @@ class DbCancelationRequest(db.Model):
     shop_id: Mapped[ShopID] = mapped_column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True
     )
+    order_id: Mapped[OrderID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_orders.id'), unique=True
+    )
     order_number: Mapped[OrderNumber] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_orders.order_number'),
@@ -65,6 +69,7 @@ class DbCancelationRequest(db.Model):
         self,
         created_at: datetime,
         shop_id: ShopID,
+        order_id: OrderID,
         order_number: OrderNumber,
         donation_extent: DonationExtent,
         amount_refund: Decimal,
@@ -74,6 +79,7 @@ class DbCancelationRequest(db.Model):
     ) -> None:
         self.created_at = created_at
         self.shop_id = shop_id
+        self.order_id = order_id
         self.order_number = order_number
         self.donation_extent = donation_extent
         self.amount_refund = amount_refund

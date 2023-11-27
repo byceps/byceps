@@ -15,6 +15,7 @@ from enum import Enum
 from uuid import UUID
 
 from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
 
 
@@ -43,6 +44,7 @@ class CancelationRequest:
     id: UUID
     created_at: datetime
     shop_id: ShopID
+    order_id: OrderID
     order_number: OrderNumber
     donation_extent: DonationExtent
     amount_refund: Decimal
