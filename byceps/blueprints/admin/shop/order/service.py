@@ -36,10 +36,8 @@ def _fake_cancelation_request_log_entries(
     """Yield cancelation requests for the order as volatile log entries."""
     order = order_service.get_order(order_id)
 
-    cancelation_request = (
-        cancelation_request_service.get_request_for_order_number(
-            order.order_number
-        )
+    cancelation_request = cancelation_request_service.get_request_for_order(
+        order.id
     )
     if cancelation_request is None:
         return

@@ -83,10 +83,8 @@ def view(order_id):
         # Order does not belong to the current site's storefront.
         abort(404)
 
-    cancelation_request = (
-        cancelation_request_service.get_request_for_order_number(
-            order.order_number
-        )
+    cancelation_request = cancelation_request_service.get_request_for_order(
+        order.id
     )
 
     template_context = {
@@ -216,9 +214,7 @@ def request_cancelation_choices(order_id):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order_number(
-            order.order_number
-        )
+        cancelation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -245,9 +241,7 @@ def donate_everything_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order_number(
-            order.order_number
-        )
+        cancelation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -273,9 +267,7 @@ def donate_everything(order_id):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order_number(
-            order.order_number
-        )
+        cancelation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -336,9 +328,7 @@ def request_partial_refund_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order_number(
-            order.order_number
-        )
+        cancelation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -367,9 +357,7 @@ def request_partial_refund(order_id):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order_number(
-            order.order_number
-        )
+        cancelation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -417,9 +405,7 @@ def request_full_refund_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order_number(
-            order.order_number
-        )
+        cancelation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -448,9 +434,7 @@ def request_full_refund(order_id):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order_number(
-            order.order_number
-        )
+        cancelation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')

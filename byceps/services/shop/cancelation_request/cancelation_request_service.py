@@ -149,13 +149,13 @@ def get_request(request_id: UUID) -> CancelationRequest | None:
     return _db_entity_to_request(db_request)
 
 
-def get_request_for_order_number(
-    order_number: OrderNumber,
+def get_request_for_order(
+    order_id: OrderID,
 ) -> CancelationRequest | None:
-    """Return the cancelation request for that order number."""
+    """Return the cancelation request for that order."""
     db_request = (
         db.session.execute(
-            select(DbCancelationRequest).filter_by(order_number=order_number)
+            select(DbCancelationRequest).filter_by(order_id=order_id)
         )
         .scalars()
         .one_or_none()
