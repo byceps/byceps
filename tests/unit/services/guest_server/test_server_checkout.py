@@ -59,7 +59,7 @@ def test_check_out_server_error(
     approved: bool,
     checked_in_at: datetime | None,
     checked_out_at: datetime | None,
-    expected: bool,
+    expected: type[AlreadyCheckedOutError | NotCheckedInError],
 ):
     server = make_server(
         approved=approved,
