@@ -15,7 +15,6 @@ from uuid import UUID
 from sqlalchemy import select
 
 from byceps.database import db, paginate, Pagination
-from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
@@ -156,9 +155,7 @@ def get_request_for_order_number(
     """Return the cancelation request for that order number."""
     db_request = (
         db.session.execute(
-            select(DbCancelationRequest)
-            .join(DbOrder)
-            .filter(DbOrder.order_number == order_number)
+            select(DbCancelationRequest).filter_by(order_number=order_number)
         )
         .scalars()
         .one_or_none()
