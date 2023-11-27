@@ -286,6 +286,7 @@ def donate_everything(order_id):
     cancelation_request = (
         cancelation_request_service.create_request_for_full_donation(
             order.shop_id,
+            order.id,
             order.order_number,
             amount_donation,
         )
@@ -385,6 +386,7 @@ def request_partial_refund(order_id):
 
     cancelation_request_service.create_request_for_partial_refund(
         order.shop_id,
+        order.id,
         order.order_number,
         amount_refund,
         amount_donation,
@@ -464,6 +466,7 @@ def request_full_refund(order_id):
 
     cancelation_request_service.create_request_for_full_refund(
         order.shop_id,
+        order.id,
         order.order_number,
         amount_refund,
         recipient_name,
