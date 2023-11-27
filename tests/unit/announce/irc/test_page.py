@@ -35,7 +35,7 @@ def test_announce_page_created(
 ):
     expected_text = (
         'PageEditor has created page "overview" (de) '
-        'in site "acmecon-2014-website".'
+        'in site "ACMECon 2014 website".'
     )
 
     event = PageCreatedEvent(
@@ -62,7 +62,7 @@ def test_announce_page_updated(
 ):
     expected_text = (
         'PageEditor has updated page "overview" (en) '
-        'in site "acmecon-2014-website".'
+        'in site "ACMECon 2014 website".'
     )
 
     event = PageUpdatedEvent(
@@ -89,7 +89,7 @@ def test_announce_page_deleted(
 ):
     expected_text = (
         'PageEditor has deleted page "old_page" (en) '
-        'in site "acmecon-2014-website".'
+        'in site "ACMECon 2014 website".'
     )
 
     event = PageDeletedEvent(
@@ -117,5 +117,5 @@ def editor(make_event_user) -> EventUser:
 @pytest.fixture(scope='module')
 def site(make_event_site) -> EventSite:
     return make_event_site(
-        id='acmecon-2014-website', title='ACMECon Website 2014'
+        id='acmecon-2014-website', title='ACMECon 2014 website'
     )

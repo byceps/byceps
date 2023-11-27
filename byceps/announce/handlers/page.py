@@ -32,11 +32,11 @@ def announce_page_created(
     initiator_screen_name = get_screen_name_or_fallback(event.initiator)
 
     text = gettext(
-        '%(initiator_screen_name)s has created page "%(page_name)s" (%(language_code)s) in site "%(site_id)s".',
+        '%(initiator_screen_name)s has created page "%(page_name)s" (%(language_code)s) in site "%(site_title)s".',
         initiator_screen_name=initiator_screen_name,
         page_name=event.page_name,
         language_code=event.language_code,
-        site_id=event.site.id,
+        site_title=event.site.title,
     )
 
     return Announcement(text)
@@ -50,11 +50,11 @@ def announce_page_updated(
     initiator_screen_name = get_screen_name_or_fallback(event.initiator)
 
     text = gettext(
-        '%(initiator_screen_name)s has updated page "%(page_name)s" (%(language_code)s) in site "%(site_id)s".',
+        '%(initiator_screen_name)s has updated page "%(page_name)s" (%(language_code)s) in site "%(site_title)s".',
         initiator_screen_name=initiator_screen_name,
         page_name=event.page_name,
         language_code=event.language_code,
-        site_id=event.site.id,
+        site_title=event.site.title,
     )
 
     return Announcement(text)
@@ -68,11 +68,11 @@ def announce_page_deleted(
     initiator_screen_name = get_screen_name_or_fallback(event.initiator)
 
     text = gettext(
-        '%(initiator_screen_name)s has deleted page "%(page_name)s" (%(language_code)s) in site "%(site_id)s".',
+        '%(initiator_screen_name)s has deleted page "%(page_name)s" (%(language_code)s) in site "%(site_title)s".',
         initiator_screen_name=initiator_screen_name,
         page_name=event.page_name,
         language_code=event.language_code,
-        site_id=event.site.id,
+        site_title=event.site.title,
     )
 
     return Announcement(text)
