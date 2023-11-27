@@ -29,16 +29,12 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
-from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token, generate_uuid
 
 from .helpers import assert_text
 
 
-BRAND_ID = BrandID('acmecon')
-BRAND_TITLE = 'ACME Entertainment Convention'
 BOARD_ID = BoardID(generate_token())
 CATEGORY_1_ID = BoardCategoryID(generate_uuid())
 CATEGORY_1_TITLE = 'Category 1'
@@ -49,7 +45,11 @@ POSTING_ID = PostingID(generate_uuid())
 
 
 def test_announce_topic_created(
-    app: Flask, now: datetime, author: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -59,11 +59,11 @@ def test_announce_topic_created(
 
     event = BoardTopicCreatedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(author),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=author,
+        brand=brand,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=EventUser.from_user(author),
+        topic_creator=author,
         topic_title='Brötchen zum Frühstück',
         url=expected_link,
     )
@@ -74,7 +74,12 @@ def test_announce_topic_created(
 
 
 def test_announce_topic_hidden(
-    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    moderator: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -85,13 +90,13 @@ def test_announce_topic_hidden(
 
     event = BoardTopicHiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=moderator,
+        brand=brand,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=EventUser.from_user(author),
+        topic_creator=author,
         topic_title='Brötchen zum Frühstück',
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=expected_link,
     )
 
@@ -101,7 +106,12 @@ def test_announce_topic_hidden(
 
 
 def test_announce_topic_unhidden(
-    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    moderator: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -112,13 +122,13 @@ def test_announce_topic_unhidden(
 
     event = BoardTopicUnhiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=moderator,
+        brand=brand,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=EventUser.from_user(author),
+        topic_creator=author,
         topic_title='Brötchen zum Frühstück',
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=expected_link,
     )
 
@@ -128,7 +138,12 @@ def test_announce_topic_unhidden(
 
 
 def test_announce_topic_locked(
-    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    moderator: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -139,13 +154,13 @@ def test_announce_topic_locked(
 
     event = BoardTopicLockedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=moderator,
+        brand=brand,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=EventUser.from_user(author),
+        topic_creator=author,
         topic_title='Brötchen zum Frühstück',
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=expected_link,
     )
 
@@ -155,7 +170,12 @@ def test_announce_topic_locked(
 
 
 def test_announce_topic_unlocked(
-    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    moderator: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -166,13 +186,13 @@ def test_announce_topic_unlocked(
 
     event = BoardTopicUnlockedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=moderator,
+        brand=brand,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=EventUser.from_user(author),
+        topic_creator=author,
         topic_title='Brötchen zum Frühstück',
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=expected_link,
     )
 
@@ -182,7 +202,12 @@ def test_announce_topic_unlocked(
 
 
 def test_announce_topic_pinned(
-    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    moderator: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -193,13 +218,13 @@ def test_announce_topic_pinned(
 
     event = BoardTopicPinnedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=moderator,
+        brand=brand,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=EventUser.from_user(author),
+        topic_creator=author,
         topic_title='Brötchen zum Frühstück',
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=expected_link,
     )
 
@@ -209,7 +234,12 @@ def test_announce_topic_pinned(
 
 
 def test_announce_topic_unpinned(
-    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    moderator: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -220,13 +250,13 @@ def test_announce_topic_unpinned(
 
     event = BoardTopicUnpinnedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=moderator,
+        brand=brand,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=EventUser.from_user(author),
+        topic_creator=author,
         topic_title='Brötchen zum Frühstück',
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=expected_link,
     )
 
@@ -236,7 +266,12 @@ def test_announce_topic_unpinned(
 
 
 def test_announce_topic_moved(
-    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    moderator: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -248,17 +283,17 @@ def test_announce_topic_moved(
 
     event = BoardTopicMovedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=moderator,
+        brand=brand,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=EventUser.from_user(author),
+        topic_creator=author,
         topic_title='Brötchen zum Frühstück',
         old_category_id=CATEGORY_1_ID,
         old_category_title=CATEGORY_1_TITLE,
         new_category_id=CATEGORY_2_ID,
         new_category_title=CATEGORY_2_TITLE,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=expected_link,
     )
 
@@ -268,7 +303,11 @@ def test_announce_topic_moved(
 
 
 def test_announce_posting_created(
-    app: Flask, now: datetime, author: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
@@ -278,11 +317,11 @@ def test_announce_posting_created(
 
     event = BoardPostingCreatedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(author),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=author,
+        brand=brand,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=EventUser.from_user(author),
+        posting_creator=author,
         topic_id=TOPIC_ID,
         topic_title='Brötchen zum Frühstück',
         topic_muted=False,
@@ -295,17 +334,21 @@ def test_announce_posting_created(
 
 
 def test_announce_posting_created_on_muted_topic(
-    app: Flask, now: datetime, author: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     link = f'http://example.com/board/postings/{POSTING_ID}'
 
     event = BoardPostingCreatedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(author),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=author,
+        brand=brand,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=EventUser.from_user(author),
+        posting_creator=author,
         topic_id=TOPIC_ID,
         topic_title='Brötchen zum Frühstück',
         topic_muted=True,
@@ -318,7 +361,12 @@ def test_announce_posting_created_on_muted_topic(
 
 
 def test_announce_posting_hidden(
-    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    moderator: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
@@ -329,14 +377,14 @@ def test_announce_posting_hidden(
 
     event = BoardPostingHiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=moderator,
+        brand=brand,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=EventUser.from_user(author),
+        posting_creator=author,
         topic_id=TOPIC_ID,
         topic_title='Brötchen zum Frühstück',
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=expected_link,
     )
 
@@ -346,7 +394,12 @@ def test_announce_posting_hidden(
 
 
 def test_announce_posting_unhidden(
-    app: Flask, now: datetime, author: User, moderator: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    author: EventUser,
+    moderator: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_link = f'http://example.com/board/postings/{POSTING_ID}'
     expected_text = (
@@ -357,14 +410,14 @@ def test_announce_posting_unhidden(
 
     event = BoardPostingUnhiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=moderator,
+        brand=brand,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=EventUser.from_user(author),
+        posting_creator=author,
         topic_id=TOPIC_ID,
         topic_title='Brötchen zum Frühstück',
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=expected_link,
     )
 
@@ -377,10 +430,15 @@ def test_announce_posting_unhidden(
 
 
 @pytest.fixture(scope='module')
-def author(make_user) -> User:
-    return make_user(screen_name='TheShadow999')
+def author(make_event_user) -> EventUser:
+    return make_event_user(screen_name='TheShadow999')
 
 
 @pytest.fixture(scope='module')
-def moderator(make_user) -> User:
-    return make_user(screen_name='TheModerator')
+def moderator(make_event_user) -> EventUser:
+    return make_event_user(screen_name='TheModerator')
+
+
+@pytest.fixture(scope='module')
+def brand(make_event_brand) -> EventBrand:
+    return make_event_brand(title='ACME Entertainment Convention')

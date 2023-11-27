@@ -17,8 +17,6 @@ from byceps.events.guest_server import (
     GuestServerRegisteredEvent,
 )
 from byceps.services.guest_server.models import ServerID
-from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -29,7 +27,12 @@ SERVER_ID = ServerID(generate_uuid())
 
 
 def test_guest_server_registered(
-    app: Flask, now: datetime, admin: User, owner: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    admin: EventUser,
+    owner: EventUser,
+    party: EventParty,
+    webhook_for_irc,
 ):
     expected_text = (
         'Admin has registered a guest server owned by Owner '
@@ -38,9 +41,9 @@ def test_guest_server_registered(
 
     event = GuestServerRegisteredEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
-        party=EventParty(PartyID('acmecon-2014'), 'ACMECon 2014'),
-        owner=EventUser.from_user(owner),
+        initiator=admin,
+        party=party,
+        owner=owner,
         server_id=SERVER_ID,
     )
 
@@ -50,14 +53,18 @@ def test_guest_server_registered(
 
 
 def test_guest_server_approved(
-    app: Flask, now: datetime, admin: User, owner: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    admin: EventUser,
+    owner: EventUser,
+    webhook_for_irc,
 ):
     expected_text = 'Admin has approved a guest server owned by Owner.'
 
     event = GuestServerApprovedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
-        owner=EventUser.from_user(owner),
+        initiator=admin,
+        owner=owner,
         server_id=SERVER_ID,
     )
 
@@ -67,14 +74,18 @@ def test_guest_server_approved(
 
 
 def test_guest_server_checked_in(
-    app: Flask, now: datetime, admin: User, owner: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    admin: EventUser,
+    owner: EventUser,
+    webhook_for_irc,
 ):
     expected_text = 'Admin has checked in a guest server owned by Owner.'
 
     event = GuestServerCheckedInEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
-        owner=EventUser.from_user(owner),
+        initiator=admin,
+        owner=owner,
         server_id=SERVER_ID,
     )
 
@@ -84,14 +95,18 @@ def test_guest_server_checked_in(
 
 
 def test_guest_server_checked_out(
-    app: Flask, now: datetime, admin: User, owner: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    admin: EventUser,
+    owner: EventUser,
+    webhook_for_irc,
 ):
     expected_text = 'Admin has checked out a guest server owned by Owner.'
 
     event = GuestServerCheckedOutEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
-        owner=EventUser.from_user(owner),
+        initiator=admin,
+        owner=owner,
         server_id=SERVER_ID,
     )
 
@@ -104,10 +119,15 @@ def test_guest_server_checked_out(
 
 
 @pytest.fixture(scope='module')
-def admin(make_user) -> User:
-    return make_user(screen_name='Admin')
+def admin(make_event_user) -> EventUser:
+    return make_event_user(screen_name='Admin')
 
 
 @pytest.fixture(scope='module')
-def owner(make_user) -> User:
-    return make_user(screen_name='Owner')
+def owner(make_event_user) -> EventUser:
+    return make_event_user(screen_name='Owner')
+
+
+@pytest.fixture(scope='module')
+def party(make_event_party) -> EventParty:
+    return make_event_party(title='ACMECon 2014')

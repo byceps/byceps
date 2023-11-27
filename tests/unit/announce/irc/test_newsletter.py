@@ -15,20 +15,19 @@ from byceps.events.newsletter import (
     UnsubscribedFromNewsletterEvent,
 )
 from byceps.services.newsletter.models import ListID
-from byceps.services.user.models.user import User
 
 from .helpers import assert_text
 
 
 def test_subscribed_to_newsletter_announced(
-    app: Flask, now: datetime, user: User, webhook_for_irc
+    app: Flask, now: datetime, user: EventUser, webhook_for_irc
 ):
     expected_text = 'User has subscribed to newsletter "CozyLAN Updates".'
 
     event = SubscribedToNewsletterEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(user),
-        user=EventUser.from_user(user),
+        initiator=user,
+        user=user,
         list_id=ListID('cozylan-updates'),
         list_title='CozyLAN Updates',
     )
@@ -39,14 +38,14 @@ def test_subscribed_to_newsletter_announced(
 
 
 def test_unsubscribed_from_newsletter_announced(
-    app: Flask, now: datetime, user: User, webhook_for_irc
+    app: Flask, now: datetime, user: EventUser, webhook_for_irc
 ):
     expected_text = 'User has unsubscribed from newsletter "CozyLAN Updates".'
 
     event = UnsubscribedFromNewsletterEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(user),
-        user=EventUser.from_user(user),
+        initiator=user,
+        user=user,
         list_id=ListID('cozylan-updates'),
         list_title='CozyLAN Updates',
     )
@@ -60,5 +59,5 @@ def test_unsubscribed_from_newsletter_announced(
 
 
 @pytest.fixture(scope='module')
-def user(make_user) -> User:
-    return make_user(screen_name='User')
+def user(make_event_user) -> EventUser:
+    return make_event_user(screen_name='User')

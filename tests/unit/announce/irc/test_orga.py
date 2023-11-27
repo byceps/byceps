@@ -11,14 +11,17 @@ import pytest
 from byceps.announce.announce import build_announcement_request
 from byceps.events.base import EventBrand, EventUser
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
-from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import User
 
 from .helpers import assert_text
 
 
 def test_orga_status_granted_announced(
-    app: Flask, now: datetime, admin: User, trainee: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    admin: EventUser,
+    trainee: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_text = (
         'Admin has granted orga status for brand CozyLAN to Trainee.'
@@ -26,9 +29,9 @@ def test_orga_status_granted_announced(
 
     event = OrgaStatusGrantedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
-        user=EventUser.from_user(trainee),
-        brand=EventBrand(BrandID('cozylan'), 'CozyLAN'),
+        initiator=admin,
+        user=trainee,
+        brand=brand,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -37,7 +40,12 @@ def test_orga_status_granted_announced(
 
 
 def test_orga_status_revoked_announced(
-    app: Flask, now: datetime, admin: User, trainee: User, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    admin: EventUser,
+    trainee: EventUser,
+    brand: EventBrand,
+    webhook_for_irc,
 ):
     expected_text = (
         'Admin has revoked orga status for brand CozyLAN for Trainee.'
@@ -45,9 +53,9 @@ def test_orga_status_revoked_announced(
 
     event = OrgaStatusRevokedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
-        user=EventUser.from_user(trainee),
-        brand=EventBrand(BrandID('cozylan'), 'CozyLAN'),
+        initiator=admin,
+        user=trainee,
+        brand=brand,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -59,10 +67,15 @@ def test_orga_status_revoked_announced(
 
 
 @pytest.fixture(scope='module')
-def admin(make_user) -> User:
-    return make_user(screen_name='Admin')
+def admin(make_event_user) -> EventUser:
+    return make_event_user(screen_name='Admin')
 
 
 @pytest.fixture(scope='module')
-def trainee(make_user) -> User:
-    return make_user(screen_name='Trainee')
+def trainee(make_event_user) -> EventUser:
+    return make_event_user(screen_name='Trainee')
+
+
+@pytest.fixture(scope='module')
+def brand(make_event_brand) -> EventBrand:
+    return make_event_brand(title='CozyLAN')

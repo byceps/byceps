@@ -21,7 +21,6 @@ from byceps.services.snippet.models import (
     SnippetScope,
     SnippetVersionID,
 )
-from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -34,7 +33,7 @@ SNIPPET_VERSION_ID = SnippetVersionID(generate_uuid())
 
 
 def test_announce_snippet_created(
-    app: Flask, now: datetime, editor: User, webhook_for_irc
+    app: Flask, now: datetime, editor: EventUser, webhook_for_irc
 ):
     expected_text = (
         'Dr.Schnipsel has created snippet "team_intro" (de) '
@@ -43,7 +42,7 @@ def test_announce_snippet_created(
 
     event = SnippetCreatedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(editor),
+        initiator=editor,
         snippet_id=SNIPPET_ID,
         scope=SCOPE,
         snippet_name='team_intro',
@@ -57,7 +56,7 @@ def test_announce_snippet_created(
 
 
 def test_announce_snippet_updated(
-    app: Flask, now: datetime, editor: User, webhook_for_irc
+    app: Flask, now: datetime, editor: EventUser, webhook_for_irc
 ):
     expected_text = (
         'Dr.Schnipsel has updated snippet "team_intro" (de) '
@@ -66,7 +65,7 @@ def test_announce_snippet_updated(
 
     event = SnippetUpdatedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(editor),
+        initiator=editor,
         snippet_id=SNIPPET_ID,
         scope=SCOPE,
         snippet_name='team_intro',
@@ -80,7 +79,7 @@ def test_announce_snippet_updated(
 
 
 def test_announce_snippet_deleted(
-    app: Flask, now: datetime, editor: User, webhook_for_irc
+    app: Flask, now: datetime, editor: EventUser, webhook_for_irc
 ):
     expected_text = (
         'Dr.Schnipsel has deleted snippet "outdated_info" (de) '
@@ -89,7 +88,7 @@ def test_announce_snippet_deleted(
 
     event = SnippetDeletedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(editor),
+        initiator=editor,
         snippet_id=SNIPPET_ID,
         scope=SCOPE,
         snippet_name='outdated_info',
@@ -105,5 +104,5 @@ def test_announce_snippet_deleted(
 
 
 @pytest.fixture(scope='module')
-def editor(make_user) -> User:
-    return make_user(screen_name='Dr.Schnipsel')
+def editor(make_event_user) -> EventUser:
+    return make_event_user(screen_name='Dr.Schnipsel')

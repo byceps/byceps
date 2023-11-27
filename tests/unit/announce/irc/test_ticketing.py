@@ -14,13 +14,16 @@ from byceps.events.base import EventUser
 from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketSaleStats
-from byceps.services.user.models.user import User
 
 from .helpers import assert_text
 
 
 def test_ticket_checked_in(
-    app: Flask, now: datetime, admin: User, make_user, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    admin: EventUser,
+    make_event_user,
+    webhook_for_irc,
 ):
     expected_text = (
         'TicketingAdmin has checked in ticket "GTFIN", used by Teilnehmer.'
@@ -28,11 +31,11 @@ def test_ticket_checked_in(
 
     event = TicketCheckedInEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
+        initiator=admin,
         ticket_id=None,
         ticket_code=TicketCode('GTFIN'),
         occupied_seat_id=None,
-        user=EventUser.from_user(make_user(screen_name='Teilnehmer')),
+        user=make_event_user(screen_name='Teilnehmer'),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -45,8 +48,8 @@ def test_single_ticket_sold(
     get_ticket_sale_stats_mock,
     app: Flask,
     now: datetime,
-    admin: User,
-    make_user,
+    admin: EventUser,
+    make_event_user,
     webhook_for_irc,
 ):
     expected_text = (
@@ -61,9 +64,9 @@ def test_single_ticket_sold(
 
     event = TicketsSoldEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
+        initiator=admin,
         party_id=PartyID('popular-party'),
-        owner=EventUser.from_user(make_user(screen_name='Neuling')),
+        owner=make_event_user(screen_name='Neuling'),
         quantity=1,
     )
 
@@ -77,8 +80,8 @@ def test_multiple_tickets_sold(
     get_ticket_sale_stats_mock,
     app: Flask,
     now: datetime,
-    admin: User,
-    make_user,
+    admin: EventUser,
+    make_event_user,
     webhook_for_irc,
 ):
     expected_text = (
@@ -93,9 +96,9 @@ def test_multiple_tickets_sold(
 
     event = TicketsSoldEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
+        initiator=admin,
         party_id=PartyID('popular-party'),
-        owner=EventUser.from_user(make_user(screen_name='TreuerKäufer')),
+        owner=make_event_user(screen_name='TreuerKäufer'),
         quantity=3,
     )
 
@@ -108,5 +111,5 @@ def test_multiple_tickets_sold(
 
 
 @pytest.fixture(scope='module')
-def admin(make_user) -> User:
-    return make_user(screen_name='TicketingAdmin')
+def admin(make_event_user) -> EventUser:
+    return make_event_user(screen_name='TicketingAdmin')

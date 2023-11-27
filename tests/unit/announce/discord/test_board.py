@@ -17,8 +17,6 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
-from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import User
 from byceps.services.webhooks.models import OutgoingWebhook
 
 from tests.helpers import generate_token, generate_uuid
@@ -26,8 +24,6 @@ from tests.helpers import generate_token, generate_uuid
 from .helpers import assert_text, build_webhook
 
 
-BRAND_ID = BrandID('acmecon')
-BRAND_TITLE = 'ACME Entertainment Convention'
 BOARD_ID = BoardID(generate_token())
 CATEGORY_1_ID = BoardCategoryID(generate_uuid())
 CATEGORY_1_TITLE = 'Category 1'
@@ -37,7 +33,9 @@ TOPIC_ID = TopicID(generate_uuid())
 POSTING_ID = PostingID(generate_uuid())
 
 
-def test_announce_topic_created(app: Flask, now: datetime, author: User):
+def test_announce_topic_created(
+    app: Flask, now: datetime, author: EventUser, brand: EventBrand
+):
     expected_url = f'https://website.test/board/topics/{TOPIC_ID}'
     expected_text = (
         '[Forum] RocketRandy has created topic '
@@ -47,11 +45,11 @@ def test_announce_topic_created(app: Flask, now: datetime, author: User):
 
     event = BoardTopicCreatedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(author),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=author,
+        brand=brand,
         board_id=BOARD_ID,
         topic_id=TOPIC_ID,
-        topic_creator=EventUser.from_user(author),
+        topic_creator=author,
         topic_title='Cannot connect to the party network :(',
         url=expected_url,
     )
@@ -63,7 +61,9 @@ def test_announce_topic_created(app: Flask, now: datetime, author: User):
     assert_text(actual, expected_text)
 
 
-def test_announce_posting_created(app: Flask, now: datetime, author: User):
+def test_announce_posting_created(
+    app: Flask, now: datetime, author: EventUser, brand: EventBrand
+):
     expected_url = f'https://website.test/board/postings/{POSTING_ID}'
     expected_text = (
         '[Forum] RocketRandy replied in topic '
@@ -73,11 +73,11 @@ def test_announce_posting_created(app: Flask, now: datetime, author: User):
 
     event = BoardPostingCreatedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(author),
-        brand=EventBrand(BRAND_ID, BRAND_TITLE),
+        initiator=author,
+        brand=brand,
         board_id=BOARD_ID,
         posting_id=POSTING_ID,
-        posting_creator=EventUser.from_user(author),
+        posting_creator=author,
         topic_id=TOPIC_ID,
         topic_title='Cannot connect to the party network :(',
         topic_muted=False,
@@ -95,8 +95,13 @@ def test_announce_posting_created(app: Flask, now: datetime, author: User):
 
 
 @pytest.fixture(scope='module')
-def author(make_user) -> User:
-    return make_user(screen_name='RocketRandy')
+def author(make_event_user) -> EventUser:
+    return make_event_user(screen_name='RocketRandy')
+
+
+@pytest.fixture(scope='module')
+def brand(make_event_brand) -> EventBrand:
+    return make_event_brand()
 
 
 def build_board_webhook(board_id: BoardID) -> OutgoingWebhook:

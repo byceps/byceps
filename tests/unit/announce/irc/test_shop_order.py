@@ -16,7 +16,6 @@ from byceps.events.shop import (
     ShopOrderPlacedEvent,
 )
 from byceps.services.shop.order.models.order import OrderID, OrderNumber
-from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -27,16 +26,16 @@ ORDER_ID = OrderID(generate_uuid())
 
 
 def test_shop_order_placed_announced(
-    app: Flask, now: datetime, orderer_user: User, webhook_for_irc
+    app: Flask, now: datetime, orderer_user: EventUser, webhook_for_irc
 ):
     expected_text = 'Ken_von_Kaufkraft has placed order ORDER-00001.'
 
     event = ShopOrderPlacedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(orderer_user),
+        initiator=orderer_user,
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00001'),
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -47,8 +46,8 @@ def test_shop_order_placed_announced(
 def test_shop_order_canceled_announced(
     app: Flask,
     now: datetime,
-    shop_admin: User,
-    orderer_user: User,
+    shop_admin: EventUser,
+    orderer_user: EventUser,
     webhook_for_irc,
 ):
     expected_text = (
@@ -57,10 +56,10 @@ def test_shop_order_canceled_announced(
 
     event = ShopOrderCanceledEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(shop_admin),
+        initiator=shop_admin,
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00002'),
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -71,8 +70,8 @@ def test_shop_order_canceled_announced(
 def test_shop_order_paid_announced(
     app: Flask,
     now: datetime,
-    shop_admin: User,
-    orderer_user: User,
+    shop_admin: EventUser,
+    orderer_user: EventUser,
     webhook_for_irc,
 ):
     expected_text = (
@@ -82,10 +81,10 @@ def test_shop_order_paid_announced(
 
     event = ShopOrderPaidEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(shop_admin),
+        initiator=shop_admin,
         order_id=ORDER_ID,
         order_number=OrderNumber('ORDER-00003'),
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
         payment_method='bank_transfer',
     )
 
@@ -98,10 +97,10 @@ def test_shop_order_paid_announced(
 
 
 @pytest.fixture(scope='module')
-def shop_admin(make_user) -> User:
-    return make_user(screen_name='ShoppingSheriff')
+def shop_admin(make_event_user) -> EventUser:
+    return make_event_user(screen_name='ShoppingSheriff')
 
 
 @pytest.fixture(scope='module')
-def orderer_user(make_user) -> User:
-    return make_user(screen_name='Ken_von_Kaufkraft')
+def orderer_user(make_event_user) -> EventUser:
+    return make_event_user(screen_name='Ken_von_Kaufkraft')

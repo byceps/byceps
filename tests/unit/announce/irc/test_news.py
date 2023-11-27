@@ -12,7 +12,6 @@ from byceps.announce.announce import build_announcement_request
 from byceps.events.base import EventUser
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
-from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token, generate_uuid
 
@@ -24,7 +23,7 @@ NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
 
 def test_published_news_item_announced_with_url(
-    app: Flask, now: datetime, admin: User, webhook_for_irc
+    app: Flask, now: datetime, admin: EventUser, webhook_for_irc
 ) -> None:
     expected_text = (
         'The news "Check this out!" has been published. '
@@ -33,7 +32,7 @@ def test_published_news_item_announced_with_url(
 
     event = NewsItemPublishedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
+        initiator=admin,
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=now,
@@ -47,13 +46,13 @@ def test_published_news_item_announced_with_url(
 
 
 def test_published_news_item_announced_without_url(
-    app: Flask, now: datetime, admin: User, webhook_for_irc
+    app: Flask, now: datetime, admin: EventUser, webhook_for_irc
 ) -> None:
     expected_text = 'The news "Check this out, too!" has been published.'
 
     event = NewsItemPublishedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(admin),
+        initiator=admin,
         item_id=NEWS_ITEM_ID,
         channel_id=NEWS_CHANNEL_ID,
         published_at=now,
@@ -70,5 +69,5 @@ def test_published_news_item_announced_without_url(
 
 
 @pytest.fixture(scope='module')
-def admin(make_user) -> User:
-    return make_user(screen_name='Admin')
+def admin(make_event_user) -> EventUser:
+    return make_event_user(screen_name='Admin')
