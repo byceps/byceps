@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
 from unittest.mock import patch
 
 from flask import Flask
@@ -117,8 +118,8 @@ def test_create_ticket_bundles(
 # helpers
 
 
-def tear_down_bundles(tickets: list[DbTicket]) -> None:
-    bundle_ids = {t.bundle_id for t in tickets}
+def tear_down_bundles(tickets: Sequence[DbTicket]) -> None:
+    bundle_ids = {t.bundle_id for t in tickets if t.bundle_id}
 
     for ticket in tickets:
         ticket_service.delete_ticket(ticket.id)
