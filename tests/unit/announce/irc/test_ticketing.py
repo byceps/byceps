@@ -13,7 +13,13 @@ from byceps.announce.announce import build_announcement_request
 from byceps.events.base import EventUser
 from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.services.party.models import PartyID
-from byceps.services.ticketing.models.ticket import TicketCode, TicketSaleStats
+from byceps.services.ticketing.models.ticket import (
+    TicketCode,
+    TicketID,
+    TicketSaleStats,
+)
+
+from tests.helpers import generate_uuid
 
 from .helpers import assert_text
 
@@ -32,7 +38,7 @@ def test_ticket_checked_in(
     event = TicketCheckedInEvent(
         occurred_at=now,
         initiator=admin,
-        ticket_id=None,
+        ticket_id=TicketID(generate_uuid()),
         ticket_code=TicketCode('GTFIN'),
         occupied_seat_id=None,
         user=make_event_user(screen_name='Teilnehmer'),
