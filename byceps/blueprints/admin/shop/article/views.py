@@ -24,6 +24,7 @@ from byceps.services.shop.article import (
 )
 from byceps.services.shop.article.models import (
     Article,
+    ArticleNumber,
     ArticleNumberSequence,
     ArticleType,
     get_article_type_label,
@@ -343,12 +344,7 @@ def create(shop_id, type_name):
     shop = _get_shop_or_404(shop_id)
     type_ = _get_article_type_or_400(type_name)
 
-    if type_ == ArticleType.ticket:
-        form = TicketArticleCreateForm(request.form)
-    elif type_ == ArticleType.ticket_bundle:
-        form = TicketBundleArticleCreateForm(request.form)
-    else:
-        form = ArticleCreateForm(request.form)
+    form = _get_create_form(type_, request)
 
     article_number_sequences = _get_active_article_number_sequences_for_shop(
         shop.id
@@ -380,15 +376,7 @@ def create(shop_id, type_name):
         flash_error(gettext('No valid article number sequence was specified.'))
         return create_form(shop_id, type_.name, form)
 
-    article_number_generation_result = (
-        article_sequence_service.generate_article_number(
-            article_number_sequence.id
-        )
-    )
-    if article_number_generation_result.is_err():
-        abort(500, article_number_generation_result.unwrap_err())
-
-    item_number = article_number_generation_result.unwrap()
+    item_number = _get_item_number(article_number_sequence.id)
 
     description = form.description.data.strip()
     price = Money(form.price_amount.data, shop.currency)
@@ -404,55 +392,21 @@ def create(shop_id, type_name):
     not_directly_orderable = form.not_directly_orderable.data
     separate_order_required = form.separate_order_required.data
 
-    if type_ == ArticleType.ticket:
-        article = article_service.create_ticket_article(
-            shop.id,
-            item_number,
-            description,
-            price,
-            tax_rate,
-            total_quantity,
-            max_quantity_per_order,
-            form.ticket_category_id.data,
-            available_from=available_from_utc,
-            available_until=available_until_utc,
-            not_directly_orderable=not_directly_orderable,
-            separate_order_required=separate_order_required,
-        )
-    elif type_ == ArticleType.ticket_bundle:
-        article = article_service.create_ticket_bundle_article(
-            shop.id,
-            item_number,
-            description,
-            price,
-            tax_rate,
-            total_quantity,
-            max_quantity_per_order,
-            form.ticket_category_id.data,
-            form.ticket_quantity.data,
-            available_from=available_from_utc,
-            available_until=available_until_utc,
-            not_directly_orderable=not_directly_orderable,
-            separate_order_required=separate_order_required,
-        )
-    else:
-        processing_required = type_ == ArticleType.physical
-
-        article = article_service.create_article(
-            shop.id,
-            item_number,
-            type_,
-            description,
-            price,
-            tax_rate,
-            total_quantity,
-            max_quantity_per_order,
-            processing_required,
-            available_from=available_from_utc,
-            available_until=available_until_utc,
-            not_directly_orderable=not_directly_orderable,
-            separate_order_required=separate_order_required,
-        )
+    article = _create_article(
+        type_,
+        shop.id,
+        item_number,
+        description,
+        price,
+        tax_rate,
+        total_quantity,
+        max_quantity_per_order,
+        form,
+        available_from_utc,
+        available_until_utc,
+        not_directly_orderable,
+        separate_order_required,
+    )
 
     flash_success(
         gettext(
@@ -461,6 +415,92 @@ def create(shop_id, type_name):
         )
     )
     return redirect_to('.view', article_id=article.id)
+
+
+def _get_create_form(type_: ArticleType, request):
+    if type_ == ArticleType.ticket:
+        return TicketArticleCreateForm(request.form)
+    elif type_ == ArticleType.ticket_bundle:
+        return TicketBundleArticleCreateForm(request.form)
+    else:
+        return ArticleCreateForm(request.form)
+
+
+def _get_item_number(article_number_sequence_id) -> ArticleNumber:
+    generation_result = article_sequence_service.generate_article_number(
+        article_number_sequence_id
+    )
+
+    if generation_result.is_err():
+        abort(500, generation_result.unwrap_err())
+
+    return generation_result.unwrap()
+
+
+def _create_article(
+    type_: ArticleType,
+    shop_id: ShopID,
+    item_number: ArticleNumber,
+    description: str,
+    price: Money,
+    tax_rate: Decimal,
+    total_quantity: int,
+    max_quantity_per_order: int,
+    form,
+    available_from: datetime | None = None,
+    available_until: datetime | None = None,
+    not_directly_orderable: bool = False,
+    separate_order_required: bool = False,
+):
+    if type_ == ArticleType.ticket:
+        return article_service.create_ticket_article(
+            shop_id,
+            item_number,
+            description,
+            price,
+            tax_rate,
+            total_quantity,
+            max_quantity_per_order,
+            form.ticket_category_id.data,
+            available_from=available_from,
+            available_until=available_until,
+            not_directly_orderable=not_directly_orderable,
+            separate_order_required=separate_order_required,
+        )
+    elif type_ == ArticleType.ticket_bundle:
+        return article_service.create_ticket_bundle_article(
+            shop_id,
+            item_number,
+            description,
+            price,
+            tax_rate,
+            total_quantity,
+            max_quantity_per_order,
+            form.ticket_category_id.data,
+            form.ticket_quantity.data,
+            available_from=available_from,
+            available_until=available_until,
+            not_directly_orderable=not_directly_orderable,
+            separate_order_required=separate_order_required,
+        )
+    else:
+        processing_required = type_ == ArticleType.physical
+
+        return article_service.create_article(
+            shop_id,
+            item_number,
+            type_,
+            description,
+            price,
+            tax_rate,
+            total_quantity,
+            max_quantity_per_order,
+            processing_required,
+            available_from=available_from,
+            available_until=available_until,
+            not_directly_orderable=not_directly_orderable,
+            separate_order_required=separate_order_required,
+        )
 
 
 # -------------------------------------------------------------------- #
