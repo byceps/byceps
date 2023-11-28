@@ -185,10 +185,8 @@ def _configure(
     app.config.from_object(config_defaults)
 
     config_filename_str = os.environ.get('BYCEPS_CONFIG')
-    if config_filename_str is not None:
-        if isinstance(config_filename_str, str):
-            config_filename = Path(config_filename_str)
-
+    if config_filename_str:
+        config_filename = Path(config_filename_str)
         app.config.from_file(str(config_filename), load=rtoml.load)
 
     if config_overrides is not None:
