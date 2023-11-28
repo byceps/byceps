@@ -45,7 +45,7 @@ def announce_tickets_sold(
 ) -> Announcement | None:
     """Announce that tickets have been sold."""
     owner_screen_name = get_screen_name_or_fallback(event.owner)
-    sale_stats = ticket_service.get_ticket_sale_stats(event.party_id)
+    sale_stats = ticket_service.get_ticket_sale_stats(event.party.id)
 
     text = (
         ngettext(

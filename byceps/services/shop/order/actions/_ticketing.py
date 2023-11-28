@@ -6,8 +6,9 @@ byceps.services.shop.order.actions._ticketing
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.events.base import EventUser
+from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketsSoldEvent
+from byceps.services.party import party_service
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.errors import OrderNotPaidError
 from byceps.services.shop.order.models.order import OrderID
@@ -31,11 +32,12 @@ def create_tickets_sold_event(
 
     paid_at = order_paid_at_result.unwrap()
     category = ticket_category_service.get_category(category_id)
+    party = party_service.get_party(category.party_id)
 
     event = TicketsSoldEvent(
         occurred_at=paid_at,
         initiator=EventUser.from_user(initiator),
-        party_id=category.party_id,
+        party=EventParty.from_party(party),
         owner=EventUser.from_user(owner),
         quantity=quantity,
     )

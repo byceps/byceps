@@ -9,8 +9,9 @@ from unittest.mock import patch
 from flask import Flask
 import pytest
 
-from byceps.events.base import EventUser
+from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketsSoldEvent
+from byceps.services.party.models import Party
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.order import (
     order_action_registry_service,
@@ -71,6 +72,7 @@ def test_create_ticket_bundles(
     tickets_sold_signal_send_mock,
     admin_app: Flask,
     article: Article,
+    party: Party,
     ticket_category: TicketCategory,
     ticket_quantity_per_bundle: int,
     bundle_quantity: int,
@@ -104,7 +106,7 @@ def test_create_ticket_bundles(
     tickets_sold_event = TicketsSoldEvent(
         occurred_at=shop_order_paid_event.occurred_at,
         initiator=EventUser.from_user(admin_user),
-        party_id=ticket_category.party_id,
+        party=EventParty.from_party(party),
         owner=EventUser.from_user(orderer.user),
         quantity=expected_ticket_total,
     )

@@ -10,9 +10,8 @@ from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
-from byceps.events.base import EventUser
+from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
-from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import (
     TicketCode,
     TicketID,
@@ -55,6 +54,7 @@ def test_single_ticket_sold(
     app: Flask,
     now: datetime,
     admin: EventUser,
+    party: EventParty,
     make_event_user,
     webhook_for_irc,
 ):
@@ -71,7 +71,7 @@ def test_single_ticket_sold(
     event = TicketsSoldEvent(
         occurred_at=now,
         initiator=admin,
-        party_id=PartyID('popular-party'),
+        party=party,
         owner=make_event_user(screen_name='Neuling'),
         quantity=1,
     )
@@ -87,6 +87,7 @@ def test_multiple_tickets_sold(
     app: Flask,
     now: datetime,
     admin: EventUser,
+    party: EventParty,
     make_event_user,
     webhook_for_irc,
 ):
@@ -103,7 +104,7 @@ def test_multiple_tickets_sold(
     event = TicketsSoldEvent(
         occurred_at=now,
         initiator=admin,
-        party_id=PartyID('popular-party'),
+        party=party,
         owner=make_event_user(screen_name='TreuerKäufer'),
         quantity=3,
     )
@@ -119,3 +120,8 @@ def test_multiple_tickets_sold(
 @pytest.fixture(scope='module')
 def admin(make_event_user) -> EventUser:
     return make_event_user(screen_name='TicketingAdmin')
+
+
+@pytest.fixture(scope='module')
+def party(make_event_party) -> EventParty:
+    return make_event_party()
