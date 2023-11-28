@@ -297,6 +297,31 @@ def item_create(menu_id, target_type_name):
     except KeyError:
         abort(400, f'Unknown target type "{target_type_name}"')
 
+    form = _get_create_form(target_type, request, menu)
+
+    if not form.validate():
+        form_view = _get_create_form_view(target_type)
+        return form_view(menu.id, form)
+
+    target, current_page_id = _get_target_and_current_page_id_for_create_form(
+        target_type, form
+    )
+
+    label = form.label.data.strip()
+    hidden = form.hidden.data
+
+    item = site_navigation_service.create_item(
+        menu.id, target_type, target, label, current_page_id, hidden=hidden
+    ).unwrap()
+
+    flash_success(
+        gettext('Menu item "%(label)s" has been created.', label=item.label)
+    )
+
+    return redirect_to('.view', menu_id=menu.id)
+
+
+def _get_create_form(target_type: NavItemTargetType, request, menu: NavMenu):
     match target_type:
         case NavItemTargetType.page:
             form = ItemCreatePageForm(request.form)
@@ -309,19 +334,24 @@ def item_create(menu_id, target_type_name):
             form = ItemCreateViewForm(request.form)
             form.set_view_type_choices()
 
-    if not form.validate():
-        match target_type:
-            case NavItemTargetType.page:
-                form_view = item_create_page_form
+    return form
 
-            case NavItemTargetType.url:
-                form_view = item_create_url_form
 
-            case NavItemTargetType.view:
-                form_view = item_create_view_form
+def _get_create_form_view(target_type: NavItemTargetType):
+    match target_type:
+        case NavItemTargetType.page:
+            return item_create_page_form
 
-        return form_view(menu.id, form)
+        case NavItemTargetType.url:
+            return item_create_url_form
 
+        case NavItemTargetType.view:
+            return item_create_view_form
+
+
+def _get_target_and_current_page_id_for_create_form(
+    target_type: NavItemTargetType, form
+) -> tuple[str, str]:
     match target_type:
         case NavItemTargetType.page:
             page = page_service.get_page(form.target_page_id.data)
@@ -343,18 +373,7 @@ def item_create(menu_id, target_type_name):
             target = view_type.name
             current_page_id = view_type.current_page_id
 
-    label = form.label.data.strip()
-    hidden = form.hidden.data
-
-    item = site_navigation_service.create_item(
-        menu.id, target_type, target, label, current_page_id, hidden=hidden
-    ).unwrap()
-
-    flash_success(
-        gettext('Menu item "%(label)s" has been created.', label=item.label)
-    )
-
-    return redirect_to('.view', menu_id=menu.id)
+    return target, current_page_id
 
 
 @blueprint.get('/items/<uuid:item_id>/update')
