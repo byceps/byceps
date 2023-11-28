@@ -5,9 +5,52 @@
 
 import pytest
 
+from byceps.events.tourney import EventTourney, EventTourneyParticipant
 from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
 
-from tests.helpers import generate_uuid
+from tests.helpers import generate_token, generate_uuid
+
+
+@pytest.fixture(scope='session')
+def make_event_tourney():
+    def _wrapper(
+        *,
+        id: str | None = None,
+        title: str | None = None,
+    ) -> EventTourney:
+        if id is None:
+            id = str(generate_uuid())
+
+        if title is None:
+            title = generate_token()
+
+        return EventTourney(
+            id=id,
+            title=title,
+        )
+
+    return _wrapper
+
+
+@pytest.fixture(scope='session')
+def make_event_tourney_participant():
+    def _wrapper(
+        *,
+        id: str | None = None,
+        name: str | None = None,
+    ) -> EventTourneyParticipant:
+        if id is None:
+            id = str(generate_uuid())
+
+        if name is None:
+            name = generate_token()
+
+        return EventTourneyParticipant(
+            id=id,
+            name=name,
+        )
+
+    return _wrapper
 
 
 @pytest.fixture(scope='package')

@@ -14,6 +14,7 @@ from flask_babel import gettext
 
 from byceps.announce.helpers import with_locale
 from byceps.events.tourney import (
+    EventTourneyParticipant,
     TourneyCanceledEvent,
     TourneyFinishedEvent,
     TourneyMatchReadyEvent,
@@ -41,7 +42,7 @@ def announce_tourney_started(
 ) -> Announcement | None:
     text = gettext(
         'Tourney %(tourney_title)s has been started.',
-        tourney_title=event.tourney_title,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -53,7 +54,7 @@ def announce_tourney_paused(
 ) -> Announcement | None:
     text = gettext(
         'Tourney %(tourney_title)s has been paused.',
-        tourney_title=event.tourney_title,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -65,7 +66,7 @@ def announce_tourney_canceled(
 ) -> Announcement | None:
     text = gettext(
         'Tourney %(tourney_title)s has been canceled.',
-        tourney_title=event.tourney_title,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -77,7 +78,7 @@ def announce_tourney_finished(
 ) -> Announcement | None:
     text = gettext(
         'Tourney %(tourney_title)s has been finished.',
-        tourney_title=event.tourney_title,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -92,13 +93,13 @@ def announce_match_ready(
     event_name: str, event: TourneyMatchReadyEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     # Do not announce a match if it does not actually need to be played.
-    if None in {event.participant1_id, event.participant2_id}:
+    if None in {event.participant1, event.participant2}:
         return None
 
     text = gettext(
         'Match %(match_label)s in tourney %(tourney_title)s is ready to be played.',
         match_label=get_match_label(event),
-        tourney_title=event.tourney_title,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -111,7 +112,7 @@ def announce_match_reset(
     text = gettext(
         'Match %(match_label)s in tourney %(tourney_title)s has been reset.',
         match_label=get_match_label(event),
-        tourney_title=event.tourney_title,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -126,7 +127,7 @@ def announce_match_score_submitted(
     text = gettext(
         'A result has been entered for match %(match_label)s in tourney %(tourney_title)s.',
         match_label=get_match_label(event),
-        tourney_title=event.tourney_title,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -141,7 +142,7 @@ def announce_match_score_confirmed(
     text = gettext(
         'The result for match %(match_label)s in tourney %(tourney_title)s has been confirmed.',
         match_label=get_match_label(event),
-        tourney_title=event.tourney_title,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -156,7 +157,7 @@ def announce_match_score_randomized(
     text = gettext(
         'A random result has been entered for match %(match_label)s in tourney %(tourney_title)s.',
         match_label=get_match_label(event),
-        tourney_title=event.tourney_title,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -174,8 +175,8 @@ def announce_participant_ready(
 ) -> Announcement | None:
     text = gettext(
         '"%(participant_name)s" in tourney %(tourney_title)s is ready to play.',
-        participant_name=event.participant_name,
-        tourney_title=event.tourney_title,
+        participant_name=event.participant.name,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -189,8 +190,8 @@ def announce_participant_eliminated(
 ) -> Announcement | None:
     text = gettext(
         '"%(participant_name)s" has been eliminated from tourney %(tourney_title)s.',
-        participant_name=event.participant_name,
-        tourney_title=event.tourney_title,
+        participant_name=event.participant.name,
+        tourney_title=event.tourney.title,
     )
 
     return Announcement(text)
@@ -207,8 +208,8 @@ def announce_participant_warned(
     text = (
         gettext(
             '"%(participant_name)s" in tourney %(tourney_title)s has been warned.',
-            participant_name=event.participant_name,
-            tourney_title=event.tourney_title,
+            participant_name=event.participant.name,
+            tourney_title=event.tourney.title,
         )
         + yellow_card_irc
     )
@@ -227,8 +228,8 @@ def announce_participant_disqualified(
     text = (
         gettext(
             '"%(participant_name)s" in tourney %(tourney_title)s has been disqualified.',
-            participant_name=event.participant_name,
-            tourney_title=event.tourney_title,
+            participant_name=event.participant.name,
+            tourney_title=event.tourney.title,
         )
         + red_card_irc
     )
@@ -241,27 +242,12 @@ def announce_participant_disqualified(
 
 
 def get_match_label(match_event) -> str:
-    participant1_label = get_participant_label(
-        match_event.participant1_id, match_event.participant1_name
-    )
-    participant2_label = get_participant_label(
-        match_event.participant2_id, match_event.participant2_name
-    )
-
     return gettext(
         '"%(participant1_label)s" vs. "%(participant2_label)s"',
-        participant1_label=participant1_label,
-        participant2_label=participant2_label,
+        participant1_label=get_participant_label(match_event.participant1),
+        participant2_label=get_participant_label(match_event.participant2),
     )
 
 
-def get_participant_label(
-    participant_id: str | None, participant_name: str | None
-) -> str:
-    if participant_id is None:
-        return gettext('bye')
-
-    if not participant_name:
-        return '<unnamed>'
-
-    return participant_name
+def get_participant_label(participant: EventTourneyParticipant | None) -> str:
+    return participant.name if (participant is not None) else gettext('bye')

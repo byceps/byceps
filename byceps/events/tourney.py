@@ -14,9 +14,20 @@ from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
+class EventTourney:
+    id: str
+    title: str
+
+
+@dataclass(frozen=True)
+class EventTourneyParticipant:
+    id: str
+    name: str
+
+
+@dataclass(frozen=True)
 class _BaseTourneyEvent(_BaseEvent):
-    tourney_id: str
-    tourney_title: str
+    tourney: EventTourney
 
 
 # tourney
@@ -58,10 +69,8 @@ class TourneyFinishedEvent(_TourneyEvent):
 @dataclass(frozen=True)
 class _TourneyMatchEvent(_BaseTourneyEvent):
     match_id: str
-    participant1_id: str | None
-    participant1_name: str | None
-    participant2_id: str | None
-    participant2_name: str | None
+    participant1: EventTourneyParticipant | None
+    participant2: EventTourneyParticipant | None
 
 
 @dataclass(frozen=True)
@@ -95,8 +104,7 @@ class TourneyMatchScoreRandomizedEvent(_TourneyMatchEvent):
 @dataclass(frozen=True)
 class _TourneyParticipantEvent(_BaseTourneyEvent):
     match_id: str
-    participant_id: str
-    participant_name: str
+    participant: EventTourneyParticipant
 
 
 @dataclass(frozen=True)

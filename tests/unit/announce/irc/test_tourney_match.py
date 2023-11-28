@@ -6,9 +6,12 @@
 from datetime import datetime
 
 from flask import Flask
+import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.events.tourney import (
+    EventTourney,
+    EventTourneyParticipant,
     TourneyMatchReadyEvent,
     TourneyMatchResetEvent,
     TourneyMatchScoreConfirmedEvent,
@@ -21,15 +24,17 @@ from tests.helpers import generate_token, generate_uuid
 from .helpers import assert_text
 
 
-TOURNEY_ID = str(generate_uuid())
 MATCH_ID = str(generate_uuid())
-PARTICIPANT_1_ID = generate_token()
-PARTICIPANT_1_NAME = 'Die Einen'
-PARTICIPANT_2_ID = generate_token()
-PARTICIPANT_2_NAME = 'Die Anderen'
 
 
-def test_announce_match_ready(app: Flask, now: datetime, webhook_for_irc):
+def test_announce_match_ready(
+    app: Flask,
+    now: datetime,
+    tourney: EventTourney,
+    participant1: EventTourneyParticipant,
+    participant2: EventTourneyParticipant,
+    webhook_for_irc,
+):
     expected_text = (
         'Match "Die Einen" vs. "Die Anderen" '
         'in tourney Octo-Highlander (8on8) '
@@ -39,13 +44,10 @@ def test_announce_match_ready(app: Flask, now: datetime, webhook_for_irc):
     event = TourneyMatchReadyEvent(
         occurred_at=now,
         initiator=None,
-        tourney_id=TOURNEY_ID,
-        tourney_title='Octo-Highlander (8on8)',
+        tourney=tourney,
         match_id=MATCH_ID,
-        participant1_id=PARTICIPANT_1_ID,
-        participant1_name=PARTICIPANT_1_NAME,
-        participant2_id=PARTICIPANT_2_ID,
-        participant2_name=PARTICIPANT_2_NAME,
+        participant1=participant1,
+        participant2=participant2,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -53,7 +55,14 @@ def test_announce_match_ready(app: Flask, now: datetime, webhook_for_irc):
     assert_text(actual, expected_text)
 
 
-def test_announce_match_reset(app: Flask, now: datetime, webhook_for_irc):
+def test_announce_match_reset(
+    app: Flask,
+    now: datetime,
+    tourney: EventTourney,
+    participant1: EventTourneyParticipant,
+    participant2: EventTourneyParticipant,
+    webhook_for_irc,
+):
     expected_text = (
         'Match "Die Einen" vs. "Die Anderen" '
         'in tourney Octo-Highlander (8on8) '
@@ -63,13 +72,10 @@ def test_announce_match_reset(app: Flask, now: datetime, webhook_for_irc):
     event = TourneyMatchResetEvent(
         occurred_at=now,
         initiator=None,
-        tourney_id=TOURNEY_ID,
-        tourney_title='Octo-Highlander (8on8)',
+        tourney=tourney,
         match_id=MATCH_ID,
-        participant1_id=PARTICIPANT_1_ID,
-        participant1_name=PARTICIPANT_1_NAME,
-        participant2_id=PARTICIPANT_2_ID,
-        participant2_name=PARTICIPANT_2_NAME,
+        participant1=participant1,
+        participant2=participant2,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -78,7 +84,12 @@ def test_announce_match_reset(app: Flask, now: datetime, webhook_for_irc):
 
 
 def test_announce_match_score_submitted(
-    app: Flask, now: datetime, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    tourney: EventTourney,
+    participant1: EventTourneyParticipant,
+    participant2: EventTourneyParticipant,
+    webhook_for_irc,
 ):
     expected_text = (
         'A result has been entered '
@@ -89,13 +100,10 @@ def test_announce_match_score_submitted(
     event = TourneyMatchScoreSubmittedEvent(
         occurred_at=now,
         initiator=None,
-        tourney_id=TOURNEY_ID,
-        tourney_title='Octo-Highlander (8on8)',
+        tourney=tourney,
         match_id=MATCH_ID,
-        participant1_id=PARTICIPANT_1_ID,
-        participant1_name=PARTICIPANT_1_NAME,
-        participant2_id=PARTICIPANT_2_ID,
-        participant2_name=PARTICIPANT_2_NAME,
+        participant1=participant1,
+        participant2=participant2,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -104,7 +112,12 @@ def test_announce_match_score_submitted(
 
 
 def test_announce_match_score_confirmed(
-    app: Flask, now: datetime, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    tourney: EventTourney,
+    participant1: EventTourneyParticipant,
+    participant2: EventTourneyParticipant,
+    webhook_for_irc,
 ):
     expected_text = (
         'The result '
@@ -116,13 +129,10 @@ def test_announce_match_score_confirmed(
     event = TourneyMatchScoreConfirmedEvent(
         occurred_at=now,
         initiator=None,
-        tourney_id=TOURNEY_ID,
-        tourney_title='Octo-Highlander (8on8)',
+        tourney=tourney,
         match_id=MATCH_ID,
-        participant1_id=PARTICIPANT_1_ID,
-        participant1_name=PARTICIPANT_1_NAME,
-        participant2_id=PARTICIPANT_2_ID,
-        participant2_name=PARTICIPANT_2_NAME,
+        participant1=participant1,
+        participant2=participant2,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -131,7 +141,12 @@ def test_announce_match_score_confirmed(
 
 
 def test_announce_match_score_randomized(
-    app: Flask, now: datetime, webhook_for_irc
+    app: Flask,
+    now: datetime,
+    tourney: EventTourney,
+    participant1: EventTourneyParticipant,
+    participant2: EventTourneyParticipant,
+    webhook_for_irc,
 ):
     expected_text = (
         'A random result has been entered '
@@ -142,15 +157,30 @@ def test_announce_match_score_randomized(
     event = TourneyMatchScoreRandomizedEvent(
         occurred_at=now,
         initiator=None,
-        tourney_id=TOURNEY_ID,
-        tourney_title='Octo-Highlander (8on8)',
+        tourney=tourney,
         match_id=MATCH_ID,
-        participant1_id=PARTICIPANT_1_ID,
-        participant1_name=PARTICIPANT_1_NAME,
-        participant2_id=PARTICIPANT_2_ID,
-        participant2_name=PARTICIPANT_2_NAME,
+        participant1=participant1,
+        participant2=participant2,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
 
     assert_text(actual, expected_text)
+
+
+# helpers
+
+
+@pytest.fixture(scope='module')
+def tourney(make_event_tourney) -> EventTourney:
+    return make_event_tourney(title='Octo-Highlander (8on8)')
+
+
+@pytest.fixture(scope='module')
+def participant1(make_event_tourney_participant) -> EventTourneyParticipant:
+    return make_event_tourney_participant(name='Die Einen')
+
+
+@pytest.fixture(scope='module')
+def participant2(make_event_tourney_participant) -> EventTourneyParticipant:
+    return make_event_tourney_participant(name='Die Anderen')
