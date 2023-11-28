@@ -193,7 +193,7 @@ def _configure(
     config_filename_str = os.environ.get('BYCEPS_CONFIG')
     if config_filename_str:
         config_filename = Path(config_filename_str)
-        app.config.from_file(str(config_filename), load=rtoml.load)
+        app.config.from_file(config_filename, load=rtoml.load)
 
     if config_overrides is not None:
         app.config.from_mapping(config_overrides)
