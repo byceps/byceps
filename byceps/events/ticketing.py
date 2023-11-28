@@ -10,11 +10,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.events.base import EventParty, EventUser
 from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
 
-from .base import _BaseEvent
+from .base import _BaseEvent, EventParty, EventUser
 
 
 @dataclass(frozen=True)

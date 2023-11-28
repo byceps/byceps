@@ -10,9 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.events.base import EventBrand, EventUser
-
-from .base import _BaseEvent
+from .base import _BaseEvent, EventBrand, EventUser
 
 
 @dataclass(frozen=True)

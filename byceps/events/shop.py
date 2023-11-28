@@ -10,11 +10,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.events.base import EventUser
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
 
-from .base import _BaseEvent
+from .base import _BaseEvent, EventUser
 
 
 @dataclass(frozen=True)
