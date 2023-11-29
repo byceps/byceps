@@ -56,20 +56,30 @@ def get_webhook_data(result: str) -> dict:
         'embeds': [
             {
                 'color': color,
-                'author': {
-                    'name': f'Run #{run_number} – {run_result}',
-                    'url': run_url,
-                },
-                'title': commit_subject,
                 'fields': [
+                    {
+                        'name': 'Run',
+                        'value': f'[{run_number}]({run_url})',
+                        'inline': 'true',
+                    },
+                    {
+                        'name': 'Result',
+                        'value': run_result,
+                        'inline': 'true',
+                    },
+                    {
+                        'name': ref_type.title(),
+                        'value': ref_name,
+                        'inline': 'true',
+                    },
                     {
                         'name': 'Commit',
                         'value': f'[{commit_hash_short}]({commit_url})',
                         'inline': 'true',
                     },
                     {
-                        'name': ref_type.title(),
-                        'value': ref_name,
+                        'name': 'Commit Message',
+                        'value': commit_subject,
                         'inline': 'true',
                     },
                 ],
