@@ -1,6 +1,6 @@
 build:
   environment:
-    python: "3.10.13"
+    python: "3.10.8"
   dependencies:
     override:
       - "pip install -r requirements.txt -r requirements-test.txt"
