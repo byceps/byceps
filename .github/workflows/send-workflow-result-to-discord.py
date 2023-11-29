@@ -59,7 +59,7 @@ def get_webhook_data(result: str) -> dict:
                 'fields': [
                     {
                         'name': 'Run',
-                        'value': f'[{run_number}]({run_url})',
+                        'value': f'[#{run_number}]({run_url})',
                         'inline': 'true',
                     },
                     {
