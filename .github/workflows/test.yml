@@ -74,12 +74,6 @@ jobs:
       run: |
         coverage run -m pytest
 
-    - name: Upload coverage results
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage
-        path: .coverage
-
     - name: Post result to Discord
       if: always()
       env:
