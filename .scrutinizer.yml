@@ -25,6 +25,12 @@ build:
               file: ".coverage"
               format: "py-cc"
 
+filter:
+  paths:
+    - "byceps/"
+  excluded_paths:
+    - "byceps/static/behavior/vendor/"
+
 tools:
   python_analyzer:
     config:
