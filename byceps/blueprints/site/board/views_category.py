@@ -41,8 +41,11 @@ def category_index():
         categories, user
     )
 
+    recent_topics = service.get_recent_topics(user)
+
     return {
         'categories': categories_with_flag,
+        'recent_topics': recent_topics,
     }
 
 

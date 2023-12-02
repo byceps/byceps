@@ -6827,6 +6827,11 @@ msgstr "Beiträge"
 msgid "Latest post"
 msgstr "Letzter Beitrag"
 
+#: byceps/blueprints/site/board/templates/site/board/category_index.html:57
+msgid "Recently Active Topics"
+msgstr "Zuletzt aktive Themen"
+
+#: byceps/blueprints/site/board/templates/site/board/category_index.html:62
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:30
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:34
 msgid "Topic"
