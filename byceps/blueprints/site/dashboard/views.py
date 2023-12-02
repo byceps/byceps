@@ -96,16 +96,16 @@ def _get_news_headlines() -> list[NewsHeadline] | None:
     return news_item_service.get_recent_headlines(channel_ids, limit=4)
 
 
-def _get_board_topics(current_user: CurrentUser) -> Sequence[DbTopic]:
+def _get_board_topics(current_user: CurrentUser) -> Sequence[DbTopic] | None:
     board_id = g.site.board_id
     if board_id is None:
-        return []
+        return None
 
     has_access = board_access_control_service.has_user_access_to_board(
         current_user.id, board_id
     )
     if not has_access:
-        return []
+        return None
 
     include_hidden = board_helper_service.may_current_user_view_hidden()
     topics = board_topic_query_service.get_recent_topics(
