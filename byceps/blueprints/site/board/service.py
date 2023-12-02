@@ -8,15 +8,17 @@ byceps.blueprints.site.board.service
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from datetime import datetime
 
 from flask import g
 
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
+    board_access_control_service,
     board_last_view_service,
     board_posting_query_service,
+    board_topic_query_service,
 )
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
@@ -38,6 +40,34 @@ from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 
 DEFAULT_POSTINGS_PER_PAGE = 10
 DEFAULT_TOPICS_PER_PAGE = 10
+
+
+def get_recent_topics(
+    current_user: CurrentUser, *, limit=6
+) -> Sequence[DbTopic] | None:
+    """Return the most recently active board topics.
+
+    Returns `None` if no board is configured for this site or the
+    current user does not have access to the configured board.
+    """
+    board_id = g.site.board_id
+    if board_id is None:
+        return None
+
+    has_access = board_access_control_service.has_user_access_to_board(
+        current_user.id, board_id
+    )
+    if not has_access:
+        return None
+
+    include_hidden = may_current_user_view_hidden()
+    topics = board_topic_query_service.get_recent_topics(
+        board_id, limit=limit, include_hidden=include_hidden
+    )
+
+    add_topic_unseen_flag(topics, current_user)
+
+    return topics
 
 
 def add_unseen_postings_flag_to_categories(

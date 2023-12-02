@@ -14,12 +14,6 @@ from flask import abort, g
 
 from byceps.blueprints.site.board import service as board_helper_service
 from byceps.blueprints.site.guest_server.views import _sort_addresses
-from byceps.services.authn.session.models import CurrentUser
-from byceps.services.board import (
-    board_access_control_service,
-    board_topic_query_service,
-)
-from byceps.services.board.dbmodels.topic import DbTopic
 from byceps.services.guest_server import guest_server_service
 from byceps.services.news import news_item_service
 from byceps.services.news.models import NewsHeadline
@@ -50,7 +44,7 @@ def index():
     open_orders = _get_open_orders(user.id)
     tickets = _get_tickets(user.id)
     news_headlines = _get_news_headlines()
-    board_topics = _get_board_topics(g.user)
+    board_topics = board_helper_service.get_recent_topics(g.user)
     guest_servers = guest_server_service.get_servers_for_owner_and_party(
         g.user.id, g.party_id
     )
@@ -94,24 +88,3 @@ def _get_news_headlines() -> list[NewsHeadline] | None:
         return None
 
     return news_item_service.get_recent_headlines(channel_ids, limit=4)
-
-
-def _get_board_topics(current_user: CurrentUser) -> Sequence[DbTopic] | None:
-    board_id = g.site.board_id
-    if board_id is None:
-        return None
-
-    has_access = board_access_control_service.has_user_access_to_board(
-        current_user.id, board_id
-    )
-    if not has_access:
-        return None
-
-    include_hidden = board_helper_service.may_current_user_view_hidden()
-    topics = board_topic_query_service.get_recent_topics(
-        board_id, limit=6, include_hidden=include_hidden
-    )
-
-    board_helper_service.add_topic_unseen_flag(topics, current_user)
-
-    return topics
