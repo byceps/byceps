@@ -88,10 +88,10 @@ def _get_tickets(user_id: UserID) -> Sequence[DbTicket]:
     return ticket_service.get_tickets_used_by_user(user_id, g.party_id)
 
 
-def _get_news_headlines() -> list[NewsHeadline]:
+def _get_news_headlines() -> list[NewsHeadline] | None:
     channel_ids = g.site.news_channel_ids
     if not channel_ids:
-        return []
+        return None
 
     return news_item_service.get_recent_headlines(channel_ids, limit=4)
 
