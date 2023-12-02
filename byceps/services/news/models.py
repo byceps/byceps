@@ -122,7 +122,7 @@ class RenderedNewsItem:
     published: bool
     title: str
     featured_image: NewsImage | None
-    featured_image_html: Result[str | None, str]
+    featured_image_html: Result[str, str] | None
     body_html: Result[str, str]
 
 

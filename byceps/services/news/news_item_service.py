@@ -581,6 +581,12 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
 
 def render_html(item: NewsItem) -> RenderedNewsItem:
     """Render item's raw body and featured image to HTML."""
+    featured_image_html = (
+        _render_featured_image_html(item.id, item.featured_image)
+        if item.featured_image
+        else None
+    )
+
     return RenderedNewsItem(
         channel=item.channel,
         slug=item.slug,
@@ -588,22 +594,21 @@ def render_html(item: NewsItem) -> RenderedNewsItem:
         published=item.published,
         title=item.title,
         featured_image=item.featured_image,
-        featured_image_html=_render_featured_image_html(item),
+        featured_image_html=featured_image_html,
         body_html=_render_body_html(item),
     )
 
 
-def _render_featured_image_html(item: NewsItem) -> Result[str | None, str]:
-    if not item.featured_image:
-        return Ok(None)
-
-    result = news_html_service.render_featured_image_html(item.featured_image)
+def _render_featured_image_html(
+    item_id: NewsItemID, image: NewsImage
+) -> Result[str, str]:
+    result = news_html_service.render_featured_image_html(image)
 
     if result.is_err():
         # Log, but do not return error.
         log.warning(
             'HTML rendering of featured image for news item %s failed: %s',
-            item.id,
+            item_id,
             result.unwrap_err(),
         )
 

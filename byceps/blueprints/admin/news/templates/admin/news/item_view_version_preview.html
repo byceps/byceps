@@ -16,14 +16,12 @@
 
       <h1>{{ item.title }}</h1>
 
-{%- if item.featured_image_html.is_ok() %}
-  {%- with featured_image_html = item.featured_image_html.unwrap() %}
-    {%- if featured_image_html %}
-{{ featured_image_html|safe }}
-    {%- endif %}
-  {%- endwith %}
-{%- else %}
-{{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(item.featured_image_html.unwrap_err())|safe, category='danger') }}
+{%- if item.featured_image_html is not none %}
+  {%- if item.featured_image_html.is_ok() %}
+  {{ item.featured_image_html.unwrap()|safe }}
+  {%- else %}
+  {{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(item.featured_image_html.unwrap_err())|safe, category='danger') }}
+  {%- endif %}
 {%- endif %}
 
 {%- if item.body_html.is_ok() %}

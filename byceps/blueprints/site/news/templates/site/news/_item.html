@@ -3,14 +3,12 @@
 <div class="main-body-box">
   <article class="news-item">
     <div class="featured-image mb">
-{%- if item.featured_image_html.is_ok() %}
-  {%- with featured_image_html = item.featured_image_html.unwrap() %}
-    {%- if featured_image_html %}
-{{ featured_image_html|safe }}
-    {%- endif %}
-  {%- endwith %}
-{%- else %}
-{{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
+{%- if item.featured_image_html is not none %}
+  {%- if item.featured_image_html.is_ok() %}
+  {{ item.featured_image_html.unwrap()|safe }}
+  {%- else %}
+  {{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
+  {%- endif %}
 {%- endif %}
     </div>
     <h1><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
