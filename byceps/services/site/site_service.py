@@ -230,6 +230,9 @@ def add_news_channel(site_id: SiteID, news_channel_id: NewsChannelID) -> None:
     db_site = _get_db_site(site_id)
     news_channel = news_channel_service.get_db_channel(news_channel_id)
 
+    if news_channel in db_site.news_channels:
+        return
+
     db_site.news_channels.append(news_channel)
     db.session.commit()
 
@@ -240,6 +243,9 @@ def remove_news_channel(
     """Remove the news channel from the site."""
     db_site = _get_db_site(site_id)
     news_channel = news_channel_service.get_db_channel(news_channel_id)
+
+    if news_channel not in db_site.news_channels:
+        return
 
     db_site.news_channels.remove(news_channel)
     db.session.commit()
