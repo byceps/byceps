@@ -15,6 +15,7 @@ from byceps.services.brand import brand_service
 from byceps.services.news import news_channel_service
 from byceps.services.party import party_service
 from byceps.services.shop.storefront import storefront_service
+from byceps.util.forms import MultiCheckboxField
 from byceps.util.l10n import LocalizedForm
 
 
@@ -82,14 +83,16 @@ class UpdateForm(_BaseForm):
         self.brand_id.choices = [(brand.id, brand.title) for brand in brands]
 
 
-class AddNewsChannelForm(LocalizedForm):
-    news_channel_id = SelectField(
-        lazy_gettext('News channel ID'), validators=[InputRequired()]
+class AssignNewsChannelsForm(LocalizedForm):
+    news_channel_ids = MultiCheckboxField(
+        lazy_gettext('News channels'), validators=[Optional()]
     )
 
-    def set_news_channel_choices(self, brand_id):
+    def set_news_channel_id_choices(self, brand_id):
         news_channels = news_channel_service.get_channels_for_brand(brand_id)
-        news_channels.sort(key=lambda channel: channel.id)
 
-        choices = [(c.id, c.id) for c in news_channels]
-        self.news_channel_id.choices = choices
+        news_channel_ids = [c.id for c in news_channels]
+        news_channel_ids.sort()
+
+        choices = [(channel_id, channel_id) for channel_id in news_channel_ids]
+        self.news_channel_ids.choices = choices

@@ -28,10 +28,9 @@ from byceps.util.framework.templating import templated
 from byceps.util.views import (
     permission_required,
     redirect_to,
-    respond_no_content,
 )
 
-from .forms import AddNewsChannelForm, CreateForm, UpdateForm
+from .forms import AssignNewsChannelsForm, CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('site_admin', __name__)
@@ -318,15 +317,19 @@ def _fill_in_common_form_choices(form, brand_id):
 # news channels
 
 
-@blueprint.get('/sites/<site_id>/news_channels/add')
+@blueprint.get('/sites/<site_id>/news_channels/update')
 @permission_required('site.update')
 @templated
-def add_news_channel_form(site_id, erroneous_form=None):
-    """Show form to add a news channel to the site."""
+def assign_news_channels_form(site_id, erroneous_form=None):
+    """Show form to assign news channels to the site."""
     site = _get_site_or_404(site_id)
 
-    form = erroneous_form if erroneous_form else AddNewsChannelForm()
-    form.set_news_channel_choices(site.brand_id)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else AssignNewsChannelsForm(news_channel_ids=site.news_channel_ids)
+    )
+    form.set_news_channel_id_choices(site.brand_id)
 
     return {
         'site': site,
@@ -336,54 +339,31 @@ def add_news_channel_form(site_id, erroneous_form=None):
 
 @blueprint.post('/sites/<site_id>/news_channels')
 @permission_required('site.update')
-def add_news_channel(site_id):
-    """Add a news channel to the site."""
+def assign_news_channels(site_id):
+    """Assign news channels to the site."""
     site = _get_site_or_404(site_id)
 
-    form = AddNewsChannelForm(request.form)
-    form.set_news_channel_choices(site.brand_id)
+    form = AssignNewsChannelsForm(request.form)
+    form.set_news_channel_id_choices(site.brand_id)
 
     if not form.validate():
-        return add_news_channel_form(site.id, form)
+        return assign_news_channels_form(site.id, form)
 
-    news_channel_id = form.news_channel_id.data
-    news_channel = news_channel_service.get_channel(news_channel_id)
+    all_channels = news_channel_service.get_channels_for_brand(site.brand_id)
+    all_channel_ids = {c.id for c in all_channels}
 
-    site_service.add_news_channel(site.id, news_channel.id)
+    channel_ids_to_add = set(form.news_channel_ids.data)
+    channel_ids_to_remove = all_channel_ids.difference(channel_ids_to_add)
 
-    flash_success(
-        gettext(
-            'News channel "%(news_channel_id)s" has been added to site "%(site_title)s".',
-            news_channel_id=news_channel.id,
-            site_title=site.title,
-        )
-    )
+    for channel_id in channel_ids_to_add:
+        site_service.add_news_channel(site.id, channel_id)
+
+    for channel_id in channel_ids_to_remove:
+        site_service.remove_news_channel(site.id, channel_id)
+
+    flash_success(gettext('Changes have been saved.'))
 
     return redirect_to('.view', site_id=site.id)
-
-
-@blueprint.delete('/sites/<site_id>/news_channels/<news_channel_id>')
-@permission_required('site.update')
-@respond_no_content
-def remove_news_channel(site_id, news_channel_id):
-    """Remove the news channel from the site."""
-    site = _get_site_or_404(site_id)
-
-    news_channel = news_channel_service.find_channel(news_channel_id)
-    if news_channel is None:
-        abort(404)
-
-    news_channel_id = news_channel.id
-
-    site_service.remove_news_channel(site.id, news_channel.id)
-
-    flash_success(
-        gettext(
-            'News channel "%(news_channel_id)s" has been removed from site "%(site_title)s".',
-            news_channel_id=news_channel.id,
-            site_title=site.title,
-        )
-    )
 
 
 # -------------------------------------------------------------------- #

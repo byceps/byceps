@@ -1,8 +1,8 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/forms.html' import form_buttons, form_field_checkboxes, form_field %}
 {% set current_page = 'sites_admin' %}
-{% set page_title = _('Add news channel') %}
+{% set page_title = _('Assign news channels') %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', site_id=site.id), _('Site')) }}
@@ -12,12 +12,12 @@
 
   <h1>{{ page_title }}</h1>
 
-  <form action="{{ url_for('.add_news_channel', site_id=site.id) }}" method="post">
+  <form action="{{ url_for('.assign_news_channels', site_id=site.id) }}" method="post">
     <div class="box">
-      {{ form_field(form.news_channel_id) }}
+      {{ form_field_checkboxes(form.news_channel_ids) }}
     </div>
 
-    {{ form_buttons(_('Add')) }}
+    {{ form_buttons(_('Save')) }}
   </form>
 
 {%- endblock %}

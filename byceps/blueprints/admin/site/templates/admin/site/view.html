@@ -101,7 +101,7 @@
   {%- if has_current_user_permission('site.update') %}
     <div class="column--align-bottom">
       <div class="button-row button-row--right">
-        <a class="button button--compact" href="{{ url_for('.add_news_channel_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Add news channel') }}</span></a>
+        <a class="button button--compact" href="{{ url_for('.assign_news_channels_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Assign news channels') }}</span></a>
       </div>
     </div>
   {%- endif %}
@@ -113,13 +113,6 @@
     {%- for channel in news_channels|sort(attribute='id') %}
       <tr>
         <td><a href="{{ url_for('news_admin.channel_view', channel_id=channel.id) }}">{{ channel.id }}</a></td>
-        {%- if has_current_user_permission('site.update') %}
-        <td>
-          <div class="button-row button-row--compact button-row--right">
-            <a href="{{ url_for('.remove_news_channel', site_id=site.id, news_channel_id=channel.id) }}" data-action="news-channel-remove" class="button button--compact" title="{{ _('Remove') }}">{{ render_icon('remove') }}</a>
-          </div>
-        </td>
-        {%- endif %}
       </tr>
     {%- endfor %}
     </tbody>
@@ -155,12 +148,4 @@
   </div>
   {%- endif %}
 
-{%- endblock %}
-
-{% block scripts %}
-  <script>
-    onDomReady(() => {
-      confirmed_delete_on_click_then_reload('[data-action="news-channel-remove"]', '{{ _('Remove news channel from site?') }}');
-    });
-  </script>
 {%- endblock %}
