@@ -9,7 +9,6 @@
 import click
 
 from byceps.services.snippet import snippet_service
-from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet.models import SnippetScope
 from byceps.services.user import user_service
 
@@ -29,35 +28,30 @@ def execute(
     source_scope = SnippetScope.for_site(source_site.id)
     target_scope = SnippetScope.for_site(target_site.id)
 
-    versions = [
-        get_version(source_scope, name, language_code) for name in snippet_names
-    ]
-
-    for version in versions:
-        copy_snippet(target_scope, version, ctx)
+    for name in snippet_names:
+        copy_snippet(source_scope, target_scope, name, language_code, ctx)
 
     click.secho('Done.', fg='green')
 
 
-def get_version(
-    source_scope: SnippetScope, snippet_name: str, language_code: str
-) -> DbSnippetVersion:
-    version = snippet_service.find_current_version_of_snippet_with_name(
-        source_scope, snippet_name, language_code
-    )
-
-    if version is None:
-        raise click.BadParameter(
-            f'Snippet "{snippet_name}" with language code "{language_code}" '
-            f'not found in scope "{scope_as_string(source_scope)}".'
-        )
-
-    return version
-
-
 def copy_snippet(
-    target_scope: SnippetScope, version: DbSnippetVersion, ctx
+    source_scope: SnippetScope,
+    target_scope: SnippetScope,
+    name: str,
+    language_code: str,
+    ctx,
 ) -> None:
+    version = snippet_service.find_current_version_of_snippet_with_name(
+        source_scope, name, language_code
+    )
+    if version is None:
+        click.secho(
+            f'Snippet "{name}" ({language_code}) '
+            f'not found in scope "{scope_as_string(source_scope)}".',
+            fg='red',
+        )
+        return None
+
     creator = user_service.get_user(version.creator_id)
 
     snippet_service.create_snippet(
@@ -69,7 +63,7 @@ def copy_snippet(
     )
 
     click.secho(
-        f'Copied snippet "{version.snippet.name}" '
+        f'Copied snippet "{version.snippet.name}" ({language_code}) '
         f'to scope "{scope_as_string(target_scope)}".',
         fg='green',
     )
