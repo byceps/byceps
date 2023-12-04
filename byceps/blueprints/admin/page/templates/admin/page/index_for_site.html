@@ -15,6 +15,7 @@
     <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Create page') }}</span></a>
+        <a class="button" href="{{ url_for('.copy_select_source_site_form', target_site_id=site.id) }}">{{ render_icon('copy') }} <span>{{ _('Copy pages') }}</span></a>
       </div>
     </div>
   {%- endif %}

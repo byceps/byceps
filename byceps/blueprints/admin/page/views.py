@@ -13,6 +13,10 @@ from flask_babel import format_datetime, gettext
 
 from byceps.blueprints.site.page.templating import build_template_context
 from byceps.services.page import page_service
+from byceps.services.page.errors import (
+    PageAlreadyExistsError,
+    PageNotFoundError,
+)
 from byceps.services.page.models import Page, PageVersion, PageVersionID
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
@@ -24,13 +28,14 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.iterables import pairwise
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
     respond_no_content_with_location,
 )
 
-from .forms import CreateForm, SetNavMenuForm, UpdateForm
+from .forms import CopyPagesForm, CreateForm, SetNavMenuForm, UpdateForm
 
 
 blueprint = create_blueprint('page_admin', __name__)
@@ -192,6 +197,112 @@ def _create_html_diff(
     return text_diff_service.create_html_diff(
         from_text, to_text, from_description, to_description
     )
+
+
+@blueprint.get('/for_site/<target_site_id>/copy')
+@permission_required('page.create')
+@templated
+def copy_select_source_site_form(target_site_id):
+    """Show form to select a site to copy pages from."""
+    target_site = _get_site(target_site_id)
+
+    source_sites = [
+        site
+        for site in site_service.get_sites_for_brand(target_site.brand_id)
+        if site.id != target_site.id
+    ]
+    source_sites.sort(key=lambda site: site.title, reverse=True)
+
+    return {
+        'site': target_site,
+        'target_site': target_site,
+        'source_sites': source_sites,
+    }
+
+
+@blueprint.get('/for_site/<target_site_id>/copy/from_site/<source_site_id>')
+@permission_required('page.create')
+@templated
+def copy_form(target_site_id, source_site_id, erroneous_form=None):
+    """Show form to select pages to copy from another site."""
+    source_site = _get_site(source_site_id)
+    target_site = _get_site(target_site_id)
+
+    pages = page_service.get_pages_for_site(source_site_id)
+    if not pages:
+        flash_error('No pages exist for this site.')
+        return redirect_to(
+            '.copy_select_source_site_form', target_site_id=target_site.id
+        )
+
+    form = erroneous_form if erroneous_form else CopyPagesForm()
+    form.set_source_page_id_choices(pages)
+
+    return {
+        'form': form,
+        'site': target_site,
+        'target_site': target_site,
+        'source_site': source_site,
+    }
+
+
+@blueprint.post('/for_site/<target_site_id>/copy/from_site/<source_site_id>')
+@permission_required('page.create')
+def copy(target_site_id, source_site_id):
+    """Copy pages from another site."""
+    source_site = _get_site(source_site_id)
+    target_site = _get_site(target_site_id)
+
+    pages = page_service.get_pages_for_site(source_site_id)
+    if not pages:
+        flash_error('No pages exist for this site.')
+        return redirect_to(
+            '.copy_select_source_site_form', target_site_id=target_site.id
+        )
+
+    form = CopyPagesForm(request.form)
+    form.set_source_page_id_choices(pages)
+
+    if not form.validate():
+        return copy_form(target_site.id, source_site.id, form)
+
+    source_pages = [
+        page_service.get_page(page_id) for page_id in form.source_page_ids.data
+    ]
+    for page in source_pages:
+        result = page_service.copy_page(
+            source_site, target_site, page.name, page.language_code
+        )
+        match result:
+            case Ok((_, event)):
+                flash_success(
+                    gettext(
+                        'Page "%(name)s" (%(language_code)s) has been copied.',
+                        name=page.name,
+                        language_code=page.language_code,
+                    )
+                )
+                page_signals.page_created.send(None, event=event)
+            case Err(PageNotFoundError()):
+                flash_error(
+                    gettext(
+                        'Page "%(name)s" (%(language_code)s) was not found in site "%(source_site_title)s".',
+                        name=page.name,
+                        language_code=page.language_code,
+                        source_site_title=source_site.title,
+                    )
+                )
+            case Err(PageAlreadyExistsError()):
+                flash_error(
+                    gettext(
+                        'Page "%(name)s" (%(language_code)s) already exists in site "%(target_site_title)s".',
+                        name=page.name,
+                        language_code=page.language_code,
+                        target_site_title=target_site.title,
+                    )
+                )
+
+    return redirect_to('.index_for_site', site_id=target_site.id)
 
 
 @blueprint.get('/for_site/<site_id>/create')

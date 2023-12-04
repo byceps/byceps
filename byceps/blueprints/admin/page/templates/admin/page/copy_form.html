@@ -1,0 +1,22 @@
+{% extends 'layout/admin/page.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkboxes %}
+{% set page_title = _('Select pages to copy from site "%s" to site "%s"'|format(source_site.title, target_site.title)) %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.copy_select_source_site_form', target_site_id=target_site.id), _('Select site to copy pages from')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.copy', target_site_id=target_site.id, source_site_id=source_site.id) }}" method="post">
+    <div class="box">
+      {{ form_field_checkboxes(form.source_page_ids) }}
+    </div>
+
+    {{ form_buttons(_('Copy')) }}
+  </form>
+
+{%- endblock %}

@@ -6,14 +6,34 @@ byceps.blueprints.admin.page.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from flask_babel import gettext, lazy_gettext
 from wtforms import SelectField, StringField, TextAreaField
-from wtforms.validators import InputRequired, ValidationError
+from wtforms.validators import InputRequired, Optional, ValidationError
 
 from byceps.services.language import language_service
+from byceps.services.page.models import Page
 from byceps.services.site.models import SiteID
 from byceps.services.site_navigation import site_navigation_service
+from byceps.util.forms import MultiCheckboxField
 from byceps.util.l10n import LocalizedForm
+
+
+class CopyPagesForm(LocalizedForm):
+    source_page_ids = MultiCheckboxField(
+        lazy_gettext('Pages'), validators=[Optional()]
+    )
+
+    def set_source_page_id_choices(self, pages: Sequence[Page]):
+        pages = list(pages)
+        pages.sort(key=lambda page: (page.name, page.language_code))
+
+        choices = [
+            (str(page.id), f'{page.name} ({page.language_code})')
+            for page in pages
+        ]
+        self.source_page_ids.choices = choices
 
 
 class _PageBaseForm(LocalizedForm):

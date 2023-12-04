@@ -1,0 +1,29 @@
+{% extends 'layout/admin/page.html' %}
+{% set page_title = _('Select site to copy pages from') %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  {%- if source_sites %}
+  <table class="itemlist itemlist--wide">
+    <thead>
+      <tr>
+        <th>{{ _('Site') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for source_site in source_sites %}
+      <tr>
+        <td><a href="{{ url_for('.copy_form', target_site_id=target_site.id, source_site_id=source_site.id) }}">{{ source_site.title }}</a></td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="box">
+    <div class="dimmed-box centered">{{ _('No sites available.') }}</div>
+  </div>
+  {%- endif %}
+
+{%- endblock %}
