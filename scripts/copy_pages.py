@@ -9,7 +9,6 @@
 import click
 
 from byceps.services.page import page_service
-from byceps.services.page.dbmodels import DbPageVersion
 from byceps.services.site.models import Site
 from byceps.services.user import user_service
 
@@ -26,30 +25,25 @@ from _validators import validate_site
 def execute(
     ctx, source_site, target_site, language_code: str, page_names
 ) -> None:
-    versions = [
-        get_version(source_site, name, language_code) for name in page_names
-    ]
-
-    for version in versions:
-        copy_page(target_site, version, ctx)
+    for name in page_names:
+        copy_page(source_site, target_site, name, language_code, ctx)
 
     click.secho('Done.', fg='green')
 
 
-def get_version(site: Site, name: str, language_code: str) -> DbPageVersion:
+def copy_page(
+    source_site: Site, target_site: Site, name: str, language_code: str, ctx
+) -> None:
     version = page_service.find_current_version_for_name(
-        site.id, name, language_code
+        source_site.id, name, language_code
     )
-
     if version is None:
-        raise click.BadParameter(
-            f'Page "{name}" not found in site "{site.id}".'
+        click.secho(
+            f'Page "{name}" ({language_code}) not found in site "{source_site.id}".',
+            fg='red',
         )
+        return None
 
-    return version
-
-
-def copy_page(target_site: Site, version: DbPageVersion, ctx) -> None:
     creator = user_service.get_user(version.creator_id)
 
     page_service.create_page(
@@ -64,7 +58,7 @@ def copy_page(target_site: Site, version: DbPageVersion, ctx) -> None:
     )
 
     click.secho(
-        f'Copied page "{version.page.name}" to site "{target_site.id}".',
+        f'Copied page "{version.page.name}" ({language_code}) to site "{target_site.id}".',
         fg='green',
     )
 
