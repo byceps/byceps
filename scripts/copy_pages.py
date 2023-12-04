@@ -9,8 +9,12 @@
 import click
 
 from byceps.services.page import page_service
+from byceps.services.page.errors import (
+    PageAlreadyExistsError,
+    PageNotFoundError,
+)
 from byceps.services.site.models import Site
-from byceps.services.user import user_service
+from byceps.util.result import Err, Ok
 
 from _util import call_with_app_context
 from _validators import validate_site
@@ -34,43 +38,22 @@ def execute(
 def copy_page(
     source_site: Site, target_site: Site, name: str, language_code: str, ctx
 ) -> None:
-    target_version = page_service.find_current_version_for_name(
-        target_site.id, name, language_code
-    )
-    if target_version is not None:
-        click.secho(
-            f'Page "{name}" ({language_code}) already exists in site "{target_site.id}".',
-            fg='red',
-        )
-        return None
-
-    version = page_service.find_current_version_for_name(
-        source_site.id, name, language_code
-    )
-    if version is None:
-        click.secho(
-            f'Page "{name}" ({language_code}) not found in site "{source_site.id}".',
-            fg='red',
-        )
-        return None
-
-    creator = user_service.get_user(version.creator_id)
-
-    page_service.create_page(
-        target_site,
-        version.page.name,
-        version.page.language_code,
-        version.page.url_path,
-        creator,
-        version.title,
-        version.body,
-        head=version.head,
-    )
-
-    click.secho(
-        f'Copied page "{version.page.name}" ({language_code}) to site "{target_site.id}".',
-        fg='green',
-    )
+    match page_service.copy_page(source_site, target_site, name, language_code):
+        case Ok(_):
+            click.secho(
+                f'Copied page "{name}" ({language_code}) from site "{source_site.id}" to site "{target_site.id}".',
+                fg='green',
+            )
+        case Err(PageNotFoundError()):
+            click.secho(
+                f'Page "{name}" ({language_code}) not found in site "{source_site.id}".',
+                fg='red',
+            )
+        case Err(PageAlreadyExistsError()):
+            click.secho(
+                f'Page "{name}" ({language_code}) already exists in site "{target_site.id}".',
+                fg='red',
+            )
 
 
 if __name__ == '__main__':

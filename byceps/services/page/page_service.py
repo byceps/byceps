@@ -23,9 +23,12 @@ from byceps.events.page import (
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
 from byceps.services.site_navigation.models import NavMenuID
+from byceps.services.user import user_service
 from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbCurrentPageVersionAssociation, DbPage, DbPageVersion
+from .errors import PageAlreadyExistsError, PageNotFoundError
 from .models import (
     Page,
     PageAggregate,
@@ -33,6 +36,39 @@ from .models import (
     PageVersion,
     PageVersionID,
 )
+
+
+def copy_page(
+    source_site: Site, target_site: Site, name: str, language_code: str
+) -> Result[
+    tuple[DbPageVersion, PageCreatedEvent],
+    PageAlreadyExistsError | PageNotFoundError,
+]:
+    """Copy a page from one site to another."""
+    version = find_current_version_for_name(source_site.id, name, language_code)
+    if version is None:
+        return Err(PageNotFoundError())
+
+    target_version = find_current_version_for_name(
+        target_site.id, name, language_code
+    )
+    if target_version is not None:
+        return Err(PageAlreadyExistsError())
+
+    creator = user_service.get_user(version.creator_id)
+
+    db_version, event = create_page(
+        target_site,
+        version.page.name,
+        version.page.language_code,
+        version.page.url_path,
+        creator,
+        version.title,
+        version.body,
+        head=version.head,
+    )
+
+    return Ok((db_version, event))
 
 
 def create_page(
