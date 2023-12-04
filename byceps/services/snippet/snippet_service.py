@@ -20,6 +20,7 @@ from byceps.events.snippet import (
     SnippetDeletedEvent,
     SnippetUpdatedEvent,
 )
+from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
@@ -28,8 +29,51 @@ from .dbmodels import (
     DbSnippet,
     DbSnippetVersion,
 )
-from .errors import SnippetNotFoundError
+from .errors import SnippetAlreadyExistsError, SnippetNotFoundError
 from .models import SnippetID, SnippetScope, SnippetVersionID
+
+
+def copy_snippet(
+    source_scope: SnippetScope,
+    target_scope: SnippetScope,
+    name: str,
+    language_code: str,
+) -> Result[
+    tuple[DbSnippetVersion, SnippetCreatedEvent],
+    SnippetAlreadyExistsError | SnippetNotFoundError,
+]:
+    """Copy a snippet from one scope to another."""
+    version = find_current_version_of_snippet_with_name(
+        source_scope, name, language_code
+    )
+    if version is None:
+        return Err(
+            SnippetNotFoundError(
+                scope=source_scope, name=name, language_code=language_code
+            )
+        )
+
+    target_version = find_current_version_of_snippet_with_name(
+        target_scope, name, language_code
+    )
+    if target_version is not None:
+        return Err(
+            SnippetAlreadyExistsError(
+                scope=source_scope, name=name, language_code=language_code
+            )
+        )
+
+    creator = user_service.get_user(version.creator_id)
+
+    db_version, event = create_snippet(
+        target_scope,
+        version.snippet.name,
+        version.snippet.language_code,
+        creator,
+        version.body,
+    )
+
+    return Ok((db_version, event))
 
 
 def create_snippet(

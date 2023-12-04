@@ -9,8 +9,12 @@
 import click
 
 from byceps.services.snippet import snippet_service
+from byceps.services.snippet.errors import (
+    SnippetAlreadyExistsError,
+    SnippetNotFoundError,
+)
 from byceps.services.snippet.models import SnippetScope
-from byceps.services.user import user_service
+from byceps.util.result import Err, Ok
 
 from _util import call_with_app_context
 from _validators import validate_site
@@ -41,43 +45,28 @@ def copy_snippet(
     language_code: str,
     ctx,
 ) -> None:
-    target_version = snippet_service.find_current_version_of_snippet_with_name(
-        target_scope, name, language_code
-    )
-    if target_version is not None:
-        click.secho(
-            f'Snippet "{name}" ({language_code}) '
-            f'already exists in scope "{scope_as_string(target_scope)}".',
-            fg='red',
-        )
-        return None
-
-    version = snippet_service.find_current_version_of_snippet_with_name(
-        source_scope, name, language_code
-    )
-    if version is None:
-        click.secho(
-            f'Snippet "{name}" ({language_code}) '
-            f'not found in scope "{scope_as_string(source_scope)}".',
-            fg='red',
-        )
-        return None
-
-    creator = user_service.get_user(version.creator_id)
-
-    snippet_service.create_snippet(
-        target_scope,
-        version.snippet.name,
-        version.snippet.language_code,
-        creator,
-        version.body,
-    )
-
-    click.secho(
-        f'Copied snippet "{version.snippet.name}" ({language_code}) '
-        f'to scope "{scope_as_string(target_scope)}".',
-        fg='green',
-    )
+    match snippet_service.copy_snippet(
+        source_scope, target_scope, name, language_code
+    ):
+        case Ok(_):
+            click.secho(
+                f'Copied snippet "{name}" ({language_code}) '
+                f'from scope "{scope_as_string(source_scope)}" '
+                f'to "{scope_as_string(target_scope)}".',
+                fg='green',
+            )
+        case Err(SnippetNotFoundError()):
+            click.secho(
+                f'Snippet "{name}" ({language_code}) not found '
+                f'in scope "{scope_as_string(source_scope)}".',
+                fg='red',
+            )
+        case Err(SnippetAlreadyExistsError()):
+            click.secho(
+                f'Snippet "{name}" ({language_code}) already exists '
+                f'in scope "{scope_as_string(target_scope)}".',
+                fg='red',
+            )
 
 
 def scope_as_string(scope: SnippetScope) -> str:

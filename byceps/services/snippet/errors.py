@@ -12,7 +12,17 @@ from .models import SnippetScope
 
 
 @dataclass(frozen=True)
-class SnippetNotFoundError:
+class _BaseSnippetError:
     scope: SnippetScope
     name: str
     language_code: str
+
+
+@dataclass(frozen=True)
+class SnippetAlreadyExistsError(_BaseSnippetError):
+    pass
+
+
+@dataclass(frozen=True)
+class SnippetNotFoundError(_BaseSnippetError):
+    pass
