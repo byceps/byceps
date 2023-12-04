@@ -41,6 +41,17 @@ def copy_snippet(
     language_code: str,
     ctx,
 ) -> None:
+    target_version = snippet_service.find_current_version_of_snippet_with_name(
+        target_scope, name, language_code
+    )
+    if target_version is not None:
+        click.secho(
+            f'Snippet "{name}" ({language_code}) '
+            f'already exists in scope "{scope_as_string(target_scope)}".',
+            fg='red',
+        )
+        return None
+
     version = snippet_service.find_current_version_of_snippet_with_name(
         source_scope, name, language_code
     )
