@@ -34,6 +34,16 @@ def execute(
 def copy_page(
     source_site: Site, target_site: Site, name: str, language_code: str, ctx
 ) -> None:
+    target_version = page_service.find_current_version_for_name(
+        target_site.id, name, language_code
+    )
+    if target_version is not None:
+        click.secho(
+            f'Page "{name}" ({language_code}) already exists in site "{target_site.id}".',
+            fg='red',
+        )
+        return None
+
     version = page_service.find_current_version_for_name(
         source_site.id, name, language_code
     )
