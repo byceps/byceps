@@ -11,6 +11,7 @@ from __future__ import annotations
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.util.uuid import generate_uuid7
 
 from . import tourney_service
 from .dbmodels.participant import DbParticipant
@@ -23,7 +24,9 @@ def create_participant(
     """Create a participant."""
     tourney = tourney_service.get_tourney(tourney_id)
 
-    db_participant = DbParticipant(tourney.id, name, max_size)
+    participant_id = ParticipantID(generate_uuid7())
+
+    db_participant = DbParticipant(participant_id, tourney.id, name, max_size)
 
     db.session.add(db_participant)
     db.session.commit()
