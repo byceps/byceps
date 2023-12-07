@@ -29,6 +29,7 @@ def create_tourney(
     *,
     subtitle: str | None = None,
     logo_url: str | None = None,
+    registration_open: bool = False,
 ) -> tuple[Tourney, TourneyCreatedEvent]:
     """Create a tourney."""
     tourney_id = TourneyID(generate_uuid7())
@@ -45,6 +46,7 @@ def create_tourney(
         current_participant_count,
         max_participant_count,
         starts_at,
+        registration_open,
     )
 
     event = _build_tourney_created_event(tourney, occurred_at, creator)

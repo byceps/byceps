@@ -40,6 +40,7 @@ def create_tourney(
     *,
     subtitle: str | None = None,
     logo_url: str | None = None,
+    registration_open: bool = False,
 ) -> tuple[Tourney, TourneyCreatedEvent]:
     """Create a tourney."""
     tourney, event = tourney_domain_service.create_tourney(
@@ -51,6 +52,7 @@ def create_tourney(
         starts_at,
         subtitle=subtitle,
         logo_url=logo_url,
+        registration_open=registration_open,
     )
 
     _persist_tourney_creation(tourney)
@@ -67,6 +69,7 @@ def _persist_tourney_creation(tourney: Tourney) -> None:
         tourney.starts_at,
         subtitle=tourney.subtitle,
         logo_url=tourney.logo_url,
+        registration_open=tourney.registration_open,
     )
 
     db.session.add(db_tourney)
@@ -81,6 +84,7 @@ def update_tourney(
     category_id: TourneyCategoryID,
     max_participant_count: int,
     starts_at: datetime,
+    registration_open: bool,
 ) -> Tourney:
     """Update tourney."""
     db_tourney = _get_db_tourney(tourney_id)
@@ -91,6 +95,7 @@ def update_tourney(
     db_tourney.category_id = category_id
     db_tourney.max_participant_count = max_participant_count
     db_tourney.starts_at = starts_at
+    db_tourney.registration_open = registration_open
 
     db.session.commit()
 
@@ -171,6 +176,7 @@ def _db_entity_to_tourney(
         current_participant_count=current_participant_count,
         max_participant_count=db_tourney.max_participant_count,
         starts_at=db_tourney.starts_at,
+        registration_open=db_tourney.registration_open,
     )
 
 

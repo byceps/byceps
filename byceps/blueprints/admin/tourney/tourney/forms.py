@@ -7,7 +7,14 @@ byceps.blueprints.admin.tourney.tourney.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import DateField, IntegerField, SelectField, StringField, TimeField
+from wtforms import (
+    BooleanField,
+    DateField,
+    IntegerField,
+    SelectField,
+    StringField,
+    TimeField,
+)
 from wtforms.validators import InputRequired, Length, Optional
 
 from byceps.services.party.models import PartyID
@@ -37,6 +44,7 @@ class CreateForm(LocalizedForm):
     starts_at = TimeField(
         lazy_gettext('Start (time)'), validators=[InputRequired()]
     )
+    registration_open = BooleanField(lazy_gettext('Registration open'))
 
     def set_category_choices(self, party_id: PartyID):
         categories = tourney_category_service.get_categories_for_party(party_id)

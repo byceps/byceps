@@ -45,6 +45,7 @@ class DbTourney(db.Model):
     category: Mapped[DbTourneyCategory] = relationship(DbTourneyCategory)
     max_participant_count: Mapped[int]
     starts_at: Mapped[datetime]
+    registration_open: Mapped[bool]
 
     def __init__(
         self,
@@ -53,6 +54,7 @@ class DbTourney(db.Model):
         category_id: TourneyCategoryID,
         max_participant_count: int,
         starts_at: datetime,
+        registration_open: bool,
         *,
         subtitle: str | None = None,
         logo_url: str | None = None,
@@ -64,6 +66,7 @@ class DbTourney(db.Model):
         self.category_id = category_id
         self.max_participant_count = max_participant_count
         self.starts_at = starts_at
+        self.registration_open = registration_open
 
     def __repr__(self) -> str:
         return (

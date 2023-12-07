@@ -1,6 +1,6 @@
 {% extends 'layout/admin/tourney.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_check %}
 {% set current_page_party = party %}
 {% set current_tab = 'tourneys' %}
 {% set page_title = _('Edit tourney') %}
@@ -30,6 +30,8 @@
           {{ form_field(form.starts_at) }}
         </div>
       </div>
+
+      {{ form_field_check(form.registration_open) }}
 
     </div>
 

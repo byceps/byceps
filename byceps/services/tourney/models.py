@@ -44,6 +44,7 @@ class Tourney:
     current_participant_count: int
     max_participant_count: int
     starts_at: datetime
+    registration_open: bool
 
 
 @dataclass(frozen=True)
@@ -67,6 +68,7 @@ class TourneyWithCategory(Tourney):
             current_participant_count=current_participant_count,
             max_participant_count=tourney.max_participant_count,
             starts_at=tourney.starts_at,
+            registration_open=tourney.registration_open,
             category=category,
         )
 

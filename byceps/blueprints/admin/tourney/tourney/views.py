@@ -140,6 +140,7 @@ def update(tourney_id):
     max_participant_count = form.max_participant_count.data
     starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
     starts_at_utc = to_utc(starts_at_local)
+    registration_open = form.registration_open.data
 
     tourney = tourney_service.update_tourney(
         tourney.id,
@@ -149,6 +150,7 @@ def update(tourney_id):
         category_id,
         max_participant_count,
         starts_at_utc,
+        registration_open,
     )
 
     flash_success(
