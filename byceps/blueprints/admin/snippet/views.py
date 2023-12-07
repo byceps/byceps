@@ -306,8 +306,8 @@ def copy(
 
     return redirect_to(
         '.index_for_scope',
-        scope_type=source_scope.type_,
-        scope_name=source_scope.name,
+        scope_type=target_scope.type_,
+        scope_name=target_scope.name,
     )
 
 
