@@ -18,12 +18,12 @@ from .models import Participant, ParticipantID, TourneyID
 
 
 def create_participant(
-    tourney_id: TourneyID, title: str, max_size: int
+    tourney_id: TourneyID, name: str, max_size: int
 ) -> Participant:
     """Create a participant."""
     tourney = tourney_service.get_tourney(tourney_id)
 
-    db_participant = DbParticipant(tourney.id, title, max_size)
+    db_participant = DbParticipant(tourney.id, name, max_size)
 
     db.session.add(db_participant)
     db.session.commit()
@@ -67,6 +67,6 @@ def _db_entity_to_participant(db_participant: DbParticipant) -> Participant:
     return Participant(
         id=db_participant.id,
         tourney_id=db_participant.tourney_id,
-        title=db_participant.title,
+        name=db_participant.name,
         logo_url=None,
     )

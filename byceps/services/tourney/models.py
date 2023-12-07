@@ -86,7 +86,7 @@ ParticipantID = NewType('ParticipantID', UUID)
 class Participant:
     id: ParticipantID
     tourney_id: TourneyID
-    title: str
+    name: str
     logo_url: str | None
 
 

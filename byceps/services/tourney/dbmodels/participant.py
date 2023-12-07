@@ -39,21 +39,19 @@ class DbParticipant(db.Model):
         db.Uuid, db.ForeignKey('users.id')
     )
     created_by: Mapped[DbUser] = relationship(DbUser)
-    title: Mapped[str] = mapped_column(db.UnicodeText)
+    name: Mapped[str] = mapped_column(db.UnicodeText)
     max_size: Mapped[int | None]
 
-    def __init__(
-        self, tourney_id: TourneyID, title: str, max_size: int
-    ) -> None:
+    def __init__(self, tourney_id: TourneyID, name: str, max_size: int) -> None:
         self.tourney_id = tourney_id
-        self.title = title
+        self.name = name
         self.max_size = max_size
 
     def __repr__(self) -> str:
         return (
             ReprBuilder(self)
             .add_with_lookup('tourney')
-            .add_with_lookup('title')
+            .add_with_lookup('name')
             .add_with_lookup('max_size')
             .build()
         )
