@@ -5194,23 +5194,23 @@ msgstr "Unbekannte Snippet-ID \"%(snippet_id)s\""
 msgid "Snippet \"%(name)s\" (%(language_code)s) has been copied."
 msgstr "Das Snippet \"%(name)s\" (%(language_code)s) wurde kopiert."
 
-#: byceps/blueprints/admin/snippet/views.py:295
+#: byceps/blueprints/admin/snippet/views.py:299
 #, python-format
 msgid ""
 "Snippet \"%(name)s\" (%(language_code)s) was not found in scope "
-"\"%(source_scope_title)s\"."
+"\"%(source_scope)s\"."
 msgstr ""
 "Das Snippet \"%(name)s\" (%(language_code)s) wurde nicht im Scope "
-"\"%(source_site_title)s\" gefunden."
+"\"%(source_scope)s\" gefunden."
 
-#: byceps/blueprints/admin/snippet/views.py:304
+#: byceps/blueprints/admin/snippet/views.py:308
 #, python-format
 msgid ""
 "Snippet \"%(name)s\" (%(language_code)s) already exists in scope "
-"\"%(target_scope_title)s\"."
+"\"%(target_scope)s\"."
 msgstr ""
 "Das Snippet \"%(name)s\" (%(language_code)s) existiert bereits im Scope "
-"\"%(target_site_title)s\"."
+"\"%(target_scope)s\"."
 
 #: byceps/blueprints/admin/snippet/views.py:362
 #, python-format

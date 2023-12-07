@@ -293,19 +293,19 @@ def copy(
             case Err(SnippetNotFoundError()):
                 flash_error(
                     gettext(
-                        'Snippet "%(name)s" (%(language_code)s) was not found in scope "%(source_scope_title)s".',
+                        'Snippet "%(name)s" (%(language_code)s) was not found in scope "%(source_scope)s".',
                         name=snippet.name,
                         language_code=snippet.language_code,
-                        source_scope_title=source_scope.title,
+                        source_scope=source_scope.as_string(),
                     )
                 )
             case Err(SnippetAlreadyExistsError()):
                 flash_error(
                     gettext(
-                        'Snippet "%(name)s" (%(language_code)s) already exists in scope "%(target_scope_title)s".',
+                        'Snippet "%(name)s" (%(language_code)s) already exists in scope "%(target_scope)s".',
                         name=snippet.name,
                         language_code=snippet.language_code,
-                        target_scope_title=target_scope.title,
+                        target_scope=target_scope.as_string(),
                     )
                 )
 
