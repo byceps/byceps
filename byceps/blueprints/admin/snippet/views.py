@@ -267,11 +267,16 @@ def copy(
             form,
         )
 
-    source_snippets = [
-        snippet_service.find_snippet(snippet_id)
-        for snippet_id in form.source_snippet_ids.data
-    ]
-    for snippet in source_snippets:
+    for snippet_id in form.source_snippet_ids.data:
+        snippet = snippet_service.find_snippet(snippet_id)
+        if snippet is None:
+            flash_error(
+                gettext(
+                    'Unknown snippet ID "%(snippet_id)s"', snippet_id=snippet_id
+                )
+            )
+            continue
+
         result = snippet_service.copy_snippet(
             source_scope, target_scope, snippet.name, snippet.language_code
         )
