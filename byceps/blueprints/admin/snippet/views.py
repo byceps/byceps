@@ -14,6 +14,10 @@ from flask_babel import format_datetime, gettext
 from byceps.blueprints.site.snippet.templating import get_rendered_snippet_body
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.dbmodels import DbSnippetVersion
+from byceps.services.snippet.errors import (
+    SnippetAlreadyExistsError,
+    SnippetNotFoundError,
+)
 from byceps.services.snippet.models import SnippetScope
 from byceps.services.text_diff import text_diff_service
 from byceps.services.user import user_service
@@ -22,13 +26,14 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.iterables import pairwise
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
     respond_no_content_with_location,
 )
 
-from .forms import CreateForm, UpdateForm
+from .forms import CopySnippetsForm, CreateForm, UpdateForm
 from .helpers import (
     find_brand_for_scope,
     find_site_for_scope,
@@ -150,6 +155,160 @@ def history(snippet_id):
         'brand': brand,
         'site': site,
     }
+
+
+@blueprint.get('/for_scope/<target_scope_type>/<target_scope_name>/copy')
+@permission_required('snippet.create')
+@templated
+def copy_select_source_scope_form(
+    target_scope_type: str, target_scope_name: str
+):
+    """Show form to select a scope to copy snippets from."""
+    target_scope = SnippetScope(target_scope_type, target_scope_name)
+
+    source_scopes = [
+        scope
+        for scope in snippet_service.get_all_scopes()
+        if scope != target_scope
+    ]
+    source_scopes.sort(key=lambda scope: (scope.type_, scope.name))
+
+    scope = target_scope
+    brand = find_brand_for_scope(scope)
+    site = find_site_for_scope(scope)
+
+    return {
+        'scope': scope,
+        'target_scope': target_scope,
+        'source_scopes': source_scopes,
+        'brand': brand,
+        'site': site,
+    }
+
+
+@blueprint.get(
+    '/for_scope/<target_scope_type>/<target_scope_name>/copy/from_scope/<source_scope_type>/<source_scope_name>'
+)
+@permission_required('snippet.create')
+@templated
+def copy_form(
+    target_scope_type: str,
+    target_scope_name: str,
+    source_scope_type: str,
+    source_scope_name: str,
+    erroneous_form=None,
+):
+    """Show form to select snippets to copy from another scope."""
+    source_scope = SnippetScope(source_scope_type, source_scope_name)
+    target_scope = SnippetScope(target_scope_type, target_scope_name)
+
+    snippets = snippet_service.get_snippets_for_scope_with_current_versions(
+        source_scope
+    )
+    if not snippets:
+        flash_error('No snippets exist for this scope.')
+        return redirect_to(
+            '.copy_select_source_scope_form',
+            target_scope_type=target_scope_type,
+            target_scope_name=target_scope_name,
+        )
+
+    form = erroneous_form if erroneous_form else CopySnippetsForm()
+    form.set_source_snippet_id_choices(snippets)
+
+    scope = target_scope
+    brand = find_brand_for_scope(scope)
+    site = find_site_for_scope(scope)
+
+    return {
+        'form': form,
+        'scope': scope,
+        'target_scope': target_scope,
+        'source_scope': source_scope,
+        'brand': brand,
+        'site': site,
+    }
+
+
+@blueprint.post(
+    '/for_scope/<target_scope_type>/<target_scope_name>/copy/from_scope/<source_scope_type>/<source_scope_name>'
+)
+@permission_required('snippet.create')
+def copy(
+    target_scope_type: str,
+    target_scope_name: str,
+    source_scope_type: str,
+    source_scope_name: str,
+):
+    """Copy snippets from another scope."""
+    source_scope = SnippetScope(source_scope_type, source_scope_name)
+    target_scope = SnippetScope(target_scope_type, target_scope_name)
+
+    snippets = snippet_service.get_snippets_for_scope_with_current_versions(
+        source_scope
+    )
+    if not snippets:
+        flash_error('No snippets exist for this scope.')
+        return redirect_to(
+            '.copy_select_source_scope_form',
+            target_scope_type=target_scope_type,
+            target_scope_name=target_scope_name,
+        )
+
+    form = CopySnippetsForm(request.form)
+    form.set_source_snippet_id_choices(snippets)
+
+    if not form.validate():
+        return copy_form(
+            target_scope.type_,
+            target_scope.name,
+            source_scope.type_,
+            source_scope.name,
+            form,
+        )
+
+    source_snippets = [
+        snippet_service.find_snippet(snippet_id)
+        for snippet_id in form.source_snippet_ids.data
+    ]
+    for snippet in source_snippets:
+        result = snippet_service.copy_snippet(
+            source_scope, target_scope, snippet.name, snippet.language_code
+        )
+        match result:
+            case Ok((_, event)):
+                flash_success(
+                    gettext(
+                        'Snippet "%(name)s" (%(language_code)s) has been copied.',
+                        name=snippet.name,
+                        language_code=snippet.language_code,
+                    )
+                )
+                snippet_signals.snippet_created.send(None, event=event)
+            case Err(SnippetNotFoundError()):
+                flash_error(
+                    gettext(
+                        'Snippet "%(name)s" (%(language_code)s) was not found in scope "%(source_scope_title)s".',
+                        name=snippet.name,
+                        language_code=snippet.language_code,
+                        source_scope_title=source_scope.title,
+                    )
+                )
+            case Err(SnippetAlreadyExistsError()):
+                flash_error(
+                    gettext(
+                        'Snippet "%(name)s" (%(language_code)s) already exists in scope "%(target_scope_title)s".',
+                        name=snippet.name,
+                        language_code=snippet.language_code,
+                        target_scope_title=target_scope.title,
+                    )
+                )
+
+    return redirect_to(
+        '.index_for_scope',
+        scope_type=source_scope.type_,
+        scope_name=source_scope.name,
+    )
 
 
 @blueprint.get('/for_scope/<scope_type>/<scope_name>/create')

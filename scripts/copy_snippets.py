@@ -51,26 +51,22 @@ def copy_snippet(
         case Ok(_):
             click.secho(
                 f'Copied snippet "{name}" ({language_code}) '
-                f'from scope "{scope_as_string(source_scope)}" '
-                f'to "{scope_as_string(target_scope)}".',
+                f'from scope "{source_scope.as_string()}" '
+                f'to "{target_scope.as_string()}".',
                 fg='green',
             )
         case Err(SnippetNotFoundError()):
             click.secho(
                 f'Snippet "{name}" ({language_code}) not found '
-                f'in scope "{scope_as_string(source_scope)}".',
+                f'in scope "{source_scope.as_string()}".',
                 fg='red',
             )
         case Err(SnippetAlreadyExistsError()):
             click.secho(
                 f'Snippet "{name}" ({language_code}) already exists '
-                f'in scope "{scope_as_string(target_scope)}".',
+                f'in scope "{target_scope.as_string()}".',
                 fg='red',
             )
-
-
-def scope_as_string(scope: SnippetScope) -> str:
-    return f'{scope.type_}/{scope.name}'
 
 
 if __name__ == '__main__':

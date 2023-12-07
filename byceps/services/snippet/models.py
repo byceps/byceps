@@ -29,6 +29,9 @@ class SnippetScope:
     def for_site(cls, site_id: SiteID) -> Self:
         return cls('site', str(site_id))
 
+    def as_string(self) -> str:
+        return f'{self.type_}/{self.name}'
+
 
 SnippetID = NewType('SnippetID', UUID)
 

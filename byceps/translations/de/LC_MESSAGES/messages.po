@@ -1092,7 +1092,7 @@ msgstr "Titel"
 #: byceps/blueprints/admin/page/forms.py:48
 #: byceps/blueprints/admin/page/templates/admin/page/compare_versions.html:28
 #: byceps/blueprints/admin/shop/order/forms.py:20
-#: byceps/blueprints/admin/snippet/forms.py:22
+#: byceps/blueprints/admin/snippet/forms.py:41
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_versions.html:18
 #: byceps/blueprints/site/board/forms.py:17
 #: byceps/blueprints/site/user_message/forms.py:18
@@ -1293,7 +1293,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:20
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:96
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:29
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:51
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:52
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:26
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:40
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:42
@@ -1504,8 +1504,8 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/site/navigation/forms.py:20
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:25
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:132
-#: byceps/blueprints/admin/snippet/forms.py:18
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:28
+#: byceps/blueprints/admin/snippet/forms.py:37
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:29
 #: byceps/blueprints/site/seating/templates/site/seating/index.html:28
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:11
 msgid "Name"
@@ -1894,6 +1894,7 @@ msgstr "E-Mail"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:55
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:19
+#: byceps/blueprints/admin/snippet/forms.py:23
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_form.html:7
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:5
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:11
@@ -2556,7 +2557,7 @@ msgstr "Wartung"
 #: byceps/blueprints/admin/page/forms.py:42
 #: byceps/blueprints/admin/site/navigation/forms.py:26
 #: byceps/blueprints/admin/site/navigation/forms.py:36
-#: byceps/blueprints/admin/snippet/forms.py:20
+#: byceps/blueprints/admin/snippet/forms.py:39
 msgid "Language code"
 msgstr "Sprachcode"
 
@@ -2580,7 +2581,7 @@ msgstr "Sprache hinzufügen"
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:35
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:26
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:28
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:29
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:30
 msgid "Language"
 msgstr "Sprache"
 
@@ -2893,7 +2894,7 @@ msgstr "Newspost erstellen"
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:66
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:32
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:30
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:31
 msgid "Latest change"
 msgstr "Letzte Änderung"
 
@@ -2922,7 +2923,7 @@ msgstr "Bild festgelegt"
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:90
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:57
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:70
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:42
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:43
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:59
 msgid "View change history"
 msgstr "Änderungshistorie ansehen"
@@ -2934,7 +2935,7 @@ msgstr "Änderungshistorie ansehen"
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:33
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:69
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:21
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:31
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:32
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:58
 #: byceps/blueprints/site/board/templates/macros/board.html:5
 #: byceps/blueprints/site/board/templates/site/board/_posting_view.html:20
@@ -3506,6 +3507,7 @@ msgstr "Orga-Teams von anderer Party kopieren"
 
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_copy_form.html:21
 #: byceps/blueprints/admin/page/templates/admin/page/copy_form.html:19
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/copy_form.html:19
 msgid "Copy"
 msgstr "Kopieren"
 
@@ -5182,39 +5184,76 @@ msgstr "kein Forum"
 msgid "no storefront"
 msgstr "kein Storefront"
 
-#: byceps/blueprints/admin/snippet/views.py:198
+#: byceps/blueprints/admin/snippet/views.py:281
+#, python-format
+msgid "Snippet \"%(name)s\" (%(language_code)s) has been copied."
+msgstr "Das Snippet \"%(name)s\" (%(language_code)s) wurde kopiert."
+
+#: byceps/blueprints/admin/snippet/views.py:290
+#, python-format
+msgid ""
+"Snippet \"%(name)s\" (%(language_code)s) was not found in scope "
+"\"%(source_scope_title)s\"."
+msgstr ""
+"Das Snippet \"%(name)s\" (%(language_code)s) wurde nicht im Scope "
+"\"%(source_site_title)s\" gefunden."
+
+#: byceps/blueprints/admin/snippet/views.py:299
+#, python-format
+msgid ""
+"Snippet \"%(name)s\" (%(language_code)s) already exists in scope "
+"\"%(target_scope_title)s\"."
+msgstr ""
+"Das Snippet \"%(name)s\" (%(language_code)s) existiert bereits im Scope "
+"\"%(target_site_title)s\"."
+
+#: byceps/blueprints/admin/snippet/views.py:357
 #, python-format
 msgid "Snippet \"%(name)s\" has been created."
 msgstr "Das Snippet \"%(name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:246
+#: byceps/blueprints/admin/snippet/views.py:405
 #, python-format
 msgid "Snippet \"%(name)s\" has been updated."
 msgstr "Das Snippet \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/snippet/views.py:303
+#: byceps/blueprints/admin/snippet/views.py:462
 #, python-format
 msgid "Snippet \"%(snippet_name)s\" could not be deleted. Is it still mounted?"
 msgstr ""
 "Das Snippet \"%(snippet_name)s\" konnte nicht gelöscht werden. Ist es "
 "noch gemountet?"
 
-#: byceps/blueprints/admin/snippet/views.py:311
+#: byceps/blueprints/admin/snippet/views.py:470
 #, python-format
 msgid "Snippet \"%(name)s\" has been deleted."
 msgstr "Das Snippet \"%(name)s\" wurde gelöscht."
+
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/copy_form.html:7
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/copy_select_source_scope_form.html:2
+msgid "Select scope to copy snippets from"
+msgstr "Scope auswählen, aus dem Snippets kopiert werden sollen"
+
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/copy_select_source_scope_form.html:12
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:23
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:15
+msgid "Scope"
+msgstr "Scope"
+
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/copy_select_source_scope_form.html:25
+msgid "No scopes available."
+msgstr "Es sind keine Scopes verfügbar."
 
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_form.html:4
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:16
 msgid "Create snippet"
 msgstr "Snippet erstellen"
 
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:22
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:15
-msgid "Scope"
-msgstr "Scope"
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:17
+msgid "Copy snippets"
+msgstr "Snippets kopieren"
 
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:61
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:62
 msgid "No snippets exist in this scope."
 msgstr "In diesem Scope sind keine Snippets vorhanden."
 

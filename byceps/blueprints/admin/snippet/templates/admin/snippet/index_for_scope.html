@@ -14,6 +14,7 @@
     <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('add') }} <span>{{ _('Create snippet') }}</span></a>
+        <a class="button" href="{{ url_for('.copy_select_source_scope_form', target_scope_type=scope.type_, target_scope_name=scope.name) }}">{{ render_icon('copy') }} <span>{{ _('Copy snippets') }}</span></a>
       </div>
     </div>
   {%- endif %}

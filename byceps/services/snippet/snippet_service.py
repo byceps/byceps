@@ -221,6 +221,17 @@ def get_snippets_for_scope_with_current_versions(
     )
 
 
+def get_all_scopes() -> list[SnippetScope]:
+    """List all scopes that contain snippets."""
+    rows = db.session.execute(
+        select(DbSnippet.scope_type, DbSnippet.scope_name).distinct(
+            DbSnippet.scope_type, DbSnippet.scope_name
+        )
+    ).all()
+
+    return [SnippetScope(type_, name) for type_, name in rows]
+
+
 def find_snippet_version(
     version_id: SnippetVersionID,
 ) -> DbSnippetVersion | None:

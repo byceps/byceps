@@ -1,0 +1,22 @@
+{% extends 'layout/admin/snippet.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkboxes %}
+{% set page_title = _('Select snippets to copy from scope "%s" to scope "%s"'|format(source_scope.as_string(), target_scope.as_string())) %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.copy_select_source_scope_form', target_scope_type=target_scope.type_, target_scope_name=target_scope.name), _('Select scope to copy snippets from')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.copy', target_scope_type=target_scope.type_, target_scope_name=target_scope.name, source_scope_type=source_scope.type_, source_scope_name=source_scope.name) }}" method="post">
+    <div class="box">
+      {{ form_field_checkboxes(form.source_snippet_ids) }}
+    </div>
+
+    {{ form_buttons(_('Copy')) }}
+  </form>
+
+{%- endblock %}
