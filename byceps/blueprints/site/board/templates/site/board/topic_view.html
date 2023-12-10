@@ -1,5 +1,4 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/events.html' import render_event_row %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
@@ -94,3 +93,19 @@
 {% block scripts %}
     <script src="{{ url_for('static', filename='behavior/board.js') }}"></script>
 {%- endblock %}
+
+{% macro render_event_row(icon, timestamp=None) -%}
+  <div class="event-row">
+    <div class="event-column">
+      <span class="event-icon-container">{{ render_icon(icon) }}</span>
+    </div>
+    <div class="event-column">
+      <span class="event-description">{{ caller() }}</span>
+    </div>
+    {%- if timestamp %}
+    <div class="event-column">
+      <span class="event-timestamp">{{ timestamp|dateformat }}, {{ timestamp|timeformat('short') }}</span>
+    </div>
+    {%- endif %}
+  </div>
+{%- endmacro %}
