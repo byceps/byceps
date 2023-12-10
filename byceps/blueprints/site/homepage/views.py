@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from flask import g
 
-from byceps.blueprints.site.board import service as board_helper_service
 from byceps.services.news import news_item_service
 from byceps.services.news.models import NewsTeaser
 from byceps.util.framework.blueprint import create_blueprint
@@ -25,11 +24,9 @@ blueprint = create_blueprint('homepage', __name__)
 def index():
     """Show homepage."""
     news_teasers = _get_news_teasers()
-    board_topics = board_helper_service.get_recent_topics(g.user)
 
     return {
         'news_teasers': news_teasers,
-        'board_topics': board_topics,
     }
 
 
