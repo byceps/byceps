@@ -6,6 +6,12 @@ __pycache__
 # virtual environment
 /venv
 
+# autoenv
+.autoenv
+.autoenv.leave
+.env
+.env.leave
+
 # test-related
 /.coverage
 /.pytest_cache
