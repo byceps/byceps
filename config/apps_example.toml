@@ -1,0 +1,17 @@
+[[app_mounts]]
+server_name = "byceps-admin.example"
+mode = "admin"
+
+[[app_mounts]]
+server_name = "byceps-api.example"
+mode = "api"
+
+[[app_mounts]]
+server_name = "byceps-site1.example"
+mode = "site"
+site_id = "site1"
+
+[[app_mounts]]
+server_name = "byceps-site2.example"
+mode = "site"
+site_id = "site2"
