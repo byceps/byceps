@@ -31,6 +31,5 @@ __pycache__
 /config/*
 !/config/development_example.toml
 !/config/production_example.toml
-!/config/testing.toml
 
 secret_key.txt
