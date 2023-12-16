@@ -73,14 +73,16 @@ def _load_app_mounts_config(path: Path) -> Result[AppsConfig, str]:
             f'Application mounts configuration file "{path}" does not exist'
         )
 
-    return _parse_app_mounts_config(path).map_err(
+    toml = path.read_text()
+
+    return parse_app_mounts_config(toml).map_err(
         lambda e: f'Application mounts configuration file "{path}" contains errors:\n{e}'
     )
 
 
-def _parse_app_mounts_config(path: Path) -> Result[AppsConfig, str]:
+def parse_app_mounts_config(toml: str) -> Result[AppsConfig, str]:
     try:
-        data = rtoml.load(path)
+        data = rtoml.loads(toml)
     except rtoml.TomlParsingError as e:
         return Err(str(e))
 
