@@ -56,7 +56,7 @@ services:
   web:
     image: nginx
     volumes:
-      - ./docker/nginx-templates:/etc/nginx/templates:ro
+      - ./docker/nginx/templates:/etc/nginx/templates:ro
       - .:/var/www/byceps:ro
     depends_on:
       - byceps-admin
