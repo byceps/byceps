@@ -65,8 +65,8 @@ services:
 
 secrets:
   secret_key:
-    # TODO: Generate secret key file with:
-    #       `docker-compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt`
+    # To generate a secret key file, run:
+    # `docker-compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt`
     file: ./secret_key.txt
 
 volumes:
