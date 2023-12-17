@@ -1,11 +1,12 @@
 server {
-    listen 81;
-    listen [::]:81;
+    listen 80;
+    listen [::]:80;
+
     root /var/www/html;
     server_name ${SERVER_NAME_ADMIN};
 
     location @byceps {
-        uwsgi_pass ${UWSGI_ADDRESS_ADMIN};
+        uwsgi_pass ${UWSGI_ADDRESS};
         include uwsgi_params;
         proxy_set_header Host $host;
     }
@@ -14,13 +15,14 @@ server {
 }
 
 server {
-    listen 83;
-    listen [::]:83;
+    listen 80;
+    listen [::]:80;
+
     root /var/www/html;
     server_name ${SERVER_NAME_API};
 
     location @byceps {
-        uwsgi_pass ${UWSGI_ADDRESS_API};
+        uwsgi_pass ${UWSGI_ADDRESS};
         include uwsgi_params;
         proxy_set_header Host $host;
     }
@@ -29,13 +31,14 @@ server {
 }
 
 server {
-    listen 82;
-    listen [::]:82;
+    listen 80;
+    listen [::]:80;
+
     root /var/www/html;
     server_name ${SERVER_NAME_SITE};
 
     location @byceps {
-        uwsgi_pass ${UWSGI_ADDRESS_SITE};
+        uwsgi_pass ${UWSGI_ADDRESS};
         include uwsgi_params;
         proxy_set_header Host $host;
     }

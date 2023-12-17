@@ -29,30 +29,13 @@ services:
     networks:
       - byceps
 
-  byceps-admin:
+  byceps-apps:
     <<: *byceps-base
+    volumes:
+      - ./config/apps.toml:/home/byceps/config/apps.toml:ro
     environment:
       <<: *byceps-base-env
-      APP_MODE: admin
-    networks:
-      - byceps
-      - proxy
-
-  byceps-api:
-    <<: *byceps-base
-    environment:
-      <<: *byceps-base-env
-      APP_MODE: api
-    networks:
-      - byceps
-      - proxy
-
-  byceps-site:
-    <<: *byceps-base
-    environment:
-      <<: *byceps-base-env
-      APP_MODE: site
-      SITE_ID: cozylan
+      BYCEPS_APPS_CONFIG: /home/byceps/config/apps.toml
     networks:
       - byceps
       - proxy
@@ -73,20 +56,14 @@ services:
       - ./docker/nginx/templates:/etc/nginx/templates:ro
       - .:/var/www/byceps:ro
     depends_on:
-      - byceps-admin
-      - byceps-api
-      - byceps-site
+      - byceps-apps
     environment:
       SERVER_NAME_ADMIN: byceps-admin.example
       SERVER_NAME_API: byceps-api.example
-      SERVER_NAME_SITE: byceps-site.example
-      UWSGI_ADDRESS_ADMIN: byceps-admin:5000
-      UWSGI_ADDRESS_API: byceps-api:5000
-      UWSGI_ADDRESS_SITE: byceps-site:5000
+      SERVER_NAME_SITE: cozylan.example
+      UWSGI_ADDRESS: byceps-apps:5000
     ports:
-      - "8081:81"
-      - "8082:82"
-      - "8083:83"
+      - "8080:80"
     networks:
       - proxy
 

@@ -41,5 +41,5 @@ CMD [ "uwsgi", \
       "--lazy-apps", \
       "--processes", "8", \
       "--uwsgi-socket", "0.0.0.0:5000", \
-      "--wsgi-file", "serve.py" \
+      "--wsgi-file", "serve_apps.py" \
     ]

@@ -62,19 +62,29 @@ user (which will get all available roles assigned):
     Enabling user "Flynn" ... done.
     Assigning 35 roles to user "Flynn" ... done.
 
-To spin up the application:
+Since a single BYCEPS instance can provide the admin frontend, the API,
+*and* one or more sites, a configuration file is required that defines
+which hostname will be routed to which application.
+
+Copy the included example configuration file:
+
+.. code-block:: sh
+
+    $ cp config/apps_example.toml config/apps.toml
+
+Finally, spin up the application:
 
 .. code-block:: sh
 
     $ docker compose up
 
-The admin frontend should now be available at http://localhost:8081/.
-Log in with the name of the initial user you created before and the
-corresponding password.
+The admin frontend should now be available at
+http://byceps-admin.example:8080/. Log in with the name of the initial
+user you created before and the corresponding password.
 
-The "CozyLAN" party site should be accessible at http://localhost:8082/.
-(If you logged in to the admin frontend just before, you might be logged
-in already as the same user.)
+The "CozyLAN" party site should be accessible at
+http://cozylan.example:8080/. (If you logged in to the admin frontend
+just before, you might be logged in already as the same user.)
 
 .. attention:: For security reasons, BYCEPS only sends cookies back
    after login over an HTTPS-secured connection by default.

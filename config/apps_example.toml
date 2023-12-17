@@ -7,11 +7,6 @@ server_name = "byceps-api.example"
 mode = "api"
 
 [[app_mounts]]
-server_name = "byceps-site1.example"
+server_name = "cozylan.example"
 mode = "site"
-site_id = "site1"
-
-[[app_mounts]]
-server_name = "byceps-site2.example"
-mode = "site"
-site_id = "site2"
+site_id = "cozylan"
