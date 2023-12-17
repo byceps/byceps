@@ -1,6 +1,6 @@
 server {
-    listen 81 default_server;
-    listen [::]:81 default_server;
+    listen 81;
+    listen [::]:81;
 
     root /var/www/html;
 
@@ -34,8 +34,8 @@ server {
 }
 
 server {
-    listen 82 default_server;
-    listen [::]:82 default_server;
+    listen 82;
+    listen [::]:82;
 
     root /var/www/html;
 
