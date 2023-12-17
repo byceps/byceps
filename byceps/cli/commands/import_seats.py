@@ -82,7 +82,7 @@ def _parse_seats(
 
 
 def _import_seats(
-    line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]]
+    line_numbers_and_seats_to_import: list[tuple[int, SeatToImport]],
 ) -> Iterator[tuple[Seat, str | None]]:
     """Import seats into database."""
     for line_number, seat_to_import in line_numbers_and_seats_to_import:

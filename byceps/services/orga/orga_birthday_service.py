@@ -89,7 +89,7 @@ def _to_user_dto(
 
 
 def sort_users_by_next_birthday(
-    users_and_birthdays: Iterable[tuple[User, Birthday]]
+    users_and_birthdays: Iterable[tuple[User, Birthday]],
 ) -> list[tuple[User, Birthday]]:
     return list(
         sorted(

@@ -651,7 +651,7 @@ def _db_entity_to_article(db_article: DbArticle) -> Article:
 
 
 def _get_article_attachments(
-    db_attached_articles: list[DbArticle]
+    db_attached_articles: list[DbArticle],
 ) -> list[ArticleAttachment]:
     return [
         ArticleAttachment(

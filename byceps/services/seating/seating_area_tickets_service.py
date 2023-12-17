@@ -39,7 +39,7 @@ def get_users(
 
 
 def _get_seat_tickets(
-    seats_with_tickets: Iterable[tuple[Seat, DbTicket]]
+    seats_with_tickets: Iterable[tuple[Seat, DbTicket]],
 ) -> Iterator[DbTicket]:
     for _, ticket in seats_with_tickets:
         if (ticket is not None) and (ticket.used_by_id is not None):

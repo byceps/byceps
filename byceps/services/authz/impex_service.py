@@ -36,7 +36,7 @@ def import_roles(path: Path) -> ImportedRoleCounts:
 
 
 def _create_roles(
-    roles: list[dict[str, str | list[str]]]
+    roles: list[dict[str, str | list[str]]],
 ) -> ImportedRoleCounts:
     imported_roles_count = 0
     skipped_roles_count = 0

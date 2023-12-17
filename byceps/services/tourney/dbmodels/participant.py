@@ -26,7 +26,7 @@ class DbParticipant(db.Model):
 
     __tablename__ = 'tourney_participants'
 
-    id: Mapped[ParticipantID] = mapped_column( db.Uuid, primary_key=True)
+    id: Mapped[ParticipantID] = mapped_column(db.Uuid, primary_key=True)
     tourney_id: Mapped[TourneyID] = mapped_column(
         db.Uuid, db.ForeignKey('tourneys.id'), index=True
     )
@@ -39,8 +39,14 @@ class DbParticipant(db.Model):
     name: Mapped[str] = mapped_column(db.UnicodeText)
     max_size: Mapped[int | None]
 
-    def __init__(self, participant_id: ParticipantID,tourney_id: TourneyID, name: str, max_size: int) -> None:
-        self.participant_id=participant_id
+    def __init__(
+        self,
+        participant_id: ParticipantID,
+        tourney_id: TourneyID,
+        name: str,
+        max_size: int,
+    ) -> None:
+        self.participant_id = participant_id
         self.tourney_id = tourney_id
         self.name = name
         self.max_size = max_size

@@ -209,7 +209,7 @@ def _get_top_archived_attendees_for_parties(
 
 
 def _merge_top_attendance_counts(
-    xs: list[Sequence[tuple[UserID, int]]]
+    xs: list[Sequence[tuple[UserID, int]]],
 ) -> Counter[UserID]:
     counter: Counter = Counter()
 

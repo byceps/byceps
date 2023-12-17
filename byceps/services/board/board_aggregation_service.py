@@ -65,7 +65,7 @@ def _get_category_posting_count(category_id: BoardCategoryID) -> int:
 
 
 def _get_category_latest_posting_info(
-    category_id: BoardCategoryID
+    category_id: BoardCategoryID,
 ) -> LatestPostingInfo | None:
     db_latest_posting = db.session.scalars(
         select(DbPosting)
@@ -113,7 +113,7 @@ def _get_topic_posting_count(topic_id: TopicID) -> int:
 
 
 def _get_topic_latest_posting_info(
-    topic_id: TopicID
+    topic_id: TopicID,
 ) -> LatestPostingInfo | None:
     db_latest_posting = db.session.scalars(
         select(DbPosting)

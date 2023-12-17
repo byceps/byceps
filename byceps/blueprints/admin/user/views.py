@@ -764,7 +764,7 @@ def manage_roles(user_id):
 
 
 def _index_permissions_by_role(
-    permission_ids_by_role: dict[Role, frozenset[PermissionID]]
+    permission_ids_by_role: dict[Role, frozenset[PermissionID]],
 ) -> dict[Role, frozenset[Permission]]:
     registered_permissions_by_id = {
         permission.id: permission

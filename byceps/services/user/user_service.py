@@ -165,7 +165,7 @@ def _get_user_stmt(include_avatar: bool) -> Select:
 
 
 def _user_row_to_dto(
-    row: tuple[UserID, str, bool, bool, bool, str | None, DbUserAvatar | None]
+    row: tuple[UserID, str, bool, bool, bool, str | None, DbUserAvatar | None],
 ) -> User:
     user_id, screen_name, initialized, suspended, deleted, locale, avatar = row
     avatar_url = avatar.url if (avatar is not None) else None
@@ -381,7 +381,7 @@ def get_email_address_data(user_id: UserID) -> UserEmailAddress:
 
 
 def get_email_addresses(
-    user_ids: set[UserID]
+    user_ids: set[UserID],
 ) -> set[tuple[UserID, str | None]]:
     """Return the users' e-mail addresses."""
     rows = (

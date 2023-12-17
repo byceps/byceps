@@ -177,7 +177,7 @@ def find_recent_login(user_id: UserID) -> datetime | None:
 
 
 def find_recent_logins_for_users(
-    user_ids: set[UserID]
+    user_ids: set[UserID],
 ) -> dict[UserID, datetime]:
     """Return the time of the users' most recent logins, if found."""
     db_recent_logins = db.session.scalars(
