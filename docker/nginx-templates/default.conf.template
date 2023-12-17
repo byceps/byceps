@@ -4,7 +4,7 @@ server {
 
     root /var/www/html;
 
-    server_name byceps-admin.example;
+    server_name ${SERVER_NAME_ADMIN};
 
     location @byceps {
         uwsgi_pass byceps-admin:5000;
@@ -39,7 +39,7 @@ server {
 
     root /var/www/html;
 
-    server_name byceps-site.example;
+    server_name ${SERVER_NAME_SITE};
 
     location @byceps {
         uwsgi_pass byceps-site:5000;

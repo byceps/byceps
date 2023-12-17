@@ -61,6 +61,9 @@ services:
     depends_on:
       - byceps-admin
       - byceps-site
+    environment:
+      SERVER_NAME_ADMIN: byceps-admin.example
+      SERVER_NAME_SITE: byceps-site.example
     ports:
       - "8081:81"
       - "8082:82"
