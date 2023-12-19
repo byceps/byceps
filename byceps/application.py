@@ -308,11 +308,12 @@ def _enable_rq_dashboard(app: Flask) -> None:
 
 
 def _log_app_state(app: Flask) -> None:
+    event_kw = {'app_mode': app.byceps_app_mode.name}
+
     features = {
         name: (enabled and 'enabled' or 'disabled')
         for name, enabled in app.byceps_feature_states.items()
     }
+    event_kw.update(features)
 
-    log.info(
-        'Application created', app_mode=app.byceps_app_mode.name, **features
-    )
+    log.info('Application created', **event_kw)
