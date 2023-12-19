@@ -21,7 +21,13 @@ match os.environ.get('APP_MODE'):
     case 'api':
         app = create_api_app()
     case 'site':
-        app = create_site_app()
+        site_id = os.environ.get('SITE_ID')
+        if not site_id:
+            raise ConfigurationError(
+                'No site ID specified via environment variable "SITE_ID".'
+            )
+
+        app = create_site_app(site_id)
     case _:
         raise ConfigurationError(
             'Unknown or no app mode specified via environment variable "APP_MODE".'

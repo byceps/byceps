@@ -58,10 +58,13 @@ def create_admin_app(
     return app
 
 
-def create_site_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
+def create_site_app(
+    site_id: str, *, config_overrides: dict[str, Any] | None = None
+) -> Flask:
     if config_overrides is None:
         config_overrides = {}
 
+    config_overrides['SITE_ID'] = site_id
     config_overrides['APP_MODE'] = 'site'
 
     app = _create_app(config_overrides=config_overrides)

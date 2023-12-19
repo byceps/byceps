@@ -169,7 +169,7 @@ def _create_app(mount: AppMount) -> Result[Flask, str]:
         case SiteAppMount():
             site_id = mount.site_id
             if site_id:
-                app = create_site_app(config_overrides={'SITE_ID': site_id})
+                app = create_site_app(site_id)
                 return Ok(app)
             else:
                 return Err(f'Unknown site ID "{site_id}"')

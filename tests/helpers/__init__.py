@@ -78,11 +78,10 @@ def create_site_app(
         config_overrides = {}
 
     config_overrides['SERVER_NAME'] = 'www.acmecon.test'
-    config_overrides['SITE_ID'] = site_id
 
     config_overrides.update(CONFIG_OVERRIDES_FOR_TESTS)
 
-    return _create_site_app(config_overrides=config_overrides)
+    return _create_site_app(site_id, config_overrides=config_overrides)
 
 
 def generate_token(n: int = 4) -> str:
