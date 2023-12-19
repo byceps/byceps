@@ -26,7 +26,11 @@ from byceps.announce.announce import enable_announcements
 from byceps.blueprints.admin.blueprints import register_admin_blueprints
 from byceps.blueprints.api.blueprints import register_api_blueprints
 from byceps.blueprints.site.blueprints import register_site_blueprints
-from byceps.config import ConfigurationError, parse_value_from_environment
+from byceps.config import (
+    AppMode,
+    ConfigurationError,
+    parse_value_from_environment,
+)
 from byceps.database import db
 from byceps.util import templatefilters
 from byceps.util.authz import (
@@ -315,5 +319,9 @@ def _log_app_state(app: Flask) -> None:
         for name, enabled in app.byceps_feature_states.items()
     }
     event_kw.update(features)
+
+    match app.byceps_app_mode:
+        case AppMode.site:
+            event_kw['site_id'] = app.config['SITE_ID']
 
     log.info('Application created', **event_kw)
