@@ -24,5 +24,5 @@ match os.environ.get('APP_MODE'):
         app = create_site_app()
     case _:
         raise ConfigurationError(
-            'Unknown or no app mode configured for configuration key "APP_MODE".'
+            'Unknown or no app mode specified via environment variable "APP_MODE".'
         )
