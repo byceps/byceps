@@ -122,11 +122,13 @@ Supported Configuration Values
 
     The URL used to connect to Redis.
 
-    The format can be one of these::
+    The format can be one of these:
 
-        redis://[[username]:[password]]@localhost:6379/0
-        rediss://[[username]:[password]]@localhost:6379/0
-        unix://[[username]:[password]]@/path/to/socket.sock?db=0
+    * ``redis://[[username]:[password]]@localhost:6379/0`` (TCP socket)
+    * ``rediss://[[username]:[password]]@localhost:6379/0`` (SSL-wrapped
+      TCP socket)
+    * ``unix://[[username]:[password]]@/path/to/socket.sock?db=0`` (Unix
+      domain socket)
 
     To use the first database of a Redis instance running on localhost
     on its default port: ``redis://127.0.0.1:6379/0``
