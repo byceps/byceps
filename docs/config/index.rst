@@ -176,8 +176,8 @@ Supported Configuration Values
 
         postgresql+psycopg2://USERNAME:PASSWORD@HOST/DATABASE
 
-    Example (user ``byceps`` with password ``hunter2`` wants to connect
-    to database ``byceps`` on the local host)::
+    Example (use user ``byceps`` with password ``hunter2`` to connect to
+    database ``byceps`` on the local host)::
 
         postgresql+psycopg2://byceps:hunter2@127.0.0.1/byceps
 
