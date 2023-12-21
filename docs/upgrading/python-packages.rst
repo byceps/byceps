@@ -16,7 +16,7 @@ good idea to update pip_ to the current version:
 
     (venv)$ pip install --upgrade pip
 
-Then instruct pip_ to install the required Python depdendencies (again,
+Then instruct pip_ to install the required Python dependencies (again,
 the same way as during the installation):
 
 .. code-block:: sh

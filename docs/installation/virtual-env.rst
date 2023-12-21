@@ -49,7 +49,7 @@ It's probably a good idea to update pip_ to the current version:
 
     (venv)$ pip install --upgrade pip
 
-Install the Python depdendencies via pip_:
+Install the Python dependencies via pip_:
 
 .. code-block:: sh
 

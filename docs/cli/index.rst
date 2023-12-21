@@ -16,7 +16,7 @@ BYCEPS comes with a command-line tool for some tasks.
    * - ``byceps create-database-tables``
      - :ref:`Create database tables <Create Database Tables>`
    * - ``byceps create-demo-data``
-     - :ref:`Create examplary data for demonstration purposes <Create Demo Data>`
+     - :ref:`Create exemplary data for demonstration purposes <Create Demo Data>`
    * - ``byceps create-superuser``
      - :ref:`Create superuser <Create Superuser>`
    * - ``byceps export-roles``
