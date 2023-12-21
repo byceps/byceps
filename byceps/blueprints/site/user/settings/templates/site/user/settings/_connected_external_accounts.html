@@ -1,7 +1,7 @@
 {% from 'macros/icons.html' import render_icon, render_site_icon %}
 
 
-  <h2>Verbundene Accounts</h2>
+  <h2>{{ _('Connected Accounts') }}</h2>
 
   <div class="main-body-box">
     <div class="row">
@@ -11,17 +11,17 @@
         <div class="row mb">
           {%- if discord_account %}
           <div class="column-auto column-auto--grow">
-            <div class="data-value">{{ render_icon('enabled', color='#009900') }} verbunden als <strong>{{ discord_account.external_name }}</strong></div>
+            <div class="data-value">{{ render_icon('enabled', color='#009900') }} {{ _('connected as') }} <strong>{{ discord_account.external_name }}</strong></div>
           </div>
           <div class="column-auto">
-            <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.remove') }}" data-action="discord-remove" title="Verbindung trennen">{{ render_icon('remove', color='#cc0000') }}</a>
+            <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.remove') }}" data-action="discord-remove" title="{{ _('Disconnect account') }}">{{ render_icon('remove', color='#cc0000') }}</a>
           </div>
           {%- else -%}
           <div class="column-auto column-auto--grow">
-            <div class="data-value dimmed">nicht verbunden</div>
+            <div class="data-value dimmed">{{ _('not connected') }}</div>
           </div>
           <div class="column-auto">
-            <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.connect') }}" title="Account verbinden">{{ render_icon('add') }}</a>
+            <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.connect') }}" title="{{ _('Connect account') }}">{{ render_icon('add') }}</a>
           </div>
           {%- endif %}
         </div>

@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set simple_layout = true %}
 {% set current_page = 'shop_orders' %}
-{% set page_title = ['Tickets zurückgeben', order.order_number] %}
+{% set page_title = [_('Return tickets'), order.order_number] %}
 
 {% block body %}
 
@@ -21,10 +21,10 @@
 
       <div class="row row--space-between mt">
         <div>
-          <a class="button button--clear button--compact" href="{{ url_for('.request_cancelation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>Zurück zur Auswahl</span></a>
+          <a class="button button--clear button--compact" href="{{ url_for('.request_cancelation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>{{ _('Back to selection') }}</span></a>
         </div>
         <div>
-          <button type="submit" class="button color-primary">Tickets zurückgeben</button>
+          <button type="submit" class="button color-primary">{{ _('Return tickets') }}</button>
         </div>
       </div>
 

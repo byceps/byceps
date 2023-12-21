@@ -210,7 +210,7 @@ def request_cancelation_choices(order_id):
         return redirect_to('.view', order_id=order.id)
 
     if not order.is_paid:
-        flash_error('Die Bestellung wurde noch nicht bezahlt.')
+        flash_error(gettext('The order has not been paid.'))
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
@@ -237,7 +237,7 @@ def donate_everything_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     if not order.is_paid:
-        flash_error('Die Bestellung wurde noch nicht bezahlt.')
+        flash_error(gettext('The order has not been paid.'))
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
@@ -263,7 +263,7 @@ def donate_everything(order_id):
         return redirect_to('.view', order_id=order.id)
 
     if not order.is_paid:
-        flash_error('Die Bestellung wurde noch nicht bezahlt.')
+        flash_error(gettext('The order has not been paid.'))
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
@@ -324,7 +324,7 @@ def request_partial_refund_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     if not order.is_paid:
-        flash_error('Die Bestellung wurde noch nicht bezahlt.')
+        flash_error(gettext('The order has not been paid.'))
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
@@ -353,7 +353,7 @@ def request_partial_refund(order_id):
         return redirect_to('.view', order_id=order.id)
 
     if not order.is_paid:
-        flash_error('Die Bestellung wurde noch nicht bezahlt.')
+        flash_error(gettext('The order has not been paid.'))
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
@@ -401,7 +401,7 @@ def request_full_refund_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     if not order.is_paid:
-        flash_error('Die Bestellung wurde noch nicht bezahlt.')
+        flash_error(gettext('The order has not been paid.'))
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
@@ -430,7 +430,7 @@ def request_full_refund(order_id):
         return redirect_to('.view', order_id=order.id)
 
     if not order.is_paid:
-        flash_error('Die Bestellung wurde noch nicht bezahlt.')
+        flash_error(gettext('The order has not been paid.'))
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (

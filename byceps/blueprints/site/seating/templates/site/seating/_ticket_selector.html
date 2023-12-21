@@ -4,12 +4,12 @@
 
 
 {%- if selected_ticket_id %}
-{{ render_notification('Du verwaltest dieses Ticket als Sitzplatz-Administrator.', category='warning', icon='warning') }}
+{{ render_notification(_('You are managing this ticket as a seating administrator.'), category='warning', icon='warning') }}
 {%- endif %}
 
 {%- if managed_tickets %}
   {%- with managed_tickets_total = managed_tickets|length %}
-  <p>Du verwaltest die Sitzplätze von {% if managed_tickets_total == 1 %}<strong>einem</strong> Ticket{% else %}<strong>{{ managed_tickets_total }}</strong> Tickets{% endif %}:</p>
+  <p>{{ ngettext('You are managing seats of <strong>%(quantity)s</strong> ticket.', 'You are managing seats of <strong>%(quantity)s</strong> tickets.', managed_tickets_total, quantity=managed_tickets_total) }}</p>
   {%- endwith %}
 
   <div class="row row--space-between">
@@ -26,7 +26,7 @@
             {%- if ticket.user -%}
               {{ render_user_screen_name(ticket.user) }}
             {%- else -%}
-              {{ 'kein/e Nutzer/in'|dim }}
+              {{ _('no user')|dim }}
             {%- endif -%}
             </span>
 
@@ -34,7 +34,7 @@
             {%- if occupies_seat -%}
               {{ seat_label|fallback(_('unnamed')) }}
             {%- else -%}
-              {{ 'kein Sitzplatz'|dim }}
+              {{ _('no seat')|dim }}
             {%- endif -%}
             </span>
 
@@ -45,9 +45,9 @@
       </div>
     </div>
     <div>
-      <button class="button" id="release-seat-trigger" title="Sitzplatz freigeben">{{ render_icon('remove') }}</button>
+      <button class="button" id="release-seat-trigger" title="{{ _('Release seat') }}">{{ render_icon('remove') }}</button>
     </div>
   </div>
 {%- else %}
-  <p>Du verwaltest keine Sitzplätze.</p>
+  <p>{{ _('You are not managing any seats.') }}</p>
 {%- endif %}

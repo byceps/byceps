@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.14.0\n"
 
 #: byceps/announce/handlers/user.py:65 byceps/announce/helpers.py:43
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:132
@@ -1238,9 +1238,9 @@ msgstr "Für diese Marke sind keine Foren vorhanden."
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:27
 #: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:19
 #: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:20
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:8
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:20
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:86
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:7
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:19
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:85
 #: byceps/services/site_navigation/models.py:97
 msgid "Board"
 msgstr "Forum"
@@ -2707,8 +2707,6 @@ msgstr "Turniere"
 #: byceps/blueprints/admin/more/templates/admin/more/view_site.html:16
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_board.html:4
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_board.html:28
-#: byceps/blueprints/site/homepage/templates/site/homepage/_board.html:4
-#: byceps/blueprints/site/homepage/templates/site/homepage/_board.html:30
 msgid "Discussion Board"
 msgstr "Forum"
 
@@ -3366,6 +3364,7 @@ msgstr "in %(days)s Tagen"
 #: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:74
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:46
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:31
+#: byceps/blueprints/site/tourney/templates/site/tourney/tourney_view.html:83
 msgid "Start"
 msgstr "Beginn"
 
@@ -5401,6 +5400,7 @@ msgstr "unbenannt"
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:46
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:37
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:130
+#: byceps/blueprints/site/seating/templates/site/seating/_ticket_selector.html:37
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:167
 msgid "no seat"
 msgstr "kein Sitzplatz"
@@ -6847,7 +6847,7 @@ msgid "Moderate this post"
 msgstr "Diesen Beitrag moderieren"
 
 #: byceps/blueprints/site/board/templates/site/board/_posting_view_actions.html:28
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:38
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:37
 msgid "Moderate"
 msgstr "Moderieren"
 
@@ -6979,7 +6979,7 @@ msgid "You are about to modify a post created by someone else."
 msgstr "Du bist im Begriff, einen Beitrag von jemand anderem zu verändern."
 
 #: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:7
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:38
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:37
 msgid "Moderate topic"
 msgstr "Thema moderieren"
 
@@ -7087,11 +7087,11 @@ msgstr "Für alle Beiträge öffnen"
 msgid "You are about to modify a topic created by someone else."
 msgstr "Du bist im Begriff, ein Thema von jemand anderem zu verändern."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:30
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:29
 msgid "This topic is hidden."
 msgstr "Dieses Thema ist versteckt."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:52
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:51
 msgid ""
 "This topic is meant for announcements. Only <strong>moderators</strong> "
 "are allowed to add posts to it."
@@ -7099,19 +7099,19 @@ msgstr ""
 "Dieses Thema ist für Ankündigungen gedacht. Nur "
 "<strong>Moderatoren</strong> dürfen Beiträge hinzufügen."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:58
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:57
 msgid "This topic is <strong>locked</strong>. No more posts can be added."
 msgstr ""
 "Dieses Thema ist <strong>geschlossen</strong>. Es können keine Beiträge "
 "mehr hinzugefügt werden."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:68
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:67
 #, python-format
 msgid "You have to be <a href=\"%(url)s\">logged in</a> to be able to reply."
 msgstr "Du musst <a href=\"%(url)s\">angemeldet</a> sein, um antworten zu können."
 
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:72
-#: byceps/blueprints/site/board/templates/site/board/topic_view.html:78
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:71
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:77
 msgid "Reply"
 msgstr "Antworten"
 
@@ -7140,7 +7140,6 @@ msgid "I consent"
 msgstr "Ich stimme zu"
 
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_board.html:24
-#: byceps/blueprints/site/homepage/templates/site/homepage/_board.html:26
 msgid "No topics yet."
 msgstr "Es gibt noch keine Themen."
 
@@ -7352,6 +7351,29 @@ msgstr "%(seat_label)s wurde freigegeben."
 msgid "Legend"
 msgstr "Legende"
 
+#: byceps/blueprints/site/seating/templates/site/seating/_ticket_selector.html:7
+msgid "You are managing this ticket as a seating administrator."
+msgstr "Du verwaltest dieses Ticket als Sitzplatz-Administrator."
+
+#: byceps/blueprints/site/seating/templates/site/seating/_ticket_selector.html:12
+#, python-format
+msgid "You are managing seats of <strong>%(quantity)s</strong> ticket."
+msgid_plural "You are managing seats of <strong>%(quantity)s</strong> tickets."
+msgstr[0] "Du verwaltest die Sitzplätze von <strong>%(quantity)s</strong> Ticket."
+msgstr[1] "Du verwaltest die Sitzplätze von <strong>%(quantity)s</strong> Tickets."
+
+#: byceps/blueprints/site/seating/templates/site/seating/_ticket_selector.html:29
+msgid "no user"
+msgstr "kein/e Nutzer/in"
+
+#: byceps/blueprints/site/seating/templates/site/seating/_ticket_selector.html:48
+msgid "Release seat"
+msgstr "Sitzplatz freigeben"
+
+#: byceps/blueprints/site/seating/templates/site/seating/_ticket_selector.html:52
+msgid "You are not managing any seats."
+msgstr "Du verwaltest keine Sitzplätze."
+
 #: byceps/blueprints/site/seating/templates/site/seating/index.html:6
 #: byceps/blueprints/site/seating/templates/site/seating/view_area.html:7
 #: byceps/blueprints/site/seating/templates/site/seating/view_area.html:24
@@ -7464,6 +7486,16 @@ msgstr ""
 msgid "Order has been canceled."
 msgstr "Die Bestellung wurde storniert."
 
+#: byceps/blueprints/site/shop/orders/views.py:213
+#: byceps/blueprints/site/shop/orders/views.py:240
+#: byceps/blueprints/site/shop/orders/views.py:266
+#: byceps/blueprints/site/shop/orders/views.py:327
+#: byceps/blueprints/site/shop/orders/views.py:356
+#: byceps/blueprints/site/shop/orders/views.py:404
+#: byceps/blueprints/site/shop/orders/views.py:433
+msgid "The order has not been paid."
+msgstr "Die Bestellung wurde nicht bezahlt."
+
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:9
 msgctxt "order"
 msgid "canceled"
@@ -7475,6 +7507,21 @@ msgstr "storniert"
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:12
 msgid "Your orders"
 msgstr "Deine Bestellungen"
+
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/donate_everything_form.html:6
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/donate_everything_form.html:27
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_full_refund_form.html:6
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_full_refund_form.html:37
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_partial_refund_form.html:6
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_partial_refund_form.html:39
+msgid "Return tickets"
+msgstr "Tickets zurückgeben"
+
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/donate_everything_form.html:24
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_full_refund_form.html:34
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_partial_refund_form.html:36
+msgid "Back to selection"
+msgstr "Zurück zur Auswahl"
 
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:64
 msgid "Payment notes"
@@ -7725,6 +7772,10 @@ msgstr "Keine Turniere gefunden."
 msgid "Tourney"
 msgstr "Turnier"
 
+#: byceps/blueprints/site/tourney/templates/site/tourney/tourney_view.html:113
+msgid "No participants have registered yet."
+msgstr "Es sind keine Teilnehmer angemeldet."
+
 #: byceps/blueprints/site/user/avatar/views.py:72
 msgid "Avatar image has been updated."
 msgstr "Dein Avatarbild wurde aktualisiert."
@@ -7892,6 +7943,26 @@ msgstr "Bevorzugte Sprache"
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:75
 msgid "no preference"
 msgstr "keine Präferenz"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_connected_external_accounts.html:4
+msgid "Connected Accounts"
+msgstr "Verbundene Accounts"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_connected_external_accounts.html:14
+msgid "connected as"
+msgstr "verbunden als"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_connected_external_accounts.html:17
+msgid "Disconnect account"
+msgstr "Verbindung trennen"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_connected_external_accounts.html:21
+msgid "not connected"
+msgstr "nicht verbunden"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_connected_external_accounts.html:24
+msgid "Connect account"
+msgstr "Account verbinden"
 
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:26
 msgid "Unsubscribe"

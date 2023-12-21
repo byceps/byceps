@@ -80,7 +80,7 @@
 
   <table class="index">
     <tr>
-      <th>Beginn</th>
+      <th>{{ _('Start') }}</th>
       <td>{{ tourney.starts_at|dateformat('EEEE') }}, {{ tourney.starts_at|timeformat('short') }}</td>
     </tr>
   </table>
@@ -110,7 +110,7 @@
       {%- endfor %}
     </ul>
   {%- else %}
-    <p class="dimmed">Es sind noch keine Teilnehmer angemeldet.</p>
+    <p class="dimmed">{{ _('No participants have registered yet.') }}</p>
   {%- endif %}
   </div>
 
