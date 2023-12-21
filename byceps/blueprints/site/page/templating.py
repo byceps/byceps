@@ -108,8 +108,8 @@ def url_for_site_page(site_id: str, name: str, **kwargs) -> str:
 def _get_url_paths_by_page_name(site_id) -> dict[str, str]:
     """Return site-specific mapping from page names to URL paths.
 
-    Preferrably from request-local cache, if available. From the
-    database if not yet cached.
+    Preferably from request-local cache, if available. From the database
+    if not yet cached.
     """
     request_context_key = f'page_url_paths_by_page_name_for_site_{site_id}'
 

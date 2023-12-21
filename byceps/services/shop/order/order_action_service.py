@@ -154,7 +154,7 @@ def _get_actions(
 
 def _get_procedure(name: str, article_id: ArticleID) -> OrderActionType:
     """Return procedure with that name, or raise an exception if the
-    name is not registerd.
+    name is not registered.
     """
     procedure = PROCEDURES_BY_NAME.get(name)
 

@@ -102,7 +102,7 @@ def index(page):
 @permission_required('user.view')
 @templated
 def view(user_id):
-    """Show a user's interal profile."""
+    """Show a user's internal profile."""
     user = _get_user_for_admin_or_404(user_id)
     db_user = user_service.find_user_with_details(user.id)
 

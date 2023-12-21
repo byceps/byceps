@@ -100,7 +100,7 @@ def assign_permission_to_role(
 def deassign_permission_from_role(
     permission_id: PermissionID, role_id: RoleID
 ) -> Result[None, str]:
-    """Dessign the permission from the role."""
+    """Deassign the permission from the role."""
     db_role_permission = db.session.get(
         DbRolePermission, (role_id, permission_id)
     )
