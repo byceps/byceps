@@ -38,3 +38,30 @@ Set this value in your configuration file so the line looks like this:
 
 .. attention:: Do **not** use the same key for development and
    production environments. Generate **separate** secret keys!
+
+
+Specify SMTP Server
+-------------------
+
+BYCEPS needs to know of an SMTP server, or mail/message transport agent
+(MTA), to forward outgoing emails to.
+
+The default is to expect a local one on ``localhost`` and port 25
+without authentication or encryption, like Sendmail_ or Postfix_.
+
+Another option is to use an external one (authentication and encryption
+are important here!) with a configuration like this:
+
+.. code-block:: toml
+
+    MAIL_HOST = "smtp.provider.example"
+    MAIL_PORT = 465
+    MAIL_USE_SSL = true
+    MAIL_USERNAME = "example-username"
+    MAIL_PASSWORD = "example-password"
+
+See the available ``MAIL_*`` :doc:`configuration properties
+</config/index>`.
+
+.. _Sendmail: https://www.proofpoint.com/us/products/email-protection/open-source-email-solution
+.. _Postfix: https://www.postfix.org/
