@@ -1,13 +1,19 @@
 Requirements
 ============
 
-* Python_ 3.10 or higher
-* PostgreSQL_ 13 or higher (for data persistence)
-* Redis_ 5.0 or higher (for the background job queue)
-* uWSGI_, Gunicorn_, *or* Waitress_ (as WSGI_ server)
-* nginx_ (as `reverse proxy`_, to serve static files, for TLS_)
-* Git_ (for downloading and updating BYCEPS, but not strictly for running it)
+* A (virtual) server to install BYCEPS on
+* At least two subdomains (adminstration UI, one party website)
+* An SMTP_ server (to send emails)
+* Software:
 
+  * Python_ 3.10 or higher
+  * PostgreSQL_ 13 or higher (for data persistence)
+  * Redis_ 5.0 or higher (for the background job queue)
+  * uWSGI_, Gunicorn_, *or* Waitress_ (as WSGI_ server)
+  * nginx_ (as `reverse proxy`_, to serve static files, for TLS_)
+  * Git_ (for downloading and updating BYCEPS, but not strictly for running it)
+
+.. _SMTP: https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol
 .. _Git: https://git-scm.com/
 .. _Gunicorn: https://gunicorn.org/
 .. _nginx: https://nginx.org/
