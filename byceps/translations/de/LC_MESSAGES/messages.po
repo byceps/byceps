@@ -6567,7 +6567,7 @@ msgstr "Anfordern"
 #: byceps/blueprints/common/core/forms.py:25
 msgid ""
 "Contains invalid characters. Allowed are letters, digits, and these "
-"special charactes: "
+"special characters: "
 msgstr ""
 "Enthält ungültige Zeichen. Erlaubt sind Buchstaben, Zahlen und diese "
 "Sonderzeichen: "

@@ -24,7 +24,7 @@ class ScreenNameValidator:
             raise ValidationError(
                 lazy_gettext(
                     'Contains invalid characters. Allowed are letters, digits, '
-                    'and these special charactes: '
+                    'and these special characters: '
                 )
                 + special_chars_spaced
             )
