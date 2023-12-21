@@ -174,17 +174,17 @@ Supported Configuration Values
 
     Format::
 
-        postgresql+psycopg2://USERNAME:PASSWORD@HOST/DATABASE
+        postgresql+psycopg://USERNAME:PASSWORD@HOST/DATABASE
 
     Example (use user ``byceps`` with password ``hunter2`` to connect to
     database ``byceps`` on the local host)::
 
-        postgresql+psycopg2://byceps:hunter2@127.0.0.1/byceps
+        postgresql+psycopg://byceps:hunter2@127.0.0.1/byceps
 
-    Since BYCEPS uses psycopg2_ by default, the scheme has to be
-    `postgresql+psycopg2`.
+    Since BYCEPS uses psycopg_ by default, the scheme has to be
+    `postgresql+psycopg`.
 
-    .. _psycopg2: https://www.psycopg.org/
+    .. _psycopg: https://www.psycopg.org/
 
     For more info, see `Flask-SQLAlchemy's documentation on
     SQLALCHEMY_DATABASE_URI

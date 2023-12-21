@@ -48,7 +48,7 @@ CONFIG_OVERRIDES_FOR_TESTS = {
     'JOBS_ASYNC': False,
     'REDIS_URL': 'redis://127.0.0.1:6379/0',
     'SECRET_KEY': 'secret-key-for-testing-ONLY',
-    'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg2://byceps_test:test@127.0.0.1/byceps_test',
+    'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg://byceps_test:test@127.0.0.1/byceps_test',
     'TESTING': True,
 }
 

@@ -15,12 +15,8 @@ ENV PATH /home/byceps/.local/bin:$PATH
 
 # Install Python dependencies.
 # First, upgrade Pip itself.
-# psycopg2 is recommended over psycopg2-binary for production use (see
-# https://www.psycopg.org/docs/install.html#psycopg-vs-psycopg-binary
-# for details). It needs to be compiled, though, but the base image
-# provides what is necessary to do that.
 RUN pip install --no-cache-dir --user --upgrade pip \
- && pip install --no-cache-dir --user psycopg2 uwsgi
+ && pip install --no-cache-dir --user uwsgi
 
 # Install more Python dependencies, as specified by the
 # application. Do this before copying the rest of the
