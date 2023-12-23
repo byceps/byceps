@@ -78,7 +78,7 @@ class DbOrder(db.Model):
     payment_state_updated_by: Mapped[DbUser] = relationship(
         DbUser, foreign_keys=[payment_state_updated_by_id]
     )
-    cancelation_reason: Mapped[str | None] = mapped_column(db.UnicodeText)
+    cancellation_reason: Mapped[str | None] = mapped_column(db.UnicodeText)
     processing_required: Mapped[bool]
     processed_at: Mapped[datetime | None]
 

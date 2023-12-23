@@ -1,6 +1,6 @@
 """
-byceps.services.shop.cancelation_request.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.cancellation_request.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -29,8 +29,8 @@ DonationExtent = Enum(
 )
 
 
-CancelationRequestState = Enum(
-    'CancelationRequestState',
+CancellationRequestState = Enum(
+    'CancellationRequestState',
     [
         'open',
         'accepted',
@@ -40,7 +40,7 @@ CancelationRequestState = Enum(
 
 
 @dataclass(frozen=True)
-class CancelationRequest:
+class CancellationRequest:
     id: UUID
     created_at: datetime
     shop_id: ShopID
@@ -51,11 +51,11 @@ class CancelationRequest:
     amount_donation: Decimal
     recipient_name: str | None
     recipient_iban: str | None
-    state: CancelationRequestState
+    state: CancellationRequestState
 
 
 @dataclass(frozen=True)
-class CancelationRequestQuantitiesByState:
+class CancellationRequestQuantitiesByState:
     open: int
     accepted: int
     denied: int

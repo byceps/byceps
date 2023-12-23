@@ -25,7 +25,7 @@ def test_assemble_text_for_canceled_order_to_orderer(
         order_number=order_number,
         line_items=[],
         total_amount=Money('57.11', EUR),
-        cancelation_reason='Du hast nicht rechtzeitig bezahlt.',
+        cancellation_reason='Du hast nicht rechtzeitig bezahlt.',
     )
 
     with force_locale(language_code):

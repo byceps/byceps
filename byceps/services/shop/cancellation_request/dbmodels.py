@@ -1,6 +1,6 @@
 """
-byceps.services.shop.cancelation_request.dbmodels
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.cancellation_request.dbmodels
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -28,17 +28,17 @@ from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 
-from .models import CancelationRequestState, DonationExtent
+from .models import CancellationRequestState, DonationExtent
 
 
-class DbCancelationRequest(db.Model):
-    """A request for cancelation of an order.
+class DbCancellationRequest(db.Model):
+    """A request for cancellation of an order.
 
     The amount can be chosen to fully donated, fully refunded, or
     partially donated and refuned.
     """
 
-    __tablename__ = 'shop_order_cancelation_requests'
+    __tablename__ = 'shop_order_cancellation_requests'
 
     id: Mapped[UUID] = mapped_column(
         db.Uuid, default=generate_uuid7, primary_key=True
@@ -86,7 +86,7 @@ class DbCancelationRequest(db.Model):
         self.amount_donation = amount_donation
         self.recipient_name = recipient_name
         self.recipient_iban = recipient_iban
-        self.state = CancelationRequestState.open
+        self.state = CancellationRequestState.open
 
     @hybrid_property
     def donation_extent(self) -> DonationExtent:
@@ -97,11 +97,11 @@ class DbCancelationRequest(db.Model):
         self._donation_extent = donation_extent.name
 
     @hybrid_property
-    def state(self) -> CancelationRequestState:
-        return CancelationRequestState[self._state]
+    def state(self) -> CancellationRequestState:
+        return CancellationRequestState[self._state]
 
     @state.setter
-    def state(self, state: CancelationRequestState) -> None:
+    def state(self, state: CancellationRequestState) -> None:
         self._state = state.name
 
     def __repr__(self) -> str:

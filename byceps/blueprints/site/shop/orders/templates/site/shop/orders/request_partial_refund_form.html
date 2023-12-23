@@ -7,7 +7,7 @@
 
 {% block body %}
 
-{% include 'site/shop/orders/_request_cancelation_head.html' %}
+{% include 'site/shop/orders/_request_cancellation_head.html' %}
 
   <div class="main-body-box">
     <form action="{{ url_for('.request_partial_refund', order_id=order.id) }}" method="post">
@@ -33,7 +33,7 @@
 
       <div class="row row--space-between mt">
         <div>
-          <a class="button button--clear button--compact" href="{{ url_for('.request_cancelation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>{{ _('Back to selection') }}</span></a>
+          <a class="button button--clear button--compact" href="{{ url_for('.request_cancellation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>{{ _('Back to selection') }}</span></a>
         </div>
         <div>
           <button type="submit" class="button color-primary">{{ _('Return tickets') }}</button>

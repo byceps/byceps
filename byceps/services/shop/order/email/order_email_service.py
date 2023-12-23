@@ -216,14 +216,14 @@ def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
     )
 
     date_str = format_date(order.created_at)
-    cancelation_reason = order.cancelation_reason or ''
+    cancellation_reason = order.cancellation_reason or ''
     paragraphs = [
         gettext(
             'your order %(order_number)s on %(order_date)s has been canceled by us for this reason:',
             order_number=order.order_number,
             order_date=date_str,
         ),
-        cancelation_reason,
+        cancellation_reason,
     ]
     body_main_part = '\n\n'.join(paragraphs)
 

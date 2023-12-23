@@ -163,7 +163,7 @@ def cancel_order(
     )
 
     _update_payment_state(db_order, payment_state_to, occurred_at, initiator)
-    db_order.cancelation_reason = reason
+    db_order.cancellation_reason = reason
 
     db_log_entry = order_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -439,7 +439,7 @@ def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
         is_overdue=_is_overdue(db_order),
         is_processing_required=db_order.processing_required,
         is_processed=_is_processed(db_order),
-        cancelation_reason=db_order.cancelation_reason,
+        cancellation_reason=db_order.cancellation_reason,
     )
 
 
@@ -763,7 +763,7 @@ def _order_to_transfer_object(db_order: DbOrder, placed_by: User) -> Order:
         is_overdue=_is_overdue(db_order),
         is_processing_required=db_order.processing_required,
         is_processed=_is_processed(db_order),
-        cancelation_reason=db_order.cancelation_reason,
+        cancellation_reason=db_order.cancellation_reason,
     )
 
 

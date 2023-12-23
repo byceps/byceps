@@ -31,7 +31,7 @@ class DetailedOrder(BaseOrder):
     is_invoiced: bool
     is_processing_required: bool
     is_processed: bool
-    cancelation_reason: str | None
+    cancellation_reason: str | None
 
 
 @dataclass(frozen=True)

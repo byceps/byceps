@@ -1,6 +1,6 @@
 """
-byceps.services.shop.cancelation_request.cancelation_request_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.cancellation_request.cancellation_request_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -19,11 +19,11 @@ from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
 
-from .dbmodels import DbCancelationRequest
+from .dbmodels import DbCancellationRequest
 from .models import (
-    CancelationRequest,
-    CancelationRequestQuantitiesByState,
-    CancelationRequestState,
+    CancellationRequest,
+    CancellationRequestQuantitiesByState,
+    CancellationRequestState,
     DonationExtent,
 )
 
@@ -33,8 +33,8 @@ def create_request_for_full_donation(
     order_id: OrderID,
     order_number: OrderNumber,
     amount_donation: Decimal,
-) -> CancelationRequest:
-    """Create a cancelation request for the full donation an order."""
+) -> CancellationRequest:
+    """Create a cancellation request for the full donation an order."""
     amount_refund = Decimal('0.00')
     recipient_name = None
     recipient_iban = None
@@ -59,8 +59,8 @@ def create_request_for_partial_refund(
     amount_donation: Decimal,
     recipient_name: str,
     recipient_iban: str,
-) -> CancelationRequest:
-    """Create a cancelation request for a partial refund an order."""
+) -> CancellationRequest:
+    """Create a cancellation request for a partial refund an order."""
     return _create_request(
         shop_id,
         order_id,
@@ -80,8 +80,8 @@ def create_request_for_full_refund(
     amount_refund: Decimal,
     recipient_name: str,
     recipient_iban: str,
-) -> CancelationRequest:
-    """Create a cancelation request for a full refund an order."""
+) -> CancellationRequest:
+    """Create a cancellation request for a full refund an order."""
     amount_donation = Decimal('0.00')
 
     return _create_request(
@@ -105,11 +105,11 @@ def _create_request(
     amount_donation: Decimal,
     recipient_name: str | None,
     recipient_iban: str | None,
-) -> CancelationRequest:
-    """Create a cancelation request for an order."""
+) -> CancellationRequest:
+    """Create a cancellation request for an order."""
     now = datetime.utcnow()
 
-    db_request = DbCancelationRequest(
+    db_request = DbCancellationRequest(
         now,
         shop_id,
         order_id,
@@ -128,20 +128,20 @@ def _create_request(
 
 
 def accept_request(request_id: UUID) -> None:
-    """Accept the cancelation request."""
-    db_request = db.session.get(DbCancelationRequest, request_id)
+    """Accept the cancellation request."""
+    db_request = db.session.get(DbCancellationRequest, request_id)
 
     if db_request is None:
-        raise ValueError(f'Unknown cancelation request ID "{request_id}"')
+        raise ValueError(f'Unknown cancellation request ID "{request_id}"')
 
-    db_request.state = CancelationRequestState.accepted
+    db_request.state = CancellationRequestState.accepted
 
     db.session.commit()
 
 
-def get_request(request_id: UUID) -> CancelationRequest | None:
-    """Return the cancelation request with that ID."""
-    db_request = db.session.get(DbCancelationRequest, request_id)
+def get_request(request_id: UUID) -> CancellationRequest | None:
+    """Return the cancellation request with that ID."""
+    db_request = db.session.get(DbCancellationRequest, request_id)
 
     if db_request is None:
         return None
@@ -151,11 +151,11 @@ def get_request(request_id: UUID) -> CancelationRequest | None:
 
 def get_request_for_order(
     order_id: OrderID,
-) -> CancelationRequest | None:
-    """Return the cancelation request for that order."""
+) -> CancellationRequest | None:
+    """Return the cancellation request for that order."""
     db_request = (
         db.session.execute(
-            select(DbCancelationRequest).filter_by(order_id=order_id)
+            select(DbCancellationRequest).filter_by(order_id=order_id)
         )
         .scalars()
         .one_or_none()
@@ -170,11 +170,11 @@ def get_request_for_order(
 def get_all_requests_for_shop_paginated(
     shop_id: ShopID, page: int, per_page: int
 ) -> Pagination:
-    """Return all cancelation requests for the shop."""
+    """Return all cancellation requests for the shop."""
     stmt = (
-        select(DbCancelationRequest)
+        select(DbCancellationRequest)
         .filter_by(shop_id=shop_id)
-        .order_by(DbCancelationRequest.created_at.desc())
+        .order_by(DbCancellationRequest.created_at.desc())
     )
 
     return paginate(stmt, page, per_page, item_mapper=_db_entity_to_request)
@@ -187,11 +187,11 @@ def get_donation_extent_totals_for_shop(
     rows = (
         db.session.execute(
             select(
-                DbCancelationRequest._donation_extent,
-                db.func.count(DbCancelationRequest._donation_extent),
+                DbCancellationRequest._donation_extent,
+                db.func.count(DbCancellationRequest._donation_extent),
             )
             .filter_by(shop_id=shop_id)
-            .group_by(DbCancelationRequest._donation_extent)
+            .group_by(DbCancellationRequest._donation_extent)
         )
         .tuples()
         .all()
@@ -207,7 +207,7 @@ def get_donation_extent_totals_for_shop(
 def get_donation_sum_for_shop(shop_id: ShopID) -> Decimal:
     """Return donation total for that shop."""
     return db.session.scalar(
-        select(db.func.sum(DbCancelationRequest.amount_donation)).filter_by(
+        select(db.func.sum(DbCancellationRequest.amount_donation)).filter_by(
             shop_id=shop_id
         )
     ) or Decimal('0.00')
@@ -215,42 +215,42 @@ def get_donation_sum_for_shop(shop_id: ShopID) -> Decimal:
 
 def get_request_quantities_by_state(
     shop_id: ShopID,
-) -> CancelationRequestQuantitiesByState:
+) -> CancellationRequestQuantitiesByState:
     """Return request quantity per state for that shop."""
     rows = (
         db.session.execute(
             select(
-                DbCancelationRequest._state,
-                db.func.count(DbCancelationRequest._state),
+                DbCancellationRequest._state,
+                db.func.count(DbCancellationRequest._state),
             )
             .filter_by(shop_id=shop_id)
-            .group_by(DbCancelationRequest._state)
+            .group_by(DbCancellationRequest._state)
         )
         .tuples()
         .all()
     )
 
     quantities_by_state_name = {
-        state.name: 0 for state in CancelationRequestState
+        state.name: 0 for state in CancellationRequestState
     }
 
     for state_name, quantity in rows:
         quantities_by_state_name[state_name] = quantity
 
-    return CancelationRequestQuantitiesByState(
-        open=quantities_by_state_name[CancelationRequestState.open.name],
+    return CancellationRequestQuantitiesByState(
+        open=quantities_by_state_name[CancellationRequestState.open.name],
         accepted=quantities_by_state_name[
-            CancelationRequestState.accepted.name
+            CancellationRequestState.accepted.name
         ],
-        denied=quantities_by_state_name[CancelationRequestState.denied.name],
+        denied=quantities_by_state_name[CancellationRequestState.denied.name],
         total=sum(quantities_by_state_name.values()),
     )
 
 
 def _db_entity_to_request(
-    db_request: DbCancelationRequest,
-) -> CancelationRequest:
-    return CancelationRequest(
+    db_request: DbCancellationRequest,
+) -> CancellationRequest:
+    return CancellationRequest(
         id=db_request.id,
         created_at=db_request.created_at,
         shop_id=db_request.shop_id,

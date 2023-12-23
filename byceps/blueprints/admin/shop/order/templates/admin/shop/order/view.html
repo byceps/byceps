@@ -82,8 +82,8 @@
         </div>
 
         {%- if order.is_canceled %}
-        <div class="data-label">{{ _('Reason for cancelation') }}</div>
-        <div class="data-value">{{ order.cancelation_reason|fallback }}</div>
+        <div class="data-label">{{ _('Reason for cancellation') }}</div>
+        <div class="data-value">{{ order.cancellation_reason|fallback }}</div>
         {%- endif %}
 
       </div>

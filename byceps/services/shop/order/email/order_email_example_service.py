@@ -95,7 +95,7 @@ def build_example_canceled_order_message_text(
         PaymentState.canceled_before_paid,
         state=OrderState.canceled,
         is_canceled=True,
-        cancelation_reason=gettext('Not paid in time.'),
+        cancellation_reason=gettext('Not paid in time.'),
     )
 
     data = _build_email_data(sender, order, brand)
@@ -123,7 +123,7 @@ def _build_order(
     is_open: bool = False,
     is_canceled: bool = False,
     is_paid: bool = False,
-    cancelation_reason: str | None = None,
+    cancellation_reason: str | None = None,
 ) -> Order:
     order_id = OrderID(generate_uuid4())
     storefront_id = StorefrontID('storefront-1')
@@ -172,7 +172,7 @@ def _build_order(
         is_overdue=False,
         is_processing_required=False,
         is_processed=False,
-        cancelation_reason=cancelation_reason,
+        cancellation_reason=cancellation_reason,
     )
 
 

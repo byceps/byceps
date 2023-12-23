@@ -18,7 +18,9 @@ from byceps.services.email import (
     email_footer_service,
     email_service,
 )
-from byceps.services.shop.cancelation_request import cancelation_request_service
+from byceps.services.shop.cancellation_request import (
+    cancellation_request_service,
+)
 from byceps.services.shop.order import order_payment_service, order_service
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import OrderAlreadyCanceledError
@@ -83,14 +85,14 @@ def view(order_id):
         # Order does not belong to the current site's storefront.
         abort(404)
 
-    cancelation_request = cancelation_request_service.get_request_for_order(
+    cancellation_request = cancellation_request_service.get_request_for_order(
         order.id
     )
 
     template_context = {
         'order': order,
         'render_order_payment_method': _find_order_payment_method_label,
-        'cancelation_request': cancelation_request,
+        'cancellation_request': cancellation_request,
     }
 
     if order.is_open:
@@ -174,9 +176,9 @@ def cancel(order_id):
 
     reason = form.reason.data.strip()
 
-    cancelation_result = order_service.cancel_order(order.id, g.user, reason)
-    if cancelation_result.is_err():
-        err = cancelation_result.unwrap_err()
+    cancellation_result = order_service.cancel_order(order.id, g.user, reason)
+    if cancellation_result.is_err():
+        err = cancellation_result.unwrap_err()
         if isinstance(err, OrderAlreadyCanceledError):
             flash_error(
                 gettext(
@@ -187,7 +189,7 @@ def cancel(order_id):
             flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
 
-    canceled_order, event = cancelation_result.unwrap()
+    canceled_order, event = cancellation_result.unwrap()
 
     flash_success(gettext('Order has been canceled.'))
 
@@ -198,11 +200,11 @@ def cancel(order_id):
     return redirect_to('.view', order_id=canceled_order.id)
 
 
-@blueprint.get('/<uuid:order_id>/request_cancelation')
+@blueprint.get('/<uuid:order_id>/request_cancellation')
 @login_required
 @templated
-def request_cancelation_choices(order_id):
-    """Show choices to request cancelation of an order."""
+def request_cancellation_choices(order_id):
+    """Show choices to request cancellation of an order."""
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
@@ -214,7 +216,7 @@ def request_cancelation_choices(order_id):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order(order.id)
+        cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -225,7 +227,7 @@ def request_cancelation_choices(order_id):
     }
 
 
-@blueprint.get('/<uuid:order_id>/request_cancelation/donate_everything')
+@blueprint.get('/<uuid:order_id>/request_cancellation/donate_everything')
 @login_required
 @templated
 def donate_everything_form(order_id, erroneous_form=None):
@@ -241,7 +243,7 @@ def donate_everything_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order(order.id)
+        cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -252,7 +254,7 @@ def donate_everything_form(order_id, erroneous_form=None):
     }
 
 
-@blueprint.post('/<uuid:order_id>/request_cancelation')
+@blueprint.post('/<uuid:order_id>/request_cancellation')
 @login_required
 def donate_everything(order_id):
     """Donate the full amount of an order, then cancel the order."""
@@ -267,7 +269,7 @@ def donate_everything(order_id):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order(order.id)
+        cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -275,8 +277,8 @@ def donate_everything(order_id):
 
     amount_donation = order.total_amount.amount
 
-    cancelation_request = (
-        cancelation_request_service.create_request_for_full_donation(
+    cancellation_request = (
+        cancellation_request_service.create_request_for_full_donation(
             order.shop_id,
             order.id,
             order.order_number,
@@ -286,9 +288,9 @@ def donate_everything(order_id):
 
     reason = 'Ticketrückgabe und Spende des Bestellbetrags in voller Höhe wie angefordert'
 
-    cancelation_result = order_service.cancel_order(order.id, g.user, reason)
-    if cancelation_result.is_err():
-        err = cancelation_result.unwrap_err()
+    cancellation_result = order_service.cancel_order(order.id, g.user, reason)
+    if cancellation_result.is_err():
+        err = cancellation_result.unwrap_err()
         if isinstance(err, OrderAlreadyCanceledError):
             flash_error(
                 gettext(
@@ -299,9 +301,9 @@ def donate_everything(order_id):
             flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
 
-    canceled_order, event = cancelation_result.unwrap()
+    canceled_order, event = cancellation_result.unwrap()
 
-    cancelation_request_service.accept_request(cancelation_request.id)
+    cancellation_request_service.accept_request(cancellation_request.id)
 
     flash_success(gettext('Order has been canceled.'))
 
@@ -328,7 +330,7 @@ def request_partial_refund_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order(order.id)
+        cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -357,7 +359,7 @@ def request_partial_refund(order_id):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order(order.id)
+        cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -372,7 +374,7 @@ def request_partial_refund(order_id):
     recipient_name = form.recipient_name.data
     recipient_iban = form.recipient_iban.data
 
-    cancelation_request_service.create_request_for_partial_refund(
+    cancellation_request_service.create_request_for_partial_refund(
         order.shop_id,
         order.id,
         order.order_number,
@@ -405,7 +407,7 @@ def request_full_refund_form(order_id, erroneous_form=None):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order(order.id)
+        cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -434,7 +436,7 @@ def request_full_refund(order_id):
         return redirect_to('.view', order_id=order.id)
 
     request_for_order_number = (
-        cancelation_request_service.get_request_for_order(order.id)
+        cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
         flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
@@ -448,7 +450,7 @@ def request_full_refund(order_id):
     recipient_name = form.recipient_name.data
     recipient_iban = form.recipient_iban.data
 
-    cancelation_request_service.create_request_for_full_refund(
+    cancellation_request_service.create_request_for_full_refund(
         order.shop_id,
         order.id,
         order.order_number,

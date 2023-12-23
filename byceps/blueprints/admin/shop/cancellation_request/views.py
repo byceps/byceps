@@ -1,6 +1,6 @@
 """
-byceps.blueprints.admin.shop.cancelation_request.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.admin.shop.cancellation_request.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,7 +9,9 @@ byceps.blueprints.admin.shop.cancelation_request.views
 from flask import abort, request
 
 from byceps.services.brand import brand_service
-from byceps.services.shop.cancelation_request import cancelation_request_service
+from byceps.services.shop.cancellation_request import (
+    cancellation_request_service,
+)
 from byceps.services.shop.order import order_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.user import user_service
@@ -18,7 +20,7 @@ from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required
 
 
-blueprint = create_blueprint('shop_cancelation_request_admin', __name__)
+blueprint = create_blueprint('shop_cancellation_request_admin', __name__)
 
 
 @blueprint.get('/for_shop/<shop_id>', defaults={'page': 1})
@@ -26,14 +28,14 @@ blueprint = create_blueprint('shop_cancelation_request_admin', __name__)
 @permission_required('shop_order.view')
 @templated
 def index(shop_id, page):
-    """Show cancelation requests for a shop."""
+    """Show cancellation requests for a shop."""
     shop = _get_shop_or_404(shop_id)
 
     brand = brand_service.get_brand(shop.brand_id)
 
     per_page = request.args.get('per_page', type=int, default=10)
 
-    requests = cancelation_request_service.get_all_requests_for_shop_paginated(
+    requests = cancellation_request_service.get_all_requests_for_shop_paginated(
         shop.id, page, per_page
     )
 
@@ -46,17 +48,17 @@ def index(shop_id, page):
 
     donation_extent_totals = {
         de.name: count
-        for de, count in cancelation_request_service.get_donation_extent_totals_for_shop(
+        for de, count in cancellation_request_service.get_donation_extent_totals_for_shop(
             shop.id
         ).items()
     }
 
-    donations_total = cancelation_request_service.get_donation_sum_for_shop(
+    donations_total = cancellation_request_service.get_donation_sum_for_shop(
         shop.id
     )
 
     request_quantities_by_state = (
-        cancelation_request_service.get_request_quantities_by_state(shop.id)
+        cancellation_request_service.get_request_quantities_by_state(shop.id)
     )
 
     return {

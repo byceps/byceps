@@ -291,9 +291,9 @@ def cancel(order_id):
     reason = form.reason.data.strip()
     send_email = form.send_email.data
 
-    cancelation_result = order_service.cancel_order(order.id, g.user, reason)
-    if cancelation_result.is_err():
-        err = cancelation_result.unwrap_err()
+    cancellation_result = order_service.cancel_order(order.id, g.user, reason)
+    if cancellation_result.is_err():
+        err = cancellation_result.unwrap_err()
         if isinstance(err, OrderAlreadyCanceledError):
             flash_error(
                 gettext(
@@ -305,7 +305,7 @@ def cancel(order_id):
             flash_error(gettext('An unexpected error occurred.'))
         return redirect_to('.view', order_id=order.id)
 
-    canceled_order, event = cancelation_result.unwrap()
+    canceled_order, event = cancellation_result.unwrap()
 
     flash_success(
         gettext(

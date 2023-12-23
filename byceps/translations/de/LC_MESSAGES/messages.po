@@ -4391,7 +4391,7 @@ msgstr "Zahlungseingang"
 
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:37
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:100
-msgid "Cancelation"
+msgid "Cancellation"
 msgstr "Stornierung"
 
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:39
@@ -4399,7 +4399,7 @@ msgid "Configuration"
 msgstr "Konfiguration"
 
 #: byceps/blueprints/admin/shop/order/forms.py:29
-msgid "Actively inform orderer via email of cancelation"
+msgid "Actively inform orderer via email of cancellation"
 msgstr "Auftraggeber/in aktiv per E-Mail über Stornierung informieren"
 
 #: byceps/blueprints/admin/shop/order/forms.py:35
@@ -4735,7 +4735,7 @@ msgstr[1] "Rechnungen"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:85
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:46
-msgid "Reason for cancelation"
+msgid "Reason for cancellation"
 msgstr "Grund für Stornierung"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:97

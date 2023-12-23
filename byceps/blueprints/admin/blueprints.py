@@ -49,7 +49,7 @@ def register_admin_blueprints(
         ('admin.shop.catalog', '/shop/catalogs'),
         ('admin.shop.email', '/shop/email'),
         ('admin.shop.order', '/shop/orders'),
-        ('admin.shop.cancelation_request', '/shop/cancelation_requests'),
+        ('admin.shop.cancellation_request', '/shop/cancellation_requests'),
         ('admin.shop.shipping', '/shop/shipping'),
         ('admin.shop.shop', '/shop/shop'),
         ('admin.shop.storefront', '/shop/storefronts'),
