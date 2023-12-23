@@ -6974,6 +6974,14 @@ msgstr ""
 msgid "The posting is <strong>visible</strong>."
 msgstr "Der Beitrag ist <strong>sichtbar</strong>."
 
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:55
+msgid "Hide posting?"
+msgstr "Beitrag verstecken?"
+
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:56
+msgid "Make posting visible?"
+msgstr "Beitrag sichtbar machen?"
+
 #: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:29
 msgid "You are about to modify a post created by someone else."
 msgstr "Du bist im Begriff, einen Beitrag von jemand anderem zu verändern."
@@ -7082,6 +7090,38 @@ msgstr "Auf Ankündigungen beschränken"
 #: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:140
 msgid "Open for all postings"
 msgstr "Für alle Beiträge öffnen"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:153
+msgid "Hide topic?"
+msgstr "Thema verstecken?"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:154
+msgid "Make topic visible?"
+msgstr "Thema wieder sichtbar machen?"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:155
+msgid "Lock topic?"
+msgstr "Thema schließen?"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:156
+msgid "Unlock topic?"
+msgstr "Thema wieder öffnen?"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:157
+msgid "Pin topic?"
+msgstr "Thema anheften?"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:158
+msgid "Unpin topic?"
+msgstr "Thema wieder lösen?"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:159
+msgid "Limit topic to announcements by moderators?"
+msgstr "Thema auf Ankündigungen von Moderatoren beschränken?"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:160
+msgid "No longer limit topic to announcements by moderators?"
+msgstr "Thema wieder für Beiträge von allen öffnen?"
 
 #: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:29
 msgid "You are about to modify a topic created by someone else."

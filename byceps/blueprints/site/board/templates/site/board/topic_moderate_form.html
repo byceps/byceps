@@ -150,14 +150,14 @@
     <script src="{{ url_for('static', filename='behavior/board.js') }}"></script>
     <script>
       onDomReady(() => {
-        confirmed_post_on_click('[data-action="topic-hide"]', 'Thema verstecken?');
-        confirmed_delete_on_click('[data-action="topic-unhide"]', 'Thema wieder anzeigen?');
-        confirmed_post_on_click('[data-action="topic-lock"]', 'Thema schließen?');
-        confirmed_delete_on_click('[data-action="topic-unlock"]', 'Thema wieder öffnen?');
-        confirmed_post_on_click('[data-action="topic-pin"]', 'Thema anpinnen?');
-        confirmed_delete_on_click('[data-action="topic-unpin"]', 'Thema wieder lösen?');
-        confirmed_post_on_click('[data-action="topic-limit-to-announcements"]', 'Thema auf Ankündigungen beschränken?');
-        confirmed_delete_on_click('[data-action="topic-remove-limit-to-announcements"]', 'Thema wieder für alle Beiträge öffnen?');
+        confirmed_post_on_click('[data-action="topic-hide"]', '{{ _('Hide topic?') }}');
+        confirmed_delete_on_click('[data-action="topic-unhide"]', '{{ _('Make topic visible?') }}');
+        confirmed_post_on_click('[data-action="topic-lock"]', '{{ _('Lock topic?') }}');
+        confirmed_delete_on_click('[data-action="topic-unlock"]', '{{ _('Unlock topic?') }}');
+        confirmed_post_on_click('[data-action="topic-pin"]', '{{ _('Pin topic?') }}');
+        confirmed_delete_on_click('[data-action="topic-unpin"]', '{{ _('Unpin topic?') }}');
+        confirmed_post_on_click('[data-action="topic-limit-to-announcements"]', '{{ _('Limit topic to announcements by moderators?') }}');
+        confirmed_delete_on_click('[data-action="topic-remove-limit-to-announcements"]', '{{ _('No longer limit topic to announcements by moderators?') }}');
       });
     </script>
 {%- endblock %}

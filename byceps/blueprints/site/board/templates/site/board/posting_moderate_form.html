@@ -52,8 +52,8 @@
     <script src="{{ url_for('static', filename='behavior/board.js') }}"></script>
     <script>
       onDomReady(() => {
-        confirmed_post_on_click('[data-action="posting-hide"]', 'Beitrag verstecken?');
-        confirmed_delete_on_click('[data-action="posting-unhide"]', 'Beitrag wieder anzeigen?');
+        confirmed_post_on_click('[data-action="posting-hide"]', '{{ _('Hide posting?') }}');
+        confirmed_delete_on_click('[data-action="posting-unhide"]', '{{ _('Make posting visible?') }}');
       });
     </script>
 {%- endblock %}
