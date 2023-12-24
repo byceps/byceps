@@ -19,7 +19,7 @@ from byceps.events.tourney import (
     TourneyMatchScoreSubmittedEvent,
 )
 
-from tests.helpers import generate_token, generate_uuid
+from tests.helpers import generate_uuid
 
 from .helpers import assert_text
 

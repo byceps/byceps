@@ -13,9 +13,9 @@ from byceps.services.board.errors import (
 )
 from byceps.services.board.models import PostingID
 from byceps.services.user.models.user import UserID
-from byceps.util.result import Err, Ok
+from byceps.util.result import Ok
 
-from tests.helpers import generate_token, generate_uuid
+from tests.helpers import generate_uuid
 
 
 def test_add_reaction_success(posting_id, posting_creator_id, user, kind):

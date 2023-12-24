@@ -8,7 +8,6 @@ from datetime import datetime
 from flask import Flask
 
 from byceps.announce.announce import build_announcement_request
-from byceps.events.base import EventSite, EventUser
 from byceps.events.user import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,

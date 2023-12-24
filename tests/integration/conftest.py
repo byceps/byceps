@@ -22,7 +22,6 @@ from byceps.services.brand import brand_service
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.email import email_config_service
 from byceps.services.email.models import EmailConfig
-from byceps.services.language import language_service
 from byceps.services.news import news_channel_service
 from byceps.services.news.models import NewsChannel, NewsChannelID
 from byceps.services.party.models import Party, PartyID
