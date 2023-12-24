@@ -43,23 +43,11 @@ from byceps.services.user import (
 from byceps.services.user.models.user import User, UserID
 
 
-CONFIG_OVERRIDES_FOR_TESTS = {
-    'MAIL_SUPPRESS_SEND': True,
-    'JOBS_ASYNC': False,
-    'REDIS_URL': 'redis://127.0.0.1:6379/0',
-    'SECRET_KEY': 'secret-key-for-testing-ONLY',
-    'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg://byceps_test:test@127.0.0.1/byceps_test',
-    'TESTING': True,
-}
-
-
 def create_admin_app(config_overrides: dict[str, Any] | None = None) -> Flask:
     if config_overrides is None:
         config_overrides = {}
 
     config_overrides['SERVER_NAME'] = 'admin.acmecon.test'
-
-    config_overrides.update(CONFIG_OVERRIDES_FOR_TESTS)
 
     return _create_admin_app(config_overrides=config_overrides)
 
@@ -69,8 +57,6 @@ def create_api_app(config_overrides: dict[str, Any] | None = None) -> Flask:
         config_overrides = {}
 
     config_overrides['SERVER_NAME'] = 'api.acmecon.test'
-
-    config_overrides.update(CONFIG_OVERRIDES_FOR_TESTS)
 
     return _create_api_app(config_overrides=config_overrides)
 
@@ -82,8 +68,6 @@ def create_site_app(
         config_overrides = {}
 
     config_overrides['SERVER_NAME'] = 'www.acmecon.test'
-
-    config_overrides.update(CONFIG_OVERRIDES_FOR_TESTS)
 
     return _create_site_app(site_id, config_overrides=config_overrides)
 

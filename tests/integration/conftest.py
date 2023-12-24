@@ -62,6 +62,15 @@ from .database import populate_database, set_up_database, tear_down_database
 
 _CONFIG_PATH_DATA_KEY = 'PATH_DATA'
 
+_CONFIG_OVERRIDES_FOR_TESTS = {
+    'MAIL_SUPPRESS_SEND': True,
+    'JOBS_ASYNC': False,
+    'REDIS_URL': 'redis://127.0.0.1:6379/0',
+    'SECRET_KEY': 'secret-key-for-testing-ONLY',
+    'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg://byceps_test:test@127.0.0.1/byceps_test',
+    'TESTING': True,
+}
+
 
 @pytest.fixture(scope='session')
 def make_admin_app(data_path: Path):
@@ -70,6 +79,9 @@ def make_admin_app(data_path: Path):
     def _wrapper(**config_overrides: Any) -> Flask:
         if _CONFIG_PATH_DATA_KEY not in config_overrides:
             config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
+
+        config_overrides.update(_CONFIG_OVERRIDES_FOR_TESTS)
+
         return create_admin_app(config_overrides)
 
     return _wrapper
@@ -94,6 +106,9 @@ def make_api_app(admin_app, data_path: Path):
     def _wrapper(**config_overrides: Any) -> Flask:
         if _CONFIG_PATH_DATA_KEY not in config_overrides:
             config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
+
+        config_overrides.update(_CONFIG_OVERRIDES_FOR_TESTS)
+
         return create_api_app(config_overrides)
 
     return _wrapper
@@ -114,6 +129,9 @@ def make_site_app(admin_app, data_path: Path):
     def _wrapper(site_id: SiteID, **config_overrides: Any) -> Flask:
         if _CONFIG_PATH_DATA_KEY not in config_overrides:
             config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
+
+        config_overrides.update(_CONFIG_OVERRIDES_FOR_TESTS)
+
         return create_site_app(site_id, config_overrides)
 
     return _wrapper
