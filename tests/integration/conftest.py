@@ -87,10 +87,10 @@ def admin_app(make_admin_app) -> Iterator[Flask]:
 
 
 @pytest.fixture(scope='session')
-def make_site_app(admin_app, data_path):
+def make_site_app(admin_app, data_path: Path):
     """Provide a site web application."""
 
-    def _wrapper(site_id: SiteID, **config_overrides: dict[str, Any]) -> Flask:
+    def _wrapper(site_id: SiteID, **config_overrides: Any) -> Flask:
         if _CONFIG_PATH_DATA_KEY not in config_overrides:
             config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
         return create_site_app(site_id, config_overrides)
@@ -126,7 +126,7 @@ def make_client():
 @pytest.fixture(scope='session')
 def make_role(admin_app: Flask):
     def _wrapper() -> Role:
-        role_id = generate_token()
+        role_id = RoleID(generate_token())
         return authz_service.create_role(role_id, role_id).unwrap()
 
     return _wrapper

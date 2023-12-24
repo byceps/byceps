@@ -34,7 +34,10 @@ def update_brand(
     archived: bool,
 ) -> Brand:
     """Update a brand."""
-    db_brand = _get_db_brand(brand_id)
+    db_brand = _find_db_brand(brand_id)
+
+    if db_brand is None:
+        raise ValueError(f'Unknown brand ID "{brand_id}"')
 
     db_brand.title = title
     db_brand.image_filename = image_filename
@@ -56,7 +59,7 @@ def delete_brand(brand_id: BrandID) -> None:
 
 def find_brand(brand_id: BrandID) -> Brand | None:
     """Return the brand with that id, or `None` if not found."""
-    db_brand = _get_db_brand(brand_id)
+    db_brand = _find_db_brand(brand_id)
 
     if db_brand is None:
         return None
@@ -64,8 +67,8 @@ def find_brand(brand_id: BrandID) -> Brand | None:
     return _db_entity_to_brand(db_brand)
 
 
-def _get_db_brand(brand_id: BrandID) -> DbBrand:
-    """Return the brand with that ID."""
+def _find_db_brand(brand_id: BrandID) -> DbBrand | None:
+    """Return the brand with that ID, or `None` if not found."""
     return db.session.get(DbBrand, brand_id)
 
 

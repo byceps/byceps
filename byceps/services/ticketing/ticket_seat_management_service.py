@@ -148,6 +148,9 @@ def release_seat(
     if ticket_belongs_to_bundle_result.is_err():
         return Err(ticket_belongs_to_bundle_result.unwrap_err())
 
+    if db_ticket.occupied_seat_id is None:
+        raise ValueError('Ticket does not occupy a seat.')
+
     seat = seat_service.find_seat(db_ticket.occupied_seat_id)
     if seat is None:
         raise ValueError('Ticket does not occupy a seat.')
