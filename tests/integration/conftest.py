@@ -14,6 +14,11 @@ from flask import Flask
 from moneyed import EUR
 import pytest
 
+from byceps.application import (
+    create_admin_app as _create_admin_app,
+    create_api_app as _create_api_app,
+    create_site_app as _create_site_app,
+)
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, Role, RoleID
 from byceps.services.board import board_service
@@ -45,12 +50,9 @@ from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User, UserID
 
 from tests.helpers import (
-    create_admin_app,
-    create_api_app,
     create_party,
     create_role_with_permissions_assigned,
     create_site,
-    create_site_app,
     create_user,
     generate_token,
     http_client,
@@ -81,8 +83,9 @@ def make_admin_app(data_path: Path):
             config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
 
         config_overrides.update(_CONFIG_OVERRIDES_FOR_TESTS)
+        config_overrides['SERVER_NAME'] = 'admin.acmecon.test'
 
-        return create_admin_app(config_overrides)
+        return _create_admin_app(config_overrides=config_overrides)
 
     return _wrapper
 
@@ -108,8 +111,9 @@ def make_api_app(admin_app, data_path: Path):
             config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
 
         config_overrides.update(_CONFIG_OVERRIDES_FOR_TESTS)
+        config_overrides['SERVER_NAME'] = 'api.acmecon.test'
 
-        return create_api_app(config_overrides)
+        return _create_api_app(config_overrides=config_overrides)
 
     return _wrapper
 
@@ -131,8 +135,9 @@ def make_site_app(admin_app, data_path: Path):
             config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
 
         config_overrides.update(_CONFIG_OVERRIDES_FOR_TESTS)
+        config_overrides['SERVER_NAME'] = 'www.acmecon.test'
 
-        return create_site_app(site_id, config_overrides)
+        return _create_site_app(site_id, config_overrides=config_overrides)
 
     return _wrapper
 

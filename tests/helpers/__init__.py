@@ -18,11 +18,6 @@ from uuid import UUID
 from flask import appcontext_pushed, Flask, g
 from uuid6 import uuid7
 
-from byceps.application import (
-    create_admin_app as _create_admin_app,
-    create_api_app as _create_api_app,
-    create_site_app as _create_site_app,
-)
 from byceps.database import db
 from byceps.services.authn.session import authn_session_service
 from byceps.services.authn.session.models import CurrentUser
@@ -41,35 +36,6 @@ from byceps.services.user import (
     user_service,
 )
 from byceps.services.user.models.user import User, UserID
-
-
-def create_admin_app(config_overrides: dict[str, Any] | None = None) -> Flask:
-    if config_overrides is None:
-        config_overrides = {}
-
-    config_overrides['SERVER_NAME'] = 'admin.acmecon.test'
-
-    return _create_admin_app(config_overrides=config_overrides)
-
-
-def create_api_app(config_overrides: dict[str, Any] | None = None) -> Flask:
-    if config_overrides is None:
-        config_overrides = {}
-
-    config_overrides['SERVER_NAME'] = 'api.acmecon.test'
-
-    return _create_api_app(config_overrides=config_overrides)
-
-
-def create_site_app(
-    site_id: SiteID, config_overrides: dict[str, Any] | None = None
-) -> Flask:
-    if config_overrides is None:
-        config_overrides = {}
-
-    config_overrides['SERVER_NAME'] = 'www.acmecon.test'
-
-    return _create_site_app(site_id, config_overrides=config_overrides)
 
 
 def generate_token(n: int = 4) -> str:
