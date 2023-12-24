@@ -64,8 +64,12 @@ def create_admin_app(config_overrides: dict[str, Any] | None = None) -> Flask:
     return _create_admin_app(config_overrides=config_overrides)
 
 
-def create_api_app() -> Flask:
-    config_overrides = {'SERVER_NAME': 'api.acmecon.test'}
+def create_api_app(config_overrides: dict[str, Any] | None = None) -> Flask:
+    if config_overrides is None:
+        config_overrides = {}
+
+    config_overrides['SERVER_NAME'] = 'api.acmecon.test'
+
     config_overrides.update(CONFIG_OVERRIDES_FOR_TESTS)
 
     return _create_api_app(config_overrides=config_overrides)

@@ -46,6 +46,7 @@ from byceps.services.user.models.user import User, UserID
 
 from tests.helpers import (
     create_admin_app,
+    create_api_app,
     create_party,
     create_role_with_permissions_assigned,
     create_site,
@@ -84,6 +85,26 @@ def admin_app(make_admin_app) -> Iterator[Flask]:
         populate_database()
 
         yield app
+
+
+@pytest.fixture(scope='session')
+def make_api_app(admin_app, data_path: Path):
+    """Provide an API web application."""
+
+    def _wrapper(**config_overrides: Any) -> Flask:
+        if _CONFIG_PATH_DATA_KEY not in config_overrides:
+            config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
+        return create_api_app(config_overrides)
+
+    return _wrapper
+
+
+@pytest.fixture(scope='session')
+def api_app(make_api_app, site: Site) -> Flask:
+    """Provide a API web application."""
+    app = make_api_app()
+    with app.app_context():
+        return app
 
 
 @pytest.fixture(scope='session')
