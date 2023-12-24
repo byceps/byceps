@@ -29,5 +29,6 @@ def populate_database() -> None:
 
 
 def tear_down_database() -> None:
+    db.reflect()
     db.session.remove()
     db.drop_all()
