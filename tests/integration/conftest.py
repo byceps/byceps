@@ -83,7 +83,7 @@ def database():
     ]
     db.init_app(app)
     with app.app_context():
-        tear_down_database()
+        #tear_down_database()
         set_up_database()
         populate_database()
 
