@@ -19,6 +19,7 @@ from byceps.application import (
     create_api_app as _create_api_app,
     create_site_app as _create_site_app,
 )
+from byceps.database import db
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, Role, RoleID
 from byceps.services.board import board_service
@@ -75,6 +76,19 @@ _CONFIG_OVERRIDES_FOR_TESTS = {
 
 
 @pytest.fixture(scope='session')
+def database():
+    app = Flask('byceps')
+    app.config['SQLALCHEMY_DATABASE_URI'] = _CONFIG_OVERRIDES_FOR_TESTS[
+        'SQLALCHEMY_DATABASE_URI'
+    ]
+    db.init_app(app)
+    with app.app_context():
+        tear_down_database()
+        set_up_database()
+        populate_database()
+
+
+@pytest.fixture(scope='session')
 def make_admin_app(data_path: Path):
     """Provide the admin web application."""
 
@@ -91,14 +105,10 @@ def make_admin_app(data_path: Path):
 
 
 @pytest.fixture(scope='session')
-def admin_app(make_admin_app) -> Iterator[Flask]:
+def admin_app(database, make_admin_app) -> Iterator[Flask]:
     """Provide the admin web application."""
     app = make_admin_app()
     with app.app_context():
-        tear_down_database()
-        set_up_database()
-        populate_database()
-
         yield app
 
 
@@ -119,7 +129,7 @@ def make_api_app(admin_app, data_path: Path):
 
 
 @pytest.fixture(scope='session')
-def api_app(make_api_app, site: Site) -> Flask:
+def api_app(database, make_api_app, site: Site) -> Flask:
     """Provide a API web application."""
     app = make_api_app()
     with app.app_context():
@@ -143,7 +153,7 @@ def make_site_app(admin_app, data_path: Path):
 
 
 @pytest.fixture(scope='session')
-def site_app(make_site_app, site: Site) -> Flask:
+def site_app(database, make_site_app, site: Site) -> Flask:
     """Provide a site web application."""
     app = make_site_app(site.id)
     with app.app_context():
