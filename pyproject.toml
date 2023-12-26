@@ -1,11 +1,13 @@
 [project]
 name = "BYCEPS"
 version = "0.0"
+requires-python = ">=3.10"
+authors = [
+    { name = "Jochen Kupperschmidt", email = "homework@nwsnet.de" },
+]
 description = "LAN party web platform"
 readme = "README.rst"
-requires-python = ">=3.10"
 license = { text = "Revised BSD License" }
-authors = [ { name = "Jochen \"Y0Gi\" Kupperschmidt", email = "homework@nwsnet.de" } ]
 keywords = [ "lanparty" ]
 classifiers = [
     "Environment :: Web Environment",
@@ -13,11 +15,11 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Other Audience",
     "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
     "Natural Language :: German",
     "Programming Language :: JavaScript",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Topic :: Communications",
@@ -31,9 +33,9 @@ classifiers = [
 byceps = "byceps.cli.cli:cli"
 
 [project.urls]
-Website = "https://byceps.nwsnet.de/"
+Homepage = "https://byceps.nwsnet.de/"
 Documentation = "https://byceps.readthedocs.io/"
-"Source Code" = "https://github.com/byceps/byceps"
+Repository = "https://github.com/byceps/byceps"
 
 [build-system]
 requires = [ "setuptools" ]
