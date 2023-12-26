@@ -65,12 +65,15 @@ from .database import populate_database, set_up_database, tear_down_database
 
 _CONFIG_PATH_DATA_KEY = 'PATH_DATA'
 
+_CONFIG_DEFAULTS_FOR_TESTS = {
+    'REDIS_URL': 'redis://127.0.0.1:6379/0',
+    'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg://byceps_test:test@127.0.0.1/byceps_test',
+}
+
 _CONFIG_OVERRIDES_FOR_TESTS = {
     'MAIL_SUPPRESS_SEND': True,
     'JOBS_ASYNC': False,
-    'REDIS_URL': 'redis://127.0.0.1:6379/0',
     'SECRET_KEY': 'secret-key-for-testing-ONLY',
-    'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg://byceps_test:test@127.0.0.1/byceps_test',
     'TESTING': True,
 }
 
@@ -78,7 +81,7 @@ _CONFIG_OVERRIDES_FOR_TESTS = {
 @pytest.fixture(scope='session')
 def database():
     app = Flask('byceps')
-    app.config['SQLALCHEMY_DATABASE_URI'] = _CONFIG_OVERRIDES_FOR_TESTS[
+    app.config['SQLALCHEMY_DATABASE_URI'] = _CONFIG_DEFAULTS_FOR_TESTS[
         'SQLALCHEMY_DATABASE_URI'
     ]
     db.init_app(app)
@@ -168,6 +171,10 @@ def _merge_config_overrides(
     merged: dict[str, Any] = {}
 
     merged.update(overrides)
+
+    for key, value in _CONFIG_DEFAULTS_FOR_TESTS.items():
+        if key not in merged:
+            merged[key] = value
 
     if _CONFIG_PATH_DATA_KEY not in merged:
         merged[_CONFIG_PATH_DATA_KEY] = data_path
