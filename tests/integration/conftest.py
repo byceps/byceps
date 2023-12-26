@@ -98,9 +98,7 @@ def database():
 def make_admin_app(data_path: Path):
     """Provide the admin web application."""
 
-    def _wrapper(**config_overrides: Any) -> Flask:
-        server_name = 'admin.acmecon.test'
-
+    def _wrapper(server_name: str, **config_overrides: Any) -> Flask:
         merged_config_overrides = _merge_config_overrides(
             config_overrides, data_path, server_name
         )
@@ -113,7 +111,8 @@ def make_admin_app(data_path: Path):
 @pytest.fixture(scope='session')
 def admin_app(database, make_admin_app) -> Iterator[Flask]:
     """Provide the admin web application."""
-    app = make_admin_app()
+    server_name = 'admin.acmecon.test'
+    app = make_admin_app(server_name)
     with app.app_context():
         yield app
 
@@ -122,9 +121,7 @@ def admin_app(database, make_admin_app) -> Iterator[Flask]:
 def make_api_app(admin_app, data_path: Path):
     """Provide an API web application."""
 
-    def _wrapper(**config_overrides: Any) -> Flask:
-        server_name = 'api.acmecon.test'
-
+    def _wrapper(server_name: str, **config_overrides: Any) -> Flask:
         merged_config_overrides = _merge_config_overrides(
             config_overrides, data_path, server_name
         )
@@ -137,7 +134,8 @@ def make_api_app(admin_app, data_path: Path):
 @pytest.fixture(scope='session')
 def api_app(database, make_api_app, site: Site) -> Flask:
     """Provide a API web application."""
-    app = make_api_app()
+    server_name = 'api.acmecon.test'
+    app = make_api_app(server_name)
     with app.app_context():
         return app
 
@@ -146,9 +144,9 @@ def api_app(database, make_api_app, site: Site) -> Flask:
 def make_site_app(admin_app, data_path: Path):
     """Provide a site web application."""
 
-    def _wrapper(site_id: SiteID, **config_overrides: Any) -> Flask:
-        server_name = 'www.acmecon.test'
-
+    def _wrapper(
+        server_name: str, site_id: SiteID, **config_overrides: Any
+    ) -> Flask:
         merged_config_overrides = _merge_config_overrides(
             config_overrides, data_path, server_name
         )
@@ -163,7 +161,8 @@ def make_site_app(admin_app, data_path: Path):
 @pytest.fixture(scope='session')
 def site_app(database, make_site_app, site: Site) -> Flask:
     """Provide a site web application."""
-    app = make_site_app(site.id)
+    server_name = 'www.acmecon.test'
+    app = make_site_app(server_name, site.id)
     with app.app_context():
         return app
 

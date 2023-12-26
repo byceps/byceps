@@ -78,7 +78,8 @@ def site(make_brand, storefront: Storefront):
 
 @pytest.fixture(scope='module')
 def site_app(site: Site, make_site_app):
-    app = make_site_app(site.id)
+    server_name = 'site-for-orders.acmecon.test'
+    app = make_site_app(server_name, site.id)
     with app.app_context():
         yield app
 

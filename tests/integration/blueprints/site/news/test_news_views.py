@@ -59,7 +59,8 @@ def news_site(news_channel):
 
 @pytest.fixture(scope='module')
 def news_site_app(make_site_app, news_site):
-    return make_site_app(news_site.id)
+    server_name = 'site-for-news.acmecon.test'
+    return make_site_app(server_name, news_site.id)
 
 
 def test_view_news_frontpage(news_site_app):

@@ -69,14 +69,16 @@ def site2(brand, storefront2):
 
 @pytest.fixture()
 def site1_app(site1, make_site_app):
-    app = make_site_app(site1.id)
+    server_name = 'site-for-orders-1.acmecon.test'
+    app = make_site_app(server_name, site1.id)
     with app.app_context():
         yield app
 
 
 @pytest.fixture()
 def site2_app(site2, make_site_app):
-    app = make_site_app(site2.id)
+    server_name = 'site-for-orders-2.acmecon.test'
+    app = make_site_app(server_name, site2.id)
     with app.app_context():
         yield app
 

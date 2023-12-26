@@ -16,7 +16,8 @@ def config_overrides():
 
 @pytest.fixture()
 def client(admin_app, config_overrides, make_admin_app):
-    app = make_admin_app(**config_overrides)
+    server_name = 'admin-for-metrics.acmecon.test'
+    app = make_admin_app(server_name, **config_overrides)
     with app.app_context():
         yield app.test_client()
 
