@@ -1,7 +1,7 @@
 [project]
 name = "BYCEPS"
 version = "0.0"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [
     { name = "Jochen Kupperschmidt", email = "homework@nwsnet.de" },
 ]
@@ -20,7 +20,6 @@ classifiers = [
     "Programming Language :: JavaScript",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Topic :: Communications",
     "Topic :: Games/Entertainment",
@@ -42,7 +41,7 @@ requires = [ "setuptools" ]
 build-backend = "setuptools.build_meta"
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.11"
 plugins = "sqlalchemy.ext.mypy.plugin"
 ignore_missing_imports = true
 no_implicit_optional = true
