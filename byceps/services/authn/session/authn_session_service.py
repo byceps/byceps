@@ -6,8 +6,6 @@ byceps.services.authn.session.authn_session_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from datetime import datetime
 from uuid import UUID, uuid4

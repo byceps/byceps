@@ -6,8 +6,6 @@ byceps.services.board.board_topic_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from datetime import datetime
 

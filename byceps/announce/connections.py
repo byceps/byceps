@@ -8,8 +8,6 @@ Connect event signals to announcement handlers.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from collections.abc import Callable
 
 from blinker import NamedSignal

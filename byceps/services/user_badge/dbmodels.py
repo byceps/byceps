@@ -6,8 +6,6 @@ byceps.services.user_badge.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from datetime import datetime
 from uuid import UUID
 

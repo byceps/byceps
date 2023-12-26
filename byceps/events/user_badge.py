@@ -6,8 +6,6 @@ byceps.events.user_badge
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 
 from byceps.services.user_badge.models import BadgeID

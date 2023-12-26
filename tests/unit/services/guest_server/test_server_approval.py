@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from byceps.services.guest_server import guest_server_domain_service
 from byceps.services.guest_server.errors import AlreadyApprovedError
 

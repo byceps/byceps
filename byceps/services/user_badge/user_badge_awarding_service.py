@@ -6,8 +6,6 @@ byceps.services.user_badge.user_badge_awarding_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from collections import defaultdict
 
 from sqlalchemy import select

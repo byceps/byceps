@@ -6,8 +6,6 @@ byceps.services.webhooks.webhook_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from typing import Any
 
 from sqlalchemy import delete, select

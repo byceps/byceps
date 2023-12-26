@@ -6,8 +6,6 @@ byceps.services.shop.article.article_sequence_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 

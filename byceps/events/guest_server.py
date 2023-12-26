@@ -6,8 +6,6 @@ byceps.events.guest_server
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 
 from byceps.services.guest_server.models import ServerID

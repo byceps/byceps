@@ -6,8 +6,6 @@ byceps.blueprints.site.snippet.templating
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from typing import Any
 
 from flask import g

@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from byceps.services.board import (
     board_category_command_service,
     board_posting_command_service,

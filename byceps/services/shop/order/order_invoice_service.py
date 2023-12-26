@@ -6,8 +6,6 @@ byceps.services.shop.order.order_invoice_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from sqlalchemy import select
 
 from byceps.database import db

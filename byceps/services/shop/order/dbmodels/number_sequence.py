@@ -6,8 +6,6 @@ byceps.services.shop.order.dbmodels.number_sequence
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db

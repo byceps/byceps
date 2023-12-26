@@ -6,8 +6,6 @@ byceps.blueprints.admin.shop.email.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from flask import abort, g
 
 from byceps.services.brand import brand_service

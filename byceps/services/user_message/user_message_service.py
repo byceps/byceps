@@ -8,8 +8,6 @@ Send an e-mail message from one user to another.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from email.utils import formataddr
 
 from flask_babel import gettext

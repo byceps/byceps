@@ -6,8 +6,6 @@ byceps.blueprints.site.homepage.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from flask import g
 
 from byceps.services.news import news_item_service

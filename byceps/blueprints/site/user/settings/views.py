@@ -6,8 +6,6 @@ byceps.blueprints.site.user.settings.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from babel import Locale
 from flask import abort, g, request
 from flask_babel import force_locale, gettext

@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from collections.abc import Iterator
 import os
 from pathlib import Path

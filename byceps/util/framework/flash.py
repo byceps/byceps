@@ -17,8 +17,6 @@ messages, but not `flask.flash` directly.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 
 from flask import flash

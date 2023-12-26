@@ -6,8 +6,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 import click
 
 from byceps.services.site.models import Site

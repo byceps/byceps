@@ -6,8 +6,6 @@ byceps.services.ticketing.ticket_revocation_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from byceps.database import db
 from byceps.services.user.models.user import UserID
 

@@ -6,8 +6,6 @@ byceps.services.guest_server.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from datetime import datetime
 import ipaddress
 from typing import TYPE_CHECKING

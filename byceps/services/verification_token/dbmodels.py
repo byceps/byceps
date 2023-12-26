@@ -6,8 +6,6 @@ byceps.services.verification_token.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from datetime import datetime
 import secrets
 from typing import Any, TYPE_CHECKING

@@ -6,8 +6,6 @@ byceps.services.ticketing.ticket_bundle_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 
 from sqlalchemy import delete, select

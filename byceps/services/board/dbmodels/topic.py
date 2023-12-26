@@ -6,8 +6,6 @@ byceps.services.board.dbmodels.topic
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy

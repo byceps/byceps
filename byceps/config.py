@@ -6,8 +6,6 @@ byceps.config
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from enum import Enum
 import json
 import os

@@ -6,8 +6,6 @@ byceps.blueprints.api.v1.tourney.match.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from collections.abc import Iterator
 from datetime import datetime
 from itertools import chain

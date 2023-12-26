@@ -6,8 +6,6 @@ byceps.services.webhooks.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from typing import Any, TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column

@@ -6,8 +6,6 @@ byceps.services.authn.password.authn_password_domain_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from datetime import datetime
 
 from werkzeug.security import (

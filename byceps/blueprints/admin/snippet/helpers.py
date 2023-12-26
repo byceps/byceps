@@ -6,8 +6,6 @@ byceps.blueprints.admin.snippet.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from flask import abort
 
 from byceps.services.brand import brand_service

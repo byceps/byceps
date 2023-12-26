@@ -6,8 +6,6 @@ byceps.services.authn.authn_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result

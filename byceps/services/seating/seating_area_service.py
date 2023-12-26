@@ -6,8 +6,6 @@ byceps.services.seating.seating_area_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from sqlalchemy import delete, select
 
 from byceps.database import db

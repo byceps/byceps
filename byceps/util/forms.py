@@ -6,8 +6,6 @@ byceps.util.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from flask_babel import lazy_gettext
 from wtforms import Field, SelectMultipleField
 from wtforms.widgets import CheckboxInput, ListWidget, TextInput

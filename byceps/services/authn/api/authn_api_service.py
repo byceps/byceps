@@ -6,8 +6,6 @@ byceps.services.authn.api.authn_api_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from uuid import UUID
 
 from sqlalchemy import delete, select

@@ -6,8 +6,6 @@ byceps.events.newsletter
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 
 from byceps.services.newsletter.models import ListID

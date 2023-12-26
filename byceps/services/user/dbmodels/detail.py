@@ -6,8 +6,6 @@ byceps.services.user.dbmodels.detail
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from datetime import date
 from typing import Any
 

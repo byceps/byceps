@@ -6,8 +6,6 @@ byceps.services.shop.shop.shop_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from moneyed import Currency
 from sqlalchemy import delete, select
 

@@ -6,8 +6,6 @@ byceps.services.shop.article.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import datetime
