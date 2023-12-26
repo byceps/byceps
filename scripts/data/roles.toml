@@ -73,6 +73,28 @@ title = 'Zustimmungen verwalten'
 assigned_permissions = ['consent.administrate']
 
 [[roles]]
+id = 'content_admin'
+title = 'Inhalte verwalten'
+assigned_permissions = [
+    'page.delete',
+    'snippet.delete',
+]
+
+[[roles]]
+id = 'content_editor'
+title = 'Inhalte bearbeiten'
+assigned_permissions = [
+    'page.create',
+    'page.update',
+    'page.view',
+    'page.view_history',
+    'snippet.create',
+    'snippet.update',
+    'snippet.view',
+    'snippet.view_history',
+]
+
+[[roles]]
 id = 'gallery_admin'
 title = 'Galerien verwalten'
 assigned_permissions = [
