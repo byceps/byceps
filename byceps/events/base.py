@@ -6,10 +6,9 @@ byceps.events.base
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Self
 
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import Party, PartyID
@@ -23,7 +22,7 @@ class EventBrand:
     title: str
 
     @classmethod
-    def from_brand(cls, brand: Brand) -> EventBrand:
+    def from_brand(cls, brand: Brand) -> Self:
         return cls(
             id=brand.id,
             title=brand.title,
@@ -36,7 +35,7 @@ class EventParty:
     title: str
 
     @classmethod
-    def from_party(cls, party: Party) -> EventParty:
+    def from_party(cls, party: Party) -> Self:
         return cls(
             id=party.id,
             title=party.title,
@@ -49,7 +48,7 @@ class EventSite:
     title: str
 
     @classmethod
-    def from_site(cls, site: Site) -> EventSite:
+    def from_site(cls, site: Site) -> Self:
         return cls(
             id=site.id,
             title=site.title,
@@ -62,7 +61,7 @@ class EventUser:
     screen_name: str | None
 
     @classmethod
-    def from_user(cls, user: User) -> EventUser:
+    def from_user(cls, user: User) -> Self:
         return cls(
             id=user.id,
             screen_name=user.screen_name,
