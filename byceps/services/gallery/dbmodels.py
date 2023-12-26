@@ -30,7 +30,7 @@ class DbGallery(db.Model):
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    gallery = relationship(
+    brand = relationship(
         DbBrand,
         backref=backref(
             'galleries',
