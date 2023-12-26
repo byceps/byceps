@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
+import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
@@ -81,12 +82,16 @@ _CONFIG_OVERRIDES_FOR_TESTS = {
 @pytest.fixture(scope='session')
 def database():
     app = Flask('byceps')
-    app.config['SQLALCHEMY_DATABASE_URI'] = _CONFIG_DEFAULTS_FOR_TESTS[
-        'SQLALCHEMY_DATABASE_URI'
-    ]
+
+    db_url_key = 'SQLALCHEMY_DATABASE_URI'
+    app.config[db_url_key] = os.environ.get(
+        db_url_key, _CONFIG_DEFAULTS_FOR_TESTS[db_url_key]
+    )
+
     db.init_app(app)
+
     with app.app_context():
-        #tear_down_database()
+        # tear_down_database()
         set_up_database()
         populate_database()
 
