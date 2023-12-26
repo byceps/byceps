@@ -14,7 +14,7 @@ from byceps.services.tourney import (
 def test_get_comments_for_match(
     api_client, api_client_authz_header, match, comment
 ):
-    url = f'/v1/tourney/matches/{match.id}/comments'
+    url = f'http://api.acmecon.test/v1/tourney/matches/{match.id}/comments'
     headers = [api_client_authz_header]
 
     response = api_client.get(url, headers=headers)
@@ -49,7 +49,7 @@ def test_get_comments_for_match(
 def test_get_comments_for_match_with_party_id(
     api_client, api_client_authz_header, match, comment, party
 ):
-    url = f'/v1/tourney/matches/{match.id}/comments?party_id={party.id}'
+    url = f'http://api.acmecon.test/v1/tourney/matches/{match.id}/comments?party_id={party.id}'
     headers = [api_client_authz_header]
 
     response = api_client.get(url, headers=headers)
@@ -84,7 +84,7 @@ def test_get_comments_for_match_with_party_id(
 def test_get_comments_for_match_with_edited_comment(
     api_client, api_client_authz_header, match, edited_comment
 ):
-    url = f'/v1/tourney/matches/{match.id}/comments'
+    url = f'http://api.acmecon.test/v1/tourney/matches/{match.id}/comments'
     headers = [api_client_authz_header]
 
     response = api_client.get(url, headers=headers)

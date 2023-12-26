@@ -67,7 +67,7 @@ def send_request(
     snippet_name,
     language_code,
 ):
-    url = f'/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}/{language_code}'
+    url = f'http://api.acmecon.test/v1/snippets/by_name/{scope.type_}/{scope.name}/{snippet_name}/{language_code}'
     headers = [api_client_authz_header]
 
     return api_client.get(url, headers=headers)

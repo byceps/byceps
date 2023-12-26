@@ -64,4 +64,4 @@ def test_with_nonexistent_user(api_client):
 
 
 def send_request(api_client, user_id):
-    return api_client.get(f'/v1/users/{user_id}/profile')
+    return api_client.get(f'http://api.acmecon.test/v1/users/{user_id}/profile')
