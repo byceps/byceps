@@ -7,8 +7,7 @@ byceps.util.navigation
 """
 
 from dataclasses import dataclass
-
-from typing_extensions import Self
+from typing import Self
 
 from .authz import has_current_user_permission
 

@@ -9,9 +9,8 @@ byceps.services.orga_presence.models
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
+from typing import Self
 from uuid import UUID
-
-from typing_extensions import Self
 
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User

@@ -12,8 +12,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Generic, Literal, TypeVar
-from typing_extensions import Never
+from typing import Generic, Literal, Never, TypeVar
 
 
 T = TypeVar('T')

@@ -6,9 +6,7 @@ byceps.util.datetime.monthday
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import NamedTuple
-
-from typing_extensions import Self
+from typing import NamedTuple, Self
 
 
 class MonthDay(NamedTuple):

@@ -6,7 +6,7 @@ byceps.util.instances
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing_extensions import Self
+from typing import Self
 
 
 class ReprBuilder:
