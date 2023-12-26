@@ -8,9 +8,9 @@ byceps.services.gallery.models
 
 from datetime import datetime
 
-from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.orderinglist import ordering_list
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
