@@ -7,7 +7,7 @@ byceps.services.orga_presence.orga_presence_service
 """
 
 from collections.abc import Iterable, Iterator
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, UTC
 from itertools import groupby
 from uuid import UUID
 from zoneinfo import ZoneInfo
@@ -107,8 +107,8 @@ def _get_hour_starts(dt_ranges: Iterable[DateTimeRange]) -> Iterator[datetime]:
         minute=0, second=0, microsecond=0
     )
 
-    min_starts_at_utc = min_starts_at_utc.replace(tzinfo=timezone.utc)
-    max_ends_at_utc = max_ends_at_utc.replace(tzinfo=timezone.utc)
+    min_starts_at_utc = min_starts_at_utc.replace(tzinfo=UTC)
+    max_ends_at_utc = max_ends_at_utc.replace(tzinfo=UTC)
 
     local_tz = ZoneInfo(current_app.config['TIMEZONE'])
     min_starts_at_local = min_starts_at_utc.astimezone(local_tz)

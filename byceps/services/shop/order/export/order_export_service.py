@@ -6,7 +6,7 @@ byceps.services.shop.order.export.order_export_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 from decimal import Decimal
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -65,7 +65,7 @@ def _format_export_amount(amount: Decimal) -> str:
 def _format_export_datetime(dt: datetime) -> str:
     """Format date and time as required by the export format specification."""
     export_tz = ZoneInfo(current_app.config['SHOP_ORDER_EXPORT_TIMEZONE'])
-    dt_utc = dt.replace(tzinfo=timezone.utc)
+    dt_utc = dt.replace(tzinfo=UTC)
     dt_local = dt_utc.astimezone(export_tz)
     return dt_local.isoformat()
 

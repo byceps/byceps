@@ -13,7 +13,7 @@ An asynchronously processed job queue based on Redis_ and RQ_.
 
 from collections.abc import Callable
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime, UTC
 
 from flask import current_app
 from rq import Connection, Queue
@@ -44,7 +44,7 @@ def enqueue_at(dt: datetime, func: Callable, *args, **kwargs):
     if dt.tzinfo is None:
         # Set UTC as timezine in naive datetime objects
         # to prevent rq from assuming local timezone.
-        dt = dt.replace(tzinfo=timezone.utc)
+        dt = dt.replace(tzinfo=UTC)
 
     with connection():
         queue = get_queue(current_app)
