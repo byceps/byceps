@@ -26,6 +26,12 @@ from .models import PermissionID, RoleID
 # import
 
 
+@dataclass(frozen=True)
+class ImportedRoleCounts:
+    imported: int
+    skipped: int
+
+
 def import_roles(path: Path) -> ImportedRoleCounts:
     """Import roles and their assigned permissions from TOML."""
     data = rtoml.load(path)
@@ -59,12 +65,6 @@ def _create_roles(
         imported=imported_roles_count,
         skipped=skipped_roles_count,
     )
-
-
-@dataclass(frozen=True)
-class ImportedRoleCounts:
-    imported: int
-    skipped: int
 
 
 # -------------------------------------------------------------------- #
