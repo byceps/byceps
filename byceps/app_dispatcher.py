@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 from threading import Lock
 from typing import Annotated, Literal
+from wsgiref.types import WSGIApplication
 
 from flask import Flask
 from pydantic import BaseModel, Field, ValidationError
@@ -113,7 +114,7 @@ def _find_conflicting_server_names(config: AppsConfig) -> set[str]:
     return conflicting_server_names
 
 
-def create_dispatcher_app(config: AppsConfig) -> Flask:
+def create_dispatcher_app(config: AppsConfig) -> WSGIApplication:
     app = Flask('dispatcher')
     app.wsgi_app = AppDispatcher(config)
     return app
@@ -125,13 +126,13 @@ class AppDispatcher:
         self.mounts_by_host = {
             mount.server_name: mount for mount in config.app_mounts
         }
-        self.apps_by_host: dict[str, Flask] = {}
+        self.apps_by_host: dict[str, WSGIApplication] = {}
 
     def __call__(self, environ, start_response):
         app = self.get_application(environ['HTTP_HOST'])
         return app(environ, start_response)
 
-    def get_application(self, host_and_port):
+    def get_application(self, host_and_port) -> WSGIApplication:
         host = host_and_port.split(':')[0]
 
         with self.lock:
@@ -158,9 +159,15 @@ class AppDispatcher:
                 case Err(e):
                     logger.error('Application creation failed', error=e)
                     return InternalServerError(e)
+                case _:
+                    error_message = 'Unknown error'
+                    logger.error(
+                        'Application creation failed', error=error_message
+                    )
+                    return InternalServerError(error_message)
 
 
-def _create_app(mount: AppMount) -> Result[Flask, str]:
+def _create_app(mount: AppMount) -> Result[WSGIApplication, str]:
     match mount:
         case AdminAppMount():
             return Ok(create_admin_app())
