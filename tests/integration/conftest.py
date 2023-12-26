@@ -93,13 +93,13 @@ def make_admin_app(data_path: Path):
     """Provide the admin web application."""
 
     def _wrapper(**config_overrides: Any) -> Flask:
-        if _CONFIG_PATH_DATA_KEY not in config_overrides:
-            config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
+        server_name = 'admin.acmecon.test'
 
-        config_overrides.update(_CONFIG_OVERRIDES_FOR_TESTS)
-        config_overrides['SERVER_NAME'] = 'admin.acmecon.test'
+        merged_config_overrides = _merge_config_overrides(
+            config_overrides, data_path, server_name
+        )
 
-        return _create_admin_app(config_overrides=config_overrides)
+        return _create_admin_app(config_overrides=merged_config_overrides)
 
     return _wrapper
 
@@ -117,13 +117,13 @@ def make_api_app(admin_app, data_path: Path):
     """Provide an API web application."""
 
     def _wrapper(**config_overrides: Any) -> Flask:
-        if _CONFIG_PATH_DATA_KEY not in config_overrides:
-            config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
+        server_name = 'api.acmecon.test'
 
-        config_overrides.update(_CONFIG_OVERRIDES_FOR_TESTS)
-        config_overrides['SERVER_NAME'] = 'api.acmecon.test'
+        merged_config_overrides = _merge_config_overrides(
+            config_overrides, data_path, server_name
+        )
 
-        return _create_api_app(config_overrides=config_overrides)
+        return _create_api_app(config_overrides=merged_config_overrides)
 
     return _wrapper
 
@@ -141,13 +141,15 @@ def make_site_app(admin_app, data_path: Path):
     """Provide a site web application."""
 
     def _wrapper(site_id: SiteID, **config_overrides: Any) -> Flask:
-        if _CONFIG_PATH_DATA_KEY not in config_overrides:
-            config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
+        server_name = 'www.acmecon.test'
 
-        config_overrides.update(_CONFIG_OVERRIDES_FOR_TESTS)
-        config_overrides['SERVER_NAME'] = 'www.acmecon.test'
+        merged_config_overrides = _merge_config_overrides(
+            config_overrides, data_path, server_name
+        )
 
-        return _create_site_app(site_id, config_overrides=config_overrides)
+        return _create_site_app(
+            site_id, config_overrides=merged_config_overrides
+        )
 
     return _wrapper
 
@@ -158,6 +160,23 @@ def site_app(database, make_site_app, site: Site) -> Flask:
     app = make_site_app(site.id)
     with app.app_context():
         return app
+
+
+def _merge_config_overrides(
+    overrides: dict[str, Any], data_path: Path, server_name: str
+) -> dict[str, Any]:
+    merged: dict[str, Any] = {}
+
+    merged.update(overrides)
+
+    if _CONFIG_PATH_DATA_KEY not in merged:
+        merged[_CONFIG_PATH_DATA_KEY] = data_path
+
+    merged['SERVER_NAME'] = server_name
+
+    merged.update(_CONFIG_OVERRIDES_FOR_TESTS)
+
+    return merged
 
 
 @pytest.fixture(scope='session')
