@@ -8401,6 +8401,14 @@ msgstr "Gäste am Einlass einchecken"
 msgid "View ticketing"
 msgstr "Tickets anzeigen"
 
+#: byceps/permissions/timetable.py:17
+msgid "Administrate timetables"
+msgstr "Zeitpläne verwalten"
+
+#: byceps/permissions/timetable.py:18
+msgid "Edit timetables"
+msgstr "Zeitpläne bearbeiten"
+
 #: byceps/permissions/tourney.py:17
 msgid "Administrate tourneys"
 msgstr "Turniere verwalten"

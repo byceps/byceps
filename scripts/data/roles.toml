@@ -78,6 +78,7 @@ title = 'Inhalte verwalten'
 assigned_permissions = [
     'page.delete',
     'snippet.delete',
+    'timetable.administrate',
 ]
 
 [[roles]]
@@ -92,6 +93,7 @@ assigned_permissions = [
     'snippet.update',
     'snippet.view',
     'snippet.view_history',
+    'timetable.edit',
 ]
 
 [[roles]]
