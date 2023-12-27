@@ -12,6 +12,11 @@ from byceps.services.site import site_service
 from tests.helpers import create_site, http_client
 
 
+SERVER_NAME = 'site-for-news.acmecon.test'
+
+BASE_URL = f'http://{SERVER_NAME}'
+
+
 @pytest.fixture(scope='module')
 def editor(make_user):
     return make_user()
@@ -59,20 +64,19 @@ def news_site(news_channel):
 
 @pytest.fixture(scope='module')
 def news_site_app(make_site_app, news_site):
-    server_name = 'site-for-news.acmecon.test'
-    return make_site_app(server_name, news_site.id)
+    return make_site_app(SERVER_NAME, news_site.id)
 
 
 def test_view_news_frontpage(news_site_app):
     with http_client(news_site_app) as client:
-        response = client.get('/news/')
+        response = client.get(f'{BASE_URL}/news/')
 
     assert response.status_code == 200
 
 
 def test_view_single_published_news_item(news_site_app, published_news_item):
     with http_client(news_site_app) as client:
-        response = client.get(f'/news/{published_news_item.slug}')
+        response = client.get(f'{BASE_URL}/news/{published_news_item.slug}')
 
     assert response.status_code == 200
 
@@ -81,6 +85,6 @@ def test_view_single_unpublished_news_item(
     news_site_app, unpublished_news_item
 ):
     with http_client(news_site_app) as client:
-        response = client.get(f'/news/{unpublished_news_item.slug}')
+        response = client.get(f'{BASE_URL}/news/{unpublished_news_item.slug}')
 
     assert response.status_code == 404

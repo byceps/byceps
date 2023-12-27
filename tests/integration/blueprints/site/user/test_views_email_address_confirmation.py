@@ -162,7 +162,7 @@ def test_different_user_and_token_email_addresses(site_app, site, user5):
 
 
 def confirm(app, token):
-    url = f'/users/email_address/confirmation/{token}'
+    url = f'http://www.acmecon.test/users/email_address/confirmation/{token}'
     with http_client(app) as client:
         return client.post(url)
 

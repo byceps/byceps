@@ -168,8 +168,7 @@ def test_send_when_not_logged_in(site_app):
 
 
 def send_request(app, recipient_id, text, *, current_user_id=None):
-    url = f'/user_messages/to/{recipient_id}'
-
+    url = f'http://www.acmecon.test/user_messages/to/{recipient_id}'
     form_data = {'body': text}
 
     if current_user_id is not None:

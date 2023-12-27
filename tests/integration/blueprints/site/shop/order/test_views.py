@@ -30,6 +30,10 @@ from tests.helpers import create_site, http_client, log_in_user
 from tests.helpers.shop import create_shop_snippet
 
 
+SERVER_NAME = 'site-for-orders.acmecon.test'
+
+BASE_URL = f'http://{SERVER_NAME}'
+
 COMMON_FORM_DATA: dict[str, str] = {
     'first_name': 'Hiro',
     'last_name': 'Protagonist',
@@ -78,8 +82,7 @@ def site(make_brand, storefront: Storefront):
 
 @pytest.fixture(scope='module')
 def site_app(site: Site, make_site_app):
-    server_name = 'site-for-orders.acmecon.test'
-    app = make_site_app(server_name, site.id)
+    app = make_site_app(SERVER_NAME, site.id)
     with app.app_context():
         yield app
 
@@ -105,7 +108,7 @@ def test_order(
     orderer_user = make_user()
     log_in_user(orderer_user.id)
 
-    url = '/shop/order'
+    url = f'{BASE_URL}/shop/order'
     article_quantity_key = f'article_{article.id}'
     form_data: dict[str, int | str] = {
         **COMMON_FORM_DATA,
@@ -149,7 +152,7 @@ def test_order(
 
     with http_client(site_app, user_id=orderer_user.id) as client:
         assert_order_detail_page_works(
-            client, order_detail_page_url, order.order_number
+            client, BASE_URL + order_detail_page_url, order.order_number
         )
 
 
@@ -169,7 +172,7 @@ def test_order_single(
     orderer_user = make_user()
     log_in_user(orderer_user.id)
 
-    url = f'/shop/order_single/{article.id!s}'
+    url = f'{BASE_URL}/shop/order_single/{article.id!s}'
     form_data: dict[str, int | str] = {
         **COMMON_FORM_DATA,
         'quantity': 1,  # TODO: Test with `3` if limitation is removed.
@@ -211,7 +214,7 @@ def test_order_single(
 
     with http_client(site_app, user_id=orderer_user.id) as client:
         assert_order_detail_page_works(
-            client, order_detail_page_url, order.order_number
+            client, BASE_URL + order_detail_page_url, order.order_number
         )
 
 

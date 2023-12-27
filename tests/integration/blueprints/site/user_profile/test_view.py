@@ -43,7 +43,7 @@ def test_view_profile_of_unknown_user(site_app, site):
 
 
 def request_profile(app, user_id):
-    url = f'/users/{user_id}'
+    url = f'http://www.acmecon.test/users/{user_id}'
 
     with http_client(app) as client:
         return client.get(url)

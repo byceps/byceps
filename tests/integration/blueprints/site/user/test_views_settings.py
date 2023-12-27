@@ -26,6 +26,6 @@ def test_when_not_logged_in(site_app):
 
 
 def send_request(app, user_id=None):
-    url = '/users/me/settings'
+    url = 'http://www.acmecon.test/users/me/settings'
     with http_client(app, user_id=user_id) as client:
         return client.get(url)

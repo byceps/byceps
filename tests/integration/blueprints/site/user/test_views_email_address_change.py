@@ -63,7 +63,7 @@ def test_unknown_token(site_app, site, make_user):
 
 
 def change(app, token):
-    url = f'/users/email_address/change/{token}'
+    url = f'http://www.acmecon.test/users/email_address/change/{token}'
     with http_client(app) as client:
         return client.post(url)
 

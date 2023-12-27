@@ -9,12 +9,15 @@ from byceps.services.board import board_topic_command_service
 from .helpers import find_topic
 
 
+BASE_URL = 'http://www.acmecon.test'
+
+
 def test_hide_topic(site_app, moderator, moderator_client, topic):
     topic_before = topic
 
     assert_topic_is_not_hidden(topic_before)
 
-    url = f'/board/topics/{topic_before.id}/flags/hidden'
+    url = f'{BASE_URL}/board/topics/{topic_before.id}/flags/hidden'
     response = moderator_client.post(url)
 
     assert response.status_code == 204
@@ -33,7 +36,7 @@ def test_unhide_topic(site_app, moderator, moderator_client, topic):
 
     assert_topic_is_hidden(topic_before, moderator.id)
 
-    url = f'/board/topics/{topic_before.id}/flags/hidden'
+    url = f'{BASE_URL}/board/topics/{topic_before.id}/flags/hidden'
     response = moderator_client.delete(url)
 
     assert response.status_code == 204

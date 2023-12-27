@@ -140,7 +140,8 @@ def create_payment_instructions_snippet(shop_id, admin):
 def request_view(app, current_user, order_id):
     log_in_user(current_user.id)
 
-    url = f'/shop/orders/{order_id!s}'
+    server_name = app.config['SERVER_NAME']
+    url = f'http://{server_name}/shop/orders/{order_id}'
 
     with http_client(app, user_id=current_user.id) as client:
         response = client.get(url)

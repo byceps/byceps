@@ -214,7 +214,7 @@ def test_create_without_newsletter_subscription(
 
 
 def send_request(app, form_data):
-    url = '/users/'
+    url = 'http://www.acmecon.test/users/'
 
     with http_client(app) as client:
         return client.post(url, data=form_data)

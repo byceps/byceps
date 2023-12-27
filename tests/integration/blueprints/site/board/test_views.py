@@ -8,6 +8,9 @@ import pytest
 from tests.helpers import log_in_user
 
 
+BASE_URL = 'http://www.acmecon.test'
+
+
 @pytest.fixture(scope='package')
 def board_user(make_user):
     user = make_user()
@@ -26,42 +29,42 @@ def logged_in_client(make_client, site_app, board_user):
 
 
 def test_category_index_anonymously(site_app, anonymous_client):
-    url = '/board/'
+    url = f'{BASE_URL}/board/'
     assert_success_response(anonymous_client, url)
 
 
 def test_category_index_logged_in(site_app, logged_in_client):
-    url = '/board/'
+    url = f'{BASE_URL}/board/'
     assert_success_response(logged_in_client, url)
 
 
 def test_category_view_anonymously(site_app, anonymous_client, category):
-    url = f'/board/categories/{category.slug}'
+    url = f'{BASE_URL}/board/categories/{category.slug}'
     assert_success_response(anonymous_client, url)
 
 
 def test_category_view_logged_in(site_app, logged_in_client, category):
-    url = f'/board/categories/{category.slug}'
+    url = f'{BASE_URL}/board/categories/{category.slug}'
     assert_success_response(logged_in_client, url)
 
 
 def test_topic_index_anonymously(site_app, anonymous_client, topic):
-    url = '/board/topics'
+    url = f'{BASE_URL}/board/topics'
     assert_success_response(anonymous_client, url)
 
 
 def test_topic_index_logged_in(site_app, logged_in_client, topic):
-    url = '/board/topics'
+    url = f'{BASE_URL}/board/topics'
     assert_success_response(logged_in_client, url)
 
 
 def test_topic_view_anonymously(site_app, anonymous_client, topic):
-    url = f'/board/topics/{topic.id}'
+    url = f'{BASE_URL}/board/topics/{topic.id}'
     assert_success_response(anonymous_client, url)
 
 
 def test_topic_view_logged_in(site_app, logged_in_client, topic):
-    url = f'/board/topics/{topic.id}'
+    url = f'{BASE_URL}/board/topics/{topic.id}'
     assert_success_response(logged_in_client, url)
 
 

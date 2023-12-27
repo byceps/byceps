@@ -15,13 +15,18 @@ from byceps.services.user import user_log_service
 from tests.helpers import generate_token
 
 
+BASE_URL = 'http://www.acmecon.test'
+
+
 @pytest.fixture()
 def client(site_app, site):
     return site_app.test_client()
 
 
 def test_login_form(client):
-    response = client.get('/authentication/log_in')
+    url = f'{BASE_URL}/authentication/log_in'
+
+    response = client.get(url)
 
     assert response.status_code == 200
 
@@ -40,12 +45,13 @@ def test_login_succeeds(site, client, make_user):
 
     assert get_session_cookie(client) is None
 
+    url = f'{BASE_URL}/authentication/log_in'
     form_data = {
         'username': user.screen_name,
         'password': password,
     }
 
-    response = client.post('/authentication/log_in', data=form_data)
+    response = client.post(url, data=form_data)
     assert response.status_code == 204
     # Location (used by JavaScript redirect) should point to user
     # user dashboard.
@@ -69,12 +75,13 @@ def test_login_succeeds(site, client, make_user):
 
 
 def test_login_fails_with_invalid_credentials(client):
+    url = f'{BASE_URL}/authentication/log_in'
     form_data = {
         'username': 'TotallyUnknownUser',
         'password': 'TotallyWrongPassword',
     }
 
-    response = client.post('/authentication/log_in', data=form_data)
+    response = client.post(url, data=form_data)
     assert response.status_code == 401
 
     assert get_session_cookie(client) is None
@@ -96,7 +103,7 @@ def test_login_fails_lacking_consent(client, brand, make_user):
         'password': password,
     }
 
-    response = client.post('/authentication/log_in', data=form_data)
+    response = client.post(f'/authentication/log_in', data=form_data)
     assert response.status_code == 204
     assert response.location.startswith('/consent/consent/')
 
