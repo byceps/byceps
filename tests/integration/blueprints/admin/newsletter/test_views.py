@@ -13,6 +13,9 @@ from byceps.services.newsletter.models import SubscriptionState
 from tests.helpers import log_in_user
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_export_subscribers(newsletter_list, subscribers, client):
     expected_data = {
         'subscribers': [
@@ -43,7 +46,9 @@ def test_export_subscribers(newsletter_list, subscribers, client):
         ],
     }
 
-    url = f'/newsletter/lists/{newsletter_list.id}/subscriptions/export'
+    url = (
+        f'{BASE_URL}/newsletter/lists/{newsletter_list.id}/subscriptions/export'
+    )
     response = client.get(url)
 
     assert response.status_code == 200
@@ -69,7 +74,7 @@ def test_export_subscriber_email_addresses(
     ]
     expected_data = '\n'.join(expected_email_addresses).encode('utf-8')
 
-    url = f'/newsletter/lists/{newsletter_list.id}/subscriptions/email_addresses/export'
+    url = f'{BASE_URL}/newsletter/lists/{newsletter_list.id}/subscriptions/email_addresses/export'
     response = client.get(url)
 
     assert response.status_code == 200

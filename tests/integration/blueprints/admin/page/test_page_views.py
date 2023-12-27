@@ -14,6 +14,9 @@ from byceps.services.user.models.user import User
 from tests.helpers import generate_token, log_in_user
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 @pytest.fixture(scope='package')
 def page_admin(make_admin):
     permission_ids = {
@@ -58,7 +61,7 @@ def make_page(site: Site, page_admin: User):
 
 
 def test_index_for_site(page_admin_client, site):
-    url = f'/pages/for_site/{site.id}'
+    url = f'{BASE_URL}/pages/for_site/{site.id}'
     response = page_admin_client.get(url)
     assert response.status_code == 200
 
@@ -67,7 +70,7 @@ def test_view_current_version(page_admin_client, make_page):
     _, event = make_page()
     page_id = event.page_id
 
-    url = f'/pages/pages/{page_id}/current_version'
+    url = f'{BASE_URL}/pages/pages/{page_id}/current_version'
     response = page_admin_client.get(url)
     assert response.status_code == 200
 
@@ -75,7 +78,7 @@ def test_view_current_version(page_admin_client, make_page):
 def test_view_version(page_admin_client, make_page):
     version, event = make_page()
 
-    url = f'/pages/versions/{version.id}'
+    url = f'{BASE_URL}/pages/versions/{version.id}'
     response = page_admin_client.get(url)
     assert response.status_code == 200
 
@@ -84,7 +87,7 @@ def test_history(page_admin_client, make_page):
     _, event = make_page()
     page_id = event.page_id
 
-    url = f'/pages/pages/{page_id}/history'
+    url = f'{BASE_URL}/pages/pages/{page_id}/history'
     response = page_admin_client.get(url)
     assert response.status_code == 200
 
@@ -105,13 +108,13 @@ def test_compare(page_admin_client, page_admin, make_page):
         'Body v2',
     )
 
-    url = f'/pages/versions/{version1.id}/compare_to/{version2.id}'
+    url = f'{BASE_URL}/pages/versions/{version1.id}/compare_to/{version2.id}'
     response = page_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_create_form(page_admin_client, site):
-    url = f'/pages/for_site/{site.id}/create'
+    url = f'{BASE_URL}/pages/for_site/{site.id}/create'
     response = page_admin_client.get(url)
     assert response.status_code == 200
 
@@ -120,7 +123,7 @@ def test_delete(page_admin_client, make_page):
     _, event = make_page()
     page_id = event.page_id
 
-    url = f'/pages/pages/{page_id}'
+    url = f'{BASE_URL}/pages/pages/{page_id}'
     response = page_admin_client.delete(url)
     assert response.status_code == 204
 

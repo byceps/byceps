@@ -8,8 +8,11 @@ import pytest
 from tests.helpers import log_in_user
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_view_for_brand(jobs_admin_client):
-    url = '/jobs/'
+    url = f'{BASE_URL}/jobs/'
     response = jobs_admin_client.get(url)
     assert response.status_code == 200
 

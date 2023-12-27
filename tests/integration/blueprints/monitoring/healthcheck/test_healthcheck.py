@@ -12,10 +12,13 @@ import pytest
 # party. After all, both admin and party apps should react the same.
 
 
+URL = 'http://admin.acmecon.test/health'
+
+
 def test_healthcheck_ok(client):
     expected_media_type = 'application/health+json'
 
-    response = client.get('/health')
+    response = client.get(URL)
 
     assert response.status_code == 200
     assert response.content_type == expected_media_type
@@ -34,7 +37,7 @@ def test_healthcheck_fail(is_rdbms_ok_mock, client):
 
     is_rdbms_ok_mock.return_value = False
 
-    response = client.get('/health')
+    response = client.get(URL)
 
     assert response.status_code == 503
     assert response.content_type == expected_media_type

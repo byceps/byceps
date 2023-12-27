@@ -8,26 +8,29 @@ from datetime import datetime
 from byceps.services.party import party_service
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_index(party_admin_client, party):
-    url = '/parties/'
+    url = f'{BASE_URL}/parties/'
     response = party_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_index_for_brand(party_admin_client, brand, party):
-    url = f'/parties/brands/{brand.id}'
+    url = f'{BASE_URL}/parties/brands/{brand.id}'
     response = party_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_view(party_admin_client, party):
-    url = f'/parties/parties/{party.id}'
+    url = f'{BASE_URL}/parties/parties/{party.id}'
     response = party_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_create_form(party_admin_client, brand):
-    url = f'/parties/for_brand/{brand.id}/create'
+    url = f'{BASE_URL}/parties/for_brand/{brand.id}/create'
     response = party_admin_client.get(url)
     assert response.status_code == 200
 
@@ -39,7 +42,7 @@ def test_create(party_admin_client, brand):
 
     assert party_service.find_party(party_id) is None
 
-    url = f'/parties/for_brand/{brand.id}'
+    url = f'{BASE_URL}/parties/for_brand/{brand.id}'
     form_data = {
         'id': party_id,
         'title': title,
@@ -62,6 +65,6 @@ def test_create(party_admin_client, brand):
 
 
 def test_update_form(party_admin_client, party):
-    url = f'/parties/parties/{party.id}/update'
+    url = f'{BASE_URL}/parties/parties/{party.id}/update'
     response = party_admin_client.get(url)
     assert response.status_code == 200

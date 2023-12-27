@@ -6,10 +6,13 @@
 from byceps.services.snippet import snippet_service
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_index_for_scope(snippet_admin_client, global_scope):
     scope = global_scope
 
-    url = f'/snippets/for_scope/{scope.type_}/{scope.name}'
+    url = f'{BASE_URL}/snippets/for_scope/{scope.type_}/{scope.name}'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -18,7 +21,7 @@ def test_view_current_version(snippet_admin_client, make_snippet):
     _, event = make_snippet()
     snippet_id = event.snippet_id
 
-    url = f'/snippets/snippets/{snippet_id}/current_version'
+    url = f'{BASE_URL}/snippets/snippets/{snippet_id}/current_version'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -26,7 +29,7 @@ def test_view_current_version(snippet_admin_client, make_snippet):
 def test_view_version(snippet_admin_client, make_snippet):
     version, event = make_snippet()
 
-    url = f'/snippets/versions/{version.id}'
+    url = f'{BASE_URL}/snippets/versions/{version.id}'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -35,7 +38,7 @@ def test_history(snippet_admin_client, make_snippet):
     _, event = make_snippet()
     snippet_id = event.snippet_id
 
-    url = f'/snippets/snippets/{snippet_id}/history'
+    url = f'{BASE_URL}/snippets/snippets/{snippet_id}/history'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -48,7 +51,7 @@ def test_compare_versions(snippet_admin_client, snippet_admin, make_snippet):
         snippet_id, snippet_admin, 'Body v2'
     )
 
-    url = f'/snippets/versions/{version1.id}/compare_to/{version2.id}'
+    url = f'{BASE_URL}/snippets/versions/{version1.id}/compare_to/{version2.id}'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -56,7 +59,7 @@ def test_compare_versions(snippet_admin_client, snippet_admin, make_snippet):
 def test_create_form(snippet_admin_client, global_scope):
     scope = global_scope
 
-    url = f'/snippets/for_scope/{scope.type_}/{scope.name}/create'
+    url = f'{BASE_URL}/snippets/for_scope/{scope.type_}/{scope.name}/create'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -65,7 +68,7 @@ def test_delete(snippet_admin_client, make_snippet):
     _, event = make_snippet()
     snippet_id = event.snippet_id
 
-    url = f'/snippets/snippets/{snippet_id}'
+    url = f'{BASE_URL}/snippets/snippets/{snippet_id}'
     response = snippet_admin_client.delete(url)
     assert response.status_code == 204
 

@@ -8,26 +8,29 @@ import pytest
 from tests.helpers import log_in_user
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_view_global(dashboard_admin_client):
-    url = '/dashboard'
+    url = f'{BASE_URL}/dashboard'
     response = dashboard_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_view_brand(dashboard_admin_client, brand):
-    url = f'/dashboard/brands/{brand.id}'
+    url = f'{BASE_URL}/dashboard/brands/{brand.id}'
     response = dashboard_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_view_party(dashboard_admin_client, party):
-    url = f'/dashboard/parties/{party.id}'
+    url = f'{BASE_URL}/dashboard/parties/{party.id}'
     response = dashboard_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_view_site(dashboard_admin_client, site):
-    url = f'/dashboard/sites/{site.id}'
+    url = f'{BASE_URL}/dashboard/sites/{site.id}'
     response = dashboard_admin_client.get(url)
     assert response.status_code == 200
 

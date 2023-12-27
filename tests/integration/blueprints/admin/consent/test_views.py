@@ -3,8 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+BASE_URL = 'http://admin.acmecon.test'
+
 
 def test_index(consent_admin_client):
-    url = '/consent/subjects'
+    url = f'{BASE_URL}/consent/subjects'
     response = consent_admin_client.get(url)
     assert response.status_code == 200

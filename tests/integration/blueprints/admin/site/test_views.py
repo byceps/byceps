@@ -6,20 +6,23 @@
 from byceps.services.site import site_service
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_index(site_admin_client, site):
-    url = '/sites/'
+    url = f'{BASE_URL}/sites/'
     response = site_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_view(site_admin_client, site):
-    url = f'/sites/sites/{site.id}'
+    url = f'{BASE_URL}/sites/sites/{site.id}'
     response = site_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_create_form(site_admin_client, brand):
-    url = f'/sites/sites/create/for_brand/{brand.id}'
+    url = f'{BASE_URL}/sites/sites/create/for_brand/{brand.id}'
     response = site_admin_client.get(url)
     assert response.status_code == 200
 
@@ -31,7 +34,7 @@ def test_create(site_admin_client, brand):
 
     assert site_service.find_site(site_id) is None
 
-    url = f'/sites/sites/for_brand/{brand.id}'
+    url = f'{BASE_URL}/sites/sites/for_brand/{brand.id}'
     form_data = {
         'id': site_id,
         'title': title,
@@ -54,6 +57,6 @@ def test_create(site_admin_client, brand):
 
 
 def test_update_form(site_admin_client, site):
-    url = f'/sites/sites/{site.id}/update'
+    url = f'{BASE_URL}/sites/sites/{site.id}/update'
     response = site_admin_client.get(url)
     assert response.status_code == 200

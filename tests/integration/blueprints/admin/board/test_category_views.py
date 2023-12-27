@@ -6,8 +6,11 @@
 from byceps.services.board import board_category_query_service
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_create_form(board_admin_client, board):
-    url = f'/boards/categories/for_board/{board.id}/create'
+    url = f'{BASE_URL}/boards/categories/for_board/{board.id}/create'
     response = board_admin_client.get(url)
     assert response.status_code == 200
 
@@ -22,7 +25,7 @@ def test_create(board_admin_client, board):
         is None
     )
 
-    url = f'/boards/categories/for_board/{board.id}'
+    url = f'{BASE_URL}/boards/categories/for_board/{board.id}'
     form_data = {
         'slug': slug,
         'title': title,
@@ -42,6 +45,6 @@ def test_create(board_admin_client, board):
 
 
 def test_update_form(board_admin_client, category):
-    url = f'/boards/categories/{category.id}/update'
+    url = f'{BASE_URL}/boards/categories/{category.id}/update'
     response = board_admin_client.get(url)
     assert response.status_code == 200

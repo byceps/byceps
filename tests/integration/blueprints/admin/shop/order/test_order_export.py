@@ -22,6 +22,9 @@ from byceps.services.user.models.user import User
 from tests.helpers import log_in_user
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 @pytest.fixture(scope='package')
 def shop_order_admin(make_admin) -> User:
     permission_ids = {'admin.access', 'shop_order.view'}
@@ -124,7 +127,7 @@ def test_serialize_existing_order(
     log_in_user(shop_order_admin.id)
     client = make_client(admin_app, user_id=shop_order_admin.id)
 
-    url = f'/shop/orders/{order.id}/export'
+    url = f'{BASE_URL}/shop/orders/{order.id}/export'
     response = client.get(url)
 
     assert response.status_code == 200
@@ -143,7 +146,7 @@ def test_serialize_unknown_order(
     log_in_user(shop_order_admin.id)
     client = make_client(admin_app, user_id=shop_order_admin.id)
 
-    url = f'/shop/orders/{unknown_order_id}/export'
+    url = f'{BASE_URL}/shop/orders/{unknown_order_id}/export'
     response = client.get(url)
 
     assert response.status_code == 404

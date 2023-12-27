@@ -8,12 +8,15 @@ from byceps.services.orga import orga_service
 from byceps.services.orga_team import orga_team_service
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_membership_create_form(
     orga_team_admin_client, brand: Brand, make_party, make_team
 ) -> None:
     party = make_party(brand.id)
     team = make_team(party.id)
-    url = f'/orga_teams/teams/{team.id}/memberships/create'
+    url = f'{BASE_URL}/orga_teams/teams/{team.id}/memberships/create'
     response = orga_team_admin_client.get(url)
     assert response.status_code == 200
 
@@ -28,7 +31,7 @@ def test_membership_create(
 
     assert orga_team_service.count_memberships_for_party(party.id) == 0
 
-    url = f'/orga_teams/teams/{team.id}/memberships'
+    url = f'{BASE_URL}/orga_teams/teams/{team.id}/memberships'
     form_data = {
         'user_id': str(user.id),
         'duties': 'Tricky Towers',
@@ -56,7 +59,7 @@ def test_membership_update_form(
     team = make_team(party.id)
     membership = orga_team_service.create_membership(team.id, user.id, 'PUBG')
 
-    url = f'/orga_teams/memberships/{membership.id}/update'
+    url = f'{BASE_URL}/orga_teams/memberships/{membership.id}/update'
     response = orga_team_admin_client.get(url)
     assert response.status_code == 200
 
@@ -78,7 +81,7 @@ def test_membership_update(
     assert membership_before.orga_team_id == team1.id
     assert membership_before.duties == 'all'
 
-    url = f'/orga_teams/memberships/{membership_before.id}'
+    url = f'{BASE_URL}/orga_teams/memberships/{membership_before.id}'
     form_data = {
         'orga_team_id': str(team2.id),
         'duties': 'Overwatch',
@@ -103,7 +106,7 @@ def test_membership_remove(
     team = make_team(party.id)
     membership = orga_team_service.create_membership(team.id, user.id, 'CS:GO')
 
-    url = f'/orga_teams/memberships/{membership.id}'
+    url = f'{BASE_URL}/orga_teams/memberships/{membership.id}'
     response = orga_team_admin_client.delete(url)
     assert response.status_code == 204
 

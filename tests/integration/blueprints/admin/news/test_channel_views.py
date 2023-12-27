@@ -6,20 +6,23 @@
 from byceps.services.news import news_channel_service
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_index_for_brand(news_admin_client, brand, channel):
-    url = f'/news/brands/{brand.id}'
+    url = f'{BASE_URL}/news/brands/{brand.id}'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_view(news_admin_client, channel):
-    url = f'/news/channels/{channel.id}'
+    url = f'{BASE_URL}/news/channels/{channel.id}'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_create_form(news_admin_client, brand):
-    url = f'/news/for_brand/{brand.id}/channels/create'
+    url = f'{BASE_URL}/news/for_brand/{brand.id}/channels/create'
     response = news_admin_client.get(url)
     assert response.status_code == 200
 
@@ -30,7 +33,7 @@ def test_create(news_admin_client, brand, site):
 
     assert news_channel_service.find_channel(channel_id) is None
 
-    url = f'/news/for_brand/{brand.id}/channels'
+    url = f'{BASE_URL}/news/for_brand/{brand.id}/channels'
     form_data = {
         'channel_id': channel_id,
         'announcement_site_id': str(announcement_site_id),

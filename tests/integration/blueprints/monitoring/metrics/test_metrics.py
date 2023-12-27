@@ -8,6 +8,10 @@ import re
 import pytest
 
 
+SERVER_NAME = 'admin-for-metrics.acmecon.test'
+URL = f'http://{SERVER_NAME}/metrics/'
+
+
 # To be overridden by test parametrization
 @pytest.fixture()
 def config_overrides():
@@ -16,15 +20,14 @@ def config_overrides():
 
 @pytest.fixture()
 def client(admin_app, config_overrides, make_admin_app):
-    server_name = 'admin-for-metrics.acmecon.test'
-    app = make_admin_app(server_name, **config_overrides)
+    app = make_admin_app(SERVER_NAME, **config_overrides)
     with app.app_context():
         yield app.test_client()
 
 
 @pytest.mark.parametrize('config_overrides', [{'METRICS_ENABLED': True}])
 def test_metrics(client):
-    response = client.get('/metrics/')
+    response = client.get(URL)
 
     assert response.status_code == 200
     assert response.content_type == 'text/plain; version=0.0.4; charset=utf-8'
@@ -43,6 +46,6 @@ def test_metrics(client):
 
 @pytest.mark.parametrize('config_overrides', [{'METRICS_ENABLED': False}])
 def test_disabled_metrics(client):
-    response = client.get('/metrics/')
+    response = client.get(URL)
 
     assert response.status_code == 404

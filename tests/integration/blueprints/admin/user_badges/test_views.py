@@ -6,20 +6,23 @@
 from byceps.services.user_badge import user_badge_service
 
 
+BASE_URL = 'http://admin.acmecon.test'
+
+
 def test_index(user_badge_admin_client):
-    url = '/user_badges/badges'
+    url = f'{BASE_URL}/user_badges/badges'
     response = user_badge_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_view(user_badge_admin_client, badge):
-    url = f'/user_badges/badges/{badge.id}'
+    url = f'{BASE_URL}/user_badges/badges/{badge.id}'
     response = user_badge_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_create_form(user_badge_admin_client):
-    url = '/user_badges/create'
+    url = f'{BASE_URL}/user_badges/create'
     response = user_badge_admin_client.get(url)
     assert response.status_code == 200
 
@@ -32,7 +35,7 @@ def test_create(user_badge_admin_client, brand):
 
     assert user_badge_service.find_badge_by_slug(slug) is None
 
-    url = '/user_badges/badges'
+    url = f'{BASE_URL}/user_badges/badges'
     form_data = {
         'slug': slug,
         'label': label,
@@ -56,6 +59,6 @@ def test_create(user_badge_admin_client, brand):
 
 
 def test_update_form(user_badge_admin_client, badge):
-    url = f'/user_badges/badges/{badge.id}/update'
+    url = f'{BASE_URL}/user_badges/badges/{badge.id}/update'
     response = user_badge_admin_client.get(url)
     assert response.status_code == 200
