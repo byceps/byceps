@@ -24,6 +24,6 @@ def test_when_not_logged_in_form_is_unavailable(site_app, site):
 
 
 def send_request(app, user_id=None):
-    url = '/authentication/password/update'
+    url = 'http://www.acmecon.test/authentication/password/update'
     with http_client(app, user_id=user_id) as client:
         return client.get(url)

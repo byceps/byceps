@@ -73,6 +73,6 @@ def find_session_token(user_id):
 
 
 def send_request(app, form_data, *, user_id=None):
-    url = '/authentication/password/'
+    url = 'http://www.acmecon.test/authentication/password/'
     with http_client(app, user_id=user_id) as client:
         return client.post(url, data=form_data)
