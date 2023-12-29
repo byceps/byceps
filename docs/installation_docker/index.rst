@@ -6,6 +6,8 @@ As an alternative to :doc:`installing directly on a system
 </installation/index>`, BYCEPS can be run from Docker_ containers,
 orchestrated by `Docker compose`_.
 
+.. important:: This guide assumes you are using Docker Compose V2. If you are still using V1, replace ``docker compose`` with ``docker-compose`` before running commands that include it.
+
 Since there is no official Docker image for BYCEPS at this point, you
 have to build one yourself.
 
@@ -28,7 +30,7 @@ take a few minutes.
 
 .. code-block:: sh
 
-    $ docker-compose up --no-start
+    $ docker compose up --no-start
 
 Then generate a *secret key* and put it in a file Docker Compose is
 configured to pick up as a secret_:
@@ -37,26 +39,26 @@ configured to pick up as a secret_:
 
 .. code-block:: sh
 
-    $ docker-compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt
+    $ docker compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt
 
 Now create and initially populate the relational database structure:
 
 .. code-block:: sh
 
-    $ docker-compose run --rm byceps-admin byceps initialize-database
+    $ docker compose run --rm byceps-admin byceps initialize-database
 
 Optionally, insert demonstration data to get a feel for how BYCEPS set
 up with a party, a party site, etc. looks like:
 
 .. code-block:: sh
 
-    $ docker-compose run --rm byceps-admin byceps create-demo-data
+    $ docker compose run --rm byceps-admin byceps create-demo-data
 
 To spin up the application:
 
 .. code-block:: sh
 
-    $ docker-compose up
+    $ docker compose up
 
 The admin frontend should now be available at http://localhost:8081/.
 Log in with user ``DemoAdmin`` and password ``demodemo``.
