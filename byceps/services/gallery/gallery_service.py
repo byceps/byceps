@@ -28,7 +28,7 @@ def create_gallery(
     hidden: bool,
 ) -> Gallery:
     """Create a gallery."""
-    db_brand = brand_service._get_db_brand(brand_id)
+    db_brand = brand_service._find_db_brand(brand_id)
     if db_brand is None:
         raise ValueError(f'Unknown brand ID "{brand_id}"')
 
