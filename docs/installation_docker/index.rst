@@ -13,7 +13,6 @@ have to build one yourself.
 
 .. _Docker: https://www.docker.com/
 .. _Docker Compose: https://docs.docker.com/compose/
-.. _Dockers guide: https://docs.docker.com/engine/install/
 
 First, clone BYCEPS' Git repository to your machine:
 
