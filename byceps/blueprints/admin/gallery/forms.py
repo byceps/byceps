@@ -18,7 +18,7 @@ from byceps.util.l10n import LocalizedForm
 class GalleryCreateForm(LocalizedForm):
     slug = StringField(lazy_gettext('Slug'), [InputRequired()])
     title = StringField(lazy_gettext('Title'), [InputRequired()])
-    hidden = BooleanField(lazy_gettext('hidden'), [InputRequired()])
+    hidden = BooleanField(lazy_gettext('hidden'), [])
 
     def __init__(self, brand_id: BrandID, *args, **kwargs):
         super().__init__(*args, **kwargs)
