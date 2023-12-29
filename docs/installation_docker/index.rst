@@ -6,8 +6,7 @@ As an alternative to :doc:`installing directly on a system
 </installation/index>`, BYCEPS can be run from Docker_ containers,
 orchestrated by `Docker compose`_.
 
-.. important:: This guide assumes you are using Docker Compose V2, which can be installed with the Docker engine.
-    See `Dockers guide`_ on how to install
+.. important:: This guide assumes you are using Docker Compose V2. If you are still using V1, replace ``docker compose`` with ``docker-compose`` before running commands that include it.
 
 Since there is no official Docker image for BYCEPS at this point, you
 have to build one yourself.
