@@ -53,11 +53,11 @@ class AppsConfig(BaseModel):
     app_mounts: list[AppMount]
 
 
-def get_config() -> Result[AppsConfig, str]:
-    return _get_config_filename().and_then(_load_app_mounts_config)
+def get_apps_config() -> Result[AppsConfig, str]:
+    return _get_apps_config_filename().and_then(_load_apps_config)
 
 
-def _get_config_filename() -> Result[Path, str]:
+def _get_apps_config_filename() -> Result[Path, str]:
     filename_str = os.environ.get('BYCEPS_APPS_CONFIG')
     if not filename_str:
         return Err(
@@ -68,43 +68,41 @@ def _get_config_filename() -> Result[Path, str]:
     return Ok(filename)
 
 
-def _load_app_mounts_config(path: Path) -> Result[AppsConfig, str]:
+def _load_apps_config(path: Path) -> Result[AppsConfig, str]:
     if not path.exists():
-        return Err(
-            f'Application mounts configuration file "{path}" does not exist'
-        )
+        return Err(f'Applications configuration file "{path}" does not exist')
 
     toml = path.read_text()
 
-    return parse_app_mounts_config(toml).map_err(
-        lambda e: f'Application mounts configuration file "{path}" contains errors:\n{e}'
+    return parse_apps_config(toml).map_err(
+        lambda e: f'Applications configuration file "{path}" contains errors:\n{e}'
     )
 
 
-def parse_app_mounts_config(toml: str) -> Result[AppsConfig, str]:
+def parse_apps_config(toml: str) -> Result[AppsConfig, str]:
     try:
         data = rtoml.loads(toml)
     except rtoml.TomlParsingError as e:
         return Err(str(e))
 
     try:
-        config = AppsConfig.model_validate(data)
+        apps_config = AppsConfig.model_validate(data)
     except ValidationError as e:
         return Err(str(e))
 
-    conflicting_server_names = _find_conflicting_server_names(config)
+    conflicting_server_names = _find_conflicting_server_names(apps_config)
     if conflicting_server_names:
         server_names_str = ', '.join(sorted(conflicting_server_names))
         return Err(f'Non-unique server names configured: {server_names_str}')
 
-    return Ok(config)
+    return Ok(apps_config)
 
 
-def _find_conflicting_server_names(config: AppsConfig) -> set[str]:
+def _find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
     defined_server_names = set()
     conflicting_server_names = set()
 
-    for mount in config.app_mounts:
+    for mount in apps_config.app_mounts:
         server_name = mount.server_name
         if server_name in defined_server_names:
             conflicting_server_names.add(server_name)
@@ -114,17 +112,17 @@ def _find_conflicting_server_names(config: AppsConfig) -> set[str]:
     return conflicting_server_names
 
 
-def create_dispatcher_app(config: AppsConfig) -> WSGIApplication:
+def create_dispatcher_app(apps_config: AppsConfig) -> WSGIApplication:
     app = Flask('dispatcher')
-    app.wsgi_app = AppDispatcher(config)
+    app.wsgi_app = AppDispatcher(apps_config)
     return app
 
 
 class AppDispatcher:
-    def __init__(self, config: AppsConfig) -> None:
+    def __init__(self, apps_config: AppsConfig) -> None:
         self.lock = Lock()
         self.mounts_by_host = {
-            mount.server_name: mount for mount in config.app_mounts
+            mount.server_name: mount for mount in apps_config.app_mounts
         }
         self.apps_by_host: dict[str, WSGIApplication] = {}
 
