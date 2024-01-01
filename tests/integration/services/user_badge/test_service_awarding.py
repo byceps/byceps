@@ -55,7 +55,7 @@ def awardings_scope():
 
 
 def test_count_awardings(
-    site_app,
+    database,
     user1,
     user2,
     user3,
@@ -82,7 +82,7 @@ def test_count_awardings(
     assert actual_relevant == {badge1.id: 4, badge2.id: 0, badge3.id: 2}
 
 
-def test_get_awardings_of_unknown_badge(site_app):
+def test_get_awardings_of_unknown_badge(database):
     unknown_badge_id = '00000000-0000-0000-0000-000000000000'
 
     actual = user_badge_awarding_service.get_awardings_of_badge(
@@ -92,7 +92,7 @@ def test_get_awardings_of_unknown_badge(site_app):
     assert actual == set()
 
 
-def test_get_awardings_of_unawarded_badge(site_app, badge3):
+def test_get_awardings_of_unawarded_badge(database, badge3):
     badge = badge3
 
     actual = user_badge_awarding_service.get_awardings_of_badge(badge.id)
@@ -101,7 +101,7 @@ def test_get_awardings_of_unawarded_badge(site_app, badge3):
 
 
 def test_get_awardings_of_badge(
-    site_app, user1, user2, badge1, awardings_scope
+    database, user1, user2, badge1, awardings_scope
 ):
     badge = badge1
 

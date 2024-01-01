@@ -11,7 +11,7 @@ from tests.helpers import create_role_with_permissions_assigned, generate_token
 
 
 def test_get_permission_ids_for_user_with_user_permissions(
-    site_app, user, permissions
+    database, user, permissions
 ):
     actual = authz_service.get_permission_ids_for_user(user.id)
     assert actual == {
