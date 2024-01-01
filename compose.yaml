@@ -1,11 +1,11 @@
 version: "3.9"
 
 x-byceps-base: &byceps-base
-  image: "the0mikkel/byceps:latest"
+  image: "${DOCKER_ORG:-ghcr.io/byceps}/byceps:${DOCKER_VERSION:-latest}"
   volumes:
-    - type: volume
-      source: byceps-data
-      target: /home/byceps/data
+    - ./data:/home/byceps/data
+    - ./sites:/home/byceps/sites
+    - ./config:/home/byceps/config:ro
   depends_on:
     - db
     - redis
@@ -13,18 +13,18 @@ x-byceps-base: &byceps-base
 x-byceps-base-env: &byceps-base-env
     REDIS_URL: "redis://redis/0"
     SECRET_KEY: /run/secrets/secret_key
-    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg://byceps:byceps@db/byceps"
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg://${DB_USER:-byceps}:${DB_PASSWORD:-byceps}@db/byceps"
 
 services:
 
   db:
-    image: "postgres:16"
+    image: "postgres:${DB_IMAGE:-16}"
     restart: unless-stopped
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: byceps
-      POSTGRES_USER: byceps
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-byceps}
+      POSTGRES_USER: ${DB_USER:-byceps}
     networks:
       - byceps
 
@@ -37,16 +37,12 @@ services:
     <<: *byceps-base
     environment:
       <<: *byceps-base-env
-    depends_on:
-      - db
-      - redis
+      BYCEPS_APPS_CONFIG: /home/byceps/config/apps.toml
     networks:
       - byceps
       - proxy
-    volumes:
-      - ./config:/home/byceps/config:ro
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      test: ["CMD", "curl", "-f", "http://${HEALTH_CHECK_HOSTNAME:-byceps-admin.localhost}t:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -56,8 +52,6 @@ services:
     environment:
       <<: *byceps-base-env
       APP_MODE: worker
-    depends_on:
-      - byceps
     networks:
       - byceps
     command: ./worker.py
@@ -71,20 +65,21 @@ services:
       # Static data files, not hosted through Byceps
       - ./data:/var/www/byceps/data:ro
       - ./sites:/var/www/byceps/sites:ro
+      - ./byceps/static:/var/www/byceps/byceps/static:ro
     depends_on:
       - byceps
     environment:
       # The hostnames that the web server should listen on and return the admin
-      SERVER_NAME_ADMIN: byceps-admin.localhost
+      SERVER_NAME_ADMIN: ${ADMIN_HOSTNAMES:-byceps-admin.localhost}
       # THe hostnames that the web server should listen on and return the site
-      SERVER_NAME_SITE: byceps-site.localhost
+      SERVER_NAME_SITE: ${SITE_HOSTNAMES:-byceps-site.localhost}
     ports:
       - "8080:80"
       - "8443:443"
     networks:
       - proxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      test: ["CMD", "curl", "-f", "http://${HEALTH_CHECK_HOSTNAME:-byceps-admin.localhost}t:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -96,9 +91,8 @@ secrets:
     file: ./secret_key.txt
 
 volumes:
-  byceps-data:
   db-data:
 
 networks:
-  byceps:
   proxy:
+  byceps:
