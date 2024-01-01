@@ -23,21 +23,31 @@ services:
     environment:
       POSTGRES_PASSWORD: byceps
       POSTGRES_USER: byceps
+    networks:
+      - byceps
 
   redis:
     image: "redis:7"
+    networks:
+      - byceps
 
   byceps-admin:
     <<: *byceps-base
     environment:
       <<: *byceps-base-env
       APP_MODE: admin
+    networks:
+      - byceps
+      - proxy
 
   byceps-api:
     <<: *byceps-base
     environment:
       <<: *byceps-base-env
       APP_MODE: api
+    networks:
+      - byceps
+      - proxy
 
   byceps-site:
     <<: *byceps-base
@@ -45,6 +55,9 @@ services:
       <<: *byceps-base-env
       APP_MODE: site
       SITE_ID: cozylan
+    networks:
+      - byceps
+      - proxy
 
   byceps-worker:
     <<: *byceps-base
@@ -52,6 +65,8 @@ services:
       <<: *byceps-base-env
       APP_MODE: worker
     command: ./worker.py
+    networks:
+      - byceps
 
   web:
     image: nginx
@@ -68,6 +83,8 @@ services:
     ports:
       - "8081:81"
       - "8082:82"
+    networks:
+      - proxy
 
 secrets:
   secret_key:
@@ -78,3 +95,7 @@ secrets:
 volumes:
   byceps-data:
   db-data:
+
+networks:
+  byceps:
+  proxy:
