@@ -26,6 +26,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Clean up
+        if: matrix.system == 'byceps'
         run: rm -rf .git/ .github/ sites/ data/ tests/ docs/ docker/nginx/ config/
 
       - name: Docker meta
