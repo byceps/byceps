@@ -1,5 +1,7 @@
+version: "3.9"
+
 x-byceps-base: &byceps-base
-  build: .
+  image: "the0mikkel/byceps:latest"
   volumes:
     - type: volume
       source: byceps-data
@@ -16,58 +18,76 @@ x-byceps-base-env: &byceps-base-env
 services:
 
   db:
-    image: "postgres:15"
+    image: "postgres:16"
     restart: unless-stopped
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: byceps
       POSTGRES_USER: byceps
+    networks:
+      - byceps
 
   redis:
     image: "redis:7"
+    networks:
+      - byceps
 
-  byceps-admin:
+  byceps:
     <<: *byceps-base
     environment:
       <<: *byceps-base-env
-      APP_MODE: admin
-
-  byceps-api:
-    <<: *byceps-base
-    environment:
-      <<: *byceps-base-env
-      APP_MODE: api
-
-  byceps-site:
-    <<: *byceps-base
-    environment:
-      <<: *byceps-base-env
-      APP_MODE: site
-      SITE_ID: cozylan
+    depends_on:
+      - db
+      - redis
+    networks:
+      - byceps
+      - proxy
+    volumes:
+      - ./config:/home/byceps/config:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   byceps-worker:
     <<: *byceps-base
     environment:
       <<: *byceps-base-env
       APP_MODE: worker
+    depends_on:
+      - byceps
+    networks:
+      - byceps
     command: ./worker.py
 
   web:
     image: nginx
     volumes:
+      # Nginx configuration
       - ./docker/nginx/includes:/etc/nginx/includes:ro
       - ./docker/nginx/templates:/etc/nginx/templates:ro
-      - .:/var/www/byceps:ro
+      # Static data files, not hosted through Byceps
+      - ./data:/var/www/byceps/data:ro
+      - ./sites:/var/www/byceps/sites:ro
     depends_on:
-      - byceps-admin
-      - byceps-site
+      - byceps
     environment:
-      SERVER_NAME_ADMIN: byceps-admin.example
-      SERVER_NAME_SITE: byceps-site.example
+      # The hostnames that the web server should listen on and return the admin
+      SERVER_NAME_ADMIN: byceps-admin.localhost
+      # THe hostnames that the web server should listen on and return the site
+      SERVER_NAME_SITE: byceps-site.localhost
     ports:
-      - "8081:81"
-      - "8082:82"
+      - "8080:80"
+      - "8443:443"
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 secrets:
   secret_key:
@@ -78,3 +98,7 @@ secrets:
 volumes:
   byceps-data:
   db-data:
+
+networks:
+  byceps:
+  proxy:
