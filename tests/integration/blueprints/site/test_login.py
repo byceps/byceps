@@ -103,7 +103,7 @@ def test_login_fails_lacking_consent(client, brand, make_user):
         'password': password,
     }
 
-    response = client.post(f'/authentication/log_in', data=form_data)
+    response = client.post(f'{BASE_URL}/authentication/log_in', data=form_data)
     assert response.status_code == 204
     assert response.location.startswith('/consent/consent/')
 
