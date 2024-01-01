@@ -115,19 +115,19 @@ def test_get_comment_with_edited_comment(
 
 
 @pytest.fixture()
-def match(api_app):
+def match(database):
     return tourney_match_service.create_match()
 
 
 @pytest.fixture()
-def comment(api_app, match, user):
+def comment(database, match, user):
     return tourney_match_comment_service.create_comment(
         match.id, user, 'Denn man tau.'
     )
 
 
 @pytest.fixture()
-def edited_comment(api_app, comment, admin_user):
+def edited_comment(database, comment, admin_user):
     tourney_match_comment_service.update_comment(
         comment.id, admin_user, '[b]So nicht[/b], Freundchen!'
     )

@@ -58,12 +58,12 @@ def test_unhide_comment(
 
 
 @pytest.fixture()
-def match(api_app, scope='module'):
+def match(database, scope='module'):
     return tourney_match_service.create_match()
 
 
 @pytest.fixture()
-def comment(api_app, match, user):
+def comment(database, match, user):
     return tourney_match_comment_service.create_comment(
         match.id, user, '¡Vámonos!'
     )
