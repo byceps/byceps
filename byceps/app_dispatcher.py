@@ -11,7 +11,7 @@ Serve multiple apps together.
 import os
 from pathlib import Path
 from threading import Lock
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 from wsgiref.types import WSGIApplication
 
 from flask import Flask
@@ -112,18 +112,28 @@ def _find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
     return conflicting_server_names
 
 
-def create_dispatcher_app(apps_config: AppsConfig) -> WSGIApplication:
+def create_dispatcher_app(
+    apps_config: AppsConfig,
+    *,
+    config_overrides: dict[str, Any] | None = None,
+) -> WSGIApplication:
     app = Flask('dispatcher')
-    app.wsgi_app = AppDispatcher(apps_config)
+    app.wsgi_app = AppDispatcher(apps_config, config_overrides=config_overrides)
     return app
 
 
 class AppDispatcher:
-    def __init__(self, apps_config: AppsConfig) -> None:
+    def __init__(
+        self,
+        apps_config: AppsConfig,
+        *,
+        config_overrides: dict[str, Any] | None = None,
+    ) -> None:
         self.lock = Lock()
         self.mounts_by_host = {
             mount.server_name: mount for mount in apps_config.app_mounts
         }
+        self.config_overrides = config_overrides
         self.apps_by_host: dict[str, WSGIApplication] = {}
 
     def __call__(self, environ, start_response):
@@ -146,7 +156,7 @@ class AppDispatcher:
                 log.debug('No application mounted for host')
                 return NotFound()
 
-            match _create_app(mount):
+            match _create_app(mount, config_overrides=self.config_overrides):
                 case Ok(app):
                     self.apps_by_host[host] = app
                     mode = app.byceps_app_mode
@@ -165,16 +175,20 @@ class AppDispatcher:
                     return InternalServerError(error_message)
 
 
-def _create_app(mount: AppMount) -> Result[WSGIApplication, str]:
+def _create_app(
+    mount: AppMount, *, config_overrides: dict[str, Any] | None = None
+) -> Result[WSGIApplication, str]:
     match mount:
         case AdminAppMount():
-            return Ok(create_admin_app())
+            return Ok(create_admin_app(config_overrides=config_overrides))
         case ApiAppMount():
-            return Ok(create_api_app())
+            return Ok(create_api_app(config_overrides=config_overrides))
         case SiteAppMount():
             site_id = mount.site_id
             if site_id:
-                app = create_site_app(site_id)
+                app = create_site_app(
+                    site_id, config_overrides=config_overrides
+                )
                 return Ok(app)
             else:
                 return Err(f'Unknown site ID "{site_id}"')
