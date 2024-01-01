@@ -8,11 +8,13 @@ import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any
+from wsgiref.types import WSGIApplication
 
 from flask import Flask
 from moneyed import EUR
 import pytest
 
+from byceps.app_dispatcher import create_dispatcher_app, parse_apps_config
 from byceps.application import (
     create_admin_app as _create_admin_app,
     create_api_app as _create_api_app,
@@ -94,6 +96,22 @@ def database():
         populate_database()
 
 
+APPS_CONFIG = """
+[[app_mounts]]
+server_name = "api.acmecon.test"
+mode = "api"
+"""
+
+
+@pytest.fixture(scope='package')
+def apps(database, data_path: Path) -> WSGIApplication:
+    apps_config = parse_apps_config(APPS_CONFIG).unwrap()
+
+    config_overrides = _merge_config_overrides({}, data_path, None)
+
+    return create_dispatcher_app(apps_config, config_overrides=config_overrides)
+
+
 @pytest.fixture(scope='session')
 def make_admin_app(data_path: Path):
     """Provide the admin web application."""
@@ -168,7 +186,7 @@ def site_app(database, make_site_app, site: Site) -> Flask:
 
 
 def _merge_config_overrides(
-    overrides: dict[str, Any], data_path: Path, server_name: str
+    overrides: dict[str, Any], data_path: Path, server_name: str | None
 ) -> dict[str, Any]:
     merged: dict[str, Any] = {}
 
@@ -181,7 +199,8 @@ def _merge_config_overrides(
     if _CONFIG_PATH_DATA_KEY not in merged:
         merged[_CONFIG_PATH_DATA_KEY] = data_path
 
-    merged['SERVER_NAME'] = server_name
+    if server_name:
+        merged['SERVER_NAME'] = server_name
 
     merged.update(_CONFIG_OVERRIDES_FOR_TESTS)
 
