@@ -88,13 +88,14 @@ jobs:
         coverage xml
 
     - name: Notify Code Climate of a completed test run
+      if: github.repository == 'byceps/byceps'
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       run: |
         ./cc-test-reporter after-build
 
     - name: Post result to Discord
-      if: always()
+      if: github.repository == 'byceps/byceps' && always()
       env:
         JOB_RESULT: ${{ job.status }}
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
