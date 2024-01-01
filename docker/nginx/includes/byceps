@@ -1,5 +1,5 @@
 location @byceps {
-    uwsgi_pass byceps-admin:5000;
+    uwsgi_pass byceps:5000;
     include uwsgi_params;
     proxy_set_header Host $host;
 }
@@ -10,10 +10,6 @@ location / {
 
 location = /favicon.ico {
     return 404;
-}
-
-location ^~ /static/ {
-    alias /var/www/byceps/byceps/static/;
 }
 
 location ~ ^/static_sites/(.+?)/(.+)$ {
