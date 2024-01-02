@@ -103,7 +103,7 @@ mode = "api"
 """
 
 
-@pytest.fixture(scope='package')
+@pytest.fixture(scope='session')
 def apps(database, data_path: Path) -> WSGIApplication:
     apps_config = parse_apps_config(APPS_CONFIG).unwrap()
 
