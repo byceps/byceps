@@ -1,7 +1,7 @@
 -r requirements-docs.txt
 -r requirements-test.txt
 Flask-DebugToolbar==0.14.1
-mypy==1.7.1
+mypy==1.8.0
 ruff==0.1.8
 types-freezegun==1.1.10
 types-redis==4.6.0.11
