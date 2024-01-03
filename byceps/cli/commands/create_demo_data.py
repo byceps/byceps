@@ -4,7 +4,7 @@ byceps.cli.command.create_demo_data
 
 Populate the database with data for demonstration purposes.
 
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

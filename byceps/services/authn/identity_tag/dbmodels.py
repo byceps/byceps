@@ -2,7 +2,7 @@
 byceps.services.authn.identity_tag.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2023 Jochen Kupperschmidt
+:Copyright: 2022-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
