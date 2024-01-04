@@ -6,12 +6,11 @@ byceps.blueprints.site.page.templating
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import sys
-import traceback
 from typing import Any
 
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
+import structlog
 
 from byceps.blueprints.site.snippet.templating import (
     render_snippet_as_partial_from_template,
@@ -22,6 +21,9 @@ from byceps.services.site_navigation import site_navigation_service
 from byceps.services.site_navigation.models import NavMenuID
 from byceps.util.l10n import get_default_locale, get_locale_str
 from byceps.util.templating import load_template
+
+
+log = structlog.get_logger()
 
 
 Context = dict[str, Any]
@@ -43,8 +45,12 @@ def render_page(page: Page, version: PageVersion) -> str | tuple[str, int]:
     except TemplateNotFound:
         abort(404)
     except Exception as e:
-        print('Error in page markup:', e, file=sys.stderr)
-        traceback.print_exc()
+        log.error(
+            'Error in page markup',
+            site_id=page.site_id,
+            page_name=page.name,
+            error=e,
+        )
         context = {'message': str(e)}
         return render_template('site/page/error.html', **context), 500
 
