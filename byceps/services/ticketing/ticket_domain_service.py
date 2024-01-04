@@ -27,7 +27,7 @@ from .errors import (
 from .models.checkin import (
     PotentialTicketForCheckIn,
     TicketCheckIn,
-    TicketValidForCheckIn,
+    ValidTicketForCheckIn,
 )
 from .models.log import TicketLogEntry, TicketLogEntryData
 from .models.ticket import TicketID
@@ -80,7 +80,7 @@ def check_in_user(
             )
         )
 
-    valid_ticket = TicketValidForCheckIn(
+    valid_ticket = ValidTicketForCheckIn(
         id=ticket_id,
         code=ticket.code,
         used_by=ticket.used_by,
@@ -105,7 +105,7 @@ def check_in_user(
 
 
 def _build_check_in(
-    occurred_at: datetime, ticket: TicketValidForCheckIn, initiator: User
+    occurred_at: datetime, ticket: ValidTicketForCheckIn, initiator: User
 ) -> TicketCheckIn:
     return TicketCheckIn(
         id=generate_uuid7(),
@@ -116,7 +116,7 @@ def _build_check_in(
 
 
 def _build_check_in_event(
-    occurred_at: datetime, ticket: TicketValidForCheckIn, initiator: User
+    occurred_at: datetime, ticket: ValidTicketForCheckIn, initiator: User
 ) -> TicketCheckedInEvent:
     return TicketCheckedInEvent(
         occurred_at=occurred_at,

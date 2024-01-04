@@ -29,7 +29,7 @@ class PotentialTicketForCheckIn:
 
 
 @dataclass(frozen=True)
-class TicketValidForCheckIn:
+class ValidTicketForCheckIn:
     id: TicketID
     code: TicketCode
     used_by: User
