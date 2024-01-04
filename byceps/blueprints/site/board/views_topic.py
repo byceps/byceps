@@ -38,6 +38,19 @@ from .blueprint import blueprint
 from .forms import PostingCreateForm, TopicCreateForm, TopicUpdateForm
 
 
+REACTION_KINDS_IN_ORDER = [
+    'thumbsup',
+    'thumbsdown',
+    'heart',
+]
+
+REACTION_KINDS_TO_SYMBOLS = {
+    'heart': '❤️',
+    'thumbsdown': '👎',
+    'thumbsup': '👍',
+}
+
+
 @blueprint.get('/topics', defaults={'page': 1})
 @blueprint.get('/topics/pages/<int:page>')
 @templated
@@ -126,18 +139,6 @@ def topic_view(topic_id, page):
         and orga_team_service.is_orga_for_party(g.user.id, g.party_id)
     )
 
-    reaction_kinds_in_order = [
-        'thumbsup',
-        'thumbsdown',
-        'heart',
-    ]
-
-    reaction_kinds_to_symbols = {
-        'heart': '❤️',
-        'thumbsdown': '👎',
-        'thumbsup': '👍',
-    }
-
     context = {
         'topic': topic,
         'postings': postings,
@@ -145,8 +146,8 @@ def topic_view(topic_id, page):
         'may_topic_be_updated_by_current_user': service.may_topic_be_updated_by_current_user,
         'may_posting_be_updated_by_current_user': service.may_posting_be_updated_by_current_user,
         'is_current_user_orga': is_current_user_orga,
-        'reaction_kinds_in_order': reaction_kinds_in_order,
-        'reaction_kinds_to_symbols': reaction_kinds_to_symbols,
+        'reaction_kinds_in_order': REACTION_KINDS_IN_ORDER,
+        'reaction_kinds_to_symbols': REACTION_KINDS_TO_SYMBOLS,
     }
 
     if is_last_page:
