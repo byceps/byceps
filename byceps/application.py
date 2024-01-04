@@ -11,7 +11,7 @@ import os
 from pathlib import Path
 from typing import Any
 
-from flask import abort, Flask
+from flask import Flask
 from flask_babel import Babel
 import jinja2
 from redis import Redis
@@ -22,6 +22,7 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from byceps import config, config_defaults
 from byceps.announce.announce import enable_announcements
 from byceps.blueprints.admin.blueprints import register_admin_blueprints
+from byceps.blueprints.admin.jobs.views import enable_rq_dashboard
 from byceps.blueprints.api.blueprints import register_api_blueprints
 from byceps.blueprints.site.blueprints import register_site_blueprints
 from byceps.config import (
@@ -31,10 +32,7 @@ from byceps.config import (
 )
 from byceps.database import db
 from byceps.util import templatefilters
-from byceps.util.authz import (
-    has_current_user_permission,
-    load_permissions,
-)
+from byceps.util.authz import load_permissions
 from byceps.util.framework.blueprint import get_blueprint
 from byceps.util.l10n import get_current_user_locale
 from byceps.util.templating import SiteTemplateOverridesLoader
@@ -294,18 +292,8 @@ def _enable_debug_toolbar(app: Flask) -> None:
 
 
 def _enable_rq_dashboard(app: Flask) -> None:
-    import rq_dashboard
-
-    @rq_dashboard.blueprint.before_request
-    def require_permission():
-        if not has_current_user_permission('jobs.view'):
-            abort(403)
-
     app.config['RQ_DASHBOARD_REDIS_URL'] = app.config['REDIS_URL']
-
-    rq_dashboard.web.setup_rq_connection(app)
-    app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
-
+    enable_rq_dashboard(app, '/admin/rq')
     app.byceps_feature_states['rq_dashboard'] = True
 
 
