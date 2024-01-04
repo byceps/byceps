@@ -7,6 +7,7 @@ byceps.services.ticketing.ticket_domain_service
 """
 
 from datetime import datetime
+from typing import assert_never
 
 from byceps.events.base import EventUser
 from byceps.events.ticketing import TicketCheckedInEvent
@@ -38,29 +39,40 @@ def check_in_user(
 ) -> Result[
     tuple[TicketCheckIn, TicketCheckedInEvent, TicketLogEntry], TicketingError
 ]:
-    ticket_id = ticket.id
+    validation_result = _validate_ticket(ticket, party_id)
+    match validation_result:
+        case Ok(valid_ticket):
+            return Ok(_check_in_user(valid_ticket, initiator))
+        case Err(e):
+            return Err(e)
+        case _:
+            assert_never(validation_result)
 
+
+def _validate_ticket(
+    ticket: PotentialTicketForCheckIn, party_id: PartyID
+) -> Result[ValidTicketForCheckIn, TicketingError]:
     if ticket.party_id != party_id:
         return Err(
             TicketBelongsToDifferentPartyError(
-                f'Ticket {ticket_id} belongs to another party ({ticket.party_id}).'
+                f'Ticket {ticket.id} belongs to another party ({ticket.party_id}).'
             )
         )
 
     if ticket.revoked:
         return Err(
-            TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
+            TicketIsRevokedError(f'Ticket {ticket.id} has been revoked.')
         )
 
     if ticket.used_by is None:
         return Err(
-            TicketLacksUserError(f'Ticket {ticket_id} has no user assigned.')
+            TicketLacksUserError(f'Ticket {ticket.id} has no user assigned.')
         )
 
     if ticket.user_checked_in:
         return Err(
             UserAlreadyCheckedInError(
-                f'Ticket {ticket_id} has already been used to check in a user.'
+                f'Ticket {ticket.id} has already been used to check in a user.'
             )
         )
 
@@ -81,27 +93,33 @@ def check_in_user(
         )
 
     valid_ticket = ValidTicketForCheckIn(
-        id=ticket_id,
+        id=ticket.id,
         code=ticket.code,
-        used_by=ticket.used_by,
+        used_by=user,
         occupied_seat_id=ticket.occupied_seat_id,
     )
 
+    return Ok(valid_ticket)
+
+
+def _check_in_user(
+    ticket: ValidTicketForCheckIn, initiator: User
+) -> tuple[TicketCheckIn, TicketCheckedInEvent, TicketLogEntry]:
     occurred_at = datetime.utcnow()
 
-    check_in = _build_check_in(occurred_at, valid_ticket, initiator)
-    event = _build_check_in_event(occurred_at, valid_ticket, initiator)
+    check_in = _build_check_in(occurred_at, ticket, initiator)
+    event = _build_check_in_event(occurred_at, ticket, initiator)
     log_entry = _build_check_in_log_entry(
         occurred_at,
         'user-checked-in',
-        ticket_id,
+        ticket.id,
         {
-            'checked_in_user_id': str(user.id),
+            'checked_in_user_id': str(ticket.used_by.id),
             'initiator_id': str(initiator.id),
         },
     )
 
-    return Ok((check_in, event, log_entry))
+    return check_in, event, log_entry
 
 
 def _build_check_in(
