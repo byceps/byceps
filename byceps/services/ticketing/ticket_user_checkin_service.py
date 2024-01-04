@@ -19,7 +19,7 @@ from byceps.util.result import Err, Ok, Result
 from . import ticket_domain_service, ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
 from .errors import TicketingError, UserIdUnknownError
-from .models.checkin import TicketCheckIn, TicketForCheckIn
+from .models.checkin import PotentialTicketForCheckIn, TicketCheckIn
 from .models.log import TicketLogEntry
 from .models.ticket import TicketCode, TicketID
 
@@ -38,7 +38,7 @@ def check_in_user(
         if used_by is None:
             return Err(UserIdUnknownError(f"Unknown user ID '{used_by_id}'"))
 
-    ticket_for_check_in = TicketForCheckIn(
+    potential_ticket_for_check_in = PotentialTicketForCheckIn(
         id=db_ticket.id,
         party_id=db_ticket.party_id,
         code=TicketCode(db_ticket.code),
@@ -49,7 +49,7 @@ def check_in_user(
     )
 
     check_in_result = ticket_domain_service.check_in_user(
-        party_id, ticket_for_check_in, initiator
+        party_id, potential_ticket_for_check_in, initiator
     )
 
     if check_in_result.is_err():

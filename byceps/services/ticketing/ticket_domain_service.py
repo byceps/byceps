@@ -25,8 +25,8 @@ from .errors import (
     UserAlreadyCheckedInError,
 )
 from .models.checkin import (
+    PotentialTicketForCheckIn,
     TicketCheckIn,
-    TicketForCheckIn,
     TicketValidForCheckIn,
 )
 from .models.log import TicketLogEntry, TicketLogEntryData
@@ -34,7 +34,7 @@ from .models.ticket import TicketID
 
 
 def check_in_user(
-    party_id: PartyID, ticket: TicketForCheckIn, initiator: User
+    party_id: PartyID, ticket: PotentialTicketForCheckIn, initiator: User
 ) -> Result[
     tuple[TicketCheckIn, TicketCheckedInEvent, TicketLogEntry], TicketingError
 ]:

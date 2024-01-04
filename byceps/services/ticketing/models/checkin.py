@@ -18,7 +18,7 @@ from .ticket import TicketCode, TicketID
 
 
 @dataclass(frozen=True)
-class TicketForCheckIn:
+class PotentialTicketForCheckIn:
     id: TicketID
     party_id: PartyID
     code: TicketCode
