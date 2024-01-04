@@ -107,19 +107,32 @@ def _build_message(
 
 def _send_via_smtp(smtp_config: SmtpConfig, message: EmailMessage) -> None:
     """Send email via SMTP."""
-
     if smtp_config.use_ssl:
-        with SMTP_SSL(smtp_config.host, smtp_config.port) as smtp:
-            if smtp_config.username and smtp_config.password:
-                smtp.login(smtp_config.username, smtp_config.password)
-
-            smtp.send_message(message)
+        _send_via_smtp_with_ssl(smtp_config, message)
     else:
-        with SMTP(smtp_config.host, smtp_config.port) as smtp:
-            if smtp_config.starttls:
-                smtp.starttls()
+        _send_via_smtp_without_ssl(smtp_config, message)
 
-            if smtp_config.username and smtp_config.password:
-                smtp.login(smtp_config.username, smtp_config.password)
 
-            smtp.send_message(message)
+def _send_via_smtp_with_ssl(
+    smtp_config: SmtpConfig, message: EmailMessage
+) -> None:
+    """Send email via SMTP with SSL."""
+    with SMTP_SSL(smtp_config.host, smtp_config.port) as smtp:
+        if smtp_config.username and smtp_config.password:
+            smtp.login(smtp_config.username, smtp_config.password)
+
+        smtp.send_message(message)
+
+
+def _send_via_smtp_without_ssl(
+    smtp_config: SmtpConfig, message: EmailMessage
+) -> None:
+    """Send email via SMTP without SSL (but potentially with STARTTLS)."""
+    with SMTP(smtp_config.host, smtp_config.port) as smtp:
+        if smtp_config.starttls:
+            smtp.starttls()
+
+        if smtp_config.username and smtp_config.password:
+            smtp.login(smtp_config.username, smtp_config.password)
+
+        smtp.send_message(message)
