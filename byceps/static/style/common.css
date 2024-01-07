@@ -382,10 +382,6 @@ table:is(.index, .itemlist) > tfoot > tr > :is(th, td) {
   border-width: 1px 0 0 0;
 }
 
-table.index.index--higher :is(th, td) {
-  --cell-padding-vertical: 0.75rem;
-}
-
 table:is(.index.index--v-centered, .itemlist.itemlist--v-centered) :is(th, td) {
   vertical-align: middle;
 }
