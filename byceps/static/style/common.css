@@ -324,7 +324,9 @@ table.itemlist {
   --table-background-color-body: transparent;
   --table-border-color: #dddddd;
   background-color: var(--table-background-color-body);
+  border-collapse: separate;  /* Required for `border-radius`. */
   border-color: var(--table-border-color);
+  border-radius: var(--border-radius);
   border-style: solid;
   border-width: 1px;
 }
