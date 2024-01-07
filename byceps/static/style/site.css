@@ -79,7 +79,7 @@ h2 {
 
 .board-index-item-link {
   --board-index-item-hover-bg-color: #dddddd;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   display: block;
   margin: -0.1rem -0.3rem;
   padding: 0.1rem 0.3rem;
@@ -187,7 +187,7 @@ form.board-posting-create-form-inline .label {
 .user-comment-main header {
   background-color: #eeeeee;
   border-width: 1px 1px 0 1px;
-  border-radius: 3px 3px 0 0;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
   display: flex;
   font-size: 0.6875rem; /* 11px / 16px */
   justify-content: space-between;
@@ -247,7 +247,7 @@ form.board-posting-create-form-inline .label {
 
 .user-comment-main .body {
   border-width: 1px;
-  border-radius: 0 0 3px 3px;
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
   flex: 1 0 auto;
   overflow: hidden;
   padding: 15px;
@@ -430,7 +430,7 @@ form.board-posting-create-form-inline .label {
   --header-bg-color: #f4f4f4;
   --header-bg-height: 104px;
   --header-border-color: #dddddd;
-  --header-border-radius: 3px;
+  --header-border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -605,7 +605,7 @@ form.board-posting-create-form-inline .label {
 
 .ticket-user-placeholder {
   border: #dddddd dashed 1px;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   display: inline-block;
   height: 46px;
   width: 46px;

@@ -79,7 +79,7 @@ a:not(:hover) {
 .box {
   background-color: #ffffff;
   border-color: #cccccc;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   border-style: solid;
   border-width: 1px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
@@ -527,7 +527,7 @@ h1 .tag .icon {
 /* dropdowns */
 
 .page-body-inner .dropdown-menu {
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   top: calc(100% - 1px);
 }
 
@@ -725,7 +725,7 @@ h1 .tag .icon {
 }
 
 .dimmed-box {
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   border: #dddddd solid 1px;
   color: var(--dimmed-color);
   padding: 1.5rem;
