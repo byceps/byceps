@@ -92,9 +92,7 @@
   </div>
 
   <h2>{{ _('Articles') }}</h2>
-  <div class="main-body-box">
 {% include 'site/shop/orders/_articles.html' %}
-  </div>
 
   {%- if order.is_paid and not cancellation_request %}
   <h2>{{ _('Cancellation') }}</h2>
