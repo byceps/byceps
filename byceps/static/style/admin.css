@@ -424,6 +424,14 @@ h2 small {
 }
 
 
+/* tables */
+
+table.itemlist {
+  --table-background-color-head: #f8f8f8;
+  --table-background-color-body: #ffffff;
+}
+
+
 /* lists */
 
 ol.index,

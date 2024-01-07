@@ -320,15 +320,17 @@ table.index {
 table.itemlist {
   --cell-padding-vertical: 0.75rem;
   --row-padding-horizontal: 1.5rem;
+  --table-background-color-head: transparent;
+  --table-background-color-body: transparent;
   --table-border-color: #dddddd;
-  background-color: #ffffff;
+  background-color: var(--table-background-color-body);
   border-color: var(--table-border-color);
   border-style: solid;
   border-width: 1px;
 }
 
 table.itemlist thead {
-  background-color: #f8f8f8;
+  background-color: var(--table-background-color-head);
 }
 
 th,
