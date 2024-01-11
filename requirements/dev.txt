@@ -1,5 +1,5 @@
--r requirements-docs.txt
--r requirements-test.txt
+-r docs.txt
+-r test.txt
 Flask-DebugToolbar==0.14.1
 mypy==1.8.0
 ruff==0.1.11
