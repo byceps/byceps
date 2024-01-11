@@ -1,8 +1,8 @@
-{%- from 'macros/admin/log.html' import render_log_entry, render_log_reason, render_log_user %}
+{%- from 'macros/admin/log.html' import render_log_entries, render_log_entry, render_log_reason, render_log_user %}
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
 
 
-  <div class="events">
+{%- call render_log_entries() %}
     {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
       {%- if log_entry.event_type == 'seat-manager-appointed' %}
         {%- call render_log_entry('administrate', log_entry.occurred_at) %}
@@ -138,4 +138,4 @@
         {%- endcall %}
       {%- endif %}
     {%- endfor %}
-  </div>
+{%- endcall %}

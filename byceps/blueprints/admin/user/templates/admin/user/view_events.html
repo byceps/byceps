@@ -1,6 +1,6 @@
 {% extends 'layout/admin/user.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/log.html' import render_log_entry, render_log_reason, render_log_user %}
+{% from 'macros/admin/log.html' import render_log_entries, render_log_entry, render_log_reason, render_log_user %}
 {% from 'macros/admin/user_badge.html' import render_user_badge_linked %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_tab = 'events' %}
@@ -25,7 +25,7 @@
   </div>
 
   <div class="box">
-    <div class="events">
+{%- call render_log_entries() %}
       {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
         {%- if log_entry.event_type == 'user-avatar-removed' %}
           {%- call render_log_entry('delete', log_entry.occurred_at) %}
@@ -296,7 +296,7 @@
           {%- endcall %}
         {%- endif %}
       {%- endfor %}
-    </div>
+{%- endcall %}
   </div>
 
 {%- endblock %}
