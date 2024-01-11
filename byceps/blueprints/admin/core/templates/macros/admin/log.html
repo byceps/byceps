@@ -3,22 +3,28 @@
 
 
 {% macro render_log_entries() -%}
-  <div class="events">
+  <table class="events itemlist itemlist--wide">
+    <tbody>
 {{ caller() }}
-  </div>
+    </tbody>
+  </table>
 {%- endmacro %}
 
 
 {% macro render_log_entry(icon_name, timestamp) -%}
-    <div class="event">
-      <div class="event-icon">{{ render_icon(icon_name) }}</div>
-      <div class="event-data">
-        <div class="event-body">
+      <tr>
+        <td>
+          <div class="event-icon">{{ render_icon(icon_name) }}</div>
+        </td>
+        <td>
+          <div class="row row--space-between row--wrap">
+            <div class="event-body">
 {{ caller() }}
-        </div>
-        <div class="event-timestamp">{{ timestamp|datetimeformat }}</div>
-      </div>
-    </div>
+            </div>
+            <div>{{ timestamp|datetimeformat|dim }}</div>
+          </div>
+        </td>
+      </tr>
 {%- endmacro %}
 
 

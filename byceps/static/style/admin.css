@@ -639,41 +639,22 @@ h1 .tag .icon {
 
 /* events */
 
-.events {
-  --path-color: #eeeeee;
-  --path-width: 0.125rem;
-  --icon-container-border-width: var(--path-width);
-  --icon-container-size: 2rem;
-  --icon-size: 1rem;
-
-  --half-path-width: calc(var(--path-width) / 2);
-  --half-icon-container-width: calc(var(--icon-container-size) / 2);
-  --path-gradient-color-stop-1: calc(var(--half-icon-container-width) - var(--half-path-width));
-  --path-gradient-color-stop-2: calc(var(--half-icon-container-width) + var(--half-path-width));
-
-  background: linear-gradient(90deg,
-    transparent var(--path-gradient-color-stop-1),
-    var(--path-color) var(--path-gradient-color-stop-1),
-    var(--path-color) var(--path-gradient-color-stop-2),
-    transparent var(--path-gradient-color-stop-2)
-  );
-}
-
-
-.event {
-  display: flex;
-  padding: 0.25rem 0;
+table.events.itemlist {
+  --cell-padding-vertical: 1.25rem;
 }
 
 .event-icon {
+  --icon-container-size: 1.75rem;
+  --icon-size: 0.875rem;
+
   align-items: center;
-  background-color: var(--path-color);
-  border: #ffffff solid var(--icon-container-border-width);
+  background-color: #eeeeee;
   border-radius: 50%;
   display: flex;
   flex: 0 0 auto;
   height: var(--icon-container-size);
   justify-content: center;
+  margin: -0.25rem 0;
   width: var(--icon-container-size);
 }
 
@@ -683,36 +664,14 @@ h1 .tag .icon {
   width: var(--icon-size);
 }
 
-.event-data {
-  color: var(--dimmed-color);
-  flex: 1 1 auto;
-  margin-left: 1rem;
-  margin-top: 0.25rem;
-}
-
-.event-body {
-  font-size: 0.8125rem; /* 13px / 16px */
-}
-
-.event-timestamp {
-  font-size: 0.6875rem; /* 11px / 16px */
-  margin-top: 0.5rem;
-  text-align: right;
-  white-space: nowrap;
-}
-
 .event-body .user-link a {
-  color: currentColor;
   font-weight: bold;
-}
-
-.event-body .user-link a:not(:hover) {
-  text-decoration: none;
 }
 
 .event-body blockquote {
   background-color: #f4f4f4;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
+  margin: 0.5rem 0 0 0;
   padding: 1rem;
   white-space: pre-wrap;
 }

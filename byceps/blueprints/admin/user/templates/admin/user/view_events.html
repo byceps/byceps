@@ -24,7 +24,6 @@
     </div>
   </div>
 
-  <div class="box">
 {%- call render_log_entries() %}
       {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
         {%- if log_entry.event_type == 'user-avatar-removed' %}
@@ -297,6 +296,5 @@
         {%- endif %}
       {%- endfor %}
 {%- endcall %}
-  </div>
 
 {%- endblock %}
