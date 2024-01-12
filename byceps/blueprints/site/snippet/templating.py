@@ -2,7 +2,7 @@
 byceps.blueprints.site.snippet.templating
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,12 +10,16 @@ from typing import Any
 
 from flask import g
 from jinja2 import Template
+import structlog
 
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet.models import SnippetScope
 from byceps.util.l10n import get_current_user_locale, get_default_locale
 from byceps.util.templating import load_template
+
+
+log = structlog.get_logger()
 
 
 Context = dict[str, Any]
@@ -85,7 +89,16 @@ def render_snippet_as_partial(
     if context is None:
         context = {}
 
-    return _render_template(current_version.body, context=context)
+    try:
+        return _render_template(current_version.body, context=context)
+    except Exception as e:
+        log.error(
+            'Error in snippet markup',
+            scope=scope.as_string(),
+            snippet_name=name,
+            error=e,
+        )
+        raise e
 
 
 def _render_template(source, *, context: Context | None = None) -> str:

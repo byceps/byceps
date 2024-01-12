@@ -16,7 +16,7 @@ dependencies:
 
 .. code:: sh
 
-    (venv)$ pip install -r requirements-test.txt
+    (venv)$ pip install -r requirements/test.txt
 
 Then run the tests:
 

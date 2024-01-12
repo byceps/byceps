@@ -2,7 +2,7 @@
 byceps.services.shop.order.order_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -603,7 +603,15 @@ def get_orders_for_shop_paginated(
 
     paginated_orders = paginate(stmt, page, per_page)
 
-    orderer_ids = {db_order.placed_by_id for db_order in paginated_orders.items}
+    paginated_orders.items = _to_admin_order_list_items(paginated_orders.items)
+
+    return paginated_orders
+
+
+def _to_admin_order_list_items(
+    db_orders: list[DbOrder],
+) -> list[AdminOrderListItem]:
+    orderer_ids = {db_order.placed_by_id for db_order in db_orders}
     orderers_by_id = user_service.get_users_indexed_by_id(
         orderer_ids, include_avatars=True
     )
@@ -630,11 +638,7 @@ def get_orders_for_shop_paginated(
             is_processed=_is_processed(db_order),
         )
 
-    paginated_orders.items = [
-        to_admin_order_list_item(item) for item in paginated_orders.items
-    ]
-
-    return paginated_orders
+    return [to_admin_order_list_item(db_order) for db_order in db_orders]
 
 
 def get_orders_placed_by_user(user_id: UserID) -> list[Order]:

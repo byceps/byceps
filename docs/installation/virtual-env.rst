@@ -53,7 +53,7 @@ Install the Python dependencies via pip_:
 
 .. code-block:: sh
 
-    (venv)$ pip install -r requirements.txt
+    (venv)$ pip install -r requirements/core.txt
 
 Install BYCEPS in editable mode to make the ``byceps`` command as well
 as the package of the same name available:

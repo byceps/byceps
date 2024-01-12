@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -17,7 +17,7 @@ from byceps.services.ticketing.errors import (
     UserAccountSuspendedError,
     UserAlreadyCheckedInError,
 )
-from byceps.services.ticketing.models.checkin import TicketForCheckIn
+from byceps.services.ticketing.models.checkin import PotentialTicketForCheckIn
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
@@ -129,8 +129,8 @@ def build_ticket():
         used_by: User | None = None,
         revoked: bool = False,
         user_checked_in: bool = False,
-    ) -> TicketForCheckIn:
-        return TicketForCheckIn(
+    ) -> PotentialTicketForCheckIn:
+        return PotentialTicketForCheckIn(
             id=TicketID(generate_uuid7()),
             party_id=party_id,
             code=TicketCode(generate_token(5)),

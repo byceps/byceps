@@ -1,8 +1,8 @@
-{%- from 'macros/admin/log.html' import render_log_entry, render_log_reason, render_log_user %}
+{%- from 'macros/admin/log.html' import render_log_entries, render_log_entry, render_log_reason, render_log_user %}
 {%- from 'macros/admin/shop/order.html' import render_order_payment_state %}
 
 
-  <div class="events">
+{%- call render_log_entries() %}
     {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
       {%- if log_entry.event_type == 'order-placed' %}
         {%- call render_log_entry('add', log_entry.occurred_at) %}
@@ -160,4 +160,4 @@
         {%- endcall %}
       {%- endif %}
     {%- endfor %}
-  </div>
+{%- endcall %}

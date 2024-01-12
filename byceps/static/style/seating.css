@@ -30,7 +30,7 @@
 .ticket {
   border-color: transparent;
   border-left-color: #04aff4;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   border-style: solid;
   border-width: 1px 1px 1px 0.25rem;
   display: none;
@@ -170,7 +170,7 @@
 .seat-tooltip {
   background-color: var(--bg-color, #ffffff);
   border: var(--border-color, #888888) solid 1px;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   bottom: 2rem;
   font-size: 0.75rem; /* 12px / 16px */
   left: -0.5rem;

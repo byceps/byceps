@@ -55,6 +55,8 @@ services:
     networks:
       - byceps
     command: ./worker.py
+    networks:
+      - byceps
 
   web:
     image: nginx
@@ -94,5 +96,5 @@ volumes:
   db-data:
 
 networks:
-  proxy:
   byceps:
+  proxy:

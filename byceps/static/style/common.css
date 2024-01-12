@@ -10,6 +10,7 @@
   --color-warning: #ffcc11;
   --color-warning-light: #ffe99a;
 
+  --border-radius: 3px;
   --dimmed-color: #808080;
   --link-color: #0066c6;
 }
@@ -201,7 +202,7 @@ span[title] .icon {
 /* notifications */
 
 .notification {
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   border: rgba(0, 0, 0, 0.25) solid 1px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
   padding: 1rem;
@@ -319,15 +320,19 @@ table.index {
 table.itemlist {
   --cell-padding-vertical: 0.75rem;
   --row-padding-horizontal: 1.5rem;
+  --table-background-color-head: transparent;
+  --table-background-color-body: transparent;
   --table-border-color: #dddddd;
-  background-color: #ffffff;
+  background-color: var(--table-background-color-body);
+  border-collapse: separate;  /* Required for `border-radius`. */
   border-color: var(--table-border-color);
+  border-radius: var(--border-radius);
   border-style: solid;
   border-width: 1px;
 }
 
 table.itemlist thead {
-  background-color: #f8f8f8;
+  background-color: var(--table-background-color-head);
 }
 
 th,
@@ -364,14 +369,17 @@ table.index td {
   font-size: 0.8125rem; /* 13px / 16px */
 }
 
-table:is(.index, .itemlist) > tbody > tr > :is(th, td) {
+table:is(.index, .itemlist) > thead th {
   border-color: var(--table-border-color);
   border-style: solid;
-  border-width: 1px 0;
+  border-width: 0 0 1px 0;
 }
 
-table.index.index--higher :is(th, td) {
-  --cell-padding-vertical: 0.75rem;
+table:is(.index, .itemlist) > tbody > tr:not(:first-child) > :is(th, td),
+table:is(.index, .itemlist) > tfoot > tr > :is(th, td) {
+  border-color: var(--table-border-color);
+  border-style: solid;
+  border-width: 1px 0 0 0;
 }
 
 table:is(.index.index--v-centered, .itemlist.itemlist--v-centered) :is(th, td) {
@@ -456,7 +464,7 @@ select.form-control,
 textarea.form-control {
   background-color: #ffffff;
   border: #bbbbbb solid 1px;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   font-size: 0.875rem; /* 14px / 16px */
   padding: 0.4rem;
 }
@@ -498,7 +506,7 @@ form .invalid {
   --padding: 0.375rem;
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   padding: var(--padding);
 }
 
@@ -592,7 +600,7 @@ form.unobtrusive input:focus ~ .button {
   border-color: #cccccc;
   border-style: solid;
   border-width: 1px;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   color: currentColor;
   cursor: pointer;
   display: inline-flex;
@@ -755,7 +763,7 @@ nav.pagination.pagination--centered ol {
   border-color: #cccccc;
   border-style: solid;
   border-width: 1px;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   color: currentColor;
   display: grid;
   font-size: 0.75rem; /* 12px / 16px */
@@ -778,7 +786,7 @@ nav.pagination.pagination--centered ol {
 
 .progress {
   background-color: #dddddd;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   display: flex;
   height: 0.5rem;
   margin: 0.25rem 0;
@@ -800,7 +808,7 @@ nav.pagination.pagination--centered ol {
 
 .tag {
   background-color: orange;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
   color: #ffffff;
   display: inline-block;
@@ -829,7 +837,7 @@ nav.pagination.pagination--centered ol {
 /* user avatars */
 
 .avatar {
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   display: inline-block;
   max-height: 100%;
   max-width: 100%;

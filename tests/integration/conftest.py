@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -17,7 +17,6 @@ import pytest
 from byceps.app_dispatcher import create_dispatcher_app, parse_apps_config
 from byceps.application import (
     create_admin_app as _create_admin_app,
-    create_api_app as _create_api_app,
     create_site_app as _create_site_app,
 )
 from byceps.database import db
@@ -103,7 +102,7 @@ mode = "api"
 """
 
 
-@pytest.fixture(scope='package')
+@pytest.fixture(scope='session')
 def apps(database, data_path: Path) -> WSGIApplication:
     apps_config = parse_apps_config(APPS_CONFIG).unwrap()
 
@@ -136,24 +135,10 @@ def admin_app(database, make_admin_app) -> Iterator[Flask]:
 
 
 @pytest.fixture(scope='session')
-def make_api_app(admin_app, data_path: Path):
-    """Provide an API web application."""
-
-    def _wrapper(server_name: str, **config_overrides: Any) -> Flask:
-        merged_config_overrides = _merge_config_overrides(
-            config_overrides, data_path, server_name
-        )
-
-        return _create_api_app(config_overrides=merged_config_overrides)
-
-    return _wrapper
-
-
-@pytest.fixture(scope='session')
-def api_app(database, make_api_app, site: Site) -> Flask:
+def api_app(apps, site: Site) -> Flask:
     """Provide a API web application."""
     server_name = 'api.acmecon.test'
-    app = make_api_app(server_name)
+    app = apps.wsgi_app.get_application(server_name)
     with app.app_context():
         return app
 

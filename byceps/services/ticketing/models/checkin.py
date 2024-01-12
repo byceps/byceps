@@ -2,7 +2,7 @@
 byceps.services.ticketing.models.checkin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -18,7 +18,7 @@ from .ticket import TicketCode, TicketID
 
 
 @dataclass(frozen=True)
-class TicketForCheckIn:
+class PotentialTicketForCheckIn:
     id: TicketID
     party_id: PartyID
     code: TicketCode
@@ -29,7 +29,7 @@ class TicketForCheckIn:
 
 
 @dataclass(frozen=True)
-class TicketValidForCheckIn:
+class ValidTicketForCheckIn:
     id: TicketID
     code: TicketCode
     used_by: User

@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,7 +13,7 @@ from byceps.services.user import (
 )
 
 
-def test_update_user_address(site_app, make_user):
+def test_update_user_address(database, make_user):
     old_first_name = 'Rainer'
     old_last_name = 'Zufall'
     old_date_of_birth = None
@@ -96,7 +96,7 @@ def test_update_user_address(site_app, make_user):
     }
 
 
-def test_update_user_real_name(site_app, make_user):
+def test_update_user_real_name(database, make_user):
     old_first_name = 'Rainer'
     old_last_name = 'Zufall'
 
@@ -147,7 +147,7 @@ def test_update_user_real_name(site_app, make_user):
     }
 
 
-def test_remove_user_dob_and_phone_number(site_app, make_user):
+def test_remove_user_dob_and_phone_number(database, make_user):
     old_date_of_birth = date(1991, 9, 17)
     old_phone_number = '555-fake-anyway'
 

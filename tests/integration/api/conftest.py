@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 
 API-specific fixtures
@@ -13,9 +13,9 @@ from byceps.services.authz.models import PermissionID
 
 
 @pytest.fixture(scope='package')
-def api_client(apps):
+def api_client(api_app):
     """Provide a test HTTP client against the API."""
-    return apps.test_client()
+    return api_app.test_client()
 
 
 @pytest.fixture(scope='package')

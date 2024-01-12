@@ -2,7 +2,7 @@
 byceps.blueprints.admin.authn.identity_tag.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2023 Jochen Kupperschmidt
+:Copyright: 2022-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

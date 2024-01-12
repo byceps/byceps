@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,7 +15,7 @@ def user(make_user):
     )
 
 
-def test_find_user_by_email_address_non_lowercase(site_app, user):
+def test_find_user_by_email_address_non_lowercase(database, user):
     actual = user_service.find_user_by_email_address(
         'Carmen.Sandiego@World.example'
     )
@@ -23,23 +23,23 @@ def test_find_user_by_email_address_non_lowercase(site_app, user):
     assert actual.id == user.id
 
 
-def test_find_user_by_email_address_unknown(site_app, user):
+def test_find_user_by_email_address_unknown(database, user):
     actual = user_service.find_user_by_email_address('no.idea@example.com')
     assert actual is None
 
 
-def test_find_user_by_screen_name_case_sensitive_match(site_app, user):
+def test_find_user_by_screen_name_case_sensitive_match(database, user):
     actual = user_service.find_user_by_screen_name('CarmenSandiego')
     assert actual is not None
     assert actual.screen_name == 'CarmenSandiego'
 
 
-def test_find_user_by_screen_name_case_sensitive_miss(site_app, user):
+def test_find_user_by_screen_name_case_sensitive_miss(database, user):
     actual = user_service.find_user_by_screen_name('cARMENsANDIEGO')
     assert actual is None
 
 
-def test_find_user_by_screen_name_case_insensitive_match(site_app, user):
+def test_find_user_by_screen_name_case_insensitive_match(database, user):
     actual = user_service.find_user_by_screen_name(
         'cARMENsANDIEGO', case_insensitive=True
     )
@@ -47,13 +47,13 @@ def test_find_user_by_screen_name_case_insensitive_match(site_app, user):
     assert actual.screen_name == 'CarmenSandiego'
 
 
-def test_find_user_by_screen_name_case_insensitive_miss(site_app, user):
+def test_find_user_by_screen_name_case_insensitive_miss(database, user):
     actual = user_service.find_user_by_screen_name(
         'cARMENsANDIEGOx', case_insensitive=True
     )
     assert actual is None
 
 
-def test_find_user_by_screen_name_unknown(site_app, user):
+def test_find_user_by_screen_name_unknown(database, user):
     actual = user_service.find_user_by_screen_name('Dunno')
     assert actual is None

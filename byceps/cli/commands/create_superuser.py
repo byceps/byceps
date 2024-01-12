@@ -4,7 +4,7 @@ byceps.cli.command.create_superuser
 
 Create a superuser with admin privileges.
 
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

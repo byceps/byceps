@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -18,7 +18,7 @@ from byceps.util.image.models import ImageType
         ('png', ImageType.png),
     ],
 )
-def test_path(data_path, site_app, user, image_extension, image_type):
+def test_path(data_path, database, user, image_extension, image_type):
     with Path(f'tests/fixtures/images/image.{image_extension}').open('rb') as f:
         avatar_id = user_avatar_service.update_avatar_image(
             user.id, f, {image_type}, user

@@ -2,7 +2,7 @@
 Create and initialize the admin or site application, based on the
 environment.
 
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

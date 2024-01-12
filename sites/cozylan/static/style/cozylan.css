@@ -287,6 +287,10 @@ table.index {
   --table-border-color: var(--border-color);
 }
 
+table.itemlist {
+  --table-border-color: var(--border-color);
+}
+
 .user-comment-main header,
 .user-comment-main .body {
   border-color: var(--border-color);

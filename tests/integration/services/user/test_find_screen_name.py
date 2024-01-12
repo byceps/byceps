@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -18,17 +18,17 @@ def unnamed_user(make_user):
     return make_user(None)
 
 
-def test_find_screen_name_for_unknown_user_id(site_app):
+def test_find_screen_name_for_unknown_user_id(database):
     unknown_user_id = '00000000-0000-0000-0000-000000000000'
     actual = user_service.find_screen_name(unknown_user_id)
     assert actual is None
 
 
-def test_find_screen_name_for_user_with_screen_name(site_app, named_user):
+def test_find_screen_name_for_user_with_screen_name(database, named_user):
     actual = user_service.find_screen_name(named_user.id)
     assert actual == 'HimWhoCanBeNamed'
 
 
-def test_find_screen_name_for_user_without_screen_name(site_app, unnamed_user):
+def test_find_screen_name_for_user_without_screen_name(database, unnamed_user):
     actual = user_service.find_screen_name(unnamed_user.id)
     assert actual is None

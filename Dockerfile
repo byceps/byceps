@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir --user --upgrade pip \
 # application. Do this before copying the rest of the
 # application's files to profit from layer caching for as long
 # as the requirements specification stays the same.
-COPY requirements.txt ./
+COPY requirements/core.txt ./requirements.txt
 RUN pip install --no-cache-dir --user --requirement requirements.txt
 
 # Copy the application into the image.

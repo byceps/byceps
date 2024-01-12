@@ -1,3 +1,0 @@
-coverage==7.3.3
-freezegun==1.4.0
-pytest==7.4.3

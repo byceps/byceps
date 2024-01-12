@@ -2,10 +2,11 @@
 byceps.services.email.email_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2023 Jochen Kupperschmidt
+:Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
 from email.message import EmailMessage
 from email.utils import parseaddr
 from smtplib import SMTP, SMTP_SSL
@@ -16,6 +17,17 @@ from byceps.util.jobqueue import enqueue
 from byceps.util.result import Err, Ok, Result
 
 from .models import Message, NameAndAddress
+
+
+@dataclass(frozen=True)
+class SmtpConfig:
+    host: str
+    port: int
+    starttls: bool
+    use_ssl: bool
+    username: str | None
+    password: str | None
+    suppress_send: bool
 
 
 def parse_address(address_str: str) -> Result[NameAndAddress, str]:
@@ -55,14 +67,30 @@ def send_email(
 
 def send(sender: str, recipients: list[str], subject: str, body: str) -> None:
     """Assemble and send e-mail."""
-    if current_app.config.get('MAIL_SUPPRESS_SEND', False):
+    smtp_config = _load_smtp_config()
+
+    if smtp_config.suppress_send:
         current_app.logger.debug('Suppressing sending of email.')
         return
 
     message = _build_message(sender, recipients, subject, body)
 
     current_app.logger.debug('Sending email.')
-    _send_via_smtp(message)
+    _send_via_smtp(smtp_config, message)
+
+
+def _load_smtp_config() -> SmtpConfig:
+    app_config = current_app.config
+
+    return SmtpConfig(
+        host=app_config.get('MAIL_HOST', 'localhost'),
+        port=int(app_config.get('MAIL_PORT', 25)),
+        starttls=bool(app_config.get('MAIL_STARTTLS', False)),
+        use_ssl=bool(app_config.get('MAIL_USE_SSL', False)),
+        username=app_config.get('MAIL_USERNAME', None),
+        password=app_config.get('MAIL_PASSWORD', None),
+        suppress_send=app_config.get('MAIL_SUPPRESS_SEND', False),
+    )
 
 
 def _build_message(
@@ -77,29 +105,34 @@ def _build_message(
     return message
 
 
-def _send_via_smtp(message: EmailMessage) -> None:
+def _send_via_smtp(smtp_config: SmtpConfig, message: EmailMessage) -> None:
     """Send email via SMTP."""
-    config = current_app.config
-
-    host = config.get('MAIL_HOST', 'localhost')
-    port = config.get('MAIL_PORT', 25)
-    starttls = config.get('MAIL_STARTTLS', False)
-    use_ssl = config.get('MAIL_USE_SSL', False)
-    username = config.get('MAIL_USERNAME', None)
-    password = config.get('MAIL_PASSWORD', None)
-
-    if use_ssl:
-        with SMTP_SSL(host, port) as smtp:
-            if username and password:
-                smtp.login(username, password)
-
-            smtp.send_message(message)
+    if smtp_config.use_ssl:
+        _send_via_smtp_with_ssl(smtp_config, message)
     else:
-        with SMTP(host, port) as smtp:
-            if starttls:
-                smtp.starttls()
+        _send_via_smtp_without_ssl(smtp_config, message)
 
-            if username and password:
-                smtp.login(username, password)
 
-            smtp.send_message(message)
+def _send_via_smtp_with_ssl(
+    smtp_config: SmtpConfig, message: EmailMessage
+) -> None:
+    """Send email via SMTP with SSL."""
+    with SMTP_SSL(smtp_config.host, smtp_config.port) as smtp:
+        if smtp_config.username and smtp_config.password:
+            smtp.login(smtp_config.username, smtp_config.password)
+
+        smtp.send_message(message)
+
+
+def _send_via_smtp_without_ssl(
+    smtp_config: SmtpConfig, message: EmailMessage
+) -> None:
+    """Send email via SMTP without SSL (but potentially with STARTTLS)."""
+    with SMTP(smtp_config.host, smtp_config.port) as smtp:
+        if smtp_config.starttls:
+            smtp.starttls()
+
+        if smtp_config.username and smtp_config.password:
+            smtp.login(smtp_config.username, smtp_config.password)
+
+        smtp.send_message(message)
