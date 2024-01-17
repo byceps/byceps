@@ -9,6 +9,7 @@ byceps.blueprints.admin.authn.login.views
 from flask import g, request
 from flask_babel import gettext
 
+from byceps.services.user import user_service
 from byceps.signals import authn as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
@@ -41,7 +42,12 @@ def log_in_form(erroneous_form=None):
 
     form = erroneous_form if erroneous_form else LogInForm()
 
-    return {'form': form}
+    users_exist = user_service.do_users_exist()
+
+    return {
+        'form': form,
+        'users_exist': users_exist,
+    }
 
 
 @blueprint.post('/log_in')

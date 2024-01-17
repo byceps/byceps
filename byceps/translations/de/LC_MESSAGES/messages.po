@@ -907,21 +907,34 @@ msgstr "Erfolgreich ausgeloggt."
 msgid "Log in"
 msgstr "Anmelden"
 
-#: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:53
+#: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:56
 #: byceps/blueprints/site/authn/login/templates/site/authn/login/log_in_form.html:40
 msgid "permanently stay logged in"
 msgstr "dauerhaft eingeloggt bleiben"
 
-#: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:60
+#: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:63
 msgid "Forgot password?"
 msgstr "Passwort vergessen?"
 
-#: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:60
+#: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:63
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:9
 #: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:5
 #: byceps/blueprints/common/authn/password/templates/common/authn/password/reset_form.html:6
 msgid "Set new password"
 msgstr "Neues Passwort setzen"
+
+#: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:69
+msgid "No user accounts exist. Thus, logging in is not possible."
+msgstr ""
+"Es sind keine Benutzerkonten vorhanden. Deshalb ist es nicht möglich, "
+"sich einzuloggen."
+
+#: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:70
+#, python-format
+msgid "Learn how to <a href=\"%(url)s\">create an initial user account</a>."
+msgstr ""
+"Finde heraus, wie man <a href=\"%(url)s\">das erste Benutzerkonto "
+"erstellen</a> kann."
 
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_out_form.html:4
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_out_form.html:11
