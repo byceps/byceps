@@ -94,7 +94,8 @@ jobs:
         ./cc-test-reporter after-build
 
     - name: Post result to Discord
-      if: always()
+      # Run job even if build is cancelled.
+      if: always() && github.repository == 'byceps/byceps'
       env:
         JOB_RESULT: ${{ job.status }}
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
