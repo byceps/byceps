@@ -71,11 +71,13 @@ jobs:
         python -m pip install -e .
 
     - name: Download binary for test coverage reporting to Code Climate
+      if: github.repository == 'byceps/byceps'
       run: |
         curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
         chmod +x ./cc-test-reporter
 
     - name: Notify Code Climate of a pending test coverage report
+      if: github.repository == 'byceps/byceps'
       run: |
         ./cc-test-reporter before-build
 
@@ -84,10 +86,12 @@ jobs:
         coverage run --source=byceps -m pytest tests
 
     - name: Generate XML output from test coverage
+      if: github.repository == 'byceps/byceps'
       run: |
         coverage xml
 
     - name: Notify Code Climate of a completed test run
+      if: github.repository == 'byceps/byceps'
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       run: |
