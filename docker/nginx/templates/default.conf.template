@@ -1,14 +1,14 @@
 server {
-    listen 81;
-    listen [::]:81;
+    listen 80;
+    listen [::]:80;
     root /var/www/html;
     server_name ${SERVER_NAME_ADMIN};
     include includes/byceps;
 }
 
 server {
-    listen 82;
-    listen [::]:82;
+    listen 80;
+    listen [::]:80;
     root /var/www/html;
     server_name ${SERVER_NAME_SITE};
     include includes/byceps;

@@ -1,9 +1,11 @@
+version: "3.9"
+
 x-byceps-base: &byceps-base
-  build: .
+  image: "${DOCKER_ORG:-ghcr.io/byceps}/byceps:${DOCKER_VERSION:-latest}"
   volumes:
-    - type: volume
-      source: byceps-data
-      target: /home/byceps/data
+    - ./data:/home/byceps/data
+    - ./sites:/home/byceps/sites
+    - ./config:/home/byceps/config:ro
   depends_on:
     - db
     - redis
@@ -11,18 +13,18 @@ x-byceps-base: &byceps-base
 x-byceps-base-env: &byceps-base-env
     REDIS_URL: "redis://redis/0"
     SECRET_KEY: /run/secrets/secret_key
-    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg://byceps:byceps@db/byceps"
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg://${DB_USER:-byceps}:${DB_PASSWORD:-byceps}@db/byceps"
 
 services:
 
   db:
-    image: "postgres:15"
+    image: "postgres:${DB_IMAGE:-16}"
     restart: unless-stopped
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: byceps
-      POSTGRES_USER: byceps
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-byceps}
+      POSTGRES_USER: ${DB_USER:-byceps}
     networks:
       - byceps
 
@@ -31,39 +33,27 @@ services:
     networks:
       - byceps
 
-  byceps-admin:
+  byceps:
     <<: *byceps-base
     environment:
       <<: *byceps-base-env
-      APP_MODE: admin
+      BYCEPS_APPS_CONFIG: /home/byceps/config/apps.toml
     networks:
       - byceps
       - proxy
-
-  byceps-api:
-    <<: *byceps-base
-    environment:
-      <<: *byceps-base-env
-      APP_MODE: api
-    networks:
-      - byceps
-      - proxy
-
-  byceps-site:
-    <<: *byceps-base
-    environment:
-      <<: *byceps-base-env
-      APP_MODE: site
-      SITE_ID: cozylan
-    networks:
-      - byceps
-      - proxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://${HEALTH_CHECK_HOSTNAME:-byceps-admin.localhost}t:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   byceps-worker:
     <<: *byceps-base
     environment:
       <<: *byceps-base-env
       APP_MODE: worker
+    networks:
+      - byceps
     command: ./worker.py
     networks:
       - byceps
@@ -71,20 +61,30 @@ services:
   web:
     image: nginx
     volumes:
+      # Nginx configuration
       - ./docker/nginx/includes:/etc/nginx/includes:ro
       - ./docker/nginx/templates:/etc/nginx/templates:ro
-      - .:/var/www/byceps:ro
+      # Static data files, not hosted through Byceps
+      - ./data:/var/www/byceps/data:ro
+      - ./sites:/var/www/byceps/sites:ro
+      - ./byceps/static:/var/www/byceps/byceps/static:ro
     depends_on:
-      - byceps-admin
-      - byceps-site
+      - byceps
     environment:
-      SERVER_NAME_ADMIN: byceps-admin.example
-      SERVER_NAME_SITE: byceps-site.example
+      # The hostnames that the web server should listen on and return the admin
+      SERVER_NAME_ADMIN: ${ADMIN_HOSTNAMES:-byceps-admin.localhost}
+      # THe hostnames that the web server should listen on and return the site
+      SERVER_NAME_SITE: ${SITE_HOSTNAMES:-byceps-site.localhost}
     ports:
-      - "8081:81"
-      - "8082:82"
+      - "8080:80"
+      - "8443:443"
     networks:
       - proxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://${HEALTH_CHECK_HOSTNAME:-byceps-admin.localhost}t:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 secrets:
   secret_key:
@@ -93,7 +93,6 @@ secrets:
     file: ./secret_key.txt
 
 volumes:
-  byceps-data:
   db-data:
 
 networks:

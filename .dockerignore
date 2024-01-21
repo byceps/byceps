@@ -13,7 +13,6 @@
 *.egg-info
 assets
 compose.yaml
-docker
 Dockerfile
 docs
 venv
