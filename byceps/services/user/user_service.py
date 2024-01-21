@@ -40,6 +40,11 @@ class UserIdRejectedError(Exception):
     """
 
 
+def do_users_exist() -> bool:
+    """Return `True` if any user accounts (i.e. at least one) exists."""
+    return db.session.scalar(select(select(DbUser).exists())) or False
+
+
 def find_active_user(
     user_id: UserID,
     *,

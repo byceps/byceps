@@ -18,6 +18,13 @@
 
 
 {% macro render_notification(text, category=None, icon=None) -%}
+  {%- call render_notification_block(category=category, icon=icon) -%}
+{{ text }}
+  {%- endcall %}
+{%- endmacro %}
+
+
+{% macro render_notification_block(category=None, icon=None) -%}
   <div class="notification{% if category %} color-{{ category }}{% endif %} block-with-icon">
     <div class="block-with-icon-icon">
     {%- if icon %}
@@ -27,7 +34,7 @@
     {%- endif %}
     </div>
     <div class="block-with-icon-body">
-      {{ text }}
+      {{ caller() }}
     </div>
   </div>
 {%- endmacro %}

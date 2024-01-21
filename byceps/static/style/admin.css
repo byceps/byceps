@@ -76,6 +76,10 @@ a:not(:hover) {
   margin-bottom: var(--layout-gutter);
 }
 
+.notification a {
+  text-decoration: underline;
+}
+
 .box {
   background-color: #ffffff;
   border-color: #cccccc;
