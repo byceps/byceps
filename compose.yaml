@@ -1,7 +1,7 @@
 version: "3.9"
 
 x-byceps-base: &byceps-base
-  image: "${DOCKER_ORG:-ghcr.io/byceps}/byceps:${DOCKER_VERSION:-latest}"
+  image: "${DC_DOCKER_ORG:-ghcr.io/byceps}/byceps:${DC_DOCKER_VERSION:-latest}"
   volumes:
     - ./data:/home/byceps/data
     - ./sites:/home/byceps/sites
@@ -13,18 +13,18 @@ x-byceps-base: &byceps-base
 x-byceps-base-env: &byceps-base-env
     REDIS_URL: "redis://redis/0"
     SECRET_KEY: /run/secrets/secret_key
-    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg://${DB_USER:-byceps}:${DB_PASSWORD:-byceps}@db/byceps"
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg://${DC_DB_USER:-byceps}:${DC_DB_PASSWORD:-byceps}@db/byceps"
 
 services:
 
   db:
-    image: "postgres:${DB_IMAGE:-16}"
+    image: "postgres:15"
     restart: unless-stopped
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-byceps}
-      POSTGRES_USER: ${DB_USER:-byceps}
+      POSTGRES_PASSWORD: ${DC_DB_PASSWORD:-byceps}
+      POSTGRES_USER: ${DC_DB_USER:-byceps}
     networks:
       - byceps
 
@@ -42,7 +42,7 @@ services:
       - byceps
       - proxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://${HEALTH_CHECK_HOSTNAME:-byceps-admin.localhost}t:8080/health"]
+      test: ["CMD", "curl", "-f", "http://${DC_HEALTH_CHECK_HOSTNAME:-byceps-admin.localhost}t:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -55,8 +55,6 @@ services:
     networks:
       - byceps
     command: ./worker.py
-    networks:
-      - byceps
 
   web:
     image: nginx
@@ -72,16 +70,16 @@ services:
       - byceps
     environment:
       # The hostnames that the web server should listen on and return the admin
-      SERVER_NAME_ADMIN: ${ADMIN_HOSTNAMES:-byceps-admin.localhost}
+      SERVER_NAME_ADMIN: ${DC_ADMIN_HOSTNAMES:-byceps-admin.localhost}
       # THe hostnames that the web server should listen on and return the site
-      SERVER_NAME_SITE: ${SITE_HOSTNAMES:-byceps-site.localhost}
+      SERVER_NAME_SITE: ${DC_SITE_HOSTNAMES:-byceps-site.localhost}
     ports:
       - "8080:80"
       - "8443:443"
     networks:
       - proxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://${HEALTH_CHECK_HOSTNAME:-byceps-admin.localhost}t:8080/health"]
+      test: ["CMD", "curl", "-f", "http://${DC_HEALTH_CHECK_HOSTNAME:-byceps-admin.localhost}t:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 5
