@@ -8,8 +8,9 @@ orchestrated by `Docker compose`_.
 
 .. important:: This guide assumes you are using Docker Compose V2. If you are still using V1, replace ``docker compose`` with ``docker-compose`` before running commands that include it.
 
-Since there is no official Docker image for BYCEPS at this point, you
-have to build one yourself.
+BYCEPS provides a Docker image, which contains all the python code, to run a BYCEPS instance.  
+However, the platform requires to modify data in the ``/data`` directory and ``/sites`` to setup a typical BYCEPS instance. 
+Therefore, we provide a Docker Compose file that mounts these directories into the container and needed services for a typical BYCEPS instance.
 
 .. _Docker: https://www.docker.com/
 .. _Docker Compose: https://docs.docker.com/compose/
