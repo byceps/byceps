@@ -1,7 +1,7 @@
 x-byceps-base: &byceps-base
   build: .
   volumes:
-    - byceps-data:/home/byceps/data:rw
+    - ./data:/home/byceps/data:rw
   depends_on:
     - db
     - redis
@@ -91,7 +91,6 @@ secrets:
     file: ./secret_key.txt
 
 volumes:
-  byceps-data:
   db-data:
 
 networks:
