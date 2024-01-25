@@ -22,7 +22,8 @@ __pycache__
 .mypy_cache
 
 # user data
-/data
+/data/*
+!/data/.gitkeep
 
 # documentation
 /docs/_build
