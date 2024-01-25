@@ -2044,6 +2044,15 @@ msgstr "Für diese Marke sind keine Newskanäle vorhanden."
 msgid "None required"
 msgstr "Keine erforderlich"
 
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:16
+#, python-format
+msgid ""
+"This looks like a brand-new installation of BYCEPS. Do you want to <a "
+"href=\"%(url)s\">create demonstration data</a>?"
+msgstr ""
+"Das hier sieht wie eine brandneue BYCEPS-Installation aus. Möchtest du <a"
+" href=\"%(url)s\">Demo-Daten erstellen</a>?"
+
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:25
 msgid "new user in the last 7 days"
 msgid_plural "new users in the last 7 days"
