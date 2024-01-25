@@ -22,6 +22,10 @@ from byceps.services.user.models.user import User
 @with_appcontext
 def create_demo_data() -> None:
     """Generate data for demonstration purposes."""
+    if demo_data_service.does_demo_data_exist():
+        click.secho('Demonstration data already exists.', fg='yellow')
+        return
+
     admin = _create_admin()
 
     demo_data_service.create_demo_data(admin)

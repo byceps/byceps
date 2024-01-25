@@ -2259,6 +2259,11 @@ msgstr "nicht verknüpft"
 msgid "News Channels"
 msgstr "Newskanäle"
 
+#: byceps/blueprints/admin/demo_data/templates/admin/demo_data/index.html:11
+#: byceps/blueprints/admin/demo_data/views.py:57
+msgid "Demonstration data already exists."
+msgstr "Demo-Daten existieren bereits."
+
 #: byceps/blueprints/admin/demo_data/views.py:54
 msgid "Demonstration data has been created."
 msgstr "Demo-Daten wurden erstellt."

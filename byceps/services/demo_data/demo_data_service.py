@@ -44,6 +44,13 @@ from byceps.services.user.models.user import User
 log = structlog.get_logger()
 
 
+BRAND_ID = BrandID('cozylan')
+PARTY_ID = PartyID('cozylan-2023')
+BOARD_ID = BoardID('cozylan')
+SHOP_ID = ShopID('cozylan')
+STOREFRONT_ID = StorefrontID('cozylan')
+
+
 def create_demo_data(creator: User) -> None:
     """Generate data for demonstration purposes."""
     brand = _create_brand(creator)
@@ -59,7 +66,7 @@ def create_demo_data(creator: User) -> None:
 
 def _create_brand(creator: User) -> Brand:
     log.info('Creating demo brand ...')
-    brand = brand_service.create_brand(BrandID('cozylan'), 'CozyLAN')
+    brand = brand_service.create_brand(BRAND_ID, 'CozyLAN')
 
     log.info('Creating demo email configuration ...')
     email_config_service.create_config(brand.id, 'noreply@demo.example')
@@ -73,7 +80,7 @@ def _create_brand(creator: User) -> Brand:
 def _create_party(brand_id: BrandID) -> Party:
     log.info('Creating demo party ...')
     return party_service.create_party(
-        PartyID('cozylan-2023'),
+        PARTY_ID,
         brand_id,
         'CozyLAN 2023',
         datetime(2023, 6, 23, 16, 0),
@@ -86,7 +93,7 @@ def _create_party(brand_id: BrandID) -> Party:
 
 def _create_board(brand: Brand) -> Board:
     log.info('Creating demo board ...')
-    board = board_service.create_board(brand, BoardID('cozylan'))
+    board = board_service.create_board(brand, BOARD_ID)
 
     log.info('Creating demo board categories ...')
     for slug, title, description in [
@@ -111,9 +118,7 @@ def _create_ticket_category(party_id: PartyID) -> TicketCategory:
 
 def _create_shop(brand_id: BrandID) -> Shop:
     log.info('Creating demo shop ...')
-    return shop_service.create_shop(
-        ShopID('cozylan'), brand_id, 'CozyLAN Shop', EUR
-    )
+    return shop_service.create_shop(SHOP_ID, brand_id, 'CozyLAN Shop', EUR)
 
 
 def _create_shop_articles(
@@ -169,7 +174,7 @@ def _create_shop_storefront(shop_id: ShopID) -> Storefront:
     )
 
     return storefront_service.create_storefront(
-        StorefrontID('cozylan'), shop_id, order_number_sequence_id, closed=False
+        STOREFRONT_ID, shop_id, order_number_sequence_id, closed=False
     )
 
 
@@ -228,3 +233,25 @@ def _create_pages(site: Site, creator: User) -> None:
         'Impressum',
         'imprint',
     ).unwrap()
+
+
+def does_demo_data_exist() -> bool:
+    """Try to figure out if demo data already exists.
+
+    This check is likely incomplete, so do not rely on it too much.
+    """
+    brand_exists = brand_service.find_brand(BRAND_ID) is not None
+    party_exists = party_service.find_party(PARTY_ID) is not None
+    board_exists = board_service.find_board(BOARD_ID) is not None
+    shop_exists = shop_service.find_shop(SHOP_ID) is not None
+    storefront_exists = (
+        storefront_service.find_storefront(STOREFRONT_ID) is not None
+    )
+
+    return (
+        brand_exists
+        or party_exists
+        or board_exists
+        or shop_exists
+        or storefront_exists
+    )

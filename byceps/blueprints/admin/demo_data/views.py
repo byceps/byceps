@@ -11,7 +11,7 @@ from flask_babel import gettext
 
 from byceps.services.demo_data import demo_data_service
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_success
+from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required, redirect_to
 
@@ -33,6 +33,11 @@ blueprint = create_blueprint('demo_data_admin', __name__)
 @templated
 def index():
     """Show control to add data for demonstration purposes."""
+    demo_data_exists = demo_data_service.does_demo_data_exist()
+
+    return {
+        'demo_data_exists': demo_data_exists,
+    }
 
 
 @blueprint.post('/')
@@ -48,6 +53,10 @@ def index():
 @permission_required('ticketing.administrate')
 def create():
     """Add data for demonstration purposes."""
+    if demo_data_service.does_demo_data_exist():
+        flash_notice(gettext('Demonstration data already exists.'))
+        return redirect_to('.index')
+
     creator = g.user
     demo_data_service.create_demo_data(creator)
 
