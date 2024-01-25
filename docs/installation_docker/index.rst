@@ -74,11 +74,12 @@ To spin up the application:
     $ docker compose up
 
 The admin frontend should now be available at http://localhost:8081/.
-Log in with user ``DemoAdmin`` and password ``demodemo``.
+Log in with the name of the initial user you created before and the
+corresponding password.
 
 The "CozyLAN" party site should be accessible at http://localhost:8082/.
 (If you logged in to the admin frontend just before, you might be logged
-in already as user ``DemoAdmin``.)
+in already as the same user.)
 
 .. attention:: For security reasons, BYCEPS only sends cookies back
    after login over an HTTPS-secured connection by default.
