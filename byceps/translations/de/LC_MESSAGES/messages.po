@@ -2259,6 +2259,14 @@ msgstr "nicht verknüpft"
 msgid "News Channels"
 msgstr "Newskanäle"
 
+#: byceps/blueprints/admin/demo_data/views.py:54
+msgid "Demonstration data has been created."
+msgstr "Demo-Daten wurden erstellt."
+
+#: byceps/blueprints/admin/demo_data/templates/admin/demo_data/index.html:4
+msgid "Create demonstration data"
+msgstr "Demo-Daten erstellen"
+
 #: byceps/blueprints/admin/gallery/views.py:71
 msgid "Gallery has been created."
 msgstr "Die Galerie wurde erstellt."

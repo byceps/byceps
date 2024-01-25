@@ -30,6 +30,7 @@ def register_admin_blueprints(
         ('admin.consent', '/consent'),
         ('admin.core', '/'),
         ('admin.dashboard', '/dashboard'),
+        ('admin.demo_data', '/demo_data'),
         ('admin.gallery', '/admin/galleries'),
         ('admin.guest_server', '/guest_servers'),
         ('admin.jobs', '/jobs'),

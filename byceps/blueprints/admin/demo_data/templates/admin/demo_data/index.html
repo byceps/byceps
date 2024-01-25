@@ -1,0 +1,14 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons %}
+{% set current_page = 'demo_data_admin' %}
+{% set page_title = _('Create demonstration data') %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.create') }}" method="post">
+    {{ form_buttons(_('Create')) }}
+  </form>
+
+{%- endblock %}
