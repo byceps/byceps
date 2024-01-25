@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin/dashboard.html' import render_bigstats_cell, render_cell %}
+{% from 'macros/misc.html' import render_notification_block %}
 {% set current_page = 'admin_dashboard_global' %}
 {% set page_title = _('Dashboard') %}
 
@@ -8,6 +9,14 @@
 {%- endblock %}
 
 {% block body %}
+
+  {%- if not demo_data_exists %}
+  <div class="notifications">
+{%- call render_notification_block(category='info', icon='info') -%}
+    <p>{{ _('This looks like a brand-new installation of BYCEPS. Do you want to <a href="%(url)s">create demonstration data</a>?', url=url_for('demo_data_admin.index')) }}</p>
+{%- endcall %}
+  </div>
+  {%- endif %}
 
 {% include 'admin/dashboard/_active_brands.html' %}
 

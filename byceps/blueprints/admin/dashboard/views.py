@@ -13,6 +13,7 @@ from flask import abort
 from byceps.services.board import board_service
 from byceps.services.brand import brand_service
 from byceps.services.consent import consent_subject_service
+from byceps.services.demo_data import demo_data_service
 from byceps.services.guest_server import (
     guest_server_domain_service,
     guest_server_service,
@@ -66,6 +67,10 @@ def view_global():
         for shop in active_shops
     ]
 
+    demo_data_exists = (
+        all_brands_by_id or demo_data_service.does_demo_data_exist()
+    )
+
     one_week_ago = timedelta(days=7)
     recent_users = user_service.get_users_created_since(one_week_ago, limit=4)
     recent_users_count = user_stats_service.count_users_created_since(
@@ -79,6 +84,7 @@ def view_global():
     )
 
     return {
+        'demo_data_exists': demo_data_exists,
         'active_brands': active_brands,
         'active_parties_with_stats': active_parties_with_stats,
         'active_shops_with_brands_and_open_orders_counts': active_shops_with_brands_and_open_orders_counts,
