@@ -47,6 +47,19 @@ Now create and initially populate the relational database structure:
 
     $ docker compose run --rm byceps-admin byceps initialize-database
 
+With the tables and the authorization data in place, create the initial
+user (which will get all available roles assigned):
+
+.. code-block:: sh
+
+    $ docker compose run --rm byceps-admin byceps create-superuser
+    Screen name: Flynn
+    Email address: flynn@flynns-arcade.net
+    Password:
+    Creating user "Flynn" ... done.
+    Enabling user "Flynn" ... done.
+    Assigning 35 roles to user "Flynn" ... done.
+
 Optionally, insert demonstration data to get a feel for how BYCEPS set
 up with a party, a party site, etc. looks like:
 
