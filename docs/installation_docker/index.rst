@@ -60,13 +60,6 @@ user (which will get all available roles assigned):
     Enabling user "Flynn" ... done.
     Assigning 35 roles to user "Flynn" ... done.
 
-Optionally, insert demonstration data to get a feel for how BYCEPS set
-up with a party, a party site, etc. looks like:
-
-.. code-block:: sh
-
-    $ docker compose run --rm byceps-admin byceps create-demo-data
-
 To spin up the application:
 
 .. code-block:: sh

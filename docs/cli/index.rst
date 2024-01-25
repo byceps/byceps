@@ -15,8 +15,6 @@ BYCEPS comes with a command-line tool for some tasks.
      - Description
    * - ``byceps create-database-tables``
      - :ref:`Create database tables <Create Database Tables>`
-   * - ``byceps create-demo-data``
-     - :ref:`Create exemplary data for demonstration purposes <Create Demo Data>`
    * - ``byceps create-superuser``
      - :ref:`Create superuser <Create Superuser>`
    * - ``byceps export-roles``
@@ -238,26 +236,6 @@ To import it:
     (venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-seats my-party-2023 example-seats.jsonl
     [line 1] Imported seat (area="Floor 3", x=10, y=10, category="Premium").
     [line 2] Imported seat (area="Floor 3", x=25, y=10, category="Premium").
-
-
-Create Demo Data
-================
-
-``byceps create-demo-data`` inserts data for demonstration purposes into
-the database.
-
-.. code-block:: sh
-
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-demo-data
-    Creating byceps_byceps-admin_run ... done
-    Creating brand ... done.
-    Creating party ... done.
-    Creating board ... done.
-    Creating board categories ... done.
-    Creating shop ... done.
-    Creating shop articles ... done.
-    Creating shop storefront ... done.
-    Creating site ... done.
 
 
 .. _JSON Lines: https://jsonlines.org/
