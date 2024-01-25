@@ -49,9 +49,7 @@ from byceps.services.user.models.user import User
 def create_demo_data() -> None:
     """Generate data for demonstration purposes."""
     admin = _create_admin()
-    brand = _create_brand()
-    _create_email_config(brand.id)
-    _create_email_footer_snippets(brand, admin)
+    brand = _create_brand(admin)
     party = _create_party(brand.id)
     board = _create_board(brand)
     ticket_category = _create_ticket_category(party.id)
@@ -74,23 +72,20 @@ def _create_admin() -> User:
     return user
 
 
-def _create_brand() -> Brand:
+def _create_brand(admin: User) -> Brand:
     click.echo('Creating brand ... ', nl=False)
     brand = brand_service.create_brand(BrandID('cozylan'), 'CozyLAN')
     click.secho('done. ', fg='green')
-    return brand
 
-
-def _create_email_config(brand_id: BrandID) -> None:
     click.echo('Creating email configuration ... ', nl=False)
-    email_config_service.create_config(brand_id, 'noreply@demo.example')
+    email_config_service.create_config(brand.id, 'noreply@demo.example')
     click.secho('done. ', fg='green')
 
-
-def _create_email_footer_snippets(brand: Brand, admin: User) -> None:
     click.echo('Creating email footer snippets ... ', nl=False)
     email_footer_service.create_footers(brand, admin, 'info@demo.example')
     click.secho('done. ', fg='green')
+
+    return brand
 
 
 def _create_party(brand_id: BrandID) -> Party:
