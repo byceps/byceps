@@ -1,9 +1,3 @@
-location @byceps {
-    uwsgi_pass byceps-admin:5000;
-    include uwsgi_params;
-    proxy_set_header Host $host;
-}
-
 location / {
     try_files $uri @byceps;
 }

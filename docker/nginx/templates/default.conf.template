@@ -3,6 +3,13 @@ server {
     listen [::]:81;
     root /var/www/html;
     server_name ${SERVER_NAME_ADMIN};
+
+    location @byceps {
+        uwsgi_pass ${UWSGI_ADDRESS_ADMIN};
+        include uwsgi_params;
+        proxy_set_header Host $host;
+    }
+
     include includes/byceps;
 }
 
@@ -11,5 +18,12 @@ server {
     listen [::]:82;
     root /var/www/html;
     server_name ${SERVER_NAME_SITE};
+
+    location @byceps {
+        uwsgi_pass ${UWSGI_ADDRESS_SITE};
+        include uwsgi_params;
+        proxy_set_header Host $host;
+    }
+
     include includes/byceps;
 }

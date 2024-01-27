@@ -78,6 +78,8 @@ services:
     environment:
       SERVER_NAME_ADMIN: byceps-admin.example
       SERVER_NAME_SITE: byceps-site.example
+      UWSGI_ADDRESS_ADMIN: byceps-admin:5000
+      UWSGI_ADDRESS_SITE: byceps-site:5000
     ports:
       - "8081:81"
       - "8082:82"
