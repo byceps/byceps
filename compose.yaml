@@ -1,7 +1,7 @@
 x-byceps-base: &byceps-base
   build: .
   volumes:
-    - ./data:/home/byceps/data:rw
+    - ./data:/home/byceps/data
   depends_on:
     - db
     - redis
