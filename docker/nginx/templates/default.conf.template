@@ -14,6 +14,21 @@ server {
 }
 
 server {
+    listen 83;
+    listen [::]:83;
+    root /var/www/html;
+    server_name ${SERVER_NAME_API};
+
+    location @byceps {
+        uwsgi_pass ${UWSGI_ADDRESS_API};
+        include uwsgi_params;
+        proxy_set_header Host $host;
+    }
+
+    include includes/byceps;
+}
+
+server {
     listen 82;
     listen [::]:82;
     root /var/www/html;
