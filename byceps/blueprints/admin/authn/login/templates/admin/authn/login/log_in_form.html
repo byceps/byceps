@@ -66,7 +66,7 @@
   {%- else %}
 
 {%- call render_notification_block(category='warning', icon='warning') -%}
-  <p>{{ _('No user accounts exist. Thus, logging in is not possible.') }}</p>
+  <p>{{ _('No user accounts exist; logging in is not possible.') }}</p>
   <p>{{ _('Learn how to <a href="%(url)s">create an initial user account</a>.', url='https://byceps.readthedocs.io/en/latest/cli/index.html#create-superuser') }}</p>
 {%- endcall %}
 

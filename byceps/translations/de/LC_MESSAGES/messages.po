@@ -924,10 +924,10 @@ msgid "Set new password"
 msgstr "Neues Passwort setzen"
 
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:69
-msgid "No user accounts exist. Thus, logging in is not possible."
+msgid "No user accounts exist; logging in is not possible."
 msgstr ""
-"Es sind keine Benutzerkonten vorhanden. Deshalb ist es nicht möglich, "
-"sich einzuloggen."
+"Es sind keine Benutzerkonten vorhanden; sich einzuloggen ist nicht "
+"möglich."
 
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:70
 #, python-format
