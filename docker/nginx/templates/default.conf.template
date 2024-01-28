@@ -1,8 +1,4 @@
 server {
-    listen 80;
-    listen [::]:80;
-
-    root /var/www/html;
     server_name ${SERVER_NAME_ADMIN};
 
     location @byceps {
@@ -15,10 +11,6 @@ server {
 }
 
 server {
-    listen 80;
-    listen [::]:80;
-
-    root /var/www/html;
     server_name ${SERVER_NAME_API};
 
     location @byceps {
@@ -31,10 +23,6 @@ server {
 }
 
 server {
-    listen 80;
-    listen [::]:80;
-
-    root /var/www/html;
     server_name ${SERVER_NAME_SITE};
 
     location @byceps {
