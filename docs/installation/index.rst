@@ -1,6 +1,6 @@
-************
-Installation
-************
+*********************
+Installation (native)
+*********************
 
 This section describes how to install BYCEPS directly on an operating
 system.
