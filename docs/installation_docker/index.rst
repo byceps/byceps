@@ -72,7 +72,28 @@ Copy the included example configuration file:
 
     $ cp config/apps_example.toml config/apps.toml
 
-Finally, spin up the application:
+- For a **local installation**, you can go with the examplary hostnames
+  already defined in the example apps configuration file,
+  ``config/apps_example.toml``, which are:
+
+  - ``byceps-admin.example`` for the admin UI
+  - ``byceps-api.example`` for the API
+  - ``cozylan.example`` for the CozyLAN demo site
+
+  To be able to access them, though, add these entries to your local
+  ``/etc/hosts`` file (or whatever the equivalent of your operating
+  system is):
+
+  .. code-block::
+
+      127.0.0.1       byceps-admin.example
+      127.0.0.1       byceps-api.example
+      127.0.0.1       cozylan.example
+
+- But if you are **installing to a server**, substitude above hostnames
+  in the config with ones that use actual, registered Internet domains.
+
+With that configured, spin up the application:
 
 .. code-block:: sh
 
