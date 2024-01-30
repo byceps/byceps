@@ -13,6 +13,7 @@ from wtforms.validators import InputRequired, Length, Optional
 from byceps.services.board import board_service
 from byceps.services.news import news_channel_service
 from byceps.services.party import party_service
+from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront import storefront_service
 from byceps.util.forms import MultiCheckboxField
 from byceps.util.l10n import LocalizedForm
@@ -57,11 +58,18 @@ class _BaseForm(LocalizedForm):
         choices.insert(0, ('', '<' + pgettext('board', 'none') + '>'))
         self.board_id.choices = choices
 
-    def set_storefront_choices(self):
-        storefronts = storefront_service.get_all_storefronts()
-        storefronts.sort(key=lambda storefront: storefront.id)
+    def set_storefront_choices(self, brand_id):
+        shop = shop_service.find_shop_for_brand(brand_id)
+        if shop:
+            storefronts = list(
+                storefront_service.get_storefronts_for_shop(shop.id)
+            )
+            storefronts.sort(key=lambda storefront: storefront.id)
 
-        choices = [(s.id, s.id) for s in storefronts]
+            choices = [(s.id, s.id) for s in storefronts]
+        else:
+            choices = []
+
         choices.insert(0, ('', '<' + pgettext('storefront', 'none') + '>'))
         self.storefront_id.choices = choices
 

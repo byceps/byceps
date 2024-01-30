@@ -306,7 +306,7 @@ def update(site_id):
 def _fill_in_common_form_choices(form, brand_id):
     form.set_party_choices(brand_id)
     form.set_board_choices(brand_id)
-    form.set_storefront_choices()
+    form.set_storefront_choices(brand_id)
 
 
 # -------------------------------------------------------------------- #

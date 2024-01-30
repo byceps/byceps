@@ -125,16 +125,6 @@ def find_storefronts(storefront_ids: set[StorefrontID]) -> list[Storefront]:
     ]
 
 
-def get_all_storefronts() -> list[Storefront]:
-    """Return all storefronts."""
-    db_storefronts = db.session.scalars(select(DbStorefront)).all()
-
-    return [
-        _db_entity_to_storefront(db_storefront)
-        for db_storefront in db_storefronts
-    ]
-
-
 def get_storefronts_for_shop(shop_id: ShopID) -> set[Storefront]:
     """Return all storefronts for that shop."""
     rows = db.session.scalars(
