@@ -16,6 +16,10 @@ have to build one yourself.
 .. _Docker: https://www.docker.com/
 .. _Docker Compose: https://docs.docker.com/compose/
 
+
+Obtain BYCEPS
+=============
+
 First, clone BYCEPS' Git repository to your machine:
 
 .. code-block:: sh
@@ -23,6 +27,10 @@ First, clone BYCEPS' Git repository to your machine:
     $ git clone https://github.com/byceps/byceps.git
 
 A new directory, ``byceps``, should have been created. ``cd`` into it.
+
+
+Docker Preparation
+==================
 
 Both a ``Dockerfile`` (to build a Docker image) and a ``compose.yml``
 (to run containers with Docker Compose) come with BYCEPS.
@@ -34,6 +42,10 @@ take a few minutes.
 
     $ docker compose up --no-start
 
+
+Secret Key
+==========
+
 Then generate a *secret key* and put it in a file Docker Compose is
 configured to pick up as a secret_:
 
@@ -43,11 +55,19 @@ configured to pick up as a secret_:
 
     $ docker compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt
 
+
+Database
+========
+
 Now create and initially populate the relational database structure:
 
 .. code-block:: sh
 
     $ docker compose run --rm byceps-admin byceps initialize-database
+
+
+Initial User
+============
 
 With the tables and the authorization data in place, create the initial
 user (which will get all available roles assigned):
@@ -61,6 +81,10 @@ user (which will get all available roles assigned):
     Creating user "Flynn" ... done.
     Enabling user "Flynn" ... done.
     Assigning 35 roles to user "Flynn" ... done.
+
+
+Hostname-to-Application Routing
+===============================
 
 Since a single BYCEPS instance can provide the admin frontend, the API,
 *and* one or more sites, a configuration file is required that defines
@@ -92,6 +116,10 @@ Copy the included example configuration file:
 
 - But if you are **installing to a server**, substitude above hostnames
   in the config with ones that use actual, registered Internet domains.
+
+
+Start BYCEPS
+============
 
 With that configured, spin up the application:
 
