@@ -69,7 +69,6 @@ def update_site(
     site_id: SiteID,
     title: str,
     server_name: str,
-    brand_id: BrandID,
     party_id: PartyID | None,
     enabled: bool,
     user_account_creation_enabled: bool,
@@ -85,7 +84,6 @@ def update_site(
 
     db_site.title = title
     db_site.server_name = server_name
-    db_site.brand_id = brand_id
     db_site.party_id = party_id
     db_site.enabled = enabled
     db_site.user_account_creation_enabled = user_account_creation_enabled

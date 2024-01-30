@@ -233,7 +233,6 @@ def update_form(site_id, erroneous_form=None):
     site = _get_site_or_404(site_id)
 
     form = erroneous_form if erroneous_form else UpdateForm(obj=site)
-    form.set_brand_choices()
     _fill_in_common_form_choices(form, site.brand_id)
 
     return {
@@ -249,7 +248,6 @@ def update(site_id):
     site = _get_site_or_404(site_id)
 
     form = UpdateForm(request.form)
-    form.set_brand_choices()
     _fill_in_common_form_choices(form, site.brand_id)
 
     if not form.validate():
@@ -257,7 +255,6 @@ def update(site_id):
 
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
-    brand_id = form.brand_id.data
     party_id = form.party_id.data
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
@@ -286,7 +283,6 @@ def update(site_id):
             site.id,
             title,
             server_name,
-            brand_id,
             party_id,
             enabled,
             user_account_creation_enabled,

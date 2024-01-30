@@ -11,7 +11,6 @@ from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
 from byceps.services.board import board_service
-from byceps.services.brand import brand_service
 from byceps.services.news import news_channel_service
 from byceps.services.party import party_service
 from byceps.services.shop.storefront import storefront_service
@@ -74,13 +73,7 @@ class CreateForm(_BaseForm):
 
 
 class UpdateForm(_BaseForm):
-    brand_id = SelectField(lazy_gettext('Brand'), validators=[InputRequired()])
     archived = BooleanField(lazy_gettext('archived'))
-
-    def set_brand_choices(self):
-        brands = brand_service.get_all_brands()
-        brands.sort(key=lambda brand: brand.title)
-        self.brand_id.choices = [(brand.id, brand.title) for brand in brands]
 
 
 class AssignNewsChannelsForm(LocalizedForm):
