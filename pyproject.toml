@@ -52,6 +52,12 @@ testpaths = [ "tests/unit", "tests/integration" ]
 
 [tool.ruff]
 line-length = 80
+
+[tool.ruff.format]
+quote-style = "single"
+line-ending = "lf"
+
+[tool.ruff.lint]
 select = [
     "B",
     "E",
@@ -79,22 +85,18 @@ ignore = [
     "W291",  # Trailing whitespace (because of email signature, `-- `)
 ]
 
-[tool.ruff.flake8-quotes]
+[tool.ruff.lint.flake8-quotes]
 inline-quotes = "single"
 multiline-quotes = "single"
 
-[tool.ruff.format]
-quote-style = "single"
-line-ending = "lf"
-
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 combine-as-imports = true
 force-sort-within-sections = true
 forced-separate = [ "tests" ]
 lines-after-imports = 2
 order-by-type = false
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [ "S101", "S105", "S106", "S107" ]
 
 [tool.setuptools]
