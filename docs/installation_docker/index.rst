@@ -53,7 +53,7 @@ configured to pick up as a secret_:
 
 .. code-block:: sh
 
-    $ docker compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt
+    $ docker compose run --rm byceps-apps byceps generate-secret-key > ./secret_key.txt
 
 
 Database
@@ -63,7 +63,7 @@ Now create and initially populate the relational database structure:
 
 .. code-block:: sh
 
-    $ docker compose run --rm byceps-admin byceps initialize-database
+    $ docker compose run --rm byceps-apps byceps initialize-database
 
 
 Initial User
@@ -74,7 +74,7 @@ user (which will get all available roles assigned):
 
 .. code-block:: sh
 
-    $ docker compose run --rm byceps-admin byceps create-superuser
+    $ docker compose run --rm byceps-apps byceps create-superuser
     Screen name: Flynn
     Email address: flynn@flynns-arcade.net
     Password:

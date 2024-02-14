@@ -70,7 +70,7 @@ services:
 secrets:
   secret_key:
     # To generate a secret key file, run:
-    # `docker compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt`
+    # `docker compose run --rm byceps-apps byceps generate-secret-key > ./secret_key.txt`
     file: ./secret_key.txt
 
 volumes:
