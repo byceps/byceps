@@ -10,7 +10,6 @@ from collections.abc import Iterable
 from contextlib import contextmanager
 from datetime import date, datetime
 from secrets import token_hex
-from typing import Any
 from uuid import UUID
 
 from flask import appcontext_pushed, Flask, g

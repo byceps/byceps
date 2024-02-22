@@ -13,7 +13,6 @@ from sqlalchemy import select
 from byceps.database import db, paginate, Pagination
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import UserID
 from byceps.util.iterables import index_of
 
 from .dbmodels.category import DbBoardCategory
