@@ -51,7 +51,7 @@ def create_article(
     item_number: ArticleNumber | None = None,
     type_: ArticleType = ArticleType.other,
     type_params: ArticleTypeParams | None = None,
-    description: str | None = None,
+    name: str | None = None,
     price: Money | None = None,
     tax_rate: Decimal | None = None,
     available_from: datetime | None = None,
@@ -63,8 +63,8 @@ def create_article(
     if item_number is None:
         item_number = ArticleNumber(generate_token())
 
-    if description is None:
-        description = generate_token()
+    if name is None:
+        name = generate_token()
 
     if price is None:
         price = Money('24.95', EUR)
@@ -76,7 +76,7 @@ def create_article(
         shop_id,
         item_number,
         type_,
-        description,
+        name,
         price,
         tax_rate,
         total_quantity,
@@ -93,7 +93,7 @@ def create_ticket_article(
     ticket_category_id: TicketCategoryID,
     *,
     item_number: ArticleNumber | None = None,
-    description: str | None = None,
+    name: str | None = None,
     price: Money | None = None,
     tax_rate: Decimal | None = None,
     available_from: datetime | None = None,
@@ -104,8 +104,8 @@ def create_ticket_article(
     if item_number is None:
         item_number = ArticleNumber(generate_token())
 
-    if description is None:
-        description = generate_token()
+    if name is None:
+        name = generate_token()
 
     if price is None:
         price = Money('24.95', EUR)
@@ -116,7 +116,7 @@ def create_ticket_article(
     return article_service.create_ticket_article(
         shop_id,
         item_number,
-        description,
+        name,
         price,
         tax_rate,
         total_quantity,
@@ -133,7 +133,7 @@ def create_ticket_bundle_article(
     ticket_quantity: int,
     *,
     item_number: ArticleNumber | None = None,
-    description: str | None = None,
+    name: str | None = None,
     price: Money | None = None,
     tax_rate: Decimal | None = None,
     available_from: datetime | None = None,
@@ -144,8 +144,8 @@ def create_ticket_bundle_article(
     if item_number is None:
         item_number = ArticleNumber(generate_token())
 
-    if description is None:
-        description = generate_token()
+    if name is None:
+        name = generate_token()
 
     if price is None:
         price = Money('24.95', EUR)
@@ -156,7 +156,7 @@ def create_ticket_bundle_article(
     return article_service.create_ticket_bundle_article(
         shop_id,
         item_number,
-        description,
+        name,
         price,
         tax_rate,
         total_quantity,

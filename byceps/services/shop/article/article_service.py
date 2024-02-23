@@ -46,7 +46,7 @@ def create_article(
     shop_id: ShopID,
     item_number: ArticleNumber,
     type_: ArticleType,
-    description: str,
+    name: str,
     price: Money,
     tax_rate: Decimal,
     total_quantity: int,
@@ -64,7 +64,7 @@ def create_article(
         shop_id,
         item_number,
         type_,
-        description,
+        name,
         price,
         tax_rate,
         total_quantity,
@@ -86,7 +86,7 @@ def create_article(
 def create_ticket_article(
     shop_id: ShopID,
     item_number: ArticleNumber,
-    description: str,
+    name: str,
     price: Money,
     tax_rate: Decimal,
     total_quantity: int,
@@ -108,7 +108,7 @@ def create_ticket_article(
         shop_id,
         item_number,
         ArticleType.ticket,
-        description,
+        name,
         price,
         tax_rate,
         total_quantity,
@@ -125,7 +125,7 @@ def create_ticket_article(
 def create_ticket_bundle_article(
     shop_id: ShopID,
     item_number: ArticleNumber,
-    description: str,
+    name: str,
     price: Money,
     tax_rate: Decimal,
     total_quantity: int,
@@ -149,7 +149,7 @@ def create_ticket_bundle_article(
         shop_id,
         item_number,
         ArticleType.ticket_bundle,
-        description,
+        name,
         price,
         tax_rate,
         total_quantity,
@@ -165,7 +165,7 @@ def create_ticket_bundle_article(
 
 def update_article(
     article_id: ArticleID,
-    description: str,
+    name: str,
     price: Money,
     tax_rate: Decimal,
     available_from: datetime | None,
@@ -178,7 +178,7 @@ def update_article(
     """Update the article."""
     db_article = _get_db_article(article_id)
 
-    db_article.description = description
+    db_article.name = name
     db_article.price_amount = price.amount
     db_article.price_currency = price.currency
     db_article.tax_rate = tax_rate
@@ -409,7 +409,7 @@ def _generate_search_clauses_for_term(search_term: str) -> Select:
 
     return db.or_(
         DbArticle.item_number.ilike(ilike_pattern),
-        DbArticle.description.ilike(ilike_pattern),
+        DbArticle.name.ilike(ilike_pattern),
     )
 
 
@@ -441,7 +441,7 @@ def get_article_compilation_for_orderable_articles(
                 now < DbArticle.available_until,
             )
         )
-        .order_by(DbArticle.description)
+        .order_by(DbArticle.name)
     ).all()
 
     if not db_orderable_articles:
@@ -575,7 +575,7 @@ def sum_ordered_articles_by_payment_state(
         select(
             DbArticle.shop_id,
             DbArticle.item_number,
-            DbArticle.description,
+            DbArticle.name,
             subquery.c.payment_state,
             subquery.c.quantity,
         )
@@ -587,7 +587,7 @@ def sum_ordered_articles_by_payment_state(
         .order_by(DbArticle.item_number, subquery.c.payment_state)
     ).all()
 
-    shop_ids_and_article_numbers_and_descriptions = {
+    shop_ids_and_article_numbers_and_names = {
         (row[0], row[1], row[2]) for row in rows
     }  # Remove duplicates.
 
@@ -596,7 +596,7 @@ def sum_ordered_articles_by_payment_state(
     for (
         shop_id,
         article_number,
-        description,
+        name,
         payment_state_name,
         quantity,
     ) in rows:
@@ -604,22 +604,22 @@ def sum_ordered_articles_by_payment_state(
             continue
 
         payment_state = PaymentState[payment_state_name]
-        key = (shop_id, article_number, description, payment_state)
+        key = (shop_id, article_number, name, payment_state)
 
         quantities[key] = quantity
 
     def generate():
-        for shop_id, article_number, description in sorted(
-            shop_ids_and_article_numbers_and_descriptions
+        for shop_id, article_number, name in sorted(
+            shop_ids_and_article_numbers_and_names
         ):
             for payment_state in PaymentState:
-                key = (shop_id, article_number, description, payment_state)
+                key = (shop_id, article_number, name, payment_state)
                 quantity = quantities.get(key, 0)
 
                 yield (
                     shop_id,
                     article_number,
-                    description,
+                    name,
                     payment_state,
                     quantity,
                 )
@@ -634,7 +634,7 @@ def _db_entity_to_article(db_article: DbArticle) -> Article:
         item_number=db_article.item_number,
         type_=db_article.type_,
         type_params=db_article.type_params or {},
-        description=db_article.description,
+        name=db_article.name,
         price=db_article.price,
         tax_rate=db_article.tax_rate,
         available_from=db_article.available_from,

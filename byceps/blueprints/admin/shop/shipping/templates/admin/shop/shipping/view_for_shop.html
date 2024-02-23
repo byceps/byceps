@@ -11,7 +11,7 @@
     <thead>
       <tr>
         <th>{{ _('Article number') }}</th>
-        <th>{{ _('Description') }}</th>
+        <th>{{ pgettext('article', 'Name') }}</th>
         <th class="number">{{ _('Paid') }}</th>
         <th class="number">{{ _('Open') }}</th>
         <th class="number">{{ _('Total') }}</th>
@@ -22,7 +22,7 @@
       <tr>
         {%- with article = articles_by_id[article_to_ship.article_id] %}
         <td>{{ article.item_number }}</td>
-        <td>{{ article_to_ship.description }}</td>
+        <td>{{ article_to_ship.name }}</td>
         <td class="number">{{ article_to_ship.quantity_paid }}</td>
         <td class="number">{{ article_to_ship.quantity_open }}</td>
         <td class="number">{{ article_to_ship.quantity_total }}</td>

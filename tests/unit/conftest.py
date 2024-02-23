@@ -158,7 +158,7 @@ def make_article():
             item_number=ArticleNumber(generate_token()),
             type_=ArticleType.other,
             type_params={},
-            description=generate_token(),
+            name=generate_token(),
             price=price,
             tax_rate=Decimal('0.19'),
             available_from=available_from,

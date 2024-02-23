@@ -55,7 +55,7 @@ class DbLineItem(db.Model):
         DbArticle, foreign_keys=[article_id]
     )
     _article_type: Mapped[str] = mapped_column('article_type', db.UnicodeText)
-    description: Mapped[str] = mapped_column(db.UnicodeText)
+    name: Mapped[str] = mapped_column(db.UnicodeText)
     unit_price: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))
     tax_rate: Mapped[Decimal] = mapped_column(db.Numeric(3, 3))
     quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity > 0'))
@@ -71,7 +71,7 @@ class DbLineItem(db.Model):
         article_id: ArticleID,
         article_number: ArticleNumber,
         article_type: ArticleType,
-        description: str,
+        name: str,
         unit_price: Decimal,
         tax_rate: Decimal,
         quantity: int,
@@ -86,7 +86,7 @@ class DbLineItem(db.Model):
         self.article_id = article_id
         self.article_number = article_number
         self._article_type = article_type.name
-        self.description = description
+        self.name = name
         self.unit_price = unit_price
         self.tax_rate = tax_rate
         self.quantity = quantity

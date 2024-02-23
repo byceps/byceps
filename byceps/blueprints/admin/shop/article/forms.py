@@ -35,9 +35,7 @@ from byceps.util.l10n import LocalizedForm
 
 
 class _ArticleBaseForm(LocalizedForm):
-    description = StringField(
-        lazy_gettext('Description'), validators=[InputRequired()]
-    )
+    name = StringField(lazy_gettext('Name'), validators=[InputRequired()])
     price_amount = DecimalField(
         lazy_gettext('Unit price'), places=2, validators=[InputRequired()]
     )
@@ -201,7 +199,7 @@ class ArticleAttachmentCreateForm(LocalizedForm):
 
     def set_article_to_attach_choices(self, attachable_articles):
         def to_label(article):
-            return f'{article.item_number} – {article.description}'
+            return f'{article.item_number} – {article.name}'
 
         choices = [
             (str(article.id), to_label(article))

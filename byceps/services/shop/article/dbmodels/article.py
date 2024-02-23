@@ -36,7 +36,7 @@ class DbArticle(db.Model):
 
     __tablename__ = 'shop_articles'
     __table_args__ = (
-        db.UniqueConstraint('shop_id', 'description'),
+        db.UniqueConstraint('shop_id', 'name'),
         db.CheckConstraint('available_from < available_until'),
     )
 
@@ -51,7 +51,7 @@ class DbArticle(db.Model):
     )
     _type: Mapped[str] = mapped_column('type', db.UnicodeText)
     type_params: Mapped[ArticleTypeParams | None] = mapped_column(db.JSONB)
-    description: Mapped[str] = mapped_column(db.UnicodeText)
+    name: Mapped[str] = mapped_column(db.UnicodeText)
     price_amount: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))
     _price_currency: Mapped[str] = mapped_column(
         'price_currency', db.UnicodeText
@@ -71,7 +71,7 @@ class DbArticle(db.Model):
         shop_id: ShopID,
         item_number: ArticleNumber,
         type_: ArticleType,
-        description: str,
+        name: str,
         price: Money,
         tax_rate: Decimal,
         total_quantity: int,
@@ -88,7 +88,7 @@ class DbArticle(db.Model):
         self.item_number = item_number
         self._type = type_.name
         self.type_params = type_params
-        self.description = description
+        self.name = name
         self.price_amount = price.amount
         self.price_currency = price.currency
         self.tax_rate = tax_rate
@@ -123,6 +123,6 @@ class DbArticle(db.Model):
             .add_with_lookup('id')
             .add('shop', self.shop_id)
             .add_with_lookup('item_number')
-            .add_with_lookup('description')
+            .add_with_lookup('name')
             .build()
         )

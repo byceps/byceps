@@ -28,7 +28,7 @@ class IncomingLineItem:
     article_id: ArticleID
     article_number: ArticleNumber
     article_type: ArticleType
-    description: str
+    name: str
     unit_price: Money
     tax_rate: Decimal
     quantity: int

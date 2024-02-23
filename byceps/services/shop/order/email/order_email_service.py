@@ -12,7 +12,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from functools import partial
 
-from flask_babel import force_locale, format_date, gettext
+from flask_babel import force_locale, format_date, gettext, pgettext
 import structlog
 
 from byceps.services.brand import brand_service
@@ -152,9 +152,9 @@ def assemble_text_for_incoming_order_to_orderer(
         '\n'.join(
             [
                 indentation
-                + gettext('Description')
+                + pgettext('article', 'Name')
                 + ': '
-                + line_item.description,
+                + line_item.name,
                 indentation
                 + gettext('Quantity')
                 + ': '
@@ -169,7 +169,7 @@ def assemble_text_for_incoming_order_to_orderer(
                 + format_money(line_item.line_amount),
             ]
         )
-        for line_item in sorted(order.line_items, key=lambda li: li.description)
+        for line_item in sorted(order.line_items, key=lambda li: li.name)
     ]
     total_amount = (
         indentation

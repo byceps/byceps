@@ -36,7 +36,7 @@ def article_bungalow(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
         item_number=ArticleNumber('LR-08-A00003'),
-        description='LANresort 2015: Bungalow 4 Plätze',
+        name='LANresort 2015: Bungalow 4 Plätze',
         price=Money('355.00', EUR),
         tax_rate=Decimal('0.07'),
     )
@@ -47,7 +47,7 @@ def article_guest_fee(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
         item_number=ArticleNumber('LR-08-A00006'),
-        description='Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
+        name='Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
         price=Money('6.00', EUR),
         tax_rate=Decimal('0.19'),
     )
@@ -58,7 +58,7 @@ def article_table(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
         item_number=ArticleNumber('LR-08-A00002'),
-        description='Tisch (zur Miete), 200 x 80 cm',
+        name='Tisch (zur Miete), 200 x 80 cm',
         price=Money('20.00', EUR),
         tax_rate=Decimal('0.19'),
     )

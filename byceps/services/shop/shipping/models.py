@@ -14,7 +14,7 @@ from byceps.services.shop.article.models import ArticleID
 @dataclass(frozen=True)
 class ArticleToShip:
     article_id: ArticleID
-    description: str
+    name: str
     quantity_paid: int
     quantity_open: int
     quantity_total: int

@@ -28,11 +28,11 @@ def get_articles_to_ship(shop_id: ShopID) -> list[ArticleToShip]:
     line_item_quantities = list(_find_line_items(shop_id))
 
     article_ids = {liq.article_id for liq in line_item_quantities}
-    article_descriptions = _get_article_descriptions(article_ids)
+    article_names = _get_article_names(article_ids)
 
     return list(
         _aggregate_ordered_article_quantites(
-            line_item_quantities, article_descriptions
+            line_item_quantities, article_names
         )
     )
 
@@ -84,7 +84,7 @@ def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
 
 def _aggregate_ordered_article_quantites(
     line_item_quantities: list[LineItemQuantity],
-    article_descriptions: dict[ArticleID, str],
+    article_names: dict[ArticleID, str],
 ) -> Iterator[ArticleToShip]:
     """Aggregate article quantities per payment state."""
     d: defaultdict[ArticleID, Counter] = defaultdict(Counter)
@@ -93,30 +93,28 @@ def _aggregate_ordered_article_quantites(
         d[liq.article_id][liq.payment_state] += liq.quantity
 
     for article_id, counter in d.items():
-        description = article_descriptions[article_id]
+        name = article_names[article_id]
         quantity_paid = counter[PaymentState.paid]
         quantity_open = counter[PaymentState.open]
 
         yield ArticleToShip(
             article_id=article_id,
-            description=description,
+            name=name,
             quantity_paid=quantity_paid,
             quantity_open=quantity_open,
             quantity_total=quantity_paid + quantity_open,
         )
 
 
-def _get_article_descriptions(
-    article_ids: set[ArticleID],
-) -> dict[ArticleID, str]:
-    """Look up description texts of the specified articles."""
+def _get_article_names(article_ids: set[ArticleID]) -> dict[ArticleID, str]:
+    """Look up names of the specified articles."""
     if not article_ids:
         return {}
 
     db_articles = db.session.scalars(
         select(DbArticle)
-        .options(db.load_only(DbArticle.id, DbArticle.description))
+        .options(db.load_only(DbArticle.id, DbArticle.name))
         .filter(DbArticle.id.in_(article_ids))
     ).all()
 
-    return {db_article.id: db_article.description for db_article in db_articles}
+    return {db_article.id: db_article.name for db_article in db_articles}

@@ -24,7 +24,7 @@
   <table class="itemlist itemlist--wide">
     <thead>
       <tr>
-        <th>{{ _('Description') }}</th>
+        <th>{{ pgettext('article', 'Name') }}</th>
         <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
         <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
       </tr>
@@ -33,7 +33,7 @@
       {%- for item in article_compilation %}
         {%- with is_available = (item.article.quantity > 0) %}
       <tr{% if not is_available %} class="dimmed"{% endif %}>
-        <td>{{ item.article.description }}
+        <td>{{ item.article.name }}
           {%- if not is_available %}
           <br><em>{{ _('currently not available') }}</em>
           {%- endif -%}

@@ -25,7 +25,7 @@ def test_assemble_text_for_incoming_order_to_orderer(
         build_line_item(
             order_number=order_number,
             article_number=ArticleNumber('AB-11-A00003'),
-            description='Einzelticket, Kategorie Loge',
+            name='Einzelticket, Kategorie Loge',
             unit_price=Money('99.00', EUR),
             quantity=5,
             line_amount=Money('495.00', EUR),
@@ -33,7 +33,7 @@ def test_assemble_text_for_incoming_order_to_orderer(
         build_line_item(
             order_number=order_number,
             article_number=ArticleNumber('AB-11-A00007'),
-            description='T-Shirt, Größe L',
+            name='T-Shirt, Größe L',
             unit_price=Money('14.95', EUR),
             quantity=2,
             line_amount=Money('29.90', EUR),
@@ -76,12 +76,12 @@ vielen Dank für deine Bestellung mit der Nummer AB-11-B00253 am 15.08.2014 übe
 
 Folgende Artikel hast du bestellt:
 
-  Beschreibung: Einzelticket, Kategorie Loge
+  Bezeichnung: Einzelticket, Kategorie Loge
   Anzahl: 5
   Stückpreis: 99,00\xa0€
   Zeilenpreis: 495,00\xa0€
 
-  Beschreibung: T-Shirt, Größe L
+  Bezeichnung: T-Shirt, Größe L
   Anzahl: 2
   Stückpreis: 14,95\xa0€
   Zeilenpreis: 29,90\xa0€

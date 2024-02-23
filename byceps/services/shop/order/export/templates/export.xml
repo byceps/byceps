@@ -55,7 +55,7 @@
 				<LINE_ITEM_ID>{{ loop.index0 }}</LINE_ITEM_ID>
 				<ARTICLE_ID>
 					<SUPPLIER_AID>{{ line_item.article_number }}</SUPPLIER_AID>
-					<DESCRIPTION_SHORT>{{ line_item.description }}</DESCRIPTION_SHORT>
+					<DESCRIPTION_SHORT>{{ line_item.name }}</DESCRIPTION_SHORT>
 					<DESCRIPTION_LONG></DESCRIPTION_LONG>
 				</ARTICLE_ID>
 				<QUANTITY>{{ line_item.quantity }}</QUANTITY>

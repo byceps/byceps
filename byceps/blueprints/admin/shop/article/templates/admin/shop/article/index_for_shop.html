@@ -47,7 +47,7 @@
   </div>
 
   <form action="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="single-row mb">
-    <input type="search" name="search_term" placeholder="{{ _('Article number') }}, {{ _('description') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} class="form-control" autofocus>
+    <input type="search" name="search_term" placeholder="{{ _('Article number') }}, {{ pgettext('article', 'name') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} class="form-control" autofocus>
     <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
     <a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
   </form>
@@ -57,7 +57,7 @@
     <thead>
       <tr>
         <th>{{ _('Item number') }}</th>
-        <th>{{ _('Description') }}</th>
+        <th>{{ pgettext('article', 'Name') }}</th>
         <th>{{ _('Type') }}</th>
         <th class="hyphenate number" style="width: 15%;">{{ _('Unit price') }}<br>{{ _('Tax rate') }}</th>
         <th class="hyphenate number" style="width: 11%;">{{ _('Quantity') }}<br>{{ _('available') }}</th>
@@ -75,7 +75,7 @@
           {%- endfor %}
         </td>
         <td>
-          {{ article.description }}
+          {{ article.name }}
 
           {%- if article.not_directly_orderable %}
           <br>{{ render_icon('info') }} {{ _('can only be ordered indirectly')|dim }}

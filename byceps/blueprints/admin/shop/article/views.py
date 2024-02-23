@@ -376,7 +376,7 @@ def create(shop_id, type_name):
 
     item_number = _get_item_number(article_number_sequence.id)
 
-    description = form.description.data.strip()
+    name = form.name.data.strip()
     price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
     available_from_utc = _assemble_datetime_utc(
@@ -394,7 +394,7 @@ def create(shop_id, type_name):
         type_,
         shop.id,
         item_number,
-        description,
+        name,
         price,
         tax_rate,
         total_quantity,
@@ -439,7 +439,7 @@ def _create_article(
     type_: ArticleType,
     shop_id: ShopID,
     item_number: ArticleNumber,
-    description: str,
+    name: str,
     price: Money,
     tax_rate: Decimal,
     total_quantity: int,
@@ -454,7 +454,7 @@ def _create_article(
         return article_service.create_ticket_article(
             shop_id,
             item_number,
-            description,
+            name,
             price,
             tax_rate,
             total_quantity,
@@ -469,7 +469,7 @@ def _create_article(
         return article_service.create_ticket_bundle_article(
             shop_id,
             item_number,
-            description,
+            name,
             price,
             tax_rate,
             total_quantity,
@@ -488,7 +488,7 @@ def _create_article(
             shop_id,
             item_number,
             type_,
-            description,
+            name,
             price,
             tax_rate,
             total_quantity,
@@ -550,7 +550,7 @@ def update(article_id):
     if not form.validate():
         return update_form(article_id, form)
 
-    description = form.description.data.strip()
+    name = form.name.data.strip()
     price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
     available_from_utc = _assemble_datetime_utc(
@@ -566,7 +566,7 @@ def update(article_id):
 
     article = article_service.update_article(
         article.id,
-        description,
+        name,
         price,
         tax_rate,
         available_from_utc,
@@ -578,10 +578,7 @@ def update(article_id):
     )
 
     flash_success(
-        gettext(
-            'Article "%(description)s" has been updated.',
-            description=article.description,
-        )
+        gettext('Article "%(name)s" has been updated.', name=article.name)
     )
     return redirect_to('.view', article_id=article.id)
 

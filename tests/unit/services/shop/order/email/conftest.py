@@ -54,7 +54,7 @@ def build_line_item():
     def _wrapper(
         order_number: OrderNumber,
         article_number: ArticleNumber,
-        description: str,
+        name: str,
         unit_price: Money,
         quantity: int,
         line_amount: Money,
@@ -65,7 +65,7 @@ def build_line_item():
             article_id=ArticleID(generate_uuid()),
             article_number=article_number,
             article_type=ArticleType.other,
-            description=description,
+            name=name,
             unit_price=unit_price,
             tax_rate=Decimal('0.19'),
             quantity=quantity,

@@ -6,7 +6,7 @@
       <tr>
         <th class="number">{{ _('Quantity') }}</th>
         <th>{{ _('Item number') }}</th>
-        <th>{{ _('Description') }}</th>
+        <th>{{ pgettext('article', 'Name') }}</th>
         <th class="centered">{{ _('Processing') }}</th>
         <th class="number">{{ _('Unit price') }}</th>
         <th class="number">{{ _('Total') }}</th>
@@ -16,8 +16,8 @@
       {%- for line_item in order.line_items|sort(attribute='article_number') %}
       <tr>
         <td class="number">{{ line_item.quantity }}</td>
-        <td class="nowrap"><a href="{{ url_for('shop_article_admin.view', article_id=line_item.article_id) }}" title="{{ line_item.description }}">{{ line_item.article_number }}</a></td>
-        <td>{{ line_item.description }}</td>
+        <td class="nowrap"><a href="{{ url_for('shop_article_admin.view', article_id=line_item.article_id) }}" title="{{ line_item.name }}">{{ line_item.article_number }}</a></td>
+        <td>{{ line_item.name }}</td>
         <td class="centered">{{ render_line_item_processing_state(line_item.processing_state) }}</td>
         <td class="number">{{ line_item.unit_price|moneyformat }}</td>
         <td class="number">{{ line_item.line_amount|moneyformat }}</td>

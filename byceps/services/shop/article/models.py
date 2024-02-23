@@ -69,7 +69,7 @@ class Article:
     item_number: ArticleNumber
     type_: ArticleType
     type_params: ArticleTypeParams
-    description: str
+    name: str
     price: Money
     tax_rate: Decimal
     available_from: datetime | None

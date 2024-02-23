@@ -62,7 +62,7 @@ def article1(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
         item_number=ArticleNumber('item-001'),
-        description='Item #1',
+        name='Item #1',
         total_quantity=8,
     )
 
@@ -72,7 +72,7 @@ def article2(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
         item_number=ArticleNumber('item-002'),
-        description='Item #2',
+        name='Item #2',
         total_quantity=8,
     )
 
@@ -82,7 +82,7 @@ def article3(make_article, shop: Shop) -> Article:
     return make_article(
         shop.id,
         item_number=ArticleNumber('item-003'),
-        description='Item #3',
+        name='Item #3',
         total_quantity=8,
     )
 

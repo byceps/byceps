@@ -5,7 +5,7 @@
       <thead>
         <tr>
           <th style="width: 15%;">{{ _('Quantity') }}</th>
-          <th>{{ _('Description') }}</th>
+          <th>{{ pgettext('article', 'Name') }}</th>
           <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
           <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
         </tr>
@@ -28,7 +28,7 @@
           {%- endwith -%}
           </td>
           {%- endif %}
-          <td>{{ item.article.description }}
+          <td>{{ item.article.name }}
             {%- if not is_available %}
             <br><em>{{ _('currently not available') }}</em>
             {%- endif -%}

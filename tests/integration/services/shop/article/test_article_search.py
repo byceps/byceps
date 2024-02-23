@@ -17,21 +17,21 @@ def shop(make_brand, make_shop):
 @pytest.fixture(scope='module')
 def article1(shop, make_article):
     return make_article(
-        shop.id, item_number='TICKET-2022', description='Ticket for 2022'
+        shop.id, item_number='TICKET-2022', name='Ticket for 2022'
     )
 
 
 @pytest.fixture(scope='module')
 def article2(shop, make_article):
     return make_article(
-        shop.id, item_number='TICKET-2023', description='Ticket for 2023'
+        shop.id, item_number='TICKET-2023', name='Ticket for 2023'
     )
 
 
 @pytest.fixture(scope='module')
 def article3(shop, make_article):
     return make_article(
-        shop.id, item_number='SHIRT-2023', description='Shirt for 2023'
+        shop.id, item_number='SHIRT-2023', name='Shirt for 2023'
     )
 
 

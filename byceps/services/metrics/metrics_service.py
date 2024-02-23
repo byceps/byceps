@@ -87,14 +87,14 @@ def _collect_shop_ordered_article_metrics(
     """Provide ordered article quantities for shops."""
     stats = shop_article_service.sum_ordered_articles_by_payment_state(shop_ids)
 
-    for shop_id, article_number, description, payment_state, quantity in stats:
+    for shop_id, article_number, name, payment_state, quantity in stats:
         yield Metric(
             'shop_ordered_article_quantity',
             quantity,
             labels=[
                 Label('shop', shop_id),
                 Label('article_number', article_number),
-                Label('description', description),
+                Label('name', name),
                 Label('payment_state', payment_state.name),
             ],
         )

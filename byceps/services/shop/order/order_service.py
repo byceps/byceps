@@ -826,7 +826,7 @@ def _line_item_to_transfer_object(
         article_id=db_line_item.article_id,
         article_number=db_line_item.article_number,
         article_type=db_line_item.article_type,
-        description=db_line_item.description,
+        name=db_line_item.name,
         unit_price=Money(db_line_item.unit_price, currency),
         tax_rate=db_line_item.tax_rate,
         quantity=db_line_item.quantity,
