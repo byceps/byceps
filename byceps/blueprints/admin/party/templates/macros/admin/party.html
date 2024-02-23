@@ -21,6 +21,10 @@
           </div>
         </div>
 
+        {%- if party.hidden %}
+        {{ render_tag(_('hidden'), class='tag--outlined', icon='hidden') }}
+        {%- endif %}
+
         {%- if party.canceled %}
         {{ render_tag(pgettext('party', 'canceled'), class='color-danger', icon='disabled') }}
         {%- endif %}

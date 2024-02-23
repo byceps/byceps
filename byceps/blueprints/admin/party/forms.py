@@ -68,5 +68,6 @@ class UpdateForm(_BaseForm):
         lazy_gettext('Ticket management open')
     )
     seat_management_enabled = BooleanField(lazy_gettext('Seat management open'))
+    hidden = BooleanField(lazy_gettext('hidden'))
     canceled = BooleanField(lazy_pgettext('party', 'canceled'))
     archived = BooleanField(lazy_gettext('archived'))

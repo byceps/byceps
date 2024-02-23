@@ -33,6 +33,7 @@ class DbParty(db.Model):
     max_ticket_quantity: Mapped[int | None]
     ticket_management_enabled: Mapped[bool]
     seat_management_enabled: Mapped[bool]
+    hidden: Mapped[bool] = mapped_column(default=False)
     canceled: Mapped[bool] = mapped_column(default=False)
     archived: Mapped[bool] = mapped_column(default=False)
 

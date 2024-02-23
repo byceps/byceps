@@ -63,6 +63,7 @@ def update_party(
     max_ticket_quantity: int | None,
     ticket_management_enabled: bool,
     seat_management_enabled: bool,
+    hidden: bool,
     canceled: bool,
     archived: bool,
 ) -> Party:
@@ -78,6 +79,7 @@ def update_party(
     db_party.max_ticket_quantity = max_ticket_quantity
     db_party.ticket_management_enabled = ticket_management_enabled
     db_party.seat_management_enabled = seat_management_enabled
+    db_party.hidden = hidden
     db_party.canceled = canceled
     db_party.archived = archived
 
@@ -252,6 +254,7 @@ def _db_entity_to_party(db_party: DbParty) -> Party:
         max_ticket_quantity=db_party.max_ticket_quantity,
         ticket_management_enabled=db_party.ticket_management_enabled,
         seat_management_enabled=db_party.seat_management_enabled,
+        hidden=db_party.hidden,
         canceled=db_party.canceled,
         archived=db_party.archived,
     )

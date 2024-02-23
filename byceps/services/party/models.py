@@ -26,6 +26,7 @@ class Party:
     max_ticket_quantity: int | None
     ticket_management_enabled: bool
     seat_management_enabled: bool
+    hidden: bool
     canceled: bool
     archived: bool
 

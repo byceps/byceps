@@ -126,6 +126,7 @@ def make_party(brand: Brand):
             max_ticket_quantity=0,
             ticket_management_enabled=False,
             seat_management_enabled=False,
+            hidden=False,
             canceled=False,
             archived=False,
         )

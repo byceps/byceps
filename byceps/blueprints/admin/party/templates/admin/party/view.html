@@ -13,13 +13,14 @@
 
       <h1>
         {{ party.title }}
-        {%- if party.canceled or party.archived %}
-          {%- if party.canceled %}
+        {%- if party.hidden %}
+        {{ render_tag(_('hidden'), class='tag--outlined', icon='hidden') }}
+        {%- endif %}
+        {%- if party.canceled %}
         {{ render_tag(pgettext('party', 'canceled'), class='color-danger', icon='disabled') }}
-          {%- endif %}
-          {%- if party.archived %}
+        {%- endif %}
+        {%- if party.archived %}
         {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
-          {%- endif %}
         {%- endif %}
       </h1>
 
