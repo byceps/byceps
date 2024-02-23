@@ -43,6 +43,7 @@ def view(user_id):
     current_party_tickets = [t for t in _current_party_tickets if not t.revoked]
 
     attended_parties = ticket_attendance_service.get_attended_parties(user.id)
+    attended_parties = [party for party in attended_parties if not party.hidden]
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
 
     return {
