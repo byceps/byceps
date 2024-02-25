@@ -386,6 +386,11 @@ table:is(.index.index--v-centered, .itemlist.itemlist--v-centered) :is(th, td) {
   vertical-align: middle;
 }
 
+table.itemlist.itemlist--compact {
+  --cell-padding-vertical: 0.5rem;
+  --row-padding-horizontal: 0.75rem;
+}
+
 table.index.index--wide,
 table.itemlist.itemlist--wide {
   width: 100%;

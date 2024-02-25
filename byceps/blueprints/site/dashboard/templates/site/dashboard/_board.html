@@ -3,26 +3,28 @@
 
 <h2>{{ _('Discussion Board') }}</h2>
 
-<div class="main-body-box">
 {%- if board_topics %}
-  <ol class="items">
+<table class="itemlist itemlist--compact itemlist--wide">
+  <tbody>
     {%- for topic in board_topics %}
-    <li>
-      <a class="disguised{% if topic.hidden %} dimmed{% endif %}" href="{{ url_for('board.topic_view', topic_id=topic.id) }}">
-        {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
-        {{ topic.title }}
-      </a>
-      <div class="item-meta">
-        {{ topic.last_updated_at|dateformat }}, {{ topic.last_updated_at|timeformat('short') }}
-        &middot;
-        {{ topic.category.title }}
-      </div>
-    </li>
+    <tr>
+      <td>
+        <a class="disguised{% if topic.hidden %} dimmed{% endif %}" href="{{ url_for('board.topic_view', topic_id=topic.id) }}">
+          {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
+          {{ topic.title }}
+        </a>
+        <div class="item-meta">
+          {{ topic.last_updated_at|dateformat }}, {{ topic.last_updated_at|timeformat('short') }}
+          &middot;
+          {{ topic.category.title }}
+        </div>
+      </td>
+    </tr>
     {%- endfor %}
-  </ol>
+  </tbody>
+</table>
 {%- else %}
-  <p class="dimmed">{{ _('No topics yet.') }}</p>
+<p class="dimmed">{{ _('No topics yet.') }}</p>
 {%- endif %}
-</div>
 
 {{ render_continuative_link(url_for('board.category_index'), _('Discussion Board')) }}
