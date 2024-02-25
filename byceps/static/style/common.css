@@ -319,7 +319,7 @@ table.index {
 
 table.itemlist {
   --cell-padding-vertical: 0.75rem;
-  --row-padding-horizontal: 1.5rem;
+  --row-padding-horizontal: 1rem;
   --table-background-color-head: transparent;
   --table-background-color-body: transparent;
   --table-border-color: #dddddd;
