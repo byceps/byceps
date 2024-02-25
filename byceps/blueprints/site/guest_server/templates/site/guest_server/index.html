@@ -49,7 +49,30 @@
         <td>
           <div class="server">
 
-            <div class="data-label">{{ _('Description') }}</div>
+            <div class="row row--space-between">
+              <div>
+
+                <div class="data-label">{{ _('Status') }}</div>
+                <div class="data-value">
+                  {%- if server.approved -%}
+                  {{ render_tag(_('approved'), class='color-success') }}
+                  {%- else -%}
+                  {{ render_tag(_('pending'), class='color-warning') }}
+                  {%- endif -%}
+                </div>
+
+              </div>
+              <div>
+
+                {%- if server.approved %}
+                <div class="data-label">{{ render_icon('print') }} {{ _('Printable server card') }}</div>
+                <div class="data-value"><a href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}">{{ pgettext('verb', 'View') }}</a></div>
+                {%- endif %}
+
+              </div>
+            </div>{# .row #}
+
+            <div class="data-label mt">{{ _('Description') }}</div>
             <div class="data-value">{{ server.description|fallback }}</div>
 
             <div class="server-addresses{% if server.approved %} server-addresses--approved{% endif %} mt">
@@ -106,29 +129,6 @@
               {%- endfor %}
 
             </div>{# .server-addresses #}
-
-            <div class="row mt">
-              <div>
-
-                <div class="data-label">{{ _('Status') }}</div>
-                <div class="data-value">
-                  {%- if server.approved -%}
-                  {{ render_tag(_('approved'), class='color-success') }}
-                  {%- else -%}
-                  {{ render_tag(_('pending'), class='color-warning') }}
-                  {%- endif -%}
-                </div>
-
-              </div>
-              <div>
-
-                {%- if server.approved %}
-                <div class="data-label">{{ render_icon('print') }} {{ _('Printable server card') }}</div>
-                <div class="data-value"><a href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}">{{ pgettext('verb', 'View') }}</a></div>
-                {%- endif %}
-
-              </div>
-            </div>{# .row #}
 
           </div>{# .server #}
         </td>
