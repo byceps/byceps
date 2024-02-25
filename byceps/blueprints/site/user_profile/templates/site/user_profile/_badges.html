@@ -5,14 +5,16 @@
 <div class="user-profile-detail-block">
   <h2>{{ _('Badges') }}</h2>
 
-  <table class="user-badges-list">
-    {%- for badge, quantity in badges_with_awarding_quantity|items|sort(attribute='0.label') %}
-    <tr>
-      <td>{{ render_user_badge_linked(badge, 32) }}</td>
-      <td>{{ badge.label }}</td>
-      <td class="centered dimmed">{% if quantity > 1 %}&times;{{ quantity }}{% endif %}</td>
-    </tr>
-    {%- endfor %}
+  <table class="itemlist itemlist--compact itemlist--wide">
+    <tbody>
+      {%- for badge, quantity in badges_with_awarding_quantity|items|sort(attribute='0.label') %}
+      <tr>
+        <td>{{ render_user_badge_linked(badge, 32) }}</td>
+        <td>{{ badge.label }}</td>
+        <td class="centered dimmed">{% if quantity > 1 %}&times;{{ quantity }}{% endif %}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
   </table>
 
 </div>

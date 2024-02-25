@@ -2,12 +2,12 @@
   <h2>{{ _('Attended parties') }}</h2>
 
   {%- if attended_parties %}
-  <ol class="bare bare--spaced">
+  <ol class="itemlist itemlist--compact itemlist--wide">
     {%- for party in attended_parties %}
     <li>{{ party.title }}</li>
     {%- endfor %}
   </ol>
   {%- else %}
-    {{- 'keine'|dim -}}
+  {{- 'keine'|dim -}}
   {%- endif %}
 </div>
