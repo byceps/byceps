@@ -283,11 +283,11 @@ main h1 {
   background-color: var(--primary-color);
 }
 
-table.index {
-  --table-border-color: var(--border-color);
+ol.itemlist {
+  --itemlist-border-color: var(--border-color);
 }
 
-table.itemlist {
+table {
   --table-border-color: var(--border-color);
 }
 
