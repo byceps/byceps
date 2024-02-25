@@ -309,7 +309,9 @@ nav.breadcrumbs + h1 {
 ol.itemlist {
   --item-padding-horizontal: 1rem;
   --item-padding-vertical: 0.75rem;
+  --itemlist-background-color: transparent;
   --itemlist-border-color: #dddddd;
+  background-color: var(--itemlist-background-color);
   border-color: var(--itemlist-border-color);
   border-radius: var(--border-radius);
   border-style: solid;
@@ -339,11 +341,11 @@ table {
   --cell-padding-horizontal: 1rem;
   --cell-padding-vertical: 0.1rem;
   --row-padding-horizontal: 0;
+  --table-border-color: #dddddd;
 }
 
 table.index {
   --cell-padding-vertical: 0.35rem;
-  --table-border-color: #dddddd;
 }
 
 table.itemlist {
@@ -351,7 +353,6 @@ table.itemlist {
   --row-padding-horizontal: 1rem;
   --table-background-color-head: transparent;
   --table-background-color-body: transparent;
-  --table-border-color: #dddddd;
   background-color: var(--table-background-color-body);
   border-collapse: separate;  /* Required for `border-radius`. */
   border-color: var(--table-border-color);
