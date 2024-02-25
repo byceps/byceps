@@ -5,6 +5,12 @@
 
 {%- if board_topics %}
 <table class="itemlist itemlist--compact itemlist--wide">
+  <thead>
+    <tr>
+      <th>{{ _('Topic') }}</th>
+      <th class="centered">{{ _('Replies') }}</th>
+    </tr>
+  </thead>
   <tbody>
     {%- for topic in board_topics %}
     <tr>
@@ -19,6 +25,7 @@
           {{ topic.category.title }}
         </div>
       </td>
+      <td class="centered bignumber">{{ topic.reply_count|numberformat }}</td>
     </tr>
     {%- endfor %}
   </tbody>
