@@ -304,6 +304,35 @@ nav.breadcrumbs + h1 {
 }
 
 
+/* lists */
+
+ol.itemlist {
+  --item-padding-horizontal: 1rem;
+  --item-padding-vertical: 0.75rem;
+  --itemlist-border-color: #dddddd;
+  border-color: var(--itemlist-border-color);
+  border-radius: var(--border-radius);
+  border-style: solid;
+  border-width: 1px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+ol.itemlist > li {
+  padding: var(--item-padding-vertical) var(--item-padding-horizontal);
+}
+
+ol.itemlist.itemlist--compact {
+  --item-padding-horizontal: 0.75rem;
+  --item-padding-vertical: 0.5rem;
+}
+
+ol.itemlist > li:not(:first-child) {
+  border-top: var(--itemlist-border-color) solid 1px;
+}
+
+
 /* tables */
 
 table {
