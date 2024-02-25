@@ -1,10 +1,19 @@
-{%- from 'macros/user_badge.html' import render_user_badges_list %}
+{%- from 'macros/user_badge.html' import render_user_badge_linked %}
 
 
 {%- if badges_with_awarding_quantity %}
 <div class="user-profile-detail-block">
   <h2>{{ _('Badges') }}</h2>
 
-  {{ render_user_badges_list(badges_with_awarding_quantity) }}
+  <table class="user-badges-list">
+    {%- for badge, quantity in badges_with_awarding_quantity|items|sort(attribute='0.label') %}
+    <tr>
+      <td>{{ render_user_badge_linked(badge, 32) }}</td>
+      <td>{{ badge.label }}</td>
+      <td class="centered dimmed">{% if quantity > 1 %}&times;{{ quantity }}{% endif %}</td>
+    </tr>
+    {%- endfor %}
+  </table>
+
 </div>
 {%- endif %}
