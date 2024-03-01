@@ -2,26 +2,28 @@
 
 <h2>{{ _('News') }}</h2>
 
-<div class="main-body-box">
 {%- if news_teasers %}
-  <ol class="items">
-    {%- for teaser in news_teasers %}
-    <li>
+<ol class="items">
+  {%- for teaser in news_teasers %}
+  <li>
+    <div class="main-body-box{% if teaser.featured_image %} main-body-box--no-padding-top{% endif %}">
       <a class="item-link" href="{{ url_for('news.view', slug=teaser.slug) }}">
         {%- if teaser.featured_image %}
           {%- with featured_image = teaser.featured_image %}
-        <img class="item-image" src="{{ featured_image.url_path }}"{% if featured_image.alt_text %} alt="{{ featured_image.alt_text }}"{% endif %}>
+        <div class="featured-image mb">
+          <img class="item-image" src="{{ featured_image.url_path }}"{% if featured_image.alt_text %} alt="{{ featured_image.alt_text }}"{% endif %}>
+        </div>
           {%- endwith %}
         {%- endif %}
         <div class="item-title">{{ teaser.title }}</div>
         <div class="item-meta">{{ teaser.published_at|dateformat('full') }}</div>
       </a>
-    </li>
-    {%- endfor %}
-  </ol>
+    </div>
+  </li>
+  {%- endfor %}
+</ol>
 {%- else %}
-  <p class="dimmed">{{ _('No news yet.') }}</p>
+<p class="dimmed">{{ _('No news yet.') }}</p>
 {%- endif %}
-</div>
 
 {{ render_continuative_link(url_for('news.index'), _('All news')) }}
