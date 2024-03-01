@@ -99,5 +99,4 @@ class Err(Generic[E]):
 Result = Ok[T] | Err[E]
 
 
-class UnwrapError(Exception):
-    ...
+class UnwrapError(Exception): ...
