@@ -8598,11 +8598,15 @@ msgstr ""
 "Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt "
 "markiert."
 
-#: byceps/services/site_navigation/models.py:101
+#: byceps/services/site_navigation/models.py:83
+msgid "Home page"
+msgstr "Homepage"
+
+#: byceps/services/site_navigation/models.py:102
 msgid "Orga team"
 msgstr "Orga-Team"
 
-#: byceps/services/site_navigation/models.py:107
+#: byceps/services/site_navigation/models.py:108
 msgid "Party history"
 msgstr "Party-Historie"
 

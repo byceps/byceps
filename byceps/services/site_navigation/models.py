@@ -80,6 +80,7 @@ _VIEW_TYPES = [
         current_page_id=current_page_id,
     )
     for name, endpoint, label, current_page_id in [
+        ('homepage', 'homepage.index', lazy_gettext('Home page'), 'homepage'),
         ('news', 'news.index', lazy_gettext('News'), 'news'),
         (
             'seating_plan',
