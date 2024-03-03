@@ -33,7 +33,7 @@
       font-size: 0.75rem; /* 12px / 16px */
     }
 
-    code.block {
+    code.codeblock {
       display: block;
       line-height: 1.5;
       padding: 0 2rem 1rem 2rem;
@@ -41,7 +41,7 @@
       overflow-x: scroll;
     }
 
-    code:not(.block) {
+    code:not(.codeblock) {
       border-radius: 0.2rem;
       padding: 0.05rem 0.3rem;
     }
@@ -57,7 +57,7 @@
     <div class="example-code">
       <details>
         <summary>Show code</summary>
-        <code class="block">
+        <code class="codeblock">
 {#- Whitespace removal in code block is significant! #}
 {%- filter forceescape -%}
 {{ caller()|trim }}
