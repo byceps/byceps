@@ -111,7 +111,8 @@
 
 .area {
   background-repeat: no-repeat;
-  margin: 2rem auto 0 auto;
+  margin-inline: auto;
+  margin-top: 2rem;
   position: relative;
 }
 

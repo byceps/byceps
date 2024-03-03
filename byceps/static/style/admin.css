@@ -204,7 +204,7 @@ a.box:hover {
 }
 
 #header-content form {
-  margin: 0 auto;
+  margin-inline: auto;
   max-width: 22rem;
 }
 

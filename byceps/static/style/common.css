@@ -116,7 +116,7 @@ img {
 /* layout */
 
 .container {
-  margin: 0 auto;
+  margin-inline: auto;
 }
 
 
