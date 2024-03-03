@@ -115,6 +115,10 @@ img {
 
 /* layout */
 
+.block:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
 .container {
   margin-inline: auto;
 }
