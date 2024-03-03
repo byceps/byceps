@@ -5,38 +5,38 @@
 {{ render_icon('success') }}
 {% endcall %}
 
-  <p><strong>{{ icon_names|length }}</strong> icons are available:</p>
+<p><strong>{{ icon_names|length }}</strong> icons are available:</p>
 
-  <style>
-    .icon-grid {
-      display: grid;
-      grid-gap: 0.25rem;
-      grid-template-columns: repeat(auto-fill, minmax(12rem, auto));
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+  .icon-grid {
+    display: grid;
+    grid-gap: 0.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, auto));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-    .icon-grid li {
-      align-items: center;
-      border-radius: 0.2rem;
-      display: flex;
-      padding: 0.5rem 1rem;
-    }
+  .icon-grid li {
+    align-items: center;
+    border-radius: 0.2rem;
+    display: flex;
+    padding: 0.5rem 1rem;
+  }
 
-    .icon-grid li:hover {
-      background-color: #333333;
-      color: #ffffff;
-    }
+  .icon-grid li:hover {
+    background-color: #333333;
+    color: #ffffff;
+  }
 
-    .icon-grid .icon {
-      font-size: 2rem;
-      margin-right: 0.75rem;
-    }
-  </style>
+  .icon-grid .icon {
+    font-size: 2rem;
+    margin-right: 0.75rem;
+  }
+</style>
 
-  <ol class="icon-grid">
-    {%- for icon_name in icon_names %}
-    <li>{{ render_icon(icon_name) }} {{ icon_name }}</li>
-    {%- endfor %}
-  </ol>
+<ol class="icon-grid">
+  {%- for icon_name in icon_names %}
+  <li>{{ render_icon(icon_name) }} {{ icon_name }}</li>
+  {%- endfor %}
+</ol>
