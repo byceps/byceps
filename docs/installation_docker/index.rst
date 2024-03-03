@@ -100,8 +100,8 @@ Copy the included example configuration file:
   already defined in the example apps configuration file,
   ``config/apps_example.toml``, which are:
 
-  - ``byceps-admin.example`` for the admin UI
-  - ``byceps-api.example`` for the API
+  - ``admin.byceps.example`` for the admin UI
+  - ``api.byceps.example`` for the API
   - ``cozylan.example`` for the CozyLAN demo site
 
   To be able to access them, though, add these entries to your local
@@ -110,8 +110,8 @@ Copy the included example configuration file:
 
   .. code-block::
 
-      127.0.0.1       byceps-admin.example
-      127.0.0.1       byceps-api.example
+      127.0.0.1       admin.byceps.example
+      127.0.0.1       api.byceps.example
       127.0.0.1       cozylan.example
 
 - But if you are **installing to a server**, substitude above hostnames
@@ -128,7 +128,7 @@ With that configured, spin up the application:
     $ docker compose up
 
 The admin frontend should now be available at
-http://byceps-admin.example:8080/. Log in with the name of the initial
+http://admin.byceps.example:8080/. Log in with the name of the initial
 user you created before and the corresponding password.
 
 The "CozyLAN" party site should be accessible at

@@ -58,8 +58,8 @@ services:
     depends_on:
       - byceps-apps
     environment:
-      SERVER_NAME_ADMIN: byceps-admin.example
-      SERVER_NAME_API: byceps-api.example
+      SERVER_NAME_ADMIN: admin.byceps.example
+      SERVER_NAME_API: api.byceps.example
       SERVER_NAME_SITE: cozylan.example
       UWSGI_ADDRESS: byceps-apps:5000
     ports:

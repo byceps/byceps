@@ -1,9 +1,9 @@
 [[app_mounts]]
-server_name = "byceps-admin.example"
+server_name = "admin.byceps.example"
 mode = "admin"
 
 [[app_mounts]]
-server_name = "byceps-api.example"
+server_name = "api.byceps.example"
 mode = "api"
 
 [[app_mounts]]
