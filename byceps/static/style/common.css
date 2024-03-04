@@ -11,7 +11,7 @@
   --color-warning-light: #ffe99a;
 
   --border-color: #cccccc;
-  --border-radius: 3px;
+  --border-radius: 0.25rem;
   --dimmed-color: #808080;
   --link-color: #0066c6;
 }
@@ -117,11 +117,17 @@ img {
 /* layout */
 
 .block:not(:last-child),
-.box:not(:last-child) {
+.box:not(:last-child),
+.card:not(:last-child) {
   margin-bottom: 1.5rem;
 }
 
 .box {
+  padding: 1.25rem;
+}
+
+.box,
+.card {
   background-color: #ffffff;
   border-color: var(--border-color);
   border-radius: var(--border-radius);
@@ -129,7 +135,30 @@ img {
   border-width: 1px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
   display: block;
+}
+
+.card {
+  max-width: 100%;
+}
+
+.card-content {
   padding: 1.25rem;
+}
+
+.card-image {
+  display: block;
+}
+
+.card-image:first-child img {
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  display: block;
+}
+
+.card-content:last-child,
+.card-image:last-child img {
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 .container {

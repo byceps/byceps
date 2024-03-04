@@ -64,6 +64,11 @@ body {
   grid-area: footer;
 }
 
+.box,
+.card {
+  background-color: transparent;
+}
+
 .container {
   padding-left: var(--page-gutter);
   padding-right: var(--page-gutter);
