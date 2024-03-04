@@ -9,31 +9,18 @@
       max-width: 1080px;
     }
 
-    .example {
-{%- if g.app_mode.is_admin() %}
-      background-color: #ffffff;
-{%- endif %}
-      border: rgba(0, 0, 0, 0.5) solid 1px;
-      border-radius: 0.2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .example-result {
-      padding: 2rem;
-    }
-
-    .example summary {
-      padding: 1rem 2rem;
-    }
-
-    .example summary,
-    code {
+    .card-content.example-code {
       background-color: rgba(0, 0, 0, 0.75);
       color: #ffffff;
       font-size: 0.75rem; /* 12px / 16px */
+      padding: 0;
     }
 
-    code.codeblock {
+    .example summary {
+      padding: 1.25rem 1.5rem;
+    }
+
+    code.example-codeblock {
       display: block;
       line-height: 1.5;
       padding: 0 2rem 1rem 2rem;
@@ -41,23 +28,24 @@
       overflow-x: scroll;
     }
 
-    code:not(.codeblock) {
+    code:not(.example-codeblock) {
       border-radius: 0.2rem;
       padding: 0.05rem 0.3rem;
     }
+
   </style>
 {%- endblock %}
 
 
 {% macro render_example() %}
-  <div class="example">
-    <div class="example-result">
+  <div class="card example">
+    <div class="card-content">
 {{ caller() }}
     </div>
-    <div class="example-code">
+    <div class="card-content example-code">
       <details>
         <summary>Show code</summary>
-        <code class="codeblock">
+        <code class="example-codeblock">
 {#- Whitespace removal in code block is significant! #}
 {%- filter forceescape -%}
 {{ caller()|trim }}
