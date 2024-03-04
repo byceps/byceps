@@ -10,6 +10,7 @@
   --color-warning: #ffcc11;
   --color-warning-light: #ffe99a;
 
+  --border-color: #cccccc;
   --border-radius: 3px;
   --dimmed-color: #808080;
   --link-color: #0066c6;
@@ -115,8 +116,20 @@ img {
 
 /* layout */
 
-.block:not(:last-child) {
+.block:not(:last-child),
+.box:not(:last-child) {
   margin-bottom: 1.5rem;
+}
+
+.box {
+  background-color: #ffffff;
+  border-color: var(--border-color);
+  border-radius: var(--border-radius);
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  display: block;
+  padding: 1.25rem;
 }
 
 .container {

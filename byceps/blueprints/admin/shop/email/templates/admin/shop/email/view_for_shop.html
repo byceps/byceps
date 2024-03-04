@@ -9,7 +9,6 @@
 <style>
 .box.email-example {
   padding: 0;
-  margin-bottom: 1rem;
 }
 
 .email-example pre {
@@ -62,7 +61,7 @@
 {%- endblock %}
 
 {% macro render_example_email(title, text_result) -%}
-    <details class="email-example"{% if text_result.is_err() %} open{% endif %}>
+    <details class="block email-example"{% if text_result.is_err() %} open{% endif %}>
       <summary class="mb">{{ title }}</summary>
   {%- if text_result.is_ok() -%}
       <div class="box email-example">
