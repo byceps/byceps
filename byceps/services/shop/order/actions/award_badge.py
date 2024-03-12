@@ -43,4 +43,4 @@ def _create_order_log_entry(order_id: OrderID, awarding: BadgeAwarding) -> None:
         'awardee_id': str(awarding.awardee_id),
     }
 
-    order_log_service.create_entry(event_type, order_id, data)
+    order_log_service.create_db_entry(event_type, order_id, data)

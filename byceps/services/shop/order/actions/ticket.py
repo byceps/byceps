@@ -75,7 +75,7 @@ def _create_creation_order_log_entries(
         for ticket in tickets
     ]
 
-    order_log_service.create_entries(event_type, order_id, datas)
+    order_log_service.create_db_entries(event_type, order_id, datas)
 
 
 def revoke_tickets(order: Order, line_item: LineItem, initiator: User) -> None:
@@ -105,4 +105,4 @@ def _create_revocation_order_log_entries(
         for ticket in tickets
     ]
 
-    order_log_service.create_entries(event_type, order_id, datas)
+    order_log_service.create_db_entries(event_type, order_id, datas)

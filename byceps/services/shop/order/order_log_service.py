@@ -22,7 +22,7 @@ from .models.log import OrderLogEntry, OrderLogEntryData
 from .models.order import OrderID
 
 
-def create_entry(
+def create_db_entry(
     event_type: str,
     order_id: OrderID,
     data: OrderLogEntryData,
@@ -30,23 +30,25 @@ def create_entry(
     occurred_at: datetime | None = None,
 ) -> None:
     """Create an order log entry."""
-    db_entry = build_entry(event_type, order_id, data, occurred_at=occurred_at)
+    db_entry = build_db_entry(
+        event_type, order_id, data, occurred_at=occurred_at
+    )
 
     db.session.add(db_entry)
     db.session.commit()
 
 
-def create_entries(
+def create_db_entries(
     event_type: str, order_id: OrderID, datas: Iterable[OrderLogEntryData]
 ) -> None:
     """Create a sequence of order log entries."""
-    db_entries = [build_entry(event_type, order_id, data) for data in datas]
+    db_entries = [build_db_entry(event_type, order_id, data) for data in datas]
 
     db.session.add_all(db_entries)
     db.session.commit()
 
 
-def build_entry(
+def build_db_entry(
     event_type: str,
     order_id: OrderID,
     data: OrderLogEntryData,

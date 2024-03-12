@@ -407,7 +407,7 @@ def resend_email_for_incoming_order_to_orderer(order_id):
 
     order_email_service.send_email_for_incoming_order_to_orderer(order)
 
-    order_log_service.create_entry(
+    order_log_service.create_db_entry(
         'order-placed-confirmation-email-resent',
         order.id,
         {

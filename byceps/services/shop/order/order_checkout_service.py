@@ -91,7 +91,7 @@ def place_order(
 
     # Create log entry in separate step as order ID is not available earlier.
     log_entry_data = {'initiator_id': str(orderer.user.id)}
-    order_log_service.create_entry(
+    order_log_service.create_db_entry(
         'order-placed', order.id, log_entry_data, occurred_at=occurred_at
     )
 

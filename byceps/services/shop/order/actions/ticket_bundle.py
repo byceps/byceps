@@ -84,7 +84,7 @@ def _create_creation_order_log_entry(
         'ticket_bundle_owner_id': str(ticket_bundle.owned_by_id),
     }
 
-    order_log_service.create_entry(event_type, order_id, data)
+    order_log_service.create_db_entry(event_type, order_id, data)
 
 
 def revoke_ticket_bundles(
@@ -111,4 +111,4 @@ def _create_revocation_order_log_entry(
         'initiator_id': str(initiator.id),
     }
 
-    order_log_service.create_entry(event_type, order_id, data)
+    order_log_service.create_db_entry(event_type, order_id, data)
