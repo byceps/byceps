@@ -132,6 +132,7 @@ def build_incoming_order(
     )
 
     return IncomingOrder(
+        id=OrderID(generate_uuid7()),
         created_at=created_at,
         shop_id=shop_id,
         storefront_id=storefront_id,
@@ -152,6 +153,7 @@ def _build_incoming_line_items(
         line_amount = cart_item.line_amount
 
         yield IncomingLineItem(
+            id=LineItemID(generate_uuid7()),
             article_id=article.id,
             article_number=article.item_number,
             article_type=article.type_,
@@ -171,7 +173,7 @@ def _build_db_order(
     orderer = incoming_order.orderer
 
     return DbOrder(
-        order_id=OrderID(generate_uuid7()),
+        order_id=incoming_order.id,
         created_at=incoming_order.created_at,
         shop_id=incoming_order.shop_id,
         storefront_id=incoming_order.storefront_id,
@@ -195,7 +197,7 @@ def _build_db_line_items(
     """Build line items from the cart's content."""
     for incoming_line_item in incoming_line_items:
         yield DbLineItem(
-            line_item_id=LineItemID(generate_uuid7()),
+            line_item_id=incoming_line_item.id,
             order=db_order,
             article_id=incoming_line_item.article_id,
             article_number=incoming_line_item.article_number,

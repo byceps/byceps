@@ -14,11 +14,14 @@ from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import (
     Order,
     Orderer,
+    OrderID,
     OrderState,
     PaymentState,
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
+
+from tests.helpers import generate_uuid
 
 
 PROCESSING_REQUIRED = True
@@ -68,6 +71,7 @@ def create_order(
     created_at = datetime.utcnow()
 
     incoming_order = IncomingOrder(
+        id=OrderID(generate_uuid()),
         created_at=created_at,
         shop_id=ShopID('shop-123'),
         storefront_id=StorefrontID('storefront-123'),

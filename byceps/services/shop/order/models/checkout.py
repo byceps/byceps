@@ -20,11 +20,12 @@ from byceps.services.shop.article.models import (
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 
-from .order import Orderer
+from .order import LineItemID, Orderer, OrderID
 
 
 @dataclass(frozen=True)
 class IncomingLineItem:
+    id: LineItemID
     article_id: ArticleID
     article_number: ArticleNumber
     article_type: ArticleType
@@ -38,6 +39,7 @@ class IncomingLineItem:
 
 @dataclass(frozen=True)
 class IncomingOrder:
+    id: OrderID
     created_at: datetime
     shop_id: ShopID
     storefront_id: StorefrontID
