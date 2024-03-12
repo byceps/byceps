@@ -16,7 +16,7 @@ psycopg[binary]==3.1.18
 pydantic==2.6.4
 py-moneyed==3.0
 qrcode==7.4.2
-redis==5.0.2
+redis==5.0.3
 requests==2.31.0
 rq==1.16.0
 rq-dashboard==0.6.7.2
