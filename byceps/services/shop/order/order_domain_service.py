@@ -20,7 +20,11 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
+from .errors import (
+    CartEmpty,
+    OrderAlreadyCanceledError,
+    OrderAlreadyMarkedAsPaidError,
+)
 from .models.checkout import IncomingLineItem, IncomingOrder
 from .models.log import OrderLogEntry, OrderLogEntryData
 from .models.order import LineItemID, Order, Orderer, OrderID, PaymentState
@@ -37,9 +41,13 @@ def place_order(
     orderer: Orderer,
     currency: Currency,
     cart: Cart,
-) -> tuple[IncomingOrder, OrderLogEntry]:
+) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmpty]:
     """Place an order."""
-    line_items = list(_build_incoming_line_items(cart.get_items()))
+    cart_items = cart.get_items()
+    if not cart_items:
+        return Err(CartEmpty())
+
+    line_items = list(_build_incoming_line_items(cart_items))
 
     total_amount = cart.calculate_total_amount()
 
@@ -60,7 +68,7 @@ def place_order(
 
     log_entry = _build_order_placed_log_entry(incoming_order)
 
-    return incoming_order, log_entry
+    return Ok((incoming_order, log_entry))
 
 
 def _build_incoming_line_items(

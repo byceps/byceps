@@ -12,10 +12,13 @@ import pytest
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_domain_service
+from byceps.services.shop.order.errors import CartEmpty
 from byceps.services.shop.order.models.checkout import IncomingOrder
+from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
+from byceps.util.result import Err, Result
 
 from tests.helpers import generate_token
 
@@ -40,9 +43,11 @@ def article3(make_article) -> Article:
 
 
 def test_without_any_items(orderer: Orderer):
-    order = build_incoming_order(orderer, [])
+    empty_cart = Cart(EUR)
 
-    assert order.total_amount == EUR.zero
+    result = place_order(orderer, empty_cart)
+
+    assert result == Err(CartEmpty())
 
 
 def test_with_single_item(orderer: Orderer, article1: Article):
@@ -84,7 +89,15 @@ def build_incoming_order(
     for article, quantity in articles:
         cart.add_item(article, quantity)
 
-    incoming_order, _ = order_domain_service.place_order(
+    incoming_order, _ = place_order(orderer, cart).unwrap()
+
+    return incoming_order
+
+
+def place_order(
+    orderer: Orderer, cart: Cart
+) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmpty]:
+    return order_domain_service.place_order(
         datetime.utcnow(),
         SHOP_ID,
         STOREFRONT_ID,
@@ -92,5 +105,3 @@ def build_incoming_order(
         EUR,
         cart,
     )
-
-    return incoming_order

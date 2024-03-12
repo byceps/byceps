@@ -6,6 +6,13 @@ byceps.services.shop.order.errors
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class CartEmpty:
+    pass
+
 
 class OrderAlreadyCanceledError:
     pass

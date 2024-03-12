@@ -63,9 +63,15 @@ def place_order(
     if created_at is None:
         created_at = datetime.utcnow()
 
-    incoming_order, log_entry = order_domain_service.place_order(
+    place_order_result = order_domain_service.place_order(
         created_at, shop.id, storefront.id, orderer, shop.currency, cart
     )
+    if place_order_result.is_err():
+        error_message = 'Cart must not be empty'
+        log.error('Order placement failed', error_message=error_message)
+        return Err(None)
+
+    incoming_order, log_entry = place_order_result.unwrap()
 
     db_order = _build_db_order(incoming_order, order_number)
 
