@@ -22,7 +22,7 @@ rq==1.16.1
 rq-dashboard==0.6.7.2
 rtoml==0.10.0
 schwifty==2024.1.1.post0
-sentry-sdk==1.40.6
+sentry-sdk==1.41.0
 sqlalchemy==2.0.27
 structlog==24.1.0
 tenacity==8.2.3
