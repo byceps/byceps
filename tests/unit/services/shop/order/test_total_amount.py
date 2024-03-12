@@ -84,7 +84,7 @@ def build_incoming_order(
     for article, quantity in articles:
         cart.add_item(article, quantity)
 
-    return order_domain_service.place_order(
+    incoming_order, _ = order_domain_service.place_order(
         datetime.utcnow(),
         SHOP_ID,
         STOREFRONT_ID,
@@ -92,3 +92,5 @@ def build_incoming_order(
         EUR,
         cart,
     )
+
+    return incoming_order

@@ -63,7 +63,7 @@ def place_order(
     if created_at is None:
         created_at = datetime.utcnow()
 
-    incoming_order = order_domain_service.place_order(
+    incoming_order, log_entry = order_domain_service.place_order(
         created_at, shop.id, storefront.id, orderer, shop.currency, cart
     )
 
@@ -90,10 +90,9 @@ def place_order(
     occurred_at = order.created_at
 
     # Create log entry in separate step as order ID is not available earlier.
-    log_entry_data = {'initiator_id': str(orderer.user.id)}
-    order_log_service.create_db_entry(
-        'order-placed', order.id, log_entry_data, occurred_at=occurred_at
-    )
+    db_log_entry = order_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+    db.session.commit()
 
     event = ShopOrderPlacedEvent(
         occurred_at=occurred_at,

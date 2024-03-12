@@ -37,7 +37,7 @@ def place_order(
     orderer: Orderer,
     currency: Currency,
     cart: Cart,
-) -> IncomingOrder:
+) -> tuple[IncomingOrder, OrderLogEntry]:
     """Place an order."""
     line_items = list(_build_incoming_line_items(cart.get_items()))
 
@@ -47,7 +47,7 @@ def place_order(
         line_item.processing_required for line_item in line_items
     )
 
-    return IncomingOrder(
+    incoming_order = IncomingOrder(
         id=OrderID(generate_uuid7()),
         created_at=created_at,
         shop_id=shop_id,
@@ -57,6 +57,10 @@ def place_order(
         total_amount=total_amount,
         processing_required=processing_required,
     )
+
+    log_entry = _build_order_placed_log_entry(incoming_order)
+
+    return incoming_order, log_entry
 
 
 def _build_incoming_line_items(
@@ -80,6 +84,22 @@ def _build_incoming_line_items(
             line_amount=line_amount,
             processing_required=article.processing_required,
         )
+
+
+def _build_order_placed_log_entry(
+    incoming_order: IncomingOrder,
+) -> OrderLogEntry:
+    data = {
+        'initiator_id': str(incoming_order.orderer.user.id),
+    }
+
+    return OrderLogEntry(
+        id=generate_uuid7(),
+        occurred_at=incoming_order.created_at,
+        event_type='order-placed',
+        order_id=incoming_order.id,
+        data=data,
+    )
 
 
 def add_note(order: Order, author: User, text: str) -> OrderLogEntry:
