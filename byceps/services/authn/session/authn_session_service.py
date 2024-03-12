@@ -148,7 +148,7 @@ def _create_login_log_entry(
     if site_id:
         data['site_id'] = site_id
 
-    user_log_service.create_entry(
+    user_log_service.create_db_entry(
         'user-logged-in', user_id, data, occurred_at=occurred_at
     )
 

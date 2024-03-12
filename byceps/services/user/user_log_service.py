@@ -18,7 +18,7 @@ from .dbmodels.log import DbUserLogEntry
 from .models.log import UserLogEntry, UserLogEntryData
 
 
-def create_entry(
+def create_db_entry(
     event_type: str,
     user_id: UserID,
     data: UserLogEntryData,
@@ -26,13 +26,13 @@ def create_entry(
     occurred_at: datetime | None = None,
 ) -> None:
     """Create a user log entry."""
-    db_entry = build_entry(event_type, user_id, data, occurred_at=occurred_at)
+    db_entry = build_db_entry(event_type, user_id, data, occurred_at=occurred_at)
 
     db.session.add(db_entry)
     db.session.commit()
 
 
-def build_entry(
+def build_db_entry(
     event_type: str,
     user_id: UserID,
     data: UserLogEntryData,

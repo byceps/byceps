@@ -61,7 +61,7 @@ def update_avatar_image(
 
     db_user.avatar_id = db_avatar.id
 
-    db_log_entry = user_log_service.build_entry(
+    db_log_entry = user_log_service.build_db_entry(
         'user-avatar-updated',
         db_user.id,
         {
@@ -88,7 +88,7 @@ def remove_avatar_image(user_id: UserID, initiator: User) -> None:
     if db_user.avatar_id is None:
         return
 
-    db_log_entry = user_log_service.build_entry(
+    db_log_entry = user_log_service.build_db_entry(
         'user-avatar-removed',
         db_user.id,
         {
