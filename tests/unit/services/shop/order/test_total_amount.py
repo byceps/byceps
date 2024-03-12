@@ -11,7 +11,7 @@ import pytest
 
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import order_checkout_service
+from byceps.services.shop.order import order_domain_service
 from byceps.services.shop.order.models.checkout import IncomingOrder
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.shop.models import ShopID
@@ -84,7 +84,7 @@ def build_incoming_order(
     for article, quantity in articles:
         cart.add_item(article, quantity)
 
-    return order_checkout_service.build_incoming_order(
+    return order_domain_service.place_order(
         datetime.utcnow(),
         SHOP_ID,
         STOREFRONT_ID,
