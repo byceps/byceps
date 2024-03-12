@@ -84,6 +84,9 @@ def place_order(
 
     _reduce_article_stock(incoming_order)
 
+    db_log_entry = order_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+
     try:
         db.session.commit()
     except IntegrityError as e:
@@ -94,11 +97,6 @@ def place_order(
     order = order_service._order_to_transfer_object(db_order, orderer.user)
 
     occurred_at = order.created_at
-
-    # Create log entry in separate step as order ID is not available earlier.
-    db_log_entry = order_log_service.to_db_entry(log_entry)
-    db.session.add(db_log_entry)
-    db.session.commit()
 
     event = ShopOrderPlacedEvent(
         occurred_at=occurred_at,
