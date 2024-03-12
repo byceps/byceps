@@ -18,7 +18,7 @@ py-moneyed==3.0
 qrcode==7.4.2
 redis==5.0.3
 requests==2.31.0
-rq==1.16.0
+rq==1.16.1
 rq-dashboard==0.6.7.2
 rtoml==0.10.0
 schwifty==2023.11.2
