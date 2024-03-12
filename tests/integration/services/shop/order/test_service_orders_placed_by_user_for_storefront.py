@@ -6,6 +6,7 @@
 from moneyed import EUR
 import pytest
 
+from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.models.order import Order, Orderer, OrderID
@@ -55,17 +56,20 @@ def orderer2(make_user, make_orderer) -> Orderer:
 
 
 def test_get_orders_placed_by_user(
+    make_article,
     admin_app,
     storefront1: Storefront,
     storefront2: Storefront,
     orderer1: Orderer,
     orderer2: Orderer,
 ):
-    order1 = place_order(storefront1, orderer1)
-    order2 = place_order(storefront1, orderer2)  # different user
-    order3 = place_order(storefront1, orderer1)
-    order4 = place_order(storefront1, orderer1)
-    order5 = place_order(storefront2, orderer1)  # different storefront
+    article = make_article(storefront1.shop_id)
+
+    order1 = place_order(article, storefront1, orderer1)
+    order2 = place_order(article, storefront1, orderer2)  # different user
+    order3 = place_order(article, storefront1, orderer1)
+    order4 = place_order(article, storefront1, orderer1)
+    order5 = place_order(article, storefront2, orderer1)  # different storefront
 
     assert get_order_ids_by_user(orderer1, storefront1.id) == {
         order4.id,
@@ -79,8 +83,11 @@ def test_get_orders_placed_by_user(
 # helpers
 
 
-def place_order(storefront: Storefront, orderer: Orderer) -> Order:
+def place_order(
+    article: Article, storefront: Storefront, orderer: Orderer
+) -> Order:
     cart = Cart(EUR)
+    cart.add_item(article, 1)
 
     order, _ = order_checkout_service.place_order(
         storefront, orderer, cart

@@ -87,6 +87,16 @@ def article3(make_article, shop: Shop) -> Article:
     )
 
 
+@pytest.fixture()
+def article4(make_article, shop: Shop) -> Article:
+    return make_article(
+        shop.id,
+        item_number=ArticleNumber('item-004'),
+        name='Item #4',
+        total_quantity=8,
+    )
+
+
 @pytest.fixture(scope='module')
 def orderer_user(make_user) -> User:
     return make_user()
@@ -203,12 +213,18 @@ def test_mark_order_as_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
     storefront: Storefront,
+    article3: Article,
     shop_order_admin: User,
     orderer_user: User,
     orderer: Orderer,
     shop_order_admin_client,
 ):
-    placed_order = place_order(storefront, orderer, [])
+    article = article3
+
+    quantified_articles_to_order = [(article, 1)]
+    placed_order = place_order(
+        storefront, orderer, quantified_articles_to_order
+    )
     db_order_before = get_db_order(placed_order.id)
 
     assert_payment_is_open(db_order_before)
@@ -251,13 +267,13 @@ def test_cancel_after_paid(
     order_paid_signal_send_mock,
     order_canceled_signal_send_mock,
     storefront: Storefront,
-    article3: Article,
+    article4: Article,
     shop_order_admin: User,
     orderer_user: User,
     orderer: Orderer,
     shop_order_admin_client,
 ):
-    article = article3
+    article = article4
 
     quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(

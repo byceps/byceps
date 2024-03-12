@@ -3,8 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from moneyed import EUR
 import pytest
 
+from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import (
     order_checkout_service,
     order_log_service,
@@ -22,10 +24,16 @@ def orderer(make_user, make_orderer):
 
 
 @pytest.fixture()
-def order(admin_app, storefront, orderer, empty_cart):
+def order(make_article, admin_app, storefront, orderer):
+    article = make_article(storefront.shop_id)
+
+    cart = Cart(EUR)
+    cart.add_item(article, 1)
+
     order, _ = order_checkout_service.place_order(
-        storefront, orderer, empty_cart
+        storefront, orderer, cart
     ).unwrap()
+
     return order
 
 

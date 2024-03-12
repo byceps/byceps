@@ -3,12 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from moneyed import EUR
 import pytest
 
 from byceps.services.brand.models import Brand
 from byceps.services.email import email_footer_service
-from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.user.models.user import User
@@ -41,8 +39,3 @@ def storefront(
     order_number_sequence = make_order_number_sequence(shop.id)
 
     return make_storefront(shop.id, order_number_sequence.id)
-
-
-@pytest.fixture()
-def empty_cart() -> Cart:
-    return Cart(EUR)
