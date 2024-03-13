@@ -39,10 +39,14 @@ def ticket_quantity() -> int:
 
 @pytest.fixture()
 def order(
-    article: Article, ticket_quantity, storefront: Storefront, orderer: Orderer
+    article: Article,
+    ticket_quantity,
+    shop: Shop,
+    storefront: Storefront,
+    orderer: Orderer,
 ) -> Order:
     articles_with_quantity = [(article, ticket_quantity)]
-    return place_order(storefront, orderer, articles_with_quantity)
+    return place_order(shop, storefront, orderer, articles_with_quantity)
 
 
 @patch('byceps.signals.ticketing.tickets_sold.send')

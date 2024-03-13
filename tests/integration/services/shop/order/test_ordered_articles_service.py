@@ -4,7 +4,6 @@
 """
 
 from flask import Flask
-from moneyed import EUR
 import pytest
 from sqlalchemy import select
 
@@ -34,7 +33,11 @@ def orderer(make_user, make_orderer) -> Orderer:
 
 
 def test_count_ordered_articles(
-    admin_app: Flask, storefront: Storefront, article: Article, orderer: Orderer
+    admin_app: Flask,
+    shop: Shop,
+    storefront: Storefront,
+    article: Article,
+    orderer: Orderer,
 ):
     expected = {
         PaymentState.open: 12,
@@ -54,6 +57,7 @@ def test_count_ordered_articles(
         (7, PaymentState.open),
     ]:
         order = place_order(
+            shop,
             storefront,
             orderer,
             article,
@@ -71,12 +75,13 @@ def test_count_ordered_articles(
 
 
 def place_order(
+    shop: Shop,
     storefront: Storefront,
     orderer: Orderer,
     article: Article,
     article_quantity: int,
 ) -> Order:
-    cart = Cart(EUR)
+    cart = Cart(shop.currency)
     cart.add_item(article, article_quantity)
 
     order, _ = order_checkout_service.place_order(

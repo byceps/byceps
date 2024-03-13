@@ -7,7 +7,6 @@ from collections.abc import Iterable
 from unittest.mock import patch
 
 from flask import Flask
-from moneyed import EUR
 import pytest
 
 from byceps.database import db
@@ -112,6 +111,7 @@ def orderer(make_orderer, orderer_user: User) -> Orderer:
 def test_cancel_before_paid(
     order_email_service_mock,
     order_canceled_signal_send_mock,
+    shop: Shop,
     storefront: Storefront,
     article1: Article,
     shop_order_admin: User,
@@ -123,7 +123,7 @@ def test_cancel_before_paid(
 
     quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(
-        storefront, orderer, quantified_articles_to_order
+        shop, storefront, orderer, quantified_articles_to_order
     )
     db_order_before = get_db_order(placed_order.id)
 
@@ -170,6 +170,7 @@ def test_cancel_before_paid(
 def test_cancel_before_paid_without_sending_email(
     order_email_service_mock,
     order_canceled_signal_send_mock,
+    shop: Shop,
     storefront: Storefront,
     article2: Article,
     shop_order_admin: User,
@@ -181,7 +182,7 @@ def test_cancel_before_paid_without_sending_email(
 
     quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(
-        storefront, orderer, quantified_articles_to_order
+        shop, storefront, orderer, quantified_articles_to_order
     )
 
     url = f'{BASE_URL}/shop/orders/{placed_order.id}/cancel'
@@ -212,6 +213,7 @@ def test_cancel_before_paid_without_sending_email(
 def test_mark_order_as_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
+    shop: Shop,
     storefront: Storefront,
     article3: Article,
     shop_order_admin: User,
@@ -223,7 +225,7 @@ def test_mark_order_as_paid(
 
     quantified_articles_to_order = [(article, 1)]
     placed_order = place_order(
-        storefront, orderer, quantified_articles_to_order
+        shop, storefront, orderer, quantified_articles_to_order
     )
     db_order_before = get_db_order(placed_order.id)
 
@@ -266,6 +268,7 @@ def test_cancel_after_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
     order_canceled_signal_send_mock,
+    shop: Shop,
     storefront: Storefront,
     article4: Article,
     shop_order_admin: User,
@@ -277,7 +280,7 @@ def test_cancel_after_paid(
 
     quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(
-        storefront, orderer, quantified_articles_to_order
+        shop, storefront, orderer, quantified_articles_to_order
     )
     db_order_before = get_db_order(placed_order.id)
 
@@ -332,11 +335,12 @@ def get_article_quantity(article_id: ArticleID) -> int:
 
 
 def place_order(
+    shop: Shop,
     storefront: Storefront,
     orderer: Orderer,
     quantified_articles: Iterable[tuple[Article, int]],
 ) -> Order:
-    cart = Cart(EUR)
+    cart = Cart(shop.currency)
 
     for article, quantity_to_order in quantified_articles:
         cart.add_item(article, quantity_to_order)

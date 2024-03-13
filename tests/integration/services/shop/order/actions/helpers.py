@@ -5,13 +5,12 @@
 
 from collections.abc import Sequence
 
-from moneyed import EUR
-
 from byceps.events.shop import ShopOrderPaidEvent
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.models.order import Order, Orderer, OrderID
+from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
@@ -23,11 +22,12 @@ def get_tickets_for_order(order: Order) -> Sequence[DbTicket]:
 
 
 def place_order(
+    shop: Shop,
     storefront: Storefront,
     orderer: Orderer,
     articles_with_quantity: list[tuple[Article, int]],
 ) -> Order:
-    cart = Cart(EUR)
+    cart = Cart(shop.currency)
     for article, quantity in articles_with_quantity:
         cart.add_item(article, quantity)
 

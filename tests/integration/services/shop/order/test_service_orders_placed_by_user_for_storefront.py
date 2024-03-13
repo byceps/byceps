@@ -3,7 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from moneyed import EUR
 import pytest
 
 from byceps.services.shop.article.models import Article
@@ -58,6 +57,7 @@ def orderer2(make_user, make_orderer) -> Orderer:
 def test_get_orders_placed_by_user(
     make_article,
     admin_app,
+    shop: Shop,
     storefront1: Storefront,
     storefront2: Storefront,
     orderer1: Orderer,
@@ -65,11 +65,11 @@ def test_get_orders_placed_by_user(
 ):
     article = make_article(storefront1.shop_id)
 
-    order1 = place_order(article, storefront1, orderer1)
-    order2 = place_order(article, storefront1, orderer2)  # different user
-    order3 = place_order(article, storefront1, orderer1)
-    order4 = place_order(article, storefront1, orderer1)
-    order5 = place_order(article, storefront2, orderer1)  # different storefront
+    order1 = place_order(shop, article, storefront1, orderer1)
+    order2 = place_order(shop, article, storefront1, orderer2)  # different user
+    order3 = place_order(shop, article, storefront1, orderer1)
+    order4 = place_order(shop, article, storefront1, orderer1)
+    order5 = place_order(shop, article, storefront2, orderer1)  # different storefront
 
     assert get_order_ids_by_user(orderer1, storefront1.id) == {
         order4.id,
@@ -84,9 +84,9 @@ def test_get_orders_placed_by_user(
 
 
 def place_order(
-    article: Article, storefront: Storefront, orderer: Orderer
+    shop: Shop, article: Article, storefront: Storefront, orderer: Orderer
 ) -> Order:
-    cart = Cart(EUR)
+    cart = Cart(shop.currency)
     cart.add_item(article, 1)
 
     order, _ = order_checkout_service.place_order(
