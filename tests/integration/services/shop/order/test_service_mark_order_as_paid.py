@@ -5,15 +5,15 @@
 
 import pytest
 
-from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import (
-    order_checkout_service,
     order_log_service,
     order_payment_service,
     order_service,
 )
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.util.iterables import find
+
+from tests.helpers.shop import place_order
 
 
 @pytest.fixture(scope='module')
@@ -25,15 +25,8 @@ def orderer(make_user, make_orderer):
 @pytest.fixture()
 def order(make_article, admin_app, shop, storefront, orderer):
     article = make_article(storefront.shop_id)
-
-    cart = Cart(shop.currency)
-    cart.add_item(article, 1)
-
-    order, _ = order_checkout_service.place_order(
-        storefront, orderer, cart
-    ).unwrap()
-
-    return order
+    articles_with_quantity = [(article, 1)]
+    return place_order(shop, storefront, orderer, articles_with_quantity)
 
 
 def test_mark_order_as_paid(order, admin_user):

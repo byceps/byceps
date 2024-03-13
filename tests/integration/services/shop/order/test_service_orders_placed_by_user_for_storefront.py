@@ -5,12 +5,12 @@
 
 import pytest
 
-from byceps.services.shop.article.models import Article
-from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import order_checkout_service, order_service
-from byceps.services.shop.order.models.order import Order, Orderer, OrderID
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.models.order import Orderer, OrderID
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront, StorefrontID
+
+from tests.helpers.shop import place_order
 
 
 @pytest.fixture()
@@ -64,12 +64,17 @@ def test_get_orders_placed_by_user(
     orderer2: Orderer,
 ):
     article = make_article(storefront1.shop_id)
+    articles_with_quantity = [(article, 1)]
 
-    order1 = place_order(shop, article, storefront1, orderer1)
-    order2 = place_order(shop, article, storefront1, orderer2)  # different user
-    order3 = place_order(shop, article, storefront1, orderer1)
-    order4 = place_order(shop, article, storefront1, orderer1)
-    order5 = place_order(shop, article, storefront2, orderer1)  # different storefront
+    order1 = place_order(shop, storefront1, orderer1, articles_with_quantity)
+    order2 = place_order(
+        shop, storefront1, orderer2, articles_with_quantity
+    )  # different user
+    order3 = place_order(shop, storefront1, orderer1, articles_with_quantity)
+    order4 = place_order(shop, storefront1, orderer1, articles_with_quantity)
+    order5 = place_order(
+        shop, storefront2, orderer1, articles_with_quantity
+    )  # different storefront
 
     assert get_order_ids_by_user(orderer1, storefront1.id) == {
         order4.id,
@@ -81,19 +86,6 @@ def test_get_orders_placed_by_user(
 
 
 # helpers
-
-
-def place_order(
-    shop: Shop, article: Article, storefront: Storefront, orderer: Orderer
-) -> Order:
-    cart = Cart(shop.currency)
-    cart.add_item(article, 1)
-
-    order, _ = order_checkout_service.place_order(
-        storefront, orderer, cart
-    ).unwrap()
-
-    return order
 
 
 def get_order_ids_by_user(

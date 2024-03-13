@@ -3,7 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterable
 from unittest.mock import patch
 
 from flask import Flask
@@ -18,11 +17,9 @@ from byceps.services.shop.article.models import (
     ArticleID,
     ArticleNumber,
 )
-from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import order_checkout_service, order_service
+from byceps.services.shop.order import order_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.order import (
-    Order,
     Orderer,
     OrderID,
     PaymentState,
@@ -32,6 +29,7 @@ from byceps.services.shop.storefront.models import Storefront
 from byceps.services.user.models.user import User, UserID
 
 from tests.helpers import log_in_user
+from tests.helpers.shop import place_order
 
 
 BASE_URL = 'http://admin.acmecon.test'
@@ -121,9 +119,9 @@ def test_cancel_before_paid(
 ):
     article = article1
 
-    quantified_articles_to_order = [(article, 3)]
+    articles_with_quantity = [(article, 3)]
     placed_order = place_order(
-        shop, storefront, orderer, quantified_articles_to_order
+        shop, storefront, orderer, articles_with_quantity
     )
     db_order_before = get_db_order(placed_order.id)
 
@@ -180,9 +178,9 @@ def test_cancel_before_paid_without_sending_email(
 ):
     article = article2
 
-    quantified_articles_to_order = [(article, 3)]
+    articles_with_quantity = [(article, 3)]
     placed_order = place_order(
-        shop, storefront, orderer, quantified_articles_to_order
+        shop, storefront, orderer, articles_with_quantity
     )
 
     url = f'{BASE_URL}/shop/orders/{placed_order.id}/cancel'
@@ -223,9 +221,9 @@ def test_mark_order_as_paid(
 ):
     article = article3
 
-    quantified_articles_to_order = [(article, 1)]
+    articles_with_quantity = [(article, 1)]
     placed_order = place_order(
-        shop, storefront, orderer, quantified_articles_to_order
+        shop, storefront, orderer, articles_with_quantity
     )
     db_order_before = get_db_order(placed_order.id)
 
@@ -278,9 +276,9 @@ def test_cancel_after_paid(
 ):
     article = article4
 
-    quantified_articles_to_order = [(article, 3)]
+    articles_with_quantity = [(article, 3)]
     placed_order = place_order(
-        shop, storefront, orderer, quantified_articles_to_order
+        shop, storefront, orderer, articles_with_quantity
     )
     db_order_before = get_db_order(placed_order.id)
 
@@ -332,24 +330,6 @@ def test_cancel_after_paid(
 def get_article_quantity(article_id: ArticleID) -> int:
     article = article_service.get_article(article_id)
     return article.quantity
-
-
-def place_order(
-    shop: Shop,
-    storefront: Storefront,
-    orderer: Orderer,
-    quantified_articles: Iterable[tuple[Article, int]],
-) -> Order:
-    cart = Cart(shop.currency)
-
-    for article, quantity_to_order in quantified_articles:
-        cart.add_item(article, quantity_to_order)
-
-    order, _ = order_checkout_service.place_order(
-        storefront, orderer, cart
-    ).unwrap()
-
-    return order
 
 
 def assert_payment_is_open(db_order: DbOrder) -> None:

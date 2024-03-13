@@ -22,9 +22,9 @@ from byceps.services.ticketing.ticket_creation_service import (
 )
 from byceps.services.user.models.user import User
 
-from tests.helpers.shop import create_ticket_article
+from tests.helpers.shop import create_ticket_article, place_order
 
-from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
+from .helpers import get_tickets_for_order, mark_order_as_paid
 
 
 @pytest.fixture()

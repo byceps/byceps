@@ -18,8 +18,11 @@ from byceps.services.shop.article.models import (
     ArticleType,
     ArticleTypeParams,
 )
-from byceps.services.shop.order.models.order import Orderer
-from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order import order_checkout_service
+from byceps.services.shop.order.models.order import Order, Orderer
+from byceps.services.shop.shop.models import Shop, ShopID
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.models import SnippetID, SnippetScope
 from byceps.services.ticketing.models.ticket import TicketCategoryID
@@ -181,3 +184,20 @@ def create_orderer(user: User) -> Orderer:
         city=detail.city or 'n/a',
         street=detail.street or 'n/a',
     )
+
+
+def place_order(
+    shop: Shop,
+    storefront: Storefront,
+    orderer: Orderer,
+    articles_with_quantity: list[tuple[Article, int]],
+) -> Order:
+    cart = Cart(shop.currency)
+    for article, quantity in articles_with_quantity:
+        cart.add_item(article, quantity)
+
+    order, _ = order_checkout_service.place_order(
+        storefront, orderer, cart
+    ).unwrap()
+
+    return order

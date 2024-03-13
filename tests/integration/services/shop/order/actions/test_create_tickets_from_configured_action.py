@@ -25,7 +25,9 @@ from byceps.services.ticketing.ticket_creation_service import (
 )
 from byceps.services.user.models.user import User
 
-from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
+from tests.helpers.shop import place_order
+
+from .helpers import get_tickets_for_order, mark_order_as_paid
 
 
 @pytest.fixture()

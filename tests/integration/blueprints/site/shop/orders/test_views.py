@@ -5,14 +5,12 @@
 
 import pytest
 
-from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import order_checkout_service
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site import site_service
 from byceps.services.snippet import snippet_service
 
 from tests.helpers import create_site, http_client, log_in_user
-from tests.helpers.shop import create_shop_snippet
+from tests.helpers.shop import create_shop_snippet, place_order
 
 
 @pytest.fixture()
@@ -97,15 +95,9 @@ def order(make_article, make_orderer, shop1, storefront1, user1):
     article = make_article(storefront1.shop_id)
 
     orderer = make_orderer(user1)
+    articles_with_quantity = [(article, 1)]
 
-    cart = Cart(shop1.currency)
-    cart.add_item(article, 1)
-
-    order, _ = order_checkout_service.place_order(
-        storefront1, orderer, cart
-    ).unwrap()
-
-    return order
+    return place_order(shop1, storefront1, orderer, articles_with_quantity)
 
 
 def test_view_matching_user_and_site_and_shop(site1_app, order, user1):
