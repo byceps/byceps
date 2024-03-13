@@ -13,6 +13,7 @@ from byceps.services.user.models.user import UserID
 
 from . import order_log_service
 from .dbmodels.invoice import DbInvoice
+from .dbmodels.order import DbOrder
 from .models.invoice import Invoice
 from .models.order import OrderID
 
@@ -25,6 +26,10 @@ def add_invoice(
     url: str | None = None,
 ) -> Invoice:
     """Add an invoice to an order."""
+    db_order = db.session.get(DbOrder, order_id)
+    if db_order is None:
+        raise ValueError(f'Unknown order ID "{order_id}"')
+
     db_invoice = DbInvoice(order_id, number, url=url)
     db.session.add(db_invoice)
 
