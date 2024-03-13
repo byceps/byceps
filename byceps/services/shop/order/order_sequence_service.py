@@ -6,7 +6,7 @@ byceps.services.shop.order.order_sequence_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, update
 from sqlalchemy.exc import IntegrityError
 
 from byceps.database import db
@@ -80,19 +80,20 @@ def generate_order_number(
     """Generate and reserve an unused, unique order number from this
     sequence.
     """
-    db_sequence = db.session.execute(
-        select(DbOrderNumberSequence)
+    sequence_prefix_and_value = db.session.execute(
+        update(DbOrderNumberSequence)
         .filter_by(id=sequence_id)
-        .with_for_update()
-    ).scalar_one_or_none()
-
-    if db_sequence is None:
-        return Err(f'No order number sequence found for ID "{sequence_id}".')
-
-    db_sequence.value = DbOrderNumberSequence.value + 1
+        .values(value=DbOrderNumberSequence.value + 1)
+        .returning(DbOrderNumberSequence.prefix, DbOrderNumberSequence.value)
+    ).one_or_none()
     db.session.commit()
 
-    order_number = OrderNumber(f'{db_sequence.prefix}{db_sequence.value:05d}')
+    if sequence_prefix_and_value is None:
+        return Err(f'No order number sequence found for ID "{sequence_id}".')
+
+    sequence_prefix, sequence_value_str = sequence_prefix_and_value
+    sequence_value = int(sequence_value_str)
+    order_number = OrderNumber(f'{sequence_prefix}{sequence_value:05d}')
 
     return Ok(order_number)
 
