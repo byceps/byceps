@@ -6,6 +6,8 @@ byceps.services.shop.order.order_invoice_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from sqlalchemy import select
 
 from byceps.database import db
@@ -41,6 +43,8 @@ def add_invoice(
         'order-invoice-created', db_invoice.order_id, log_entry_data
     )
     db.session.add(db_log_entry)
+
+    db_order.invoice_created_at = datetime.utcnow()
 
     db.session.commit()
 
