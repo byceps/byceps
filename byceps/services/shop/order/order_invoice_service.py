@@ -25,16 +25,16 @@ def add_invoice(
     """Add an invoice to an order."""
     db_invoice = DbInvoice(order_id, number, url=url)
     db.session.add(db_invoice)
+
+    log_entry_data = {'invoice_number': db_invoice.number}
+    db_log_entry = order_log_service.build_db_entry(
+        'order-invoice-created', db_invoice.order_id, log_entry_data
+    )
+    db.session.add(db_log_entry)
+
     db.session.commit()
 
-    invoice = _db_entity_to_invoice(db_invoice)
-
-    log_entry_data = {'invoice_number': invoice.number}
-    order_log_service.create_db_entry(
-        'order-invoice-created', invoice.order_id, log_entry_data
-    )
-
-    return invoice
+    return _db_entity_to_invoice(db_invoice)
 
 
 def get_invoices_for_order(order_id: OrderID) -> list[Invoice]:
