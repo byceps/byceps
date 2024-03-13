@@ -9,6 +9,7 @@ byceps.services.shop.order.order_invoice_service
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.user.models.user import UserID
 
 from . import order_log_service
 from .dbmodels.invoice import DbInvoice
@@ -18,6 +19,7 @@ from .models.order import OrderID
 
 def add_invoice(
     order_id: OrderID,
+    initiator_id: UserID,
     number: str,
     *,
     url: str | None = None,
@@ -26,7 +28,10 @@ def add_invoice(
     db_invoice = DbInvoice(order_id, number, url=url)
     db.session.add(db_invoice)
 
-    log_entry_data = {'invoice_number': db_invoice.number}
+    log_entry_data = {
+        'initiator_id': str(initiator_id),
+        'invoice_number': db_invoice.number,
+    }
     db_log_entry = order_log_service.build_db_entry(
         'order-invoice-created', db_invoice.order_id, log_entry_data
     )
