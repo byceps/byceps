@@ -101,6 +101,11 @@ h2 {
   color: var(--dimmed-color);
 }
 
+.board-category-tag {
+  font-size: 0.625rem; /* 10px / 16px */
+  text-transform: uppercase;
+}
+
 @media (max-width: 35.9375rem) { /* 575px / 16px */
 
   table.board-category-index thead th:nth-child(4),

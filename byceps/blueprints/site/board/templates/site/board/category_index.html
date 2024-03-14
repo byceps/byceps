@@ -57,7 +57,6 @@
     <thead>
       <tr>
         <th>{{ _('Topic') }}</th>
-        <th>{{ _('Category') }}</th>
         <th class="centered">{{ _('Replies') }}</th>
         <th>{{ _('Latest post') }}</th>
       </tr>
@@ -75,9 +74,11 @@
               {%- if topic.pinned %}{{ render_icon('pin', title=_('pinned')) }} {% endif -%}
               <strong>{{ topic.title }}</strong>
             </div>
+            <div class="board-index-item-meta">
+              <span class="board-category-tag">{{ topic.category.title }}</span>
+            </div>
           </a>
         </td>
-        <td>{{ topic.category.title }}</td>
         <td class="centered bignumber">{{ topic.reply_count|numberformat }}</td>
         <td class="nowrap">{{ topic.last_updated_at|dateformat }}, {{ topic.last_updated_at|timeformat('short') }}<br>{{ _('by') }} {{ render_user_avatar_and_name(topic.last_updated_by, size=16) }}</td>
       </tr>
