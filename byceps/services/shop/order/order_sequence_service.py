@@ -80,7 +80,7 @@ def generate_order_number(
     """Generate and reserve an unused, unique order number from this
     sequence.
     """
-    sequence_prefix_and_value = db.session.execute(
+    row = db.session.execute(
         update(DbOrderNumberSequence)
         .filter_by(id=sequence_id)
         .values(value=DbOrderNumberSequence.value + 1)
@@ -88,12 +88,11 @@ def generate_order_number(
     ).one_or_none()
     db.session.commit()
 
-    if sequence_prefix_and_value is None:
+    if row is None:
         return Err(f'No order number sequence found for ID "{sequence_id}".')
 
-    sequence_prefix, sequence_value_str = sequence_prefix_and_value
-    sequence_value = int(sequence_value_str)
-    order_number = OrderNumber(f'{sequence_prefix}{sequence_value:05d}')
+    prefix, value = row
+    order_number = OrderNumber(f'{prefix}{value:05d}')
 
     return Ok(order_number)
 
