@@ -6,7 +6,7 @@ byceps.services.shop.article.article_sequence_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, update
 from sqlalchemy.exc import IntegrityError
 
 from byceps.database import db
@@ -82,21 +82,21 @@ def generate_article_number(
     sequence_id: ArticleNumberSequenceID,
 ) -> Result[ArticleNumber, str]:
     """Generate and reserve the next article number from this sequence."""
-    db_sequence = db.session.execute(
-        select(DbArticleNumberSequence)
+    row = db.session.execute(
+        update(DbArticleNumberSequence)
         .filter_by(id=sequence_id)
-        .with_for_update()
-    ).scalar_one_or_none()
-
-    if db_sequence is None:
-        return Err(f'No article number sequence found for ID "{sequence_id}".')
-
-    db_sequence.value = DbArticleNumberSequence.value + 1
+        .values(value=DbArticleNumberSequence.value + 1)
+        .returning(
+            DbArticleNumberSequence.prefix, DbArticleNumberSequence.value
+        )
+    ).one_or_none()
     db.session.commit()
 
-    article_number = ArticleNumber(
-        f'{db_sequence.prefix}{db_sequence.value:05d}'
-    )
+    if row is None:
+        return Err(f'No article number sequence found for ID "{sequence_id}".')
+
+    prefix, value = row
+    article_number = ArticleNumber(f'{prefix}{value:05d}')
 
     return Ok(article_number)
 
