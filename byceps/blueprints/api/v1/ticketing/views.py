@@ -26,7 +26,7 @@ def get_sale_stats(party_id):
     """
     party = _get_party_or_404(party_id)
 
-    sale_stats = ticket_service.get_ticket_sale_stats(party.id)
+    sale_stats = ticket_service.get_ticket_sale_stats(party)
 
     return jsonify(
         {

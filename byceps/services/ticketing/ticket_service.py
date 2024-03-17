@@ -12,8 +12,7 @@ from enum import Enum
 from sqlalchemy import delete, select
 
 from byceps.database import db, paginate, Pagination
-from byceps.services.party import party_service
-from byceps.services.party.models import PartyID
+from byceps.services.party.models import Party, PartyID
 from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.seating.models import SeatID
 from byceps.services.shop.order.models.number import OrderNumber
@@ -367,10 +366,8 @@ def count_tickets_checked_in_for_party(party_id: PartyID) -> int:
     )
 
 
-def get_ticket_sale_stats(party_id: PartyID) -> TicketSaleStats:
+def get_ticket_sale_stats(party: Party) -> TicketSaleStats:
     """Return the number of maximum and sold tickets, respectively."""
-    party = party_service.get_party(party_id)
-
     sold = count_sold_tickets_for_party(party.id)
 
     return TicketSaleStats(

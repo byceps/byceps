@@ -45,7 +45,7 @@ def inject_ticket_sale_stats() -> dict[str, Any]:
     if g.site.is_intranet:
         return {}
 
-    ticket_sale_stats = ticket_service.get_ticket_sale_stats(g.party_id)
+    ticket_sale_stats = ticket_service.get_ticket_sale_stats(g.party)
 
     return {
         'ticket_sale_stats': ticket_sale_stats,

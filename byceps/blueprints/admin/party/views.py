@@ -92,7 +92,7 @@ def _get_ticket_sale_stats_by_party_id(
     parties,
 ) -> dict[PartyID, TicketSaleStats]:
     return {
-        party.id: ticket_service.get_ticket_sale_stats(party.id)
+        party.id: ticket_service.get_ticket_sale_stats(party)
         for party in parties
     }
 

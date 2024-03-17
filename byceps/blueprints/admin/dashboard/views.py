@@ -48,7 +48,7 @@ def view_global():
     active_parties_with_stats = [
         (
             party,
-            ticket_service.get_ticket_sale_stats(party.id),
+            ticket_service.get_ticket_sale_stats(party),
             seat_service.get_seat_utilization(party.id),
         )
         for party in active_parties
@@ -114,7 +114,7 @@ def view_brand(brand_id):
     active_parties_with_stats = [
         (
             party,
-            ticket_service.get_ticket_sale_stats(party.id),
+            ticket_service.get_ticket_sale_stats(party),
             seat_service.get_seat_utilization(party.id),
         )
         for party in active_parties
@@ -172,7 +172,7 @@ def view_party(party_id):
     seating_area_count = seating_area_service.count_areas_for_party(party.id)
     seat_count = seat_service.count_seats_for_party(party.id)
 
-    ticket_sale_stats = ticket_service.get_ticket_sale_stats(party.id)
+    ticket_sale_stats = ticket_service.get_ticket_sale_stats(party)
     tickets_checked_in = ticket_service.count_tickets_checked_in_for_party(
         party.id
     )
