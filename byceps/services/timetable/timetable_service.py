@@ -11,8 +11,7 @@ from datetime import datetime
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.services.party import party_service
-from byceps.services.party.models import PartyID
+from byceps.services.party.models import Party, PartyID
 
 from . import timetable_domain_service
 from .dbmodels import DbTimetable, DbTimetableItem
@@ -20,12 +19,10 @@ from .models import Timetable, TimetableID, TimetableItem
 
 
 def create_timetable(
-    party_id: PartyID,
+    party: Party,
     hidden: bool,
 ) -> Timetable:
     """Create a timetable."""
-    party = party_service.get_party(party_id)
-
     timetable = timetable_domain_service.create_timetable(party.id, hidden)
 
     db_timetable = DbTimetable(
