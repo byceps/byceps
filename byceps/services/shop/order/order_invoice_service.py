@@ -11,7 +11,7 @@ from datetime import datetime
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from . import order_log_service
 from .dbmodels.invoice import DbInvoice
@@ -22,7 +22,7 @@ from .models.order import OrderID
 
 def add_invoice(
     order_id: OrderID,
-    initiator_id: UserID,
+    initiator: User,
     number: str,
     *,
     url: str | None = None,
@@ -36,7 +36,7 @@ def add_invoice(
     db.session.add(db_invoice)
 
     log_entry_data = {
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
         'invoice_number': db_invoice.number,
     }
     db_log_entry = order_log_service.build_db_entry(
