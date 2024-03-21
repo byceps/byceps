@@ -34,7 +34,9 @@ def add_invoice(
     if db_order is None:
         raise ValueError(f'Unknown order ID "{order_id}"')
 
-    db_invoice = DbInvoice(order_id, number, url=url)
+    invoice_id = generate_uuid7()
+
+    db_invoice = DbInvoice(invoice_id, order_id, number, url=url)
     db.session.add(db_invoice)
 
     log_entry = _build_order_invoice_created_log_entry(
