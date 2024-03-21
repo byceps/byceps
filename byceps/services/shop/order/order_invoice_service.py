@@ -12,11 +12,13 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.user.models.user import User
+from byceps.util.uuid import generate_uuid7
 
 from . import order_log_service
 from .dbmodels.invoice import DbInvoice
 from .dbmodels.order import DbOrder
 from .models.invoice import Invoice
+from .models.log import OrderLogEntry
 from .models.order import OrderID
 
 
@@ -35,20 +37,36 @@ def add_invoice(
     db_invoice = DbInvoice(order_id, number, url=url)
     db.session.add(db_invoice)
 
-    log_entry_data = {
-        'initiator_id': str(initiator.id),
-        'invoice_number': db_invoice.number,
-    }
-    db_log_entry = order_log_service.build_db_entry(
-        'order-invoice-created', db_invoice.order_id, log_entry_data
+    log_entry = _build_order_invoice_created_log_entry(
+        order_id, initiator, number
     )
+    db_log_entry = order_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
-    db_order.invoice_created_at = datetime.utcnow()
+    db_order.invoice_created_at = log_entry.occurred_at
 
     db.session.commit()
 
     return _db_entity_to_invoice(db_invoice)
+
+
+def _build_order_invoice_created_log_entry(
+    order_id: OrderID,
+    initiator: User,
+    invoice_number: str,
+) -> OrderLogEntry:
+    data = {
+        'initiator_id': str(initiator.id),
+        'invoice_number': invoice_number,
+    }
+
+    return OrderLogEntry(
+        id=generate_uuid7(),
+        occurred_at=datetime.utcnow(),
+        event_type='order-invoice-created',
+        order_id=order_id,
+        data=data,
+    )
 
 
 def get_invoices_for_order(order_id: OrderID) -> list[Invoice]:
