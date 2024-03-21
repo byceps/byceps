@@ -6,19 +6,15 @@ byceps.services.shop.order.order_invoice_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime
-
 from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.user.models.user import User
-from byceps.util.uuid import generate_uuid7
 
 from . import order_invoice_domain_service, order_log_service
 from .dbmodels.invoice import DbInvoice
 from .dbmodels.order import DbOrder
 from .models.invoice import Invoice
-from .models.log import OrderLogEntry
 from .models.order import OrderID
 
 
