@@ -9,11 +9,11 @@ from byceps.util.result import Err, Ok
 
 
 @pytest.mark.parametrize(
-    ('obj', 'f', 'expected'),
+    ('result', 'f', 'expected'),
     [
-        (Ok(23), lambda x: x * 2, Ok(23)),
-        (Err(23), lambda x: x * 2, Err(46)),
+        (Ok(23), lambda v: v * 2, Ok(23)),
+        (Err(23), lambda v: v * 2, Err(46)),
     ],
 )
-def test_map_err(obj, f, expected):
-    assert obj.map_err(f) == expected
+def test_map_err(result, f, expected):
+    assert result.map_err(f) == expected
