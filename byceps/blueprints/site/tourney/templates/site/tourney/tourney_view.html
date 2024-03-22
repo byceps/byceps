@@ -78,12 +78,8 @@
     </div>
   </div>
 
-  <table class="index">
-    <tr>
-      <th>{{ _('Start') }}</th>
-      <td>{{ tourney.starts_at|dateformat('EEEE') }}, {{ tourney.starts_at|timeformat('short') }}</td>
-    </tr>
-  </table>
+  <div class="data-label">{{ _('Start') }}</div>
+  <div class="data-value">{{ tourney.starts_at|dateformat('EEEE') }}, {{ tourney.starts_at|timeformat('short') }}</div>
 
   <h2>
     <div class="row" style="align-items: center;">
