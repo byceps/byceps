@@ -138,7 +138,7 @@ def cancel_order(
         return Err(OrderAlreadyCanceledError())
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    order = _order_to_transfer_object(db_order, orderer_user)
+    order = _db_order_to_transfer_object(db_order, orderer_user)
 
     occurred_at = datetime.utcnow()
 
@@ -174,7 +174,7 @@ def cancel_order(
 
     db.session.commit()
 
-    canceled_order = _order_to_transfer_object(db_order, orderer_user)
+    canceled_order = _db_order_to_transfer_object(db_order, orderer_user)
 
     if payment_state_to == PaymentState.canceled_after_paid:
         _execute_article_revocation_actions(canceled_order, initiator)
@@ -195,7 +195,7 @@ def mark_order_as_paid(
     db_order = _get_order_entity(order_id)
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    order = _order_to_transfer_object(db_order, orderer_user)
+    order = _db_order_to_transfer_object(db_order, orderer_user)
 
     occurred_at = datetime.utcnow()
 
@@ -229,7 +229,7 @@ def mark_order_as_paid(
 
     db.session.commit()
 
-    paid_order = _order_to_transfer_object(db_order, orderer_user)
+    paid_order = _db_order_to_transfer_object(db_order, orderer_user)
 
     _execute_article_creation_actions(paid_order, initiator)
 
@@ -383,14 +383,14 @@ def find_order(order_id: OrderID) -> Order | None:
         return None
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    return _order_to_transfer_object(db_order, orderer_user)
+    return _db_order_to_transfer_object(db_order, orderer_user)
 
 
 def get_order(order_id: OrderID) -> Order:
     """Return the order with that id, or raise an exception."""
     db_order = _get_order_entity(order_id)
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    return _order_to_transfer_object(db_order, orderer_user)
+    return _db_order_to_transfer_object(db_order, orderer_user)
 
 
 def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
@@ -476,7 +476,7 @@ def find_order_by_order_number(order_number: OrderNumber) -> Order | None:
         return None
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    return _order_to_transfer_object(db_order, orderer_user)
+    return _db_order_to_transfer_object(db_order, orderer_user)
 
 
 def get_orders_for_order_numbers(
@@ -740,7 +740,7 @@ def get_payment_date(order_id: OrderID) -> Result[datetime, OrderNotPaidError]:
     return Ok(paid_at)
 
 
-def _order_to_transfer_object(db_order: DbOrder, placed_by: User) -> Order:
+def _db_order_to_transfer_object(db_order: DbOrder, placed_by: User) -> Order:
     """Create transfer object from order database entity."""
     return Order(
         id=db_order.id,
@@ -778,7 +778,7 @@ def _db_orders_to_transfer_objects_with_orderer_users(
     )
 
     return [
-        _order_to_transfer_object(
+        _db_order_to_transfer_object(
             db_order, orderers_by_id[db_order.placed_by_id]
         )
         for db_order in db_orders

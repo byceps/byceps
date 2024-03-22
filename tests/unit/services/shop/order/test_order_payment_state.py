@@ -91,4 +91,4 @@ def create_order_with_payment_state(
     )
     db_order.payment_state = payment_state
 
-    return order_service._order_to_transfer_object(db_order, orderer.user)
+    return order_service._db_order_to_transfer_object(db_order, orderer.user)

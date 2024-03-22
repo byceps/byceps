@@ -94,7 +94,7 @@ def place_order(
         db.session.rollback()
         return Err(None)
 
-    order = order_service._order_to_transfer_object(db_order, orderer.user)
+    order = order_service._db_order_to_transfer_object(db_order, orderer.user)
 
     occurred_at = order.created_at
 
