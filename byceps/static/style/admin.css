@@ -388,18 +388,6 @@ h2 small {
 }
 
 
-/* tables */
-
-@media (max-width: 1080px) {
-
-  table.index--wide {
-    display: block;
-    overflow-x: auto;
-  }
-
-}
-
-
 /* layouts */
 
 .grid {
