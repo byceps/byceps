@@ -134,9 +134,6 @@ def cancel_order(
     """
     db_order = _get_order_entity(order_id)
 
-    if _is_canceled(db_order):
-        return Err(OrderAlreadyCanceledError())
-
     orderer_user = user_service.get_user(db_order.placed_by_id)
     order = _db_order_to_transfer_object(db_order, orderer_user)
 
