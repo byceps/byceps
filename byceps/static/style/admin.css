@@ -410,7 +410,7 @@ table.itemlist {
 
 ol.index,
 ol.index li {
-  border-color: #cccccc;
+  border-color: var(--border-color);
   border-style: solid;
 }
 
@@ -538,7 +538,7 @@ h1 .tag .icon {
 
 .filter .tag.color-none {
   background-color: #ffffff;
-  border: #cccccc solid 1px;
+  border: var(--border-color) solid 1px;
   color: #666666;
   text-shadow: none;
 }
