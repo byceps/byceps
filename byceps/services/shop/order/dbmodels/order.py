@@ -23,6 +23,7 @@ from byceps.database import db
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID, PaymentState
 from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront.dbmodels import DbStorefront
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
@@ -44,6 +45,7 @@ class DbOrder(db.Model):
         db.ForeignKey('shop_storefronts.id'),
         index=True,
     )
+    storefront: Mapped[DbStorefront] = relationship(DbStorefront)
     order_number: Mapped[OrderNumber] = mapped_column(
         db.UnicodeText, unique=True
     )
