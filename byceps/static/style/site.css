@@ -27,8 +27,8 @@ body {
   padding: 0 !important;
 }
 
-.main-body-box + .main-body-box {
-  margin-top: 1.5rem;
+.main-body-box:not(:last-child) {
+  margin-bottom: 1.5rem;
 }
 
 .main-body-box .featured-image {
