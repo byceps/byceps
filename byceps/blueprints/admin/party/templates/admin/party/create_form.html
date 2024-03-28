@@ -15,7 +15,6 @@
 
   <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
     <div class="box">
-
       {{ form_field(form.id, placeholder='%s-42'|format(brand.id), autofocus='autofocus') }}
       {{ form_field(form.title, placeholder='%s 42'|format(brand.title)) }}
 
@@ -38,7 +37,6 @@
       </div>
 
       {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
-
     </div>
 
     {{ form_buttons(_('Create')) }}

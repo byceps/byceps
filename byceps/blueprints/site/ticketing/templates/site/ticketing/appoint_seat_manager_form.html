@@ -8,12 +8,12 @@
 
   <h1>{{ page_title }}</h1>
 
-  <div class="main-body-box">
-    <form action="{{ url_for('.appoint_seat_manager', ticket_id=ticket.id) }}" method="post">
+  <form action="{{ url_for('.appoint_seat_manager', ticket_id=ticket.id) }}" method="post">
+    <div class="main-body-box">
       {{ form_field(form.user, maxlength=40, autofocus='autofocus') }}
+    </div>
 
-      {{ form_buttons(_('Assign')) }}
-    </form>
-  </div>
+    {{ form_buttons(_('Assign')) }}
+  </form>
 
 {%- endblock %}

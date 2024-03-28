@@ -23,13 +23,13 @@
   </nav>
   <h1>{{ render_icon('reply') }} {{ page_title }}</h1>
 
-  <div class="main-body-box">
-    <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post">
+  <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post">
+    <div class="main-body-box">
       {{ form_field(form.body, autofocus='autofocus') }}
 {% include 'site/board/_posting_form_body_supplement.html' %}
+    </div>
 
-      {{ form_buttons(_('Add'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
-    </form>
-  </div>
+    {{ form_buttons(_('Add'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
+  </form>
 
 {%- endblock %}

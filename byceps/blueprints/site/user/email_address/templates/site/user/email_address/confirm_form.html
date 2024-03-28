@@ -9,13 +9,14 @@
   <h1>{{ page_title }}</h1>
 
   {%- if token|default %}
-  <div class="main-body-box">
-    <form action="{{ url_for('.confirm', token=token) }}" method="post">
+  <form action="{{ url_for('.confirm', token=token) }}" method="post">
+    <div class="main-body-box">
       <p>{{ _('Please confirm that this is your email address:') }}</p>
       <p class="centered monospace">{{ email_address }}</p>
-      {{ form_buttons(_('Confirm')) }}
-    </form>
-  </div>
+    </div>
+
+    {{ form_buttons(_('Confirm')) }}
+  </form>
   {%- endif %}
 
 {%- endblock %}

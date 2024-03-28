@@ -9,8 +9,8 @@
 
   <h1>{{ page_title }}</h1>
 
-  <div class="main-body-box">
-    <form action="{{ url_for('.update') }}" method="post" enctype="multipart/form-data" class="disable-submit-button-on-submit">
+  <form action="{{ url_for('.update') }}" method="post" enctype="multipart/form-data" class="disable-submit-button-on-submit">
+    <div class="main-body-box">
     {%- with %}
       {%- set caption %}
         {{ _('Allowed formats') }}: {{ allowed_types|sort|join(', ') }}<br>
@@ -20,9 +20,9 @@
       {%- endset %}
       {{ form_field(form.image, maxlength=150000, accept='image/*', autofocus='autofocus', caption=caption) }}
     {%- endwith %}
+    </div>
 
-      {{ form_buttons(render_icon('upload') + ' ' + _('Upload')) }}
-    </form>
-  </div>
+    {{ form_buttons(render_icon('upload') + ' ' + _('Upload')) }}
+  </form>
 
 {%- endblock %}

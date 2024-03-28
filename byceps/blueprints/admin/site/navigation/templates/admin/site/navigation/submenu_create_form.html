@@ -13,7 +13,6 @@
 
   <form action="{{ url_for('.submenu_create', site_id=site.id, parent_menu_id=parent_menu.id) }}" method="post">
     <div class="box">
-
       <div class="mb">
         <label class="form-label">{{ _('Parent menu') }}</label>
         <div>{{ parent_menu.name }} ({{ parent_menu.language_code }})</div>

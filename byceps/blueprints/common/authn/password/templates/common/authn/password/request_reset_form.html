@@ -8,12 +8,12 @@
 
   <h1>{{ page_title }}</h1>
 
-  <div class="main-body-box">
-    <form action="{{ url_for('.request_reset') }}" method="post">
+  <form action="{{ url_for('.request_reset') }}" method="post">
+    <div class="main-body-box">
       {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
+    </div>
 
-      {{ form_buttons(_('Request')) }}
-    </form>
-  </div>
+    {{ form_buttons(_('Request')) }}
+  </form>
 
 {%- endblock %}

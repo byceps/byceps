@@ -12,7 +12,6 @@
     {{ form_datalist('countries', country_names) }}
 
     <div class="box">
-
       <div class="row">
         <div class="column--grow">
           {{ form_field(form.first_name, maxlength=40, autofocus='autofocus') }}
@@ -36,7 +35,6 @@
 
       {{ form_field(form.country, list='countries') }}
       {{ form_field(form.phone_number) }}
-
     </div>
 
     {{ form_buttons(_('Save')) }}

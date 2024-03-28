@@ -30,13 +30,13 @@
   </div>
   {%- endif %}
 
-  <div class="main-body-box">
-    <form action="{{ url_for('.posting_update', posting_id=posting.id) }}" method="post">
+  <form action="{{ url_for('.posting_update', posting_id=posting.id) }}" method="post">
+    <div class="main-body-box">
       {{ form_field(form.body, autofocus='autofocus') }}
 {% include 'site/board/_posting_form_body_supplement.html' %}
+    </div>
 
-      {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=posting.topic.id)) }}
-    </form>
-  </div>
+    {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=posting.topic.id)) }}
+  </form>
 
 {%- endblock %}

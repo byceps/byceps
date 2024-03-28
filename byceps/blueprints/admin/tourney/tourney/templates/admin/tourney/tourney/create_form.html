@@ -15,7 +15,6 @@
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
     <div class="box">
-
       {{ form_field(form.title, autofocus='autofocus') }}
       {{ form_field(form.subtitle) }}
       {{ form_field(form.logo_url) }}
@@ -30,7 +29,6 @@
           {{ form_field(form.starts_at) }}
         </div>
       </div>
-
     </div>
 
     {{ form_buttons(_('Create')) }}

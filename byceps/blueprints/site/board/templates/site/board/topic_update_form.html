@@ -30,14 +30,14 @@
   </div>
   {%- endif %}
 
-  <div class="main-body-box">
-    <form action="{{ url_for('.topic_update', topic_id=topic.id) }}" method="post">
+  <form action="{{ url_for('.topic_update', topic_id=topic.id) }}" method="post">
+    <div class="main-body-box">
       {{ form_field(form.title, autofocus='autofocus') }}
       {{ form_field(form.body) }}
 {% include 'site/board/_posting_form_body_supplement.html' %}
+    </div>
 
-      {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
-    </form>
-  </div>
+    {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
+  </form>
 
 {%- endblock %}

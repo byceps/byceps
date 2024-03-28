@@ -27,8 +27,8 @@
   <h1>{{ page_title }}</h1>
 
   {%- if login_enabled %}
-  <div class="main-body-box">
-    <form action="{{ url_for('.log_in') }}" method="post" id="login-form">
+  <form action="{{ url_for('.log_in') }}" method="post" id="login-form">
+    <div class="main-body-box">
       <div class="row row--wrap" style="row-gap: 0;">
         <div class="column--grow">
           {{ form_field(form.username, maxlength=40, autofocus='autofocus') }}
@@ -42,10 +42,10 @@
       <div id="login-failed-notice" class="hidden">
 {{ render_notification(_('Login failed.'), category='danger', icon='warning') }}
       </div>
+    </div>
 
-      {{ form_buttons(_('Log in')) }}
-    </form>
-  </div>
+    {{ form_buttons(_('Log in')) }}
+  </form>
 
   <div style="margin-top: 3rem;">
     {% if g.site.user_account_creation_enabled %}
