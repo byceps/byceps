@@ -116,9 +116,12 @@ img {
 
 /* layout */
 
-.block:not(:last-child),
-.box:not(:last-child),
-.card:not(:last-child) {
+:is(
+  .block,
+  .box,
+  .card,
+  .pagination,
+):not(:last-child) {
   margin-bottom: 1.5rem;
 }
 
@@ -820,10 +823,6 @@ button.button[disabled],
 
 
 /* pagination */
-
-nav.pagination {
-  margin: 2em 0;
-}
 
 nav.pagination ol {
   align-items: stretch;
