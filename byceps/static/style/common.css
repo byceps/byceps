@@ -120,6 +120,7 @@ img {
   .block,
   .box,
   .card,
+  table.itemlist,
   .notification,
   .pagination,
 ):not(:last-child) {
