@@ -123,6 +123,7 @@ img {
   table.itemlist,
   .notification,
   .pagination,
+  .tabs,
 ):not(:last-child) {
   margin-bottom: 1.5rem;
 }
@@ -283,7 +284,7 @@ span[title] .icon {
   border-width: 0 0 1px 0;
   display: flex;
   list-style: none;
-  margin: 0 0 2rem 0;
+  margin: 0;
   padding: 0;
 }
 
