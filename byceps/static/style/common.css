@@ -119,7 +119,9 @@ img {
 :is(
   .block,
   .box,
+  .button-row,
   .card,
+  .form-buttons,
   table.itemlist,
   .notification,
   .pagination,
@@ -627,7 +629,6 @@ form .invalid .form-errors li {
 }
 
 .form-buttons {
-  margin-top: 1.5rem;
   text-align: center;
 }
 
@@ -656,7 +657,6 @@ form.unobtrusive input:focus ~ .button {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 1.5rem 0;
 }
 
 .button-row--compact {
