@@ -22,15 +22,9 @@
   </nav>
   <h1><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></h1>
 
-{%- if topic.hidden or topic.locked %}
-  <div class="notifications">
-
   {%- if topic.hidden %}
 {{ render_notification(_('This topic is hidden.'), category='info', icon='hidden') }}
   {%- endif %}
-
-  </div>
-{%- endif %}
 
   {%- if has_current_user_any_permission('board.hide', 'board_topic.lock', 'board_topic.move', 'board_topic.pin') %}
   <div class="button-row button-row--right">

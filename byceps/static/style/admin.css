@@ -72,10 +72,6 @@ a:not(:hover) {
   padding: var(--layout-gutter);
 }
 
-.notifications {
-  margin-bottom: var(--layout-gutter);
-}
-
 .notification a {
   text-decoration: underline;
 }

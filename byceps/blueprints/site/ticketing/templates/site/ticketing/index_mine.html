@@ -11,9 +11,7 @@
   <h1>{{ render_icon('ticket') }} {{ page_title }}</h1>
 
   {%- if not current_user_uses_any_ticket %}
-  <div class="notifications">
 {{ render_notification(_('You currently do not use a ticket.'), category='warning', icon='warning') }}
-  </div>
   {%- endif %}
 
   {%- if tickets %}

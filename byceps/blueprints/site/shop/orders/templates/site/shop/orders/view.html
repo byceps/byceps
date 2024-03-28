@@ -15,9 +15,7 @@
   <h1>{{ order.order_number }}</h1>
 
   {%- if cancellation_request and cancellation_request.state.name != 'accepted' %}
-  <div class="notifications">
 {{ render_notification('Zu dieser Bestellung wurde am %s, %s Uhr eine Stornierung angefordert.'|format(cancellation_request.created_at|dateformat, cancellation_request.created_at|timeformat('short')), category='info') }}
-  </div>
   {%- endif %}
 
   <div class="main-body-box">

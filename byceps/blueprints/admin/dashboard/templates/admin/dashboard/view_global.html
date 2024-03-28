@@ -11,11 +11,9 @@
 {% block body %}
 
   {%- if not demo_data_exists %}
-  <div class="notifications">
 {%- call render_notification_block(category='info', icon='info') -%}
-    <p>{{ _('This looks like a brand-new installation of BYCEPS. Do you want to <a href="%(url)s">create demonstration data</a>?', url=url_for('demo_data_admin.index')) }}</p>
+  <p>{{ _('This looks like a brand-new installation of BYCEPS. Do you want to <a href="%(url)s">create demonstration data</a>?', url=url_for('demo_data_admin.index')) }}</p>
 {%- endcall %}
-  </div>
   {%- endif %}
 
 {% include 'admin/dashboard/_active_brands.html' %}
