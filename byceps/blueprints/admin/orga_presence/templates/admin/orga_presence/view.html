@@ -54,14 +54,14 @@
     </tbody>
   </table>
 
-  <div class="row mb mt">
+  <div class="row row--vertically-centered">
     <div>
-      <h2 class="mb0 mt0">{{ _('My Presence') }} {{ render_extra_in_heading(current_user_presences|length) }}</h2>
+      <h2>{{ _('My Presence') }} {{ render_extra_in_heading(current_user_presences|length) }}</h2>
     </div>
     {%- if has_current_user_permission('orga_presence.update') %}
-    <div class="column--align-bottom">
+    <div>
       <div class="button-row button-row--compact button-row--right">
-        <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
+        <a class="button button--compact" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
       </div>
     </div>
     {%- endif %}

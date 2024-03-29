@@ -9,11 +9,6 @@
 
 {% block head %}
 <style>
-.article-grid > .box,
-.row > .box {
-  margin-bottom: 0;
-}
-
 .progress {
   height: 0.3rem;
   margin-top: 0.5rem;
@@ -31,7 +26,7 @@
 
 {% block body %}
 
-  <div class="row row--space-between">
+  <div class="row row--space-between block">
     <div>
       <h1 class="title">{{ _('Article') }}</h1>
     </div>
@@ -44,7 +39,7 @@
     </div>
   </div>
 
-  <div class="row row--space-between row--wrap">
+  <div class="row row--space-between row--wrap block">
     <div class="box column--grow">
 
       <div class="data-label">{{ pgettext('article', 'Name') }}</div>
@@ -71,7 +66,7 @@
     </div>
   </div>
 
-  <div class="grid article-grid mt" style="--column-min-width: 12rem;">
+  <div class="grid article-grid block" style="--column-min-width: 12rem;">
     <div class="box">
 
       <div class="data-label">{{ _('Type') }}</div>
@@ -190,7 +185,7 @@
     </div>
   </div>
 
-  <div class="row row--space-between">
+  <div class="row row--space-between row--vertically-centered">
     <div>
       <h2>{{ _('Actions') }}</h2>
     </div>
@@ -198,7 +193,7 @@
     <div>
       <div class="button-row button-row--right">
         <div class="dropdown">
-          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} {{ _('Add action') }}</span> {{ render_icon('chevron-down') }}</button>
+          <button class="dropdown-toggle button button--compact"><span>{{ render_icon('add') }} {{ _('Add action') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.action_create_form_for_badge_awarding', article_id=article.id) }}">{{ _('Award badge') }}</a></li>
             {%- if article.type_.name not in ('ticket', 'ticket_bundle') %}
@@ -212,7 +207,7 @@
     {%- endif %}
   </div>
 
-  <div class="mb">{{ _('An action will be executed if an order contains an article that has an action assigned and the order state is changed to one of the states listed for the article.') }}</div>
+  <div class="block">{{ _('An action will be executed if an order contains an article that has an action assigned and the order state is changed to one of the states listed for the article.') }}</div>
 
   {%- if actions %}
   <table class="itemlist itemlist--v-centered itemlist--wide">

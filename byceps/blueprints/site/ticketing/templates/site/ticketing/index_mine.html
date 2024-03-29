@@ -15,7 +15,7 @@
   {%- endif %}
 
   {%- if tickets %}
-  <p>{{ _('These are the tickets for party <strong>%(party_title)s</strong> relevant to (i.e. owned, managed, and/or used by) you.', party_title=party_title) }}</p>
+  <div class="block">{{ _('These are the tickets for party <strong>%(party_title)s</strong> relevant to (i.e. owned, managed, and/or used by) you.', party_title=party_title) }}</div>
   <div class="main-body-box">
 {{ render_tickets(tickets) }}
   </div>

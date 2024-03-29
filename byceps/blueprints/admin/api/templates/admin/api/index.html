@@ -22,11 +22,11 @@ code {
 
   <h1 class="title">{{ page_title }}</h1>
 
-  <div class="row row--space-between">
+  <div class="row row--space-between block">
     <div>
       <h2>{{ _('API Tokens') }} {{ render_extra_in_heading(api_tokens|length) }}</h2>
     </div>
-    <div class="column--align-bottom">
+    <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_api_token_form') }}">{{ render_icon('add') }} <span>{{ _('Create API token') }}</span></a>
       </div>

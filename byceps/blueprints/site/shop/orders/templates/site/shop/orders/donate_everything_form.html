@@ -11,15 +11,15 @@
 
   <div class="main-body-box">
 
-    <p>Du möchtest <strong>den vollen Betrag spenden</strong> und nichts erstattet bekommen. Das finden wir total super, vielen Dank dafür! ❤️</p>
+    <div class="block">Du möchtest <strong>den vollen Betrag spenden</strong> und nichts erstattet bekommen. Das finden wir total super, vielen Dank dafür! ❤️</div>
 
 {% include 'site/shop/orders/_articles.html' %}
 
-    <p>Deine Bestellung wird im Anschluss automatisch storniert.</p>
+    <div class="block">Deine Bestellung wird im Anschluss automatisch storniert.</div>
 
     <form action="{{ url_for('.donate_everything', order_id=order.id) }}" method="post">
 
-      <div class="row row--space-between mt">
+      <div class="row row--space-between">
         <div>
           <a class="button button--clear button--compact" href="{{ url_for('.request_cancellation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>{{ _('Back to selection') }}</span></a>
         </div>

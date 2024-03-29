@@ -36,7 +36,7 @@ a.awardee:hover .avatar {
 
 {% block body %}
 
-  <div class="row row--space-between">
+  <div class="row row--space-between row--vertically-centered block">
     <div>
 
       <nav class="breadcrumbs">
@@ -47,7 +47,7 @@ a.awardee:hover .avatar {
       <h1 class="title">{{ badge.label }}</h1>
 
     </div>
-    <div class="column--align-bottom">
+    <div>
 
       {%- if has_current_user_permission('user_badge.update') %}
       <div class="button-row button-row--right">

@@ -2,9 +2,9 @@
 {% from 'macros/admin/dashboard.html' import render_cell %}
 
 
-<div class="row row--space-between mb">
+<div class="row row--space-between row--vertically-centered">
   <div>
-    <h2 class="mb0 mt0">{{ _('Active Brands') }}</h2>
+    <h2>{{ _('Active Brands') }}</h2>
   </div>
   <div>
     <a class="dashboard-section-link" href="{{ url_for('brand_admin.index') }}">{{ _('All brands') }} &rarr;</a>

@@ -10,7 +10,7 @@
 
   <h1 class="title">{{ _('Tickets') }} {{ render_extra_in_heading(tickets.total) }}</h1>
 
-  <div class="row row--space-between mb">
+  <div class="row row--space-between row--vertically-centered block">
     <div>
 
       <form action="{{ url_for('.index_for_party', party_id=party.id) }}" class="single-row">
@@ -20,7 +20,7 @@
       </form>
 
     </div>
-    <div class="column--align-bottom">
+    <div>
 
       <div class="row">
         <div>

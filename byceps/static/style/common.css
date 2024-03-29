@@ -218,6 +218,10 @@ img {
   flex-grow: 1;
 }
 
+.row .box:not(:last-child) {
+  margin-bottom: 0;
+}
+
 
 /* links */
 

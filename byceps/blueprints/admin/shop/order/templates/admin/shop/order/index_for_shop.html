@@ -10,7 +10,7 @@
 
   <h1 class="title">{{ page_title }} {{ render_extra_in_heading(orders.total) }}</h1>
 
-  <div class="row row--space-between mb">
+  <div class="row row--space-between row--vertically-centered block">
     <div>
 
       <form action="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="single-row">
@@ -35,7 +35,7 @@
       </form>
 
     </div>
-    <div class="column--align-bottom">
+    <div>
 
       <div class="filter">
         <span>{{ _('Status') }}:</span>

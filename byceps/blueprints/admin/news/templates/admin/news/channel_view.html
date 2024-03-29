@@ -10,7 +10,7 @@
 
 {% block body %}
 
-  <div class="row row--space-between">
+  <div class="row row--space-between block">
     <div>
       <h1 class="title">
         {{ _('News channel') }} &quot;{{ channel.id }}&quot;
@@ -20,7 +20,7 @@
       </h1>
     </div>
   {%- if has_current_user_permission('news_channel.administrate') %}
-    <div class="column--align-bottom">
+    <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.channel_update_form', channel_id=channel.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>
@@ -41,14 +41,14 @@
 
   </div>
 
-  <div class="row row--space-between">
+  <div class="row row--space-between row--vertically-centered">
     <div>
       <h2>{{ _('News posts') }} {{ render_extra_in_heading(items.total) }}</h2>
     </div>
   {%- if has_current_user_permission('news_item.create') %}
     <div>
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.item_create_form', channel_id=channel.id) }}">{{ render_icon('add') }} <span>{{ _('Create news post') }}</span></a>
+        <a class="button button--compact" href="{{ url_for('.item_create_form', channel_id=channel.id) }}">{{ render_icon('add') }} <span>{{ _('Create news post') }}</span></a>
       </div>
     </div>
   {%- endif %}

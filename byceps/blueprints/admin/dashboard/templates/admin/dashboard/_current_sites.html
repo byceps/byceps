@@ -1,16 +1,16 @@
 {% from 'macros/admin/dashboard.html' import render_cell, render_site_cell %}
 
 
-<div class="row row--space-between mb">
+<div class="row row--space-between row--vertically-centered">
   <div>
-    <h2 class="mb0 mt0">{{ _('Current Sites') }}</h2>
+    <h2>{{ _('Current Sites') }}</h2>
   </div>
   <div>
     <a class="dashboard-section-link" href="{{ url_for('site_admin.index_for_brand', brand_id=brand.id) if brand|default else url_for('site_admin.index') }}">{{ _('All sites') }} &rarr;</a>
   </div>
 </div>
 
-<div class="grid mb">
+<div class="grid">
 
 {%- if current_sites %}
   {%- for site in current_sites|sort(attribute='title') %}

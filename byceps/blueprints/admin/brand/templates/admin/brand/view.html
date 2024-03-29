@@ -9,7 +9,7 @@
 
 {% block body %}
 
-  <div class="row row--space-between">
+  <div class="row row--space-between block">
     <div>
       <h1 class="title">
         {{ brand.title }}
@@ -19,7 +19,7 @@
       </h1>
     </div>
   {%- if has_current_user_permission('brand.update') %}
-    <div class="column--align-bottom">
+    <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
       </div>
@@ -64,12 +64,12 @@
   </div>
   {%- endif %}
 
-  <div class="row row--space-between">
+  <div class="row row--space-between row--vertically-centered">
     <div>
       <h2>{{ _('Email Configuration') }}</h2>
     </div>
     {%- if email_config and has_current_user_permission('brand.update') %}
-    <div class="column--align-bottom">
+    <div>
       <div class="button-row button-row--right">
         <a class="button button--compact" href="{{ url_for('.email_config_update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
       </div>

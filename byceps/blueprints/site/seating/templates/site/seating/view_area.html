@@ -27,7 +27,7 @@
   {%- endif %}
   <h1 class="title">{{ _('Seat management') if manage_mode else _('Seating plan') }} – {{ area.title }}</h1>
 
-  <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive mb">
+  <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive block">
     <input type="search" name="search_term" placeholder="{{ _('Username') }}" class="form-control">
     <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
   </form>
@@ -44,9 +44,11 @@
     {%- endif %}
   {%- endif %}
 
+  <div class="block">
 {{ render_area(area, seats_and_tickets) }}
+  </div>
 
-    <div class="row row--space-between mt">
+    <div class="row row--space-between">
       <div>
 {% include 'site/seating/_legend.html' %}
       </div>

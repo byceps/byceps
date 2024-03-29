@@ -9,7 +9,7 @@
 
 {%- if managed_tickets %}
   {%- with managed_tickets_total = managed_tickets|length %}
-  <p>{{ ngettext('You are managing seats of <strong>%(quantity)s</strong> ticket.', 'You are managing seats of <strong>%(quantity)s</strong> tickets.', managed_tickets_total, quantity=managed_tickets_total) }}</p>
+  <div class="block">{{ ngettext('You are managing seats of <strong>%(quantity)s</strong> ticket.', 'You are managing seats of <strong>%(quantity)s</strong> tickets.', managed_tickets_total, quantity=managed_tickets_total) }}</div>
   {%- endwith %}
 
   <div class="row row--space-between">
