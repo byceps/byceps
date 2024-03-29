@@ -9,7 +9,7 @@
 
 {% block body %}
 
-  <h1>
+  <h1 class="title">
     {{ render_icon('ticket-bundle') }} {{ bundle.id }}
     {%- if bundle.revoked %} {{ render_tag(_('revoked'), class='color-danger nowrap', icon='disabled') }}{% endif -%}
   </h1>

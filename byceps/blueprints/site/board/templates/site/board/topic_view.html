@@ -20,7 +20,7 @@
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
     </ol>
   </nav>
-  <h1><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></h1>
+  <h1 class="title"><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></h1>
 
   {%- if topic.hidden %}
 {{ render_notification(_('This topic is hidden.'), category='info', icon='hidden') }}

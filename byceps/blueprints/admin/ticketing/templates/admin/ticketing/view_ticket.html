@@ -27,7 +27,7 @@
   <div class="row row--space-between">
     <div>
 
-      <h1>
+      <h1 class="title">
         {{- render_icon('ticket') }} {{ ticket.code }}
         {%- if ticket.revoked %} {{ render_ticket_flag_revoked() }}{% endif -%}
         {%- if ticket.user_checked_in %} {{ render_ticket_flag_user_checked_in() }}{% endif -%}

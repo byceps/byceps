@@ -21,7 +21,7 @@
       <li><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('moderate') }} {{ page_title }}</h1>
+  <h1 class="title">{{ render_icon('moderate') }} {{ page_title }}</h1>
 
   <p>{{ _('Topic &quot;%(topic)s&quot; by %(creator)s', topic=topic.title, creator=render_user_link(topic.creator)) }}
 

@@ -13,7 +13,7 @@
       <li><a href="{{ url_for('.view', order_id=order.id) }}">{{ order.order_number }}</a></li>
     </ol>
   </nav>
-  <h1>{{ _('Cancel order') }}</h1>
+  <h1 class="title">{{ _('Cancel order') }}</h1>
 
   <form action="{{ url_for('.cancel', order_id=order.id) }}" method="post">
     <div class="main-body-box">

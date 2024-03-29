@@ -10,7 +10,7 @@
 
   <div class="row row--space-between">
     <div>
-      <h1>{{ _('Tourneys') }} {{ render_extra_in_heading(tourneys|length) }}</h1>
+      <h1 class="title">{{ _('Tourneys') }} {{ render_extra_in_heading(tourneys|length) }}</h1>
     </div>
     <div>
       {%- if has_current_user_permission('tourney.administrate') %}

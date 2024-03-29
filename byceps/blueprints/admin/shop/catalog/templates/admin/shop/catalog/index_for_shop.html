@@ -4,7 +4,7 @@
 
 {% block body %}
 
-  <h1>{{ page_title }} {{ render_extra_in_heading(catalogs|length) }}</h1>
+  <h1 class="title">{{ page_title }} {{ render_extra_in_heading(catalogs|length) }}</h1>
 
   {%- if catalogs %}
   <table class="itemlist itemlist--wide">

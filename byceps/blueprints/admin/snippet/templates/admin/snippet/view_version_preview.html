@@ -14,7 +14,7 @@
 
     <main>
 {%- if error_occurred %}
-      <h1>{{ _('Error') }}</h1>
+      <h1 class="title">{{ _('Error') }}</h1>
 {{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(error_message)|safe, category='danger') }}
 {%- else %}
 {{ body|safe }}

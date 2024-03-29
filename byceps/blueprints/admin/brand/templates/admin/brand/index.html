@@ -10,7 +10,7 @@
 
   <div class="row row--space-between">
     <div>
-      <h1>{{ _('Brands') }} {{ render_extra_in_heading(brands|length) }}</h1>
+      <h1 class="title">{{ _('Brands') }} {{ render_extra_in_heading(brands|length) }}</h1>
     </div>
   {%- if has_current_user_permission('brand.create') %}
     <div>

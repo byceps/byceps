@@ -18,7 +18,7 @@
     </ol>
   </nav>
 
-  <h1>{{ gallery.title }}{% if gallery.hidden %} {{ render_tag(_('hidden')) }}{% endif %}</h1>
+  <h1 class="title">{{ gallery.title }}{% if gallery.hidden %} {{ render_tag(_('hidden')) }}{% endif %}</h1>
 
   <div class="main-body-box">
     {%- if gallery.images %}

@@ -9,7 +9,7 @@
 
 {% block body %}
 
-  <h1>{{ _('Edit page') }}</h1>
+  <h1 class="title">{{ _('Edit page') }}</h1>
 
   <form action="{{ url_for('.update', page_id=page.id) }}" method="post">
     <div class="box">

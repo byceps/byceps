@@ -12,7 +12,7 @@
       <li><a href="{{ url_for('.index') }}">{{ _('Your orders') }}</a></li>
     </ol>
   </nav>
-  <h1>{{ order.order_number }}</h1>
+  <h1 class="title">{{ order.order_number }}</h1>
 
   {%- if cancellation_request and cancellation_request.state.name != 'accepted' %}
 {{ render_notification('Zu dieser Bestellung wurde am %s, %s Uhr eine Stornierung angefordert.'|format(cancellation_request.created_at|dateformat, cancellation_request.created_at|timeformat('short')), category='info') }}

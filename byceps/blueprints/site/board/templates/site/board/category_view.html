@@ -20,7 +20,7 @@
       <li><a href="{{ url_for('.category_index') }}">{{ _('Board') }}</a></li>
     </ol>
   </nav>
-  <h1>{{ category.title }}</h1>
+  <h1 class="title">{{ category.title }}</h1>
 
   {%- if topics.items %}
   <table class="itemlist itemlist--v-centered itemlist--wide board-topic-index">

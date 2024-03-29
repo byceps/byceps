@@ -7,7 +7,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('password') }} {{ page_title }}</h1>
+  <h1 class="title">{{ render_icon('password') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.reset', token=token) }}" method="post">
     <div class="main-body-box">

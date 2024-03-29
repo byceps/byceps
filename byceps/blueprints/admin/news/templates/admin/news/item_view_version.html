@@ -33,7 +33,7 @@
           <li>{{ _('Channel') }}: <a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></li>
         </ol>
       </nav>
-      <h1>{% if not version.item.published %}{{ render_tag(_('Draft')) }} {% endif %}{{ item.title }}</h1>
+      <h1 class="title">{% if not version.item.published %}{{ render_tag(_('Draft')) }} {% endif %}{{ item.title }}</h1>
 
     </div>
     <div class="column--align-bottom">

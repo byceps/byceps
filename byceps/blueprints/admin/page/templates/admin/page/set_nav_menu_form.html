@@ -9,7 +9,7 @@
 
 {% block body %}
 
-  <h1>{{ _('Set navigation menu') }}</h1>
+  <h1 class="title">{{ _('Set navigation menu') }}</h1>
 
   <form action="{{ url_for('.set_nav_menu', page_id=page.id) }}" method="post">
     <div class="box">

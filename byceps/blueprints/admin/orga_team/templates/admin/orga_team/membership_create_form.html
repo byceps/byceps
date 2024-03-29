@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <h1>{{ page_title }}</h1>
+  <h1 class="title">{{ page_title }}</h1>
 
   {%- if unassigned_orgas_available %}
   <form action="{{ url_for('.membership_create', team_id=team.id) }}" method="post">

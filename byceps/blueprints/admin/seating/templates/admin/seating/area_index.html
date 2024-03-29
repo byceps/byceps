@@ -10,7 +10,7 @@
 
   <div class="row row--space-between">
     <div>
-      <h1>{{ _('Areas') }} {{ render_extra_in_heading(areas_with_utilization|length) }}</h1>
+      <h1 class="title">{{ _('Areas') }} {{ render_extra_in_heading(areas_with_utilization|length) }}</h1>
     </div>
     {%- if has_current_user_permission('seating.administrate') %}
     <div>

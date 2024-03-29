@@ -25,7 +25,7 @@
     </ol>
   </nav>
   {%- endif %}
-  <h1>{{ _('Seat management') if manage_mode else _('Seating plan') }} – {{ area.title }}</h1>
+  <h1 class="title">{{ _('Seat management') if manage_mode else _('Seating plan') }} – {{ area.title }}</h1>
 
   <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive mb">
     <input type="search" name="search_term" placeholder="{{ _('Username') }}" class="form-control">

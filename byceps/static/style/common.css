@@ -125,7 +125,9 @@ img {
   table.itemlist,
   .notification,
   .pagination,
+  .subtitle,
   .tabs,
+  .title,
 ):not(:last-child) {
   margin-bottom: 1.5rem;
 }
@@ -171,6 +173,12 @@ img {
 
 .container {
   margin-inline: auto;
+}
+
+.subtitle,
+.title {
+  margin: 0;
+  padding: 0;
 }
 
 

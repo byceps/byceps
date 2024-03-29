@@ -22,7 +22,7 @@
       <li><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
+  <h1 class="title">{{ render_icon('edit') }} {{ page_title }}</h1>
 
   {%- if topic.creator_id != g.user.id %}
   <div class="mb">

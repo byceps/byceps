@@ -11,7 +11,7 @@
   {%- endif %}
 {%- endif %}
     </div>
-    <h1><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
+    <h1 class="title"><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
     <footer class="meta">
       {%- if item.published %}
       {{ item.published_at|dateformat('full') }}

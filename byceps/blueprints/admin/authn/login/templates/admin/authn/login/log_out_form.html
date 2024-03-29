@@ -5,7 +5,7 @@
 
 {% block body %}
 
-  <h1>{{ page_title }}</h1>
+  <h1 class="title">{{ page_title }}</h1>
 
   <form action="{{ url_for('.log_out') }}" method="post">
     {{ form_buttons(_('Log out')) }}

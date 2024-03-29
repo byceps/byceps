@@ -9,7 +9,7 @@
 
 {% block body %}
 
-  <h1>{{ page_title }}</h1>
+  <h1 class="title">{{ page_title }}</h1>
 
   <form action="{{ url_for('.menu_create', site_id=site.id) }}" method="post">
     <div class="box">
