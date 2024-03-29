@@ -843,8 +843,8 @@ nav.pagination ol {
   flex-wrap: wrap;
   gap: 0.5rem;
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 nav.pagination.pagination--centered ol {
