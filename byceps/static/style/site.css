@@ -23,12 +23,12 @@ body {
 
 /* layout */
 
-.main-body-box--no-padding {
-  padding: 0 !important;
-}
-
 .main-body-box:not(:last-child) {
   margin-bottom: 1.5rem;
+}
+
+.main-body-box--no-padding {
+  padding: 0 !important;
 }
 
 .main-body-box .featured-image {
