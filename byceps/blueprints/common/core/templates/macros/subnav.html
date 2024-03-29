@@ -15,11 +15,9 @@
 
 
 {% macro render_subnav() -%}
-  <nav class="subnav">
-    <ol class="tabs tabs--centered">
+  <ol class="tabs tabs--centered">
 {{ caller() }}
-    </ol>
-  </nav>
+  </ol>
 {%- endmacro %}
 
 
