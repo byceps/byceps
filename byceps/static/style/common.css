@@ -271,7 +271,7 @@ span[title] .icon {
   border-radius: var(--border-radius);
   border: rgba(0, 0, 0, 0.25) solid 1px;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
-  padding: 1rem;
+  padding: 1.25rem;
 }
 
 .notification > .block-with-icon-body :first-child {
