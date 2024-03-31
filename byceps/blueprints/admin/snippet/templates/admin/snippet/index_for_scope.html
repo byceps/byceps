@@ -6,7 +6,7 @@
 
 {% block body %}
 
-  <div class="row row--space-between">
+  <div class="row row--space-between block">
     <div>
       <h1 class="title">{{ _('Snippets') }} {{ render_extra_in_heading(snippets|length) }}</h1>
     </div>
@@ -20,7 +20,7 @@
   {%- endif %}
   </div>
 
-  <div class="mb"><strong>{{ _('Scope') }}:</strong> {{ scope.type_ }}/{{ scope.name }}</div>
+  <div class="block"><strong>{{ _('Scope') }}:</strong> {{ scope.type_ }}/{{ scope.name }}</div>
 
   {%- if snippets %}
   <table class="itemlist itemlist--v-centered itemlist--wide">
