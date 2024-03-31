@@ -65,7 +65,8 @@ body {
 }
 
 .box,
-.card {
+.card,
+.notification {
   background-color: transparent;
 }
 
