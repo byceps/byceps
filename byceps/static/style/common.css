@@ -303,7 +303,8 @@ ol.tabs {
   padding: 0;
 }
 
-.tabs--centered {
+.tabs--centered,
+.tabs.is-hcentered {
   justify-content: center;
 }
 
@@ -677,7 +678,8 @@ form.unobtrusive input:focus ~ .button {
   margin: 0;
 }
 
-.button-row--center {
+.button-row--center,
+.button-row.is-hcentered {
   justify-content: center;
 }
 
@@ -850,7 +852,8 @@ nav.pagination ol {
   padding: 0;
 }
 
-nav.pagination.pagination--centered ol {
+nav.pagination.pagination--centered ol,
+nav.pagination.is-hcentered ol {
   justify-content: center;
 }
 

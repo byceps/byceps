@@ -3,7 +3,7 @@
 
 {% macro render_pagination_nav(pagination, endpoint, url_args=None) %}
   {%- if pagination.pages > 1 %}
-    <nav class="pagination pagination--centered">
+    <nav class="pagination is-hcentered">
       <ol>
       {%- if pagination.has_prev %}
         <li class="pagination-item"><a href="{{ url_for(endpoint, **add_page_arg(url_args, pagination.prev_num)) }}" title="{{ _('Previous page') }}">{{ render_icon('arrow-left') }}</a></li>
