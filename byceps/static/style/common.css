@@ -207,7 +207,7 @@ img {
   justify-content: space-evenly;
 }
 
-.row--v-centered {
+.row--v-centered, .row.is-vcentered {
   align-items: center;
 }
 
@@ -474,7 +474,10 @@ table:is(.index, .itemlist) > tfoot > tr > :is(th, td) {
   border-width: 1px 0 0 0;
 }
 
-table:is(.index.index--v-centered, .itemlist.itemlist--v-centered) :is(th, td) {
+table:is(
+  .index:is(.index--v-centered, .is-vcentered),
+  .itemlist:is(.itemlist--v-centered, .is-vcentered),
+) :is(th, td) {
   vertical-align: middle;
 }
 
@@ -483,8 +486,8 @@ table.itemlist.itemlist--compact {
   --row-padding-horizontal: 0.75rem;
 }
 
-table.index.index--wide,
-table.itemlist.itemlist--wide {
+table.index:is(.index--wide, .is-wide),
+table.itemlist:is(.itemlist--wide.is-wide) {
   width: 100%;
 }
 

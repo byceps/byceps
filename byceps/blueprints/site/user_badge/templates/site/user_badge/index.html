@@ -38,7 +38,7 @@
     <ol class="badges">
       {%- for badge in badges|sort(attribute='label') %}
         <li>
-          <div class="row row--v-centered">
+          <div class="row is-vcentered">
             <div>{{ render_user_badge_linked(badge, 64) }}</div>
             {%- if badge.description %}
             <div class="column--grow description">

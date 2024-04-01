@@ -42,7 +42,7 @@
       <div><small class="dimmed">{{ verification_token_total }}</small></div>
     </div>
 
-    <table class="index index--small index--wide mb">
+    <table class="index index--small is-wide mb">
       {%- for purpose_name, count in verification_token_counts_by_purpose_name|dictsort %}
       <tr>
         <td>{{ purpose_name }}</td>

@@ -30,7 +30,7 @@
   {%- if teams_and_members %}
     {%- for team, members in teams_and_members %}
 
-  <div class="row row--space-between row--v-centered">
+  <div class="row row--space-between is-vcentered">
     <div>
       {%- with member_total = members|length %}
       <h2>{{ team.title }} <small>{{ member_total}} {{ ngettext('person', 'persons', member_total) }}</small></h2>
@@ -56,7 +56,7 @@
   </div>
 
       {%- if members %}
-  <table class="itemlist itemlist--v-centered itemlist--wide">
+  <table class="itemlist is-vcentered is-wide">
     <colgroup>
       <col style="width: 45%;"/>
       <col/>

@@ -19,7 +19,7 @@
 
 {% block body %}
 
-  <div class="row row--space-between row--v-centered">
+  <div class="row row--space-between is-vcentered">
     <div>
       <h2>{{ _('Permissions') }}</h2>
     </div>
@@ -33,7 +33,7 @@
   </div>
 
   {%- if permissions_by_role %}
-  <table class="itemlist itemlist--wide">
+  <table class="itemlist is-wide">
     <thead>
       <tr>
         <th>{{ _('Role') }}</th>
