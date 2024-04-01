@@ -487,7 +487,7 @@ table.itemlist:is(.itemlist--compact, .is-compact) {
 }
 
 table.index:is(.index--wide, .is-wide),
-table.itemlist:is(.itemlist--wide.is-wide) {
+table.itemlist:is(.itemlist--wide, .is-wide) {
   width: 100%;
 }
 
