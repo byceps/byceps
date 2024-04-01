@@ -113,9 +113,9 @@
 
       {%- if has_current_user_permission('news_item.update') %}
       <div class="button-row button-row--nowrap button-row--right">
-        <a class="button button--compact" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} <span>{{ _('Add image') }}</span></a>
+        <a class="button is-compact" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} <span>{{ _('Add image') }}</span></a>
         <div class="dropdown">
-          <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
+          <button class="dropdown-toggle button is-compact"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
             {%- if item.featured_image is not none %}
             <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}">{{ _('Unset featured image') }}</a></li>
@@ -160,9 +160,9 @@
             {%- if has_current_user_permission('news_item.update') %}
             <div>
               <div class="button-row button-row--nowrap button-row--right">
-                <a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+                <a class="button is-compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
                 <div class="dropdown">
-                  <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
+                  <button class="dropdown-toggle button is-compact"><span>{{ render_icon('chevron-down') }}</span></button>
                   <ol class="dropdown-menu dropdown-menu--right">
                     {%- if (item.featured_image is not none) and (image.id == item.featured_image.id) %}
                     <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}">{{ _('Unset image as featured') }}</a></li>

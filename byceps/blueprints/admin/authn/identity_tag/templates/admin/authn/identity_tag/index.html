@@ -46,7 +46,7 @@
         <td>{{ tag.note|fallback }}</td>
         <td>{{ tag.created_at|datetimeformat }}</td>
         <td>{{ render_user_avatar_and_name(tag.creator, size=16) }}</td>
-        <td><a class="button button--compact color-danger" href="{{ url_for('.delete', tag_id=tag.id) }}" data-action="delete-tag" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a></td>
+        <td><a class="button is-compact color-danger" href="{{ url_for('.delete', tag_id=tag.id) }}" data-action="delete-tag" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a></td>
       </tr>
       {%- endfor %}
     </tbody>

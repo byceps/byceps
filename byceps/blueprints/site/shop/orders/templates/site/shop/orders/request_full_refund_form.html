@@ -31,7 +31,7 @@
 
       <div class="row row--space-between">
         <div>
-          <a class="button button--clear button--compact" href="{{ url_for('.request_cancellation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>{{ _('Back to selection') }}</span></a>
+          <a class="button button--clear is-compact" href="{{ url_for('.request_cancellation_choices', order_id=order.id) }}">{{ render_icon('chevron-left') }} <span>{{ _('Back to selection') }}</span></a>
         </div>
         <div>
           <button type="submit" class="button color-primary">{{ _('Return tickets') }}</button>

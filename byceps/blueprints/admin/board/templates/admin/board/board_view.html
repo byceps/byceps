@@ -54,7 +54,7 @@
         <td>
           {%- if has_current_user_permission('board_category.update') -%}
           <div class="dropdown">
-            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+            <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
               <li><a class="dropdown-item" href="{{ url_for('.category_update_form', category_id=category.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
               <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.category_move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>

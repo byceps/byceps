@@ -35,17 +35,17 @@
 
         {%- if has_current_user_permission('guest_server.administrate') %}
         <div>
-          <div class="button-row button-row--compact button-row--nowrap button-row--right">
-            <a class="button button--compact" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a>
-            <a class="button button--compact" href="{{ url_for('.server_update_form', server_id=server.id) }}" title="{{ _('Update server') }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+          <div class="button-row is-compact button-row--nowrap button-row--right">
+            <a class="button is-compact" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a>
+            <a class="button is-compact" href="{{ url_for('.server_update_form', server_id=server.id) }}" title="{{ _('Update server') }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
             {%- if server.checked_out %}
             {%- elif server.checked_in %}
-              <a class="button button--compact" href="{{ url_for('.server_check_out', server_id=server.id) }}" data-action="check-out-server">{{ render_icon('log-out') }} <span>{{ _('Check out') }}</span></a>
+              <a class="button is-compact" href="{{ url_for('.server_check_out', server_id=server.id) }}" data-action="check-out-server">{{ render_icon('log-out') }} <span>{{ _('Check out') }}</span></a>
             {%- elif server.approved %}
-              <a class="button button--compact" href="{{ url_for('.server_check_in', server_id=server.id) }}" data-action="check-in-server">{{ render_icon('log-in') }} <span>{{ _('Check in') }}</a>
+              <a class="button is-compact" href="{{ url_for('.server_check_in', server_id=server.id) }}" data-action="check-in-server">{{ render_icon('log-in') }} <span>{{ _('Check in') }}</a>
             {%- else %}
-              <a class="button button--compact" href="{{ url_for('.server_approve', server_id=server.id) }}" data-action="approve-server">{{ render_icon('success') }} <span>{{ _('Approve') }}</span></a>
-              <a class="button button--compact color-danger" href="{{ url_for('.server_delete', server_id=server.id) }}" data-action="delete-server">{{ render_icon('delete') }} <span>{{ _('Delete') }}</span></a>
+              <a class="button is-compact" href="{{ url_for('.server_approve', server_id=server.id) }}" data-action="approve-server">{{ render_icon('success') }} <span>{{ _('Approve') }}</span></a>
+              <a class="button is-compact color-danger" href="{{ url_for('.server_delete', server_id=server.id) }}" data-action="delete-server">{{ render_icon('delete') }} <span>{{ _('Delete') }}</span></a>
             {%- endif -%}
           </div>
         </div>
@@ -82,7 +82,7 @@
           <th class="data-label">{{ _('Netmask') }}</th>
           <th class="data-label">{{ _('Gateway') }}</th>
           {%- if has_current_user_permission('guest_server.administrate') %}
-          <td><a class="button button--compact" href="{{ url_for('.address_create_form', server_id=server.id) }}" title="{{ _('Add server address') }}">{{ render_icon('add') }}</a></th>
+          <td><a class="button is-compact" href="{{ url_for('.address_create_form', server_id=server.id) }}" title="{{ _('Add server address') }}">{{ render_icon('add') }}</a></th>
           {%- endif %}
         </tr>
       </thead>
@@ -94,7 +94,7 @@
           <td>{{ render_netmask(address, setting) }}</td>
           <td>{{ render_gateway(address, setting) }}</td>
           {%- if has_current_user_permission('guest_server.administrate') %}
-          <td><a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
+          <td><a class="button is-compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
           {%- endif %}
         </tr>
         {%- endfor %}

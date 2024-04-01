@@ -60,8 +60,8 @@
     </div>
     {%- if has_current_user_permission('orga_presence.update') %}
     <div>
-      <div class="button-row button-row--compact button-row--right">
-        <a class="button button--compact" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
+      <div class="button-row is-compact button-row--right">
+        <a class="button is-compact" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
       </div>
     </div>
     {%- endif %}
@@ -81,7 +81,7 @@
       <tr>
         <td class="nowrap">{{ presence.starts_at|dateformat }}, {{ presence.starts_at|timeformat('short') }}</td>
         <td class="nowrap">{{ presence.ends_at|dateformat }}, {{ presence.ends_at|timeformat('short') }}</td>
-        <td><a class="button button--compact" data-action="time-slot-delete" href="{{ url_for('.time_slot_delete', time_slot_id=presence.id) }}" title="{{ _('Remove presence') }}">{{ render_icon('remove') }}</a></td>
+        <td><a class="button is-compact" data-action="time-slot-delete" href="{{ url_for('.time_slot_delete', time_slot_id=presence.id) }}" title="{{ _('Remove presence') }}">{{ render_icon('remove') }}</a></td>
       </tr>
     {%- endfor %}
     </tbody>

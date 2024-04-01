@@ -357,7 +357,7 @@ nav.breadcrumbs li::after {
   content: ' \0BB \020';
 }
 
-nav.breadcrumbs.compact li:last-child::after {
+nav.breadcrumbs:is(.compact, .is-compact) li:last-child::after {
   content: none;
 }
 
@@ -387,7 +387,7 @@ ol.itemlist > li {
   padding: var(--item-padding-vertical) var(--item-padding-horizontal);
 }
 
-ol.itemlist.itemlist--compact {
+ol.itemlist:is(.itemlist--compact, .is-compact) {
   --item-padding-horizontal: 0.75rem;
   --item-padding-vertical: 0.5rem;
 }
@@ -481,7 +481,7 @@ table:is(
   vertical-align: middle;
 }
 
-table.itemlist.itemlist--compact {
+table.itemlist:is(.itemlist--compact, .is-compact) {
   --cell-padding-vertical: 0.5rem;
   --row-padding-horizontal: 0.75rem;
 }
@@ -672,7 +672,8 @@ form.unobtrusive input:focus ~ .button {
   gap: 0.5rem;
 }
 
-.button-row--compact {
+.button-row--compact,
+.button-row.is-compact {
   margin: 0;
 }
 
@@ -712,7 +713,8 @@ form.unobtrusive input:focus ~ .button {
   white-space: nowrap;
 }
 
-.button--compact {
+.button--compact,
+.button.is-compact {
   font-size: 0.875rem; /* 14px / 16px */
   padding: 0.125rem 0.25rem;
 }

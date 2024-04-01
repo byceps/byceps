@@ -2,7 +2,7 @@
   <h2>{{ _('Attended parties') }}</h2>
 
   {%- if attended_parties %}
-  <ol class="itemlist itemlist--compact is-wide">
+  <ol class="itemlist is-compact is-wide">
     {%- for party in attended_parties %}
     <li>{{ party.title }}</li>
     {%- endfor %}

@@ -14,14 +14,14 @@
             <div class="data-value">{{ render_icon('enabled', color='#009900') }} {{ _('connected as') }} <strong>{{ discord_account.external_name }}</strong></div>
           </div>
           <div class="column-auto">
-            <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.remove') }}" data-action="discord-remove" title="{{ _('Disconnect account') }}">{{ render_icon('remove', color='#cc0000') }}</a>
+            <a class="button is-compact" href="{{ url_for('connected_external_accounts_discord.remove') }}" data-action="discord-remove" title="{{ _('Disconnect account') }}">{{ render_icon('remove', color='#cc0000') }}</a>
           </div>
           {%- else -%}
           <div class="column-auto column-auto--grow">
             <div class="data-value dimmed">{{ _('not connected') }}</div>
           </div>
           <div class="column-auto">
-            <a class="button button--compact" href="{{ url_for('connected_external_accounts_discord.connect') }}" title="{{ _('Connect account') }}">{{ render_icon('add') }}</a>
+            <a class="button is-compact" href="{{ url_for('connected_external_accounts_discord.connect') }}" title="{{ _('Connect account') }}">{{ render_icon('add') }}</a>
           </div>
           {%- endif %}
         </div>

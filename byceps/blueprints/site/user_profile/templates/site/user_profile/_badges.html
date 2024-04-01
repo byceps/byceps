@@ -5,7 +5,7 @@
 <div class="user-profile-detail-block">
   <h2>{{ _('Badges') }}</h2>
 
-  <table class="itemlist itemlist--compact is-vcentered is-wide">
+  <table class="itemlist is-compact is-vcentered is-wide">
     <tbody>
       {%- for badge, quantity in badges_with_awarding_quantity|items|sort(attribute='0.label') %}
       <tr>

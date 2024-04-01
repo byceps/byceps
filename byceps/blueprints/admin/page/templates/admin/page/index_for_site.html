@@ -61,9 +61,9 @@
         </td>
         <td>{{ render_user_avatar_and_name(users_by_id[page.current_version.creator_id], size=20) }}</td>
         <td>
-          <div class="button-row button-row--compact button-row--right">
+          <div class="button-row is-compact button-row--right">
             {%- if has_current_user_permission('page.update') %}
-            <a href="{{ url_for('.update_form', page_id=page.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
+            <a href="{{ url_for('.update_form', page_id=page.id) }}" class="button is-compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
             {%- endif %}
           </div>
         </td>

@@ -16,9 +16,9 @@
     <div>
       <div class="button-row button-row--right">
         {%- if logins_included %}
-        <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id, include_logins='no') }}">{{ render_icon('hidden') }} <span>{{ _('Hide logins') }}</span></a>
+        <a class="button is-compact" href="{{ url_for('.view_events', user_id=user.id, include_logins='no') }}">{{ render_icon('hidden') }} <span>{{ _('Hide logins') }}</span></a>
         {%- else %}
-        <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id) }}">{{ render_icon('view') }} <span>{{ _('Show logins') }}</span></a>
+        <a class="button is-compact" href="{{ url_for('.view_events', user_id=user.id) }}">{{ render_icon('view') }} <span>{{ _('Show logins') }}</span></a>
         {%- endif %}
       </div>
     </div>

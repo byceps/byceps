@@ -27,7 +27,7 @@
 
           <div class="dropdown">
             <span>{{ _('Category') }}:</span>
-            <button class="dropdown-toggle button button--compact">
+            <button class="dropdown-toggle button is-compact">
               <span>
                 {%- if filter_category %}
                 {{ filter_category.title }}
@@ -51,7 +51,7 @@
 
           <div class="dropdown">
             <span>{{ _('revoked') }}:</span>
-            <button class="dropdown-toggle button button--compact">
+            <button class="dropdown-toggle button is-compact">
               <span>
                 {%- if filter_revoked is not none %}
                   {%- if filter_revoked.name == 'select' %}
@@ -78,7 +78,7 @@
 
           <div class="dropdown">
             <span>{{ _('checked in') }}:</span>
-            <button class="dropdown-toggle button button--compact">
+            <button class="dropdown-toggle button is-compact">
               <span>
                 {%- if filter_checked_in is not none %}
                   {%- if filter_checked_in.name == 'select' %}

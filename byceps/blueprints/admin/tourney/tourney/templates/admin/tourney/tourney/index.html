@@ -52,8 +52,8 @@
         </td>
         <td>
           {%- if has_current_user_permission('tourney.administrate') %}
-          <div class="button-row button-row--compact">
-            <a class="button button--compact" href="{{ url_for('.update_form', tourney_id=tourney.id) }}">{{ render_icon('edit', title=_('Edit tourney')) }}</a>
+          <div class="button-row is-compact">
+            <a class="button is-compact" href="{{ url_for('.update_form', tourney_id=tourney.id) }}">{{ render_icon('edit', title=_('Edit tourney')) }}</a>
           </div>
           {%- endif %}
         </td>

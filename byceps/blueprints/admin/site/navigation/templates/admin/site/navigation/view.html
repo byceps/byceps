@@ -38,7 +38,7 @@
     <div>
       <div class="button-row button-row--right">
         <div class="dropdown">
-          <button class="dropdown-toggle button button--compact">{{ render_icon('add') }} <span>{{ _('Create menu item') }}</span> {{ render_icon('chevron-down') }}</button>
+          <button class="dropdown-toggle button is-compact">{{ render_icon('add') }} <span>{{ _('Create menu item') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.item_create_page_form', menu_id=menu.id) }}">{{ _('Page') }}</a></li>
             <li><a class="dropdown-item" href="{{ url_for('.item_create_view_form', menu_id=menu.id) }}">{{ _('View') }}</a></li>
@@ -91,7 +91,7 @@
         <td>
           {%- if has_current_user_permission('site_navigation.administrate') -%}
           <div class="dropdown">
-            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+            <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
               <li><a class="dropdown-item" data-action="item-move-up" href="{{ url_for('.item_move_up', item_id=item.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>

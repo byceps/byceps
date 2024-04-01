@@ -74,7 +74,7 @@
 
 {{ render_pagination_nav(postings, 'board.topic_view', {'topic_id': topic.id}) }}
 
-  <nav class="breadcrumbs compact">
+  <nav class="breadcrumbs is-compact">
     <ol>
       <li><a href="{{ url_for('.category_index') }}">{{ _('Board') }}</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>

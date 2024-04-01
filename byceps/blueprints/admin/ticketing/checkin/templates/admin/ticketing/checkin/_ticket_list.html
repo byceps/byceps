@@ -48,13 +48,13 @@
       </td>
       <td style="text-align: right;">
         {%- if ticket.revoked -%}
-        <div class="button button--compact button--disabled color-danger">{{ _('No entry!') }}</div>
+        <div class="button is-compact button--disabled color-danger">{{ _('No entry!') }}</div>
         {%- elif ticket.user_checked_in -%}
-        <div class="button button--compact button--disabled color-warning">{{ _('Already checked in!') }}</div>
+        <div class="button is-compact button--disabled color-warning">{{ _('Already checked in!') }}</div>
         {%- elif ticket.used_by and ticket.used_by.deleted -%}
-        <div class="button button--compact button--disabled color-danger"><div>{{ _('No entry!') }}<br><small>{{ _('Account has been deleted.') }}</small></div></div>
+        <div class="button is-compact button--disabled color-danger"><div>{{ _('No entry!') }}<br><small>{{ _('Account has been deleted.') }}</small></div></div>
         {%- elif ticket.used_by and ticket.used_by.suspended -%}
-        <div class="button button--compact button--disabled color-danger"><div>{{ _('No entry!') }}<br><small>{{ _('Account is suspended.') }}</small></div></div>
+        <div class="button is-compact button--disabled color-danger"><div>{{ _('No entry!') }}<br><small>{{ _('Account is suspended.') }}</small></div></div>
         {%- elif ticket.used_by -%}
         <a class="button button-check-in color-primary" data-action="check-in-user" href="{{ url_for('ticketing_checkin_admin.check_in_user', party_id=party.id, ticket_id=ticket.id) }}">{{ render_icon('ticketing-checkin') }} <span>{{ _('Check in') }}</span></a>
         {%- endif -%}

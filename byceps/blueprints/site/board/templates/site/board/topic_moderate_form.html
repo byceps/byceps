@@ -35,7 +35,7 @@
     <div>{{ _('The topic is <strong>visible</strong>.') }}</div>
     {%- endif %}
 
-    <div class="button-row button-row--compact mt">
+    <div class="button-row is-compact mt">
     {%- if topic.hidden %}
       <span class="button button--disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>
       <a class="button" data-action="topic-unhide" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>
@@ -58,7 +58,7 @@
     <div>{{ _('The topic is <strong>not locked</strong>.') }}</div>
     {%- endif %}
 
-    <div class="button-row button-row--compact mt">
+    <div class="button-row is-compact mt">
     {%- if topic.locked %}
       <span class="button button--disabled">{{ render_icon('lock') }} <span>{{ _('Lock') }}</span></span>
       <a class="button" data-action="topic-unlock" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}">{{ render_icon('unlock') }} <span>{{ _('Unlock') }}</span></a>
@@ -81,7 +81,7 @@
     <div>{{ _('The topic is <strong>not pinned</strong>.') }}</div>
     {%- endif %}
 
-    <div class="button-row button-row--compact mt">
+    <div class="button-row is-compact mt">
     {%- if topic.pinned %}
       <span class="button button--disabled">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></span>
       <a class="button" data-action="topic-unpin" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></a>
@@ -101,7 +101,7 @@
     <div>{{ _('This topic is in category &quot;%(category)s&quot;.', category=topic.category.title) }}</div>
 
     {%- if categories %}
-    <div class="button-row button-row--compact mt">
+    <div class="button-row is-compact mt">
       <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
         {{ _('New category') }}:
         <select name="category_id" class="form-control" style="display: inline-block;">
@@ -131,7 +131,7 @@
     <div>{{ _('The topic is <strong>limited to announcements</strong> by moderators.') }}</div>
     {%- endif %}
 
-    <div class="button-row button-row--compact mt">
+    <div class="button-row is-compact mt">
     {%- if topic.posting_limited_to_moderators %}
       <span class="button button--disabled">{{ render_icon('announce') }} <span>{{ _('Limit to announcements') }}</span></span>
       <a class="button" data-action="topic-remove-limit-to-announcements" href="{{ url_for('.topic_remove_limit_to_announcements', topic_id=topic.id) }}">{{ render_icon('board') }} <span>{{ _('Open for all postings') }}</span></a>

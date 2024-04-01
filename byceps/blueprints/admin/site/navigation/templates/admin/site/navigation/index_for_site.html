@@ -59,7 +59,7 @@
         </td>
         <td style="text-align: right;">
           {%- if not menu.parent_menu_id and has_current_user_permission('site_navigation.administrate') %}
-          <a class="button button--compact" href="{{ url_for('.submenu_create_form', site_id=site.id, parent_menu_id=menu.id) }}">{{ render_icon('add') }} <span>{{ _('Create submenu') }}</span></a>
+          <a class="button is-compact" href="{{ url_for('.submenu_create_form', site_id=site.id, parent_menu_id=menu.id) }}">{{ render_icon('add') }} <span>{{ _('Create submenu') }}</span></a>
           {%- endif -%}
         </td>
       </tr>

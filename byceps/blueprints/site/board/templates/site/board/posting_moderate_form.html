@@ -34,7 +34,7 @@
     <div>{{ _('The posting is <strong>visible</strong>.') }}</div>
     {%- endif %}
 
-    <div class="button-row button-row--compact mt">
+    <div class="button-row is-compact mt">
     {%- if posting.hidden %}
       <span class="button button--disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>
       <a class="button" data-action="posting-unhide" href="{{ url_for('.posting_unhide', posting_id=posting.id) }}">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>

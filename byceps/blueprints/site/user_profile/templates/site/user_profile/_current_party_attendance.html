@@ -6,7 +6,7 @@
   {%- if current_party_tickets %}
   <h2>{{ ngettext('Seat', 'Seats', current_party_tickets|length) }}</h2>
 
-  <table class="itemlist itemlist--compact is-vcentered is-wide">
+  <table class="itemlist is-compact is-vcentered is-wide">
     <tbody>
       {%- for ticket in current_party_tickets %}
       <tr>

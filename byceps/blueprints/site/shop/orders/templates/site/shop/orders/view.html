@@ -49,7 +49,7 @@
       <div>
 
         {%- if order.is_open %}
-        <div class="button-row button-row--compact button-row--right">
+        <div class="button-row is-compact button-row--right">
           <a class="button" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('remove') }} <span>{{ _('Cancel order') }}</span></a>
         </div>
         {%- endif %}

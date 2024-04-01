@@ -36,8 +36,8 @@
       <td class="bignumber number">{{ count|numberformat }}</td>
       <td>
         {%- if has_current_user_permission('consent.administrate') %}
-        <div class="button-row button-row--compact button-row--right">
-          <a class="button button--compact color-danger" data-action="requirement-delete" href="{{ url_for('.requirement_delete', brand_id=brand.id, subject_id=subject.id) }}" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a>
+        <div class="button-row is-compact button-row--right">
+          <a class="button is-compact color-danger" data-action="requirement-delete" href="{{ url_for('.requirement_delete', brand_id=brand.id, subject_id=subject.id) }}" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a>
         </div>
         {%- endif %}
       </td>
