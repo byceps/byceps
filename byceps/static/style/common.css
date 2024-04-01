@@ -121,7 +121,6 @@ img {
   .box,
   .button-row,
   .card,
-  .form-buttons,
   table.itemlist,
   .notification,
   .pagination,
@@ -640,10 +639,6 @@ form .invalid .form-errors li {
 
 .form-errors li span {
   font-style: italic;
-}
-
-.form-buttons {
-  text-align: center;
 }
 
 form.single-row {
