@@ -12,7 +12,7 @@
     </div>
     {%- if has_current_user_permission('page.update') -%}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.update_form', page_id=page.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>

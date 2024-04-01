@@ -14,7 +14,7 @@
       <h1 class="title">{{ _('Addresses') }} {{ render_extra_in_heading(addresses|length) }}</h1>
     </div>
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.address_export_netbox', party_id=party.id) }}">{{ render_icon('download') }} <span>{{ _('Export') }} (NetBox)</span></a>
       </div>
     </div>

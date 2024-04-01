@@ -16,7 +16,7 @@
     </div>
     {%- if has_current_user_permission('site_navigation.administrate') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.menu_update_form', menu_id=menu.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>
     </div>
@@ -36,7 +36,7 @@
     </div>
     {%- if has_current_user_permission('site_navigation.administrate') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <div class="dropdown">
           <button class="dropdown-toggle button is-compact">{{ render_icon('add') }} <span>{{ _('Create menu item') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">

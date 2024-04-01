@@ -1,7 +1,7 @@
 {%- from 'macros/icons.html' import render_icon %}
 
   {%- if not user.deleted and has_current_user_any_permission('user.administrate', 'user.set_password') %}
-  <div class="button-row is-compact button-row--right">
+  <div class="button-row is-compact is-right-aligned">
     <div class="dropdown">
       <button class="dropdown-toggle button is-compact"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">

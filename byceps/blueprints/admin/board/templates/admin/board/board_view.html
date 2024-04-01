@@ -18,7 +18,7 @@
     </div>
   {%- if has_current_user_permission('board_category.create') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.category_create_form', board_id=board_id) }}">{{ render_icon('add') }} <span>{{ _('Create category') }}</span></a>
       </div>
     </div>

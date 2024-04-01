@@ -39,7 +39,7 @@
     <div>
 
       {%- if has_current_user_permission('news_item.update') %}
-      <div class="button-row button-row--nowrap button-row--right">
+      <div class="button-row button-row--nowrap is-right-aligned">
         <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         {%- if has_current_user_permission('news_item.publish') %}
         <div class="dropdown">
@@ -112,7 +112,7 @@
     <div>
 
       {%- if has_current_user_permission('news_item.update') %}
-      <div class="button-row button-row--nowrap button-row--right">
+      <div class="button-row button-row--nowrap is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} <span>{{ _('Add image') }}</span></a>
         <div class="dropdown">
           <button class="dropdown-toggle button is-compact"><span>{{ render_icon('chevron-down') }}</span></button>
@@ -159,7 +159,7 @@
 
             {%- if has_current_user_permission('news_item.update') %}
             <div>
-              <div class="button-row button-row--nowrap button-row--right">
+              <div class="button-row button-row--nowrap is-right-aligned">
                 <a class="button is-compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
                 <div class="dropdown">
                   <button class="dropdown-toggle button is-compact"><span>{{ render_icon('chevron-down') }}</span></button>

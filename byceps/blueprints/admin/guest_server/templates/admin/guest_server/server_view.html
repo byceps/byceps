@@ -35,7 +35,7 @@
 
         {%- if has_current_user_permission('guest_server.administrate') %}
         <div>
-          <div class="button-row is-compact button-row--nowrap button-row--right">
+          <div class="button-row is-compact button-row--nowrap is-right-aligned">
             <a class="button is-compact" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a>
             <a class="button is-compact" href="{{ url_for('.server_update_form', server_id=server.id) }}" title="{{ _('Update server') }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
             {%- if server.checked_out %}

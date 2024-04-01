@@ -14,7 +14,7 @@
     </div>
   {%- if has_current_user_permission('brand.create') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Create brand') }}</span></a>
       </div>
     </div>

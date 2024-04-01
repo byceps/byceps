@@ -27,7 +27,7 @@ code {
       <h2>{{ _('API Tokens') }} {{ render_extra_in_heading(api_tokens|length) }}</h2>
     </div>
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.create_api_token_form') }}">{{ render_icon('add') }} <span>{{ _('Create API token') }}</span></a>
       </div>
     </div>
@@ -45,7 +45,7 @@ code {
       </div>
       <div>
 
-        <div class="button-row is-compact button-row--right">
+        <div class="button-row is-compact is-right-aligned">
           {%- if api_token.suspended %}
           <a class="button is-compact" href="{{ url_for('.unsuspend_api_token', api_token_id=api_token.id) }}" data-action="unsuspend-api-token" title="{{ _('Unsuspend API token') }}">{{ render_icon('enabled') }}</a>
           {%- else %}

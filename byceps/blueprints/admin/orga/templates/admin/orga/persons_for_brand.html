@@ -27,7 +27,7 @@
     </div>
     <div>
 
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         {%- if has_current_user_permission('orga_team.administrate_memberships') %}
         <a class="button" href="{{ url_for('.grant_orga_status_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Grant organizer status') }}</span></a>
         {%- endif %}

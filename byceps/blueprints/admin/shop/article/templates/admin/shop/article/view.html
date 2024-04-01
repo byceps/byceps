@@ -31,7 +31,7 @@
       <h1 class="title">{{ _('Article') }}</h1>
     </div>
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         {%- if has_current_user_permission('shop_article.update') %}
         <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         {%- endif %}
@@ -191,7 +191,7 @@
     </div>
     {%- if has_current_user_permission('shop_article.update') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <div class="dropdown">
           <button class="dropdown-toggle button is-compact"><span>{{ render_icon('add') }} {{ _('Add action') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
@@ -225,7 +225,7 @@
         <td class="monospace">{{ action.procedure_name }}<br>{{ action.parameters }}</td>
         <td>
           {%- if has_current_user_permission('shop_article.update') %}
-          <div class="button-row is-compact button-row--right">
+          <div class="button-row is-compact is-right-aligned">
             <a data-action="action-remove" href="{{ url_for('.action_remove', action_id=action.id) }}" class="button is-compact" title="{{ _('Remove action') }}">{{ render_icon('remove') }}</a>
           </div>
           {%- endif %}

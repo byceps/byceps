@@ -14,7 +14,7 @@
     </div>
     {%- if has_current_user_permission('orga_team.create') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.team_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create team') }}</span></a>
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
@@ -38,7 +38,7 @@
     </div>
     {%- if has_current_user_permission('orga_team.administrate_memberships') %}
     <div>
-      <div class="button-row is-compact button-row--right">
+      <div class="button-row is-compact is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="{{ _('Add orga') }}">{{ render_icon('add') }}</a>
         <div class="dropdown">
           <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>

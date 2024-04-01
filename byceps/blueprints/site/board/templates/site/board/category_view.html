@@ -65,7 +65,7 @@
 
   {%- set current_user_may_create_topic = has_current_user_permission('board_topic.create') %}
 
-  <div class="button-row button-row--right">
+  <div class="button-row is-right-aligned">
 
     {%- if current_user_may_create_topic %}
     <a class="button" href="{{ url_for('.topic_create_form', category_id=category.id) }}">{{ render_icon('add') }} <span>{{ _('Create topic') }}</span></a>

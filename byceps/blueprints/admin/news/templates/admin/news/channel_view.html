@@ -21,7 +21,7 @@
     </div>
   {%- if has_current_user_permission('news_channel.administrate') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.channel_update_form', channel_id=channel.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>
     </div>
@@ -47,7 +47,7 @@
     </div>
   {%- if has_current_user_permission('news_item.create') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.item_create_form', channel_id=channel.id) }}">{{ render_icon('add') }} <span>{{ _('Create news post') }}</span></a>
       </div>
     </div>

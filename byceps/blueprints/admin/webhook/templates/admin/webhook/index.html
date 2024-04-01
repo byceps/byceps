@@ -13,7 +13,7 @@
     </div>
   {%- if has_current_user_permission('webhook.administrate') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Create webhook') }}</span></a>
       </div>
     </div>
@@ -31,7 +31,7 @@
       </div>
       {%- if has_current_user_permission('webhook.administrate') %}
       <div>
-        <div class="button-row is-compact button-row--right">
+        <div class="button-row is-compact is-right-aligned">
           <a class="button" href="{{ url_for('.update_form', webhook_id=webhook.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
           <a class="button" data-action="webhook-test" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
           <div class="dropdown">

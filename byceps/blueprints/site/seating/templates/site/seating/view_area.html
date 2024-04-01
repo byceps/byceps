@@ -38,7 +38,7 @@
     {%- if manage_mode %}
 {% include 'site/seating/_ticket_selector.html' %}
     {%- else %}
-    <div class="button-row button-row--right">
+    <div class="button-row is-right-aligned">
       <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">{{ _('Manage seats') }}</a>
     </div>
     {%- endif %}

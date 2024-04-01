@@ -14,7 +14,7 @@
       <h2>{{ _('Events') }} {{ render_extra_in_heading(log_entries|length) }}</h2>
     </div>
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         {%- if logins_included %}
         <a class="button is-compact" href="{{ url_for('.view_events', user_id=user.id, include_logins='no') }}">{{ render_icon('hidden') }} <span>{{ _('Hide logins') }}</span></a>
         {%- else %}

@@ -682,7 +682,8 @@ form.unobtrusive input:focus ~ .button {
   flex-wrap: nowrap;
 }
 
-.button-row--right {
+.button-row--right,
+.button-row.is-right-aligned {
   justify-content: flex-end;
 }
 

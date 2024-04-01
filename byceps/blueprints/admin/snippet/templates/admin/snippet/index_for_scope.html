@@ -12,7 +12,7 @@
     </div>
   {%- if has_current_user_permission('snippet.create') %}
     <div>
-      <div class="button-row button-row--right">
+      <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.create_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('add') }} <span>{{ _('Create snippet') }}</span></a>
         <a class="button" href="{{ url_for('.copy_select_source_scope_form', target_scope_type=scope.type_, target_scope_name=scope.name) }}">{{ render_icon('copy') }} <span>{{ _('Copy snippets') }}</span></a>
       </div>
@@ -48,7 +48,7 @@
         <td>{{ render_user_avatar_and_name(users_by_id[snippet.current_version.creator_id], size=20) }}</td>
         <td>
           {%- if has_current_user_permission('snippet.update') %}
-          <div class="button-row is-compact button-row--right">
+          <div class="button-row is-compact is-right-aligned">
             <a href="{{ url_for('.update_form', snippet_id=snippet.id) }}" class="button is-compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
           </div>
           {%- endif %}
