@@ -1,8 +1,7 @@
 {%- from 'macros/misc.html' import render_notification, render_tag %}
 
-<div class="main-body-box">
-  <article class="news-item">
-    <div class="featured-image mb">
+<article class="news-item main-body-box">
+  <div class="featured-image mb">
 {%- if item.featured_image_html is not none %}
   {%- if item.featured_image_html.is_ok() %}
   {{ item.featured_image_html.unwrap()|safe }}
@@ -10,16 +9,16 @@
   {{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
   {%- endif %}
 {%- endif %}
-    </div>
-    <h1 class="title"><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
-    <footer class="meta">
-      {%- if item.published %}
-      {{ item.published_at|dateformat('full') }}
-      {%- else %}
-      {{ render_tag(_('Draft')) }}
-      {%- endif %}
-    </footer>
-    <div class="body">
+  </div>
+  <h1 class="title"><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
+  <footer class="meta">
+    {%- if item.published %}
+    {{ item.published_at|dateformat('full') }}
+    {%- else %}
+    {{ render_tag(_('Draft')) }}
+    {%- endif %}
+  </footer>
+  <div class="body">
 {%- if item.body_html.is_ok() %}
   {%- with body_html = item.body_html.unwrap() %}
 {{ body_html|safe }}
@@ -27,6 +26,5 @@
 {%- else %}
 {{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
 {%- endif %}
-    </div>
-  </article>
-</div>
+  </div>
+</article>
