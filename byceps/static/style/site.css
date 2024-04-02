@@ -27,8 +27,12 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.main-body-box--no-padding {
+.main-body-box.main-body-box--no-padding {
   padding: 0 !important;
+}
+
+.main-body-box.main-body-box--no-padding-top {
+  padding-top: 0;
 }
 
 .main-body-box .featured-image {
