@@ -520,7 +520,7 @@ form.board-posting-create-form-inline .label {
 .user-profile-detail-blocks {
   --column-min-width: 270px;
   display: grid;
-  grid-gap: 2rem;
+  gap: 2rem;
   grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
 }
 
@@ -639,7 +639,7 @@ form.board-posting-create-form-inline .label {
 .gallery-covers,
 .gallery-images {
   display: grid;
-  grid-gap: 1rem;
+  gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
 }
 

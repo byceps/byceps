@@ -79,7 +79,7 @@
     {%- for request in requests.items|sort(attribute='created_at', reverse=True) %}
   <div class="box" style="border-left: {% if request.state.name == 'accepted' %}#55cc00{% elif request.state.name == 'open' %}#1199ff{% endif %} solid 0.25rem;">
 
-    <div style="display: grid; grid-gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(313px, 1fr));">
+    <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(313px, 1fr));">
       <div>
 
         <div class="row mb">
