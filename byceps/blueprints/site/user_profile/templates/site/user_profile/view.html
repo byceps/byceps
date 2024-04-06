@@ -6,9 +6,7 @@
 {% block body %}
 
   <div class="main-body-box main-body-box--no-padding">
-
     <div class="user-profile">
-
       <div class="user-profile-header">
 
         <div class="user-profile-header-column">
@@ -45,20 +43,18 @@
         </div>
 
       </div>
+    </div>
+  </div>
 
-      <div class="block user-profile-detail-blocks">
+  <div class="block user-profile-detail-blocks">
 {% include 'site/user_profile/_current_party_attendance.html' %}
 {% include 'site/user_profile/_contact.html' %}
-      </div>
+  </div>
 
 {% include 'site/user_profile/_badges.html' %}
 
-      <div class="block user-profile-detail-blocks">
+  <div class="block user-profile-detail-blocks">
 {% include 'site/user_profile/_attended_parties.html' %}
-      </div>
-
-    </div>
-
   </div>
 
 {%- endblock %}
