@@ -4,7 +4,7 @@
 
 <div class="user-profile-detail-block">
   {%- if current_party_tickets %}
-  <h2>{{ ngettext('Seat', 'Seats', current_party_tickets|length) }}</h2>
+  <h2 class="title">{{ ngettext('Seat', 'Seats', current_party_tickets|length) }}</h2>
 
   <table class="itemlist is-compact is-vcentered is-wide">
     <tbody>
