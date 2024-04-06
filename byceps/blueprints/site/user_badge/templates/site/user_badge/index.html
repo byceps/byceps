@@ -4,52 +4,32 @@
 {% set page_title = _('Badges') %}
 
 {% block head %}
-  <style>
-    .badges {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .badges li + li {
-      margin-top: 1.5rem;
-    }
-
-    .badges .badge a.user-badge {
-      display: block;
-    }
-
-    .badges .description p {
-      margin: 0;
-      padding: 0;
-    }
-
-    .badges .description p + p {
-      margin-top: 0.5rem;
-    }
-  </style>
+<style>
+.badge-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+</style>
 {%- endblock %}
 
 {% block body %}
 
-  <h1 class="title">{{ _('Badges') }}</h1>
+<h1 class="title">{{ _('Badges') }}</h1>
 
-  <div class="main-body-box">
-    <ol class="badges">
-      {%- for badge in badges|sort(attribute='label') %}
-        <li>
-          <div class="row is-vcentered">
-            <div>{{ render_user_badge_linked(badge, 64) }}</div>
-            {%- if badge.description %}
-            <div class="column--grow description">
-              <p><strong>{{ badge.label }}</strong></p>
-              <p>{{ badge.description|safe }}</p>
-            </div>
-            {%- endif %}
-          </div>
-        </li>
-      {%- endfor %}
-    </ol>
-  </div>
+<ol class="itemlist">
+  {%- for badge in badges|sort(attribute='label') %}
+  <li>
+    <div class="row is-vcentered">
+      <div>{{ render_user_badge_linked(badge, 64) }}</div>
+      <div class="column--grow description">
+        <div class="badge-title">{{ badge.label }}</div>
+        {%- if badge.description %}
+        <div>{{ badge.description|safe }}</div>
+        {%- endif %}
+      </div>
+    </div>
+  </li>
+  {%- endfor %}
+</ol>
 
 {%- endblock %}
