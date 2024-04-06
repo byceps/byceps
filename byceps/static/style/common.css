@@ -1033,6 +1033,12 @@ a.user-badge:hover {
   width: 64px;
 }
 
+.user-badge.size-96 {
+  height: 96px;
+  padding: 12px;
+  width: 96px;
+}
+
 table.user-badges-list td {
   padding: 0.25rem 0.5rem 0.25rem 0;
   vertical-align: middle;
