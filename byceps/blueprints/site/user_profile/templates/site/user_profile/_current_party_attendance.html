@@ -2,7 +2,7 @@
 {%- from 'macros/seating.html' import render_seat_link %}
 
 
-<div>
+<div class="block">
   {%- if current_party_tickets %}
   <h2 class="title">{{ ngettext('Seat', 'Seats', current_party_tickets|length) }}</h2>
 

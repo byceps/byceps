@@ -1,10 +1,10 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-<div>
+<div class="block">
   {%- if not g.site.is_intranet %}
   <h2 class="title">{{ _('Contact') }}</h2>
 
-  <p><a class="button" href="{{ url_for('user_message.create_form', recipient_id=user.id) }}">{{ render_icon('email') }} <span>{{ _('Send message') }}</span></a></p>
+  <div class="button-row"><a class="button" href="{{ url_for('user_message.create_form', recipient_id=user.id) }}">{{ render_icon('email') }} <span>{{ _('Send message') }}</span></a></div>
   {%- endif %}
 </div>
