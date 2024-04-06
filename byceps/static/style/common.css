@@ -189,6 +189,10 @@ img {
   gap: 1rem;
 }
 
+.row.is-compact {
+  column-gap: 0.5rem;
+}
+
 .row--equal-sized-centered-columns > * {
   flex: 1;
   text-align: center;
