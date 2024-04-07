@@ -518,7 +518,7 @@ form.board-posting-create-form-inline .label {
 }
 
 .user-profile-detail-blocks {
-  --column-min-width: 270px;
+  --column-min-width: 280px;
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
