@@ -453,19 +453,10 @@ form.board-posting-create-form-inline .label {
   z-index: -1;
 }
 
-.user-profile-header {
-  display: flex;
-  justify-content: space-between;
-}
-
 .user-profile-header-column {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-}
-
-.user-profile-header-column + .user-profile-header-column {
-  margin-left: 1rem;
 }
 
 .user-profile-header-column.screenname-and-orgateam {
