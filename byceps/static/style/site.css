@@ -464,7 +464,6 @@ form.board-posting-create-form-inline .label {
 }
 
 .user-profile-header-cell-top {
-  font-weight: bold;
   padding-bottom: 3px;
 }
 
@@ -472,10 +471,6 @@ form.board-posting-create-form-inline .label {
   height: 50%;
   opacity: 0.5;
   padding-top: 4px;
-}
-
-.user-profile :is(.screenname, .orgateam) {
-  font-weight: bold;
 }
 
 .user-profile .screenname {
@@ -492,7 +487,7 @@ form.board-posting-create-form-inline .label {
 }
 
 .user-profile .stats {
-  font-size: 1.125rem; /* 18px / 16px */
+  font-size: 1.25rem; /* 20px / 16px */
 }
 
 .user-profile .stats-label {

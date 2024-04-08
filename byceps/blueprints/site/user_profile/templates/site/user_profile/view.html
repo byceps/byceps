@@ -15,11 +15,11 @@
 
         <div class="user-profile-header-column screenname-and-orgateam">
           <div class="user-profile-header-cell-top screenname">
-            {{ render_user_screen_name(user) }}
+            <h1 class="title">{{ render_user_screen_name(user) }}</h1>
           </div>
           <div class="user-profile-header-cell-bottom orgateam">
             {%- if orga_teams %}
-            {{ orga_teams|map(attribute='title')|join(', ') }}
+            <div class="subtitle">{{ orga_teams|map(attribute='title')|join(', ') }}</div>
             {%- endif %}
           </div>
         </div>
