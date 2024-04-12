@@ -407,6 +407,10 @@ table.itemlist {
 
 /* lists */
 
+ol.itemlist {
+  --itemlist-background-color: #ffffff;
+}
+
 ol.index,
 ol.index li {
   border-color: var(--border-color);
