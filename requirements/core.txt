@@ -27,5 +27,5 @@ sqlalchemy==2.0.29
 structlog==24.1.0
 tenacity==8.2.3
 uuid6==2024.01.12
-werkzeug==3.0.1
+werkzeug==3.0.2
 wtforms==3.1.2
