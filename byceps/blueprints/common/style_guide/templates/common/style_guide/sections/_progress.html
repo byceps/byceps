@@ -1,31 +1,43 @@
 {% call render_example() %}
-<p>Basic progress bars:</p>
-<div class="progress">
-  <div class="progress-bar" style="width: 0%;"></div>
+<div class="block">Basic progress bars:</div>
+<div class="block">
+  <div class="progress">
+    <div class="progress-bar" style="width: 0%;"></div>
+  </div>
 </div>
-<div class="progress">
-  <div class="progress-bar" style="width: 42%;"></div>
+<div class="block">
+  <div class="progress">
+    <div class="progress-bar" style="width: 42%;"></div>
+  </div>
 </div>
-<div class="progress">
-  <div class="progress-bar" style="width: 100%;"></div>
-</div>
-
-<p>Custom-colored, shorter progress bar:</p>
-<div class="progress" style="background-color: #88ccff; width: 8rem;">
-  <div class="progress-bar" style="background-color: #1199ff; width: 75%;"></div>
-</div>
-
-<p>Stacked, colored, thinner progress bars:</p>
-<div class="progress" style="height: 0.3rem;">
-  <div class="progress-bar color-danger" style="width: 16%;"></div>
-  <div class="progress-bar color-warning" style="width: 42%;"></div>
-  <div class="progress-bar color-success" style="width: 23%;"></div>
+<div class="block">
+  <div class="progress">
+    <div class="progress-bar" style="width: 100%;"></div>
+  </div>
 </div>
 
-<p>Stacked, colored, separated (intended for fully filled) progress bars:</p>
-<div class="progress progress--separated">
-  <div class="progress-bar color-danger" style="width: 23%;"></div>
-  <div class="progress-bar color-warning" style="width: 42%;"></div>
-  <div class="progress-bar color-success" style="width: 35%;"></div>
+<div class="block">Custom-colored, shorter progress bar:</div>
+<div class="block">
+  <div class="progress" style="background-color: #88ccff; width: 8rem;">
+    <div class="progress-bar" style="background-color: #1199ff; width: 75%;"></div>
+  </div>
+</div>
+
+<div class="block">Stacked, colored, thinner progress bars:</div>
+<div class="block">
+  <div class="progress" style="height: 0.3rem;">
+    <div class="progress-bar color-danger" style="width: 16%;"></div>
+    <div class="progress-bar color-warning" style="width: 42%;"></div>
+    <div class="progress-bar color-success" style="width: 23%;"></div>
+  </div>
+</div>
+
+<div class="block">Stacked, colored, separated (intended for fully filled) progress bars:</div>
+<div class="block">
+  <div class="progress progress--separated">
+    <div class="progress-bar color-danger" style="width: 23%;"></div>
+    <div class="progress-bar color-warning" style="width: 42%;"></div>
+    <div class="progress-bar color-success" style="width: 35%;"></div>
+  </div>
 </div>
 {% endcall %}

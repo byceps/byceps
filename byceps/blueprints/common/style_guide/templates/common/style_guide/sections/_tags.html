@@ -2,26 +2,26 @@
 
 
 {% call render_example() %}
-<p>Just a {{ render_tag('tag') }} to attach to things or to represent state.</p>
+<div class="block">Just a {{ render_tag('tag') }} to attach to things or to represent state.</div>
 {% endcall %}
 
 <p>With pre-defined colors and styles:</p>
 
 {% call render_example() %}
 {%- with colors = ('info', 'success', 'warning', 'danger', 'disabled') %}
-<p>
+<div class="block">
   {%- for color in colors %}
   {{ render_tag(color, class='color-{}'.format(color)) }}
   {%- endfor %}
-</p>
-<p>
+</div>
+<div class="block">
   {%- for color in colors %}
   {{ render_tag(color, class='color-{}--light'.format(color)) }}
   {%- endfor %}
-</p>
+</div>
 {%- endwith %}
-<p>
+<div class="block">
   {{ render_tag('outlined', class='tag--outlined') }}
   {{ render_tag('with icon', icon='success') }}
-</p>
+</div>
 {% endcall %}

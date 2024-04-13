@@ -37,6 +37,11 @@
 <p>Label wrapping:</p>
 
 {% call render_example() %}
-<p><a href="#" class="button">A button with a rather long label, not wrapping by default</a></p>
-<p><a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wrapping</a></p>
+<div class="button-row">
+  <a href="#" class="button">A button with a rather long label, not wrapping by default</a>
+</div>
+
+<div class="button-row">
+  <a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wrapping</a>
+</div>
 {% endcall %}
