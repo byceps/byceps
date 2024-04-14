@@ -123,7 +123,7 @@ def find_party(party_id: PartyID) -> Party | None:
 
 
 def get_party(party_id: PartyID) -> Party:
-    """Return the party with that id, or `None` if not found."""
+    """Return the party with that id."""
     party = find_party(party_id)
 
     if party is None:
