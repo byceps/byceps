@@ -52,19 +52,6 @@ def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
     )
 
 
-def count_orgas_for_brand(brand_id: BrandID) -> int:
-    """Return the number of users with organizer status for the brand."""
-    return (
-        db.session.scalar(
-            select(db.func.count(DbUser.id))
-            .distinct(DbUser.id)
-            .join(DbOrgaFlag)
-            .filter(DbOrgaFlag.brand_id == brand_id)
-        )
-        or 0
-    )
-
-
 def grant_orga_status(
     user: User, brand: Brand, initiator: User
 ) -> OrgaStatusGrantedEvent:
