@@ -8,7 +8,10 @@
 
 
 {% macro render_user_avatar_and_admin_link(user, size) -%}
-<span class="nowrap">{{ render_user_avatar(user, size=size) }} {{ render_user_admin_link(user) }}</span>
+<div class="row is-compact is-vcentered">
+  <div>{{ render_user_avatar(user, size=size) }}</div>
+  <div>{{ render_user_admin_link(user) }}</div>
+</div>
 {%- endmacro %}
 
 
