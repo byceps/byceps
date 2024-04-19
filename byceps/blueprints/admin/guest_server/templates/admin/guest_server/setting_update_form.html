@@ -15,7 +15,7 @@
 
   <form action="{{ url_for('.setting_update', party_id=party.id) }}" method="post">
     <div class="box">
-      <div class="row">
+      <div class="form-control-block row">
         <div>
           {{ form_field(form.netmask, autofocus='autofocus') }}
         </div>
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="form-control-block row">
         <div>
           {{ form_field(form.dns_server1) }}
         </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="form-control-block row">
         <div>
           {{ form_field(form.domain) }}
         </div>

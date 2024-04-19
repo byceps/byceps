@@ -14,7 +14,7 @@
 
 <form action="{{ url_for('.create') }}" method="post">
   <div class="box">
-    <div class="row row--wrap" style="row-gap: 0;">
+    <div class="form-control-block row row--wrap" style="row-gap: 0;">
       <div class="column--grow">
         {{ form_field(form.identifier, autofocus=true) }}
       </div>

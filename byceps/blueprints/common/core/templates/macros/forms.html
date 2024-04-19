@@ -2,7 +2,7 @@
 
 
 {%- macro form_field(field, class='', prefix=None, suffix=None, caption=None) -%}
-  <div class="mb{% if field.errors %} invalid{% endif %}">
+  <div class="form-control-block{% if field.errors %} invalid{% endif %}">
     {{ field.label(class='form-label') }}
   {%- if prefix is not none or suffix is not none %}
     <div class="form-control-wrapper">
@@ -26,7 +26,7 @@
 
 
 {%- macro form_field_check(field, label=None) -%}
-  <div class="mb{% if field.errors %} invalid{% endif %}">
+  <div class="form-control-block{% if field.errors %} invalid{% endif %}">
     {%- with label = label if label is not none else field.label.text %}
     <label class="form-check-label">{{- field(**kwargs) }} <span>{{ label }}</span></label>
     {%- endwith %}
@@ -36,7 +36,7 @@
 
 
 {%- macro form_field_checkboxes(field) -%}
-  <div class="mb{% if field.errors %} invalid{% endif %}">
+  <div class="form-control-block{% if field.errors %} invalid{% endif %}">
     {{ field.label(class='form-label') }}
     <div class="form-control-checkboxes">
       {{- field(**kwargs) }}
@@ -47,7 +47,7 @@
 
 
 {%- macro form_field_radio(field) -%}
-  <div class="mb{% if field.errors %} invalid{% endif %}">
+  <div class="form-control-block{% if field.errors %} invalid{% endif %}">
     {{ field.label(class='form-label') }}
     <div class="form-control-radios">
       {{- field(**kwargs) }}
@@ -59,7 +59,7 @@
 
 {%- macro form_form_errors(form) %}
   {%- if form.form_errors %}
-  <div class="form-form-errors mb">
+  <div class="form-form-errors">
 {{ _errors(form.form_errors) -}}
   </div>
   {%- endif %}

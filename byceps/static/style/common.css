@@ -531,6 +531,17 @@ table.index .details {
 
 /* forms */
 
+:is(
+  .form-control-block,
+  .form-form-errors,
+):not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.form-control-block + .button-row {
+  margin-top: 1.5rem;
+}
+
 label {
   display: inline-block;
 }
@@ -618,11 +629,6 @@ form .invalid {
 
 form .invalid {
   margin: calc(var(--padding) * -1 - 1px);
-}
-
-form .form-form-errors.mb,
-form .invalid.mb {
-  margin-bottom: 1rem;
 }
 
 .form-errors {

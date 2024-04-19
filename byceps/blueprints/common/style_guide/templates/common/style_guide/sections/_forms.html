@@ -4,7 +4,7 @@
 {% call render_example() %}
 <form>
 
-  <div class="block">
+  <div class="form-control-block">
     <div class="form-form-errors">
       <ol class="form-errors">
         <li><strong>Error:</strong> <span>There were validation errors.</span></li>
@@ -13,15 +13,15 @@
     </div>
   </div>
 
-  <div class="block">
+  <div class="form-control-block">
     <label class="form-label" for="field1">Field 1</label>
     <input class="form-control" id="field1" name="field1">
   </div>
 
-  <div class="block row">
+  <div class="form-control-block row">
     <div>
 
-      <div>
+      <div class="form-control-block">
         <label class="form-label">Optional selections</label>
         <div class="form-control-checkboxes">
           <label class="form-check-label"> <input name="checkbox1" type="checkbox">Option 1</label>
@@ -32,7 +32,7 @@
     </div>
     <div>
 
-      <div>
+      <div class="form-control-block">
         <label class="form-label" for="checkboxes1">Mandatory selection</label>
         <div class="form-control-radios">
           <ul id="radios1">
@@ -46,10 +46,10 @@
     </div>
   </div>
 
-  <div class="block row">
+  <div class="form-control-block row">
     <div class="column--grow">
 
-      <div>
+      <div class="form-control-block">
         <label class="form-label" for="field2">Field 2</label>
         <input class="form-control" id="field2" name="field2">
       </div>
@@ -57,7 +57,7 @@
     </div>
     <div class="column--grow">
 
-      <div class="invalid">
+      <div class="form-control-block invalid">
         <label class="form-label" for="field3">Field 3</label>
         <input class="form-control" id="field3" name="field3">
         <ol class="form-errors">
@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  <div class="block">
+  <div class="form-control-block">
     <label class="form-label" for="field4">Field 4</label>
     <textarea class="form-control" id="field4" name="field4"></textarea>
   </div>
