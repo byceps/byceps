@@ -8,6 +8,7 @@
 
   <h1 class="title">{{ page_title }}</h1>
 
+  {%- if groups %}
   <table class="itemlist is-wide">
     <thead>
       <tr>
@@ -32,6 +33,9 @@
       <tr>
     </tbody>
   </table>
+  {%- else %}
+  <div class="block dimmed">{{ _('No groups exist yet.') }}</div>
+  {%- endif %}
 
   {%- if g.user.authenticated %}
   <div class="button-row">
