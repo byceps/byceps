@@ -76,9 +76,7 @@ def delete_tag(tag: UserIdentityTag, initiator: User) -> None:
 
 def find_tag(tag_id: UUID) -> UserIdentityTag | None:
     """Return the tag, if found."""
-    db_tag = db.session.execute(
-        select(DbUserIdentityTag).filter_by(id=tag_id)
-    ).scalar_one_or_none()
+    db_tag = db.session.get(DbUserIdentityTag, tag_id)
 
     if db_tag is None:
         return None

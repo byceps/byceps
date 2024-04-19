@@ -50,9 +50,7 @@ def get_order_number_sequence(
     sequence_id: OrderNumberSequenceID,
 ) -> OrderNumberSequence:
     """Return the order number sequence, or raise an exception."""
-    db_sequence = db.session.execute(
-        select(DbOrderNumberSequence).filter_by(id=sequence_id)
-    ).scalar_one_or_none()
+    db_sequence = db.session.get(DbOrderNumberSequence, sequence_id)
 
     if db_sequence is None:
         raise ValueError(f'Unknown order number sequence ID "{sequence_id}"')

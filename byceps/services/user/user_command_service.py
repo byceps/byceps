@@ -10,7 +10,6 @@ from datetime import date
 from warnings import warn
 
 from babel import Locale
-from sqlalchemy import select
 
 from byceps.database import db
 from byceps.events.user import (
@@ -336,9 +335,7 @@ def _get_db_user(user_id: UserID) -> DbUser:
 
 def _get_db_user_detail(user_id: UserID) -> DbUserDetail:
     """Return the user's details, or raise an exception."""
-    db_detail = db.session.scalars(
-        select(DbUserDetail).filter_by(user_id=user_id)
-    ).one_or_none()
+    db_detail = db.session.get(DbUserDetail, user_id)
 
     if db_detail is None:
         raise ValueError(f"Unknown user ID '{user_id}'")

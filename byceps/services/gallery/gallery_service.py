@@ -61,9 +61,7 @@ def find_gallery(gallery_id: GalleryID) -> Gallery | None:
 
 
 def _find_db_gallery(gallery_id: GalleryID) -> DbGallery | None:
-    return db.session.execute(
-        select(DbGallery).filter_by(id=gallery_id)
-    ).scalar_one_or_none()
+    return db.session.get(DbGallery, gallery_id)
 
 
 def _get_db_gallery(gallery_id: GalleryID) -> DbGallery:

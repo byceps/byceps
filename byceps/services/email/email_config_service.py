@@ -89,9 +89,7 @@ def delete_config(brand_id: BrandID) -> bool:
 
 
 def _find_db_config(brand_id: BrandID) -> DbEmailConfig | None:
-    return db.session.scalars(
-        select(DbEmailConfig).filter_by(brand_id=brand_id)
-    ).one_or_none()
+    return db.session.get(DbEmailConfig, brand_id)
 
 
 def get_config(brand_id: BrandID) -> EmailConfig:

@@ -54,9 +54,7 @@ def get_article_number_sequence(
     sequence_id: ArticleNumberSequenceID,
 ) -> ArticleNumberSequence:
     """Return the article number sequence, or raise an exception."""
-    db_sequence = db.session.execute(
-        select(DbArticleNumberSequence).filter_by(id=sequence_id)
-    ).scalar_one_or_none()
+    db_sequence = db.session.get(DbArticleNumberSequence, sequence_id)
 
     if db_sequence is None:
         raise ValueError(f'Unknown article number sequence ID "{sequence_id}"')
