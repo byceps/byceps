@@ -67,7 +67,7 @@ class DbUserGroup(db.Model):
         )
 
 
-class DbMembership(db.Model):
+class DbUserGroupMembership(db.Model):
     """The assignment of a user to a user group.
 
     A user must not be a member of more than one group per party.
