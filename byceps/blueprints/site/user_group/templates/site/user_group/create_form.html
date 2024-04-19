@@ -10,8 +10,8 @@
 
   <form action="{{ url_for('.create') }}" method="post">
     <div class="main-body-box">
-      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.description, maxlength=200) }}
+      {{ form_field(form.title, autofocus='autofocus') }}
+      {{ form_field(form.description) }}
     </div>
 
     {{ form_buttons(_('Create'), cancel_url=url_for('.index')) }}
