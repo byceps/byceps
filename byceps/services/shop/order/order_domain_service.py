@@ -13,6 +13,7 @@ from moneyed import Currency, Money
 
 from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
+from byceps.services.shop.article import article_domain_service
 from byceps.services.shop.article.models import ArticleWithQuantity
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.models import ShopID
@@ -50,7 +51,7 @@ def place_order(
 
     line_items = list(_build_incoming_line_items(cart_items))
 
-    total_amount = cart.calculate_total_amount()
+    total_amount = article_domain_service.calculate_total_amount(cart_items)
 
     processing_required = any(
         line_item.processing_required for line_item in line_items
