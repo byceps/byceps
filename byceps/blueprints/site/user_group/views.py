@@ -25,7 +25,10 @@ blueprint = create_blueprint('user_group', __name__)
 @templated
 def index():
     """List groups."""
-    groups = user_group_service.get_all_groups()
+    if g.party_id is None:
+        abort(404)
+
+    groups = user_group_service.get_groups_for_party(g.party_id)
 
     return {
         'groups': groups,

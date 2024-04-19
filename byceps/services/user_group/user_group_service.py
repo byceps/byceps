@@ -11,7 +11,7 @@ from datetime import datetime
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.services.party.models import Party
+from byceps.services.party.models import Party, PartyID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 
@@ -48,8 +48,8 @@ def create_group(
     return group
 
 
-def get_all_groups() -> list[UserGroup]:
-    """Return all groups."""
+def get_groups_for_party(party_id: PartyID) -> list[UserGroup]:
+    """Return user groups for a party."""
     db_groups = db.session.scalars(select(DbUserGroup)).all()
 
     user_ids = {db_group.creator_id for db_group in db_groups}
