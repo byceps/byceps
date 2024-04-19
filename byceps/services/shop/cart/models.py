@@ -6,7 +6,7 @@ byceps.services.shop.cart.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from moneyed import Currency, Money
+from moneyed import Currency
 
 from byceps.services.shop.article.models import Article, ArticleWithQuantity
 from byceps.util.instances import ReprBuilder
