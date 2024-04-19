@@ -57,7 +57,7 @@ def create_form(erroneous_form=None):
     if g.party_id is None:
         abort(404)
 
-    form = erroneous_form if erroneous_form else CreateForm()
+    form = erroneous_form if erroneous_form else CreateForm(g.party_id)
 
     return {
         'form': form,
@@ -71,7 +71,7 @@ def create():
     if g.party_id is None:
         abort(404)
 
-    form = CreateForm(request.form)
+    form = CreateForm(g.party_id, request.form)
     if not form.validate():
         return create_form(form)
 
@@ -99,7 +99,11 @@ def update_form(group_id, erroneous_form=None):
     """Show a form to update a group."""
     group = _get_group_or_404(group_id)
 
-    form = erroneous_form if erroneous_form else UpdateForm(obj=group)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else UpdateForm(group.party_id, group.title, obj=group)
+    )
 
     return {
         'group': group,
@@ -113,7 +117,7 @@ def update(group_id):
     """Update a group."""
     group = _get_group_or_404(group_id)
 
-    form = UpdateForm(request.form)
+    form = UpdateForm(group.party_id, group.title, request.form)
     if not form.validate():
         return update_form(group_id, form)
 

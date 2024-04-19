@@ -61,6 +61,17 @@ def update_group(group: UserGroup, title: str, description: str) -> None:
     db.session.commit()
 
 
+def is_title_available(party_id: PartyID, title: str) -> bool:
+    """Check if the title is yet unused."""
+    return not db.session.scalar(
+        select(
+            db.exists()
+            .where(DbUserGroup.party_id == party_id)
+            .where(db.func.lower(DbUserGroup.title) == title.lower())
+        )
+    )
+
+
 def find_group(group_id: UUID) -> UserGroup | None:
     """Return the group, if found."""
     db_group = _get_db_group(group_id)
