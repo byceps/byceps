@@ -6,39 +6,72 @@ byceps.services.user_group.user_group_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Sequence
 from datetime import datetime
 
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
-from byceps.util.uuid import generate_uuid7
+from byceps.services.party.models import Party
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User, UserID
 
+from . import user_group_domain_service
 from .dbmodels import DbUserGroup
+from .models import UserGroup
 
 
 def create_group(
-    party_id: PartyID,
+    party: Party,
     creator: User,
     title: str,
     description: str | None,
-) -> DbUserGroup:
-    """Introduce a new group."""
-    group_id = generate_uuid7()
+) -> UserGroup:
+    """Create a group."""
     created_at = datetime.utcnow()
 
+    group = user_group_domain_service.create_group(
+        party, created_at, creator, title, description=description
+    )
+
     db_group = DbUserGroup(
-        group_id, party_id, created_at, creator.id, title, description
+        group.id,
+        group.party_id,
+        group.created_at,
+        group.creator.id,
+        group.title,
+        group.description,
     )
 
     db.session.add(db_group)
     db.session.commit()
 
-    return db_group
+    return group
 
 
-def get_all_groups() -> Sequence[DbUserGroup]:
+def get_all_groups() -> list[UserGroup]:
     """Return all groups."""
-    return db.session.scalars(select(DbUserGroup)).all()
+    db_groups = db.session.scalars(select(DbUserGroup)).all()
+
+    user_ids = {db_group.creator_id for db_group in db_groups}
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
+
+    return [
+        _db_entity_to_group(db_group, users_by_id) for db_group in db_groups
+    ]
+
+
+def _db_entity_to_group(
+    db_group: DbUserGroup, users_by_id: dict[UserID, User]
+) -> UserGroup:
+    creator = users_by_id[db_group.creator_id]
+
+    return UserGroup(
+        id=db_group.id,
+        party_id=db_group.party_id,
+        created_at=db_group.created_at,
+        creator=creator,
+        title=db_group.title,
+        description=db_group.description,
+    )
