@@ -33,13 +33,13 @@ def calculate_article_compilation_total_amount(
     """Calculate total amount of articles and their attached articles in
     the compilation.
     """
+    if any(item.fixed_quantity is None for item in compilation):
+        return Err(SomeArticlesLackFixedQuantityError())
+
     cart = Cart(compilation._items[0].article.price.currency)
 
-    for compilation_item in compilation:
-        if compilation_item.fixed_quantity is None:
-            return Err(SomeArticlesLackFixedQuantityError())
-
-        cart.add_item(compilation_item.article, compilation_item.fixed_quantity)
+    for item in compilation:
+        cart.add_item(item.article, item.fixed_quantity)
 
     total_amount = cart.calculate_total_amount()
     return Ok(total_amount)
