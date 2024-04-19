@@ -308,24 +308,24 @@ def _persist_details_update(
 
 def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:
     """Set a value for a key in the user's detail extras map."""
-    detail = _get_db_user_detail(user_id)
+    db_detail = _get_db_user_detail(user_id)
 
-    if detail.extras is None:
-        detail.extras = {}
+    if db_detail.extras is None:
+        db_detail.extras = {}
 
-    detail.extras[key] = value
+    db_detail.extras[key] = value
 
     db.session.commit()
 
 
 def remove_user_detail_extra(user_id: UserID, key: str) -> None:
     """Remove the entry with that key from the user's detail extras map."""
-    detail = _get_db_user_detail(user_id)
+    db_detail = _get_db_user_detail(user_id)
 
-    if (detail.extras is None) or (key not in detail.extras):
+    if (db_detail.extras is None) or (key not in db_detail.extras):
         return
 
-    del detail.extras[key]
+    del db_detail.extras[key]
     db.session.commit()
 
 
@@ -336,11 +336,11 @@ def _get_db_user(user_id: UserID) -> DbUser:
 
 def _get_db_user_detail(user_id: UserID) -> DbUserDetail:
     """Return the user's details, or raise an exception."""
-    detail = db.session.scalars(
+    db_detail = db.session.scalars(
         select(DbUserDetail).filter_by(user_id=user_id)
     ).one_or_none()
 
-    if detail is None:
+    if db_detail is None:
         raise ValueError(f"Unknown user ID '{user_id}'")
 
-    return detail
+    return db_detail
