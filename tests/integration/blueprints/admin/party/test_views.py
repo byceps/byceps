@@ -47,10 +47,8 @@ def test_create(party_admin_client, brand):
         'id': party_id,
         'title': title,
         # Dates/times are local in UTC+02:00.
-        'starts_on': '2020-09-18',
-        'starts_at': '17:00',
-        'ends_on': '2020-09-20',
-        'ends_at': '13:00',
+        'starts_at': '2020-09-18T17:00',
+        'ends_at': '2020-09-20T13:00',
         'max_ticket_quantity': str(max_ticket_quantity),
     }
     response = party_admin_client.post(url, data=form_data)
