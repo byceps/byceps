@@ -7,6 +7,7 @@ byceps.services.user_group.user_group_service
 """
 
 from datetime import datetime
+from uuid import UUID
 
 from sqlalchemy import select
 
@@ -46,6 +47,17 @@ def create_group(
     db.session.commit()
 
     return group
+
+
+def find_group(group_id: UUID) -> UserGroup | None:
+    """Return the group, if found."""
+    db_group = db.session.get(DbUserGroup, group_id)
+
+    if db_group is None:
+        return None
+
+    creator = user_service.get_user(db_group.creator_id, include_avatar=True)
+    return _db_entity_to_group(db_group, {creator.id: creator})
 
 
 def get_groups_for_party(party_id: PartyID) -> list[UserGroup]:

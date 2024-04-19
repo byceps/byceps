@@ -31,8 +31,8 @@
       {%- for group in groups|sort(attribute='title') %}
       <tr>
         <td>
-          <strong>{{ group.title }}</strong>
-          {%- if group.description is not none %}
+          <strong><a class="disguised" href="{{ url_for('.view', group_id=group.id) }}">{{ group.title }}</a></strong>
+          {%- if group.description %}
           <div class="details">{{ group.description }}</div>
           {%- endif %}
         </td>

@@ -1,0 +1,28 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user.html' import render_user_avatar_and_link %}
+{% set current_page = 'user_group' %}
+{% set page_title = [group.title, _('User groups')] %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">{{ _('User groups') }}</a></li>
+    </ol>
+  </nav>
+  <h1 class="title">{{ group.title }}</h1>
+
+  <div class="block">
+    <div class="data-label">{{ _('Creator') }}</div>
+    <div class="data-value">{{ render_user_avatar_and_link(group.creator, size=32) }}</div>
+  </div>
+
+  {%- if group.description %}
+  <div class="block">
+    <div class="data-label">{{ _('Description') }}</div>
+    <div class="data-value">{{ group.description }}</div>
+  </div>
+  {%- endif %}
+
+{%- endblock %}

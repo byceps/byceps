@@ -35,6 +35,22 @@ def index():
     }
 
 
+@blueprint.get('/<uuid:group_id>')
+@templated
+def view(group_id):
+    """Show group."""
+    if g.party_id is None:
+        abort(404)
+
+    group = user_group_service.find_group(group_id)
+    if (group is None) or (group.party_id != g.party_id):
+        abort(404)
+
+    return {
+        'group': group,
+    }
+
+
 @blueprint.get('/create')
 @login_required
 @templated
@@ -75,4 +91,4 @@ def create():
             group_title=group.title,
         )
     )
-    return redirect_to('.index')
+    return redirect_to('.view', group_id=group.id)
