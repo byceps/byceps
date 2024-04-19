@@ -2,7 +2,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_link %}
 {% set current_page = 'user_group' %}
-{% set page_title = 'Benutzergruppen' %}
+{% set page_title = _('User groups') %}
 
 {% block body %}
 
@@ -13,7 +13,7 @@
     {%- if g.user.authenticated %}
     <div>
       <div class="button-row is-right-aligned">
-        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Gruppe erstellen</span></a>
+        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Create') }}</span></a>
       </div>
     </div>
     {%- endif %}
@@ -23,8 +23,8 @@
   <table class="itemlist is-wide">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Ersteller</th>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Creator') }}</th>
       </tr>
     </thead>
     <tbody>
