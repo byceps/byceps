@@ -20,7 +20,7 @@
   </div>
 
   {%- if groups %}
-  <table class="itemlist is-wide">
+  <table class="itemlist is-vcentered is-wide">
     <thead>
       <tr>
         <th>{{ _('Name') }}</th>
@@ -30,12 +30,7 @@
     <tbody>
       {%- for group in groups|sort(attribute='title') %}
       <tr>
-        <td>
-          <strong><a class="disguised" href="{{ url_for('.view', group_id=group.id) }}">{{ group.title }}</a></strong>
-          {%- if group.description %}
-          <div class="details">{{ group.description }}</div>
-          {%- endif %}
-        </td>
+        <td><strong><a class="disguised" href="{{ url_for('.view', group_id=group.id) }}">{{ group.title }}</a></strong></td>
         <td>{{ render_user_avatar_and_name(group.creator, size=24) }}</td>
       </tr>
       {%- endfor %}
