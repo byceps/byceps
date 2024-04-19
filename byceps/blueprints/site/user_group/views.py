@@ -15,7 +15,7 @@ from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import login_required, redirect_to
 
-from .forms import CreateForm
+from .forms import CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('user_group', __name__)
@@ -42,9 +42,7 @@ def view(group_id):
     if g.party_id is None:
         abort(404)
 
-    group = user_group_service.find_group(group_id)
-    if (group is None) or (group.party_id != g.party_id):
-        abort(404)
+    group = _get_group_or_404(group_id)
 
     return {
         'group': group,
@@ -92,3 +90,46 @@ def create():
         )
     )
     return redirect_to('.view', group_id=group.id)
+
+
+@blueprint.get('/<uuid:group_id>/update')
+@login_required
+@templated
+def update_form(group_id, erroneous_form=None):
+    """Show a form to update a group."""
+    group = _get_group_or_404(group_id)
+
+    form = erroneous_form if erroneous_form else UpdateForm(obj=group)
+
+    return {
+        'group': group,
+        'form': form,
+    }
+
+
+@blueprint.post('/<uuid:group_id>')
+@login_required
+def update(group_id):
+    """Update a group."""
+    group = _get_group_or_404(group_id)
+
+    form = UpdateForm(request.form)
+    if not form.validate():
+        return update_form(group_id, form)
+
+    title = form.title.data
+    description = form.description.data
+
+    user_group_service.update_group(group, title, description)
+
+    flash_success(gettext('Changes have been saved.'))
+    return redirect_to('.view', group_id=group.id)
+
+
+def _get_group_or_404(group_id):
+    group = user_group_service.find_group(group_id)
+
+    if (group is None) or (group.party_id != g.party_id):
+        abort(404)
+
+    return group

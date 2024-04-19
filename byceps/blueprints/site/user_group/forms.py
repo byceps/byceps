@@ -20,3 +20,7 @@ class CreateForm(LocalizedForm):
     description = TextAreaField(
         lazy_gettext('Description'), [Optional(), Length(max=200)]
     )
+
+
+class UpdateForm(CreateForm):
+    pass

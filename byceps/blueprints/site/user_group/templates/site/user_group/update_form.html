@@ -1,0 +1,20 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set simple_layout = true %}
+{% set current_page = 'user_group' %}
+{% set page_title = _('Edit user group') %}
+
+{% block body %}
+
+  <h1 class="title">{{ page_title }}</h1>
+
+  <form action="{{ url_for('.update', group_id=group.id) }}" method="post">
+    <div class="main-body-box">
+      {{ form_field(form.title, autofocus='autofocus') }}
+      {{ form_field(form.description) }}
+    </div>
+
+    {{ form_buttons(_('Save'), cancel_url=url_for('.view', group_id=group.id)) }}
+  </form>
+
+{%- endblock %}

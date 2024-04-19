@@ -11,7 +11,18 @@
       <li><a href="{{ url_for('.index') }}">{{ _('User groups') }}</a></li>
     </ol>
   </nav>
-  <h1 class="title">{{ group.title }}</h1>
+  <div class="block row row--space-between row--wrap">
+    <div>
+      <h1 class="title">{{ group.title }}</h1>
+    </div>
+    {%- if g.user.id == group.creator.id %}
+    <div>
+      <div class="button-row is-right-aligned">
+        <a class="button" href="{{ url_for('.update_form', group_id=group.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
 
   <div class="block">
     <div class="data-label">{{ _('Creator') }}</div>
