@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user.html' import render_user_link %}
+{% from 'macros/user.html' import render_user_avatar_and_name %}
 {% set current_page = 'user_group' %}
 {% set page_title = _('User groups') %}
 
@@ -36,7 +36,7 @@
           <div class="details">{{ group.description }}</div>
           {%- endif %}
         </td>
-        <td>{{ render_user_link(group.creator) }}</td>
+        <td>{{ render_user_avatar_and_name(group.creator, size=24) }}</td>
       </tr>
       {%- endfor %}
       <tr>
