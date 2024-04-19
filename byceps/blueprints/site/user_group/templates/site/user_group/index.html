@@ -6,7 +6,18 @@
 
 {% block body %}
 
-  <h1 class="title">{{ page_title }}</h1>
+  <div class="block row row--space-between row--wrap">
+    <div>
+      <h1 class="title">{{ page_title }}</h1>
+    </div>
+    {%- if g.user.authenticated %}
+    <div>
+      <div class="button-row is-right-aligned">
+        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Gruppe erstellen</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
 
   {%- if groups %}
   <table class="itemlist is-wide">
@@ -35,12 +46,6 @@
   </table>
   {%- else %}
   <div class="block dimmed">{{ _('No groups exist yet.') }}</div>
-  {%- endif %}
-
-  {%- if g.user.authenticated %}
-  <div class="button-row">
-    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Gruppe erstellen</span></a>
-  </div>
   {%- endif %}
 
 {%- endblock %}
