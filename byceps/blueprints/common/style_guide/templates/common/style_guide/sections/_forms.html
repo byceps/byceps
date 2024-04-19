@@ -4,8 +4,8 @@
 {% call render_example() %}
 <form>
 
-  <div class="mb">
-    <div class="form-form-errors mb">
+  <div class="block">
+    <div class="form-form-errors">
       <ol class="form-errors">
         <li><strong>Error:</strong> <span>There were validation errors.</span></li>
         <li><strong>Error:</strong> <span>The server is not in the mood for processing.</span></li>
@@ -13,43 +13,67 @@
     </div>
   </div>
 
-  <div class="mb">
-    <label class="form-label" for="field1">Field #1</label>
+  <div class="block">
+    <label class="form-label" for="field1">Field 1</label>
     <input class="form-control" id="field1" name="field1">
   </div>
 
-  <div class="row">
+  <div class="block row">
     <div>
 
-      <div class="mb invalid">
-        <label class="form-label" for="field2">Field #2</label>
+      <div>
+        <label class="form-label">Optional selections</label>
+        <div class="form-control-checkboxes">
+          <label class="form-check-label"> <input name="checkbox1" type="checkbox">Option 1</label>
+          <label class="form-check-label"> <input name="checkbox2" type="checkbox">Option 2</label>
+        </div>
+      </div>
+
+    </div>
+    <div>
+
+      <div>
+        <label class="form-label" for="checkboxes1">Mandatory selection</label>
+        <div class="form-control-radios">
+          <ul id="radios1">
+            <li><input id="radios1-1" name="radios1" type="radio"> <label for="radios1-1">Option A</label></li>
+            <li><input id="radios1-2" name="radios1" type="radio"> <label for="radios1-2">Option B</label></li>
+            <li><input id="radios1-3" name="radios1" type="radio"> <label for="radios1-3">Option C</label></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="block row">
+    <div class="column--grow">
+
+      <div>
+        <label class="form-label" for="field2">Field 2</label>
         <input class="form-control" id="field2" name="field2">
+      </div>
+
+    </div>
+    <div class="column--grow">
+
+      <div class="invalid">
+        <label class="form-label" for="field3">Field 3</label>
+        <input class="form-control" id="field3" name="field3">
         <ol class="form-errors">
           <li><strong>Error:</strong> <span>Your answer must be in the form of a question. (<a href="#">More on this.</a>)</span></li>
         </ol>
       </div>
 
     </div>
-    <div class="column--grow">
-
-      <div class="mb">
-        <label class="form-label" for="field3">Field #3</label>
-        <input class="form-control" id="field3" name="field3">
-      </div>
-
-    </div>
   </div>
 
-  <div class="mb">
-    <label class="form-label" for="field4">Field #4</label>
+  <div class="block">
+    <label class="form-label" for="field4">Field 4</label>
     <textarea class="form-control" id="field4" name="field4"></textarea>
   </div>
 
-  <div class="mb">
-    <label class="form-check-label"><input name="check_it" type="checkbox"> Tick, tick, tick, tick.</label>
-  </div>
-
-  {{ form_buttons('Do it!', cancel_url='#') }}
+  {{ form_buttons(_('Save'), cancel_url='#') }}
 
 </form>
 {% endcall %}
