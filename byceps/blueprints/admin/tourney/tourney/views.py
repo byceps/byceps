@@ -7,7 +7,6 @@ byceps.blueprints.admin.tourney.tourney.views
 """
 
 import dataclasses
-from datetime import datetime
 
 from flask import abort, g, request
 from flask_babel import gettext, to_user_timezone, to_utc
@@ -73,7 +72,7 @@ def create(party_id):
     logo_url = form.logo_url.data.strip()
     category_id = form.category_id.data
     max_participant_count = form.max_participant_count.data
-    starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
+    starts_at_local = form.starts_at.data
     starts_at_utc = to_utc(starts_at_local)
 
     creator = g.user
@@ -108,8 +107,7 @@ def update_form(tourney_id, erroneous_form=None):
 
     data = dataclasses.asdict(tourney)
     starts_at_local = to_user_timezone(tourney.starts_at)
-    data['starts_on'] = starts_at_local.date()
-    data['starts_at'] = starts_at_local.time()
+    data['starts_at'] = starts_at_local
 
     form = erroneous_form if erroneous_form else UpdateForm(data=data)
     form.set_category_choices(tourney.party_id)
@@ -138,7 +136,7 @@ def update(tourney_id):
     logo_url = form.logo_url.data.strip()
     category_id = form.category_id.data
     max_participant_count = form.max_participant_count.data
-    starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
+    starts_at_local = form.starts_at.data
     starts_at_utc = to_utc(starts_at_local)
     registration_open = form.registration_open.data
 

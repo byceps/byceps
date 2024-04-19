@@ -20,16 +20,7 @@
       {{ form_field(form.logo_url) }}
       {{ form_field(form.category_id) }}
       {{ form_field(form.max_participant_count, min=0, max=999, style='width: 4rem;') }}
-
-      <div class="form-control-block row">
-        <div>
-          {{ form_field(form.starts_on) }}
-        </div>
-        <div>
-          {{ form_field(form.starts_at) }}
-        </div>
-      </div>
-
+      {{ form_field(form.starts_at) }}
       {{ form_field_check(form.registration_open) }}
     </div>
 

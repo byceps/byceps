@@ -9,11 +9,10 @@ byceps.blueprints.admin.tourney.tourney.forms
 from flask_babel import lazy_gettext
 from wtforms import (
     BooleanField,
-    DateField,
+    DateTimeLocalField,
     IntegerField,
     SelectField,
     StringField,
-    TimeField,
 )
 from wtforms.validators import InputRequired, Length, Optional
 
@@ -38,11 +37,8 @@ class CreateForm(LocalizedForm):
     max_participant_count = IntegerField(
         lazy_gettext('Maximum number of attendees'), [InputRequired()]
     )
-    starts_on = DateField(
-        lazy_gettext('Start (date)'), validators=[InputRequired()]
-    )
-    starts_at = TimeField(
-        lazy_gettext('Start (time)'), validators=[InputRequired()]
+    starts_at = DateTimeLocalField(
+        lazy_gettext('Start'), validators=[InputRequired()]
     )
     registration_open = BooleanField(lazy_gettext('Registration open'))
 
