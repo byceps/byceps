@@ -13,7 +13,7 @@ from moneyed import Money
 from byceps.util.result import Err, Ok, Result
 
 from .errors import SomeArticlesLackFixedQuantityError
-from .models import Article, ArticleCompilation
+from .models import Article, ArticleCompilation, ArticleWithQuantity
 
 
 def is_article_available_now(article: Article) -> bool:
@@ -27,16 +27,13 @@ def is_article_available_now(article: Article) -> bool:
 
 
 def calculate_total_amount(
-    articles_with_quantities: list[tuple[Article, int]],
+    articles_with_quantities: list[ArticleWithQuantity],
 ) -> Money:
     """Calculate total amount of articles with quantities."""
     if not articles_with_quantities:
-        raise ValueError('No articles given')
+        raise ValueError('No articles with quantity given')
 
-    return sum(
-        article.price * quantity
-        for article, quantity in articles_with_quantities
-    )  # type: ignore[return-value]
+    return sum(awq.amount for awq in articles_with_quantities)  # type: ignore[return-value]
 
 
 def calculate_article_compilation_total_amount(
@@ -49,7 +46,8 @@ def calculate_article_compilation_total_amount(
         return Err(SomeArticlesLackFixedQuantityError())
 
     articles_with_quantities = [
-        (item.article, item.fixed_quantity) for item in compilation
+        ArticleWithQuantity(item.article, item.fixed_quantity)
+        for item in compilation
     ]
 
     total_amount = calculate_total_amount(articles_with_quantities)

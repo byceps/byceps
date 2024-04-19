@@ -7,6 +7,7 @@ from moneyed import EUR, Money
 import pytest
 
 from byceps.services.shop.article import article_domain_service
+from byceps.services.shop.article.models import ArticleWithQuantity
 
 
 def test_calculate_total_amount_without_articles():
@@ -20,12 +21,6 @@ def test_calculate_total_amount_without_articles():
         (
             [
                 ('0.00', 3),
-            ],
-            '0.00',
-        ),
-        (
-            [
-                ('1.99', 0),
             ],
             '0.00',
         ),
@@ -49,7 +44,7 @@ def test_calculate_total_amount_with_articles(
     make_article, price_strs_and_quantities, expected_total_str: str
 ):
     articles_with_quantities = [
-        (make_article(price=Money(price, EUR)), quantity)
+        ArticleWithQuantity(make_article(price=Money(price, EUR)), quantity)
         for price, quantity in price_strs_and_quantities
     ]
 
