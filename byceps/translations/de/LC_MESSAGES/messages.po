@@ -8056,11 +8056,6 @@ msgstr "Avatarbild entfernen?"
 msgid "Unsubscribe from newsletter?"
 msgstr "Vom Newsletter abmelden?"
 
-#: byceps/blueprints/site/user_group/views.py:43
-#: byceps/blueprints/site/user_group/views.py:60
-msgid "You have to be logged in to create a user group."
-msgstr "Du musst angemeldet sein, um eine Benutzergruppe erstellen zu können."
-
 #: byceps/blueprints/site/user_group/views.py:76
 #, python-format
 msgid "Group \"%(group_title)s\" has been created."

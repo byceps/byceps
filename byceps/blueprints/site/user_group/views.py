@@ -11,9 +11,9 @@ from flask_babel import gettext
 
 from byceps.services.user_group import user_group_service
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import redirect_to
+from byceps.util.views import login_required, redirect_to
 
 from .forms import CreateForm
 
@@ -33,15 +33,12 @@ def index():
 
 
 @blueprint.get('/create')
+@login_required
 @templated
 def create_form(erroneous_form=None):
     """Show a form to create a group."""
     if g.party_id is None:
         abort(404)
-
-    if not g.user.authenticated:
-        flash_error(gettext('You have to be logged in to create a user group.'))
-        return redirect_to('.index')
 
     form = erroneous_form if erroneous_form else CreateForm()
 
@@ -51,14 +48,11 @@ def create_form(erroneous_form=None):
 
 
 @blueprint.post('/')
+@login_required
 def create():
     """Create a group."""
     if g.party_id is None:
         abort(404)
-
-    if not g.user.authenticated:
-        flash_error(gettext('You have to be logged in to create a user group.'))
-        return redirect_to('.index')
 
     form = CreateForm(request.form)
     if not form.validate():
