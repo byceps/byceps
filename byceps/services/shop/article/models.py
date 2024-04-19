@@ -7,7 +7,7 @@ byceps.services.shop.article.models
 """
 
 from collections.abc import Iterator
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
@@ -86,6 +86,19 @@ class Article:
 class ArticleAttachment:
     attached_article: Article
     attached_quantity: int
+
+
+@dataclass(frozen=True, slots=True)
+class ArticleWithQuantity:
+    article: Article
+    quantity: int
+    amount: Money = field(init=False)
+
+    def __post_init__(self) -> None:
+        if self.quantity < 1:
+            raise ValueError('Quantity must be a positive number.')
+
+        object.__setattr__(self, 'amount', self.article.price * self.quantity)
 
 
 @dataclass(frozen=True)

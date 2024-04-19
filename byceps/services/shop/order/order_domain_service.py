@@ -13,7 +13,8 @@ from moneyed import Currency, Money
 
 from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
-from byceps.services.shop.cart.models import Cart, CartItem
+from byceps.services.shop.article.models import ArticleWithQuantity
+from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.models.user import User
@@ -72,13 +73,13 @@ def place_order(
 
 
 def _build_incoming_line_items(
-    cart_items: list[CartItem],
+    cart_items: list[ArticleWithQuantity],
 ) -> Iterator[IncomingLineItem]:
     """Build incoming line item objects from the cart's content."""
     for cart_item in cart_items:
         article = cart_item.article
         quantity = cart_item.quantity
-        line_amount = cart_item.line_amount
+        line_amount = cart_item.amount
 
         yield IncomingLineItem(
             id=LineItemID(generate_uuid7()),
