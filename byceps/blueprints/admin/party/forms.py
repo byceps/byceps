@@ -6,16 +6,8 @@ byceps.blueprints.admin.party.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime
-
 from flask_babel import gettext, lazy_gettext, lazy_pgettext
-from wtforms import (
-    BooleanField,
-    DateField,
-    IntegerField,
-    StringField,
-    TimeField,
-)
+from wtforms import BooleanField, DateTimeLocalField, IntegerField, StringField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from byceps.services.party import party_service
@@ -27,14 +19,12 @@ class _BaseForm(LocalizedForm):
         lazy_gettext('Title'),
         validators=[InputRequired(), Length(min=1, max=40)],
     )
-    starts_on = DateField(
-        lazy_gettext('Start date'), validators=[InputRequired()]
+    starts_at = DateTimeLocalField(
+        lazy_gettext('Start'), validators=[InputRequired()]
     )
-    starts_at = TimeField(
-        lazy_gettext('Start time'), validators=[InputRequired()]
+    ends_at = DateTimeLocalField(
+        lazy_gettext('End'), validators=[InputRequired()]
     )
-    ends_on = DateField(lazy_gettext('End date'), validators=[InputRequired()])
-    ends_at = TimeField(lazy_gettext('End time'), validators=[InputRequired()])
     max_ticket_quantity = IntegerField(
         lazy_gettext('Maximum number of tickets'), validators=[Optional()]
     )
@@ -42,10 +32,7 @@ class _BaseForm(LocalizedForm):
     @staticmethod
     def validate_ends_at(form, field):
         """Ensure that the party starts before it ends."""
-        starts_at = datetime.combine(form.starts_on.data, form.starts_at.data)
-        ends_at = datetime.combine(form.ends_on.data, form.ends_at.data)
-
-        if starts_at >= ends_at:
+        if form.starts_at.data >= form.ends_at.data:
             raise ValidationError(
                 gettext('The party must begin before it ends.')
             )
