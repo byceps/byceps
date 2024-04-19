@@ -6,9 +6,9 @@
     {{ field.label(class='form-label') }}
   {%- if prefix is not none or suffix is not none %}
     <div class="form-control-wrapper">
-  {%- if prefix is not none %}
+    {%- if prefix is not none %}
     {{ prefix }}
-  {%- endif %}
+    {%- endif %}
   {%- endif %}
     {{ field(class='form-control ' + class, **kwargs) }}
   {%- if suffix is not none %}
