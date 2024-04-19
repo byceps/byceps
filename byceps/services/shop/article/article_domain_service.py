@@ -10,7 +10,6 @@ from datetime import datetime
 
 from moneyed import Money
 
-from byceps.services.shop.cart.models import Cart
 from byceps.util.result import Err, Ok, Result
 
 from .errors import SomeArticlesLackFixedQuantityError
@@ -27,6 +26,19 @@ def is_article_available_now(article: Article) -> bool:
     return (start is None or start <= now) and (end is None or now < end)
 
 
+def calculate_total_amount(
+    articles_with_quantities: list[tuple[Article, int]],
+) -> Money:
+    """Calculate total amount of articles with quantities."""
+    if not articles_with_quantities:
+        raise ValueError('No articles given')
+
+    return sum(
+        article.price * quantity
+        for article, quantity in articles_with_quantities
+    )  # type: ignore[return-value]
+
+
 def calculate_article_compilation_total_amount(
     compilation: ArticleCompilation,
 ) -> Result[Money, SomeArticlesLackFixedQuantityError]:
@@ -36,10 +48,10 @@ def calculate_article_compilation_total_amount(
     if any(item.fixed_quantity is None for item in compilation):
         return Err(SomeArticlesLackFixedQuantityError())
 
-    cart = Cart(compilation._items[0].article.price.currency)
+    articles_with_quantities = [
+        (item.article, item.fixed_quantity) for item in compilation
+    ]
 
-    for item in compilation:
-        cart.add_item(item.article, item.fixed_quantity)
+    total_amount = calculate_total_amount(articles_with_quantities)
 
-    total_amount = cart.calculate_total_amount()
     return Ok(total_amount)
