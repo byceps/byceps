@@ -25,7 +25,6 @@
       <tr>
         <th>Name</th>
         <th>Ersteller</th>
-        <th class="centered">Mitglieder</th>
       </tr>
     </thead>
     <tbody>
@@ -38,7 +37,6 @@
           {%- endif %}
         </td>
         <td>{{ render_user_link(group.creator) }}</td>
-        <td class="centered">{{ group.member_count }}</td>
       </tr>
       {%- endfor %}
       <tr>

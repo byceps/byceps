@@ -55,10 +55,6 @@ class DbUserGroup(db.Model):
         self.title = title
         self.description = description
 
-    @property
-    def member_count(self) -> int:
-        return len(self.members)
-
     def __repr__(self) -> str:
         return (
             ReprBuilder(self)
