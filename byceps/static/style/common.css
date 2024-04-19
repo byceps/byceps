@@ -586,7 +586,7 @@ textarea.form-control {
   padding: 0.4rem;
 }
 
-input.form-control:not([size]):not([type='checkbox']):not([type='date']):not([type='radio']):not([type='time']),
+input.form-control:not([size]):not([type='checkbox']):not([type='date']):not([type='datetime-local']):not([type='radio']):not([type='time']),
 textarea.form-control {
   width: 100%;
 }
