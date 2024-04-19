@@ -3738,10 +3738,6 @@ msgstr "Endzeit"
 msgid "Maximum number of tickets"
 msgstr "Maximale Anzahl Tickets"
 
-#: byceps/blueprints/admin/party/forms.py:50
-msgid "The party must begin before it ends."
-msgstr "Der Beginn der Party muss vor dessen Ende liegen."
-
 #: byceps/blueprints/admin/party/forms.py:68
 msgid "Ticket management open"
 msgstr "Ticketverwaltung geöffnet"

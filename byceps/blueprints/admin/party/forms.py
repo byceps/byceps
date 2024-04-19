@@ -34,7 +34,7 @@ class _BaseForm(LocalizedForm):
         """Ensure that the party starts before it ends."""
         if form.starts_at.data >= form.ends_at.data:
             raise ValidationError(
-                gettext('The party must begin before it ends.')
+                gettext('Start value must be before end value.')
             )
 
 
