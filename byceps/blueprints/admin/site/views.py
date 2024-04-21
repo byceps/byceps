@@ -232,7 +232,11 @@ def update_form(site_id, erroneous_form=None):
     """Show form to update the site."""
     site = _get_site_or_404(site_id)
 
-    form = erroneous_form if erroneous_form else UpdateForm(obj=site)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else UpdateForm(site.title, site.server_name, obj=site)
+    )
     _fill_in_common_form_choices(form, site.brand_id)
 
     return {
@@ -247,7 +251,7 @@ def update(site_id):
     """Update the site."""
     site = _get_site_or_404(site_id)
 
-    form = UpdateForm(request.form)
+    form = UpdateForm(site.title, site.server_name, request.form)
     _fill_in_common_form_choices(form, site.brand_id)
 
     if not form.validate():

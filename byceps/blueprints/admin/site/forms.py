@@ -8,13 +8,14 @@ byceps.blueprints.admin.site.forms
 
 from flask_babel import lazy_gettext, pgettext
 from wtforms import BooleanField, SelectField, StringField
-from wtforms.validators import InputRequired, Length, Optional
+from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from byceps.services.board import board_service
 from byceps.services.news import news_channel_service
 from byceps.services.party import party_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront import storefront_service
+from byceps.services.site import site_service
 from byceps.util.forms import MultiCheckboxField
 from byceps.util.l10n import LocalizedForm
 
@@ -79,9 +80,76 @@ class CreateForm(_BaseForm):
         lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=40)]
     )
 
+    @staticmethod
+    def validate_id(form, field):
+        site_id = field.data.strip()
+
+        if site_service.find_site(site_id):
+            raise ValidationError(
+                lazy_gettext(
+                    'This value is not available. Please choose another.'
+                )
+            )
+
+    @staticmethod
+    def validate_title(form, field):
+        title = field.data.strip()
+
+        if not site_service.is_title_available(title):
+            raise ValidationError(
+                lazy_gettext(
+                    'This value is not available. Please choose another.'
+                )
+            )
+
+    @staticmethod
+    def validate_server_name(form, field):
+        server_name = field.data.strip()
+
+        if not site_service.is_server_name_available(server_name):
+            raise ValidationError(
+                lazy_gettext(
+                    'This value is not available. Please choose another.'
+                )
+            )
+
 
 class UpdateForm(_BaseForm):
     archived = BooleanField(lazy_gettext('archived'))
+
+    def __init__(
+        self, current_title: str, current_server_name: str, *args, **kwargs
+    ):
+        super().__init__(*args, **kwargs)
+        self._current_title = current_title
+        self._current_server_name = current_server_name
+
+    @staticmethod
+    def validate_title(form, field):
+        title = field.data.strip()
+
+        if title != form._current_title and not site_service.is_title_available(
+            title
+        ):
+            raise ValidationError(
+                lazy_gettext(
+                    'This value is not available. Please choose another.'
+                )
+            )
+
+    @staticmethod
+    def validate_server_name(form, field):
+        server_name = field.data.strip()
+
+        if (
+            server_name != form._current_server_name
+            and not site_service.is_server_name_available(server_name)
+        ):
+            raise ValidationError(
+                lazy_gettext(
+                    'This value is not available. Please choose another.'
+                )
+            )
 
 
 class AssignNewsChannelsForm(LocalizedForm):

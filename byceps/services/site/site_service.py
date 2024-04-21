@@ -188,6 +188,24 @@ def get_current_sites(
     return {transform(db_site) for db_site in db_sites}
 
 
+def is_title_available(title: str) -> bool:
+    """Check if the title is unused."""
+    return not db.session.scalar(
+        select(db.exists().where(db.func.lower(DbSite.title) == title.lower()))
+    )
+
+
+def is_server_name_available(server_name: str) -> bool:
+    """Check if the server name is unused."""
+    return not db.session.scalar(
+        select(
+            db.exists().where(
+                db.func.lower(DbSite.server_name) == server_name.lower()
+            )
+        )
+    )
+
+
 def _db_entity_to_site(db_site: DbSite) -> Site:
     news_channel_ids = frozenset(
         channel.id for channel in db_site.news_channels
