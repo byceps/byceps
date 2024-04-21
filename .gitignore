@@ -4,6 +4,7 @@ __pycache__
 /.eggs
 
 # virtual environment
+/.venv
 /venv
 
 # autoenv

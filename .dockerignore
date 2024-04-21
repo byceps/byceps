@@ -10,6 +10,7 @@
 .ruff_cache
 .scrutinizer.yml
 .secret_key.txt
+.venv
 *.egg-info
 assets
 compose.yaml
