@@ -62,7 +62,19 @@ def create_item(
     return item
 
 
-def find_timetable(party_id: PartyID) -> Timetable | None:
+def find_timetable(timetable_id: TimetableID) -> Timetable | None:
+    """Return the timetable."""
+    db_timetable = db.session.get(DbTimetable, timetable_id)
+
+    if db_timetable is None:
+        return None
+
+    items = _get_items(db_timetable.id)
+
+    return _db_entity_to_timetable(db_timetable, items)
+
+
+def find_timetable_for_party(party_id: PartyID) -> Timetable | None:
     """Return the timetable for the party."""
     db_timetable = db.session.scalars(
         select(DbTimetable).filter_by(id=party_id)
@@ -71,14 +83,20 @@ def find_timetable(party_id: PartyID) -> Timetable | None:
     if db_timetable is None:
         return None
 
+    items = _get_items(db_timetable.id)
+
+    return _db_entity_to_timetable(db_timetable, items)
+
+
+def _get_items(timetable_id: TimetableID) -> list[TimetableItem]:
     db_items = db.session.scalars(
-        select(DbTimetableItem).filter_by(timetable_id=db_timetable.id)
+        select(DbTimetableItem).filter_by(timetable_id=timetable_id)
     ).all()
 
     items = [_db_entity_to_item(db_item) for db_item in db_items]
     items.sort(key=lambda item: (item.scheduled_at, item.description))
 
-    return _db_entity_to_timetable(db_timetable, items)
+    return items
 
 
 def _db_entity_to_timetable(
