@@ -77,7 +77,7 @@ def find_timetable(timetable_id: TimetableID) -> Timetable | None:
 def find_timetable_for_party(party_id: PartyID) -> Timetable | None:
     """Return the timetable for the party."""
     db_timetable = db.session.scalars(
-        select(DbTimetable).filter_by(id=party_id)
+        select(DbTimetable).filter_by(party_id=party_id)
     ).one_or_none()
 
     if db_timetable is None:
