@@ -2,8 +2,8 @@
 
 <h2>{{ _('News') }}</h2>
 
-{%- if news_teasers %}
-<ol class="items">
+{%- if not news_teasers %}
+<ol class="block items">
   {%- for teaser in news_teasers %}
   <li>
     <a class="card item-link" href="{{ url_for('news.view', slug=teaser.slug) }}">
@@ -23,7 +23,7 @@
   {%- endfor %}
 </ol>
 {%- else %}
-<p class="dimmed">{{ _('No news yet.') }}</p>
+<div class="block dimmed centered">{{ _('No news yet.') }}</div>
 {%- endif %}
 
 {{ render_continuative_link(url_for('news.index'), _('All news')) }}
