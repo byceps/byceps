@@ -50,6 +50,8 @@ class DbTimetableItem(db.Model):
     scheduled_at: Mapped[datetime]
     description: Mapped[str] = mapped_column(db.UnicodeText)
     location: Mapped[str | None] = mapped_column(db.UnicodeText)
+    link_target: Mapped[str | None] = mapped_column(db.UnicodeText)
+    link_label: Mapped[str | None] = mapped_column(db.UnicodeText)
     hidden: Mapped[bool]
 
     def __init__(
@@ -59,6 +61,8 @@ class DbTimetableItem(db.Model):
         scheduled_at: datetime,
         description: str,
         location: str | None,
+        link_target: str | None,
+        link_label: str | None,
         hidden: bool,
     ) -> None:
         self.id = item_id
@@ -66,4 +70,6 @@ class DbTimetableItem(db.Model):
         self.scheduled_at = scheduled_at
         self.description = description
         self.location = location
+        self.link_target = link_target
+        self.link_label = link_label
         self.hidden = hidden

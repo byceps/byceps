@@ -34,6 +34,8 @@ def create_item(
     scheduled_at: datetime,
     description: str,
     location: str | None,
+    link_target: str | None,
+    link_label: str | None,
     hidden: bool,
 ) -> TimetableItem:
     """Create a timetable item."""
@@ -45,5 +47,7 @@ def create_item(
         scheduled_at=scheduled_at,
         description=description,
         location=location,
+        link_target=link_target,
+        link_label=link_label,
         hidden=hidden,
     )

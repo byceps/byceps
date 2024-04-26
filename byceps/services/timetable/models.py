@@ -36,4 +36,6 @@ class TimetableItem:
     scheduled_at: datetime
     description: str
     location: str | None
+    link_target: str | None
+    link_label: str | None
     hidden: bool

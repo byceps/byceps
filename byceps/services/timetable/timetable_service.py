@@ -41,11 +41,19 @@ def create_item(
     scheduled_at: datetime,
     description: str,
     location: str | None,
+    link_target: str | None,
+    link_label: str | None,
     hidden: bool,
 ) -> TimetableItem:
     """Create a timetable item."""
     item = timetable_domain_service.create_item(
-        timetable_id, scheduled_at, description, location, hidden
+        timetable_id,
+        scheduled_at,
+        description,
+        location,
+        link_target,
+        link_label,
+        hidden,
     )
 
     db_item = DbTimetableItem(
@@ -54,6 +62,8 @@ def create_item(
         item.scheduled_at,
         item.description,
         item.location,
+        item.link_target,
+        item.link_label,
         item.hidden,
     )
     db.session.add(db_item)
@@ -117,5 +127,7 @@ def _db_entity_to_item(db_item: DbTimetableItem) -> TimetableItem:
         scheduled_at=db_item.scheduled_at,
         description=db_item.description,
         location=db_item.location,
+        link_target=db_item.link_target,
+        link_label=db_item.link_label,
         hidden=db_item.hidden,
     )
