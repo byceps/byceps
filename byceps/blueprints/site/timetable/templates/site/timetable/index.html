@@ -1,0 +1,55 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'timetable' %}
+{% set page_title = _('Timetable') %}
+
+{% block head %}
+<style>
+.timetable tbody:not(:first-of-type) tr:first-child :is(th, td) {
+  border-top: var(--table-border-color) solid 1px;
+}
+
+.timetable .day-header {
+  background-color: var(--table-background-color-head);
+}
+</style>
+{%- endblock %}
+
+{% block body %}
+
+<h1 class="title">{{ page_title }}</h1>
+
+<table class="itemlist is-wide timetable">
+  <thead>
+    <tr>
+      <th>{{ _('When?') }}</th>
+      <th>{{ _('What?') }}</th>
+      <th width="25%">{{ _('Where?') }}</th>
+      <th></th>
+    </tr>
+  </thead>
+  {%- for day, items in items_grouped_by_day.items() %}
+  <tbody>
+    <tr>
+      <td class="day-header" colspan="4">{{ day|dateformat('full', rebase=False) }}</td>
+    </tr>
+    {%- for item in items|sort(attribute='scheduled_at') %}
+    <tr>
+      <td class="nowrap">{{ item.scheduled_at|timeformat('short', rebase=False) }}</td>
+      <td>{{ item.description|safe }}</td>
+      <td>
+        {%- if item.location %}
+        {{ item.location }}
+        {%- endif %}
+      </td>
+      <td>
+        {%- if item.link_target %}
+        <a href="{{ item.link_target }}">{% if item.link_label %}{{ item.link_label }}{% else %}Link{% endif %}</a>
+        {%- endif %}
+      </td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+  {%- endfor %}
+</table>
+
+{%- endblock %}

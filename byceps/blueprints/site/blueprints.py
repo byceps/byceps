@@ -44,6 +44,7 @@ def register_site_blueprints(
         ('site.site', None),
         ('site.snippet', None),
         ('site.ticketing', '/tickets'),
+        ('site.timetable', '/timetable'),
         ('site.tourney', '/tourneys'),
         ('site.user.avatar', '/users'),
         ('site.user.creation', '/users'),
