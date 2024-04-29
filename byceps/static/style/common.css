@@ -615,7 +615,7 @@ textarea.collapsible.collapsed {
 .form-caption {
   color: var(--dimmed-color);
   font-size: 0.75rem; /* 12px / 16px */
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 form .form-form-errors,
