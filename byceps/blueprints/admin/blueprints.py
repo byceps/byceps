@@ -60,6 +60,7 @@ def register_admin_blueprints(
         ('admin.ticketing', '/ticketing'),
         ('admin.ticketing.category', '/ticketing/categories'),
         ('admin.ticketing.checkin', '/ticketing/checkin'),
+        ('admin.timetable', '/timetables'),
         ('admin.tourney', None),
         ('admin.tourney.category', '/tourney/categories'),
         ('admin.tourney.tourney', '/tourney/tourneys'),
