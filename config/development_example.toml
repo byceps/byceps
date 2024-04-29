@@ -6,6 +6,7 @@ SECRET_KEY = "secret-key-for-development"
 SESSION_COOKIE_SECURE = false
 
 SQLALCHEMY_DATABASE_URI = "postgresql+psycopg://byceps:boioioing@127.0.0.1/byceps"
+SQLALCHEMY_RECORD_QUERIES = false
 
 REDIS_URL = "redis://127.0.0.1:6379/0"
 
