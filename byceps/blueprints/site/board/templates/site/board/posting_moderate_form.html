@@ -28,11 +28,13 @@
   <h2>{{ render_icon('view') }} {{ _('Visibility') }}</h2>
   <div class="main-body-box">
 
+    <div class="block">
     {%- if posting.hidden %}
-    <div>{{ _('The posting is <strong>hidden</strong> (%(timestamp)s by %(moderator)s).', timestamp=posting.hidden_at|datetimeformat, moderator=render_user_screen_name(posting.hidden_by)) }}</div>
+    {{ _('The posting is <strong>hidden</strong> (%(timestamp)s by %(moderator)s).', timestamp=posting.hidden_at|datetimeformat, moderator=render_user_screen_name(posting.hidden_by)) }}
     {%- else %}
-    <div>{{ _('The posting is <strong>visible</strong>.') }}</div>
+    {{ _('The posting is <strong>visible</strong>.') }}
     {%- endif %}
+    </div>
 
     <div class="button-row is-compact mt">
     {%- if posting.hidden %}

@@ -29,11 +29,13 @@
   <h2>{{ render_icon('view') }} {{ _('Visibility') }}</h2>
   <div class="main-body-box">
 
+    <div class="block">
     {%- if topic.hidden %}
-    <div>{{ _('The topic is <strong>hidden</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.hidden_at|datetimeformat, moderator=render_user_screen_name(topic.hidden_by)) }}</div>
+    {{ _('The topic is <strong>hidden</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.hidden_at|datetimeformat, moderator=render_user_screen_name(topic.hidden_by)) }}
     {%- else %}
-    <div>{{ _('The topic is <strong>visible</strong>.') }}</div>
+    {{ _('The topic is <strong>visible</strong>.') }}
     {%- endif %}
+    </div>
 
     <div class="button-row is-compact mt">
     {%- if topic.hidden %}
@@ -52,11 +54,13 @@
   <h2>{{ render_icon('lock') }} {{ _('Write lock') }}</h2>
   <div class="main-body-box">
 
+    <div class="block">
     {%- if topic.locked %}
-    <div>{{ _('The topic is <strong>locked</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.locked_at|datetimeformat, moderator=render_user_screen_name(topic.locked_by)) }}</div>
+    {{ _('The topic is <strong>locked</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.locked_at|datetimeformat, moderator=render_user_screen_name(topic.locked_by)) }}
     {%- else %}
-    <div>{{ _('The topic is <strong>not locked</strong>.') }}</div>
+    {{ _('The topic is <strong>not locked</strong>.') }}
     {%- endif %}
+    </div>
 
     <div class="button-row is-compact mt">
     {%- if topic.locked %}
@@ -75,11 +79,13 @@
   <h2>{{ render_icon('pin') }} {{ _('Pinning') }}</h2>
   <div class="main-body-box">
 
+    <div class="block">
     {%- if topic.pinned %}
-    <div>{{ _('The topic is <strong>pinned</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.pinned_at|datetimeformat, moderator=render_user_screen_name(topic.pinned_by)) }}</div>
+    {{ _('The topic is <strong>pinned</strong> (%(timestamp)s by %(moderator)s).', timestamp=topic.pinned_at|datetimeformat, moderator=render_user_screen_name(topic.pinned_by)) }}
     {%- else %}
-    <div>{{ _('The topic is <strong>not pinned</strong>.') }}</div>
+    {{ _('The topic is <strong>not pinned</strong>.') }}
     {%- endif %}
+    </div>
 
     <div class="button-row is-compact mt">
     {%- if topic.pinned %}
@@ -98,7 +104,7 @@
   <h2>{{ render_icon('move') }} {{ _('Move') }}</h2>
   <div class="main-body-box">
 
-    <div>{{ _('This topic is in category &quot;%(category)s&quot;.', category=topic.category.title) }}</div>
+    <div class="block">{{ _('This topic is in category &quot;%(category)s&quot;.', category=topic.category.title) }}</div>
 
     {%- if categories %}
     <div class="button-row is-compact mt">
@@ -125,11 +131,13 @@
   <h2>{{ render_icon('announce') }} {{ _('Announcements') }}</h2>
   <div class="main-body-box">
 
+    <div class="block">
     {%- if not topic.posting_limited_to_moderators %}
-    <div>{{ _('The topic is <strong>not limited</strong> to announcements by moderators.') }}</div>
+    {{ _('The topic is <strong>not limited</strong> to announcements by moderators.') }}
     {%- else %}
-    <div>{{ _('The topic is <strong>limited to announcements</strong> by moderators.') }}</div>
+    {{ _('The topic is <strong>limited to announcements</strong> by moderators.') }}
     {%- endif %}
+    </div>
 
     <div class="button-row is-compact mt">
     {%- if topic.posting_limited_to_moderators %}
