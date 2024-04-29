@@ -93,7 +93,7 @@ assigned_permissions = [
     'snippet.update',
     'snippet.view',
     'snippet.view_history',
-    'timetable.edit',
+    'timetable.update',
 ]
 
 [[roles]]

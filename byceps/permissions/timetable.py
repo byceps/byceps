@@ -15,6 +15,6 @@ register_permissions(
     'timetable',
     [
         ('administrate', lazy_gettext('Administrate timetables')),
-        ('edit', lazy_gettext('Edit timetables')),
+        ('update', lazy_gettext('Edit timetables')),
     ],
 )
