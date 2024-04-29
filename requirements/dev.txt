@@ -1,6 +1,6 @@
 -r docs.txt
 -r test.txt
-Flask-DebugToolbar==0.14.1
+Flask-DebugToolbar==0.15.1
 mypy==1.9.0
 ruff==0.4.1
 types-freezegun==1.1.10
