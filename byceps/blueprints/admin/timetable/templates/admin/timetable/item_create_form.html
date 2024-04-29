@@ -1,0 +1,33 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_check %}
+{% set current_page = 'timetable_admin' %}
+{% set current_page_party = party %}
+{% set page_title = _('Create timetable item') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.view', party_id=party.id), party.title) }}
+{%- endblock %}
+
+{% block body %}
+
+<h1 class="title">{{ page_title }}</h1>
+
+<form action="{{ url_for('.item_create', timetable_id=timetable.id) }}" method="post">
+  <div class="box">
+    {{ form_field(form.scheduled_at, caption=_('Local time'), autofocus='autofocus') }}
+    {{ form_field(form.description) }}
+    {{ form_field(form.location, caption=_('optional')) }}
+
+    <div class="row block">
+      <div class="column--grow">{{ form_field(form.link_target, caption=_('optional')) }}</div>
+      <div class="column--grow">{{ form_field(form.link_label, caption=_('optional')) }}</div>
+    </div>
+
+    {{ form_field_check(form.hidden) }}
+  </div>
+
+  {{ form_buttons(_('Create')) }}
+</form>
+
+{%- endblock %}

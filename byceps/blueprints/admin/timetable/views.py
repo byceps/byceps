@@ -8,13 +8,17 @@ byceps.blueprints.admin.timetable.views
 
 from collections import defaultdict
 
-from flask import abort
+from flask import abort, request
+from flask_babel import gettext
 
 from byceps.services.party import party_service
 from byceps.services.timetable import timetable_service
 from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import permission_required
+from byceps.util.views import permission_required, redirect_to
+
+from .forms import CreateForm
 
 
 blueprint = create_blueprint('timetable_admin', __name__)
@@ -33,6 +37,7 @@ def view(party_id):
 
     return {
         'party': party,
+        'timetable': timetable,
         'items_grouped_by_day': items_grouped_by_day,
     }
 
@@ -46,6 +51,56 @@ def _group_items_by_day(timetable):
     return dict(items_grouped_by_day)
 
 
+@blueprint.get('/timetables/<uuid:timetable_id>/create')
+@permission_required('timetable.update')
+@templated
+def item_create_form(timetable_id, erroneous_form=None):
+    """Show form to create a timetable item."""
+    timetable = _get_timetable_or_404(timetable_id)
+
+    party = party_service.get_party(timetable.party_id)
+
+    form = erroneous_form if erroneous_form else CreateForm()
+
+    return {
+        'party': party,
+        'timetable': timetable,
+        'form': form,
+    }
+
+
+@blueprint.post('/timetables/<uuid:timetable_id>')
+@permission_required('timetable.update')
+def item_create(timetable_id):
+    """Create a timetable item."""
+    timetable = _get_timetable_or_404(timetable_id)
+
+    form = CreateForm(request.form)
+    if not form.validate():
+        return item_create_form(form)
+
+    scheduled_at = form.scheduled_at.data  # TODO: timezone conversion!!
+    description = form.description.data.strip()
+    location = form.location.data
+    link_target = form.link_target.data
+    link_label = form.link_label.data
+    hidden = form.hidden.data
+
+    timetable_service.create_item(
+        timetable.id,
+        scheduled_at,
+        description,
+        location,
+        link_target,
+        link_label,
+        hidden,
+    )
+
+    flash_success(gettext('The object has been created.'))
+
+    return redirect_to('.view', party_id=timetable.party_id)
+
+
 # -------------------------------------------------------------------- #
 
 
@@ -56,6 +111,15 @@ def _get_party_or_404(party_id):
         abort(404)
 
     return party
+
+
+def _get_timetable_or_404(timetable_id):
+    timetable = timetable_service.find_timetable(timetable_id)
+
+    if timetable is None:
+        abort(404)
+
+    return timetable
 
 
 def _get_timetable_for_party_or_404(party_id):
