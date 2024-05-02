@@ -64,7 +64,7 @@ def create(party_id):
     """Create a timetable."""
     party = _get_party_or_404(party_id)
 
-    timetable_service.create_timetable(party, hidden=True)
+    timetable_service.create_timetable(party, hidden=False)
 
     flash_success(gettext('The object has been created.'))
 
