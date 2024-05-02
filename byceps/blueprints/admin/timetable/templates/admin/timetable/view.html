@@ -49,15 +49,15 @@
       <td class="day-header" colspan="6">{{ day|dateformat('full', rebase=False) }}</td>
     </tr>
     {%- for item in items|sort(attribute='scheduled_at') %}
-      <tr{% if item.hidden %} class="dimmed"{% endif %}>
-      <td class="nowrap">{{ item.scheduled_at|timeformat('short', rebase=False) }}</td>
-      <td>{{ item.description|safe }}</td>
-      <td>
+      <tr>
+      <td class="nowrap{% if item.hidden %} dimmed{% endif %}">{{ item.scheduled_at|timeformat('short', rebase=False) }}</td>
+      <td{% if item.hidden %} class="dimmed"{% endif %}>{{ item.description|safe }}</td>
+      <td{% if item.hidden %} class="dimmed"{% endif %}>
         {%- if item.location %}
         {{ item.location }}
         {%- endif %}
       </td>
-      <td>
+      <td{% if item.hidden %} class="dimmed"{% endif %}>
         {%- if item.link_target %}
         <a href="{{ item.link_target }}">{% if item.link_label %}{{ item.link_label }}{% else %}Link{% endif %}</a>
         {%- endif %}
