@@ -293,7 +293,7 @@ def _enable_debug_toolbar(app: Flask) -> None:
 
 def _enable_rq_dashboard(app: Flask) -> None:
     app.config['RQ_DASHBOARD_REDIS_URL'] = app.config['REDIS_URL']
-    enable_rq_dashboard(app, '/admin/rq')
+    enable_rq_dashboard(app, '/rq')
     app.byceps_feature_states['rq_dashboard'] = True
 
 
