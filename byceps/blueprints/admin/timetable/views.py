@@ -8,7 +8,7 @@ byceps.blueprints.admin.timetable.views
 
 from collections import defaultdict
 
-from flask import abort, request
+from flask import abort, g, request
 from flask_babel import gettext
 
 from byceps.services.party import party_service
@@ -16,7 +16,11 @@ from byceps.services.timetable import timetable_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import permission_required, redirect_to
+from byceps.util.views import (
+    permission_required,
+    redirect_to,
+    respond_no_content,
+)
 
 from .forms import CreateForm, UpdateForm
 
@@ -153,6 +157,20 @@ def item_update(item_id):
     flash_success(gettext('The object has been updated.'))
 
     return redirect_to('.view', party_id=timetable.party_id)
+
+
+@blueprint.delete('/timetable_items/<uuid:item_id>')
+@permission_required('timetable.update')
+@respond_no_content
+def item_delete(item_id):
+    """Delete a timetable item."""
+    item = _get_timetable_item_or_404(item_id)
+
+    initiator = g.user
+
+    timetable_service.delete_item(item.id, initiator)
+
+    flash_success(gettext('The object has been deleted.'))
 
 
 # -------------------------------------------------------------------- #

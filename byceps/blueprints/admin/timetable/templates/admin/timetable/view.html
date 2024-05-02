@@ -71,6 +71,7 @@
         {%- if has_current_user_permission('timetable.update') %}
         <div class="button-row is-compact is-right-aligned">
           <a href="{{ url_for('.item_update_form', item_id=item.id) }}" class="button is-compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
+          <a href="{{ url_for('.item_delete', item_id=item.id) }}" data-action="delete-item" class="button is-compact color-danger" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a>
         </div>
         {%- endif %}
       </td>
@@ -81,3 +82,11 @@
 </table>
 
 {%- endblock %}
+
+{% block scripts %}
+<script>
+onDomReady(() => {
+  confirmed_delete_on_click_then_reload('[data-action="delete-item"]', '{{ _('Really delete it?') }}');
+});
+</script>
+{% endblock %}
