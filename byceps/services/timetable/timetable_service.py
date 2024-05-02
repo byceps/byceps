@@ -15,7 +15,11 @@ from byceps.services.party.models import Party, PartyID
 
 from . import timetable_domain_service
 from .dbmodels import DbTimetable, DbTimetableItem
-from .models import Timetable, TimetableID, TimetableItem
+from .models import Timetable, TimetableID, TimetableItem, TimetableItemID
+
+
+# -------------------------------------------------------------------- #
+# timetable
 
 
 def create_timetable(
@@ -34,42 +38,6 @@ def create_timetable(
     db.session.commit()
 
     return timetable
-
-
-def create_item(
-    timetable_id: TimetableID,
-    scheduled_at: datetime,
-    description: str,
-    location: str | None,
-    link_target: str | None,
-    link_label: str | None,
-    hidden: bool,
-) -> TimetableItem:
-    """Create a timetable item."""
-    item = timetable_domain_service.create_item(
-        timetable_id,
-        scheduled_at,
-        description,
-        location,
-        link_target,
-        link_label,
-        hidden,
-    )
-
-    db_item = DbTimetableItem(
-        item.id,
-        item.timetable_id,
-        item.scheduled_at,
-        item.description,
-        item.location,
-        item.link_target,
-        item.link_label,
-        item.hidden,
-    )
-    db.session.add(db_item)
-    db.session.commit()
-
-    return item
 
 
 def find_timetable(timetable_id: TimetableID) -> Timetable | None:
@@ -118,6 +86,82 @@ def _db_entity_to_timetable(
         hidden=db_timetable.hidden,
         items=items,
     )
+
+
+# -------------------------------------------------------------------- #
+# item
+
+
+def create_item(
+    timetable_id: TimetableID,
+    scheduled_at: datetime,
+    description: str,
+    location: str | None,
+    link_target: str | None,
+    link_label: str | None,
+    hidden: bool,
+) -> TimetableItem:
+    """Create a timetable item."""
+    item = timetable_domain_service.create_item(
+        timetable_id,
+        scheduled_at,
+        description,
+        location,
+        link_target,
+        link_label,
+        hidden,
+    )
+
+    db_item = DbTimetableItem(
+        item.id,
+        item.timetable_id,
+        item.scheduled_at,
+        item.description,
+        item.location,
+        item.link_target,
+        item.link_label,
+        item.hidden,
+    )
+    db.session.add(db_item)
+    db.session.commit()
+
+    return item
+
+
+def update_item(
+    item_id: TimetableItemID,
+    scheduled_at: datetime,
+    description: str,
+    location: str | None,
+    link_target: str | None,
+    link_label: str | None,
+    hidden: bool,
+) -> TimetableItem:
+    """Update a timetable item."""
+    db_item = db.session.get(DbTimetableItem, item_id)
+    if db_item is None:
+        raise ValueError(f'Unknown item ID "{item_id}"')
+
+    db_item.scheduled_at = scheduled_at
+    db_item.description = description
+    db_item.location = location
+    db_item.link_target = link_target
+    db_item.link_label = link_label
+    db_item.hidden = hidden
+
+    db.session.commit()
+
+    return _db_entity_to_item(db_item)
+
+
+def find_item(item_id: TimetableItemID) -> TimetableItem | None:
+    """Return the timetable item."""
+    db_item = db.session.get(DbTimetableItem, item_id)
+
+    if db_item is None:
+        return None
+
+    return _db_entity_to_item(db_item)
 
 
 def _db_entity_to_item(db_item: DbTimetableItem) -> TimetableItem:

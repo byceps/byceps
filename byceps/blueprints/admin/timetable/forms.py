@@ -28,3 +28,7 @@ class _BaseForm(LocalizedForm):
 
 class CreateForm(_BaseForm):
     pass
+
+
+class UpdateForm(_BaseForm):
+    pass

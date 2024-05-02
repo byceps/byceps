@@ -40,12 +40,13 @@
       <th width="25%">{{ _('Where?') }}</th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   {%- for day, items in items_grouped_by_day.items() %}
   <tbody>
     <tr>
-      <td class="day-header" colspan="5">{{ day|dateformat('full', rebase=False) }}</td>
+      <td class="day-header" colspan="6">{{ day|dateformat('full', rebase=False) }}</td>
     </tr>
     {%- for item in items|sort(attribute='scheduled_at') %}
       <tr{% if item.hidden %} class="dimmed"{% endif %}>
@@ -64,6 +65,13 @@
       <td>
         {%- if item.hidden %}
         {{ render_tag('hidden', class='color-disabled', icon='hidden') }}
+        {%- endif %}
+      </td>
+      <td>
+        {%- if has_current_user_permission('timetable.update') %}
+        <div class="button-row is-compact is-right-aligned">
+          <a href="{{ url_for('.item_update_form', item_id=item.id) }}" class="button is-compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
+        </div>
         {%- endif %}
       </td>
     </tr>

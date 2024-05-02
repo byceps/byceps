@@ -18,7 +18,7 @@ from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required, redirect_to
 
-from .forms import CreateForm
+from .forms import CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('timetable_admin', __name__)
@@ -101,6 +101,60 @@ def item_create(timetable_id):
     return redirect_to('.view', party_id=timetable.party_id)
 
 
+@blueprint.get('/timetable_items/<uuid:item_id>/update')
+@permission_required('timetable.update')
+@templated
+def item_update_form(item_id, erroneous_form=None):
+    """Show form to update a timetable item."""
+    item = _get_timetable_item_or_404(item_id)
+
+    timetable = _get_timetable_or_404(item.timetable_id)
+
+    party = party_service.get_party(timetable.party_id)
+
+    form = erroneous_form if erroneous_form else UpdateForm(obj=item)
+
+    return {
+        'party': party,
+        'item': item,
+        'form': form,
+    }
+
+
+@blueprint.post('/timetable_items/<uuid:item_id>')
+@permission_required('timetable.update')
+def item_update(item_id):
+    """Update a timetable item."""
+    item = _get_timetable_item_or_404(item_id)
+
+    timetable = _get_timetable_or_404(item.timetable_id)
+
+    form = UpdateForm(request.form)
+    if not form.validate():
+        return item_update_form(item.id, form)
+
+    scheduled_at = form.scheduled_at.data
+    description = form.description.data.strip()
+    location = form.location.data.strip()
+    link_target = form.link_target.data.strip()
+    link_label = form.link_label.data.strip()
+    hidden = form.hidden.data
+
+    timetable_service.update_item(
+        item.id,
+        scheduled_at,
+        description,
+        location,
+        link_target,
+        link_label,
+        hidden,
+    )
+
+    flash_success(gettext('The object has been updated.'))
+
+    return redirect_to('.view', party_id=timetable.party_id)
+
+
 # -------------------------------------------------------------------- #
 
 
@@ -129,3 +183,12 @@ def _get_timetable_for_party_or_404(party_id):
         abort(404)
 
     return timetable
+
+
+def _get_timetable_item_or_404(item_id):
+    item = timetable_service.find_item(item_id)
+
+    if item is None:
+        abort(404)
+
+    return item
