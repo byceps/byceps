@@ -108,6 +108,12 @@ _VIEW_TYPES = [
             lazy_gettext('Party history'),
             'party_history',
         ),
+        (
+            'timetable',
+            'timetable.index',
+            lazy_gettext('Timetable'),
+            'timetable',
+        ),
         ('gallery', 'gallery.index', lazy_gettext('Galleries'), 'gallery'),
     ]
 ]
