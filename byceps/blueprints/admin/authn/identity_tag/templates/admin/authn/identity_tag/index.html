@@ -9,13 +9,26 @@
 
 {% block body %}
 
-<div class="row row--space-between block">
+<div class="block row row--space-between row--wrap">
   <div>
     <h1 class="title">{{ page_title }} {{ render_extra_in_heading(tags|length) }}</h1>
   </div>
   <div>
-    <div class="button-row is-right-aligned">
-      <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
+    <div class="block row row--space-between row--wrap is-vcentered">
+      <div>
+        <form action="{{ url_for('.index') }}" class="single-row">
+          <input type="search" name="search_term" placeholder="{{ _('Identifier') }}" title="{{ _('username, first name, last name, email address') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} class="form-control">
+          <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
+          {%- if search_term %}
+          <a href="{{ url_for('.index') }}" class="button" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
+          {%- endif %}
+        </form>
+      </div>
+      <div>
+        <div class="button-row is-right-aligned">
+          <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

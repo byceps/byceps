@@ -30,9 +30,17 @@ blueprint = create_blueprint('authn_identity_tag_admin', __name__)
 @templated
 def index():
     """List tags."""
+    search_term = request.args.get('search_term', default='').strip()
+
     tags = authn_identity_tag_service.get_all_tags()
 
-    return {'tags': tags}
+    if search_term:
+        tags = [tag for tag in tags if tag.identifier == search_term]
+
+    return {
+        'tags': tags,
+        'search_term': search_term,
+    }
 
 
 @blueprint.get('/tags/create')
