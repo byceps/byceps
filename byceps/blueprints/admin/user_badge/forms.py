@@ -58,4 +58,5 @@ class AwardForm(LocalizedForm):
     def set_badge_choices(self, badges):
         choices = [(str(badge.id), badge.label) for badge in badges]
         choices.sort(key=lambda choice: choice[1])
+        choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
         self.badge_id.choices = choices
