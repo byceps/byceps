@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'timetable_admin' %}
@@ -23,7 +24,7 @@
   <div>
     <h1 class="title">{{ page_title }}</h1>
   </div>
-{%- if has_current_user_permission('timetable.update') %}
+{%- if timetable and has_current_user_permission('timetable.update') %}
   <div>
     <div class="button-row is-right-aligned">
       <a class="button" href="{{ url_for('.item_create_form', timetable_id=timetable.id) }}">{{ render_icon('add') }} <span>{{ _('Create item') }}</span></a>
@@ -32,6 +33,7 @@
 {%- endif %}
 </div>
 
+{%- if timetable %}
 <table class="itemlist is-wide timetable">
   <thead>
     <tr>
@@ -80,6 +82,11 @@
   </tbody>
   {%- endfor %}
 </table>
+{%- elif has_current_user_permission('timetable.administrate') %}
+<form action="{{ url_for('.create', party_id=party.id) }}" method="post">
+  {{ form_buttons(_('Create')) }}
+</form>
+{%- endif %}
 
 {%- endblock %}
 

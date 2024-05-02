@@ -35,9 +35,12 @@ def view(party_id):
     """Show timetable for party."""
     party = _get_party_or_404(party_id)
 
-    timetable = _get_timetable_for_party_or_404(party.id)
+    timetable = timetable_service.find_timetable_for_party(party.id)
 
-    items_grouped_by_day = _group_items_by_day(timetable)
+    if timetable:
+        items_grouped_by_day = _group_items_by_day(timetable)
+    else:
+        items_grouped_by_day = []
 
     return {
         'party': party,
@@ -53,6 +56,19 @@ def _group_items_by_day(timetable):
         items_grouped_by_day[item.scheduled_at.date()].append(item)
 
     return dict(items_grouped_by_day)
+
+
+@blueprint.post('/for_party/<party_id>')
+@permission_required('timetable.administrate')
+def create(party_id):
+    """Create a timetable."""
+    party = _get_party_or_404(party_id)
+
+    timetable_service.create_timetable(party, hidden=True)
+
+    flash_success(gettext('The object has been created.'))
+
+    return redirect_to('.view', party_id=party_id)
 
 
 @blueprint.get('/timetables/<uuid:timetable_id>/create')
@@ -187,15 +203,6 @@ def _get_party_or_404(party_id):
 
 def _get_timetable_or_404(timetable_id):
     timetable = timetable_service.find_timetable(timetable_id)
-
-    if timetable is None:
-        abort(404)
-
-    return timetable
-
-
-def _get_timetable_for_party_or_404(party_id):
-    timetable = timetable_service.find_timetable_for_party(party_id)
 
     if timetable is None:
         abort(404)
