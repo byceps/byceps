@@ -4,7 +4,7 @@
 {% set page_title = _('Edit snippet') %}
 
 {% block before_body %}
-{{ render_backlink(url_for('.view_current_version', snippet_id=snippet.id), snippet.name) }}
+{{ render_backlink(url_for('.view_current_version', snippet_id=snippet.id), snippet.name ~ ' (' ~ snippet.language_code ~ ')') }}
 {%- endblock %}
 
 {% block body %}
