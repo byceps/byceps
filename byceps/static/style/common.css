@@ -627,7 +627,8 @@ form .invalid {
 }
 
 form .invalid {
-  margin: calc(var(--padding) * -1 - 1px);
+  margin-block: 1rem;
+  margin-inline: calc(var(--padding) * -1 - 1px);
 }
 
 .form-errors {
