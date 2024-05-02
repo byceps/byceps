@@ -8,7 +8,7 @@
 
 {% include 'site/user/settings/_account.html' %}
 {% include 'site/user/settings/_details_personal.html' %}
-  {%- if newsletter_offered %}
+  {%- if newsletter_offered and not g.site.is_intranet %}
 {% include 'site/user/settings/_newsletter.html' %}
   {%- endif %}
 {%- include 'site/user/settings/_connected_external_accounts.html' %}
