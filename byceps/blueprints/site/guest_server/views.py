@@ -172,7 +172,7 @@ def server_view(server_id):
     if not admin_url_root:
         abort(500, 'Admin URL root not configured.')
 
-    url = f'https://{admin_url_root}/admin/guest_servers/servers/{server.id}'
+    url = f'https://{admin_url_root}/guest_servers/servers/{server.id}'
     return redirect(url)
 
 
