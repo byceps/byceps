@@ -118,25 +118,49 @@ a.box:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#header-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 1rem;
-  min-height: 48px;
-  justify-content: space-between;
-  padding: 4px var(--layout-gutter);
+.header-grid {
+  align-items: center;
+  display: grid;
+  gap: 0.25rem;
+  padding-inline: var(--layout-gutter);
 }
 
-#header-content .column {
-  align-self: center;
+.header-grid-cell-brand {
+  grid-area: brand;
 }
 
-#header-content :is(.column--brand, .column--user) {
-  flex: 0 0 auto;
+.header-grid-cell-search {
+  grid-area: search;
 }
 
-#header-content .column--form {
-  flex: 1 0 auto;
+.header-grid-cell-user {
+  grid-area: user;
+  justify-self: end;
+}
+
+@media (width < 36rem) { /* 576px / 16px */
+
+  .header-grid {
+    grid-template-areas:
+      "brand user"
+      "search search"
+      ;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    padding-block: 0 0.5rem;
+  }
+}
+
+@media (width >= 36rem) { /* 576px / 16px */
+
+  .header-grid {
+    grid-template-areas: "brand search user";
+    grid-template-columns: auto 1fr auto;
+  }
+
+  #header-content form {
+    max-width: 22rem;
+  }
 }
 
 #header-content .brand-text {
@@ -189,7 +213,6 @@ a.box:hover {
 
 #header-content form {
   margin-inline: auto;
-  max-width: 22rem;
 }
 
 #header-content form input {

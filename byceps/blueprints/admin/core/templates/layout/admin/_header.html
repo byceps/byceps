@@ -3,13 +3,13 @@
 
     <header id="header">
       <div id="header-content" class="container">
-        <div id="header-grid">
-          <div class="column column--brand">
+        <div class="header-grid">
+          <div class="header-grid-cell-brand">
 
             <a href="/" class="brand-text disguised">BYCEPS</a>
 
-          </div>{# .column #}
-          <div class="column column--form">
+          </div>
+          <div class="header-grid-cell-search">
 
             {%- if has_current_user_permission('user.view') %}
             <form action="{{ url_for('user_admin.index') }}" class="single-row">
@@ -18,12 +18,12 @@
             </form>
             {%- endif %}
 
-          </div>{# .column #}
-          <div class="column column--user">
+          </div>
+          <div class="header-grid-cell-user">
 
 {% include 'layout/admin/_current_user.html' %}
 
-          </div>{# .column #}
+          </div>
         </div>{# #header-grid #}
       </div>{# #header-content #}
     </header>
