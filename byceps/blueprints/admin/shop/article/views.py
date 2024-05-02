@@ -250,7 +250,7 @@ def create_form(shop_id, type_name, erroneous_form=None):
         erroneous_form
         if erroneous_form
         else ArticleCreateForm(
-            price_amount=Decimal('0.0'), tax_rate=Decimal('19.0')
+            shop.id, price_amount=Decimal('0.0'), tax_rate=Decimal('19.0')
         )
     )
     form.set_article_number_sequence_choices(article_number_sequences)
@@ -342,7 +342,7 @@ def create(shop_id, type_name):
     shop = _get_shop_or_404(shop_id)
     type_ = _get_article_type_or_400(type_name)
 
-    form = _get_create_form(type_, request)
+    form = _get_create_form(type_, shop.id, request)
 
     article_number_sequences = _get_active_article_number_sequences_for_shop(
         shop.id
@@ -415,13 +415,13 @@ def create(shop_id, type_name):
     return redirect_to('.view', article_id=article.id)
 
 
-def _get_create_form(type_: ArticleType, request):
+def _get_create_form(type_: ArticleType, shop_id: ShopID, request):
     if type_ == ArticleType.ticket:
         return TicketArticleCreateForm(request.form)
     elif type_ == ArticleType.ticket_bundle:
         return TicketBundleArticleCreateForm(request.form)
     else:
-        return ArticleCreateForm(request.form)
+        return ArticleCreateForm(shop_id, request.form)
 
 
 def _get_item_number(article_number_sequence_id) -> ArticleNumber:
@@ -527,7 +527,11 @@ def update_form(article_id, erroneous_form=None):
         data['available_until_date'] = available_until_local.date()
         data['available_until_time'] = available_until_local.time()
 
-    form = erroneous_form if erroneous_form else ArticleUpdateForm(data=data)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else ArticleUpdateForm(shop.id, article.name, data=data)
+    )
     form.tax_rate.data = article.tax_rate * TAX_RATE_DISPLAY_FACTOR
 
     return {
@@ -546,7 +550,7 @@ def update(article_id):
 
     shop = shop_service.get_shop(article.shop_id)
 
-    form = ArticleUpdateForm(request.form)
+    form = ArticleUpdateForm(shop.id, article.name, request.form)
     if not form.validate():
         return update_form(article_id, form)
 

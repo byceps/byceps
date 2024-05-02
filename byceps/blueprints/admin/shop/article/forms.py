@@ -29,6 +29,8 @@ from wtforms.validators import (
 
 from byceps.services.brand.models import BrandID
 from byceps.services.party import party_service
+from byceps.services.shop.article import article_service
+from byceps.services.shop.shop.models import ShopID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.user_badge.models import Badge
 from byceps.util.l10n import LocalizedForm
@@ -152,6 +154,10 @@ def _validate_availability_range(
 
 
 class ArticleCreateForm(_ArticleBaseForm):
+    def __init__(self, shop_id: ShopID, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._shop_id = shop_id
+
     article_number_sequence_id = SelectField(
         lazy_gettext('Article number sequence'), validators=[InputRequired()]
     )
@@ -162,6 +168,17 @@ class ArticleCreateForm(_ArticleBaseForm):
         choices = [(str(seq.id), seq.prefix) for seq in sequences]
         choices.insert(0, ('', '<' + pgettext('sequence', 'none') + '>'))
         self.article_number_sequence_id.choices = choices
+
+    @staticmethod
+    def validate_name(form, field):
+        name = field.data.strip()
+
+        if not article_service.is_name_available(form._shop_id, name):
+            raise ValidationError(
+                lazy_gettext(
+                    'This value is not available. Please choose another.'
+                )
+            )
 
 
 class TicketArticleCreateForm(ArticleCreateForm):
@@ -186,7 +203,23 @@ class TicketBundleArticleCreateForm(ArticleCreateForm):
 
 
 class ArticleUpdateForm(_ArticleBaseForm):
-    pass
+    def __init__(self, shop_id: ShopID, current_name: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._shop_id = shop_id
+        self._current_name = current_name
+
+    @staticmethod
+    def validate_name(form, field):
+        name = field.data.strip()
+
+        if name != form._current_name and not article_service.is_name_available(
+            form._shop_id, name
+        ):
+            raise ValidationError(
+                lazy_gettext(
+                    'This value is not available. Please choose another.'
+                )
+            )
 
 
 class ArticleAttachmentCreateForm(LocalizedForm):

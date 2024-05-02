@@ -313,6 +313,17 @@ def find_article_with_details(article_id: ArticleID) -> DbArticle | None:
     )
 
 
+def is_name_available(shop_id: ShopID, name: str) -> bool:
+    """Check if the name is yet unused."""
+    return not db.session.scalar(
+        select(
+            db.exists()
+            .where(DbArticle.shop_id == shop_id)
+            .where(db.func.lower(DbArticle.name) == name.lower())
+        )
+    )
+
+
 def find_attached_article(
     attached_article_id: AttachedArticleID,
 ) -> DbAttachedArticle | None:
