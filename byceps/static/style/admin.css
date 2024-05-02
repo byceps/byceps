@@ -142,6 +142,12 @@ a.box:hover {
 #header-content .brand-text {
   color: #eeeeee;
   font-size: 1.75rem; /* 28px / 16px */
+  text-decoration: none;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+#header-content .brand-text:hover {
+  color: #33aa88;
 }
 
 #header-content .current-user :is(.button, .button:hover, .dropdown-toggle) {
