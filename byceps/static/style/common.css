@@ -192,7 +192,7 @@ img {
 }
 
 .row.is-compact {
-  column-gap: 0.5rem;
+  gap: 0.5rem;
 }
 
 .row--equal-sized-centered-columns > * {
