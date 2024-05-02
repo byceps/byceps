@@ -22,7 +22,12 @@
 
 <div class="row row--space-between block">
   <div>
-    <h1 class="title">{{ page_title }}</h1>
+    <h1 class="title">
+      {{ page_title }}
+      {%- if timetable and timetable.hidden %}
+      {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+      {%- endif %}
+    </h1>
   </div>
 {%- if timetable and has_current_user_permission('timetable.update') %}
   <div>
