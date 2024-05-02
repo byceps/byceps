@@ -31,7 +31,7 @@
   </div>
 {%- if timetable and has_current_user_permission('timetable.update') %}
   <div>
-    <div class="button-row is-right-aligned">
+    <div class="button-row button-row--nowrap is-right-aligned">
       <a class="button" href="{{ url_for('.item_create_form', timetable_id=timetable.id) }}">{{ render_icon('add') }} <span>{{ _('Create item') }}</span></a>
     </div>
   </div>
@@ -45,8 +45,8 @@
       <th>{{ _('When?') }}</th>
       <th>{{ _('What?') }}</th>
       <th width="25%">{{ _('Where?') }}</th>
-      <th></th>
-      <th></th>
+      <th>{{ _('Link') }}</th>
+      <th>{{ _('Visibility') }}</th>
       <th></th>
     </tr>
   </thead>
