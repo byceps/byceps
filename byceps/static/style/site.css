@@ -142,17 +142,14 @@ form.board-posting-create-form-inline .label {
 
 /* board, tourneys */
 
-.user-comments {
-  margin: 20px 0;
+.user-comments,
+.user-comment:not(:last-child) {
+  margin-bottom: 1.5rem;
 }
 
 .user-comment {
   display: flex;
   flex-wrap: wrap;
-}
-
-.user-comment + .user-comment {
-  margin-top: 20px;
 }
 
 .user-comment-aside {
@@ -171,7 +168,6 @@ form.board-posting-create-form-inline .label {
     flex: 0 0 116px;
     flex-direction: column;
     row-gap: 0.5rem;
-    padding-bottom: 20px;
   }
 
   .user-comment-aside .creator .avatar {
