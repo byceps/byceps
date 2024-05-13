@@ -96,7 +96,7 @@ Copy the included example configuration file:
 
     $ cp config/apps_example.toml config/apps.toml
 
-- For a **local installation**, you can go with the examplary hostnames
+- For a **local installation**, you can go with the exemplary hostnames
   already defined in the example apps configuration file,
   ``config/apps_example.toml``, which are:
 
