@@ -284,7 +284,7 @@ def create_ticket_form(shop_id, erroneous_form=None):
         erroneous_form
         if erroneous_form
         else TicketArticleCreateForm(
-            price_amount=Decimal('0.0'), tax_rate=Decimal('19.0')
+            shop.id, price_amount=Decimal('0.0'), tax_rate=Decimal('19.0')
         )
     )
     form.set_article_number_sequence_choices(article_number_sequences)
@@ -319,7 +319,7 @@ def create_ticket_bundle_form(shop_id, erroneous_form=None):
         erroneous_form
         if erroneous_form
         else TicketBundleArticleCreateForm(
-            price_amount=Decimal('0.0'), tax_rate=Decimal('19.0')
+            shop.id, price_amount=Decimal('0.0'), tax_rate=Decimal('19.0')
         )
     )
     form.set_article_number_sequence_choices(article_number_sequences)
@@ -417,9 +417,9 @@ def create(shop_id, type_name):
 
 def _get_create_form(type_: ArticleType, shop_id: ShopID, request):
     if type_ == ArticleType.ticket:
-        return TicketArticleCreateForm(request.form)
+        return TicketArticleCreateForm(shop_id, request.form)
     elif type_ == ArticleType.ticket_bundle:
-        return TicketBundleArticleCreateForm(request.form)
+        return TicketBundleArticleCreateForm(shop_id, request.form)
     else:
         return ArticleCreateForm(shop_id, request.form)
 
