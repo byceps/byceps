@@ -1,0 +1,31 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/misc.html' import render_tag %}
+{% set page_title = _('Payment gateways') %}
+
+{% block body %}
+
+<h1 class="title">{{ page_title }} {{ render_extra_in_heading(payment_gateways|length) }}</h1>
+
+<table class="itemlist">
+  <thead>
+    <tr>
+      <th>{{ _('ID') }}</th>
+      <th>{{ _('Name') }}</th>
+      <th>{{ _('Status') }}</th>
+    </tr>
+  </thead>
+  {%- if payment_gateways %}
+  <tbody>
+    {%- for payment_gateway in payment_gateways|sort(attribute='name') %}
+    <tr>
+      <td>{{ payment_gateway.id }}</td>
+      <td>{{ payment_gateway.name }}</td>
+      <td>{{ render_tag(_('enabled'), class='color-success', icon='success') if payment_gateway.enabled else render_tag(_('disabled'), class='color-disabled', icon='disabled') }}</td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+  {%- endif %}
+</table>
+
+{%- endblock %}

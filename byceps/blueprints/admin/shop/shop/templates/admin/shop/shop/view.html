@@ -35,25 +35,6 @@
         </div>
 
       </div>
-      <div>
-
-        <div class="data-label">{{ _('Payment gateways') }}</div>
-        <div class="data-value">
-          {%- if payment_gateways %}
-          <table class="index">
-            {%- for payment_gateway in payment_gateways %}
-            <tr>
-              <td>{{ payment_gateway.name }}</td>
-              <td>{{ render_tag(_('enabled'), class='color-success', icon='success') if payment_gateway.enabled else render_tag(_('disabled'), class='color-disabled', icon='disabled') }}</td>
-            </tr>
-            {%- endfor %}
-          </table>
-          {%- else %}
-          {{ _('none')|dim }}
-          {%- endif %}
-        </div>
-
-      </div>
     </div>
   </div>
 
