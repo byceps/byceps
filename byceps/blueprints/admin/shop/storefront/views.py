@@ -44,8 +44,16 @@ def index_for_shop(shop_id):
     )
     order_number_prefixes_by_sequence_id = {s.id: s.prefix for s in sequences}
 
+    enabled_payment_gateways_by_storefront_id = (
+        payment_gateway_service.get_payment_gateways_enabled_for_storefronts(
+            shop.id
+        )
+    )
+
     storefronts_for_admin = storefront_service.to_storefronts_for_admin(
-        storefronts, order_number_prefixes_by_sequence_id
+        storefronts,
+        order_number_prefixes_by_sequence_id,
+        enabled_payment_gateways_by_storefront_id,
     )
 
     return {

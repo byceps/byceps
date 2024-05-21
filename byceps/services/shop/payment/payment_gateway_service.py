@@ -6,9 +6,13 @@ byceps.services.shop.payment.payment_gateway_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections import defaultdict
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront.dbmodels import DbStorefront
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.util.result import Err, Ok, Result
 
@@ -151,8 +155,8 @@ def enable_payment_gateway_for_storefront(
 
 def get_payment_gateways_enabled_for_storefront(
     storefront_id: StorefrontID,
-) -> list[PaymentGateway]:
-    """Return the payment gateways that are enabled for the storefront.
+) -> set[PaymentGateway]:
+    """Return the enabled payment gateways for the storefront.
 
     To be included, a payment gateway must be enabled and assigned to
     the storefront.
@@ -164,10 +168,38 @@ def get_payment_gateways_enabled_for_storefront(
         .filter(DbStorefrontPaymentGateway.storefront_id == storefront_id)
     ).all()
 
-    return [
+    return {
         _db_entity_to_payment_gateway(db_payment_gateway)
         for db_payment_gateway in db_payment_gateways
-    ]
+    }
+
+
+def get_payment_gateways_enabled_for_storefronts(
+    shop_id: ShopID,
+) -> dict[StorefrontID, set[PaymentGateway]]:
+    """Return the enabled payment gateways for storefronts of the shop.
+
+    To be included, a payment gateway must be enabled and assigned to
+    the storefront.
+    """
+    storefront_ids_and_db_payment_gateways = db.session.execute(
+        select(DbStorefrontPaymentGateway.storefront_id, DbPaymentGateway)
+        .join(DbStorefrontPaymentGateway)
+        .join(DbStorefront)
+        .filter(DbPaymentGateway.enabled == True)  # noqa: E712
+        .filter(DbStorefront.shop_id == shop_id)
+    ).all()
+
+    payment_gateways_by_storefront_id = defaultdict(list)
+    for (
+        storefront_id,
+        db_payment_gateway,
+    ) in storefront_ids_and_db_payment_gateways:
+        payment_gateways_by_storefront_id[storefront_id].append(
+            _db_entity_to_payment_gateway(db_payment_gateway)
+        )
+
+    return dict(payment_gateways_by_storefront_id)
 
 
 def is_payment_gateway_enabled_for_storefront(

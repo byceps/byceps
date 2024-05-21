@@ -1,5 +1,5 @@
 {% extends 'layout/admin/shop/storefront.html' %}
-{% from 'macros/admin/shop/storefront.html' import render_storefront_status %}
+{% from 'macros/admin/shop/storefront.html' import render_enabled_payment_gateways, render_storefront_status %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
 {% set page_title = _('Storefronts') %}
@@ -33,6 +33,8 @@
       <tr>
         <th>{{ _('ID') }}</th>
         <th>{{ _('Order number sequence') }}</th>
+        <th>{{ _('Catalog') }}</th>
+        <th>{{ _('Payment gateways') }}</th>
         <th>{{ _('Status') }}</th>
       </tr>
     </thead>
@@ -41,6 +43,8 @@
       <tr>
         <td><a href="{{ url_for('.view', storefront_id=storefront.id) }}"><strong>{{ storefront.id }}</strong></a></td>
         <td>{{ storefront.order_number_prefix }}</td>
+        <td>{{ storefront.catalog_id|fallback }}</td>
+        <td>{{ render_enabled_payment_gateways(storefront.enabled_payment_gateways) }}</td>
         <td>{{ render_storefront_status(storefront) }}</td>
       </tr>
       {%- endfor %}

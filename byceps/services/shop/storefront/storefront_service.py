@@ -166,6 +166,9 @@ def to_storefront_for_admin(
 def to_storefronts_for_admin(
     storefronts: Iterable[Storefront],
     order_number_prefixes_by_sequence_id: dict[OrderNumberSequenceID, str],
+    enabled_payment_gateways_by_storefront_id: dict[
+        StorefrontID, set[PaymentGateway]
+    ],
 ) -> list[StorefrontForAdmin]:
     return [
         to_storefront_for_admin(
@@ -173,7 +176,7 @@ def to_storefronts_for_admin(
             order_number_prefixes_by_sequence_id[
                 storefront.order_number_sequence_id
             ],
-            set(),
+            enabled_payment_gateways_by_storefront_id.get(storefront.id, set()),
         )
         for storefront in storefronts
     ]
