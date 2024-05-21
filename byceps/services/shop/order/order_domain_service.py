@@ -23,7 +23,7 @@ from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from .errors import (
-    CartEmpty,
+    CartEmptyError,
     OrderAlreadyCanceledError,
     OrderAlreadyMarkedAsPaidError,
 )
@@ -43,11 +43,11 @@ def place_order(
     orderer: Orderer,
     currency: Currency,
     cart: Cart,
-) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmpty]:
+) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmptyError]:
     """Place an order."""
     cart_items = cart.get_items()
     if not cart_items:
-        return Err(CartEmpty())
+        return Err(CartEmptyError())
 
     line_items = list(_build_incoming_line_items(cart_items))
 

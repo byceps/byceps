@@ -12,7 +12,7 @@ import pytest
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_domain_service
-from byceps.services.shop.order.errors import CartEmpty
+from byceps.services.shop.order.errors import CartEmptyError
 from byceps.services.shop.order.models.checkout import IncomingOrder
 from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import Orderer
@@ -47,7 +47,7 @@ def test_without_any_items(orderer: Orderer):
 
     result = place_order(orderer, empty_cart)
 
-    assert result == Err(CartEmpty())
+    assert result == Err(CartEmptyError())
 
 
 def test_with_single_item(orderer: Orderer, article1: Article):
@@ -96,7 +96,7 @@ def build_incoming_order(
 
 def place_order(
     orderer: Orderer, cart: Cart
-) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmpty]:
+) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmptyError]:
     return order_domain_service.place_order(
         datetime.utcnow(),
         SHOP_ID,
