@@ -4932,7 +4932,7 @@ msgstr "aktiv"
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:40
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:37
 msgid "Payment gateways"
-msgstr "Bezahldienst"
+msgstr "Bezahldienste"
 
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view_for_brand.html:13
 msgid "No shop exists for this brand."
