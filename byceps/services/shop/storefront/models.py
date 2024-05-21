@@ -24,3 +24,8 @@ class Storefront:
     catalog_id: CatalogID | None
     order_number_sequence_id: OrderNumberSequenceID
     closed: bool
+
+
+@dataclass(frozen=True)
+class StorefrontForAdmin(Storefront):
+    order_number_prefix: str

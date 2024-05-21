@@ -44,11 +44,14 @@ def index_for_shop(shop_id):
     )
     order_number_prefixes_by_sequence_id = {s.id: s.prefix for s in sequences}
 
+    storefronts_for_admin = storefront_service.to_storefronts_for_admin(
+        storefronts, order_number_prefixes_by_sequence_id
+    )
+
     return {
         'shop': shop,
         'brand': brand,
-        'storefronts': storefronts,
-        'order_number_prefixes_by_sequence_id': order_number_prefixes_by_sequence_id,
+        'storefronts': storefronts_for_admin,
     }
 
 
@@ -74,8 +77,12 @@ def view(storefront_id):
     )
     order_number_prefix = order_number_sequence.prefix
 
+    storefront_for_admin = storefront_service.to_storefront_for_admin(
+        storefront, order_number_prefix
+    )
+
     return {
-        'storefront': storefront,
+        'storefront': storefront_for_admin,
         'shop': shop,
         'brand': brand,
         'enabled_payment_gateways': enabled_payment_gateways,

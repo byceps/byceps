@@ -6,6 +6,8 @@ byceps.services.shop.storefront.storefront_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
@@ -14,7 +16,7 @@ from byceps.services.shop.order.models.number import OrderNumberSequenceID
 from byceps.services.shop.shop.models import ShopID
 
 from .dbmodels import DbStorefront
-from .models import Storefront, StorefrontID
+from .models import Storefront, StorefrontForAdmin, StorefrontID
 
 
 class UnknownStorefrontIdError(ValueError):
@@ -142,3 +144,31 @@ def _db_entity_to_storefront(db_storefront: DbStorefront) -> Storefront:
         order_number_sequence_id=db_storefront.order_number_sequence_id,
         closed=db_storefront.closed,
     )
+
+
+def to_storefront_for_admin(
+    storefront: Storefront, order_number_prefix: str
+) -> StorefrontForAdmin:
+    return StorefrontForAdmin(
+        id=storefront.id,
+        shop_id=storefront.shop_id,
+        catalog_id=storefront.catalog_id,
+        order_number_sequence_id=storefront.order_number_sequence_id,
+        closed=storefront.closed,
+        order_number_prefix=order_number_prefix,
+    )
+
+
+def to_storefronts_for_admin(
+    storefronts: Iterable[Storefront],
+    order_number_prefixes_by_sequence_id: dict[OrderNumberSequenceID, str],
+) -> list[StorefrontForAdmin]:
+    return [
+        to_storefront_for_admin(
+            storefront,
+            order_number_prefixes_by_sequence_id[
+                storefront.order_number_sequence_id
+            ],
+        )
+        for storefront in storefronts
+    ]
