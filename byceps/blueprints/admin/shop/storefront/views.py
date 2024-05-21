@@ -78,14 +78,13 @@ def view(storefront_id):
     order_number_prefix = order_number_sequence.prefix
 
     storefront_for_admin = storefront_service.to_storefront_for_admin(
-        storefront, order_number_prefix
+        storefront, order_number_prefix, enabled_payment_gateways
     )
 
     return {
         'storefront': storefront_for_admin,
         'shop': shop,
         'brand': brand,
-        'enabled_payment_gateways': enabled_payment_gateways,
         'order_number_prefix': order_number_prefix,
     }
 

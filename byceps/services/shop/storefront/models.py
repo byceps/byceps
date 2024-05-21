@@ -11,6 +11,7 @@ from typing import NewType
 
 from byceps.services.shop.catalog.models import CatalogID
 from byceps.services.shop.order.models.number import OrderNumberSequenceID
+from byceps.services.shop.payment.models import PaymentGateway
 from byceps.services.shop.shop.models import ShopID
 
 
@@ -29,3 +30,4 @@ class Storefront:
 @dataclass(frozen=True)
 class StorefrontForAdmin(Storefront):
     order_number_prefix: str
+    enabled_payment_gateways: set[PaymentGateway]
