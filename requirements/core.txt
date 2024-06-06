@@ -1,6 +1,6 @@
 babel==2.15.0
 bbcode==1.1.0
-blinker==1.8.1
+blinker==1.8.2
 bpython>=0.24
 click==8.1.7
 flask==3.0.3
