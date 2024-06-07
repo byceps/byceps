@@ -33,7 +33,7 @@
       {%- for category, ticket_count in categories_with_ticket_counts|sort(attribute='0.title') %}
         <tr>
           <td><strong>{{ category.title }}</strong><br><span class="dimmed">{{ category.id }}</span></td>
-          <td class="bignumber number">{{ ticket_count }}</td>
+          <td class="bignumber number"><a href="{{ url_for('ticketing_admin.index_for_party', party_id=party.id, category=category.id) }}">{{ ticket_count }}</a></td>
           <td>
             {%- if has_current_user_permission('ticketing.administrate') %}
             <div class="button-row is-compact is-right-aligned">
