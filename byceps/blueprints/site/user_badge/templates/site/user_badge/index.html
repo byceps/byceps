@@ -16,20 +16,18 @@
 
 <h1 class="title">{{ _('Badges') }}</h1>
 
-<ol class="itemlist">
+<table class="itemlist is-vcentered">
   {%- for badge in badges|sort(attribute='label') %}
-  <li>
-    <div class="row is-vcentered">
-      <div>{{ render_user_badge_linked(badge, 64) }}</div>
-      <div class="column--grow description">
-        <div class="badge-title">{{ badge.label }}</div>
-        {%- if badge.description %}
-        <div>{{ badge.description|safe }}</div>
-        {%- endif %}
-      </div>
-    </div>
-  </li>
+  <tr>
+    <td>{{ render_user_badge_linked(badge, 64) }}</td>
+    <td>
+      <div class="badge-title">{{ badge.label }}</div>
+      {%- if badge.description %}
+      <div>{{ badge.description|safe }}</div>
+      {%- endif %}
+    </td>
+  </tr>
   {%- endfor %}
-</ol>
+</table>
 
 {%- endblock %}
