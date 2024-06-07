@@ -19,10 +19,10 @@
   </div>
 </div>
 
-<div class="box">
-  {%- if badges_with_awarding_quantity %}
+{%- if badges_with_awarding_quantity %}
 {{ render_user_badges_list(badges_with_awarding_quantity) }}
-  {%- else %}
+{%- else %}
+<div class="box">
   {{ _('none')|dim }}
-  {%- endif %}
 </div>
+{%- endif %}
