@@ -26,7 +26,7 @@
       <div>
 
         <div class="data-label">{{ _('Category') }}</div>
-        <div class="data-value">{{ bundle.ticket_category.title }}</div>
+        <div class="data-value"><a href="{{ url_for('ticketing_category_admin.index', party_id=party.id) }}">{{ bundle.ticket_category.title }}</a></div>
 
       </div>
       <div>

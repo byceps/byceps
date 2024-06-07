@@ -70,7 +70,7 @@
     <div class="data-value">{{ ticket.created_at|datetimeformat }}</div>
 
     <div class="data-label">{{ _('Category') }}</div>
-    <div class="data-value">{{ ticket.category.title }}</div>
+    <div class="data-value"><a href="{{ url_for('ticketing_category_admin.index', party_id=party.id) }}">{{ ticket.category.title }}</a></div>
 
     <div class="data-label">{{ _('Bundle') }}</div>
     <div class="data-value">
