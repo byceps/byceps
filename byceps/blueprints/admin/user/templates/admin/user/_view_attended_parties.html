@@ -2,14 +2,14 @@
 
 <h2>{{ _('Attended Parties') }} {{ render_extra_in_heading(attended_parties|length) }}</h2>
 
+{%- if attended_parties %}
+<ol class="itemlist is-compact">
+  {%- for party in attended_parties %}
+  <li>{{ party.title }}</li>
+  {%- endfor %}
+</ol>
+{%- else %}
 <div class="box">
-  {%- if attended_parties %}
-  <ul class="compact">
-    {%- for party in attended_parties %}
-    <li>{{ party.title }}</li>
-    {%- endfor %}
-  </ul>
-  {%- else %}
   {{ _('none')|dim }}
-  {%- endif %}
 </div>
+{%- endif %}
