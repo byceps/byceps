@@ -109,7 +109,9 @@ def _render_view_area(area: SeatingArea) -> dict[str, Any]:
 @subnavigation_for_view('seating_plan')
 def manage_seats_in_area(slug):
     """Manage seats for assigned tickets in area."""
-    if not _is_seat_management_enabled():
+    seat_management_enabled = _is_seat_management_enabled()
+
+    if not seat_management_enabled:
         flash_error(
             gettext('Seat reservations cannot be changed at this time.')
         )
@@ -118,8 +120,6 @@ def manage_seats_in_area(slug):
     area = seating_area_service.find_area_for_party_by_slug(g.party_id, slug)
     if area is None:
         abort(404)
-
-    seat_management_enabled = _is_seat_management_enabled()
 
     seat_manager_id = None
     selected_ticket_id = None
