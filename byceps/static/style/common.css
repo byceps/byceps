@@ -387,6 +387,7 @@ ol.itemlist {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: fit-content;
 }
 
 ol.itemlist > li {
@@ -400,6 +401,10 @@ ol.itemlist:is(.itemlist--compact, .is-compact) {
 
 ol.itemlist > li:not(:first-child) {
   border-top: var(--itemlist-border-color) solid 1px;
+}
+
+ol.itemlist.is-wide {
+  width: 100%;
 }
 
 
