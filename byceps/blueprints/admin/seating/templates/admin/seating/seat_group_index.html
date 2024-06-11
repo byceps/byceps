@@ -13,21 +13,19 @@
     <thead>
       <tr>
         <th>{{ _('Area') }}</th>
-        <th>{{ _('ID') }}</th>
-        <th>{{ _('Description') }}</th>
+        <th>{{ _('Description') }}<br>{{ _('Seat ID') }}</th>
         <th>{{ _('Ticket category') }}</th>
       </tr>
     </thead>
     <tbody>
       {%- for group in groups|sort(attribute='title') %}
       <tr>
-        <td colspan="4"><strong>{{ group.title }}</strong></td>
+        <td colspan="3"><strong>{{ group.title }}</strong></td>
       </tr>
         {%- for seat in group.seats %}
       <tr>
         <td></td>
-        <td>{{ seat.id }}</td>
-        <td>{{ seat.label|fallback }}</td>
+        <td>{{ seat.label|fallback }}<br>{{ seat.id|dim }}</td>
         <td>{{ seat.category.title }}</td>
       </tr>
         {%- endfor %}
