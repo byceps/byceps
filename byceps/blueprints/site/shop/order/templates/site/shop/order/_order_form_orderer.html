@@ -3,7 +3,7 @@
     <h2>{{ _('Billing and shipping address') }}</h2>
     <div class="main-body-box">
       {{ form_field(form.company, caption=_('optional'), autofocus='autofocus') }}
-      <div class="row">
+      <div class="form-control-block row">
         <div class="column--grow">
           {{ form_field(form.first_name, maxlength=40) }}
         </div>
@@ -12,7 +12,7 @@
         </div>
       </div>
       {{ form_field(form.street, maxlength=40) }}
-      <div class="row">
+      <div class="form-control-block row">
         <div>
           {{ form_field(form.zip_code, size=5, maxlength=5) }}
         </div>
