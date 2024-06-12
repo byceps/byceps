@@ -22,7 +22,7 @@
     <div class="grid" style="--column-min-width: 10rem;">
       <div>
         <div class="data-label">{{ _('Shop') }}</div>
-        <div class="data-value"><a href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">{{ shop.title }}</a></div>
+        <div class="data-value"><a href="{{ url_for('shop_shop_admin.dashboard', shop_id=shop.id) }}">{{ shop.title }}</a></div>
       </div>
       <div>
         <div class="data-label">{{ _('Order number sequence') }}</div>
