@@ -11,27 +11,33 @@
   <h1 class="title">{{ _('Seat Groups') }} {{ render_extra_in_heading(groups|length) }}</h1>
 
   {%- if groups %}
+    {%- for group in groups|sort(attribute='title') %}
+  <h2 class="title">{{ group.title }}</h2>
+
+  <div class="block row">
+    <div>
+      <div class="data-label">{{ _('Ticket category') }}</div>
+      <div class="data-value">{{ group.ticket_category.title }}</div>
+    </div>
+    <div>
+      <div class="data-label">{{ _('Seats') }}</div>
+      <div class="data-value">{{ group.seat_quantity }}</div>
+    </div>
+  </div>
+
   <table class="itemlist is-vcentered is-wide">
     <thead>
       <tr>
-        <th>{{ _('Area') }}</th>
         <th>{{ _('Description') }}<br>{{ _('Seat ID') }}</th>
-        <th>{{ _('Ticket category') }}</th>
         <th>{{ _('Ticket code') }}</th>
         <th>{{ _('Ticket user') }}</th>
         <th>{{ _('Ticket owner') }}</th>
       </tr>
     </thead>
     <tbody>
-    {%- for group in groups|sort(attribute='title') %}
-      <tr>
-        <td colspan="6"><strong>{{ group.title }}</strong></td>
-      </tr>
       {%- for seat in group.seats %}
       <tr>
-        <td></td>
         <td>{{ seat.label|fallback }}<br>{{ seat.id|dim }}</td>
-        <td>{{ seat.category.title }}</td>
         {%- with ticket = seat.occupied_by_ticket %}
           {%- if ticket %}
         <td>
@@ -53,9 +59,9 @@
         {%- endwith %}
       </tr>
       {%- endfor %}
-    {%- endfor %}
     </tbody>
   </table>
+    {%- endfor %}
   {%- else %}
   <div class="box">
     <div class="dimmed-box centered">{{ _('No seat groups exist for this party.') }}</div>
