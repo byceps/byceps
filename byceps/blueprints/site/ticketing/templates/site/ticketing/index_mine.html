@@ -123,7 +123,7 @@
               {{ render_user_link(ticket.used_by) }}
               {%- else %}
               <div><div class="ticket-user-placeholder"></div></div>
-              {{ render_tag(_('available'), class='available') }}
+              {{ render_tag(_('available'), class='color-info') }}
               {%- endif %}
             </div>
           </div>
@@ -162,7 +162,7 @@
               {%- if ticket.occupied_seat -%}
               {{ render_seat_link(ticket.occupied_seat) }}
               {%- else -%}
-              {{ render_tag(_('no seat'), class='available') }}
+              {{ render_tag(_('no seat'), class='color-info') }}
               {%- endif -%}
             </div>
           </div>

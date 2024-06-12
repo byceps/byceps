@@ -49,7 +49,7 @@
           {%- if ticket.used_by -%}
           {{ render_user_microcard(ticket.used_by) }}
           {%- else -%}
-          {{ render_tag(_('available'), class='available') }}
+          {{ render_tag(_('available'), class='color-info') }}
           {%- endif -%}
         </td>
         <td>{{ render_user_microcard(ticket.owned_by, tiny_avatar=True) }}</td>
