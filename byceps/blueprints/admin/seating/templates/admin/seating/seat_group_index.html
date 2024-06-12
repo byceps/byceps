@@ -1,5 +1,7 @@
 {% extends 'layout/admin/seating.html' %}
+{% from 'macros/admin/user.html' import render_user_microcard %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page_party = party %}
 {% set current_tab = 'seat_groups' %}
 {% set page_title = [_('Seat Groups'), party.title] %}
@@ -15,21 +17,43 @@
         <th>{{ _('Area') }}</th>
         <th>{{ _('Description') }}<br>{{ _('Seat ID') }}</th>
         <th>{{ _('Ticket category') }}</th>
+        <th>{{ _('Ticket code') }}</th>
+        <th>{{ _('Ticket user') }}</th>
+        <th>{{ _('Ticket owner') }}</th>
       </tr>
     </thead>
     <tbody>
-      {%- for group in groups|sort(attribute='title') %}
+    {%- for group in groups|sort(attribute='title') %}
       <tr>
-        <td colspan="3"><strong>{{ group.title }}</strong></td>
+        <td colspan="6"><strong>{{ group.title }}</strong></td>
       </tr>
-        {%- for seat in group.seats %}
+      {%- for seat in group.seats %}
       <tr>
         <td></td>
         <td>{{ seat.label|fallback }}<br>{{ seat.id|dim }}</td>
         <td>{{ seat.category.title }}</td>
+        {%- with ticket = seat.occupied_by_ticket %}
+          {%- if ticket %}
+        <td>
+          <a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=ticket.id) }}"><strong>{{ ticket.code }}</strong></a>
+          {%- if ticket.revoked %}<br>{{ render_ticket_flag_revoked() }}{% endif -%}
+          {%- if ticket.user_checked_in %}<br>{{ render_ticket_flag_user_checked_in() }}{% endif -%}
+        </td>
+        <td>
+          {%- if ticket.used_by -%}
+          {{ render_user_microcard(ticket.used_by) }}
+          {%- else -%}
+          {{ render_tag(_('available'), class='available') }}
+          {%- endif -%}
+        </td>
+        <td>{{ render_user_microcard(ticket.owned_by, tiny_avatar=True) }}</td>
+          {%- else %}
+        <td colspan="3" class="centered">{{ render_tag(_('seat not assigned'), class='color-info') }}</td>
+          {%- endif %}
+        {%- endwith %}
       </tr>
-        {%- endfor %}
       {%- endfor %}
+    {%- endfor %}
     </tbody>
   </table>
   {%- else %}
