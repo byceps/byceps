@@ -127,7 +127,7 @@ img {
   .pagination,
   .subtitle,
   .tabs,
-  .title,
+  .title
 ):not(:last-child) {
   margin-bottom: 1.5rem;
 }
@@ -486,7 +486,7 @@ table:is(.index, .itemlist) > tfoot > tr > :is(th, td) {
 
 table:is(
   .index:is(.index--v-centered, .is-vcentered),
-  .itemlist:is(.itemlist--v-centered, .is-vcentered),
+  .itemlist:is(.itemlist--v-centered, .is-vcentered)
 ) :is(th, td) {
   vertical-align: middle;
 }
@@ -537,7 +537,7 @@ table.index .details {
 
 :is(
   .form-control-block,
-  .form-form-errors,
+  .form-form-errors
 ):not(:last-child) {
   margin-bottom: 1rem;
 }
