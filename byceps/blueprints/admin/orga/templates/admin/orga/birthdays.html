@@ -6,50 +6,38 @@
 {% set page_title = _('Upcoming birthdays') %}
 
 {% block head %}
-    <style>
-      ol.birthdays {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
+<style>
+.hastoday {
+  font-weight: bold;
+}
 
-      .birthdays li {
-        margin: 0.5rem 0;
-      }
-
-      .hastoday {
-        font-weight: bold;
-      }
-
-      .birthdays time {
-        cursor: help;
-        border-bottom: #666666 dotted 1px;
-      }
-    </style>
+.birthdays time {
+  cursor: help;
+  border-bottom: #666666 dotted 1px;
+}
+</style>
 {%- endblock %}
 
 {% block body %}
 
   <h1 class="title">{{ page_title }}</h1>
 
-  <div class="box">
-    {%- if orgas %}
-    <ol class="birthdays">
-    {%- for user, birthday in orgas %}
-      {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
-      <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
-        <strong>{{ render_user_avatar_and_admin_link(user, size=20) }}</strong>
-        {% if is_today %}{{ render_icon('birthday') }}{% endif %}
-        {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}
-        wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}
-        {{ render_random_age_adjective() }} {{ birthday.age if is_today else birthday.age + 1 }} Jahre alt.
-      </li>
-      {%- endwith %}
-    {%- endfor %}
-    </ol>
-    {%- else %}
-    <div class="dimmed-box centered">Es stehen keine Geburtstage von Organisatoren bevor.</div>
-    {%- endif %}
-  </div>
+  {%- if orgas %}
+  <ol class="itemlist birthdays">
+  {%- for user, birthday in orgas %}
+    {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
+    <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
+      <strong>{{ render_user_avatar_and_admin_link(user, size=24) }}</strong>
+      {% if is_today %}{{ render_icon('birthday') }}{% endif %}
+      {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}
+      wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}
+      {{ render_random_age_adjective() }} {{ birthday.age if is_today else birthday.age + 1 }} Jahre alt.
+    </li>
+    {%- endwith %}
+  {%- endfor %}
+  </ol>
+  {%- else %}
+  <div class="dimmed-box centered">Es stehen keine Geburtstage von Organisatoren bevor.</div>
+  {%- endif %}
 
 {%- endblock %}
