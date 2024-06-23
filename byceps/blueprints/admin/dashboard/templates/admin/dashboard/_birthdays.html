@@ -25,9 +25,9 @@
     {%- endwith %}
   {%- endfor %}
   </ol>
-
-  <div class="mt small" style="text-align: right;">
-    <a href="{{ url_for('orga_admin.birthdays') }}" class="disguised" style="display: block;">{{ _('All birthdays') }} &rarr;</a>
-  </div>
 {%- endcall %}
+</div>
+
+<div class="mt" style="text-align: right;">
+  <a class="dashboard-section-link" href="{{ url_for('orga_admin.birthdays') }}">{{ _('All birthdays') }} &rarr;</a>
 </div>

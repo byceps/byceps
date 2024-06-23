@@ -10,3 +10,7 @@
 {% include 'admin/dashboard/_recent_users.html' %}
   {{ render_bigstats_cell(uninitialized_user_count, ngettext('uninitialized user', 'uninitialized users', uninitialized_user_count), href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
 </div>
+
+<div class="mt" style="text-align: right;">
+  <a class="dashboard-section-link" href="{{ url_for('user_admin.index') }}">{{ _('All users') }} &rarr;</a>
+</div>
