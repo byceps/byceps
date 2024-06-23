@@ -5,6 +5,9 @@
 {% from 'macros/user.html' import render_user_avatar %}
 
 
+<h2>{{ _('Upcoming Birthdays') }}</h2>
+
+<div class="grid">
 {%- call render_cell('birthday', 'cell--wider') %}
   <ol class="birthdays mt">
   {%- for user, birthday in orgas_with_next_birthdays %}
@@ -27,3 +30,4 @@
     <a href="{{ url_for('orga_admin.birthdays') }}" class="disguised" style="display: block;">{{ _('All birthdays') }} &rarr;</a>
   </div>
 {%- endcall %}
+</div>

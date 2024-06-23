@@ -1,0 +1,12 @@
+{% from 'macros/admin/dashboard.html' import render_bigstats_cell, render_cell %}
+{% from 'macros/admin/user.html' import render_most_important_user_flag %}
+{% from 'macros/user.html' import render_user_avatar, render_user_screen_name %}
+
+
+<h2>{{ _('Users') }}</h2>
+
+<div class="grid">
+  {{ render_bigstats_cell(recent_users_count, ngettext('new user in the last 7 days', 'new users in the last 7 days', recent_users_count), href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
+{% include 'admin/dashboard/_recent_users.html' %}
+  {{ render_bigstats_cell(uninitialized_user_count, ngettext('uninitialized user', 'uninitialized users', uninitialized_user_count), href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
+</div>

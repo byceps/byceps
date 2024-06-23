@@ -1,5 +1,4 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/dashboard.html' import render_bigstats_cell %}
 {% from 'macros/misc.html' import render_notification_block %}
 {% set current_page = 'admin_dashboard_global' %}
 {% set page_title = _('Dashboard') %}
@@ -26,22 +25,10 @@
 
   <div class="row row--space-between row--wrap">
     <div style="flex: 1;">
-
-      <h2>{{ _('Users') }}</h2>
-      <div class="grid">
-        {{ render_bigstats_cell(recent_users_count, ngettext('new user in the last 7 days', 'new users in the last 7 days', recent_users_count), href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
-{% include 'admin/dashboard/_recent_users.html' %}
-        {{ render_bigstats_cell(uninitialized_user_count, ngettext('uninitialized user', 'uninitialized users', uninitialized_user_count), href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
-      </div>
-
+{% include 'admin/dashboard/_users.html' %}
     </div>
     <div style="flex: 1;">
-
-      <h2>{{ _('Upcoming Birthdays') }}</h2>
-      <div class="grid">
 {% include 'admin/dashboard/_birthdays.html' %}
-      </div>
-
     </div>
   </div>
 
