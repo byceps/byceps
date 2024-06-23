@@ -1,26 +1,29 @@
+{% from 'macros/admin/dashboard.html' import render_cell %}
 {% from 'macros/admin/orga.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
 {% from 'macros/admin/user.html' import render_user_admin_link %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_avatar %}
 
 
-<ol class="birthdays mt">
-{%- for user, birthday in orgas_with_next_birthdays %}
-  {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
-  <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
-    {{ render_user_avatar(user, size=32) }}
-    <div>
-      {{ render_user_admin_link(user) }}
-      {% if is_today %}{{ render_icon('birthday') }}{% endif %}
-      {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}
-      wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}
-      {{ render_random_age_adjective() }} {{ birthday.age if is_today else birthday.age + 1 }} Jahre alt.
-    </div>
-  </li>
-  {%- endwith %}
-{%- endfor %}
-</ol>
+{%- call render_cell('birthday', 'cell--wider') %}
+  <ol class="birthdays mt">
+  {%- for user, birthday in orgas_with_next_birthdays %}
+    {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
+    <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
+      {{ render_user_avatar(user, size=32) }}
+      <div>
+        {{ render_user_admin_link(user) }}
+        {% if is_today %}{{ render_icon('birthday') }}{% endif %}
+        {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}
+        wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}
+        {{ render_random_age_adjective() }} {{ birthday.age if is_today else birthday.age + 1 }} Jahre alt.
+      </div>
+    </li>
+    {%- endwith %}
+  {%- endfor %}
+  </ol>
 
-<div class="mt small" style="text-align: right;">
-  <a href="{{ url_for('orga_admin.birthdays') }}" class="disguised" style="display: block;">{{ _('All birthdays') }} &rarr;</a>
-</div>
+  <div class="mt small" style="text-align: right;">
+    <a href="{{ url_for('orga_admin.birthdays') }}" class="disguised" style="display: block;">{{ _('All birthdays') }} &rarr;</a>
+  </div>
+{%- endcall %}
