@@ -37,12 +37,12 @@ body {
 
 html {
   font-size: 16px;
-  text-rendering: optimizeLegibility;
 }
 
 body {
   font-size: 1rem; /* 16px */
   line-height: 1.5;
+  text-rendering: optimizeLegibility;
 }
 
 body,
