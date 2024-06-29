@@ -12,7 +12,7 @@ from datetime import datetime
 from urllib import parse
 
 from flask import current_app, g, redirect, request, url_for
-import requests
+import httpx
 
 from byceps.services.connected_external_accounts import (
     connected_external_accounts_service,
@@ -79,7 +79,7 @@ def connect_verify():
     }
 
     # Try to obtain access token with given authorization code.
-    token_response = requests.post(
+    token_response = httpx.post(
         API_URL_BASE + '/oauth2/token',
         auth=auth,
         data=token_request_data,
@@ -92,7 +92,7 @@ def connect_verify():
     # Get user info.
     access_token = reponse_token['access_token']
     headers = {'Authorization': f'Bearer {access_token}'}
-    user_response = requests.get(
+    user_response = httpx.get(
         API_URL_BASE + '/users/@me', headers=headers, timeout=10
     )
     user_response_data = user_response.json()

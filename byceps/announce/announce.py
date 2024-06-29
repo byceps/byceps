@@ -11,7 +11,7 @@ from http import HTTPStatus
 from typing import Any
 
 from flask import current_app
-import requests
+import httpx
 
 from byceps.events.base import _BaseEvent
 from byceps.services.webhooks import webhook_service
@@ -163,7 +163,7 @@ def announce(announcement_request: AnnouncementRequest) -> None:
 
 def call_webhook(announcement_request: AnnouncementRequest) -> None:
     """Send HTTP request to the webhook."""
-    response = requests.post(
+    response = httpx.post(
         announcement_request.url,
         json=announcement_request.data,
         timeout=DEFAULT_WEBHOOK_TIMEOUT,

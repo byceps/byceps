@@ -7,6 +7,7 @@ flask==3.0.3
 flask-babel==4.0.0
 flask-sqlalchemy==3.1.1
 hiredis==2.3.2
+httpx[http2]==0.27.0
 itsdangerous==2.2.0
 jinja2==3.1.4
 markupsafe==2.1.5
@@ -17,7 +18,6 @@ pydantic==2.7.4
 py-moneyed==3.0
 qrcode==7.4.2
 redis==5.0.7
-requests==2.32.3
 rq==1.16.2
 rq-dashboard==0.7.1.2
 rtoml==0.11.0
