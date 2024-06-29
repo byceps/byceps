@@ -3,6 +3,7 @@
     {%- if image.alt_text %} alt="{{ image.alt_text }}"{% endif -%}
     {%- if width %} width="{{ width }}"{% endif -%}
     {%- if height %} height="{{ height }}"{% endif -%}
+    {{- ' loading="lazy"'|safe -}}
   >
   {%- if image.caption %}
   <figcaption{% if width %} style="max-width: {{ width }}px;"{% endif %}>

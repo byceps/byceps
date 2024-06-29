@@ -10,7 +10,7 @@
       {%- if teaser.featured_image %}
         {%- with featured_image = teaser.featured_image %}
       <div class="card-image">
-        <img src="{{ featured_image.url_path }}"{% if featured_image.alt_text %} alt="{{ featured_image.alt_text }}"{% endif %}>
+        <img src="{{ featured_image.url_path }}"{% if featured_image.alt_text %} alt="{{ featured_image.alt_text }}"{% endif %} loading="lazy">
       </div>
         {%- endwith %}
       {%- endif %}
