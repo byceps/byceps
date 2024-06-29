@@ -81,37 +81,7 @@ a.dashboard-section-link:hover {
 }
 
 
-/* fancy list  */
-
-ol.fancy-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.fancy-list li {
-  line-height: 1.3;
-  margin: -0.5rem 0;
-}
-
-.fancy-list li + li {
-  margin-top: 0.25rem;
-}
-
-.fancy-list a {
-  border-color: transparent;
-  border-radius: var(--border-radius);
-  border-style: solid;
-  border-width: 1px;
-  display: block;
-  margin: 0 -0.5rem;
-  padding: 0.5rem;
-}
-
-.fancy-list a:hover {
-  background-color: #eeeeee;
-  border-color: #cccccc;
-}
+/* recent users */
 
 .supplement {
   color: #888888;

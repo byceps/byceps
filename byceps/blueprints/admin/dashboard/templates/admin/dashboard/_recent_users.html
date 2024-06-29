@@ -3,11 +3,11 @@
 {% from 'macros/user.html' import render_user_avatar, render_user_screen_name %}
 
 
-{%- call render_cell('users', 'cell--higher') %}
+{%- call render_cell(none, 'cell--higher', boxed=false) %}
   <div class="cell-label">{{ _('Newest Users') }}</div>
   <div class="mt">
     {%- if recent_users %}
-    <ol class="fancy-list">
+    <ol class="itemlist is-linked is-wide recent-users">
       {%- for user in recent_users %}
       <li>
         <a href="{{ url_for('user_admin.view', user_id=user.id) }}">
