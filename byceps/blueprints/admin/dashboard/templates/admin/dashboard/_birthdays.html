@@ -8,8 +8,8 @@
 <h2>{{ _('Upcoming Birthdays') }}</h2>
 
 <div class="grid">
-{%- call render_cell('birthday', 'cell--wider') %}
-  <ol class="birthdays mt">
+{%- call render_cell('birthday', 'cell--wider', boxed=false) %}
+  <ol class="itemlist is-wide birthdays">
   {%- for user, birthday in orgas_with_next_birthdays %}
     {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
     <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>

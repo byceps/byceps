@@ -122,19 +122,9 @@ ol.fancy-list {
 
 /* birthdays */
 
-ol.birthdays {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
 .birthdays li {
   align-items: center;
   display: flex;
-}
-
-.birthdays li + li {
-  margin-top: 10px;
 }
 
 .birthdays .hastoday {
