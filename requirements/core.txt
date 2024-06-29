@@ -25,7 +25,7 @@ schwifty==2024.6.1
 sentry-sdk==1.45.0
 sqlalchemy==2.0.31
 structlog==24.2.0
-tenacity==8.3.0
+tenacity==8.4.2
 uuid6==2024.01.12
 werkzeug==3.0.3
 wtforms==3.1.2
