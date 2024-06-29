@@ -47,7 +47,7 @@ a.dashboard-section-link:hover {
   top: 0;
 }
 
-.cell .box > :not(.cell-icon) {
+.cell :is(.box, .cell-icon-wrapper) {
   /* Keep cell icon in the background. */
   position: relative;
 }
