@@ -402,6 +402,19 @@ ol.itemlist > li:not(:first-child) {
   border-top: var(--itemlist-border-color) solid 1px;
 }
 
+ol.itemlist.is-linked > li {
+  padding: 0;
+}
+
+ol.itemlist.is-linked > li > a {
+  display: block;
+  padding: var(--item-padding-vertical) var(--item-padding-horizontal);
+}
+
+ol.itemlist.is-linked > li > a:hover {
+  background-color: #eeeeee;
+}
+
 ol.itemlist.is-wide {
   width: 100%;
 }
