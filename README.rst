@@ -109,3 +109,20 @@ BYCEPS is licensed under the `BSD 3-Clause "New" or "Revised" License
 <https://choosealicense.com/licenses/bsd-3-clause/>`_.
 
 The license text is provided in the `LICENSE <LICENSE>`_ file.
+
+
+Express Your Appreciation
+=========================
+
+Computers and LAN parties and the Internet are great.
+
+If you appreciate BYCEPS, please consider `gifting trees to the world
+<https://ecologi.com/homeworkprod>`_ via Ecologi to compensate nature a
+bit for the environmental impact of us enjoying LAN parties (or whatever
+reason makes sense to you).
+
+(And if you choose to sign up yourself, `this referral link
+<https://ecologi.com/homeworkprod?direct=true&r=659932316b887049d65bb503>`_
+will yield some extra sparkling trees for both of us.)
+
+Thank you.
