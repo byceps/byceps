@@ -47,6 +47,9 @@ def collect_metrics() -> Iterator[Metric]:
     yield from _collect_consent_metrics()
     yield from _collect_shop_ordered_article_metrics(active_shop_ids)
     yield from _collect_shop_order_metrics(active_shops)
+    # Copy and uncomment the following line to add all orders with the
+    # given order number prefix (usually one per party) to the metrics.
+    #yield from _collect_shop_order_metrics_for_order_number_prefix('LAN23-B')
     yield from _collect_seating_metrics(active_party_ids)
     yield from _collect_ticket_metrics(active_parties)
     yield from _collect_user_metrics()
@@ -116,6 +119,29 @@ def _collect_shop_order_metrics(shops: list[Shop]) -> Iterator[Metric]:
                     Label('payment_state', payment_state.name),
                 ],
             )
+
+
+def _collect_shop_order_metrics_for_order_number_prefix(
+    order_number_prefix: str,
+) -> Iterator[Metric]:
+    """Provide order counts grouped by payment state for orders with the
+    order number prefix.
+    """
+    order_counts_per_payment_state = (
+        order_service.count_orders_per_payment_state_via_order_prefix(
+            order_number_prefix
+        )
+    )
+
+    for payment_state, quantity in order_counts_per_payment_state.items():
+        yield Metric(
+            'shop_order_quantity_by_order_number_prefix',
+            quantity,
+            labels=[
+                Label('order_number_prefix', order_number_prefix),
+                Label('payment_state', payment_state.name),
+            ],
+        )
 
 
 def _collect_seating_metrics(

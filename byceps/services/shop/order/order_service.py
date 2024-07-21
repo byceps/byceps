@@ -353,6 +353,25 @@ def count_orders_per_payment_state(shop_id: ShopID) -> dict[PaymentState, int]:
     return counts_by_payment_state
 
 
+def count_orders_per_payment_state_via_order_prefix(
+    order_number_prefix: str,
+) -> dict[PaymentState, int]:
+    """Count orders with the order number prefix, grouped by payment state."""
+    counts_by_payment_state = dict.fromkeys(PaymentState, 0)
+
+    rows = db.session.execute(
+        select(DbOrder._payment_state, db.func.count(DbOrder.id))
+        .filter(DbOrder.order_number.like(order_number_prefix + '%'))
+        .group_by(DbOrder._payment_state)
+    ).all()
+
+    for payment_state_str, count in rows:
+        payment_state = PaymentState[payment_state_str]
+        counts_by_payment_state[payment_state] = count
+
+    return counts_by_payment_state
+
+
 def _find_order_entity(order_id: OrderID) -> DbOrder | None:
     """Return the order database entity with that id, or `None` if not
     found.
