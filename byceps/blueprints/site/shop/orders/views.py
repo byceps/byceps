@@ -8,7 +8,7 @@ byceps.blueprints.site.shop.orders.views
 
 from decimal import Decimal
 
-from flask import abort, g, request
+from flask import abort, current_app, g, request
 from flask_babel import gettext
 import structlog
 
@@ -25,6 +25,7 @@ from byceps.services.shop.order import order_payment_service, order_service
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import OrderAlreadyCanceledError
 from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.payment import payment_gateway_service
 from byceps.services.shop.storefront import storefront_service
 from byceps.services.user import user_service
 from byceps.signals import shop as shop_signals
@@ -85,12 +86,26 @@ def view(order_id):
         # Order does not belong to the current site's storefront.
         abort(404)
 
+    stripe_enabled = (
+        payment_gateway_service.is_payment_gateway_enabled_for_storefront(
+            'stripe', storefront.id
+        )
+    )
+    if stripe_enabled:
+        stripe_publishable_key = current_app.config.get(
+            'STRIPE_PUBLISHABLE_KEY'
+        )
+    else:
+        stripe_publishable_key = None
+
     cancellation_request = cancellation_request_service.get_request_for_order(
         order.id
     )
 
     template_context = {
         'order': order,
+        'stripe_enabled': stripe_enabled,
+        'stripe_publishable_key': stripe_publishable_key,
         'render_order_payment_method': _find_order_payment_method_label,
         'cancellation_request': cancellation_request,
     }

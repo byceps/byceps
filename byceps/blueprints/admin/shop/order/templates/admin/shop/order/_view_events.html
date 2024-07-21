@@ -27,6 +27,12 @@
         {%- endcall %}
       {%- elif log_entry.event_type == 'order-paid' %}
         {%- call render_log_entry('success', log_entry.occurred_at) %}
+          {%- set payment_method %}
+            {{ render_order_payment_method(log_entry.data.payment_method) }}
+            {%- if 'stripe_payment_id' in log_entry.data %}
+            (<a href="https://dashboard.stripe.com/payments/{{ log_entry.data.stripe_payment_id }}">{{ log_entry.data.stripe_payment_id }}</a>)
+            {%- endif %}
+          {%- endset %}
           {{ _(
             '%(initiator)s has marked order <a href="%(order_url)s">%(order_number)s</a> as %(new_payment_state)s via %(payment_method)s (previously %(former_payment_state)s).',
             initiator=render_log_user(log_entry.initiator),
@@ -34,7 +40,7 @@
             order_number=log_entry.order_number,
             former_payment_state=render_order_payment_state(PaymentState[log_entry.data.former_payment_state]),
             new_payment_state=render_order_payment_state(PaymentState.paid),
-            payment_method=render_order_payment_method(log_entry.data.payment_method),
+            payment_method=payment_method,
           ) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'order-canceled-after-paid' %}

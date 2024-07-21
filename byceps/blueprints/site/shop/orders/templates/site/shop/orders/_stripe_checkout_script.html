@@ -1,0 +1,40 @@
+{%- if order.is_open and stripe_enabled %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  (function () {
+    function unhideElement(id) {
+      const element = document.getElementById(id);
+      element.hidden = false;
+    }
+
+    const stripe = Stripe('{{ stripe_publishable_key }}');
+    const checkoutButton = document.getElementById('stripe-checkout-button');
+
+    checkoutButton.addEventListener('click', function () {
+      checkoutButton.disabled = true;
+
+      fetch("{{ url_for('shop_payment_stripe.create_checkout_session') }}", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({shop_order_id: '{{ order.id }}'})
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (session) {
+          return stripe.redirectToCheckout({sessionId: session.id});
+        })
+        .then(function (result) {
+          if (result.error) {
+            unhideElement('stripe-failed-notice');
+          }
+        })
+        .catch(function (error) {
+          unhideElement('stripe-failed-notice');
+        });
+    });
+  })();
+</script>
+{%- endif %}

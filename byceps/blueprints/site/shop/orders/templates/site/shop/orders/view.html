@@ -67,6 +67,30 @@
     {%- else %}
 {{ render_notification(_('Payment instructions not found.'), category='danger', icon='warning') }}
     {%- endif %}
+
+    {%- if stripe_enabled %}
+  <h2>Weitere Zahlungsarten</h2>
+  <div class="main-body-box">
+
+      {%- if stripe_enabled %}
+    <p>Über den Zahlungsdienstleister Stripe kannst du folgende Zahlungsarten nutzen, um die Bestellung in Echtzeit zu bezahlen:</p>
+    <ul>
+      <li>Kreditkarte (auch Apple Pay und Google Pay)</li>
+      <li>Giropay (für deutsche Girokonten)</li>
+    </ul>
+    <p>Sind in der Bestellung Tickets enthalten, werden diese sofort freigeschaltet.</p>
+    <div id="stripe-failed-notice" hidden>
+    {{ render_notification('Der Bezahlvorgang konnte nicht gestartet werden. Bitte probiere es später erneut.', category='danger', icon='warning') }}
+    </div>
+    <fieldset class="buttons">
+      <div class="button-row is-compact is-hcentered">
+        <button id="stripe-checkout-button" class="button">{{ render_icon('payment') }} <span>Echtzeitzahlung starten</span></button>
+      </div>
+    </fieldset>
+      {%- endif %}
+  </div>
+    {%- endif %}
+
   {%- endif %}
 
   <h2>{{ _('Billing and shipping address') }}</h2>
@@ -97,4 +121,8 @@
   <div><a class="button" href="{{ url_for('.request_cancellation_choices', order_id=order.id) }}"><span>Tickets zurückgeben</span> {{ render_icon('chevron-right') }}</a></div>
   {%- endif %}
 
+{%- endblock %}
+
+{% block scripts %}
+{%- include 'site/shop/orders/_stripe_checkout_script.html' %}
 {%- endblock %}
