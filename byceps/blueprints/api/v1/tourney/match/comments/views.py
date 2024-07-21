@@ -173,7 +173,9 @@ def create():
         match.id, creator, body
     )
 
-    tourney_signals.match_comment_created.send(None, comment_id=comment.id)
+    tourney_signals.match_comment_created.send(
+        None, comment_id=comment.id, creator_id=creator.id, match_id=match.id
+    )
 
     return url_for('.view', comment_id=comment.id)
 
