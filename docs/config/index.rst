@@ -196,6 +196,18 @@ Supported Configuration Values
 
     Default: ``False``
 
+.. py:data:: STRIPE_PUBLISHABLE_KEY
+
+    The publishable key for payments via Stripe.
+
+.. py:data:: STRIPE_SECRET_KEY
+
+    The secret key for payments via Stripe.
+
+.. py:data:: STRIPE_WEBHOOK_SECRET
+
+    The webhook secret for payments via Stripe.
+
 .. py:data:: STYLE_GUIDE_ENABLED
 
     Enable BYCEPS' style guide, available at ``/style_guide/`` both in
