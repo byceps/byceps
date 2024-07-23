@@ -14,10 +14,6 @@ from dataclasses import dataclass
 import os
 
 import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
-from sentry_sdk.integrations.redis import RedisIntegration
-from sentry_sdk.integrations.rq import RqIntegration
-from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 import structlog
 
 
@@ -77,12 +73,6 @@ def configure_sentry(config: SentryAppConfig) -> None:
     sentry_sdk.init(
         dsn=config.dsn,
         environment=config.environment,
-        integrations=[
-            FlaskIntegration(),
-            RedisIntegration(),
-            RqIntegration(),
-            SqlalchemyIntegration(),
-        ],
     )
 
     sentry_sdk.set_tag('app_mode', config.app_mode)
