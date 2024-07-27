@@ -195,8 +195,8 @@ def _occupy_seats(
     db_seats = _sort_seats(db_seats)
     db_tickets = _sort_tickets(db_tickets)
 
-    for seat, ticket in zip(db_seats, db_tickets, strict=True):
-        ticket.occupied_seat = seat
+    for db_seat, db_ticket in zip(db_seats, db_tickets, strict=True):
+        db_ticket.occupied_seat = db_seat
 
 
 def _sort_seats(db_seats: Sequence[DbSeat]) -> list[DbSeat]:
