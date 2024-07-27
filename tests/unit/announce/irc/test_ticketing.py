@@ -26,7 +26,7 @@ from .helpers import assert_text
 def test_ticket_checked_in(
     app: Flask,
     now: datetime,
-    admin: EventUser,
+    event_admin: EventUser,
     make_event_user,
     webhook_for_irc,
 ):
@@ -36,7 +36,7 @@ def test_ticket_checked_in(
 
     event = TicketCheckedInEvent(
         occurred_at=now,
-        initiator=admin,
+        initiator=event_admin,
         ticket_id=TicketID(generate_uuid()),
         ticket_code=TicketCode('GTFIN'),
         occupied_seat_id=None,
@@ -53,8 +53,8 @@ def test_single_ticket_sold(
     get_ticket_sale_stats_mock,
     app: Flask,
     now: datetime,
-    admin: EventUser,
-    party: EventParty,
+    event_admin: EventUser,
+    event_party: EventParty,
     make_event_user,
     webhook_for_irc,
 ):
@@ -70,8 +70,8 @@ def test_single_ticket_sold(
 
     event = TicketsSoldEvent(
         occurred_at=now,
-        initiator=admin,
-        party=party,
+        initiator=event_admin,
+        party=event_party,
         owner=make_event_user(screen_name='Neuling'),
         quantity=1,
     )
@@ -86,8 +86,8 @@ def test_multiple_tickets_sold(
     get_ticket_sale_stats_mock,
     app: Flask,
     now: datetime,
-    admin: EventUser,
-    party: EventParty,
+    event_admin: EventUser,
+    event_party: EventParty,
     make_event_user,
     webhook_for_irc,
 ):
@@ -103,8 +103,8 @@ def test_multiple_tickets_sold(
 
     event = TicketsSoldEvent(
         occurred_at=now,
-        initiator=admin,
-        party=party,
+        initiator=event_admin,
+        party=event_party,
         owner=make_event_user(screen_name='TreuerKäufer'),
         quantity=3,
     )
@@ -118,10 +118,10 @@ def test_multiple_tickets_sold(
 
 
 @pytest.fixture(scope='module')
-def admin(make_event_user) -> EventUser:
+def event_admin(make_event_user) -> EventUser:
     return make_event_user(screen_name='TicketingAdmin')
 
 
 @pytest.fixture(scope='module')
-def party(make_event_party) -> EventParty:
+def event_party(make_event_party) -> EventParty:
     return make_event_party()

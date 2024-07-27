@@ -29,9 +29,9 @@ SERVER_ID = ServerID(generate_uuid())
 def test_guest_server_registered(
     app: Flask,
     now: datetime,
-    admin: EventUser,
-    owner: EventUser,
-    party: EventParty,
+    event_admin: EventUser,
+    event_owner: EventUser,
+    event_party: EventParty,
     webhook_for_irc,
 ):
     expected_text = (
@@ -41,9 +41,9 @@ def test_guest_server_registered(
 
     event = GuestServerRegisteredEvent(
         occurred_at=now,
-        initiator=admin,
-        party=party,
-        owner=owner,
+        initiator=event_admin,
+        party=event_party,
+        owner=event_owner,
         server_id=SERVER_ID,
     )
 
@@ -55,16 +55,16 @@ def test_guest_server_registered(
 def test_guest_server_approved(
     app: Flask,
     now: datetime,
-    admin: EventUser,
-    owner: EventUser,
+    event_admin: EventUser,
+    event_owner: EventUser,
     webhook_for_irc,
 ):
     expected_text = 'Admin has approved a guest server owned by Owner.'
 
     event = GuestServerApprovedEvent(
         occurred_at=now,
-        initiator=admin,
-        owner=owner,
+        initiator=event_admin,
+        owner=event_owner,
         server_id=SERVER_ID,
     )
 
@@ -76,16 +76,16 @@ def test_guest_server_approved(
 def test_guest_server_checked_in(
     app: Flask,
     now: datetime,
-    admin: EventUser,
-    owner: EventUser,
+    event_admin: EventUser,
+    event_owner: EventUser,
     webhook_for_irc,
 ):
     expected_text = 'Admin has checked in a guest server owned by Owner.'
 
     event = GuestServerCheckedInEvent(
         occurred_at=now,
-        initiator=admin,
-        owner=owner,
+        initiator=event_admin,
+        owner=event_owner,
         server_id=SERVER_ID,
     )
 
@@ -97,16 +97,16 @@ def test_guest_server_checked_in(
 def test_guest_server_checked_out(
     app: Flask,
     now: datetime,
-    admin: EventUser,
-    owner: EventUser,
+    event_admin: EventUser,
+    event_owner: EventUser,
     webhook_for_irc,
 ):
     expected_text = 'Admin has checked out a guest server owned by Owner.'
 
     event = GuestServerCheckedOutEvent(
         occurred_at=now,
-        initiator=admin,
-        owner=owner,
+        initiator=event_admin,
+        owner=event_owner,
         server_id=SERVER_ID,
     )
 
@@ -119,15 +119,15 @@ def test_guest_server_checked_out(
 
 
 @pytest.fixture(scope='module')
-def admin(make_event_user) -> EventUser:
+def event_admin(make_event_user) -> EventUser:
     return make_event_user(screen_name='Admin')
 
 
 @pytest.fixture(scope='module')
-def owner(make_event_user) -> EventUser:
+def event_owner(make_event_user) -> EventUser:
     return make_event_user(screen_name='Owner')
 
 
 @pytest.fixture(scope='module')
-def party(make_event_party) -> EventParty:
+def event_party(make_event_party) -> EventParty:
     return make_event_party(title='ACMECon 2014')
