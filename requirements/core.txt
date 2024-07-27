@@ -26,7 +26,7 @@ sentry-sdk[flask,rq,sqlalchemy]==2.11.0
 sqlalchemy==2.0.31
 stripe==5.4.0
 structlog==24.4.0
-tenacity==8.4.2
+tenacity==8.5.0
 uuid6==2024.01.12
 werkzeug==3.0.3
 wtforms==3.1.2
