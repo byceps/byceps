@@ -14,7 +14,7 @@ markupsafe==2.1.5
 mistletoe==1.4.0
 pillow==10.4.0
 psycopg[binary]==3.2.1
-pydantic==2.7.4
+pydantic==2.8.2
 py-moneyed==3.0
 qrcode==7.4.2
 redis==5.0.7
