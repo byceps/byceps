@@ -197,6 +197,14 @@ def _occupy_seats(
 ) -> Result[None, SeatingError]:
     """Occupy all seats in the group with all tickets from the bundle."""
     db_seats = _sort_seats(db_seats)
+    for db_seat in db_seats:
+        already_occupying_ticket = db_seat.occupied_by_ticket
+        if already_occupying_ticket:
+            return Err(
+                SeatingError(
+                    f'Seat {db_seat.id} is already occupied by ticket {already_occupying_ticket.id}; seat cannot be occupied.'
+                )
+            )
 
     db_tickets = _sort_tickets(db_tickets)
     for db_ticket in db_tickets:
