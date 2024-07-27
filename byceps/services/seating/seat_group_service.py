@@ -93,7 +93,9 @@ def occupy_seat_group(
     db_occupancy = DbSeatGroupOccupancy(db_seat_group.id, db_ticket_bundle.id)
     db.session.add(db_occupancy)
 
-    _occupy_seats(db_seats, db_tickets)
+    occupy_seats_result = _occupy_seats(db_seats, db_tickets)
+    if occupy_seats_result.is_err():
+        return Err(occupy_seats_result.unwrap_err())
 
     db.session.commit()
 
@@ -132,7 +134,9 @@ def switch_seat_group(
 
     db_occupancy.seat_group_id = db_to_group.id
 
-    _occupy_seats(db_seats, db_tickets)
+    occupy_seats_result = _occupy_seats(db_seats, db_tickets)
+    if occupy_seats_result.is_err():
+        return Err(occupy_seats_result.unwrap_err())
 
     db.session.commit()
 
@@ -190,13 +194,23 @@ def _ensure_actual_quantities_match(
 
 def _occupy_seats(
     db_seats: Sequence[DbSeat], db_tickets: Sequence[DbTicket]
-) -> None:
+) -> Result[None, SeatingError]:
     """Occupy all seats in the group with all tickets from the bundle."""
     db_seats = _sort_seats(db_seats)
+
     db_tickets = _sort_tickets(db_tickets)
+    for db_ticket in db_tickets:
+        if db_ticket.revoked:
+            return Err(
+                SeatingError(
+                    f'Ticket {db_ticket.id} is revoked; it cannot be used to occupy a seat.'
+                )
+            )
 
     for db_seat, db_ticket in zip(db_seats, db_tickets, strict=True):
         db_ticket.occupied_seat = db_seat
+
+    return Ok(None)
 
 
 def _sort_seats(db_seats: Sequence[DbSeat]) -> list[DbSeat]:
