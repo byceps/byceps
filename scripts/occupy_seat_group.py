@@ -59,7 +59,17 @@ def validate_ticket_bundle(
 @click.argument('seat_group', callback=validate_seat_group)
 @click.argument('ticket_bundle', callback=validate_ticket_bundle)
 def execute(seat_group, ticket_bundle) -> None:
-    seat_group_service.occupy_seat_group(seat_group, ticket_bundle)
+    occupy_result = seat_group_service.occupy_seat_group(
+        seat_group, ticket_bundle
+    )
+
+    if occupy_result.is_err():
+        error_str = occupy_result.unwrap_err().message
+        click.secho(
+            f'Group "{seat_group.title}" could not be occupied: {error_str}',
+            fg='red',
+        )
+        return
 
     click.secho('Done.', fg='green')
 

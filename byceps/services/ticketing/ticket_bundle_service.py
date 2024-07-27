@@ -84,7 +84,12 @@ def revoke_bundle(
         )
     )
     if seat_group_id is not None:
-        seat_group_service.release_seat_group(seat_group_id)
+        release_result = seat_group_service.release_seat_group(seat_group_id)
+        if release_result.is_err():
+            error_msg = release_result.unwrap_err().message
+            raise ValueError(
+                f'Could not release seat group {seat_group_id}: {error_msg}'
+            )
 
     for db_ticket in db_bundle.tickets:
         db_ticket.revoked = True

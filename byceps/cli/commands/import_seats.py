@@ -115,9 +115,19 @@ def _import_seat_groups(
             seats_by_group_title[group_title].append(seat)
 
     for group_title, seats in seats_by_group_title.items():
-        db_group = seat_group_service.create_seat_group(
+        group_creation_result = seat_group_service.create_seat_group(
             party_id, seats[0].category_id, group_title, seats
         )
+
+        if group_creation_result.is_err():
+            error_str = group_creation_result.unwrap_err().message
+            click.secho(
+                f'Group "{group_title}" could not be created: {error_str}',
+                fg='red',
+            )
+            continue
+
+        db_group = group_creation_result.unwrap()
 
         click.secho(
             f'Imported seat group "{db_group.title}" with {db_group.seat_quantity} seats (category_id="{db_group.ticket_category_id}")',
