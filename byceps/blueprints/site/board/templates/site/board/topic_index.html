@@ -59,4 +59,18 @@
 
 {{ render_pagination_nav(topics, 'board.topic_index') }}
 
+  {%- if g.user.authenticated %}
+  <div class="button-row is-right-aligned">
+    <button class="button" data-action="mark-all-topics-as-viewed" href="{{ url_for('.mark_all_topics_as_viewed') }}" title="{{ _('Mark all topics as unread') }}">{{ render_icon('view') }}</button>
+  </div>
+  {%- endif %}
+
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      onDomReady(() => {
+        confirmed_post_on_click('[data-action="mark-all-topics-as-viewed"]', '{{ _('Mark all topics as unread?') }}');
+      });
+    </script>
 {%- endblock %}

@@ -113,6 +113,13 @@ def paginate_topics(
     return paginate(stmt, page, per_page)
 
 
+def get_all_topic_ids() -> set[TopicID]:
+    """Return the IDs of all topics."""
+    topic_ids = db.session.scalars(select(DbTopic.id)).all()
+
+    return set(topic_ids)
+
+
 def get_all_topic_ids_in_category(category_id: BoardCategoryID) -> set[TopicID]:
     """Return the IDs of all topics in the category."""
     topic_ids = db.session.scalars(

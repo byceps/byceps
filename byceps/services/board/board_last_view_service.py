@@ -119,14 +119,25 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
     upsert(table, identifier, replacement)
 
 
+def mark_all_topics_as_viewed(user_id: UserID) -> None:
+    """Mark all topics as viewed by the current user."""
+    topic_ids = board_topic_query_service.get_all_topic_ids()
+
+    _mark_topics_as_viewed(topic_ids, user_id)
+
+
 def mark_all_topics_in_category_as_viewed(
     category_id: BoardCategoryID, user_id: UserID
 ) -> None:
-    """Mark all topics in the category as viewed."""
+    """Mark all topics in the category as viewed by the current user."""
     topic_ids = board_topic_query_service.get_all_topic_ids_in_category(
         category_id
     )
 
+    _mark_topics_as_viewed(topic_ids, user_id)
+
+
+def _mark_topics_as_viewed(topic_ids: set[TopicID], user_id: UserID) -> None:
     if not topic_ids:
         return
 

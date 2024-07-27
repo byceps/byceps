@@ -91,6 +91,16 @@ def category_view(slug, page):
     }
 
 
+@blueprint.post('/topics/mark_all_topics_as_read')
+@respond_no_content_with_location
+def mark_all_topics_as_viewed():
+    board_last_view_service.mark_all_topics_as_viewed(g.user.id)
+
+    flash_success(gettext('All topics have been marked as read.'))
+
+    return url_for('.category_index')
+
+
 @blueprint.post('/categories/<category_id>/mark_all_topics_as_read')
 @respond_no_content_with_location
 def mark_all_topics_in_category_as_viewed(category_id):

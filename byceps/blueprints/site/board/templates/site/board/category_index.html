@@ -51,7 +51,7 @@
     </tbody>
   </table>
 
-{%- if recent_topics is not none %}
+  {%- if recent_topics is not none %}
   <h2>{{ _('Recently Active Topics') }}</h2>
   <table class="itemlist is-vcentered is-wide board-topic-index">
     <thead>
@@ -85,6 +85,20 @@
       {%- endfor %}
     </tbody>
   </table>
-{%- endif %}
+  {%- endif %}
 
+  {%- if g.user.authenticated %}
+  <div class="button-row is-right-aligned">
+    <button class="button" data-action="mark-all-topics-as-viewed" href="{{ url_for('.mark_all_topics_as_viewed') }}" title="{{ _('Mark all topics as unread') }}">{{ render_icon('view') }}</button>
+  </div>
+  {%- endif %}
+
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      onDomReady(() => {
+        confirmed_post_on_click('[data-action="mark-all-topics-as-viewed"]', '{{ _('Mark all topics as unread?') }}');
+      });
+    </script>
 {%- endblock %}

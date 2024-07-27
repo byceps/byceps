@@ -6836,7 +6836,11 @@ msgstr "Setze ein neues Passwort."
 msgid "Login is disabled."
 msgstr "Die Anmeldung ist deaktiviert."
 
-#: byceps/blueprints/site/board/views_category.py:104
+#: byceps/blueprints/site/board/views_category.py:99
+msgid "All topics have been marked as read."
+msgstr "Alle Themen wurden als gelesen markiert."
+
+#: byceps/blueprints/site/board/views_category.py:114
 msgid "All topics in this category have been marked as read."
 msgstr "Alle Themen in dieser Kategorie wurden als gelesen markiert."
 
@@ -7075,6 +7079,16 @@ msgstr "geschlossen"
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:38
 msgid "pinned"
 msgstr "angeheftet"
+
+#: byceps/blueprints/site/board/templates/site/board/category_index.html:92
+#: byceps/blueprints/site/board/templates/site/board/topic_index.html:64
+msgid "Mark all topics as unread"
+msgstr "Alle Themen als gelesen markieren"
+
+#: byceps/blueprints/site/board/templates/site/board/category_index.html:101
+#: byceps/blueprints/site/board/templates/site/board/topic_index.html:73
+msgid "Mark all topics as unread?"
+msgstr "Alle Themen als gelesen markieren?"
 
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:48
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:44
