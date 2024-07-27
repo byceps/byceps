@@ -12,6 +12,7 @@ import pytest
 from byceps.announce.announce import build_announcement_request
 from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
+from byceps.services.party.models import Party
 from byceps.services.ticketing.models.ticket import (
     TicketCode,
     TicketID,
@@ -48,12 +49,15 @@ def test_ticket_checked_in(
     assert_text(actual, expected_text)
 
 
+@patch('byceps.services.party.party_service.get_party')
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
 def test_single_ticket_sold(
     get_ticket_sale_stats_mock,
+    get_party_mock,
     app: Flask,
     now: datetime,
     event_admin: EventUser,
+    party: Party,
     event_party: EventParty,
     make_event_user,
     webhook_for_irc,
@@ -62,6 +66,8 @@ def test_single_ticket_sold(
         'Neuling has paid 1 ticket. '
         'Currently 772 of 1001 tickets have been paid.'
     )
+
+    get_party_mock.return_value = party
 
     get_ticket_sale_stats_mock.return_value = TicketSaleStats(
         tickets_max=1001,
@@ -81,12 +87,15 @@ def test_single_ticket_sold(
     assert_text(actual, expected_text)
 
 
+@patch('byceps.services.party.party_service.get_party')
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
 def test_multiple_tickets_sold(
     get_ticket_sale_stats_mock,
+    get_party_mock,
     app: Flask,
     now: datetime,
     event_admin: EventUser,
+    party: Party,
     event_party: EventParty,
     make_event_user,
     webhook_for_irc,
@@ -95,6 +104,8 @@ def test_multiple_tickets_sold(
         'TreuerKäufer has paid 3 tickets. '
         'Currently 775 of 1001 tickets have been paid.'
     )
+
+    get_party_mock.return_value = party
 
     get_ticket_sale_stats_mock.return_value = TicketSaleStats(
         tickets_max=1001,
@@ -123,5 +134,5 @@ def event_admin(make_event_user) -> EventUser:
 
 
 @pytest.fixture(scope='module')
-def event_party(make_event_party) -> EventParty:
-    return make_event_party()
+def event_party(make_event_party, party: Party) -> EventParty:
+    return make_event_party(id=party.id, title=party.title)

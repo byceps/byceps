@@ -15,6 +15,7 @@ from byceps.announce.helpers import (
     with_locale,
 )
 from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
+from byceps.services.party import party_service
 from byceps.services.ticketing import ticket_service
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
@@ -43,7 +44,9 @@ def announce_tickets_sold(
 ) -> Announcement | None:
     """Announce that tickets have been sold."""
     owner_screen_name = get_screen_name_or_fallback(event.owner)
-    sale_stats = ticket_service.get_ticket_sale_stats(event.party)
+
+    party = party_service.get_party(event.party.id)
+    sale_stats = ticket_service.get_ticket_sale_stats(party)
 
     text = (
         ngettext(
