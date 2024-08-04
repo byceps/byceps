@@ -102,6 +102,22 @@ Supported Configuration Values
 
     Default: ``'./data'`` (relative to the BYCEPS root path)
 
+.. py:data:: PAYPAL_CLIENT_ID
+
+    The client ID for payments via PayPal.
+
+.. py:data:: PAYPAL_CLIENT_SECRET
+
+    The client secret for payments via PayPal.
+
+.. py:data:: PAYPAL_ENVIRONMENT
+
+    The environment for payments via PayPal.
+
+    ``sandbox`` for testing, ``live`` for production use.
+
+    Default: ``sandbox``
+
 .. py:data:: PROPAGATE_EXCEPTIONS
 
     Reraise exceptions instead of letting BYCEPS handle them.
