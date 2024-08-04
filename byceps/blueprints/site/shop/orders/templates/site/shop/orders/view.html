@@ -20,10 +20,10 @@
 
   {%- if order.is_open and paypal_enabled %}
   <div id="payment-failed-notice" hidden>
-{{ render_notification('Die Zahlung ist fehlgeschlagen.', category='danger', icon='warning') }}
+{{ render_notification(_('Payment failed.'), category='danger', icon='warning') }}
   </div>
   <div id="payment-processing-notice" hidden>
-{{ render_notification('Die Zahlung wird verarbeitet, bitte warten …', category='info', icon='spinner') }}
+{{ render_notification(_('Payment is being processed, please wait …'), category='info', icon='spinner') }}
   </div>
   {%- endif %}
 
@@ -82,7 +82,8 @@
   <div class="main-body-box">
 
       {%- if paypal_enabled %}
-    <p>Über PayPal kannst du verschiedene Wege nutzen, um die Bestellung zu bezahlen. Sind in der Bestellung Tickets enthalten, werden diese sofort freigeschaltet.</p>
+    <p>{{ _('PayPal offers several ways to pay for the order right now.') }}</p>
+    <p>{{ _('If the order includes tickets, they will be issued immediately.') }}</p>
     <div id="paypal-button-container" style="margin: 2rem auto 0 auto; width: 250px;"></div>
       {%- endif %}
 
