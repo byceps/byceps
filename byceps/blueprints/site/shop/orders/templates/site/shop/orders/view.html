@@ -18,6 +18,15 @@
 {{ render_notification(_('A cancelation has been requested for this order on %(date)s at %(time)s.', date=cancellation_request.created_at|dateformat, time=cancellation_request.created_at|timeformat('short')), category='info') }}
   {%- endif %}
 
+  {%- if order.is_open and paypal_enabled %}
+  <div id="payment-failed-notice" hidden>
+{{ render_notification('Die Zahlung ist fehlgeschlagen.', category='danger', icon='warning') }}
+  </div>
+  <div id="payment-processing-notice" hidden>
+{{ render_notification('Die Zahlung wird verarbeitet, bitte warten …', category='info', icon='spinner') }}
+  </div>
+  {%- endif %}
+
   <div class="main-body-box">
     <div class="row row--space-between">
       <div>
@@ -68,9 +77,14 @@
 {{ render_notification(_('Payment instructions not found.'), category='danger', icon='warning') }}
     {%- endif %}
 
-    {%- if stripe_enabled %}
+    {%- if paypal_enabled or stripe_enabled %}
   <h2>{{ _('Additional Payment Methods') }}</h2>
   <div class="main-body-box">
+
+      {%- if paypal_enabled %}
+    <p>Über PayPal kannst du verschiedene Wege nutzen, um die Bestellung zu bezahlen. Sind in der Bestellung Tickets enthalten, werden diese sofort freigeschaltet.</p>
+    <div id="paypal-button-container" style="margin: 2rem auto 0 auto; width: 250px;"></div>
+      {%- endif %}
 
       {%- if stripe_enabled %}
     <p>{{ _('You can use the following payment methods through payment provider Stripe to pay for the order right now:') }}</p>
@@ -124,5 +138,6 @@
 {%- endblock %}
 
 {% block scripts %}
+{%- include 'site/shop/orders/_paypal_script.html' %}
 {%- include 'site/shop/orders/_stripe_checkout_script.html' %}
 {%- endblock %}

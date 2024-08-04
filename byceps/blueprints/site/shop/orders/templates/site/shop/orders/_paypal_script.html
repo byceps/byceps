@@ -1,0 +1,101 @@
+{%- if order.is_open and paypal_enabled %}
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal_client_id }}&commit=true&disable-funding=sepa&currency=EUR"></script>
+<script>
+  function setElementVisibility(id, visible) {
+    let element = document.getElementById(id);
+    element.hidden = !visible;
+  }
+
+  function showPaymentError() {
+    setElementVisibility('payment-processing-notice', false);
+    setElementVisibility('payment-failed-notice', true);
+  }
+
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          invoice_id: {{ order.order_number|tojson }},
+          amount: {
+            currency_code: "{{ order.total_amount.currency }}",
+            value: "{{ order.total_amount.amount }}",
+            breakdown: {
+              item_total: {
+                currency_code: "{{ order.total_amount.currency }}",
+                value: "{{ order.total_amount.amount }}"
+              }
+            }
+          },
+          items: [
+          {%- set comma_joiner = joiner(", ") -%}
+          {%- for line_item in order.line_items|sort(attribute='article_number')  -%}
+          {{- comma_joiner() -}}
+          {
+            name: {{ line_item.name|tojson }},
+            category: "DIGITAL_GOODS",
+            quantity: {{ line_item.quantity|tojson }},
+            unit_amount: {
+              currency_code: "{{ line_item.unit_price.currency }}",
+              value: "{{ line_item.unit_price.amount }}"
+            }
+          }
+          {%- endfor -%}
+          ]
+        }],
+        application_context: {
+          brand_name: {{ shop_title|tojson }},
+          shipping_preference: "NO_SHIPPING"
+        }
+      });
+    },
+    onApprove: function(data, actions) {
+      // Hide PayPal buttons.
+      setElementVisibility('paypal-button-container', false);
+
+      // Unhide processing notification.
+      setElementVisibility('payment-processing-notice', true);
+
+      // Prevent unload.
+      let isProcessing = true;
+      window.addEventListener('beforeunload', function (e) {
+        if (isProcessing) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      });
+
+      actions.order.capture()
+        .then(function(details) {
+          return fetch('{{ url_for('shop_payment_paypal.capture_transaction') }}', {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              paypal_order_id: data.orderID,
+              shop_order_id: '{{ order.id }}'
+            })
+          }).then(function(response) {
+            isProcessing = false;
+            if (response.ok) {
+              location.reload();
+            } else {
+              showPaymentError();
+            }
+          });
+        })
+      .catch(function(error) {
+        isProcessing = false;
+        showPaymentError();
+      });
+    },
+    onError: function(err) {
+      // Authorization failed.
+      showPaymentError();
+    },
+    style: {
+      color: 'blue'
+    }
+  }).render('#paypal-button-container');
+</script>
+{%- endif %}
