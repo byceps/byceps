@@ -31,6 +31,7 @@ from byceps.config import (
     parse_value_from_environment,
 )
 from byceps.database import db
+from byceps.paypal import paypal
 from byceps.util import templatefilters
 from byceps.util.authz import load_permissions
 from byceps.util.framework.blueprint import get_blueprint
@@ -145,6 +146,8 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     # Initialize Redis client.
     app.redis_client = Redis.from_url(app.config['REDIS_URL'])
+
+    paypal.init_app(app)
 
     load_permissions()
 

@@ -26,6 +26,7 @@ from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import OrderAlreadyCanceledError
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.payment import payment_gateway_service
+from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront import storefront_service
 from byceps.services.user import user_service
 from byceps.signals import shop as shop_signals
@@ -86,6 +87,18 @@ def view(order_id):
         # Order does not belong to the current site's storefront.
         abort(404)
 
+    shop = shop_service.get_shop(order.shop_id)
+
+    paypal_enabled = (
+        payment_gateway_service.is_payment_gateway_enabled_for_storefront(
+            'paypal', storefront.id
+        )
+    )
+    if paypal_enabled:
+        paypal_client_id = current_app.config.get('PAYPAL_CLIENT_ID')
+    else:
+        paypal_client_id = None
+
     stripe_enabled = (
         payment_gateway_service.is_payment_gateway_enabled_for_storefront(
             'stripe', storefront.id
@@ -104,6 +117,9 @@ def view(order_id):
 
     template_context = {
         'order': order,
+        'shop_title': shop.title,
+        'paypal_enabled': paypal_enabled,
+        'paypal_client_id': paypal_client_id,
         'stripe_enabled': stripe_enabled,
         'stripe_publishable_key': stripe_publishable_key,
         'render_order_payment_method': _find_order_payment_method_label,

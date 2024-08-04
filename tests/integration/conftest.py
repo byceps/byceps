@@ -38,6 +38,8 @@ from byceps.services.shop.order.models.number import (
     OrderNumberSequenceID,
 )
 from byceps.services.shop.order.models.order import Orderer
+from byceps.services.shop.payment import payment_gateway_service
+from byceps.services.shop.payment.models import PaymentGateway
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.shop.storefront import storefront_service
@@ -377,6 +379,27 @@ def make_news_channel():
 
         return news_channel_service.create_channel(
             brand, channel_id, announcement_site_id=announcement_site_id
+        )
+
+    return _wrapper
+
+
+@pytest.fixture(scope='session')
+def make_payment_gateway(admin_app: Flask):
+    def _wrapper(
+        *,
+        payment_gateway_id: str | None = None,
+        name: str | None = None,
+        enabled: bool = True,
+    ) -> PaymentGateway:
+        if payment_gateway_id is None:
+            payment_gateway_id = generate_token()
+
+        if name is None:
+            name = payment_gateway_id
+
+        return payment_gateway_service.create_payment_gateway(
+            payment_gateway_id, name, enabled
         )
 
     return _wrapper
