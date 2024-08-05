@@ -10,6 +10,15 @@ from flask import abort, g, request, Response
 from flask_babel import gettext
 
 from byceps.services.brand import brand_service
+from byceps.services.shop.invoice import order_invoice_service
+from byceps.services.shop.invoice.errors import (
+    InvoiceConfigurationError,
+    InvoiceDeniedForFreeOrderError,
+    InvoiceDownloadError,
+    InvoiceError,
+    NoInvoiceProviderIntegratedError,
+)
+from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import (
     order_log_service,
     order_sequence_service,
@@ -147,6 +156,65 @@ def export(order_id):
 
     return Response(
         xml_export['content'], content_type=xml_export['content_type']
+    )
+
+
+# -------------------------------------------------------------------- #
+# invoice
+
+
+@blueprint.get('/<uuid:order_id>/invoice')
+@permission_required('shop_order.update')
+def download_invoice(order_id):
+    """Download an invoice (draft) for the order, obtained from an
+    invoice provider.
+    """
+    order = order_service.find_order_with_details_for_admin(order_id)
+    if order is None:
+        abort(404)
+
+    draft_arg = request.args.get('mode', default='')
+    is_draft = draft_arg == 'draft'
+
+    def serve_invoice(invoice: DownloadableInvoice) -> Response:
+        response = Response(invoice.content, content_type=invoice.content_type)
+        response.headers['Content-Disposition'] = invoice.content_disposition
+        return response
+
+    def serve_error(err: InvoiceError) -> Response:
+        match err:
+            case InvoiceConfigurationError():
+                abort(
+                    500,
+                    gettext(
+                        'The integration of an invoice provider is not properly configured.'
+                    ),
+                )
+            case InvoiceDeniedForFreeOrderError():
+                abort(
+                    400,
+                    gettext(
+                        'The order is marked as paid for free. No invoice is created in this case.'
+                    ),
+                )
+            case InvoiceDownloadError():
+                abort(
+                    500,
+                    gettext(
+                        'The download of an invoice from an invoice provider failed.'
+                    ),
+                )
+            case NoInvoiceProviderIntegratedError():
+                abort(500, gettext('No invoice provider is integrated.'))
+            case _:
+                abort(500)
+
+    return (
+        order_invoice_service.get_downloadable_invoice_for_order(
+            order, is_draft, g.user
+        )
+        .map(serve_invoice)
+        .unwrap_or_else(serve_error)
     )
 
 

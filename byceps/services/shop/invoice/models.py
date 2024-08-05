@@ -18,3 +18,10 @@ class Invoice:
     order_id: OrderID
     number: str
     url: str | None
+
+
+@dataclass(frozen=True)
+class DownloadableInvoice:
+    content_disposition: str
+    content_type: str
+    content: bytes
