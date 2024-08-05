@@ -74,6 +74,18 @@ def count_awardings() -> dict[BadgeID, int]:
     return dict(rows)
 
 
+def count_badge_awardings_to_user(badge_id: BadgeID, awardee_id: UserID) -> int:
+    """Return the number of times the badge has been awarded to the user."""
+    return (
+        db.session.scalar(
+            select(db.func.count(DbBadgeAwarding.id))
+            .filter_by(badge_id=badge_id)
+            .filter_by(awardee_id=awardee_id)
+        )
+        or 0
+    )
+
+
 def get_awardings_of_badge(badge_id: BadgeID) -> set[QuantifiedBadgeAwarding]:
     """Return the awardings of this badge."""
     rows = db.session.execute(
