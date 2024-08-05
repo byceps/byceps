@@ -5,7 +5,12 @@
       <button class="dropdown-toggle button"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
         <li><a class="dropdown-item" href="{{ url_for('.add_note_form', order_id=order.id) }}">{{ render_icon('note') }} {{ _('Add note') }}</a></li>
+        <li class="dropdown-divider"></li>
+
         <li><a class="dropdown-item" href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} {{ _('Export for Lexware (XML)') }}</a></li>
+
+        <li><a class="dropdown-item" href="{{ url_for('.download_invoice', order_id=order.id, mode='draft') }}">{{ render_icon('invoice') }} {{ _('Download invoice draft') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.download_invoice', order_id=order.id) }}">{{ render_icon('invoice') }} {{ _('Download invoice') }}</a></li>
 
         {%- if not order.is_canceled %}
         <li class="dropdown-divider"></li>
