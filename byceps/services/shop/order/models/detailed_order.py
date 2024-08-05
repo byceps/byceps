@@ -8,10 +8,10 @@ byceps.services.shop.order.models.detailed_order
 
 from dataclasses import dataclass
 
+from byceps.services.shop.order.invoice.models import Invoice
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 
-from .invoice import Invoice
 from .order import Address, BaseOrder, LineItem
 from .payment import Payment
 

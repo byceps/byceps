@@ -1,5 +1,5 @@
 """
-byceps.services.shop.order.dbmodels.invoice
+byceps.services.shop.order.invoice.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2024 Jochen Kupperschmidt

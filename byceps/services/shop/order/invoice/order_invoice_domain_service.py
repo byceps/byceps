@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.order_invoice_domain_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.invoice.order_invoice_domain_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -8,12 +8,12 @@ byceps.services.shop.order.order_invoice_domain_service
 
 from datetime import datetime
 
+from byceps.services.shop.order.models.log import OrderLogEntry
+from byceps.services.shop.order.models.order import OrderID
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
-from .models.invoice import Invoice
-from .models.log import OrderLogEntry
-from .models.order import OrderID
+from .models import Invoice
 
 
 def create_invoice(

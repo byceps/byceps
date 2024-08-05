@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.order_invoice_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.invoice.order_invoice_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,13 +9,14 @@ byceps.services.shop.order.order_invoice_service
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.shop.order import order_log_service
+from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.models.order import OrderID
 from byceps.services.user.models.user import User
 
-from . import order_invoice_domain_service, order_log_service
-from .dbmodels.invoice import DbInvoice
-from .dbmodels.order import DbOrder
-from .models.invoice import Invoice
-from .models.order import OrderID
+from . import order_invoice_domain_service
+from .dbmodels import DbInvoice
+from .models import Invoice
 
 
 def add_invoice(

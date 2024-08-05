@@ -1,5 +1,5 @@
 """
-byceps.services.shop.order.models.invoice
+byceps.services.shop.order.invoice.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2024 Jochen Kupperschmidt
@@ -9,7 +9,7 @@ byceps.services.shop.order.models.invoice
 from dataclasses import dataclass
 from uuid import UUID
 
-from .order import OrderID
+from byceps.services.shop.order.models.order import OrderID
 
 
 @dataclass(frozen=True)

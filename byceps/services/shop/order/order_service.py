@@ -21,6 +21,7 @@ from byceps.database import db, paginate, Pagination
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import ArticleType
+from byceps.services.shop.order.invoice import order_invoice_service
 from byceps.services.shop.shop.dbmodels import DbShop
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
@@ -32,7 +33,6 @@ from byceps.util.result import Err, Ok, Result
 from . import (
     order_action_service,
     order_domain_service,
-    order_invoice_service,
     order_log_service,
     order_payment_service,
 )
