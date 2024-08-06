@@ -4511,22 +4511,42 @@ msgstr "Auftraggeber/in aktiv per E-Mail über Stornierung informieren"
 msgid "Payment type"
 msgstr "Zahlungsart"
 
-#: byceps/blueprints/admin/shop/order/views.py:192
+#: byceps/blueprints/admin/shop/order/views.py:189
+msgid "The integration of the invoice provider is not properly configured."
+msgstr ""
+"Die Integration mit einem Rechnungsanbieter ist nicht korrekt "
+"konfiguriert."
+
+#: byceps/blueprints/admin/shop/order/views.py:196
+msgid "The order is marked as paid for free. No invoice is created in this case."
+msgstr ""
+"Die Bestellung ist als kostenlos bezahlt markiert. In diesem Fall wird "
+"keine Rechnung erstellt."
+
+#: byceps/blueprints/admin/shop/order/views.py:203
+msgid "The download of the invoice from the invoice provider failed."
+msgstr "Der Download der Rechnung vom Rechnungsanbieter ist fehlgeschlagen."
+
+#: byceps/blueprints/admin/shop/order/views.py:208
+msgid "No invoice provider is integrated."
+msgstr "Es ist kein Rechnungsanbieter integriert."
+
+#: byceps/blueprints/admin/shop/order/views.py:260
 msgid "Note has been added."
 msgstr "Die Notiz wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/order/views.py:216
+#: byceps/blueprints/admin/shop/order/views.py:284
 #, python-format
 msgid "Order %(order_number)s has been marked as shipped."
 msgstr "Bestellung %(order_number)s wurde als verschickt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:238
+#: byceps/blueprints/admin/shop/order/views.py:306
 #, python-format
 msgid "Order %(order_number)s has been marked as not shipped."
 msgstr "Bestellung %(order_number)s wurde als nicht verschickt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:258
-#: byceps/blueprints/admin/shop/order/views.py:299
+#: byceps/blueprints/admin/shop/order/views.py:326
+#: byceps/blueprints/admin/shop/order/views.py:367
 #: byceps/blueprints/site/shop/orders/views.py:215
 #: byceps/blueprints/site/shop/orders/views.py:327
 msgid ""
@@ -4536,8 +4556,8 @@ msgstr ""
 "Die Bestellung ist bereits storniert worden; der Bezahlstatus kann nicht "
 "mehr geändert werden."
 
-#: byceps/blueprints/admin/shop/order/views.py:305
-#: byceps/blueprints/admin/shop/order/views.py:381
+#: byceps/blueprints/admin/shop/order/views.py:373
+#: byceps/blueprints/admin/shop/order/views.py:449
 #: byceps/blueprints/admin/ticketing/checkin/views.py:168
 #: byceps/blueprints/site/seating/views.py:268
 #: byceps/blueprints/site/seating/views.py:335
@@ -4546,7 +4566,7 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr "Ein unvorhergesehener Fehler ist aufgetreten."
 
-#: byceps/blueprints/admin/shop/order/views.py:311
+#: byceps/blueprints/admin/shop/order/views.py:379
 msgid ""
 "The order has been canceled and the corresponding articles have been made"
 " available again."
@@ -4554,24 +4574,24 @@ msgstr ""
 "Die Bestellung wurde als storniert markiert und die betroffenen Artikel "
 "in den entsprechenden Stückzahlen wieder zur Bestellung freigegeben."
 
-#: byceps/blueprints/admin/shop/order/views.py:322
+#: byceps/blueprints/admin/shop/order/views.py:390
 msgid "No email has been sent to the orderer."
 msgstr "Es wurde keine E-Mail an den/die Auftraggeber/in versendet."
 
-#: byceps/blueprints/admin/shop/order/views.py:341
-#: byceps/blueprints/admin/shop/order/views.py:379
+#: byceps/blueprints/admin/shop/order/views.py:409
+#: byceps/blueprints/admin/shop/order/views.py:447
 msgid "Order is already marked as paid."
 msgstr "Die Bestellung ist bereits als bezahlt markiert worden."
 
-#: byceps/blueprints/admin/shop/order/views.py:386
+#: byceps/blueprints/admin/shop/order/views.py:454
 msgid "Order has been marked as paid."
 msgstr "Die Bestellung wurde als bezahlt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:419
+#: byceps/blueprints/admin/shop/order/views.py:487
 msgid "Email confirmation for placed order has been sent again."
 msgstr "Die E-Mail-Eingangsbestätigung wurde erneut versendet."
 
-#: byceps/blueprints/admin/shop/order/views.py:462
+#: byceps/blueprints/admin/shop/order/views.py:530
 #, python-format
 msgid ""
 "Order number sequence could not be created. Is the prefix \"%(prefix)s\" "
@@ -4580,7 +4600,7 @@ msgstr ""
 "Die Bestellnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/order/views.py:471
+#: byceps/blueprints/admin/shop/order/views.py:539
 #, python-format
 msgid "Order number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -4602,7 +4622,7 @@ msgid "shipping required"
 msgstr "Versand erforderlich"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:42
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:18
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:23
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/mark_as_paid_form.html:4
 msgid "Mark order as paid"
 msgstr "Als bezahlt markieren"
@@ -4612,15 +4632,23 @@ msgstr "Als bezahlt markieren"
 msgid "Add note"
 msgstr "Notiz hinzufügen"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:8
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:10
 msgid "Export for Lexware (XML)"
 msgstr "für Lexware exportieren (XML)"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:14
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:12
+msgid "Download invoice draft"
+msgstr "Rechnungsentwurf herunterladen"
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:13
+msgid "Download invoice"
+msgstr "Rechnung herunterladen"
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:19
 msgid "Resend confirmation email"
 msgstr "E-Mail-Bestätigung erneut senden"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:22
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:27
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:5
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:31
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:5
@@ -4630,11 +4658,11 @@ msgstr "E-Mail-Bestätigung erneut senden"
 msgid "Cancel order"
 msgstr "Bestellung stornieren"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:30
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:35
 msgid "Mark as <strong>not</strong> shipped"
 msgstr "Als <strong>nicht</strong> versendet markieren"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:32
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:37
 msgid "Mark as shipped"
 msgstr "Als versendet markieren"
 
