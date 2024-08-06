@@ -27,19 +27,6 @@ from .models.user import (
 )
 
 
-class UserIdRejectedError(Exception):
-    """Indicate that the given user ID is not accepted.
-
-    Reasons can include the user ID being
-    - not well-formed,
-    - unknown,
-    or the associated account being
-    - not yet initialized,
-    - suspended,
-    - or deleted.
-    """
-
-
 def do_users_exist() -> bool:
     """Return `True` if any user accounts (i.e. at least one) exists."""
     return db.session.scalar(select(select(DbUser).exists())) or False
