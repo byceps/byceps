@@ -22,7 +22,12 @@ from byceps.events.user import (
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import RoleID
 
-from . import user_domain_service, user_log_service, user_service
+from . import (
+    user_creation_domain_service,
+    user_domain_service,
+    user_log_service,
+    user_service,
+)
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
 from .models.log import UserLogEntry
@@ -39,7 +44,9 @@ def initialize_account(
 
     This is meant to happen only once at most, and can not be undone.
     """
-    result = user_domain_service.initialize_account(user, initiator=initiator)
+    result = user_creation_domain_service.initialize_account(
+        user, initiator=initiator
+    )
 
     if result.is_err():
         raise ValueError('Account is already initialized.')

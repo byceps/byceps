@@ -18,7 +18,7 @@ from byceps.services.site.models import Site, SiteID
 from byceps.util.result import Err, Ok, Result
 
 from . import (
-    user_domain_service,
+    user_creation_domain_service,
     user_email_address_service,
     user_log_service,
     user_service,
@@ -55,7 +55,7 @@ def create_user(
     InvalidScreenNameError | InvalidEmailAddressError | None,
 ]:
     """Create a user account and related records."""
-    result = user_domain_service.create_account(
+    result = user_creation_domain_service.create_account(
         screen_name,
         email_address,
         password,
@@ -121,7 +121,7 @@ def request_email_address_confirmation(
     """Send an e-mail to the user to request confirmation of the e-mail
     address.
     """
-    normalization_result = user_domain_service.normalize_email_address(
+    normalization_result = user_creation_domain_service.normalize_email_address(
         email_address
     )
 
