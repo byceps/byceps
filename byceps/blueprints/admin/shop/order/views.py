@@ -187,7 +187,7 @@ def download_invoice(order_id):
                 abort(
                     500,
                     gettext(
-                        'The integration of an invoice provider is not properly configured.'
+                        'The integration of the invoice provider is not properly configured.'
                     ),
                 )
             case InvoiceDeniedForFreeOrderError():
@@ -201,7 +201,7 @@ def download_invoice(order_id):
                 abort(
                     500,
                     gettext(
-                        'The download of an invoice from an invoice provider failed.'
+                        'The download of the invoice from the invoice provider failed.'
                     ),
                 )
             case NoInvoiceProviderIntegratedError():
