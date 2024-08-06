@@ -20,7 +20,7 @@ from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import (
     user_command_service,
-    user_domain_service,
+    user_email_address_domain_service,
     user_log_service,
     user_service,
 )
@@ -114,7 +114,7 @@ def confirm_email_address(
     """Confirm the email address of the user account."""
     current_email_address = user_service.get_email_address_data(user.id)
 
-    result = user_domain_service.confirm_email_address(
+    result = user_email_address_domain_service.confirm_email_address(
         user, current_email_address, email_address_to_confirm
     )
 
@@ -152,8 +152,10 @@ def invalidate_email_address(
     """
     email_address = user_service.get_email_address_data(user.id)
 
-    invalidation_result = user_domain_service.invalidate_email_address(
-        user, email_address, reason, initiator=initiator
+    invalidation_result = (
+        user_email_address_domain_service.invalidate_email_address(
+            user, email_address, reason, initiator=initiator
+        )
     )
 
     if invalidation_result.is_err():

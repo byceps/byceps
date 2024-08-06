@@ -25,6 +25,7 @@ from byceps.services.authz.models import RoleID
 from . import (
     user_creation_domain_service,
     user_domain_service,
+    user_email_address_domain_service,
     user_log_service,
     user_service,
 )
@@ -182,7 +183,7 @@ def change_email_address(
     db_user = _get_db_user(user.id)
     old_email_address = db_user.email_address
 
-    event, log_entry = user_domain_service.change_email_address(
+    event, log_entry = user_email_address_domain_service.change_email_address(
         user,
         old_email_address,
         new_email_address,
