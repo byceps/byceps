@@ -9,7 +9,7 @@
     <tr>
       <td>
         <a class="disguised" href="{{ url_for('news.view', slug=headline.slug) }}">{{ headline.title }}</a>
-        <div class="item-meta">{{ headline.published_at|dateformat('full') }}</div>
+        <div class="dashboard-item-meta">{{ headline.published_at|dateformat('full') }}</div>
       </td>
     </tr>
     {%- endfor %}

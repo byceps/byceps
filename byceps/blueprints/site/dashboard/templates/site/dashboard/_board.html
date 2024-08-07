@@ -19,7 +19,7 @@
           {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
           {{ topic.title }}
         </a>
-        <div class="item-meta">
+        <div class="dashboard-item-meta">
           {{ topic.last_updated_at|dateformat }}, {{ topic.last_updated_at|timeformat('short') }}
           &middot;
           {{ topic.category.title }}
