@@ -23,7 +23,7 @@
   {%- endfor %}
 </ol>
 {%- else %}
-<div class="block dimmed centered">{{ _('No news yet.') }}</div>
+<div class="block dimmed">{{ _('No news yet.') }}</div>
 {%- endif %}
 
 {{ render_continuative_link(url_for('news.index'), _('All news')) }}
