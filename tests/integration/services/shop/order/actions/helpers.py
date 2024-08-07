@@ -6,7 +6,7 @@
 from collections.abc import Sequence
 
 from byceps.events.shop import ShopOrderPaidEvent
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_command_service
 from byceps.services.shop.order.models.order import Order, OrderID
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
@@ -18,7 +18,7 @@ def get_tickets_for_order(order: Order) -> Sequence[DbTicket]:
 
 
 def mark_order_as_paid(order_id: OrderID, admin: User) -> ShopOrderPaidEvent:
-    _, event = order_service.mark_order_as_paid(
+    _, event = order_command_service.mark_order_as_paid(
         order_id, 'bank_transfer', admin
     ).unwrap()
 

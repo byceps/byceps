@@ -20,6 +20,7 @@ from byceps.services.shop.invoice.errors import (
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import (
+    order_command_service,
     order_log_service,
     order_sequence_service,
     order_service,
@@ -255,7 +256,7 @@ def add_note(order_id):
 
     text = form.text.data.strip()
 
-    order_service.add_note(order, g.user, text)
+    order_command_service.add_note(order, g.user, text)
 
     flash_success(gettext('Note has been added.'))
 
@@ -274,7 +275,7 @@ def set_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator = g.user
 
-    result = order_service.set_shipped_flag(order, initiator)
+    result = order_command_service.set_shipped_flag(order, initiator)
 
     if result.is_err():
         flash_error(result.unwrap_err())
@@ -296,7 +297,7 @@ def unset_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator = g.user
 
-    result = order_service.unset_shipped_flag(order, initiator)
+    result = order_command_service.unset_shipped_flag(order, initiator)
 
     if result.is_err():
         flash_error(result.unwrap_err())
@@ -359,7 +360,9 @@ def cancel(order_id):
     reason = form.reason.data.strip()
     send_email = form.send_email.data
 
-    cancellation_result = order_service.cancel_order(order.id, g.user, reason)
+    cancellation_result = order_command_service.cancel_order(
+        order.id, g.user, reason
+    )
     if cancellation_result.is_err():
         err = cancellation_result.unwrap_err()
         if isinstance(err, OrderAlreadyCanceledError):
@@ -438,7 +441,7 @@ def mark_as_paid(order_id):
     payment_method = form.payment_method.data
     initiator = g.user
 
-    mark_as_paid_result = order_service.mark_order_as_paid(
+    mark_as_paid_result = order_command_service.mark_order_as_paid(
         order.id, payment_method, initiator
     )
     if mark_as_paid_result.is_err():

@@ -21,7 +21,11 @@ from byceps.services.email import (
 from byceps.services.shop.cancellation_request import (
     cancellation_request_service,
 )
-from byceps.services.shop.order import order_payment_service, order_service
+from byceps.services.shop.order import (
+    order_command_service,
+    order_payment_service,
+    order_service,
+)
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import OrderAlreadyCanceledError
 from byceps.services.shop.order.models.order import PaymentState
@@ -207,7 +211,9 @@ def cancel(order_id):
 
     reason = form.reason.data.strip()
 
-    cancellation_result = order_service.cancel_order(order.id, g.user, reason)
+    cancellation_result = order_command_service.cancel_order(
+        order.id, g.user, reason
+    )
     if cancellation_result.is_err():
         err = cancellation_result.unwrap_err()
         if isinstance(err, OrderAlreadyCanceledError):
@@ -319,7 +325,9 @@ def donate_everything(order_id):
 
     reason = 'Ticketrückgabe und Spende des Bestellbetrags in voller Höhe wie angefordert'
 
-    cancellation_result = order_service.cancel_order(order.id, g.user, reason)
+    cancellation_result = order_command_service.cancel_order(
+        order.id, g.user, reason
+    )
     if cancellation_result.is_err():
         err = cancellation_result.unwrap_err()
         if isinstance(err, OrderAlreadyCanceledError):

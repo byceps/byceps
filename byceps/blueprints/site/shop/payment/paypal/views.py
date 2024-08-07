@@ -14,7 +14,7 @@ from paypalhttp import HttpError
 from pydantic import BaseModel, ValidationError
 
 from byceps.paypal import paypal
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_command_service, order_service
 from byceps.services.shop.order.email import order_email_service
 from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
@@ -62,7 +62,7 @@ def capture_transaction():
         )
         return create_empty_json_response(400)
 
-    paid_order, event = order_service.mark_order_as_paid(
+    paid_order, event = order_command_service.mark_order_as_paid(
         order.id,
         'paypal',
         g.user,

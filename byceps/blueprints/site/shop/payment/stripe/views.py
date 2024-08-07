@@ -21,7 +21,7 @@ from moneyed import Money
 from pydantic import BaseModel, ValidationError
 import stripe
 
-from byceps.services.shop.order import order_service
+from byceps.services.shop.order import order_command_service, order_service
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import UserID
@@ -165,7 +165,7 @@ def _fulfill_order(session: stripe.checkout.Session):
         )
         return
 
-    paid_order, event = order_service.mark_order_as_paid(
+    paid_order, event = order_command_service.mark_order_as_paid(
         order.id,
         'stripe',
         order.placed_by,

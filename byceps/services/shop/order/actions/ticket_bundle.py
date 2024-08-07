@@ -9,7 +9,7 @@ byceps.services.shop.order.actions.ticket_bundle
 from typing import Any
 from uuid import UUID
 
-from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order import order_command_service, order_log_service
 from byceps.services.shop.order.models.order import LineItem, Order, OrderID
 from byceps.services.ticketing import (
     ticket_bundle_service,
@@ -59,7 +59,7 @@ def create_ticket_bundles(
             sorted(str(bundle_id) for bundle_id in bundle_ids)
         )
     }
-    order_service.update_line_item_processing_result(line_item.id, data)
+    order_command_service.update_line_item_processing_result(line_item.id, data)
 
     total_quantity = ticket_quantity_per_bundle * bundle_quantity
     tickets_sold_event = create_tickets_sold_event(

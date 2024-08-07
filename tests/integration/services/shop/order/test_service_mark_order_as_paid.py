@@ -6,6 +6,7 @@
 import pytest
 
 from byceps.services.shop.order import (
+    order_command_service,
     order_log_service,
     order_payment_service,
     order_service,
@@ -39,7 +40,9 @@ def test_mark_order_as_paid(order, admin_user):
     payments_before = order_payment_service.get_payments_for_order(order.id)
     assert not payments_before
 
-    order_service.mark_order_as_paid(order.id, 'cash', admin_user).unwrap()
+    order_command_service.mark_order_as_paid(
+        order.id, 'cash', admin_user
+    ).unwrap()
 
     order_after = order_service.get_order(order.id)
     assert order_after.payment_method == 'cash'
@@ -67,7 +70,7 @@ def test_additional_payment_data(order, admin_user):
         'external_payment_id': '555-gimme-da-moneys',
     }
 
-    order_service.mark_order_as_paid(
+    order_command_service.mark_order_as_paid(
         order.id,
         'cash',
         admin_user,
