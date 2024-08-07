@@ -8,7 +8,10 @@ from datetime import datetime
 from moneyed import EUR
 import pytest
 
-from byceps.services.shop.order import order_checkout_service, order_service
+from byceps.services.shop.order import (
+    order_checkout_service,
+    order_helper_service,
+)
 from byceps.services.shop.order.models.checkout import IncomingOrder
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import (
@@ -88,4 +91,4 @@ def create_order(
     db_order.processing_required = incoming_order.processing_required
     db_order.processed_at = created_at if processed else None
 
-    return order_service._db_order_to_transfer_object(db_order, orderer.user)
+    return order_helper_service.to_order(db_order, orderer.user)

@@ -13,7 +13,6 @@ from typing import Any
 from uuid import UUID
 
 from flask_babel import lazy_gettext
-from moneyed import Currency, Money
 from sqlalchemy import delete, select
 import structlog
 
@@ -52,19 +51,22 @@ from .models.detailed_order import AdminDetailedOrder, DetailedOrder
 from .models.log import OrderLogEntry
 from .models.number import OrderNumber
 from .models.order import (
-    Address,
     AdminOrderListItem,
-    LineItem,
     LineItemID,
-    LineItemProcessingState,
     Order,
     OrderID,
-    OrderState,
     PaymentState,
     SiteOrderListItem,
 )
 from .models.payment import AdditionalPaymentData
 from .order_domain_service import OVERDUE_THRESHOLD
+from .order_helper_service import (
+    to_admin_order_list_item,
+    to_detailed_order,
+    to_order,
+    to_site_order_list_item,
+    _is_paid,
+)
 
 
 log = structlog.get_logger()
@@ -135,7 +137,7 @@ def cancel_order(
     db_order = _get_order_entity(order_id)
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    order = _db_order_to_transfer_object(db_order, orderer_user)
+    order = to_order(db_order, orderer_user)
 
     occurred_at = datetime.utcnow()
 
@@ -171,7 +173,7 @@ def cancel_order(
 
     db.session.commit()
 
-    canceled_order = _db_order_to_transfer_object(db_order, orderer_user)
+    canceled_order = to_order(db_order, orderer_user)
 
     if payment_state_to == PaymentState.canceled_after_paid:
         _execute_article_revocation_actions(canceled_order, initiator)
@@ -192,7 +194,7 @@ def mark_order_as_paid(
     db_order = _get_order_entity(order_id)
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    order = _db_order_to_transfer_object(db_order, orderer_user)
+    order = to_order(db_order, orderer_user)
 
     occurred_at = datetime.utcnow()
 
@@ -226,7 +228,7 @@ def mark_order_as_paid(
 
     db.session.commit()
 
-    paid_order = _db_order_to_transfer_object(db_order, orderer_user)
+    paid_order = to_order(db_order, orderer_user)
 
     _execute_article_creation_actions(paid_order, initiator)
 
@@ -399,14 +401,14 @@ def find_order(order_id: OrderID) -> Order | None:
         return None
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    return _db_order_to_transfer_object(db_order, orderer_user)
+    return to_order(db_order, orderer_user)
 
 
 def get_order(order_id: OrderID) -> Order:
     """Return the order with that id, or raise an exception."""
     db_order = _get_order_entity(order_id)
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    return _db_order_to_transfer_object(db_order, orderer_user)
+    return to_order(db_order, orderer_user)
 
 
 def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
@@ -430,31 +432,7 @@ def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
         db_order.placed_by_id, include_avatar=True
     )
 
-    return DetailedOrder(
-        id=db_order.id,
-        created_at=db_order.created_at,
-        shop_id=db_order.shop_id,
-        storefront_id=db_order.storefront_id,
-        order_number=db_order.order_number,
-        placed_by=placed_by,
-        company=db_order.company,
-        first_name=db_order.first_name,
-        last_name=db_order.last_name,
-        address=_get_address(db_order),
-        total_amount=db_order.total_amount,
-        line_items=_get_line_items(db_order),
-        payment_method=db_order.payment_method,
-        payment_state=db_order.payment_state,
-        state=_get_order_state(db_order),
-        is_open=_is_open(db_order),
-        is_canceled=_is_canceled(db_order),
-        is_paid=_is_paid(db_order),
-        is_invoiced=_is_invoiced(db_order),
-        is_overdue=_is_overdue(db_order),
-        is_processing_required=db_order.processing_required,
-        is_processed=_is_processed(db_order),
-        cancellation_reason=db_order.cancellation_reason,
-    )
+    return to_detailed_order(db_order, placed_by)
 
 
 def find_order_with_details_for_admin(
@@ -492,7 +470,7 @@ def find_order_by_order_number(order_number: OrderNumber) -> Order | None:
         return None
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
-    return _db_order_to_transfer_object(db_order, orderer_user)
+    return to_order(db_order, orderer_user)
 
 
 def get_orders_for_order_numbers(
@@ -632,29 +610,10 @@ def _to_admin_order_list_items(
         orderer_ids, include_avatars=True
     )
 
-    def to_admin_order_list_item(db_order: DbOrder) -> AdminOrderListItem:
-        placed_by = orderers_by_id[db_order.placed_by_id]
-
-        return AdminOrderListItem(
-            id=db_order.id,
-            created_at=db_order.created_at,
-            order_number=db_order.order_number,
-            placed_by=placed_by,
-            first_name=db_order.first_name,
-            last_name=db_order.last_name,
-            total_amount=db_order.total_amount,
-            payment_state=db_order.payment_state,
-            state=_get_order_state(db_order),
-            is_open=_is_open(db_order),
-            is_canceled=_is_canceled(db_order),
-            is_paid=_is_paid(db_order),
-            is_invoiced=_is_invoiced(db_order),
-            is_overdue=_is_overdue(db_order),
-            is_processing_required=db_order.processing_required,
-            is_processed=_is_processed(db_order),
-        )
-
-    return [to_admin_order_list_item(db_order) for db_order in db_orders]
+    return [
+        to_admin_order_list_item(db_order, orderers_by_id)
+        for db_order in db_orders
+    ]
 
 
 def get_orders_placed_by_user(user_id: UserID) -> list[Order]:
@@ -696,24 +655,10 @@ def get_orders_placed_by_user_for_storefront(
     orderer_ids = {db_order.placed_by_id for db_order in db_orders}
     orderers_by_id = user_service.get_users_indexed_by_id(orderer_ids)
 
-    def to_site_order_list_item(db_order: DbOrder) -> SiteOrderListItem:
-        placed_by = orderers_by_id[db_order.placed_by_id]
-
-        return SiteOrderListItem(
-            id=db_order.id,
-            created_at=db_order.created_at,
-            order_number=db_order.order_number,
-            placed_by=placed_by,
-            total_amount=db_order.total_amount,
-            payment_state=db_order.payment_state,
-            state=_get_order_state(db_order),
-            is_open=_is_open(db_order),
-            is_canceled=_is_canceled(db_order),
-            is_paid=_is_paid(db_order),
-            is_overdue=_is_overdue(db_order),
-        )
-
-    return list(map(to_site_order_list_item, db_orders))
+    return [
+        to_site_order_list_item(db_order, orderers_by_id)
+        for db_order in db_orders
+    ]
 
 
 def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
@@ -756,35 +701,6 @@ def get_payment_date(order_id: OrderID) -> Result[datetime, OrderNotPaidError]:
     return Ok(paid_at)
 
 
-def _db_order_to_transfer_object(db_order: DbOrder, placed_by: User) -> Order:
-    """Create transfer object from order database entity."""
-    return Order(
-        id=db_order.id,
-        created_at=db_order.created_at,
-        shop_id=db_order.shop_id,
-        storefront_id=db_order.storefront_id,
-        order_number=db_order.order_number,
-        placed_by=placed_by,
-        company=db_order.company,
-        first_name=db_order.first_name,
-        last_name=db_order.last_name,
-        address=_get_address(db_order),
-        total_amount=db_order.total_amount,
-        line_items=_get_line_items(db_order),
-        payment_method=db_order.payment_method,
-        payment_state=db_order.payment_state,
-        state=_get_order_state(db_order),
-        is_open=_is_open(db_order),
-        is_canceled=_is_canceled(db_order),
-        is_paid=_is_paid(db_order),
-        is_invoiced=_is_invoiced(db_order),
-        is_overdue=_is_overdue(db_order),
-        is_processing_required=db_order.processing_required,
-        is_processed=_is_processed(db_order),
-        cancellation_reason=db_order.cancellation_reason,
-    )
-
-
 def _db_orders_to_transfer_objects_with_orderer_users(
     db_orders: Sequence[DbOrder], *, include_avatars=False
 ) -> list[Order]:
@@ -794,117 +710,6 @@ def _db_orders_to_transfer_objects_with_orderer_users(
     )
 
     return [
-        _db_order_to_transfer_object(
-            db_order, orderers_by_id[db_order.placed_by_id]
-        )
+        to_order(db_order, orderers_by_id[db_order.placed_by_id])
         for db_order in db_orders
     ]
-
-
-def _get_address(db_order: DbOrder) -> Address:
-    return Address(
-        country=db_order.country,
-        zip_code=db_order.zip_code,
-        city=db_order.city,
-        street=db_order.street,
-    )
-
-
-def _get_line_items(db_order: DbOrder) -> list[LineItem]:
-    is_order_canceled = _is_canceled(db_order)
-
-    line_items = [
-        _line_item_to_transfer_object(
-            db_line_item, db_order.currency, is_order_canceled
-        )
-        for db_line_item in db_order.line_items
-    ]
-
-    line_items.sort(key=lambda li: li.article_id)
-
-    return line_items
-
-
-def _is_overdue(db_order: DbOrder) -> bool:
-    """Return `True` if payment of the order is overdue."""
-    return order_domain_service.is_overdue(
-        db_order.created_at, db_order.payment_state
-    )
-
-
-def _line_item_to_transfer_object(
-    db_line_item: DbLineItem, currency: Currency, is_order_canceled: bool
-) -> LineItem:
-    """Create transfer object from line item database entity."""
-    return LineItem(
-        id=db_line_item.id,
-        order_number=db_line_item.order_number,
-        article_id=db_line_item.article_id,
-        article_number=db_line_item.article_number,
-        article_type=db_line_item.article_type,
-        name=db_line_item.name,
-        unit_price=Money(db_line_item.unit_price, currency),
-        tax_rate=db_line_item.tax_rate,
-        quantity=db_line_item.quantity,
-        line_amount=Money(db_line_item.line_amount, currency),
-        processing_required=db_line_item.processing_required,
-        processing_result=db_line_item.processing_result or {},
-        processed_at=db_line_item.processed_at,
-        processing_state=_get_line_item_processing_state(
-            db_line_item, is_order_canceled
-        ),
-    )
-
-
-def _get_line_item_processing_state(
-    db_line_item: DbLineItem, is_order_canceled: bool
-) -> LineItemProcessingState:
-    if not db_line_item.processing_required:
-        return LineItemProcessingState.not_applicable
-
-    if is_order_canceled:
-        return LineItemProcessingState.canceled
-
-    if db_line_item.processed_at is not None:
-        return LineItemProcessingState.complete
-    else:
-        return LineItemProcessingState.pending
-
-
-def _get_order_state(db_order: DbOrder) -> OrderState:
-    is_canceled = _is_canceled(db_order)
-    is_paid = _is_paid(db_order)
-    is_processing_required = db_order.processing_required
-    is_processed = _is_processed(db_order)
-
-    if is_canceled:
-        return OrderState.canceled
-
-    if is_paid:
-        if not is_processing_required or is_processed:
-            return OrderState.complete
-
-    return OrderState.open
-
-
-def _is_open(db_order: DbOrder) -> bool:
-    return db_order.payment_state == PaymentState.open
-
-
-def _is_canceled(db_order: DbOrder) -> bool:
-    return db_order.payment_state in {
-        PaymentState.canceled_before_paid,
-        PaymentState.canceled_after_paid,
-    }
-
-
-def _is_paid(db_order: DbOrder) -> bool:
-    return db_order.payment_state == PaymentState.paid
-
-
-def _is_invoiced(db_order: DbOrder) -> bool:
-    return db_order.invoice_created_at is not None
-
-
-def _is_processed(db_order: DbOrder) -> bool:
-    return db_order.processed_at is not None

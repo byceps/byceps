@@ -23,6 +23,7 @@ from byceps.util.result import Err, Ok, Result
 
 from . import (
     order_domain_service,
+    order_helper_service,
     order_log_service,
     order_sequence_service,
     order_service,
@@ -94,7 +95,7 @@ def place_order(
         db.session.rollback()
         return Err(None)
 
-    order = order_service._db_order_to_transfer_object(db_order, orderer.user)
+    order = order_helper_service.to_order(db_order, orderer.user)
 
     occurred_at = order.created_at
 
