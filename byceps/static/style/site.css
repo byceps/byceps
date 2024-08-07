@@ -661,6 +661,10 @@ main h1 a:not(:hover) {
   text-decoration: none;
 }
 
+.continuative-link {
+  text-align: right;
+}
+
 
 /* misc */
 
