@@ -3,7 +3,7 @@
 
 {% block head %}
 <style>
-.dashboard {
+.dashboard-items {
   display: grid;
   gap: 1rem 3rem;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -20,7 +20,7 @@
 
   <h1 class="title">{{ _('Dashboard') }}</h1>
 
-  <div class="dashboard">
+  <div class="dashboard-items">
 
     <div class="dashboard-item">
 {% include 'site/dashboard/_orders.html' %}
