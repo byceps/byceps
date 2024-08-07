@@ -95,18 +95,18 @@ def count_orders_per_payment_state_via_order_prefix(
     return counts_by_payment_state
 
 
-def _find_order_entity(order_id: OrderID) -> DbOrder | None:
+def _find_db_order(order_id: OrderID) -> DbOrder | None:
     """Return the order database entity with that id, or `None` if not
     found.
     """
     return db.session.get(DbOrder, order_id)
 
 
-def _get_order_entity(order_id: OrderID) -> DbOrder:
+def get_db_order(order_id: OrderID) -> DbOrder:
     """Return the order database entity with that id, or raise an
     exception.
     """
-    db_order = _find_order_entity(order_id)
+    db_order = _find_db_order(order_id)
 
     if db_order is None:
         raise ValueError(f'Unknown order ID "{order_id}"')
@@ -116,7 +116,7 @@ def _get_order_entity(order_id: OrderID) -> DbOrder:
 
 def find_order(order_id: OrderID) -> Order | None:
     """Return the order with that id, or `None` if not found."""
-    db_order = _find_order_entity(order_id)
+    db_order = _find_db_order(order_id)
 
     if db_order is None:
         return None
@@ -127,7 +127,7 @@ def find_order(order_id: OrderID) -> Order | None:
 
 def get_order(order_id: OrderID) -> Order:
     """Return the order with that id, or raise an exception."""
-    db_order = _get_order_entity(order_id)
+    db_order = get_db_order(order_id)
     orderer_user = user_service.get_user(db_order.placed_by_id)
     return to_order(db_order, orderer_user)
 

@@ -38,6 +38,7 @@ from .models.log import OrderLogEntry
 from .models.order import LineItemID, Order, OrderID, PaymentState
 from .models.payment import AdditionalPaymentData
 from .order_helper_service import to_order, _is_paid
+from .order_service import get_db_order
 
 
 log = structlog.get_logger()
@@ -87,7 +88,7 @@ def unset_shipped_flag(order: Order, initiator: User) -> Result[None, str]:
 def _persist_shipped_flag(
     log_entry: OrderLogEntry, processed_at: datetime | None
 ) -> None:
-    db_order = _get_order_entity(log_entry.order_id)
+    db_order = get_db_order(log_entry.order_id)
 
     db_log_entry = order_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -105,7 +106,7 @@ def cancel_order(
     Reserved quantities of articles from that order are made available
     again.
     """
-    db_order = _get_order_entity(order_id)
+    db_order = get_db_order(order_id)
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
     order = to_order(db_order, orderer_user)
@@ -162,7 +163,7 @@ def mark_order_as_paid(
     additional_payment_data: AdditionalPaymentData | None = None,
 ) -> Result[tuple[Order, ShopOrderPaidEvent], OrderAlreadyMarkedAsPaidError]:
     """Mark the order as paid."""
-    db_order = _get_order_entity(order_id)
+    db_order = get_db_order(order_id)
 
     orderer_user = user_service.get_user(db_order.placed_by_id)
     order = to_order(db_order, orderer_user)
@@ -281,15 +282,3 @@ def update_line_item_processing_result(
     db_line_item.processing_result = data
     db_line_item.processed_at = datetime.utcnow()
     db.session.commit()
-
-
-def _get_order_entity(order_id: OrderID) -> DbOrder:
-    """Return the order database entity with that id, or raise an
-    exception.
-    """
-    db_order = db.session.get(DbOrder, order_id)
-
-    if db_order is None:
-        raise ValueError(f'Unknown order ID "{order_id}"')
-
-    return db_order
