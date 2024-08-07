@@ -10,7 +10,7 @@ from copy import deepcopy
 from datetime import datetime
 
 from moneyed import Money
-from sqlalchemy import delete, select
+from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.shop.shop.models import ShopID
@@ -62,12 +62,6 @@ def _persist_payment(payment: Payment, log_entry: OrderLogEntry) -> None:
     db_log_entry = order_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
-    db.session.commit()
-
-
-def delete_payments_for_order(order_id: OrderID) -> None:
-    """Delete all payments that belong to the order."""
-    db.session.execute(delete(DbPayment).where(DbPayment.order_id == order_id))
     db.session.commit()
 
 

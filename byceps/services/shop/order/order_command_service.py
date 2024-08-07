@@ -10,7 +10,6 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from sqlalchemy import delete
 import structlog
 
 from byceps.database import db
@@ -33,7 +32,6 @@ from .actions import (
     ticket_bundle as ticket_bundle_actions,
 )
 from .dbmodels.line_item import DbLineItem
-from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
 from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
 from .models.log import OrderLogEntry
@@ -283,20 +281,6 @@ def update_line_item_processing_result(
     db_line_item.processing_result = data
     db_line_item.processed_at = datetime.utcnow()
     db.session.commit()
-
-
-def delete_order(order: Order) -> None:
-    """Delete an order."""
-    order_payment_service.delete_payments_for_order(order.id)
-
-    db.session.execute(delete(DbOrderLogEntry).filter_by(order_id=order.id))
-    db.session.execute(
-        delete(DbLineItem).filter_by(order_number=order.order_number)
-    )
-    db.session.execute(delete(DbOrder).filter_by(id=order.id))
-    db.session.commit()
-
-    log.info('Order deleted', order_number=order.order_number)
 
 
 def _get_order_entity(order_id: OrderID) -> DbOrder:
