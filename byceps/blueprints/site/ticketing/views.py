@@ -11,7 +11,6 @@ from typing import Any
 from flask import abort, g, request
 from flask_babel import gettext
 
-from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
 from byceps.services.shop.order import order_service
 from byceps.services.ticketing import (
@@ -80,11 +79,6 @@ def index_mine():
         order_numbers
     )
 
-    ticket_user_ids = {ticket.used_by_id for ticket in tickets}
-    orga_ids = orga_team_service.select_orgas_for_party(
-        ticket_user_ids, g.party_id
-    )
-
     current_user_uses_any_ticket = find(
         tickets, lambda t: t.used_by_id == user.id
     )
@@ -93,7 +87,6 @@ def index_mine():
         'party_title': party.title,
         'tickets': tickets,
         'order_ids_by_order_number': order_ids_by_order_number,
-        'orga_ids': orga_ids,
         'current_user_uses_any_ticket': current_user_uses_any_ticket,
         'is_user_allowed_to_print_ticket': _is_user_allowed_to_print_ticket,
         'ticket_management_enabled': _is_ticket_management_enabled(),
