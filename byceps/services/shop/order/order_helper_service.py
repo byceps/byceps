@@ -144,9 +144,7 @@ def _get_line_items(db_order: DbOrder) -> list[LineItem]:
     is_order_canceled = _is_canceled(db_order)
 
     line_items = [
-        _line_item_to_transfer_object(
-            db_line_item, db_order.currency, is_order_canceled
-        )
+        to_line_item(db_line_item, db_order.currency, is_order_canceled)
         for db_line_item in db_order.line_items
     ]
 
@@ -162,10 +160,10 @@ def _is_overdue(db_order: DbOrder) -> bool:
     )
 
 
-def _line_item_to_transfer_object(
+def to_line_item(
     db_line_item: DbLineItem, currency: Currency, is_order_canceled: bool
 ) -> LineItem:
-    """Create transfer object from line item database entity."""
+    """Create line item transfer object from database entity."""
     return LineItem(
         id=db_line_item.id,
         order_number=db_line_item.order_number,
