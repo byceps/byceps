@@ -3,9 +3,9 @@
 <h2>{{ _('News') }}</h2>
 
 {%- if news_teasers %}
-<ol class="block homepage-items">
+<div class="block homepage-items">
   {%- for teaser in news_teasers %}
-  <li>
+  <div>
     <a class="card homepage-item-link" href="{{ url_for('news.view', slug=teaser.slug) }}">
       {%- if teaser.featured_image %}
         {%- with featured_image = teaser.featured_image %}
@@ -19,9 +19,9 @@
         <div class="homepage-item-meta">{{ teaser.published_at|dateformat('full') }}</div>
       </div>
     </a>
-  </li>
+  </div>
   {%- endfor %}
-</ol>
+</div>
 {%- else %}
 <div class="block dimmed">{{ _('No news yet.') }}</div>
 {%- endif %}

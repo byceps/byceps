@@ -5,26 +5,14 @@
 {% block head %}
 <style>
 .homepage-items {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.homepage-block--news .homepage-items {
+  --min-column-width: 200px;
   display: grid;
   gap: 1rem 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-}
-
-.homepage-items li + li {
-  margin-top: 0.75rem;
-}
-
-.homepage-block--news .homepage-items li + li {
-  margin-top: 0;
+  grid-template-columns: repeat(auto-fit, minmax(var(--min-column-width), 1fr));
 }
 
 .homepage-item-link:not(:hover) {
+  color: currentColor;
   text-decoration: none;
 }
 
@@ -41,7 +29,7 @@
 {{ render_snippet('homepage', ignore_if_unknown=True)|safe }}
 
 {%- if news_teasers is not none %}
-  <div class="homepage-block homepage-block--news">
+  <div class="homepage-block">
 {% include 'site/homepage/_news.html' %}
   </div>
 {%- endif %}
