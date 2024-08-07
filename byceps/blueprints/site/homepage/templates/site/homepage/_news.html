@@ -3,10 +3,10 @@
 <h2>{{ _('News') }}</h2>
 
 {%- if news_teasers %}
-<ol class="block items">
+<ol class="block homepage-items">
   {%- for teaser in news_teasers %}
   <li>
-    <a class="card item-link" href="{{ url_for('news.view', slug=teaser.slug) }}">
+    <a class="card homepage-item-link" href="{{ url_for('news.view', slug=teaser.slug) }}">
       {%- if teaser.featured_image %}
         {%- with featured_image = teaser.featured_image %}
       <div class="card-image">
@@ -15,8 +15,8 @@
         {%- endwith %}
       {%- endif %}
       <div class="card-content">
-        <div class="item-title">{{ teaser.title }}</div>
-        <div class="item-meta">{{ teaser.published_at|dateformat('full') }}</div>
+        <div class="homepage-item-title">{{ teaser.title }}</div>
+        <div class="homepage-item-meta">{{ teaser.published_at|dateformat('full') }}</div>
       </div>
     </a>
   </li>
