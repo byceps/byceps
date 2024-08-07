@@ -29,7 +29,7 @@
 {{ render_snippet('homepage', ignore_if_unknown=True)|safe }}
 
 {%- if news_teasers is not none %}
-<div class="homepage-block">
+<div class="block homepage-block">
 {% include 'site/homepage/_news.html' %}
 </div>
 {%- endif %}
