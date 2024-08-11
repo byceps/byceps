@@ -8,7 +8,7 @@ byceps.services.shop.order.order_service
 
 from collections.abc import Sequence
 import dataclasses
-from datetime import datetime, UTC
+from datetime import datetime, timedelta, UTC
 
 from flask_babel import lazy_gettext
 from sqlalchemy import select
@@ -333,6 +333,34 @@ def _to_admin_order_list_items(
 
     return [
         to_admin_order_list_item(db_order, orderers_by_id)
+        for db_order in db_orders
+    ]
+
+
+def get_overdue_orders(
+    shop_id: ShopID, older_than: timedelta, *, limit: int | None = None
+) -> list[Order]:
+    """Return all overdue orders for that shop, ordered by creation date."""
+    now = datetime.now(UTC)
+
+    db_orders = (
+        db.session.scalars(
+            select(DbOrder)
+            .options(db.joinedload(DbOrder.line_items))
+            .filter_by(shop_id=shop_id)
+            .filter_by(_payment_state=PaymentState.open.name)
+            .filter(DbOrder.created_at + older_than < now)
+            .order_by(DbOrder.created_at)
+        )
+        .unique()
+        .all()
+    )
+
+    orderer_ids = {db_order.placed_by_id for db_order in db_orders}
+    orderers_by_id = user_service.get_users_indexed_by_id(orderer_ids)
+
+    return [
+        to_order(db_order, orderers_by_id[db_order.placed_by_id])
         for db_order in db_orders
     ]
 
