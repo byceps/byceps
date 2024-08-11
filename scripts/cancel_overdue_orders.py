@@ -29,18 +29,18 @@ NOTIFY_ORDERERS = True
 
 @click.command()
 @click.option('--shop-id', required=True)
-@click.option('--age-in-days', required=True, type=click.INT)
+@click.option('--minimum-age-in-days', required=True, type=click.INT)
 @click.option('--canceler', required=True, callback=validate_user_screen_name)
 @click.option('--reason')
-def execute(shop_id, age_in_days: int, canceler, reason: str | None):
-    overdue_orders = _collect_overdue_orders(shop_id, age_in_days)
+def execute(shop_id, minimum_age_in_days: int, canceler, reason: str | None):
+    overdue_orders = _collect_overdue_orders(shop_id, minimum_age_in_days)
     for order in overdue_orders:
         with force_locale(LOCALE):
             _cancel_order(order, canceler, reason)
 
 
-def _collect_overdue_orders(shop_id, age_in_days: int) -> list[Order]:
-    older_than = timedelta(days=age_in_days)
+def _collect_overdue_orders(shop_id, minimum_age_in_days: int) -> list[Order]:
+    older_than = timedelta(days=minimum_age_in_days)
     overdue_orders = order_service.get_overdue_orders(
         shop_id,
         older_than,
