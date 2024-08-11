@@ -74,7 +74,7 @@
           {%- if not item.published %}
           {{ render_tag(_('Draft')) }}
           {%- endif %}
-          <a href="{{ url_for('.item_view', item_id=item.id) }}"><strong>{{ item.title|fallback('&lt;' ~ _('untitled') ~ '&gt;') }}</strong></a><br>
+          <a href="{{ url_for('.item_view', item_id=item.id) }}"><strong>{{ item.title|fallback(_('untitled')) }}</strong></a><br>
           {{ item.slug|dim }}
         </td>
         <td>{% if item.featured_image %} {{ render_icon('image', title=_('Image defined')) }}{% endif %}</td>

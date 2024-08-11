@@ -7,7 +7,7 @@
 {% set page_title = _('Change history') %}
 
 {% block before_body %}
-{{ render_backlink(url_for('.item_view', item_id=item.id), item.title|fallback('&lt;' ~ _('untitled') ~ '&gt;')) }}
+{{ render_backlink(url_for('.item_view', item_id=item.id), item.title|fallback(_('untitled'))) }}
 {%- endblock %}
 
 {% block body %}
