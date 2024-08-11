@@ -1,4 +1,4 @@
-babel==2.15.0
+babel==2.16.0
 bbcode==1.1.0
 blinker==1.8.2
 bpython>=0.24
