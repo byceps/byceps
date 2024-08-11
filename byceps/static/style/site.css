@@ -40,6 +40,11 @@ body {
   margin-right: calc(-1 * var(--main-body-box-hspace));
 }
 
+.main-body-box .featured-image figcaption {
+  padding-left: var(--main-body-box-hspace);
+  padding-right: var(--main-body-box-hspace);
+}
+
 
 /* headings */
 
