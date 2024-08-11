@@ -28,9 +28,9 @@ NOTIFY_ORDERERS = True
 
 
 @click.command()
-@click.argument('shop_id')
-@click.argument('age_in_days', type=click.INT)
-@click.argument('canceler', callback=validate_user_screen_name)
+@click.option('--shop-id', required=True)
+@click.option('--age-in-days', required=True, type=click.INT)
+@click.option('--canceler', required=True, callback=validate_user_screen_name)
 @click.option('--reason')
 def execute(shop_id, age_in_days: int, canceler, reason: str | None):
     overdue_orders = _collect_overdue_orders(shop_id, age_in_days)
