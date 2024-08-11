@@ -22,7 +22,6 @@ from _util import call_with_app_context
 from _validators import validate_user_screen_name
 
 
-LOCALE = 'de_DE'
 MAX_ORDERS_TO_CANCEL = 100
 NOTIFY_ORDERERS = True
 
@@ -31,11 +30,14 @@ NOTIFY_ORDERERS = True
 @click.option('--shop-id', required=True)
 @click.option('--minimum-age-in-days', required=True, type=click.INT)
 @click.option('--canceler', required=True, callback=validate_user_screen_name)
+@click.option('--locale', required=True, default='en')
 @click.option('--reason')
-def execute(shop_id, minimum_age_in_days: int, canceler, reason: str | None):
+def execute(
+    shop_id, minimum_age_in_days: int, canceler, locale: str, reason: str | None
+):
     overdue_orders = _collect_overdue_orders(shop_id, minimum_age_in_days)
     for order in overdue_orders:
-        with force_locale(LOCALE):
+        with force_locale(locale):
             _cancel_order(order, canceler, reason)
 
 
