@@ -8,7 +8,7 @@ byceps.services.shop.order.order_service
 
 from collections.abc import Sequence
 import dataclasses
-from datetime import datetime
+from datetime import datetime, UTC
 
 from flask_babel import lazy_gettext
 from sqlalchemy import select
@@ -299,7 +299,7 @@ def get_orders_for_shop_paginated(
         if (only_payment_state == PaymentState.open) and (
             only_overdue is not None
         ):
-            now = datetime.utcnow()
+            now = datetime.now(UTC)
 
             if only_overdue:
                 stmt = stmt.filter(DbOrder.created_at + OVERDUE_THRESHOLD < now)
