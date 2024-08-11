@@ -22,7 +22,6 @@ from _util import call_with_app_context
 from _validators import validate_user_screen_name
 
 
-MAX_ORDERS_TO_CANCEL = 100
 NOTIFY_ORDERERS = True
 
 
@@ -32,21 +31,29 @@ NOTIFY_ORDERERS = True
 @click.option('--canceler', required=True, callback=validate_user_screen_name)
 @click.option('--locale', required=True, default='en')
 @click.option('--reason')
+@click.option('--limit', default=100)
 def execute(
-    shop_id, minimum_age_in_days: int, canceler, locale: str, reason: str | None
+    shop_id,
+    minimum_age_in_days: int,
+    canceler,
+    locale: str,
+    reason: str | None,
+    limit: int,
 ):
-    overdue_orders = _collect_overdue_orders(shop_id, minimum_age_in_days)
+    overdue_orders = _collect_overdue_orders(
+        shop_id, minimum_age_in_days, limit
+    )
     for order in overdue_orders:
         with force_locale(locale):
             _cancel_order(order, canceler, reason)
 
 
-def _collect_overdue_orders(shop_id, minimum_age_in_days: int) -> list[Order]:
+def _collect_overdue_orders(
+    shop_id, minimum_age_in_days: int, limit: int
+) -> list[Order]:
     older_than = timedelta(days=minimum_age_in_days)
     overdue_orders = order_service.get_overdue_orders(
-        shop_id,
-        older_than,
-        limit=MAX_ORDERS_TO_CANCEL,
+        shop_id, older_than, limit=limit
     )
     click.secho(f'Found {len(overdue_orders)} overdue orders.', fg='yellow')
     return overdue_orders
