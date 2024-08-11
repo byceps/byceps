@@ -31,8 +31,8 @@ NOTIFY_ORDERERS = True
 @click.argument('shop_id')
 @click.argument('age_in_days', type=click.INT)
 @click.argument('canceler', callback=validate_user_screen_name)
-@click.argument('reason', default='')
-def execute(shop_id, age_in_days: int, canceler, reason: str):
+@click.option('--reason')
+def execute(shop_id, age_in_days: int, canceler, reason: str | None):
     overdue_orders = _collect_overdue_orders(shop_id, age_in_days)
     for order in overdue_orders:
         with force_locale(LOCALE):
@@ -50,7 +50,7 @@ def _collect_overdue_orders(shop_id, age_in_days: int) -> list[Order]:
     return overdue_orders
 
 
-def _cancel_order(order, canceler, reason: str) -> None:
+def _cancel_order(order, canceler, reason: str | None) -> None:
     if not reason:
         reason = gettext(
             'The payment deadline has been exceed. '
