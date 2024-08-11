@@ -9,7 +9,7 @@
 from datetime import timedelta
 
 import click
-from flask_babel import force_locale
+from flask_babel import force_locale, gettext
 
 from byceps.services.shop.order import order_command_service, order_service
 from byceps.services.shop.order.email import order_email_service
@@ -25,14 +25,13 @@ from _validators import validate_user_screen_name
 LOCALE = 'de_DE'
 MAX_ORDERS_TO_CANCEL = 100
 NOTIFY_ORDERERS = True
-REASON_DEFAULT = 'Das Zahlungsziel wurde überschritten. Gib eine neue Bestellung auf, falls du weiterhin Interesse an der Teilnahme hast.'
 
 
 @click.command()
 @click.argument('shop_id')
 @click.argument('age_in_days', type=click.INT)
 @click.argument('canceler', callback=validate_user_screen_name)
-@click.argument('reason', default=REASON_DEFAULT)
+@click.argument('reason', default='')
 def execute(shop_id, age_in_days: int, canceler, reason: str):
     overdue_orders = _collect_overdue_orders(shop_id, age_in_days)
     for order in overdue_orders:
@@ -52,6 +51,12 @@ def _collect_overdue_orders(shop_id, age_in_days: int) -> list[Order]:
 
 
 def _cancel_order(order, canceler, reason: str) -> None:
+    if not reason:
+        reason = gettext(
+            'The payment deadline has been exceed. '
+            'Place a new order if you are still interested in attending.'
+        )
+
     match order_command_service.cancel_order(order.id, canceler, reason):
         case Ok((_, canceled_event)):
             shop_signals.order_canceled.send(None, event=canceled_event)

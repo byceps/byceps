@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.16.0\n"
 
 #: byceps/announce/handlers/user.py:63 byceps/announce/helpers.py:41
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:141
@@ -1816,7 +1816,7 @@ msgstr "Shop"
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:8
 #: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:20
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:2
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:35
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:21
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -4511,44 +4511,44 @@ msgstr "Auftraggeber/in aktiv per E-Mail über Stornierung informieren"
 msgid "Payment type"
 msgstr "Zahlungsart"
 
-#: byceps/blueprints/admin/shop/order/views.py:189
+#: byceps/blueprints/admin/shop/order/views.py:190
 msgid "The integration of the invoice provider is not properly configured."
 msgstr ""
 "Die Integration mit einem Rechnungsanbieter ist nicht korrekt "
 "konfiguriert."
 
-#: byceps/blueprints/admin/shop/order/views.py:196
+#: byceps/blueprints/admin/shop/order/views.py:197
 msgid "The order is marked as paid for free. No invoice is created in this case."
 msgstr ""
 "Die Bestellung ist als kostenlos bezahlt markiert. In diesem Fall wird "
 "keine Rechnung erstellt."
 
-#: byceps/blueprints/admin/shop/order/views.py:203
+#: byceps/blueprints/admin/shop/order/views.py:204
 msgid "The download of the invoice from the invoice provider failed."
 msgstr "Der Download der Rechnung vom Rechnungsanbieter ist fehlgeschlagen."
 
-#: byceps/blueprints/admin/shop/order/views.py:208
+#: byceps/blueprints/admin/shop/order/views.py:209
 msgid "No invoice provider is integrated."
 msgstr "Es ist kein Rechnungsanbieter integriert."
 
-#: byceps/blueprints/admin/shop/order/views.py:260
+#: byceps/blueprints/admin/shop/order/views.py:261
 msgid "Note has been added."
 msgstr "Die Notiz wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/order/views.py:284
+#: byceps/blueprints/admin/shop/order/views.py:285
 #, python-format
 msgid "Order %(order_number)s has been marked as shipped."
 msgstr "Bestellung %(order_number)s wurde als verschickt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:306
+#: byceps/blueprints/admin/shop/order/views.py:307
 #, python-format
 msgid "Order %(order_number)s has been marked as not shipped."
 msgstr "Bestellung %(order_number)s wurde als nicht verschickt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:326
-#: byceps/blueprints/admin/shop/order/views.py:367
-#: byceps/blueprints/site/shop/orders/views.py:215
-#: byceps/blueprints/site/shop/orders/views.py:327
+#: byceps/blueprints/admin/shop/order/views.py:327
+#: byceps/blueprints/admin/shop/order/views.py:370
+#: byceps/blueprints/site/shop/orders/views.py:221
+#: byceps/blueprints/site/shop/orders/views.py:335
 msgid ""
 "The order has already been canceled. The payment state cannot be changed "
 "anymore."
@@ -4556,17 +4556,17 @@ msgstr ""
 "Die Bestellung ist bereits storniert worden; der Bezahlstatus kann nicht "
 "mehr geändert werden."
 
-#: byceps/blueprints/admin/shop/order/views.py:373
-#: byceps/blueprints/admin/shop/order/views.py:449
+#: byceps/blueprints/admin/shop/order/views.py:376
+#: byceps/blueprints/admin/shop/order/views.py:452
 #: byceps/blueprints/admin/ticketing/checkin/views.py:168
 #: byceps/blueprints/site/seating/views.py:268
 #: byceps/blueprints/site/seating/views.py:335
-#: byceps/blueprints/site/shop/orders/views.py:220
-#: byceps/blueprints/site/shop/orders/views.py:332
+#: byceps/blueprints/site/shop/orders/views.py:226
+#: byceps/blueprints/site/shop/orders/views.py:340
 msgid "An unexpected error occurred."
 msgstr "Ein unvorhergesehener Fehler ist aufgetreten."
 
-#: byceps/blueprints/admin/shop/order/views.py:379
+#: byceps/blueprints/admin/shop/order/views.py:382
 msgid ""
 "The order has been canceled and the corresponding articles have been made"
 " available again."
@@ -4574,24 +4574,24 @@ msgstr ""
 "Die Bestellung wurde als storniert markiert und die betroffenen Artikel "
 "in den entsprechenden Stückzahlen wieder zur Bestellung freigegeben."
 
-#: byceps/blueprints/admin/shop/order/views.py:390
+#: byceps/blueprints/admin/shop/order/views.py:393
 msgid "No email has been sent to the orderer."
 msgstr "Es wurde keine E-Mail an den/die Auftraggeber/in versendet."
 
-#: byceps/blueprints/admin/shop/order/views.py:409
-#: byceps/blueprints/admin/shop/order/views.py:447
+#: byceps/blueprints/admin/shop/order/views.py:412
+#: byceps/blueprints/admin/shop/order/views.py:450
 msgid "Order is already marked as paid."
 msgstr "Die Bestellung ist bereits als bezahlt markiert worden."
 
-#: byceps/blueprints/admin/shop/order/views.py:454
+#: byceps/blueprints/admin/shop/order/views.py:457
 msgid "Order has been marked as paid."
 msgstr "Die Bestellung wurde als bezahlt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:487
+#: byceps/blueprints/admin/shop/order/views.py:490
 msgid "Email confirmation for placed order has been sent again."
 msgstr "Die E-Mail-Eingangsbestätigung wurde erneut versendet."
 
-#: byceps/blueprints/admin/shop/order/views.py:530
+#: byceps/blueprints/admin/shop/order/views.py:533
 #, python-format
 msgid ""
 "Order number sequence could not be created. Is the prefix \"%(prefix)s\" "
@@ -4600,7 +4600,7 @@ msgstr ""
 "Die Bestellnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/order/views.py:539
+#: byceps/blueprints/admin/shop/order/views.py:542
 #, python-format
 msgid "Order number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -5433,7 +5433,7 @@ msgid "Code for ticket %(ticket_code)s has been updated."
 msgstr "Der Code von Ticket %(ticket_code)s wurde geändert."
 
 #: byceps/blueprints/admin/ticketing/views.py:239
-#: byceps/blueprints/site/ticketing/views.py:204
+#: byceps/blueprints/site/ticketing/views.py:197
 #, python-format
 msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
 msgstr ""
@@ -7703,37 +7703,37 @@ msgstr "Jetzt kostenpflichtig bestellen"
 msgid "No articles are available at this time."
 msgstr "Es sind derzeit keine Artikel verfügbar."
 
-#: byceps/blueprints/site/shop/orders/views.py:165
-#: byceps/blueprints/site/shop/orders/views.py:193
-#: byceps/blueprints/site/shop/orders/views.py:242
-#: byceps/blueprints/site/shop/orders/views.py:269
-#: byceps/blueprints/site/shop/orders/views.py:295
-#: byceps/blueprints/site/shop/orders/views.py:356
-#: byceps/blueprints/site/shop/orders/views.py:385
-#: byceps/blueprints/site/shop/orders/views.py:433
-#: byceps/blueprints/site/shop/orders/views.py:462
+#: byceps/blueprints/site/shop/orders/views.py:169
+#: byceps/blueprints/site/shop/orders/views.py:197
+#: byceps/blueprints/site/shop/orders/views.py:248
+#: byceps/blueprints/site/shop/orders/views.py:275
+#: byceps/blueprints/site/shop/orders/views.py:301
+#: byceps/blueprints/site/shop/orders/views.py:364
+#: byceps/blueprints/site/shop/orders/views.py:393
+#: byceps/blueprints/site/shop/orders/views.py:441
+#: byceps/blueprints/site/shop/orders/views.py:470
 msgid "The order has already been canceled."
 msgstr "Die Bestellung ist bereits storniert worden."
 
-#: byceps/blueprints/site/shop/orders/views.py:170
-#: byceps/blueprints/site/shop/orders/views.py:198
+#: byceps/blueprints/site/shop/orders/views.py:174
+#: byceps/blueprints/site/shop/orders/views.py:202
 msgid "The order has already been paid. You cannot cancel it yourself anymore."
 msgstr ""
 "Die Bestellung ist bereits bezahlt worden. Du kannst sie nicht mehr "
 "selbst stornieren."
 
-#: byceps/blueprints/site/shop/orders/views.py:225
-#: byceps/blueprints/site/shop/orders/views.py:339
+#: byceps/blueprints/site/shop/orders/views.py:231
+#: byceps/blueprints/site/shop/orders/views.py:347
 msgid "Order has been canceled."
 msgstr "Die Bestellung wurde storniert."
 
-#: byceps/blueprints/site/shop/orders/views.py:246
-#: byceps/blueprints/site/shop/orders/views.py:273
-#: byceps/blueprints/site/shop/orders/views.py:299
-#: byceps/blueprints/site/shop/orders/views.py:360
-#: byceps/blueprints/site/shop/orders/views.py:389
-#: byceps/blueprints/site/shop/orders/views.py:437
-#: byceps/blueprints/site/shop/orders/views.py:466
+#: byceps/blueprints/site/shop/orders/views.py:252
+#: byceps/blueprints/site/shop/orders/views.py:279
+#: byceps/blueprints/site/shop/orders/views.py:305
+#: byceps/blueprints/site/shop/orders/views.py:368
+#: byceps/blueprints/site/shop/orders/views.py:397
+#: byceps/blueprints/site/shop/orders/views.py:445
+#: byceps/blueprints/site/shop/orders/views.py:474
 msgid "The order has not been paid."
 msgstr "Die Bestellung wurde nicht bezahlt."
 
@@ -7947,18 +7947,18 @@ msgstr ""
 #: byceps/services/authn/password/authn_password_reset_service.py:46
 #: byceps/services/shop/order/email/order_email_service.py:308
 #: byceps/services/user/user_email_address_service.py:78
-#: byceps/services/user/user_email_address_service.py:220
+#: byceps/services/user/user_email_address_service.py:222
 #: byceps/services/user_message/user_message_service.py:103
 #, python-format
 msgid "Hello %(screen_name)s,"
 msgstr "Hallo %(screen_name)s,"
 
-#: byceps/blueprints/site/ticketing/views.py:249
+#: byceps/blueprints/site/ticketing/views.py:242
 #, python-format
 msgid "You have been assigned as user of ticket %(ticket_code)s."
 msgstr "Du wurdest als Nutzer/in von Ticket %(ticket_code)s eingetragen."
 
-#: byceps/blueprints/site/ticketing/views.py:318
+#: byceps/blueprints/site/ticketing/views.py:311
 #, python-format
 msgid ""
 "%(screen_name)s has been assigned as user manager of ticket "
@@ -7967,12 +7967,12 @@ msgstr ""
 "%(screen_name)s wurde als Nutzer-Verwalter/in von Ticket %(ticket_code)s "
 "eingetragen."
 
-#: byceps/blueprints/site/ticketing/views.py:357
+#: byceps/blueprints/site/ticketing/views.py:350
 #, python-format
 msgid "User manager of ticket %(ticket_code)s has been removed."
 msgstr "Der Nutzer-Verwalter von Ticket %(ticket_code)s wurde entfernt."
 
-#: byceps/blueprints/site/ticketing/views.py:419
+#: byceps/blueprints/site/ticketing/views.py:412
 #, python-format
 msgid ""
 "%(screen_name)s has been assigned as seat manager of ticket "
@@ -7981,16 +7981,16 @@ msgstr ""
 "%(screen_name)s wurde als Sitzplatz-Verwalter/in von Ticket "
 "%(ticket_code)s eingetragen."
 
-#: byceps/blueprints/site/ticketing/views.py:456
+#: byceps/blueprints/site/ticketing/views.py:449
 #, python-format
 msgid "Seat manager of ticket %(ticket_code)s has been removed."
 msgstr "Der Sitzplatz-Verwalter von Ticket %(ticket_code)s wurde entfernt."
 
-#: byceps/blueprints/site/ticketing/views.py:470
+#: byceps/blueprints/site/ticketing/views.py:463
 msgid "Tickets cannot be updated at this time."
 msgstr "Tickets können derzeit nicht verändert werden."
 
-#: byceps/blueprints/site/ticketing/views.py:496
+#: byceps/blueprints/site/ticketing/views.py:489
 msgid "Somebody has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
 
@@ -8762,19 +8762,19 @@ msgstr "physikalisch"
 msgid "other"
 msgstr "sonstiges"
 
-#: byceps/services/shop/order/order_service.py:734
+#: byceps/services/shop/order/order_service.py:428
 msgid "bank transfer"
 msgstr "Überweisung"
 
-#: byceps/services/shop/order/order_service.py:735
+#: byceps/services/shop/order/order_service.py:429
 msgid "cash"
 msgstr "Barzahlung"
 
-#: byceps/services/shop/order/order_service.py:736
+#: byceps/services/shop/order/order_service.py:430
 msgid "direct debit"
 msgstr "Lastschrift"
 
-#: byceps/services/shop/order/order_service.py:737
+#: byceps/services/shop/order/order_service.py:431
 msgid "free"
 msgstr "kostenlos"
 
@@ -8851,13 +8851,13 @@ msgid "wrote"
 msgstr "schrieb"
 
 #: byceps/services/user/user_email_address_service.py:73
-#: byceps/services/user/user_email_address_service.py:215
+#: byceps/services/user/user_email_address_service.py:217
 #, python-format
 msgid "%(screen_name)s, please verify your email address"
 msgstr "%(screen_name)s, bitte bestätige deine E-Mail-Adresse"
 
 #: byceps/services/user/user_email_address_service.py:80
-#: byceps/services/user/user_email_address_service.py:222
+#: byceps/services/user/user_email_address_service.py:224
 msgid "please verify your email address here:"
 msgstr "bitte bestätige deine E-Mail-Adresse hier:"
 
@@ -8895,6 +8895,14 @@ msgstr "Bei Fragen kontaktiere uns bitte per E-Mail an: %(email_address)s"
 #: byceps/util/views.py:35
 msgid "Please log in."
 msgstr "Bitte melde dich an."
+
+#: scripts/cancel_overdue_orders.py:55
+msgid ""
+"The payment deadline has been exceed. Place a new order if you are still "
+"interested in attending."
+msgstr ""
+"Das Zahlungsziel wurde überschritten. Gib eine neue Bestellung auf, falls"
+" du weiterhin Interesse an der Teilnahme hast."
 
 #: sites/cozylan/template_overrides/layout/_sidebar_right.html:24
 msgid "Sold out!"
