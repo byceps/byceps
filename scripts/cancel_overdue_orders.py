@@ -22,15 +22,13 @@ from _util import call_with_app_context
 from _validators import validate_user_screen_name
 
 
-NOTIFY_ORDERERS = True
-
-
 @click.command()
 @click.option('--shop-id', required=True)
 @click.option('--minimum-age-in-days', required=True, type=click.INT)
 @click.option('--canceler', required=True, callback=validate_user_screen_name)
 @click.option('--locale', required=True, default='en')
 @click.option('--reason')
+@click.option('--notify/--no-notify', required=True)
 @click.option('--limit', default=100)
 def execute(
     shop_id,
@@ -38,6 +36,7 @@ def execute(
     canceler,
     locale: str,
     reason: str | None,
+    notify: bool,
     limit: int,
 ):
     overdue_orders = _collect_overdue_orders(
@@ -45,7 +44,7 @@ def execute(
     )
     for order in overdue_orders:
         with force_locale(locale):
-            _cancel_order(order, canceler, reason)
+            _cancel_order(order, canceler, reason, notify)
 
 
 def _collect_overdue_orders(
@@ -59,7 +58,7 @@ def _collect_overdue_orders(
     return overdue_orders
 
 
-def _cancel_order(order, canceler, reason: str | None) -> None:
+def _cancel_order(order, canceler, reason: str | None, notify: bool) -> None:
     if not reason:
         reason = gettext(
             'The payment deadline has been exceed. '
@@ -74,7 +73,7 @@ def _cancel_order(order, canceler, reason: str | None) -> None:
                 fg='green',
             )
 
-            if NOTIFY_ORDERERS:
+            if notify:
                 _notify_orderer(order)
         case Err(e):
             if isinstance(e, OrderAlreadyCanceledError):
