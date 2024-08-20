@@ -9,7 +9,7 @@
   <h1 class="title">{{ page_title }}</h1>
 
   <form action="{{ url_for('.request_reset') }}" method="post">
-    <div class="main-body-box">
+    <div class="{{ 'main-body-box' if g.app_mode.is_site() else 'box' }}">
       {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
     </div>
 
