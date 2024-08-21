@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import Any
 from uuid import UUID
 
-from byceps.services.shop.article.models import ArticleID
+from byceps.services.shop.product.models import ProductID
 
 from .order import PaymentState
 
@@ -21,7 +21,7 @@ ActionParameters = dict[str, Any]
 @dataclass(frozen=True)
 class Action:
     id: UUID
-    article_id: ArticleID
+    product_id: ProductID
     payment_state: PaymentState
     procedure_name: str
     parameters: ActionParameters

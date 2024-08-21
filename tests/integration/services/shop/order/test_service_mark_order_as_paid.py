@@ -24,10 +24,10 @@ def orderer(make_user, make_orderer):
 
 
 @pytest.fixture()
-def order(make_article, admin_app, shop, storefront, orderer):
-    article = make_article(storefront.shop_id)
-    articles_with_quantity = [(article, 1)]
-    return place_order(shop, storefront, orderer, articles_with_quantity)
+def order(make_product, admin_app, shop, storefront, orderer):
+    product = make_product(storefront.shop_id)
+    products_with_quantity = [(product, 1)]
+    return place_order(shop, storefront, orderer, products_with_quantity)
 
 
 def test_mark_order_as_paid(order, admin_user):

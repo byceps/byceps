@@ -18,15 +18,15 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from byceps.database import db
-from byceps.services.shop.article.dbmodels.article import DbArticle
-from byceps.services.shop.article.models import ArticleID
+from byceps.services.shop.product.dbmodels.product import DbProduct
+from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.util.uuid import generate_uuid4
 
 
 class DbOrderAction(db.Model):
-    """A procedure to execute when an order for that article is marked
+    """A procedure to execute when an order for that product is marked
     as paid.
     """
 
@@ -35,11 +35,11 @@ class DbOrderAction(db.Model):
     id: Mapped[UUID] = mapped_column(
         db.Uuid, default=generate_uuid4, primary_key=True
     )
-    article_id: Mapped[ArticleID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_articles.id'), index=True
+    product_id: Mapped[ProductID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_products.id'), index=True
     )
-    article: Mapped[DbArticle] = relationship(
-        DbArticle, backref='order_actions'
+    product: Mapped[DbProduct] = relationship(
+        DbProduct, backref='order_actions'
     )
     _payment_state: Mapped[str] = mapped_column(
         'payment_state', db.UnicodeText, index=True
@@ -49,12 +49,12 @@ class DbOrderAction(db.Model):
 
     def __init__(
         self,
-        article_id: ArticleID,
+        product_id: ProductID,
         payment_state: PaymentState,
         procedure: str,
         parameters: ActionParameters,
     ) -> None:
-        self.article_id = article_id
+        self.product_id = product_id
         self.payment_state = payment_state
         self.procedure = procedure
         self.parameters = parameters

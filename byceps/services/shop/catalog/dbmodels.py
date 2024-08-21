@@ -10,16 +10,16 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
-from byceps.services.shop.article.models import ArticleID
+from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 
-from .models import CatalogArticleID, CatalogID, CollectionID
+from .models import CatalogProductID, CatalogID, CollectionID
 
 
 class DbCatalog(db.Model):
-    """A catalog to offer articles."""
+    """A catalog to offer products."""
 
     __tablename__ = 'shop_catalogs'
 
@@ -40,7 +40,7 @@ class DbCatalog(db.Model):
 
 
 class DbCollection(db.Model):
-    """A group of articles inside of catalog."""
+    """A group of products inside of catalog."""
 
     __tablename__ = 'shop_catalog_collections'
     __table_args__ = (db.UniqueConstraint('catalog_id', 'title'),)
@@ -76,13 +76,13 @@ class DbCollection(db.Model):
         )
 
 
-class DbCatalogArticle(db.Model):
-    """The assignment of an article to a collection."""
+class DbCatalogProduct(db.Model):
+    """The assignment of a product to a collection."""
 
-    __tablename__ = 'shop_catalog_articles'
-    __table_args__ = (db.UniqueConstraint('collection_id', 'article_id'),)
+    __tablename__ = 'shop_catalog_products'
+    __table_args__ = (db.UniqueConstraint('collection_id', 'product_id'),)
 
-    id: Mapped[CatalogArticleID] = mapped_column(
+    id: Mapped[CatalogProductID] = mapped_column(
         db.Uuid, default=generate_uuid7, primary_key=True
     )
     collection_id: Mapped[CollectionID] = mapped_column(
@@ -91,22 +91,22 @@ class DbCatalogArticle(db.Model):
         index=True,
         nullable=False,
     )
-    article_id: Mapped[ArticleID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_articles.id'), index=True
+    product_id: Mapped[ProductID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_products.id'), index=True
     )
     position: Mapped[int] = mapped_column(db.Integer)
 
     collection: Mapped[DbCollection] = relationship(
         DbCollection,
         backref=db.backref(
-            'catalog_articles',
+            'catalog_products',
             order_by=position,
             collection_class=ordering_list('position', count_from=1),
         ),
     )
 
     def __init__(
-        self, collection_id: CollectionID, article_id: ArticleID
+        self, collection_id: CollectionID, product_id: ProductID
     ) -> None:
         self.collection_id = collection_id
-        self.article_id = article_id
+        self.product_id = product_id

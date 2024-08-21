@@ -50,11 +50,11 @@
 			</ORDER_INFO>
 		</ORDER_HEADER>
 		<ORDER_ITEM_LIST>
-		{%- for line_item in line_items|sort(attribute='article_number') %}
+		{%- for line_item in line_items|sort(attribute='product_number') %}
 			<ORDER_ITEM>
 				<LINE_ITEM_ID>{{ loop.index0 }}</LINE_ITEM_ID>
 				<ARTICLE_ID>
-					<SUPPLIER_AID>{{ line_item.article_number }}</SUPPLIER_AID>
+					<SUPPLIER_AID>{{ line_item.product_number }}</SUPPLIER_AID>
 					<DESCRIPTION_SHORT>{{ line_item.name }}</DESCRIPTION_SHORT>
 					<DESCRIPTION_LONG></DESCRIPTION_LONG>
 				</ARTICLE_ID>

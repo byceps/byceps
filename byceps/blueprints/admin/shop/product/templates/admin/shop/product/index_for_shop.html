@@ -1,0 +1,126 @@
+{% extends 'layout/admin/shop/product.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/shop/product.html' import render_product_link %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_progress_bar %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
+{% set page_title = _('Products') %}
+
+{% block head %}
+<style>
+.progress-bar.color--available {
+  background-color: #11aa22;
+}
+
+.progress-bar.color--ordered {
+  background-color: #eecc00;
+}
+</style>
+{%- endblock %}
+
+{% block body %}
+
+  <div class="row row--space-between block">
+    <div>
+      <h1 class="title">{{ page_title }} {{ render_extra_in_heading(products.total) }}</h1>
+    </div>
+    {%- if has_current_user_permission('shop_product.administrate') %}
+    <div>
+      <div class="button-row is-right-aligned">
+        <div class="dropdown">
+          <button class="dropdown-toggle button">{{ render_icon('add') }} <span>{{ _('Create product') }}</span> {{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            {%- for type, label in product_type_labels_by_type|items %}
+            <li><a class="dropdown-item" href="{{ url_for('.create_form', shop_id=shop.id, type_name=type.name) }}">{{ label }}</a></li>
+            {%- endfor %}
+          </ol>
+        </div>
+        <div class="dropdown">
+          <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" href="{{ url_for('.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} {{ _('Create product number sequence') }}</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
+
+  <form action="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="single-row block">
+    <input type="search" name="search_term" placeholder="{{ _('Product number') }}, {{ pgettext('product', 'name') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} class="form-control" autofocus>
+    <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
+    <a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
+  </form>
+
+  {%- if products.items %}
+  <table class="itemlist is-vcentered is-wide">
+    <thead>
+      <tr>
+        <th>{{ _('Item number') }}</th>
+        <th>{{ pgettext('product', 'Name') }}</th>
+        <th>{{ _('Type') }}</th>
+        <th class="hyphenate number" style="width: 15%;">{{ _('Unit price') }}<br>{{ _('Tax rate') }}</th>
+        <th class="hyphenate number" style="width: 11%;">{{ _('Quantity') }}<br>{{ _('available') }}</th>
+        <th class="number">{{ _('Total') }}</th>
+        <th>{{ _('Availability') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for product in products.items %}
+      <tr>
+        <td class="nowrap">
+          <strong>{{ render_product_link(product) }}</strong>
+          {%- for attached_product in product.attached_products|sort(attribute='product.item_number') %}
+            <div style="font-size: 0.625rem;">{{ render_icon('attached') }} {{ attached_product.quantity }} &times; {{ render_product_link(attached_product.product) }}</div>
+          {%- endfor %}
+        </td>
+        <td>
+          {{ product.name }}
+
+          {%- if product.not_directly_orderable %}
+          <br>{{ render_icon('info') }} {{ _('can only be ordered indirectly')|dim }}
+          {%- endif %}
+
+          {%- if product.separate_order_required %}
+          <br>{{ render_icon('info') }} {{ _('must be ordered separately')|dim }}
+          {%- endif %}
+
+          {%- if product.available_from %}
+          <br>{{ render_icon('time') }} {% filter dim %}{{ _('from') }} {{ product.available_from|datetimeformat }}{% endfilter %}
+          {%- endif %}
+
+          {%- if product.available_until %}
+          <br>{{ render_icon('time') }} {% filter dim %}{{ _('until') }} {{ product.available_until|datetimeformat }}{% endfilter %}
+          {%- endif %}
+        </td>
+        <td>{{ product_type_labels_by_type[product.type_] }}</td>
+        <td class="nowrap number">
+          {{- product.price|moneyformat }}<br>
+          {{- product.tax_rate|tax_rate_as_percentage|dim -}}
+        </td>
+        <td class="number bignumber{% if product.quantity == 0 %} dimmed{% endif %}">{{ product.quantity }}</td>
+        <td class="number">{{ product.total_quantity }}</td>
+        <td>
+          <div class="progress">
+            {{ render_progress_bar(product.quantity, product.total_quantity, 'color--available') }}
+            {{ render_progress_bar(totals_by_product_number[product.item_number][PaymentState.open], product.total_quantity, 'color--ordered') }}
+          </div>
+        </td>
+      </tr>
+      {%- endfor %}
+      <tr>
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="box">
+    <div class="dimmed-box centered">{{ _('No products exist.') }}</div>
+  </div>
+  {%- endif %}
+
+{{ render_pagination_nav(products, '.index_for_shop', {
+  'shop_id': shop.id,
+  'per_page': per_page,
+  'search_term': search_term if search_term else None,
+}) }}
+
+{%- endblock %}

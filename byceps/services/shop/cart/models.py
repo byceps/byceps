@@ -8,7 +8,7 @@ byceps.services.shop.cart.models
 
 from moneyed import Currency
 
-from byceps.services.shop.article.models import Article, ArticleWithQuantity
+from byceps.services.shop.product.models import Product, ProductWithQuantity
 from byceps.util.instances import ReprBuilder
 
 
@@ -17,19 +17,19 @@ class Cart:
 
     def __init__(self, currency: Currency) -> None:
         self.currency = currency
-        self._items: list[ArticleWithQuantity] = []
+        self._items: list[ProductWithQuantity] = []
 
-    def add_item(self, article: Article, quantity: int) -> None:
-        article_currency = article.price.currency
-        if article_currency != self.currency:
+    def add_item(self, product: Product, quantity: int) -> None:
+        product_currency = product.price.currency
+        if product_currency != self.currency:
             raise ValueError(
-                f'Article currency ({article_currency}) does not match cart currency ({self.currency})'
+                f'Product currency ({product_currency}) does not match cart currency ({self.currency})'
             )
 
-        item = ArticleWithQuantity(article, quantity)
+        item = ProductWithQuantity(product, quantity)
         self._items.append(item)
 
-    def get_items(self) -> list[ArticleWithQuantity]:
+    def get_items(self) -> list[ProductWithQuantity]:
         return self._items
 
     def is_empty(self) -> bool:

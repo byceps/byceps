@@ -12,12 +12,12 @@ import pytest
 from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketsSoldEvent
 from byceps.services.party.models import Party
-from byceps.services.shop.article.models import Article
 from byceps.services.shop.order import (
     order_action_registry_service,
     order_log_service,
 )
 from byceps.services.shop.order.models.order import Order, Orderer
+from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.ticketing import ticket_bundle_service, ticket_service
@@ -31,8 +31,8 @@ from .helpers import get_tickets_for_order, mark_order_as_paid
 
 
 @pytest.fixture()
-def article(make_article, shop: Shop) -> Article:
-    return make_article(shop.id)
+def product(make_product, shop: Shop) -> Product:
+    return make_product(shop.id)
 
 
 @pytest.fixture(scope='module')
@@ -47,24 +47,24 @@ def bundle_quantity() -> int:
 
 @pytest.fixture()
 def order(
-    article: Article,
+    product: Product,
     bundle_quantity: int,
     shop: Shop,
     storefront: Storefront,
     orderer: Orderer,
 ) -> Order:
-    articles_with_quantity = [(article, bundle_quantity)]
-    return place_order(shop, storefront, orderer, articles_with_quantity)
+    products_with_quantity = [(product, bundle_quantity)]
+    return place_order(shop, storefront, orderer, products_with_quantity)
 
 
 @pytest.fixture()
 def order_action(
-    article: Article,
+    product: Product,
     ticket_category: TicketCategory,
     ticket_quantity_per_bundle: int,
 ) -> None:
     order_action_registry_service.register_ticket_bundles_creation(
-        article.id,
+        product.id,
         ticket_category.id,
         ticket_quantity_per_bundle,
     )
@@ -74,7 +74,7 @@ def order_action(
 def test_create_ticket_bundles(
     tickets_sold_signal_send_mock,
     admin_app: Flask,
-    article: Article,
+    product: Product,
     party: Party,
     ticket_category: TicketCategory,
     ticket_quantity_per_bundle: int,

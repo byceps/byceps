@@ -22,11 +22,10 @@ register_permissions(
 
 
 register_permissions(
-    'shop_article',
+    'shop_product',
     [
-        ('create', lazy_gettext('Create shop articles')),
-        ('update', lazy_gettext('Edit shop articles')),
-        ('view', lazy_gettext('View shop articles')),
+        ('administrate', lazy_gettext('Administrate shop products')),
+        ('view', lazy_gettext('View shop products')),
     ],
 )
 

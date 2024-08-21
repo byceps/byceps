@@ -1,0 +1,47 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/misc.html' import render_notification %}
+{% from 'macros/subnav.html' import render_subnav_for_menu_id %}
+{% set current_page = 'shop_order' %}
+{% set page_title = pgettext('verb', 'Order') %}
+
+{% block subnav %}
+  {%- if subnav_menu_id|default %}
+{{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
+  {%- endif %}
+{% endblock %}
+
+{% block body %}
+
+  <h1 class="title">{{ page_title }}</h1>
+
+{{ render_notification(_('You have to be <a href="%(url)s">logged in</a> to order something.', url=url_for('authn_login.log_in_form')), category='info', icon='info') }}
+
+{{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}
+
+  <h2>{{ _('Products') }}</h2>
+  <table class="itemlist is-wide">
+    <thead>
+      <tr>
+        <th>{{ pgettext('product', 'Name') }}</th>
+        <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
+        <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for item in product_compilation %}
+        {%- with is_available = (item.product.quantity > 0) %}
+      <tr{% if not is_available %} class="dimmed"{% endif %}>
+        <td>{{ item.product.name }}
+          {%- if not is_available %}
+          <br><em>{{ _('currently not available') }}</em>
+          {%- endif -%}
+        </td>
+        <td class="number">{{ item.product.tax_rate|tax_rate_as_percentage }}</td>
+        <td class="number">{{ item.product.price|moneyformat }}</td>
+      </tr>
+        {%- endwith %}
+      {%- endfor %}
+    </tbody>
+  </table>
+
+{%- endblock %}

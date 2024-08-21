@@ -12,13 +12,13 @@ from moneyed import Currency
 
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.country import country_service
-from byceps.services.shop.article import article_domain_service, article_service
-from byceps.services.shop.article.errors import NoArticlesAvailableError
-from byceps.services.shop.article.models import ArticleCompilation
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.product import product_domain_service, product_service
+from byceps.services.shop.product.errors import NoProductsAvailableError
+from byceps.services.shop.product.models import ProductCompilation
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront import storefront_service
 from byceps.services.user import user_service
@@ -29,7 +29,7 @@ from byceps.util.framework.templating import templated
 from byceps.util.result import Err, Ok, Result
 from byceps.util.views import login_required, redirect_to
 
-from .forms import assemble_articles_order_form, OrderForm
+from .forms import assemble_products_order_form, OrderForm
 
 
 blueprint = create_blueprint('shop_order', __name__)
@@ -46,64 +46,64 @@ def tax_rate_as_percentage(tax_rate) -> str:
 @templated
 @subnavigation_for_view('shop')
 def order_form(erroneous_form=None):
-    """Show a form to order articles."""
+    """Show a form to order products."""
     storefront = _get_storefront_or_404()
     shop = shop_service.get_shop(storefront.shop_id)
 
     if storefront.closed:
         flash_notice(gettext('The shop is closed.'))
-        return {'article_compilation': None}
+        return {'product_compilation': None}
 
-    article_compilation_result = (
-        article_service.get_article_compilation_for_orderable_articles(shop.id)
+    product_compilation_result = (
+        product_service.get_product_compilation_for_orderable_products(shop.id)
     )
 
-    match article_compilation_result:
+    match product_compilation_result:
         case Err(e):
-            if isinstance(e, NoArticlesAvailableError):
-                error_message = gettext('No articles are available.')
+            if isinstance(e, NoProductsAvailableError):
+                error_message = gettext('No products are available.')
             else:
                 error_message = gettext('An unknown error has occurred.')
 
             flash_error(error_message)
-            return {'article_compilation': None}
+            return {'product_compilation': None}
 
-    article_compilation = article_compilation_result.unwrap()
+    product_compilation = product_compilation_result.unwrap()
 
     if not g.user.authenticated:
-        return list_articles(article_compilation)
+        return list_products(product_compilation)
 
     detail = user_service.get_detail(g.user.id)
 
     if erroneous_form:
         form = erroneous_form
     else:
-        ArticlesOrderForm = assemble_articles_order_form(article_compilation)
-        form = ArticlesOrderForm(obj=detail)
+        ProductsOrderForm = assemble_products_order_form(product_compilation)
+        form = ProductsOrderForm(obj=detail)
 
     country_names = country_service.get_country_names()
 
     return {
         'form': form,
         'country_names': country_names,
-        'article_compilation': article_compilation,
+        'product_compilation': product_compilation,
     }
 
 
 # No route registered. Intended to be called from another view function.
 @templated
 @subnavigation_for_view('shop')
-def list_articles(article_compilation):
-    """List articles for anonymous users to view."""
+def list_products(product_compilation):
+    """List products for anonymous users to view."""
     return {
-        'article_compilation': article_compilation,
+        'product_compilation': product_compilation,
     }
 
 
 @blueprint.post('/order')
 @login_required
 def order():
-    """Order articles."""
+    """Order products."""
     storefront = _get_storefront_or_404()
     shop = shop_service.get_shop(storefront.shop_id)
 
@@ -111,32 +111,32 @@ def order():
         flash_notice(gettext('The shop is closed.'))
         return order_form()
 
-    article_compilation_result = (
-        article_service.get_article_compilation_for_orderable_articles(shop.id)
+    product_compilation_result = (
+        product_service.get_product_compilation_for_orderable_products(shop.id)
     )
 
-    match article_compilation_result:
+    match product_compilation_result:
         case Err(e):
-            if isinstance(e, NoArticlesAvailableError):
-                error_message = gettext('No articles are available.')
+            if isinstance(e, NoProductsAvailableError):
+                error_message = gettext('No products are available.')
             else:
                 error_message = gettext('An unknown error has occurred.')
 
             flash_error(error_message)
             return order_form()
 
-    article_compilation = article_compilation_result.unwrap()
+    product_compilation = product_compilation_result.unwrap()
 
-    ArticlesOrderForm = assemble_articles_order_form(article_compilation)
-    form = ArticlesOrderForm(request.form)
+    ProductsOrderForm = assemble_products_order_form(product_compilation)
+    form = ProductsOrderForm(request.form)
 
     if not form.validate():
         return order_form(form)
 
-    cart = form.get_cart(article_compilation)
+    cart = form.get_cart(product_compilation)
 
     if cart.is_empty():
-        flash_error(gettext('No articles have been selected.'))
+        flash_error(gettext('No products have been selected.'))
         return order_form(form)
 
     orderer = form.get_orderer(g.user)
@@ -153,13 +153,13 @@ def order():
     return redirect_to('shop_orders.view', order_id=order.id)
 
 
-@blueprint.get('/order_single/<uuid:article_id>')
+@blueprint.get('/order_single/<uuid:product_id>')
 @login_required
 @templated
 @subnavigation_for_view('shop')
-def order_single_form(article_id, erroneous_form=None):
-    """Show a form to order a single article."""
-    article = _get_article_or_404(article_id)
+def order_single_form(product_id, erroneous_form=None):
+    """Show a form to order a single product."""
+    product = _get_product_or_404(product_id)
 
     storefront = _get_storefront_or_404()
     shop = shop_service.get_shop(storefront.shop_id)
@@ -173,89 +173,89 @@ def order_single_form(article_id, erroneous_form=None):
         flash_notice(gettext('The shop is closed.'))
         return {
             'form': form,
-            'article': None,
+            'product': None,
         }
 
-    article_compilation = (
-        article_service.get_article_compilation_for_single_article(article.id)
+    product_compilation = (
+        product_service.get_product_compilation_for_single_product(product.id)
     )
 
     country_names = country_service.get_country_names()
 
-    if article.not_directly_orderable:
-        flash_error(gettext('The article cannot be ordered directly.'))
+    if product.not_directly_orderable:
+        flash_error(gettext('The product cannot be ordered directly.'))
         return {
             'form': form,
-            'article': None,
+            'product': None,
         }
 
     if order_service.has_user_placed_orders(user.id, shop.id):
         flash_error(gettext('You cannot place another order.'))
         return {
             'form': form,
-            'article': None,
+            'product': None,
         }
 
     if (
-        article.quantity < 1
-        or not article_domain_service.is_article_available_now(article)
+        product.quantity < 1
+        or not product_domain_service.is_product_available_now(product)
     ):
-        flash_error(gettext('The article is not available.'))
+        flash_error(gettext('The product is not available.'))
         return {
             'form': form,
-            'article': None,
+            'product': None,
         }
 
     return {
         'form': form,
         'country_names': country_names,
-        'article': article,
-        'article_compilation': article_compilation,
+        'product': product,
+        'product_compilation': product_compilation,
     }
 
 
-@blueprint.post('/order_single/<uuid:article_id>')
+@blueprint.post('/order_single/<uuid:product_id>')
 @login_required
-def order_single(article_id):
-    """Order a single article."""
-    article = _get_article_or_404(article_id)
+def order_single(product_id):
+    """Order a single product."""
+    product = _get_product_or_404(product_id)
 
     storefront = _get_storefront_or_404()
     shop = shop_service.get_shop(storefront.shop_id)
 
     if storefront.closed:
         flash_notice(gettext('The shop is closed.'))
-        return order_single_form(article.id)
+        return order_single_form(product.id)
 
-    if article.not_directly_orderable:
-        flash_error(gettext('The article cannot be ordered directly.'))
-        return order_single_form(article.id)
+    if product.not_directly_orderable:
+        flash_error(gettext('The product cannot be ordered directly.'))
+        return order_single_form(product.id)
 
-    article_compilation = (
-        article_service.get_article_compilation_for_single_article(article.id)
+    product_compilation = (
+        product_service.get_product_compilation_for_single_product(product.id)
     )
 
     user = g.user
 
     if order_service.has_user_placed_orders(user.id, shop.id):
         flash_error(gettext('You cannot place another order.'))
-        return order_single_form(article.id)
+        return order_single_form(product.id)
 
     if (
-        article.quantity < 1
-        or not article_domain_service.is_article_available_now(article)
+        product.quantity < 1
+        or not product_domain_service.is_product_available_now(product)
     ):
-        flash_error(gettext('The article is not available.'))
-        return order_single_form(article.id)
+        flash_error(gettext('The product is not available.'))
+        return order_single_form(product.id)
 
     form = OrderForm(request.form)
     if not form.validate():
-        return order_single_form(article.id, form)
+        return order_single_form(product.id, form)
 
     orderer = form.get_orderer(user)
 
-    cart = _create_cart_from_article_compilation(
-        shop.currency, article_compilation
+    cart = _create_cart_from_product_compilation(
+        shop.currency, product_compilation
     )
 
     placement_result = _place_order(storefront, orderer, cart)
@@ -278,23 +278,23 @@ def _get_storefront_or_404():
     return storefront_service.get_storefront(storefront_id)
 
 
-def _get_article_or_404(article_id):
-    article = article_service.find_db_article(article_id)
+def _get_product_or_404(product_id):
+    product = product_service.find_db_product(product_id)
 
-    if article is None:
+    if product is None:
         abort(404)
 
-    return article
+    return product
 
 
-def _create_cart_from_article_compilation(
+def _create_cart_from_product_compilation(
     currency: Currency,
-    article_compilation: ArticleCompilation,
+    product_compilation: ProductCompilation,
 ) -> Cart:
     cart = Cart(currency)
 
-    for item in article_compilation:
-        cart.add_item(item.article, item.fixed_quantity)
+    for item in product_compilation:
+        cart.add_item(item.product, item.fixed_quantity)
 
     return cart
 

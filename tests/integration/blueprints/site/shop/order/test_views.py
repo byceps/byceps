@@ -12,15 +12,15 @@ import pytest
 
 from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderPlacedEvent
-from byceps.services.shop.article import article_service
-from byceps.services.shop.article.models import (
-    Article,
-    ArticleID,
-    ArticleNumber,
-)
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import LineItem, Order
+from byceps.services.shop.product import product_service
+from byceps.services.shop.product.models import (
+    Product,
+    ProductID,
+    ProductNumber,
+)
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
@@ -88,8 +88,8 @@ def site_app(site: Site, make_site_app):
 
 
 @pytest.fixture()
-def article(make_article, admin_app: Flask, shop: Shop) -> Article:
-    return make_article(shop.id, total_quantity=5)
+def product(make_product, admin_app: Flask, shop: Shop) -> Product:
+    return make_product(shop.id, total_quantity=5)
 
 
 @patch('byceps.signals.shop.order_placed.send')
@@ -101,24 +101,24 @@ def test_order(
     site: Site,
     admin_user: User,
     make_user,
-    article: Article,
+    product: Product,
 ):
-    assert get_article_quantity(article.id) == 5
+    assert get_product_quantity(product.id) == 5
 
     orderer_user = make_user()
     log_in_user(orderer_user.id)
 
     url = f'{BASE_URL}/shop/order'
-    article_quantity_key = f'article_{article.id}'
+    product_quantity_key = f'product_{product.id}'
     form_data: dict[str, int | str] = {
         **COMMON_FORM_DATA,
         'company': 'ACME Corp.',
-        article_quantity_key: 3,
+        product_quantity_key: 3,
     }
     with http_client(site_app, user_id=orderer_user.id) as client:
         response = client.post(url, data=form_data)
 
-    assert get_article_quantity(article.id) == 2
+    assert get_product_quantity(product.id) == 2
 
     order = get_single_order_by(orderer_user.id)
     assert_order(order, OrderNumber('ORDR-23-B00005'), 1)
@@ -126,10 +126,10 @@ def test_order(
     first_line_item = order.line_items[0]
     assert_line_item(
         first_line_item,
-        article.id,
-        article.item_number,
-        article.price,
-        article.tax_rate,
+        product.id,
+        product.item_number,
+        product.price,
+        product.tax_rate,
         3,
     )
 
@@ -165,14 +165,14 @@ def test_order_single(
     site: Site,
     admin_user: User,
     make_user,
-    article: Article,
+    product: Product,
 ):
-    assert get_article_quantity(article.id) == 5
+    assert get_product_quantity(product.id) == 5
 
     orderer_user = make_user()
     log_in_user(orderer_user.id)
 
-    url = f'{BASE_URL}/shop/order_single/{article.id!s}'
+    url = f'{BASE_URL}/shop/order_single/{product.id!s}'
     form_data: dict[str, int | str] = {
         **COMMON_FORM_DATA,
         'quantity': 1,  # TODO: Test with `3` if limitation is removed.
@@ -180,7 +180,7 @@ def test_order_single(
     with http_client(site_app, user_id=orderer_user.id) as client:
         response = client.post(url, data=form_data)
 
-    assert get_article_quantity(article.id) == 4
+    assert get_product_quantity(product.id) == 4
 
     order = get_single_order_by(orderer_user.id)
     assert_order(order, OrderNumber('ORDR-23-B00006'), 1)
@@ -188,10 +188,10 @@ def test_order_single(
     first_line_item = order.line_items[0]
     assert_line_item(
         first_line_item,
-        article.id,
-        article.item_number,
-        article.price,
-        article.tax_rate,
+        product.id,
+        product.item_number,
+        product.price,
+        product.tax_rate,
         1,
     )
 
@@ -221,9 +221,9 @@ def test_order_single(
 # helpers
 
 
-def get_article_quantity(article_id: ArticleID) -> int:
-    article = article_service.get_article(article_id)
-    return article.quantity
+def get_product_quantity(product_id: ProductID) -> int:
+    product = product_service.get_product(product_id)
+    return product.quantity
 
 
 def get_single_order_by(user_id: UserID) -> Order:
@@ -246,14 +246,14 @@ def assert_order(
 
 def assert_line_item(
     line_item: LineItem,
-    article_id: ArticleID,
-    article_number: ArticleNumber,
+    product_id: ProductID,
+    product_number: ProductNumber,
     unit_price: Money,
     tax_rate: Decimal,
     quantity: int,
 ) -> None:
-    assert line_item.article_id == article_id
-    assert line_item.article_number == article_number
+    assert line_item.product_id == product_id
+    assert line_item.product_number == product_number
     assert line_item.unit_price == unit_price
     assert line_item.tax_rate == tax_rate
     assert line_item.quantity == quantity

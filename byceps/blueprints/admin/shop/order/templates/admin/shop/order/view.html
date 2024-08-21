@@ -91,8 +91,8 @@
     </div>
   </div>
 
-  <h2>{{ _('Articles') }}</h2>
-{% include 'admin/shop/order/_view_articles.html' %}
+  <h2>{{ _('Products') }}</h2>
+{% include 'admin/shop/order/_view_products.html' %}
 
   <h2>{{ ngettext('Payment', 'Payments', order.payments|length) }}</h2>
   {%- if order.payments %}

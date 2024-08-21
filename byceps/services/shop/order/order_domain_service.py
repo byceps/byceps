@@ -13,9 +13,9 @@ from moneyed import Currency, Money
 
 from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
-from byceps.services.shop.article import article_domain_service
-from byceps.services.shop.article.models import ArticleWithQuantity
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.product import product_domain_service
+from byceps.services.shop.product.models import ProductWithQuantity
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.models.user import User
@@ -51,7 +51,7 @@ def place_order(
 
     line_items = list(_build_incoming_line_items(cart_items))
 
-    total_amount = article_domain_service.calculate_total_amount(cart_items)
+    total_amount = product_domain_service.calculate_total_amount(cart_items)
 
     processing_required = any(
         line_item.processing_required for line_item in line_items
@@ -74,25 +74,25 @@ def place_order(
 
 
 def _build_incoming_line_items(
-    cart_items: list[ArticleWithQuantity],
+    cart_items: list[ProductWithQuantity],
 ) -> Iterator[IncomingLineItem]:
     """Build incoming line item objects from the cart's content."""
     for cart_item in cart_items:
-        article = cart_item.article
+        product = cart_item.product
         quantity = cart_item.quantity
         line_amount = cart_item.amount
 
         yield IncomingLineItem(
             id=LineItemID(generate_uuid7()),
-            article_id=article.id,
-            article_number=article.item_number,
-            article_type=article.type_,
-            name=article.name,
-            unit_price=article.price,
-            tax_rate=article.tax_rate,
+            product_id=product.id,
+            product_number=product.item_number,
+            product_type=product.type_,
+            name=product.name,
+            unit_price=product.price,
+            tax_rate=product.tax_rate,
             quantity=quantity,
             line_amount=line_amount,
-            processing_required=article.processing_required,
+            processing_required=product.processing_required,
         )
 
 

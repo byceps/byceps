@@ -11,10 +11,10 @@ from freezegun import freeze_time
 from moneyed import Money
 import pytest
 
-from byceps.services.shop.article.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service
 from byceps.services.shop.order.models.order import Order, Orderer
+from byceps.services.shop.product.models import Product, ProductNumber
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.user.models.user import User
@@ -32,10 +32,10 @@ def shop_order_admin(make_admin) -> User:
 
 
 @pytest.fixture()
-def article_bungalow(make_article, shop: Shop) -> Article:
-    return make_article(
+def product_bungalow(make_product, shop: Shop) -> Product:
+    return make_product(
         shop.id,
-        item_number=ArticleNumber('LR-08-A00003'),
+        item_number=ProductNumber('LR-08-A00003'),
         name='LANresort 2015: Bungalow 4 Plätze',
         price=Money('355.00', shop.currency),
         tax_rate=Decimal('0.07'),
@@ -43,10 +43,10 @@ def article_bungalow(make_article, shop: Shop) -> Article:
 
 
 @pytest.fixture()
-def article_guest_fee(make_article, shop: Shop) -> Article:
-    return make_article(
+def product_guest_fee(make_product, shop: Shop) -> Product:
+    return make_product(
         shop.id,
-        item_number=ArticleNumber('LR-08-A00006'),
+        item_number=ProductNumber('LR-08-A00006'),
         name='Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
         price=Money('6.00', shop.currency),
         tax_rate=Decimal('0.19'),
@@ -54,10 +54,10 @@ def article_guest_fee(make_article, shop: Shop) -> Article:
 
 
 @pytest.fixture()
-def article_table(make_article, shop: Shop) -> Article:
-    return make_article(
+def product_table(make_product, shop: Shop) -> Product:
+    return make_product(
         shop.id,
-        item_number=ArticleNumber('LR-08-A00002'),
+        item_number=ProductNumber('LR-08-A00002'),
         name='Tisch (zur Miete), 200 x 80 cm',
         price=Money('20.00', shop.currency),
         tax_rate=Decimal('0.19'),
@@ -67,15 +67,15 @@ def article_table(make_article, shop: Shop) -> Article:
 @pytest.fixture()
 def cart(
     shop: Shop,
-    article_bungalow: Article,
-    article_guest_fee: Article,
-    article_table: Article,
+    product_bungalow: Product,
+    product_guest_fee: Product,
+    product_table: Product,
 ) -> Cart:
     cart = Cart(shop.currency)
 
-    cart.add_item(article_bungalow, 1)
-    cart.add_item(article_guest_fee, 1)
-    cart.add_item(article_table, 2)
+    cart.add_item(product_bungalow, 1)
+    cart.add_item(product_guest_fee, 1)
+    cart.add_item(product_table, 2)
 
     return cart
 

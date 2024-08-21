@@ -148,7 +148,7 @@ def _get_line_items(db_order: DbOrder) -> list[LineItem]:
         for db_line_item in db_order.line_items
     ]
 
-    line_items.sort(key=lambda li: li.article_id)
+    line_items.sort(key=lambda li: li.product_id)
 
     return line_items
 
@@ -167,9 +167,9 @@ def to_line_item(
     return LineItem(
         id=db_line_item.id,
         order_number=db_line_item.order_number,
-        article_id=db_line_item.article_id,
-        article_number=db_line_item.article_number,
-        article_type=db_line_item.article_type,
+        product_id=db_line_item.product_id,
+        product_number=db_line_item.product_number,
+        product_type=db_line_item.product_type,
         name=db_line_item.name,
         unit_price=Money(db_line_item.unit_price, currency),
         tax_rate=db_line_item.tax_rate,

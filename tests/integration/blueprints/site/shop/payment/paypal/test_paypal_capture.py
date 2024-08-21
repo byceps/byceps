@@ -75,12 +75,12 @@ def orderer(orderer_user: User) -> Orderer:
 
 @pytest.fixture()
 def order(
-    make_article, shop: Shop, storefront: Storefront, orderer: Orderer
+    make_product, shop: Shop, storefront: Storefront, orderer: Orderer
 ) -> Order:
-    article = make_article(storefront.shop_id)
+    product = make_product(storefront.shop_id)
 
     cart = Cart(shop.currency)
-    cart.add_item(article, 1)
+    cart.add_item(product, 1)
 
     order, _ = order_checkout_service.place_order(
         storefront, orderer, cart

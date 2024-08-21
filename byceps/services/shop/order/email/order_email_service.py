@@ -152,7 +152,7 @@ def assemble_text_for_incoming_order_to_orderer(
         '\n'.join(
             [
                 indentation
-                + pgettext('article', 'Name')
+                + pgettext('product', 'Name')
                 + ': '
                 + line_item.name,
                 indentation

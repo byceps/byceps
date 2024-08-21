@@ -9,18 +9,18 @@ import pytest
 from byceps.services.shop.cart.models import Cart
 
 
-def test_add_item_with_cart_currency(make_article):
+def test_add_item_with_cart_currency(make_product):
     cart = Cart(EUR)
-    article = make_article()
+    product = make_product()
 
-    cart.add_item(article, 1)
+    cart.add_item(product, 1)
 
     assert not cart.is_empty()
 
 
-def test_add_item_with_different_currency(make_article):
+def test_add_item_with_different_currency(make_product):
     cart = Cart(USD)
-    article = make_article()
+    product = make_product()
 
     with pytest.raises(ValueError):
-        cart.add_item(article, 1)
+        cart.add_item(product, 1)

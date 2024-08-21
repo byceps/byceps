@@ -11,16 +11,16 @@ from decimal import Decimal
 
 from moneyed import EUR, Money
 
-from byceps.services.shop.article import article_service
-from byceps.services.shop.article.models import (
-    Article,
-    ArticleNumber,
-    ArticleType,
-    ArticleTypeParams,
-)
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service
 from byceps.services.shop.order.models.order import Order, Orderer
+from byceps.services.shop.product import product_service
+from byceps.services.shop.product.models import (
+    Product,
+    ProductNumber,
+    ProductType,
+    ProductTypeParams,
+)
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.snippet import snippet_service
@@ -48,12 +48,12 @@ def create_shop_snippet(
     return version.snippet_id
 
 
-def create_article(
+def create_product(
     shop_id: ShopID,
     *,
-    item_number: ArticleNumber | None = None,
-    type_: ArticleType = ArticleType.other,
-    type_params: ArticleTypeParams | None = None,
+    item_number: ProductNumber | None = None,
+    type_: ProductType = ProductType.other,
+    type_params: ProductTypeParams | None = None,
     name: str | None = None,
     price: Money | None = None,
     tax_rate: Decimal | None = None,
@@ -62,9 +62,9 @@ def create_article(
     total_quantity: int = 999,
     max_quantity_per_order: int = 10,
     processing_required: bool = False,
-) -> Article:
+) -> Product:
     if item_number is None:
-        item_number = ArticleNumber(generate_token())
+        item_number = ProductNumber(generate_token())
 
     if name is None:
         name = generate_token()
@@ -75,7 +75,7 @@ def create_article(
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
-    return article_service.create_article(
+    return product_service.create_product(
         shop_id,
         item_number,
         type_,
@@ -91,11 +91,11 @@ def create_article(
     )
 
 
-def create_ticket_article(
+def create_ticket_product(
     shop_id: ShopID,
     ticket_category_id: TicketCategoryID,
     *,
-    item_number: ArticleNumber | None = None,
+    item_number: ProductNumber | None = None,
     name: str | None = None,
     price: Money | None = None,
     tax_rate: Decimal | None = None,
@@ -103,9 +103,9 @@ def create_ticket_article(
     available_until: datetime | None = None,
     total_quantity: int = 999,
     max_quantity_per_order: int = 10,
-) -> Article:
+) -> Product:
     if item_number is None:
-        item_number = ArticleNumber(generate_token())
+        item_number = ProductNumber(generate_token())
 
     if name is None:
         name = generate_token()
@@ -116,7 +116,7 @@ def create_ticket_article(
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
-    return article_service.create_ticket_article(
+    return product_service.create_ticket_product(
         shop_id,
         item_number,
         name,
@@ -130,12 +130,12 @@ def create_ticket_article(
     )
 
 
-def create_ticket_bundle_article(
+def create_ticket_bundle_product(
     shop_id: ShopID,
     ticket_category_id: TicketCategoryID,
     ticket_quantity: int,
     *,
-    item_number: ArticleNumber | None = None,
+    item_number: ProductNumber | None = None,
     name: str | None = None,
     price: Money | None = None,
     tax_rate: Decimal | None = None,
@@ -143,9 +143,9 @@ def create_ticket_bundle_article(
     available_until: datetime | None = None,
     total_quantity: int = 999,
     max_quantity_per_order: int = 10,
-) -> Article:
+) -> Product:
     if item_number is None:
-        item_number = ArticleNumber(generate_token())
+        item_number = ProductNumber(generate_token())
 
     if name is None:
         name = generate_token()
@@ -156,7 +156,7 @@ def create_ticket_bundle_article(
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
-    return article_service.create_ticket_bundle_article(
+    return product_service.create_ticket_bundle_product(
         shop_id,
         item_number,
         name,
@@ -190,11 +190,11 @@ def place_order(
     shop: Shop,
     storefront: Storefront,
     orderer: Orderer,
-    articles_with_quantity: list[tuple[Article, int]],
+    products_with_quantity: list[tuple[Product, int]],
 ) -> Order:
     cart = Cart(shop.currency)
-    for article, quantity in articles_with_quantity:
-        cart.add_item(article, quantity)
+    for product, quantity in products_with_quantity:
+        cart.add_item(product, quantity)
 
     order, _ = order_checkout_service.place_order(
         storefront, orderer, cart

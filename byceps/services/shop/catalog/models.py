@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from byceps.services.shop.article.models import ArticleNumber
+from byceps.services.shop.product.models import ProductNumber
 from byceps.services.shop.shop.models import ShopID
 
 
@@ -20,7 +20,7 @@ CatalogID = NewType('CatalogID', UUID)
 CollectionID = NewType('CollectionID', UUID)
 
 
-CatalogArticleID = NewType('CatalogArticleID', UUID)
+CatalogProductID = NewType('CatalogProductID', UUID)
 
 
 @dataclass(frozen=True)
@@ -36,12 +36,12 @@ class Collection:
     catalog_id: CatalogID
     title: str
     position: int
-    article_numbers: list[ArticleNumber]
+    product_numbers: list[ProductNumber]
 
 
 @dataclass(frozen=True)
-class CatalogArticle:
-    id: CatalogArticleID
+class CatalogProduct:
+    id: CatalogProductID
     collection_id: CollectionID
-    article_number: ArticleNumber
+    product_number: ProductNumber
     position: int

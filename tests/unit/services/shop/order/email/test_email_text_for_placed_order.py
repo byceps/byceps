@@ -9,9 +9,9 @@ from flask import Flask
 from flask_babel import force_locale
 from moneyed import EUR, Money
 
-from byceps.services.shop.article.models import ArticleNumber
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.product.models import ProductNumber
 
 
 def test_assemble_text_for_incoming_order_to_orderer(
@@ -24,7 +24,7 @@ def test_assemble_text_for_incoming_order_to_orderer(
     line_items = [
         build_line_item(
             order_number=order_number,
-            article_number=ArticleNumber('AB-11-A00003'),
+            product_number=ProductNumber('AB-11-A00003'),
             name='Einzelticket, Kategorie Loge',
             unit_price=Money('99.00', EUR),
             quantity=5,
@@ -32,7 +32,7 @@ def test_assemble_text_for_incoming_order_to_orderer(
         ),
         build_line_item(
             order_number=order_number,
-            article_number=ArticleNumber('AB-11-A00007'),
+            product_number=ProductNumber('AB-11-A00007'),
             name='T-Shirt, Größe L',
             unit_price=Money('14.95', EUR),
             quantity=2,

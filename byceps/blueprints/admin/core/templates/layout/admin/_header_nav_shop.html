@@ -21,11 +21,11 @@
       required_permission='shop.view',
       icon='catalog')
     .add_item(
-      url_for('shop_article_admin.index_for_shop', shop_id=shop.id),
-      _('Articles'),
-      id='shop_article_admin',
-      required_permission='shop_article.view',
-      icon='shop-articles')
+      url_for('shop_product_admin.index_for_shop', shop_id=shop.id),
+      _('Products'),
+      id='shop_product_admin',
+      required_permission='shop_product.view',
+      icon='shop-products')
     .add_item(
       url_for('shop_order_admin.index_for_shop', shop_id=shop.id),
       _('Orders'),

@@ -6,26 +6,26 @@
 
   <h1 class="title">{{ page_title }}</h1>
 
-  {%- if articles_to_ship %}
+  {%- if products_to_ship %}
   <table class="itemlist is-wide">
     <thead>
       <tr>
-        <th>{{ _('Article number') }}</th>
-        <th>{{ pgettext('article', 'Name') }}</th>
+        <th>{{ _('Product number') }}</th>
+        <th>{{ pgettext('product', 'Name') }}</th>
         <th class="number">{{ _('Paid') }}</th>
         <th class="number">{{ _('Open') }}</th>
         <th class="number">{{ _('Total') }}</th>
       </tr>
     </thead>
     <tbody>
-      {%- for article_to_ship in articles_to_ship %}
+      {%- for product_to_ship in products_to_ship %}
       <tr>
-        {%- with article = articles_by_id[article_to_ship.article_id] %}
-        <td>{{ article.item_number }}</td>
-        <td>{{ article_to_ship.name }}</td>
-        <td class="number">{{ article_to_ship.quantity_paid }}</td>
-        <td class="number">{{ article_to_ship.quantity_open }}</td>
-        <td class="number">{{ article_to_ship.quantity_total }}</td>
+        {%- with product = products_by_id[product_to_ship.product_id] %}
+        <td>{{ product.item_number }}</td>
+        <td>{{ product_to_ship.name }}</td>
+        <td class="number">{{ product_to_ship.quantity_paid }}</td>
+        <td class="number">{{ product_to_ship.quantity_open }}</td>
+        <td class="number">{{ product_to_ship.quantity_total }}</td>
         {%- endwith %}
       </tr>
       {%- endfor %}
@@ -33,7 +33,7 @@
   </table>
   {%- else %}
   <div class="box">
-    <div class="dimmed-box centered">{{ _('Currently no articles that need to be shipped are ordered or paid.') }}</div>
+    <div class="dimmed-box centered">{{ _('Currently no products that need to be shipped are ordered or paid.') }}</div>
   </div>
   {%- endif %}
 

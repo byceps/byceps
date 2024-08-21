@@ -20,8 +20,8 @@ from byceps.services.metrics.models import Label, Metric
 from byceps.services.party import party_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.seating import seat_service
-from byceps.services.shop.article import article_service as shop_article_service
 from byceps.services.shop.order import order_service
+from byceps.services.shop.product import product_service as shop_product_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.ticketing import ticket_service
@@ -45,7 +45,7 @@ def collect_metrics() -> Iterator[Metric]:
 
     yield from _collect_board_metrics(brand_ids)
     yield from _collect_consent_metrics()
-    yield from _collect_shop_ordered_article_metrics(active_shop_ids)
+    yield from _collect_shop_ordered_product_metrics(active_shop_ids)
     yield from _collect_shop_order_metrics(active_shops)
     # Copy and uncomment the following line to add all orders with the
     # given order number prefix (usually one per party) to the metrics.
@@ -84,19 +84,19 @@ def _collect_consent_metrics() -> Iterator[Metric]:
         )
 
 
-def _collect_shop_ordered_article_metrics(
+def _collect_shop_ordered_product_metrics(
     shop_ids: set[ShopID],
 ) -> Iterator[Metric]:
-    """Provide ordered article quantities for shops."""
-    stats = shop_article_service.sum_ordered_articles_by_payment_state(shop_ids)
+    """Provide ordered product quantities for shops."""
+    stats = shop_product_service.sum_ordered_products_by_payment_state(shop_ids)
 
-    for shop_id, article_number, name, payment_state, quantity in stats:
+    for shop_id, product_number, name, payment_state, quantity in stats:
         yield Metric(
-            'shop_ordered_article_quantity',
+            'shop_ordered_product_quantity',
             quantity,
             labels=[
                 Label('shop', shop_id),
-                Label('article_number', article_number),
+                Label('product_number', product_number),
                 Label('name', name),
                 Label('payment_state', payment_state.name),
             ],

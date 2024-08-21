@@ -46,7 +46,7 @@ def register_admin_blueprints(
         ('admin.party', '/parties'),
         ('admin.seating', '/seating'),
         ('admin.shop', None),
-        ('admin.shop.article', '/shop/articles'),
+        ('admin.shop.product', '/shop/products'),
         ('admin.shop.catalog', '/shop/catalogs'),
         ('admin.shop.email', '/shop/email'),
         ('admin.shop.order', '/shop/orders'),

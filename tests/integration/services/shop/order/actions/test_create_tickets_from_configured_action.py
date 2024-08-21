@@ -11,12 +11,12 @@ import pytest
 from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketsSoldEvent
 from byceps.services.party.models import Party
-from byceps.services.shop.article.models import Article
 from byceps.services.shop.order import (
     order_action_registry_service,
     order_log_service,
 )
 from byceps.services.shop.order.models.order import Order, Orderer
+from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.ticketing.models.ticket import TicketCategory
@@ -31,8 +31,8 @@ from .helpers import get_tickets_for_order, mark_order_as_paid
 
 
 @pytest.fixture()
-def article(make_article, shop: Shop) -> Article:
-    return make_article(shop.id)
+def product(make_product, shop: Shop) -> Product:
+    return make_product(shop.id)
 
 
 @pytest.fixture(scope='module')
@@ -42,20 +42,20 @@ def ticket_quantity() -> int:
 
 @pytest.fixture()
 def order(
-    article: Article,
+    product: Product,
     ticket_quantity,
     shop: Shop,
     storefront: Storefront,
     orderer: Orderer,
 ) -> Order:
-    articles_with_quantity = [(article, ticket_quantity)]
-    return place_order(shop, storefront, orderer, articles_with_quantity)
+    products_with_quantity = [(product, ticket_quantity)]
+    return place_order(shop, storefront, orderer, products_with_quantity)
 
 
 @pytest.fixture()
-def order_action(article: Article, ticket_category: TicketCategory) -> None:
+def order_action(product: Product, ticket_category: TicketCategory) -> None:
     order_action_registry_service.register_tickets_creation(
-        article.id, ticket_category.id
+        product.id, ticket_category.id
     )
 
 
@@ -63,7 +63,7 @@ def order_action(article: Article, ticket_category: TicketCategory) -> None:
 def test_create_tickets(
     tickets_sold_signal_send_mock,
     admin_app: Flask,
-    article: Article,
+    product: Product,
     party: Party,
     ticket_category: TicketCategory,
     ticket_quantity: int,
@@ -106,7 +106,7 @@ def test_create_tickets(
 def test_create_tickets_with_same_code_fails(
     generate_ticket_code_mock,
     admin_app: Flask,
-    article: Article,
+    product: Product,
     ticket_category: TicketCategory,
     ticket_quantity: int,
     admin_user: User,
@@ -124,7 +124,7 @@ def test_create_tickets_with_same_code_fails(
 def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
     generate_ticket_code_mock,
     admin_app: Flask,
-    article: Article,
+    product: Product,
     ticket_category: TicketCategory,
     ticket_quantity: int,
     admin_user: User,

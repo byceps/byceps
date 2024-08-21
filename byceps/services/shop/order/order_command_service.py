@@ -14,8 +14,8 @@ import structlog
 
 from byceps.database import db
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
-from byceps.services.shop.article import article_service
-from byceps.services.shop.article.models import ArticleType
+from byceps.services.shop.product import product_service
+from byceps.services.shop.product.models import ProductType
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
@@ -103,7 +103,7 @@ def cancel_order(
 ) -> Result[tuple[Order, ShopOrderCanceledEvent], OrderAlreadyCanceledError]:
     """Cancel the order.
 
-    Reserved quantities of articles from that order are made available
+    Reserved quantities of products from that order are made available
     again.
     """
     db_order = get_db_order(order_id)
@@ -137,10 +137,10 @@ def cancel_order(
     db_log_entry = order_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
-    # Make the reserved quantity of articles available again.
+    # Make the reserved quantity of products available again.
     for db_line_item in db_order.line_items:
-        article_service.increase_quantity(
-            db_line_item.article.id, db_line_item.quantity, commit=False
+        product_service.increase_quantity(
+            db_line_item.product.id, db_line_item.quantity, commit=False
         )
 
     db.session.commit()
@@ -148,7 +148,7 @@ def cancel_order(
     canceled_order = to_order(db_order, orderer_user)
 
     if payment_state_to == PaymentState.canceled_after_paid:
-        _execute_article_revocation_actions(canceled_order, initiator)
+        _execute_product_revocation_actions(canceled_order, initiator)
 
     log.info('Order canceled', shop_order_canceled_event=event)
 
@@ -202,7 +202,7 @@ def mark_order_as_paid(
 
     paid_order = to_order(db_order, orderer_user)
 
-    _execute_article_creation_actions(paid_order, initiator)
+    _execute_product_creation_actions(paid_order, initiator)
 
     log.info('Order paid', shop_order_paid_event=event)
 
@@ -220,29 +220,29 @@ def _update_payment_state(
     db_order.payment_state_updated_by_id = initiator.id
 
 
-def _execute_article_creation_actions(order: Order, initiator: User) -> None:
-    # based on article type
+def _execute_product_creation_actions(order: Order, initiator: User) -> None:
+    # based on product type
     for line_item in order.line_items:
-        if line_item.article_type in (
-            ArticleType.ticket,
-            ArticleType.ticket_bundle,
+        if line_item.product_type in (
+            ProductType.ticket,
+            ProductType.ticket_bundle,
         ):
-            article = article_service.get_article(line_item.article_id)
+            product = product_service.get_product(line_item.product_id)
 
             ticket_category_id = TicketCategoryID(
-                UUID(str(article.type_params['ticket_category_id']))
+                UUID(str(product.type_params['ticket_category_id']))
             )
 
-            if line_item.article_type == ArticleType.ticket:
+            if line_item.product_type == ProductType.ticket:
                 ticket_actions.create_tickets(
                     order,
                     line_item,
                     ticket_category_id,
                     initiator,
                 )
-            elif line_item.article_type == ArticleType.ticket_bundle:
+            elif line_item.product_type == ProductType.ticket_bundle:
                 ticket_quantity_per_bundle = int(
-                    article.type_params['ticket_quantity']
+                    product.type_params['ticket_quantity']
                 )
                 ticket_bundle_actions.create_ticket_bundles(
                     order,
@@ -252,21 +252,21 @@ def _execute_article_creation_actions(order: Order, initiator: User) -> None:
                     initiator,
                 )
 
-    # based on order action registered for article number
+    # based on order action registered for product number
     order_action_service.execute_creation_actions(order, initiator)
 
 
-def _execute_article_revocation_actions(order: Order, initiator: User) -> None:
-    # based on article type
+def _execute_product_revocation_actions(order: Order, initiator: User) -> None:
+    # based on product type
     for line_item in order.line_items:
-        if line_item.article_type == ArticleType.ticket:
+        if line_item.product_type == ProductType.ticket:
             ticket_actions.revoke_tickets(order, line_item, initiator)
-        elif line_item.article_type == ArticleType.ticket_bundle:
+        elif line_item.product_type == ProductType.ticket_bundle:
             ticket_bundle_actions.revoke_ticket_bundles(
                 order, line_item, initiator
             )
 
-    # based on order action registered for article number
+    # based on order action registered for product number
     order_action_service.execute_revocation_actions(order, initiator)
 
 

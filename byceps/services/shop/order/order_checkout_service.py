@@ -15,8 +15,8 @@ import structlog
 from byceps.database import db
 from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderPlacedEvent
-from byceps.services.shop.article import article_service
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.product import product_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront.models import Storefront
 from byceps.util.result import Err, Ok, Result
@@ -26,7 +26,6 @@ from . import (
     order_helper_service,
     order_log_service,
     order_sequence_service,
-    order_service,
 )
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.order import DbOrder
@@ -45,7 +44,7 @@ def place_order(
     *,
     created_at: datetime | None = None,
 ) -> Result[tuple[Order, ShopOrderPlacedEvent], None]:
-    """Place an order for one or more articles."""
+    """Place an order for one or more products."""
     shop = shop_service.get_shop(storefront.shop_id)
 
     order_number_sequence = order_sequence_service.get_order_number_sequence(
@@ -83,7 +82,7 @@ def place_order(
     db.session.add(db_order)
     db.session.add_all(db_line_items)
 
-    _reduce_article_stock(incoming_order)
+    _reduce_product_stock(incoming_order)
 
     db_log_entry = order_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -145,9 +144,9 @@ def _build_db_line_items(
         yield DbLineItem(
             line_item_id=incoming_line_item.id,
             order=db_order,
-            article_id=incoming_line_item.article_id,
-            article_number=incoming_line_item.article_number,
-            article_type=incoming_line_item.article_type,
+            product_id=incoming_line_item.product_id,
+            product_number=incoming_line_item.product_number,
+            product_type=incoming_line_item.product_type,
             name=incoming_line_item.name,
             unit_price=incoming_line_item.unit_price.amount,
             tax_rate=incoming_line_item.tax_rate,
@@ -157,9 +156,9 @@ def _build_db_line_items(
         )
 
 
-def _reduce_article_stock(incoming_order: IncomingOrder) -> None:
-    """Reduce article stock according to what is in the cart."""
+def _reduce_product_stock(incoming_order: IncomingOrder) -> None:
+    """Reduce product stock according to what is in the cart."""
     for line_item in incoming_order.line_items:
-        article_service.decrease_quantity(
-            line_item.article_id, line_item.quantity, commit=False
+        product_service.decrease_quantity(
+            line_item.product_id, line_item.quantity, commit=False
         )

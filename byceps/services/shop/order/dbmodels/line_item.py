@@ -19,11 +19,11 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from byceps.database import db
-from byceps.services.shop.article.dbmodels.article import DbArticle
-from byceps.services.shop.article.models import (
-    ArticleID,
-    ArticleNumber,
-    ArticleType,
+from byceps.services.shop.product.dbmodels.product import DbProduct
+from byceps.services.shop.product.models import (
+    ProductID,
+    ProductNumber,
+    ProductType,
 )
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import LineItemID
@@ -43,18 +43,18 @@ class DbLineItem(db.Model):
         index=True,
     )
     order: Mapped[DbOrder] = relationship(DbOrder, backref='line_items')
-    article_id: Mapped[ArticleID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_articles.id'), index=True
+    product_id: Mapped[ProductID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_products.id'), index=True
     )
-    article_number: Mapped[ArticleNumber] = mapped_column(
+    product_number: Mapped[ProductNumber] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('shop_articles.item_number'),
+        db.ForeignKey('shop_products.item_number'),
         index=True,
     )
-    article: Mapped[DbArticle] = relationship(
-        DbArticle, foreign_keys=[article_id]
+    product: Mapped[DbProduct] = relationship(
+        DbProduct, foreign_keys=[product_id]
     )
-    _article_type: Mapped[str] = mapped_column('article_type', db.UnicodeText)
+    _product_type: Mapped[str] = mapped_column('product_type', db.UnicodeText)
     name: Mapped[str] = mapped_column(db.UnicodeText)
     unit_price: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))
     tax_rate: Mapped[Decimal] = mapped_column(db.Numeric(3, 3))
@@ -68,9 +68,9 @@ class DbLineItem(db.Model):
         self,
         line_item_id: LineItemID,
         order: DbOrder,
-        article_id: ArticleID,
-        article_number: ArticleNumber,
-        article_type: ArticleType,
+        product_id: ProductID,
+        product_number: ProductNumber,
+        product_type: ProductType,
         name: str,
         unit_price: Decimal,
         tax_rate: Decimal,
@@ -83,9 +83,9 @@ class DbLineItem(db.Model):
         # because line items are created together with the order – and
         # until the order is created, there is no order number assigned.
         self.order = order
-        self.article_id = article_id
-        self.article_number = article_number
-        self._article_type = article_type.name
+        self.product_id = product_id
+        self.product_number = product_number
+        self._product_type = product_type.name
         self.name = name
         self.unit_price = unit_price
         self.tax_rate = tax_rate
@@ -94,5 +94,5 @@ class DbLineItem(db.Model):
         self.processing_required = processing_required
 
     @hybrid_property
-    def article_type(self) -> ArticleType:
-        return ArticleType[self._article_type]
+    def product_type(self) -> ProductType:
+        return ProductType[self._product_type]

@@ -14,20 +14,20 @@ def test_is_empty_without_items():
     assert cart.is_empty()
 
 
-def test_is_empty_with_one_item(make_article):
+def test_is_empty_with_one_item(make_product):
     cart = create_empty_cart()
 
-    cart.add_item(make_article(), 1)
+    cart.add_item(make_product(), 1)
 
     assert not cart.is_empty()
 
 
-def test_is_empty_with_multiple_items(make_article):
+def test_is_empty_with_multiple_items(make_product):
     cart = create_empty_cart()
 
-    cart.add_item(make_article(), 3)
-    cart.add_item(make_article(), 1)
-    cart.add_item(make_article(), 6)
+    cart.add_item(make_product(), 3)
+    cart.add_item(make_product(), 1)
+    cart.add_item(make_product(), 6)
 
     assert not cart.is_empty()
 

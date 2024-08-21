@@ -31,7 +31,7 @@ from byceps.util.instances import ReprBuilder
 
 
 class DbOrder(db.Model):
-    """An order for articles, placed by a user."""
+    """An order for products, placed by a user."""
 
     __tablename__ = 'shop_orders'
 

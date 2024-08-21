@@ -22,12 +22,12 @@ from byceps.services.email import email_config_service, email_footer_service
 from byceps.services.page import page_service
 from byceps.services.party import party_service
 from byceps.services.party.models import Party, PartyID
-from byceps.services.shop.article import (
-    article_sequence_service,
-    article_service,
-)
-from byceps.services.shop.article.models import ArticleType
 from byceps.services.shop.order import order_sequence_service
+from byceps.services.shop.product import (
+    product_sequence_service,
+    product_service,
+)
+from byceps.services.shop.product.models import ProductType
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.shop.storefront import storefront_service
@@ -58,7 +58,7 @@ def create_demo_data(creator: User) -> None:
     board = _create_board(brand)
     ticket_category = _create_ticket_category(party.id)
     shop = _create_shop(brand.id)
-    _create_shop_articles(shop.id, ticket_category)
+    _create_shop_products(shop.id, ticket_category)
     storefront = _create_shop_storefront(shop.id)
     site = _create_site(brand.id, party.id, board.id, storefront.id)
     _create_pages(site, creator)
@@ -121,23 +121,23 @@ def _create_shop(brand_id: BrandID) -> Shop:
     return shop_service.create_shop(SHOP_ID, brand_id, 'CozyLAN Shop', EUR)
 
 
-def _create_shop_articles(
+def _create_shop_products(
     shop_id: ShopID, ticket_category: TicketCategory
 ) -> None:
-    log.info('Creating demo shop articles ...')
+    log.info('Creating demo shop products ...')
 
-    article_number_sequence = (
-        article_sequence_service.create_article_number_sequence(
+    product_number_sequence = (
+        product_sequence_service.create_product_number_sequence(
             shop_id, 'A-CL2023-'
         ).unwrap()
     )
 
-    article_number_ticket = article_sequence_service.generate_article_number(
-        article_number_sequence.id
+    product_number_ticket = product_sequence_service.generate_product_number(
+        product_number_sequence.id
     ).unwrap()
-    article_service.create_ticket_article(
+    product_service.create_ticket_product(
         shop_id,
-        article_number_ticket,
+        product_number_ticket,
         f'Ticket "{ticket_category.title}"',
         Money('35.00', EUR),
         Decimal('0.19'),
@@ -146,13 +146,13 @@ def _create_shop_articles(
         ticket_category.id,
     )
 
-    article_number_merch = article_sequence_service.generate_article_number(
-        article_number_sequence.id
+    product_number_merch = product_sequence_service.generate_product_number(
+        product_number_sequence.id
     ).unwrap()
-    article_service.create_article(
+    product_service.create_product(
         shop_id,
-        article_number_merch,
-        ArticleType.physical,
+        product_number_merch,
+        ProductType.physical,
         'Sticker Pack',
         Money('5.00', EUR),
         Decimal('0.19'),

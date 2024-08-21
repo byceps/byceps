@@ -1,0 +1,17 @@
+{% macro render_product_link(product) -%}
+  <a href="{{ url_for('shop_product_admin.view', product_id=product.id) }}" title="{{ product.name }}">{{ product.item_number }}</a>
+{%- endmacro %}
+
+
+{% macro render_product_temporal_availability(product) -%}
+  {%- if product.available_from and product.available_until -%}
+    {{ product.available_from|datetimeformat }} –<br>
+    {{- product.available_until|datetimeformat }}
+  {%- elif product.available_from and not product.available_until -%}
+    {{ _('from') }} {{ product.available_from|datetimeformat }}
+  {%- elif not product.available_from and product.available_until -%}
+    {{ _('until') }} {{ product.available_until|datetimeformat }}
+  {%- else -%}
+    {{ _('unlimited')|dim }}
+  {%- endif -%}
+{%- endmacro %}

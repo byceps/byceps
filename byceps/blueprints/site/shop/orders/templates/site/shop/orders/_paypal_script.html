@@ -28,7 +28,7 @@
           },
           items: [
           {%- set comma_joiner = joiner(", ") -%}
-          {%- for line_item in order.line_items|sort(attribute='article_number')  -%}
+          {%- for line_item in order.line_items|sort(attribute='product_number')  -%}
           {{- comma_joiner() -}}
           {
             name: {{ line_item.name|tojson }},

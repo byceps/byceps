@@ -189,7 +189,7 @@ def cancel_form(order_id, erroneous_form=None):
 @login_required
 def cancel(order_id):
     """Set the payment state of a single order to 'canceled' and
-    release the respective article quantities.
+    release the respective product quantities.
     """
     order = _get_order_by_current_user_or_404(order_id)
 

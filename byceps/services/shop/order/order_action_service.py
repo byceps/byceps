@@ -12,8 +12,8 @@ from uuid import UUID
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.shop.article import article_service
-from byceps.services.shop.article.models import ArticleID
+from byceps.services.shop.product import product_service
+from byceps.services.shop.product.models import ProductID
 from byceps.services.user.models.user import User
 
 from .actions.award_badge import award_badge
@@ -43,14 +43,14 @@ PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
 
 
 def create_action(
-    article_id: ArticleID,
+    product_id: ProductID,
     payment_state: PaymentState,
     procedure_name: str,
     parameters: ActionParameters,
 ) -> None:
     """Create an order action."""
     db_action = DbOrderAction(
-        article_id, payment_state, procedure_name, parameters
+        product_id, payment_state, procedure_name, parameters
     )
 
     db.session.add(db_action)
@@ -63,9 +63,9 @@ def delete_action(action_id: UUID) -> None:
     db.session.commit()
 
 
-def delete_actions_for_article(article_id: ArticleID) -> None:
-    """Delete all order actions for an article."""
-    db.session.execute(delete(DbOrderAction).filter_by(article_id=article_id))
+def delete_actions_for_product(product_id: ProductID) -> None:
+    """Delete all order actions for a product."""
+    db.session.execute(delete(DbOrderAction).filter_by(product_id=product_id))
     db.session.commit()
 
 
@@ -83,10 +83,10 @@ def find_action(action_id: UUID) -> Action | None:
 # retrieval
 
 
-def get_actions_for_article(article_id: ArticleID) -> list[Action]:
-    """Return the order actions defined for that article."""
+def get_actions_for_product(product_id: ProductID) -> list[Action]:
+    """Return the order actions defined for that product."""
     db_actions = db.session.scalars(
-        select(DbOrderAction).filter_by(article_id=article_id)
+        select(DbOrderAction).filter_by(product_id=product_id)
     ).all()
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
@@ -95,7 +95,7 @@ def get_actions_for_article(article_id: ArticleID) -> list[Action]:
 def _db_entity_to_action(db_action: DbOrderAction) -> Action:
     return Action(
         id=db_action.id,
-        article_id=db_action.article_id,
+        product_id=db_action.product_id,
         payment_state=db_action.payment_state,
         procedure_name=db_action.procedure,
         parameters=db_action.parameters,
@@ -120,47 +120,47 @@ def _execute_actions(
     order: Order, payment_state: PaymentState, initiator: User
 ) -> None:
     """Execute relevant actions for this order in its new payment state."""
-    article_ids = {line_item.article_id for line_item in order.line_items}
+    product_ids = {line_item.product_id for line_item in order.line_items}
 
-    actions = _get_actions(article_ids, payment_state)
-    actions_by_article_id = {action.article_id: action for action in actions}
+    actions = _get_actions(product_ids, payment_state)
+    actions_by_product_id = {action.product_id: action for action in actions}
 
     for line_item in order.line_items:
-        action = actions_by_article_id.get(line_item.article_id)
+        action = actions_by_product_id.get(line_item.product_id)
         if action is None:
             continue
 
-        procedure = _get_procedure(action.procedure_name, action.article_id)
+        procedure = _get_procedure(action.procedure_name, action.product_id)
         procedure(order, line_item, initiator, action.parameters)
 
 
 def _get_actions(
-    article_ids: set[ArticleID], payment_state: PaymentState
+    product_ids: set[ProductID], payment_state: PaymentState
 ) -> list[Action]:
-    """Return the order actions for those article IDs."""
-    if not article_ids:
+    """Return the order actions for those product IDs."""
+    if not product_ids:
         return []
 
     db_actions = db.session.scalars(
         select(DbOrderAction)
-        .filter(DbOrderAction.article_id.in_(article_ids))
+        .filter(DbOrderAction.product_id.in_(product_ids))
         .filter_by(_payment_state=payment_state.name)
     ).all()
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
 
 
-def _get_procedure(name: str, article_id: ArticleID) -> OrderActionType:
+def _get_procedure(name: str, product_id: ProductID) -> OrderActionType:
     """Return procedure with that name, or raise an exception if the
     name is not registered.
     """
     procedure = PROCEDURES_BY_NAME.get(name)
 
     if procedure is None:
-        article = article_service.get_article(article_id)
+        product = product_service.get_product(product_id)
         raise Exception(
             f"Unknown procedure '{name}' configured "
-            f"for article number '{article.item_number}'."
+            f"for product number '{product.item_number}'."
         )
 
     return procedure

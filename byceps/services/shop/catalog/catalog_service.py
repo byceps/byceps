@@ -9,13 +9,13 @@ byceps.services.shop.catalog.catalog_service
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.shop.article.models import ArticleID
+from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.shop.models import ShopID
 
-from .dbmodels import DbCatalog, DbCatalogArticle, DbCollection
+from .dbmodels import DbCatalog, DbCatalogProduct, DbCollection
 from .models import (
     Catalog,
-    CatalogArticleID,
+    CatalogProductID,
     CatalogID,
     Collection,
     CollectionID,
@@ -169,36 +169,36 @@ def _db_entity_to_collection(db_collection: DbCollection) -> Collection:
         catalog_id=db_collection.catalog_id,
         title=db_collection.title,
         position=db_collection.position,
-        article_numbers=[],
+        product_numbers=[],
     )
 
 
-# article assignment
+# product assignment
 
 
-def add_article_to_collection(
-    article_id: ArticleID, collection_id: CollectionID
-) -> CatalogArticleID:
-    """Add article to collection."""
+def add_product_to_collection(
+    product_id: ProductID, collection_id: CollectionID
+) -> CatalogProductID:
+    """Add product to collection."""
     db_collection = db.session.get(DbCollection, collection_id)
     if db_collection is None:
         raise ValueError(f'Unknown collection ID "{collection_id}"')
 
-    db_catalog_article = DbCatalogArticle(collection_id, article_id)
+    db_catalog_product = DbCatalogProduct(collection_id, product_id)
 
-    db_collection.catalog_articles.append(db_catalog_article)
+    db_collection.catalog_products.append(db_catalog_product)
     db.session.commit()
 
-    return db_catalog_article.id
+    return db_catalog_product.id
 
 
-def remove_article_from_collection(
-    catalog_article_id: CatalogArticleID,
+def remove_product_from_collection(
+    catalog_product_id: CatalogProductID,
 ) -> None:
-    """Remove article from collection."""
+    """Remove product from collection."""
     db.session.execute(
-        delete(DbCatalogArticle).where(
-            DbCatalogArticle.id == catalog_article_id
+        delete(DbCatalogProduct).where(
+            DbCatalogProduct.id == catalog_product_id
         )
     )
     db.session.commit()

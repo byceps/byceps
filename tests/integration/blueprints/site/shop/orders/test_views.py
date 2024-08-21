@@ -91,13 +91,13 @@ def user2(make_user):
 
 
 @pytest.fixture()
-def order(make_article, make_orderer, shop1, storefront1, user1):
-    article = make_article(storefront1.shop_id)
+def order(make_product, make_orderer, shop1, storefront1, user1):
+    product = make_product(storefront1.shop_id)
 
     orderer = make_orderer(user1)
-    articles_with_quantity = [(article, 1)]
+    products_with_quantity = [(product, 1)]
 
-    return place_order(shop1, storefront1, orderer, articles_with_quantity)
+    return place_order(shop1, storefront1, orderer, products_with_quantity)
 
 
 def test_view_matching_user_and_site_and_shop(site1_app, order, user1):

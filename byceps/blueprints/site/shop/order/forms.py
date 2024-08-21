@@ -48,47 +48,47 @@ class OrderForm(LocalizedForm):
         )
 
 
-def assemble_articles_order_form(article_compilation):
-    """Dynamically extend the order form with one field per article."""
+def assemble_products_order_form(product_compilation):
+    """Dynamically extend the order form with one field per product."""
 
-    class ArticlesOrderForm(OrderForm):
-        def get_field_for_article(self, article):
-            name = _generate_field_name(article)
+    class ProductsOrderForm(OrderForm):
+        def get_field_for_product(self, product):
+            name = _generate_field_name(product)
             return getattr(self, name)
 
-        def get_cart(self, article_compilation):
+        def get_cart(self, product_compilation):
             cart = Cart(EUR)
-            for article, quantity in self.get_cart_items(article_compilation):
-                cart.add_item(article, quantity)
+            for product, quantity in self.get_cart_items(product_compilation):
+                cart.add_item(product, quantity)
             return cart
 
-        def get_cart_items(self, article_compilation):
-            for item in article_compilation:
-                quantity = self.get_field_for_article(item.article).data
+        def get_cart_items(self, product_compilation):
+            for item in product_compilation:
+                quantity = self.get_field_for_product(item.product).data
                 if quantity > 0:
-                    yield item.article, quantity
+                    yield item.product, quantity
 
     validators = [InputRequired()]
-    for item in article_compilation:
-        field_name = _generate_field_name(item.article)
-        choices = _create_choices(item.article)
+    for item in product_compilation:
+        field_name = _generate_field_name(item.product)
+        choices = _create_choices(item.product)
         field = SelectField(
             lazy_gettext('Quantity'), validators, coerce=int, choices=choices
         )
-        setattr(ArticlesOrderForm, field_name, field)
+        setattr(ProductsOrderForm, field_name, field)
 
-    return ArticlesOrderForm
-
-
-def _generate_field_name(article):
-    return f'article_{article.id}'
+    return ProductsOrderForm
 
 
-def _create_choices(article):
-    max_orderable_quantity = _get_max_orderable_quantity(article)
+def _generate_field_name(product):
+    return f'product_{product.id}'
+
+
+def _create_choices(product):
+    max_orderable_quantity = _get_max_orderable_quantity(product)
     quantities = list(range(max_orderable_quantity + 1))
     return [(quantity, str(quantity)) for quantity in quantities]
 
 
-def _get_max_orderable_quantity(article):
-    return min(article.quantity, article.max_quantity_per_order)
+def _get_max_orderable_quantity(product):
+    return min(product.quantity, product.max_quantity_per_order)

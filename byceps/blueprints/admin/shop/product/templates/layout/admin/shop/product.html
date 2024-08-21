@@ -1,0 +1,54 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_main_tabs %}
+{% set current_page = 'shop_product_admin' %}
+{% set current_page_brand = brand %}
+{% set current_page_shop = shop %}
+
+{% block before_body %}
+  {%- if product is defined %}
+
+  <style>
+    .product-head {
+      margin-bottom: var(--inner-gutter);
+    }
+
+    .product-head .title {
+      margin: 0 !important;
+      padding: 0;
+    }
+
+    .product-head .subtitle {
+      font-size: 1.125rem; /* 18px / 16px */
+      opacity: 0.7;
+    }
+  </style>
+
+  <div class="product-head">
+    <h1 class="title">{{ product.item_number }}</h1>
+    <div class="subtitle">{{ product.name }}</div>
+  </div>
+
+{{
+  render_main_tabs(
+    Navigation()
+      .add_item(
+        url_for('.view', product_id=product.id),
+        _('Product'),
+        id='product',
+      )
+      .add_item(
+        url_for('.view_orders', product_id=product.id),
+        _('Orders'),
+        id='orders',
+      )
+      .add_item(
+        url_for('.view_purchases', product_id=product.id),
+        _('Purchases'),
+        id='purchases',
+      )
+    , current_tab|default
+  )
+}}
+
+  {%- endif %}
+{%- endblock %}

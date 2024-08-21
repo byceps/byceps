@@ -1,0 +1,250 @@
+{% extends 'layout/admin/shop/product.html' %}
+{% from 'macros/admin/shop/product.html' import render_product_link, render_product_temporal_availability %}
+{% from 'macros/admin/shop/order.html' import render_order_payment_state %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_progress_bar, render_tag %}
+{% set current_page_shop = shop %}
+{% set current_tab = 'product' %}
+{% set page_title = [_('Product'), product.item_number] %}
+
+{% block head %}
+<style>
+.progress {
+  height: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.progress-bar.color--available {
+  background-color: #11aa22;
+}
+
+.progress-bar.color--ordered {
+  background-color: #eecc00;
+}
+</style>
+{%- endblock %}
+
+{% block body %}
+
+  <div class="row row--space-between block">
+    <div>
+      <h1 class="title">{{ _('Product') }}</h1>
+    </div>
+    <div>
+      <div class="button-row is-right-aligned">
+        {%- if has_current_user_permission('shop_product.administrate') %}
+        <a class="button" href="{{ url_for('.update_form', product_id=product.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="row row--space-between row--wrap block">
+    <div class="box column--grow">
+
+      <div class="data-label">{{ pgettext('product', 'Name') }}</div>
+      <div class="data-value">{{ product.name }}</div>
+
+    </div>
+    <div class="box">
+
+      <div class="row row--space-between">
+        <div>
+
+          <div class="data-label">{{ _('Tax rate') }}</div>
+          <div class="data-value">{{ product.tax_rate|tax_rate_as_percentage }}</div>
+
+        </div>
+        <div>
+
+          <div class="data-label">{{ _('Unit price') }}</div>
+          <div class="data-value" style="font-size: 1.5rem;">{{ product.price|moneyformat }}</div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="grid product-grid block" style="--column-min-width: 12rem;">
+    <div class="box">
+
+      <div class="data-label">{{ _('Type') }}</div>
+      <div class="data-value">
+        {%- if product.type_.name == 'ticket' %}
+        {{ render_icon('ticket') }}
+        {%- elif product.type_.name == 'ticket_bundle' %}
+        {{ render_icon('ticket-bundle') }}
+        {%- endif %}
+        {{ type_label }}
+      </div>
+
+      {%- if product.type_.name in ('ticket', 'ticket_bundle') %}
+      <div class="data-label">{{ _('Party') }}</div>
+      <div class="data-value">
+        {%- if ticket_party %}
+        <a href="{{ url_for('admin_dashboard.view_party', party_id=ticket_category.party_id) }}">{{ ticket_party.title }}</a>
+        {%- else %}
+        <em>{{ _('unknown')|dim }}</em> ({{ product.type_params['ticket_category_id'] }})
+        {%- endif %}
+      </div>
+
+      <div class="data-label">{{ _('Ticket category') }}</div>
+      <div class="data-value">
+        {%- if ticket_category %}
+        <a href="{{ url_for('ticketing_category_admin.index', party_id=ticket_category.party_id) }}">{{ ticket_category.title }}</a>
+        {%- else %}
+        <em>{{ _('unknown')|dim }}</em> ({{ product.type_params['ticket_category_id'] }})
+        {%- endif %}
+      </div>
+      {%- endif %}
+
+      {%- if product.type_.name == 'ticket_bundle' %}
+      <div class="data-label">{{ _('Ticket quantity') }}</div>
+      <div class="data-value">{{ product.type_params['ticket_quantity'] }}</div>
+      {%- endif %}
+
+    </div>
+    <div class="box">
+
+      <div class="data-label">{{ _('Availability') }}</div>
+      <div class="data-value">
+        <div class="progress">
+          {{ render_progress_bar(product.quantity, product.total_quantity, 'color--available') }}
+          {{ render_progress_bar(totals[PaymentState.open], product.total_quantity, 'color--ordered') }}
+        </div>
+        <div class="row row--space-between" style="font-size: 0.75rem;">
+          <div>
+            <strong>{{ product.quantity }}</strong> {{ _('available') }}{% if product.quantity < 1 %} {{ render_tag(_('sold out')) }}{% endif %}<br>
+            <strong>{{ totals[PaymentState.open] }}</strong> {{ _('ordered') }}<br>
+            <strong>{{ totals[PaymentState.paid] }}</strong> {{ _('paid') }}
+          </div>
+          <div class="dimmed">{{ _('of') }} {{ product.total_quantity }}</div>
+        </div>
+      </div>
+
+      <div class="data-label">{{ _('Period') }}</div>
+      <div class="data-value">{{ render_product_temporal_availability(product) }}</div>
+
+    </div>
+    <div class="box">
+
+      <div class="data-label">{{ _('Maximum quantity per order') }}</div>
+      <div class="data-value">{{ product.max_quantity_per_order }}</div>
+
+      <div class="data-label">{{ _('Can only be ordered indirectly') }}</div>
+      <div class="data-value">{{ _('yes') if product.not_directly_orderable else _('no') }}</div>
+
+      <div class="data-label">{{ _('Must be ordered separately') }}</div>
+      <div class="data-value">{{ _('yes') if product.separate_order_required else _('no') }}</div>
+
+      <div class="data-label">{{ _('Shipping required') }}</div>
+      <div class="data-value">{{ _('yes') if product.processing_required else _('no') }}</div>
+
+    </div>
+    <div class="box">
+
+      <div class="data-label">{{ _('Attached to products') }}</div>
+      <div class="data-value">
+        {%- if product.products_attached_to %}
+        <ol class="bare">
+        {%- for attached_product in product.products_attached_to|sort(attribute='attached_to_product.item_number') %}
+        <li>{{ render_product_link(attached_product.attached_to_product) }} ({{ attached_product.quantity }} {{ _('pieces') }})</li>
+        {%- endfor %}
+        </ol>
+        {%- else %}
+        {{ _('none')|dim }}
+        {%- endif %}
+      </div>
+
+      <div class="row row--space-between mt">
+        <div>
+          <div class="data-label">{{ _('Attached products') }}</div>
+        </div>
+        {%- if has_current_user_permission('shop_product.administrate') %}
+        <div>
+          <a class="button is-compact" href="{{ url_for('.attachment_create_form', product_id=product.id) }}" title="{{ _('Attach product') }}">{{ render_icon('attached') }}</a></li>
+        </div>
+        {%- endif %}
+      </div>
+      <div class="data-value">
+        {%- if product.attached_products %}
+        {%- for attached_product in product.attached_products|sort(attribute='product.item_number') %}
+        <div class="row row--space-between">
+          <div>{{ attached_product.quantity }} &times; {{ render_product_link(attached_product.product) }}</div>
+          <div><a data-action="attachment-remove" href="{{ url_for('.attachment_remove', product_id=attached_product.id) }}" class="button is-compact" title="{{ _('Remove attached product') }}">{{ render_icon('remove') }}</a></div>
+        </div>
+        {%- endfor %}
+        {%- else %}
+        {{ _('none')|dim }}
+        {%- endif %}
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row row--space-between is-vcentered">
+    <div>
+      <h2>{{ _('Actions') }}</h2>
+    </div>
+    {%- if has_current_user_permission('shop_product.administrate') %}
+    <div>
+      <div class="button-row is-right-aligned">
+        <div class="dropdown">
+          <button class="dropdown-toggle button is-compact"><span>{{ render_icon('add') }} {{ _('Add action') }}</span> {{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" href="{{ url_for('.action_create_form_for_badge_awarding', product_id=product.id) }}">{{ _('Award badge') }}</a></li>
+            {%- if product.type_.name not in ('ticket', 'ticket_bundle') %}
+            <li><a class="dropdown-item" href="{{ url_for('.action_create_form_for_tickets_creation', product_id=product.id) }}">{{ _('Create tickets') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.action_create_form_for_ticket_bundles_creation', product_id=product.id) }}">{{ _('Create ticket bundles') }}</a></li>
+            {%- endif %}
+          </ol>
+        </div>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
+
+  <div class="block">{{ _('An action will be executed if an order contains a product that has an action assigned and the order state is changed to one of the states listed for the product.') }}</div>
+
+  {%- if actions %}
+  <table class="itemlist is-vcentered is-wide">
+    <thead>
+      <tr>
+        <th>{{ _('Payment state') }}</th>
+        <th>{{ _('Procedure') }}<br>{{ _('Parameters') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for action in actions %}
+      <tr>
+        <td>{{ render_order_payment_state(action.payment_state) }}</td>
+        <td class="monospace">{{ action.procedure_name }}<br>{{ action.parameters }}</td>
+        <td>
+          {%- if has_current_user_permission('shop_product.administrate') %}
+          <div class="button-row is-compact is-right-aligned">
+            <a data-action="action-remove" href="{{ url_for('.action_remove', action_id=action.id) }}" class="button is-compact" title="{{ _('Remove action') }}">{{ render_icon('remove') }}</a>
+          </div>
+          {%- endif %}
+        </td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="box">
+    <div class="dimmed-box centered">{{ _('No actions are assigned for this product.') }}</div>
+  </div>
+  {%- endif %}
+
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      onDomReady(() => {
+        confirmed_delete_on_click_then_reload('[data-action="attachment-remove"]', '{{ _('Remove attached product?') }}');
+        confirmed_delete_on_click_then_reload('[data-action="action-remove"]', '{{ _('Remove action?') }}');
+      });
+    </script>
+{%- endblock %}

@@ -11,18 +11,18 @@ import pytest
 from byceps.database import db
 from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
-from byceps.services.shop.article import article_service
-from byceps.services.shop.article.models import (
-    Article,
-    ArticleID,
-    ArticleNumber,
-)
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.order import (
     Orderer,
     OrderID,
     PaymentState,
+)
+from byceps.services.shop.product import product_service
+from byceps.services.shop.product.models import (
+    Product,
+    ProductID,
+    ProductNumber,
 )
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
@@ -55,40 +55,40 @@ def shop_order_admin_client(
 
 
 @pytest.fixture()
-def article1(make_article, shop: Shop) -> Article:
-    return make_article(
+def product1(make_product, shop: Shop) -> Product:
+    return make_product(
         shop.id,
-        item_number=ArticleNumber('item-001'),
+        item_number=ProductNumber('item-001'),
         name='Item #1',
         total_quantity=8,
     )
 
 
 @pytest.fixture()
-def article2(make_article, shop: Shop) -> Article:
-    return make_article(
+def product2(make_product, shop: Shop) -> Product:
+    return make_product(
         shop.id,
-        item_number=ArticleNumber('item-002'),
+        item_number=ProductNumber('item-002'),
         name='Item #2',
         total_quantity=8,
     )
 
 
 @pytest.fixture()
-def article3(make_article, shop: Shop) -> Article:
-    return make_article(
+def product3(make_product, shop: Shop) -> Product:
+    return make_product(
         shop.id,
-        item_number=ArticleNumber('item-003'),
+        item_number=ProductNumber('item-003'),
         name='Item #3',
         total_quantity=8,
     )
 
 
 @pytest.fixture()
-def article4(make_article, shop: Shop) -> Article:
-    return make_article(
+def product4(make_product, shop: Shop) -> Product:
+    return make_product(
         shop.id,
-        item_number=ArticleNumber('item-004'),
+        item_number=ProductNumber('item-004'),
         name='Item #4',
         total_quantity=8,
     )
@@ -111,21 +111,21 @@ def test_cancel_before_paid(
     order_canceled_signal_send_mock,
     shop: Shop,
     storefront: Storefront,
-    article1: Article,
+    product1: Product,
     shop_order_admin: User,
     orderer_user: User,
     orderer: Orderer,
     shop_order_admin_client,
 ):
-    article = article1
+    product = product1
 
-    articles_with_quantity = [(article, 3)]
+    products_with_quantity = [(product, 3)]
     placed_order = place_order(
-        shop, storefront, orderer, articles_with_quantity
+        shop, storefront, orderer, products_with_quantity
     )
     db_order_before = get_db_order(placed_order.id)
 
-    assert get_article_quantity(article.id) == 5
+    assert get_product_quantity(product.id) == 5
 
     assert_payment_is_open(db_order_before)
 
@@ -145,7 +145,7 @@ def test_cancel_before_paid(
         shop_order_admin.id,
     )
 
-    assert get_article_quantity(article.id) == 8
+    assert get_product_quantity(product.id) == 8
 
     order_afterwards = order_service.get_order(placed_order.id)
 
@@ -170,17 +170,17 @@ def test_cancel_before_paid_without_sending_email(
     order_canceled_signal_send_mock,
     shop: Shop,
     storefront: Storefront,
-    article2: Article,
+    product2: Product,
     shop_order_admin: User,
     orderer_user: User,
     orderer: Orderer,
     shop_order_admin_client,
 ):
-    article = article2
+    product = product2
 
-    articles_with_quantity = [(article, 3)]
+    products_with_quantity = [(product, 3)]
     placed_order = place_order(
-        shop, storefront, orderer, articles_with_quantity
+        shop, storefront, orderer, products_with_quantity
     )
 
     url = f'{BASE_URL}/shop/orders/{placed_order.id}/cancel'
@@ -213,17 +213,17 @@ def test_mark_order_as_paid(
     order_paid_signal_send_mock,
     shop: Shop,
     storefront: Storefront,
-    article3: Article,
+    product3: Product,
     shop_order_admin: User,
     orderer_user: User,
     orderer: Orderer,
     shop_order_admin_client,
 ):
-    article = article3
+    product = product3
 
-    articles_with_quantity = [(article, 1)]
+    products_with_quantity = [(product, 1)]
     placed_order = place_order(
-        shop, storefront, orderer, articles_with_quantity
+        shop, storefront, orderer, products_with_quantity
     )
     db_order_before = get_db_order(placed_order.id)
 
@@ -268,21 +268,21 @@ def test_cancel_after_paid(
     order_canceled_signal_send_mock,
     shop: Shop,
     storefront: Storefront,
-    article4: Article,
+    product4: Product,
     shop_order_admin: User,
     orderer_user: User,
     orderer: Orderer,
     shop_order_admin_client,
 ):
-    article = article4
+    product = product4
 
-    articles_with_quantity = [(article, 3)]
+    products_with_quantity = [(product, 3)]
     placed_order = place_order(
-        shop, storefront, orderer, articles_with_quantity
+        shop, storefront, orderer, products_with_quantity
     )
     db_order_before = get_db_order(placed_order.id)
 
-    assert get_article_quantity(article.id) == 5
+    assert get_product_quantity(product.id) == 5
 
     assert_payment_is_open(db_order_before)
 
@@ -306,7 +306,7 @@ def test_cancel_after_paid(
         shop_order_admin.id,
     )
 
-    assert get_article_quantity(article.id) == 8
+    assert get_product_quantity(product.id) == 8
 
     order_afterwards = order_service.get_order(placed_order.id)
 
@@ -327,9 +327,9 @@ def test_cancel_after_paid(
 # helpers
 
 
-def get_article_quantity(article_id: ArticleID) -> int:
-    article = article_service.get_article(article_id)
-    return article.quantity
+def get_product_quantity(product_id: ProductID) -> int:
+    product = product_service.get_product(product_id)
+    return product.quantity
 
 
 def assert_payment_is_open(db_order: DbOrder) -> None:

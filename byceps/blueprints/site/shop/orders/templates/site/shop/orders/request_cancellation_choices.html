@@ -12,7 +12,7 @@
 
     <div class="block">Du kannst hier die Rückgabe deiner Tickets anfragen. Dabei hast du die Möglichkeit, einen Teil des Betrages zu spenden.</div>
 
-{% include 'site/shop/orders/_articles.html' %}
+{% include 'site/shop/orders/_products.html' %}
 
     <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem auto; width: max-content;">
       <div><a class="button" href="{{ url_for('.donate_everything_form', order_id=order.id) }}"><span>Den gesamten Bestellbetrag spenden</span> {{ render_icon('chevron-right') }}</a></div>

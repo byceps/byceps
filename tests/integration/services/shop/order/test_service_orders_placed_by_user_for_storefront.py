@@ -55,7 +55,7 @@ def orderer2(make_user, make_orderer) -> Orderer:
 
 
 def test_get_orders_placed_by_user(
-    make_article,
+    make_product,
     admin_app,
     shop: Shop,
     storefront1: Storefront,
@@ -63,17 +63,17 @@ def test_get_orders_placed_by_user(
     orderer1: Orderer,
     orderer2: Orderer,
 ):
-    article = make_article(storefront1.shop_id)
-    articles_with_quantity = [(article, 1)]
+    product = make_product(storefront1.shop_id)
+    products_with_quantity = [(product, 1)]
 
-    order1 = place_order(shop, storefront1, orderer1, articles_with_quantity)
+    order1 = place_order(shop, storefront1, orderer1, products_with_quantity)
     order2 = place_order(
-        shop, storefront1, orderer2, articles_with_quantity
+        shop, storefront1, orderer2, products_with_quantity
     )  # different user
-    order3 = place_order(shop, storefront1, orderer1, articles_with_quantity)
-    order4 = place_order(shop, storefront1, orderer1, articles_with_quantity)
+    order3 = place_order(shop, storefront1, orderer1, products_with_quantity)
+    order4 = place_order(shop, storefront1, orderer1, products_with_quantity)
     order5 = place_order(
-        shop, storefront2, orderer1, articles_with_quantity
+        shop, storefront2, orderer1, products_with_quantity
     )  # different storefront
 
     assert get_order_ids_by_user(orderer1, storefront1.id) == {

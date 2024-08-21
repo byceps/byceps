@@ -14,13 +14,13 @@ import pytest
 
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import Party, PartyID
-from byceps.services.shop.article.models import (
-    Article,
-    ArticleID,
-    ArticleNumber,
-    ArticleType,
-)
 from byceps.services.shop.order.models.order import Orderer
+from byceps.services.shop.product.models import (
+    Product,
+    ProductID,
+    ProductNumber,
+    ProductType,
+)
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.user.models.user import User, UserID
 
@@ -140,7 +140,7 @@ def party(brand: Brand, make_party) -> Party:
 
 
 @pytest.fixture(scope='session')
-def make_article():
+def make_product():
     def _wrapper(
         *,
         price: Money | None = None,
@@ -149,15 +149,15 @@ def make_article():
         total_quantity: int = 100,
         quantity: int = 1,
         max_quantity_per_order: int = 10,
-    ) -> Article:
+    ) -> Product:
         if price is None:
             price = Money('1.99', EUR)
 
-        return Article(
-            id=ArticleID(generate_uuid()),
+        return Product(
+            id=ProductID(generate_uuid()),
             shop_id=ShopID(generate_token()),
-            item_number=ArticleNumber(generate_token()),
-            type_=ArticleType.other,
+            item_number=ProductNumber(generate_token()),
+            type_=ProductType.other,
             type_params={},
             name=generate_token(),
             price=price,

@@ -12,10 +12,10 @@ from decimal import Decimal
 
 from moneyed import Money
 
-from byceps.services.shop.article.models import (
-    ArticleID,
-    ArticleNumber,
-    ArticleType,
+from byceps.services.shop.product.models import (
+    ProductID,
+    ProductNumber,
+    ProductType,
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
@@ -26,9 +26,9 @@ from .order import LineItemID, Orderer, OrderID
 @dataclass(frozen=True)
 class IncomingLineItem:
     id: LineItemID
-    article_id: ArticleID
-    article_number: ArticleNumber
-    article_type: ArticleType
+    product_id: ProductID
+    product_number: ProductNumber
+    product_type: ProductType
     name: str
     unit_price: Money
     tax_rate: Decimal

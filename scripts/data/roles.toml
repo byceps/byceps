@@ -228,12 +228,11 @@ assigned_permissions = [
 ]
 
 [[roles]]
-id = 'shop_article_admin'
-title = 'Shop-Artikel verwalten'
+id = 'shop_product_admin'
+title = 'Shop-Produkte verwalten'
 assigned_permissions = [
-    'shop_article.create',
-    'shop_article.update',
-    'shop_article.view',
+    'shop_product.administrate',
+    'shop_product.view',
 ]
 
 [[roles]]

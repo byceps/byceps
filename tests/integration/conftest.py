@@ -31,7 +31,6 @@ from byceps.services.email.models import EmailConfig
 from byceps.services.news import news_channel_service
 from byceps.services.news.models import NewsChannel, NewsChannelID
 from byceps.services.party.models import Party, PartyID
-from byceps.services.shop.article.models import Article
 from byceps.services.shop.order import order_sequence_service
 from byceps.services.shop.order.models.number import (
     OrderNumberSequence,
@@ -40,6 +39,7 @@ from byceps.services.shop.order.models.number import (
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.payment import payment_gateway_service
 from byceps.services.shop.payment.models import PaymentGateway
+from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.shop.storefront import storefront_service
@@ -60,7 +60,7 @@ from tests.helpers import (
     generate_token,
     http_client,
 )
-from tests.helpers.shop import create_article, create_orderer
+from tests.helpers.shop import create_product, create_orderer
 
 from .database import populate_database, set_up_database, tear_down_database
 
@@ -456,9 +456,9 @@ def make_storefront():
 
 
 @pytest.fixture(scope='session')
-def make_article():
-    def _wrapper(shop_id: ShopID, **kwargs) -> Article:
-        return create_article(shop_id, **kwargs)
+def make_product():
+    def _wrapper(shop_id: ShopID, **kwargs) -> Product:
+        return create_product(shop_id, **kwargs)
 
     return _wrapper
 

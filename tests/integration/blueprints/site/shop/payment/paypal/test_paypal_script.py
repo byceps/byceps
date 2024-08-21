@@ -21,7 +21,7 @@ from tests.helpers import (
     log_in_user,
 )
 from tests.helpers.shop import (
-    create_article as _create_article,
+    create_product as _create_product,
     create_orderer,
     create_shop_snippet,
 )
@@ -96,24 +96,24 @@ def orderer(make_user):
 def cart(shop: Shop) -> Cart:
     tax_rate = Decimal('0.19')
 
-    article1 = create_article(
+    product1 = create_product(
         shop.id,
         'PP-A01',
-        'Sample Article 1',
+        'Sample Product 1',
         Decimal('10.00'),
         tax_rate,
     )
-    article2 = create_article(
+    product2 = create_product(
         shop.id,
         'PP-A02',
-        'Sample Article 2',
+        'Sample Product 2',
         Decimal('1.99'),
         tax_rate,
     )
 
     cart = Cart(shop.currency)
-    cart.add_item(article1, 1)
-    cart.add_item(article2, 3)
+    cart.add_item(product1, 1)
+    cart.add_item(product2, 3)
 
     return cart
 
@@ -157,14 +157,14 @@ def test_render_paypal_script(request, app, order):
 # helpers
 
 
-def create_article(
+def create_product(
     shop_id: ShopID,
     item_number,
     name: str,
     price: Decimal,
     tax_rate: Decimal,
 ):
-    return _create_article(
+    return _create_product(
         shop_id,
         item_number=item_number,
         name=name,

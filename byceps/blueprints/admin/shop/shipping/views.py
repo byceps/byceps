@@ -9,7 +9,7 @@ byceps.blueprints.admin.shop.shipping.views
 from flask import abort
 
 from byceps.services.brand import brand_service
-from byceps.services.shop.article import article_service
+from byceps.services.shop.product import product_service
 from byceps.services.shop.shipping import shipping_service
 from byceps.services.shop.shop import shop_service
 from byceps.util.framework.blueprint import create_blueprint
@@ -24,21 +24,21 @@ blueprint = create_blueprint('shop_shipping_admin', __name__)
 @permission_required('shop_order.view')
 @templated
 def view_for_shop(shop_id):
-    """List the articles to ship, or likely to ship, for that shop."""
+    """List the products to ship, or likely to ship, for that shop."""
     shop = _get_shop_or_404(shop_id)
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    articles_to_ship = shipping_service.get_articles_to_ship(shop.id)
-    article_ids = {ats.article_id for ats in articles_to_ship}
-    articles = article_service.get_articles(article_ids)
-    articles_by_id = {article.id: article for article in articles}
+    products_to_ship = shipping_service.get_products_to_ship(shop.id)
+    product_ids = {pts.product_id for pts in products_to_ship}
+    products = product_service.get_products(product_ids)
+    products_by_id = {product.id: product for product in products}
 
     return {
         'shop': shop,
         'brand': brand,
-        'articles_to_ship': articles_to_ship,
-        'articles_by_id': articles_by_id,
+        'products_to_ship': products_to_ship,
+        'products_by_id': products_by_id,
     }
 
 

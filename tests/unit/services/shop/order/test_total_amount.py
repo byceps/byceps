@@ -9,13 +9,13 @@ from datetime import datetime
 from moneyed import EUR, Money
 import pytest
 
-from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_domain_service
 from byceps.services.shop.order.errors import CartEmptyError
 from byceps.services.shop.order.models.checkout import IncomingOrder
 from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import Orderer
+from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.util.result import Err, Result
@@ -28,18 +28,18 @@ STOREFRONT_ID = StorefrontID(generate_token())
 
 
 @pytest.fixture(scope='module')
-def article1(make_article) -> Article:
-    return make_article(price=Money('49.95', EUR))
+def product1(make_product) -> Product:
+    return make_product(price=Money('49.95', EUR))
 
 
 @pytest.fixture(scope='module')
-def article2(make_article) -> Article:
-    return make_article(price=Money('6.20', EUR))
+def product2(make_product) -> Product:
+    return make_product(price=Money('6.20', EUR))
 
 
 @pytest.fixture(scope='module')
-def article3(make_article) -> Article:
-    return make_article(price=Money('12.53', EUR))
+def product3(make_product) -> Product:
+    return make_product(price=Money('12.53', EUR))
 
 
 def test_without_any_items(orderer: Orderer):
@@ -50,11 +50,11 @@ def test_without_any_items(orderer: Orderer):
     assert result == Err(CartEmptyError())
 
 
-def test_with_single_item(orderer: Orderer, article1: Article):
+def test_with_single_item(orderer: Orderer, product1: Product):
     order = build_incoming_order(
         orderer,
         [
-            (article1, 1),
+            (product1, 1),
         ],
     )
 
@@ -63,16 +63,16 @@ def test_with_single_item(orderer: Orderer, article1: Article):
 
 def test_with_multiple_items(
     orderer: Orderer,
-    article1: Article,
-    article2: Article,
-    article3: Article,
+    product1: Product,
+    product2: Product,
+    product3: Product,
 ):
     order = build_incoming_order(
         orderer,
         [
-            (article1, 3),
-            (article2, 1),
-            (article3, 4),
+            (product1, 3),
+            (product2, 1),
+            (product3, 4),
         ],
     )
 
@@ -83,11 +83,11 @@ def test_with_multiple_items(
 
 
 def build_incoming_order(
-    orderer: Orderer, articles: Iterable[tuple[Article, int]]
+    orderer: Orderer, products: Iterable[tuple[Product, int]]
 ) -> IncomingOrder:
     cart = Cart(EUR)
-    for article, quantity in articles:
-        cart.add_item(article, quantity)
+    for product, quantity in products:
+        cart.add_item(product, quantity)
 
     incoming_order, _ = place_order(orderer, cart).unwrap()
 

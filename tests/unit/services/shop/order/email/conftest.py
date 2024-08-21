@@ -10,11 +10,6 @@ from moneyed import Money
 import pytest
 
 
-from byceps.services.shop.article.models import (
-    ArticleID,
-    ArticleNumber,
-    ArticleType,
-)
 from byceps.services.shop.order.models.order import (
     Address,
     LineItem,
@@ -26,6 +21,11 @@ from byceps.services.shop.order.models.order import (
     OrderNumber,
     OrderState,
     PaymentState,
+)
+from byceps.services.shop.product.models import (
+    ProductID,
+    ProductNumber,
+    ProductType,
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
@@ -53,7 +53,7 @@ def app(make_app):
 def build_line_item():
     def _wrapper(
         order_number: OrderNumber,
-        article_number: ArticleNumber,
+        product_number: ProductNumber,
         name: str,
         unit_price: Money,
         quantity: int,
@@ -62,9 +62,9 @@ def build_line_item():
         return LineItem(
             id=LineItemID(generate_uuid()),
             order_number=order_number,
-            article_id=ArticleID(generate_uuid()),
-            article_number=article_number,
-            article_type=ArticleType.other,
+            product_id=ProductID(generate_uuid()),
+            product_number=product_number,
+            product_type=ProductType.other,
             name=name,
             unit_price=unit_price,
             tax_rate=Decimal('0.19'),

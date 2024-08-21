@@ -349,7 +349,7 @@ def cancel_form(order_id, erroneous_form=None):
 @permission_required('shop_order.cancel')
 def cancel(order_id):
     """Set the payment state of a single order to 'canceled' and
-    release the respective article quantities.
+    release the respective product quantities.
     """
     order = _get_order_or_404(order_id)
 
@@ -380,7 +380,7 @@ def cancel(order_id):
 
     flash_success(
         gettext(
-            'The order has been canceled and the corresponding articles '
+            'The order has been canceled and the corresponding products '
             'have been made available again.'
         )
     )

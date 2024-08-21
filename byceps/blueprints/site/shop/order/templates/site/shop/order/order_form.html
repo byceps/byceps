@@ -17,16 +17,16 @@
 
 {{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}
 
-  {%- if article_compilation %}
+  {%- if product_compilation %}
   <form action="{{ url_for('.order') }}" method="post" class="disable-submit-button-on-submit">
 
 {% include 'site/shop/order/_order_form_orderer.html' %}
-{% include 'site/shop/order/_order_form_articles.html' %}
+{% include 'site/shop/order/_order_form_products.html' %}
 
     {{ form_buttons(_('Place binding order now')) }}
   </form>
   {%- else %}
-  <p>{{ _('No articles are available at this time.') }}</p>
+  <p>{{ _('No products are available at this time.') }}</p>
   {%- endif %}
 
 {%- endblock %}

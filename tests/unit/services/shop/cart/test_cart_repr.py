@@ -13,12 +13,12 @@ def test_cart_empty_repr():
     assert repr(cart) == '<Cart(0 items)>'
 
 
-def test_cart_filled_repr(make_article):
-    article1 = make_article()
-    article2 = make_article()
+def test_cart_filled_repr(make_product):
+    product1 = make_product()
+    product2 = make_product()
 
     cart = Cart(EUR)
-    cart.add_item(article1, 5)
-    cart.add_item(article2, 3)
+    cart.add_item(product1, 5)
+    cart.add_item(product2, 3)
 
     assert repr(cart) == '<Cart(2 items)>'
