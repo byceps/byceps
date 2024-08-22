@@ -8579,7 +8579,7 @@ msgstr "Partys anzeigen"
 
 #: byceps/permissions/seating.py:17
 msgid "Administrate seating"
-msgstr "Sitzpläne und -plätze administrieren"
+msgstr "Sitzpläne und -plätze verwalten"
 
 #: byceps/permissions/seating.py:18
 msgid "View seating administration"
@@ -8639,7 +8639,7 @@ msgstr "Sites anzeigen"
 
 #: byceps/permissions/site.py:27
 msgid "Administrate site navigation"
-msgstr "Site-Navigation administrieren"
+msgstr "Site-Navigation verwalten"
 
 #: byceps/permissions/snippet.py:17
 msgid "Create snippets"
