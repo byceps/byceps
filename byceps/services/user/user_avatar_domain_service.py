@@ -8,6 +8,11 @@ byceps.services.user.user_avatar_domain_service
 
 from datetime import datetime, UTC
 
+from byceps.events.base import EventUser
+from byceps.events.user import (
+    UserAvatarRemovedEvent,
+    UserAvatarUpdatedEvent,
+)
 from byceps.util.uuid import generate_uuid7
 
 from .models.log import UserLogEntry
@@ -18,15 +23,31 @@ def update_avatar_image(
     user: User,
     avatar: UserAvatar,
     initiator: User,
-) -> UserLogEntry:
+) -> tuple[UserAvatarUpdatedEvent, UserLogEntry]:
     """Set a new avatar image for the user."""
     occurred_at = datetime.now(UTC)
+
+    event = _build_avatar_updated_event(occurred_at, initiator, user, avatar)
 
     log_entry = _build_avatar_updated_log_entry(
         occurred_at, user, initiator, avatar
     )
 
-    return log_entry
+    return event, log_entry
+
+
+def _build_avatar_updated_event(
+    occurred_at: datetime,
+    initiator: User,
+    user: User,
+    avatar: UserAvatar,
+) -> UserAvatarUpdatedEvent:
+    return UserAvatarUpdatedEvent(
+        occurred_at=occurred_at,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
+        avatar_id=avatar.id,
+    )
 
 
 def _build_avatar_updated_log_entry(
@@ -50,15 +71,31 @@ def _build_avatar_updated_log_entry(
 
 def remove_avatar_image(
     user: User, avatar: UserAvatar, initiator: User
-) -> UserLogEntry:
+) -> tuple[UserAvatarRemovedEvent, UserLogEntry]:
     """Remove the user's avatar image."""
     occurred_at = datetime.now(UTC)
+
+    event = _build_avatar_removed_event(occurred_at, initiator, user, avatar)
 
     log_entry = _build_avatar_removed_log_entry(
         occurred_at, user, initiator, avatar
     )
 
-    return log_entry
+    return event, log_entry
+
+
+def _build_avatar_removed_event(
+    occurred_at: datetime,
+    initiator: User,
+    user: User,
+    avatar: UserAvatar,
+) -> UserAvatarRemovedEvent:
+    return UserAvatarRemovedEvent(
+        occurred_at=occurred_at,
+        initiator=EventUser.from_user(initiator),
+        user=EventUser.from_user(user),
+        avatar_id=avatar.id,
+    )
 
 
 def _build_avatar_removed_log_entry(

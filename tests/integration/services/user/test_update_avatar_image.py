@@ -20,7 +20,7 @@ from byceps.util.image.models import ImageType
 )
 def test_path(data_path, database, user, image_extension, image_type):
     with Path(f'tests/fixtures/images/image.{image_extension}').open('rb') as f:
-        avatar = user_avatar_service.update_avatar_image(
+        avatar, _ = user_avatar_service.update_avatar_image(
             user, f, {image_type}, user
         ).unwrap()
 

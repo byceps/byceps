@@ -8,7 +8,7 @@ byceps.events.user
 
 from dataclasses import dataclass
 
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import UserAvatarID, UserID
 
 from .base import _BaseEvent, EventSite, EventUser
 
@@ -35,6 +35,21 @@ class UserAccountSuspendedEvent(_UserEvent):
 
 @dataclass(frozen=True)
 class UserAccountUnsuspendedEvent(_UserEvent):
+    pass
+
+
+@dataclass(frozen=True)
+class _UserAvatarEvent(_UserEvent):
+    avatar_id: UserAvatarID
+
+
+@dataclass(frozen=True)
+class UserAvatarRemovedEvent(_UserAvatarEvent):
+    pass
+
+
+@dataclass(frozen=True)
+class UserAvatarUpdatedEvent(_UserAvatarEvent):
     pass
 
 

@@ -11,6 +11,10 @@ from typing import BinaryIO
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.events.user import (
+    UserAvatarRemovedEvent,
+    UserAvatarUpdatedEvent,
+)
 from byceps.services.image import image_service
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
@@ -33,7 +37,7 @@ def update_avatar_image(
     initiator: User,
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
-) -> Result[UserAvatar, str]:
+) -> Result[tuple[UserAvatar, UserAvatarUpdatedEvent], str]:
     """Set a new avatar image for the user."""
     db_user = user_service.get_db_user(user.id)
 
@@ -63,7 +67,7 @@ def update_avatar_image(
 
     db_user.avatar_id = avatar.id
 
-    log_entry = user_avatar_domain_service.update_avatar_image(
+    event, log_entry = user_avatar_domain_service.update_avatar_image(
         user, avatar, initiator
     )
 
@@ -72,10 +76,12 @@ def update_avatar_image(
 
     db.session.commit()
 
-    return Ok(avatar)
+    return Ok((avatar, event))
 
 
-def remove_avatar_image(user: User, initiator: User) -> None:
+def remove_avatar_image(
+    user: User, initiator: User
+) -> UserAvatarRemovedEvent | None:
     """Remove the user's avatar image.
 
     The avatar will be unlinked from the user, but the database record
@@ -84,11 +90,11 @@ def remove_avatar_image(user: User, initiator: User) -> None:
     db_user = user_service.get_db_user(user.id)
 
     if db_user.avatar_id is None:
-        return
+        return None
 
     avatar = _db_entity_to_item(db_user.avatar)
 
-    log_entry = user_avatar_domain_service.remove_avatar_image(
+    event, log_entry = user_avatar_domain_service.remove_avatar_image(
         user, avatar, initiator
     )
 
@@ -99,6 +105,8 @@ def remove_avatar_image(user: User, initiator: User) -> None:
     db_user.avatar_id = None
 
     db.session.commit()
+
+    return event
 
 
 def get_avatar_url_for_user(user_id: UserID) -> str | None:
