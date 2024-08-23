@@ -20,7 +20,7 @@ from byceps.util.result import Err, Ok, Result
 from . import user_log_service, user_service
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.user import DbUser
-from .models.user import User, UserAvatar, UserAvatarID, UserID
+from .models.user import User, UserAvatar, UserID
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -107,13 +107,6 @@ def remove_avatar_image(user: User, initiator: User) -> None:
     db_user.avatar_id = None
 
     db.session.commit()
-
-
-def get_db_avatar(avatar_id: UserAvatarID) -> DbUserAvatar:
-    """Return the avatar with that ID, or raise exception if not found."""
-    return db.session.execute(
-        select(DbUserAvatar).filter_by(id=avatar_id)
-    ).scalar_one()
 
 
 def get_avatar_url_for_user(user_id: UserID) -> str | None:
