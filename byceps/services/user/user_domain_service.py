@@ -15,16 +15,12 @@ from byceps.events.user import (
     UserAccountSuspendedEvent,
     UserAccountUnsuspendedEvent,
     UserDetailsUpdatedEvent,
-    UserEmailAddressChangedEvent,
-    UserEmailAddressConfirmedEvent,
-    UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from .models.log import UserLogEntry, UserLogEntryData
-from .models.user import User, UserEmailAddress
+from .models.user import User
 
 
 def suspend_account(
