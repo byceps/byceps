@@ -29,7 +29,7 @@ class UserAvatar:
     id: UserAvatarID
     created_at: datetime
     image_type: ImageType
-    filename: str
+    filename: Path
     path: Path
     url: str
 
