@@ -109,19 +109,17 @@
 
       <div class="data-label">{{ _('Availability') }}</div>
       <div class="data-value">
-        <div style="line-height: 1.5;">
-          <div class="progress">
-            {{ render_progress_bar(article.quantity, article.total_quantity, 'color--available') }}
-            {{ render_progress_bar(totals[PaymentState.open], article.total_quantity, 'color--ordered') }}
+        <div class="progress">
+          {{ render_progress_bar(article.quantity, article.total_quantity, 'color--available') }}
+          {{ render_progress_bar(totals[PaymentState.open], article.total_quantity, 'color--ordered') }}
+        </div>
+        <div class="row row--space-between" style="font-size: 0.75rem;">
+          <div>
+            <strong>{{ article.quantity }}</strong> {{ _('available') }}{% if article.quantity < 1 %} {{ render_tag(_('sold out')) }}{% endif %}<br>
+            <strong>{{ totals[PaymentState.open] }}</strong> {{ _('ordered') }}<br>
+            <strong>{{ totals[PaymentState.paid] }}</strong> {{ _('paid') }}
           </div>
-          <div class="row row--space-between" style="font-size: 0.75rem;">
-            <div>
-              <strong>{{ article.quantity }}</strong> {{ _('available') }}{% if article.quantity < 1 %} {{ render_tag(_('sold out')) }}{% endif %}<br>
-              <strong>{{ totals[PaymentState.open] }}</strong> {{ _('ordered') }}<br>
-              <strong>{{ totals[PaymentState.paid] }}</strong> {{ _('paid') }}
-            </div>
-            <div class="dimmed">{{ _('of') }} {{ article.total_quantity }}</div>
-          </div>
+          <div class="dimmed">{{ _('of') }} {{ article.total_quantity }}</div>
         </div>
       </div>
 
