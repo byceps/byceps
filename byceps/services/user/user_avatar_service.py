@@ -77,13 +77,13 @@ def update_avatar_image(
     return Ok(db_avatar.id)
 
 
-def remove_avatar_image(user_id: UserID, initiator: User) -> None:
+def remove_avatar_image(user: User, initiator: User) -> None:
     """Remove the user's avatar image.
 
     The avatar will be unlinked from the user, but the database record
     as well as the image file itself won't be removed, though.
     """
-    db_user = user_service.get_db_user(user_id)
+    db_user = user_service.get_db_user(user.id)
 
     if db_user.avatar_id is None:
         return

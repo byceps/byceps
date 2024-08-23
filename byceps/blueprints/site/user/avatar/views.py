@@ -97,7 +97,7 @@ def delete():
     user = _get_current_user_or_404()
 
     try:
-        user_avatar_service.remove_avatar_image(user.id, user)
+        user_avatar_service.remove_avatar_image(user, user)
     except ValueError:
         # No avatar selected.
         # But that's ok, deletions should be idempotent.
