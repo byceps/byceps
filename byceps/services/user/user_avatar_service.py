@@ -33,7 +33,7 @@ def update_avatar_image(
     initiator: User,
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
-) -> Result[UserAvatarID, str]:
+) -> Result[UserAvatar, str]:
     """Set a new avatar image for the user."""
     db_user = user_service.get_db_user(user.id)
 
@@ -76,7 +76,7 @@ def update_avatar_image(
 
     db.session.commit()
 
-    return Ok(avatar.id)
+    return Ok(avatar)
 
 
 def remove_avatar_image(user: User, initiator: User) -> None:

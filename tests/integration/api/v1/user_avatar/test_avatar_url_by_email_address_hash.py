@@ -58,10 +58,10 @@ def create_initialized_user(screen_name, email_address):
 
 def set_avatar(user):
     with Path('tests/fixtures/images/image.jpeg').open('rb') as f:
-        avatar_id = user_avatar_service.update_avatar_image(
+        avatar = user_avatar_service.update_avatar_image(
             user, f, {ImageType.jpeg}, user
         ).unwrap()
-    return avatar_id
+    return avatar.id
 
 
 def hash_email_address(email_address):
