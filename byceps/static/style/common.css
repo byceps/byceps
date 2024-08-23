@@ -220,6 +220,10 @@ table.itemlist,
   justify-content: space-evenly;
 }
 
+.row.is-hcentered {
+  justify-content: center;
+}
+
 .row--v-centered, .row.is-vcentered {
   align-items: center;
 }
