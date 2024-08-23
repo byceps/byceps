@@ -11,14 +11,27 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime
 from enum import Enum
+from pathlib import Path
 from typing import Any, NewType
 from uuid import UUID
+
+from byceps.util.image.models import ImageType
 
 
 UserID = NewType('UserID', UUID)
 
 
 UserAvatarID = NewType('UserAvatarID', UUID)
+
+
+@dataclass(frozen=True)
+class UserAvatar:
+    id: UserAvatarID
+    created_at: datetime
+    image_type: ImageType
+    filename: str
+    path: Path
+    url: str
 
 
 @dataclass(frozen=True)

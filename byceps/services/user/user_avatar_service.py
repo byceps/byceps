@@ -20,7 +20,7 @@ from byceps.util.result import Err, Ok, Result
 from . import user_log_service, user_service
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.user import DbUser
-from .models.user import User, UserAvatarID, UserID
+from .models.user import User, UserAvatar, UserAvatarID, UserID
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -56,17 +56,19 @@ def update_avatar_image(
     db.session.add(db_avatar)
     db.session.commit()
 
-    # Might raise `FileExistsError`.
-    upload.store(stream, db_avatar.path, create_parent_path_if_nonexistent=True)
+    avatar = _db_entity_to_item(db_avatar)
 
-    db_user.avatar_id = db_avatar.id
+    # Might raise `FileExistsError`.
+    upload.store(stream, avatar.path, create_parent_path_if_nonexistent=True)
+
+    db_user.avatar_id = avatar.id
 
     db_log_entry = user_log_service.build_db_entry(
         'user-avatar-updated',
-        db_user.id,
+        user.id,
         {
-            'avatar_id': str(db_avatar.id),
-            'filename': str(db_avatar.filename),
+            'avatar_id': str(avatar.id),
+            'filename': str(avatar.filename),
             'initiator_id': str(initiator.id),
         },
     )
@@ -74,7 +76,7 @@ def update_avatar_image(
 
     db.session.commit()
 
-    return Ok(db_avatar.id)
+    return Ok(avatar.id)
 
 
 def remove_avatar_image(user: User, initiator: User) -> None:
@@ -88,12 +90,14 @@ def remove_avatar_image(user: User, initiator: User) -> None:
     if db_user.avatar_id is None:
         return
 
+    avatar = _db_entity_to_item(db_user.avatar)
+
     db_log_entry = user_log_service.build_db_entry(
         'user-avatar-removed',
         db_user.id,
         {
-            'avatar_id': str(db_user.avatar_id),
-            'filename': str(db_user.avatar.filename),
+            'avatar_id': str(avatar.id),
+            'filename': str(avatar.filename),
             'initiator_id': str(initiator.id),
         },
     )
@@ -156,3 +160,14 @@ def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> str | None:
         return None
 
     return db_avatar.url
+
+
+def _db_entity_to_item(db_avatar: DbUserAvatar) -> UserAvatar:
+    return UserAvatar(
+        id=db_avatar.id,
+        created_at=db_avatar.created_at,
+        image_type=db_avatar.image_type,
+        filename=db_avatar.filename,
+        path=db_avatar.path,
+        url=db_avatar.url,
+    )
