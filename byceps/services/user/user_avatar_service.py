@@ -6,7 +6,6 @@ byceps.services.user.user_avatar_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime, UTC
 from typing import BinaryIO
 
 from sqlalchemy import select
@@ -17,12 +16,10 @@ from byceps.util import upload
 from byceps.util.image import create_thumbnail
 from byceps.util.image.models import Dimensions, ImageType
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid7
 
-from . import user_log_service, user_service
+from . import user_avatar_domain_service, user_log_service, user_service
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.user import DbUser
-from .models.log import UserLogEntry
 from .models.user import User, UserAvatar, UserID
 
 
@@ -61,15 +58,13 @@ def update_avatar_image(
 
     avatar = _db_entity_to_item(db_avatar)
 
-    occurred_at = datetime.now(UTC)
-
     # Might raise `FileExistsError`.
     upload.store(stream, avatar.path, create_parent_path_if_nonexistent=True)
 
     db_user.avatar_id = avatar.id
 
-    log_entry = _build_avatar_updated_log_entry(
-        occurred_at, user, initiator, avatar
+    log_entry = user_avatar_domain_service.update_avatar_image(
+        user, avatar, initiator
     )
 
     db_log_entry = user_log_service.to_db_entry(log_entry)
@@ -78,25 +73,6 @@ def update_avatar_image(
     db.session.commit()
 
     return Ok(avatar)
-
-
-def _build_avatar_updated_log_entry(
-    occurred_at: datetime,
-    user: User,
-    initiator: User,
-    avatar: UserAvatar,
-) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-avatar-updated',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
-            'avatar_id': str(avatar.id),
-            'filename': str(avatar.filename),
-        },
-    )
 
 
 def remove_avatar_image(user: User, initiator: User) -> None:
@@ -112,10 +88,8 @@ def remove_avatar_image(user: User, initiator: User) -> None:
 
     avatar = _db_entity_to_item(db_user.avatar)
 
-    occurred_at = datetime.now(UTC)
-
-    log_entry = _build_avatar_removed_log_entry(
-        occurred_at, user, initiator, avatar
+    log_entry = user_avatar_domain_service.remove_avatar_image(
+        user, avatar, initiator
     )
 
     db_log_entry = user_log_service.to_db_entry(log_entry)
@@ -125,25 +99,6 @@ def remove_avatar_image(user: User, initiator: User) -> None:
     db_user.avatar_id = None
 
     db.session.commit()
-
-
-def _build_avatar_removed_log_entry(
-    occurred_at: datetime,
-    user: User,
-    initiator: User,
-    avatar: UserAvatar,
-) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-avatar-removed',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
-            'avatar_id': str(avatar.id),
-            'filename': str(avatar.filename),
-        },
-    )
 
 
 def get_avatar_url_for_user(user_id: UserID) -> str | None:
