@@ -82,7 +82,7 @@ def _update(user: User, image) -> None:
 
     try:
         update_result = user_avatar_service.update_avatar_image(
-            user.id, image.stream, ALLOWED_IMAGE_TYPES, user
+            user, image.stream, ALLOWED_IMAGE_TYPES, user
         )
         if update_result.is_err():
             abort(400, update_result.unwrap_err())

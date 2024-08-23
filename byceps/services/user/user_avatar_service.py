@@ -27,7 +27,7 @@ MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 
 
 def update_avatar_image(
-    user_id: UserID,
+    user: User,
     stream: BinaryIO,
     allowed_types: set[ImageType],
     initiator: User,
@@ -35,7 +35,7 @@ def update_avatar_image(
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> Result[UserAvatarID, str]:
     """Set a new avatar image for the user."""
-    db_user = user_service.get_db_user(user_id)
+    db_user = user_service.get_db_user(user.id)
 
     image_type_result = image_service.determine_image_type(
         stream, allowed_types
