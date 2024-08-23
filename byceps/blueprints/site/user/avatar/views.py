@@ -11,6 +11,7 @@ from flask_babel import gettext
 
 from byceps.services.image import image_service
 from byceps.services.user import user_avatar_service
+from byceps.services.user.models.user import User
 from byceps.signals import user as user_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
@@ -75,7 +76,7 @@ def update():
     return redirect_to('user_settings.view')
 
 
-def _update(user, image):
+def _update(user: User, image) -> None:
     if not image or not image.filename:
         abort(400, 'No file to upload has been specified.')
 
@@ -105,7 +106,7 @@ def delete():
         flash_success(gettext('Avatar image has been removed.'))
 
 
-def _get_current_user_or_404():
+def _get_current_user_or_404() -> User:
     user = g.user
 
     if not user.authenticated:
