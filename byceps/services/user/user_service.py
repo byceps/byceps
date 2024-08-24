@@ -157,8 +157,8 @@ def _get_user_stmt(include_avatar: bool) -> Select:
 def _user_row_to_dto(
     row: tuple[UserID, str, bool, bool, bool, str | None, DbUserAvatar | None],
 ) -> User:
-    user_id, screen_name, initialized, suspended, deleted, locale, avatar = row
-    avatar_url = avatar.url if (avatar is not None) else None
+    user_id, screen_name, initialized, suspended, deleted, locale, db_avatar = row
+    avatar_url = db_avatar.url if (db_avatar is not None) else None
 
     return User(
         id=user_id,

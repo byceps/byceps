@@ -46,7 +46,7 @@ def collect_orgas_with_next_birthdays(
 
 def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
     """Yield all organizers whose birthday is known."""
-    users = (
+    db_users = (
         db.session.scalars(
             select(DbUser)
             .join(DbOrgaFlag)
@@ -58,30 +58,30 @@ def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
         .all()
     )
 
-    user_ids = {user.id for user in users}
+    user_ids = {db_user.id for db_user in db_users}
     avatar_urls_by_user_id = user_avatar_service.get_avatar_urls_for_users(
         user_ids
     )
 
-    for user in users:
-        user_dto = _to_user_dto(user, avatar_urls_by_user_id)
-        birthday = Birthday(user.detail.date_of_birth)
+    for db_user in db_users:
+        user_dto = _to_user_dto(db_user, avatar_urls_by_user_id)
+        birthday = Birthday(db_user.detail.date_of_birth)
         yield user_dto, birthday
 
 
 def _to_user_dto(
-    user: DbUser, avatar_urls_by_user_id: dict[UserID, str | None]
+    db_user: DbUser, avatar_urls_by_user_id: dict[UserID, str | None]
 ) -> User:
     """Create user DTO from database entity."""
-    avatar_url = avatar_urls_by_user_id.get(user.id)
+    avatar_url = avatar_urls_by_user_id.get(db_user.id)
 
     return User(
-        id=user.id,
-        screen_name=user.screen_name,
-        initialized=user.initialized,
-        suspended=user.suspended,
-        deleted=user.deleted,
-        locale=user.locale,
+        id=db_user.id,
+        screen_name=db_user.screen_name,
+        initialized=db_user.initialized,
+        suspended=db_user.suspended,
+        deleted=db_user.deleted,
+        locale=db_user.locale,
         avatar_url=avatar_url,
     )
 
