@@ -10,7 +10,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from flask import current_app
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -58,11 +57,6 @@ class DbUserAvatar(db.Model):
         name_without_suffix = str(self.id)
         suffix = '.' + self.image_type.name
         return Path(name_without_suffix).with_suffix(suffix)
-
-    @property
-    def path(self) -> Path:
-        path = current_app.config['PATH_DATA'] / 'global' / 'users' / 'avatars'
-        return path / self.filename
 
     @property
     def url(self) -> str:

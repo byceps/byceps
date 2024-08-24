@@ -8,6 +8,7 @@ byceps.services.user.user_avatar_service
 
 from typing import BinaryIO
 
+from flask import current_app
 from sqlalchemy import select
 
 from byceps.database import db
@@ -156,11 +157,16 @@ def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> str | None:
 
 
 def _db_entity_to_item(db_avatar: DbUserAvatar) -> UserAvatar:
+    images_path = (
+        current_app.config['PATH_DATA'] / 'global' / 'users' / 'avatars'
+    )
+    path = images_path / db_avatar.filename
+
     return UserAvatar(
         id=db_avatar.id,
         created_at=db_avatar.created_at,
         image_type=db_avatar.image_type,
         filename=db_avatar.filename,
-        path=db_avatar.path,
+        path=path,
         url=db_avatar.url,
     )
