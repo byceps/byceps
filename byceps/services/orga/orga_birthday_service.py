@@ -12,10 +12,10 @@ from itertools import islice
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.services.user import user_avatar_service
+from byceps.services.user import user_service
 from byceps.services.user.dbmodels.detail import DbUserDetail
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import User
 
 from .dbmodels import DbOrgaFlag
 from .models import Birthday
@@ -46,44 +46,27 @@ def collect_orgas_with_next_birthdays(
 
 def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
     """Yield all organizers whose birthday is known."""
-    db_users = (
-        db.session.scalars(
-            select(DbUser)
+    user_ids_and_dates_of_birth = (
+        db.session.execute(
+            select(DbUser.id, DbUserDetail.date_of_birth)
             .join(DbOrgaFlag)
             .join(DbUserDetail)
             .filter(DbUserDetail.date_of_birth.is_not(None))
-            .options(db.joinedload(DbUser.detail))
         )
         .unique()
         .all()
     )
 
-    user_ids = {db_user.id for db_user in db_users}
-    avatar_urls_by_user_id = user_avatar_service.get_avatar_urls_for_users(
-        user_ids
+    user_ids = {user_id for user_id, _ in user_ids_and_dates_of_birth}
+
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
     )
 
-    for db_user in db_users:
-        user_dto = _to_user_dto(db_user, avatar_urls_by_user_id)
-        birthday = Birthday(db_user.detail.date_of_birth)
-        yield user_dto, birthday
-
-
-def _to_user_dto(
-    db_user: DbUser, avatar_urls_by_user_id: dict[UserID, str | None]
-) -> User:
-    """Create user DTO from database entity."""
-    avatar_url = avatar_urls_by_user_id.get(db_user.id)
-
-    return User(
-        id=db_user.id,
-        screen_name=db_user.screen_name,
-        initialized=db_user.initialized,
-        suspended=db_user.suspended,
-        deleted=db_user.deleted,
-        locale=db_user.locale,
-        avatar_url=avatar_url,
-    )
+    for user_id, date_of_birth in user_ids_and_dates_of_birth:
+        user = users_by_id[user_id]
+        birthday = Birthday(date_of_birth)
+        yield user, birthday
 
 
 def sort_users_by_next_birthday(
