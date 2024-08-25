@@ -33,10 +33,10 @@ def get_attendees_paginated(
     search_term: str | None = None,
 ) -> Pagination:
     """Return the party's ticket users with tickets and seats."""
-    users_paginated = _get_users_paginated(
+    pagination = _get_users_paginated(
         party_id, page, per_page, search_term=search_term
     )
-    db_users = users_paginated.items
+    db_users = pagination.items
     user_ids = {db_user.id for db_user in db_users}
 
     db_tickets = _get_tickets_for_users(party_id, user_ids)
@@ -46,8 +46,9 @@ def get_attendees_paginated(
         _generate_attendees(party_id, db_users, tickets_by_user_id)
     )
 
-    users_paginated.items = attendees
-    return users_paginated
+    pagination.items = attendees
+
+    return pagination
 
 
 def _get_users_paginated(
