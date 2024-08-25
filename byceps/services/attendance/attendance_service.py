@@ -66,7 +66,14 @@ def _get_users_paginated(
         )
         .distinct()
         .options(
-            db.load_only(DbUser.id, DbUser.screen_name, DbUser.deleted),
+            db.load_only(
+                DbUser.id,
+                DbUser.screen_name,
+                DbUser.initialized,
+                DbUser.suspended,
+                DbUser.deleted,
+                DbUser.locale,
+            ),
             db.joinedload(DbUser.avatar),
         )
         .join(DbTicket, DbTicket.used_by_id == DbUser.id)
