@@ -19,8 +19,9 @@ from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketID
+from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import UserID
 
 from .models import Attendee, AttendeeSeat, AttendeeTicket
 
@@ -33,17 +34,16 @@ def get_attendees_paginated(
     search_term: str | None = None,
 ) -> Pagination:
     """Return the party's ticket users with tickets and seats."""
-    pagination = _get_users_paginated(
+    pagination = _get_user_ids_paginated(
         party_id, page, per_page, search_term=search_term
     )
-    db_users = pagination.items
-    user_ids = {db_user.id for db_user in db_users}
+    user_ids = set(pagination.items)
 
     db_tickets = _get_tickets_for_users(party_id, user_ids)
     tickets_by_user_id = _index_tickets_by_user_id(db_tickets)
 
     attendees = list(
-        _generate_attendees(party_id, db_users, tickets_by_user_id)
+        _generate_attendees(party_id, user_ids, tickets_by_user_id)
     )
 
     pagination.items = attendees
@@ -51,7 +51,7 @@ def get_attendees_paginated(
     return pagination
 
 
-def _get_users_paginated(
+def _get_user_ids_paginated(
     party_id: PartyID,
     page: int,
     per_page: int,
@@ -63,20 +63,10 @@ def _get_users_paginated(
 
     stmt = (
         select(
-            DbUser, db.func.lower(DbUser.screen_name).label('screen_name_lower')
+            DbUser.id,
+            db.func.lower(DbUser.screen_name).label('screen_name_lower'),
         )
         .distinct()
-        .options(
-            db.load_only(
-                DbUser.id,
-                DbUser.screen_name,
-                DbUser.initialized,
-                DbUser.suspended,
-                DbUser.deleted,
-                DbUser.locale,
-            ),
-            db.joinedload(DbUser.avatar),
-        )
         .join(DbTicket, DbTicket.used_by_id == DbUser.id)
         .filter(DbTicket.revoked == False)  # noqa: E712
         .join(DbTicketCategory)
@@ -120,26 +110,26 @@ def _index_tickets_by_user_id(
 
 def _generate_attendees(
     party_id: PartyID,
-    db_users: Iterable[DbUser],
+    user_ids: set[UserID],
     tickets_by_user_id: dict[UserID, set[DbTicket]],
 ) -> Iterable[Attendee]:
-    user_ids = {db_user.id for db_user in db_users}
+    users = user_service.get_users(user_ids, include_avatars=True)
+
+    # Sort *again* case-insensitively by screen name.
+    # Sorting in the database was relevant to correctly select
+    # the entries for the page.
+    # Sorting here is necessary to restore that order for a set
+    # of users.
+    users_sorted = list(
+        sorted(users, key=lambda u: (u.screen_name or '').lower())
+    )
+
     orga_ids = orga_team_service.select_orgas_for_party(user_ids, party_id)
 
-    for db_user in db_users:
-        user = User(
-            id=db_user.id,
-            screen_name=db_user.screen_name,
-            initialized=db_user.initialized,
-            suspended=db_user.suspended,
-            deleted=db_user.deleted,
-            locale=db_user.locale,
-            avatar_url=db_user.avatar_url,
-        )
+    for user in users_sorted:
+        is_orga = user.id in orga_ids
 
-        is_orga = db_user.id in orga_ids
-
-        db_tickets = tickets_by_user_id[db_user.id]
+        db_tickets = tickets_by_user_id[user.id]
         attendee_tickets = _to_attendee_tickets(db_tickets)
 
         yield Attendee(
