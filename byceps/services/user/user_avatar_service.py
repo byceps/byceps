@@ -25,7 +25,7 @@ from byceps.util.result import Err, Ok, Result
 from . import user_avatar_domain_service, user_log_service, user_service
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.user import DbUser
-from .models.user import User, UserAvatar, UserID
+from .models.user import User, UserAvatar
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -108,36 +108,6 @@ def remove_avatar_image(
     db.session.commit()
 
     return event
-
-
-def get_avatar_url_for_user(user_id: UserID) -> str | None:
-    """Return the URL of the user's current avatar, or `None` if not set."""
-    avatar_urls_by_user_id = get_avatar_urls_for_users({user_id})
-    return avatar_urls_by_user_id.get(user_id)
-
-
-def get_avatar_urls_for_users(
-    user_ids: set[UserID],
-) -> dict[UserID, str | None]:
-    """Return the URLs of those users' current avatars."""
-    if not user_ids:
-        return {}
-
-    user_ids_and_db_avatars = db.session.execute(
-        select(
-            DbUser.id,
-            DbUserAvatar,
-        )
-        .join(DbUserAvatar, DbUser.avatar_id == DbUserAvatar.id)
-        .filter(DbUser.id.in_(user_ids))
-    ).all()
-
-    urls_by_user_id = {
-        user_id: db_avatar.url for user_id, db_avatar in user_ids_and_db_avatars
-    }
-
-    # Include all user IDs in result.
-    return {user_id: urls_by_user_id.get(user_id) for user_id in user_ids}
 
 
 def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> str | None:
