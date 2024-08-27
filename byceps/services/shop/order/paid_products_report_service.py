@@ -130,7 +130,7 @@ def get_product_quantity(product_number: ProductNumber, order: Order) -> int:
 
 def export_paid_products_report_as_csv(report: PaidProductsReport) -> str:
     header_row = _assemble_csv_header_row(report.products)
-    data_rows = _assemble_csv_data_rows(report.products, report.order_summaries)
+    data_rows = _assemble_csv_data_rows(report.order_summaries)
     all_rows = [header_row] + data_rows
 
     lines = serialize_tuples_to_csv(all_rows)
@@ -148,7 +148,7 @@ def _assemble_csv_header_row(products: list[Product]) -> CsvRow:
 
 
 def _assemble_csv_data_rows(
-    products: list[Product], order_summaries: list[OrderSummary]
+    order_summaries: list[OrderSummary],
 ) -> list[CsvRow]:
     return [
         tuple(_assemble_data_row(order_summary))
