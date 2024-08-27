@@ -18,6 +18,7 @@ from byceps.services.email import (
     email_footer_service,
     email_service,
 )
+from byceps.services.party import party_setting_service
 from byceps.services.shop.cancellation_request import (
     cancellation_request_service,
 )
@@ -127,6 +128,7 @@ def view(order_id):
         'stripe_enabled': stripe_enabled,
         'stripe_publishable_key': stripe_publishable_key,
         'render_order_payment_method': _find_order_payment_method_label,
+        'cancellation_requesting_enabled': _is_cancellation_requesting_enabled(),
         'cancellation_request': cancellation_request,
     }
 
@@ -140,6 +142,14 @@ def view(order_id):
 
 def _find_order_payment_method_label(payment_method):
     return order_service.find_payment_method_label(payment_method)
+
+
+def _is_cancellation_requesting_enabled() -> bool:
+    cancellation_permitted = party_setting_service.find_setting_value(
+        g.party.id, 'order_cancellation_requesting_enabled'
+    )
+
+    return cancellation_permitted == 'true'
 
 
 def _get_payment_instructions(order) -> str | None:
@@ -242,6 +252,9 @@ def cancel(order_id):
 @templated
 def request_cancellation_choices(order_id):
     """Show choices to request cancellation of an order."""
+    if not _is_cancellation_requesting_enabled():
+        abort(403)
+
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
@@ -269,6 +282,9 @@ def request_cancellation_choices(order_id):
 @templated
 def donate_everything_form(order_id, erroneous_form=None):
     """Show form to donate the full amount of an order."""
+    if not _is_cancellation_requesting_enabled():
+        abort(403)
+
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
@@ -295,6 +311,9 @@ def donate_everything_form(order_id, erroneous_form=None):
 @login_required
 def donate_everything(order_id):
     """Donate the full amount of an order, then cancel the order."""
+    if not _is_cancellation_requesting_enabled():
+        abort(403)
+
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
@@ -358,6 +377,9 @@ def donate_everything(order_id):
 @templated
 def request_partial_refund_form(order_id, erroneous_form=None):
     """Show form to request a partial refund of an order."""
+    if not _is_cancellation_requesting_enabled():
+        abort(403)
+
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
@@ -387,6 +409,9 @@ def request_partial_refund_form(order_id, erroneous_form=None):
 @login_required
 def request_partial_refund(order_id):
     """Request a partial refund of an order."""
+    if not _is_cancellation_requesting_enabled():
+        abort(403)
+
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
@@ -435,6 +460,9 @@ def request_partial_refund(order_id):
 @templated
 def request_full_refund_form(order_id, erroneous_form=None):
     """Show form to request a full refund of an order."""
+    if not _is_cancellation_requesting_enabled():
+        abort(403)
+
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
@@ -464,6 +492,9 @@ def request_full_refund_form(order_id, erroneous_form=None):
 @login_required
 def request_full_refund(order_id):
     """Request a full refund of an order."""
+    if not _is_cancellation_requesting_enabled():
+        abort(403)
+
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:

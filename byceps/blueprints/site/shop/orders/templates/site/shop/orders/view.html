@@ -131,7 +131,7 @@
   <h2>{{ _('Products') }}</h2>
 {% include 'site/shop/orders/_products.html' %}
 
-  {%- if order.is_paid and not cancellation_request %}
+  {%- if order.is_paid and cancellation_requesting_enabled and not cancellation_request %}
   <h2>{{ _('Cancellation') }}</h2>
   <div><a class="button" href="{{ url_for('.request_cancellation_choices', order_id=order.id) }}"><span>{{ _('Return tickets') }}</span> {{ render_icon('chevron-right') }}</a></div>
   {%- endif %}
