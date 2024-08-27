@@ -65,6 +65,7 @@ class DbProduct(db.Model):
     not_directly_orderable: Mapped[bool] = mapped_column(default=False)
     separate_order_required: Mapped[bool] = mapped_column(default=False)
     processing_required: Mapped[bool]
+    archived: Mapped[bool]
 
     def __init__(
         self,
@@ -83,6 +84,7 @@ class DbProduct(db.Model):
         available_until: datetime | None = None,
         not_directly_orderable: bool = False,
         separate_order_required: bool = False,
+        archived: bool = False,
     ) -> None:
         self.shop_id = shop_id
         self.item_number = item_number
@@ -100,6 +102,7 @@ class DbProduct(db.Model):
         self.not_directly_orderable = not_directly_orderable
         self.separate_order_required = separate_order_required
         self.processing_required = processing_required
+        self.archived = archived
 
     @hybrid_property
     def type_(self) -> ProductType:

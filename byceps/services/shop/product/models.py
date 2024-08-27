@@ -80,6 +80,7 @@ class Product:
     not_directly_orderable: bool
     separate_order_required: bool
     processing_required: bool
+    archived: bool
 
 
 @dataclass(frozen=True)

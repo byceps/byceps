@@ -170,6 +170,7 @@ def make_product():
             not_directly_orderable=False,
             separate_order_required=False,
             processing_required=False,
+            archived=False,
         )
 
     return _wrapper

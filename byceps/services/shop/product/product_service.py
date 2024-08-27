@@ -174,6 +174,7 @@ def update_product(
     max_quantity_per_order: int,
     not_directly_orderable: bool,
     separate_order_required: bool,
+    archived: bool,
 ) -> Product:
     """Update the product."""
     db_product = _get_db_product(product_id)
@@ -188,6 +189,7 @@ def update_product(
     db_product.max_quantity_per_order = max_quantity_per_order
     db_product.not_directly_orderable = not_directly_orderable
     db_product.separate_order_required = separate_order_required
+    db_product.archived = archived
 
     db.session.commit()
 
@@ -656,6 +658,7 @@ def _db_entity_to_product(db_product: DbProduct) -> Product:
         not_directly_orderable=db_product.not_directly_orderable,
         separate_order_required=db_product.separate_order_required,
         processing_required=db_product.processing_required,
+        archived=db_product.archived,
     )
 
 

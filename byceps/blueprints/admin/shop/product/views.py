@@ -567,6 +567,7 @@ def update(product_id):
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
     separate_order_required = form.separate_order_required.data
+    archived = form.archived.data
 
     product = product_service.update_product(
         product.id,
@@ -579,6 +580,7 @@ def update(product_id):
         max_quantity_per_order,
         not_directly_orderable,
         separate_order_required,
+        archived,
     )
 
     flash_success(

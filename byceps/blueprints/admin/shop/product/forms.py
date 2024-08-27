@@ -74,6 +74,7 @@ class _ProductBaseForm(LocalizedForm):
     separate_order_required = BooleanField(
         lazy_gettext('must be ordered separately')
     )
+    archived = BooleanField(lazy_gettext('archived'))
 
     @staticmethod
     def validate_available_from_date(form, field):

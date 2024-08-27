@@ -40,6 +40,7 @@
       {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5.5rem;') }}
       {{ form_field_check(form.not_directly_orderable) }}
       {{ form_field_check(form.separate_order_required) }}
+      {{ form_field_check(form.archived) }}
     </div>
 
     {{ form_buttons(_('Save')) }}

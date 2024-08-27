@@ -28,7 +28,12 @@
 
   <div class="row row--space-between block">
     <div>
-      <h1 class="title">{{ _('Product') }}</h1>
+      <h1 class="title">
+        {%- if product.archived %}
+        {{ render_tag(_('archived'), icon='archived', class='color-disabled') }}
+        {%- endif %}
+        {{ _('Product') }}
+      </h1>
     </div>
     <div>
       <div class="button-row is-right-aligned">

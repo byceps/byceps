@@ -2,7 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/product.html' import render_product_link %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_progress_bar %}
+{% from 'macros/misc.html' import render_progress_bar, render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set page_title = _('Products') %}
 
@@ -76,6 +76,10 @@
         </td>
         <td>
           {{ product.name }}
+
+          {%- if product.archived %}
+          {{ render_tag(_('archived'), icon='archived', class='color-disabled') }}
+          {%- endif %}
 
           {%- if product.not_directly_orderable %}
           <br>{{ render_icon('info') }} {{ _('can only be ordered indirectly')|dim }}
