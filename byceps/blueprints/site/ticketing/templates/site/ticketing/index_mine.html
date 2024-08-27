@@ -10,6 +10,8 @@
 
   <h1 class="title">{{ render_icon('ticket') }} {{ page_title }}</h1>
 
+{{ render_snippet('ticketing_intro', ignore_if_unknown=True)|safe }}
+
   {%- if not current_user_uses_any_ticket %}
 {{ render_notification(_('You currently do not use a ticket.'), category='warning', icon='warning') }}
   {%- endif %}
