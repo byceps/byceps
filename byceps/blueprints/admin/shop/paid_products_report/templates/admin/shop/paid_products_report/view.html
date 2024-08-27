@@ -1,0 +1,44 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/user.html' import render_user_microcard %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'paid_products_report_admin' %}
+{% set current_page_party = party %}
+{% set page_title = _('Paid Products Report') %}
+
+{% block body %}
+
+<div class="block row row--space-between">
+  <div>
+    <h1 class="title">{{ page_title }}</h1>
+  </div>
+  <div>
+    <div class="button-row is-right-aligned">
+      <a class="button" href="{{ url_for('.export_as_csv', party_id=party.id, product_number1=product_number1, product_number2=product_number2, product_number3=product_number3, product_number4=product_number4) }}">{{ render_icon('download') }} <span>{{ _('Export') }} (CSV)</span></a>
+    </div>
+  </div>
+</div>
+
+<table class="itemlist is-vcentered is-wide">
+  <thead>
+    <tr>
+      <th>{{ _('Order number') }}</th>
+      <th>{{ _('Buyer') }}</th>
+      {%- for product in report.products %}
+      <th class="centered">{{ product.name }}</th>
+      {%- endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {%- for order_summary in report.order_summaries %}
+    <tr>
+      <td><a href="{{ url_for('shop_order_admin.view', order_id=order_summary.order_id) }}">{{ order_summary.order_number }}</a></td>
+      <td>{{ render_user_microcard(order_summary.orderer, full_name=order_summary.orderer.detail.full_name) }}</td>
+      {%- for product_quantity in order_summary.product_quantities %}
+      <td class="centered bignumber">{{ product_quantity.quantity }}</td>
+      {%- endfor %}
+    </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+
+{%- endblock %}

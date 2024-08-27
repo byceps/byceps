@@ -786,6 +786,7 @@ msgstr "Kennung"
 #: byceps/blueprints/site/user/creation/forms.py:41
 #: byceps/blueprints/site/user/email_address/forms.py:17
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:32
+#: byceps/services/shop/order/paid_products_report_service.py:143
 msgid "Username"
 msgstr "Benutzername"
 
@@ -799,8 +800,8 @@ msgstr "Anmerkung"
 #: byceps/blueprints/admin/gallery/forms.py:33
 #: byceps/blueprints/admin/news/forms.py:121
 #: byceps/blueprints/admin/news/forms.py:142
-#: byceps/blueprints/admin/shop/product/forms.py:178
-#: byceps/blueprints/admin/shop/product/forms.py:219
+#: byceps/blueprints/admin/shop/product/forms.py:179
+#: byceps/blueprints/admin/shop/product/forms.py:220
 #: byceps/blueprints/admin/site/forms.py:89
 #: byceps/blueprints/admin/site/forms.py:100
 #: byceps/blueprints/admin/site/forms.py:111
@@ -834,6 +835,9 @@ msgid "Identity Tags"
 msgstr "Benutzerkennzeichen"
 
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/create_form.html:25
+#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:16
+#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:19
+#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:22
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/item_create_form.html:20
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/item_create_form.html:23
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/item_create_form.html:24
@@ -1021,11 +1025,11 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/page/forms.py:82
 #: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:163
 #: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:166
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:52
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:55
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:80
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:127
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:156
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:179
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:161
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:184
 #: byceps/blueprints/admin/shop/storefront/templates/macros/admin/shop/storefront.html:10
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:68
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_user_list.html:26
@@ -1355,7 +1359,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:66
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:16
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:32
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:36
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:41
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:15
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:20
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:96
@@ -1426,8 +1430,8 @@ msgid "Edit category"
 msgstr "Kategorie bearbeiten"
 
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:9
-#: byceps/blueprints/admin/shop/product/forms.py:262
-#: byceps/blueprints/admin/shop/product/forms.py:269
+#: byceps/blueprints/admin/shop/product/forms.py:263
+#: byceps/blueprints/admin/shop/product/forms.py:270
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:12
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:21
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:29
@@ -1458,7 +1462,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/page/templates/admin/page/update_form.html:24
 #: byceps/blueprints/admin/party/templates/admin/party/update_form.html:37
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_update_form.html:33
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/update_form.html:45
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/update_form.html:46
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/update_form.html:21
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/item_update_form.html:26
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_update_form.html:21
@@ -1505,6 +1509,10 @@ msgstr "Bild-Dateiname"
 #: byceps/blueprints/admin/party/forms.py:60
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:23
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:33
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:40
+#: byceps/blueprints/admin/shop/product/forms.py:77
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:81
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:33
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:31
 #: byceps/blueprints/admin/site/forms.py:118
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:20
@@ -1583,6 +1591,7 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/site/seating/templates/site/seating/index.html:28
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:11
 #: byceps/blueprints/site/user_group/templates/site/user_group/index.html:26
+#: byceps/services/shop/order/paid_products_report_service.py:144
 msgid "Name"
 msgstr "Name"
 
@@ -1763,7 +1772,7 @@ msgstr "Marke"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav.html:28
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:4
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:46
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:83
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:88
 #: byceps/blueprints/admin/site/forms.py:31
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:65
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:67
@@ -2126,7 +2135,7 @@ msgstr "Datum"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:20
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:40
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:93
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:97
 #: byceps/blueprints/admin/shop/product/templates/macros/admin/shop/product.html:13
 msgid "until"
 msgstr "bis"
@@ -2172,7 +2181,7 @@ msgstr "Tickets verkauft"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:53
 #: byceps/blueprints/admin/dashboard/templates/macros/admin/dashboard.html:56
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:90
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:118
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:123
 msgid "sold out"
 msgstr "ausverkauft"
 
@@ -2182,7 +2191,7 @@ msgstr "ausverkauft"
 #: byceps/blueprints/admin/dashboard/templates/macros/admin/dashboard.html:52
 #: byceps/blueprints/admin/dashboard/templates/macros/admin/dashboard.html:66
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:83
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:122
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:127
 msgid "of"
 msgstr "von"
 
@@ -2468,6 +2477,7 @@ msgstr "Adressen"
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:29
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:36
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:38
+#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/view.html:16
 msgid "Export"
 msgstr "Exportieren"
 
@@ -2668,10 +2678,12 @@ msgid "Language"
 msgstr "Sprache"
 
 #: byceps/blueprints/admin/language/templates/admin/language/index.html:34
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:88
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:97
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:93
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:102
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:23
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:41
+#: byceps/services/shop/order/paid_products_report_service.py:162
+#: byceps/services/shop/order/paid_products_report_service.py:163
 msgid "unknown"
 msgstr "unbekannt"
 
@@ -2789,13 +2801,19 @@ msgid "Organizer Presence"
 msgstr "Orga-Anwesenheit"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:18
+#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:5
+#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/view.html:6
+msgid "Paid Products Report"
+msgstr "Bericht über bezahlte Produkte"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:19
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:7
 #: byceps/blueprints/site/timetable/templates/site/timetable/index.html:3
 #: byceps/services/site_navigation/models.py:114
 msgid "Timetable"
 msgstr "Zeitplan"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:19
+#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:20
 msgid "Tournaments"
 msgstr "Turniere"
 
@@ -3789,6 +3807,38 @@ msgstr "Seite löschen?"
 msgid "Error"
 msgstr "Fehler"
 
+#: byceps/blueprints/admin/paid_products_report/forms.py:18
+#: byceps/blueprints/admin/paid_products_report/forms.py:20
+#: byceps/blueprints/admin/paid_products_report/forms.py:21
+#: byceps/blueprints/admin/paid_products_report/forms.py:22
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:50
+#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:13
+msgid "Product number"
+msgstr "Produktnummer"
+
+#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:27
+msgid "Generate"
+msgstr "Erzeugen"
+
+#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/view.html:24
+#: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:110
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:26
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_orders.html:27
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_purchases.html:27
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:12
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_orders.html:10
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:20
+#: byceps/services/shop/order/paid_products_report_service.py:142
+msgid "Order number"
+msgstr "Bestellnummer"
+
+#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/view.html:25
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:43
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:90
+msgid "Buyer"
+msgstr "Käufer/in"
+
 #: byceps/blueprints/admin/party/forms.py:29
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:69
 msgid "Maximum number of tickets"
@@ -3923,7 +3973,7 @@ msgstr "belegt"
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:31
 #: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:52
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:63
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:118
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:123
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:28
 #: byceps/blueprints/site/seating/templates/site/seating/index.html:31
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:126
@@ -3988,9 +4038,9 @@ msgid "Seat Groups"
 msgstr "Sitzplatz-Gruppen"
 
 #: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:19
-#: byceps/blueprints/admin/shop/product/forms.py:186
-#: byceps/blueprints/admin/shop/product/forms.py:195
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:92
+#: byceps/blueprints/admin/shop/product/forms.py:187
+#: byceps/blueprints/admin/shop/product/forms.py:196
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:97
 msgid "Ticket category"
 msgstr "Ticket-Kategorie"
 
@@ -4027,17 +4077,6 @@ msgstr "Gruppen"
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:20
 msgid "accepted"
 msgstr "akzeptiert"
-
-#: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:110
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:26
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_orders.html:27
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_purchases.html:27
-#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:12
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_orders.html:10
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:20
-msgid "Order number"
-msgstr "Bestellnummer"
 
 #: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:116
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:11
@@ -4088,7 +4127,7 @@ msgid "Payment type"
 msgstr "Zahlungsart"
 
 #: byceps/blueprints/admin/shop/order/forms.py:57
-#: byceps/blueprints/admin/shop/product/forms.py:248
+#: byceps/blueprints/admin/shop/product/forms.py:249
 msgid "Static prefix"
 msgstr "Statisches Präfix"
 
@@ -4202,14 +4241,14 @@ msgstr "versendet"
 msgid "shipping required"
 msgstr "Versand erforderlich"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:42
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:45
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:23
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/mark_as_paid_form.html:4
 msgid "Mark order as paid"
 msgstr "Als bezahlt markieren"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:5
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:188
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:193
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:42
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:6
 #: byceps/blueprints/site/board/templates/site/board/_posting_view_actions.html:13
@@ -4411,7 +4450,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:7
-#: byceps/blueprints/admin/shop/product/forms.py:230
+#: byceps/blueprints/admin/shop/product/forms.py:231
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:63
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_orders.html:30
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_purchases.html:29
@@ -4429,7 +4468,7 @@ msgstr "Artikelnummer"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:9
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:60
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:45
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:50
 #: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:14
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_products.html:8
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_products.html:25
@@ -4446,7 +4485,7 @@ msgstr "Verarbeitung"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:11
 #: byceps/blueprints/admin/shop/product/forms.py:42
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:62
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:60
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:65
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_products.html:10
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_products.html:27
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_products.html:6
@@ -4550,7 +4589,7 @@ msgid "complete"
 msgstr "abgeschlossen"
 
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:26
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:120
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:125
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:7
 msgid "paid"
 msgstr "bezahlt"
@@ -4583,7 +4622,7 @@ msgstr "auf Versand wartend"
 
 #: byceps/blueprints/admin/shop/product/forms.py:45
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:62
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:54
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:59
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_products.html:9
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_products.html:26
 msgid "Tax rate"
@@ -4610,53 +4649,53 @@ msgid "Total quantity"
 msgstr "Gesamtmenge"
 
 #: byceps/blueprints/admin/shop/product/forms.py:68
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:132
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:137
 msgid "Maximum quantity per order"
 msgstr "Maximale Anzahl pro Bestellung"
 
 #: byceps/blueprints/admin/shop/product/forms.py:72
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:81
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:85
 msgid "can only be ordered indirectly"
 msgstr "nur indirekt bestellbar"
 
 #: byceps/blueprints/admin/shop/product/forms.py:75
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:85
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:89
 msgid "must be ordered separately"
 msgstr "muss separat bestellt werden"
 
-#: byceps/blueprints/admin/shop/product/forms.py:134
+#: byceps/blueprints/admin/shop/product/forms.py:135
 msgid "Either date and time must be specified or neither of them."
 msgstr "Entweder Datum und Uhrzeit müssen angegeben werden oder keines von beiden."
 
-#: byceps/blueprints/admin/shop/product/forms.py:150
+#: byceps/blueprints/admin/shop/product/forms.py:151
 msgid "The end of the availability period must be after its begin."
 msgstr "Das Ende des Verfügbarkeitszeitraums muss nach dessen Beginn liegen."
 
-#: byceps/blueprints/admin/shop/product/forms.py:162
+#: byceps/blueprints/admin/shop/product/forms.py:163
 msgid "Product number sequence"
 msgstr "Produktnummer-Sequenz"
 
-#: byceps/blueprints/admin/shop/product/forms.py:169
+#: byceps/blueprints/admin/shop/product/forms.py:170
 #: byceps/blueprints/admin/shop/storefront/forms.py:33
 msgctxt "sequence"
 msgid "none"
 msgstr "keine"
 
-#: byceps/blueprints/admin/shop/product/forms.py:198
-#: byceps/blueprints/admin/shop/product/forms.py:271
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:103
+#: byceps/blueprints/admin/shop/product/forms.py:199
+#: byceps/blueprints/admin/shop/product/forms.py:272
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:108
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:34
 msgid "Ticket quantity"
 msgstr "Ticketanzahl"
 
-#: byceps/blueprints/admin/shop/product/forms.py:227
+#: byceps/blueprints/admin/shop/product/forms.py:228
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:8
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:31
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:35
 #: byceps/blueprints/admin/shop/product/templates/layout/admin/shop/product.html:36
 msgid "Product"
 msgstr "Produkt"
 
-#: byceps/blueprints/admin/shop/product/forms.py:253
+#: byceps/blueprints/admin/shop/product/forms.py:254
 #: byceps/blueprints/admin/user_badge/forms.py:56
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:7
 msgid "Badge"
@@ -4676,12 +4715,12 @@ msgstr "Es wurde keine gültige Produktnummer-Sequenz angegeben."
 msgid "Product \"%(item_number)s\" has been created."
 msgstr "Das Produkt \"%(item_number)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/product/views.py:585
+#: byceps/blueprints/admin/shop/product/views.py:587
 #, python-format
 msgid "Product \"%(name)s\" has been updated."
 msgstr "Das Produkt \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/product/views.py:643
+#: byceps/blueprints/admin/shop/product/views.py:645
 #, python-format
 msgid ""
 "Product \"%(product_to_attach_item_number)s\" has been attached "
@@ -4690,7 +4729,7 @@ msgstr ""
 "Das Produkt \"%(product_to_attach_item_number)s\" wurde %(quantity)s mal "
 "an das Produkt \"%(product_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/product/views.py:669
+#: byceps/blueprints/admin/shop/product/views.py:671
 #, python-format
 msgid ""
 "Product \"%(product_number)s\" is no longer attached to product "
@@ -4699,17 +4738,17 @@ msgstr ""
 "Das Produkt \"%(product_number)s\" ist nun nicht mehr an Produkt "
 "\"%(attached_to_product_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/product/views.py:725
-#: byceps/blueprints/admin/shop/product/views.py:777
-#: byceps/blueprints/admin/shop/product/views.py:833
+#: byceps/blueprints/admin/shop/product/views.py:727
+#: byceps/blueprints/admin/shop/product/views.py:779
+#: byceps/blueprints/admin/shop/product/views.py:835
 msgid "Action has been added."
 msgstr "Die Aktion wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/product/views.py:850
+#: byceps/blueprints/admin/shop/product/views.py:852
 msgid "Action has been removed."
 msgstr "Die Aktion wurde entfernt."
 
-#: byceps/blueprints/admin/shop/product/views.py:894
+#: byceps/blueprints/admin/shop/product/views.py:896
 #, python-format
 msgid ""
 "Product number sequence could not be created. Is prefix \"%(prefix)s\" "
@@ -4718,7 +4757,7 @@ msgstr ""
 "Die Produktnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/product/views.py:903
+#: byceps/blueprints/admin/shop/product/views.py:905
 #, python-format
 msgid "Product number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Produktnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -4744,7 +4783,7 @@ msgstr "Produktnummer-Sequenz erstellen"
 
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/_create_form_base.html:23
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:61
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:72
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:77
 msgid "Type"
 msgstr "Typ"
 
@@ -4759,20 +4798,15 @@ msgstr "Neue Sequenz erstellen"
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/action_create_form_for_ticket_bundles_creation.html:21
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/action_create_form_for_tickets_creation.html:5
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/action_create_form_for_tickets_creation.html:20
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:194
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:199
 msgid "Add action"
 msgstr "Aktion hinzufügen"
 
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/attachment_create_form.html:5
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/attachment_create_form.html:21
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:166
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:171
 msgid "Attach product"
 msgstr "Produkt anhängen"
-
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:50
-#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:13
-msgid "Product number"
-msgstr "Produktnummer"
 
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:50
 msgctxt "product"
@@ -4780,16 +4814,16 @@ msgid "name"
 msgstr "Bezeichnung"
 
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:65
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:110
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:115
 msgid "Availability"
 msgstr "Verfügbarkeit"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:89
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:93
 #: byceps/blueprints/admin/shop/product/templates/macros/admin/shop/product.html:11
 msgid "from"
 msgstr "von"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:116
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:120
 msgid "No products exist."
 msgstr "Es sind keine Produkte vorhanden."
 
@@ -4797,21 +4831,21 @@ msgstr "Es sind keine Produkte vorhanden."
 msgid "Edit product"
 msgstr "Produkt bearbeiten"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:119
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:124
 msgid "ordered"
 msgstr "bestellt"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:126
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:131
 msgid "Period"
 msgstr "Zeitraum"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:135
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:140
 msgid "Can only be ordered indirectly"
 msgstr "Nur indirekt bestellbar"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:136
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:139
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:142
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:141
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:144
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:147
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:60
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:58
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:71
@@ -4821,9 +4855,9 @@ msgstr "Nur indirekt bestellbar"
 msgid "yes"
 msgstr "ja"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:136
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:139
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:142
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:141
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:144
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:147
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:60
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:60
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:72
@@ -4833,45 +4867,45 @@ msgstr "ja"
 msgid "no"
 msgstr "nein"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:138
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:143
 msgid "Must be ordered separately"
 msgstr "Muss separat bestellt werden"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:141
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:146
 msgid "Shipping required"
 msgstr "Versand erforderlich"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:147
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:152
 msgid "Attached to products"
 msgstr "An Produkte angehängt"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:152
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:157
 msgid "pieces"
 msgstr "Stück"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:162
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:167
 msgid "Attached products"
 msgstr "Angehängte Produkte"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:175
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:180
 msgid "Remove attached product"
 msgstr "Angehängtes Produkt entfernen?"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:196
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:201
 #: byceps/blueprints/admin/user/templates/admin/user/_view_badges.html:15
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:28
 msgid "Award badge"
 msgstr "Abzeichen verleihen"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:198
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:203
 msgid "Create tickets"
 msgstr "Tickets erstellen"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:199
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:204
 msgid "Create ticket bundles"
 msgstr "Ticketpakete erstellen"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:208
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:213
 msgid ""
 "An action will be executed if an order contains a product that has an "
 "action assigned and the order state is changed to one of the states "
@@ -4881,32 +4915,32 @@ msgstr ""
 "verknüpftes Produkt enthält und der Bestellstatus auf einen der für das "
 "Produkt aufgeführten Zustände geändert wird."
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:214
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:219
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:41
 msgid "Payment state"
 msgstr "Bezahlstatus"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:215
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:220
 msgid "Procedure"
 msgstr "Prozedur"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:215
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:220
 msgid "Parameters"
 msgstr "Parameter"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:227
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:232
 msgid "Remove action"
 msgstr "Aktion entfernen"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:237
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:242
 msgid "No actions are assigned for this product."
 msgstr "Für dieses Produkt sind keine Aktionen definiert."
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:246
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:251
 msgid "Remove attached product?"
 msgstr "Angehängtes Produkt entfernen?"
 
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:247
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:252
 msgid "Remove action?"
 msgstr "Aktion entfernen?"
 
@@ -6171,11 +6205,6 @@ msgstr "nicht abonniert"
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:4
 msgid "Personal Data"
 msgstr "Persönliche Daten"
-
-#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:43
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:90
-msgid "Buyer"
-msgstr "Käufer/in"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:44
 msgid "manages seat"

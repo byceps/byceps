@@ -1,0 +1,30 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set current_page = 'paid_products_report_admin' %}
+{% set current_page_party = party %}
+{% set page_title = _('Paid Products Report') %}
+
+{% block body %}
+
+<form action="{{ url_for('.view', party_id=party.id) }}" method="get">
+  <div class="box">
+    <div class="row row--space-between row--wrap">
+      <div class="column--grow">
+        {{ form_field(form.product_number1, autofocus='autofocus') }}
+      </div>
+      <div class="column--grow">
+        {{ form_field(form.product_number2, caption=_('optional')) }}
+      </div>
+      <div class="column--grow">
+        {{ form_field(form.product_number3, caption=_('optional')) }}
+      </div>
+      <div class="column--grow">
+        {{ form_field(form.product_number4, caption=_('optional')) }}
+      </div>
+    </div>
+  </div>
+
+  {{ form_buttons(_('Generate')) }}
+</form>
+
+{%- endblock %}
