@@ -1125,6 +1125,10 @@ a.user-badge:hover {
   background-color: var(--color-info);
 }
 
+.progress-bar.color-light {
+  background-color: #dddddd;
+}
+
 .tag.color-info--light {
   background-color: var(--color-info-light);
 }
