@@ -129,30 +129,28 @@ def get_product_quantity(product_number: ProductNumber, order: Order) -> int:
 
 
 def export_paid_products_report_as_csv(report: PaidProductsReport) -> str:
-    header_row = _assemble_csv_header_row(report.products)
-    data_rows = _assemble_csv_data_rows(report.order_summaries)
+    header_row = _assemble_csv_header_row(report)
+    data_rows = _assemble_csv_data_rows(report)
     all_rows = [header_row] + data_rows
 
     lines = serialize_tuples_to_csv(all_rows)
     return ''.join(lines)
 
 
-def _assemble_csv_header_row(products: list[Product]) -> CsvRow:
+def _assemble_csv_header_row(report: PaidProductsReport) -> CsvRow:
     fixed_column_names = (
         lazy_gettext('Order number'),
         lazy_gettext('Username'),
         lazy_gettext('Name'),
     )
-    product_names = tuple(product.name for product in products)
+    product_names = tuple(product.name for product in report.products)
     return fixed_column_names + product_names
 
 
-def _assemble_csv_data_rows(
-    order_summaries: list[OrderSummary],
-) -> list[CsvRow]:
+def _assemble_csv_data_rows(report: PaidProductsReport) -> list[CsvRow]:
     return [
         tuple(_assemble_data_row(order_summary))
-        for order_summary in order_summaries
+        for order_summary in report.order_summaries
     ]
 
 
