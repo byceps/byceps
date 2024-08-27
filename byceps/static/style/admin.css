@@ -517,8 +517,18 @@ h1 .tag {
   vertical-align: 0.4rem;
 }
 
-h1 .tag .icon {
+h2 .tag {
+  font-size: 0.625rem !important; /* 10px / 16px */
+  padding: 0.3rem 0.4rem;
+  vertical-align: 0.2rem;
+}
+
+:is(h1, h2) .tag .icon {
   margin-right: 0.125rem;
+}
+
+:is(h1, h2) .tag.icon-only .icon {
+  margin-left: 0.125rem;
 }
 
 
