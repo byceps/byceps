@@ -51,8 +51,7 @@ def create_bundle(
     db_bundle = DbTicketBundle(
         bundle_id,
         created_at,
-        category.party_id,
-        category.id,
+        category,
         ticket_quantity,
         owner.id,
         label=label,

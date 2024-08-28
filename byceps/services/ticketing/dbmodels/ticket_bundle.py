@@ -14,6 +14,7 @@ from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
+    TicketCategory,
     TicketCategoryID,
 )
 from byceps.services.user.dbmodels.user import DbUser
@@ -67,8 +68,7 @@ class DbTicketBundle(db.Model):
         self,
         bundle_id: TicketBundleID,
         created_at: datetime,
-        party_id: PartyID,
-        ticket_category_id: TicketCategoryID,
+        ticket_category: TicketCategory,
         ticket_quantity: int,
         owned_by_id: UserID,
         *,
@@ -77,8 +77,8 @@ class DbTicketBundle(db.Model):
     ) -> None:
         self.id = bundle_id
         self.created_at = created_at
-        self.party_id = party_id
-        self.ticket_category_id = ticket_category_id
+        self.party_id = ticket_category.party_id
+        self.ticket_category_id = ticket_category.id
         self.ticket_quantity = ticket_quantity
         self.owned_by_id = owned_by_id
         self.label = label
