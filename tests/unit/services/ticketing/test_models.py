@@ -126,8 +126,15 @@ def create_ticket(
     code = 'BRTZN'
     category_id = None
 
-    ticket = DbTicket(ticket_id, created_at, party_id, code, category_id, owned_by_id)
-    ticket.bundle_id = bundle_id
+    ticket = DbTicket(
+        ticket_id,
+        created_at,
+        party_id,
+        code,
+        category_id,
+        owned_by_id,
+        bundle_id=bundle_id,
+    )
     ticket.seat_managed_by_id = seat_managed_by_id
     ticket.user_managed_by_id = user_managed_by_id
 

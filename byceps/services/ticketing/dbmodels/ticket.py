@@ -108,7 +108,7 @@ class DbTicket(db.Model):
         category_id: TicketCategoryID,
         owned_by_id: UserID,
         *,
-        bundle: DbTicketBundle | None = None,
+        bundle_id: TicketBundleID | None = None,
         order_number: OrderNumber | None = None,
         used_by_id: UserID | None = None,
         revoked: bool = False,
@@ -118,7 +118,7 @@ class DbTicket(db.Model):
         self.created_at = created_at
         self.party_id = party_id
         self.code = code
-        self.bundle = bundle
+        self.bundle_id = bundle_id
         self.category_id = category_id
         self.owned_by_id = owned_by_id
         self.order_number = order_number

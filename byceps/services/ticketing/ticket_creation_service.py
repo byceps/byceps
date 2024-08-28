@@ -127,7 +127,7 @@ def build_tickets(
             code,
             category_id,
             owner.id,
-            bundle=bundle,
+            bundle_id=bundle.id,
             order_number=order_number,
             used_by_id=user.id if user else None,
         )
