@@ -60,8 +60,7 @@ def create_bundle(
 
     db_tickets = list(
         build_tickets(
-            category.party_id,
-            category.id,
+            category,
             owner,
             ticket_quantity,
             bundle_id=bundle_id,

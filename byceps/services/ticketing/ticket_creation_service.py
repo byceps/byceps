@@ -13,7 +13,6 @@ from sqlalchemy.exc import IntegrityError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
 from byceps.database import db
-from byceps.services.party.models import PartyID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user.models.user import User
@@ -21,7 +20,7 @@ from byceps.util.uuid import generate_uuid7
 
 from . import ticket_code_service
 from .dbmodels.ticket import DbTicket
-from .models.ticket import TicketBundleID, TicketCategory, TicketCategoryID
+from .models.ticket import TicketBundleID, TicketCategory
 
 
 class TicketCreationFailedError(Exception):
@@ -67,12 +66,7 @@ def create_tickets(
     """Create a number of tickets of the same category for a single owner."""
     db_tickets = list(
         build_tickets(
-            category.party_id,
-            category.id,
-            owner,
-            quantity,
-            order_number=order_number,
-            user=user,
+            category, owner, quantity, order_number=order_number, user=user
         )
     )
 
@@ -88,8 +82,7 @@ def create_tickets(
 
 
 def build_tickets(
-    party_id: PartyID,
-    category_id: TicketCategoryID,
+    category: TicketCategory,
     owner: User,
     quantity: int,
     *,
@@ -115,9 +108,9 @@ def build_tickets(
         yield DbTicket(
             ticket_id,
             created_at,
-            party_id,
+            category.party_id,
             code,
-            category_id,
+            category.id,
             owner.id,
             bundle_id=bundle_id,
             order_number=order_number,
