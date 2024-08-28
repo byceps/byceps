@@ -42,8 +42,7 @@ def create_ticket_bundles(
     bundle_ids = set()
     for _ in range(bundle_quantity):
         bundle = ticket_bundle_service.create_bundle(
-            ticket_category.party_id,
-            ticket_category.id,
+            ticket_category,
             ticket_quantity_per_bundle,
             owner,
             order_number=order_number,

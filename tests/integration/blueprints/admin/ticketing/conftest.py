@@ -50,9 +50,7 @@ def category(party):
 
 @pytest.fixture(scope='package')
 def ticket(category, ticket_owner):
-    ticket = ticket_creation_service.create_ticket(
-        category.party_id, category.id, ticket_owner
-    )
+    ticket = ticket_creation_service.create_ticket(category, ticket_owner)
     ticket_id = ticket.id
 
     yield ticket
@@ -64,7 +62,7 @@ def ticket(category, ticket_owner):
 def bundle(category, ticket_owner):
     quantity = 4
     bundle = ticket_bundle_service.create_bundle(
-        category.party_id, category.id, quantity, ticket_owner
+        category, quantity, ticket_owner
     )
     tickets = bundle.tickets
 

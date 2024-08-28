@@ -22,7 +22,7 @@ from byceps.util.uuid import generate_uuid7
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
-from .models.ticket import TicketBundleID, TicketCategoryID
+from .models.ticket import TicketBundleID, TicketCategory
 from .ticket_creation_service import build_tickets, TicketCreationFailedError
 from .ticket_revocation_service import build_ticket_revoked_log_entry
 
@@ -33,8 +33,7 @@ from .ticket_revocation_service import build_ticket_revoked_log_entry
     stop=stop_after_attempt(5),
 )
 def create_bundle(
-    party_id: PartyID,
-    category_id: TicketCategoryID,
+    category: TicketCategory,
     ticket_quantity: int,
     owner: User,
     *,
@@ -52,8 +51,8 @@ def create_bundle(
     db_bundle = DbTicketBundle(
         bundle_id,
         created_at,
-        party_id,
-        category_id,
+        category.party_id,
+        category.id,
         ticket_quantity,
         owner.id,
         label=label,
@@ -62,8 +61,8 @@ def create_bundle(
 
     db_tickets = list(
         build_tickets(
-            party_id,
-            category_id,
+            category.party_id,
+            category.id,
             owner,
             ticket_quantity,
             bundle_id=bundle_id,
