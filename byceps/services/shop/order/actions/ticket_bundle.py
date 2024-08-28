@@ -15,8 +15,8 @@ from byceps.services.ticketing import (
     ticket_bundle_service,
     ticket_category_service,
 )
-from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from byceps.services.ticketing.models.ticket import (
+    TicketBundle,
     TicketBundleID,
     TicketCategoryID,
 )
@@ -72,15 +72,15 @@ def create_ticket_bundles(
 
 
 def _create_creation_order_log_entry(
-    order_id: OrderID, ticket_bundle: DbTicketBundle
+    order_id: OrderID, ticket_bundle: TicketBundle
 ) -> None:
     event_type = 'ticket-bundle-created'
 
     data = {
         'ticket_bundle_id': str(ticket_bundle.id),
-        'ticket_bundle_category_id': str(ticket_bundle.ticket_category_id),
+        'ticket_bundle_category_id': str(ticket_bundle.ticket_category.id),
         'ticket_bundle_ticket_quantity': ticket_bundle.ticket_quantity,
-        'ticket_bundle_owner_id': str(ticket_bundle.owned_by_id),
+        'ticket_bundle_owner_id': str(ticket_bundle.owned_by.id),
     }
 
     order_log_service.create_db_entry(event_type, order_id, data)

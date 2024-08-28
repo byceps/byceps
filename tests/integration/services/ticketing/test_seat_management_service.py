@@ -188,10 +188,10 @@ def test_occupy_seat_with_invalid_id(admin_app, ticket):
 def test_occupy_seat_with_bundled_ticket(
     admin_app, ticket_bundle, seat1, ticket
 ):
-    bundled_ticket = ticket_bundle.tickets[0]
+    bundled_ticket_id = list(ticket_bundle.ticket_ids)[0]
 
     actual = ticket_seat_management_service.occupy_seat(
-        bundled_ticket.id, seat1.id, ticket.owned_by_id
+        bundled_ticket_id, seat1.id, ticket.owned_by_id
     )
     assert isinstance(
         actual.unwrap_err(), SeatChangeDeniedForBundledTicketError

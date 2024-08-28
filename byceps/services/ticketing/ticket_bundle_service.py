@@ -22,7 +22,7 @@ from byceps.util.uuid import generate_uuid7
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
-from .models.ticket import TicketBundleID, TicketCategory
+from .models.ticket import TicketBundle, TicketBundleID, TicketCategory
 from .ticket_creation_service import build_tickets, TicketCreationFailedError
 from .ticket_revocation_service import build_ticket_revoked_log_entry
 
@@ -40,7 +40,7 @@ def create_bundle(
     label: str | None = None,
     order_number: OrderNumber | None = None,
     user: User | None = None,
-) -> DbTicketBundle:
+) -> TicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
@@ -72,7 +72,23 @@ def create_bundle(
 
     db.session.commit()
 
-    return db_bundle
+    ticket_ids = {db_ticket.id for db_ticket in db_tickets}
+
+    bundle = TicketBundle(
+        id=bundle_id,
+        created_at=created_at,
+        party_id=category.party_id,
+        ticket_category=category,
+        ticket_quantity=ticket_quantity,
+        owned_by=owner,
+        seat_managed_by=None,
+        user_managed_by=None,
+        label=label,
+        revoked=False,
+        ticket_ids=ticket_ids,
+    )
+
+    return bundle
 
 
 def revoke_bundle(

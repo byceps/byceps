@@ -6,11 +6,15 @@ byceps.services.ticketing.models.ticket
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
+from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
 from byceps.services.party.models import PartyID
+from byceps.services.user.models.user import User
 
 
 TicketCategoryID = NewType('TicketCategoryID', UUID)
@@ -30,6 +34,21 @@ TicketID = NewType('TicketID', UUID)
 
 
 TicketBundleID = NewType('TicketBundleID', UUID)
+
+
+@dataclass(frozen=True)
+class TicketBundle:
+    id: TicketBundleID
+    created_at: datetime
+    party_id: PartyID
+    ticket_category: TicketCategory
+    ticket_quantity: int
+    owned_by: User
+    seat_managed_by: User | None
+    user_managed_by: User | None
+    label: str | None
+    revoked: bool
+    ticket_ids: set[TicketID]
 
 
 @dataclass(frozen=True)
