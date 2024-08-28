@@ -86,7 +86,7 @@ def connect_verify():
         timeout=10,
     )
     reponse_token = token_response.json()
-    if not token_response.ok or ('access_token' not in reponse_token):
+    if not token_response.is_success or ('access_token' not in reponse_token):
         return error()
 
     # Get user info.
@@ -96,7 +96,7 @@ def connect_verify():
         API_URL_BASE + '/users/@me', headers=headers, timeout=10
     )
     user_response_data = user_response.json()
-    if not user_response.ok:
+    if not user_response.is_success:
         return error()
 
     discord_id = user_response_data['id']
