@@ -7,6 +7,7 @@ byceps.services.ticketing.ticket_bundle_service
 """
 
 from collections.abc import Sequence
+from datetime import datetime, UTC
 
 from sqlalchemy import delete, select
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
@@ -16,6 +17,7 @@ from byceps.services.party.models import PartyID
 from byceps.services.seating import seat_group_service
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user.models.user import User
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
@@ -44,8 +46,17 @@ def create_bundle(
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
+    bundle_id = TicketBundleID(generate_uuid7())
+    created_at = datetime.now(UTC)
+
     db_bundle = DbTicketBundle(
-        party_id, category_id, ticket_quantity, owner.id, label=label
+        bundle_id,
+        created_at,
+        party_id,
+        category_id,
+        ticket_quantity,
+        owner.id,
+        label=label,
     )
     db.session.add(db_bundle)
 

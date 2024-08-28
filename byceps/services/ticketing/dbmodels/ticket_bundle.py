@@ -19,7 +19,6 @@ from byceps.services.ticketing.models.ticket import (
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 from .category import DbTicketCategory
 
@@ -31,10 +30,8 @@ class DbTicketBundle(db.Model):
 
     __tablename__ = 'ticket_bundles'
 
-    id: Mapped[TicketBundleID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    id: Mapped[TicketBundleID] = mapped_column(db.Uuid, primary_key=True)
+    created_at: Mapped[datetime]
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -64,22 +61,28 @@ class DbTicketBundle(db.Model):
     label: Mapped[str | None] = mapped_column(  # noqa: F821, UP007
         db.UnicodeText
     )
-    revoked: Mapped[bool] = mapped_column(default=False)
+    revoked: Mapped[bool]
 
     def __init__(
         self,
+        bundle_id: TicketBundleID,
+        created_at: datetime,
         party_id: PartyID,
         ticket_category_id: TicketCategoryID,
         ticket_quantity: int,
         owned_by_id: UserID,
         *,
         label: str | None = None,
+        revoked: bool = False,
     ) -> None:
+        self.id = bundle_id
+        self.created_at = created_at
         self.party_id = party_id
         self.ticket_category_id = ticket_category_id
         self.ticket_quantity = ticket_quantity
         self.owned_by_id = owned_by_id
         self.label = label
+        self.revoked = revoked
 
     def __repr__(self) -> str:
         return (
