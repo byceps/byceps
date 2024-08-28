@@ -12,7 +12,6 @@ from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid4
 
 
 class DbTicketCategory(db.Model):
@@ -21,15 +20,16 @@ class DbTicketCategory(db.Model):
     __tablename__ = 'ticket_categories'
     __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
-    id: Mapped[TicketCategoryID] = mapped_column(
-        db.Uuid, default=generate_uuid4, primary_key=True
-    )
+    id: Mapped[TicketCategoryID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
     title: Mapped[str] = mapped_column(db.UnicodeText)
 
-    def __init__(self, party_id: PartyID, title: str) -> None:
+    def __init__(
+        self, category_id: TicketCategoryID, party_id: PartyID, title: str
+    ) -> None:
+        self.id = category_id
         self.party_id = party_id
         self.title = title
 

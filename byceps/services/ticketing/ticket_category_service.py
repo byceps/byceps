@@ -10,6 +10,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
+from byceps.util.uuid import generate_uuid4
 
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
@@ -18,7 +19,9 @@ from .models.ticket import TicketCategory, TicketCategoryID
 
 def create_category(party_id: PartyID, title: str) -> TicketCategory:
     """Create a category."""
-    db_category = DbTicketCategory(party_id, title)
+    category_id = TicketCategoryID(generate_uuid4())
+
+    db_category = DbTicketCategory(category_id, party_id, title)
 
     db.session.add(db_category)
     db.session.commit()
