@@ -145,8 +145,12 @@ def _find_order_payment_method_label(payment_method):
 
 
 def _is_cancellation_requesting_enabled() -> bool:
+    party_id = g.party.id if g.party else None
+    if party_id is None:
+        return False
+
     cancellation_permitted = party_setting_service.find_setting_value(
-        g.party.id, 'order_cancellation_requesting_enabled'
+        party_id, 'order_cancellation_requesting_enabled'
     )
 
     return cancellation_permitted == 'true'
