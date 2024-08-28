@@ -15,6 +15,7 @@ from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from . import ticket_domain_service, ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
@@ -70,10 +71,12 @@ def _persist_check_in(
 ) -> None:
     db_ticket.user_checked_in = True
 
+    check_in_id = generate_uuid7()
+
     initiator_id = event.initiator.id if event.initiator else None
 
     db_check_in = DbTicketCheckIn(
-        event.occurred_at, event.ticket_id, initiator_id
+        check_in_id, event.occurred_at, event.ticket_id, initiator_id
     )
     db.session.add(db_check_in)
 
