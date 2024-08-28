@@ -60,6 +60,11 @@ class UserIdUnknownError(TicketingError):
 
 
 @dataclass(frozen=True)
+class InitiatorNotSpecifiedError(TicketingError):
+    """Indicate that no initiator has been specified for the check-in."""
+
+
+@dataclass(frozen=True)
 class SeatChangeDeniedForBundledTicketError(TicketingError):
     """Indicate that the ticket belongs to a bundle and, thus, must not
     be used to occupy (or release) a single seat.

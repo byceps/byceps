@@ -19,7 +19,11 @@ from byceps.util.uuid import generate_uuid7
 
 from . import ticket_domain_service, ticket_log_service, ticket_service
 from .dbmodels.ticket import DbTicket
-from .errors import TicketingError, UserIdUnknownError
+from .errors import (
+    InitiatorNotSpecifiedError,
+    TicketingError,
+    UserIdUnknownError,
+)
 from .models.checkin import PotentialTicketForCheckIn, TicketCheckIn
 from .models.log import TicketLogEntry
 from .models.ticket import TicketCode, TicketID
@@ -58,7 +62,9 @@ def check_in_user(
 
     check_in, event, log_entry = check_in_result.unwrap()
 
-    _persist_check_in(db_ticket, check_in, event, log_entry)
+    persist_result = _persist_check_in(db_ticket, check_in, event, log_entry)
+    if persist_result.is_err():
+        return Err(persist_result.unwrap_err())
 
     return Ok(event)
 
@@ -68,12 +74,19 @@ def _persist_check_in(
     check_in: TicketCheckIn,
     event: TicketCheckedInEvent,
     log_entry: TicketLogEntry,
-) -> None:
+) -> Result[None, InitiatorNotSpecifiedError]:
     db_ticket.user_checked_in = True
 
     check_in_id = generate_uuid7()
 
-    initiator_id = event.initiator.id if event.initiator else None
+    if not event.initiator:
+        return Err(
+            InitiatorNotSpecifiedError(
+                'No initiator specified in check-in event.'
+            )
+        )
+
+    initiator_id = event.initiator.id
 
     db_check_in = DbTicketCheckIn(
         check_in_id, event.occurred_at, event.ticket_id, initiator_id
@@ -84,6 +97,8 @@ def _persist_check_in(
     db.session.add(db_log_entry)
 
     db.session.commit()
+
+    return Ok(None)
 
 
 def revert_user_check_in(ticket_id: TicketID, initiator: User) -> None:
