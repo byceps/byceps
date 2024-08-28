@@ -108,9 +108,8 @@ def build_tickets(
         yield DbTicket(
             ticket_id,
             created_at,
-            category.party_id,
+            category,
             code,
-            category.id,
             owner.id,
             bundle_id=bundle_id,
             order_number=order_number,

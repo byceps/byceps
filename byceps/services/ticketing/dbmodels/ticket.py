@@ -17,6 +17,7 @@ from byceps.services.seating.models import SeatID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
+    TicketCategory,
     TicketCategoryID,
     TicketCode,
     TicketID,
@@ -103,9 +104,8 @@ class DbTicket(db.Model):
         self,
         ticket_id: TicketID,
         created_at: datetime,
-        party_id: PartyID,
+        category: TicketCategory,
         code: TicketCode,
-        category_id: TicketCategoryID,
         owned_by_id: UserID,
         *,
         bundle_id: TicketBundleID | None = None,
@@ -116,10 +116,10 @@ class DbTicket(db.Model):
     ) -> None:
         self.id = ticket_id
         self.created_at = created_at
-        self.party_id = party_id
+        self.party_id = category.party_id
         self.code = code
         self.bundle_id = bundle_id
-        self.category_id = category_id
+        self.category_id = category.id
         self.owned_by_id = owned_by_id
         self.order_number = order_number
         self.used_by_id = used_by_id

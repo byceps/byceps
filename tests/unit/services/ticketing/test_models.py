@@ -8,8 +8,13 @@ from uuid import UUID
 
 import pytest
 
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.services.ticketing.models.ticket import TicketID
+from byceps.services.ticketing.models.ticket import (
+    TicketCategory,
+    TicketCategoryID,
+    TicketID,
+)
 
 from tests.helpers import generate_uuid
 
@@ -122,18 +127,15 @@ def create_ticket(
 ):
     ticket_id = TicketID(generate_uuid())
     created_at = datetime.now(UTC)
-    party_id = 'megacon-99'
+    category = TicketCategory(
+        id=TicketCategoryID(generate_uuid()),
+        party_id=PartyID('megacon-99'),
+        title='Standard',
+    )
     code = 'BRTZN'
-    category_id = None
 
     ticket = DbTicket(
-        ticket_id,
-        created_at,
-        party_id,
-        code,
-        category_id,
-        owned_by_id,
-        bundle_id=bundle_id,
+        ticket_id, created_at, category, code, owned_by_id, bundle_id=bundle_id
     )
     ticket.seat_managed_by_id = seat_managed_by_id
     ticket.user_managed_by_id = user_managed_by_id
