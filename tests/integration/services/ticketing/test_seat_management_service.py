@@ -15,7 +15,6 @@ from byceps.services.ticketing import (
     ticket_creation_service,
     ticket_log_service,
     ticket_seat_management_service,
-    ticket_service,
 )
 from byceps.services.ticketing.errors import (
     SeatChangeDeniedForBundledTicketError,
@@ -48,19 +47,14 @@ def seat_of_another_category(area, another_category):
 
 @pytest.fixture()
 def ticket(admin_app, category, ticket_owner):
-    ticket = ticket_creation_service.create_ticket(category, ticket_owner)
-    yield ticket
-    ticket_service.delete_ticket(ticket.id)
+    return ticket_creation_service.create_ticket(category, ticket_owner)
 
 
 @pytest.fixture()
-def ticket_bundle(category, ticket_owner):
-    ticket_quantity = 1
-    bundle = ticket_bundle_service.create_bundle(
+def ticket_bundle(category, ticket_owner, *, ticket_quantity=1):
+    return ticket_bundle_service.create_bundle(
         category, ticket_quantity, ticket_owner
     )
-    yield bundle
-    ticket_bundle_service.delete_bundle(bundle.id)
 
 
 def test_appoint_and_withdraw_seat_manager(admin_app, ticket, ticket_manager):

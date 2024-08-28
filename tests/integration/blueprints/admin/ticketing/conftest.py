@@ -9,10 +9,9 @@ from byceps.services.ticketing import (
     ticket_bundle_service,
     ticket_category_service,
     ticket_creation_service,
-    ticket_service,
 )
 
-from tests.helpers import log_in_user
+from tests.helpers import generate_token, log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -41,33 +40,15 @@ def ticket_owner(make_user):
 
 @pytest.fixture(scope='package')
 def category(party):
-    category = ticket_category_service.create_category(party.id, 'Basic')
-
-    yield category
-
-    ticket_category_service.delete_category(category.id)
+    title = generate_token()
+    return ticket_category_service.create_category(party.id, title)
 
 
 @pytest.fixture(scope='package')
 def ticket(category, ticket_owner):
-    ticket = ticket_creation_service.create_ticket(category, ticket_owner)
-    ticket_id = ticket.id
-
-    yield ticket
-
-    ticket_service.delete_ticket(ticket_id)
+    return ticket_creation_service.create_ticket(category, ticket_owner)
 
 
 @pytest.fixture(scope='package')
-def bundle(category, ticket_owner):
-    quantity = 4
-    bundle = ticket_bundle_service.create_bundle(
-        category, quantity, ticket_owner
-    )
-    tickets = bundle.tickets
-
-    yield bundle
-
-    for ticket in tickets:
-        ticket_service.delete_ticket(ticket.id)
-    ticket_bundle_service.delete_bundle(bundle.id)
+def bundle(category, ticket_owner, *, quantity=4):
+    return ticket_bundle_service.create_bundle(category, quantity, ticket_owner)
