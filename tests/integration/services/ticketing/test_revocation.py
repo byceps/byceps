@@ -49,22 +49,15 @@ def tickets(category, ticket_owner):
 
 @pytest.fixture()
 def seat(area, category):
-    seat = seat_service.create_seat(area.id, 0, 0, category.id)
-    yield seat
-    seat_service.delete_seat(seat.id)
+    return seat_service.create_seat(area.id, 0, 0, category.id)
 
 
 @pytest.fixture()
 def seats(tickets, area):
-    seats = [
+    return [
         seat_service.create_seat(area.id, 0, 0, ticket.category_id)
         for ticket in tickets
     ]
-
-    yield seats
-
-    for seat in seats:
-        seat_service.delete_seat(seat.id)
 
 
 def test_revoke_ticket(admin_app, ticket, ticketing_admin):
