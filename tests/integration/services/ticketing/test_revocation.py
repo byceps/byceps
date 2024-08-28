@@ -28,9 +28,7 @@ def area(party):
 
 @pytest.fixture()
 def ticket(category, ticket_owner):
-    ticket = ticket_creation_service.create_ticket(
-        category.party_id, category.id, ticket_owner
-    )
+    ticket = ticket_creation_service.create_ticket(category, ticket_owner)
     yield ticket
     ticket_service.delete_ticket(ticket.id)
 

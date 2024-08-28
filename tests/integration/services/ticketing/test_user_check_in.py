@@ -15,9 +15,7 @@ from byceps.services.ticketing import (
 
 @pytest.fixture()
 def ticket(admin_app, category, ticket_owner):
-    return ticket_creation_service.create_ticket(
-        category.party_id, category.id, ticket_owner
-    )
+    return ticket_creation_service.create_ticket(category, ticket_owner)
 
 
 def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):

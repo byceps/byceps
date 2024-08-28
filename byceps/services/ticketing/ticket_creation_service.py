@@ -21,7 +21,7 @@ from byceps.util.uuid import generate_uuid7
 
 from . import ticket_code_service
 from .dbmodels.ticket import DbTicket
-from .models.ticket import TicketBundleID, TicketCategoryID
+from .models.ticket import TicketBundleID, TicketCategory, TicketCategoryID
 
 
 class TicketCreationFailedError(Exception):
@@ -35,8 +35,7 @@ class TicketCreationFailedWithConflictError(TicketCreationFailedError):
 
 
 def create_ticket(
-    party_id: PartyID,
-    category_id: TicketCategoryID,
+    category: TicketCategory,
     owner: User,
     *,
     order_number: OrderNumber | None = None,
@@ -46,8 +45,8 @@ def create_ticket(
     quantity = 1
 
     db_tickets = create_tickets(
-        party_id,
-        category_id,
+        category.party_id,
+        category.id,
         owner,
         quantity,
         order_number=order_number,

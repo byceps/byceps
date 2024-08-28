@@ -14,9 +14,7 @@ from byceps.services.ticketing import (
 
 
 def test_create_ticket(admin_app, category, ticket_owner):
-    ticket = ticket_creation_service.create_ticket(
-        category.party_id, category.id, ticket_owner
-    )
+    ticket = ticket_creation_service.create_ticket(category, ticket_owner)
 
     assert_created_ticket(ticket, category.id, ticket_owner.id)
 
@@ -28,16 +26,14 @@ def test_create_ticket_with_existing_code(
     generate_ticket_code_mock.return_value = 'TAKEN'
 
     existing_ticket = ticket_creation_service.create_ticket(
-        category.party_id, category.id, ticket_owner
+        category, ticket_owner
     )
     assert existing_ticket.code == 'TAKEN'
 
     with pytest.raises(
         ticket_creation_service.TicketCreationFailedWithConflictError
     ):
-        ticket_creation_service.create_ticket(
-            category.party_id, category.id, ticket_owner
-        )
+        ticket_creation_service.create_ticket(category, ticket_owner)
 
 
 def test_create_tickets(admin_app, category, ticket_owner):
