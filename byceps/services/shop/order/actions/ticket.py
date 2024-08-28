@@ -39,8 +39,7 @@ def create_tickets(
     ticket_category = ticket_category_service.get_category(ticket_category_id)
 
     tickets = ticket_creation_service.create_tickets(
-        ticket_category.party_id,
-        ticket_category_id,
+        ticket_category,
         owner,
         ticket_quantity,
         order_number=order_number,

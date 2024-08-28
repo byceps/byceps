@@ -37,7 +37,7 @@ def ticket(category, ticket_owner):
 def tickets(category, ticket_owner):
     quantity = 3
     tickets = ticket_creation_service.create_tickets(
-        category.party_id, category.id, ticket_owner, quantity
+        category, ticket_owner, quantity
     )
 
     yield tickets

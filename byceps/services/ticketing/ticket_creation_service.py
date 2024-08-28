@@ -45,12 +45,7 @@ def create_ticket(
     quantity = 1
 
     db_tickets = create_tickets(
-        category.party_id,
-        category.id,
-        owner,
-        quantity,
-        order_number=order_number,
-        user=user,
+        category, owner, quantity, order_number=order_number, user=user
     )
 
     return db_tickets[0]
@@ -62,8 +57,7 @@ def create_ticket(
     stop=stop_after_attempt(5),
 )
 def create_tickets(
-    party_id: PartyID,
-    category_id: TicketCategoryID,
+    category: TicketCategory,
     owner: User,
     quantity: int,
     *,
@@ -73,8 +67,8 @@ def create_tickets(
     """Create a number of tickets of the same category for a single owner."""
     db_tickets = list(
         build_tickets(
-            party_id,
-            category_id,
+            category.party_id,
+            category.id,
             owner,
             quantity,
             order_number=order_number,

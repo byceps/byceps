@@ -39,7 +39,7 @@ def test_create_ticket_with_existing_code(
 def test_create_tickets(admin_app, category, ticket_owner):
     quantity = 3
     tickets = ticket_creation_service.create_tickets(
-        category.party_id, category.id, ticket_owner, quantity
+        category, ticket_owner, quantity
     )
 
     for ticket in tickets:
@@ -57,9 +57,7 @@ def test_create_tickets_with_clashing_generated_codes(
     with pytest.raises(
         ticket_creation_service.TicketCreationFailedError
     ) as excinfo:
-        ticket_creation_service.create_tickets(
-            category.party_id, category.id, ticket_owner, quantity
-        )
+        ticket_creation_service.create_tickets(category, ticket_owner, quantity)
 
     assert (
         excinfo.value.args[0]
