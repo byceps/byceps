@@ -66,7 +66,7 @@ def create_bundle(
             category_id,
             owner,
             ticket_quantity,
-            bundle=db_bundle,
+            bundle_id=bundle_id,
             order_number=order_number,
             user=user,
         )

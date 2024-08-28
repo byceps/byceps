@@ -21,8 +21,7 @@ from byceps.util.uuid import generate_uuid7
 
 from . import ticket_code_service
 from .dbmodels.ticket import DbTicket
-from .dbmodels.ticket_bundle import DbTicketBundle
-from .models.ticket import TicketCategoryID
+from .models.ticket import TicketBundleID, TicketCategoryID
 
 
 class TicketCreationFailedError(Exception):
@@ -101,7 +100,7 @@ def build_tickets(
     owner: User,
     quantity: int,
     *,
-    bundle: DbTicketBundle | None = None,
+    bundle_id: TicketBundleID | None = None,
     order_number: OrderNumber | None = None,
     user: User | None = None,
 ) -> Iterator[DbTicket]:
@@ -127,7 +126,7 @@ def build_tickets(
             code,
             category_id,
             owner.id,
-            bundle_id=bundle.id,
+            bundle_id=bundle_id,
             order_number=order_number,
             used_by_id=user.id if user else None,
         )
