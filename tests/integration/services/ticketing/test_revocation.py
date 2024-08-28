@@ -18,12 +18,13 @@ from byceps.services.ticketing import (
     ticket_service,
 )
 
+from tests.helpers import generate_token
+
 
 @pytest.fixture(scope='module')
 def area(party):
-    area = seating_area_service.create_area(party.id, 'main', 'Main Hall')
-    yield area
-    seating_area_service.delete_area(area.id)
+    token = generate_token()
+    return seating_area_service.create_area(party.id, token, token)
 
 
 @pytest.fixture()
