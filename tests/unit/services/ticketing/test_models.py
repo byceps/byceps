@@ -3,15 +3,18 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime, UTC
 from uuid import UUID
 
 import pytest
 
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.ticketing.models.ticket import TicketID
+
+from tests.helpers import generate_uuid
 
 
 ANY_BUNDLE_ID = UUID('4138fcfb-cc18-45c0-aede-d49a8e279885')
-
 
 user_id1 = UUID('388925a8-1f67-4506-9dde-63a9880139a6')
 user_id2 = UUID('cd9685fe-b503-41ce-a6e5-5a4762c29cbc')
@@ -117,11 +120,13 @@ def create_ticket(
     seat_managed_by_id=None,
     user_managed_by_id=None,
 ):
+    ticket_id = TicketID(generate_uuid())
+    created_at = datetime.now(UTC)
     party_id = 'megacon-99'
     code = 'BRTZN'
     category_id = None
 
-    ticket = DbTicket(party_id, code, category_id, owned_by_id)
+    ticket = DbTicket(ticket_id, created_at, party_id, code, category_id, owned_by_id)
     ticket.bundle_id = bundle_id
     ticket.seat_managed_by_id = seat_managed_by_id
     ticket.user_managed_by_id = user_managed_by_id

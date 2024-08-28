@@ -7,6 +7,7 @@ byceps.services.ticketing.ticket_creation_service
 """
 
 from collections.abc import Iterator
+from datetime import datetime, UTC
 
 from sqlalchemy.exc import IntegrityError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
@@ -14,7 +15,9 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user.models.user import User
+from byceps.util.uuid import generate_uuid7
 
 from . import ticket_code_service
 from .dbmodels.ticket import DbTicket
@@ -105,6 +108,8 @@ def build_tickets(
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
+    created_at = datetime.now(UTC)
+
     generation_result = ticket_code_service.generate_ticket_codes(quantity)
 
     if generation_result.is_err():
@@ -113,7 +118,11 @@ def build_tickets(
     codes = generation_result.unwrap()
 
     for code in codes:
+        ticket_id = TicketID(generate_uuid7())
+
         yield DbTicket(
+            ticket_id,
+            created_at,
             party_id,
             code,
             category_id,

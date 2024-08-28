@@ -24,7 +24,6 @@ from byceps.services.ticketing.models.ticket import (
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 from .category import DbTicketCategory
 from .ticket_bundle import DbTicketBundle
@@ -43,10 +42,8 @@ class DbTicket(db.Model):
     __tablename__ = 'tickets'
     __table_args__ = (db.UniqueConstraint('party_id', 'code'),)
 
-    id: Mapped[TicketID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    id: Mapped[TicketID] = mapped_column(db.Uuid, primary_key=True)
+    created_at: Mapped[datetime]
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -99,11 +96,13 @@ class DbTicket(db.Model):
     used_by: Mapped[DbUser | None] = relationship(
         DbUser, foreign_keys=[used_by_id]
     )
-    revoked: Mapped[bool] = mapped_column(default=False)
-    user_checked_in: Mapped[bool] = mapped_column(default=False)
+    revoked: Mapped[bool]
+    user_checked_in: Mapped[bool]
 
     def __init__(
         self,
+        ticket_id: TicketID,
+        created_at: datetime,
         party_id: PartyID,
         code: TicketCode,
         category_id: TicketCategoryID,
@@ -112,7 +111,11 @@ class DbTicket(db.Model):
         bundle: DbTicketBundle | None = None,
         order_number: OrderNumber | None = None,
         used_by_id: UserID | None = None,
+        revoked: bool = False,
+        user_checked_in: bool = False,
     ) -> None:
+        self.id = ticket_id
+        self.created_at = created_at
         self.party_id = party_id
         self.code = code
         self.bundle = bundle
@@ -120,6 +123,8 @@ class DbTicket(db.Model):
         self.owned_by_id = owned_by_id
         self.order_number = order_number
         self.used_by_id = used_by_id
+        self.revoked = revoked
+        self.user_checked_in = user_checked_in
 
     @property
     def belongs_to_bundle(self) -> bool:
