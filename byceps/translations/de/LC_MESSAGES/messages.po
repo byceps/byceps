@@ -7450,11 +7450,11 @@ msgstr "Kein Vorschaubild"
 
 #: byceps/blueprints/site/gallery/templates/site/gallery/index.html:32
 msgid "No galleries available."
-msgstr "Keine Galerien vorhanden"
+msgstr "Keine Galerien vorhanden."
 
 #: byceps/blueprints/site/gallery/templates/site/gallery/view.html:31
 msgid "No images available."
-msgstr "Keine Bilder vorhanden"
+msgstr "Keine Bilder vorhanden."
 
 #: byceps/blueprints/site/guest_server/forms.py:53
 msgid "Quantity of addresses needed"
