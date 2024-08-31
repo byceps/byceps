@@ -1,8 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/orga.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
-{% from 'macros/admin/user.html' import render_user_admin_link %}
-{% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user.html' import render_user_avatar %}
+{% from 'macros/admin/orga.html' import render_upcoming_birthday_items %}
 {% set current_page = 'orga_admin.birthdays' %}
 {% set page_title = _('Upcoming birthdays') %}
 
@@ -12,20 +9,7 @@
 
   {%- if orgas %}
   <ol class="itemlist birthdays">
-  {%- for user, birthday in orgas %}
-    {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
-    <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
-      {{ render_user_avatar(user, size=24) }}
-      <div>
-        {{ render_user_admin_link(user) }}
-        {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}
-        wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}
-        {{ render_random_age_adjective() }} {{ birthday.age if is_today else birthday.age + 1 }} Jahre alt.
-        {% if is_today %}{{ render_icon('birthday') }}{% endif %}
-      </div>
-    </li>
-    {%- endwith %}
-  {%- endfor %}
+{{ render_upcoming_birthday_items(orgas) }}
   </ol>
   {%- else %}
   <div class="dimmed-box centered">Es stehen keine Geburtstage von Organisatoren bevor.</div>
