@@ -294,6 +294,12 @@ def get_users_for_admin_indexed_by_id(
     return {user.id: user for user in users}
 
 
+def get_all_users() -> list[User]:
+    """Return all users."""
+    db_users = db.session.scalars(select(DbUser)).all()
+    return [_db_entity_to_user(db_user) for db_user in db_users]
+
+
 def _db_entity_to_user(db_user: DbUser) -> User:
     return User(
         id=db_user.id,
