@@ -15,10 +15,10 @@
       {{ render_user_avatar(user, size=32) }}
       <div>
         {{ render_user_admin_link(user) }}
-        {% if is_today %}{{ render_icon('birthday') }}{% endif %}
         {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}
         wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}
         {{ render_random_age_adjective() }} {{ birthday.age if is_today else birthday.age + 1 }} Jahre alt.
+        {% if is_today %}{{ render_icon('birthday') }}{% endif %}
       </div>
     </li>
     {%- endwith %}
