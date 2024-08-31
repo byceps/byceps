@@ -3,9 +3,10 @@
 
 
 {% macro render_upcoming_birthday_items(orgas_with_next_birthdays) %}
-  {%- for user, birthday in orgas_with_next_birthdays %}
-    {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
-      {%- with relative_days_label = render_relative_days_until(days_until_next_birthday) %}
+  {%- if orgas_with_next_birthdays %}
+    {%- for user, birthday in orgas_with_next_birthdays %}
+      {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
+        {%- with relative_days_label = render_relative_days_until(days_until_next_birthday) %}
   <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
     {{ render_user_avatar(user, size=24) }}
     <div>
@@ -15,9 +16,12 @@
       {% if is_today %}{{ render_icon('birthday') }}{% endif %}
     </div>
   </li>
+        {%- endwith %}
       {%- endwith %}
-    {%- endwith %}
-  {%- endfor %}
+    {%- endfor %}
+  {%- else %}
+  <li class="dimmed">Es stehen keine Geburtstage von Organisatoren bevor.</li>
+  {%- endif %}
 {%- endmacro %}
 
 
