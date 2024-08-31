@@ -12,11 +12,9 @@
 
 <div class="grid">
   {%- for item in items|sort(attribute='label') %}
-    {%- if has_current_user_permission(item.required_permission) and item.precondition %}
-      {%- call render_cell(icon_name=item.icon, href=item.url) %}
-        {{ render_icon(item.icon) }} <span>{{ item.label }}</span>
-      {%- endcall %}
-    {%- endif %}
+    {%- call render_cell(icon_name=item.icon, href=item.url) %}
+      {{ render_icon(item.icon) }} <span>{{ item.label }}</span>
+    {%- endcall %}
   {%- endfor %}
 </div>
 

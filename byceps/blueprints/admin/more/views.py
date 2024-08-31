@@ -27,7 +27,9 @@ blueprint = create_blueprint('more_admin', __name__)
 def view_global():
     """Show more global admin items."""
     return {
-        'items': item_service.get_global_items(),
+        'items': item_service.select_visible_items(
+            item_service.get_global_items()
+        ),
     }
 
 
@@ -42,7 +44,9 @@ def view_brand(brand_id):
 
     return {
         'brand': brand,
-        'items': item_service.get_brand_items(brand),
+        'items': item_service.select_visible_items(
+            item_service.get_brand_items(brand)
+        ),
     }
 
 
@@ -57,7 +61,9 @@ def view_party(party_id):
 
     return {
         'party': party,
-        'items': item_service.get_party_items(party),
+        'items': item_service.select_visible_items(
+            item_service.get_party_items(party)
+        ),
     }
 
 
@@ -72,5 +78,7 @@ def view_site(site_id):
 
     return {
         'site': site,
-        'items': item_service.get_site_items(site),
+        'items': item_service.select_visible_items(
+            item_service.get_site_items(site)
+        ),
     }

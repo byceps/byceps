@@ -14,6 +14,7 @@ from flask_babel import gettext
 from byceps.services.brand.models import Brand
 from byceps.services.party.models import Party
 from byceps.services.site.models import Site
+from byceps.util.authz import has_current_user_permission
 
 
 @dataclass(frozen=True)
@@ -23,6 +24,17 @@ class MoreItem:
     url: str
     required_permission: str
     precondition: bool = True
+
+
+def select_visible_items(items: list[MoreItem]) -> list[MoreItem]:
+    return list(filter(_is_item_visible, items))
+
+
+def _is_item_visible(item: MoreItem) -> bool:
+    return (
+        has_current_user_permission(item.required_permission)
+        and item.precondition
+    )
 
 
 def get_global_items() -> list[MoreItem]:
