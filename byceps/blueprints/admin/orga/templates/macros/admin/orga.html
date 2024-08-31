@@ -10,9 +10,11 @@
   <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
     {{ render_user_avatar(user, size=24) }}
     <div>
-      {{ render_user_admin_link(user) }}
-      wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}
-      {{ render_random_age_adjective() }} {{ birthday.age if is_today else birthday.age + 1 }} Jahre alt.
+      {{ _('%(user)s will be %(adjective)s %(age)s years old %(when)s.',
+        user=render_user_admin_link(user),
+        adjective=render_random_age_adjective(),
+        age=birthday.age if is_today else birthday.age + 1,
+        when=render_time_element(birthday.date_of_birth, relative_days_label)) }}
       {% if is_today %}{{ render_icon('birthday') }}{% endif %}
     </div>
   </li>
@@ -20,7 +22,7 @@
       {%- endwith %}
     {%- endfor %}
   {%- else %}
-  <li class="dimmed">Es stehen keine Geburtstage von Organisatoren bevor.</li>
+  <li class="dimmed">{{ _('No upcoming birthdays.') }}</li>
   {%- endif %}
 {%- endmacro %}
 
@@ -49,46 +51,45 @@
 
 {% macro render_random_age_adjective() %}
   {%- set adjectives = [
-    'agile',
-    'atemberaubende',
-    'bemerkenswerte',
-    'beneidenswerte',
-    'fantastische',
-    'beschauliche',
-    'bombastische',
-    'eindrucksvolle',
-    'epische',
-    'erbarmungslose',
-    'erfrischende',
-    'erheiternde',
-    'erquickende',
-    'fantastische',
-    'ganze',
-    'grandiose',
-    'herzallerliebste',
-    'kolossale',
-    'krasse',
-    'legendäre',
-    'niedliche',
-    'passable',
-    'phänomenale',
-    'possierliche',
-    'quirlige',
-    'schmeichelhafte',
-    'sensationelle',
-    'sportliche',
-    'überschaubare',
-    'umwerfende',
-    'unbegreifliche',
-    'unbeschreibliche',
-    'unbezahlbare',
-    'unfassbare',
-    'unglaubliche',
-    'wahnsinnige',
-    'wilde',
-    'zarte',
-    'zierliche',
-    'zuckersüße',
+    _('agile'),
+    _('bombastic'),
+    _('breathtaking'),
+    _('colossal'),
+    _('contemplative'),
+    _('crass'),
+    _('cute'),
+    _('dearest'),
+    _('delicate'),
+    _('enviable'),
+    _('epic'),
+    _('exhilarating'),
+    _('fantastic'),
+    _('flattering'),
+    _('full'),
+    _('impressive'),
+    _('incredible'),
+    _('ineffable'),
+    _('insane'),
+    _('inscrutable'),
+    _('invaluable'),
+    _('invigorating'),
+    _('legendary'),
+    _('lively'),
+    _('manageable'),
+    _('merciless'),
+    _('passable'),
+    _('phenomenal'),
+    _('refreshing'),
+    _('remarkable'),
+    _('sensational'),
+    _('sickly-sweet'),
+    _('sporty'),
+    _('staggering'),
+    _('sweet'),
+    _('tender'),
+    _('terrific'),
+    _('unfathomable'),
+    _('wild'),
   ] %}
   {{- adjectives|random }}
 {%- endmacro %}

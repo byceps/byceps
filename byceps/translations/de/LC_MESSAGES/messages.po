@@ -835,9 +835,9 @@ msgid "Identity Tags"
 msgstr "Benutzerkennzeichen"
 
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/create_form.html:25
-#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:16
-#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:19
-#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:22
+#: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/index.html:16
+#: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/index.html:19
+#: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/index.html:22
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/item_create_form.html:20
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/item_create_form.html:23
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/item_create_form.html:24
@@ -1025,7 +1025,7 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/page/forms.py:82
 #: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:163
 #: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:166
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:55
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:52
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:80
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:127
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:161
@@ -1441,7 +1441,7 @@ msgstr "Kategorie bearbeiten"
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:29
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:12
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:23
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:78
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:80
 msgid "Category"
 msgstr "Kategorie"
 
@@ -1509,7 +1509,6 @@ msgstr "Bild-Dateiname"
 #: byceps/blueprints/admin/party/forms.py:60
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:23
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:33
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:40
 #: byceps/blueprints/admin/shop/product/forms.py:77
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:81
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:33
@@ -2045,11 +2044,11 @@ msgstr "Keine offenen Bestellungen"
 msgid "No active shops"
 msgstr "Keine aktiven Shops"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_birthdays.html:8
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_birthdays.html:5
 msgid "Upcoming Birthdays"
 msgstr "Die nächsten Geburtstage"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_birthdays.html:32
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_birthdays.html:14
 msgid "All birthdays"
 msgstr "Alle Geburtstage"
 
@@ -2239,7 +2238,7 @@ msgstr "wartend"
 #: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:10
 #: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:94
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:29
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:62
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:64
 #: byceps/blueprints/site/user_profile/templates/site/user_profile/_current_party_attendance.html:16
 msgid "checked in"
 msgstr "eingecheckt"
@@ -2477,7 +2476,7 @@ msgstr "Adressen"
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:29
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:36
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:38
-#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/view.html:16
+#: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/view.html:16
 msgid "Export"
 msgstr "Exportieren"
 
@@ -2682,8 +2681,8 @@ msgstr "Sprache"
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:102
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:23
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:41
-#: byceps/services/shop/order/paid_products_report_service.py:162
-#: byceps/services/shop/order/paid_products_report_service.py:163
+#: byceps/services/shop/order/paid_products_report_service.py:160
+#: byceps/services/shop/order/paid_products_report_service.py:161
 msgid "unknown"
 msgstr "unbekannt"
 
@@ -2801,8 +2800,8 @@ msgid "Organizer Presence"
 msgstr "Orga-Anwesenheit"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:18
-#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:5
-#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/view.html:6
+#: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/index.html:5
+#: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/view.html:6
 msgid "Paid Products Report"
 msgstr "Bericht über bezahlte Produkte"
 
@@ -3409,7 +3408,7 @@ msgstr "E-Mail-Adresse"
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: byceps/blueprints/admin/orga/templates/admin/orga/birthdays.html:6
+#: byceps/blueprints/admin/orga/templates/admin/orga/birthdays.html:4
 msgid "Upcoming birthdays"
 msgstr "Die nächsten Geburtstage"
 
@@ -3459,18 +3458,183 @@ msgstr "Keine Benutzer haben Orga-Status."
 msgid "Revoke organizer status?"
 msgstr "Orga-Status entziehen?"
 
-#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:7
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:13
+#, python-format
+msgid "%(user)s will be %(adjective)s %(age)s years old %(when)s."
+msgstr "%(user)s wird %(when)s %(adjective)s %(age)s Jahre alt."
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:25
+msgid "No upcoming birthdays."
+msgstr "Keine bevorstehenden Geburtstage."
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:36
 msgid "today"
 msgstr "heute"
 
-#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:9
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:38
 msgid "tomorrow"
 msgstr "morgen"
 
-#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:11
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:40
 #, python-format
 msgid "in %(days)s days"
 msgstr "in %(days)s Tagen"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:54
+msgid "agile"
+msgstr "agile"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:55
+msgid "bombastic"
+msgstr "bombastische"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:56
+msgid "breathtaking"
+msgstr "atemberaubende"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:57
+msgid "colossal"
+msgstr "kolossale"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:58
+msgid "contemplative"
+msgstr "beschauliche"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:59
+msgid "crass"
+msgstr "krass"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:60
+msgid "cute"
+msgstr "niedlich"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:61
+msgid "dearest"
+msgstr "herzallerliebste"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:62
+msgid "delicate"
+msgstr "zierliche"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:63
+msgid "enviable"
+msgstr "beneidenswerte"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:64
+msgid "epic"
+msgstr "epische"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:65
+msgid "exhilarating"
+msgstr "erheiternde"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:66
+msgid "fantastic"
+msgstr "fantastische"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:67
+msgid "flattering"
+msgstr "schmeichelhafte"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:68
+msgid "full"
+msgstr "ganze"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:69
+msgid "impressive"
+msgstr "beeindruckende"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:70
+msgid "incredible"
+msgstr "unglaubliche"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:71
+msgid "ineffable"
+msgstr "unbeschreibliche"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:72
+msgid "insane"
+msgstr "wahnsinnige"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:73
+msgid "inscrutable"
+msgstr "unbegreifliche"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:74
+msgid "invaluable"
+msgstr "unbezahlbare"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:75
+msgid "invigorating"
+msgstr "erquickende"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:76
+msgid "legendary"
+msgstr "legendär"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:77
+msgid "lively"
+msgstr "quirlige"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:78
+msgid "manageable"
+msgstr "überschaubare"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:79
+msgid "merciless"
+msgstr "erbarmungslose"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:80
+msgid "passable"
+msgstr "passabel"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:81
+msgid "phenomenal"
+msgstr "phänomenal"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:82
+msgid "refreshing"
+msgstr "erfrischende"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:83
+msgid "remarkable"
+msgstr "bemerkenswerte"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:84
+msgid "sensational"
+msgstr "sensationelle"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:85
+msgid "sickly-sweet"
+msgstr "zuckersüße"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:86
+msgid "sporty"
+msgstr "sportliche"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:87
+msgid "staggering"
+msgstr "umwerfende"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:88
+msgid "sweet"
+msgstr "possierliche"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:89
+msgid "tender"
+msgstr "zarte"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:90
+msgid "terrific"
+msgstr "grandiose"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:91
+msgid "unfathomable"
+msgstr "unfassbare"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:92
+msgid "wild"
+msgstr "wilde"
 
 #: byceps/blueprints/admin/orga_presence/forms.py:29
 #: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:27
@@ -3807,38 +3971,6 @@ msgstr "Seite löschen?"
 msgid "Error"
 msgstr "Fehler"
 
-#: byceps/blueprints/admin/paid_products_report/forms.py:18
-#: byceps/blueprints/admin/paid_products_report/forms.py:20
-#: byceps/blueprints/admin/paid_products_report/forms.py:21
-#: byceps/blueprints/admin/paid_products_report/forms.py:22
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:50
-#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:13
-msgid "Product number"
-msgstr "Produktnummer"
-
-#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/index.html:27
-msgid "Generate"
-msgstr "Erzeugen"
-
-#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/view.html:24
-#: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:110
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:26
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_orders.html:27
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_purchases.html:27
-#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:12
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_orders.html:10
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:20
-#: byceps/services/shop/order/paid_products_report_service.py:142
-msgid "Order number"
-msgstr "Bestellnummer"
-
-#: byceps/blueprints/admin/paid_products_report/templates/admin/paid_products_report/view.html:25
-#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:43
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:90
-msgid "Buyer"
-msgstr "Käufer/in"
-
 #: byceps/blueprints/admin/party/forms.py:29
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:69
 msgid "Maximum number of tickets"
@@ -3976,7 +4108,7 @@ msgstr "belegt"
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:123
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:28
 #: byceps/blueprints/site/seating/templates/site/seating/index.html:31
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:126
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:128
 msgid "available"
 msgstr "verfügbar"
 
@@ -4078,6 +4210,19 @@ msgstr "Gruppen"
 msgid "accepted"
 msgstr "akzeptiert"
 
+#: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:110
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:26
+#: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/view.html:24
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_orders.html:27
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_purchases.html:27
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:12
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_orders.html:10
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:20
+#: byceps/services/shop/order/paid_products_report_service.py:142
+msgid "Order number"
+msgstr "Bestellnummer"
+
 #: byceps/blueprints/admin/shop/cancellation_request/templates/admin/shop/cancellation_request/index.html:116
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:11
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:54
@@ -4167,8 +4312,8 @@ msgstr "Bestellung %(order_number)s wurde als nicht verschickt markiert."
 
 #: byceps/blueprints/admin/shop/order/views.py:327
 #: byceps/blueprints/admin/shop/order/views.py:370
-#: byceps/blueprints/site/shop/orders/views.py:221
-#: byceps/blueprints/site/shop/orders/views.py:335
+#: byceps/blueprints/site/shop/orders/views.py:235
+#: byceps/blueprints/site/shop/orders/views.py:358
 msgid ""
 "The order has already been canceled. The payment state cannot be changed "
 "anymore."
@@ -4181,8 +4326,8 @@ msgstr ""
 #: byceps/blueprints/admin/ticketing/checkin/views.py:168
 #: byceps/blueprints/site/seating/views.py:268
 #: byceps/blueprints/site/seating/views.py:335
-#: byceps/blueprints/site/shop/orders/views.py:226
-#: byceps/blueprints/site/shop/orders/views.py:340
+#: byceps/blueprints/site/shop/orders/views.py:240
+#: byceps/blueprints/site/shop/orders/views.py:363
 msgid "An unexpected error occurred."
 msgstr "Ein unvorhergesehener Fehler ist aufgetreten."
 
@@ -4241,7 +4386,7 @@ msgstr "versendet"
 msgid "shipping required"
 msgstr "Versand erforderlich"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:45
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:42
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:23
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/mark_as_paid_form.html:4
 msgid "Mark order as paid"
@@ -4619,6 +4764,25 @@ msgstr "offen"
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:41
 msgid "waiting for shipping"
 msgstr "auf Versand wartend"
+
+#: byceps/blueprints/admin/shop/paid_products_report/forms.py:18
+#: byceps/blueprints/admin/shop/paid_products_report/forms.py:20
+#: byceps/blueprints/admin/shop/paid_products_report/forms.py:21
+#: byceps/blueprints/admin/shop/paid_products_report/forms.py:22
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:50
+#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:13
+msgid "Product number"
+msgstr "Produktnummer"
+
+#: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/index.html:27
+msgid "Generate"
+msgstr "Erzeugen"
+
+#: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/view.html:25
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:43
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:92
+msgid "Buyer"
+msgstr "Käufer/in"
 
 #: byceps/blueprints/admin/shop/product/forms.py:45
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:62
@@ -5444,7 +5608,7 @@ msgstr "Snippet löschen?"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:9
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:11
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:11
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:58
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:60
 msgid "Code"
 msgstr "Code"
 
@@ -5541,7 +5705,7 @@ msgstr "Der Check-In wurde rückgängig gemacht."
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:13
 #: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:68
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:12
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:160
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:162
 #: byceps/blueprints/site/user_profile/templates/site/user_profile/_current_party_attendance.html:7
 msgid "Seat"
 msgid_plural "Seats"
@@ -5566,7 +5730,7 @@ msgstr "unbenannt"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:37
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:130
 #: byceps/blueprints/site/seating/templates/site/seating/_ticket_selector.html:37
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:165
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:167
 msgid "no seat"
 msgstr "kein Sitzplatz"
 
@@ -5812,7 +5976,7 @@ msgstr "eigenständig"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:84
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:6
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:84
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:86
 msgid "Order"
 msgstr "Bestellung"
 
@@ -7732,37 +7896,37 @@ msgstr "Jetzt kostenpflichtig bestellen"
 msgid "No products are available at this time."
 msgstr "Es sind derzeit keine Produkte verfügbar."
 
-#: byceps/blueprints/site/shop/orders/views.py:169
-#: byceps/blueprints/site/shop/orders/views.py:197
-#: byceps/blueprints/site/shop/orders/views.py:248
-#: byceps/blueprints/site/shop/orders/views.py:275
-#: byceps/blueprints/site/shop/orders/views.py:301
-#: byceps/blueprints/site/shop/orders/views.py:364
-#: byceps/blueprints/site/shop/orders/views.py:393
-#: byceps/blueprints/site/shop/orders/views.py:441
-#: byceps/blueprints/site/shop/orders/views.py:470
+#: byceps/blueprints/site/shop/orders/views.py:183
+#: byceps/blueprints/site/shop/orders/views.py:211
+#: byceps/blueprints/site/shop/orders/views.py:265
+#: byceps/blueprints/site/shop/orders/views.py:295
+#: byceps/blueprints/site/shop/orders/views.py:324
+#: byceps/blueprints/site/shop/orders/views.py:390
+#: byceps/blueprints/site/shop/orders/views.py:422
+#: byceps/blueprints/site/shop/orders/views.py:473
+#: byceps/blueprints/site/shop/orders/views.py:505
 msgid "The order has already been canceled."
 msgstr "Die Bestellung ist bereits storniert worden."
 
-#: byceps/blueprints/site/shop/orders/views.py:174
-#: byceps/blueprints/site/shop/orders/views.py:202
+#: byceps/blueprints/site/shop/orders/views.py:188
+#: byceps/blueprints/site/shop/orders/views.py:216
 msgid "The order has already been paid. You cannot cancel it yourself anymore."
 msgstr ""
 "Die Bestellung ist bereits bezahlt worden. Du kannst sie nicht mehr "
 "selbst stornieren."
 
-#: byceps/blueprints/site/shop/orders/views.py:231
-#: byceps/blueprints/site/shop/orders/views.py:347
+#: byceps/blueprints/site/shop/orders/views.py:245
+#: byceps/blueprints/site/shop/orders/views.py:370
 msgid "Order has been canceled."
 msgstr "Die Bestellung wurde storniert."
 
-#: byceps/blueprints/site/shop/orders/views.py:252
-#: byceps/blueprints/site/shop/orders/views.py:279
-#: byceps/blueprints/site/shop/orders/views.py:305
-#: byceps/blueprints/site/shop/orders/views.py:368
-#: byceps/blueprints/site/shop/orders/views.py:397
-#: byceps/blueprints/site/shop/orders/views.py:445
-#: byceps/blueprints/site/shop/orders/views.py:474
+#: byceps/blueprints/site/shop/orders/views.py:269
+#: byceps/blueprints/site/shop/orders/views.py:299
+#: byceps/blueprints/site/shop/orders/views.py:328
+#: byceps/blueprints/site/shop/orders/views.py:394
+#: byceps/blueprints/site/shop/orders/views.py:426
+#: byceps/blueprints/site/shop/orders/views.py:477
+#: byceps/blueprints/site/shop/orders/views.py:509
 msgid "The order has not been paid."
 msgstr "Die Bestellung wurde nicht bezahlt."
 
@@ -8023,11 +8187,11 @@ msgstr "Tickets können derzeit nicht verändert werden."
 msgid "Somebody has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:14
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:16
 msgid "You currently do not use a ticket."
 msgstr "Du nutzt derzeit kein Ticket."
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:18
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:20
 #, python-format
 msgid ""
 "These are the tickets for party <strong>%(party_title)s</strong> relevant"
@@ -8036,7 +8200,7 @@ msgstr ""
 "Dies sind die für dich relevanten (d.h. gekauften, verwalteten und/oder "
 "genutzten) Tickets für die Party <strong>%(party_title)s</strong>."
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:23
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:25
 #, python-format
 msgid ""
 "You do now own, manage, or use any tickets for party "
@@ -8045,49 +8209,49 @@ msgstr ""
 "Du besitzt, verwaltest und/oder nutzt <em>keine</em> Tickets für die "
 "Party <strong>%(party_title)s</strong>."
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:31
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:33
 msgid "Use this ticket yourself?"
 msgstr "Dieses Ticket selbst nutzen?"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:32
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:34
 msgid "Take back user management?"
 msgstr "Nutzer-Verwaltung zurückholen?"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:33
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:35
 msgid "Take back seat management?"
 msgstr "Sitzplatz-Verwaltung zurückholen?"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:103
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:105
 msgctxt "ticket"
 msgid "User"
 msgstr "Nutzer/in"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:110
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:112
 msgid "Appoint user"
 msgstr "Nutzer/in zuweisen"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:112
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:114
 msgid "Use yourself"
 msgstr "selbst nutzen"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:134
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:173
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:136
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:175
 msgid "Manager"
 msgstr "Verwalter/in"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:141
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:143
 msgid "Transfer user management"
 msgstr "Nutzer-Verwaltung übertragen"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:143
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:145
 msgid "Take back user management"
 msgstr "Nutzer-Verwaltung zurückholen"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:180
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:182
 msgid "Transfer seat management"
 msgstr "Sitzplatz-Verwaltung übertragen"
 
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:182
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:184
 msgid "Take back seat management"
 msgstr "Sitzplatz-Verwaltung zurückholen"
 
