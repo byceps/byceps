@@ -1,6 +1,6 @@
 """
-byceps.blueprints.admin.shop.paid_products_report.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.admin.shop.sold_products.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,7 +11,7 @@ from sqlalchemy.exc import NoResultFound
 
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
-from byceps.services.shop.order import paid_products_report_service
+from byceps.services.shop.order import sold_products_service
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import Product, ProductNumber
 from byceps.util.framework.blueprint import create_blueprint
@@ -22,7 +22,7 @@ from byceps.util.views import permission_required, textified
 from .forms import GenerateForm
 
 
-blueprint = create_blueprint('shop_paid_products_report_admin', __name__)
+blueprint = create_blueprint('shop_sold_products_admin', __name__)
 
 
 @blueprint.get('/for_party/<party_id>')
@@ -100,9 +100,7 @@ def export_as_csv(party_id):
 
     report = _assemble_report(party, product_numbers)
 
-    return paid_products_report_service.export_paid_products_report_as_csv(
-        report
-    )
+    return sold_products_service.export_sold_products_as_csv(report)
 
 
 def _assemble_report(party: Party, product_numbers: list[str]):
@@ -112,9 +110,7 @@ def _assemble_report(party: Party, product_numbers: list[str]):
         if product_number
     ]
 
-    return paid_products_report_service.get_paid_products_report(
-        party, products
-    )
+    return sold_products_service.get_sold_products_report(party, products)
 
 
 # -------------------------------------------------------------------- #

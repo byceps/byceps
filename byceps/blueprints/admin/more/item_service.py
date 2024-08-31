@@ -176,11 +176,9 @@ def get_party_items(party: Party) -> list[MoreItem]:
             required_permission='orga_presence.view',
         ),
         MoreItem(
-            label=gettext('Paid Products Report'),
+            label=gettext('Sold Products'),
             icon='shop-order',
-            url=url_for(
-                'shop_paid_products_report_admin.index', party_id=party.id
-            ),
+            url=url_for('shop_sold_products_admin.index', party_id=party.id),
             required_permission='shop_order.view',
         ),
         MoreItem(

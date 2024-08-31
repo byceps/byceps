@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.paid_products_report_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.sold_products_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -40,7 +40,7 @@ class OrderSummary:
 
 
 @dataclass(frozen=True, slots=True)
-class PaidProductsReport:
+class SoldProductsReport:
     products: list[Product]
     order_summaries: list[OrderSummary]
 
@@ -48,9 +48,9 @@ class PaidProductsReport:
 CsvRow: TypeAlias = tuple[str, ...]
 
 
-def get_paid_products_report(
+def get_sold_products_report(
     party: Party, products: list[Product]
-) -> PaidProductsReport:
+) -> SoldProductsReport:
     orders = list(_select_unique_orders(_collect_product_orders(products)))
 
     orderers_by_id = _get_orderers_by_id(orders)
@@ -62,7 +62,7 @@ def get_paid_products_report(
 
     order_summaries.sort(key=lambda summary: summary.order_number)
 
-    return PaidProductsReport(
+    return SoldProductsReport(
         products=products,
         order_summaries=order_summaries,
     )
@@ -128,7 +128,7 @@ def get_product_quantity(product_number: ProductNumber, order: Order) -> int:
     return product_line_item.quantity
 
 
-def export_paid_products_report_as_csv(report: PaidProductsReport) -> str:
+def export_sold_products_as_csv(report: SoldProductsReport) -> str:
     header_row = _assemble_csv_header_row(report)
     data_rows = _assemble_csv_data_rows(report)
     all_rows = [header_row] + data_rows
@@ -137,7 +137,7 @@ def export_paid_products_report_as_csv(report: PaidProductsReport) -> str:
     return ''.join(lines)
 
 
-def _assemble_csv_header_row(report: PaidProductsReport) -> CsvRow:
+def _assemble_csv_header_row(report: SoldProductsReport) -> CsvRow:
     fixed_column_names = (
         lazy_gettext('Order number'),
         lazy_gettext('Username'),
@@ -147,7 +147,7 @@ def _assemble_csv_header_row(report: PaidProductsReport) -> CsvRow:
     return fixed_column_names + product_names
 
 
-def _assemble_csv_data_rows(report: PaidProductsReport) -> list[CsvRow]:
+def _assemble_csv_data_rows(report: SoldProductsReport) -> list[CsvRow]:
     return [
         tuple(_assemble_data_row(order_summary))
         for order_summary in report.order_summaries

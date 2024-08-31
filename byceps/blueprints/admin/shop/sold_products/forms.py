@@ -1,6 +1,6 @@
 """
-byceps.blueprints.admin.shop.paid_products_report.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.admin.shop.sold_products.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
