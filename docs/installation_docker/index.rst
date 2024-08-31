@@ -144,7 +144,7 @@ just before, you might be logged in already as the same user.)
 
    To be able to login without HTTPS using above links, you can
    temporarily disable session cookie security by setting
-   :py:data:`SESSION_COOKIE_SECURE` to false: In ``compose.yaml`` add
+   :py:data:`SESSION_COOKIE_SECURE` accordingly: In ``compose.yaml`` add
    ``SESSION_COOKIE_SECURE: "false"`` on a separate, indented line to the
    section ``x-byceps-base-env``.
 
