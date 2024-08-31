@@ -3,6 +3,7 @@
 
 
 {% macro render_more_items(items) -%}
+  {%- if items %}
   <div class="grid">
     {%- for item in items|sort(attribute='label') %}
       {%- call render_cell(icon_name=item.icon, href=item.url) %}
@@ -10,4 +11,7 @@
       {%- endcall %}
     {%- endfor %}
   </div>
+  {%- else %}
+  <div class="dimmed-box centered">{{ _('You are not permitted to see any items.') }}</div>
+  {%- endif %}
 {%- endmacro %}
