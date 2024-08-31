@@ -12,7 +12,7 @@
   <h1 class="title">{{ page_title }}</h1>
 
   {%- if orders %}
-  <div class="block">Bestellungen mit dem Status {{ render_order_payment_state(PaymentState.open) }} kannst du selbst stornieren.</div>
+  <div class="block">{{ _('You can cancel orders with status %(status)s yourself.', payment_state=render_order_payment_state(PaymentState.open)) }}</div>
 
   <table class="itemlist is-wide">
     <thead>
@@ -35,7 +35,7 @@
     </tbody>
   </table>
   {%- else %}
-  <p>Du hast bisher keine Bestellungen aufgegeben.</p>
+  <div class="block">{{ _('You have not placed any orders.') }}</div>
   {%- endif %}
 
 {%- endblock %}

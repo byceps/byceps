@@ -5269,6 +5269,7 @@ msgid "Check in attendees on login to this site"
 msgstr "Teilnehmende beim Anmelden auf dieser Site einchecken"
 
 #: byceps/blueprints/admin/site/forms.py:51
+#: byceps/blueprints/site/user_profile/templates/site/user_profile/_attended_parties.html:11
 msgctxt "party"
 msgid "none"
 msgstr "keine"
@@ -7957,6 +7958,15 @@ msgstr "Tickets zurückgeben"
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_partial_refund_form.html:36
 msgid "Back to selection"
 msgstr "Zurück zur Auswahl"
+
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:15
+#, python-format
+msgid "You can cancel orders with status %(status)s yourself."
+msgstr "Du kannst Bestellungen mit dem Status %(status)s selbst stornieren."
+
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:38
+msgid "You have not placed any orders."
+msgstr "Du hast keine Bestellungen aufgeben."
 
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:18
 #, python-format
