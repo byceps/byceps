@@ -1,0 +1,13 @@
+{% from 'macros/admin/dashboard.html' import render_cell %}
+{% from 'macros/icons.html' import render_icon %}
+
+
+{% macro render_more_items(items) -%}
+  <div class="grid">
+    {%- for item in items|sort(attribute='label') %}
+      {%- call render_cell(icon_name=item.icon, href=item.url) %}
+        {{ render_icon(item.icon) }} <span>{{ item.label }}</span>
+      {%- endcall %}
+    {%- endfor %}
+  </div>
+{%- endmacro %}

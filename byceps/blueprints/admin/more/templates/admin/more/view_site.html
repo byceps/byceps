@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/dashboard.html' import render_cell %}
-{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/admin/more.html' import render_more_items %}
 {% set current_page = 'more_admin_site' %}
 {% set current_page_site = site %}
 {% set page_title = _('More') %}
@@ -11,12 +10,6 @@
 
 {% block body %}
 
-<div class="grid">
-  {%- for item in items|sort(attribute='label') %}
-    {%- call render_cell(icon_name=item.icon, href=item.url) %}
-      {{ render_icon(item.icon) }} <span>{{ item.label }}</span>
-    {%- endcall %}
-  {%- endfor %}
-</div>
+{{ render_more_items(items) }}
 
 {%- endblock %}
