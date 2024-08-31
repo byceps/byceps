@@ -692,6 +692,32 @@ table.events.itemlist {
 }
 
 
+/* birthdays */
+
+.birthdays li {
+  align-items: center;
+  display: flex;
+}
+
+.birthdays .hastoday {
+  font-weight: bold;
+}
+
+.birthdays .avatar {
+  flex: 0 0 auto;
+  margin-right: 0.5rem;
+}
+
+.birthdays a {
+  font-weight: bold;
+}
+
+.birthdays time {
+  cursor: help;
+  border-bottom: #666666 dotted 1px;
+}
+
+
 /* misc */
 
 .mb {

@@ -12,7 +12,7 @@
   {%- for user, birthday in orgas_with_next_birthdays %}
     {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
     <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
-      {{ render_user_avatar(user, size=32) }}
+      {{ render_user_avatar(user, size=24) }}
       <div>
         {{ render_user_admin_link(user) }}
         {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}

@@ -88,29 +88,3 @@ a.dashboard-section-link:hover {
   font-size: 0.6875rem; /* 11px / 16px */
   margin-top: 0.15rem;
 }
-
-
-/* birthdays */
-
-.birthdays li {
-  align-items: center;
-  display: flex;
-}
-
-.birthdays .hastoday {
-  font-weight: bold;
-}
-
-.birthdays .avatar {
-  flex: 0 0 auto;
-  margin-right: 10px;
-}
-
-.birthdays a {
-  font-weight: bold;
-}
-
-.birthdays time {
-  cursor: help;
-  border-bottom: #666666 dotted 1px;
-}
