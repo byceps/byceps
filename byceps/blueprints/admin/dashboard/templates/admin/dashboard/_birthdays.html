@@ -7,7 +7,6 @@
 
 <h2>{{ _('Upcoming Birthdays') }}</h2>
 
-<div class="grid">
 {%- call render_cell('birthday', 'cell--wider', boxed=false) %}
   <ol class="itemlist is-wide birthdays">
   {%- for user, birthday in orgas_with_next_birthdays %}
@@ -26,7 +25,6 @@
   {%- endfor %}
   </ol>
 {%- endcall %}
-</div>
 
 <div class="mt" style="text-align: right;">
   <a class="dashboard-section-link" href="{{ url_for('orga_admin.birthdays') }}">{{ _('All birthdays') }} &rarr;</a>
