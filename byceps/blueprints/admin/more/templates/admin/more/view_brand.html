@@ -11,23 +11,14 @@
 
 {% block body %}
 
-  <div class="grid">
-  {%- with items = [
-    (_('Newsletter Subscriptions'), 'email', url_for('newsletter_admin.view_subscriptions', list_id=brand.id), 'newsletter.view_subscriptions'),
-    (_('Discussion Boards'), 'board', url_for('board_admin.board_index_for_brand', brand_id=brand.id), 'board_category.view'),
-    (_('Galleries'), 'gallery', url_for('gallery_admin.gallery_index_for_brand', brand_id=brand.id), 'gallery.administrate'),
-    (_('Most Frequent Attendees'), 'users', url_for('attendance_admin.view_for_brand', brand_id=brand.id), 'admin.access'),
-    (_('Brand Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id), 'snippet.view'),
-    (_('Required Consents'), 'consent', url_for('consent_admin.requirement_index', brand_id=brand.id), 'consent.administrate'),
-  ] %}
-    {%- for label, icon, url, required_permission in items|sort(attribute='0') %}
-      {%- if has_current_user_permission(required_permission) %}
-        {%- call render_cell(icon_name=icon, href=url) %}
-          {{ render_icon(icon) }} <span>{{ label }}</span>
-        {%- endcall %}
-      {%- endif %}
-    {%- endfor %}
-  {%- endwith %}
-  </div>
+<div class="grid">
+  {%- for item in items|sort(attribute='label') %}
+    {%- if has_current_user_permission(item.required_permission) and item.precondition %}
+      {%- call render_cell(icon_name=item.icon, href=item.url) %}
+        {{ render_icon(item.icon) }} <span>{{ item.label }}</span>
+      {%- endcall %}
+    {%- endif %}
+  {%- endfor %}
+</div>
 
 {%- endblock %}

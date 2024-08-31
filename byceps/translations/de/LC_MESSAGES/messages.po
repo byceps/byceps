@@ -546,7 +546,7 @@ msgstr ""
 #: byceps/blueprints/admin/api/forms.py:28
 #: byceps/blueprints/admin/api/templates/admin/api/index.html:93
 #: byceps/blueprints/admin/authz/templates/admin/authz/permission_index.html:4
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:15
+#: byceps/blueprints/admin/more/item_service.py:31
 #: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:23
 #: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:30
 #: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:5
@@ -644,7 +644,7 @@ msgid "Create"
 msgstr "Erstellen"
 
 #: byceps/blueprints/admin/api/templates/admin/api/index.html:7
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:23
+#: byceps/blueprints/admin/more/item_service.py:83
 msgid "API"
 msgstr "API"
 
@@ -723,7 +723,7 @@ msgid "Delete API token?"
 msgstr "API-Token löschen?"
 
 #: byceps/blueprints/admin/attendance/templates/admin/attendance/view_for_brand.html:5
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:19
+#: byceps/blueprints/admin/more/item_service.py:128
 msgid "Most Frequent Attendees"
 msgstr "Häufigste Teilnehmer"
 
@@ -830,7 +830,7 @@ msgstr "Benutzerkennzeichen hinzufügen"
 
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/create_form.html:8
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:8
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:21
+#: byceps/blueprints/admin/more/item_service.py:71
 msgid "Identity Tags"
 msgstr "Benutzerkennzeichen"
 
@@ -1715,13 +1715,13 @@ msgstr "Zustimmungsthema erstellen"
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:8
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:5
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_index.html:27
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:18
+#: byceps/blueprints/admin/more/item_service.py:53
 msgid "Consents"
 msgstr "Zustimmungen"
 
 #: byceps/blueprints/admin/consent/templates/admin/consent/requirement_index.html:6
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:42
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:21
+#: byceps/blueprints/admin/more/item_service.py:144
 msgid "Required Consents"
 msgstr "Erforderliche Zustimmungen"
 
@@ -2214,7 +2214,7 @@ msgstr "Tickets eingecheckt"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:8
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_update_form.html:9
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:5
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:16
+#: byceps/blueprints/admin/more/item_service.py:155
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:4
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:37
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:11
@@ -2341,7 +2341,7 @@ msgstr "Galerie hinzufügen"
 
 #: byceps/blueprints/admin/gallery/templates/admin/gallery/gallery_create_form.html:8
 #: byceps/blueprints/admin/gallery/templates/admin/gallery/gallery_index_for_brand.html:6
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:18
+#: byceps/blueprints/admin/more/item_service.py:120
 #: byceps/blueprints/site/gallery/templates/site/gallery/index.html:5
 #: byceps/blueprints/site/gallery/templates/site/gallery/view.html:5
 #: byceps/blueprints/site/gallery/templates/site/gallery/view.html:17
@@ -2639,7 +2639,7 @@ msgstr "Hintergrundjobs"
 
 #: byceps/blueprints/admin/jobs/templates/admin/jobs/index.html:16
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:5
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:25
+#: byceps/blueprints/admin/more/item_service.py:95
 msgid "Maintenance"
 msgstr "Wartung"
 
@@ -2659,7 +2659,7 @@ msgstr "Die Sprache wurde hinzugefügt."
 #: byceps/blueprints/admin/language/templates/admin/language/create_form.html:5
 #: byceps/blueprints/admin/language/templates/admin/language/create_form.html:8
 #: byceps/blueprints/admin/language/templates/admin/language/index.html:5
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:16
+#: byceps/blueprints/admin/more/item_service.py:37
 msgid "Languages"
 msgstr "Sprachen"
 
@@ -2753,70 +2753,70 @@ msgstr "Alte Login-Events löschen?"
 msgid "Delete all session tokens?"
 msgstr "Alle Benutzer-Sitzungen löschen?"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:16
-#: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:3
-msgid "Newsletter Subscriptions"
-msgstr "Newsletter-Abos"
-
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
-msgid "Discussion Boards"
-msgstr "Foren"
-
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:20
-msgid "Brand Snippets"
-msgstr "Marken-Snippets"
-
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:17
+#: byceps/blueprints/admin/more/item_service.py:43
 msgid "Global Snippets"
 msgstr "Globale Snippets"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:19
+#: byceps/blueprints/admin/more/item_service.py:59
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:74
 msgid "Newsletters"
 msgstr "Newsletter"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:20
+#: byceps/blueprints/admin/more/item_service.py:65
 msgid "User Badges"
 msgstr "Benutzer-Abzeichen"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
+#: byceps/blueprints/admin/more/item_service.py:77
 #: byceps/blueprints/admin/shop/payment/templates/admin/shop/payment/index.html:4
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:37
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:36
 msgid "Payment gateways"
 msgstr "Bezahldienste"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:24
+#: byceps/blueprints/admin/more/item_service.py:89
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:8
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:6
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:8
 msgid "Webhooks"
 msgstr "Webhooks"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
+#: byceps/blueprints/admin/more/item_service.py:106
+#: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:3
+msgid "Newsletter Subscriptions"
+msgstr "Newsletter-Abos"
+
+#: byceps/blueprints/admin/more/item_service.py:114
+msgid "Discussion Boards"
+msgstr "Foren"
+
+#: byceps/blueprints/admin/more/item_service.py:134
+msgid "Brand Snippets"
+msgstr "Marken-Snippets"
+
+#: byceps/blueprints/admin/more/item_service.py:161
 #: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/create_form.html:6
 #: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:7
 msgid "Organizer Presence"
 msgstr "Orga-Anwesenheit"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:18
+#: byceps/blueprints/admin/more/item_service.py:167
 #: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/index.html:5
 #: byceps/blueprints/admin/shop/paid_products_report/templates/admin/shop/paid_products_report/view.html:6
 msgid "Paid Products Report"
 msgstr "Bericht über bezahlte Produkte"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:19
+#: byceps/blueprints/admin/more/item_service.py:175
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:7
 #: byceps/blueprints/site/timetable/templates/site/timetable/index.html:3
 #: byceps/services/site_navigation/models.py:114
 msgid "Timetable"
 msgstr "Zeitplan"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:20
+#: byceps/blueprints/admin/more/item_service.py:181
 msgid "Tournaments"
 msgstr "Turniere"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_site.html:16
+#: byceps/blueprints/admin/more/item_service.py:192
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_board.html:4
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_board.html:37
 msgid "Discussion Board"

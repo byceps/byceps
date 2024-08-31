@@ -15,6 +15,8 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required
 
+from . import item_service
+
 
 blueprint = create_blueprint('more_admin', __name__)
 
@@ -24,7 +26,9 @@ blueprint = create_blueprint('more_admin', __name__)
 @templated
 def view_global():
     """Show more global admin items."""
-    return {}
+    return {
+        'items': item_service.get_global_items(),
+    }
 
 
 @blueprint.get('/brands/<brand_id>')
@@ -36,7 +40,10 @@ def view_brand(brand_id):
     if brand is None:
         abort(404)
 
-    return {'brand': brand}
+    return {
+        'brand': brand,
+        'items': item_service.get_brand_items(brand),
+    }
 
 
 @blueprint.get('/parties/<party_id>')
@@ -48,7 +55,10 @@ def view_party(party_id):
     if party is None:
         abort(404)
 
-    return {'party': party}
+    return {
+        'party': party,
+        'items': item_service.get_party_items(party),
+    }
 
 
 @blueprint.get('/sites/<site_id>')
@@ -60,4 +70,7 @@ def view_site(site_id):
     if site is None:
         abort(404)
 
-    return {'site': site}
+    return {
+        'site': site,
+        'items': item_service.get_site_items(site),
+    }
