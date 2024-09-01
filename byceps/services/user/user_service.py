@@ -224,7 +224,7 @@ def find_user_by_screen_name(
             db.func.lower(DbUser.screen_name) == screen_name.lower()
         )
     else:
-        stmt = stmt.filter_by(screen_name=screen_name)
+        stmt = stmt.filter(DbUser.screen_name == screen_name)
 
     user_row = db.session.execute(stmt).tuples().one_or_none()
 
