@@ -19,6 +19,11 @@
 {{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}
 
   <h2>{{ _('Products') }}</h2>
+
+  {%- for collection in collections %}
+    {%- if collection.title %}
+  <h3>{{ collection.title }}</h3>
+    {%- endif %}
   <table class="itemlist is-wide">
     <thead>
       <tr>
@@ -28,7 +33,7 @@
       </tr>
     </thead>
     <tbody>
-      {%- for item in product_compilation %}
+      {%- for item in collection.items %}
         {%- with product = item.product %}
           {%- with is_available = (product.quantity > 0) %}
       <tr{% if not is_available %} class="dimmed"{% endif %}>
@@ -45,5 +50,6 @@
       {%- endfor %}
     </tbody>
   </table>
+  {%- endfor %}
 
 {%- endblock %}

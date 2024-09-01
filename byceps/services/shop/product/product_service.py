@@ -30,6 +30,8 @@ from .errors import NoProductsAvailableError
 from .models import (
     Product,
     ProductAttachment,
+    ProductCollection,
+    ProductCollectionItem,
     ProductCompilation,
     ProductCompilationBuilder,
     ProductID,
@@ -648,6 +650,23 @@ def get_attachable_products(product_id: ProductID) -> list[Product]:
     ).all()
 
     return [_db_entity_to_product(db_product) for db_product in db_products]
+
+
+def get_product_collection_for_product_compilation(
+    title: str, compilation: ProductCompilation
+) -> ProductCollection:
+    """Create product collection from product compilation."""
+    return ProductCollection(
+        title=title,
+        items=[
+            ProductCollectionItem(
+                product=compilation_item.product,
+                fixed_quantity=compilation_item.fixed_quantity,
+                has_fixed_quantity=compilation_item.has_fixed_quantity,
+            )
+            for compilation_item in compilation
+        ],
+    )
 
 
 def sum_ordered_products_by_payment_state(

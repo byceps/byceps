@@ -17,7 +17,7 @@
 
 {{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}
 
-  {%- if product_compilation %}
+  {%- if collections %}
   <form action="{{ url_for('.order') }}" method="post" class="disable-submit-button-on-submit">
 
 {% include 'site/shop/order/_order_form_orderer.html' %}

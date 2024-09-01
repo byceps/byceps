@@ -6,6 +6,8 @@ byceps.services.shop.product.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
 from collections.abc import Iterator
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -99,6 +101,19 @@ class ProductImage:
 class ProductAttachment:
     attached_product: Product
     attached_quantity: int
+
+
+@dataclass(frozen=True)
+class ProductCollection:
+    title: str
+    items: list[ProductCollectionItem]
+
+
+@dataclass(frozen=True)
+class ProductCollectionItem:
+    product: Product
+    fixed_quantity: int | None
+    has_fixed_quantity: bool
 
 
 @dataclass(frozen=True, slots=True)

@@ -18,7 +18,11 @@ from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.product import product_domain_service, product_service
 from byceps.services.shop.product.errors import NoProductsAvailableError
-from byceps.services.shop.product.models import ProductCompilation
+from byceps.services.shop.product.models import (
+    ProductCollection,
+    ProductCollectionItem,
+    ProductCompilation,
+)
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront import storefront_service
 from byceps.services.user import user_service
@@ -70,8 +74,13 @@ def order_form(erroneous_form=None):
 
     product_compilation = product_compilation_result.unwrap()
 
+    collection = product_service.get_product_collection_for_product_compilation(
+        '', product_compilation
+    )
+    collections = [collection]
+
     if not g.user.authenticated:
-        return list_products(product_compilation)
+        return list_products(collections)
 
     detail = user_service.get_detail(g.user.id)
 
@@ -86,17 +95,17 @@ def order_form(erroneous_form=None):
     return {
         'form': form,
         'country_names': country_names,
-        'product_compilation': product_compilation,
+        'collections': collections,
     }
 
 
 # No route registered. Intended to be called from another view function.
 @templated
 @subnavigation_for_view('shop')
-def list_products(product_compilation):
+def list_products(collections: list[ProductCollection]):
     """List products for anonymous users to view."""
     return {
-        'product_compilation': product_compilation,
+        'collections': collections,
     }
 
 
@@ -180,6 +189,11 @@ def order_single_form(product_id, erroneous_form=None):
         product_service.get_product_compilation_for_single_product(product.id)
     )
 
+    collection = product_service.get_product_collection_for_product_compilation(
+        '', product_compilation
+    )
+    collections = [collection]
+
     country_names = country_service.get_country_names()
 
     if product.not_directly_orderable:
@@ -210,7 +224,7 @@ def order_single_form(product_id, erroneous_form=None):
         'form': form,
         'country_names': country_names,
         'product': product,
-        'product_compilation': product_compilation,
+        'collections': collections,
     }
 
 

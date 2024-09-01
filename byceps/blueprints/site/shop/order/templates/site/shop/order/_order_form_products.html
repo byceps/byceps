@@ -1,6 +1,11 @@
 {%- from 'macros/forms.html' import form_field_errors %}
 
     <h2>{{ _('Products') }}</h2>
+
+    {%- for collection in collections %}
+      {%- if collection.title %}
+    <h3>{{ collection.title }}</h3>
+      {%- endif %}
     <table class="itemlist is-vcentered is-wide">
       <thead>
         <tr>
@@ -11,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        {%- for item in product_compilation %}
+        {%- for item in collection.items %}
           {%- with product = item.product %}
             {%- with is_available = (product.quantity > 0) %}
         <tr{% if not is_available %} class="dimmed"{% endif %}>
@@ -50,3 +55,4 @@
       </tfoot>
       {%- endif %}
     </table>
+    {%- endfor %}
