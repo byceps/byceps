@@ -20,7 +20,6 @@ from byceps.services.shop.product import product_domain_service, product_service
 from byceps.services.shop.product.errors import NoProductsAvailableError
 from byceps.services.shop.product.models import (
     ProductCollection,
-    ProductCollectionItem,
     ProductCompilation,
 )
 from byceps.services.shop.shop import shop_service
@@ -56,7 +55,7 @@ def order_form(erroneous_form=None):
 
     if storefront.closed:
         flash_notice(gettext('The shop is closed.'))
-        return {'product_compilation': None}
+        return {'collections': None}
 
     product_compilation_result = (
         product_service.get_product_compilation_for_orderable_products(shop.id)
@@ -70,7 +69,7 @@ def order_form(erroneous_form=None):
                 error_message = gettext('An unknown error has occurred.')
 
             flash_error(error_message)
-            return {'product_compilation': None}
+            return {'collections': None}
 
     product_compilation = product_compilation_result.unwrap()
 
