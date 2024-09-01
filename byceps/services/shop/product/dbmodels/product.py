@@ -22,6 +22,7 @@ else:
 from byceps.database import db
 from byceps.services.shop.product.models import (
     ProductID,
+    ProductImageID,
     ProductNumber,
     ProductType,
     ProductTypeParams,
@@ -128,3 +129,31 @@ class DbProduct(db.Model):
             .add_with_lookup('name')
             .build()
         )
+
+
+class DbProductImage(db.Model):
+    """An image to illustrate a product."""
+
+    __tablename__ = 'shop_product_images'
+
+    id: Mapped[ProductImageID] = mapped_column(db.Uuid, primary_key=True)
+    product_id: Mapped[ProductID] = mapped_column(
+        db.Uuid, db.ForeignKey('shop_products.id'), index=True
+    )
+    url_preview: Mapped[str] = mapped_column(db.UnicodeText)
+    url: Mapped[str] = mapped_column(db.UnicodeText)
+    position: Mapped[int]
+
+    def __init__(
+        self,
+        image_id: ProductImageID,
+        product_id: ProductID,
+        url: str,
+        url_preview: str,
+        position: int,
+    ) -> None:
+        self.id = image_id
+        self.product_id = product_id
+        self.url = url
+        self.url_preview = url_preview
+        self.position = position

@@ -59,6 +59,9 @@ def get_product_type_label(product_type: ProductType) -> str:
 ProductTypeParams = dict[str, str | int]
 
 
+ProductImageID = NewType('ProductImageID', UUID)
+
+
 AttachedProductID = NewType('AttachedProductID', UUID)
 
 
@@ -81,6 +84,15 @@ class Product:
     separate_order_required: bool
     processing_required: bool
     archived: bool
+
+
+@dataclass(frozen=True)
+class ProductImage:
+    id: ProductImageID
+    product_id: ProductID
+    url: str
+    url_preview: str
+    position: int
 
 
 @dataclass(frozen=True)

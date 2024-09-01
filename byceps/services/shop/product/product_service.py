@@ -23,7 +23,8 @@ from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from .dbmodels.product import DbProduct
+from . import product_domain_service
+from .dbmodels.product import DbProduct, DbProductImage
 from .dbmodels.attached_product import DbAttachedProduct
 from .errors import NoProductsAvailableError
 from .models import (
@@ -32,6 +33,7 @@ from .models import (
     ProductCompilation,
     ProductCompilationBuilder,
     ProductID,
+    ProductImage,
     ProductNumber,
     ProductType,
     ProductTypeParams,
@@ -200,6 +202,30 @@ def update_product(
     return _db_entity_to_product(db_product)
 
 
+def create_product_image(
+    product: Product, url: str, url_preview: str, position: int
+) -> ProductImage:
+    """Create an image for a product."""
+    # Verify if product exists.
+    _get_db_product(product.id)
+
+    image = product_domain_service.create_product_image(
+        product, url, url_preview, position
+    )
+
+    db_image = DbProductImage(
+        image.id,
+        image.product_id,
+        image.url,
+        image.url_preview,
+        image.position,
+    )
+    db.session.add(db_image)
+    db.session.commit()
+
+    return image
+
+
 def attach_product(
     product_id_to_attach: ProductID,
     quantity: int,
@@ -333,6 +359,36 @@ def is_name_available(shop_id: ShopID, name: str) -> bool:
             .where(db.func.lower(DbProduct.name) == name.lower())
         )
     )
+
+
+def get_images_for_product(product_id: ProductID) -> list[ProductImage]:
+    """Return images for the product."""
+    db_images = db.session.scalars(
+        select(DbProductImage).filter_by(product_id=product_id)
+    ).all()
+
+    return [_db_entity_to_product_image(db_image) for db_image in db_images]
+
+
+def get_images_for_products(
+    product_ids: set[ProductID],
+) -> dict[ProductID, list[ProductImage]]:
+    """Return the images (if any) for each of the products."""
+    db_images = db.session.scalars(
+        select(DbProductImage).filter(
+            DbProductImage.product_id.in_(product_ids)
+        )
+    ).all()
+
+    images = [_db_entity_to_product_image(db_image) for db_image in db_images]
+
+    images.sort(key=lambda image: (image.product_id, image.position))
+
+    images_by_product_id = defaultdict(list)
+    for image in images:
+        images_by_product_id[image.product_id].append(image)
+
+    return dict(images_by_product_id)
 
 
 def find_attached_product(
@@ -668,6 +724,16 @@ def _db_entity_to_product(db_product: DbProduct) -> Product:
         separate_order_required=db_product.separate_order_required,
         processing_required=db_product.processing_required,
         archived=db_product.archived,
+    )
+
+
+def _db_entity_to_product_image(db_image: DbProductImage) -> ProductImage:
+    return ProductImage(
+        id=db_image.id,
+        product_id=db_image.product_id,
+        url=db_image.url,
+        url_preview=db_image.url_preview,
+        position=db_image.position,
     )
 
 

@@ -11,9 +11,16 @@ from datetime import datetime
 from moneyed import Money
 
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .errors import SomeProductsLackFixedQuantityError
-from .models import Product, ProductCompilation, ProductWithQuantity
+from .models import (
+    Product,
+    ProductCompilation,
+    ProductImage,
+    ProductImageID,
+    ProductWithQuantity,
+)
 
 
 def is_product_available_now(product: Product) -> bool:
@@ -53,3 +60,18 @@ def calculate_product_compilation_total_amount(
     total_amount = calculate_total_amount(products_with_quantities)
 
     return Ok(total_amount)
+
+
+def create_product_image(
+    product: Product, url: str, url_preview: str, position: int
+) -> ProductImage:
+    """Create an image for a product."""
+    image_id = ProductImageID(generate_uuid7())
+
+    return ProductImage(
+        id=image_id,
+        product_id=product.id,
+        url=url,
+        url_preview=url_preview,
+        position=position,
+    )
