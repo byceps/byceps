@@ -430,7 +430,7 @@ def make_order_number_sequence():
         shop_id: ShopID,
         *,
         prefix: str | None = None,
-        value: int | None = None,
+        value: int = 0,
     ) -> OrderNumberSequence:
         if prefix is None:
             prefix = f'{generate_token()}-O'

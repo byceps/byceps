@@ -12,6 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from byceps.database import db
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.number_sequence import DbOrderNumberSequence
 from .models.number import (
@@ -22,10 +23,12 @@ from .models.number import (
 
 
 def create_order_number_sequence(
-    shop_id: ShopID, prefix: str, *, value: int | None = None
+    shop_id: ShopID, prefix: str, *, value: int = 0
 ) -> Result[OrderNumberSequence, None]:
     """Create an order number sequence."""
-    db_sequence = DbOrderNumberSequence(shop_id, prefix, value=value)
+    sequence_id = OrderNumberSequenceID(generate_uuid7())
+
+    db_sequence = DbOrderNumberSequence(sequence_id, shop_id, prefix, value)
 
     db.session.add(db_sequence)
 
