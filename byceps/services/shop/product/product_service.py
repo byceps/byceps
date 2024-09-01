@@ -63,11 +63,7 @@ def create_product(
     separate_order_required: bool = False,
 ) -> Product:
     """Create a product."""
-    product_id = ProductID(generate_uuid7())
-    quantity = total_quantity  # Initialize with total quantity.
-
-    db_product = DbProduct(
-        product_id,
+    product = product_domain_service.create_product(
         shop_id,
         item_number,
         type_,
@@ -75,7 +71,6 @@ def create_product(
         price,
         tax_rate,
         total_quantity,
-        quantity,
         max_quantity_per_order,
         processing_required,
         type_params=type_params,
@@ -83,6 +78,25 @@ def create_product(
         available_until=available_until,
         not_directly_orderable=not_directly_orderable,
         separate_order_required=separate_order_required,
+    )
+
+    db_product = DbProduct(
+        product.id,
+        product.shop_id,
+        product.item_number,
+        product.type_,
+        product.name,
+        product.price,
+        product.tax_rate,
+        product.total_quantity,
+        product.quantity,
+        product.max_quantity_per_order,
+        product.processing_required,
+        type_params=product.type_params,
+        available_from=product.available_from,
+        available_until=product.available_until,
+        not_directly_orderable=product.not_directly_orderable,
+        separate_order_required=product.separate_order_required,
     )
 
     db.session.add(db_product)

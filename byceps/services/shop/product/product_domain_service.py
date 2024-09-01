@@ -7,9 +7,11 @@ byceps.services.shop.product.product_domain_service
 """
 
 from datetime import datetime
+from decimal import Decimal
 
 from moneyed import Money
 
+from byceps.services.shop.shop.models import ShopID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -17,10 +19,56 @@ from .errors import SomeProductsLackFixedQuantityError
 from .models import (
     Product,
     ProductCompilation,
+    ProductID,
     ProductImage,
     ProductImageID,
+    ProductNumber,
+    ProductType,
+    ProductTypeParams,
     ProductWithQuantity,
 )
+
+
+def create_product(
+    shop_id: ShopID,
+    item_number: ProductNumber,
+    type_: ProductType,
+    name: str,
+    price: Money,
+    tax_rate: Decimal,
+    total_quantity: int,
+    max_quantity_per_order: int,
+    processing_required: bool,
+    *,
+    type_params: ProductTypeParams | None = None,
+    available_from: datetime | None = None,
+    available_until: datetime | None = None,
+    not_directly_orderable: bool = False,
+    separate_order_required: bool = False,
+) -> Product:
+    """Create a product."""
+    product_id = ProductID(generate_uuid7())
+    quantity = total_quantity  # Initialize with total quantity.
+
+    return Product(
+        id=product_id,
+        shop_id=shop_id,
+        item_number=item_number,
+        type_=type_,
+        type_params=type_params if type_params else {},
+        name=name,
+        price=price,
+        tax_rate=tax_rate,
+        available_from=available_from,
+        available_until=available_until,
+        total_quantity=total_quantity,
+        quantity=quantity,
+        max_quantity_per_order=max_quantity_per_order,
+        not_directly_orderable=not_directly_orderable,
+        separate_order_required=separate_order_required,
+        processing_required=processing_required,
+        archived=False,
+    )
 
 
 def is_product_available_now(product: Product) -> bool:
