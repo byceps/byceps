@@ -11,6 +11,7 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.shop.models import ShopID
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels import DbCatalog, DbCatalogProduct, DbCollection
 from .models import (
@@ -27,7 +28,9 @@ from .models import (
 
 def create_catalog(shop_id: ShopID, title: str) -> Catalog:
     """Create a catalog."""
-    db_catalog = DbCatalog(shop_id, title)
+    catalog_id = CatalogID(generate_uuid7())
+
+    db_catalog = DbCatalog(catalog_id, shop_id, title)
 
     db.session.add(db_catalog)
     db.session.commit()
@@ -102,7 +105,9 @@ def create_collection(catalog_id: CatalogID, title: str) -> Collection:
     if db_catalog is None:
         raise ValueError(f'Unknown catalog ID "{catalog_id}"')
 
-    db_collection = DbCollection(catalog_id, title)
+    collection_id = CollectionID(generate_uuid7())
+
+    db_collection = DbCollection(collection_id, catalog_id, title)
 
     db_catalog.collections.append(db_collection)
     db.session.commit()
@@ -184,7 +189,11 @@ def add_product_to_collection(
     if db_collection is None:
         raise ValueError(f'Unknown collection ID "{collection_id}"')
 
-    db_catalog_product = DbCatalogProduct(collection_id, product_id)
+    assignment_id = CatalogProductID(generate_uuid7())
+
+    db_catalog_product = DbCatalogProduct(
+        assignment_id, collection_id, product_id
+    )
 
     db_collection.catalog_products.append(db_catalog_product)
     db.session.commit()

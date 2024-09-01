@@ -13,7 +13,6 @@ from byceps.database import db
 from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 from .models import CatalogProductID, CatalogID, CollectionID
 
@@ -23,15 +22,16 @@ class DbCatalog(db.Model):
 
     __tablename__ = 'shop_catalogs'
 
-    id: Mapped[CatalogID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[CatalogID] = mapped_column(db.Uuid, primary_key=True)
     shop_id: Mapped[ShopID] = mapped_column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True
     )
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
 
-    def __init__(self, shop_id: ShopID, title: str) -> None:
+    def __init__(
+        self, catalog_id: CatalogID, shop_id: ShopID, title: str
+    ) -> None:
+        self.id = catalog_id
         self.shop_id = shop_id
         self.title = title
 
@@ -45,9 +45,7 @@ class DbCollection(db.Model):
     __tablename__ = 'shop_catalog_collections'
     __table_args__ = (db.UniqueConstraint('catalog_id', 'title'),)
 
-    id: Mapped[CollectionID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[CollectionID] = mapped_column(db.Uuid, primary_key=True)
     catalog_id: Mapped[CatalogID] = mapped_column(
         db.Uuid, db.ForeignKey('shop_catalogs.id'), index=True
     )
@@ -63,7 +61,10 @@ class DbCollection(db.Model):
         ),
     )
 
-    def __init__(self, catalog_id: CatalogID, title: str) -> None:
+    def __init__(
+        self, collection_id: CollectionID, catalog_id: CatalogID, title: str
+    ) -> None:
+        self.id = collection_id
         self.catalog_id = catalog_id
         self.title = title
 
@@ -82,9 +83,7 @@ class DbCatalogProduct(db.Model):
     __tablename__ = 'shop_catalog_products'
     __table_args__ = (db.UniqueConstraint('collection_id', 'product_id'),)
 
-    id: Mapped[CatalogProductID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[CatalogProductID] = mapped_column(db.Uuid, primary_key=True)
     collection_id: Mapped[CollectionID] = mapped_column(
         db.Uuid,
         db.ForeignKey('shop_catalog_collections.id'),
@@ -106,7 +105,11 @@ class DbCatalogProduct(db.Model):
     )
 
     def __init__(
-        self, collection_id: CollectionID, product_id: ProductID
+        self,
+        assignment_id: CatalogProductID,
+        collection_id: CollectionID,
+        product_id: ProductID,
     ) -> None:
+        self.id = assignment_id
         self.collection_id = collection_id
         self.product_id = product_id
