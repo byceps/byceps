@@ -29,16 +29,18 @@
     </thead>
     <tbody>
       {%- for item in product_compilation %}
-        {%- with is_available = (item.product.quantity > 0) %}
+        {%- with product = item.product %}
+          {%- with is_available = (product.quantity > 0) %}
       <tr{% if not is_available %} class="dimmed"{% endif %}>
-        <td>{{ item.product.name }}
+        <td>{{ product.name }}
           {%- if not is_available %}
           <br><em>{{ _('currently not available') }}</em>
           {%- endif -%}
         </td>
-        <td class="number">{{ item.product.tax_rate|tax_rate_as_percentage }}</td>
-        <td class="number">{{ item.product.price|moneyformat }}</td>
+        <td class="number">{{ product.tax_rate|tax_rate_as_percentage }}</td>
+        <td class="number">{{ product.price|moneyformat }}</td>
       </tr>
+          {%- endwith %}
         {%- endwith %}
       {%- endfor %}
     </tbody>
