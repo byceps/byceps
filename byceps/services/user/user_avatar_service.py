@@ -9,7 +9,6 @@ byceps.services.user.user_avatar_service
 from typing import BinaryIO
 
 from flask import current_app
-from sqlalchemy import select
 
 from byceps.database import db
 from byceps.events.user import (
@@ -24,7 +23,6 @@ from byceps.util.result import Err, Ok, Result
 
 from . import user_avatar_domain_service, user_log_service, user_service
 from .dbmodels.avatar import DbUserAvatar
-from .dbmodels.user import DbUser
 from .models.user import User, UserAvatar
 
 
@@ -108,22 +106,6 @@ def remove_avatar_image(
     db.session.commit()
 
     return event
-
-
-def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> str | None:
-    """Return the URL of the current avatar of the user with that hashed
-    email address, or `None` if not set.
-    """
-    db_avatar = db.session.execute(
-        select(DbUserAvatar)
-        .join(DbUser)
-        .filter(db.func.md5(DbUser.email_address) == md5_hash)
-    ).scalar_one_or_none()
-
-    if db_avatar is None:
-        return None
-
-    return db_avatar.url
 
 
 def _db_entity_to_item(db_avatar: DbUserAvatar) -> UserAvatar:

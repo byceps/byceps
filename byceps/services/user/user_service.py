@@ -193,6 +193,26 @@ def find_user_by_email_address(email_address: str) -> User | None:
     return _user_row_to_dto(user_row)
 
 
+def find_user_by_email_address_md5_hash(md5_hash: str) -> User | None:
+    """Return the user with that MD5 hash for their email address, or
+    `None` if not found.
+    """
+    user_row = (
+        db.session.execute(
+            _get_user_stmt(include_avatar=True).filter(
+                db.func.md5(DbUser.email_address) == md5_hash
+            )
+        )
+        .tuples()
+        .one_or_none()
+    )
+
+    if user_row is None:
+        return None
+
+    return _user_row_to_dto(user_row)
+
+
 def find_user_by_screen_name(
     screen_name: str, *, case_insensitive=False
 ) -> User | None:
