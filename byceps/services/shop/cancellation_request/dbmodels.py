@@ -24,7 +24,6 @@ from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 from .models import CancellationRequestState, DonationExtent
 
@@ -38,9 +37,7 @@ class DbCancellationRequest(db.Model):
 
     __tablename__ = 'shop_order_cancellation_requests'
 
-    id: Mapped[UUID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     shop_id: Mapped[ShopID] = mapped_column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True
@@ -65,6 +62,7 @@ class DbCancellationRequest(db.Model):
 
     def __init__(
         self,
+        request_id: UUID,
         created_at: datetime,
         shop_id: ShopID,
         order_id: OrderID,
@@ -75,6 +73,7 @@ class DbCancellationRequest(db.Model):
         recipient_name: str | None,
         recipient_iban: str | None,
     ) -> None:
+        self.id = request_id
         self.created_at = created_at
         self.shop_id = shop_id
         self.order_id = order_id

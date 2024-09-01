@@ -16,6 +16,7 @@ from byceps.database import db, paginate, Pagination
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels import DbCancellationRequest
 from .models import (
@@ -105,9 +106,11 @@ def _create_request(
     recipient_iban: str | None,
 ) -> CancellationRequest:
     """Create a cancellation request for an order."""
+    request_id = generate_uuid7()
     now = datetime.utcnow()
 
     db_request = DbCancellationRequest(
+        request_id,
         now,
         shop_id,
         order_id,
