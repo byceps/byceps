@@ -15,7 +15,7 @@
           {%- with product = item.product %}
             {%- with is_available = (product.quantity > 0) %}
         <tr{% if not is_available %} class="dimmed"{% endif %}>
-          {%- if item.has_fixed_quantity() %}
+          {%- if item.has_fixed_quantity %}
           <td class="number">{{ item.fixed_quantity }}</td>
           {%- else %}
           <td>

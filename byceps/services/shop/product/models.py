@@ -125,6 +125,7 @@ class ProductCompilationItem:
                 'Fixed quantity, if given, must be a positive number.'
             )
 
+    @property
     def has_fixed_quantity(self) -> bool:
         return self.fixed_quantity is not None
 
