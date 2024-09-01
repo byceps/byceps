@@ -177,30 +177,41 @@ def _user_row_to_dto(
 
 def find_user_by_email_address(email_address: str) -> User | None:
     """Return the user with that email address, or `None` if not found."""
-    db_user = db.session.scalars(
-        select(DbUser).filter(
-            db.func.lower(DbUser.email_address) == email_address.lower()
+    user_row = (
+        db.session.execute(
+            _get_user_stmt(include_avatar=True).filter(
+                db.func.lower(DbUser.email_address) == email_address.lower()
+            )
         )
-    ).one_or_none()
+        .tuples()
+        .one_or_none()
+    )
 
-    if db_user is None:
+    if user_row is None:
         return None
 
-    return _db_entity_to_user(db_user)
+    return _user_row_to_dto(user_row)
 
 
 def find_user_by_screen_name(
     screen_name: str, *, case_insensitive=False
 ) -> User | None:
     """Return the user with that screen name, or `None` if not found."""
-    db_user = find_db_user_by_screen_name(
-        screen_name, case_insensitive=case_insensitive
-    )
+    stmt = _get_user_stmt(include_avatar=True)
 
-    if db_user is None:
+    if case_insensitive:
+        stmt = stmt.filter(
+            db.func.lower(DbUser.screen_name) == screen_name.lower()
+        )
+    else:
+        stmt = stmt.filter_by(screen_name=screen_name)
+
+    user_row = db.session.execute(stmt).tuples().one_or_none()
+
+    if user_row is None:
         return None
 
-    return _db_entity_to_user(db_user)
+    return _user_row_to_dto(user_row)
 
 
 def find_db_user_by_screen_name(
