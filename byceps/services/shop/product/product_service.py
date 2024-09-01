@@ -206,8 +206,13 @@ def attach_product(
     product_id_to_attach_to: ProductID,
 ) -> None:
     """Attach a product to another product."""
+    attached_product_id = AttachedProductID(generate_uuid7())
+
     db_attached_product = DbAttachedProduct(
-        product_id_to_attach, quantity, product_id_to_attach_to
+        attached_product_id,
+        product_id_to_attach,
+        quantity,
+        product_id_to_attach_to,
     )
 
     db.session.add(db_attached_product)

@@ -10,7 +10,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.shop.product.models import ProductID, AttachedProductID
-from byceps.util.uuid import generate_uuid7
 
 from .product import DbProduct
 
@@ -23,9 +22,7 @@ class DbAttachedProduct(db.Model):
         db.UniqueConstraint('product_id', 'attached_to_product_id'),
     )
 
-    id: Mapped[AttachedProductID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[AttachedProductID] = mapped_column(db.Uuid, primary_key=True)
     product_id: Mapped[ProductID] = mapped_column(
         db.Uuid, db.ForeignKey('shop_products.id'), index=True
     )
@@ -46,10 +43,12 @@ class DbAttachedProduct(db.Model):
 
     def __init__(
         self,
+        attached_product_id: AttachedProductID,
         product_id: ProductID,
         quantity: int,
         attached_to_product_id: ProductID,
     ) -> None:
+        self.id = attached_product_id
         self.product_id = product_id
         self.quantity = quantity
         self.attached_to_product_id = attached_to_product_id
