@@ -46,7 +46,7 @@ def find_active_user(
     """
     stmt = _get_user_stmt(include_avatar)
 
-    row = (
+    user_row = (
         db.session.execute(
             stmt.filter(DbUser.initialized == True)  # noqa: E712
             .filter(DbUser.suspended == False)  # noqa: E712
@@ -57,10 +57,10 @@ def find_active_user(
         .one_or_none()
     )
 
-    if row is None:
+    if user_row is None:
         return None
 
-    return _user_row_to_dto(row)
+    return _user_row_to_dto(user_row)
 
 
 def find_user(
@@ -72,7 +72,7 @@ def find_user(
 
     Include avatar URL if requested.
     """
-    row = (
+    user_row = (
         db.session.execute(
             _get_user_stmt(include_avatar).filter(DbUser.id == user_id)
         )
@@ -80,10 +80,10 @@ def find_user(
         .one_or_none()
     )
 
-    if row is None:
+    if user_row is None:
         return None
 
-    return _user_row_to_dto(row)
+    return _user_row_to_dto(user_row)
 
 
 def get_user(user_id: UserID, *, include_avatar: bool = False) -> User:
@@ -111,7 +111,7 @@ def get_users(
     if not user_ids:
         return set()
 
-    rows = (
+    user_rows = (
         db.session.execute(
             _get_user_stmt(include_avatars).filter(
                 DbUser.id.in_(frozenset(user_ids))
@@ -121,7 +121,7 @@ def get_users(
         .all()
     )
 
-    return {_user_row_to_dto(row) for row in rows}
+    return {_user_row_to_dto(user_row) for user_row in user_rows}
 
 
 def get_users_indexed_by_id(
@@ -155,9 +155,13 @@ def _get_user_stmt(include_avatar: bool) -> Select:
 
 
 def _user_row_to_dto(
-    row: tuple[UserID, str, bool, bool, bool, str | None, DbUserAvatar | None],
+    user_row: tuple[
+        UserID, str, bool, bool, bool, str | None, DbUserAvatar | None
+    ],
 ) -> User:
-    user_id, screen_name, initialized, suspended, deleted, locale, db_avatar = row
+    user_id, screen_name, initialized, suspended, deleted, locale, db_avatar = (
+        user_row
+    )
     avatar_url = db_avatar.url if (db_avatar is not None) else None
 
     return User(
@@ -173,30 +177,30 @@ def _user_row_to_dto(
 
 def find_user_by_email_address(email_address: str) -> User | None:
     """Return the user with that email address, or `None` if not found."""
-    user = db.session.scalars(
+    db_user = db.session.scalars(
         select(DbUser).filter(
             db.func.lower(DbUser.email_address) == email_address.lower()
         )
     ).one_or_none()
 
-    if user is None:
+    if db_user is None:
         return None
 
-    return _db_entity_to_user(user)
+    return _db_entity_to_user(db_user)
 
 
 def find_user_by_screen_name(
     screen_name: str, *, case_insensitive=False
 ) -> User | None:
     """Return the user with that screen name, or `None` if not found."""
-    user = find_db_user_by_screen_name(
+    db_user = find_db_user_by_screen_name(
         screen_name, case_insensitive=case_insensitive
     )
 
-    if user is None:
+    if db_user is None:
         return None
 
-    return _db_entity_to_user(user)
+    return _db_entity_to_user(db_user)
 
 
 def find_db_user_by_screen_name(
@@ -226,17 +230,17 @@ def find_user_with_details(user_id: UserID) -> DbUser | None:
 
 def get_db_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
-    user = db.session.get(DbUser, user_id)
+    db_user = db.session.get(DbUser, user_id)
 
-    if user is None:
+    if db_user is None:
         raise ValueError(f"Unknown user ID '{user_id}'")
 
-    return user
+    return db_user
 
 
 def find_user_for_admin(user_id: UserID) -> UserForAdmin | None:
     """Return the user with that ID, or `None` if not found."""
-    user = db.session.scalars(
+    db_user = db.session.scalars(
         select(DbUser)
         .options(
             db.joinedload(DbUser.avatar),
@@ -247,10 +251,10 @@ def find_user_for_admin(user_id: UserID) -> UserForAdmin | None:
         .filter_by(id=user_id)
     ).one_or_none()
 
-    if user is None:
+    if db_user is None:
         return None
 
-    return _db_entity_to_user_for_admin(user)
+    return _db_entity_to_user_for_admin(db_user)
 
 
 def get_user_for_admin(user_id: UserID) -> UserForAdmin:
@@ -268,7 +272,7 @@ def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
     if not user_ids:
         return set()
 
-    users = (
+    db_users = (
         db.session.scalars(
             select(DbUser)
             .options(
@@ -283,7 +287,7 @@ def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
         .all()
     )
 
-    return {_db_entity_to_user_for_admin(user) for user in users}
+    return {_db_entity_to_user_for_admin(db_user) for db_user in db_users}
 
 
 def get_users_for_admin_indexed_by_id(
@@ -477,9 +481,9 @@ def get_users_created_since(
     if limit is not None:
         stmt = stmt.limit(limit)
 
-    users = db.session.scalars(stmt).unique().all()
+    db_users = db.session.scalars(stmt).unique().all()
 
-    return [_db_entity_to_user_for_admin(u) for u in users]
+    return [_db_entity_to_user_for_admin(db_user) for db_user in db_users]
 
 
 def get_users_paginated(
