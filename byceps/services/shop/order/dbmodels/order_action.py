@@ -11,7 +11,6 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-
 if TYPE_CHECKING:
     hybrid_property = property
 else:
@@ -22,7 +21,6 @@ from byceps.services.shop.product.dbmodels.product import DbProduct
 from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import PaymentState
-from byceps.util.uuid import generate_uuid4
 
 
 class DbOrderAction(db.Model):
@@ -32,9 +30,7 @@ class DbOrderAction(db.Model):
 
     __tablename__ = 'shop_order_actions'
 
-    id: Mapped[UUID] = mapped_column(
-        db.Uuid, default=generate_uuid4, primary_key=True
-    )
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     product_id: Mapped[ProductID] = mapped_column(
         db.Uuid, db.ForeignKey('shop_products.id'), index=True
     )
@@ -49,11 +45,13 @@ class DbOrderAction(db.Model):
 
     def __init__(
         self,
+        action_id: UUID,
         product_id: ProductID,
         payment_state: PaymentState,
         procedure: str,
         parameters: ActionParameters,
     ) -> None:
+        self.id = action_id
         self.product_id = product_id
         self.payment_state = payment_state
         self.procedure = procedure

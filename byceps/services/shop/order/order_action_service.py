@@ -15,6 +15,7 @@ from byceps.database import db
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductID
 from byceps.services.user.models.user import User
+from byceps.util.uuid import generate_uuid7
 
 from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles
@@ -49,8 +50,10 @@ def create_action(
     parameters: ActionParameters,
 ) -> None:
     """Create an order action."""
+    action_id = generate_uuid7()
+
     db_action = DbOrderAction(
-        product_id, payment_state, procedure_name, parameters
+        action_id, product_id, payment_state, procedure_name, parameters
     )
 
     db.session.add(db_action)
