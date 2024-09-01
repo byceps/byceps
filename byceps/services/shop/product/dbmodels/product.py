@@ -28,7 +28,6 @@ from byceps.services.shop.product.models import (
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 
 class DbProduct(db.Model):
@@ -40,9 +39,7 @@ class DbProduct(db.Model):
         db.CheckConstraint('available_from < available_until'),
     )
 
-    id: Mapped[ProductID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[ProductID] = mapped_column(db.Uuid, primary_key=True)
     shop_id: Mapped[ShopID] = mapped_column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True
     )
@@ -62,13 +59,14 @@ class DbProduct(db.Model):
     total_quantity: Mapped[int]
     quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity >= 0'))
     max_quantity_per_order: Mapped[int]
-    not_directly_orderable: Mapped[bool] = mapped_column(default=False)
-    separate_order_required: Mapped[bool] = mapped_column(default=False)
+    not_directly_orderable: Mapped[bool]
+    separate_order_required: Mapped[bool]
     processing_required: Mapped[bool]
     archived: Mapped[bool]
 
     def __init__(
         self,
+        product_id: ProductID,
         shop_id: ShopID,
         item_number: ProductNumber,
         type_: ProductType,
@@ -86,6 +84,7 @@ class DbProduct(db.Model):
         separate_order_required: bool = False,
         archived: bool = False,
     ) -> None:
+        self.id = product_id
         self.shop_id = shop_id
         self.item_number = item_number
         self._type = type_.name

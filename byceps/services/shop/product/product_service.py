@@ -21,6 +21,7 @@ from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.product import DbProduct
 from .dbmodels.attached_product import DbAttachedProduct
@@ -60,7 +61,10 @@ def create_product(
     separate_order_required: bool = False,
 ) -> Product:
     """Create a product."""
+    product_id = ProductID(generate_uuid7())
+
     db_product = DbProduct(
+        product_id,
         shop_id,
         item_number,
         type_,
