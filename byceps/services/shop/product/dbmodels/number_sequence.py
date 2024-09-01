@@ -12,7 +12,6 @@ from byceps.database import db
 from byceps.services.shop.product.models import ProductNumberSequenceID
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid4
 
 
 class DbProductNumberSequence(db.Model):
@@ -21,28 +20,29 @@ class DbProductNumberSequence(db.Model):
     __tablename__ = 'shop_product_number_sequences'
 
     id: Mapped[ProductNumberSequenceID] = mapped_column(
-        db.Uuid, default=generate_uuid4, primary_key=True
+        db.Uuid, primary_key=True
     )
     shop_id: Mapped[ShopID] = mapped_column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True
     )
     prefix: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    value: Mapped[int] = mapped_column(default=0)
-    archived: Mapped[bool] = mapped_column(default=False)
+    value: Mapped[int]
+    archived: Mapped[bool]
 
     def __init__(
         self,
+        sequence_id: ProductNumberSequenceID,
         shop_id: ShopID,
         prefix: str,
+        value: int,
         *,
-        value: int | None = 0,
+        archived: bool = False,
     ) -> None:
-        if value is None:
-            value = 0
-
+        self.id = sequence_id
         self.shop_id = shop_id
         self.prefix = prefix
         self.value = value
+        self.archived = archived
 
     def __repr__(self) -> str:
         return (
