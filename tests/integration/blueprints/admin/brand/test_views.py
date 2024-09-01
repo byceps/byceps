@@ -10,13 +10,13 @@ from byceps.services.email import email_config_service
 BASE_URL = 'http://admin.acmecon.test'
 
 
-def test_index(brand_admin_client, brand):
+def test_index(brand_admin_client, brand, email_config):
     url = f'{BASE_URL}/brands/'
     response = brand_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_view(brand_admin_client, brand):
+def test_view(brand_admin_client, brand, email_config):
     url = f'{BASE_URL}/brands/brands/{brand.id}'
     response = brand_admin_client.get(url)
     assert response.status_code == 200
@@ -54,7 +54,7 @@ def test_create(brand_admin_client):
     assert email_config.contact_address == 'info@galant.example'
 
 
-def test_update_form(brand_admin_client, brand):
+def test_update_form(brand_admin_client, brand, email_config):
     url = f'{BASE_URL}/brands/brands/{brand.id}/update'
     response = brand_admin_client.get(url)
     assert response.status_code == 200
