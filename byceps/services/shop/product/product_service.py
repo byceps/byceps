@@ -64,6 +64,7 @@ def create_product(
 ) -> Product:
     """Create a product."""
     product_id = ProductID(generate_uuid7())
+    quantity = total_quantity  # Initialize with total quantity.
 
     db_product = DbProduct(
         product_id,
@@ -74,6 +75,7 @@ def create_product(
         price,
         tax_rate,
         total_quantity,
+        quantity,
         max_quantity_per_order,
         processing_required,
         type_params=type_params,

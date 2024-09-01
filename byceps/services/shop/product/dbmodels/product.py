@@ -75,6 +75,7 @@ class DbProduct(db.Model):
         price: Money,
         tax_rate: Decimal,
         total_quantity: int,
+        quantity: int,
         max_quantity_per_order: int,
         processing_required: bool,
         *,
@@ -97,7 +98,7 @@ class DbProduct(db.Model):
         self.available_from = available_from
         self.available_until = available_until
         self.total_quantity = total_quantity
-        self.quantity = total_quantity  # Initialize with total quantity.
+        self.quantity = quantity
         self.max_quantity_per_order = max_quantity_per_order
         self.not_directly_orderable = not_directly_orderable
         self.separate_order_required = separate_order_required
