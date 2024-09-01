@@ -139,6 +139,8 @@ def view(product_id):
 
     totals = ordered_products_service.count_ordered_products(product.id)
 
+    images = product_service.get_images_for_product(product.id)
+
     actions = order_action_service.get_actions_for_product(product.id)
     actions.sort(key=lambda a: a.payment_state.name, reverse=True)
 
@@ -151,6 +153,7 @@ def view(product_id):
         'ticket_party': ticket_party,
         'totals': totals,
         'PaymentState': PaymentState,
+        'images': images,
         'actions': actions,
     }
 

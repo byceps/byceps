@@ -1,4 +1,5 @@
 {% extends 'layout/admin/shop/product.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/product.html' import render_product_link, render_product_temporal_availability %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {% from 'macros/icons.html' import render_icon %}
@@ -187,6 +188,19 @@
 
     </div>
   </div>
+
+  <h2>{{ _('Images') }} {{ render_extra_in_heading(images|length) }}</h2>
+  {%- if images %}
+  <div class="grid">
+    {%- for image in images|sort(attribute='position') %}
+      <div class="box"><a href="{{ image.url }}"><img src="{{ image.url_preview }}"></a></div>
+    {%- endfor %}
+  </div>
+  {%- else %}
+  <div class="box">
+    <div class="dimmed-box centered">{{ _('No images available.') }}</div>
+  </div>
+  {%- endif %}
 
   <div class="row row--space-between is-vcentered">
     <div>
