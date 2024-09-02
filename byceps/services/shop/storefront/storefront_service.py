@@ -11,6 +11,7 @@ from collections.abc import Iterable
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.services.shop.catalog import catalog_service
 from byceps.services.shop.catalog.models import Catalog
 from byceps.services.shop.order.models.number import OrderNumberSequenceID
 from byceps.services.shop.payment.models import PaymentGateway
@@ -44,7 +45,7 @@ def create_storefront(
     db.session.add(db_storefront)
     db.session.commit()
 
-    return _db_entity_to_storefront(db_storefront)
+    return _db_entity_to_storefront(db_storefront, catalog)
 
 
 def update_storefront(
@@ -62,7 +63,7 @@ def update_storefront(
 
     db.session.commit()
 
-    return _db_entity_to_storefront(db_storefront)
+    return _db_entity_to_storefront(db_storefront, catalog)
 
 
 def delete_storefront(storefront_id: StorefrontID) -> None:
@@ -80,7 +81,13 @@ def find_storefront(storefront_id: StorefrontID) -> Storefront | None:
     if db_storefront is None:
         return None
 
-    return _db_entity_to_storefront(db_storefront)
+    catalog = (
+        catalog_service.find_catalog(db_storefront.catalog_id)
+        if db_storefront.catalog_id
+        else None
+    )
+
+    return _db_entity_to_storefront(db_storefront, catalog)
 
 
 def _find_db_storefront(storefront_id: StorefrontID) -> DbStorefront | None:
@@ -119,29 +126,48 @@ def find_storefronts(storefront_ids: set[StorefrontID]) -> list[Storefront]:
         return []
 
     db_storefronts = db.session.scalars(
-        select(DbStorefront).filter(DbStorefront.id.in_(storefront_ids))
+        select(DbStorefront)
+        .options(db.joinedload(DbStorefront.catalog))
+        .filter(DbStorefront.id.in_(storefront_ids))
     ).all()
 
     return [
-        _db_entity_to_storefront(db_storefront)
+        _db_entity_to_storefront(
+            db_storefront,
+            catalog=catalog_service._db_entity_to_catalog(db_storefront.catalog)
+            if db_storefront.catalog
+            else None,
+        )
         for db_storefront in db_storefronts
     ]
 
 
 def get_storefronts_for_shop(shop_id: ShopID) -> set[Storefront]:
     """Return all storefronts for that shop."""
-    rows = db.session.scalars(
-        select(DbStorefront).filter_by(shop_id=shop_id)
+    db_storefronts = db.session.scalars(
+        select(DbStorefront)
+        .options(db.joinedload(DbStorefront.catalog))
+        .filter(DbStorefront.shop_id == shop_id)
     ).all()
 
-    return {_db_entity_to_storefront(row) for row in rows}
+    return {
+        _db_entity_to_storefront(
+            db_storefront,
+            catalog=catalog_service._db_entity_to_catalog(db_storefront.catalog)
+            if db_storefront.catalog
+            else None,
+        )
+        for db_storefront in db_storefronts
+    }
 
 
-def _db_entity_to_storefront(db_storefront: DbStorefront) -> Storefront:
+def _db_entity_to_storefront(
+    db_storefront: DbStorefront, catalog: Catalog | None
+) -> Storefront:
     return Storefront(
         id=db_storefront.id,
         shop_id=db_storefront.shop_id,
-        catalog_id=db_storefront.catalog_id,
+        catalog=catalog,
         order_number_sequence_id=db_storefront.order_number_sequence_id,
         closed=db_storefront.closed,
     )
@@ -155,7 +181,7 @@ def to_storefront_for_admin(
     return StorefrontForAdmin(
         id=storefront.id,
         shop_id=storefront.shop_id,
-        catalog_id=storefront.catalog_id,
+        catalog=storefront.catalog,
         order_number_sequence_id=storefront.order_number_sequence_id,
         closed=storefront.closed,
         order_number_prefix=order_number_prefix,

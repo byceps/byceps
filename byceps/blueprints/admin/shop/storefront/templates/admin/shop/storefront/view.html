@@ -30,7 +30,7 @@
       </div>
       <div>
         <div class="data-label">{{ _('Catalog') }}</div>
-        <div class="data-value">{{ storefront.catalog_id|fallback }}</div>
+        <div class="data-value">{{ storefront.catalog.id if storefront.catalog else None|fallback }}</div>
       </div>
       <div>
         <div class="data-label">{{ _('Payment gateways') }}</div>

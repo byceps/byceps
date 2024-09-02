@@ -9,7 +9,7 @@ byceps.services.shop.storefront.models
 from dataclasses import dataclass
 from typing import NewType
 
-from byceps.services.shop.catalog.models import CatalogID
+from byceps.services.shop.catalog.models import Catalog
 from byceps.services.shop.order.models.number import OrderNumberSequenceID
 from byceps.services.shop.payment.models import PaymentGateway
 from byceps.services.shop.shop.models import ShopID
@@ -22,7 +22,7 @@ StorefrontID = NewType('StorefrontID', str)
 class Storefront:
     id: StorefrontID
     shop_id: ShopID
-    catalog_id: CatalogID | None
+    catalog: Catalog | None
     order_number_sequence_id: OrderNumberSequenceID
     closed: bool
 
