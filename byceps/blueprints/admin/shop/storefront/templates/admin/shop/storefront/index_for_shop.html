@@ -43,7 +43,15 @@
       <tr>
         <td><a href="{{ url_for('.view', storefront_id=storefront.id) }}"><strong>{{ storefront.id }}</strong></a></td>
         <td>{{ storefront.order_number_prefix }}</td>
-        <td>{{ storefront.catalog.title if storefront.catalog else None|fallback }}</td>
+        <td>
+          {%- with catalog = storefront.catalog %}
+            {%- if catalog %}
+          <a href="{{ url_for('shop_catalog_admin.view', catalog_id=catalog.id) }}">{{ catalog.title }}</a>
+            {%- else %}
+          {{ None|fallback }}
+            {%- endif %}
+          {%- endwith %}
+        </td>
         <td>{{ render_enabled_payment_gateways(storefront.enabled_payment_gateways) }}</td>
         <td>{{ render_storefront_status(storefront) }}</td>
       </tr>

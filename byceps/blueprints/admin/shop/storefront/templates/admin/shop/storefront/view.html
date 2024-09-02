@@ -30,7 +30,15 @@
       </div>
       <div>
         <div class="data-label">{{ _('Catalog') }}</div>
-        <div class="data-value">{{ storefront.catalog.title if storefront.catalog else None|fallback }}</div>
+        <div class="data-value">
+          {%- with catalog = storefront.catalog %}
+            {%- if catalog %}
+          <a href="{{ url_for('shop_catalog_admin.view', catalog_id=catalog.id) }}">{{ catalog.title }}</a>
+            {%- else %}
+          {{ None|fallback }}
+            {%- endif %}
+          {%- endwith %}
+        </div>
       </div>
       <div>
         <div class="data-label">{{ _('Payment gateways') }}</div>
