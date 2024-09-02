@@ -7965,8 +7965,8 @@ msgstr "Zurück zur Auswahl"
 
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:15
 #, python-format
-msgid "You can cancel orders with status %(status)s yourself."
-msgstr "Du kannst Bestellungen mit dem Status %(status)s selbst stornieren."
+msgid "You can cancel orders with status %(payment_state)s yourself."
+msgstr "Du kannst Bestellungen mit dem Status %(payment_state)s selbst stornieren."
 
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:38
 msgid "You have not placed any orders."
