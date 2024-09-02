@@ -152,6 +152,8 @@ def create(shop_id):
     catalog_id = form.catalog_id.data or None
     order_number_sequence_id = form.order_number_sequence_id.data
 
+    catalog = catalog_service.get_catalog(catalog_id) if catalog_id else None
+
     if not order_number_sequence_id:
         flash_error(gettext('No valid order number sequence was specified.'))
         return create_form(shop_id, form)
@@ -168,7 +170,7 @@ def create(shop_id):
         shop.id,
         order_number_sequence.id,
         closed=False,
-        catalog_id=catalog_id,
+        catalog=catalog,
     )
 
     flash_success(
@@ -235,8 +237,10 @@ def update(storefront_id):
     catalog_id = form.catalog_id.data or None
     closed = form.closed.data
 
+    catalog = catalog_service.get_catalog(catalog_id) if catalog_id else None
+
     storefront = storefront_service.update_storefront(
-        storefront.id, catalog_id, order_number_sequence_id, closed
+        storefront.id, catalog, order_number_sequence_id, closed
     )
 
     flash_success(

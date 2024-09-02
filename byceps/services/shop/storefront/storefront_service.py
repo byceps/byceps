@@ -11,7 +11,7 @@ from collections.abc import Iterable
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.shop.catalog.models import CatalogID
+from byceps.services.shop.catalog.models import Catalog
 from byceps.services.shop.order.models.number import OrderNumberSequenceID
 from byceps.services.shop.payment.models import PaymentGateway
 from byceps.services.shop.shop.models import ShopID
@@ -30,7 +30,7 @@ def create_storefront(
     order_number_sequence_id: OrderNumberSequenceID,
     closed: bool,
     *,
-    catalog_id: CatalogID | None = None,
+    catalog: Catalog | None = None,
 ) -> Storefront:
     """Create a storefront."""
     db_storefront = DbStorefront(
@@ -38,7 +38,7 @@ def create_storefront(
         shop_id,
         order_number_sequence_id,
         closed,
-        catalog_id=catalog_id,
+        catalog_id=catalog.id if catalog else None,
     )
 
     db.session.add(db_storefront)
@@ -49,14 +49,14 @@ def create_storefront(
 
 def update_storefront(
     storefront_id: StorefrontID,
-    catalog_id: CatalogID,
+    catalog: Catalog | None,
     order_number_sequence_id: OrderNumberSequenceID,
     closed: bool,
 ) -> Storefront:
     """Update a storefront."""
     db_storefront = _get_db_storefront(storefront_id)
 
-    db_storefront.catalog_id = catalog_id
+    db_storefront.catalog_id = catalog.id if catalog else None
     db_storefront.order_number_sequence_id = order_number_sequence_id
     db_storefront.closed = closed
 
