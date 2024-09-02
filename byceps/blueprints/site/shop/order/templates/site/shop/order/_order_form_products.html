@@ -2,7 +2,8 @@
 
     <h2>{{ _('Products') }}</h2>
 
-    {%- for collection in collections %}
+  {%- for collection in collections %}
+    {%- if collection.items %}
       {%- if collection.title %}
     <h3>{{ collection.title }}</h3>
       {%- endif %}
@@ -55,4 +56,5 @@
       </tfoot>
       {%- endif %}
     </table>
-    {%- endfor %}
+    {%- endif %}
+  {%- endfor %}
