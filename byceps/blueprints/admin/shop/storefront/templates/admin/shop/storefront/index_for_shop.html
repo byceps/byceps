@@ -43,7 +43,7 @@
       <tr>
         <td><a href="{{ url_for('.view', storefront_id=storefront.id) }}"><strong>{{ storefront.id }}</strong></a></td>
         <td>{{ storefront.order_number_prefix }}</td>
-        <td>{{ storefront.catalog.id if storefront.catalog else None|fallback }}</td>
+        <td>{{ storefront.catalog.title if storefront.catalog else None|fallback }}</td>
         <td>{{ render_enabled_payment_gateways(storefront.enabled_payment_gateways) }}</td>
         <td>{{ render_storefront_status(storefront) }}</td>
       </tr>
