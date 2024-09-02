@@ -3507,11 +3507,11 @@ msgstr "beschauliche"
 
 #: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:60
 msgid "crass"
-msgstr "krass"
+msgstr "krasse"
 
 #: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:61
 msgid "cute"
-msgstr "niedlich"
+msgstr "niedliche"
 
 #: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:62
 msgid "dearest"
@@ -3575,7 +3575,7 @@ msgstr "erquickende"
 
 #: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:77
 msgid "legendary"
-msgstr "legendär"
+msgstr "legendäre"
 
 #: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:78
 msgid "lively"
@@ -3591,11 +3591,11 @@ msgstr "erbarmungslose"
 
 #: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:81
 msgid "passable"
-msgstr "passabel"
+msgstr "passable"
 
 #: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:82
 msgid "phenomenal"
-msgstr "phänomenal"
+msgstr "phänomenale"
 
 #: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:83
 msgid "refreshing"
