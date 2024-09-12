@@ -97,7 +97,7 @@ def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
         if 'initiator_id' in entry.data
     }
     users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = {str(user.id): user for user in users}
+    users_by_id = {user.id: user for user in users}
 
     for entry in log_entries:
         data = {
@@ -202,7 +202,7 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
 
 
 def _get_additional_data(
-    log_entry: UserLogEntry, users_by_id: dict[str, User]
+    log_entry: UserLogEntry, users_by_id: dict[UserID, User]
 ) -> Iterator[tuple[str, Any]]:
     if log_entry.event_type in {
         'user-avatar-removed',
@@ -260,10 +260,11 @@ def _get_additional_data(
 
 
 def _get_additional_data_for_user_initiated_log_entry(
-    log_entry: UserLogEntry, users_by_id: dict[str, User]
+    log_entry: UserLogEntry, users_by_id: dict[UserID, User]
 ) -> Iterator[tuple[str, Any]]:
-    initiator_id = log_entry.data.get('initiator_id')
-    if initiator_id is not None:
+    initiator_id_str = log_entry.data.get('initiator_id')
+    if initiator_id_str is not None:
+        initiator_id = _to_user_id(initiator_id_str)
         yield 'initiator', users_by_id[initiator_id]
 
 
