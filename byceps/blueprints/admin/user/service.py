@@ -92,7 +92,7 @@ def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
     log_entries.extend(_get_order_log_entries(user_id))
 
     user_ids = {
-        entry.data['initiator_id']
+        _to_user_id(entry.data['initiator_id'])
         for entry in log_entries
         if 'initiator_id' in entry.data
     }
@@ -265,3 +265,7 @@ def _get_additional_data_for_user_initiated_log_entry(
     initiator_id = log_entry.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]
+
+
+def _to_user_id(id_str: str) -> UserID:
+    return UserID(UUID(id_str))
