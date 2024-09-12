@@ -281,7 +281,7 @@ def _get_additional_data_for_user_initiated_log_entry(
     if initiator_id is None:
         initiator_id_str = log_entry.data.get('initiator_id')
         if initiator_id_str is not None:
-            initiator_id = UserID(initiator_id_str)
+            initiator_id = _to_user_id(initiator_id_str)
 
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]
