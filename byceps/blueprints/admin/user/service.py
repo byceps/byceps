@@ -84,12 +84,7 @@ def get_newsletter_subscription_states(
 
 
 def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
-    log_entries = user_log_service.get_entries_for_user(user_id)
-    log_entries.extend(_fake_consent_log_entries(user_id))
-    log_entries.extend(
-        _fake_newsletter_subscription_update_log_entries(user_id)
-    )
-    log_entries.extend(_get_order_log_entries(user_id))
+    log_entries = _collect_log_entries(user_id)
 
     user_ids = {
         _to_user_id(entry.data['initiator_id'])
@@ -111,6 +106,17 @@ def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
         data.update(additional_data)
 
         yield data
+
+
+def _collect_log_entries(user_id: UserID) -> list[UserLogEntry]:
+    log_entries = user_log_service.get_entries_for_user(user_id)
+    log_entries.extend(_fake_consent_log_entries(user_id))
+    log_entries.extend(
+        _fake_newsletter_subscription_update_log_entries(user_id)
+    )
+    log_entries.extend(_get_order_log_entries(user_id))
+
+    return log_entries
 
 
 def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
