@@ -96,8 +96,9 @@ def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
         for entry in log_entries
         if 'initiator_id' in entry.data
     }
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = {user.id: user for user in users}
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
 
     for entry in log_entries:
         data = {
