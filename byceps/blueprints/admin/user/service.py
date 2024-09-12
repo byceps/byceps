@@ -86,14 +86,7 @@ def get_newsletter_subscription_states(
 def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
     log_entries = _collect_log_entries(user_id)
 
-    user_ids = {
-        _to_user_id(entry.data['initiator_id'])
-        for entry in log_entries
-        if 'initiator_id' in entry.data
-    }
-    users_by_id = user_service.get_users_indexed_by_id(
-        user_ids, include_avatars=True
-    )
+    users_by_id = _get_users_indexed_by_id(log_entries)
 
     for entry in log_entries:
         data = {
@@ -206,6 +199,20 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
             initiator_id=initiator_id,
             data=data,
         )
+
+
+def _get_users_indexed_by_id(
+    log_entries: Iterable[UserLogEntry],
+) -> dict[UserID, User]:
+    initiator_ids = {
+        _to_user_id(entry.data['initiator_id'])
+        for entry in log_entries
+        if 'initiator_id' in entry.data
+    }
+
+    return user_service.get_users_indexed_by_id(
+        initiator_ids, include_avatars=True
+    )
 
 
 def _get_additional_data(
