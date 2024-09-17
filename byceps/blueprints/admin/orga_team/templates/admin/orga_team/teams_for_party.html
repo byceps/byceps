@@ -46,7 +46,7 @@
             {%- if not members and has_current_user_permission('orga_team.delete') %}
             <li><a class="dropdown-item" data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></a></li>
             {%- else %}
-            <li><span class="dropdown-item button--disabled">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></span></li>
+            <li><span class="dropdown-item is-disabled">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></span></li>
             {%- endif %}
           </ol>
         </div>

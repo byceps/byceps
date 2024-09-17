@@ -867,6 +867,11 @@ button.button[disabled],
   background-color: #eeeeee;
 }
 
+.dropdown-item.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .dropdown-item .icon {
   opacity: 0.9;
 }
