@@ -786,6 +786,15 @@ button.button[disabled],
   background-color: transparent;
 }
 
+.button.is-rounded {
+  border-radius: 99rem;
+  padding-inline: 1rem;
+}
+
+.button.is-compact.is-rounded {
+  padding-inline: 0.5rem;
+}
+
 .button--wrapping {
   white-space: normal;
 }
