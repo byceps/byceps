@@ -781,7 +781,8 @@ button.button[disabled],
   box-shadow: none;
 }
 
-.button.button--outlined:not(:hover) {
+.button.button--outlined:not(:hover),
+.button.is-outlined:not(:hover) {
   background-color: transparent;
 }
 

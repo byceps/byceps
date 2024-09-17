@@ -263,7 +263,7 @@ main h1 {
   border-color: var(--border-color);
 }
 
-.button.button--outlined:hover {
+.button.is-outlined:hover {
   background-color: var(--bg-color-light);
 }
 
