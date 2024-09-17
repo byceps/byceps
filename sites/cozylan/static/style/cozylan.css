@@ -258,7 +258,7 @@ main h1 {
 }
 
 .button,
-.button.button--clear:hover {
+.button.is-clear:hover {
   background-color: var(--bg-color-light);
   border-color: var(--border-color);
 }

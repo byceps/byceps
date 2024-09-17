@@ -30,6 +30,6 @@
 
 {% macro render_backlink(url, label) -%}
   <nav class="button-row">
-    <a class="button button--clear is-compact" href="{{ url }}">{{ render_icon('arrow-left') }} <span>{{ label }}</span></a>
+    <a class="button is-clear is-compact" href="{{ url }}">{{ render_icon('arrow-left') }} <span>{{ label }}</span></a>
   </nav>
 {%- endmacro %}

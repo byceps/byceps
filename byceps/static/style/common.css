@@ -774,7 +774,8 @@ button.button[disabled],
   box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.button.button--clear:not(:hover) {
+.button.button--clear:not(:hover),
+.button.is-clear:not(:hover) {
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
