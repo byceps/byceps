@@ -62,7 +62,7 @@
   </small>
   {%- elif topic.locked or (topic.posting_limited_to_moderators and not has_current_user_permission('board.announce')) %}
   <div class="button-row is-right-aligned">
-    <span class="button button--disabled">{{ render_icon('reply') }} <span>{{ _('Reply') }}</span></span>
+    <span class="button is-disabled">{{ render_icon('reply') }} <span>{{ _('Reply') }}</span></span>
   </div>
   {%- elif is_last_page %}
 {% include 'site/board/_posting_inline_create_form.html' %}

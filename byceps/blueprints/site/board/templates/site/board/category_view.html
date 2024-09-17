@@ -70,7 +70,7 @@
     {%- if current_user_may_create_topic %}
     <a class="button" href="{{ url_for('.topic_create_form', category_id=category.id) }}">{{ render_icon('add') }} <span>{{ _('Create topic') }}</span></a>
     {%- else %}
-    <span class="button button--disabled">{{ render_icon('add') }} <span>{{ _('Create topic') }}</span></span>
+    <span class="button is-disabled">{{ render_icon('add') }} <span>{{ _('Create topic') }}</span></span>
     {%- endif %}
 
     {%- if g.user.authenticated %}

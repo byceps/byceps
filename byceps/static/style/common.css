@@ -760,7 +760,8 @@ form.unobtrusive input:focus ~ .button {
 }
 
 button.button[disabled],
-.button--disabled {
+.button--disabled,
+.button.is-disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
