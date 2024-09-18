@@ -383,9 +383,13 @@ def create(shop_id, type_name):
     price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
     available_from_local = form.available_from.data
-    available_from_utc = to_utc(available_from_local)
+    available_from_utc = (
+        to_utc(available_from_local) if available_from_local else None
+    )
     available_until_local = form.available_until.data
-    available_until_utc = to_utc(available_until_local)
+    available_until_utc = (
+        to_utc(available_until_local) if available_until_local else None
+    )
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
@@ -555,9 +559,13 @@ def update(product_id):
     price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
     available_from_local = form.available_from.data
-    available_from_utc = to_utc(available_from_local)
+    available_from_utc = (
+        to_utc(available_from_local) if available_from_local else None
+    )
     available_until_local = form.available_until.data
-    available_until_utc = to_utc(available_until_local)
+    available_until_utc = (
+        to_utc(available_until_local) if available_until_local else None
+    )
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
