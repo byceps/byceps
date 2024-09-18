@@ -618,7 +618,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/party/templates/admin/party/create_form.html:33
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:33
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:19
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/_create_form_base.html:58
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/_create_form_base.html:57
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/create_number_sequence_form.html:20
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/create_form.html:21
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:27
@@ -800,8 +800,8 @@ msgstr "Anmerkung"
 #: byceps/blueprints/admin/gallery/forms.py:33
 #: byceps/blueprints/admin/news/forms.py:121
 #: byceps/blueprints/admin/news/forms.py:142
-#: byceps/blueprints/admin/shop/product/forms.py:179
-#: byceps/blueprints/admin/shop/product/forms.py:220
+#: byceps/blueprints/admin/shop/product/forms.py:109
+#: byceps/blueprints/admin/shop/product/forms.py:150
 #: byceps/blueprints/admin/site/forms.py:89
 #: byceps/blueprints/admin/site/forms.py:100
 #: byceps/blueprints/admin/site/forms.py:111
@@ -1430,8 +1430,8 @@ msgid "Edit category"
 msgstr "Kategorie bearbeiten"
 
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:9
-#: byceps/blueprints/admin/shop/product/forms.py:263
-#: byceps/blueprints/admin/shop/product/forms.py:270
+#: byceps/blueprints/admin/shop/product/forms.py:193
+#: byceps/blueprints/admin/shop/product/forms.py:200
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:12
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:21
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:29
@@ -1462,7 +1462,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/page/templates/admin/page/update_form.html:24
 #: byceps/blueprints/admin/party/templates/admin/party/update_form.html:37
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_update_form.html:33
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/update_form.html:46
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/update_form.html:45
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/update_form.html:21
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/item_update_form.html:26
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_update_form.html:21
@@ -1509,7 +1509,7 @@ msgstr "Bild-Dateiname"
 #: byceps/blueprints/admin/party/forms.py:60
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:23
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:33
-#: byceps/blueprints/admin/shop/product/forms.py:77
+#: byceps/blueprints/admin/shop/product/forms.py:70
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:81
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:34
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:31
@@ -1580,7 +1580,7 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:95
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:11
 #: byceps/blueprints/admin/shop/payment/templates/admin/shop/payment/index.html:14
-#: byceps/blueprints/admin/shop/product/forms.py:40
+#: byceps/blueprints/admin/shop/product/forms.py:39
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:46
 #: byceps/blueprints/admin/site/navigation/forms.py:20
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:25
@@ -4175,8 +4175,8 @@ msgid "Seat Groups"
 msgstr "Sitzplatz-Gruppen"
 
 #: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:19
-#: byceps/blueprints/admin/shop/product/forms.py:187
-#: byceps/blueprints/admin/shop/product/forms.py:196
+#: byceps/blueprints/admin/shop/product/forms.py:117
+#: byceps/blueprints/admin/shop/product/forms.py:126
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:98
 msgid "Ticket category"
 msgstr "Ticket-Kategorie"
@@ -4277,7 +4277,7 @@ msgid "Payment type"
 msgstr "Zahlungsart"
 
 #: byceps/blueprints/admin/shop/order/forms.py:57
-#: byceps/blueprints/admin/shop/product/forms.py:249
+#: byceps/blueprints/admin/shop/product/forms.py:179
 msgid "Static prefix"
 msgstr "Statisches Präfix"
 
@@ -4600,7 +4600,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:7
-#: byceps/blueprints/admin/shop/product/forms.py:231
+#: byceps/blueprints/admin/shop/product/forms.py:161
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:63
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_orders.html:30
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view_purchases.html:29
@@ -4633,7 +4633,7 @@ msgid "Processing"
 msgstr "Verarbeitung"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:11
-#: byceps/blueprints/admin/shop/product/forms.py:42
+#: byceps/blueprints/admin/shop/product/forms.py:41
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:62
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:66
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_products.html:16
@@ -4770,7 +4770,7 @@ msgstr "offen"
 msgid "waiting for shipping"
 msgstr "auf Versand wartend"
 
-#: byceps/blueprints/admin/shop/product/forms.py:45
+#: byceps/blueprints/admin/shop/product/forms.py:44
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:62
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:60
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_products.html:15
@@ -4778,74 +4778,62 @@ msgstr "auf Versand wartend"
 msgid "Tax rate"
 msgstr "Steuersatz"
 
-#: byceps/blueprints/admin/shop/product/forms.py:53
-msgid "Available from date"
-msgstr "Verfügbar ab Datum"
+#: byceps/blueprints/admin/shop/product/forms.py:52
+msgid "Available from"
+msgstr "Verfügbar ab"
 
-#: byceps/blueprints/admin/shop/product/forms.py:56
-msgid "Available from time"
-msgstr "Verfügbar ab Uhrzeit"
+#: byceps/blueprints/admin/shop/product/forms.py:55
+msgid "Available until"
+msgstr "Verfügbar bis"
 
-#: byceps/blueprints/admin/shop/product/forms.py:59
-msgid "Available until date"
-msgstr "Verfügbar bis Datum"
-
-#: byceps/blueprints/admin/shop/product/forms.py:62
-msgid "Available until time"
-msgstr "Verfügbar bis Uhrzeit"
-
-#: byceps/blueprints/admin/shop/product/forms.py:65
+#: byceps/blueprints/admin/shop/product/forms.py:58
 msgid "Total quantity"
 msgstr "Gesamtmenge"
 
-#: byceps/blueprints/admin/shop/product/forms.py:68
+#: byceps/blueprints/admin/shop/product/forms.py:61
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:138
 msgid "Maximum quantity per order"
 msgstr "Maximale Anzahl pro Bestellung"
 
-#: byceps/blueprints/admin/shop/product/forms.py:72
+#: byceps/blueprints/admin/shop/product/forms.py:65
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:85
 msgid "can only be ordered indirectly"
 msgstr "nur indirekt bestellbar"
 
-#: byceps/blueprints/admin/shop/product/forms.py:75
+#: byceps/blueprints/admin/shop/product/forms.py:68
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:89
 msgid "must be ordered separately"
 msgstr "muss separat bestellt werden"
 
-#: byceps/blueprints/admin/shop/product/forms.py:135
-msgid "Either date and time must be specified or neither of them."
-msgstr "Entweder Datum und Uhrzeit müssen angegeben werden oder keines von beiden."
-
-#: byceps/blueprints/admin/shop/product/forms.py:151
+#: byceps/blueprints/admin/shop/product/forms.py:81
 msgid "The end of the availability period must be after its begin."
 msgstr "Das Ende des Verfügbarkeitszeitraums muss nach dessen Beginn liegen."
 
-#: byceps/blueprints/admin/shop/product/forms.py:163
+#: byceps/blueprints/admin/shop/product/forms.py:93
 msgid "Product number sequence"
 msgstr "Produktnummer-Sequenz"
 
-#: byceps/blueprints/admin/shop/product/forms.py:170
+#: byceps/blueprints/admin/shop/product/forms.py:100
 #: byceps/blueprints/admin/shop/storefront/forms.py:33
 msgctxt "sequence"
 msgid "none"
 msgstr "keine"
 
-#: byceps/blueprints/admin/shop/product/forms.py:199
-#: byceps/blueprints/admin/shop/product/forms.py:272
+#: byceps/blueprints/admin/shop/product/forms.py:129
+#: byceps/blueprints/admin/shop/product/forms.py:202
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:109
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:34
 msgid "Ticket quantity"
 msgstr "Ticketanzahl"
 
-#: byceps/blueprints/admin/shop/product/forms.py:228
+#: byceps/blueprints/admin/shop/product/forms.py:158
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:9
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:36
 #: byceps/blueprints/admin/shop/product/templates/layout/admin/shop/product.html:36
 msgid "Product"
 msgstr "Produkt"
 
-#: byceps/blueprints/admin/shop/product/forms.py:254
+#: byceps/blueprints/admin/shop/product/forms.py:184
 #: byceps/blueprints/admin/user_badge/forms.py:56
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:7
 msgid "Badge"
@@ -4860,17 +4848,17 @@ msgstr "Für diesen Shop sind keine Produktnummer-Sequenzen definiert."
 msgid "No valid product number sequence was specified."
 msgstr "Es wurde keine gültige Produktnummer-Sequenz angegeben."
 
-#: byceps/blueprints/admin/shop/product/views.py:413
+#: byceps/blueprints/admin/shop/product/views.py:411
 #, python-format
 msgid "Product \"%(item_number)s\" has been created."
 msgstr "Das Produkt \"%(item_number)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/product/views.py:590
+#: byceps/blueprints/admin/shop/product/views.py:582
 #, python-format
 msgid "Product \"%(name)s\" has been updated."
 msgstr "Das Produkt \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/product/views.py:648
+#: byceps/blueprints/admin/shop/product/views.py:640
 #, python-format
 msgid ""
 "Product \"%(product_to_attach_item_number)s\" has been attached "
@@ -4879,7 +4867,7 @@ msgstr ""
 "Das Produkt \"%(product_to_attach_item_number)s\" wurde %(quantity)s mal "
 "an das Produkt \"%(product_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/product/views.py:674
+#: byceps/blueprints/admin/shop/product/views.py:666
 #, python-format
 msgid ""
 "Product \"%(product_number)s\" is no longer attached to product "
@@ -4888,17 +4876,17 @@ msgstr ""
 "Das Produkt \"%(product_number)s\" ist nun nicht mehr an Produkt "
 "\"%(attached_to_product_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/product/views.py:730
-#: byceps/blueprints/admin/shop/product/views.py:782
-#: byceps/blueprints/admin/shop/product/views.py:838
+#: byceps/blueprints/admin/shop/product/views.py:722
+#: byceps/blueprints/admin/shop/product/views.py:774
+#: byceps/blueprints/admin/shop/product/views.py:830
 msgid "Action has been added."
 msgstr "Die Aktion wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/product/views.py:855
+#: byceps/blueprints/admin/shop/product/views.py:847
 msgid "Action has been removed."
 msgstr "Die Aktion wurde entfernt."
 
-#: byceps/blueprints/admin/shop/product/views.py:899
+#: byceps/blueprints/admin/shop/product/views.py:891
 #, python-format
 msgid ""
 "Product number sequence could not be created. Is prefix \"%(prefix)s\" "
@@ -4907,7 +4895,7 @@ msgstr ""
 "Die Produktnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/product/views.py:908
+#: byceps/blueprints/admin/shop/product/views.py:900
 #, python-format
 msgid "Product number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Produktnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."

@@ -382,12 +382,10 @@ def create(shop_id, type_name):
     name = form.name.data.strip()
     price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
-    available_from_utc = _assemble_datetime_utc(
-        form.available_from_date.data, form.available_from_time.data
-    )
-    available_until_utc = _assemble_datetime_utc(
-        form.available_until_date.data, form.available_until_time.data
-    )
+    available_from_local = form.available_from.data
+    available_from_utc = to_utc(available_from_local)
+    available_until_local = form.available_until.data
+    available_until_utc = to_utc(available_until_local)
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
@@ -522,13 +520,9 @@ def update_form(product_id, erroneous_form=None):
     data = dataclasses.asdict(product)
     data['price_amount'] = product.price.amount
     if product.available_from:
-        available_from_local = to_user_timezone(product.available_from)
-        data['available_from_date'] = available_from_local.date()
-        data['available_from_time'] = available_from_local.time()
+        data['available_from'] = to_user_timezone(product.available_from)
     if product.available_until:
-        available_until_local = to_user_timezone(product.available_until)
-        data['available_until_date'] = available_until_local.date()
-        data['available_until_time'] = available_until_local.time()
+        data['available_until'] = to_user_timezone(product.available_until)
 
     form = (
         erroneous_form
@@ -560,12 +554,10 @@ def update(product_id):
     name = form.name.data.strip()
     price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
-    available_from_utc = _assemble_datetime_utc(
-        form.available_from_date.data, form.available_from_time.data
-    )
-    available_until_utc = _assemble_datetime_utc(
-        form.available_until_date.data, form.available_until_time.data
-    )
+    available_from_local = form.available_from.data
+    available_from_utc = to_utc(available_from_local)
+    available_until_local = form.available_until.data
+    available_until_utc = to_utc(available_until_local)
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
