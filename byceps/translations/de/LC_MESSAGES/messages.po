@@ -1928,7 +1928,7 @@ msgstr "Kataloge"
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:7
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_products.html:3
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_products.html:21
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:131
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:130
 msgid "Products"
 msgstr "Produkte"
 
@@ -3429,7 +3429,7 @@ msgstr "als Excel-CSV"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:51
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:7
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:119
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:118
 msgid "Full name"
 msgstr "Voller Name"
 
@@ -4260,7 +4260,7 @@ msgid "Payment receipt"
 msgstr "Zahlungseingang"
 
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:36
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:135
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:134
 msgid "Cancellation"
 msgstr "Stornierung"
 
@@ -4588,13 +4588,13 @@ msgstr ""
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/blueprints/site/shop/order/forms.py:21
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:115
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:114
 msgid "Company"
 msgstr "Firma"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:14
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:26
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:122
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:121
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:30
 msgid "Address"
 msgstr "Adresse"
@@ -4848,17 +4848,17 @@ msgstr "Für diesen Shop sind keine Produktnummer-Sequenzen definiert."
 msgid "No valid product number sequence was specified."
 msgstr "Es wurde keine gültige Produktnummer-Sequenz angegeben."
 
-#: byceps/blueprints/admin/shop/product/views.py:411
+#: byceps/blueprints/admin/shop/product/views.py:415
 #, python-format
 msgid "Product \"%(item_number)s\" has been created."
 msgstr "Das Produkt \"%(item_number)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/product/views.py:582
+#: byceps/blueprints/admin/shop/product/views.py:590
 #, python-format
 msgid "Product \"%(name)s\" has been updated."
 msgstr "Das Produkt \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/product/views.py:640
+#: byceps/blueprints/admin/shop/product/views.py:648
 #, python-format
 msgid ""
 "Product \"%(product_to_attach_item_number)s\" has been attached "
@@ -4867,7 +4867,7 @@ msgstr ""
 "Das Produkt \"%(product_to_attach_item_number)s\" wurde %(quantity)s mal "
 "an das Produkt \"%(product_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/product/views.py:666
+#: byceps/blueprints/admin/shop/product/views.py:674
 #, python-format
 msgid ""
 "Product \"%(product_number)s\" is no longer attached to product "
@@ -4876,17 +4876,17 @@ msgstr ""
 "Das Produkt \"%(product_number)s\" ist nun nicht mehr an Produkt "
 "\"%(attached_to_product_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/product/views.py:722
-#: byceps/blueprints/admin/shop/product/views.py:774
-#: byceps/blueprints/admin/shop/product/views.py:830
+#: byceps/blueprints/admin/shop/product/views.py:730
+#: byceps/blueprints/admin/shop/product/views.py:782
+#: byceps/blueprints/admin/shop/product/views.py:838
 msgid "Action has been added."
 msgstr "Die Aktion wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/product/views.py:847
+#: byceps/blueprints/admin/shop/product/views.py:855
 msgid "Action has been removed."
 msgstr "Die Aktion wurde entfernt."
 
-#: byceps/blueprints/admin/shop/product/views.py:891
+#: byceps/blueprints/admin/shop/product/views.py:899
 #, python-format
 msgid ""
 "Product number sequence could not be created. Is prefix \"%(prefix)s\" "
@@ -4895,7 +4895,7 @@ msgstr ""
 "Die Produktnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/product/views.py:900
+#: byceps/blueprints/admin/shop/product/views.py:908
 #, python-format
 msgid "Product number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Produktnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -7859,7 +7859,7 @@ msgstr ""
 "wurde entgegengenommen. Vielen Dank!"
 
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_orderer.html:3
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:111
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:110
 msgid "Billing and shipping address"
 msgstr "Rechnungs- und Lieferadresse"
 
@@ -7943,7 +7943,7 @@ msgstr "Deine Bestellungen"
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_full_refund_form.html:37
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_partial_refund_form.html:6
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/request_partial_refund_form.html:39
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:136
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:135
 msgid "Return tickets"
 msgstr "Tickets zurückgeben"
 
@@ -7996,7 +7996,7 @@ msgstr ""
 "Zahlungsarten nutzen, um die Bestellung jetzt gleich zu bezahlen:"
 
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:86
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:96
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:95
 msgid "If the order includes tickets, they will be issued immediately."
 msgstr "Wenn die Bestellung Tickets enthält, werden diese sofort freigeschaltet."
 
@@ -8012,17 +8012,13 @@ msgstr ""
 msgid "credit card (Apple Pay and Google Pay as well)"
 msgstr "Kreditkarte (auch Apple Pay und Google Pay)"
 
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:94
-msgid "Giropay (for German giro accounts)"
-msgstr "Giropay (für deutsche Girokonten)"
-
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:98
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:97
 msgid "The payment process could not be started. Please try again later."
 msgstr ""
 "Der Bezahlvorgang konnte nicht gestartet werden. Bitte probiere es später"
 " erneut."
 
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:102
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:101
 msgid "Start real-time payment"
 msgstr "Echtzeitzahlung starten"
 
