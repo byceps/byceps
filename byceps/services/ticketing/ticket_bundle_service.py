@@ -7,7 +7,7 @@ byceps.services.ticketing.ticket_bundle_service
 """
 
 from collections.abc import Sequence
-from datetime import datetime, UTC
+from datetime import datetime
 
 from sqlalchemy import delete, select
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
@@ -46,7 +46,7 @@ def create_bundle(
         raise ValueError('Ticket quantity must be positive.')
 
     bundle_id = TicketBundleID(generate_uuid7())
-    created_at = datetime.now(UTC)
+    created_at = datetime.utcnow()
 
     db_bundle = DbTicketBundle(
         bundle_id,

@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime, UTC
+from datetime import datetime
 from uuid import UUID
 
 import pytest
@@ -126,7 +126,7 @@ def create_ticket(
     user_managed_by_id=None,
 ):
     ticket_id = TicketID(generate_uuid())
-    created_at = datetime.now(UTC)
+    created_at = datetime.utcnow()
     category = TicketCategory(
         id=TicketCategoryID(generate_uuid()),
         party_id=PartyID('megacon-99'),

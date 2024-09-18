@@ -7,7 +7,7 @@ byceps.services.ticketing.ticket_creation_service
 """
 
 from collections.abc import Iterator
-from datetime import datetime, UTC
+from datetime import datetime
 
 from sqlalchemy.exc import IntegrityError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
@@ -93,7 +93,7 @@ def build_tickets(
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    created_at = datetime.now(UTC)
+    created_at = datetime.utcnow()
 
     generation_result = ticket_code_service.generate_ticket_codes(quantity)
 

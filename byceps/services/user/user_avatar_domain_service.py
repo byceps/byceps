@@ -6,7 +6,7 @@ byceps.services.user.user_avatar_domain_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime, UTC
+from datetime import datetime
 
 from byceps.events.base import EventUser
 from byceps.events.user import (
@@ -25,7 +25,7 @@ def update_avatar_image(
     initiator: User,
 ) -> tuple[UserAvatarUpdatedEvent, UserLogEntry]:
     """Set a new avatar image for the user."""
-    occurred_at = datetime.now(UTC)
+    occurred_at = datetime.utcnow()
 
     event = _build_avatar_updated_event(occurred_at, initiator, user, avatar)
 
@@ -73,7 +73,7 @@ def remove_avatar_image(
     user: User, avatar: UserAvatar, initiator: User
 ) -> tuple[UserAvatarRemovedEvent, UserLogEntry]:
     """Remove the user's avatar image."""
-    occurred_at = datetime.now(UTC)
+    occurred_at = datetime.utcnow()
 
     event = _build_avatar_removed_event(occurred_at, initiator, user, avatar)
 
