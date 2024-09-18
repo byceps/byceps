@@ -7860,8 +7860,8 @@ msgstr ""
 
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_orderer.html:3
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:110
-msgid "Billing and shipping address"
-msgstr "Rechnungs- und Lieferadresse"
+msgid "Billing address"
+msgstr "Rechnungsadresse"
 
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_products.html:40
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_products.html:42
