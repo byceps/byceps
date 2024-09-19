@@ -21,9 +21,10 @@
   <h2>{{ _('Products') }}</h2>
 
   {%- for collection in collections %}
-    {%- if collection.title %}
+    {%- if collection.items %}
+      {%- if collection.title %}
   <h3>{{ collection.title }}</h3>
-    {%- endif %}
+      {%- endif %}
   <table class="itemlist is-wide">
     <thead>
       <tr>
@@ -50,6 +51,7 @@
       {%- endfor %}
     </tbody>
   </table>
+    {%- endif %}
   {%- endfor %}
 
 {%- endblock %}
