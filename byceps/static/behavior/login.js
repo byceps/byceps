@@ -20,7 +20,7 @@ onDomReady(() => {
             return;
           }
 
-          // extract 'next' parameter from location.search, if available
+          // Extract `next` parameter from `location.search`, if available.
           const searchObject = new URLSearchParams(location.search);
           const nextParam = searchObject.get('next');
           if (nextParam !== null) {
@@ -38,7 +38,7 @@ onDomReady(() => {
             return;
           }
 
-          // fallback: redirect to /
+          // Fallback: redirect to `/`.
           location.href = '/';
         });
     });
