@@ -6,6 +6,8 @@ byceps.blueprints.site.shop.order.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
+
 from flask import abort, g, request
 from flask_babel import gettext, format_percent
 from moneyed import Currency
@@ -19,8 +21,10 @@ from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.product import product_domain_service, product_service
 from byceps.services.shop.product.errors import NoProductsAvailableError
 from byceps.services.shop.product.models import (
+    Product,
     ProductCollection,
     ProductCompilation,
+    ProductCompilationBuilder,
 )
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront import storefront_service
@@ -86,6 +90,14 @@ def order_form(erroneous_form=None):
         )
         collections = [collection]
 
+    products = _get_products_from_collections(collections)
+
+    product_ids = {product.id for product in products}
+    if not product_ids:
+        error_message = gettext('No products are available.')
+        flash_error(error_message)
+        return {'collections': None}
+
     if not g.user.authenticated:
         return list_products(collections)
 
@@ -94,7 +106,7 @@ def order_form(erroneous_form=None):
     if erroneous_form:
         form = erroneous_form
     else:
-        product_compilation = compilation
+        product_compilation = _build_product_compilation(products)
         ProductsOrderForm = assemble_products_order_form(product_compilation)
         form = ProductsOrderForm(obj=detail)
 
@@ -150,7 +162,22 @@ def order():
 
         compilation = compilation_result.unwrap()
 
-    product_compilation = compilation
+        collection = (
+            product_service.get_product_collection_for_product_compilation(
+                '', compilation
+            )
+        )
+        collections = [collection]
+
+    products = _get_products_from_collections(collections)
+
+    product_ids = {product.id for product in products}
+    if not product_ids:
+        error_message = gettext('No products are available.')
+        flash_error(error_message)
+        return order_form()
+
+    product_compilation = _build_product_compilation(products)
 
     ProductsOrderForm = assemble_products_order_form(product_compilation)
     form = ProductsOrderForm(request.form)
@@ -313,6 +340,25 @@ def _get_product_or_404(product_id):
         abort(404)
 
     return product
+
+
+def _get_products_from_collections(
+    collections: list[ProductCollection],
+) -> list[Product]:
+    return [
+        item.product for collection in collections for item in collection.items
+    ]
+
+
+def _build_product_compilation(
+    products: Iterable[Product],
+) -> ProductCompilation:
+    builder = ProductCompilationBuilder()
+
+    for product in products:
+        builder.append_product(product)
+
+    return builder.build()
 
 
 def _create_cart_from_product_compilation(
