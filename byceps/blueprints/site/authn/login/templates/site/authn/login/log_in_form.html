@@ -14,6 +14,10 @@
   width: 100%;
 }
 
+.login-component-help {
+  margin-top: 2rem;
+}
+
 #login-failed-notice {
   max-height: 4rem;
   overflow-y: hidden;
@@ -48,7 +52,7 @@
     {{ form_buttons(_('Log in')) }}
   </form>
 
-  <div style="margin-top: 3rem;">
+  <div class="login-component-help">
     {% if g.site.user_account_creation_enabled %}
     <p>{{ _('Not registered yet?') }} <a href="{{ url_for('user_creation.create_form') }}">{{ _('Create an account.') }}</a></p>
     <p>{{ _('Confirmation email not received yet?') }} <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">{{ _('Request it again.') }}</a></p>
