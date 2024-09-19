@@ -57,11 +57,11 @@ def order_form(erroneous_form=None):
         flash_notice(gettext('The shop is closed.'))
         return {'collections': None}
 
-    product_compilation_result = (
+    compilation_result = (
         product_service.get_product_compilation_for_orderable_products(shop.id)
     )
 
-    match product_compilation_result:
+    match compilation_result:
         case Err(e):
             if isinstance(e, NoProductsAvailableError):
                 error_message = gettext('No products are available.')
@@ -71,10 +71,10 @@ def order_form(erroneous_form=None):
             flash_error(error_message)
             return {'collections': None}
 
-    product_compilation = product_compilation_result.unwrap()
+    compilation = compilation_result.unwrap()
 
     collection = product_service.get_product_collection_for_product_compilation(
-        '', product_compilation
+        '', compilation
     )
     collections = [collection]
 
@@ -86,7 +86,7 @@ def order_form(erroneous_form=None):
     if erroneous_form:
         form = erroneous_form
     else:
-        ProductsOrderForm = assemble_products_order_form(product_compilation)
+        ProductsOrderForm = assemble_products_order_form(compilation)
         form = ProductsOrderForm(obj=detail)
 
     country_names = country_service.get_country_names()
@@ -119,11 +119,11 @@ def order():
         flash_notice(gettext('The shop is closed.'))
         return order_form()
 
-    product_compilation_result = (
+    compilation_result = (
         product_service.get_product_compilation_for_orderable_products(shop.id)
     )
 
-    match product_compilation_result:
+    match compilation_result:
         case Err(e):
             if isinstance(e, NoProductsAvailableError):
                 error_message = gettext('No products are available.')
@@ -133,15 +133,15 @@ def order():
             flash_error(error_message)
             return order_form()
 
-    product_compilation = product_compilation_result.unwrap()
+    compilation = compilation_result.unwrap()
 
-    ProductsOrderForm = assemble_products_order_form(product_compilation)
+    ProductsOrderForm = assemble_products_order_form(compilation)
     form = ProductsOrderForm(request.form)
 
     if not form.validate():
         return order_form(form)
 
-    cart = form.get_cart(product_compilation)
+    cart = form.get_cart(compilation)
 
     if cart.is_empty():
         flash_error(gettext('No products have been selected.'))
@@ -184,12 +184,12 @@ def order_single_form(product_id, erroneous_form=None):
             'product': None,
         }
 
-    product_compilation = (
-        product_service.get_product_compilation_for_single_product(product.id)
+    compilation = product_service.get_product_compilation_for_single_product(
+        product.id
     )
 
     collection = product_service.get_product_collection_for_product_compilation(
-        '', product_compilation
+        '', compilation
     )
     collections = [collection]
 
@@ -244,8 +244,8 @@ def order_single(product_id):
         flash_error(gettext('The product cannot be ordered directly.'))
         return order_single_form(product.id)
 
-    product_compilation = (
-        product_service.get_product_compilation_for_single_product(product.id)
+    compilation = product_service.get_product_compilation_for_single_product(
+        product.id
     )
 
     user = g.user
@@ -267,9 +267,7 @@ def order_single(product_id):
 
     orderer = form.get_orderer(user)
 
-    cart = _create_cart_from_product_compilation(
-        shop.currency, product_compilation
-    )
+    cart = _create_cart_from_product_compilation(shop.currency, compilation)
 
     placement_result = _place_order(storefront, orderer, cart)
     if placement_result.is_err():
@@ -301,12 +299,11 @@ def _get_product_or_404(product_id):
 
 
 def _create_cart_from_product_compilation(
-    currency: Currency,
-    product_compilation: ProductCompilation,
+    currency: Currency, compilation: ProductCompilation
 ) -> Cart:
     cart = Cart(currency)
 
-    for item in product_compilation:
+    for item in compilation:
         cart.add_item(item.product, item.fixed_quantity)
 
     return cart
