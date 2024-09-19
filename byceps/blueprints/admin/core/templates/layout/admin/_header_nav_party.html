@@ -33,6 +33,12 @@
       required_permission='ticketing.checkin',
       icon='ticketing-checkin')
     .add_item(
+      url_for('guest_server_admin.server_index', party_id=party.id),
+      _('Guest Servers'),
+      id='guest_server_admin',
+      required_permission='guest_server.view',
+      icon='server')
+    .add_item(
       url_for('party_admin.view', party_id=party.id),
       _('Settings'),
       id='party_admin',

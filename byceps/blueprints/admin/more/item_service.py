@@ -164,12 +164,6 @@ def get_brand_items(brand: Brand) -> list[MoreItem]:
 def get_party_items(party: Party) -> list[MoreItem]:
     return [
         MoreItem(
-            label=gettext('Guest Servers'),
-            icon='server',
-            url=url_for('guest_server_admin.server_index', party_id=party.id),
-            required_permission='guest_server.view',
-        ),
-        MoreItem(
             label=gettext('Organizer Presence'),
             icon='date-okay',
             url=url_for('orga_presence.view', party_id=party.id),
