@@ -57,26 +57,34 @@ def order_form(erroneous_form=None):
         flash_notice(gettext('The shop is closed.'))
         return {'collections': None}
 
-    compilation_result = (
-        product_service.get_product_compilation_for_orderable_products(shop.id)
-    )
+    if storefront.catalog:
+        flash_error('Catalogs are not supported at this time.')
+        return {'collections': None}
+    else:
+        compilation_result = (
+            product_service.get_product_compilation_for_orderable_products(
+                shop.id
+            )
+        )
 
-    match compilation_result:
-        case Err(e):
-            if isinstance(e, NoProductsAvailableError):
-                error_message = gettext('No products are available.')
-            else:
-                error_message = gettext('An unknown error has occurred.')
+        match compilation_result:
+            case Err(e):
+                if isinstance(e, NoProductsAvailableError):
+                    error_message = gettext('No products are available.')
+                else:
+                    error_message = gettext('An unknown error has occurred.')
 
-            flash_error(error_message)
-            return {'collections': None}
+                flash_error(error_message)
+                return {'collections': None}
 
-    compilation = compilation_result.unwrap()
+        compilation = compilation_result.unwrap()
 
-    collection = product_service.get_product_collection_for_product_compilation(
-        '', compilation
-    )
-    collections = [collection]
+        collection = (
+            product_service.get_product_collection_for_product_compilation(
+                '', compilation
+            )
+        )
+        collections = [collection]
 
     if not g.user.authenticated:
         return list_products(collections)
@@ -86,7 +94,8 @@ def order_form(erroneous_form=None):
     if erroneous_form:
         form = erroneous_form
     else:
-        ProductsOrderForm = assemble_products_order_form(compilation)
+        product_compilation = compilation
+        ProductsOrderForm = assemble_products_order_form(product_compilation)
         form = ProductsOrderForm(obj=detail)
 
     country_names = country_service.get_country_names()
@@ -119,29 +128,37 @@ def order():
         flash_notice(gettext('The shop is closed.'))
         return order_form()
 
-    compilation_result = (
-        product_service.get_product_compilation_for_orderable_products(shop.id)
-    )
+    if storefront.catalog:
+        flash_error('Catalogs are not supported at this time.')
+        return order_form()
+    else:
+        compilation_result = (
+            product_service.get_product_compilation_for_orderable_products(
+                shop.id
+            )
+        )
 
-    match compilation_result:
-        case Err(e):
-            if isinstance(e, NoProductsAvailableError):
-                error_message = gettext('No products are available.')
-            else:
-                error_message = gettext('An unknown error has occurred.')
+        match compilation_result:
+            case Err(e):
+                if isinstance(e, NoProductsAvailableError):
+                    error_message = gettext('No products are available.')
+                else:
+                    error_message = gettext('An unknown error has occurred.')
 
-            flash_error(error_message)
-            return order_form()
+                flash_error(error_message)
+                return order_form()
 
-    compilation = compilation_result.unwrap()
+        compilation = compilation_result.unwrap()
 
-    ProductsOrderForm = assemble_products_order_form(compilation)
+    product_compilation = compilation
+
+    ProductsOrderForm = assemble_products_order_form(product_compilation)
     form = ProductsOrderForm(request.form)
 
     if not form.validate():
         return order_form(form)
 
-    cart = form.get_cart(compilation)
+    cart = form.get_cart(product_compilation)
 
     if cart.is_empty():
         flash_error(gettext('No products have been selected.'))
