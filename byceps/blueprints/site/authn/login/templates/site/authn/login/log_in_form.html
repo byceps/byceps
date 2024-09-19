@@ -8,6 +8,12 @@
 
 {% block head %}
 <style>
+.login-component {
+  margin-inline: auto;
+  max-width: 24rem;
+  width: 100%;
+}
+
 #login-failed-notice {
   max-height: 4rem;
   overflow-y: hidden;
@@ -22,6 +28,8 @@
 {%- endblock %}
 
 {% block body %}
+
+<div class="login-component">
 
   <h1 class="title">{{ page_title }}</h1>
 
@@ -50,6 +58,8 @@
   {%- else %}
 {{ render_notification(_('Login is disabled.'), category='warning', icon='warning') }}
   {%- endif %}
+
+</div>
 
 {%- endblock %}
 
