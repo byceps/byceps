@@ -131,8 +131,7 @@ def _group_items_by_day(
     items_by_day = defaultdict(list)
 
     for item in timetable.items:
-        if not item.hidden:
-            items_by_day[item.scheduled_at.date()].append(item)
+        items_by_day[item.scheduled_at.date()].append(item)
 
     return dict(items_by_day)
 

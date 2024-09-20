@@ -35,6 +35,7 @@
       <td class="day-header" colspan="4">{{ day|dateformat('full', rebase=False) }}</td>
     </tr>
     {%- for item in items %}
+      {%- if not item.hidden %}
     <tr>
       <td class="nowrap">{{ item.scheduled_at|timeformat('short', rebase=False) }}</td>
       <td>{{ item.description|safe }}</td>
@@ -49,6 +50,7 @@
         {%- endif %}
       </td>
     </tr>
+      {%- endif %}
     {%- endfor %}
   </tbody>
   {%- endfor %}
