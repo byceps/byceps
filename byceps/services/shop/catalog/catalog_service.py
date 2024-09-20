@@ -165,7 +165,7 @@ def _find_db_collection(collection_id: CollectionID) -> DbCollection | None:
 
 
 def get_collections_for_catalog(
-    catalog_id: CatalogID,
+    catalog_id: CatalogID, *, include_unavailable_products: bool
 ) -> list[ProductCollection]:
     """Return the catalog's collections."""
     # Attention: Products attached to products assigned to a catalog
@@ -193,26 +193,32 @@ def get_collections_for_catalog(
 
     now = datetime.utcnow()
 
-    db_products = db.session.scalars(
+    products_stmt = (
         select(DbProduct)
         .filter(DbProduct.id.in_(product_ids))
         .filter_by(not_directly_orderable=False)
         .filter_by(separate_order_required=False)
-        # Select only products that are available in between the
-        # temporal boundaries for this product, if specified.
-        .filter(
-            db.or_(
-                DbProduct.available_from.is_(None),
-                now >= DbProduct.available_from,
+    )
+
+    if not include_unavailable_products:
+        products_stmt = (
+            products_stmt
+            # Select only products that are available in between the
+            # temporal boundaries for this product, if specified.
+            .filter(
+                db.or_(
+                    DbProduct.available_from.is_(None),
+                    now >= DbProduct.available_from,
+                )
+            ).filter(
+                db.or_(
+                    DbProduct.available_until.is_(None),
+                    now < DbProduct.available_until,
+                )
             )
         )
-        .filter(
-            db.or_(
-                DbProduct.available_until.is_(None),
-                now < DbProduct.available_until,
-            )
-        )
-    ).all()
+
+    db_products = db.session.scalars(products_stmt).all()
 
     products = [
         product_service._db_entity_to_product(db_product)
