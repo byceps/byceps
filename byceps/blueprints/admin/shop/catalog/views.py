@@ -49,10 +49,13 @@ def view(catalog_id):
     shop = shop_service.get_shop(catalog.shop_id)
     brand = brand_service.get_brand(shop.brand_id)
 
+    collections = catalog_service.get_collections_for_catalog(catalog.id)
+
     return {
         'catalog': catalog,
         'shop': shop,
         'brand': brand,
+        'collections': collections,
     }
 
 

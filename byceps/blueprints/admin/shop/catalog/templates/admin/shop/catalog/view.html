@@ -1,4 +1,6 @@
 {% extends 'layout/admin/shop/catalog.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/shop/product.html' import render_product_link %}
 {% set page_title = [_('Catalog'), catalog.id] %}
 
 {% block body %}
@@ -11,5 +13,24 @@
     <div class="data-value">{{ catalog.id }}</div>
 
   </div>
+
+  <h2>{{ _('Collections') }} {{ render_extra_in_heading(collections|length) }}</h2>
+
+  {%- for collection in collections %}
+  <h3>{{ collection.title }} {{ render_extra_in_heading(collection.items|length, label=ngettext('product', 'products', collection.items|length)) }}</h3>
+
+    {%- if collection.items %}
+  <table class="itemlist">
+      {%- for item in collection.items %}
+        {%- with product = item.product %}
+    <tr>
+      <td>{{ render_product_link(product) }}</td>
+      <td>{{ product.name }}</td>
+    </tr>
+        {%- endwith %}
+      {%- endfor %}
+  </table>
+    {%- endif %}
+  {%- endfor %}
 
 {%- endblock %}

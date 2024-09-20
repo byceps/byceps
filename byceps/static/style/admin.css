@@ -396,7 +396,7 @@ h2 {
   font-size: 1.25rem; /* 20px / 16px */
 }
 
-:is(h1, h2) small {
+:is(h1, h2, h3) small {
   font-weight: normal;
   margin-left: 0.25em;
   opacity: 0.5;

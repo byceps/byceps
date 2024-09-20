@@ -1089,7 +1089,7 @@ msgstr "mehr als"
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:13
 #: byceps/blueprints/admin/party/forms.py:43
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:41
-#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:10
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:12
 #: byceps/blueprints/admin/shop/payment/templates/admin/shop/payment/index.html:13
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:16
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
@@ -4240,12 +4240,22 @@ msgstr "Besteller"
 msgid "No catalogs exist."
 msgstr "Es sind keine Kataloge vorhanden."
 
-#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:2
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:4
 #: byceps/blueprints/admin/shop/storefront/forms.py:17
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:36
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:32
 msgid "Catalog"
 msgstr "Katalog"
+
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:17
+msgid "Collections"
+msgstr "Kollektionen"
+
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:20
+msgid "product"
+msgid_plural "products"
+msgstr[0] "Produkt"
+msgstr[1] "Produkte"
 
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:32
 msgid "Examples"
@@ -7642,8 +7652,8 @@ msgid "You have already registered the maximum number of servers allowed."
 msgstr "Du hast bereits die maximal erlaubte Anzahl an Gastservern registriert."
 
 #: byceps/blueprints/site/guest_server/views.py:211
-#: byceps/blueprints/site/shop/order/views.py:79
-#: byceps/blueprints/site/shop/order/views.py:158
+#: byceps/blueprints/site/shop/order/views.py:81
+#: byceps/blueprints/site/shop/order/views.py:161
 msgid "An unknown error has occurred."
 msgstr "Ein unbekannter Fehler ist aufgetreten."
 
@@ -7819,45 +7829,45 @@ msgstr "Sitzplan"
 msgid "Manage seats"
 msgstr "Sitzplätze verwalten"
 
-#: byceps/blueprints/site/shop/order/views.py:61
-#: byceps/blueprints/site/shop/order/views.py:140
-#: byceps/blueprints/site/shop/order/views.py:225
-#: byceps/blueprints/site/shop/order/views.py:284
+#: byceps/blueprints/site/shop/order/views.py:62
+#: byceps/blueprints/site/shop/order/views.py:142
+#: byceps/blueprints/site/shop/order/views.py:228
+#: byceps/blueprints/site/shop/order/views.py:287
 msgid "The shop is closed."
 msgstr "Der Shop ist derzeit geschlossen."
 
-#: byceps/blueprints/site/shop/order/views.py:77
-#: byceps/blueprints/site/shop/order/views.py:97
-#: byceps/blueprints/site/shop/order/views.py:156
-#: byceps/blueprints/site/shop/order/views.py:176
+#: byceps/blueprints/site/shop/order/views.py:79
+#: byceps/blueprints/site/shop/order/views.py:99
+#: byceps/blueprints/site/shop/order/views.py:159
+#: byceps/blueprints/site/shop/order/views.py:179
 msgid "No products are available."
 msgstr "Es sind keine Produkte verfügbar."
 
-#: byceps/blueprints/site/shop/order/views.py:191
+#: byceps/blueprints/site/shop/order/views.py:194
 msgid "No products have been selected."
 msgstr "Es wurden keine Produkte ausgewählt."
 
-#: byceps/blueprints/site/shop/order/views.py:198
-#: byceps/blueprints/site/shop/order/views.py:318
+#: byceps/blueprints/site/shop/order/views.py:201
+#: byceps/blueprints/site/shop/order/views.py:321
 msgid "Placing the order has failed."
 msgstr "Die Bestellung ist fehlgeschlagen."
 
-#: byceps/blueprints/site/shop/order/views.py:243
-#: byceps/blueprints/site/shop/order/views.py:288
+#: byceps/blueprints/site/shop/order/views.py:246
+#: byceps/blueprints/site/shop/order/views.py:291
 msgid "The product cannot be ordered directly."
 msgstr "Das Produkt kann nicht direkt bestellt werden."
 
-#: byceps/blueprints/site/shop/order/views.py:250
-#: byceps/blueprints/site/shop/order/views.py:298
+#: byceps/blueprints/site/shop/order/views.py:253
+#: byceps/blueprints/site/shop/order/views.py:301
 msgid "You cannot place another order."
 msgstr "Du kannst keine weitere Bestellung aufgeben."
 
-#: byceps/blueprints/site/shop/order/views.py:260
-#: byceps/blueprints/site/shop/order/views.py:305
+#: byceps/blueprints/site/shop/order/views.py:263
+#: byceps/blueprints/site/shop/order/views.py:308
 msgid "The product is not available."
 msgstr "Das Produkt ist nicht verfügbar."
 
-#: byceps/blueprints/site/shop/order/views.py:393
+#: byceps/blueprints/site/shop/order/views.py:396
 #, python-format
 msgid "Your order <strong>%(order_number)s</strong> has been placed. Thank you!"
 msgstr ""
