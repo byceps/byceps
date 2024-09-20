@@ -629,7 +629,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_form.html:21
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/create_form.html:21
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/item_create_form.html:30
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:98
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:99
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:21
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:26
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:33
@@ -900,7 +900,7 @@ msgstr "Hinzufügen"
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:22
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:99
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:33
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:82
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:83
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:27
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:22
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
@@ -916,7 +916,7 @@ msgid "None defined"
 msgstr "Keine festgelegt"
 
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:78
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:107
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:108
 msgid "Really delete it?"
 msgstr "Wirklich löschen?"
 
@@ -1339,7 +1339,7 @@ msgstr "Position"
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:13
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:88
 #: byceps/blueprints/admin/timetable/forms.py:26
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:28
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:29
 #: byceps/blueprints/site/board/templates/macros/board.html:5
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:72
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:42
@@ -1367,7 +1367,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:52
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:26
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:40
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:81
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:82
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:42
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:54
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:35
@@ -4257,6 +4257,30 @@ msgid_plural "products"
 msgstr[0] "Produkt"
 msgstr[1] "Produkte"
 
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:25
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:8
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:59
+msgid "Item number"
+msgstr "Artikelnummer"
+
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:26
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:9
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:60
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:51
+#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:14
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_products.html:14
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/list_products.html:31
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_products.html:5
+#: byceps/services/shop/order/email/order_email_service.py:155
+msgctxt "product"
+msgid "Name"
+msgstr "Bezeichnung"
+
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:27
+#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:132
+msgid "Period"
+msgstr "Zeitraum"
+
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:32
 msgid "Examples"
 msgstr "Beispiele"
@@ -4621,23 +4645,6 @@ msgstr "Adresse"
 msgid "Quantity"
 msgstr "Anzahl"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:8
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:59
-msgid "Item number"
-msgstr "Artikelnummer"
-
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:9
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/index_for_shop.html:60
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:51
-#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:14
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_products.html:14
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/list_products.html:31
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/_products.html:5
-#: byceps/services/shop/order/email/order_email_service.py:155
-msgctxt "product"
-msgid "Name"
-msgstr "Bezeichnung"
-
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_products.html:10
 msgid "Processing"
 msgstr "Verarbeitung"
@@ -4991,10 +4998,6 @@ msgstr "Produkt bearbeiten"
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:125
 msgid "ordered"
 msgstr "bestellt"
-
-#: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:132
-msgid "Period"
-msgstr "Zeitraum"
 
 #: byceps/blueprints/admin/shop/product/templates/admin/shop/product/view.html:141
 msgid "Can only be ordered indirectly"
@@ -6047,36 +6050,36 @@ msgstr "Lokalzeit"
 msgid "Update timetable item"
 msgstr "Zeitplan-Eintrag bearbeiten"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:35
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:36
 msgid "Create item"
 msgstr "Zeitplan-Eintrag erstellen"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:46
-#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:26
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:47
+#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:27
 msgid "When?"
 msgstr "Wann?"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:47
-#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:27
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:48
+#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:28
 msgid "What?"
 msgstr "Was?"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:48
-#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:28
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:49
+#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:29
 msgid "Where?"
 msgstr "Wo?"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:49
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:50
 msgid "Link"
 msgstr "Verknüpfung"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:50
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:51
 #: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:28
 #: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:29
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:93
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:94
 msgid "No entries"
 msgstr "Keine Einträge"
 

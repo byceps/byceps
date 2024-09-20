@@ -1,6 +1,6 @@
 {% extends 'layout/admin/shop/catalog.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/shop/product.html' import render_product_link %}
+{% from 'macros/admin/shop/product.html' import render_product_link, render_product_temporal_availability %}
 {% set page_title = [_('Catalog'), catalog.id] %}
 
 {% block body %}
@@ -20,15 +20,23 @@
   <h3>{{ collection.title }} {{ render_extra_in_heading(collection.items|length, label=ngettext('product', 'products', collection.items|length)) }}</h3>
 
     {%- if collection.items %}
-  <table class="itemlist">
+  <table class="itemlist is-wide">
+    <thead>
+      <th>{{ _('Item number') }}</th>
+      <th>{{ pgettext('product', 'Name') }}</th>
+      <th>{{ _('Period') }}</th>
+    </thead>
+    <tbody>
       {%- for item in collection.items %}
         {%- with product = item.product %}
-    <tr>
-      <td>{{ render_product_link(product) }}</td>
-      <td>{{ product.name }}</td>
-    </tr>
+      <tr>
+        <td><strong>{{ render_product_link(product) }}</strong></td>
+        <td>{{ product.name }}</td>
+        <td>{{ render_product_temporal_availability(product) }}</td>
+      </tr>
         {%- endwith %}
       {%- endfor %}
+    </tbody>
   </table>
     {%- endif %}
   {%- endfor %}
