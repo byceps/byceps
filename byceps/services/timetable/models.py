@@ -9,7 +9,7 @@ byceps.services.timetable.models
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 from typing import NewType
 from uuid import UUID
 
@@ -27,6 +27,14 @@ class Timetable:
     party_id: PartyID
     hidden: bool
     items: list[TimetableItem]
+
+
+@dataclass(frozen=True, slots=True)
+class TimetableGroupedByDay:
+    id: TimetableID
+    party_id: PartyID
+    hidden: bool
+    items: list[tuple[date, list[TimetableItem]]]
 
 
 @dataclass(frozen=True, slots=True)

@@ -6,7 +6,8 @@ byceps.services.timetable.timetable_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime
+from collections import defaultdict
+from datetime import date, datetime
 
 from sqlalchemy import delete, select
 
@@ -16,7 +17,13 @@ from byceps.services.user.models.user import User
 
 from . import timetable_domain_service
 from .dbmodels import DbTimetable, DbTimetableItem
-from .models import Timetable, TimetableID, TimetableItem, TimetableItemID
+from .models import (
+    Timetable,
+    TimetableGroupedByDay,
+    TimetableID,
+    TimetableItem,
+    TimetableItemID,
+)
 
 
 # -------------------------------------------------------------------- #
@@ -67,6 +74,18 @@ def find_timetable_for_party(party_id: PartyID) -> Timetable | None:
     return _db_entity_to_timetable(db_timetable, items)
 
 
+def find_timetable_grouped_by_day_for_party(
+    party_id: PartyID,
+) -> TimetableGroupedByDay | None:
+    """Return the timetable, items grouped by day, for the party."""
+    timetable = find_timetable_for_party(party_id)
+
+    if timetable is None:
+        return None
+
+    return group_timetable_items_by_day(timetable)
+
+
 def _get_items(timetable_id: TimetableID) -> list[TimetableItem]:
     db_items = db.session.scalars(
         select(DbTimetableItem).filter_by(timetable_id=timetable_id)
@@ -87,6 +106,35 @@ def _db_entity_to_timetable(
         hidden=db_timetable.hidden,
         items=items,
     )
+
+
+def group_timetable_items_by_day(timetable: Timetable) -> TimetableGroupedByDay:
+    items_by_day = _group_items_by_day(timetable)
+
+    days_and_items = []
+    for day, day_items in items_by_day.items():
+        day_items.sort(key=lambda item: item.scheduled_at)
+        days_and_items.append((day, day_items))
+    days_and_items.sort(key=lambda day_and_items: day_and_items[0])
+
+    return TimetableGroupedByDay(
+        id=timetable.id,
+        party_id=timetable.party_id,
+        hidden=timetable.hidden,
+        items=days_and_items,
+    )
+
+
+def _group_items_by_day(
+    timetable: Timetable,
+) -> dict[date, list[TimetableItem]]:
+    items_by_day = defaultdict(list)
+
+    for item in timetable.items:
+        if not item.hidden:
+            items_by_day[item.scheduled_at.date()].append(item)
+
+    return dict(items_by_day)
 
 
 # -------------------------------------------------------------------- #

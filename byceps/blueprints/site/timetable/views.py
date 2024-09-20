@@ -6,8 +6,6 @@ byceps.blueprints.site.timetable.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections import defaultdict
-
 from flask import abort, g
 
 from byceps.services.timetable import timetable_service
@@ -24,28 +22,18 @@ def index():
     """Show timetable for current party."""
     timetable = _get_timetable_for_party_or_404(g.party_id)
 
-    items_grouped_by_day = _group_items_by_day(timetable)
-
     return {
-        'items_grouped_by_day': items_grouped_by_day,
+        'timetable': timetable,
     }
-
-
-def _group_items_by_day(timetable):
-    items_grouped_by_day = defaultdict(list)
-
-    for item in timetable.items:
-        if not item.hidden:
-            items_grouped_by_day[item.scheduled_at.date()].append(item)
-
-    return dict(items_grouped_by_day)
 
 
 # -------------------------------------------------------------------- #
 
 
 def _get_timetable_for_party_or_404(party_id):
-    timetable = timetable_service.find_timetable_for_party(party_id)
+    timetable = timetable_service.find_timetable_grouped_by_day_for_party(
+        party_id
+    )
 
     if timetable is None:
         abort(404)

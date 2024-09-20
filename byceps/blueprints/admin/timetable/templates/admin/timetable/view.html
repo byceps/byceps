@@ -50,12 +50,12 @@
       <th></th>
     </tr>
   </thead>
-  {%- for day, items in items_grouped_by_day.items() %}
+  {%- for day, items in timetable.items %}
   <tbody>
     <tr>
       <td class="day-header" colspan="6">{{ day|dateformat('full', rebase=False) }}</td>
     </tr>
-    {%- for item in items|sort(attribute='scheduled_at') %}
+    {%- for item in items %}
       <tr>
       <td class="nowrap{% if item.hidden %} dimmed{% endif %}">{{ item.scheduled_at|timeformat('short', rebase=False) }}</td>
       <td{% if item.hidden %} class="dimmed"{% endif %}>{{ item.description|safe }}</td>
