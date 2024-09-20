@@ -6,10 +6,20 @@ byceps.services.shop.catalog.catalog_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections import defaultdict
+from datetime import datetime
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.shop.product.models import ProductID
+from byceps.services.shop.product.dbmodels.product import DbProduct
+from byceps.services.shop.product import product_service
+from byceps.services.shop.product.models import (
+    Product,
+    ProductCollection,
+    ProductCollectionItem,
+    ProductID,
+)
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.uuid import generate_uuid7
 
@@ -154,16 +164,77 @@ def _find_db_collection(collection_id: CollectionID) -> DbCollection | None:
     return db.session.get(DbCollection, collection_id)
 
 
-def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
+def get_collections_for_catalog(
+    catalog_id: CatalogID,
+) -> list[ProductCollection]:
     """Return the catalog's collections."""
+    # Attention: Products attached to products assigned to a catalog
+    # will not be included at this time!
+
     db_collections = db.session.scalars(
         select(DbCollection)
         .filter_by(catalog_id=catalog_id)
         .order_by(DbCollection.position)
     ).all()
 
+    db_catalog_products = db.session.scalars(
+        select(DbCatalogProduct)
+        .join(DbCollection)
+        .filter(DbCollection.catalog_id == catalog_id)
+        .order_by(DbCatalogProduct.position)
+    ).all()
+
+    collection_ids_to_products = defaultdict(list)
+
+    product_ids = {
+        db_catalog_product.product_id
+        for db_catalog_product in db_catalog_products
+    }
+
+    now = datetime.utcnow()
+
+    db_products = db.session.scalars(
+        select(DbProduct)
+        .filter(DbProduct.id.in_(product_ids))
+        .filter_by(not_directly_orderable=False)
+        .filter_by(separate_order_required=False)
+        # Select only products that are available in between the
+        # temporal boundaries for this product, if specified.
+        .filter(
+            db.or_(
+                DbProduct.available_from.is_(None),
+                now >= DbProduct.available_from,
+            )
+        )
+        .filter(
+            db.or_(
+                DbProduct.available_until.is_(None),
+                now < DbProduct.available_until,
+            )
+        )
+    ).all()
+
+    products = [
+        product_service._db_entity_to_product(db_product)
+        for db_product in db_products
+    ]
+
+    products_indexed_by_id = {product.id: product for product in products}
+
+    for db_catalog_product in db_catalog_products:
+        collection_id = db_catalog_product.collection_id
+        product_id = db_catalog_product.product_id
+
+        product = products_indexed_by_id.get(product_id)
+        if not product:
+            continue
+
+        collection_ids_to_products[collection_id].append(product)
+
     return [
-        _db_entity_to_collection(db_collection)
+        _db_entity_to_product_collection(
+            db_collection, collection_ids_to_products[db_collection.id]
+        )
         for db_collection in db_collections
     ]
 
@@ -175,6 +246,29 @@ def _db_entity_to_collection(db_collection: DbCollection) -> Collection:
         title=db_collection.title,
         position=db_collection.position,
         product_numbers=[],
+    )
+
+
+def _db_entity_to_product_collection(
+    db_collection: DbCollection, products: list[Product]
+) -> ProductCollection:
+    items = [
+        _product_to_product_collection_item(product) for product in products
+    ]
+
+    return ProductCollection(
+        title=db_collection.title,
+        items=items,
+    )
+
+
+def _product_to_product_collection_item(
+    product: Product,
+) -> ProductCollectionItem:
+    return ProductCollectionItem(
+        product=product,
+        fixed_quantity=None,
+        has_fixed_quantity=False,
     )
 
 
