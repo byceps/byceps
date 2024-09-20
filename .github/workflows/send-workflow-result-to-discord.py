@@ -15,9 +15,12 @@ RESULT_COLORS = {
     'failure': '15158332',
 }
 
+UNICODE_GREEN_HEART = '\U0001F49A'  # 💚
+UNICODE_BROKEN_HEART = '\U0001F494'  # 💔
+
 RESULT_LABELS = {
-    'success': '💚 SUCCESS',
-    'failure': '💔 FAILURE',
+    'success': f'{UNICODE_GREEN_HEART} SUCCESS',
+    'failure': f'{UNICODE_BROKEN_HEART} FAILURE',
 }
 
 
