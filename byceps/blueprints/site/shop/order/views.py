@@ -15,6 +15,7 @@ from moneyed import Currency
 from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.country import country_service
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.catalog import catalog_service
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import Order
@@ -62,8 +63,9 @@ def order_form(erroneous_form=None):
         return {'collections': None}
 
     if storefront.catalog:
-        flash_error('Catalogs are not supported at this time.')
-        return {'collections': None}
+        collections = catalog_service.get_collections_for_catalog(
+            storefront.catalog.id
+        )
     else:
         compilation_result = (
             product_service.get_product_compilation_for_orderable_products(
@@ -141,8 +143,9 @@ def order():
         return order_form()
 
     if storefront.catalog:
-        flash_error('Catalogs are not supported at this time.')
-        return order_form()
+        collections = catalog_service.get_collections_for_catalog(
+            storefront.catalog.id
+        )
     else:
         compilation_result = (
             product_service.get_product_compilation_for_orderable_products(
