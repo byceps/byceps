@@ -41,9 +41,13 @@ def get_webhook_data(result: str) -> dict:
     commit_hash_short = commit_hash[:7]
     commit_url = f'{github_server_url}/{github_repository}/commit/{commit_hash}'
 
-    commit_subject = subprocess.getoutput(
-        ['git', 'log', '-1', '--pretty="%s"', commit_hash]
+    git_log_output = subprocess.run(
+        ['git', 'log', '-1', '--pretty=%s', commit_hash],
+        capture_output=True,
+        check=True,
+        text=True,
     )
+    commit_subject = git_log_output.stdout
 
     run_id = os.environ['GITHUB_RUN_ID']
     run_number = os.environ['GITHUB_RUN_NUMBER']
