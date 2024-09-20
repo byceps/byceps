@@ -6,19 +6,6 @@
 {% set current_page_party = party %}
 {% set page_title = _('Timetable') %}
 
-{% block head %}
-<style>
-.timetable tbody:not(:first-of-type) tr:first-child :is(th, td) {
-  border-top: var(--table-border-color) solid 1px;
-}
-
-.timetable .day-header {
-  background-color: var(--table-background-color-head);
-  font-weight: bold;
-}
-</style>
-{%- endblock %}
-
 {% block body %}
 
 <div class="row row--space-between block">
@@ -41,6 +28,8 @@
 
 {%- if timetable %}
   {%- if timetable.items %}
+  {%- for day, items in timetable.items %}
+<h2 class="title">{{ day|dateformat('full', rebase=False) }}</h2>
 <table class="itemlist is-wide timetable">
   <thead>
     <tr>
@@ -52,11 +41,7 @@
       <th></th>
     </tr>
   </thead>
-  {%- for day, items in timetable.items %}
   <tbody>
-    <tr>
-      <td class="day-header" colspan="6">{{ day|dateformat('full', rebase=False) }}</td>
-    </tr>
     {%- for item in items %}
       <tr>
       <td class="nowrap{% if item.hidden %} dimmed{% endif %}">{{ item.scheduled_at|timeformat('short', rebase=False) }}</td>
@@ -87,8 +72,8 @@
     </tr>
     {%- endfor %}
   </tbody>
-  {%- endfor %}
 </table>
+  {%- endfor %}
   {%- else %}
   <div class="box">
     <div class="dimmed-box centered">{{ _('No entries') }}</div>

@@ -2,39 +2,24 @@
 {% set current_page = 'timetable' %}
 {% set page_title = _('Timetable') %}
 
-{% block head %}
-<style>
-.timetable tbody:not(:first-of-type) tr:first-child :is(th, td) {
-  border-top: var(--table-border-color) solid 1px;
-}
-
-.timetable .day-header {
-  background-color: var(--table-background-color-head);
-  font-weight: bold;
-}
-</style>
-{%- endblock %}
-
 {% block body %}
 
 <h1 class="title">{{ page_title }}</h1>
 
 {{ render_snippet('timetable_intro', ignore_if_unknown=True)|safe }}
 
+  {%- for day, items in timetable.items %}
+<h2 class="title">{{ day|dateformat('full', rebase=False) }}</h2>
 <table class="itemlist is-wide timetable">
   <thead>
     <tr>
-      <th>{{ _('When?') }}</th>
+      <th style="width: 4.5rem;">{{ _('When?') }}</th>
       <th>{{ _('What?') }}</th>
-      <th width="25%">{{ _('Where?') }}</th>
-      <th></th>
+      <th style="width: 25%;">{{ _('Where?') }}</th>
+      <th style="width: 6rem;"></th>
     </tr>
   </thead>
-  {%- for day, items in timetable.items %}
   <tbody>
-    <tr>
-      <td class="day-header" colspan="4">{{ day|dateformat('full', rebase=False) }}</td>
-    </tr>
     {%- for item in items %}
     <tr>
       <td class="nowrap">{{ item.scheduled_at|timeformat('short', rebase=False) }}</td>
@@ -52,7 +37,7 @@
     </tr>
     {%- endfor %}
   </tbody>
-  {%- endfor %}
 </table>
+  {%- endfor %}
 
 {%- endblock %}
