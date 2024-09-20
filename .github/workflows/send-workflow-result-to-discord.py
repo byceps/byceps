@@ -15,6 +15,11 @@ RESULT_COLORS = {
     'failure': '15158332',
 }
 
+RESULT_LABELS = {
+    'success': '💚 SUCCESS',
+    'failure': '💔 FAILURE',
+}
+
 
 def main() -> None:
     args = parse_args()
@@ -51,10 +56,10 @@ def get_webhook_data(result: str) -> dict:
 
     run_id = os.environ['GITHUB_RUN_ID']
     run_number = os.environ['GITHUB_RUN_NUMBER']
-    run_result = format_result(result)
     run_url = f'{github_server_url}/{github_repository}/actions/runs/{run_id}'
 
     result_color = RESULT_COLORS[result]
+    result_label = RESULT_LABELS[result]
 
     return {
         'embeds': [
@@ -68,7 +73,7 @@ def get_webhook_data(result: str) -> dict:
                     },
                     {
                         'name': 'Result',
-                        'value': run_result,
+                        'value': result_label,
                         'inline': 'true',
                     },
                     {
@@ -90,16 +95,6 @@ def get_webhook_data(result: str) -> dict:
             },
         ],
     }
-
-
-def format_result(result: str) -> str:
-    match result:
-        case 'success':
-            return '💚 SUCCESS'
-        case 'failure':
-            return '💔 FAILURE'
-        case _:
-            raise ValueError(f"Unknown result value '{result}'")
 
 
 def call_webhook(url: str, data: dict) -> None:
