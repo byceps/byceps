@@ -35,7 +35,7 @@ def _get_timetable_for_party_or_404(party_id):
         party_id
     )
 
-    if timetable is None:
+    if (timetable is None) or timetable.hidden:
         abort(404)
 
     return timetable
