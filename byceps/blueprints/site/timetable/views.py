@@ -6,6 +6,8 @@ byceps.blueprints.site.timetable.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from itertools import chain
+
 from flask import abort, g
 
 from byceps.services.timetable import timetable_service
@@ -35,7 +37,16 @@ def _get_timetable_for_party_or_404(party_id):
         party_id
     )
 
-    if (timetable is None) or timetable.hidden:
+    if (
+        (timetable is None)
+        or timetable.hidden
+        or _has_only_hidden_items(timetable)
+    ):
         abort(404)
 
     return timetable
+
+
+def _has_only_hidden_items(timetable):
+    items = chain.from_iterable(day_items for _, day_items in timetable.items)
+    return all(item.hidden for item in items)
