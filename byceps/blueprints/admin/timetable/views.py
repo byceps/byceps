@@ -34,7 +34,7 @@ def view(party_id):
     party = _get_party_or_404(party_id)
 
     timetable = timetable_service.find_timetable_grouped_by_day_for_party(
-        party.id
+        party.id, include_hidden_items=True
     )
 
     return {

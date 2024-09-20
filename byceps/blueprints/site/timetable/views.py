@@ -34,7 +34,7 @@ def index():
 
 def _get_timetable_for_party_or_404(party_id):
     timetable = timetable_service.find_timetable_grouped_by_day_for_party(
-        party_id
+        party_id, include_hidden_items=False
     )
 
     if (

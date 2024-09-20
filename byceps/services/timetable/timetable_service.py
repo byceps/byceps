@@ -75,7 +75,7 @@ def find_timetable_for_party(party_id: PartyID) -> Timetable | None:
 
 
 def find_timetable_grouped_by_day_for_party(
-    party_id: PartyID,
+    party_id: PartyID, *, include_hidden_items: bool
 ) -> TimetableGroupedByDay | None:
     """Return the timetable, items grouped by day, for the party."""
     timetable = find_timetable_for_party(party_id)
@@ -83,7 +83,9 @@ def find_timetable_grouped_by_day_for_party(
     if timetable is None:
         return None
 
-    return group_timetable_items_by_day(timetable)
+    return group_timetable_items_by_day(
+        timetable, include_hidden_items=include_hidden_items
+    )
 
 
 def _get_items(timetable_id: TimetableID) -> list[TimetableItem]:
@@ -108,8 +110,12 @@ def _db_entity_to_timetable(
     )
 
 
-def group_timetable_items_by_day(timetable: Timetable) -> TimetableGroupedByDay:
-    items_by_day = _group_items_by_day(timetable)
+def group_timetable_items_by_day(
+    timetable: Timetable, *, include_hidden_items: bool
+) -> TimetableGroupedByDay:
+    items_by_day = _group_items_by_day(
+        timetable, include_hidden_items=include_hidden_items
+    )
 
     days_and_items = []
     for day, day_items in items_by_day.items():
@@ -126,12 +132,13 @@ def group_timetable_items_by_day(timetable: Timetable) -> TimetableGroupedByDay:
 
 
 def _group_items_by_day(
-    timetable: Timetable,
+    timetable: Timetable, *, include_hidden_items: bool
 ) -> dict[date, list[TimetableItem]]:
     items_by_day = defaultdict(list)
 
     for item in timetable.items:
-        items_by_day[item.scheduled_at.date()].append(item)
+        if not item.hidden or include_hidden_items:
+            items_by_day[item.scheduled_at.date()].append(item)
 
     return dict(items_by_day)
 

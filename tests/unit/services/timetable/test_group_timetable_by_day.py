@@ -25,7 +25,13 @@ def test_group_timetable_items_by_day():
     item1 = _build_item(timetable_id, datetime(2024, 9, 20, 22, 0, 0))
     item2 = _build_item(timetable_id, datetime(2024, 9, 21, 16, 0, 0))
     item3 = _build_item(timetable_id, datetime(2024, 9, 21, 18, 0, 0))
-    item4 = _build_item(timetable_id, datetime(2024, 9, 22, 11, 0, 0))
+    item4 = _build_item(
+        timetable_id, datetime(2024, 9, 21, 20, 0, 0), hidden=True
+    )
+    item5 = _build_item(timetable_id, datetime(2024, 9, 22, 11, 0, 0))
+    item6 = _build_item(
+        timetable_id, datetime(2024, 9, 22, 11, 0, 0), hidden=True
+    )
 
     expected = TimetableGroupedByDay(
         id=timetable_id,
@@ -34,15 +40,20 @@ def test_group_timetable_items_by_day():
         items=[
             (date(2024, 9, 20), [item1]),
             (date(2024, 9, 21), [item2, item3]),
-            (date(2024, 9, 22), [item4]),
+            (date(2024, 9, 22), [item5]),
         ],
     )
 
     timetable = _build_timetable(
-        timetable_id, party_id, [item1, item2, item3, item4]
+        timetable_id, party_id, [item1, item2, item3, item4, item5, item6]
     )
 
-    assert timetable_service.group_timetable_items_by_day(timetable) == expected
+    assert (
+        timetable_service.group_timetable_items_by_day(
+            timetable, include_hidden_items=False
+        )
+        == expected
+    )
 
 
 def _build_timetable(
@@ -57,7 +68,9 @@ def _build_timetable(
 
 
 def _build_item(
-    timetable_id: TimetableID, scheduled_at: datetime
+    timetable_id: TimetableID,
+    scheduled_at: datetime,
+    hidden: bool = False,
 ) -> TimetableItem:
     return TimetableItem(
         id=TimetableItemID(generate_uuid()),
@@ -67,5 +80,5 @@ def _build_item(
         location=None,
         link_target=None,
         link_label=None,
-        hidden=False,
+        hidden=hidden,
     )
