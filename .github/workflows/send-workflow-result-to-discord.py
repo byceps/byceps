@@ -10,7 +10,7 @@ import subprocess
 import requests
 
 
-COLORS = {
+RESULT_COLORS = {
     'success': '3066993',
     'failure': '15158332',
 }
@@ -54,12 +54,12 @@ def get_webhook_data(result: str) -> dict:
     run_result = format_result(result)
     run_url = f'{github_server_url}/{github_repository}/actions/runs/{run_id}'
 
-    color = COLORS[result]
+    result_color = RESULT_COLORS[result]
 
     return {
         'embeds': [
             {
-                'color': color,
+                'color': result_color,
                 'fields': [
                     {
                         'name': 'Run',
