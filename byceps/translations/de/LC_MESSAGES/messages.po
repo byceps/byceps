@@ -4281,6 +4281,10 @@ msgstr "Bezeichnung"
 msgid "Period"
 msgstr "Zeitraum"
 
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:43
+msgid "No products assigned."
+msgstr "Keine Produkte zugewiesen."
+
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:32
 msgid "Examples"
 msgstr "Beispiele"

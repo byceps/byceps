@@ -38,6 +38,10 @@
       {%- endfor %}
     </tbody>
   </table>
+    {%- else %}
+  <div class="box">
+    <div class="centered dimmed">{{ _('No products assigned.') }}</div>
+  </div>
     {%- endif %}
   {%- endfor %}
 
