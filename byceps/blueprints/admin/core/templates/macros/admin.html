@@ -23,8 +23,8 @@
 {%- endmacro %}
 
 
-{% macro render_extra_in_heading(value) -%}
-  <small>{{ value }}</small>
+{% macro render_extra_in_heading(value, label=None) -%}
+  <small>{{ value }}{% if label %} {{ label }}{% endif %}</small>
 {%- endmacro %}
 
 
