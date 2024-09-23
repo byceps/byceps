@@ -144,7 +144,7 @@ def order():
 
     if storefront.catalog:
         collections = catalog_service.get_collections_for_catalog(
-            storefront.catalog.id
+            storefront.catalog.id, include_unavailable_products=False
         )
     else:
         compilation_result = (
