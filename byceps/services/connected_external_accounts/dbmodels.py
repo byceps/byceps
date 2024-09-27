@@ -13,7 +13,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
 from byceps.services.user.models.user import UserID
-from byceps.util.uuid import generate_uuid7
 
 
 class DbConnectedExternalAccount(db.Model):
@@ -26,9 +25,7 @@ class DbConnectedExternalAccount(db.Model):
         db.UniqueConstraint('service', 'external_name'),
     )
 
-    id: Mapped[UUID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime] = mapped_column(db.DateTime)
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
@@ -39,18 +36,19 @@ class DbConnectedExternalAccount(db.Model):
 
     def __init__(
         self,
+        connection_id: UUID,
         created_at: datetime,
         user_id: UserID,
         service: str,
-        *,
-        external_id: str | None = None,
-        external_name: str | None = None,
+        external_id: str | None,
+        external_name: str | None,
     ) -> None:
         if not external_id and not external_name:
             raise ValueError(
                 'Either external ID or external name must be given'
             )
 
+        self.id = connection_id
         self.created_at = created_at
         self.user_id = user_id
         self.service = service

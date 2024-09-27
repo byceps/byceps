@@ -16,6 +16,7 @@ from byceps.services.user import user_service
 from byceps.services.user.models.user import UserID
 from byceps.util.result import Err, Ok, Result
 
+from . import connected_external_accounts_domain_service
 from .dbmodels import DbConnectedExternalAccount
 from .models import ConnectedExternalAccount
 
@@ -33,21 +34,31 @@ def connect_external_account(
     if not user:
         return Err('Unknown user ID')
 
-    db_connected_external_account = DbConnectedExternalAccount(
-        created_at,
-        user_id,
-        service,
-        external_id=external_id,
-        external_name=external_name,
+    connection_result = (
+        connected_external_accounts_domain_service.connect_external_account(
+            created_at,
+            user,
+            service,
+            external_id=external_id,
+            external_name=external_name,
+        )
     )
-    db.session.add(db_connected_external_account)
-    db.session.commit()
+    match connection_result:
+        case Ok(connected_external_account):
+            db_connected_external_account = DbConnectedExternalAccount(
+                connected_external_account.id,
+                connected_external_account.created_at,
+                connected_external_account.user_id,
+                connected_external_account.service,
+                connected_external_account.external_id,
+                connected_external_account.external_name,
+            )
+            db.session.add(db_connected_external_account)
+            db.session.commit()
 
-    connected_external_account = _db_entity_to_connected_external_account(
-        db_connected_external_account
-    )
-
-    return Ok(connected_external_account)
+            return Ok(connected_external_account)
+        case Err(e):
+            return Err(e)
 
 
 def disconnect_external_account(
