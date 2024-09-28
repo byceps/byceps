@@ -11,9 +11,7 @@ from flask import abort, g, request
 from flask_babel import force_locale, gettext
 
 from byceps.services.brand import brand_setting_service
-from byceps.services.connected_external_accounts import (
-    connected_external_accounts_service,
-)
+from byceps.services.external_accounts import external_accounts_service
 from byceps.services.country import country_service
 from byceps.services.newsletter import newsletter_service
 from byceps.services.newsletter.models import ListID as NewsletterListID
@@ -57,7 +55,7 @@ def view():
         user.id, newsletter_list_id
     )
 
-    discord_account = connected_external_accounts_service.find_connected_external_account_for_user_and_service(
+    discord_account = external_accounts_service.find_connected_external_account_for_user_and_service(
         g.user.id, 'discord'
     )
 

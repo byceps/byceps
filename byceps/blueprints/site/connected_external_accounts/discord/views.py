@@ -14,9 +14,7 @@ from urllib import parse
 from flask import current_app, g, redirect, request, url_for
 import httpx
 
-from byceps.services.connected_external_accounts import (
-    connected_external_accounts_service,
-)
+from byceps.services.external_accounts import external_accounts_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.views import login_required, redirect_to, respond_no_content
@@ -107,7 +105,7 @@ def connect_verify():
     now = datetime.utcnow()
     external_id = discord_id
     external_name = f'{discord_username}#{discord_discriminator}'
-    connected_external_accounts_service.connect_external_account(
+    external_accounts_service.connect_external_account(
         now,
         g.user.id,
         SERVICE_NAME,
@@ -124,15 +122,13 @@ def connect_verify():
 @respond_no_content
 def remove():
     """Unlink Discord account."""
-    connected_external_account = connected_external_accounts_service.find_connected_external_account_for_user_and_service(
+    connected_external_account = external_accounts_service.find_connected_external_account_for_user_and_service(
         g.user.id, SERVICE_NAME
     )
     if not connected_external_account:
         return
 
-    disconnect_result = (
-        connected_external_accounts_service.disconnect_external_account(
-            connected_external_account.id
-        )
+    disconnect_result = external_accounts_service.disconnect_external_account(
+        connected_external_account.id
     )
     disconnect_result.unwrap()

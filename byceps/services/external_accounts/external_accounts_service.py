@@ -1,6 +1,6 @@
 """
-byceps.services.connected_external_accounts.connected_external_accounts_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.external_accounts.external_accounts_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -16,7 +16,7 @@ from byceps.services.user import user_service
 from byceps.services.user.models.user import UserID
 from byceps.util.result import Err, Ok, Result
 
-from . import connected_external_accounts_domain_service
+from . import external_accounts_domain_service
 from .dbmodels import DbConnectedExternalAccount
 from .models import ConnectedExternalAccount
 
@@ -35,7 +35,7 @@ def connect_external_account(
         return Err('Unknown user ID')
 
     connection_result = (
-        connected_external_accounts_domain_service.connect_external_account(
+        external_accounts_domain_service.connect_external_account(
             created_at,
             user,
             service,
