@@ -187,6 +187,22 @@ msgstr "\"%(brand_title)s\"-Forum"
 msgid " in %(board_label)s"
 msgstr " im %(board_label)s"
 
+#: byceps/announce/handlers/external_accounts.py:34
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has connected an external account for "
+"%(user_screen_name)s on \"%(service)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat ein Benutzerkonto auf \"%(service)s\" für \"%(user_screen_name)s\"s verbunden."
+
+#: byceps/announce/handlers/external_accounts.py:55
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has disconnected an external account for "
+"%(user_screen_name)s on \"%(service)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat ein Benutzerkonto auf \"%(service)s\" für \"%(user_screen_name)s\"s entkoppelt."
+
 #: byceps/announce/handlers/guest_server.py:34
 #, python-format
 msgid ""

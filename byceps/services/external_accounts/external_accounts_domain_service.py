@@ -8,6 +8,11 @@ byceps.services.external_accounts.external_accounts_domain_service
 
 from datetime import datetime
 
+from byceps.events.base import EventUser
+from byceps.events.external_accounts import (
+    ExternalAccountConnectedEvent,
+    ExternalAccountDisconnectedEvent,
+)
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
@@ -22,7 +27,9 @@ def connect_external_account(
     *,
     external_id: str | None = None,
     external_name: str | None = None,
-) -> Result[ConnectedExternalAccount, str]:
+) -> Result[
+    tuple[ConnectedExternalAccount, ExternalAccountConnectedEvent], str
+]:
     """Connect an external account to a BYCEPS user account."""
     if not external_id and not external_name:
         return Err('Either external ID or external name must be given')
@@ -36,4 +43,49 @@ def connect_external_account(
         external_name=external_name,
     )
 
-    return Ok(connected_external_account)
+    event = _build_external_account_connected_event(
+        connected_external_account, user
+    )
+
+    return Ok((connected_external_account, event))
+
+
+def _build_external_account_connected_event(
+    connected_external_account: ConnectedExternalAccount, user: User
+) -> ExternalAccountConnectedEvent:
+    event_user = EventUser.from_user(user)
+    return ExternalAccountConnectedEvent(
+        connected_external_account_id=connected_external_account.id,
+        occurred_at=connected_external_account.created_at,
+        initiator=event_user,
+        user=event_user,
+        service=connected_external_account.service,
+        external_id=connected_external_account.external_id,
+        external_name=connected_external_account.external_name,
+    )
+
+
+def disconnect_external_account(
+    connected_external_account: ConnectedExternalAccount, user: User
+) -> ExternalAccountDisconnectedEvent:
+    """Disonnect a BYCEPS user account from an external account."""
+    event = _build_external_account_disconnected_event(
+        connected_external_account, user
+    )
+
+    return event
+
+
+def _build_external_account_disconnected_event(
+    connected_external_account: ConnectedExternalAccount, user: User
+) -> ExternalAccountDisconnectedEvent:
+    event_user = EventUser.from_user(user)
+    return ExternalAccountDisconnectedEvent(
+        connected_external_account_id=connected_external_account.id,
+        occurred_at=connected_external_account.created_at,
+        initiator=event_user,
+        user=event_user,
+        service=connected_external_account.service,
+        external_id=connected_external_account.external_id,
+        external_name=connected_external_account.external_name,
+    )

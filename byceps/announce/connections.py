@@ -31,6 +31,10 @@ from byceps.events.board import (
     BoardTopicUnlockedEvent,
     BoardTopicUnpinnedEvent,
 )
+from byceps.events.external_accounts import (
+    ExternalAccountConnectedEvent,
+    ExternalAccountDisconnectedEvent,
+)
 from byceps.events.guest_server import (
     GuestServerApprovedEvent,
     GuestServerCheckedInEvent,
@@ -90,6 +94,7 @@ from byceps.signals import (
     authn as authn_signals,
     authz as authz_signals,
     board as board_signals,
+    external_accounts as external_accounts_signals,
     guest_server as guest_server_signals,
     news as news_signals,
     newsletter as newsletter_signals,
@@ -107,6 +112,7 @@ from .handlers import (
     authn as authn_handlers,
     authz as authz_handlers,
     board as board_handlers,
+    external_accounts as external_accounts_handlers,
     guest_server as guest_server_handlers,
     news as news_handlers,
     newsletter as newsletter_handler,
@@ -234,6 +240,16 @@ for event, name, handler in [
         BoardTopicUnpinnedEvent,
         'board-topic-unpinned',
         board_handlers.announce_board_topic_unpinned,
+    ),
+    (
+        ExternalAccountConnectedEvent,
+        'external-account-connected',
+        external_accounts_handlers.announce_external_account_connected,
+    ),
+    (
+        ExternalAccountDisconnectedEvent,
+        'external-account-disconnected',
+        external_accounts_handlers.announce_external_account_disconnected,
     ),
     (
         GuestServerApprovedEvent,
@@ -453,6 +469,8 @@ _SIGNALS: list[NamedSignal] = [
     board_signals.topic_unhidden,
     board_signals.topic_unlocked,
     board_signals.topic_unpinned,
+    external_accounts_signals.external_account_connected,
+    external_accounts_signals.external_account_disconnected,
     guest_server_signals.guest_server_approved,
     guest_server_signals.guest_server_checked_in,
     guest_server_signals.guest_server_checked_out,

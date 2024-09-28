@@ -12,6 +12,10 @@ from uuid import UUID
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.events.external_accounts import (
+    ExternalAccountConnectedEvent,
+    ExternalAccountDisconnectedEvent,
+)
 from byceps.services.user import user_service
 from byceps.services.user.models.user import UserID
 from byceps.util.result import Err, Ok, Result
@@ -28,7 +32,9 @@ def connect_external_account(
     *,
     external_id: str | None = None,
     external_name: str | None = None,
-) -> Result[ConnectedExternalAccount, str]:
+) -> Result[
+    tuple[ConnectedExternalAccount, ExternalAccountConnectedEvent], str
+]:
     """Connect an external account to a BYCEPS user account."""
     user = user_service.find_user(user_id)
     if not user:
@@ -44,26 +50,28 @@ def connect_external_account(
         )
     )
     match connection_result:
-        case Ok(connected_external_account):
-            db_connected_external_account = DbConnectedExternalAccount(
-                connected_external_account.id,
-                connected_external_account.created_at,
-                connected_external_account.user_id,
-                connected_external_account.service,
-                connected_external_account.external_id,
-                connected_external_account.external_name,
-            )
-            db.session.add(db_connected_external_account)
-            db.session.commit()
-
-            return Ok(connected_external_account)
         case Err(e):
             return Err(e)
+
+    connected_external_account, event = connection_result.unwrap()
+
+    db_connected_external_account = DbConnectedExternalAccount(
+        connected_external_account.id,
+        connected_external_account.created_at,
+        connected_external_account.user_id,
+        connected_external_account.service,
+        connected_external_account.external_id,
+        connected_external_account.external_name,
+    )
+    db.session.add(db_connected_external_account)
+    db.session.commit()
+
+    return Ok((connected_external_account, event))
 
 
 def disconnect_external_account(
     connected_external_account_id: UUID,
-) -> Result[None, str]:
+) -> Result[ExternalAccountDisconnectedEvent, str]:
     """Disconnect an external account from a BYCEPS user account."""
     db_connected_external_account = db.session.get(
         DbConnectedExternalAccount, connected_external_account_id
@@ -71,10 +79,22 @@ def disconnect_external_account(
     if not db_connected_external_account:
         return Err('Unknown connected external account ID')
 
+    connected_external_account = _db_entity_to_connected_external_account(
+        db_connected_external_account
+    )
+
+    user = user_service.get_user(connected_external_account.user_id)
+
+    event = (
+        connected_external_accounts_domain_service.disconnect_external_account(
+            connected_external_account, user
+        )
+    )
+
     db.session.delete(db_connected_external_account)
     db.session.commit()
 
-    return Ok(None)
+    return Ok(event)
 
 
 def find_connected_external_account_for_user_and_service(

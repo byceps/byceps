@@ -15,6 +15,7 @@ from flask import current_app, g, redirect, request, url_for
 import httpx
 
 from byceps.services.external_accounts import external_accounts_service
+from byceps.signals import external_accounts as external_accounts_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.views import login_required, redirect_to, respond_no_content
@@ -101,17 +102,22 @@ def connect_verify():
     discord_username = user_response_data['username']
     discord_discriminator = user_response_data['discriminator']
 
-    # Store Discord id + user-name.
+    # Store Discord ID and username.
     now = datetime.utcnow()
     external_id = discord_id
     external_name = f'{discord_username}#{discord_discriminator}'
-    external_accounts_service.connect_external_account(
+
+    connection_result = external_accounts_service.connect_external_account(
         now,
         g.user.id,
         SERVICE_NAME,
         external_id=external_id,
         external_name=external_name,
     )
+
+    _, event = connection_result.unwrap()
+
+    external_accounts_signals.external_account_connected.send(None, event=event)
 
     flash_success('Discord-Account erfolgreich verbunden.')
     return redirect_to('user_settings.view')
@@ -128,7 +134,14 @@ def remove():
     if not connected_external_account:
         return
 
-    disconnect_result = external_accounts_service.disconnect_external_account(
-        connected_external_account.id
+    disconnection_result = (
+        external_accounts_service.disconnect_external_account(
+            connected_external_account.id
+        )
     )
-    disconnect_result.unwrap()
+
+    event = disconnection_result.unwrap()
+
+    external_accounts_signals.external_account_disconnected.send(
+        None, event=event
+    )
