@@ -85,10 +85,8 @@ def disconnect_external_account(
 
     user = user_service.get_user(connected_external_account.user_id)
 
-    event = (
-        connected_external_accounts_domain_service.disconnect_external_account(
-            connected_external_account, user
-        )
+    event = external_accounts_domain_service.disconnect_external_account(
+        connected_external_account, user
     )
 
     db.session.delete(db_connected_external_account)
