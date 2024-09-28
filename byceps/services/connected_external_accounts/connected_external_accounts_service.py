@@ -28,7 +28,7 @@ def connect_external_account(
     external_id: str | None = None,
     external_name: str | None = None,
 ) -> Result[ConnectedExternalAccount, str]:
-    """Connect a BYCEPS user account to an external account."""
+    """Connect an external account to a BYCEPS user account."""
     user = user_service.find_user(user_id)
     if not user:
         return Err('Unknown user ID')
@@ -53,7 +53,7 @@ def connect_external_account(
 def disconnect_external_account(
     connected_external_account_id: UUID,
 ) -> Result[None, str]:
-    """Connect a BYCEPS user account from an external account."""
+    """Disconnect an external account from a BYCEPS user account."""
     db_connected_external_account = db.session.get(
         DbConnectedExternalAccount, connected_external_account_id
     )
