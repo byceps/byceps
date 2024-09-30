@@ -15,7 +15,7 @@ mistletoe==1.4.0
 paypal-checkout-serversdk==1.0.1
 paypalhttp==1.0.1
 pillow==10.4.0
-psycopg[binary]==3.2.2
+psycopg[binary]==3.2.3
 pydantic==2.9.1
 py-moneyed==3.0
 qrcode==7.4.2
