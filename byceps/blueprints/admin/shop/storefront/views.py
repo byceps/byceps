@@ -169,7 +169,7 @@ def create(shop_id):
         storefront_id,
         shop.id,
         order_number_sequence.id,
-        closed=False,
+        closed=True,
         catalog=catalog,
     )
 
