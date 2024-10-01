@@ -580,12 +580,12 @@ label {
   margin-bottom: 0.25rem;
 }
 
-.form-check-label {
+:is(.form-check-label, .form-radio-label) {
   align-items: flex-start;
   display: flex;
 }
 
-.form-check-label span {
+:is(.form-check-label, .form-radio-label) span {
   margin-left: 0.25rem;
 }
 
