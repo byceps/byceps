@@ -21,21 +21,48 @@ def test_parse_apps_config_with_empty_input():
     assert parse_apps_config(toml) == expected
 
 
+def test_parse_apps_config_with_modespecific_sections():
+    expected = Ok(
+        AppsConfig(
+            admin=AdminAppMount(server_name='admin.byceps.test'),
+            api=ApiAppMount(server_name='api.byceps.test'),
+            sites=[
+                SiteAppMount(server_name='www.byceps.test', site_id='internet'),
+                SiteAppMount(
+                    server_name='local.byceps.test', site_id='intranet'
+                ),
+            ],
+        )
+    )
+
+    toml = """
+    [admin]
+    server_name = "admin.byceps.test"
+
+    [api]
+    server_name = "api.byceps.test"
+
+    [[sites]]
+    server_name = "www.byceps.test"
+    site_id = 'internet'
+
+    [[sites]]
+    server_name = "local.byceps.test"
+    site_id = 'intranet'
+    """
+
+    assert parse_apps_config(toml) == expected
+
+
 def test_parse_apps_config_with_app_mounts():
     expected = Ok(
         AppsConfig(
             app_mounts=[
-                AdminAppMount(server_name='admin.byceps.test', mode='admin'),
-                ApiAppMount(server_name='api.byceps.test', mode='api'),
+                AdminAppMount(server_name='admin.byceps.test'),
+                ApiAppMount(server_name='api.byceps.test'),
+                SiteAppMount(server_name='www.byceps.test', site_id='internet'),
                 SiteAppMount(
-                    server_name='www.byceps.test',
-                    mode='site',
-                    site_id='internet',
-                ),
-                SiteAppMount(
-                    server_name='local.byceps.test',
-                    mode='site',
-                    site_id='intranet',
+                    server_name='local.byceps.test', site_id='intranet'
                 ),
             ]
         )
@@ -64,11 +91,28 @@ def test_parse_apps_config_with_app_mounts():
     assert parse_apps_config(toml) == expected
 
 
-def test_parse_apps_config_with_conflicting_server_names():
+def test_parse_apps_config_with_conflicting_server_names_in_app_mounts():
     toml = """
     [[app_mounts]]
     server_name = "www.byceps.test"
     mode = "site"
+    site_id = 'one'
+
+    [[app_mounts]]
+    server_name = "www.byceps.test"
+    mode = "site"
+    site_id = 'two'
+    """
+
+    assert parse_apps_config(toml) == Err(
+        'Non-unique server names configured: www.byceps.test'
+    )
+
+
+def test_parse_apps_config_with_conflicting_server_names():
+    toml = """
+    [[sites]]
+    server_name = "www.byceps.test"
     site_id = 'one'
 
     [[app_mounts]]

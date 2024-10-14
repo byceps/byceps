@@ -32,15 +32,15 @@ class _BaseAppMount(BaseModel):
 
 
 class AdminAppMount(_BaseAppMount):
-    mode: Literal['admin']
+    mode: Literal['admin'] = 'admin'
 
 
 class ApiAppMount(_BaseAppMount):
-    mode: Literal['api']
+    mode: Literal['api'] = 'api'
 
 
 class SiteAppMount(_BaseAppMount):
-    mode: Literal['site']
+    mode: Literal['site'] = 'site'
     site_id: str | None
 
 
@@ -51,6 +51,24 @@ AppMount = Annotated[
 
 class AppsConfig(BaseModel):
     app_mounts: list[AppMount] = Field(default_factory=list)
+    admin: AdminAppMount | None = None
+    api: ApiAppMount | None = None
+    sites: list[SiteAppMount] = Field(default_factory=list)
+
+    def get_all_app_mounts(self) -> list[AppMount]:
+        all_app_mounts = []
+
+        all_app_mounts.extend(self.app_mounts)
+
+        if self.admin:
+            all_app_mounts.append(self.admin)
+
+        if self.api:
+            all_app_mounts.append(self.api)
+
+        all_app_mounts.extend(self.sites)
+
+        return all_app_mounts
 
 
 def get_apps_config() -> Result[AppsConfig, str]:
@@ -102,7 +120,7 @@ def _find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
     defined_server_names = set()
     conflicting_server_names = set()
 
-    for mount in apps_config.app_mounts:
+    for mount in apps_config.get_all_app_mounts():
         server_name = mount.server_name
         if server_name in defined_server_names:
             conflicting_server_names.add(server_name)
@@ -131,7 +149,8 @@ class AppDispatcher:
     ) -> None:
         self.lock = Lock()
         self.mounts_by_host = {
-            mount.server_name: mount for mount in apps_config.app_mounts
+            mount.server_name: mount
+            for mount in apps_config.get_all_app_mounts()
         }
         self.config_overrides = config_overrides
         self.apps_by_host: dict[str, WSGIApplication] = {}

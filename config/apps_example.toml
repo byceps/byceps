@@ -1,12 +1,9 @@
-[[app_mounts]]
+[admin]
 server_name = "admin.byceps.example"
-mode = "admin"
 
-[[app_mounts]]
+[api]
 server_name = "api.byceps.example"
-mode = "api"
 
-[[app_mounts]]
+[[sites]]
 server_name = "cozylan.example"
-mode = "site"
 site_id = "cozylan"

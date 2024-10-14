@@ -98,9 +98,8 @@ def database():
 
 
 APPS_CONFIG = """
-[[app_mounts]]
+[api]
 server_name = "api.acmecon.test"
-mode = "api"
 """
 
 
