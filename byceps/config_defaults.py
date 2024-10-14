@@ -12,10 +12,6 @@ from datetime import timedelta
 from pathlib import Path
 
 
-# Avoid connection errors after database becomes temporarily
-# unreachable, then becomes reachable again.
-SQLALCHEMY_ENGINE_OPTIONS = {'pool_pre_ping': True}
-
 # job queue
 JOBS_ASYNC = True
 

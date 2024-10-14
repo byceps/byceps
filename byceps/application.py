@@ -129,6 +129,10 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
     """Create the actual Flask application."""
     app = Flask('byceps')
 
+    # Avoid connection errors after database becomes temporarily
+    # unreachable, then becomes reachable again.
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True}
+
     _configure(app, config_overrides)
 
     app_mode = app.byceps_app_mode
