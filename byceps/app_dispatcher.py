@@ -50,7 +50,7 @@ AppMount = Annotated[
 
 
 class AppsConfig(BaseModel):
-    app_mounts: list[AppMount]
+    app_mounts: list[AppMount] = Field(default_factory=list)
 
 
 def get_apps_config() -> Result[AppsConfig, str]:

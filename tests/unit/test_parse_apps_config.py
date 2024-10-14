@@ -13,6 +13,14 @@ from byceps.app_dispatcher import (
 from byceps.util.result import Err, Ok
 
 
+def test_parse_apps_config_with_empty_input():
+    expected = Ok(AppsConfig())
+
+    toml = ''
+
+    assert parse_apps_config(toml) == expected
+
+
 def test_parse_apps_config_with_app_mounts():
     expected = Ok(
         AppsConfig(
