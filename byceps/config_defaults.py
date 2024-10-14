@@ -12,9 +12,6 @@ from datetime import timedelta
 from pathlib import Path
 
 
-# job queue
-JOBS_ASYNC = True
-
 # metrics
 METRICS_ENABLED = False
 
