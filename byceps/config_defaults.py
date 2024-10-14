@@ -15,9 +15,6 @@ from pathlib import Path
 # metrics
 METRICS_ENABLED = False
 
-# RQ dashboard (for job queue)
-RQ_DASHBOARD_POLL_INTERVAL = 2500
-
 # login sessions
 PERMANENT_SESSION_LIFETIME = timedelta(14)
 SESSION_COOKIE_SAMESITE = 'Lax'
