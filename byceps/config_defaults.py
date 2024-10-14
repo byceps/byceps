@@ -17,7 +17,6 @@ METRICS_ENABLED = False
 
 # RQ dashboard (for job queue)
 RQ_DASHBOARD_POLL_INTERVAL = 2500
-RQ_DASHBOARD_WEB_BACKGROUND = 'white'
 
 # login sessions
 PERMANENT_SESSION_LIFETIME = timedelta(14)
