@@ -14,7 +14,7 @@ markupsafe==3.0.2
 mistletoe==1.4.0
 paypal-checkout-serversdk==1.0.3
 paypalhttp==1.0.1
-pillow==10.4.0
+pillow==11.0.0
 psycopg[binary]==3.2.3
 pydantic==2.9.2
 py-moneyed==3.0
