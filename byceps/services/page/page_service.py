@@ -400,6 +400,24 @@ def get_pages_for_site_with_current_versions(
     )
 
 
+def search_pages(
+    search_term: str, *, site_id: SiteID | None = None
+) -> Sequence[Page]:
+    """Search in (the latest versions of) pages."""
+    stmt = (
+        select(DbPage).join(DbCurrentPageVersionAssociation).join(DbPageVersion)
+    )
+
+    if site_id:
+        stmt = stmt.filter(DbPage.site_id == site_id)
+
+    stmt = stmt.filter(DbPageVersion.body.contains(search_term))
+
+    db_pages = db.session.scalars(stmt).all()
+
+    return [_db_entity_to_page(db_page) for db_page in db_pages]
+
+
 def _db_entity_to_page(db_page: DbPage) -> Page:
     return Page(
         id=db_page.id,
