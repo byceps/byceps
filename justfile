@@ -14,10 +14,10 @@ export-requirements-core:
     uv export --format requirements-txt --frozen --no-header --quiet --output-file requirements/core.txt
 
 export-requirements-dev:
-    uv export --format requirements-txt --frozen --no-header --quiet --only-group dev --output-file requirements/dev.txt
+    uv export --format requirements-txt --frozen --no-header --quiet --output-file requirements/dev.txt --only-group dev
 
 export-requirements-docs:
-    uv export --format requirements-txt --frozen --no-header --quiet --only-group docs --output-file requirements/docs.txt
+    uv export --format requirements-txt --frozen --no-header --quiet --output-file requirements/docs.txt --only-group docs
 
 export-requirements-test:
-    uv export --format requirements-txt --frozen --no-header --quiet --only-group test --output-file requirements/test.txt
+    uv export --format requirements-txt --frozen --no-header --quiet --output-file requirements/test.txt --only-group test
