@@ -54,21 +54,20 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v4
 
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "0.4.27"
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        cache: 'pip'
-        cache-dependency-path: 'requirements/core.txt'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip wheel
-        python -m pip install -r requirements/core.txt -r requirements/test.txt
-
-    - name: Install BYCEPS
-      run: |
-        python -m pip install -e .
+    - name: Install project
+      run: uv sync --frozen --only-group test
 
     - name: Download binary for test coverage reporting to Code Climate
       if: github.repository == 'byceps/byceps' && github.ref_name == 'main'
@@ -83,7 +82,7 @@ jobs:
 
     - name: Test with pytest and coverage
       run: |
-        coverage run --source=byceps -m pytest tests
+        uv run coverage run --source=byceps -m pytest tests
 
     - name: Generate XML output from test coverage
       if: github.repository == 'byceps/byceps' && github.ref_name == 'main'
