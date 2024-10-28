@@ -41,7 +41,7 @@ to run BYCEPS in a relational database instance.
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-database-tables
+    (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-database-tables
     Creating database tables ... done.
 
 .. note:: The :ref:`database initialization command <Initialize
@@ -58,7 +58,7 @@ By default, an initial set of roles provided with BYCEPS is imported:
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-roles
+    (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-roles
     Importing roles ... done. Imported 35 roles, skipped 0 roles.
 
 Optionally, the file to import from can be specified with the option
@@ -66,7 +66,7 @@ Optionally, the file to import from can be specified with the option
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-roles -f custom_roles.toml
+    (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-roles -f custom_roles.toml
     Importing roles ... done. Imported 35 roles, skipped 0 roles.
 
 .. note:: The :ref:`database initialization command <Initialize
@@ -85,7 +85,7 @@ To export all roles into a TOML file, standard output is redirected
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps export-roles > exported-roles.toml
+    (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps export-roles > exported-roles.toml
 
 
 Initialize Database
@@ -103,7 +103,7 @@ unnecessary to call the covered commands separately):
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps initialize-database
+    (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps initialize-database
     Creating database tables ... done.
     Importing roles ... done. Imported 35 roles, skipped 0 roles.
     Adding language "en" ... done.
@@ -132,7 +132,7 @@ they all will have superuser-like privileges in BYCEPS.
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-superuser
+    (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-superuser
     Screen name: Flynn
     Email address: flynn@flynns-arcade.net
     Password:
@@ -177,7 +177,7 @@ To import it:
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-users example-users.jsonl
+    (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-users example-users.jsonl
     [line 1] Imported user imported01.
     [line 2] Could not import user: 1 validation error for UserToImport
     screen_name
@@ -196,7 +196,7 @@ A secret key is, among other things, required for login sessions.
 
 .. code-block:: sh
 
-    (venv)$ byceps generate-secret-key
+    (.venv)$ byceps generate-secret-key
     3ac1c416bfacb82918d56720d1c3104fd96e8b8d4fbee42343ae7512a9ced293
 
 .. attention:: Do **not** use the above key (or any other key you copied
@@ -233,7 +233,7 @@ To import it:
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-seats my-party-2023 example-seats.jsonl
+    (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-seats my-party-2023 example-seats.jsonl
     [line 1] Imported seat (area="Floor 3", x=10, y=10, category="Premium").
     [line 2] Imported seat (area="Floor 3", x=25, y=10, category="Premium").
 
@@ -254,6 +254,6 @@ accidental damage).
 
 .. code:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps shell
+    (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps shell
     Welcome to the interactive BYCEPS shell on Python 3.11.2!
     >>>

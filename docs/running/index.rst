@@ -14,7 +14,7 @@ server for development purposes:
 
 .. code-block:: sh
 
-   (venv)$ BYCEPS_CONFIG=../config/development.toml flask --app=serve_admin --debug run
+   (.venv)$ BYCEPS_CONFIG=../config/development.toml flask --app=serve_admin --debug run
 
 The admin application should now be reachable at
 `<http://127.0.0.1:5000>`_ (on Flask's standard port).
@@ -29,7 +29,7 @@ the admin application):
 
 .. code-block:: sh
 
-   (venv)$ BYCEPS_CONFIG=../config/development.toml SITE_ID=cozylan flask --app=serve_site --debug run --port 5001
+   (.venv)$ BYCEPS_CONFIG=../config/development.toml SITE_ID=cozylan flask --app=serve_site --debug run --port 5001
 
 The application for site ``cozylan`` should now be reachable at
 `<http://127.0.0.1:5001>`_.
@@ -47,7 +47,7 @@ To start it:
 
 .. code-block:: sh
 
-   (venv)$ BYCEPS_CONFIG=../config/development.toml ./worker.py
+   (.venv)$ BYCEPS_CONFIG=../config/development.toml ./worker.py
 
 It should start processing any jobs in the queue right away and will
 then wait for new jobs to be enqueued.

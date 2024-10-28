@@ -14,14 +14,14 @@ good idea to update pip_ to the current version:
 
 .. code-block:: sh
 
-    (venv)$ pip install --upgrade pip
+    (.venv)$ pip install --upgrade pip
 
 Then instruct pip_ to install the required Python dependencies (again,
 the same way as during the installation):
 
 .. code-block:: sh
 
-    (venv)$ pip install -r requirements/core.txt
+    (.venv)$ pip install -r requirements/core.txt
 
 This will install new but yet missing packages and upgrade/downgrade
 existing packages. It will *not* remove no longer used packages, though,
@@ -32,4 +32,4 @@ their requirements as well:
 
 .. code-block:: sh
 
-    (venv)$ pip install -r requirements/dev.txt
+    (.venv)$ pip install -r requirements/dev.txt

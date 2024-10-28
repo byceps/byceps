@@ -16,16 +16,16 @@ dependencies:
 
 .. code:: sh
 
-    (venv)$ pip install -r requirements/test.txt
+    (.venv)$ pip install -r requirements/test.txt
 
 Then run the tests:
 
 .. code:: sh
 
-    (venv)$ pytest
+    (.venv)$ pytest
 
 To abort on encountering the first failing test case:
 
 .. code:: sh
 
-    (venv)$ pytest -x
+    (.venv)$ pytest -x
