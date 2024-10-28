@@ -27,6 +27,60 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Message Boards",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
 ]
+dependencies = [
+    "babel==2.16.0",
+    "bbcode==1.1.0",
+    "blinker==1.8.2",
+    "bpython>=0.24",
+    "click==8.1.7",
+    "flask-babel==4.0.0",
+    "flask-sqlalchemy==3.1.1",
+    "flask==3.0.3",
+    "hiredis==3.0.0",
+    "httpx[http2]==0.27.2",
+    "itsdangerous==2.2.0",
+    "jinja2==3.1.4",
+    "markupsafe==3.0.2",
+    "mistletoe==1.4.0",
+    "paypal-checkout-serversdk==1.0.3",
+    "paypalhttp==1.0.1",
+    "pillow==11.0.0",
+    "psycopg[binary]==3.2.3",
+    "py-moneyed==3.0",
+    "pydantic==2.9.2",
+    "qrcode==8.0",
+    "redis==5.2.0",
+    "rq-dashboard==0.8.0.2",
+    "rq==1.16.2",
+    "rtoml==0.11.0",
+    "schwifty==2024.9.0",
+    "sentry-sdk[flask,rq,sqlalchemy]==2.17.0",
+    "sqlalchemy==2.0.36",
+    "stripe==5.4.0",
+    "structlog==24.4.0",
+    "tenacity==9.0.0",
+    "uuid6==2024.7.10",
+    "werkzeug==3.0.4",
+    "wtforms==3.2.1",
+]
+
+[dependency-groups]
+dev = [
+    "flask-debugtoolbar==0.16.0",
+    "mypy==1.13.0",
+    "ruff==0.7.1",
+    "types-freezegun==1.1.10",
+    "types-redis==4.6.0.20241004",
+]
+docs = [
+    "furo==2024.8.6",
+    "sphinx==8.1.3",
+]
+test = [
+    "coverage==7.6.4",
+    "freezegun==1.5.1",
+    "pytest==8.3.3",
+]
 
 [project.scripts]
 byceps = "byceps.cli.cli:cli"

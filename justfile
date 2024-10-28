@@ -9,3 +9,15 @@ babel-init locale:
 
 babel-compile:
     pybabel compile -d byceps/translations
+
+export-requirements-core:
+    uv export --format requirements-txt --frozen --quiet --output-file requirements/core.txt
+
+export-requirements-dev:
+    uv export --format requirements-txt --frozen --quiet --only-group dev --output-file requirements/dev.txt
+
+export-requirements-docs:
+    uv export --format requirements-txt --frozen --quiet --only-group docs --output-file requirements/docs.txt
+
+export-requirements-test:
+    uv export --format requirements-txt --frozen --quiet --only-group test --output-file requirements/test.txt
