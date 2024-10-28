@@ -87,7 +87,7 @@ jobs:
     - name: Generate XML output from test coverage
       if: github.repository == 'byceps/byceps' && github.ref_name == 'main'
       run: |
-        coverage xml
+        uv run coverage xml
 
     - name: Notify Code Climate of a completed test run
       if: github.repository == 'byceps/byceps' && github.ref_name == 'main'
