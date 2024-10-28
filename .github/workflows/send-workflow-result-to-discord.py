@@ -7,7 +7,7 @@ import json
 import os
 import subprocess
 
-import requests
+import httpx
 
 
 RESULT_COLORS = {
@@ -104,7 +104,7 @@ def call_webhook(url: str, data: dict) -> None:
     print('Request data:')
     print(json.dumps(data, indent=2))
 
-    response = requests.post(url, json=data, timeout=10)
+    response = httpx.post(url, json=data, timeout=10)
 
     print('Response:')
     print(response)
