@@ -60,7 +60,7 @@ dependencies = [
     "structlog==24.4.0",
     "tenacity==9.0.0",
     "uuid6==2024.7.10",
-    "werkzeug==3.0.6",
+    "werkzeug>=3.1.1",
     "wtforms==3.2.1",
 ]
 
