@@ -16,7 +16,7 @@ dependencies:
 
 .. code:: sh
 
-    (.venv)$ pip install -r requirements/test.txt
+    (.venv)$ uv sync --group test
 
 Then run the tests:
 
