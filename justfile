@@ -12,6 +12,3 @@ babel-compile:
 
 export-requirements-core:
     uv export --format requirements-txt --frozen --no-header --quiet --output-file requirements/core.txt --no-emit-project --no-dev
-
-export-requirements-dev:
-    uv export --format requirements-txt --frozen --no-header --quiet --output-file requirements/dev.txt --only-group dev
