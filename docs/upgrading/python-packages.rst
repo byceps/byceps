@@ -27,9 +27,8 @@ This will install new but yet missing packages and upgrade/downgrade
 existing packages. It will *not* remove no longer used packages, though,
 but that *should* not be an issue.
 
-If you want to run the test suite and/or use development tools, update
-their requirements as well:
+If you want to use development tools, update their dependencies as well:
 
 .. code-block:: sh
 
-    (.venv)$ pip install -r requirements/dev.txt
+    (.venv)$ uv sync --group dev
