@@ -15,6 +15,3 @@ export-requirements-core:
 
 export-requirements-dev:
     uv export --format requirements-txt --frozen --no-header --quiet --output-file requirements/dev.txt --only-group dev
-
-export-requirements-test:
-    uv export --format requirements-txt --frozen --no-header --quiet --output-file requirements/test.txt --only-group test
