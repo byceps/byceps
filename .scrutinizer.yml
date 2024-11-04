@@ -1,24 +1,10 @@
 build:
-  environment:
-    python:
-      version: 3.11.2
-      virtualenv: false
-  dependencies:
-    override:
-      - "curl -LsSf https://astral.sh/uv/install.sh | env UV_UNMANAGED_INSTALL='/home/scrutinizer/bin' sh && uv sync --frozen --no-progress --only-group test && alias coverage='uv run --no-progress coverage'"
   nodes:
     analysis:
       tests:
         override:
           - js-scrutinizer-run
           - py-scrutinizer-run
-    coverage:
-      tests:
-        override:
-          - command: 'coverage run --source=byceps -m pytest tests'
-            coverage:
-              file: '.coverage'
-              format: 'py-cc'
 
 filter:
   paths:
