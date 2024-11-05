@@ -155,3 +155,6 @@ order-by-type = false
 
 [tool.setuptools]
 packages = [ "byceps" ]
+
+[tool.uv]
+default-groups = []
