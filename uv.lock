@@ -178,7 +178,7 @@ dependencies = [
     { name = "wtforms" },
 ]
 
-[package.dependency-groups]
+[package.dev-dependencies]
 dev = [
     { name = "flask-debugtoolbar" },
     { name = "mypy" },
@@ -234,7 +234,7 @@ requires-dist = [
     { name = "wtforms", specifier = "==3.2.1" },
 ]
 
-[package.metadata.dependency-groups]
+[package.metadata.requires-dev]
 dev = [
     { name = "flask-debugtoolbar", specifier = "==0.16.0" },
     { name = "mypy", specifier = "==1.13.0" },
