@@ -91,8 +91,8 @@ Documentation = "https://byceps.readthedocs.io/"
 Repository = "https://github.com/byceps/byceps"
 
 [build-system]
-requires = [ "setuptools" ]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.mypy]
 python_version = "3.11"
@@ -152,9 +152,6 @@ order-by-type = false
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = [ "S101", "S105", "S106", "S107" ]
-
-[tool.setuptools]
-packages = [ "byceps" ]
 
 [tool.uv]
 default-groups = []
