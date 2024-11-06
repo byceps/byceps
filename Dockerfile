@@ -2,10 +2,11 @@ FROM python:3.11-bookworm
 
 # Install Debian dependencies.
 # A final `apt-get clean` is part of the Debian base image.
-RUN apt-get update \
- && apt-get install --no-install-recommends --yes \
+RUN apt-get update && \
+    apt-get install --no-install-recommends --yes \
         locales-all \
- && rm -rf /var/lib/apt/lists/*
+    && \
+    rm -rf /var/lib/apt/lists/*
 
 # Don't run as root.
 RUN useradd --create-home byceps
@@ -15,8 +16,8 @@ ENV PATH /home/byceps/.local/bin:$PATH
 
 # Install Python dependencies.
 # First, upgrade Pip itself.
-RUN pip install --no-cache-dir --user --upgrade pip \
- && pip install --no-cache-dir --user uwsgi
+RUN pip install --no-cache-dir --user --upgrade pip && \
+    pip install --no-cache-dir --user uwsgi
 
 # Install more Python dependencies, as specified by the
 # application. Do this before copying the rest of the
