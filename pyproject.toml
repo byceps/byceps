@@ -82,6 +82,11 @@ test = [
     "pytest==8.3.3",
 ]
 
+[project.optional-dependencies]
+wsgiserver = [
+    "uwsgi>=2.0.28",
+]
+
 [project.scripts]
 byceps = "byceps.cli.cli:cli"
 

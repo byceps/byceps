@@ -178,6 +178,11 @@ dependencies = [
     { name = "wtforms" },
 ]
 
+[package.optional-dependencies]
+wsgiserver = [
+    { name = "uwsgi" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "flask-debugtoolbar" },
@@ -230,6 +235,7 @@ requires-dist = [
     { name = "structlog", specifier = "==24.4.0" },
     { name = "tenacity", specifier = "==9.0.0" },
     { name = "uuid6", specifier = "==2024.7.10" },
+    { name = "uwsgi", marker = "extra == 'wsgiserver'", specifier = ">=2.0.28" },
     { name = "werkzeug", specifier = ">=3.1.1" },
     { name = "wtforms", specifier = "==3.2.1" },
 ]
@@ -1695,6 +1701,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/2c/56/2560a9f1ccab9e12b
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d3/3e/4ae6af487ce5781ed71d5fe10aca72e7cbc4d4f45afc31b120287082a8dd/uuid6-2024.7.10-py3-none-any.whl", hash = "sha256:93432c00ba403751f722829ad21759ff9db051dea140bf81493271e8e4dd18b7", size = 6376 },
 ]
+
+[[package]]
+name = "uwsgi"
+version = "2.0.28"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/24/c2/d58480aadc9a1f420dd96fc43cf0dcd8cb5ededb95cab53743529c23b6cd/uwsgi-2.0.28.tar.gz", hash = "sha256:79ca1891ef2df14508ab0471ee8c0eb94bd2d51d03f32f90c4bbe557ab1e99d0", size = 816212 }
 
 [[package]]
 name = "wcwidth"
