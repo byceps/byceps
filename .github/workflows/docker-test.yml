@@ -13,13 +13,13 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Create services
-      run: docker-compose up --no-start --quiet-pull
+      run: docker compose up --no-start --quiet-pull
 
     - name: Generate secret key
-      run: docker-compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt
+      run: docker compose run --rm byceps-admin byceps generate-secret-key > ./secret_key.txt
 
     - name: Initialize database
-      run: docker-compose run --rm byceps-admin byceps initialize-database
+      run: docker compose run --rm byceps-admin byceps initialize-database
 
     - name: Create demo data
-      run: docker-compose run --rm byceps-admin byceps create-demo-data
+      run: docker compose run --rm byceps-admin byceps create-demo-data
