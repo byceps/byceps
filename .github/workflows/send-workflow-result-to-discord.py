@@ -2,6 +2,13 @@
 
 """Notify Discord via webhook about workflow result."""
 
+# /// script
+# requires-python = ">=3.11"
+# dependencies = [
+#     "httpx",
+# ]
+# ///
+
 from argparse import ArgumentParser
 import json
 import os
