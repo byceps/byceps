@@ -20,18 +20,14 @@ ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
     UV_PYTHON_DOWNLOADS=never
 
-# Install Python dependencies.
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv venv && \
-    uv pip install --no-cache-dir uwsgi
-
 # Install more Python dependencies, as specified by the
 # application. Do this before copying the rest of the
 # application's files to profit from layer caching for as long
 # as the requirements specification stays the same.
 RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=requirements/core.txt,target=requirements.txt \
-    uv pip install --no-cache-dir --requirement requirements.txt
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    uv sync --extra wsgiserver --frozen --no-editable --no-install-project
 
 # Copy the application into the image.
 COPY . .
