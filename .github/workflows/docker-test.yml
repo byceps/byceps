@@ -16,10 +16,10 @@ jobs:
       run: docker compose up --no-start --quiet-pull
 
     - name: Generate secret key
-      run: docker compose run --rm byceps-apps byceps generate-secret-key > ./secret_key.txt
+      run: docker compose run --rm byceps-apps uv run byceps generate-secret-key > ./secret_key.txt
 
     - name: Initialize database
-      run: docker compose run --rm byceps-apps byceps initialize-database
+      run: docker compose run --rm byceps-apps uv run byceps initialize-database
 
     - name: Create demo data
-      run: docker compose run --rm byceps-apps byceps create-demo-data
+      run: docker compose run --rm byceps-apps uv run byceps create-demo-data
