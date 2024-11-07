@@ -35,12 +35,13 @@ RUN pip install -e .
 EXPOSE 5000
 EXPOSE 8080
 
-CMD [ "uwsgi", \
-      "--callable", "app", \
-      "--enable-threads", \
-      "--http-socket", "0.0.0.0:8080", \
-      "--lazy-apps", \
-      "--processes", "8", \
-      "--uwsgi-socket", "0.0.0.0:5000", \
-      "--wsgi-file", "serve_apps.py" \
+CMD [ \
+        "uwsgi", \
+        "--callable", "app", \
+        "--enable-threads", \
+        "--http-socket", "0.0.0.0:8080", \
+        "--lazy-apps", \
+        "--processes", "8", \
+        "--uwsgi-socket", "0.0.0.0:5000", \
+        "--wsgi-file", "serve_apps.py" \
     ]
