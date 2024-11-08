@@ -20,6 +20,3 @@ jobs:
 
     - name: Initialize database
       run: docker compose run --rm byceps-apps uv run byceps initialize-database
-
-    - name: Create demo data
-      run: docker compose run --rm byceps-apps uv run byceps create-demo-data
