@@ -6,5 +6,6 @@ byceps.config.errors
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+
 class ConfigurationError(Exception):
     pass
