@@ -14,8 +14,6 @@
   --border-radius: 0.25rem;
   --dimmed-color: #808080;
   --link-color: #0066c6;
-
-  --box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -147,14 +145,6 @@ img {
   border-style: solid;
   border-width: 1px;
   display: block;
-}
-
-.box,
-.card,
-ol.itemlist,
-table.itemlist,
-.notification {
-  box-shadow: var(--box-shadow);
 }
 
 .card {
@@ -963,7 +953,6 @@ nav.pagination.is-hcentered ol {
 .tag {
   background-color: orange;
   border-radius: var(--border-radius);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
   color: #ffffff;
   display: inline-block;
   font-size: 0.625rem; /* 10px / 16px */
@@ -977,7 +966,6 @@ nav.pagination.is-hcentered ol {
 .tag.tag--outlined {
   background-color: transparent;
   border: #aaaaaa solid 1px;
-  box-shadow: none;
   color: currentColor;
   font-weight: normal;
   text-shadow: none;
