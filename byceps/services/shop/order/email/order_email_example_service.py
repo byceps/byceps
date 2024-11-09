@@ -11,7 +11,7 @@ from datetime import datetime
 from flask_babel import gettext
 from moneyed import EUR, Money
 
-from byceps.config import ConfigurationError
+from byceps.config.errors import ConfigurationError
 from byceps.services.brand.models import Brand
 from byceps.services.email.models import Message, NameAndAddress
 from byceps.services.shop.order.models.number import OrderNumber

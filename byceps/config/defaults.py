@@ -1,5 +1,5 @@
 """
-byceps.config_defaults
+byceps.config.defaults
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Default configuration values

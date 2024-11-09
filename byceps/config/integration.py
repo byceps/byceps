@@ -1,6 +1,6 @@
 """
-byceps.config
-~~~~~~~~~~~~~
+byceps.config.integration
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2024 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,6 +11,8 @@ import json
 import os
 
 from flask import Flask
+
+from .errors import ConfigurationError
 
 
 class AppMode(Enum):
@@ -45,10 +47,6 @@ class AppMode(Enum):
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}[{self.name}]'
-
-
-class ConfigurationError(Exception):
-    pass
 
 
 def init_app(app: Flask) -> None:

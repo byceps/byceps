@@ -8,7 +8,7 @@ from typing import Any
 
 import pytest
 
-from byceps.config import parse_value_from_environment
+from byceps.config.integration import parse_value_from_environment
 
 
 @pytest.mark.parametrize(

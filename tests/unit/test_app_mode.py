@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.config import AppMode
+from byceps.config.integration import AppMode
 
 
 def test_is_admin():

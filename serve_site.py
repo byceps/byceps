@@ -8,7 +8,7 @@ Create and initialize the site application.
 import os
 
 from byceps.application import create_site_app
-from byceps.config import ConfigurationError
+from byceps.config.errors import ConfigurationError
 from byceps.util.sentry import configure_sentry_from_env
 
 

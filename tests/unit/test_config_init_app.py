@@ -6,7 +6,8 @@
 from flask import Flask
 import pytest
 
-from byceps.config import AppMode, ConfigurationError, init_app
+from byceps.config.errors import ConfigurationError
+from byceps.config.integration import AppMode,  init_app
 
 
 @pytest.mark.parametrize(

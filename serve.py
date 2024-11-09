@@ -9,7 +9,7 @@ environment.
 import os
 
 from byceps.application import create_admin_app, create_api_app, create_site_app
-from byceps.config import ConfigurationError
+from byceps.config.errors import ConfigurationError
 from byceps.util.sentry import configure_sentry_from_env
 
 

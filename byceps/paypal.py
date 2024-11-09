@@ -14,7 +14,7 @@ from paypalcheckoutsdk.core import (
     SandboxEnvironment,
 )
 
-from byceps.config import ConfigurationError
+from byceps.config.errors import ConfigurationError
 
 
 class PayPalClient:
