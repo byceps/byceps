@@ -10,12 +10,13 @@ from uuid import UUID
 
 from flask import abort, current_app, g, jsonify, request
 from paypalcheckoutsdk.orders import OrdersGetRequest
-from paypalhttp import HttpError
+from paypalhttp import HttpError, HttpResponse
 from pydantic import BaseModel, ValidationError
 
 from byceps.paypal import paypal
 from byceps.services.shop.order import order_command_service, order_service
 from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.models.order import Order
 from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import create_empty_json_response
@@ -86,7 +87,7 @@ def _parse_request() -> CapturePayPalRequest:
         abort(400, e.json())
 
 
-def _extract_transaction_id(response):
+def _extract_transaction_id(response: HttpResponse) -> str:
     purchase_unit = response.result.purchase_units[0]
 
     completed_captures = filter(
@@ -98,7 +99,9 @@ def _extract_transaction_id(response):
     return transaction.id
 
 
-def _check_transaction_against_order(response, order):
+def _check_transaction_against_order(
+    response: HttpResponse, order: Order
+) -> bool:
     purchase_unit = response.result.purchase_units[0]
 
     return (
