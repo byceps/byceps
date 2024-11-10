@@ -11,7 +11,8 @@ from uuid import UUID
 
 from flask import abort, current_app, g, jsonify, request
 from paypalcheckoutsdk.orders import OrdersGetRequest
-from paypalhttp import HttpError, HttpResponse
+from paypalhttp import HttpError
+from paypalhttp.http_response import Result as HttpResult
 from pydantic import BaseModel, ValidationError
 
 from byceps.paypal import paypal
@@ -51,7 +52,7 @@ def capture_transaction():
 
     request = OrdersGetRequest(req.paypal_order_id)
     try:
-        response = paypal.client.execute(request)
+        paypal_result = paypal.client.execute(request).result
     except HttpError as e:
         current_app.logger.error(
             'PayPal API returned status code %d for paypal_order_id = %s, shop_order_id = %s: %s',
@@ -62,9 +63,9 @@ def capture_transaction():
         )
         return create_empty_json_response(400)
 
-    paypal_order_details = _parse_paypal_order_details(response)
+    paypal_order_details = _parse_paypal_order_details(paypal_result)
 
-    if not _check_transaction_against_order(response, order):
+    if not _check_transaction_against_order(paypal_result, order):
         current_app.logger.error(
             'PayPal order %s failed verification against shop order %s',
             req.paypal_order_id,
@@ -84,11 +85,11 @@ def _parse_request() -> CapturePayPalRequest:
         abort(400, e.json())
 
 
-def _parse_paypal_order_details(response: HttpResponse) -> PayPalOrderDetails:
-    purchase_unit = response.result.purchase_units[0]
+def _parse_paypal_order_details(result: HttpResult) -> PayPalOrderDetails:
+    purchase_unit = result.purchase_units[0]
 
     return PayPalOrderDetails(
-        id=response.result.id,
+        id=result.id,
         transaction_id=_extract_transaction_id(purchase_unit),
     )
 
@@ -104,13 +105,11 @@ def _extract_transaction_id(purchase_unit) -> str:
     return transaction.id
 
 
-def _check_transaction_against_order(
-    response: HttpResponse, order: Order
-) -> bool:
-    purchase_unit = response.result.purchase_units[0]
+def _check_transaction_against_order(result: HttpResult, order: Order) -> bool:
+    purchase_unit = result.purchase_units[0]
 
     return (
-        response.result.status == 'COMPLETED'
+        result.status == 'COMPLETED'
         and purchase_unit.amount.currency_code == 'EUR'
         and purchase_unit.amount.value == str(order.total_amount)
         and purchase_unit.invoice_id == order.order_number

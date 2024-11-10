@@ -1,5 +1,4 @@
-from string import Template
-
+from paypalhttp import HttpResponse
 import pytest
 
 from byceps.blueprints.site.shop.payment.paypal.views import (
@@ -17,34 +16,30 @@ def test_parse_paypal_order_details():
         transaction_id='transaction-id-completed',
     )
 
-    response = json_to_obj(
-        """
-        {
-            "result": {
-                "id": "1DA59471B5379105V",
-                "status": "COMPLETED",
-                "purchase_units": [
-                    {
-                        "payments": {
-                            "captures": [
-                                {
-                                    "id": "transaction-id-denied",
-                                    "status": "DENIED"
-                                },
-                                {
-                                    "id": "transaction-id-completed",
-                                    "status": "COMPLETED"
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }
-        }
-        """
-    )
+    result_data = {
+        'id': '1DA59471B5379105V',
+        'status': 'COMPLETED',
+        'purchase_units': [
+            {
+                'payments': {
+                    'captures': [
+                        {
+                            'id': 'transaction-id-denied',
+                            'status': 'DENIED',
+                        },
+                        {
+                            'id': 'transaction-id-completed',
+                            'status': 'COMPLETED',
+                        },
+                    ],
+                },
+            },
+        ],
+    }
 
-    assert _parse_paypal_order_details(response) == expected
+    result = HttpResponse(result_data, 200).result
+
+    assert _parse_paypal_order_details(result) == expected
 
 
 @pytest.mark.parametrize(
@@ -69,33 +64,19 @@ def test_paypal_check_transaction_against_order(
         """
     )
 
-    response_json_template = Template(
-        """
-        {
-            "result": {
-                "status": "$status",
-                "purchase_units": [
-                    {
-                        "amount": {
-                            "currency_code": "$currency_code",
-                            "value": "$total_amount"
-                        },
-                        "invoice_id": "$invoice_id"
-                    }
-                ]
-            }
-        }
-        """
-    )
+    result_data = {
+        'status': status,
+        'purchase_units': [
+            {
+                'amount': {
+                    'currency_code': currency_code,
+                    'value': total_amount,
+                },
+                'invoice_id': invoice_id,
+            },
+        ],
+    }
 
-    response_json = response_json_template.substitute(
-        {
-            'status': status,
-            'currency_code': currency_code,
-            'total_amount': total_amount,
-            'invoice_id': invoice_id,
-        }
-    )
-    response = json_to_obj(response_json)
+    result = HttpResponse(result_data, 200).result
 
-    assert _check_transaction_against_order(response, order) == expected
+    assert _check_transaction_against_order(result, order) == expected
