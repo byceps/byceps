@@ -10,6 +10,36 @@ from byceps.blueprints.site.shop.payment.paypal.views import (
 from .helpers import json_to_obj
 
 
+def test_paypal_extract_transaction_id():
+    response = json_to_obj(
+        """
+        {
+            "result": {
+                "status": "COMPLETED",
+                "purchase_units": [
+                    {
+                        "payments": {
+                            "captures": [
+                                {
+                                    "id": "transaction-id-denied",
+                                    "status": "DENIED"
+                                },
+                                {
+                                    "id": "transaction-id-completed",
+                                    "status": "COMPLETED"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+        """
+    )
+
+    assert _extract_transaction_id(response) == 'transaction-id-completed'
+
+
 @pytest.mark.parametrize(
     'status, currency_code, total_amount, invoice_id, expected',
     [
@@ -20,7 +50,7 @@ from .helpers import json_to_obj
         ('COMPLETED', 'EUR', '47.11', 'order-002', False),
     ],
 )
-def test_paypal_check_transaction(
+def test_paypal_check_transaction_against_order(
     status, currency_code, total_amount, invoice_id, expected
 ):
     order = json_to_obj(
@@ -62,33 +92,3 @@ def test_paypal_check_transaction(
     response = json_to_obj(response_json)
 
     assert _check_transaction_against_order(response, order) == expected
-
-
-def test_paypal_extract_transaction_id():
-    response = json_to_obj(
-        """
-        {
-            "result": {
-                "status": "COMPLETED",
-                "purchase_units": [
-                    {
-                        "payments": {
-                            "captures": [
-                                {
-                                    "id": "transaction-id-denied",
-                                    "status": "DENIED"
-                                },
-                                {
-                                    "id": "transaction-id-completed",
-                                    "status": "COMPLETED"
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }
-        }
-        """
-    )
-
-    assert _extract_transaction_id(response) == 'transaction-id-completed'

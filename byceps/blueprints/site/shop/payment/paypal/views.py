@@ -79,15 +79,11 @@ def capture_transaction():
     return jsonify({'status': 'OK'})
 
 
-def _check_transaction_against_order(response, order):
-    purchase_unit = response.result.purchase_units[0]
-
-    return (
-        response.result.status == 'COMPLETED'
-        and purchase_unit.amount.currency_code == 'EUR'
-        and purchase_unit.amount.value == str(order.total_amount)
-        and purchase_unit.invoice_id == order.order_number
-    )
+def _parse_request() -> CapturePayPalRequest:
+    try:
+        return CapturePayPalRequest.model_validate(request.get_json())
+    except ValidationError as e:
+        abort(400, e.json())
 
 
 def _extract_transaction_id(response):
@@ -102,8 +98,12 @@ def _extract_transaction_id(response):
     return transaction.id
 
 
-def _parse_request() -> CapturePayPalRequest:
-    try:
-        return CapturePayPalRequest.model_validate(request.get_json())
-    except ValidationError as e:
-        abort(400, e.json())
+def _check_transaction_against_order(response, order):
+    purchase_unit = response.result.purchase_units[0]
+
+    return (
+        response.result.status == 'COMPLETED'
+        and purchase_unit.amount.currency_code == 'EUR'
+        and purchase_unit.amount.value == str(order.total_amount)
+        and purchase_unit.invoice_id == order.order_number
+    )
