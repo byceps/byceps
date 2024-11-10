@@ -85,15 +85,15 @@ def _parse_request() -> CapturePayPalRequest:
 
 
 def _parse_paypal_order_details(response: HttpResponse) -> PayPalOrderDetails:
+    purchase_unit = response.result.purchase_units[0]
+
     return PayPalOrderDetails(
         id=response.result.id,
-        transaction_id=_extract_transaction_id(response),
+        transaction_id=_extract_transaction_id(purchase_unit),
     )
 
 
-def _extract_transaction_id(response: HttpResponse) -> str:
-    purchase_unit = response.result.purchase_units[0]
-
+def _extract_transaction_id(purchase_unit) -> str:
     completed_captures = filter(
         lambda c: c.status in ('COMPLETED', 'PENDING'),
         purchase_unit.payments.captures,
