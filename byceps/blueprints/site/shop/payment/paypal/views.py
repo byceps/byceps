@@ -63,19 +63,10 @@ def capture_transaction():
         )
         return create_empty_json_response(400)
 
-    paid_order, event = order_command_service.mark_order_as_paid(
-        order.id,
-        'paypal',
-        g.user,
-        additional_payment_data={
-            'paypal_order_id': response.result.id,
-            'paypal_transaction_id': _extract_transaction_id(response),
-        },
-    ).unwrap()
+    paypal_order_id = response.result.id
+    paypal_transaction_id = _extract_transaction_id(response)
 
-    order_email_service.send_email_for_paid_order_to_orderer(paid_order)
-
-    shop_signals.order_paid.send(None, event=event)
+    _mark_order_as_paid(order, paypal_order_id, paypal_transaction_id)
 
     return jsonify({'status': 'OK'})
 
@@ -110,3 +101,23 @@ def _check_transaction_against_order(
         and purchase_unit.amount.value == str(order.total_amount)
         and purchase_unit.invoice_id == order.order_number
     )
+
+
+def _mark_order_as_paid(
+    order: Order, paypal_order_id: str, paypal_transaction_id: str
+) -> None:
+    additional_payment_data = {
+        'paypal_order_id': paypal_order_id,
+        'paypal_transaction_id': paypal_transaction_id,
+    }
+
+    paid_order, event = order_command_service.mark_order_as_paid(
+        order.id,
+        'paypal',
+        g.user,
+        additional_payment_data=additional_payment_data,
+    ).unwrap()
+
+    order_email_service.send_email_for_paid_order_to_orderer(paid_order)
+
+    shop_signals.order_paid.send(None, event=event)
