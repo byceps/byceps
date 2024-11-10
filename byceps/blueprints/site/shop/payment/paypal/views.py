@@ -2,10 +2,11 @@
 byceps.blueprints.site.shop.payment.paypal.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2020 Jan Korneffel
+:Copyright: 2020-2024 Jan Korneffel, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
 from uuid import UUID
 
 from flask import abort, current_app, g, jsonify, request
@@ -28,6 +29,12 @@ blueprint = create_blueprint('shop_payment_paypal', __name__)
 class CapturePayPalRequest(BaseModel):
     shop_order_id: UUID
     paypal_order_id: str
+
+
+@dataclass(frozen=True)
+class PayPalOrderDetails:
+    id: str
+    transaction_id: str
 
 
 @blueprint.post('/capture')
@@ -55,6 +62,8 @@ def capture_transaction():
         )
         return create_empty_json_response(400)
 
+    paypal_order_details = _parse_paypal_order_details(response)
+
     if not _check_transaction_against_order(response, order):
         current_app.logger.error(
             'PayPal order %s failed verification against shop order %s',
@@ -63,10 +72,7 @@ def capture_transaction():
         )
         return create_empty_json_response(400)
 
-    paypal_order_id = response.result.id
-    paypal_transaction_id = _extract_transaction_id(response)
-
-    _mark_order_as_paid(order, paypal_order_id, paypal_transaction_id)
+    _mark_order_as_paid(order, paypal_order_details)
 
     return jsonify({'status': 'OK'})
 
@@ -78,6 +84,13 @@ def _parse_request() -> CapturePayPalRequest:
         abort(400, e.json())
 
 
+def _parse_paypal_order_details(response: HttpResponse) -> PayPalOrderDetails:
+    return PayPalOrderDetails(
+        id=response.result.id,
+        transaction_id=_extract_transaction_id(response),
+    )
+
+
 def _extract_transaction_id(response: HttpResponse) -> str:
     purchase_unit = response.result.purchase_units[0]
 
@@ -85,6 +98,7 @@ def _extract_transaction_id(response: HttpResponse) -> str:
         lambda c: c.status in ('COMPLETED', 'PENDING'),
         purchase_unit.payments.captures,
     )
+
     transaction = next(completed_captures)
 
     return transaction.id
@@ -104,11 +118,11 @@ def _check_transaction_against_order(
 
 
 def _mark_order_as_paid(
-    order: Order, paypal_order_id: str, paypal_transaction_id: str
+    order: Order, paypal_order_details: PayPalOrderDetails
 ) -> None:
     additional_payment_data = {
-        'paypal_order_id': paypal_order_id,
-        'paypal_transaction_id': paypal_transaction_id,
+        'paypal_order_id': paypal_order_details.id,
+        'paypal_transaction_id': paypal_order_details.transaction_id,
     }
 
     paid_order, event = order_command_service.mark_order_as_paid(

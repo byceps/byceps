@@ -147,9 +147,13 @@ def test_payment_success(
 @patch(
     'byceps.blueprints.site.shop.payment.paypal.views._check_transaction_against_order'
 )
+@patch(
+    'byceps.blueprints.site.shop.payment.paypal.views._extract_transaction_id'
+)
 @patch('byceps.blueprints.site.shop.payment.paypal.views.paypal.client.execute')
 def test_payment_manipulation_denied(
     paypal_client_mock,
+    extract_transaction_id_mock,
     check_transaction_mock,
     site_app,
     site: Site,
