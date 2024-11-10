@@ -5,6 +5,7 @@ from freezegun import freeze_time
 from paypalhttp import HttpError
 import pytest
 
+from byceps.blueprints.site.shop.payment.paypal.views import PayPalOrderDetails
 from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderPaidEvent
 from byceps.services.party.models import Party
@@ -92,7 +93,7 @@ def order(
     'byceps.blueprints.site.shop.payment.paypal.views._check_transaction_against_order'
 )
 @patch(
-    'byceps.blueprints.site.shop.payment.paypal.views._extract_transaction_id'
+    'byceps.blueprints.site.shop.payment.paypal.views._parse_paypal_order_details'
 )
 @patch('byceps.blueprints.site.shop.payment.paypal.views.paypal.client.execute')
 @patch('byceps.signals.shop.order_paid.send')
@@ -103,7 +104,7 @@ def test_payment_success(
     order_email_service_mock,
     order_paid_signal_send_mock,
     paypal_client_mock,
-    extract_transaction_id_mock,
+    parse_paypal_order_details_mock,
     check_transaction_mock,
     site_app,
     storefront: Storefront,
@@ -113,7 +114,10 @@ def test_payment_success(
 ):
     assert not order.is_paid
 
-    extract_transaction_id_mock.return_value = 'dummy-transaction-id'
+    parse_paypal_order_details_mock.return_value = PayPalOrderDetails(
+        id='dummy-paaypal-order-id',
+        transaction_id='dummy-paypal-transaction-id',
+    )
     check_transaction_mock.return_value = True
     paypal_client_mock.return_value = create_response(200)
 
@@ -125,7 +129,7 @@ def test_payment_success(
 
     assert paypal_client_mock.call_count == 1
     assert check_transaction_mock.call_count == 1
-    assert extract_transaction_id_mock.call_count == 1
+    assert parse_paypal_order_details_mock.call_count == 1
 
     order_processed = get_order(order.id)
     assert order_processed.is_paid
@@ -148,12 +152,12 @@ def test_payment_success(
     'byceps.blueprints.site.shop.payment.paypal.views._check_transaction_against_order'
 )
 @patch(
-    'byceps.blueprints.site.shop.payment.paypal.views._extract_transaction_id'
+    'byceps.blueprints.site.shop.payment.paypal.views._parse_paypal_order_details'
 )
 @patch('byceps.blueprints.site.shop.payment.paypal.views.paypal.client.execute')
 def test_payment_manipulation_denied(
     paypal_client_mock,
-    extract_transaction_id_mock,
+    parse_paypal_order_details_mock,
     check_transaction_mock,
     site_app,
     site: Site,
