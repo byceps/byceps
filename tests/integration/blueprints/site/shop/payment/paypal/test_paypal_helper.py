@@ -3,18 +3,25 @@ from string import Template
 import pytest
 
 from byceps.blueprints.site.shop.payment.paypal.views import (
+    PayPalOrderDetails,
     _check_transaction_against_order,
-    _extract_transaction_id,
+    _parse_paypal_order_details,
 )
 
 from .helpers import json_to_obj
 
 
-def test_paypal_extract_transaction_id():
+def test_parse_paypal_order_details():
+    expected = PayPalOrderDetails(
+        id='1DA59471B5379105V',
+        transaction_id='transaction-id-completed',
+    )
+
     response = json_to_obj(
         """
         {
             "result": {
+                "id": "1DA59471B5379105V",
                 "status": "COMPLETED",
                 "purchase_units": [
                     {
@@ -37,7 +44,7 @@ def test_paypal_extract_transaction_id():
         """
     )
 
-    assert _extract_transaction_id(response) == 'transaction-id-completed'
+    assert _parse_paypal_order_details(response) == expected
 
 
 @pytest.mark.parametrize(
