@@ -111,7 +111,7 @@ def _check_transaction_against_order(result: HttpResult, order: Order) -> bool:
     return (
         result.status == 'COMPLETED'
         and purchase_unit.amount.currency_code == 'EUR'
-        and purchase_unit.amount.value == str(order.total_amount)
+        and purchase_unit.amount.value == str(order.total_amount.amount)
         and purchase_unit.invoice_id == order.order_number
     )
 

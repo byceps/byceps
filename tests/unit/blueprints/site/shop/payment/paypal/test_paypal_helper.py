@@ -1,6 +1,7 @@
-import json
-from types import SimpleNamespace
+from datetime import datetime
+from decimal import Decimal
 
+from moneyed import EUR, Money
 from paypalhttp import HttpResponse
 import pytest
 
@@ -9,6 +10,19 @@ from byceps.blueprints.site.shop.payment.paypal.views import (
     _check_transaction_against_order,
     _parse_paypal_order_details,
 )
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import (
+    Address,
+    Order,
+    Orderer,
+    OrderID,
+    OrderState,
+    PaymentState,
+)
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront.models import StorefrontID
+
+from tests.helpers import generate_token, generate_uuid
 
 
 def test_parse_paypal_order_details():
@@ -54,15 +68,15 @@ def test_parse_paypal_order_details():
     ],
 )
 def test_paypal_check_transaction_against_order(
-    status, currency_code, total_amount, invoice_id, expected
+    orderer: Orderer,
+    status: str,
+    currency_code: str,
+    total_amount: str,
+    invoice_id: str,
+    expected: bool,
 ):
-    order = json_to_obj(
-        """
-        {
-            "total_amount": "47.11",
-            "order_number": "order-001"
-        }
-        """
+    order = create_order(
+        OrderNumber('order-001'), orderer, Money(Decimal('47.11'), EUR)
     )
 
     result_data = {
@@ -83,5 +97,36 @@ def test_paypal_check_transaction_against_order(
     assert _check_transaction_against_order(result, order) == expected
 
 
-def json_to_obj(json_text):
-    return json.loads(json_text, object_hook=lambda d: SimpleNamespace(**d))
+def create_order(
+    order_number: OrderNumber, orderer: Orderer, total_amount: Money
+) -> Order:
+    return Order(
+        id=OrderID(generate_uuid()),
+        created_at=datetime.utcnow(),
+        shop_id=ShopID(generate_token()),
+        storefront_id=StorefrontID(generate_token()),
+        order_number=order_number,
+        placed_by=orderer.user,
+        company=orderer.company,
+        first_name=orderer.first_name,
+        last_name=orderer.last_name,
+        address=Address(
+            country=orderer.country,
+            zip_code=orderer.zip_code,
+            city=orderer.city,
+            street=orderer.street,
+        ),
+        line_items=[],
+        total_amount=total_amount,
+        is_invoiced=False,
+        payment_method=None,
+        payment_state=PaymentState.open,
+        cancellation_reason=None,
+        is_processing_required=False,
+        is_processed=False,
+        is_open=True,
+        is_canceled=False,
+        is_paid=False,
+        is_overdue=False,
+        state=OrderState.open,
+    )
