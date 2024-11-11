@@ -2,7 +2,7 @@ from datetime import datetime
 from unittest.mock import patch
 
 from freezegun import freeze_time
-from paypalhttp import HttpError
+from paypalhttp import HttpError, HttpResponse
 import pytest
 
 from byceps.blueprints.site.shop.payment.paypal.views import PayPalOrderDetails
@@ -22,8 +22,6 @@ from tests.helpers.shop import (
     create_orderer,
     create_shop_snippet,
 )
-
-from .helpers import json_to_obj
 
 
 @pytest.fixture(scope='module')
@@ -194,16 +192,14 @@ def test_paypal_api_failure(
 
 
 def create_response(status_code: int):
-    return json_to_obj(
-        """
+    return HttpResponse(
         {
-            "status_code": %d,
-            "result": {
-                "id": "dummy-paypal-order-id"
-            }
-        }
-        """
-        % status_code
+            'status_code': status_code,
+            'result': {
+                'id': 'dummy-paypal-order-id',
+            },
+        },
+        status_code,
     )
 
 
