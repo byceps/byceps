@@ -1,3 +1,6 @@
+import json
+from types import SimpleNamespace
+
 from paypalhttp import HttpResponse
 import pytest
 
@@ -6,8 +9,6 @@ from byceps.blueprints.site.shop.payment.paypal.views import (
     _check_transaction_against_order,
     _parse_paypal_order_details,
 )
-
-from .helpers import json_to_obj
 
 
 def test_parse_paypal_order_details():
@@ -80,3 +81,7 @@ def test_paypal_check_transaction_against_order(
     result = HttpResponse(result_data, 200).result
 
     assert _check_transaction_against_order(result, order) == expected
+
+
+def json_to_obj(json_text):
+    return json.loads(json_text, object_hook=lambda d: SimpleNamespace(**d))
