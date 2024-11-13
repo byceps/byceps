@@ -110,7 +110,11 @@ def is_slug_available(brand_id: BrandID, slug: str) -> bool:
 def get_galleries_for_brand(brand_id: BrandID) -> list[Gallery]:
     """Return all galeries for the brand."""
     db_galleries = (
-        db.session.scalars(select(DbGallery).filter_by(brand_id=brand_id))
+        db.session.scalars(
+            select(DbGallery)
+            .filter_by(brand_id=brand_id)
+            .order_by(DbGallery.position)
+        )
         .unique()
         .all()
     )
@@ -127,6 +131,7 @@ def get_galleries_for_brand_with_images(
             select(DbGallery)
             .options(db.joinedload(DbGallery.images))
             .filter(DbGallery.brand_id == brand_id)
+            .order_by(DbGallery.position)
         )
         .unique()
         .all()
