@@ -129,9 +129,7 @@ def test_parse_config():
     enabled = true
     """
 
-    actual = parse_config(toml)
-
-    assert actual == expected
+    assert parse_config(toml) == expected
 
 
 def test_parse_config_defaults():
@@ -208,9 +206,7 @@ def test_parse_config_defaults():
     [smtp]
     """
 
-    actual = parse_config(toml)
-
-    assert actual == expected
+    assert parse_config(toml) == expected
 
 
 def test_parse_incomplete_config():
@@ -232,6 +228,4 @@ def test_parse_incomplete_config():
     database = "db-database"
     """
 
-    actual = parse_config(toml)
-
-    assert actual == expected
+    assert parse_config(toml) == expected
