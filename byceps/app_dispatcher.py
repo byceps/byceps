@@ -24,7 +24,7 @@ from byceps.application import create_admin_app, create_api_app, create_site_app
 from byceps.util.result import Err, Ok, Result
 
 
-logger = structlog.get_logger()
+log = structlog.get_logger()
 
 
 class _BaseAppMount(BaseModel):
@@ -168,7 +168,7 @@ class AppDispatcher:
             if app:
                 return app
 
-            log = logger.bind(host=host)
+            log = log.bind(host=host)
 
             mount = self.mounts_by_host.get(host)
             if not mount:
@@ -184,11 +184,11 @@ class AppDispatcher:
                     log.info('Application mounted', mode=mode.name)
                     return app
                 case Err(e):
-                    logger.error('Application creation failed', error=e)
+                    log.error('Application creation failed', error=e)
                     return InternalServerError(e)
                 case _:
                     error_message = 'Unknown error'
-                    logger.error(
+                    log.error(
                         'Application creation failed', error=error_message
                     )
                     return InternalServerError(error_message)
