@@ -21,6 +21,7 @@ from byceps.services.shop.order.models.order import (
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
+from byceps.util.result import Err, Ok, Result
 
 from tests.helpers import generate_token, generate_uuid
 
@@ -60,11 +61,11 @@ def test_parse_paypal_order_details():
 @pytest.mark.parametrize(
     'status, currency_code, total_amount, invoice_id, expected',
     [
-        ('COMPLETED', 'EUR', '47.11', 'order-001', True),
-        ('COMPLETED', 'EUR', '57.11', 'order-001', False),
-        ('DENIED', 'EUR', '47.11', 'order-001', False),
-        ('COMPLETED', 'USD', '47.11', 'order-001', False),
-        ('COMPLETED', 'EUR', '47.11', 'order-002', False),
+        ('COMPLETED', 'EUR', '47.11', 'order-001', Ok(None)),
+        ('DENIED', 'EUR', '47.11', 'order-001', Err({'status'})),
+        ('COMPLETED', 'EUR', '57.11', 'order-001', Err({'total_amount'})),
+        ('COMPLETED', 'USD', '47.11', 'order-001', Err({'currency_code'})),
+        ('COMPLETED', 'EUR', '47.11', 'order-002', Err({'invoice_id'})),
     ],
 )
 def test_paypal_check_transaction_against_order(
@@ -73,7 +74,7 @@ def test_paypal_check_transaction_against_order(
     currency_code: str,
     total_amount: str,
     invoice_id: str,
-    expected: bool,
+    expected: Result[None, set[str]],
 ):
     order = create_order(
         OrderNumber('order-001'), orderer, Money(Decimal('47.11'), EUR)

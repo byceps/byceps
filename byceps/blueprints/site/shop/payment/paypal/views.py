@@ -22,6 +22,7 @@ from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import Order
 from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.result import Err, Ok, Result
 from byceps.util.views import create_empty_json_response
 
 
@@ -69,13 +70,15 @@ def capture_transaction():
 
     paypal_order_details = _parse_paypal_order_details(paypal_result)
 
-    if not _check_transaction_against_order(paypal_result, order):
-        log.error(
-            'PayPal order verification failed',
-            paypal_order_id=req.paypal_order_id,
-            shop_order_id=order.id,
-        )
-        return create_empty_json_response(400)
+    match _check_transaction_against_order(paypal_result, order):
+        case Err(errors):
+            log.error(
+                'PayPal order verification failed',
+                paypal_order_id=req.paypal_order_id,
+                shop_order_id=order.id,
+                errors=errors,
+            )
+            return create_empty_json_response(400)
 
     _mark_order_as_paid(order, paypal_order_details)
 
@@ -109,15 +112,29 @@ def _extract_transaction_id(purchase_unit) -> str:
     return transaction.id
 
 
-def _check_transaction_against_order(result: HttpResult, order: Order) -> bool:
+def _check_transaction_against_order(
+    result: HttpResult, order: Order
+) -> Result[None, set[str]]:
+    errors = set()
+
     purchase_unit = result.purchase_units[0]
 
-    return (
-        result.status == 'COMPLETED'
-        and purchase_unit.amount.currency_code == 'EUR'
-        and purchase_unit.amount.value == str(order.total_amount.amount)
-        and purchase_unit.invoice_id == order.order_number
-    )
+    if result.status != 'COMPLETED':
+        errors.add('status')
+
+    if purchase_unit.amount.currency_code != 'EUR':
+        errors.add('currency_code')
+
+    if purchase_unit.amount.value != str(order.total_amount.amount):
+        errors.add('total_amount')
+
+    if purchase_unit.invoice_id != order.order_number:
+        errors.add('invoice_id')
+
+    if errors:
+        return Err(errors)
+
+    return Ok(None)
 
 
 def _mark_order_as_paid(

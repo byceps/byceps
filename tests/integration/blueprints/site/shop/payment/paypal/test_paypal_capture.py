@@ -16,6 +16,7 @@ from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok
 
 from tests.helpers import create_site, http_client, log_in_user
 from tests.helpers.shop import (
@@ -113,10 +114,10 @@ def test_payment_success(
     assert not order.is_paid
 
     parse_paypal_order_details_mock.return_value = PayPalOrderDetails(
-        id='dummy-paaypal-order-id',
+        id='dummy-paypal-order-id',
         transaction_id='dummy-paypal-transaction-id',
     )
-    check_transaction_mock.return_value = True
+    check_transaction_mock.return_value = Ok(None)
     paypal_client_mock.return_value = create_response(200)
 
     payment_state_updated_at = datetime.utcnow()
@@ -163,7 +164,7 @@ def test_payment_manipulation_denied(
 ):
     assert not order.is_paid
 
-    check_transaction_mock.return_value = False
+    check_transaction_mock.return_value = Err({'status'})
     paypal_client_mock.return_value = create_response(200)
 
     response = call_capture_api(site_app, order)
