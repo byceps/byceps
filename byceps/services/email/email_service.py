@@ -12,11 +12,15 @@ from email.utils import parseaddr
 from smtplib import SMTP, SMTP_SSL
 
 from flask import current_app
+import structlog
 
 from byceps.util.jobqueue import enqueue
 from byceps.util.result import Err, Ok, Result
 
 from .models import Message, NameAndAddress
+
+
+log = structlog.get_logger()
 
 
 @dataclass(frozen=True)
@@ -70,12 +74,12 @@ def send(sender: str, recipients: list[str], subject: str, body: str) -> None:
     smtp_config = _load_smtp_config()
 
     if smtp_config.suppress_send:
-        current_app.logger.debug('Suppressing sending of email.')
+        log.debug('Suppressing sending of email.')
         return
 
     message = _build_message(sender, recipients, subject, body)
 
-    current_app.logger.debug('Sending email.')
+    log.debug('Sending email.')
     _send_via_smtp(smtp_config, message)
 
 
