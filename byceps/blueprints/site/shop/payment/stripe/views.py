@@ -20,6 +20,7 @@ from flask import (
 from moneyed import Money
 from pydantic import BaseModel, ValidationError
 import stripe
+import structlog
 
 from byceps.services.shop.order import order_command_service, order_service
 from byceps.services.shop.order.email import order_email_service
@@ -28,6 +29,9 @@ from byceps.services.user.models.user import UserID
 from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import create_empty_json_response
+
+
+log = structlog.get_logger()
 
 
 blueprint = create_blueprint('shop_payment_stripe', __name__)
@@ -114,11 +118,11 @@ def event_webhook():
         )
 
     except ValueError:
-        current_app.logger.error('Invalid payload')
+        log.error('Invalid payload')
         return create_empty_json_response(400)
 
     except stripe.error.SignatureVerificationError:
-        current_app.logger.error('Invalid signature')
+        log.error('Invalid signature')
         return create_empty_json_response(400)
 
     if event.type == 'checkout.session.completed':
@@ -127,7 +131,7 @@ def event_webhook():
 
         return create_empty_json_response(200)
     else:
-        current_app.logger.error('Unsupported event type: %s', event.type)
+        log.error('Unsupported event type: %s', event.type)
 
     # Return error response by default
     return create_empty_json_response(400)
@@ -138,30 +142,30 @@ def _fulfill_order(session: stripe.checkout.Session):
 
     shop_order_id = session.metadata.get('shop_order_id')
     if shop_order_id is None:
-        current_app.logger.error(
-            'Error processing checkout session %s: '
+        log.error(
+            'Error processing checkout session: '
             'shop_order_id not found in metadata.',
-            session_id,
+            session_id=session_id,
         )
         return
 
     order = order_service.find_order(shop_order_id)
 
     if not order or not order.is_open:
-        current_app.logger.error(
-            'Error processing checkout session %s: '
-            'Order %s does not exist or is not open.',
-            session_id,
-            shop_order_id,
+        log.error(
+            'Error processing checkout session: '
+            'Order does not exist or is not open.',
+            session_id=session_id,
+            shop_order_id=shop_order_id,
         )
         return
 
     if not _check_transaction_against_order(session, order):
-        current_app.logger.error(
-            'Error processing checkout session %s: '
-            'Verification for order %s failed.',
-            session_id,
-            shop_order_id,
+        log.error(
+            'Error processing checkout session: '
+            'Verification for order failed.',
+            session_id=session_id,
+            shop_order_id=shop_order_id,
         )
         return
 
