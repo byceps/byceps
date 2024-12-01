@@ -10,8 +10,8 @@ from datetime import datetime
 from http import HTTPStatus
 from typing import Any
 
-from flask import current_app
 import httpx
+import structlog
 
 from byceps.events.base import _BaseEvent
 from byceps.services.webhooks import webhook_service
@@ -22,6 +22,9 @@ from .connections import get_signals, registry
 
 
 DEFAULT_WEBHOOK_TIMEOUT = 15
+
+
+log = structlog.get_logger()
 
 
 class WebhookError(Exception):
@@ -123,9 +126,7 @@ def _assemble_request_data(
         case 'weitersager':
             channel = webhook.extra_fields.get('channel')
             if not channel:
-                current_app.logger.warning(
-                    'No channel specified with IRC webhook.'
-                )
+                log.warning('No channel specified with IRC webhook.')
 
             return {'channel': channel, 'text': text}
 
@@ -135,15 +136,11 @@ def _assemble_request_data(
         case 'matrix':
             key = webhook.extra_fields.get('key')
             if not key:
-                current_app.logger.warning(
-                    'No API key specified with Matrix webhook.'
-                )
+                log.warning('No API key specified with Matrix webhook.')
 
             room_id = webhook.extra_fields.get('room_id')
             if not room_id:
-                current_app.logger.warning(
-                    'No room ID specified with Matrix webhook.'
-                )
+                log.warning('No room ID specified with Matrix webhook.')
 
             return {'key': key, 'room_id': room_id, 'text': text}
 
