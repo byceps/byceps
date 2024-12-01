@@ -9,11 +9,12 @@ byceps.blueprints.site.shop.payment.paypal.views
 from dataclasses import dataclass
 from uuid import UUID
 
-from flask import abort, current_app, g, jsonify, request
+from flask import abort, g, jsonify, request
 from paypalcheckoutsdk.orders import OrdersGetRequest
 from paypalhttp import HttpError
 from paypalhttp.http_response import Result as HttpResult
 from pydantic import BaseModel, ValidationError
+import structlog
 
 from byceps.paypal import paypal
 from byceps.services.shop.order import order_command_service, order_service
@@ -22,6 +23,9 @@ from byceps.services.shop.order.models.order import Order
 from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import create_empty_json_response
+
+
+log = structlog.get_logger()
 
 
 blueprint = create_blueprint('shop_payment_paypal', __name__)
@@ -54,22 +58,22 @@ def capture_transaction():
     try:
         paypal_result = paypal.client.execute(request).result
     except HttpError as e:
-        current_app.logger.error(
-            'PayPal API returned status code %d for paypal_order_id = %s, shop_order_id = %s: %s',
-            e.status_code,
-            req.paypal_order_id,
-            order.id,
-            e.message,
+        log.error(
+            'PayPal API returned unexpected response code',
+            paypal_order_id=req.paypal_order_id,
+            shop_order_id=order.id,
+            status_code=e.status_code,
+            error_message=e.message,
         )
         return create_empty_json_response(400)
 
     paypal_order_details = _parse_paypal_order_details(paypal_result)
 
     if not _check_transaction_against_order(paypal_result, order):
-        current_app.logger.error(
-            'PayPal order %s failed verification against shop order %s',
-            req.paypal_order_id,
-            order.id,
+        log.error(
+            'PayPal order verification failed',
+            paypal_order_id=req.paypal_order_id,
+            shop_order_id=order.id,
         )
         return create_empty_json_response(400)
 
