@@ -162,17 +162,17 @@ class AppDispatcher:
     def get_application(self, host_and_port) -> WSGIApplication:
         host = host_and_port.split(':')[0]
 
+        log_ctx = log.bind(host=host)
+
         with self.lock:
             app = self.apps_by_host.get(host)
 
             if app:
                 return app
 
-            log = log.bind(host=host)
-
             mount = self.mounts_by_host.get(host)
             if not mount:
-                log.debug('No application mounted for host')
+                log_ctx.debug('No application mounted for host')
                 return NotFound()
 
             match _create_app(mount, config_overrides=self.config_overrides):
@@ -180,15 +180,15 @@ class AppDispatcher:
                     self.apps_by_host[host] = app
                     mode = app.byceps_app_mode
                     if mode.is_site():
-                        log = log.bind(site_id=app.config['SITE_ID'])
-                    log.info('Application mounted', mode=mode.name)
+                        log_ctx = log_ctx.bind(site_id=app.config['SITE_ID'])
+                    log_ctx.info('Application mounted', mode=mode.name)
                     return app
                 case Err(e):
-                    log.error('Application creation failed', error=e)
+                    log_ctx.error('Application creation failed', error=e)
                     return InternalServerError(e)
                 case _:
                     error_message = 'Unknown error'
-                    log.error(
+                    log_ctx.error(
                         'Application creation failed', error=error_message
                     )
                     return InternalServerError(error_message)
