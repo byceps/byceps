@@ -9,7 +9,7 @@ byceps.services.user.user_creation_service
 from datetime import date
 from typing import Any
 
-from flask import current_app
+import structlog
 
 from byceps.database import db
 from byceps.events.user import UserAccountCreatedEvent
@@ -27,6 +27,9 @@ from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
 from .errors import InvalidEmailAddressError, InvalidScreenNameError
 from .models.user import User
+
+
+log = structlog.get_logger()
 
 
 def create_user(
@@ -98,8 +101,8 @@ def create_user(
 
     try:
         db.session.commit()
-    except Exception as e:
-        current_app.logger.error('User creation failed: %s', e)
+    except Exception as exc:
+        log.error('User creation failed', exc_info=exc)
         db.session.rollback()
         return Err(None)
 
