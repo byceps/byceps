@@ -155,11 +155,11 @@ def test_parse_config_defaults():
                 client_id='',
                 client_secret='',
             ),
-            metrics=MetricsConfig(
-                enabled=False,
-            ),
             jobs=JobsConfig(
                 asynchronous=True,
+            ),
+            metrics=MetricsConfig(
+                enabled=False,
             ),
             paypal=PaypalConfig(
                 enabled=False,
