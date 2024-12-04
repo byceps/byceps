@@ -39,6 +39,7 @@ def test_parse_config():
                 toolbar_enabled=True,
             ),
             discord=DiscordConfig(
+                enabled=True,
                 client_id='discord-client-id',
                 client_secret='discord-client-secret',
             ),
@@ -94,6 +95,7 @@ def test_parse_config():
     toolbar_enabled = true
 
     [discord]
+    enabled = true
     client_id = "discord-client-id"
     client_secret = "discord-client-secret"
 
