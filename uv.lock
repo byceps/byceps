@@ -228,7 +228,7 @@ requires-dist = [
     { name = "rq", specifier = "==1.16.2" },
     { name = "rq-dashboard", specifier = "==0.8.0.2" },
     { name = "rtoml", specifier = "==0.11.0" },
-    { name = "schwifty", specifier = "==2024.9.0" },
+    { name = "schwifty", specifier = ">=2024.11.0" },
     { name = "sentry-sdk", extras = ["flask", "rq", "sqlalchemy"], specifier = "==2.17.0" },
     { name = "sqlalchemy", specifier = "==2.0.36" },
     { name = "stripe", specifier = "==5.4.0" },
@@ -1373,16 +1373,16 @@ wheels = [
 
 [[package]]
 name = "schwifty"
-version = "2024.9.0"
+version = "2024.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "importlib-resources", marker = "python_full_version < '3.12'" },
     { name = "pycountry" },
     { name = "rstr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/36/82/e396a2ea9577fe6da455481b03dcb0bd075265ae1103718050c63b38349d/schwifty-2024.9.0.tar.gz", hash = "sha256:acee9f5021587c254fc5f77ebefcd62feb0c0c3a80fea4523d451307dd04f330", size = 734841 }
+sdist = { url = "https://files.pythonhosted.org/packages/2e/c3/a1987ba6081fc50fe371e5b1df85b50d6487c6e7101d942a38db9c3ea31d/schwifty-2024.11.0.tar.gz", hash = "sha256:d0aaed03168403b433de515d663df09516941ae70152850da3afe3c242255f6a", size = 735326 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5b/f6/bd77169af403dc60dd5fe6fff2b757720841a2a7a44d016bd032ea8799ee/schwifty-2024.9.0-py3-none-any.whl", hash = "sha256:88f5a73549c5e4acb627ca669d52f49368b00ed3c3dae3778068471d0f6f4f62", size = 360288 },
+    { url = "https://files.pythonhosted.org/packages/2b/5d/5a585e2a9bf74acd5474b264d00e59b894b4f3f4d60a61f4ee4a5d574323/schwifty-2024.11.0-py3-none-any.whl", hash = "sha256:743bb6ae91f1cded149b3842f9becf795f19641d75755f73eaf921524b1ba8f9", size = 359588 },
 ]
 
 [[package]]
