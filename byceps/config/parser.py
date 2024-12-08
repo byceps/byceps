@@ -50,7 +50,7 @@ class Section:
     name: str
     fields: list[Field]
     config_class: type[C]
-    required: bool = True
+    required: bool
 
 
 @dataclass(frozen=True, slots=True)
@@ -79,6 +79,7 @@ _SECTION_DEFINITIONS = [
             Field('database'),
         ],
         config_class=DatabaseConfig,
+        required=True,
     ),
     Section(
         name='debug',
@@ -132,6 +133,7 @@ _SECTION_DEFINITIONS = [
             Field('url'),
         ],
         config_class=RedisConfig,
+        required=True,
     ),
     Section(
         name='smtp',
@@ -145,6 +147,7 @@ _SECTION_DEFINITIONS = [
             Field('suppress_send', type_=ValueType.Boolean, default=False),
         ],
         config_class=SmtpConfig,
+        required=True,
     ),
     Section(
         name='stripe',
