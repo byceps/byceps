@@ -52,6 +52,7 @@ class Section:
     config_class: type[C]
     required: bool
     default: C | None = None
+    subsections: dict[str, Section] | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -226,6 +227,7 @@ def _parse_section(data: Data, section: Section) -> ParsingResult[T]:
             section_data,
             section.name,
             section.fields,
+            section.subsections or {},
             section.config_class,
         )
 
@@ -267,6 +269,7 @@ def _parse_section_fields(
     section_data: Data,
     section_name: str,
     fields: list[Field],
+    subsections: dict[str, Section],
     config_class: type[C],
 ) -> ParsingResult[C]:
     entries = {}
@@ -283,6 +286,13 @@ def _parse_section_fields(
         match value:
             case Ok(value):
                 entries[field.key] = value
+            case Err(err):
+                errors.append(err)
+
+    for subsection_name, subsection in subsections.items():
+        match _parse_section(section_data, subsection):
+            case Ok(value):
+                entries[subsection_name] = value
             case Err(err):
                 errors.append(err)
 
