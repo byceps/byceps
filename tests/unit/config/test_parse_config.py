@@ -152,23 +152,14 @@ def test_parse_config_defaults():
                 enabled=False,
                 toolbar_enabled=False,
             ),
-            discord=DiscordConfig(
-                enabled=False,
-                client_id='',
-                client_secret='',
-            ),
+            discord=None,
             jobs=JobsConfig(
                 asynchronous=True,
             ),
             metrics=MetricsConfig(
                 enabled=False,
             ),
-            paypal=PaypalConfig(
-                enabled=False,
-                client_id='',
-                client_secret='',
-                environment='',
-            ),
+            paypal=None,
             redis=RedisConfig(
                 url='redis://127.0.0.1:6379/0',
             ),
@@ -181,12 +172,7 @@ def test_parse_config_defaults():
                 password='',
                 suppress_send=False,
             ),
-            stripe=StripeConfig(
-                enabled=False,
-                secret_key='',
-                publishable_key='',
-                webhook_secret='',
-            ),
+            stripe=None,
             styleguide=StyleguideConfig(
                 enabled=False,
             ),

@@ -104,11 +104,7 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=DiscordConfig,
         required=False,
-        default=DiscordConfig(
-            enabled=False,
-            client_id='',
-            client_secret='',
-        ),
+        default=None,
     ),
     Section(
         name='jobs',
@@ -142,12 +138,7 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=PaypalConfig,
         required=False,
-        default=PaypalConfig(
-            enabled=False,
-            client_id='',
-            client_secret='',
-            environment='',
-        ),
+        default=None,
     ),
     Section(
         name='redis',
@@ -181,12 +172,7 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=StripeConfig,
         required=False,
-        default=StripeConfig(
-            enabled=False,
-            secret_key='',
-            publishable_key='',
-            webhook_secret='',
-        ),
+        default=None,
     ),
     Section(
         name='styleguide',

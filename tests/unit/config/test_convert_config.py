@@ -8,13 +8,10 @@ from byceps.config.models import (
     BycepsConfig,
     DatabaseConfig,
     DebugConfig,
-    DiscordConfig,
     JobsConfig,
     MetricsConfig,
-    PaypalConfig,
     RedisConfig,
     SmtpConfig,
-    StripeConfig,
     StyleguideConfig,
 )
 
@@ -61,14 +58,14 @@ def test_convert_config():
             enabled=True,
             toolbar_enabled=True,
         ),
-        discord=DiscordConfig(),
+        discord=None,
         jobs=JobsConfig(
             asynchronous=True,
         ),
         metrics=MetricsConfig(
             enabled=True,
         ),
-        paypal=PaypalConfig(),
+        paypal=None,
         redis=RedisConfig(
             url='redis://127.0.0.1:6379/0',
         ),
@@ -81,7 +78,7 @@ def test_convert_config():
             password='smtppass',
             suppress_send=False,
         ),
-        stripe=StripeConfig(),
+        stripe=None,
         styleguide=StyleguideConfig(
             enabled=True,
         ),
