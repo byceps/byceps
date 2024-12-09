@@ -50,6 +50,7 @@ def test_parse_config():
                 enabled=True,
             ),
             paypal=PaypalConfig(
+                enabled=True,
                 client_id='paypal-client-id',
                 client_secret='paypal-client-secret',
                 environment='sandbox',
@@ -67,6 +68,7 @@ def test_parse_config():
                 suppress_send=True,
             ),
             stripe=StripeConfig(
+                enabled=True,
                 secret_key='stripe-secret-key',
                 publishable_key='stripe-publishable-key',
                 webhook_secret='stripe-webhook-secret',
@@ -106,6 +108,7 @@ def test_parse_config():
     enabled = true
 
     [paypal]
+    enabled = true
     client_id = "paypal-client-id"
     client_secret = "paypal-client-secret"
     environment = "sandbox"
@@ -123,6 +126,7 @@ def test_parse_config():
     suppress_send = true
 
     [stripe]
+    enabled = true
     secret_key = "stripe-secret-key"
     publishable_key = "stripe-publishable-key"
     webhook_secret = "stripe-webhook-secret"
