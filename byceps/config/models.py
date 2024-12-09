@@ -41,33 +41,33 @@ class DatabaseConfig:
 
 @dataclass(frozen=True, slots=True)
 class DebugConfig:
-    enabled: bool = False
-    toolbar_enabled: bool = False
+    enabled: bool
+    toolbar_enabled: bool
 
 
 @dataclass(frozen=True, slots=True)
 class DiscordConfig:
-    enabled: bool = False
-    client_id: str = ''
-    client_secret: str = ''
+    enabled: bool
+    client_id: str
+    client_secret: str
 
 
 @dataclass(frozen=True, slots=True)
 class JobsConfig:
-    asynchronous: bool = True
+    asynchronous: bool
 
 
 @dataclass(frozen=True, slots=True)
 class MetricsConfig:
-    enabled: bool = False
+    enabled: bool
 
 
 @dataclass(frozen=True, slots=True)
 class PaypalConfig:
-    enabled: bool = False
-    client_id: str = ''
-    client_secret: str = ''
-    environment: str = ''
+    enabled: bool
+    client_id: str
+    client_secret: str
+    environment: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -88,12 +88,12 @@ class SmtpConfig:
 
 @dataclass(frozen=True, slots=True)
 class StripeConfig:
-    enabled: bool = False
-    secret_key: str = ''
-    publishable_key: str = ''
-    webhook_secret: str = ''
+    enabled: bool
+    secret_key: str
+    publishable_key: str
+    webhook_secret: str
 
 
 @dataclass(frozen=True, slots=True)
 class StyleguideConfig:
-    enabled: bool = False
+    enabled: bool
