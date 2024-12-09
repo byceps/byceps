@@ -102,7 +102,7 @@ def test_parse_config():
     client_secret = "discord-client-secret"
 
     [jobs]
-    async = false
+    asynchronous = false
 
     [metrics]
     enabled = true
