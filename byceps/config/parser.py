@@ -51,6 +51,7 @@ class Section:
     fields: list[Field]
     config_class: type[C]
     required: bool
+    default: C | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -89,6 +90,10 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=DebugConfig,
         required=False,
+        default=DebugConfig(
+            enabled=False,
+            toolbar_enabled=False,
+        ),
     ),
     Section(
         name='discord',
@@ -99,6 +104,11 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=DiscordConfig,
         required=False,
+        default=DiscordConfig(
+            enabled=False,
+            client_id='',
+            client_secret='',
+        ),
     ),
     Section(
         name='jobs',
@@ -107,6 +117,9 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=JobsConfig,
         required=False,
+        default=JobsConfig(
+            asynchronous=True,
+        ),
     ),
     Section(
         name='metrics',
@@ -115,6 +128,9 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=MetricsConfig,
         required=False,
+        default=MetricsConfig(
+            enabled=False,
+        ),
     ),
     Section(
         name='paypal',
@@ -126,6 +142,12 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=PaypalConfig,
         required=False,
+        default=PaypalConfig(
+            enabled=False,
+            client_id='',
+            client_secret='',
+            environment='',
+        ),
     ),
     Section(
         name='redis',
@@ -159,6 +181,12 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=StripeConfig,
         required=False,
+        default=StripeConfig(
+            enabled=False,
+            secret_key='',
+            publishable_key='',
+            webhook_secret='',
+        ),
     ),
     Section(
         name='styleguide',
@@ -167,6 +195,9 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=StyleguideConfig,
         required=False,
+        default=StyleguideConfig(
+            enabled=False,
+        ),
     ),
 ]
 
@@ -241,8 +272,10 @@ def _parse_optional_section(
     section_data = data.get(key, None)
 
     if section_data is None:
-        config = section.config_class()
-        return Ok(config)
+        if section.default:
+            return Ok(section.default)
+        else:
+            return Ok(None)
 
     return parse(section_data)
 
