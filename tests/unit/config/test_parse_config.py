@@ -11,6 +11,7 @@ from byceps.config.models import (
     DiscordConfig,
     JobsConfig,
     MetricsConfig,
+    PaymentGatewaysConfig,
     PaypalConfig,
     RedisConfig,
     SmtpConfig,
@@ -49,11 +50,19 @@ def test_parse_config():
             metrics=MetricsConfig(
                 enabled=True,
             ),
-            paypal=PaypalConfig(
-                enabled=True,
-                client_id='paypal-client-id',
-                client_secret='paypal-client-secret',
-                environment='sandbox',
+            payment_gateways=PaymentGatewaysConfig(
+                paypal=PaypalConfig(
+                    enabled=True,
+                    client_id='paypal-client-id',
+                    client_secret='paypal-client-secret',
+                    environment='sandbox',
+                ),
+                stripe=StripeConfig(
+                    enabled=True,
+                    secret_key='stripe-secret-key',
+                    publishable_key='stripe-publishable-key',
+                    webhook_secret='stripe-webhook-secret',
+                ),
             ),
             redis=RedisConfig(
                 url='redis://127.0.0.1:6379/0',
@@ -66,12 +75,6 @@ def test_parse_config():
                 username='smtp-user',
                 password='smtp-password',
                 suppress_send=True,
-            ),
-            stripe=StripeConfig(
-                enabled=True,
-                secret_key='stripe-secret-key',
-                publishable_key='stripe-publishable-key',
-                webhook_secret='stripe-webhook-secret',
             ),
             styleguide=StyleguideConfig(
                 enabled=True,
@@ -107,11 +110,17 @@ def test_parse_config():
     [metrics]
     enabled = true
 
-    [paypal]
+    [payment_gateways.paypal]
     enabled = true
     client_id = "paypal-client-id"
     client_secret = "paypal-client-secret"
     environment = "sandbox"
+
+    [payment_gateways.stripe]
+    enabled = true
+    secret_key = "stripe-secret-key"
+    publishable_key = "stripe-publishable-key"
+    webhook_secret = "stripe-webhook-secret"
 
     [redis]
     url = "redis://127.0.0.1:6379/0"
@@ -124,12 +133,6 @@ def test_parse_config():
     username = "smtp-user"
     password = "smtp-password"
     suppress_send = true
-
-    [stripe]
-    enabled = true
-    secret_key = "stripe-secret-key"
-    publishable_key = "stripe-publishable-key"
-    webhook_secret = "stripe-webhook-secret"
 
     [styleguide]
     enabled = true
@@ -163,7 +166,7 @@ def test_parse_config_defaults():
             metrics=MetricsConfig(
                 enabled=False,
             ),
-            paypal=None,
+            payment_gateways=None,
             redis=RedisConfig(
                 url='redis://127.0.0.1:6379/0',
             ),
@@ -176,7 +179,6 @@ def test_parse_config_defaults():
                 password='',
                 suppress_send=False,
             ),
-            stripe=None,
             styleguide=StyleguideConfig(
                 enabled=False,
             ),

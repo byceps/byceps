@@ -23,10 +23,9 @@ class BycepsConfig:
     discord: DiscordConfig | None
     jobs: JobsConfig
     metrics: MetricsConfig
-    paypal: PaypalConfig | None
+    payment_gateways: PaymentGatewaysConfig | None
     redis: RedisConfig
     smtp: SmtpConfig
-    stripe: StripeConfig | None
     styleguide: StyleguideConfig
 
 
@@ -60,6 +59,12 @@ class JobsConfig:
 @dataclass(frozen=True, slots=True)
 class MetricsConfig:
     enabled: bool
+
+
+@dataclass(frozen=True, slots=True)
+class PaymentGatewaysConfig:
+    paypal: PaypalConfig | None
+    stripe: StripeConfig | None
 
 
 @dataclass(frozen=True, slots=True)

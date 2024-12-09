@@ -65,7 +65,7 @@ def test_convert_config():
         metrics=MetricsConfig(
             enabled=True,
         ),
-        paypal=None,
+        payment_gateways={},
         redis=RedisConfig(
             url='redis://127.0.0.1:6379/0',
         ),
@@ -78,7 +78,6 @@ def test_convert_config():
             password='smtppass',
             suppress_send=False,
         ),
-        stripe=None,
         styleguide=StyleguideConfig(
             enabled=True,
         ),

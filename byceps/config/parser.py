@@ -25,6 +25,7 @@ from .models import (
     DiscordConfig,
     JobsConfig,
     MetricsConfig,
+    PaymentGatewaysConfig,
     PaypalConfig,
     RedisConfig,
     SmtpConfig,
@@ -129,14 +130,34 @@ _SECTION_DEFINITIONS = [
         ),
     ),
     Section(
-        name='paypal',
-        fields=[
-            Field('enabled', type_=ValueType.Boolean),
-            Field('client_id'),
-            Field('client_secret'),
-            Field('environment'),
-        ],
-        config_class=PaypalConfig,
+        name='payment_gateways',
+        subsections={
+            'paypal': Section(
+                name='paypal',
+                fields=[
+                    Field('enabled', type_=ValueType.Boolean),
+                    Field('client_id'),
+                    Field('client_secret'),
+                    Field('environment'),
+                ],
+                config_class=PaypalConfig,
+                required=False,
+                default=None,
+            ),
+            'stripe': Section(
+                name='stripe',
+                fields=[
+                    Field('enabled', type_=ValueType.Boolean),
+                    Field('secret_key'),
+                    Field('publishable_key'),
+                    Field('webhook_secret'),
+                ],
+                config_class=StripeConfig,
+                required=False,
+            ),
+        },
+        fields=[],
+        config_class=PaymentGatewaysConfig,
         required=False,
     ),
     Section(
@@ -160,17 +181,6 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=SmtpConfig,
         required=True,
-    ),
-    Section(
-        name='stripe',
-        fields=[
-            Field('enabled', type_=ValueType.Boolean),
-            Field('secret_key'),
-            Field('publishable_key'),
-            Field('webhook_secret'),
-        ],
-        config_class=StripeConfig,
-        required=False,
     ),
     Section(
         name='styleguide',
