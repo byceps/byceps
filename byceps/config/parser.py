@@ -98,7 +98,7 @@ _SECTION_DEFINITIONS = [
     Section(
         name='discord',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, default=False),
+            Field('enabled', type_=ValueType.Boolean),
             Field('client_id'),
             Field('client_secret'),
         ],
@@ -109,7 +109,7 @@ _SECTION_DEFINITIONS = [
     Section(
         name='jobs',
         fields=[
-            Field('asynchronous', type_=ValueType.Boolean, default=False),
+            Field('asynchronous', type_=ValueType.Boolean),
         ],
         config_class=JobsConfig,
         required=False,
@@ -120,7 +120,7 @@ _SECTION_DEFINITIONS = [
     Section(
         name='metrics',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, default=False),
+            Field('enabled', type_=ValueType.Boolean),
         ],
         config_class=MetricsConfig,
         required=False,
@@ -131,7 +131,7 @@ _SECTION_DEFINITIONS = [
     Section(
         name='paypal',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, default=False),
+            Field('enabled', type_=ValueType.Boolean),
             Field('client_id'),
             Field('client_secret'),
             Field('environment'),
@@ -165,7 +165,7 @@ _SECTION_DEFINITIONS = [
     Section(
         name='stripe',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, default=False),
+            Field('enabled', type_=ValueType.Boolean),
             Field('secret_key'),
             Field('publishable_key'),
             Field('webhook_secret'),
@@ -177,7 +177,7 @@ _SECTION_DEFINITIONS = [
     Section(
         name='styleguide',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, default=False),
+            Field('enabled', type_=ValueType.Boolean),
         ],
         config_class=StyleguideConfig,
         required=False,
