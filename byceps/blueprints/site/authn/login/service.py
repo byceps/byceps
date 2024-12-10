@@ -50,6 +50,7 @@ def log_in_user(
         log.info(
             'User authentication failed',
             scope='site',
+            site_id=site.id,
             username=username,
             error=str(authn_result.unwrap_err()),
         )
@@ -71,6 +72,7 @@ def log_in_user(
     log.info(
         'User logged in',
         scope='site',
+        site_id=site.id,
         user_id=str(user.id),
         screen_name=user.screen_name,
     )
@@ -88,12 +90,13 @@ def _is_consent_required(user_id: UserID, brand_id: BrandID) -> bool:
     )
 
 
-def log_out_user(user: User) -> None:
+def log_out_user(user: User, site: Site) -> None:
     user_session.end()
 
     log.info(
         'User logged out',
         scope='site',
+        site_id=site.id,
         user_id=str(user.id),
         screen_name=user.screen_name,
     )
