@@ -64,7 +64,7 @@ class Field:
 
 
 _TOPLEVEL_FIELDS = [
-    Field('locale', default='en'),
+    Field('locale'),
     Field('propagate_exceptions', default=False),
     Field('secret_key'),
     Field('timezone'),

@@ -186,6 +186,7 @@ def test_parse_config_defaults():
     )
 
     toml = """\
+    locale = "en"
     secret_key = "<RANDOM-BYTES>"
     timezone = "Europe/London"
 
@@ -206,6 +207,7 @@ def test_parse_config_defaults():
 def test_parse_incomplete_config():
     expected = Err(
         [
+            'Key "locale" missing',
             'Key "secret_key" missing',
             'Key "timezone" missing',
             'Key "username" missing in section "database"',
