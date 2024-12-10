@@ -8,7 +8,7 @@
 from rq import Worker
 
 from byceps.application import create_worker_app
-from byceps.util.jobqueue import connection, get_queue
+from byceps.util.jobqueue import get_queue
 from byceps.util.sentry import configure_sentry_from_env
 
 
@@ -18,8 +18,7 @@ if __name__ == '__main__':
     app = create_worker_app()
 
     with app.app_context():
-        with connection():
-            queues = [get_queue(app)]
+        queues = [get_queue(app)]
 
-            worker = Worker(queues)
-            worker.work(with_scheduler=True)
+        worker = Worker(queues)
+        worker.work(with_scheduler=True)

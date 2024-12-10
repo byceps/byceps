@@ -12,29 +12,21 @@ An asynchronously processed job queue based on Redis_ and RQ_.
 """
 
 from collections.abc import Callable
-from contextlib import contextmanager
 from datetime import datetime, UTC
 
 from flask import current_app
-from rq import Connection, Queue
-
-
-@contextmanager
-def connection():
-    with Connection(current_app.redis_client):
-        yield
+from rq import Queue
 
 
 def get_queue(app):
     is_async = app.config.get('JOBS_ASYNC', True)
-    return Queue(is_async=is_async)
+    return Queue(connection=app.redis_client, is_async=is_async)
 
 
 def enqueue(func: Callable, *args, **kwargs):
     """Add the function call to the queue as a job."""
-    with connection():
-        queue = get_queue(current_app)
-        queue.enqueue(func, *args, **kwargs)
+    queue = get_queue(current_app)
+    queue.enqueue(func, *args, **kwargs)
 
 
 def enqueue_at(dt: datetime, func: Callable, *args, **kwargs):
@@ -46,6 +38,5 @@ def enqueue_at(dt: datetime, func: Callable, *args, **kwargs):
         # to prevent rq from assuming local timezone.
         dt = dt.replace(tzinfo=UTC)
 
-    with connection():
-        queue = get_queue(current_app)
-        queue.enqueue_at(dt, func, *args, **kwargs)
+    queue = get_queue(current_app)
+    queue.enqueue_at(dt, func, *args, **kwargs)
