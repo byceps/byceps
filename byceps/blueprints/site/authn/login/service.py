@@ -38,9 +38,9 @@ def log_in_user(
     password: str,
     permanent: bool,
     brand_id: BrandID,
+    site: Site,
     *,
     ip_address: str | None = None,
-    site: Site | None = None,
 ) -> Result[
     tuple[User, UserLoggedInEvent],
     AuthenticationFailedError | ConsentRequiredError,

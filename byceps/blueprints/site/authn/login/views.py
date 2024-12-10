@@ -72,8 +72,8 @@ def log_in():
         password,
         permanent,
         g.brand_id,
-        ip_address=request.remote_addr,
         site=g.site,
+        ip_address=request.remote_addr,
     )
     if log_in_result.is_err():
         err = log_in_result.unwrap_err()
