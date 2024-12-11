@@ -10,7 +10,7 @@ Configuration parser
 
 from __future__ import annotations
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field as dataclass_field
 from enum import Enum
 from typing import Any, TypeVar
 
@@ -53,7 +53,7 @@ class Section:
     config_class: type[C]
     required: bool
     default: C | None = None
-    subsections: dict[str, Section] | None = None
+    subsections: list[Subsection] = dataclass_field(default_factory=list)
 
 
 @dataclass(frozen=True, slots=True)
@@ -61,6 +61,11 @@ class Field:
     key: str
     type_: ValueType = ValueType.String
     default: Value | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class Subsection:
+    section: Section
 
 
 _TOPLEVEL_FIELDS = [
@@ -131,31 +136,35 @@ _SECTION_DEFINITIONS = [
     ),
     Section(
         name='payment_gateways',
-        subsections={
-            'paypal': Section(
-                name='paypal',
-                fields=[
-                    Field('enabled', type_=ValueType.Boolean),
-                    Field('client_id'),
-                    Field('client_secret'),
-                    Field('environment'),
-                ],
-                config_class=PaypalConfig,
-                required=False,
-                default=None,
+        subsections=[
+            Subsection(
+                Section(
+                    name='paypal',
+                    fields=[
+                        Field('enabled', type_=ValueType.Boolean),
+                        Field('client_id'),
+                        Field('client_secret'),
+                        Field('environment'),
+                    ],
+                    config_class=PaypalConfig,
+                    required=False,
+                    default=None,
+                ),
             ),
-            'stripe': Section(
-                name='stripe',
-                fields=[
-                    Field('enabled', type_=ValueType.Boolean),
-                    Field('secret_key'),
-                    Field('publishable_key'),
-                    Field('webhook_secret'),
-                ],
-                config_class=StripeConfig,
-                required=False,
+            Subsection(
+                Section(
+                    name='stripe',
+                    fields=[
+                        Field('enabled', type_=ValueType.Boolean),
+                        Field('secret_key'),
+                        Field('publishable_key'),
+                        Field('webhook_secret'),
+                    ],
+                    config_class=StripeConfig,
+                    required=False,
+                ),
             ),
-        },
+        ],
         fields=[],
         config_class=PaymentGatewaysConfig,
         required=False,
@@ -237,7 +246,7 @@ def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
             section_data,
             section.name,
             section.fields,
-            section.subsections or {},
+            section.subsections,
             section.config_class,
         )
 
@@ -283,7 +292,7 @@ def _parse_section_fields(
     section_data: Data,
     section_name: str,
     fields: list[Field],
-    subsections: dict[str, Section],
+    subsections: list[Subsection],
     config_class: type[C],
 ) -> ParsingResult[C]:
     entries = {}
@@ -303,10 +312,10 @@ def _parse_section_fields(
             case Err(err):
                 errors.append(err)
 
-    for subsection_name, subsection in subsections.items():
-        match _parse_section(section_data, subsection):
+    for subsection in subsections:
+        match _parse_section(section_data, subsection.section):
             case Ok(value):
-                entries[subsection_name] = value
+                entries[subsection.section.name] = value
             case Err(err):
                 errors.append(err)
 
