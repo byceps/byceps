@@ -18,6 +18,7 @@ class BycepsConfig:
     propagate_exceptions: bool
     timezone: str
     secret_key: str
+    apps: AppsConfig
     database: DatabaseConfig
     debug: DebugConfig
     discord: DiscordConfig | None
@@ -27,6 +28,33 @@ class BycepsConfig:
     redis: RedisConfig
     smtp: SmtpConfig
     styleguide: StyleguideConfig
+
+
+@dataclass(frozen=True, slots=True)
+class AppsConfig:
+    admin: AdminAppConfig | None
+    api: ApiAppConfig | None
+    sites: list[SiteAppConfig]
+
+
+@dataclass(frozen=True, slots=True)
+class _BaseAppConfig:
+    server_name: str
+
+
+@dataclass(frozen=True, slots=True)
+class AdminAppConfig(_BaseAppConfig):
+    pass
+
+
+@dataclass(frozen=True, slots=True)
+class ApiAppConfig(_BaseAppConfig):
+    pass
+
+
+@dataclass(frozen=True, slots=True)
+class SiteAppConfig(_BaseAppConfig):
+    site_id: str
 
 
 @dataclass(frozen=True, slots=True)

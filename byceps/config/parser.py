@@ -19,6 +19,9 @@ import rtoml
 from byceps.util.result import Err, Ok, Result
 
 from .models import (
+    AdminAppConfig,
+    ApiAppConfig,
+    AppsConfig,
     BycepsConfig,
     DatabaseConfig,
     DebugConfig,
@@ -28,6 +31,7 @@ from .models import (
     PaymentGatewaysConfig,
     PaypalConfig,
     RedisConfig,
+    SiteAppConfig,
     SmtpConfig,
     StripeConfig,
     StyleguideConfig,
@@ -81,6 +85,49 @@ _TOPLEVEL_FIELDS = [
 
 
 _SECTION_DEFINITIONS = [
+    Section(
+        name='apps',
+        subsections=[
+            Subsection(
+                Section(
+                    name='admin',
+                    fields=[
+                        Field('server_name'),
+                    ],
+                    config_class=AdminAppConfig,
+                    required=False,
+                    default=None,
+                ),
+            ),
+            Subsection(
+                Section(
+                    name='api',
+                    fields=[
+                        Field('server_name'),
+                    ],
+                    config_class=ApiAppConfig,
+                    required=False,
+                    default=None,
+                ),
+            ),
+            Subsection(
+                Section(
+                    name='sites',
+                    fields=[
+                        Field('server_name'),
+                        Field('site_id'),
+                    ],
+                    config_class=SiteAppConfig,
+                    collection_type=CollectionType.List,
+                    required=False,
+                ),
+                collection_type=CollectionType.List,
+            ),
+        ],
+        fields=[],
+        config_class=AppsConfig,
+        required=True,
+    ),
     Section(
         name='database',
         fields=[

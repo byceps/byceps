@@ -5,6 +5,9 @@
 
 from byceps.config.parser import parse_config
 from byceps.config.models import (
+    AdminAppConfig,
+    ApiAppConfig,
+    AppsConfig,
     BycepsConfig,
     DatabaseConfig,
     DebugConfig,
@@ -14,6 +17,7 @@ from byceps.config.models import (
     PaymentGatewaysConfig,
     PaypalConfig,
     RedisConfig,
+    SiteAppConfig,
     SmtpConfig,
     StripeConfig,
     StyleguideConfig,
@@ -28,6 +32,24 @@ def test_parse_config():
             propagate_exceptions=True,
             secret_key='<RANDOM-BYTES>',
             timezone='Europe/Berlin',
+            apps=AppsConfig(
+                admin=AdminAppConfig(
+                    server_name='admin.test',
+                ),
+                api=ApiAppConfig(
+                    server_name='api.test',
+                ),
+                sites=[
+                    SiteAppConfig(
+                        server_name='site1.test',
+                        site_id='site1',
+                    ),
+                    SiteAppConfig(
+                        server_name='site2.test',
+                        site_id='site2',
+                    ),
+                ],
+            ),
             database=DatabaseConfig(
                 host='db-host',
                 port=54321,
@@ -87,6 +109,14 @@ def test_parse_config():
     propagate_exceptions = true
     secret_key = "<RANDOM-BYTES>"
     timezone = "Europe/Berlin"
+
+    [apps]
+    admin = { server_name = "admin.test" }
+    api = { server_name = "api.test" }
+    sites = [
+      { server_name = "site1.test", site_id = "site1" },
+      { server_name = "site2.test", site_id = "site2" },
+    ]
 
     [database]
     host = "db-host"
@@ -148,6 +178,11 @@ def test_parse_config_defaults():
             propagate_exceptions=False,
             secret_key='<RANDOM-BYTES>',
             timezone='Europe/London',
+            apps=AppsConfig(
+                admin=None,
+                api=None,
+                sites=[],
+            ),
             database=DatabaseConfig(
                 host='localhost',
                 port=5432,
@@ -190,6 +225,8 @@ def test_parse_config_defaults():
     secret_key = "<RANDOM-BYTES>"
     timezone = "Europe/London"
 
+    [apps]
+
     [database]
     username = "db-user"
     password = "db-password"
@@ -210,6 +247,7 @@ def test_parse_incomplete_config():
             'Key "locale" missing',
             'Key "secret_key" missing',
             'Key "timezone" missing',
+            'Section "apps" missing',
             'Key "username" missing in section "database"',
             'Key "password" missing in section "database"',
             'Section "redis" missing',

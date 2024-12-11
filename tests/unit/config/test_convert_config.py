@@ -5,6 +5,7 @@
 
 from byceps.config.converter import convert_config
 from byceps.config.models import (
+    AppsConfig,
     BycepsConfig,
     DatabaseConfig,
     DebugConfig,
@@ -47,6 +48,11 @@ def test_convert_config():
         propagate_exceptions=True,
         secret_key='<RANDOM-BYTES>',
         timezone='Europe/Berlin',
+        apps=AppsConfig(
+            admin=None,
+            api=None,
+            sites=[],
+        ),
         database=DatabaseConfig(
             host='127.0.0.1',
             port=5432,
