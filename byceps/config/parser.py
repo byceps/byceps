@@ -231,7 +231,7 @@ def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
         return Ok(config)
 
 
-def _parse_section(data: Data, section: Section) -> ParsingResult[T]:
+def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
     def parse(section_data: Data) -> ParsingResult[C]:
         return _parse_section_fields(
             section_data,
@@ -248,7 +248,9 @@ def _parse_section(data: Data, section: Section) -> ParsingResult[T]:
 
 
 def _parse_required_section(
-    data: Data, section: Section, parse: Callable[[Data], ParsingResult[T]]
+    data: Data,
+    section: Section,
+    parse: Callable[[Data], ParsingResult[T | None]],
 ) -> ParsingResult[T]:
     key = section.name
     return (
@@ -260,8 +262,10 @@ def _parse_required_section(
 
 
 def _parse_optional_section(
-    data: Data, section: Section, parse: Callable[[Data], ParsingResult[T]]
-) -> ParsingResult[T]:
+    data: Data,
+    section: Section,
+    parse: Callable[[Data], ParsingResult[T | None]],
+) -> ParsingResult[T | None]:
     key = section.name
 
     section_data = data.get(key, None)
@@ -286,14 +290,14 @@ def _parse_section_fields(
     errors = []
 
     for field in fields:
-        value = _get_section_value(
+        section_value = _get_section_value(
             section_data,
             section_name,
             field.key,
             field.type_,
             default=field.default,
         )
-        match value:
+        match section_value:
             case Ok(value):
                 entries[field.key] = value
             case Err(err):
