@@ -45,6 +45,8 @@ Value = bool | int | str
 
 ValueType = Enum('ValueType', ['Boolean', 'Integer', 'String'])
 
+CollectionType = Enum('CollectionType', ['List'])
+
 
 @dataclass(frozen=True, slots=True)
 class Section:
@@ -52,6 +54,7 @@ class Section:
     fields: list[Field]
     config_class: type[C]
     required: bool
+    collection_type: CollectionType | None = None
     default: C | None = None
     subsections: list[Subsection] = dataclass_field(default_factory=list)
 
@@ -66,6 +69,7 @@ class Field:
 @dataclass(frozen=True, slots=True)
 class Subsection:
     section: Section
+    collection_type: CollectionType | None = None
 
 
 _TOPLEVEL_FIELDS = [
@@ -313,11 +317,39 @@ def _parse_section_fields(
                 errors.append(err)
 
     for subsection in subsections:
-        match _parse_section(section_data, subsection.section):
-            case Ok(value):
-                entries[subsection.section.name] = value
-            case Err(err):
-                errors.append(err)
+        match subsection.collection_type:
+            case CollectionType.List:
+                key = subsection.section.name
+                subsection_data = section_data.get(key)
+
+                if subsection_data is None:
+                    entries[key] = []
+                    continue
+
+                if not isinstance(subsection_data, list):
+                    errors.append(
+                        f'Value "{subsection_data!r}" for key "{key}" in section "{section_name}" is not of type list'
+                    )
+                    continue
+
+                values = []
+                for data in subsection_data:
+                    match _parse_section({key: data}, subsection.section):
+                        case Ok(value):
+                            values.append(value)
+                        case Err(err):
+                            errors.append(err)
+                entries[key] = values
+            case None:
+                match _parse_section(section_data, subsection.section):
+                    case Ok(value):
+                        entries[subsection.section.name] = value
+                    case Err(err):
+                        errors.append(err)
+            case _:
+                raise Exception(
+                    f'Invalid value collection type "{subsection.collection_type}"'
+                )
 
     if errors:
         return Err(errors)
