@@ -7,35 +7,24 @@ Run BYCEPS
    activated.
 
 
-Admin Application
-=================
+Applications
+============
 
-To run the admin application with Flask's (insecure!) *development*
-server for development purposes:
-
-.. code-block:: sh
-
-   (.venv)$ BYCEPS_CONFIG=../config/development.toml flask --app=serve_admin --debug run
-
-The admin application should now be reachable at
-`<http://127.0.0.1:5000>`_ (on Flask's standard port).
-
-
-Site Application
-================
-
-To run a site application with Flask's (insecure!) *development* server
-for development purposes on a different port (to avoid conflicting with
-the admin application):
+To run the applications defined in the :doc:`application mapping file
+<apps-config-file>` with Flask's (insecure!) *development* server for
+development purposes:
 
 .. code-block:: sh
 
-   (.venv)$ BYCEPS_CONFIG=../config/development.toml SITE_ID=cozylan flask --app=serve_site --debug run --port 5001
+   (.venv)$ BYCEPS_CONFIG=../config/development.toml BYCEPS_APPS_CONFIG=config/apps.toml flask --app=serve_apps --debug run
 
-The application for site ``cozylan`` should now be reachable at
-`<http://127.0.0.1:5001>`_.
+If the hostname mapping (or DNS setup) is also correct, the configured
+BYCEPS applications should be accessible at their respective hostnames
+on Flask's standard port (5000), for example:
 
-For now, every site will need its own site application instance.
+- `<http://admin.byceps.example:5000/>`_
+- `<http://api.byceps.example:5000/>`_
+- `<http://cozylan.example:5000/>`_
 
 
 Worker
