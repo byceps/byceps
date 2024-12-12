@@ -60,8 +60,9 @@ Copy the included example configuration file:
       127.0.0.1       api.byceps.example
       127.0.0.1       cozylan.example
 
-- But if you are **installing to a server**, substitude above hostnames
-  in the config with ones that use actual, registered Internet domains.
+- But if you are **installing to a server on the Internet**, substitute
+  above hostnames in the configuration with ones that use actual,
+  registered Internet domains.
 
 
 Docker Preparation
