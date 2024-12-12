@@ -18,5 +18,6 @@ how to do that instead.
    byceps
    virtual-env
    byceps-config-file
+   apps-config-file
    postgresql
    populate-database
