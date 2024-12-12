@@ -5,10 +5,11 @@ When updating BYCEPS to a newer version, the set of required Python
 packages may change (additions, version upgrades/downgrades, removals).
 
 .. important:: Before continuing, make sure that the :doc:`virtual
-   environment </installation/virtual-env>` is set up and activated.
+   environment </installation_native/virtual-env>` is set up and
+   activated.
 
-As with the :doc:`installation </installation/index>`, it's probably a
-good idea to update pip_ to the current version:
+As with the :doc:`installation </installation_native/index>`, it's
+probably a good idea to update pip_ to the current version:
 
 .. _pip: https://pip.pypa.io/
 

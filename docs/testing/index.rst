@@ -9,7 +9,8 @@ Running the tests is mostly useful for development of BYCEPS itself as
 well as for customization.
 
 .. important:: Before continuing, make sure that the :doc:`virtual
-   environment </installation/virtual-env>` is set up and activated.
+   environment </installation_native/virtual-env>` is set up and
+   activated.
 
 In the activated virtual environment, first install the test
 dependencies:

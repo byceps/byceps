@@ -3,8 +3,8 @@ Installation (Docker Compose)
 *****************************
 
 As an alternative to :doc:`installing directly on a system
-</installation/index>`, BYCEPS can be run from Docker_ containers,
-orchestrated by `Docker compose`_.
+</installation_native/index>`, BYCEPS can be run from Docker_
+containers, orchestrated by `Docker compose`_.
 
 .. important:: This guide assumes you are using Docker Compose V2. If
    you are still using V1, replace ``docker compose`` with

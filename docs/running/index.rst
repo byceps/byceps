@@ -3,7 +3,8 @@ Running BYCEPS
 **************
 
 .. important:: Before continuing, make sure that the :doc:`virtual
-   environment </installation/virtual-env>` is set up and activated.
+   environment </installation_native/virtual-env>` is set up and
+   activated.
 
 
 Admin Application

@@ -2,7 +2,8 @@ Populate Database
 =================
 
 .. important:: Before continuing, make sure that the :doc:`virtual
-   environment </installation/virtual-env>` is set up and activated.
+   environment </installation_native/virtual-env>` is set up and
+   activated.
 
 Initialize the database (:ref:`details <Initialize Database>`) specified
 in the configuration file:

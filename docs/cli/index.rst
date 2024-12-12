@@ -5,8 +5,8 @@ Command-line Interface
 BYCEPS comes with a command-line tool for some tasks.
 
 .. important:: Before attempting to run any ``byceps`` command, make
-   sure that the :doc:`virtual environment </installation/virtual-env>`
-   is set up and activated.
+   sure that the :doc:`virtual environment
+   </installation_native/virtual-env>` is set up and activated.
 
 .. list-table::
    :header-rows: 1
