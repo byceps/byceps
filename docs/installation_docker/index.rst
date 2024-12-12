@@ -110,9 +110,19 @@ user (which will get all available roles assigned):
 .. code-block:: sh
 
     $ docker compose run --rm byceps-apps uv run byceps create-superuser
+
+Enter user account details interactively:
+
+.. code-block:: none
+
     Screen name: Flynn
     Email address: flynn@flynns-arcade.net
-    Password:
+    Password: hunter2
+
+Expected output:
+
+.. code-block:: none
+
     Creating user "Flynn" ... done.
     Enabling user "Flynn" ... done.
     Assigning 35 roles to user "Flynn" ... done.

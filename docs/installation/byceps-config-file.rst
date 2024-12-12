@@ -25,6 +25,11 @@ let's generate one in a cryptographically secure way:
 .. code-block:: sh
 
     (.venv)$ byceps generate-secret-key
+
+Exemplary output:
+
+.. code-block:: none
+
     3ac1c416bfacb82918d56720d1c3104fd96e8b8d4fbee42343ae7512a9ced293
 
 Set this value in your configuration file so the line looks like this:

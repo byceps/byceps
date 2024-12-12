@@ -10,6 +10,11 @@ in the configuration file:
 .. code-block:: sh
 
     (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps initialize-database
+
+Expected output:
+
+.. code-block:: none
+
     Creating database tables ... done.
     Importing roles ... done. Imported 35 roles, skipped 0 roles.
     Adding language "en" ... done.
@@ -21,9 +26,19 @@ user (which will get all available roles assigned):
 .. code-block:: sh
 
     (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-superuser
+
+Enter user account details interactively:
+
+.. code-block:: none
+
     Screen name: Flynn
     Email address: flynn@flynns-arcade.net
-    Password:
+    Password: hunter2
+
+Expected output:
+
+.. code-block:: none
+
     Creating user "Flynn" ... done.
     Enabling user "Flynn" ... done.
     Assigning 35 roles to user "Flynn" ... done.
