@@ -21,3 +21,4 @@ how to do that instead.
    apps-config-file
    postgresql
    populate-database
+   run

@@ -36,7 +36,6 @@ This documentation should guide you to understand and set up BYCEPS.
    blueprints/index
    installation_docker/index
    installation_native/index
-   running/index
    upgrading/index
    config/index
    cli/index
