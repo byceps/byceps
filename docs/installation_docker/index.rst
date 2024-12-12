@@ -40,11 +40,11 @@ Copy the included example configuration file:
 
 .. code-block:: sh
 
-    $ cp config/apps_example.toml config/apps.toml
+    $ cp config/apps.toml.example config/apps.toml
 
 - For a **local installation**, you can go with the exemplary hostnames
   already defined in the example apps configuration file,
-  ``config/apps_example.toml``, which are:
+  ``config/apps.toml.example``, which are:
 
   - ``admin.byceps.example`` for the admin UI
   - ``api.byceps.example`` for the API

@@ -4,8 +4,8 @@ Create BYCEPS Configuration File
 To run BYCEPS, a configuration file is required. Those usually reside in
 ``/config``.
 
-There are two examples, ``development_example.toml`` and
-``production_example.toml``, that you can use as a base for your
+There are two examples, ``development.toml.example`` and
+``production.toml.example``, that you can use as a base for your
 specific configuration.
 
 For starters, create a copy of the development example file to adjust as
@@ -13,7 +13,7 @@ we go along:
 
 .. code-block:: sh
 
-    $ cp config/development_example.toml config/development.toml
+    $ cp config/development.toml.example config/development.toml
 
 
 Set a Secret Key
