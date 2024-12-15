@@ -60,8 +60,7 @@ Other sites using BYCEPS:
 Documentation
 =============
 
-See `https://byceps.readthedocs.io/
-<https://byceps.readthedocs.io/en/latest/installation/index.html>`_.
+See `https://byceps.readthedocs.io/ <https://byceps.readthedocs.io/>`_.
 
 
 Code Status
