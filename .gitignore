@@ -33,4 +33,7 @@ __pycache__
 !/config/development_example.toml
 !/config/production_example.toml
 
+# l10n
+messages.pot
+
 secret_key.txt
