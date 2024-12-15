@@ -57,10 +57,10 @@ Other sites using BYCEPS:
 .. _OrgaTalk: https://www.orgatalk.de/
 
 
-Installation
-============
+Documentation
+=============
 
-See `installation instructions
+See `https://byceps.readthedocs.io/
 <https://byceps.readthedocs.io/en/latest/installation/index.html>`_.
 
 
