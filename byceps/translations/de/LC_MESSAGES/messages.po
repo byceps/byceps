@@ -190,18 +190,20 @@ msgstr " im %(board_label)s"
 #: byceps/announce/handlers/external_accounts.py:34
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has connected an external account for "
-"%(user_screen_name)s on \"%(service)s\"."
+"%(initiator_screen_name)s has connected an external account on "
+"\"%(service)s\" for %(user_screen_name)s."
 msgstr ""
-"%(initiator_screen_name)s hat ein Benutzerkonto auf \"%(service)s\" für \"%(user_screen_name)s\"s verbunden."
+"%(initiator_screen_name)s hat ein Benutzerkonto auf \"%(service)s\" für "
+"\"%(user_screen_name)s\"s verbunden."
 
 #: byceps/announce/handlers/external_accounts.py:55
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has disconnected an external account for "
-"%(user_screen_name)s on \"%(service)s\"."
+"%(initiator_screen_name)s has disconnected an external account on "
+"\"%(service)s\" for %(user_screen_name)s."
 msgstr ""
-"%(initiator_screen_name)s hat ein Benutzerkonto auf \"%(service)s\" für \"%(user_screen_name)s\"s entkoppelt."
+"%(initiator_screen_name)s hat ein Benutzerkonto auf \"%(service)s\" für "
+"\"%(user_screen_name)s\"s entkoppelt."
 
 #: byceps/announce/handlers/guest_server.py:34
 #, python-format
@@ -645,7 +647,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_form.html:21
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/create_form.html:21
 #: byceps/blueprints/admin/timetable/templates/admin/timetable/item_create_form.html:30
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:99
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:84
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:21
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:26
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:33
@@ -916,7 +918,7 @@ msgstr "Hinzufügen"
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:22
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:99
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:33
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:83
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:68
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:27
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:22
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
@@ -932,7 +934,7 @@ msgid "None defined"
 msgstr "Keine festgelegt"
 
 #: byceps/blueprints/admin/authn/identity_tag/templates/admin/authn/identity_tag/index.html:78
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:108
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:93
 msgid "Really delete it?"
 msgstr "Wirklich löschen?"
 
@@ -1355,7 +1357,7 @@ msgstr "Position"
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:13
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:88
 #: byceps/blueprints/admin/timetable/forms.py:26
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:29
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:16
 #: byceps/blueprints/site/board/templates/macros/board.html:5
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:72
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:42
@@ -1383,7 +1385,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:52
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:26
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:40
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:82
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:67
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:42
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:54
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:35
@@ -5184,7 +5186,7 @@ msgstr ""
 msgid "Currency"
 msgstr "Währung"
 
-#: byceps/blueprints/admin/shop/shop/views.py:169
+#: byceps/blueprints/admin/shop/shop/views.py:168
 msgid "Shop has been created."
 msgstr "Der Shop wurde angelegt."
 
@@ -6070,36 +6072,36 @@ msgstr "Lokalzeit"
 msgid "Update timetable item"
 msgstr "Zeitplan-Eintrag bearbeiten"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:36
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:23
 msgid "Create item"
 msgstr "Zeitplan-Eintrag erstellen"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:47
-#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:27
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:36
+#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:16
 msgid "When?"
 msgstr "Wann?"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:48
-#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:28
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:37
+#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:17
 msgid "What?"
 msgstr "Was?"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:49
-#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:29
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:38
+#: byceps/blueprints/site/timetable/templates/site/timetable/index.html:18
 msgid "Where?"
 msgstr "Wo?"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:50
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:39
 msgid "Link"
 msgstr "Verknüpfung"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:51
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:40
 #: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:28
 #: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:29
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
-#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:94
+#: byceps/blueprints/admin/timetable/templates/admin/timetable/view.html:79
 msgid "No entries"
 msgstr "Keine Einträge"
 
@@ -8434,7 +8436,7 @@ msgstr "Dies ist bereits der aktuelle Benutzername."
 msgid "Wrong password."
 msgstr "Das Passwort ist nicht korrekt."
 
-#: byceps/blueprints/site/user/settings/views.py:106
+#: byceps/blueprints/site/user/settings/views.py:104
 msgid ""
 "An email with a verification link has been sent to your new address. The "
 "email address of your account will be changed to the new address once you"
@@ -8444,17 +8446,17 @@ msgstr ""
 "gesendet. Die E-Mail-Adresse deines Benutzerkontos wird geändert sobald "
 "du die neue Adresse über den Link bestätigst."
 
-#: byceps/blueprints/site/user/settings/views.py:148
+#: byceps/blueprints/site/user/settings/views.py:146
 #, python-format
 msgid "Your username has been changed to \"%(new_screen_name)s\"."
 msgstr "Dein Benutzername wurde zu \"%(new_screen_name)s\" geändert."
 
+#: byceps/blueprints/site/user/settings/views.py:170
 #: byceps/blueprints/site/user/settings/views.py:172
-#: byceps/blueprints/site/user/settings/views.py:174
 msgid "Your language preference has been updated."
 msgstr "Deine Sprachpräferenz wurde aktualisiert."
 
-#: byceps/blueprints/site/user/settings/views.py:227
+#: byceps/blueprints/site/user/settings/views.py:225
 msgid "Your data has been saved."
 msgstr "Deine Daten wurden gespeichert."
 
