@@ -20,6 +20,7 @@ from secret_type import Secret
 from byceps.util.image.image_type import ImageType
 
 
+USER_DELETED_AVATAR_URL_PATH = '/static/user_avatar_deleted.svg'
 USER_FALLBACK_AVATAR_URL_PATH = '/static/user_avatar_fallback.svg'
 
 

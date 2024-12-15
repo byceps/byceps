@@ -14,6 +14,7 @@ from byceps.database import db
 from byceps.services.user.models.user import (
     UserAvatarID,
     UserID,
+    USER_DELETED_AVATAR_URL_PATH,
     USER_FALLBACK_AVATAR_URL_PATH,
 )
 from byceps.util.instances import ReprBuilder
@@ -64,12 +65,12 @@ class DbUser(db.Model):
 
     @property
     def avatar_url(self) -> str | None:
-        avatar = self.avatar
-        return (
-            avatar.url
-            if (avatar is not None)
-            else USER_FALLBACK_AVATAR_URL_PATH
-        )
+        if self.avatar:
+            return self.avatar.url
+        elif self.deleted:
+            return USER_DELETED_AVATAR_URL_PATH
+        else:
+            return USER_FALLBACK_AVATAR_URL_PATH
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)

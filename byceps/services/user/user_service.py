@@ -24,6 +24,7 @@ from .models.user import (
     UserFilter,
     UserForAdmin,
     UserForAdminDetail,
+    USER_DELETED_AVATAR_URL_PATH,
     USER_FALLBACK_AVATAR_URL_PATH,
 )
 
@@ -162,11 +163,12 @@ def _user_row_to_dto(
         user_row
     )
 
-    avatar_url = (
-        db_avatar.url
-        if (db_avatar is not None)
-        else USER_FALLBACK_AVATAR_URL_PATH
-    )
+    if db_avatar:
+        avatar_url = db_avatar.url
+    elif deleted:
+        avatar_url = USER_DELETED_AVATAR_URL_PATH
+    else:
+        avatar_url = USER_FALLBACK_AVATAR_URL_PATH
 
     return User(
         id=user_id,
@@ -345,9 +347,14 @@ def _db_entity_to_user(db_user: DbUser) -> User:
 
 def _db_entity_to_user_for_admin(db_user: DbUser) -> UserForAdmin:
     full_name = db_user.detail.full_name if db_user.detail is not None else None
-    avatar_url = (
-        db_user.avatar.url if db_user.avatar else USER_FALLBACK_AVATAR_URL_PATH
-    )
+
+    if db_user.avatar:
+        avatar_url = db_user.avatar.url
+    elif db_user.deleted:
+        avatar_url = USER_DELETED_AVATAR_URL_PATH
+    else:
+        avatar_url = USER_FALLBACK_AVATAR_URL_PATH
+
     detail = UserForAdminDetail(full_name=full_name)
 
     return UserForAdmin(
