@@ -6,7 +6,7 @@
 from byceps.app_dispatcher import (
     AdminAppMount,
     ApiAppMount,
-    AppsConfig,
+    AppMountsConfig,
     SiteAppMount,
     parse_apps_config,
 )
@@ -14,7 +14,7 @@ from byceps.util.result import Err, Ok
 
 
 def test_parse_apps_config_with_empty_input():
-    expected = Ok(AppsConfig())
+    expected = Ok(AppMountsConfig())
 
     toml = ''
 
@@ -23,7 +23,7 @@ def test_parse_apps_config_with_empty_input():
 
 def test_parse_apps_config_with_modespecific_sections():
     expected = Ok(
-        AppsConfig(
+        AppMountsConfig(
             admin=AdminAppMount(server_name='admin.byceps.test'),
             api=ApiAppMount(server_name='api.byceps.test'),
             sites=[

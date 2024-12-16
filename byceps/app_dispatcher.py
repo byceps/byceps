@@ -49,7 +49,7 @@ AppMount = Annotated[
 ]
 
 
-class AppsConfig(BaseModel):
+class AppMountsConfig(BaseModel):
     admin: AdminAppMount | None = None
     api: ApiAppMount | None = None
     sites: list[SiteAppMount] = Field(default_factory=list)
@@ -68,7 +68,7 @@ class AppsConfig(BaseModel):
         return all_app_mounts
 
 
-def get_apps_config() -> Result[AppsConfig, str]:
+def get_apps_config() -> Result[AppMountsConfig, str]:
     return _get_apps_config_filename().and_then(_load_apps_config)
 
 
@@ -83,7 +83,7 @@ def _get_apps_config_filename() -> Result[Path, str]:
     return Ok(filename)
 
 
-def _load_apps_config(path: Path) -> Result[AppsConfig, str]:
+def _load_apps_config(path: Path) -> Result[AppMountsConfig, str]:
     if not path.exists():
         return Err(f'Applications configuration file "{path}" does not exist')
 
@@ -94,14 +94,14 @@ def _load_apps_config(path: Path) -> Result[AppsConfig, str]:
     )
 
 
-def parse_apps_config(toml: str) -> Result[AppsConfig, str]:
+def parse_apps_config(toml: str) -> Result[AppMountsConfig, str]:
     try:
         data = rtoml.loads(toml)
     except rtoml.TomlParsingError as e:
         return Err(str(e))
 
     try:
-        apps_config = AppsConfig.model_validate(data)
+        apps_config = AppMountsConfig.model_validate(data)
     except ValidationError as e:
         return Err(str(e))
 
@@ -113,7 +113,9 @@ def parse_apps_config(toml: str) -> Result[AppsConfig, str]:
     return Ok(apps_config)
 
 
-def _find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
+def _find_conflicting_server_names(
+    apps_config: AppMountsConfig,
+) -> set[str]:
     defined_server_names = set()
     conflicting_server_names = set()
 
@@ -128,7 +130,7 @@ def _find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
 
 
 def create_dispatcher_app(
-    apps_config: AppsConfig,
+    apps_config: AppMountsConfig,
     *,
     config_overrides: dict[str, Any] | None = None,
 ) -> WSGIApplication:
@@ -140,7 +142,7 @@ def create_dispatcher_app(
 class AppDispatcher:
     def __init__(
         self,
-        apps_config: AppsConfig,
+        apps_config: AppMountsConfig,
         *,
         config_overrides: dict[str, Any] | None = None,
     ) -> None:
