@@ -50,15 +50,12 @@ AppMount = Annotated[
 
 
 class AppsConfig(BaseModel):
-    app_mounts: list[AppMount] = Field(default_factory=list)
     admin: AdminAppMount | None = None
     api: ApiAppMount | None = None
     sites: list[SiteAppMount] = Field(default_factory=list)
 
     def get_all_app_mounts(self) -> list[AppMount]:
         all_app_mounts = []
-
-        all_app_mounts.extend(self.app_mounts)
 
         if self.admin:
             all_app_mounts.append(self.admin)
