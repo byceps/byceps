@@ -44,11 +44,11 @@ def test_parse_apps_config_with_modespecific_sections():
 
     [[sites]]
     server_name = "www.byceps.test"
-    site_id = 'internet'
+    site_id = "internet"
 
     [[sites]]
     server_name = "local.byceps.test"
-    site_id = 'intranet'
+    site_id = "intranet"
     """
 
     assert parse_apps_config(toml) == expected
@@ -80,12 +80,12 @@ def test_parse_apps_config_with_app_mounts():
     [[app_mounts]]
     server_name = "www.byceps.test"
     mode = "site"
-    site_id = 'internet'
+    site_id = "internet"
 
     [[app_mounts]]
     server_name = "local.byceps.test"
     mode = "site"
-    site_id = 'intranet'
+    site_id = "intranet"
     """
 
     assert parse_apps_config(toml) == expected
@@ -96,12 +96,12 @@ def test_parse_apps_config_with_conflicting_server_names_in_app_mounts():
     [[app_mounts]]
     server_name = "www.byceps.test"
     mode = "site"
-    site_id = 'one'
+    site_id = "one"
 
     [[app_mounts]]
     server_name = "www.byceps.test"
     mode = "site"
-    site_id = 'two'
+    site_id = "two"
     """
 
     assert parse_apps_config(toml) == Err(
@@ -113,12 +113,12 @@ def test_parse_apps_config_with_conflicting_server_names():
     toml = """
     [[sites]]
     server_name = "www.byceps.test"
-    site_id = 'one'
+    site_id = "one"
 
     [[app_mounts]]
     server_name = "www.byceps.test"
     mode = "site"
-    site_id = 'two'
+    site_id = "two"
     """
 
     assert parse_apps_config(toml) == Err(
