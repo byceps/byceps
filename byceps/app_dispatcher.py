@@ -171,7 +171,7 @@ class AppDispatcher:
 
 def _create_app(
     app_config: AppConfig, *, config_overrides: dict[str, Any] | None = None
-) -> Result[WSGIApplication, str]:
+) -> Result[Flask, str]:
     match app_config:
         case AdminAppConfig():
             return Ok(create_admin_app(config_overrides=config_overrides))
