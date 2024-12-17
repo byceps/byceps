@@ -11,7 +11,7 @@ Serve multiple apps together.
 import os
 from pathlib import Path
 from threading import Lock
-from typing import Annotated, Any, Literal
+from typing import Any, Literal
 from wsgiref.types import WSGIApplication
 
 from flask import Flask
@@ -21,6 +21,12 @@ import structlog
 from werkzeug.exceptions import InternalServerError, NotFound
 
 from byceps.application import create_admin_app, create_api_app, create_site_app
+from byceps.config.models import (
+    AdminAppConfig,
+    ApiAppConfig,
+    AppsConfig,
+    SiteAppConfig,
+)
 from byceps.util.result import Err, Ok, Result
 
 
@@ -41,12 +47,10 @@ class ApiAppMount(_BaseAppMount):
 
 class SiteAppMount(_BaseAppMount):
     mode: Literal['site'] = 'site'
-    site_id: str | None
+    site_id: str
 
 
-AppMount = Annotated[
-    AdminAppMount | ApiAppMount | SiteAppMount, Field(discriminator='mode')
-]
+AppConfig = AdminAppConfig | ApiAppConfig | SiteAppConfig
 
 
 class AppMountsConfig(BaseModel):
@@ -55,21 +59,21 @@ class AppMountsConfig(BaseModel):
     sites: list[SiteAppMount] = Field(default_factory=list)
 
 
-def _get_all_app_mounts(app_mounts_config: AppMountsConfig) -> list[AppMount]:
-    all_app_mounts = []
+def _get_all_app_configs(apps_config: AppsConfig) -> list[AppConfig]:
+    all_app_configs: list[AppConfig] = []
 
-    if app_mounts_config.admin:
-        all_app_mounts.append(app_mounts_config.admin)
+    if apps_config.admin:
+        all_app_configs.append(apps_config.admin)
 
-    if app_mounts_config.api:
-        all_app_mounts.append(app_mounts_config.api)
+    if apps_config.api:
+        all_app_configs.append(apps_config.api)
 
-    all_app_mounts.extend(app_mounts_config.sites)
+    all_app_configs.extend(apps_config.sites)
 
-    return all_app_mounts
+    return all_app_configs
 
 
-def get_apps_config() -> Result[AppMountsConfig, str]:
+def get_apps_config() -> Result[AppsConfig, str]:
     return _get_apps_config_filename().and_then(_load_apps_config)
 
 
@@ -84,7 +88,7 @@ def _get_apps_config_filename() -> Result[Path, str]:
     return Ok(filename)
 
 
-def _load_apps_config(path: Path) -> Result[AppMountsConfig, str]:
+def _load_apps_config(path: Path) -> Result[AppsConfig, str]:
     if not path.exists():
         return Err(f'Applications configuration file "{path}" does not exist')
 
@@ -95,16 +99,31 @@ def _load_apps_config(path: Path) -> Result[AppMountsConfig, str]:
     )
 
 
-def parse_apps_config(toml: str) -> Result[AppMountsConfig, str]:
+def parse_apps_config(toml: str) -> Result[AppsConfig, str]:
     try:
         data = rtoml.loads(toml)
     except rtoml.TomlParsingError as e:
         return Err(str(e))
 
     try:
-        apps_config = AppMountsConfig.model_validate(data)
+        app_mounts_config = AppMountsConfig.model_validate(data)
     except ValidationError as e:
         return Err(str(e))
+
+    apps_config = AppsConfig(
+        admin=AdminAppConfig(server_name=app_mounts_config.admin.server_name)
+        if app_mounts_config.admin
+        else None,
+        api=ApiAppConfig(server_name=app_mounts_config.api.server_name)
+        if app_mounts_config.api
+        else None,
+        sites=[
+            SiteAppConfig(
+                server_name=site_mount.server_name, site_id=site_mount.site_id
+            )
+            for site_mount in app_mounts_config.sites
+        ],
+    )
 
     conflicting_server_names = _find_conflicting_server_names(apps_config)
     if conflicting_server_names:
@@ -114,14 +133,12 @@ def parse_apps_config(toml: str) -> Result[AppMountsConfig, str]:
     return Ok(apps_config)
 
 
-def _find_conflicting_server_names(
-    apps_config: AppMountsConfig,
-) -> set[str]:
+def _find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
     defined_server_names = set()
     conflicting_server_names = set()
 
-    for mount in _get_all_app_mounts(apps_config):
-        server_name = mount.server_name
+    for app_config in _get_all_app_configs(apps_config):
+        server_name = app_config.server_name
         if server_name in defined_server_names:
             conflicting_server_names.add(server_name)
         else:
@@ -131,7 +148,7 @@ def _find_conflicting_server_names(
 
 
 def create_dispatcher_app(
-    apps_config: AppMountsConfig,
+    apps_config: AppsConfig,
     *,
     config_overrides: dict[str, Any] | None = None,
 ) -> WSGIApplication:
@@ -143,14 +160,14 @@ def create_dispatcher_app(
 class AppDispatcher:
     def __init__(
         self,
-        apps_config: AppMountsConfig,
+        apps_config: AppsConfig,
         *,
         config_overrides: dict[str, Any] | None = None,
     ) -> None:
         self.lock = Lock()
-        self.mounts_by_host = {
-            mount.server_name: mount
-            for mount in _get_all_app_mounts(apps_config)
+        self.app_configs_by_host = {
+            app_config.server_name: app_config
+            for app_config in _get_all_app_configs(apps_config)
         }
         self.config_overrides = config_overrides
         self.apps_by_host: dict[str, WSGIApplication] = {}
@@ -170,12 +187,14 @@ class AppDispatcher:
             if app:
                 return app
 
-            mount = self.mounts_by_host.get(host)
-            if not mount:
-                log_ctx.debug('No application mounted for host')
+            app_config = self.app_configs_by_host.get(host)
+            if not app_config:
+                log_ctx.debug('No application configured for host')
                 return NotFound()
 
-            match _create_app(mount, config_overrides=self.config_overrides):
+            match _create_app(
+                app_config, config_overrides=self.config_overrides
+            ):
                 case Ok(app):
                     self.apps_by_host[host] = app
                     mode = app.byceps_app_mode
@@ -195,15 +214,15 @@ class AppDispatcher:
 
 
 def _create_app(
-    mount: AppMount, *, config_overrides: dict[str, Any] | None = None
+    app_config: AppConfig, *, config_overrides: dict[str, Any] | None = None
 ) -> Result[WSGIApplication, str]:
-    match mount:
-        case AdminAppMount():
+    match app_config:
+        case AdminAppConfig():
             return Ok(create_admin_app(config_overrides=config_overrides))
-        case ApiAppMount():
+        case ApiAppConfig():
             return Ok(create_api_app(config_overrides=config_overrides))
-        case SiteAppMount():
-            site_id = mount.site_id
+        case SiteAppConfig():
+            site_id = app_config.site_id
             if site_id:
                 app = create_site_app(
                     site_id, config_overrides=config_overrides
@@ -212,4 +231,4 @@ def _create_app(
             else:
                 return Err(f'Unknown site ID "{site_id}"')
         case _:
-            return Err(f'Unknown or unsupported app mode "{mount.mode}"')
+            return Err('Unknown or unsupported app configuration type')
