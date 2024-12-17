@@ -11,16 +11,15 @@ Serve multiple apps together.
 import os
 from pathlib import Path
 from threading import Lock
-from typing import Any, Literal
+from typing import Any
 from wsgiref.types import WSGIApplication
 
 from flask import Flask
-from pydantic import BaseModel, Field, ValidationError
-import rtoml
 import structlog
 from werkzeug.exceptions import InternalServerError, NotFound
 
 from byceps.application import create_admin_app, create_api_app, create_site_app
+from byceps.config.apps import parse_app_mounts_config
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
@@ -33,30 +32,7 @@ from byceps.util.result import Err, Ok, Result
 log = structlog.get_logger()
 
 
-class _BaseAppMount(BaseModel):
-    server_name: str
-
-
-class AdminAppMount(_BaseAppMount):
-    mode: Literal['admin'] = 'admin'
-
-
-class ApiAppMount(_BaseAppMount):
-    mode: Literal['api'] = 'api'
-
-
-class SiteAppMount(_BaseAppMount):
-    mode: Literal['site'] = 'site'
-    site_id: str
-
-
 AppConfig = AdminAppConfig | ApiAppConfig | SiteAppConfig
-
-
-class AppMountsConfig(BaseModel):
-    admin: AdminAppMount | None = None
-    api: ApiAppMount | None = None
-    sites: list[SiteAppMount] = Field(default_factory=list)
 
 
 def _get_all_app_configs(apps_config: AppsConfig) -> list[AppConfig]:
@@ -100,37 +76,17 @@ def _load_apps_config(path: Path) -> Result[AppsConfig, str]:
 
 
 def parse_apps_config(toml: str) -> Result[AppsConfig, str]:
-    try:
-        data = rtoml.loads(toml)
-    except rtoml.TomlParsingError as e:
-        return Err(str(e))
-
-    try:
-        app_mounts_config = AppMountsConfig.model_validate(data)
-    except ValidationError as e:
-        return Err(str(e))
-
-    apps_config = AppsConfig(
-        admin=AdminAppConfig(server_name=app_mounts_config.admin.server_name)
-        if app_mounts_config.admin
-        else None,
-        api=ApiAppConfig(server_name=app_mounts_config.api.server_name)
-        if app_mounts_config.api
-        else None,
-        sites=[
-            SiteAppConfig(
-                server_name=site_mount.server_name, site_id=site_mount.site_id
+    def validate_server_names(apps_config: AppsConfig):
+        conflicting_server_names = _find_conflicting_server_names(apps_config)
+        if conflicting_server_names:
+            server_names_str = ', '.join(sorted(conflicting_server_names))
+            return Err(
+                f'Non-unique server names configured: {server_names_str}'
             )
-            for site_mount in app_mounts_config.sites
-        ],
-    )
+        else:
+            return Ok(apps_config)
 
-    conflicting_server_names = _find_conflicting_server_names(apps_config)
-    if conflicting_server_names:
-        server_names_str = ', '.join(sorted(conflicting_server_names))
-        return Err(f'Non-unique server names configured: {server_names_str}')
-
-    return Ok(apps_config)
+    return parse_app_mounts_config(toml).and_then(validate_server_names)
 
 
 def _find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
