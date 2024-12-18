@@ -26,7 +26,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'LOCALE', config.locale
 
     timezone = config.timezone
-    yield 'BABEL_DEFAULT_TIMEZONE', timezone
     yield 'SHOP_ORDER_EXPORT_TIMEZONE', timezone
     yield 'TIMEZONE', timezone
 

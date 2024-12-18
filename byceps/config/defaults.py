@@ -20,7 +20,6 @@ SESSION_COOKIE_SECURE = True
 # localization
 LOCALE = 'de'
 TIMEZONE = 'Europe/Berlin'
-BABEL_DEFAULT_TIMEZONE = TIMEZONE
 
 # static content files path
 PATH_DATA = Path('./data')

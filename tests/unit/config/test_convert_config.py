@@ -19,7 +19,6 @@ from byceps.config.models import (
 
 def test_convert_config():
     expected = {
-        'BABEL_DEFAULT_TIMEZONE': 'Europe/Berlin',
         'DEBUG': True,
         'DEBUG_TOOLBAR_ENABLED': True,
         'JOBS_ASYNC': True,

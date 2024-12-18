@@ -215,6 +215,9 @@ def _configure(
     locale = app.config['LOCALE']
     app.config['BABEL_DEFAULT_LOCALE'] = locale
 
+    timezone = app.config['TIMEZONE']
+    app.config['BABEL_DEFAULT_TIMEZONE'] = timezone
+
     init_app_config(app)
 
 
