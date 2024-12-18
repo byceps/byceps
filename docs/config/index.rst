@@ -41,9 +41,6 @@ Supported Configuration Values
 
     Specifies the default locale.
 
-    Default: ``de`` (This will likely be changed to ``en`` at some point
-    in the future.)
-
 .. py:data:: MAIL_HOST
 
     The host of the SMTP server.
