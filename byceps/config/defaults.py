@@ -12,9 +12,6 @@ from datetime import timedelta
 from pathlib import Path
 
 
-# metrics
-METRICS_ENABLED = False
-
 # login sessions
 PERMANENT_SESSION_LIFETIME = timedelta(14)
 SESSION_COOKIE_SAMESITE = 'Lax'
