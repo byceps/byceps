@@ -68,8 +68,10 @@ from .database import populate_database, set_up_database, tear_down_database
 _CONFIG_PATH_DATA_KEY = 'PATH_DATA'
 
 _CONFIG_DEFAULTS_FOR_TESTS = {
+    'LOCALE': 'de',
     'REDIS_URL': 'redis://127.0.0.1:6379/0',
     'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg://byceps_test:test@127.0.0.1/byceps_test',
+    'TIMEZONE': 'Europe/Berlin',
 }
 
 _CONFIG_OVERRIDES_FOR_TESTS = {

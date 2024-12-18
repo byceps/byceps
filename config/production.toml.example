@@ -15,3 +15,6 @@ SQLALCHEMY_DATABASE_URI = "postgresql+psycopg://byceps:boioioing@127.0.0.1/bycep
 REDIS_URL = "redis://127.0.0.1:6379/0"
 # Or, if you want to access Redis via unix socket instead:
 #REDIS_URL = "unix:///var/run/redis/redis.sock?db=0"
+
+LOCALE = 'de'
+TIMEZONE = 'Europe/Berlin'

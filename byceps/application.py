@@ -255,9 +255,11 @@ def _ensure_required_config_keys(app: BycepsApp) -> None:
     """Ensure the required configuration keys have values."""
     for key in (
         'APP_MODE',
+        'LOCALE',
         'REDIS_URL',
         'SECRET_KEY',
         'SQLALCHEMY_DATABASE_URI',
+        'TIMEZONE',
     ):
         if not app.config.get(key):
             raise ConfigurationError(

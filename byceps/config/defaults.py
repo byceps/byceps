@@ -17,10 +17,6 @@ PERMANENT_SESSION_LIFETIME = timedelta(14)
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SECURE = True
 
-# localization
-LOCALE = 'de'
-TIMEZONE = 'Europe/Berlin'
-
 # static content files path
 PATH_DATA = Path('./data')
 
