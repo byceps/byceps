@@ -83,8 +83,8 @@ def get_locale_str() -> str | None:
 
 class LocalizedForm(Form):
     def __init__(self, *args, **kwargs):
-        locales = current_app.config['LOCALES_FORMS']
-        kwargs['meta'] = {'locales': locales}
+        locale = current_app.config['LOCALE']
+        kwargs['meta'] = {'locales': [locale]}
         super().__init__(*args, **kwargs)
 
 

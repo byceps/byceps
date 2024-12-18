@@ -25,7 +25,6 @@ def test_convert_config():
         'DEBUG_TOOLBAR_ENABLED': True,
         'JOBS_ASYNC': True,
         'LOCALE': 'de',
-        'LOCALES_FORMS': ['de'],
         'MAIL_HOST': 'localhost',
         'MAIL_PASSWORD': 'smtppass',
         'MAIL_PORT': 25,
