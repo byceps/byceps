@@ -228,6 +228,7 @@ def _get_config_from_environment() -> Iterator[tuple[str, Any]]:
         'APP_MODE',
         'DEBUG',
         'DEBUG_TOOLBAR_ENABLED',
+        'LOCALE',
         'MAIL_HOST',
         'MAIL_PASSWORD',
         'MAIL_PORT',
@@ -243,6 +244,7 @@ def _get_config_from_environment() -> Iterator[tuple[str, Any]]:
         'SITE_ID',
         'SQLALCHEMY_DATABASE_URI',
         'STYLE_GUIDE_ENABLED',
+        'TIMEZONE',
     ):
         value = parse_value_from_environment(key)
         if value is not None:
