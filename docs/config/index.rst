@@ -9,230 +9,242 @@ be set as environment variables.
 Supported Configuration Values
 ==============================
 
-.. py:data:: DEBUG
+.. confval:: DEBUG
+   :default: ``False``
 
-    Enable debug mode.
+   Enable debug mode.
 
-    Default: ``False``
+   Handled by Flask_.
 
-    Handled by Flask_.
+   Debug mode can also be enabled by appending the ``--debug`` option to
+   the ``flask`` command.
 
-    Debug mode can also be enabled by appending the ``--debug`` option
-    to the ``flask`` command.
 
-.. py:data:: DEBUG_TOOLBAR_ENABLED
+.. confval:: DEBUG_TOOLBAR_ENABLED
+   :default: ``False``
 
-    Enable the debug toolbar (provided by Flask-DebugToolbar_).
+   Enable the debug toolbar (provided by Flask-DebugToolbar_).
 
-    Default: ``False``
+   .. _Flask-DebugToolbar: https://github.com/pallets-eco/flask-debugtoolbar
 
-    .. _Flask-DebugToolbar: https://github.com/pallets-eco/flask-debugtoolbar
 
-.. py:data:: JOBS_ASYNC
+.. confval:: JOBS_ASYNC
+   :default: ``True``
 
-    Make jobs run asynchronously.
+   Make jobs run asynchronously.
 
-    Can be disabled to run jobs synchronously, but that is likely only
-    useful for (and actually used for) testing.
+   Can be disabled to run jobs synchronously, but that is likely only
+   useful for (and actually used for) testing.
 
-    Default: ``True``
 
-.. py:data:: LOCALE
+.. confval:: LOCALE
 
-    The default locale.
+   The default locale.
 
-.. py:data:: MAIL_HOST
 
-    The host of the SMTP server.
+.. confval:: MAIL_HOST
+   :default: ``'localhost'``
 
-    Default: ``'localhost'``
+   The host of the SMTP server.
 
-.. py:data:: MAIL_PASSWORD
 
-    The password to authenticate with against the SMTP server.
+.. confval:: MAIL_PASSWORD
+   :default: ``None``
 
-    Default: ``None``
+   The password to authenticate with against the SMTP server.
 
-.. py:data:: MAIL_PORT
 
-    The port of the SMTP server.
+.. confval:: MAIL_PORT
+   :default: ``25``
 
-    Default: ``25``
+   The port of the SMTP server.
 
-.. py:data:: MAIL_STARTTLS
 
-    Put the SMTP connection in TLS (Transport Layer Security) mode.
+.. confval:: MAIL_STARTTLS
+   :default: ``False``
 
-    Default: ``False``
+   Put the SMTP connection in TLS (Transport Layer Security) mode.
 
-.. py:data:: MAIL_SUPPRESS_SEND
 
-    Suppress sending of emails.
+.. confval:: MAIL_SUPPRESS_SEND
+   :default: ``False``
 
-    Default: ``False``
+   Suppress sending of emails.
 
-.. py:data:: MAIL_USE_SSL
 
-    Use SSL for the connection to the SMTP server.
+.. confval:: MAIL_USE_SSL
+   :default: ``False``
 
-    Default: ``False``
+   Use SSL for the connection to the SMTP server.
 
-.. py:data:: MAIL_USERNAME
 
-    The username to authenticate with against the SMTP server.
+.. confval:: MAIL_USERNAME
+   :default: ``None``
 
-    Default: ``None``
+   The username to authenticate with against the SMTP server.
 
-.. py:data:: METRICS_ENABLED
 
-    Enable the Prometheus_-compatible metrics endpoint at ``/metrics/``.
+.. confval:: METRICS_ENABLED
+   :default: ``False``
 
-    Only available on admin application.
+   Enable the Prometheus_-compatible metrics endpoint at ``/metrics/``.
 
-    Default: ``False``
+   Only available on admin application.
 
-    .. _Prometheus: https://prometheus.io/
+   .. _Prometheus: https://prometheus.io/
 
-.. py:data:: PATH_DATA
 
-    Filesystem path for static files (including uploads).
+.. confval:: PATH_DATA
+   :default: ``'./data'`` (relative to the BYCEPS root path)
 
-    Default: ``'./data'`` (relative to the BYCEPS root path)
+   Filesystem path for static files (including uploads).
 
-.. py:data:: PAYPAL_CLIENT_ID
 
-    The client ID for payments via PayPal.
+.. confval:: PAYPAL_CLIENT_ID
 
-.. py:data:: PAYPAL_CLIENT_SECRET
+   The client ID for payments via PayPal.
 
-    The client secret for payments via PayPal.
 
-.. py:data:: PAYPAL_ENVIRONMENT
+.. confval:: PAYPAL_CLIENT_SECRET
 
-    The environment for payments via PayPal.
+   The client secret for payments via PayPal.
 
-    ``sandbox`` for testing, ``live`` for production use.
 
-    Default: ``sandbox``
+.. confval:: PAYPAL_ENVIRONMENT
+   :default: ``sandbox``
 
-.. py:data:: PROPAGATE_EXCEPTIONS
+   The environment for payments via PayPal.
 
-    Reraise exceptions instead of letting BYCEPS handle them.
+   ``sandbox`` for testing, ``live`` for production use.
 
-    This is useful if an external service like Sentry_ should handle
-    exceptions.
 
-    .. _Sentry: https://sentry.io/
+.. confval:: PROPAGATE_EXCEPTIONS
+   :default: ``None``
 
-    Default: ``None``
+   Reraise exceptions instead of letting BYCEPS handle them.
 
-    If not set, this is implicitly true if ``DEBUG`` or ``TESTING`` is
-    enabled.
+   This is useful if an external service like Sentry_ should handle
+   exceptions.
 
-    Handled by Flask_.
+   .. _Sentry: https://sentry.io/
 
-.. py:data:: REDIS_URL
+   If not set, this is implicitly true if :confval:`DEBUG` or
+   :confval:`TESTING` is enabled.
 
-    The URL used to connect to Redis.
+   Handled by Flask_.
 
-    The format can be one of these:
 
-    * ``redis://[[username]:[password]]@localhost:6379/0`` (TCP socket)
-    * ``rediss://[[username]:[password]]@localhost:6379/0`` (SSL-wrapped
-      TCP socket)
-    * ``unix://[[username]:[password]]@/path/to/socket.sock?db=0`` (Unix
-      domain socket)
+.. confval:: REDIS_URL
 
-    To use the first database of a Redis instance running on localhost
-    on its default port: ``redis://127.0.0.1:6379/0``
+   The URL used to connect to Redis.
 
-    The documentation for ``Redis.from_url`` provides `details on
-    supported URL schemes and examples
-    <https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url>`_.
+   The format can be one of these:
 
-.. py:data:: SECRET_KEY
+   * ``redis://[[username]:[password]]@localhost:6379/0`` (TCP socket)
+   * ``rediss://[[username]:[password]]@localhost:6379/0`` (SSL-wrapped
+     TCP socket)
+   * ``unix://[[username]:[password]]@/path/to/socket.sock?db=0`` (Unix
+     domain socket)
 
-    A secret key that will be for security features such as signing
-    session cookies.
+   To use the first database of a Redis instance running on localhost
+   on its default port: ``redis://127.0.0.1:6379/0``
 
-    Should be a long, random string.
+   The documentation for ``Redis.from_url`` provides `details on
+   supported URL schemes and examples
+   <https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url>`_.
 
-    BYCEPS provides a command-line tool to securely :ref:`generate a
-    secret key <Generate Secret Key>`.
 
-.. py:data:: SESSION_COOKIE_SECURE
+.. confval:: SECRET_KEY
 
-    Only send cookies marked as secure when an HTTPS connection is
-    available.
+   A secret key that will be for security features such as signing
+   session cookies.
 
-    Logging in will fail if this is set to true and BYCEPS is accessed
-    without TLS.
+   Should be a long, random string.
 
-    This behavior can be disabled for development purposes without a
-    TLS-terminating frontend to the BYCEPS application.
+   BYCEPS provides a command-line tool to securely :ref:`generate a
+   secret key <Generate Secret Key>`.
 
-    Default: ``True`` (set by BYCEPS; `Flask's default
-    <https://flask.palletsprojects.com/en/2.2.x/config/#SESSION_COOKIE_SECURE>`_
-    is ``False``)
 
-.. py:data:: SQLALCHEMY_DATABASE_URI
+.. confval:: SESSION_COOKIE_SECURE
+   :default: ``True``
 
-    The URL used to connect to the relational database (i.e. PostgreSQL).
+   Only send cookies marked as secure when an HTTPS connection is
+   available.
 
-    Format::
+   Logging in will fail if this is set to true and BYCEPS is accessed
+   without TLS.
 
-        postgresql+psycopg://USERNAME:PASSWORD@HOST/DATABASE
+   This behavior can be disabled for development purposes without a
+   TLS-terminating frontend to the BYCEPS application.
 
-    Example (use user ``byceps`` with password ``hunter2`` to connect to
-    database ``byceps`` on the local host)::
+   The default value of ``True`` is set by BYCEPS. `Flask's default
+   <https://flask.palletsprojects.com/en/2.2.x/config/#SESSION_COOKIE_SECURE>`_
+   is ``False``.
 
-        postgresql+psycopg://byceps:hunter2@127.0.0.1/byceps
 
-    Since BYCEPS uses psycopg_ by default, the scheme has to be
-    `postgresql+psycopg`.
+.. confval:: SQLALCHEMY_DATABASE_URI
 
-    .. _psycopg: https://www.psycopg.org/
+   The URL used to connect to the relational database (i.e. PostgreSQL).
 
-    For more info, see `Flask-SQLAlchemy's documentation on
-    SQLALCHEMY_DATABASE_URI
-    <https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/config/#flask_sqlalchemy.config.SQLALCHEMY_DATABASE_URI>`_.
+   Format::
 
-.. py:data:: SQLALCHEMY_ECHO
+       postgresql+psycopg://USERNAME:PASSWORD@HOST/DATABASE
 
-    Enable echoing of issued SQL queries. Useful for development and debugging.
+   Example (use user ``byceps`` with password ``hunter2`` to connect to
+   database ``byceps`` on the local host)::
 
-    Default: ``False``
+       postgresql+psycopg://byceps:hunter2@127.0.0.1/byceps
 
-.. py:data:: STRIPE_PUBLISHABLE_KEY
+   Since BYCEPS uses psycopg_ by default, the scheme has to be
+   `postgresql+psycopg`.
 
-    The publishable key for payments via Stripe.
+   .. _psycopg: https://www.psycopg.org/
 
-.. py:data:: STRIPE_SECRET_KEY
+   For more info, see `Flask-SQLAlchemy's documentation on
+   SQLALCHEMY_DATABASE_URI
+   <https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/config/#flask_sqlalchemy.config.SQLALCHEMY_DATABASE_URI>`_.
 
-    The secret key for payments via Stripe.
 
-.. py:data:: STRIPE_WEBHOOK_SECRET
+.. confval:: SQLALCHEMY_ECHO
+   :default: ``False``
 
-    The webhook secret for payments via Stripe.
+   Enable echoing of issued SQL queries. Useful for development and debugging.
 
-.. py:data:: STYLE_GUIDE_ENABLED
 
-    Enable BYCEPS' style guide, available at ``/style_guide/`` both in
-    admin mode and site mode.
+.. confval:: STRIPE_PUBLISHABLE_KEY
 
-.. py:data:: TESTING
+   The publishable key for payments via Stripe.
 
-    Enable testing mode.
 
-    Only relevant when executing tests.
+.. confval:: STRIPE_SECRET_KEY
 
-    Default: ``False``
+   The secret key for payments via Stripe.
 
-    Handled by Flask_.
 
-.. py:data:: TIMEZONE
+.. confval:: STRIPE_WEBHOOK_SECRET
 
-    The default timezone.
+   The webhook secret for payments via Stripe.
+
+
+.. confval:: STYLE_GUIDE_ENABLED
+
+   Enable BYCEPS' style guide, available at ``/style_guide/`` both in
+   admin mode and site mode.
+
+
+.. confval:: TESTING
+   :default: ``False``
+
+   Enable testing mode.
+
+   Only relevant when executing tests.
+
+   Handled by Flask_.
+
+
+.. confval:: TIMEZONE
+
+   The default timezone.
 
 
 .. _Flask: https://github.com/pallets/flask

@@ -65,8 +65,8 @@ are important here!) with a configuration like this:
     MAIL_USERNAME = "example-username"
     MAIL_PASSWORD = "example-password"
 
-See the available ``MAIL_*`` :doc:`configuration properties
-</config/index>`.
+See the available ``MAIL_*`` configuration properties
+(:confval:`MAIL_HOST`, etc.).
 
 .. _Sendmail: https://www.proofpoint.com/us/products/email-protection/open-source-email-solution
 .. _Postfix: https://www.postfix.org/

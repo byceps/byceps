@@ -25,8 +25,8 @@ Create a database user named ``byceps``:
 You should be prompted to enter a password. Do that.
 
 In your :doc:`BYCEPS configuration file <byceps-config-file>`, replace
-the example password in the value of ``SQLALCHEMY_DATABASE_URI`` with
-the one you just entered.
+the example password in the value of :confval:`SQLALCHEMY_DATABASE_URI`
+with the one you just entered.
 
 Create a schema, also named ``byceps``:
 
