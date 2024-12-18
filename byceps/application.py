@@ -27,10 +27,10 @@ from byceps.blueprints.api.blueprints import register_api_blueprints
 from byceps.blueprints.site.blueprints import register_site_blueprints
 from byceps.config.errors import ConfigurationError
 from byceps.config.integration import (
-    AppMode,
     init_app as init_app_config,
     parse_value_from_environment,
 )
+from byceps.config.models import AppMode
 from byceps.database import db
 from byceps.paypal import paypal
 from byceps.util import templatefilters
