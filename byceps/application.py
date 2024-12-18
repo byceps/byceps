@@ -217,6 +217,7 @@ def _configure(
 
     timezone = app.config['TIMEZONE']
     app.config['BABEL_DEFAULT_TIMEZONE'] = timezone
+    app.config['SHOP_ORDER_EXPORT_TIMEZONE'] = timezone
 
     init_app_config(app)
 

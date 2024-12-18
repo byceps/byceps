@@ -26,6 +26,3 @@ PATH_DATA = Path('./data')
 
 # Limit incoming request content.
 MAX_CONTENT_LENGTH = 4000000
-
-# shop
-SHOP_ORDER_EXPORT_TIMEZONE = 'Europe/Berlin'
