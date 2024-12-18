@@ -7,6 +7,7 @@ byceps.application
 """
 
 from collections.abc import Iterator
+from datetime import timedelta
 import os
 from pathlib import Path
 from typing import Any
@@ -24,7 +25,6 @@ from byceps.blueprints.admin.blueprints import register_admin_blueprints
 from byceps.blueprints.admin.jobs.views import enable_rq_dashboard
 from byceps.blueprints.api.blueprints import register_api_blueprints
 from byceps.blueprints.site.blueprints import register_site_blueprints
-from byceps.config import defaults as config_defaults
 from byceps.config.errors import ConfigurationError
 from byceps.config.integration import (
     AppMode,
@@ -197,7 +197,18 @@ def _configure(
     app: BycepsApp, config_overrides: dict[str, Any] | None = None
 ) -> None:
     """Configure application from file, environment variables, and defaults."""
-    app.config.from_object(config_defaults)
+    app.config.update(
+        {
+            # login sessions
+            'PERMANENT_SESSION_LIFETIME': timedelta(14),
+            'SESSION_COOKIE_SAMESITE': 'Lax',
+            'SESSION_COOKIE_SECURE': True,
+            # static content files path
+            'PATH_DATA': Path('./data'),
+            # Limit incoming request content.
+            'MAX_CONTENT_LENGTH': 4000000,
+        }
+    )
 
     config_filename_str = os.environ.get('BYCEPS_CONFIG')
     if config_filename_str:
