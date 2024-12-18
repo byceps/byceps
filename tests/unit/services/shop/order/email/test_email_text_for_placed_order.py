@@ -5,17 +5,17 @@
 
 from datetime import datetime
 
-from flask import Flask
 from flask_babel import force_locale
 from moneyed import EUR, Money
 
+from byceps.byceps_app import BycepsApp
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.product.models import ProductNumber
 
 
 def test_assemble_text_for_incoming_order_to_orderer(
-    app: Flask, build_line_item, build_open_order
+    app: BycepsApp, build_line_item, build_open_order
 ):
     language_code = 'de'
 

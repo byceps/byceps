@@ -3,9 +3,9 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import Flask
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.services.text_markup.text_markup_service import render_html
 
 
@@ -71,7 +71,7 @@ def test_quote_without_author():
     assert render_html(text) == expected
 
 
-def test_quote_with_author(app: Flask):
+def test_quote_with_author(app: BycepsApp):
     text = '[quote author="CATS"]All your base are belong to us.[/quote]'
     expected = '<p class="quote-intro"><cite>CATS</cite> schrieb:</p>\n<blockquote>All your base are belong to us.</blockquote>'
     assert render_html(text) == expected
@@ -111,6 +111,6 @@ def test_quote_with_author(app: Flask):
     ],
 )
 def test_quote_with_author_whose_name_contains_square_brackets(
-    app: Flask, text: str, expected: str
+    app: BycepsApp, text: str, expected: str
 ):
     assert render_html(text) == expected

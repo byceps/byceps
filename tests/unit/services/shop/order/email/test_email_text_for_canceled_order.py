@@ -5,16 +5,16 @@
 
 from datetime import datetime
 
-from flask import Flask
 from flask_babel import force_locale
 from moneyed import EUR, Money
 
+from byceps.byceps_app import BycepsApp
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.number import OrderNumber
 
 
 def test_assemble_text_for_canceled_order_to_orderer(
-    app: Flask, build_canceled_order
+    app: BycepsApp, build_canceled_order
 ):
     language_code = 'de'
 

@@ -3,9 +3,9 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import Flask
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.services.orga_team import orga_team_service
 from byceps.services.orga_team.models import OrgaTeam
 from byceps.services.party.models import PartyID
@@ -30,13 +30,13 @@ def orga_team_admin(make_admin) -> User:
 
 @pytest.fixture(scope='package')
 def orga_team_admin_client(
-    make_client, admin_app: Flask, orga_team_admin: User
+    make_client, admin_app: BycepsApp, orga_team_admin: User
 ):
     return make_client(admin_app, user_id=orga_team_admin.id)
 
 
 @pytest.fixture()
-def make_team(admin_app: Flask):
+def make_team(admin_app: BycepsApp):
     team_ids = []
 
     def _wrapper(party_id: PartyID, title: str | None = None) -> OrgaTeam:

@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.tourney import (
     EventTourney,
     EventTourneyParticipant,
@@ -28,7 +28,7 @@ MATCH_ID = str(generate_uuid())
 
 
 def test_announce_match_ready(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     tourney: EventTourney,
     participant1: EventTourneyParticipant,
@@ -56,7 +56,7 @@ def test_announce_match_ready(
 
 
 def test_announce_match_reset(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     tourney: EventTourney,
     participant1: EventTourneyParticipant,
@@ -84,7 +84,7 @@ def test_announce_match_reset(
 
 
 def test_announce_match_score_submitted(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     tourney: EventTourney,
     participant1: EventTourneyParticipant,
@@ -112,7 +112,7 @@ def test_announce_match_score_submitted(
 
 
 def test_announce_match_score_confirmed(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     tourney: EventTourney,
     participant1: EventTourneyParticipant,
@@ -141,7 +141,7 @@ def test_announce_match_score_confirmed(
 
 
 def test_announce_match_score_randomized(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     tourney: EventTourney,
     participant1: EventTourneyParticipant,

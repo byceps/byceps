@@ -5,9 +5,9 @@
 
 from collections.abc import Iterable
 
-from flask import Flask
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.services.country import country_service
 from byceps.services.country.country_service import Country
 
@@ -27,7 +27,7 @@ def app(make_app):
     ],
 )
 def test_get_countries_contains_country(
-    app: Flask, name: str, alpha2: str, alpha3: str
+    app: BycepsApp, name: str, alpha2: str, alpha3: str
 ):
     countries = country_service.get_countries()
 
@@ -39,7 +39,7 @@ def test_get_countries_contains_country(
     assert country.alpha3 == alpha3
 
 
-def test_get_country_names_contains_selected_items(app: Flask):
+def test_get_country_names_contains_selected_items(app: BycepsApp):
     actual = country_service.get_country_names()
 
     some_expected = {
@@ -56,7 +56,7 @@ def test_get_country_names_contains_selected_items(app: Flask):
     assert frozenset(actual).issuperset(some_expected)
 
 
-def test_get_country_names_contains_no_duplicates(app: Flask):
+def test_get_country_names_contains_no_duplicates(app: BycepsApp):
     actual = country_service.get_country_names()
 
     assert len(actual) == len(set(actual))

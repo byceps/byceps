@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventParty, EventUser
 from byceps.events.guest_server import (
     GuestServerApprovedEvent,
@@ -27,7 +27,7 @@ SERVER_ID = ServerID(generate_uuid())
 
 
 def test_guest_server_registered(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     event_admin: EventUser,
     event_owner: EventUser,
@@ -53,7 +53,7 @@ def test_guest_server_registered(
 
 
 def test_guest_server_approved(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     event_admin: EventUser,
     event_owner: EventUser,
@@ -74,7 +74,7 @@ def test_guest_server_approved(
 
 
 def test_guest_server_checked_in(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     event_admin: EventUser,
     event_owner: EventUser,
@@ -95,7 +95,7 @@ def test_guest_server_checked_in(
 
 
 def test_guest_server_checked_out(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     event_admin: EventUser,
     event_owner: EventUser,

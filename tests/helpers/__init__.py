@@ -12,9 +12,10 @@ from datetime import date, datetime
 from secrets import token_hex
 from uuid import UUID
 
-from flask import appcontext_pushed, Flask, g
+from flask import appcontext_pushed, g
 from uuid6 import uuid7
 
+from byceps.byceps_app import BycepsApp
 from byceps.database import db
 from byceps.services.authn.session import authn_session_service
 from byceps.services.authn.session.models import CurrentUser
@@ -44,7 +45,7 @@ def generate_uuid() -> UUID:
 
 
 @contextmanager
-def current_party_set(app: Flask, party: Party):
+def current_party_set(app: BycepsApp, party: Party):
     def handler(sender, **kwargs):
         g.party_id = party.id
         g.brand_id = party.brand_id
@@ -54,7 +55,7 @@ def current_party_set(app: Flask, party: Party):
 
 
 @contextmanager
-def current_user_set(app: Flask, current_user: CurrentUser):
+def current_user_set(app: BycepsApp, current_user: CurrentUser):
     def handler(sender, **kwargs):
         g.user = current_user
 
@@ -193,7 +194,7 @@ def create_site(
 
 
 @contextmanager
-def http_client(app: Flask, *, user_id: UserID | None = None):
+def http_client(app: BycepsApp, *, user_id: UserID | None = None):
     """Provide an HTTP client.
 
     If a user ID is given, the client authenticates with the user's

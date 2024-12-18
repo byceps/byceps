@@ -6,10 +6,10 @@
 from decimal import Decimal
 from unittest.mock import patch
 
-from flask import Flask
 from moneyed import Money
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderPlacedEvent
 from byceps.services.shop.order import order_service
@@ -88,7 +88,7 @@ def site_app(site: Site, make_site_app):
 
 
 @pytest.fixture()
-def product(make_product, admin_app: Flask, shop: Shop) -> Product:
+def product(make_product, admin_app: BycepsApp, shop: Shop) -> Product:
     return make_product(shop.id, total_quantity=5)
 
 
@@ -97,7 +97,7 @@ def product(make_product, admin_app: Flask, shop: Shop) -> Product:
 def test_order(
     order_email_service_mock,
     order_placed_mock,
-    site_app: Flask,
+    site_app: BycepsApp,
     site: Site,
     admin_user: User,
     make_user,
@@ -161,7 +161,7 @@ def test_order(
 def test_order_single(
     order_email_service_mock,
     order_placed_mock,
-    site_app: Flask,
+    site_app: BycepsApp,
     site: Site,
     admin_user: User,
     make_user,

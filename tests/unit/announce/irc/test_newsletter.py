@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventUser
 from byceps.events.newsletter import (
     SubscribedToNewsletterEvent,
@@ -20,7 +20,7 @@ from .helpers import assert_text
 
 
 def test_subscribed_to_newsletter_announced(
-    app: Flask, now: datetime, user: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, user: EventUser, webhook_for_irc
 ):
     expected_text = 'User has subscribed to newsletter "CozyLAN Updates".'
 
@@ -38,7 +38,7 @@ def test_subscribed_to_newsletter_announced(
 
 
 def test_unsubscribed_from_newsletter_announced(
-    app: Flask, now: datetime, user: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, user: EventUser, webhook_for_irc
 ):
     expected_text = 'User has unsubscribed from newsletter "CozyLAN Updates".'
 

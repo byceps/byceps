@@ -5,9 +5,9 @@
 
 from unittest.mock import patch
 
-from flask import Flask
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketsSoldEvent
 from byceps.services.party.models import Party
@@ -70,7 +70,7 @@ def order_action(
 @patch('byceps.signals.ticketing.tickets_sold.send')
 def test_create_ticket_bundles(
     tickets_sold_signal_send_mock,
-    admin_app: Flask,
+    admin_app: BycepsApp,
     product: Product,
     party: Party,
     ticket_category: TicketCategory,

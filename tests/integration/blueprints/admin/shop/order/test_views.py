@@ -5,9 +5,9 @@
 
 from unittest.mock import patch
 
-from flask import Flask
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.database import db
 from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
@@ -49,7 +49,7 @@ def shop_order_admin(make_admin) -> User:
 
 @pytest.fixture(scope='package')
 def shop_order_admin_client(
-    make_client, admin_app: Flask, shop_order_admin: User
+    make_client, admin_app: BycepsApp, shop_order_admin: User
 ):
     return make_client(admin_app, user_id=shop_order_admin.id)
 

@@ -5,9 +5,8 @@
 
 from datetime import datetime
 
-from flask import Flask
-
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.authz import (
     RoleAssignedToUserEvent,
     RoleDeassignedFromUserEvent,
@@ -18,7 +17,7 @@ from .helpers import assert_text
 
 
 def test_role_assigned_to_user_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'AuthzAdmin has assigned role "orga" to FreshOrga.'
 
@@ -35,7 +34,7 @@ def test_role_assigned_to_user_announced(
 
 
 def test_role_deassigned_from_user_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = (
         'AuthzAdmin has deassigned role "board_moderator" from FormerOrga.'

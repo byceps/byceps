@@ -3,10 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import Flask
 import pytest
 from sqlalchemy import select
 
+from byceps.byceps_app import BycepsApp
 from byceps.database import db
 from byceps.services.shop.order import ordered_products_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
@@ -31,7 +31,7 @@ def orderer(make_user, make_orderer) -> Orderer:
 
 
 def test_count_ordered_products(
-    admin_app: Flask,
+    admin_app: BycepsApp,
     shop: Shop,
     storefront: Storefront,
     product: Product,

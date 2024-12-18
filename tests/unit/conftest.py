@@ -7,11 +7,11 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any
 
-from flask import Flask
 from flask_babel import Babel
 from moneyed import EUR, Money
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import Party, PartyID
 from byceps.services.shop.order.models.order import Orderer
@@ -32,8 +32,8 @@ def make_app():
     def _wrapper(
         *,
         additional_config: dict[str, Any] | None = None,
-    ) -> Flask:
-        app = Flask('byceps')
+    ) -> BycepsApp:
+        app = BycepsApp()
 
         if additional_config is not None:
             app.config.update(additional_config)

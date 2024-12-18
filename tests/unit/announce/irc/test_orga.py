@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventBrand, EventUser
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 
@@ -16,7 +16,7 @@ from .helpers import assert_text
 
 
 def test_orga_status_granted_announced(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     admin: EventUser,
     trainee: EventUser,
@@ -40,7 +40,7 @@ def test_orga_status_granted_announced(
 
 
 def test_orga_status_revoked_announced(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     admin: EventUser,
     trainee: EventUser,

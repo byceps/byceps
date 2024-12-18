@@ -5,9 +5,9 @@
 
 from unittest.mock import patch
 
-from flask import Flask
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketsSoldEvent
 from byceps.services.party.models import Party
@@ -52,7 +52,7 @@ def order(
 @patch('byceps.signals.ticketing.tickets_sold.send')
 def test_create_tickets(
     tickets_sold_signal_send_mock,
-    admin_app: Flask,
+    admin_app: BycepsApp,
     product: Product,
     party: Party,
     ticket_category: TicketCategory,
@@ -104,7 +104,7 @@ def test_create_tickets(
 @patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
 def test_create_tickets_with_same_code_fails(
     generate_ticket_code_mock,
-    admin_app: Flask,
+    admin_app: BycepsApp,
     product: Product,
     ticket_category: TicketCategory,
     ticket_quantity: int,
@@ -121,7 +121,7 @@ def test_create_tickets_with_same_code_fails(
 @patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
 def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
     generate_ticket_code_mock,
-    admin_app: Flask,
+    admin_app: BycepsApp,
     product: Product,
     ticket_category: TicketCategory,
     ticket_quantity: int,

@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.tourney import (
     EventTourney,
     TourneyCanceledEvent,
@@ -21,7 +21,7 @@ from .helpers import assert_text
 
 
 def test_announce_tourney_started(
-    app: Flask, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
 ):
     expected_text = 'Tourney Taco Arena (1on1) has been started.'
 
@@ -37,7 +37,7 @@ def test_announce_tourney_started(
 
 
 def test_announce_tourney_paused(
-    app: Flask, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
 ):
     expected_text = 'Tourney Taco Arena (1on1) has been paused.'
 
@@ -53,7 +53,7 @@ def test_announce_tourney_paused(
 
 
 def test_announce_tourney_canceled(
-    app: Flask, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
 ):
     expected_text = 'Tourney Taco Arena (1on1) has been canceled.'
 
@@ -69,7 +69,7 @@ def test_announce_tourney_canceled(
 
 
 def test_announce_tourney_finished(
-    app: Flask, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
 ):
     expected_text = 'Tourney Taco Arena (1on1) has been finished.'
 

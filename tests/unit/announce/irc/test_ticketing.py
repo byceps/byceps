@@ -6,10 +6,10 @@
 from datetime import datetime
 from unittest.mock import patch
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.services.party.models import Party
@@ -25,7 +25,7 @@ from .helpers import assert_text
 
 
 def test_ticket_checked_in(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     event_admin: EventUser,
     make_event_user,
@@ -54,7 +54,7 @@ def test_ticket_checked_in(
 def test_single_ticket_sold(
     get_ticket_sale_stats_mock,
     get_party_mock,
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     event_admin: EventUser,
     party: Party,
@@ -92,7 +92,7 @@ def test_single_ticket_sold(
 def test_multiple_tickets_sold(
     get_ticket_sale_stats_mock,
     get_party_mock,
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     event_admin: EventUser,
     party: Party,

@@ -5,9 +5,8 @@
 
 from datetime import datetime
 
-from flask import Flask
-
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.user import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,
@@ -26,7 +25,7 @@ from .helpers import assert_text
 
 
 def test_account_created_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'Someone has created user account "JaneDoe".'
 
@@ -43,7 +42,11 @@ def test_account_created_announced(
 
 
 def test_account_created_announced_on_site(
-    app: Flask, now: datetime, make_event_site, make_event_user, webhook_for_irc
+    app: BycepsApp,
+    now: datetime,
+    make_event_site,
+    make_event_user,
+    webhook_for_irc,
 ):
     expected_text = (
         'Someone has created user account "JaneDoeOnSite" '
@@ -63,7 +66,7 @@ def test_account_created_announced_on_site(
 
 
 def test_account_created_by_admin_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'EinAdmin has created user account "EinUser".'
 
@@ -80,7 +83,7 @@ def test_account_created_by_admin_announced(
 
 
 def test_screen_name_change_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'ElAdmin has renamed user account "DrJekyll" to "MrHyde".'
 
@@ -98,7 +101,7 @@ def test_screen_name_change_announced(
 
 
 def test_email_address_changed_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = (
         'UserSupporter has changed the email address '
@@ -117,7 +120,7 @@ def test_email_address_changed_announced(
 
 
 def test_email_address_invalidated_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = (
         'BounceWatchman has invalidated the email address '
@@ -136,7 +139,7 @@ def test_email_address_invalidated_announced(
 
 
 def test_user_details_updated_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = (
         'Chameleon has changed personal data of user account "Chameleon".'
@@ -154,7 +157,7 @@ def test_user_details_updated_announced(
 
 
 def test_suspended_account_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'She-Ra has suspended user account "Skeletor".'
 
@@ -170,7 +173,7 @@ def test_suspended_account_announced(
 
 
 def test_unsuspended_account_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'TheBoss has unsuspended user account "RambaZamba".'
 
@@ -186,7 +189,7 @@ def test_unsuspended_account_announced(
 
 
 def test_deleted_account_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     user = make_event_user(screen_name='Snake')
 

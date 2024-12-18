@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventBrand, EventUser
 from byceps.events.board import (
     BoardPostingCreatedEvent,
@@ -45,7 +45,7 @@ POSTING_ID = PostingID(generate_uuid())
 
 
 def test_announce_topic_created(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     brand: EventBrand,
@@ -74,7 +74,7 @@ def test_announce_topic_created(
 
 
 def test_announce_topic_hidden(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     moderator: EventUser,
@@ -106,7 +106,7 @@ def test_announce_topic_hidden(
 
 
 def test_announce_topic_unhidden(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     moderator: EventUser,
@@ -138,7 +138,7 @@ def test_announce_topic_unhidden(
 
 
 def test_announce_topic_locked(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     moderator: EventUser,
@@ -170,7 +170,7 @@ def test_announce_topic_locked(
 
 
 def test_announce_topic_unlocked(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     moderator: EventUser,
@@ -202,7 +202,7 @@ def test_announce_topic_unlocked(
 
 
 def test_announce_topic_pinned(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     moderator: EventUser,
@@ -234,7 +234,7 @@ def test_announce_topic_pinned(
 
 
 def test_announce_topic_unpinned(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     moderator: EventUser,
@@ -266,7 +266,7 @@ def test_announce_topic_unpinned(
 
 
 def test_announce_topic_moved(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     moderator: EventUser,
@@ -303,7 +303,7 @@ def test_announce_topic_moved(
 
 
 def test_announce_posting_created(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     brand: EventBrand,
@@ -334,7 +334,7 @@ def test_announce_posting_created(
 
 
 def test_announce_posting_created_on_muted_topic(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     brand: EventBrand,
@@ -361,7 +361,7 @@ def test_announce_posting_created_on_muted_topic(
 
 
 def test_announce_posting_hidden(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     moderator: EventUser,
@@ -394,7 +394,7 @@ def test_announce_posting_hidden(
 
 
 def test_announce_posting_unhidden(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     author: EventUser,
     moderator: EventUser,

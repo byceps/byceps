@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventUser
 from byceps.events.shop import (
     ShopOrderCanceledEvent,
@@ -26,7 +26,7 @@ ORDER_ID = OrderID(generate_uuid())
 
 
 def test_shop_order_placed_announced(
-    app: Flask, now: datetime, orderer_user: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, orderer_user: EventUser, webhook_for_irc
 ):
     expected_text = 'Ken_von_Kaufkraft has placed order ORDER-00001.'
 
@@ -44,7 +44,7 @@ def test_shop_order_placed_announced(
 
 
 def test_shop_order_canceled_announced(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     shop_admin: EventUser,
     orderer_user: EventUser,
@@ -68,7 +68,7 @@ def test_shop_order_canceled_announced(
 
 
 def test_shop_order_paid_announced(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     shop_admin: EventUser,
     orderer_user: EventUser,

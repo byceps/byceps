@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventBrand, EventUser
 from byceps.events.board import BoardPostingCreatedEvent, BoardTopicCreatedEvent
 from byceps.services.board.models import (
@@ -34,7 +34,7 @@ POSTING_ID = PostingID(generate_uuid())
 
 
 def test_announce_topic_created(
-    app: Flask, now: datetime, author: EventUser, brand: EventBrand
+    app: BycepsApp, now: datetime, author: EventUser, brand: EventBrand
 ):
     expected_url = f'https://website.test/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -62,7 +62,7 @@ def test_announce_topic_created(
 
 
 def test_announce_posting_created(
-    app: Flask, now: datetime, author: EventUser, brand: EventBrand
+    app: BycepsApp, now: datetime, author: EventUser, brand: EventBrand
 ):
     expected_url = f'https://website.test/board/postings/{POSTING_ID}'
     expected_text = (

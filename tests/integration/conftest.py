@@ -10,7 +10,6 @@ from tempfile import TemporaryDirectory
 from typing import Any
 from wsgiref.types import WSGIApplication
 
-from flask import Flask
 from moneyed import EUR
 import pytest
 
@@ -19,6 +18,7 @@ from byceps.application import (
     create_admin_app as _create_admin_app,
     create_site_app as _create_site_app,
 )
+from byceps.byceps_app import BycepsApp
 from byceps.database import db
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, Role, RoleID
@@ -84,7 +84,7 @@ _CONFIG_OVERRIDES_FOR_TESTS = {
 
 @pytest.fixture(scope='session')
 def database():
-    app = Flask('byceps')
+    app = BycepsApp()
 
     db_url_key = 'SQLALCHEMY_DATABASE_URI'
     app.config[db_url_key] = os.environ.get(
@@ -118,7 +118,7 @@ def apps(database, data_path: Path) -> WSGIApplication:
 def make_admin_app(data_path: Path):
     """Provide the admin web application."""
 
-    def _wrapper(server_name: str, **config_overrides: Any) -> Flask:
+    def _wrapper(server_name: str, **config_overrides: Any) -> BycepsApp:
         merged_config_overrides = _merge_config_overrides(
             config_overrides, data_path, server_name
         )
@@ -129,7 +129,7 @@ def make_admin_app(data_path: Path):
 
 
 @pytest.fixture(scope='session')
-def admin_app(database, make_admin_app) -> Iterator[Flask]:
+def admin_app(database, make_admin_app) -> Iterator[BycepsApp]:
     """Provide the admin web application."""
     server_name = 'admin.acmecon.test'
     app = make_admin_app(server_name)
@@ -138,7 +138,7 @@ def admin_app(database, make_admin_app) -> Iterator[Flask]:
 
 
 @pytest.fixture(scope='session')
-def api_app(apps, site: Site) -> Flask:
+def api_app(apps, site: Site) -> BycepsApp:
     """Provide a API web application."""
     server_name = 'api.acmecon.test'
     app = apps.wsgi_app.get_application(server_name)
@@ -152,7 +152,7 @@ def make_site_app(admin_app, data_path: Path):
 
     def _wrapper(
         server_name: str, site_id: SiteID, **config_overrides: Any
-    ) -> Flask:
+    ) -> BycepsApp:
         merged_config_overrides = _merge_config_overrides(
             config_overrides, data_path, server_name
         )
@@ -165,7 +165,7 @@ def make_site_app(admin_app, data_path: Path):
 
 
 @pytest.fixture(scope='session')
-def site_app(database, make_site_app, site: Site) -> Flask:
+def site_app(database, make_site_app, site: Site) -> BycepsApp:
     """Provide a site web application."""
     server_name = 'www.acmecon.test'
     app = make_site_app(server_name, site.id)
@@ -205,7 +205,7 @@ def data_path() -> Path:
 def make_client():
     """Provide a test HTTP client against the application."""
 
-    def _wrapper(app: Flask, *, user_id: UserID | None = None):
+    def _wrapper(app: BycepsApp, *, user_id: UserID | None = None):
         with http_client(app, user_id=user_id) as client:
             return client
 
@@ -213,7 +213,7 @@ def make_client():
 
 
 @pytest.fixture(scope='session')
-def make_role(admin_app: Flask):
+def make_role(admin_app: BycepsApp):
     def _wrapper() -> Role:
         role_id = RoleID(generate_token())
         return authz_service.create_role(role_id, role_id).unwrap()
@@ -222,7 +222,7 @@ def make_role(admin_app: Flask):
 
 
 @pytest.fixture(scope='session')
-def make_user(admin_app: Flask):
+def make_user(admin_app: BycepsApp):
     def _wrapper(*args, **kwargs) -> User:
         return create_user(*args, **kwargs)
 
@@ -274,7 +274,7 @@ def deleted_user(make_user) -> User:
 
 
 @pytest.fixture(scope='session')
-def make_email_config(admin_app: Flask):
+def make_email_config(admin_app: BycepsApp):
     def _wrapper(
         brand_id: BrandID,
         *,
@@ -320,7 +320,7 @@ def site(email_config: EmailConfig, party: Party, board: Board) -> Site:
 
 
 @pytest.fixture(scope='session')
-def make_brand(admin_app: Flask):
+def make_brand(admin_app: BycepsApp):
     def _wrapper(
         brand_id: BrandID | None = None, title: str | None = None
     ) -> Brand:
@@ -341,7 +341,7 @@ def brand(make_brand) -> Brand:
 
 
 @pytest.fixture(scope='session')
-def make_party(admin_app: Flask):
+def make_party(admin_app: BycepsApp):
     def _wrapper(*args, **kwargs) -> Party:
         return create_party(*args, **kwargs)
 
@@ -354,7 +354,7 @@ def party(make_party, brand: Brand) -> Party:
 
 
 @pytest.fixture(scope='session')
-def make_ticket_category(admin_app: Flask):
+def make_ticket_category(admin_app: BycepsApp):
     def _wrapper(party_id: PartyID, title: str) -> TicketCategory:
         return ticket_category_service.create_category(party_id, title)
 
@@ -386,7 +386,7 @@ def make_news_channel():
 
 
 @pytest.fixture(scope='session')
-def make_payment_gateway(admin_app: Flask):
+def make_payment_gateway(admin_app: BycepsApp):
     def _wrapper(
         *,
         payment_gateway_id: str | None = None,
@@ -407,7 +407,7 @@ def make_payment_gateway(admin_app: Flask):
 
 
 @pytest.fixture(scope='session')
-def make_shop(admin_app: Flask):
+def make_shop(admin_app: BycepsApp):
     def _wrapper(
         brand_id: BrandID,
         *,

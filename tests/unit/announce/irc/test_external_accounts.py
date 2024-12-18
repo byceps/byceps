@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventUser
 from byceps.events.external_accounts import (
     ExternalAccountConnectedEvent,
@@ -21,7 +21,7 @@ from .helpers import assert_text
 
 
 def test_external_account_connected(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     event_user: EventUser,
     webhook_for_irc,
@@ -44,7 +44,7 @@ def test_external_account_connected(
 
 
 def test_external_account_disconnected(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     event_user: EventUser,
     webhook_for_irc,

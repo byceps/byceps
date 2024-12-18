@@ -9,13 +9,13 @@ byceps.config.integration
 import json
 import os
 
-from flask import Flask
+from byceps.byceps_app import BycepsApp
 
 from .errors import ConfigurationError
 from .models import AppMode
 
 
-def init_app(app: Flask) -> None:
+def init_app(app: BycepsApp) -> None:
     app.byceps_app_mode = _determine_app_mode(app)
 
     if app.byceps_app_mode.is_site():
@@ -23,7 +23,7 @@ def init_app(app: Flask) -> None:
             raise ConfigurationError('No site ID configured.')
 
 
-def _determine_app_mode(app: Flask) -> AppMode:
+def _determine_app_mode(app: BycepsApp) -> AppMode:
     value = app.config.get('APP_MODE', 'base')
 
     try:

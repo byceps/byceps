@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.services.site.models import SiteID
 from byceps.events.base import EventUser
 from byceps.events.snippet import (
@@ -33,7 +33,7 @@ SNIPPET_VERSION_ID = SnippetVersionID(generate_uuid())
 
 
 def test_announce_snippet_created(
-    app: Flask, now: datetime, editor: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, editor: EventUser, webhook_for_irc
 ):
     expected_text = (
         'Dr.Schnipsel has created snippet "team_intro" (de) '
@@ -56,7 +56,7 @@ def test_announce_snippet_created(
 
 
 def test_announce_snippet_updated(
-    app: Flask, now: datetime, editor: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, editor: EventUser, webhook_for_irc
 ):
     expected_text = (
         'Dr.Schnipsel has updated snippet "team_intro" (de) '
@@ -79,7 +79,7 @@ def test_announce_snippet_updated(
 
 
 def test_announce_snippet_deleted(
-    app: Flask, now: datetime, editor: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, editor: EventUser, webhook_for_irc
 ):
     expected_text = (
         'Dr.Schnipsel has deleted snippet "outdated_info" (de) '

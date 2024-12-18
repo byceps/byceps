@@ -3,9 +3,9 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import Flask
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.config.errors import ConfigurationError
 from byceps.config.integration import init_app
 from byceps.config.models import AppMode
@@ -22,7 +22,7 @@ from byceps.config.models import AppMode
         ('worker', AppMode.worker),
     ],
 )
-def test_init_app(app: Flask, value: str, expected: AppMode):
+def test_init_app(app: BycepsApp, value: str, expected: AppMode):
     if value is not None:
         app.config['APP_MODE'] = value
 
@@ -41,7 +41,7 @@ def test_init_app(app: Flask, value: str, expected: AppMode):
         'invalid',
     ],
 )
-def test_init_app_error(app: Flask, value: str):
+def test_init_app_error(app: BycepsApp, value: str):
     app.config['APP_MODE'] = value
 
     with pytest.raises(ConfigurationError):
@@ -49,5 +49,5 @@ def test_init_app_error(app: Flask, value: str):
 
 
 @pytest.fixture(scope='module')
-def app(make_app) -> Flask:
+def app(make_app) -> BycepsApp:
     return make_app()

@@ -5,16 +5,15 @@
 
 from datetime import datetime
 
-from flask import Flask
-
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.authn import PasswordUpdatedEvent, UserLoggedInEvent
 
 from .helpers import assert_text
 
 
 def test_password_updated_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'AuthAdmin has updated the password for ForgetfulFred.'
 
@@ -30,7 +29,7 @@ def test_password_updated_announced(
 
 
 def test_user_logged_in_into_admin_app_announced(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'Logvogel has logged in.'
 
@@ -46,7 +45,11 @@ def test_user_logged_in_into_admin_app_announced(
 
 
 def test_user_logged_in_into_site_app_announced(
-    app: Flask, now: datetime, make_event_site, make_event_user, webhook_for_irc
+    app: BycepsApp,
+    now: datetime,
+    make_event_site,
+    make_event_user,
+    webhook_for_irc,
 ):
     expected_text = 'Logvogel has logged in on site "ACMECon 2014 website".'
 

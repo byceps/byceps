@@ -6,11 +6,11 @@
 from datetime import datetime
 from decimal import Decimal
 
-from flask import Flask
 from freezegun import freeze_time
 from moneyed import Money
 import pytest
 
+from byceps.byceps_app import BycepsApp
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service
 from byceps.services.shop.order.models.order import Order, Orderer
@@ -120,7 +120,11 @@ def order(storefront: Storefront, cart: Cart, orderer: Orderer):
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
 def test_serialize_existing_order(
-    request, admin_app: Flask, shop_order_admin: User, make_client, order: Order
+    request,
+    admin_app: BycepsApp,
+    shop_order_admin: User,
+    make_client,
+    order: Order,
 ):
     filename = request.fspath.dirpath('order_export.xml')
     expected = filename.read_text('iso-8859-1').rstrip()
@@ -140,7 +144,7 @@ def test_serialize_existing_order(
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
 def test_serialize_unknown_order(
-    admin_app: Flask, shop_order_admin: User, make_client
+    admin_app: BycepsApp, shop_order_admin: User, make_client
 ):
     unknown_order_id = '00000000-0000-0000-0000-000000000000'
 

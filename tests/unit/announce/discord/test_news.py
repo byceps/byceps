@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventUser
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
@@ -24,7 +24,7 @@ NEWS_ITEM_ID = NewsItemID(generate_uuid())
 
 
 def test_published_news_item_announced_with_url(
-    app: Flask, now: datetime, admin: EventUser
+    app: BycepsApp, now: datetime, admin: EventUser
 ) -> None:
     expected_text = (
         '[News] The news "Check this out!" has been published. '
@@ -49,7 +49,7 @@ def test_published_news_item_announced_with_url(
 
 
 def test_published_news_item_announced_without_url(
-    app: Flask, now: datetime, admin: EventUser
+    app: BycepsApp, now: datetime, admin: EventUser
 ) -> None:
     expected_text = '[News] The news "Check this out, too!" has been published.'
 

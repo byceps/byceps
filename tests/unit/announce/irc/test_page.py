@@ -5,10 +5,10 @@
 
 from datetime import datetime
 
-from flask import Flask
 import pytest
 
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.base import EventSite, EventUser
 from byceps.events.page import (
     PageCreatedEvent,
@@ -27,7 +27,7 @@ PAGE_VERSION_ID = PageVersionID(generate_uuid())
 
 
 def test_announce_page_created(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     editor: EventUser,
     site: EventSite,
@@ -54,7 +54,7 @@ def test_announce_page_created(
 
 
 def test_announce_page_updated(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     editor: EventUser,
     site: EventSite,
@@ -81,7 +81,7 @@ def test_announce_page_updated(
 
 
 def test_announce_page_deleted(
-    app: Flask,
+    app: BycepsApp,
     now: datetime,
     editor: EventUser,
     site: EventSite,

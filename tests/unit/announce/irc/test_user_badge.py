@@ -5,9 +5,8 @@
 
 from datetime import datetime
 
-from flask import Flask
-
 from byceps.announce.announce import build_announcement_request
+from byceps.byceps_app import BycepsApp
 from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.user_badge.models import BadgeID
 
@@ -20,7 +19,7 @@ BADGE_ID = BadgeID(generate_uuid())
 
 
 def test_user_badge_awarding_announced_without_initiator(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'Someone has awarded badge "First Post!" to Erster.'
 
@@ -38,7 +37,7 @@ def test_user_badge_awarding_announced_without_initiator(
 
 
 def test_user_badge_awarding_announced_with_initiator(
-    app: Flask, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
 ):
     expected_text = 'Admin has awarded badge "Glanzleistung" to PathFinder.'
 
