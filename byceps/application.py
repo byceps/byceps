@@ -52,7 +52,7 @@ def create_admin_app(
 
     app = _create_app(AppMode.admin, config_overrides=config_overrides)
 
-    _dispatch_apps_by_url_path(app, config_overrides)
+    _dispatch_apps_by_url_path(app)
 
     _log_app_state(app)
 
@@ -279,10 +279,7 @@ def _init_site_app(app: BycepsApp) -> None:
     app.jinja_loader = SiteTemplateOverridesLoader()
 
 
-def _dispatch_apps_by_url_path(
-    app: BycepsApp,
-    config_overrides: dict[str, Any] | None,
-) -> None:
+def _dispatch_apps_by_url_path(app: BycepsApp) -> None:
     mounts = {}
 
     app_mode = app.byceps_app_mode
