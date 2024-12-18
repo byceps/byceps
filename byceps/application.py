@@ -47,9 +47,6 @@ log = structlog.get_logger()
 def create_admin_app(
     *, config_overrides: dict[str, Any] | None = None
 ) -> BycepsApp:
-    if config_overrides is None:
-        config_overrides = {}
-
     app = _create_app(AppMode.admin, config_overrides=config_overrides)
 
     _dispatch_apps_by_url_path(app)
@@ -79,9 +76,6 @@ def create_site_app(
 def create_api_app(
     *, config_overrides: dict[str, Any] | None = None
 ) -> BycepsApp:
-    if config_overrides is None:
-        config_overrides = {}
-
     app = _create_app(AppMode.api, config_overrides=config_overrides)
 
     register_api_blueprints(app)
