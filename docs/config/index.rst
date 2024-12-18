@@ -236,5 +236,9 @@ Supported Configuration Values
 
     Handled by Flask_.
 
+.. py:data:: TIMEZONE
+
+    Specifies the default timezone.
+
 
 .. _Flask: https://github.com/pallets/flask
