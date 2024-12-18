@@ -285,7 +285,8 @@ def _dispatch_apps_by_url_path(app: BycepsApp) -> None:
         mounts['/metrics'] = metrics_app
     app.byceps_feature_states['metrics'] = metrics_enabled
 
-    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
+    if mounts:
+        app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
 
 
 def _enable_debug_toolbar(app: BycepsApp) -> None:
