@@ -50,9 +50,7 @@ def create_admin_app(
     if config_overrides is None:
         config_overrides = {}
 
-    config_overrides['APP_MODE'] = 'admin'
-
-    app = _create_app(config_overrides=config_overrides)
+    app = _create_app(AppMode.admin, config_overrides=config_overrides)
 
     _dispatch_apps_by_url_path(app, config_overrides)
 
@@ -68,9 +66,8 @@ def create_site_app(
         config_overrides = {}
 
     config_overrides['SITE_ID'] = site_id
-    config_overrides['APP_MODE'] = 'site'
 
-    app = _create_app(config_overrides=config_overrides)
+    app = _create_app(AppMode.site, config_overrides=config_overrides)
 
     _init_site_app(app)
 
@@ -85,9 +82,7 @@ def create_api_app(
     if config_overrides is None:
         config_overrides = {}
 
-    config_overrides['APP_MODE'] = 'api'
-
-    app = _create_app(config_overrides=config_overrides)
+    app = _create_app(AppMode.api, config_overrides=config_overrides)
 
     register_api_blueprints(app)
 
@@ -95,11 +90,7 @@ def create_api_app(
 
 
 def create_cli_app() -> BycepsApp:
-    config_overrides = {
-        'APP_MODE': 'cli',
-    }
-
-    return _create_app(config_overrides=config_overrides)
+    return _create_app(AppMode.cli)
 
 
 def create_metrics_app(database_uri: str) -> BycepsApp:
@@ -116,16 +107,19 @@ def create_metrics_app(database_uri: str) -> BycepsApp:
 
 
 def create_worker_app() -> BycepsApp:
-    config_overrides = {
-        'APP_MODE': 'worker',
-    }
-
-    return _create_app(config_overrides=config_overrides)
+    return _create_app(AppMode.worker)
 
 
-def _create_app(*, config_overrides: dict[str, Any] | None = None) -> BycepsApp:
+def _create_app(
+    app_mode: AppMode, *, config_overrides: dict[str, Any] | None = None
+) -> BycepsApp:
     """Create the actual Flask-based BYCEPS application."""
     app = BycepsApp()
+
+    if config_overrides is None:
+        config_overrides = {}
+
+    config_overrides['APP_MODE'] = app_mode.name
 
     # Avoid connection errors after database becomes temporarily
     # unreachable, then becomes reachable again.
