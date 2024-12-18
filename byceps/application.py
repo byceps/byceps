@@ -12,7 +12,6 @@ import os
 from pathlib import Path
 from typing import Any
 
-from flask import Flask
 from flask_babel import Babel
 import jinja2
 from redis import Redis
@@ -39,18 +38,10 @@ from byceps.util.framework.blueprint import get_blueprint
 from byceps.util.l10n import get_current_user_locale
 from byceps.util.templating import SiteTemplateOverridesLoader
 
+from .byceps_app import BycepsApp
+
 
 log = structlog.get_logger()
-
-
-class BycepsApp(Flask):
-    def __init__(self) -> None:
-        super().__init__('byceps')
-
-        self.babel_instance: Babel
-        self.byceps_app_mode: AppMode
-        self.byceps_feature_states: dict[str, bool] = {}
-        self.redis_client: Redis
 
 
 def create_admin_app(

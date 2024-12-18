@@ -18,12 +18,7 @@ from flask import Flask
 import structlog
 from werkzeug.exceptions import InternalServerError, NotFound
 
-from byceps.application import (
-    BycepsApp,
-    create_admin_app,
-    create_api_app,
-    create_site_app,
-)
+from byceps.application import create_admin_app, create_api_app, create_site_app
 from byceps.config.apps import parse_app_mounts_config
 from byceps.config.models import (
     AdminAppConfig,
@@ -32,6 +27,8 @@ from byceps.config.models import (
     SiteAppConfig,
 )
 from byceps.util.result import Err, Ok, Result
+
+from .byceps_app import BycepsApp
 
 
 log = structlog.get_logger()
