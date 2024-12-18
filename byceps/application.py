@@ -43,9 +43,19 @@ from byceps.util.templating import SiteTemplateOverridesLoader
 log = structlog.get_logger()
 
 
+class BycepsApp(Flask):
+    def __init__(self) -> None:
+        super().__init__('byceps')
+
+        self.babel_instance: Babel
+        self.byceps_app_mode: AppMode
+        self.byceps_feature_states: dict[str, bool] = {}
+        self.redis_client: Redis
+
+
 def create_admin_app(
     *, config_overrides: dict[str, Any] | None = None
-) -> Flask:
+) -> BycepsApp:
     if config_overrides is None:
         config_overrides = {}
 
@@ -62,7 +72,7 @@ def create_admin_app(
 
 def create_site_app(
     site_id: str, *, config_overrides: dict[str, Any] | None = None
-) -> Flask:
+) -> BycepsApp:
     if config_overrides is None:
         config_overrides = {}
 
@@ -78,7 +88,9 @@ def create_site_app(
     return app
 
 
-def create_api_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
+def create_api_app(
+    *, config_overrides: dict[str, Any] | None = None
+) -> BycepsApp:
     if config_overrides is None:
         config_overrides = {}
 
@@ -91,7 +103,7 @@ def create_api_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
     return app
 
 
-def create_cli_app() -> Flask:
+def create_cli_app() -> BycepsApp:
     config_overrides = {
         'APP_MODE': 'cli',
         'DEBUG_TOOLBAR_ENABLED': False,
@@ -102,8 +114,8 @@ def create_cli_app() -> Flask:
     return _create_app(config_overrides=config_overrides)
 
 
-def create_metrics_app(database_uri: str) -> Flask:
-    app = Flask(__name__)
+def create_metrics_app(database_uri: str) -> BycepsApp:
+    app = BycepsApp()
 
     app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 
@@ -115,7 +127,7 @@ def create_metrics_app(database_uri: str) -> Flask:
     return app
 
 
-def create_worker_app() -> Flask:
+def create_worker_app() -> BycepsApp:
     config_overrides = {
         'APP_MODE': 'worker',
         'DEBUG_TOOLBAR_ENABLED': False,
@@ -126,9 +138,9 @@ def create_worker_app() -> Flask:
     return _create_app(config_overrides=config_overrides)
 
 
-def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
-    """Create the actual Flask application."""
-    app = Flask('byceps')
+def _create_app(*, config_overrides: dict[str, Any] | None = None) -> BycepsApp:
+    """Create the actual Flask-based BYCEPS application."""
+    app = BycepsApp()
 
     # Avoid connection errors after database becomes temporarily
     # unreachable, then becomes reachable again.
@@ -156,9 +168,7 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
     load_permissions()
 
-    app.byceps_feature_states: dict[str, bool] = {
-        'debug': app.debug,
-    }
+    app.byceps_feature_states['debug'] = app.debug
 
     style_guide_enabled = app.config.get('STYLE_GUIDE_ENABLED', False) and (
         app_mode.is_admin() or app_mode.is_site()
@@ -190,7 +200,7 @@ def _create_app(*, config_overrides: dict[str, Any] | None = None) -> Flask:
 
 
 def _configure(
-    app: Flask, config_overrides: dict[str, Any] | None = None
+    app: BycepsApp, config_overrides: dict[str, Any] | None = None
 ) -> None:
     """Configure application from file, environment variables, and defaults."""
     app.config.from_object(config_defaults)
@@ -238,7 +248,7 @@ def _get_config_from_environment() -> Iterator[tuple[str, Any]]:
             yield key, value
 
 
-def _ensure_required_config_keys(app: Flask) -> None:
+def _ensure_required_config_keys(app: BycepsApp) -> None:
     """Ensure the required configuration keys have values."""
     for key in (
         'APP_MODE',
@@ -252,7 +262,7 @@ def _ensure_required_config_keys(app: Flask) -> None:
             )
 
 
-def _add_static_file_url_rules(app: Flask) -> None:
+def _add_static_file_url_rules(app: BycepsApp) -> None:
     """Add URL rules to for static files."""
     app.add_url_rule(
         '/static_sites/<site_id>/<path:filename>',
@@ -262,14 +272,14 @@ def _add_static_file_url_rules(app: Flask) -> None:
     )
 
 
-def _init_site_app(app: Flask) -> None:
+def _init_site_app(app: BycepsApp) -> None:
     """Initialize site application."""
     # Incorporate site-specific template overrides.
     app.jinja_loader = SiteTemplateOverridesLoader()
 
 
 def _dispatch_apps_by_url_path(
-    app: Flask,
+    app: BycepsApp,
     config_overrides: dict[str, Any] | None,
 ) -> None:
     mounts = {}
@@ -285,7 +295,7 @@ def _dispatch_apps_by_url_path(
     app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
 
 
-def _enable_debug_toolbar(app: Flask) -> None:
+def _enable_debug_toolbar(app: BycepsApp) -> None:
     try:
         from flask_debugtoolbar import DebugToolbarExtension
     except ImportError:
@@ -299,13 +309,13 @@ def _enable_debug_toolbar(app: Flask) -> None:
     DebugToolbarExtension(app)
 
 
-def _enable_rq_dashboard(app: Flask) -> None:
+def _enable_rq_dashboard(app: BycepsApp) -> None:
     app.config['RQ_DASHBOARD_REDIS_URL'] = app.config['REDIS_URL']
     enable_rq_dashboard(app, '/rq')
     app.byceps_feature_states['rq_dashboard'] = True
 
 
-def _log_app_state(app: Flask) -> None:
+def _log_app_state(app: BycepsApp) -> None:
     event_kw = {'app_mode': app.byceps_app_mode.name}
 
     features = {

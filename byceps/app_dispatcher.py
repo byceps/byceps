@@ -18,7 +18,12 @@ from flask import Flask
 import structlog
 from werkzeug.exceptions import InternalServerError, NotFound
 
-from byceps.application import create_admin_app, create_api_app, create_site_app
+from byceps.application import (
+    BycepsApp,
+    create_admin_app,
+    create_api_app,
+    create_site_app,
+)
 from byceps.config.apps import parse_app_mounts_config
 from byceps.config.models import (
     AdminAppConfig,
@@ -107,7 +112,7 @@ def create_dispatcher_app(
     apps_config: AppsConfig,
     *,
     config_overrides: dict[str, Any] | None = None,
-) -> WSGIApplication:
+) -> Flask:
     app = Flask('dispatcher')
     app.wsgi_app = AppDispatcher(apps_config, config_overrides=config_overrides)
     return app
@@ -171,7 +176,7 @@ class AppDispatcher:
 
 def _create_app(
     app_config: AppConfig, *, config_overrides: dict[str, Any] | None = None
-) -> Result[Flask, str]:
+) -> Result[BycepsApp, str]:
     match app_config:
         case AdminAppConfig():
             return Ok(create_admin_app(config_overrides=config_overrides))
