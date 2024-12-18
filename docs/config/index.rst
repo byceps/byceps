@@ -227,6 +227,7 @@ Supported Configuration Values
 
 
 .. confval:: STYLE_GUIDE_ENABLED
+   :default: ``False``
 
    Enable BYCEPS' style guide, available at ``/style_guide/`` both in
    admin mode and site mode.
