@@ -181,12 +181,10 @@ def _create_app(
             return Ok(create_api_app(config_overrides=config_overrides))
         case SiteAppConfig():
             site_id = app_config.site_id
-            if site_id:
-                app = create_site_app(
-                    site_id, config_overrides=config_overrides
-                )
-                return Ok(app)
-            else:
+            if not site_id:
                 return Err(f'Unknown site ID "{site_id}"')
+
+            app = create_site_app(site_id, config_overrides=config_overrides)
+            return Ok(app)
         case _:
             return Err('Unknown or unsupported app configuration type')
