@@ -175,12 +175,6 @@ Supported Configuration Values
     <https://flask.palletsprojects.com/en/2.2.x/config/#SESSION_COOKIE_SECURE>`_
     is ``False``)
 
-.. py:data:: SHOP_ORDER_EXPORT_TIMEZONE
-
-    The timezone used for shop order exports.
-
-    Default: ``'Europe/Berlin'``
-
 .. py:data:: SQLALCHEMY_DATABASE_URI
 
     The URL used to connect to the relational database (i.e. PostgreSQL).
