@@ -278,9 +278,10 @@ def _dispatch_apps_by_url_path(
 ) -> None:
     mounts = {}
 
-    metrics_enabled = (
-        app.config.get('METRICS_ENABLED', False)
-        and app.byceps_app_mode.is_admin()
+    app_mode = app.byceps_app_mode
+
+    metrics_enabled = app.config.get('METRICS_ENABLED', False) and (
+        app_mode.is_admin() or app_mode.is_api()
     )
     if metrics_enabled:
         metrics_app = create_metrics_app(app.config['SQLALCHEMY_DATABASE_URI'])
