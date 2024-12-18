@@ -30,7 +30,7 @@ Supported Configuration Values
 
 .. py:data:: JOBS_ASYNC
 
-    Makes jobs run asynchronously.
+    Make jobs run asynchronously.
 
     Can be disabled to run jobs synchronously, but that is likely only
     useful for (and actually used for) testing.
@@ -39,7 +39,7 @@ Supported Configuration Values
 
 .. py:data:: LOCALE
 
-    Specifies the default locale.
+    The default locale.
 
 .. py:data:: MAIL_HOST
 
@@ -232,7 +232,7 @@ Supported Configuration Values
 
 .. py:data:: TIMEZONE
 
-    Specifies the default timezone.
+    The default timezone.
 
 
 .. _Flask: https://github.com/pallets/flask
