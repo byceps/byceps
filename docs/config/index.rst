@@ -10,6 +10,7 @@ Supported Configuration Values
 ==============================
 
 .. confval:: DEBUG
+   :type: boolean
    :default: ``False``
 
    Enable debug mode.
@@ -21,6 +22,7 @@ Supported Configuration Values
 
 
 .. confval:: DEBUG_TOOLBAR_ENABLED
+   :type: boolean
    :default: ``False``
 
    Enable the debug toolbar (provided by Flask-DebugToolbar_).
@@ -29,6 +31,7 @@ Supported Configuration Values
 
 
 .. confval:: JOBS_ASYNC
+   :type: boolean
    :default: ``True``
 
    Make jobs run asynchronously.
@@ -38,53 +41,62 @@ Supported Configuration Values
 
 
 .. confval:: LOCALE
+   :type: string
 
    The default locale.
 
 
 .. confval:: MAIL_HOST
+   :type: string
    :default: ``'localhost'``
 
    The host of the SMTP server.
 
 
 .. confval:: MAIL_PASSWORD
+   :type: string
    :default: ``None``
 
    The password to authenticate with against the SMTP server.
 
 
 .. confval:: MAIL_PORT
+   :type: integer
    :default: ``25``
 
    The port of the SMTP server.
 
 
 .. confval:: MAIL_STARTTLS
+   :type: boolean
    :default: ``False``
 
    Put the SMTP connection in TLS (Transport Layer Security) mode.
 
 
 .. confval:: MAIL_SUPPRESS_SEND
+   :type: boolean
    :default: ``False``
 
    Suppress sending of emails.
 
 
 .. confval:: MAIL_USE_SSL
+   :type: boolean
    :default: ``False``
 
    Use SSL for the connection to the SMTP server.
 
 
 .. confval:: MAIL_USERNAME
+   :type: string
    :default: ``None``
 
    The username to authenticate with against the SMTP server.
 
 
 .. confval:: METRICS_ENABLED
+   :type: boolean
    :default: ``False``
 
    Enable the Prometheus_-compatible metrics endpoint at ``/metrics/``.
@@ -95,22 +107,26 @@ Supported Configuration Values
 
 
 .. confval:: PATH_DATA
+   :type: path object
    :default: ``'./data'`` (relative to the BYCEPS root path)
 
    Filesystem path for static files (including uploads).
 
 
 .. confval:: PAYPAL_CLIENT_ID
+   :type: string
 
    The client ID for payments via PayPal.
 
 
 .. confval:: PAYPAL_CLIENT_SECRET
+   :type: string
 
    The client secret for payments via PayPal.
 
 
 .. confval:: PAYPAL_ENVIRONMENT
+   :type: string
    :default: ``sandbox``
 
    The environment for payments via PayPal.
@@ -119,6 +135,7 @@ Supported Configuration Values
 
 
 .. confval:: PROPAGATE_EXCEPTIONS
+   :type: boolean
    :default: ``None``
 
    Reraise exceptions instead of letting BYCEPS handle them.
@@ -135,6 +152,7 @@ Supported Configuration Values
 
 
 .. confval:: REDIS_URL
+   :type: string
 
    The URL used to connect to Redis.
 
@@ -155,6 +173,7 @@ Supported Configuration Values
 
 
 .. confval:: SECRET_KEY
+   :type: string
 
    A secret key that will be for security features such as signing
    session cookies.
@@ -166,6 +185,7 @@ Supported Configuration Values
 
 
 .. confval:: SESSION_COOKIE_SECURE
+   :type: boolean
    :default: ``True``
 
    Only send cookies marked as secure when an HTTPS connection is
@@ -183,6 +203,7 @@ Supported Configuration Values
 
 
 .. confval:: SQLALCHEMY_DATABASE_URI
+   :type: string
 
    The URL used to connect to the relational database (i.e. PostgreSQL).
 
@@ -206,27 +227,32 @@ Supported Configuration Values
 
 
 .. confval:: SQLALCHEMY_ECHO
+   :type: boolean
    :default: ``False``
 
    Enable echoing of issued SQL queries. Useful for development and debugging.
 
 
 .. confval:: STRIPE_PUBLISHABLE_KEY
+   :type: string
 
    The publishable key for payments via Stripe.
 
 
 .. confval:: STRIPE_SECRET_KEY
+   :type: string
 
    The secret key for payments via Stripe.
 
 
 .. confval:: STRIPE_WEBHOOK_SECRET
+   :type: string
 
    The webhook secret for payments via Stripe.
 
 
 .. confval:: STYLE_GUIDE_ENABLED
+   :type: boolean
    :default: ``False``
 
    Enable BYCEPS' style guide, available at ``/style_guide/`` both in
@@ -234,6 +260,7 @@ Supported Configuration Values
 
 
 .. confval:: TESTING
+   :type: boolean
    :default: ``False``
 
    Enable testing mode.
@@ -244,6 +271,7 @@ Supported Configuration Values
 
 
 .. confval:: TIMEZONE
+   :type: string
 
    The default timezone.
 
