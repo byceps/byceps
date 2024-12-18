@@ -212,6 +212,9 @@ def _configure(
 
     _ensure_required_config_keys(app)
 
+    locale = app.config['LOCALE']
+    app.config['BABEL_DEFAULT_LOCALE'] = locale
+
     init_app_config(app)
 
 

@@ -23,9 +23,7 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'DEBUG', config.debug.enabled
     yield 'DEBUG_TOOLBAR_ENABLED', config.debug.toolbar_enabled
 
-    locale = config.locale
-    yield 'BABEL_DEFAULT_LOCALE', locale
-    yield 'LOCALE', locale
+    yield 'LOCALE', config.locale
 
     timezone = config.timezone
     yield 'BABEL_DEFAULT_TIMEZONE', timezone
