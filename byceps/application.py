@@ -106,9 +106,6 @@ def create_api_app(
 def create_cli_app() -> BycepsApp:
     config_overrides = {
         'APP_MODE': 'cli',
-        'DEBUG_TOOLBAR_ENABLED': False,
-        'METRICS_ENABLED': False,
-        'STYLE_GUIDE_ENABLED': False,
     }
 
     return _create_app(config_overrides=config_overrides)
@@ -130,9 +127,6 @@ def create_metrics_app(database_uri: str) -> BycepsApp:
 def create_worker_app() -> BycepsApp:
     config_overrides = {
         'APP_MODE': 'worker',
-        'DEBUG_TOOLBAR_ENABLED': False,
-        'METRICS_ENABLED': False,
-        'STYLE_GUIDE_ENABLED': False,
     }
 
     return _create_app(config_overrides=config_overrides)
