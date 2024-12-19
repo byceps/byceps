@@ -7,11 +7,11 @@ x-byceps-base: &byceps-base
     - redis
 
 x-byceps-base-env: &byceps-base-env
-    LOCALE: "de"
-    REDIS_URL: "redis://redis/0"
-    SECRET_KEY: /run/secrets/secret_key
-    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg://byceps:byceps@db/byceps"
-    TIMEZONE: "Europe/Berlin"
+  LOCALE: "de"
+  REDIS_URL: "redis://redis/0"
+  SECRET_KEY: /run/secrets/secret_key
+  SQLALCHEMY_DATABASE_URI: "postgresql+psycopg://byceps:byceps@db/byceps"
+  TIMEZONE: "Europe/Berlin"
 
 services:
 
