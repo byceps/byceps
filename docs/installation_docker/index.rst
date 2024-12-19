@@ -30,6 +30,20 @@ A new directory, :file:`byceps/`, should have been created. ``cd`` into
 it.
 
 
+Create BYCEPS Configuration File
+================================
+
+To run BYCEPS, a configuration file is required. Those usually reside in
+:file:`config/`.
+
+Create a copy of the example file for the Docker setup,
+:file:`docker.toml.example`:
+
+.. code-block:: sh
+
+    $ cp config/docker.toml.example config/docker.toml
+
+
 Hostname-to-Application Routing
 ===============================
 

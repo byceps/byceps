@@ -1,0 +1,4 @@
+# Exemplary production configuration for Docker
+
+LOCALE = 'de'
+TIMEZONE = 'Europe/Berlin'
