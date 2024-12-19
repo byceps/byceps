@@ -2,10 +2,10 @@ Create BYCEPS Configuration File
 ================================
 
 To run BYCEPS, a configuration file is required. Those usually reside in
-``/config``.
+:file:`config/`.
 
-There are two examples, ``development.toml.example`` and
-``production.toml.example``, that you can use as a base for your
+There are two examples, :file:`development.toml.example` and
+:file:`production.toml.example`, that you can use as a base for your
 specific configuration.
 
 For starters, create a copy of the development example file to adjust as

@@ -28,13 +28,13 @@ Activate it (but don't change into its path):
 
 Note that the first dot is the `dot command`_, followed by a relative
 file name (which is written as explicitly relative to the current path,
-``./``).
+:file:`./`).
 
 Whenever you want to activate the virtual environment, make sure to do
 that either in the path in which you have created it using the above
 command, or adjust the path to reference it relatively (e.g.
-``../../.venv/bin/activate``) or absolutely (e.g.
-``/var/www/byceps/.venv/bin/activate``).
+:file:`../../.venv/bin/activate`) or absolutely (e.g.
+:file:`/var/www/byceps/.venv/bin/activate`).
 
 Make sure the correct version of Python is used:
 

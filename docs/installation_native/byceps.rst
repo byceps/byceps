@@ -8,7 +8,7 @@ clone the Git repository from GitHub:
 
     $ git clone https://github.com/byceps/byceps.git
 
-A new directory, ``byceps``, should have been created.
+A new directory, :file:`byceps/`, should have been created.
 
 This way, it should be easy to pull in future updates to BYCEPS using
 Git. (And there currently are no release tarballs anyway.)

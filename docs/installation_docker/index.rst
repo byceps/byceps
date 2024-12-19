@@ -26,7 +26,8 @@ First, clone BYCEPS' Git repository to your machine:
 
     $ git clone https://github.com/byceps/byceps.git
 
-A new directory, ``byceps``, should have been created. ``cd`` into it.
+A new directory, :file:`byceps/`, should have been created. ``cd`` into
+it.
 
 
 Hostname-to-Application Routing
@@ -44,14 +45,14 @@ Copy the included example configuration file:
 
 - For a **local installation**, you can go with the exemplary hostnames
   already defined in the example apps configuration file,
-  ``config/apps.toml.example``, which are:
+  :file:`config/apps.toml.example`, which are:
 
   - ``admin.byceps.example`` for the admin UI
   - ``api.byceps.example`` for the API
   - ``cozylan.example`` for the CozyLAN demo site
 
   To be able to access them, though, add these entries to your local
-  ``/etc/hosts`` file (or whatever the equivalent of your operating
+  :file:`/etc/hosts` file (or whatever the equivalent of your operating
   system is):
 
   .. code-block::
@@ -68,8 +69,9 @@ Copy the included example configuration file:
 Docker Preparation
 ==================
 
-Both a ``Dockerfile`` (to build a Docker image) and a ``compose.yml``
-(to run containers with Docker Compose) come with BYCEPS.
+Both a :file:`Dockerfile` (to build a Docker image) and a
+:file:`compose.yml` (to run containers with Docker Compose) come with
+BYCEPS.
 
 Create the services (build images, create volumes, etc.). This might
 take a few minutes.
@@ -155,9 +157,9 @@ just before, you might be logged in already as the same user.)
 
    To be able to login without HTTPS using above links, you can
    temporarily disable session cookie security by setting
-   :confval:`SESSION_COOKIE_SECURE` accordingly: In ``compose.yaml`` add
-   ``SESSION_COOKIE_SECURE: "false"`` on a separate, indented line to the
-   section ``x-byceps-base-env``.
+   :confval:`SESSION_COOKIE_SECURE` accordingly: In :file:`compose.yaml`
+   add ``SESSION_COOKIE_SECURE: "false"`` on a separate, indented line
+   to the section ``x-byceps-base-env``.
 
 .. _nginx: https://nginx.org/
 .. _Caddy: https://caddyserver.com/
