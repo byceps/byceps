@@ -41,7 +41,7 @@ Copy the included example configuration file:
 
 .. code-block:: sh
 
-    $ cp config/apps.toml.example config/apps.toml
+    $ cp config/apps.toml.example config/docker-apps.toml
 
 - For a **local installation**, you can go with the exemplary hostnames
   already defined in the example apps configuration file,
