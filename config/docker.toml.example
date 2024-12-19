@@ -1,4 +1,9 @@
 # Exemplary production configuration for Docker
 
+# Set a custom secret key before running in production!
+# To generate a secret key, run:
+#     $ docker compose run --rm byceps-apps uv run byceps generate-secret-key
+#SECRET_KEY = ""
+
 LOCALE = 'de'
 TIMEZONE = 'Europe/Berlin'

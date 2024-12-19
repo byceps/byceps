@@ -44,6 +44,29 @@ Create a copy of the example file for the Docker setup,
     $ cp config/docker.toml.example config/docker.toml
 
 
+Set a Secret Key
+----------------
+
+A secret key is, among other things, required for login sessions. So
+let's generate one in a cryptographically secure way:
+
+.. code-block:: sh
+
+    $ docker compose run --rm byceps-apps uv run byceps generate-secret-key
+
+Exemplary output:
+
+.. code-block:: none
+
+    3ac1c416bfacb82918d56720d1c3104fd96e8b8d4fbee42343ae7512a9ced293
+
+Set this value in your configuration file so the line looks like this:
+
+.. code-block:: toml
+
+    SECRET_KEY = "3ac1c416bfacb82918d56720d1c3104fd96e8b8d4fbee42343ae7512a9ced293"
+
+
 Hostname-to-Application Routing
 ===============================
 
@@ -93,19 +116,6 @@ take a few minutes.
 .. code-block:: sh
 
     $ docker compose up --no-start
-
-
-Secret Key
-==========
-
-Then generate a *secret key* and put it in a file Docker Compose is
-configured to pick up as a secret_:
-
-.. _secret: https://docs.docker.com/compose/use-secrets/
-
-.. code-block:: sh
-
-    $ docker compose run --rm byceps-apps uv run byceps generate-secret-key > ./secret_key.txt
 
 
 Database
