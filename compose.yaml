@@ -47,7 +47,7 @@ services:
     environment:
       <<: *byceps-base-env
       APP_MODE: worker
-    command: ./worker.py
+    command: uv run --no-sync ./worker.py
     networks:
       - byceps
 
