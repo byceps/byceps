@@ -51,7 +51,7 @@ def view():
     newsletter_list_id = _find_newsletter_list_for_brand()
     newsletter_offered = newsletter_list_id is not None
 
-    subscribed_to_newsletter = newsletter_service.is_subscribed(
+    subscribed_to_newsletter = newsletter_service.is_user_subscribed_to_list(
         user.id, newsletter_list_id
     )
 

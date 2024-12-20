@@ -79,7 +79,9 @@ def get_newsletter_subscription_states(
 ) -> Iterator[tuple[NewsletterList, bool]]:
     lists = newsletter_service.get_all_lists()
     for list_ in lists:
-        is_subscribed = newsletter_service.is_subscribed(user_id, list_.id)
+        is_subscribed = newsletter_service.is_user_subscribed_to_list(
+            user_id, list_.id
+        )
         yield list_, is_subscribed
 
 

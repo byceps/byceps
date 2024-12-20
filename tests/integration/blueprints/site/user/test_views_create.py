@@ -237,7 +237,7 @@ def find_verification_token(user_id):
 
 
 def is_subscribed_to_newsletter(user_id, brand_id):
-    return newsletter_service.is_subscribed(user_id, brand_id)
+    return newsletter_service.is_user_subscribed_to_list(user_id, brand_id)
 
 
 def assert_creation_log_entry_created(user_id, site_id):

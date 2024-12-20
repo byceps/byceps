@@ -105,7 +105,7 @@ def get_subscription_updates_for_user(
     ).all()
 
 
-def is_subscribed(user_id: UserID, list_id: ListID) -> bool:
+def is_user_subscribed_to_list(user_id: UserID, list_id: ListID) -> bool:
     """Return if the user is subscribed to the list or not."""
     return (
         db.session.scalar(
