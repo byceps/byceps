@@ -152,7 +152,10 @@ def delete_verification_tokens(user_ids: set[UserID]) -> int:
 
 def _execute_delete_for_users_query(model, user_ids: set[UserID]) -> int:
     """Execute (but not commit) deletions, return number of affected rows."""
-    return db.session.execute(delete(model).filter(model.user_id.in_(user_ids)))
+    result = db.session.execute(
+        delete(model).filter(model.user_id.in_(user_ids))
+    )
+    return result.rowcount
 
 
 if __name__ == '__main__':
