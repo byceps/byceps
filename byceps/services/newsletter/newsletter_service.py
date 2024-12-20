@@ -47,7 +47,7 @@ def get_all_lists() -> list[List]:
     return [_db_entity_to_list(db_list) for db_list in db_lists]
 
 
-def count_subscribers(list_id: ListID) -> int:
+def count_subscribers_to_list(list_id: ListID) -> int:
     """Return the number of users that are currently subscribed to that list."""
     return (
         db.session.scalar(

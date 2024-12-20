@@ -16,7 +16,7 @@ from byceps.services.newsletter.models import SubscriptionState
 from tests.helpers import generate_token
 
 
-def test_count_subscribers(newsletter_list, subscribers):
+def test_count_subscribers_to_list(newsletter_list, subscribers):
     # Included users:
     # - #1
     # - #5 (eventually requested subscription)
@@ -30,7 +30,7 @@ def test_count_subscribers(newsletter_list, subscribers):
     # - #9 (deleted)
     expected = 3
 
-    actual = newsletter_service.count_subscribers(newsletter_list.id)
+    actual = newsletter_service.count_subscribers_to_list(newsletter_list.id)
 
     assert actual == expected
 
