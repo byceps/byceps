@@ -65,7 +65,7 @@ def count_subscribers_to_list(list_id: ListID) -> int:
     )
 
 
-def get_subscribers(list_id: ListID) -> Iterator[Subscriber]:
+def get_subscribers_to_list(list_id: ListID) -> Iterator[Subscriber]:
     """Yield screen name and email address of the users that are
     currently subscribed to the list.
 

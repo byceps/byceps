@@ -116,7 +116,7 @@ def export_subscribers(list_id):
     """
     list_ = _get_list_or_404(list_id)
 
-    subscribers = newsletter_service.get_subscribers(list_.id)
+    subscribers = newsletter_service.get_subscribers_to_list(list_.id)
 
     exports = list(map(assemble_subscriber_export, subscribers))
 
@@ -139,7 +139,7 @@ def export_subscriber_email_addresses(list_id):
     """
     list_ = _get_list_or_404(list_id)
 
-    subscribers = newsletter_service.get_subscribers(list_.id)
+    subscribers = newsletter_service.get_subscribers_to_list(list_.id)
     email_addresses = map(attrgetter('email_address'), subscribers)
     return '\n'.join(email_addresses)
 
