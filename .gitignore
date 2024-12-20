@@ -28,10 +28,7 @@ __pycache__
 /docs/_build
 
 # custom configurations
-/config/*
-!/config/apps_example.toml
-!/config/development_example.toml
-!/config/production_example.toml
+/config/*.toml
 /docker/byceps/*.toml
 
 # l10n
