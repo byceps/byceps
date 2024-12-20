@@ -70,7 +70,7 @@ def subscribers(make_user, newsletter_list):
 
             match state:
                 case SubscriptionState.requested:
-                    newsletter_command_service.subscribe(
+                    newsletter_command_service.subscribe_user_to_list(
                         user, newsletter_list, expressed_at
                     ).unwrap()
                 case SubscriptionState.declined:

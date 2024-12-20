@@ -18,7 +18,7 @@ from byceps.services.user.models.user import User
 from .models import List, SubscriptionState, SubscriptionUpdate
 
 
-def subscribe(
+def subscribe_user_to_list(
     user: User, list_: List, expressed_at: datetime
 ) -> tuple[SubscriptionUpdate, SubscribedToNewsletterEvent]:
     """Subscribe the user to that list."""

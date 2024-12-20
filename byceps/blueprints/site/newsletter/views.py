@@ -31,7 +31,9 @@ def subscribe(list_id):
     list_ = _get_list_or_404(list_id)
     expressed_at = datetime.utcnow()
 
-    result = newsletter_command_service.subscribe(g.user, list_, expressed_at)
+    result = newsletter_command_service.subscribe_user_to_list(
+        g.user, list_, expressed_at
+    )
 
     if result.is_err():
         flash_error(result.unwrap_err())

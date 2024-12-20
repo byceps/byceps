@@ -139,7 +139,7 @@ def create():
     if newsletter_offered:
         subscribe_to_newsletter = form.subscribe_to_newsletter.data
         if subscribe_to_newsletter:
-            newsletter_command_service.subscribe(
+            newsletter_command_service.subscribe_user_to_list(
                 user, newsletter_list, now_utc
             ).unwrap()
 
