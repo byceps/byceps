@@ -138,7 +138,7 @@ def subscribers(make_user, newsletter_list):
                     user, newsletter_list, expressed_at
                 ).unwrap()
             elif state == SubscriptionState.declined:
-                newsletter_command_service.unsubscribe(
+                newsletter_command_service.unsubscribe_user_from_list(
                     user, newsletter_list, expressed_at
                 ).unwrap()
 

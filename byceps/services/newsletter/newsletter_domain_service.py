@@ -50,7 +50,7 @@ def _build_subscribed_to_newsletter_event(
     )
 
 
-def unsubscribe(
+def unsubscribe_user_from_list(
     user: User, list_: List, expressed_at: datetime
 ) -> tuple[SubscriptionUpdate, UnsubscribedFromNewsletterEvent]:
     """Unsubscribe the user from that list."""

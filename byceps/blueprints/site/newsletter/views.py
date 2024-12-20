@@ -58,7 +58,9 @@ def unsubscribe(list_id):
     list_ = _get_list_or_404(list_id)
     expressed_at = datetime.utcnow()
 
-    result = newsletter_command_service.unsubscribe(g.user, list_, expressed_at)
+    result = newsletter_command_service.unsubscribe_user_from_list(
+        g.user, list_, expressed_at
+    )
 
     if result.is_err():
         flash_error(result.unwrap_err())

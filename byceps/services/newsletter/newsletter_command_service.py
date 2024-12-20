@@ -76,15 +76,17 @@ def subscribe_user_to_list(
     return Ok((subscription_update, event))
 
 
-def unsubscribe(
+def unsubscribe_user_from_list(
     user: User, list_: List, expressed_at: datetime
 ) -> Result[
     tuple[SubscriptionUpdate, UnsubscribedFromNewsletterEvent],
     UnknownListIdError,
 ]:
     """Unsubscribe the user from that list."""
-    subscription_update, event = newsletter_domain_service.unsubscribe(
-        user, list_, expressed_at
+    subscription_update, event = (
+        newsletter_domain_service.unsubscribe_user_from_list(
+            user, list_, expressed_at
+        )
     )
 
     update_subscription_state_result = _update_subscription_state(
