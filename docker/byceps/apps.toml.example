@@ -1,0 +1,9 @@
+[admin]
+server_name = "admin.byceps.example"
+
+[api]
+server_name = "api.byceps.example"
+
+[[sites]]
+server_name = "cozylan.example"
+site_id = "cozylan"

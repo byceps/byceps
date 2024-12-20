@@ -33,15 +33,12 @@ it.
 Create BYCEPS Configuration File
 ================================
 
-To run BYCEPS, a configuration file is required. Those usually reside in
-:file:`config/`.
-
-Create a copy of the example file for the Docker setup,
-:file:`docker.toml.example`:
+To run BYCEPS, a configuration file is required. Create a copy of the
+example file for the Docker setup:
 
 .. code-block:: sh
 
-    $ cp config/docker.toml.example config/docker.toml
+    $ cp docker/byceps/config.toml.example docker/byceps/config.toml
 
 
 Set a Secret Key
@@ -84,11 +81,11 @@ Copy the included example configuration file:
 
 .. code-block:: sh
 
-    $ cp config/apps.toml.example config/docker-apps.toml
+    $ cp docker/byceps/apps.toml.example docker/byceps/apps.toml
 
 - For a **local installation**, you can go with the exemplary hostnames
   already defined in the example apps configuration file,
-  :file:`config/apps.toml.example`, which are:
+  :file:`docker/byceps/apps.toml.example`, which are:
 
   - ``admin.byceps.example`` for the admin UI
   - ``api.byceps.example`` for the API

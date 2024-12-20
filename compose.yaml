@@ -32,8 +32,8 @@ services:
   byceps-apps:
     <<: *byceps-base
     volumes:
-      - ./config/docker.toml:/home/byceps/config/config.toml:ro
-      - ./config/docker-apps.toml:/home/byceps/config/apps.toml:ro
+      - ./docker/byceps/config.toml:/home/byceps/config/config.toml:ro
+      - ./docker/byceps/apps.toml:/home/byceps/config/apps.toml:ro
     environment:
       <<: *byceps-base-env
       BYCEPS_APPS_CONFIG: /home/byceps/config/apps.toml
@@ -44,7 +44,7 @@ services:
   byceps-worker:
     <<: *byceps-base
     volumes:
-      - ./config/docker.toml:/home/byceps/config/config.toml:ro
+      - ./docker/byceps/config.toml:/home/byceps/config/config.toml:ro
     environment:
       <<: *byceps-base-env
       APP_MODE: worker
