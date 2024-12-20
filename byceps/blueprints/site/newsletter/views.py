@@ -30,9 +30,10 @@ blueprint = create_blueprint('newsletter', __name__)
 def subscribe(list_id):
     list_ = _get_list_or_404(list_id)
     expressed_at = datetime.utcnow()
+    initiator = g.user
 
     result = newsletter_command_service.subscribe_user_to_list(
-        g.user, list_, expressed_at
+        g.user, list_, expressed_at, initiator
     )
 
     if result.is_err():
@@ -57,9 +58,10 @@ def subscribe(list_id):
 def unsubscribe(list_id):
     list_ = _get_list_or_404(list_id)
     expressed_at = datetime.utcnow()
+    initiator = g.user
 
     result = newsletter_command_service.unsubscribe_user_from_list(
-        g.user, list_, expressed_at
+        g.user, list_, expressed_at, initiator
     )
 
     if result.is_err():

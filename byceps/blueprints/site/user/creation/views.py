@@ -139,8 +139,9 @@ def create():
     if newsletter_offered:
         subscribe_to_newsletter = form.subscribe_to_newsletter.data
         if subscribe_to_newsletter:
+            initiator = user
             newsletter_command_service.subscribe_user_to_list(
-                user, newsletter_list, now_utc
+                user, newsletter_list, now_utc, initiator
             ).unwrap()
 
     return redirect_to('authn_login.log_in_form')

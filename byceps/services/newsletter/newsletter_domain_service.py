@@ -19,11 +19,9 @@ from .models import List, SubscriptionState, SubscriptionUpdate
 
 
 def subscribe_user_to_list(
-    user: User, list_: List, expressed_at: datetime
+    user: User, list_: List, expressed_at: datetime, initiator: User
 ) -> tuple[SubscriptionUpdate, SubscribedToNewsletterEvent]:
     """Subscribe the user to that list."""
-    initiator = user
-
     subscription_update = SubscriptionUpdate(
         user_id=user.id,
         list_id=list_.id,
@@ -51,11 +49,9 @@ def _build_subscribed_to_newsletter_event(
 
 
 def unsubscribe_user_from_list(
-    user: User, list_: List, expressed_at: datetime
+    user: User, list_: List, expressed_at: datetime, initiator: User
 ) -> tuple[SubscriptionUpdate, UnsubscribedFromNewsletterEvent]:
     """Unsubscribe the user from that list."""
-    initiator = user
-
     subscription_update = SubscriptionUpdate(
         user_id=user.id,
         list_id=list_.id,

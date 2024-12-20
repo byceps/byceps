@@ -46,14 +46,14 @@ def delete_list(list_id: ListID) -> None:
 
 
 def subscribe_user_to_list(
-    user: User, list_: List, expressed_at: datetime
+    user: User, list_: List, expressed_at: datetime, initiator: User
 ) -> Result[
     tuple[SubscriptionUpdate, SubscribedToNewsletterEvent], UnknownListIdError
 ]:
     """Subscribe the user to that list."""
     subscription_update, event = (
         newsletter_domain_service.subscribe_user_to_list(
-            user, list_, expressed_at
+            user, list_, expressed_at, initiator
         )
     )
 
@@ -81,7 +81,7 @@ def subscribe_user_to_list(
 
 
 def unsubscribe_user_from_list(
-    user: User, list_: List, expressed_at: datetime
+    user: User, list_: List, expressed_at: datetime, initiator: User
 ) -> Result[
     tuple[SubscriptionUpdate, UnsubscribedFromNewsletterEvent],
     UnknownListIdError,
@@ -89,7 +89,7 @@ def unsubscribe_user_from_list(
     """Unsubscribe the user from that list."""
     subscription_update, event = (
         newsletter_domain_service.unsubscribe_user_from_list(
-            user, list_, expressed_at
+            user, list_, expressed_at, initiator
         )
     )
 
@@ -110,13 +110,13 @@ def unsubscribe_user_from_list(
 
 
 def unsubscribe_user_from_lists(
-    user: User, expressed_at: datetime
+    user: User, expressed_at: datetime, initiator: User
 ) -> tuple[SubscriptionUpdate, UnsubscribedFromNewsletterEvent]:
     """Unsubscribe the user from the lists they are subscribed to."""
     events = []
 
     for list_ in newsletter_service.get_lists_user_is_subscribed_to(user.id):
-        match unsubscribe_user_from_list(user, list_, expressed_at):
+        match unsubscribe_user_from_list(user, list_, expressed_at, initiator):
             case Ok((_, event)):
                 events.append(event)
             case Err(e):
