@@ -5,6 +5,7 @@
 .git
 .github
 .gitignore
+.jj
 .mypy_cache
 .pytest_cache
 .ruff_cache
