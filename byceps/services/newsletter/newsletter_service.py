@@ -105,6 +105,15 @@ def get_subscription_updates_for_user(
     ).all()
 
 
+def get_lists_user_is_subscribed_to(user_id: UserID) -> set[List]:
+    """Return the lists the user is subscribed to."""
+    return {
+        list_
+        for list_ in get_all_lists()
+        if is_user_subscribed_to_list(user_id, list_.id)
+    }
+
+
 def is_user_subscribed_to_list(user_id: UserID, list_id: ListID) -> bool:
     """Return if the user is subscribed to the list or not."""
     return (
