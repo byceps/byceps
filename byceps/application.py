@@ -200,7 +200,7 @@ def _configure(
     # Allow configuration values to be overridden by environment variables.
     app.config.update(_get_config_from_environment())
 
-    _ensure_required_config_keys(app)
+    _ensure_required_config_keys(app.config)
 
     locale = app.config['LOCALE']
     app.config['BABEL_DEFAULT_LOCALE'] = locale
@@ -241,7 +241,7 @@ def _get_config_from_environment() -> Iterator[tuple[str, Any]]:
             yield key, value
 
 
-def _ensure_required_config_keys(app: BycepsApp) -> None:
+def _ensure_required_config_keys(config: dict[str, Any]) -> None:
     """Ensure the required configuration keys have values."""
     for key in (
         'APP_MODE',
@@ -251,7 +251,7 @@ def _ensure_required_config_keys(app: BycepsApp) -> None:
         'SQLALCHEMY_DATABASE_URI',
         'TIMEZONE',
     ):
-        if not app.config.get(key):
+        if not config.get(key):
             raise ConfigurationError(
                 f'Missing value for configuration key "{key}".'
             )
