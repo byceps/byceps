@@ -151,7 +151,7 @@ def test_create(
     assert_consent(user.id, privacy_policy_consent_subject_id)
 
     # newsletter subscription
-    assert is_subscribed_to_newsletter(user.id, brand.id)
+    assert is_subscribed_to_brand_newsletter(user.id, brand.id)
 
     # confirmation e-mail
 
@@ -207,7 +207,7 @@ def test_create_without_newsletter_subscription(
     assert user is not None
 
     # newsletter subscription
-    assert not is_subscribed_to_newsletter(user.id, brand.id)
+    assert not is_subscribed_to_brand_newsletter(user.id, brand.id)
 
 
 # helpers
@@ -236,7 +236,7 @@ def find_verification_token(user_id):
     ).first()
 
 
-def is_subscribed_to_newsletter(user_id, brand_id):
+def is_subscribed_to_brand_newsletter(user_id, brand_id):
     return newsletter_service.is_user_subscribed_to_list(user_id, brand_id)
 
 
