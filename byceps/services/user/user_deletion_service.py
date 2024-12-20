@@ -13,6 +13,7 @@ from byceps.events.user import UserAccountDeletedEvent
 from byceps.services.authn.password import authn_password_service
 from byceps.services.authn.session import authn_session_service
 from byceps.services.authz import authz_service
+from byceps.services.newsletter import newsletter_command_service
 from byceps.services.user import (
     user_domain_service,
     user_log_service,
@@ -37,6 +38,9 @@ def delete_account(
     authn_session_service.delete_session_tokens_for_user(user.id)
     authn_password_service.delete_password_hash(user.id)
     verification_token_service.delete_tokens_for_user(user.id)
+    newsletter_command_service.unsubscribe_user_from_lists(
+        user, log_entry.occurred_at, initiator
+    )
 
     return event
 
