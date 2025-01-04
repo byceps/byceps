@@ -173,41 +173,49 @@ def _create_app(
 
 def _configure(app: BycepsApp, config_overrides: dict[str, Any]) -> None:
     """Configure application from file, environment variables, and defaults."""
-    app.config.from_mapping(
-        {
-            # login sessions
-            'PERMANENT_SESSION_LIFETIME': timedelta(14),
-            'SESSION_COOKIE_SAMESITE': 'Lax',
-            'SESSION_COOKIE_SECURE': True,
-            # static content files path
-            'PATH_DATA': Path('./data'),
-            # Limit incoming request content.
-            'MAX_CONTENT_LENGTH': 4000000,
-        }
-    )
+    root_path = Path(app.root_path)
+    data = _assemble_configuration(root_path, config_overrides)
+    app.config.from_mapping(data)
+
+    init_app_config(app)
+
+
+def _assemble_configuration(
+    root_path: Path, config_overrides: dict[str, Any]
+) -> dict[str, Any]:
+    """Assemble configuration."""
+    data = {
+        # login sessions
+        'PERMANENT_SESSION_LIFETIME': timedelta(14),
+        'SESSION_COOKIE_SAMESITE': 'Lax',
+        'SESSION_COOKIE_SECURE': True,
+        # static content files path
+        'PATH_DATA': Path('./data'),
+        # Limit incoming request content.
+        'MAX_CONTENT_LENGTH': 4000000,
+    }
 
     config_filename_str = os.environ.get('BYCEPS_CONFIG')
     if config_filename_str:
-        root_path = Path(app.root_path)
         config_filename = root_path / config_filename_str
-        config_data = _read_configuration_from_file(config_filename)
-        app.config.from_mapping(config_data)
+        config_file_data = _read_configuration_from_file(config_filename)
+        data.update(config_file_data)
 
-    app.config.from_mapping(config_overrides)
+    data.update(config_overrides)
 
     # Allow configuration values to be overridden by environment variables.
-    app.config.from_mapping(_get_config_from_environment())
+    data.update(_get_config_from_environment())
 
-    _ensure_required_config_keys(app.config)
+    locale = data['LOCALE']
+    data['BABEL_DEFAULT_LOCALE'] = locale
 
-    locale = app.config['LOCALE']
-    app.config['BABEL_DEFAULT_LOCALE'] = locale
+    timezone = data['TIMEZONE']
+    data['BABEL_DEFAULT_TIMEZONE'] = timezone
+    data['SHOP_ORDER_EXPORT_TIMEZONE'] = timezone
 
-    timezone = app.config['TIMEZONE']
-    app.config['BABEL_DEFAULT_TIMEZONE'] = timezone
-    app.config['SHOP_ORDER_EXPORT_TIMEZONE'] = timezone
+    _ensure_required_config_keys(data)
 
-    init_app_config(app)
+    return data
 
 
 def _read_configuration_from_file(filename: Path) -> dict[str, Any]:
