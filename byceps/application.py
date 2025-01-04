@@ -171,9 +171,7 @@ def _create_app(
     return app
 
 
-def _configure(
-    app: BycepsApp, config_overrides: dict[str, Any] | None = None
-) -> None:
+def _configure(app: BycepsApp, config_overrides: dict[str, Any]) -> None:
     """Configure application from file, environment variables, and defaults."""
     app.config.from_mapping(
         {
@@ -195,8 +193,7 @@ def _configure(
         config_data = _read_configuration_from_file(config_filename)
         app.config.from_mapping(config_data)
 
-    if config_overrides is not None:
-        app.config.from_mapping(config_overrides)
+    app.config.from_mapping(config_overrides)
 
     # Allow configuration values to be overridden by environment variables.
     app.config.from_mapping(_get_config_from_environment())
