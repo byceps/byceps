@@ -6,7 +6,6 @@ byceps.application
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterator
 from datetime import timedelta
 import os
 from pathlib import Path
@@ -224,8 +223,10 @@ def _read_configuration_from_file(filename: Path) -> dict[str, Any]:
         raise
 
 
-def _get_config_from_environment() -> Iterator[tuple[str, Any]]:
+def _get_config_from_environment() -> dict[str, Any]:
     """Obtain selected config values from environment variables."""
+    data = {}
+
     for key in (
         'APP_MODE',
         'DEBUG',
@@ -250,7 +251,9 @@ def _get_config_from_environment() -> Iterator[tuple[str, Any]]:
     ):
         value = parse_value_from_environment(key)
         if value is not None:
-            yield key, value
+            data[key] = value
+
+    return data
 
 
 def _ensure_required_config_keys(config: dict[str, Any]) -> None:
