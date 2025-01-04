@@ -206,14 +206,14 @@ def _assemble_configuration(
     # Allow configuration values to be overridden by environment variables.
     data.update(_get_config_from_environment())
 
+    _ensure_required_config_keys(data)
+
     locale = data['LOCALE']
     data['BABEL_DEFAULT_LOCALE'] = locale
 
     timezone = data['TIMEZONE']
     data['BABEL_DEFAULT_TIMEZONE'] = timezone
     data['SHOP_ORDER_EXPORT_TIMEZONE'] = timezone
-
-    _ensure_required_config_keys(data)
 
     return data
 
