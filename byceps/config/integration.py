@@ -24,7 +24,7 @@ def init_app(app: BycepsApp) -> None:
 
 
 def _determine_app_mode(app: BycepsApp) -> AppMode:
-    value = app.config.get('APP_MODE', 'base')
+    value = app.config['APP_MODE']
 
     try:
         return AppMode[value]

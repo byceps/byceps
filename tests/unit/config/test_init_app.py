@@ -14,7 +14,6 @@ from byceps.config.models import AppMode
 @pytest.mark.parametrize(
     ('value', 'expected'),
     [
-        (None, AppMode.base),
         ('base', AppMode.base),
         ('admin', AppMode.admin),
         ('cli', AppMode.cli),
@@ -23,8 +22,7 @@ from byceps.config.models import AppMode
     ],
 )
 def test_init_app(app: BycepsApp, value: str, expected: AppMode):
-    if value is not None:
-        app.config['APP_MODE'] = value
+    app.config['APP_MODE'] = value
 
     if expected == AppMode.site:
         app.config['SITE_ID'] = 'site01'
@@ -37,11 +35,12 @@ def test_init_app(app: BycepsApp, value: str, expected: AppMode):
 @pytest.mark.parametrize(
     'value',
     [
+        None,
         '',
         'invalid',
     ],
 )
-def test_init_app_error(app: BycepsApp, value: str):
+def test_init_app_invalid_app_mode(app: BycepsApp, value: str | None):
     app.config['APP_MODE'] = value
 
     with pytest.raises(ConfigurationError):
