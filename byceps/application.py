@@ -176,7 +176,7 @@ def _configure(
     app: BycepsApp, config_overrides: dict[str, Any] | None = None
 ) -> None:
     """Configure application from file, environment variables, and defaults."""
-    app.config.update(
+    app.config.from_mapping(
         {
             # login sessions
             'PERMANENT_SESSION_LIFETIME': timedelta(14),
@@ -198,7 +198,7 @@ def _configure(
         app.config.from_mapping(config_overrides)
 
     # Allow configuration values to be overridden by environment variables.
-    app.config.update(_get_config_from_environment())
+    app.config.from_mapping(_get_config_from_environment())
 
     _ensure_required_config_keys(app.config)
 

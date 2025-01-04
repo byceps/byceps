@@ -36,7 +36,7 @@ def make_app():
         app = BycepsApp()
 
         if additional_config is not None:
-            app.config.update(additional_config)
+            app.config.from_mapping(additional_config)
 
         Babel(app)
 
