@@ -191,8 +191,10 @@ def _configure(
 
     config_filename_str = os.environ.get('BYCEPS_CONFIG')
     if config_filename_str:
-        config_filename = Path(config_filename_str)
-        app.config.from_file(config_filename, load=rtoml.load)
+        root_path = Path(app.root_path)
+        config_filename = root_path / config_filename_str
+        config_data = _read_configuration_from_file(config_filename)
+        app.config.from_mapping(config_data)
 
     if config_overrides is not None:
         app.config.from_mapping(config_overrides)
@@ -210,6 +212,16 @@ def _configure(
     app.config['SHOP_ORDER_EXPORT_TIMEZONE'] = timezone
 
     init_app_config(app)
+
+
+def _read_configuration_from_file(filename: Path) -> dict[str, Any]:
+    """Load configuration from file."""
+    try:
+        with filename.open() as f:
+            return rtoml.load(f)
+    except OSError as e:
+        e.strerror = f'Unable to load configuration file ({e.strerror})'
+        raise
 
 
 def _get_config_from_environment() -> Iterator[tuple[str, Any]]:
