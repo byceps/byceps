@@ -264,25 +264,25 @@ def parse_config(toml: str) -> ParsingResult[BycepsConfig]:
 
 def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
     """Parse configuration from dictionary."""
-    entries = {}
-    errors = []
+    entries: Data = {}
+    errors: list[str] = []
 
     for field in _TOPLEVEL_FIELDS:
         match _get_value(data, field.key, field.default):
-            case Ok(value):
-                entries[field.key] = value
-            case Err(err):
-                errors.append(err)
+            case Ok(toplevel_value):
+                entries[field.key] = toplevel_value
+            case Err(toplevel_err):
+                errors.append(toplevel_err)
 
     for section in _SECTION_DEFINITIONS:
         match _parse_section(data, section):
-            case Ok(value):
-                entries[section.name] = value
-            case Err(err):
-                if isinstance(err, list):
-                    errors.extend(err)
+            case Ok(section_value):
+                entries[section.name] = section_value
+            case Err(section_err):
+                if isinstance(section_err, list):
+                    errors.extend(section_err)
                 else:
-                    errors.append(err)
+                    errors.append(section_err)
 
     if errors:
         return Err(errors)
@@ -310,7 +310,7 @@ def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
 def _parse_required_section(
     data: Data,
     section: Section,
-    parse: Callable[[Data], ParsingResult[T | None]],
+    parse: Callable[[Data], ParsingResult[T]],
 ) -> ParsingResult[T]:
     key = section.name
     return (
@@ -346,8 +346,8 @@ def _parse_section_fields(
     subsections: list[Subsection],
     config_class: type[C],
 ) -> ParsingResult[C]:
-    entries = {}
-    errors = []
+    entries: Data = {}
+    errors: list[str] = []
 
     for field in fields:
         section_value = _get_section_value(
