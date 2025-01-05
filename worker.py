@@ -13,7 +13,7 @@ from byceps.util.sentry import configure_sentry_from_env
 
 
 if __name__ == '__main__':
-    configure_sentry_from_env()
+    configure_sentry_from_env('worker')
 
     app = create_worker_app()
 

@@ -24,13 +24,14 @@ log = structlog.get_logger()
 class SentryAppConfig:
     dsn: str
     environment: str
+    component: str
     app_mode: str
     site_id: str | None
 
 
-def configure_sentry_from_env() -> None:
+def configure_sentry_from_env(component: str) -> None:
     """Initialize and configure the Sentry SDK based on the environment."""
-    config = get_sentry_app_config_from_env()
+    config = _get_sentry_app_config_from_env(component)
     if config is None:
         log.info('Sentry integration: disabled (no DSN configured)')
         return None
@@ -40,12 +41,13 @@ def configure_sentry_from_env() -> None:
     log.info(
         'Sentry integration: enabled',
         environment=config.environment,
+        component=component,
         app_mode=config.app_mode,
         site_id=config.site_id,
     )
 
 
-def get_sentry_app_config_from_env() -> SentryAppConfig | None:
+def _get_sentry_app_config_from_env(component: str) -> SentryAppConfig | None:
     """Attempt to obtain Sentry configuration from environment."""
     dsn = os.environ.get('SENTRY_DSN')
     if not dsn:
@@ -63,6 +65,7 @@ def get_sentry_app_config_from_env() -> SentryAppConfig | None:
     return SentryAppConfig(
         dsn=dsn,
         environment=environment,
+        component=component,
         app_mode=app_mode,
         site_id=site_id,
     )
@@ -75,6 +78,7 @@ def configure_sentry(config: SentryAppConfig) -> None:
         environment=config.environment,
     )
 
+    sentry_sdk.set_tag('component', config.component)
     sentry_sdk.set_tag('app_mode', config.app_mode)
 
     if config.app_mode == 'site':

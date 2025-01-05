@@ -17,7 +17,7 @@ from byceps.util.sentry import configure_sentry_from_env
 log = structlog.get_logger()
 
 
-configure_sentry_from_env()
+configure_sentry_from_env('apps')
 
 match get_apps_config():
     case Ok(apps_config):
