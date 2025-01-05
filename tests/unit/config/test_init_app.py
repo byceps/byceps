@@ -16,6 +16,7 @@ from byceps.config.models import AppMode
     [
         ('base', AppMode.base),
         ('admin', AppMode.admin),
+        ('api', AppMode.api),
         ('cli', AppMode.cli),
         ('site', AppMode.site),
         ('worker', AppMode.worker),
