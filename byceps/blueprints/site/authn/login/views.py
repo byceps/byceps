@@ -60,12 +60,12 @@ def log_in():
         abort(403, 'Log in to this site is generally disabled.')
 
     form = LogInForm(request.form)
+    if not form.validate():
+        abort(401)
 
     username = form.username.data.strip()
     password = form.password.data
     permanent = form.permanent.data
-    if not all([username, password]):
-        abort(401)
 
     log_in_result = service.log_in_user(
         username,
