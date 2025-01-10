@@ -10,6 +10,7 @@ from moneyed import Money
 import pytest
 
 
+from byceps.config.models import AppMode
 from byceps.services.shop.order.models.order import (
     Address,
     LineItem,
@@ -38,11 +39,12 @@ def app(make_app):
     tz = 'Europe/Berlin'
 
     app = make_app(
+        AppMode.site,
         additional_config={
             'LOCALE': 'de',
             'TIMEZONE': tz,
             'BABEL_DEFAULT_TIMEZONE': tz,
-        }
+        },
     )
 
     with app.app_context():

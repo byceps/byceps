@@ -8,13 +8,14 @@ from collections.abc import Iterable
 import pytest
 
 from byceps.byceps_app import BycepsApp
+from byceps.config.models import AppMode
 from byceps.services.country import country_service
 from byceps.services.country.country_service import Country
 
 
 @pytest.fixture(scope='module')
 def app(make_app):
-    app = make_app()
+    app = make_app(AppMode.site)
     with app.app_context():
         yield app
 

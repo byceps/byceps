@@ -6,12 +6,15 @@
 import pytest
 
 from byceps.byceps_app import BycepsApp
+from byceps.config.models import AppMode
 from byceps.services.text_markup.text_markup_service import render_html
 
 
 @pytest.fixture(scope='module')
 def app(make_app):
-    app = make_app(additional_config={'BABEL_DEFAULT_LOCALE': 'de'})
+    app = make_app(
+        AppMode.site, additional_config={'BABEL_DEFAULT_LOCALE': 'de'}
+    )
 
     with app.app_context():
         yield app

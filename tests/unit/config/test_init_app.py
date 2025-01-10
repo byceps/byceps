@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.byceps_app import BycepsApp
 from byceps.config.errors import ConfigurationError
 from byceps.config.integration import init_app
 from byceps.config.models import AppMode
@@ -21,7 +20,9 @@ from byceps.config.models import AppMode
         ('worker', AppMode.worker),
     ],
 )
-def test_init_app(app: BycepsApp, value: str, expected: AppMode):
+def test_init_app(make_app, value: str, expected: AppMode):
+    app = make_app(AppMode.cli)
+
     app.config['APP_MODE'] = value
 
     if expected == AppMode.site:
@@ -40,13 +41,10 @@ def test_init_app(app: BycepsApp, value: str, expected: AppMode):
         'invalid',
     ],
 )
-def test_init_app_invalid_app_mode(app: BycepsApp, value: str | None):
+def test_init_app_invalid_app_mode(make_app, value: str | None):
+    app = make_app(AppMode.cli)
+
     app.config['APP_MODE'] = value
 
     with pytest.raises(ConfigurationError):
         init_app(app)
-
-
-@pytest.fixture(scope='module')
-def app(make_app) -> BycepsApp:
-    return make_app()

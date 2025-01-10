@@ -12,6 +12,7 @@ from moneyed import EUR, Money
 import pytest
 
 from byceps.byceps_app import BycepsApp
+from byceps.config.models import AppMode
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import Party, PartyID
 from byceps.services.shop.order.models.order import Orderer
@@ -30,6 +31,7 @@ from tests.helpers import generate_token, generate_uuid
 @pytest.fixture(scope='session')
 def make_app():
     def _wrapper(
+        app_mode: AppMode,
         *,
         additional_config: dict[str, Any] | None = None,
     ) -> BycepsApp:
@@ -47,7 +49,7 @@ def make_app():
 
 @pytest.fixture(scope='session')
 def app(make_app):
-    return make_app()
+    return make_app(AppMode.site)
 
 
 @pytest.fixture(scope='session')

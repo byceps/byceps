@@ -7,10 +7,12 @@ from datetime import datetime
 
 import pytest
 
+from byceps.config.models import AppMode
+
 
 @pytest.fixture(scope='package')
 def app(make_app):
-    app = make_app(additional_config={'LOCALE': 'en'})
+    app = make_app(AppMode.site, additional_config={'LOCALE': 'en'})
     with app.app_context():
         yield app
 
