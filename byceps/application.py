@@ -10,6 +10,7 @@ from datetime import timedelta
 import os
 from pathlib import Path
 from typing import Any
+from wsgiref.types import WSGIApplication
 
 from flask_babel import Babel
 import jinja2
@@ -294,7 +295,7 @@ def _init_site_app(app: BycepsApp) -> None:
 
 
 def _dispatch_apps_by_url_path(app: BycepsApp) -> None:
-    mounts = {}
+    mounts: dict[str, WSGIApplication] = {}
 
     metrics_enabled = (
         app.config.get('METRICS_ENABLED', False)
