@@ -61,7 +61,7 @@ def log_in():
 
     form = LogInForm(request.form)
     if not form.validate():
-        abort(401)
+        abort(401, 'Username and/or password not given')
 
     username = form.username.data.strip()
     password = form.password.data
@@ -83,7 +83,7 @@ def log_in():
             )
             return [('Location', consent_form_url)]
         else:
-            abort(401)
+            abort(401, 'Authentication failed')
 
     user, logged_in_event = log_in_result.unwrap()
 
