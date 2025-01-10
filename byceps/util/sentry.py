@@ -26,7 +26,6 @@ class SentryAppConfig:
     environment: str
     component: str
     app_mode: str
-    site_id: str | None
 
 
 def configure_sentry_from_env(component: str) -> None:
@@ -43,7 +42,6 @@ def configure_sentry_from_env(component: str) -> None:
         environment=config.environment,
         component=component,
         app_mode=config.app_mode,
-        site_id=config.site_id,
     )
 
 
@@ -57,17 +55,11 @@ def _get_sentry_app_config_from_env(component: str) -> SentryAppConfig | None:
 
     app_mode = os.environ.get('APP_MODE', 'base')
 
-    if app_mode == 'site':
-        site_id = os.environ.get('SITE_ID')
-    else:
-        site_id = None
-
     return SentryAppConfig(
         dsn=dsn,
         environment=environment,
         component=component,
         app_mode=app_mode,
-        site_id=site_id,
     )
 
 
@@ -80,6 +72,3 @@ def configure_sentry(config: SentryAppConfig) -> None:
 
     sentry_sdk.set_tag('component', config.component)
     sentry_sdk.set_tag('app_mode', config.app_mode)
-
-    if config.app_mode == 'site':
-        sentry_sdk.set_tag('site_id', config.site_id)
