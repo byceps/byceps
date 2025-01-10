@@ -25,7 +25,6 @@ class SentryAppConfig:
     dsn: str
     environment: str
     component: str
-    app_mode: str
 
 
 def configure_sentry_from_env(component: str) -> None:
@@ -41,7 +40,6 @@ def configure_sentry_from_env(component: str) -> None:
         'Sentry integration: enabled',
         environment=config.environment,
         component=component,
-        app_mode=config.app_mode,
     )
 
 
@@ -53,13 +51,10 @@ def _get_sentry_app_config_from_env(component: str) -> SentryAppConfig | None:
 
     environment = os.environ.get('SENTRY_ENV', default='prod')
 
-    app_mode = os.environ.get('APP_MODE', 'base')
-
     return SentryAppConfig(
         dsn=dsn,
         environment=environment,
         component=component,
-        app_mode=app_mode,
     )
 
 
@@ -71,4 +66,3 @@ def configure_sentry(config: SentryAppConfig) -> None:
     )
 
     sentry_sdk.set_tag('component', config.component)
-    sentry_sdk.set_tag('app_mode', config.app_mode)
