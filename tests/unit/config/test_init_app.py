@@ -14,7 +14,6 @@ from byceps.config.models import AppMode
 @pytest.mark.parametrize(
     ('value', 'expected'),
     [
-        ('base', AppMode.base),
         ('admin', AppMode.admin),
         ('api', AppMode.api),
         ('cli', AppMode.cli),

@@ -16,7 +16,6 @@ from enum import Enum
 class AppMode(Enum):
     admin = object()
     api = object()
-    base = object()
     cli = object()
     metrics = object()
     site = object()
@@ -27,9 +26,6 @@ class AppMode(Enum):
 
     def is_api(self) -> bool:
         return self == AppMode.api
-
-    def is_base(self) -> bool:
-        return self == AppMode.base
 
     def is_cli(self) -> bool:
         return self == AppMode.cli
