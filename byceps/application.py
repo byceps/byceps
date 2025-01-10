@@ -88,7 +88,7 @@ def create_cli_app() -> BycepsApp:
 
 
 def create_metrics_app(database_uri: str) -> BycepsApp:
-    app = BycepsApp()
+    app = BycepsApp(AppMode.metrics)
 
     app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 
@@ -108,12 +108,10 @@ def _create_app(
     app_mode: AppMode, *, config_overrides: dict[str, Any] | None = None
 ) -> BycepsApp:
     """Create the actual Flask-based BYCEPS application."""
-    app = BycepsApp()
+    app = BycepsApp(app_mode)
 
     if config_overrides is None:
         config_overrides = {}
-
-    config_overrides['APP_MODE'] = app_mode.name
 
     # Avoid connection errors after database becomes temporarily
     # unreachable, then becomes reachable again.
@@ -234,7 +232,6 @@ def _get_config_from_environment() -> dict[str, Any]:
     data = {}
 
     for key in (
-        'APP_MODE',
         'DEBUG',
         'DEBUG_TOOLBAR_ENABLED',
         'LOCALE',
@@ -265,7 +262,6 @@ def _get_config_from_environment() -> dict[str, Any]:
 def _ensure_required_config_keys(config: dict[str, Any]) -> None:
     """Ensure the required configuration keys have values."""
     for key in (
-        'APP_MODE',
         'LOCALE',
         'REDIS_URL',
         'SECRET_KEY',

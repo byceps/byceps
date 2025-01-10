@@ -5,46 +5,26 @@
 
 import pytest
 
-from byceps.config.errors import ConfigurationError
 from byceps.config.integration import init_app
 from byceps.config.models import AppMode
 
 
 @pytest.mark.parametrize(
-    ('value', 'expected'),
+    ('app_mode'),
     [
-        ('admin', AppMode.admin),
-        ('api', AppMode.api),
-        ('cli', AppMode.cli),
-        ('site', AppMode.site),
-        ('worker', AppMode.worker),
+        (AppMode.admin),
+        (AppMode.api),
+        (AppMode.cli),
+        (AppMode.site),
+        (AppMode.worker),
     ],
 )
-def test_init_app(make_app, value: str, expected: AppMode):
-    app = make_app(AppMode.cli)
+def test_init_app(make_app, app_mode: AppMode):
+    app = make_app(app_mode)
 
-    app.config['APP_MODE'] = value
-
-    if expected == AppMode.site:
+    if app_mode == AppMode.site:
         app.config['SITE_ID'] = 'site01'
 
     init_app(app)
 
-    assert app.byceps_app_mode == expected
-
-
-@pytest.mark.parametrize(
-    'value',
-    [
-        None,
-        '',
-        'invalid',
-    ],
-)
-def test_init_app_invalid_app_mode(make_app, value: str | None):
-    app = make_app(AppMode.cli)
-
-    app.config['APP_MODE'] = value
-
-    with pytest.raises(ConfigurationError):
-        init_app(app)
+    assert app.byceps_app_mode == app_mode

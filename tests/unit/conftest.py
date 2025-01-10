@@ -35,7 +35,7 @@ def make_app():
         *,
         additional_config: dict[str, Any] | None = None,
     ) -> BycepsApp:
-        app = BycepsApp()
+        app = BycepsApp(app_mode)
 
         if additional_config is not None:
             app.config.from_mapping(additional_config)

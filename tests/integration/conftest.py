@@ -19,6 +19,7 @@ from byceps.application import (
     create_site_app as _create_site_app,
 )
 from byceps.byceps_app import BycepsApp
+from byceps.config.models import AppMode
 from byceps.database import db
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, Role, RoleID
@@ -84,7 +85,7 @@ _CONFIG_OVERRIDES_FOR_TESTS = {
 
 @pytest.fixture(scope='session')
 def database():
-    app = BycepsApp()
+    app = BycepsApp(AppMode.metrics)
 
     db_url_key = 'SQLALCHEMY_DATABASE_URI'
     app.config[db_url_key] = os.environ.get(

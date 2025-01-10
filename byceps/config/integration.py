@@ -12,26 +12,12 @@ import os
 from byceps.byceps_app import BycepsApp
 
 from .errors import ConfigurationError
-from .models import AppMode
 
 
 def init_app(app: BycepsApp) -> None:
-    app.byceps_app_mode = _determine_app_mode(app)
-
     if app.byceps_app_mode.is_site():
         if not app.config.get('SITE_ID'):
             raise ConfigurationError('No site ID configured.')
-
-
-def _determine_app_mode(app: BycepsApp) -> AppMode:
-    value = app.config['APP_MODE']
-
-    try:
-        return AppMode[value]
-    except KeyError as exc:
-        raise ConfigurationError(
-            f'Invalid app mode "{value}" configured.'
-        ) from exc
 
 
 def parse_value_from_environment(
