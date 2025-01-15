@@ -412,11 +412,9 @@ def make_shop(admin_app: BycepsApp):
     def _wrapper(
         brand: Brand,
         *,
-        shop_id: ShopID | None = None,
         title: str | None = None,
     ) -> Shop:
-        if shop_id is None:
-            shop_id = ShopID(generate_token())
+        shop_id = ShopID(brand.id)
 
         if title is None:
             title = shop_id
