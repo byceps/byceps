@@ -409,17 +409,10 @@ def make_payment_gateway(admin_app: BycepsApp):
 
 @pytest.fixture(scope='session')
 def make_shop(admin_app: BycepsApp):
-    def _wrapper(
-        brand: Brand,
-        *,
-        title: str | None = None,
-    ) -> Shop:
+    def _wrapper(brand: Brand) -> Shop:
         shop_id = ShopID(brand.id)
 
-        if title is None:
-            title = shop_id
-
-        return shop_service.create_shop(shop_id, brand.id, title, EUR)
+        return shop_service.create_shop(shop_id, brand.id, brand.title, EUR)
 
     return _wrapper
 

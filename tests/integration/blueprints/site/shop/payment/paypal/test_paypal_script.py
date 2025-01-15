@@ -29,8 +29,8 @@ from tests.helpers.shop import (
 
 @pytest.fixture(scope='module')
 def shop(make_brand, make_shop, admin_user):
-    brand = make_brand()
-    shop = make_shop(brand, title='NorthCon 2020')
+    brand = make_brand(title='NorthCon 2020')
+    shop = make_shop(brand)
     snippet_id = create_shop_snippet(
         shop.id, admin_user, 'payment_instructions', 'de', ''
     )
