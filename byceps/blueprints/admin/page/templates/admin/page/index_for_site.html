@@ -72,9 +72,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No pages exist for this site.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No pages exist for this site.') }}</div>
   {%- endif %}
 
 {%- endblock %}

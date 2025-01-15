@@ -197,9 +197,7 @@
     {%- endfor %}
   </div>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No images available.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No images available.') }}</div>
   {%- endif %}
 
   <div class="row row--space-between is-vcentered">
@@ -252,9 +250,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No actions are assigned for this product.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No actions are assigned for this product.') }}</div>
   {%- endif %}
 
 {%- endblock %}

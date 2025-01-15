@@ -27,7 +27,7 @@
 {{ render_party(party, days_by_party_id[party.id], ticket_sale_stats_by_party_id[party.id], show_brand_avatar=False) }}
     {%- endfor %}
   {%- else %}
-  <div class="dimmed-box centered">{{ _('No parties exist for this brand.') }}</div>
+  <div class="box no-data-message">{{ _('No parties exist for this brand.') }}</div>
   {%- endif %}
 
 {{ render_pagination_nav(parties, '.index_for_brand', {

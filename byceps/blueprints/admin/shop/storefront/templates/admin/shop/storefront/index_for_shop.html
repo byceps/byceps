@@ -59,9 +59,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No storefronts exist.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No storefronts exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}

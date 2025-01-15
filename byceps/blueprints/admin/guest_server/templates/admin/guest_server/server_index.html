@@ -132,11 +132,8 @@
 
   </a>
     {%- endfor %}
-
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No servers') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No servers') }}</div>
   {%- endif %}
 
 {%- endblock %}

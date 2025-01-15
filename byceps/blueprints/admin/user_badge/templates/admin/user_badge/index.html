@@ -57,9 +57,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No badges defined.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No badges defined.') }}</div>
   {%- endif %}
 
 {%- endblock %}

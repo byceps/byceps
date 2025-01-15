@@ -63,9 +63,7 @@
   </table>
     {%- endfor %}
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No seat groups exist for this party.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No seat groups exist for this party.') }}</div>
   {%- endif %}
 
 {%- endblock %}

@@ -8,16 +8,12 @@
 
   <h1 class="title">{{ page_title }}</h1>
 
-  <div class="box">
-    <div class="block dimmed-box centered">
-      <p>{{ _('No shop exists for this brand.') }}</p>
-    </div>
+  <div class="box no-data-message">{{ _('No shop exists for this brand.') }}</div>
 
-    {%- if has_current_user_permission('shop.create') %}
-    <div class="button-row is-compact is-hcentered mt">
-      <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create shop') }}</span></a>
-    </div>
-    {%- endif %}
+  {%- if has_current_user_permission('shop.create') %}
+  <div class="button-row is-hcentered">
+    <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create shop') }}</span></a>
   </div>
+  {%- endif %}
 
 {%- endblock %}

@@ -58,9 +58,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No snippets exist in this scope.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No snippets exist in this scope.') }}</div>
   {%- endif %}
 
 {%- endblock %}

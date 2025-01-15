@@ -24,9 +24,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No subscription lists exist.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No subscription lists exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}

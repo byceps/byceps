@@ -118,9 +118,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No news channels are assigned to this site.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No news channels are assigned to this site.') }}</div>
   {%- endif %}
 
   <h2>{{ _('Settings') }} {{ render_extra_in_heading(settings|length) }}</h2>
@@ -143,9 +141,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No settings defined.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No settings defined.') }}</div>
   {%- endif %}
 
 {%- endblock %}

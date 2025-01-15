@@ -57,9 +57,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No settings defined.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No settings defined.') }}</div>
   {%- endif %}
 
 {%- endblock %}

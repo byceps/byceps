@@ -50,9 +50,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No boards exist for this brand.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No boards exist for this brand.') }}</div>
   {%- endif %}
 
 {%- endblock %}

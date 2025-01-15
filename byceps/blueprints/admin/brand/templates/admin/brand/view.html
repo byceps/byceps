@@ -59,9 +59,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No settings defined.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No settings defined.') }}</div>
   {%- endif %}
 
   <div class="row row--space-between is-vcentered">
@@ -76,8 +74,8 @@
     </div>
     {%- endif %}
   </div>
+  {%- if email_config %}
   <div class="box">
-    {%- if email_config %}
     <div class="row mb">
       <div>
 
@@ -95,9 +93,9 @@
 
     <div class="data-label">{{ _('Contact address') }}</div>
     <div class="data-value">{{ email_config.contact_address|fallback }}</div>
-    {%- else %}
-    <div class="dimmed-box centered">{{ _('Not configured') }}</div>
-    {%- endif %}
   </div>
+  {%- else %}
+  <div class="box no-data-message">{{ _('Not configured') }}</div>
+  {%- endif %}
 
 {%- endblock %}

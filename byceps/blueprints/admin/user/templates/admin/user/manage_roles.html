@@ -71,9 +71,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('There are no roles that could be assigned to the user.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('There are no roles that could be assigned to the user.') }}</div>
   {%- endif %}
 
 {%- endblock %}

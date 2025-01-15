@@ -79,16 +79,12 @@
         {%- endfor %}
   </table>
       {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('This team has no members.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('This team has no members.') }}</div>
       {%- endif %}
 
     {%- endfor %}
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No orga teams are defined.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No orga teams are defined.') }}</div>
   {%- endif %}
 
 {%- endblock %}

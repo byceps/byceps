@@ -37,9 +37,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('None defined') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('None defined') }}</div>
   {%- endif %}
 
 {%- endblock %}

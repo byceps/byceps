@@ -21,9 +21,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No sites available.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No sites available.') }}</div>
   {%- endif %}
 
 {%- endblock %}

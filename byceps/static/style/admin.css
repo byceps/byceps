@@ -727,11 +727,10 @@ table.events.itemlist {
   margin-top: var(--inner-gutter);
 }
 
-.dimmed-box {
-  border-radius: var(--border-radius);
-  border: #dddddd solid 1px;
+.box.no-data-message {
   color: var(--dimmed-color);
-  padding: 1.5rem;
+  padding: 2rem;
+  text-align: center;
 }
 
 .preview-background {

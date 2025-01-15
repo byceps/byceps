@@ -93,9 +93,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No news posts exist for this channel.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No news posts exist for this channel.') }}</div>
   {%- endif %}
 
 {{ render_pagination_nav(items, '.channel_view', {

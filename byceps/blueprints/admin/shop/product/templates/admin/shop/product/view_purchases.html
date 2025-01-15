@@ -40,9 +40,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('This product has not been purchased yet.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('This product has not been purchased yet.') }}</div>
   {%- endif %}
 
 {%- endblock %}

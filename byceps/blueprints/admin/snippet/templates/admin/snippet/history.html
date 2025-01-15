@@ -44,9 +44,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No versions exist.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No versions exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}

@@ -112,7 +112,7 @@
   </div>{# .box #}
     {%- endfor %}
   {%- else %}
-  <div class="dimmed-box centered">{{ _('No webhooks defined.') }}</div>
+  <div class="box no-data-message">{{ _('No webhooks defined.') }}</div>
   {%- endif %}
 
 {%- endblock %}

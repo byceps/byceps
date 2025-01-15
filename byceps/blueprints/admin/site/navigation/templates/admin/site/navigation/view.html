@@ -106,9 +106,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No menus exist.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No menus exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}

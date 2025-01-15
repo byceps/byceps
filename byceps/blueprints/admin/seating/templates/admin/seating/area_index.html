@@ -72,9 +72,7 @@
     </tfoot>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No areas exist.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No areas exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}

@@ -126,9 +126,7 @@ code {
   </div>
     {%- endfor %}
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No API tokens defined.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No API tokens defined.') }}</div>
   {%- endif %}
 
 {%- endblock %}

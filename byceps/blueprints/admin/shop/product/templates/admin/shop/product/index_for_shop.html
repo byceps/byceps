@@ -116,9 +116,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No products exist.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No products exist.') }}</div>
   {%- endif %}
 
 {{ render_pagination_nav(products, '.index_for_shop', {

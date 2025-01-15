@@ -62,9 +62,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No tourneys exist.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No tourneys exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}

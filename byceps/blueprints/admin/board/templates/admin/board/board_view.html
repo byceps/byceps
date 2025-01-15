@@ -76,9 +76,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('This board contains no categories.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('This board contains no categories.') }}</div>
   {%- endif %}
 
 {%- endblock %}

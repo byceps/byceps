@@ -173,9 +173,7 @@
   </div>
     {%- endfor %}
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">Keine</div>
-  </div>
+  <div class="box no-data-message">Keine</div>
   {%- endif %}
 
 {{ render_pagination_nav(requests, '.index', {

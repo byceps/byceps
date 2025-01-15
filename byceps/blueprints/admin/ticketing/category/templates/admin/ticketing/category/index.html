@@ -49,9 +49,7 @@
     <p style="text-align: right;"><sup>*)</sup> {{ _('created, non-revoked tickets') }}</p>
   </small>
   {%- else %}
-  <div class="box">
-    <div class="dimmed-box centered">{{ _('No ticket categories exist for this party.') }}</div>
-  </div>
+  <div class="box no-data-message">{{ _('No ticket categories exist for this party.') }}</div>
   {%- endif %}
 
 {%- endblock %}
