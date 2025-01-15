@@ -8,7 +8,7 @@ in their ticket.
 This is useful for a party's intranet site when they don't have a
 check-in at the door.
 
-:Copyright: 2014-2024 Jochen Kupperschmidt
+:Copyright: 2014-2025 Jochen Kupperschmidt
 """
 
 from byceps.events.authn import UserLoggedInEvent

@@ -2,7 +2,7 @@
 byceps.services.authn.api.authn_api_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2024 Jochen Kupperschmidt
+:Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

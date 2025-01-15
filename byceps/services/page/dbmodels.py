@@ -5,7 +5,7 @@ byceps.services.page.dbmodels
 Pages of database-stored content. Can contain HTML and template engine
 syntax.
 
-:Copyright: 2014-2024 Jochen Kupperschmidt
+:Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'BYCEPS'
-copyright = '2014-2024 Jochen Kupperschmidt'
+copyright = '2014-2025 Jochen Kupperschmidt'
 author = 'Jochen Kupperschmidt'
 
 

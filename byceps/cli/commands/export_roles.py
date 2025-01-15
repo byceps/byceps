@@ -4,7 +4,7 @@ byceps.cli.command.export_roles
 
 Export roles and their assigned permissions as TOML to STDOUT.
 
-:Copyright: 2014-2024 Jochen Kupperschmidt
+:Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

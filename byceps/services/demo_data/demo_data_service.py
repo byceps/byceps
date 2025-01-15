@@ -4,7 +4,7 @@ byceps.services.demo_data.demo_data_service
 
 Populate the database with data for demonstration purposes.
 
-:Copyright: 2014-2024 Jochen Kupperschmidt
+:Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

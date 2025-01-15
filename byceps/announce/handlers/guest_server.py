@@ -4,7 +4,7 @@ byceps.announce.handlers.guest_server
 
 Announce guest server events.
 
-:Copyright: 2014-2024 Jochen Kupperschmidt
+:Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
