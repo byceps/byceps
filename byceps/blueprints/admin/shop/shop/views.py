@@ -156,11 +156,9 @@ def create(brand_id):
     if not form.validate():
         return create_form(brand.id, form)
 
-    shop_id = brand.id
-    title = brand.title
     currency = get_currency(form.currency.data)
 
-    shop = shop_service.create_shop(shop_id, brand.id, title, currency)
+    shop = shop_service.create_shop(brand, currency)
 
     order_payment_service.create_email_payment_instructions(shop.id, g.user)
     order_payment_service.create_html_payment_instructions(shop.id, g.user)

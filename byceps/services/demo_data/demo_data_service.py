@@ -57,7 +57,7 @@ def create_demo_data(creator: User) -> None:
     party = _create_party(brand.id)
     board = _create_board(brand)
     ticket_category = _create_ticket_category(party.id)
-    shop = _create_shop(brand.id)
+    shop = _create_shop(brand)
     _create_shop_products(shop.id, ticket_category)
     storefront = _create_shop_storefront(shop.id)
     site = _create_site(brand.id, party.id, board.id, storefront.id)
@@ -116,9 +116,9 @@ def _create_ticket_category(party_id: PartyID) -> TicketCategory:
     return ticket_category_service.create_category(party_id, 'Standard')
 
 
-def _create_shop(brand_id: BrandID) -> Shop:
+def _create_shop(brand: Brand) -> Shop:
     log.info('Creating demo shop ...')
-    return shop_service.create_shop(SHOP_ID, brand_id, 'CozyLAN Shop', EUR)
+    return shop_service.create_shop(brand, EUR)
 
 
 def _create_shop_products(

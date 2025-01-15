@@ -10,7 +10,7 @@ from moneyed import Currency
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.brand.models import BrandID
+from byceps.services.brand.models import Brand, BrandID
 
 from .dbmodels import DbShop
 from .models import Shop, ShopID
@@ -20,11 +20,11 @@ class UnknownShopIdError(ValueError):
     pass
 
 
-def create_shop(
-    shop_id: ShopID, brand_id: BrandID, title: str, currency: Currency
-) -> Shop:
+def create_shop(brand: Brand, currency: Currency) -> Shop:
     """Create a shop."""
-    db_shop = DbShop(shop_id, brand_id, title, currency)
+    shop_id = ShopID(brand.id)
+
+    db_shop = DbShop(shop_id, brand.id, brand.title, currency)
 
     db.session.add(db_shop)
     db.session.commit()
