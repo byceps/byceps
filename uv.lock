@@ -165,7 +165,7 @@ dependencies = [
     { name = "rq-dashboard" },
     { name = "rtoml" },
     { name = "schwifty" },
-    { name = "sentry-sdk", extra = ["flask", "rq", "sqlalchemy"] },
+    { name = "sentry-sdk", extra = ["flask", "httpx", "rq", "sqlalchemy"] },
     { name = "sqlalchemy" },
     { name = "stripe" },
     { name = "structlog" },
@@ -226,7 +226,7 @@ requires-dist = [
     { name = "rq-dashboard", specifier = ">=0.8.2.2" },
     { name = "rtoml", specifier = "==0.12.0" },
     { name = "schwifty", specifier = ">=2024.11.0" },
-    { name = "sentry-sdk", extras = ["flask", "rq", "sqlalchemy"], specifier = ">=2.20.0" },
+    { name = "sentry-sdk", extras = ["flask", "httpx", "rq", "sqlalchemy"], specifier = ">=2.20.0" },
     { name = "sqlalchemy", specifier = ">=2.0.37" },
     { name = "stripe", specifier = "==5.4.0" },
     { name = "structlog", specifier = "==24.4.0" },
@@ -1426,6 +1426,9 @@ flask = [
     { name = "blinker" },
     { name = "flask" },
     { name = "markupsafe" },
+]
+httpx = [
+    { name = "httpx" },
 ]
 rq = [
     { name = "rq" },
