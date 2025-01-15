@@ -7,7 +7,8 @@ byceps.blueprints.admin.brand.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import BooleanField, StringField
+from moneyed import CHF, DKK, EUR, GBP, NOK, SEK, USD
+from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from byceps.services.brand import brand_service
@@ -31,12 +32,28 @@ class CreateForm(_BaseForm):
     id = StringField(
         lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=20)]
     )
+    currency = SelectField(lazy_gettext('Currency'), [InputRequired()])
 
     @staticmethod
     def validate_id(form, field):
         brand_id = field.data
         if brand_service.find_brand(brand_id) is not None:
             raise ValidationError(lazy_gettext('The value is already in use.'))
+
+    def set_currency_choices(self, locale: str):
+        currencies = [CHF, DKK, EUR, GBP, NOK, SEK, USD]
+
+        def get_label(currency) -> str:
+            name = currency.get_name(locale)
+            return f'{name} ({currency.code})'
+
+        choices = [
+            (currency.code, get_label(currency)) for currency in currencies
+        ]
+        choices.sort(key=lambda choice: choice[1])
+        choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
+
+        self.currency.choices = choices
 
 
 class UpdateForm(_BaseForm):

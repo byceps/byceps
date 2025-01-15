@@ -8,14 +8,17 @@ byceps.blueprints.admin.brand.views
 
 from flask import abort, g, request
 from flask_babel import gettext
+from moneyed import get_currency
 
 from byceps.services.brand import brand_service, brand_setting_service
 from byceps.services.email import email_config_service, email_footer_service
 from byceps.services.orga import orga_service
 from byceps.services.party import party_service
+from byceps.services.shop.shop import shop_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.l10n import get_default_locale, get_locale_str
 from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm, EmailConfigUpdateForm, UpdateForm
@@ -64,7 +67,10 @@ def view(brand_id):
 @templated
 def create_form(erroneous_form=None):
     """Show form to create a brand."""
+    locale = get_locale_str() or get_default_locale()
+
     form = erroneous_form if erroneous_form else CreateForm()
+    form.set_currency_choices(locale)
 
     return {
         'form': form,
@@ -75,13 +81,17 @@ def create_form(erroneous_form=None):
 @permission_required('brand.create')
 def create():
     """Create a brand."""
+    locale = get_default_locale()
+
     form = CreateForm(request.form)
+    form.set_currency_choices(locale)
 
     if not form.validate():
         return create_form(form)
 
     brand_id = form.id.data.strip().lower()
     title = form.title.data.strip()
+    currency = get_currency(form.currency.data)
 
     brand = brand_service.create_brand(brand_id, title)
 
@@ -96,6 +106,8 @@ def create():
         sender_name=brand.title,
         contact_address=contact_address,
     )
+
+    shop_service.create_shop(brand, currency)
 
     flash_success(
         gettext('Brand "%(title)s" has been created.', title=brand.title)
