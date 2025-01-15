@@ -38,6 +38,7 @@ def test_create(brand_admin_client):
     form_data = {
         'id': brand_id,
         'title': title,
+        'currency': 'EUR',
     }
     response = brand_admin_client.post(url, data=form_data)
     assert response.status_code == 302
