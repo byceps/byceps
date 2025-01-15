@@ -7,7 +7,6 @@ byceps.blueprints.admin.shop.product.forms
 """
 
 from collections.abc import Iterable
-from datetime import date, datetime, time
 from decimal import Decimal
 
 from flask_babel import gettext, lazy_gettext, pgettext
