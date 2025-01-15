@@ -37,7 +37,7 @@ To start it:
 
 .. code-block:: sh
 
-   (.venv)$ BYCEPS_CONFIG=../config/development.toml ./worker.py
+   (.venv)$ BYCEPS_CONFIG=../config/development.toml byceps worker
 
 It should start processing any jobs in the queue right away and will
 then wait for new jobs to be enqueued.
