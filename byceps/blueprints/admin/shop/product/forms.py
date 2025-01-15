@@ -168,6 +168,7 @@ class ProductAttachmentCreateForm(LocalizedForm):
         choices = [
             (str(product.id), to_label(product))
             for product in attachable_products
+            if not product.archived
         ]
         choices.sort(key=lambda choice: choice[1])
 
