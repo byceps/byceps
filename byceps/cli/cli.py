@@ -20,6 +20,7 @@ from .commands.import_seats import import_seats
 from .commands.import_users import import_users
 from .commands.initialize_database import initialize_database
 from .commands.shell import shell
+from .commands.worker import worker
 
 
 @click.group(cls=AppGroup)
@@ -37,5 +38,6 @@ for func in [
     import_users,
     initialize_database,
     shell,
+    worker,
 ]:
     cli.add_command(func)
