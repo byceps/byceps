@@ -29,7 +29,7 @@ def email_footer_snippets(shop_brand: Brand, admin_user: User) -> None:
 
 @pytest.fixture()
 def shop(shop_brand: Brand, make_email_config, make_shop) -> Shop:
-    return make_shop(shop_brand.id)
+    return make_shop(shop_brand)
 
 
 @pytest.fixture()

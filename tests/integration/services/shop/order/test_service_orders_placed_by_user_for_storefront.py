@@ -16,8 +16,7 @@ from tests.helpers.shop import place_order
 @pytest.fixture()
 def shop(make_brand, make_shop) -> Shop:
     brand = make_brand()
-
-    return make_shop(brand.id)
+    return make_shop(brand)
 
 
 @pytest.fixture()

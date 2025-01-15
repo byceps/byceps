@@ -47,7 +47,7 @@ COMMON_FORM_DATA: dict[str, str] = {
 @pytest.fixture(scope='module')
 def shop(make_brand, make_shop, admin_user: User):
     brand = make_brand()
-    shop = make_shop(brand.id)
+    shop = make_shop(brand)
     create_shop_snippet(
         shop.id,
         admin_user,

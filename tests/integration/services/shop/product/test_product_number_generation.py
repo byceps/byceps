@@ -11,15 +11,13 @@ from byceps.services.shop.product import product_sequence_service
 @pytest.fixture(scope='module')
 def shop1(make_brand, make_shop):
     brand = make_brand()
-
-    return make_shop(brand.id)
+    return make_shop(brand)
 
 
 @pytest.fixture(scope='module')
 def shop2(make_brand, make_shop):
     brand = make_brand()
-
-    return make_shop(brand.id)
+    return make_shop(brand)
 
 
 def test_generate_product_number_default(admin_app, shop1):

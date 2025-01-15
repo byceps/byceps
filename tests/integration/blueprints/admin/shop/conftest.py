@@ -11,8 +11,7 @@ from byceps.services.shop.storefront.models import Storefront
 @pytest.fixture(scope='module')
 def shop(make_brand, make_shop):
     brand = make_brand()
-
-    return make_shop(brand.id)
+    return make_shop(brand)
 
 
 @pytest.fixture(scope='module')

@@ -31,7 +31,7 @@ from tests.helpers.shop import (
 @pytest.fixture(scope='module')
 def shop(make_brand, make_shop, admin_user: User) -> Shop:
     brand = make_brand()
-    shop = make_shop(brand.id)
+    shop = make_shop(brand)
     create_shop_snippet(shop.id, admin_user, 'payment_instructions', 'de', '')
 
     return shop

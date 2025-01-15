@@ -16,7 +16,7 @@ from tests.helpers.shop import create_shop_snippet, place_order
 @pytest.fixture()
 def shop1(admin_app, make_brand, make_shop, admin_user):
     brand = make_brand()
-    shop = make_shop(brand.id)
+    shop = make_shop(brand)
     snippet_id = create_payment_instructions_snippet(shop.id, admin_user)
 
     yield shop
@@ -27,7 +27,7 @@ def shop1(admin_app, make_brand, make_shop, admin_user):
 @pytest.fixture()
 def shop2(admin_app, make_brand, make_shop):
     brand = make_brand()
-    shop = make_shop(brand.id)
+    shop = make_shop(brand)
 
     return shop
 
