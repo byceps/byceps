@@ -70,6 +70,16 @@ def _find_db_brand(brand_id: BrandID) -> DbBrand | None:
     return db.session.get(DbBrand, brand_id)
 
 
+def find_brand_by_title(title: str) -> Brand | None:
+    """Return the brand with that title, or `None` if not found."""
+    db_brand = db.session.scalar(select(DbBrand).filter_by(title=title))
+
+    if db_brand is None:
+        return None
+
+    return _db_entity_to_brand(db_brand)
+
+
 def get_brand(brand_id: BrandID) -> Brand:
     """Return the brand with that id, or raise an exception."""
     brand = find_brand(brand_id)

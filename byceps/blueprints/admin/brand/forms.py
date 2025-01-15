@@ -20,6 +20,12 @@ class _BaseForm(LocalizedForm):
         validators=[InputRequired(), Length(min=1, max=40)],
     )
 
+    @staticmethod
+    def validate_title(form, field):
+        title = field.data
+        if brand_service.find_brand_by_title(title) is not None:
+            raise ValidationError(lazy_gettext('The value is already in use.'))
+
 
 class CreateForm(_BaseForm):
     id = StringField(
