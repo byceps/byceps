@@ -8,6 +8,10 @@ byceps.config.integration
 
 import json
 import os
+from pathlib import Path
+from typing import Any
+
+import rtoml
 
 from byceps.byceps_app import BycepsApp
 
@@ -33,3 +37,13 @@ def parse_value_from_environment(
     except Exception:
         # Leave it as a string.
         return value
+
+
+def read_configuration_from_file(filename: Path) -> dict[str, Any]:
+    """Load configuration from file."""
+    try:
+        with filename.open() as f:
+            return rtoml.load(f)
+    except OSError as e:
+        e.strerror = f'Unable to load configuration file ({e.strerror})'
+        raise

@@ -15,7 +15,6 @@ from wsgiref.types import WSGIApplication
 from flask_babel import Babel
 import jinja2
 from redis import Redis
-import rtoml
 import structlog
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
@@ -28,6 +27,7 @@ from byceps.config.errors import ConfigurationError
 from byceps.config.integration import (
     init_app as init_app_config,
     parse_value_from_environment,
+    read_configuration_from_file,
 )
 from byceps.config.models import AppMode
 from byceps.database import db
@@ -197,7 +197,7 @@ def _assemble_configuration(
     config_filename_str = os.environ.get('BYCEPS_CONFIG')
     if config_filename_str:
         config_filename = root_path / config_filename_str
-        config_file_data = _read_configuration_from_file(config_filename)
+        config_file_data = read_configuration_from_file(config_filename)
         data.update(config_file_data)
 
     data.update(config_overrides)
@@ -215,16 +215,6 @@ def _assemble_configuration(
     data['SHOP_ORDER_EXPORT_TIMEZONE'] = timezone
 
     return data
-
-
-def _read_configuration_from_file(filename: Path) -> dict[str, Any]:
-    """Load configuration from file."""
-    try:
-        with filename.open() as f:
-            return rtoml.load(f)
-    except OSError as e:
-        e.strerror = f'Unable to load configuration file ({e.strerror})'
-        raise
 
 
 def _get_config_from_environment() -> dict[str, Any]:
