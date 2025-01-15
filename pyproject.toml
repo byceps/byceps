@@ -45,7 +45,7 @@ dependencies = [
     "paypal-checkout-serversdk==1.0.3",
     "paypalhttp==1.0.1",
     "pillow>=11.1.0",
-    "psycopg[binary]==3.2.3",
+    "psycopg[binary]>=3.2.4",
     "py-moneyed==3.0",
     "pydantic>=2.10.5",
     "qrcode==8.0",
