@@ -2,7 +2,8 @@
 {%- from 'macros/admin/shop/order.html' import render_order_payment_state %}
 
 
-{%- call render_log_entries() %}
+{%- if log_entries %}
+  {%- call render_log_entries() %}
     {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
       {%- if log_entry.event_type == 'order-placed' %}
         {%- call render_log_entry('add', log_entry.occurred_at) %}
@@ -169,4 +170,7 @@
         {%- endcall %}
       {%- endif %}
     {%- endfor %}
-{%- endcall %}
+  {%- endcall %}
+{%- else %}
+<div class="box no-data-message">{{ _('No data yet.') }}</div>
+{%- endif %}
