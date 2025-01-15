@@ -172,16 +172,13 @@ def _create_app(
 
 def _configure(app: BycepsApp, config_overrides: dict[str, Any]) -> None:
     """Configure application from file, environment variables, and defaults."""
-    root_path = Path(app.root_path)
-    data = _assemble_configuration(root_path, config_overrides)
+    data = _assemble_configuration(config_overrides)
     app.config.from_mapping(data)
 
     init_app_config(app)
 
 
-def _assemble_configuration(
-    root_path: Path, config_overrides: dict[str, Any]
-) -> dict[str, Any]:
+def _assemble_configuration(config_overrides: dict[str, Any]) -> dict[str, Any]:
     """Assemble configuration."""
     data = {
         # login sessions
@@ -196,7 +193,7 @@ def _assemble_configuration(
 
     config_filename_str = os.environ.get('BYCEPS_CONFIG')
     if config_filename_str:
-        config_filename = root_path / config_filename_str
+        config_filename = Path(config_filename_str)
         config_file_data = read_configuration_from_file(config_filename)
         data.update(config_file_data)
 
