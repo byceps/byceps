@@ -25,9 +25,7 @@ def test_get_sale_stats(party, tickets, api_client, api_client_authz_header):
 @pytest.fixture(scope='session')
 def party(brand, make_party):
     party_id = 'for-the-stats'
-    return make_party(
-        brand.id, party_id, title=party_id, max_ticket_quantity=1348
-    )
+    return make_party(brand, party_id, title=party_id, max_ticket_quantity=1348)
 
 
 @pytest.fixture()

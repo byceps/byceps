@@ -351,7 +351,7 @@ def make_party(admin_app: BycepsApp):
 
 @pytest.fixture(scope='session')
 def party(make_party, brand: Brand) -> Party:
-    return make_party(brand.id, title='ACMECon 2014')
+    return make_party(brand, title='ACMECon 2014')
 
 
 @pytest.fixture(scope='session')

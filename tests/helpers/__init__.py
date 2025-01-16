@@ -22,7 +22,7 @@ from byceps.services.authn.session.models import CurrentUser
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, RoleID
 from byceps.services.board.models import BoardID
-from byceps.services.brand.models import BrandID
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party import party_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.shop.storefront.models import StorefrontID
@@ -133,7 +133,7 @@ def create_role_with_permissions_assigned(
 
 
 def create_party(
-    brand_id: BrandID,
+    brand: Brand,
     party_id: PartyID | None = None,
     title: str | None = None,
     *,
@@ -150,7 +150,7 @@ def create_party(
 
     return party_service.create_party(
         party_id,
-        brand_id,
+        brand.id,
         title,
         starts_at,
         ends_at,

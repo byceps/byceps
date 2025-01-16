@@ -11,12 +11,12 @@ from byceps.services.snippet.models import SnippetScope
 
 @pytest.fixture(scope='module')
 def party1(make_party, brand):
-    return make_party(brand.id, 'lafiesta-2014', 'La Fiesta 2014')
+    return make_party(brand, 'lafiesta-2014', 'La Fiesta 2014')
 
 
 @pytest.fixture(scope='module')
 def party2(make_party, brand):
-    return make_party(brand.id, 'lafiesta-2015', 'La Fiesta 2015')
+    return make_party(brand, 'lafiesta-2015', 'La Fiesta 2015')
 
 
 def test_current_party_is_considered(party1, party2, make_user):

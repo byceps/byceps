@@ -14,7 +14,7 @@ PARTY_ID = 'favorite-party'
 
 @pytest.fixture(scope='module')
 def party(make_party, brand):
-    return make_party(brand.id, PARTY_ID, 'My favorite party!')
+    return make_party(brand, PARTY_ID, 'My favorite party!')
 
 
 def test_create(party):

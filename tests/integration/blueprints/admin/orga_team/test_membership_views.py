@@ -14,7 +14,7 @@ BASE_URL = 'http://admin.acmecon.test'
 def test_membership_create_form(
     orga_team_admin_client, brand: Brand, make_party, make_team
 ) -> None:
-    party = make_party(brand.id)
+    party = make_party(brand)
     team = make_team(party.id)
     url = f'{BASE_URL}/orga_teams/teams/{team.id}/memberships/create'
     response = orga_team_admin_client.get(url)
@@ -25,7 +25,7 @@ def test_membership_create(
     orga_team_admin_client, brand: Brand, make_party, make_team, make_user
 ) -> None:
     user = make_user()
-    party = make_party(brand.id)
+    party = make_party(brand)
     team = make_team(party.id)
     orga_service.grant_orga_status(user, brand, user)
 
@@ -55,7 +55,7 @@ def test_membership_update_form(
     orga_team_admin_client, brand: Brand, make_party, make_team, make_user
 ) -> None:
     user = make_user()
-    party = make_party(brand.id)
+    party = make_party(brand)
     team = make_team(party.id)
     membership = orga_team_service.create_membership(team.id, user.id, 'PUBG')
 
@@ -71,7 +71,7 @@ def test_membership_update(
     orga_team_admin_client, brand: Brand, make_party, make_team, make_user
 ) -> None:
     user = make_user()
-    party = make_party(brand.id)
+    party = make_party(brand)
     team1 = make_team(party.id, 'Support')
     team2 = make_team(party.id, 'Tournaments')
     membership_before = orga_team_service.create_membership(
@@ -102,7 +102,7 @@ def test_membership_remove(
     orga_team_admin_client, brand: Brand, make_party, make_team, make_user
 ) -> None:
     user = make_user()
-    party = make_party(brand.id)
+    party = make_party(brand)
     team = make_team(party.id)
     membership = orga_team_service.create_membership(team.id, user.id, 'CS:GO')
 
