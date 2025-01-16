@@ -7,6 +7,9 @@ application instance
 """
 
 from byceps.application import create_cli_app
+from byceps.config.integration import (
+    read_configuration_from_file_given_in_env_var,
+)
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.models.order import (
     PaymentState as OrderPaymentState,
@@ -15,7 +18,8 @@ from byceps.services.ticketing.ticket_service import find_ticket_by_code
 from byceps.services.user import user_service
 
 
-app = create_cli_app()
+config_overrides = read_configuration_from_file_given_in_env_var()
+app = create_cli_app(config_overrides=config_overrides)
 
 
 @app.shell_context_processor

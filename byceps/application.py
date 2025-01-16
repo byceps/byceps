@@ -7,7 +7,6 @@ byceps.application
 """
 
 from datetime import timedelta
-import os
 from pathlib import Path
 from typing import Any
 from wsgiref.types import WSGIApplication
@@ -27,7 +26,6 @@ from byceps.config.errors import ConfigurationError
 from byceps.config.integration import (
     init_app as init_app_config,
     parse_value_from_environment,
-    read_configuration_from_file,
 )
 from byceps.config.models import AppMode
 from byceps.database import db
@@ -83,8 +81,10 @@ def create_api_app(
     return app
 
 
-def create_cli_app() -> BycepsApp:
-    return _create_app(AppMode.cli)
+def create_cli_app(
+    *, config_overrides: dict[str, Any] | None = None
+) -> BycepsApp:
+    return _create_app(AppMode.cli, config_overrides=config_overrides)
 
 
 def create_metrics_app(database_uri: str) -> BycepsApp:
@@ -100,8 +100,10 @@ def create_metrics_app(database_uri: str) -> BycepsApp:
     return app
 
 
-def create_worker_app() -> BycepsApp:
-    return _create_app(AppMode.worker)
+def create_worker_app(
+    *, config_overrides: dict[str, Any] | None = None
+) -> BycepsApp:
+    return _create_app(AppMode.worker, config_overrides=config_overrides)
 
 
 def _create_app(
@@ -190,12 +192,6 @@ def _assemble_configuration(config_overrides: dict[str, Any]) -> dict[str, Any]:
         # Limit incoming request content.
         'MAX_CONTENT_LENGTH': 4000000,
     }
-
-    config_filename_str = os.environ.get('BYCEPS_CONFIG')
-    if config_filename_str:
-        config_filename = Path(config_filename_str)
-        config_file_data = read_configuration_from_file(config_filename)
-        data.update(config_file_data)
 
     data.update(config_overrides)
 

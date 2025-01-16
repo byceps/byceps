@@ -39,7 +39,17 @@ def parse_value_from_environment(
         return value
 
 
-def read_configuration_from_file(filename: Path) -> dict[str, Any]:
+def read_configuration_from_file_given_in_env_var() -> dict[str, Any]:
+    """Load configuration from file specified via environment variable."""
+    filename_str = os.environ.get('BYCEPS_CONFIG')
+    if not filename_str:
+        return {}
+
+    filename = Path(filename_str)
+    return _read_configuration_from_file(filename)
+
+
+def _read_configuration_from_file(filename: Path) -> dict[str, Any]:
     """Load configuration from file."""
     try:
         with filename.open() as f:
