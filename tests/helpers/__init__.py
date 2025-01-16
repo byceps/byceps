@@ -150,7 +150,7 @@ def create_party(
 
     return party_service.create_party(
         party_id,
-        brand.id,
+        brand,
         title,
         starts_at,
         ends_at,

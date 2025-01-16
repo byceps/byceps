@@ -15,7 +15,7 @@ from sqlalchemy import delete, select
 from byceps.database import db, paginate, Pagination
 from byceps.services.brand import brand_service
 from byceps.services.brand.dbmodels import DbBrand
-from byceps.services.brand.models import BrandID
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import PartyID
 
 from .dbmodels import DbParty, DbPartySetting
@@ -28,7 +28,7 @@ class UnknownPartyIdError(Exception):
 
 def create_party(
     party_id: PartyID,
-    brand_id: BrandID,
+    brand: Brand,
     title: str,
     starts_at: datetime,
     ends_at: datetime,
@@ -40,7 +40,7 @@ def create_party(
     """Create a party."""
     db_party = DbParty(
         party_id,
-        brand_id,
+        brand.id,
         title,
         starts_at,
         ends_at,

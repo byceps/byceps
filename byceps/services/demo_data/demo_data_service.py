@@ -54,7 +54,7 @@ STOREFRONT_ID = StorefrontID('cozylan')
 def create_demo_data(creator: User) -> None:
     """Generate data for demonstration purposes."""
     brand = _create_brand(creator)
-    party = _create_party(brand.id)
+    party = _create_party(brand)
     board = _create_board(brand)
     ticket_category = _create_ticket_category(party.id)
     shop = _create_shop(brand)
@@ -77,11 +77,11 @@ def _create_brand(creator: User) -> Brand:
     return brand
 
 
-def _create_party(brand_id: BrandID) -> Party:
+def _create_party(brand: Brand) -> Party:
     log.info('Creating demo party ...')
     return party_service.create_party(
         PARTY_ID,
-        brand_id,
+        brand,
         'CozyLAN 2023',
         datetime(2023, 6, 23, 16, 0),
         datetime(2023, 6, 25, 13, 0),

@@ -153,7 +153,7 @@ def create(brand_id):
 
     party = party_service.create_party(
         party_id,
-        brand.id,
+        brand,
         title,
         starts_at_utc,
         ends_at_utc,
