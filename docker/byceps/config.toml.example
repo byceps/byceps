@@ -1,9 +1,62 @@
 # Exemplary production configuration for Docker
 
+locale = "en"
 # Set a custom secret key before running in production!
 # To generate a secret key, run:
 #     $ docker compose run --rm byceps-apps uv run byceps generate-secret-key
-#SECRET_KEY = ""
+secret_key = ""
+timezone = "Europe/Berlin"
 
-LOCALE = 'de'
-TIMEZONE = 'Europe/Berlin'
+[apps]
+#admin = { server_name = "admin.example" }
+#api = { server_name = "api.example" }
+#sites = [
+#  { server_name = "site1.example", site_id = "site1" },
+#  { server_name = "site2.example", site_id = "site2" },
+#]
+
+[database]
+host = "db"
+port = 5432
+username = "byceps"
+password = "byceps"
+database = "byceps"
+
+#[debug]
+#enabled = false
+#toolbar_enabled = false
+
+#[discord]
+#enabled = false
+#client_id = "discord-client-id"
+#client_secret = "discord-client-secret"
+
+#[metrics]
+#enabled = false
+
+#[payment_gateways.paypal]
+#enabled = false
+#client_id = "paypal-client-id"
+#client_secret = "paypal-client-secret"
+#environment = "sandbox"
+
+#[payment_gateways.stripe]
+#enabled = false
+#secret_key = "stripe-secret-key"
+#publishable_key = "stripe-publishable-key"
+#webhook_secret = "stripe-webhook-secret"
+
+[redis]
+url = "redis://redis/0"
+
+[smtp]
+#host = "localhost"
+#port = 25
+#starttls = true
+#use_ssl = true
+#username = "smtp-user"
+#password = "smtp-password"
+#suppress_send = false
+
+#[styleguide]
+#enabled = false
