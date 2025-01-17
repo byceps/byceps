@@ -160,4 +160,4 @@ order-by-type = false
 
 [tool.uv]
 default-groups = []
-required-version = ">=0.5.16"
+required-version = ">=0.5.20"
