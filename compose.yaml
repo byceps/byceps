@@ -45,7 +45,7 @@ services:
       - ./docker/byceps/config.toml:/home/byceps/config/config.toml:ro
     environment:
       <<: *byceps-base-env
-    command: uv run --no-sync byceps worker
+    command: uv run --no-sync ./worker.py
     networks:
       - byceps
 
