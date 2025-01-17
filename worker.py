@@ -8,6 +8,9 @@
 from rq import Worker
 
 from byceps.application import create_worker_app
+from byceps.config.integration import (
+    read_configuration_from_file_given_in_env_var,
+)
 from byceps.util.jobqueue import get_queue
 from byceps.util.sentry import configure_sentry_from_env
 
@@ -15,7 +18,9 @@ from byceps.util.sentry import configure_sentry_from_env
 if __name__ == '__main__':
     configure_sentry_from_env('worker')
 
-    app = create_worker_app()
+    config_overrides = read_configuration_from_file_given_in_env_var()
+
+    app = create_worker_app(config_overrides=config_overrides)
 
     with app.app_context():
         queues = [get_queue(app)]
