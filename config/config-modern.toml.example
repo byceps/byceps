@@ -52,7 +52,7 @@ url = "redis://127.0.0.1:6379/0"
 #use_ssl = true
 #username = "smtp-user"
 #password = "smtp-password"
-#suppress_send = true
+#suppress_send = false
 
 #[styleguide]
 #enabled = false
