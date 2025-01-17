@@ -106,7 +106,7 @@ def get_tickets_created_by_order(
     return db.session.scalars(
         select(DbTicket)
         .filter_by(order_number=order_number)
-        .order_by(DbTicket.created_at)
+        .order_by(DbTicket.id)
     ).all()
 
 
@@ -157,7 +157,7 @@ def get_tickets_related_to_user(user_id: UserID) -> Sequence[DbTicket]:
                 db.joinedload(DbTicket.user_managed_by),
                 db.joinedload(DbTicket.used_by),
             )
-            .order_by(DbTicket.created_at)
+            .order_by(DbTicket.id)
         )
         .unique()
         .all()
@@ -187,7 +187,7 @@ def get_tickets_related_to_user_for_party(
                 db.joinedload(DbTicket.user_managed_by),
                 db.joinedload(DbTicket.used_by),
             )
-            .order_by(DbTicket.created_at)
+            .order_by(DbTicket.id)
         )
         .unique()
         .all()
@@ -303,7 +303,7 @@ def get_tickets_with_details_for_party_paginated(
             db.joinedload(DbTicket.owned_by),
             db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
         )
-        .order_by(DbTicket.created_at)
+        .order_by(DbTicket.id)
     )
 
     if search_term:
