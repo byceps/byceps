@@ -7,7 +7,7 @@ x-byceps-base: &byceps-base
     - redis
 
 x-byceps-base-env: &byceps-base-env
-  BYCEPS_CONFIG_FILE: /home/byceps/config/config.toml
+  BYCEPS_CONFIG_FILE: /home/byceps/config.toml
 
 services:
 
@@ -30,7 +30,7 @@ services:
   byceps-apps:
     <<: *byceps-base
     volumes:
-      - ./docker/byceps/config.toml:/home/byceps/config/config.toml:ro
+      - ./docker/byceps/config.toml:/home/byceps/config.toml:ro
     environment:
       <<: *byceps-base-env
     networks:
@@ -40,7 +40,7 @@ services:
   byceps-worker:
     <<: *byceps-base
     volumes:
-      - ./docker/byceps/config.toml:/home/byceps/config/config.toml:ro
+      - ./docker/byceps/config.toml:/home/byceps/config.toml:ro
     environment:
       <<: *byceps-base-env
     command: uv run --no-sync byceps worker
