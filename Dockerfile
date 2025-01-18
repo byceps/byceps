@@ -32,6 +32,10 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Copy the application into the image.
 COPY . .
 
+# Sync the project.
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --extra wsgiserver --frozen --no-editable
+
 EXPOSE 5000
 EXPOSE 8080
 
