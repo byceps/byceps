@@ -41,7 +41,7 @@ to run BYCEPS in a relational database instance.
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps create-database-tables
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps create-database-tables
 
 Expected output:
 
@@ -63,7 +63,7 @@ By default, an initial set of roles provided with BYCEPS is imported:
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps import-roles
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-roles
 
 Expected output:
 
@@ -76,7 +76,7 @@ Optionally, the file to import from can be specified with the option
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps import-roles -f custom_roles.toml
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-roles -f custom_roles.toml
 
 Expected output:
 
@@ -100,7 +100,7 @@ To export all roles into a TOML file, standard output is redirected
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps export-roles > exported-roles.toml
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps export-roles > exported-roles.toml
 
 
 Initialize Database
@@ -118,7 +118,7 @@ unnecessary to call the covered commands separately):
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps initialize-database
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps initialize-database
 
 Expected output:
 
@@ -152,7 +152,7 @@ they all will have superuser-like privileges in BYCEPS.
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps create-superuser
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps create-superuser
 
 Expected output:
 
@@ -202,7 +202,7 @@ To import it:
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps import-users example-users.jsonl
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-users example-users.jsonl
 
 Expected output:
 
@@ -268,7 +268,7 @@ To import it:
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps import-seats my-party-2023 example-seats.jsonl
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-seats my-party-2023 example-seats.jsonl
 
 Expected output:
 
@@ -294,7 +294,7 @@ accidental damage).
 
 .. code:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps shell
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps shell
 
 Expected output:
 

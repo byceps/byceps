@@ -10,7 +10,7 @@ in the configuration file:
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps initialize-database
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps initialize-database
 
 Expected output:
 
@@ -26,7 +26,7 @@ user (which will get all available roles assigned):
 
 .. code-block:: sh
 
-    (.venv)$ BYCEPS_CONFIG=config/development.toml byceps create-superuser
+    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps create-superuser
 
 Enter user account details interactively:
 

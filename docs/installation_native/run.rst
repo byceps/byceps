@@ -16,7 +16,7 @@ development purposes:
 
 .. code-block:: sh
 
-   (.venv)$ BYCEPS_CONFIG=config/development.toml BYCEPS_APPS_CONFIG=config/apps.toml flask --app=serve_apps --debug run
+   (.venv)$ BYCEPS_CONFIG=config/config.toml BYCEPS_APPS_CONFIG=config/apps.toml flask --app=serve_apps --debug run
 
 If the hostname mapping (or DNS setup) is also correct, the configured
 BYCEPS applications should be accessible at their respective hostnames
@@ -37,7 +37,7 @@ To start it:
 
 .. code-block:: sh
 
-   (.venv)$ BYCEPS_CONFIG=config/development.toml byceps worker
+   (.venv)$ BYCEPS_CONFIG=config/config.toml byceps worker
 
 It should start processing any jobs in the queue right away and will
 then wait for new jobs to be enqueued.

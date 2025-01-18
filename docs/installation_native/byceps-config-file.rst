@@ -13,7 +13,7 @@ we go along:
 
 .. code-block:: sh
 
-    $ cp config/config.toml.example-development config/development.toml
+    $ cp config/config.toml.example-development config/config.toml
 
 
 Set a Secret Key
