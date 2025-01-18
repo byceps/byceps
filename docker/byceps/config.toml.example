@@ -8,12 +8,11 @@ secret_key = ""
 timezone = "Europe/Berlin"
 
 [apps]
-#admin = { server_name = "admin.example" }
-#api = { server_name = "api.example" }
-#sites = [
-#  { server_name = "site1.example", site_id = "site1" },
-#  { server_name = "site2.example", site_id = "site2" },
-#]
+admin = { server_name = "admin.byceps.example" }
+api = { server_name = "api.byceps.example" }
+sites = [
+  { server_name = "cozylan.example", site_id = "cozylan" },
+]
 
 [database]
 host = "db"
