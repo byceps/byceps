@@ -24,7 +24,7 @@ def worker() -> None:
     """Start a worker."""
     configure_sentry_from_env('worker')
 
-    config_overrides = read_configuration_from_file_given_in_env_var()
+    _, config_overrides = read_configuration_from_file_given_in_env_var()
 
     app = create_worker_app(config_overrides=config_overrides)
 

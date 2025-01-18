@@ -19,6 +19,7 @@ from byceps.util.result import Err, Ok
 
 from .converter import convert_config
 from .errors import ConfigurationError
+from .models import AppsConfig
 from .parser import parse_config
 
 
@@ -46,19 +47,25 @@ def parse_value_from_environment(
         return value
 
 
-def read_configuration_from_file_given_in_env_var() -> dict[str, Any]:
+def read_configuration_from_file_given_in_env_var() -> (
+    tuple[AppsConfig | None, dict[str, Any]]
+):
     """Load configuration from file specified via environment variable."""
     filename_str = os.environ.get('BYCEPS_CONFIG_FILE')
     if filename_str:
         filename = Path(filename_str)
         return _read_modern_configuration_from_file(filename)
     else:
+        apps_config = None
+
         filename_str = os.environ.get('BYCEPS_CONFIG')
         if not filename_str:
-            return {}
+            return apps_config, {}
 
         filename = Path(filename_str)
-        return _read_configuration_from_file(filename)
+        config_overrides = _read_configuration_from_file(filename)
+
+        return apps_config, config_overrides
 
 
 def _read_configuration_from_file(filename: Path) -> dict[str, Any]:
@@ -71,11 +78,16 @@ def _read_configuration_from_file(filename: Path) -> dict[str, Any]:
         raise
 
 
-def _read_modern_configuration_from_file(filename: Path) -> dict[str, Any]:
+def _read_modern_configuration_from_file(
+    filename: Path,
+) -> tuple[AppsConfig, dict[str, Any]]:
     """Load modern configuration from file."""
     match parse_config(filename.read_text()):
         case Ok(config):
-            return convert_config(config)
+            apps_config = config.apps
+            config_overrides = convert_config(config)
+
+            return apps_config, config_overrides
         case Err(errors):
             log.error(
                 'Could not parse configuration file.',

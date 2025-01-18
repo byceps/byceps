@@ -22,13 +22,14 @@ log = structlog.get_logger()
 
 configure_sentry_from_env('apps')
 
-config_overrides = read_configuration_from_file_given_in_env_var()
+apps_config, config_overrides = read_configuration_from_file_given_in_env_var()
 
-match get_apps_config():
-    case Ok(apps_config):
-        app = create_dispatcher_app(
-            apps_config, config_overrides=config_overrides
-        )
-    case Err(e):
-        log.error(e)
-        sys.exit(1)
+if apps_config is None:
+    match get_apps_config():
+        case Ok(_apps_config):
+            apps_config = _apps_config
+        case Err(e):
+            log.error(e)
+            sys.exit(1)
+
+app = create_dispatcher_app(apps_config, config_overrides=config_overrides)

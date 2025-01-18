@@ -18,7 +18,7 @@ from byceps.services.ticketing.ticket_service import find_ticket_by_code
 from byceps.services.user import user_service
 
 
-config_overrides = read_configuration_from_file_given_in_env_var()
+_, config_overrides = read_configuration_from_file_given_in_env_var()
 app = create_cli_app(config_overrides=config_overrides)
 
 
