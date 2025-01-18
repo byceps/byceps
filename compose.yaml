@@ -2,6 +2,7 @@ x-byceps-base: &byceps-base
   build: .
   volumes:
     - ./data:/home/byceps/data
+    - ./docker/byceps/config.toml:/home/byceps/config.toml:ro
   depends_on:
     - db
     - redis
@@ -29,8 +30,6 @@ services:
 
   byceps-apps:
     <<: *byceps-base
-    volumes:
-      - ./docker/byceps/config.toml:/home/byceps/config.toml:ro
     environment:
       <<: *byceps-base-env
     networks:
@@ -39,8 +38,6 @@ services:
 
   byceps-worker:
     <<: *byceps-base
-    volumes:
-      - ./docker/byceps/config.toml:/home/byceps/config.toml:ro
     environment:
       <<: *byceps-base-env
     command: uv run --no-sync byceps worker
