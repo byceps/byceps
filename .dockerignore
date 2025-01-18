@@ -14,7 +14,13 @@
 .venv
 *.egg-info
 assets
+babel.cfg
 compose.yaml
+config
+data
 docker
 Dockerfile
 docs
+justfile
+messages.pot
+tests
