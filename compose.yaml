@@ -31,10 +31,8 @@ services:
     <<: *byceps-base
     volumes:
       - ./docker/byceps/config.toml:/home/byceps/config/config.toml:ro
-      - ./docker/byceps/apps.toml:/home/byceps/config/apps.toml:ro
     environment:
       <<: *byceps-base-env
-      BYCEPS_APPS_CONFIG: /home/byceps/config/apps.toml
     networks:
       - byceps
       - proxy

@@ -74,18 +74,13 @@ Hostname-to-Application Routing
 ===============================
 
 Since a single BYCEPS instance can provide the admin frontend, the API,
-*and* one or more sites, a configuration file is required that defines
-which hostname will be routed to which application.
-
-Copy the included example configuration file:
-
-.. code-block:: sh
-
-    $ cp docker/byceps/apps.toml.example docker/byceps/apps.toml
+*and* one or more sites, a configuration is required that defines which
+hostname will be routed to which application. This is done in the
+``[apps]`` section in the configuration file.
 
 - For a **local installation**, you can go with the exemplary hostnames
-  already defined in the example apps configuration file,
-  :file:`docker/byceps/apps.toml.example`, which are:
+  already defined in the example configuration file,
+  :file:`docker/byceps/config.toml.example`, which are:
 
   - ``admin.byceps.example`` for the admin UI
   - ``api.byceps.example`` for the API
