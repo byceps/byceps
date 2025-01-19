@@ -23,4 +23,3 @@ Dockerfile
 docs
 justfile
 messages.pot
-tests
