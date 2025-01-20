@@ -363,20 +363,20 @@ msgstr ""
 
 #: byceps/announce/handlers/ticketing.py:52
 #, python-format
-msgid "%(owner_screen_name)s has paid %(quantity)s ticket."
-msgid_plural "%(owner_screen_name)s has paid %(quantity)s tickets."
+msgid "%(owner_screen_name)s has paid for %(quantity)s ticket."
+msgid_plural "%(owner_screen_name)s has paid for %(quantity)s tickets."
 msgstr[0] "%(owner_screen_name)s hat %(quantity)s Ticket bezahlt."
 msgstr[1] "%(owner_screen_name)s hat %(quantity)s Tickets bezahlt."
 
 #: byceps/announce/handlers/ticketing.py:63
 #, python-format
-msgid "Currently %(tickets_sold)s of %(tickets_max)s tickets have been paid."
-msgstr "Aktuell sind %(tickets_sold)s von %(tickets_max)s Tickets bezahlt."
+msgid "Currently %(tickets_sold)s of %(tickets_max)s tickets have been sold."
+msgstr "Aktuell sind %(tickets_sold)s von %(tickets_max)s Tickets verkauft."
 
 #: byceps/announce/handlers/ticketing.py:69
 #, python-format
-msgid "Currently %(tickets_sold)s tickets have been paid."
-msgstr "Aktuell sind %(tickets_sold)s Tickets bezahlt."
+msgid "Currently %(tickets_sold)s tickets have been sold."
+msgstr "Aktuell sind %(tickets_sold)s Tickets verkauft."
 
 #: byceps/announce/handlers/tourney.py:41
 #, python-format

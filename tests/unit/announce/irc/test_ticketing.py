@@ -63,7 +63,8 @@ def test_single_ticket_sold_without_max(
     webhook_for_irc,
 ):
     expected_text = (
-        'Neuling has paid 1 ticket. ' 'Currently 772 tickets have been paid.'
+        'Neuling has paid for 1 ticket. '
+        'Currently 772 tickets have been sold.'
     )
 
     get_party_mock.return_value = party
@@ -100,8 +101,8 @@ def test_single_ticket_sold_with_max(
     webhook_for_irc,
 ):
     expected_text = (
-        'Neuling has paid 1 ticket. '
-        'Currently 772 of 1001 tickets have been paid.'
+        'Neuling has paid for 1 ticket. '
+        'Currently 772 of 1001 tickets have been sold.'
     )
 
     get_party_mock.return_value = party
@@ -138,8 +139,8 @@ def test_multiple_tickets_sold(
     webhook_for_irc,
 ):
     expected_text = (
-        'TreuerKäufer has paid 3 tickets. '
-        'Currently 775 of 1001 tickets have been paid.'
+        'TreuerKäufer has paid for 3 tickets. '
+        'Currently 775 of 1001 tickets have been sold.'
     )
 
     get_party_mock.return_value = party

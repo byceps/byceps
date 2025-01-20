@@ -50,8 +50,8 @@ def announce_tickets_sold(
 
     text = (
         ngettext(
-            '%(owner_screen_name)s has paid %(quantity)s ticket.',
-            '%(owner_screen_name)s has paid %(quantity)s tickets.',
+            '%(owner_screen_name)s has paid for %(quantity)s ticket.',
+            '%(owner_screen_name)s has paid for %(quantity)s tickets.',
             event.quantity,
             owner_screen_name=owner_screen_name,
             quantity=event.quantity,
@@ -61,13 +61,13 @@ def announce_tickets_sold(
 
     if sale_stats.tickets_max is not None:
         text += gettext(
-            'Currently %(tickets_sold)s of %(tickets_max)s tickets have been paid.',
+            'Currently %(tickets_sold)s of %(tickets_max)s tickets have been sold.',
             tickets_sold=sale_stats.tickets_sold,
             tickets_max=sale_stats.tickets_max,
         )
     else:
         text += gettext(
-            'Currently %(tickets_sold)s tickets have been paid.',
+            'Currently %(tickets_sold)s tickets have been sold.',
             tickets_sold=sale_stats.tickets_sold,
         )
 
