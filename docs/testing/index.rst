@@ -17,7 +17,7 @@ dependencies:
 
 .. code:: console
 
-    (.venv)$ uv sync --group test
+    $ uv sync --group test
 
 Then run the tests:
 
