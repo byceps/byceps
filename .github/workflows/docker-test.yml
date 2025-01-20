@@ -18,5 +18,10 @@ jobs:
     - name: Generate secret key
       run: docker compose run --rm byceps-apps uv run byceps generate-secret-key > ./secret_key.txt
 
+    - name: Create configuration file
+      run: |
+        cp docker/byceps/config.toml.example config.toml
+        sed -i '/secret_key = ""/s|^.*|secret_key = "fake-secret-key-for-testing|' config.toml
+
     - name: Initialize database
       run: docker compose run --rm byceps-apps uv run byceps initialize-database
