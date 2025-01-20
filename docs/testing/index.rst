@@ -12,7 +12,7 @@ First, install the test dependencies:
 
 .. code:: console
 
-    $ uv sync --group test
+    $ uv sync --frozen --group test
 
 Then run the tests:
 

@@ -32,4 +32,4 @@ If you want to use development tools, update their dependencies as well:
 
 .. code-block:: console
 
-    $ uv sync --group dev
+    $ uv sync --frozen --group dev
