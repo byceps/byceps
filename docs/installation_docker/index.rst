@@ -22,7 +22,7 @@ Obtain BYCEPS
 
 First, clone BYCEPS' Git repository to your machine:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ git clone https://github.com/byceps/byceps.git
 
@@ -36,7 +36,7 @@ Create BYCEPS Configuration File
 To run BYCEPS, a configuration file is required. Create a copy of the
 example file for the Docker setup:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ cp docker/byceps/config.toml.example docker/byceps/config.toml
 
@@ -47,7 +47,7 @@ Set a Secret Key
 A secret key is, among other things, required for login sessions. So
 let's generate one in a cryptographically secure way:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ docker compose run --rm byceps-apps uv run byceps generate-secret-key
 
@@ -111,7 +111,7 @@ BYCEPS.
 Create the services (build images, create volumes, etc.). This might
 take a few minutes.
 
-.. code-block:: sh
+.. code-block:: console
 
     $ docker compose up --no-start
 
@@ -121,7 +121,7 @@ Database
 
 Now create and initially populate the relational database structure:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ docker compose run --rm byceps-apps uv run byceps initialize-database
 
@@ -132,7 +132,7 @@ Initial User
 With the tables and the authorization data in place, create the initial
 user (which will get all available roles assigned):
 
-.. code-block:: sh
+.. code-block:: console
 
     $ docker compose run --rm byceps-apps uv run byceps create-superuser
 
@@ -158,7 +158,7 @@ Start BYCEPS
 
 Now spin up the BYCEPS web applications and the task worker:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ docker compose up
 

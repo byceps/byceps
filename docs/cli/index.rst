@@ -39,7 +39,7 @@ Create Database Tables
 ``byceps create-database-tables`` creates the tables that are required
 to run BYCEPS in a relational database instance.
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps create-database-tables
 
@@ -61,7 +61,7 @@ format into BYCEPS.
 
 By default, an initial set of roles provided with BYCEPS is imported:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-roles
 
@@ -74,7 +74,7 @@ Expected output:
 Optionally, the file to import from can be specified with the option
 ``-f``/``--file``:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-roles -f custom_roles.toml
 
@@ -98,7 +98,7 @@ BYCEPS to standard output.
 To export all roles into a TOML file, standard output is redirected
 (``>``) to it:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps export-roles > exported-roles.toml
 
@@ -116,7 +116,7 @@ unnecessary to call the covered commands separately):
 - Import authorization roles. (What :ref:`Import Authorization Roles` does.)
 - Register the supported languages.
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps initialize-database
 
@@ -150,7 +150,7 @@ administrative functionality.
 The command can be run to create additional user accounts as well, but
 they all will have superuser-like privileges in BYCEPS.
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps create-superuser
 
@@ -200,7 +200,7 @@ Example file (including a deliberately bad record):
 
 To import it:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-users example-users.jsonl
 
@@ -224,7 +224,7 @@ cryptographically secure way.
 
 A secret key is, among other things, required for login sessions.
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ byceps generate-secret-key
 
@@ -266,7 +266,7 @@ Example file:
 
 To import it:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-seats my-party-2023 example-seats.jsonl
 
@@ -292,7 +292,7 @@ using primarily the various services (from ``byceps.services``) without
 directly accessing the database (hopefully limiting the amount of
 accidental damage).
 
-.. code:: sh
+.. code:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps shell
 

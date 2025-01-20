@@ -7,7 +7,7 @@ which hostname will be routed to which application.
 
 Copy the included example configuration file:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ cp config/apps.toml.example config/apps.toml
 

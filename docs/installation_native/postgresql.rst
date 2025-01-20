@@ -5,20 +5,20 @@ There should already be a system user, likely ``postgres``.
 
 Become root:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ su
     <enter root password>
 
 Switch to the ``postgres`` user:
 
-.. code-block:: sh
+.. code-block:: console
 
     # su postgres
 
 Create a database user named ``byceps``:
 
-.. code-block:: sh
+.. code-block:: console
 
     postgres@host$ createuser --echo --pwprompt byceps
 
@@ -30,20 +30,20 @@ with the one you just entered.
 
 Create a schema, also named ``byceps``:
 
-.. code-block:: sh
+.. code-block:: console
 
     postgres@host$ createdb --encoding=UTF8 --template=template0 --owner byceps byceps
 
 To run the tests (optional), a dedicated user and database have to be
 created:
 
-.. code-block:: sh
+.. code-block:: console
 
     postgres@host$ createuser --echo --pwprompt byceps_test
     postgres@host$ createdb --encoding=UTF8 --template=template0 --owner byceps_test byceps_test
 
 Connect to the database:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ psql

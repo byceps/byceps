@@ -14,7 +14,7 @@ To run the applications defined in the :doc:`application mapping file
 <apps-config-file>` with Flask's (insecure!) *development* server for
 development purposes:
 
-.. code-block:: sh
+.. code-block:: console
 
    (.venv)$ BYCEPS_CONFIG=config/config.toml BYCEPS_APPS_CONFIG=config/apps.toml flask --app=serve_apps --debug run
 
@@ -35,7 +35,7 @@ applications.
 
 To start it:
 
-.. code-block:: sh
+.. code-block:: console
 
    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps worker
 

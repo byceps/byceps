@@ -15,18 +15,18 @@ well as for customization.
 In the activated virtual environment, first install the test
 dependencies:
 
-.. code:: sh
+.. code:: console
 
     (.venv)$ uv sync --group test
 
 Then run the tests:
 
-.. code:: sh
+.. code:: console
 
     (.venv)$ pytest
 
 To abort on encountering the first failing test case:
 
-.. code:: sh
+.. code:: console
 
     (.venv)$ pytest -x

@@ -8,7 +8,7 @@ Populate Database
 Initialize the database (:ref:`details <Initialize Database>`) specified
 in the configuration file:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps initialize-database
 
@@ -24,7 +24,7 @@ Expected output:
 With the tables and the authorization data in place, create the initial
 user (which will get all available roles assigned):
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ BYCEPS_CONFIG=config/config.toml byceps create-superuser
 

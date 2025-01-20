@@ -15,14 +15,14 @@ pip_.
 Change into the BYCEPS path and create a virtual environment (named
 ``.venv``) there:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ cd byceps
     $ python3 -m venv .venv
 
 Activate it (but don't change into its path):
 
-.. code-block:: sh
+.. code-block:: console
 
     $ . ./.venv/bin/activate
 
@@ -38,7 +38,7 @@ command, or adjust the path to reference it relatively (e.g.
 
 Make sure the correct version of Python is used:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ python -V
 
@@ -50,20 +50,20 @@ Expected output:
 
 It's probably a good idea to update pip_ to the current version:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ pip install --upgrade pip
 
 Install the Python dependencies via pip_:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ pip install -r requirements/core.txt
 
 Install BYCEPS in editable mode to make the ``byceps`` command as well
 as the package of the same name available:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ pip install -e .
 

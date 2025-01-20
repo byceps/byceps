@@ -11,7 +11,7 @@ your specific configuration.
 For starters, create a copy of the development example file to adjust as
 we go along:
 
-.. code-block:: sh
+.. code-block:: console
 
     $ cp config/config.toml.example-development config/config.toml
 
@@ -22,7 +22,7 @@ Set a Secret Key
 A secret key is, among other things, required for login sessions. So
 let's generate one in a cryptographically secure way:
 
-.. code-block:: sh
+.. code-block:: console
 
     (.venv)$ byceps generate-secret-key
 
