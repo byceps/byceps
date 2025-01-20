@@ -57,11 +57,18 @@ def announce_tickets_sold(
             quantity=event.quantity,
         )
         + ' '
-        + gettext(
+    )
+
+    if sale_stats.tickets_max is not None:
+        text += gettext(
             'Currently %(tickets_sold)s of %(tickets_max)s tickets have been paid.',
             tickets_sold=sale_stats.tickets_sold,
             tickets_max=sale_stats.tickets_max,
         )
-    )
+    else:
+        text += gettext(
+            'Currently %(tickets_sold)s tickets have been paid.',
+            tickets_sold=sale_stats.tickets_sold,
+        )
 
     return Announcement(text)

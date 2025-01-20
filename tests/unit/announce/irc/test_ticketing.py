@@ -51,7 +51,44 @@ def test_ticket_checked_in(
 
 @patch('byceps.services.party.party_service.get_party')
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
-def test_single_ticket_sold(
+def test_single_ticket_sold_without_max(
+    get_ticket_sale_stats_mock,
+    get_party_mock,
+    app: BycepsApp,
+    now: datetime,
+    event_admin: EventUser,
+    party: Party,
+    event_party: EventParty,
+    make_event_user,
+    webhook_for_irc,
+):
+    expected_text = (
+        'Neuling has paid 1 ticket. ' 'Currently 772 tickets have been paid.'
+    )
+
+    get_party_mock.return_value = party
+
+    get_ticket_sale_stats_mock.return_value = TicketSaleStats(
+        tickets_max=None,
+        tickets_sold=772,
+    )
+
+    event = TicketsSoldEvent(
+        occurred_at=now,
+        initiator=event_admin,
+        party=event_party,
+        owner=make_event_user(screen_name='Neuling'),
+        quantity=1,
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
+
+
+@patch('byceps.services.party.party_service.get_party')
+@patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
+def test_single_ticket_sold_with_max(
     get_ticket_sale_stats_mock,
     get_party_mock,
     app: BycepsApp,
