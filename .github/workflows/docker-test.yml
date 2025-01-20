@@ -22,7 +22,7 @@ jobs:
       run: docker compose run --rm byceps-apps uv run byceps generate-secret-key > ./secret_key.txt
 
     - name: Insert secret key into configuration file
-      run: sed -i '/secret_key = ""/s|^.*|secret_key = "fake-secret-key-for-testing|' docker/byceps/config.toml
+      run: sed -i '/secret_key = ""/s|^.*|secret_key = "fake-secret-key-for-testing"|' docker/byceps/config.toml
 
     - name: Initialize database
       run: docker compose run --rm byceps-apps uv run byceps initialize-database
