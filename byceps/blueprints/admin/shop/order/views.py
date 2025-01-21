@@ -2,7 +2,7 @@
 byceps.blueprints.admin.shop.order.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2025 Jochen Kupperschmidt, Jan Korneffel, Micha Ober
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
