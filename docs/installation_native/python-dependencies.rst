@@ -1,5 +1,5 @@
-Set Up a Virtual Python Environment
-===================================
+Install Python Dependencies
+===========================
 
 The installation should happen in an isolated Python_ environment just
 for BYCEPS so that its requirements don't clash with different versions

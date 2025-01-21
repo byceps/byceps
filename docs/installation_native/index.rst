@@ -16,7 +16,7 @@ how to do that instead.
    requirements
    debian-packages
    byceps
-   virtual-env
+   python-dependencies
    byceps-config-file
    apps-config-file
    postgresql
