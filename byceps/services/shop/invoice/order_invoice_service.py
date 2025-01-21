@@ -9,19 +9,16 @@ byceps.services.shop.invoice.order_invoice_service
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.services.shop.invoice.errors import (
-    InvoiceError,
-    InvoiceProviderNotConfiguredError,
-)
+from byceps.services.shop.invoice.errors import InvoiceError
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import order_log_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.detailed_order import AdminDetailedOrder
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.user.models.user import User
-from byceps.util.result import Err, Result
+from byceps.util.result import Result
 
-from . import order_invoice_domain_service
+from . import invoiceninja_service, order_invoice_domain_service
 from .dbmodels import DbInvoice
 from .models import Invoice
 
@@ -82,4 +79,6 @@ def get_downloadable_invoice_for_order(
 
     Create it if it does not exist.
     """
-    return Err(InvoiceProviderNotConfiguredError())
+    return invoiceninja_service.get_downloadable_invoice_for_order(
+        order, draft, initiator
+    )
