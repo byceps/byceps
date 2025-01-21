@@ -29,6 +29,10 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'SHOP_ORDER_EXPORT_TIMEZONE', timezone
     yield 'TIMEZONE', timezone
 
+    if (config.invoiceninja is not None) and config.invoiceninja.enabled:
+        yield 'INVOICENINJA_BASE_URL', config.invoiceninja.base_url
+        yield 'INVOICENINJA_API_KEY', config.invoiceninja.api_key
+
     yield 'JOBS_ASYNC', config.jobs.asynchronous
 
     yield 'MAIL_HOST', config.smtp.host

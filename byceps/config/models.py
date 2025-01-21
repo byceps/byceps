@@ -53,6 +53,7 @@ class BycepsConfig:
     database: DatabaseConfig
     debug: DebugConfig
     discord: DiscordConfig | None
+    invoiceninja: InvoiceNinjaConfig | None
     jobs: JobsConfig
     metrics: MetricsConfig
     payment_gateways: PaymentGatewaysConfig | None
@@ -108,6 +109,13 @@ class DiscordConfig:
     enabled: bool
     client_id: str
     client_secret: str
+
+
+@dataclass(frozen=True, slots=True)
+class InvoiceNinjaConfig:
+    enabled: bool
+    base_url: str
+    api_key: str
 
 
 @dataclass(frozen=True, slots=True)

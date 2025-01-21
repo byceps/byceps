@@ -26,6 +26,7 @@ from .models import (
     DatabaseConfig,
     DebugConfig,
     DiscordConfig,
+    InvoiceNinjaConfig,
     JobsConfig,
     MetricsConfig,
     PaymentGatewaysConfig,
@@ -161,6 +162,16 @@ _SECTION_DEFINITIONS = [
             Field('client_secret'),
         ],
         config_class=DiscordConfig,
+        required=False,
+    ),
+    Section(
+        name='invoiceninja',
+        fields=[
+            Field('enabled', type_=ValueType.Boolean),
+            Field('base_url'),
+            Field('api_key'),
+        ],
+        config_class=InvoiceNinjaConfig,
         required=False,
     ),
     Section(
