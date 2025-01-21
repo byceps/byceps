@@ -4,6 +4,15 @@
 {% set current_page = 'gallery' %}
 {% set page_title = [gallery.title, _('Galleries')] %}
 
+{% block head %}
+  {%- if gallery.title_image %}
+    <meta property="og:title" content="{{ gallery.title }} &middot; {{ _('Galleries') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ request.url_root }}{{ gallery.title_image.url_path_preview }}">
+    <meta property="og:url" content="{{ url_for('.view', slug=gallery.slug, _external=True) }}">
+  {%- endif %}
+{% endblock %}
+
 {% block subnav %}
   {%- if subnav_menu_id|default %}
 {{ render_subnav_for_menu_id(subnav_menu_id, current_page) }}
