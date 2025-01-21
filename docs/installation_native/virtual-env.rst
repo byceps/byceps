@@ -21,5 +21,4 @@ environment in the process:
 
 .. code-block:: console
 
-    $ cd byceps
     $ uv sync --frozen
