@@ -9,6 +9,7 @@ from byceps.config.models import (
     BycepsConfig,
     DatabaseConfig,
     DebugConfig,
+    InvoiceNinjaConfig,
     JobsConfig,
     MetricsConfig,
     RedisConfig,
@@ -21,6 +22,8 @@ def test_convert_config():
     expected = {
         'DEBUG': True,
         'DEBUG_TOOLBAR_ENABLED': True,
+        'INVOICENINJA_BASE_URL': 'https://invoiceninja.example',
+        'INVOICENINJA_API_KEY': 'invoiceninja-api-key',
         'JOBS_ASYNC': True,
         'LOCALE': 'de',
         'MAIL_HOST': 'localhost',
@@ -62,6 +65,11 @@ def test_convert_config():
             toolbar_enabled=True,
         ),
         discord=None,
+        invoiceninja=InvoiceNinjaConfig(
+            enabled=True,
+            base_url='https://invoiceninja.example',
+            api_key='invoiceninja-api-key',
+        ),
         jobs=JobsConfig(
             asynchronous=True,
         ),

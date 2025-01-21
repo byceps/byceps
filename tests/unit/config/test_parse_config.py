@@ -12,6 +12,7 @@ from byceps.config.models import (
     DatabaseConfig,
     DebugConfig,
     DiscordConfig,
+    InvoiceNinjaConfig,
     JobsConfig,
     MetricsConfig,
     PaymentGatewaysConfig,
@@ -65,6 +66,11 @@ def test_parse_config():
                 enabled=True,
                 client_id='discord-client-id',
                 client_secret='discord-client-secret',
+            ),
+            invoiceninja=InvoiceNinjaConfig(
+                enabled=True,
+                base_url='https://invoiceninja.example',
+                api_key='invoiceninja-api-key',
             ),
             jobs=JobsConfig(
                 asynchronous=False,
@@ -134,6 +140,11 @@ def test_parse_config():
     client_id = "discord-client-id"
     client_secret = "discord-client-secret"
 
+    [invoiceninja]
+    enabled = true
+    base_url = "https://invoiceninja.example"
+    api_key = "invoiceninja-api-key"
+
     [jobs]
     asynchronous = false
 
@@ -195,6 +206,7 @@ def test_parse_config_defaults():
                 toolbar_enabled=False,
             ),
             discord=None,
+            invoiceninja=None,
             jobs=JobsConfig(
                 asynchronous=True,
             ),
