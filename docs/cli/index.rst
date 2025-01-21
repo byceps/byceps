@@ -188,6 +188,7 @@ Currently supported fields:
 Example file (including a deliberately bad record):
 
 .. code-block:: json
+    :caption: excerpt from :file:`example-users.jsonl`
 
     {"screen_name": "imported01", "email_address": "imported01@example.test", "first_name": "Alice", "last_name": "Allison"}
     {"bad": "data"}
@@ -256,6 +257,7 @@ Currently supported fields:
 Example file:
 
 .. code-block:: json
+    :caption: excerpt from :file:`example-seats.jsonl`
 
     {"area_title": "Floor 3", "coord_x": 10, "coord_y": 10, "rotation": 0, "category_title": "Premium", "label": "Seat A-1"}
     {"area_title": "Floor 3", "coord_x": 25, "coord_y": 10, "rotation": 0, "category_title": "Premium", "label": "Seat A-2"}

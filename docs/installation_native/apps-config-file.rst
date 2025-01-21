@@ -24,6 +24,7 @@ Copy the included example configuration file:
   system is):
 
   .. code-block::
+      :caption: excerpt from :file:`/etc/hosts`
 
       127.0.0.1       admin.byceps.example
       127.0.0.1       api.byceps.example

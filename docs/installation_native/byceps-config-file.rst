@@ -35,6 +35,7 @@ Exemplary output:
 Set this value in your configuration file so the line looks like this:
 
 .. code-block:: toml
+    :caption: excerpt from :file:`config/config.toml`
 
     SECRET_KEY = "3ac1c416bfacb82918d56720d1c3104fd96e8b8d4fbee42343ae7512a9ced293"
 
@@ -58,6 +59,7 @@ Another option is to use an external one (authentication and encryption
 are important here!) with a configuration like this:
 
 .. code-block:: toml
+    :caption: excerpt from :file:`config/config.toml`
 
     MAIL_HOST = "smtp.provider.example"
     MAIL_PORT = 465

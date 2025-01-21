@@ -60,6 +60,7 @@ Exemplary output:
 Set this value in your configuration file so the line looks like this:
 
 .. code-block:: toml
+    :caption: excerpt from :file:`docker/byceps/config.toml`
 
     SECRET_KEY = "3ac1c416bfacb82918d56720d1c3104fd96e8b8d4fbee42343ae7512a9ced293"
 
@@ -91,6 +92,7 @@ hostname will be routed to which application. This is done in the
   system is):
 
   .. code-block::
+      :caption: excerpt from :file:`/etc/hosts`
 
       127.0.0.1       admin.byceps.example
       127.0.0.1       api.byceps.example
