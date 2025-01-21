@@ -9,6 +9,3 @@ babel-init locale:
 
 babel-compile:
     uv run pybabel compile -d byceps/translations
-
-export-requirements-core:
-    uv export --format requirements-txt --frozen --no-header --quiet --output-file requirements/core.txt --no-emit-project --no-dev
