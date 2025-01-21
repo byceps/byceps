@@ -4,10 +4,6 @@ Command-line Interface
 
 BYCEPS comes with a command-line tool for some tasks.
 
-.. important:: Before attempting to run any ``byceps`` command, make
-   sure that the :doc:`virtual environment
-   </installation_native/virtual-env>` is set up and activated.
-
 .. list-table::
    :header-rows: 1
 
@@ -41,7 +37,7 @@ to run BYCEPS in a relational database instance.
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps create-database-tables
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps create-database-tables
 
 Expected output:
 
@@ -63,7 +59,7 @@ By default, an initial set of roles provided with BYCEPS is imported:
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-roles
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps import-roles
 
 Expected output:
 
@@ -76,7 +72,7 @@ Optionally, the file to import from can be specified with the option
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-roles -f custom_roles.toml
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps import-roles -f custom_roles.toml
 
 Expected output:
 
@@ -100,7 +96,7 @@ To export all roles into a TOML file, standard output is redirected
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps export-roles > exported-roles.toml
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps export-roles > exported-roles.toml
 
 
 Initialize Database
@@ -118,7 +114,7 @@ unnecessary to call the covered commands separately):
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps initialize-database
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps initialize-database
 
 Expected output:
 
@@ -152,7 +148,7 @@ they all will have superuser-like privileges in BYCEPS.
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps create-superuser
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps create-superuser
 
 Expected output:
 
@@ -202,7 +198,7 @@ To import it:
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-users example-users.jsonl
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps import-users example-users.jsonl
 
 Expected output:
 
@@ -226,7 +222,7 @@ A secret key is, among other things, required for login sessions.
 
 .. code-block:: console
 
-    (.venv)$ byceps generate-secret-key
+    $ uv run byceps generate-secret-key
 
 Expected output:
 
@@ -268,7 +264,7 @@ To import it:
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps import-seats my-party-2023 example-seats.jsonl
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps import-seats my-party-2023 example-seats.jsonl
 
 Expected output:
 
@@ -294,7 +290,7 @@ accidental damage).
 
 .. code:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps shell
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps shell
 
 Expected output:
 

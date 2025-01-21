@@ -1,16 +1,12 @@
 Populate Database
 =================
 
-.. important:: Before continuing, make sure that the :doc:`virtual
-   environment </installation_native/virtual-env>` is set up and
-   activated.
-
 Initialize the database (:ref:`details <Initialize Database>`) specified
 in the configuration file:
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps initialize-database
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps initialize-database
 
 Expected output:
 
@@ -26,7 +22,7 @@ user (which will get all available roles assigned):
 
 .. code-block:: console
 
-    (.venv)$ BYCEPS_CONFIG=config/config.toml byceps create-superuser
+    $ BYCEPS_CONFIG=config/config.toml uv run byceps create-superuser
 
 Enter user account details interactively:
 

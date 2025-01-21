@@ -2,10 +2,6 @@
 Run BYCEPS
 **********
 
-.. important:: Before continuing, make sure that the :doc:`virtual
-   environment </installation_native/virtual-env>` is set up and
-   activated.
-
 
 Applications
 ============
@@ -16,7 +12,7 @@ development purposes:
 
 .. code-block:: console
 
-   (.venv)$ BYCEPS_CONFIG=config/config.toml BYCEPS_APPS_CONFIG=config/apps.toml flask --app=serve_apps --debug run
+   $ BYCEPS_CONFIG=config/config.toml BYCEPS_APPS_CONFIG=config/apps.toml uv run flask --app=serve_apps --debug run
 
 If the hostname mapping (or DNS setup) is also correct, the configured
 BYCEPS applications should be accessible at their respective hostnames
@@ -37,7 +33,7 @@ To start it:
 
 .. code-block:: console
 
-   (.venv)$ BYCEPS_CONFIG=config/config.toml byceps worker
+   $ BYCEPS_CONFIG=config/config.toml uv run byceps worker
 
 It should start processing any jobs in the queue right away and will
 then wait for new jobs to be enqueued.

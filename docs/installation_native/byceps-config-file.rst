@@ -24,7 +24,7 @@ let's generate one in a cryptographically secure way:
 
 .. code-block:: console
 
-    (.venv)$ byceps generate-secret-key
+    $ uv run byceps generate-secret-key
 
 Exemplary output:
 
