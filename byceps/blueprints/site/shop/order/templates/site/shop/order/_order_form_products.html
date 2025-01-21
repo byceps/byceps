@@ -2,6 +2,16 @@
 
     <h2>{{ _('Products') }}</h2>
 
+<style>
+.product-image {
+  background-color: #333333;
+  border-radius: 0.5rem;
+  height: auto;
+  min-width: 48px;
+  width: 80px;
+}
+</style>
+
   {%- for collection in collections %}
     {%- if collection.items %}
       {%- if collection.title %}
@@ -11,6 +21,9 @@
       <thead>
         <tr>
           <th style="width: 15%;">{{ _('Quantity') }}</th>
+          {%- if images_by_product_id %}
+          <th>{{ _('Image') }}</th>
+          {%- endif %}
           <th>{{ pgettext('product', 'Name') }}</th>
           <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
           <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
@@ -33,6 +46,15 @@
               {%- endif %}
             {{ form_field_errors(field) }}
             {%- endwith -%}
+          </td>
+          {%- endif %}
+          {%- if images_by_product_id %}
+          <td>
+            {%- with images = images_by_product_id.get(product.id) %}
+              {%- if images %}
+            <img src="{{ images[0].url_preview }}" class="product-image">
+              {%- endif %}
+            {%- endwith %}
           </td>
           {%- endif %}
           <td>{{ product.name }}

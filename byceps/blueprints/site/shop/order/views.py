@@ -100,6 +100,8 @@ def order_form(erroneous_form=None):
         flash_error(error_message)
         return {'collections': None}
 
+    images_by_product_id = product_service.get_images_for_products(product_ids)
+
     if not g.user.authenticated:
         return list_products(collections)
 
@@ -118,6 +120,7 @@ def order_form(erroneous_form=None):
         'form': form,
         'country_names': country_names,
         'collections': collections,
+        'images_by_product_id': images_by_product_id,
     }
 
 
@@ -266,11 +269,14 @@ def order_single_form(product_id, erroneous_form=None):
             'product': None,
         }
 
+    images_by_product_id = product_service.get_images_for_products({product.id})
+
     return {
         'form': form,
         'country_names': country_names,
         'product': product,
         'collections': collections,
+        'images_by_product_id': images_by_product_id,
     }
 
 
