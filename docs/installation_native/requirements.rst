@@ -23,7 +23,7 @@ Requirements
 .. _Redis: https://redis.io/
 .. _reverse proxy: https://en.wikipedia.org/wiki/Reverse_proxy
 .. _TLS: https://en.wikipedia.org/wiki/Transport_Layer_Security
-.. _uv: https://github.com/astral-sh/uv
+.. _uv: https://docs.astral.sh/uv/
 .. _uWSGI: https://uwsgi-docs.readthedocs.io/
 .. _Waitress: https://github.com/Pylons/waitress
 .. _WSGI: https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface
