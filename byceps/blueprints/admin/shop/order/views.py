@@ -12,11 +12,11 @@ from flask_babel import gettext
 from byceps.services.brand import brand_service
 from byceps.services.shop.invoice import order_invoice_service
 from byceps.services.shop.invoice.errors import (
-    InvoiceConfigurationError,
     InvoiceDeniedForFreeOrderError,
     InvoiceDownloadError,
     InvoiceError,
-    NoInvoiceProviderIntegratedError,
+    InvoiceProviderConfigurationError,
+    InvoiceProviderNotConfiguredError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import (
@@ -184,7 +184,7 @@ def download_invoice(order_id):
 
     def serve_error(err: InvoiceError) -> Response:
         match err:
-            case InvoiceConfigurationError():
+            case InvoiceProviderConfigurationError():
                 abort(
                     500,
                     gettext(
@@ -205,8 +205,8 @@ def download_invoice(order_id):
                         'The download of the invoice from the invoice provider failed.'
                     ),
                 )
-            case NoInvoiceProviderIntegratedError():
-                abort(500, gettext('No invoice provider is integrated.'))
+            case InvoiceProviderNotConfiguredError():
+                abort(500, gettext('Invoice provider is not configured.'))
             case _:
                 abort(500)
 

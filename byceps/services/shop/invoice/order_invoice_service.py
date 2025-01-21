@@ -11,7 +11,7 @@ from sqlalchemy import select
 from byceps.database import db
 from byceps.services.shop.invoice.errors import (
     InvoiceError,
-    NoInvoiceProviderIntegratedError,
+    InvoiceProviderNotConfiguredError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import order_log_service
@@ -82,4 +82,4 @@ def get_downloadable_invoice_for_order(
 
     Create it if it does not exist.
     """
-    return Err(NoInvoiceProviderIntegratedError())
+    return Err(InvoiceProviderNotConfiguredError())

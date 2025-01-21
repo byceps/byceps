@@ -17,13 +17,6 @@ class InvoiceError:
 
 
 @dataclass(frozen=True)
-class InvoiceConfigurationError(InvoiceError):
-    """The integration of an invoice provider is not configured
-    correctly.
-    """
-
-
-@dataclass(frozen=True)
 class InvoiceDeniedForFreeOrderError(InvoiceError):
     """Invoices should not be created for orders paid as "free"."""
 
@@ -34,5 +27,12 @@ class InvoiceDownloadError(InvoiceError):
 
 
 @dataclass(frozen=True)
-class NoInvoiceProviderIntegratedError(InvoiceError):
-    """No invoice provider is integrated."""
+class InvoiceProviderConfigurationError(InvoiceError):
+    """The integration of an invoice provider is not configured
+    correctly.
+    """
+
+
+@dataclass(frozen=True)
+class InvoiceProviderNotConfiguredError(InvoiceError):
+    """Invoice provider is not configured."""
