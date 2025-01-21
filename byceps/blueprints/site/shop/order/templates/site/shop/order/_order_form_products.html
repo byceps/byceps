@@ -25,14 +25,14 @@
           <td class="number">{{ item.fixed_quantity }}</td>
           {%- else %}
           <td>
-          {%- with field = form.get_field_for_product(product) %}
-            {%- if is_available %}
+            {%- with field = form.get_field_for_product(product) %}
+              {%- if is_available %}
             {{ field(class='form-control') }}
-            {%- else %}
+              {%- else %}
             {{ field(hidden=true) }}
-            {%- endif %}
+              {%- endif %}
             {{ form_field_errors(field) }}
-          {%- endwith -%}
+            {%- endwith -%}
           </td>
           {%- endif %}
           <td>{{ product.name }}
