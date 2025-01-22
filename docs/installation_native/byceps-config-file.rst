@@ -62,9 +62,9 @@ routed to which application.
   - ``api.byceps.example`` for the API
   - ``cozylan.example`` for the CozyLAN demo site
 
-  To be able to access them, though, add these entries to your local
-  :file:`/etc/hosts` file (or whatever the equivalent of your operating
-  system is):
+  To be able to access them, add these entries to your local
+  :file:`/etc/hosts` file (or whatever the equivalent is for your
+  operating system):
 
   .. code-block::
       :caption: excerpt from :file:`/etc/hosts`
