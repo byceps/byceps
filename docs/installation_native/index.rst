@@ -18,7 +18,6 @@ how to do that instead.
    byceps
    python-dependencies
    byceps-config-file
-   apps-config-file
    postgresql
    populate-database
    run

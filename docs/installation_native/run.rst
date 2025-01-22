@@ -6,13 +6,13 @@ Run BYCEPS
 Applications
 ============
 
-To run the applications defined in the :doc:`application mapping file
-<apps-config-file>` with Flask's (insecure!) *development* server for
-development purposes:
+To run the applications defined in the :ref:`application mapping
+<Map Applications>` with Flask's (insecure!)
+*development* server for development purposes:
 
 .. code-block:: console
 
-   $ BYCEPS_CONFIG=config/config.toml BYCEPS_APPS_CONFIG=config/apps.toml uv run flask --app=serve_apps --debug run
+   $ BYCEPS_CONFIG=config/config.toml uv run flask --app=serve_apps --debug run
 
 If the hostname mapping (or DNS setup) is also correct, the configured
 BYCEPS applications should be accessible at their respective hostnames

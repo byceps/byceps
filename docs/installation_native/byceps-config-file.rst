@@ -46,6 +46,38 @@ Set this value in your configuration file so the line looks like this:
    production environments. Generate **separate** secret keys!
 
 
+
+Map Applications
+----------------
+
+Since a single BYCEPS instance can provide the admin frontend, the API,
+*and* one or more sites, a mapping (in the ``[apps]`` section in the
+configuration file) is required which defines which hostname will be
+routed to which application.
+
+- For a **local installation**, you can go with the exemplary hostnames
+  already defined in the example configuration file, which are:
+
+  - ``admin.byceps.example`` for the admin UI
+  - ``api.byceps.example`` for the API
+  - ``cozylan.example`` for the CozyLAN demo site
+
+  To be able to access them, though, add these entries to your local
+  :file:`/etc/hosts` file (or whatever the equivalent of your operating
+  system is):
+
+  .. code-block::
+      :caption: excerpt from :file:`/etc/hosts`
+
+      127.0.0.1       admin.byceps.example
+      127.0.0.1       api.byceps.example
+      127.0.0.1       cozylan.example
+
+- But if you are **installing to a server on the Internet**, substitute
+  above hostnames in the configuration with ones that use actual,
+  registered Internet domains.
+
+
 Specify SMTP Server
 -------------------
 
