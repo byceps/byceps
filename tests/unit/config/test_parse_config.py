@@ -190,7 +190,9 @@ def test_parse_config_defaults():
             secret_key='<RANDOM-BYTES>',
             timezone='Europe/London',
             apps=AppsConfig(
-                admin=None,
+                admin=AdminAppConfig(
+                    server_name='admin.test',
+                ),
                 api=None,
                 sites=[],
             ),
@@ -238,6 +240,7 @@ def test_parse_config_defaults():
     timezone = "Europe/London"
 
     [apps]
+    admin = { server_name = "admin.test" }
 
     [database]
     username = "db-user"
@@ -272,6 +275,34 @@ def test_parse_incomplete_config():
     host = "db-host"
     port = 54321
     database = "db-database"
+    """
+
+    assert parse_config(toml) == expected
+
+
+def test_parse_config_without_apps():
+    expected = Err(
+        [
+            'No applications configured',
+        ]
+    )
+
+    toml = """\
+    locale = "en"
+    secret_key = "<RANDOM-BYTES>"
+    timezone = "Europe/London"
+
+    [apps]
+
+    [database]
+    username = "db-user"
+    password = "db-password"
+    database = "db-database"
+
+    [redis]
+    url = "redis://127.0.0.1:6379/0"
+
+    [smtp]
     """
 
     assert parse_config(toml) == expected

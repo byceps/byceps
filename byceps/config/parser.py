@@ -37,7 +37,7 @@ from .models import (
     StripeConfig,
     StyleguideConfig,
 )
-from .util import find_duplicate_server_names
+from .util import find_duplicate_server_names, iterate_app_configs
 
 
 Data = dict[str, Any]
@@ -81,9 +81,12 @@ class Subsection:
     collection_type: CollectionType | None = None
 
 
-def _validate_server_names(apps_config: AppsConfig) -> ParsingResult[None]:
-    duplicate_server_names = find_duplicate_server_names(apps_config)
+def _validate_apps_config(apps_config: AppsConfig) -> ParsingResult[None]:
+    app_configs = list(iterate_app_configs(apps_config))
+    if not app_configs:
+        return Err(['No applications configured'])
 
+    duplicate_server_names = find_duplicate_server_names(apps_config)
     if duplicate_server_names:
         server_names_str = ', '.join(sorted(duplicate_server_names))
         return Err([f'Non-unique server names configured: {server_names_str}'])
@@ -142,7 +145,7 @@ _SECTION_DEFINITIONS = [
         fields=[],
         config_class=AppsConfig,
         required=True,
-        validator=_validate_server_names,
+        validator=_validate_apps_config,
     ),
     Section(
         name='database',
