@@ -8,6 +8,7 @@ Configuration utilities
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections import Counter
 from collections.abc import Iterator
 
 from .models import AppConfig, AppsConfig
@@ -28,16 +29,9 @@ def iterate_app_configs(apps_config: AppsConfig) -> Iterator[AppConfig]:
 
 def find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
     """Return server names configured multiple times."""
-    defined_server_names = set()
-    conflicting_server_names = set()
-
-    for server_name in _get_server_names(apps_config):
-        if server_name in defined_server_names:
-            conflicting_server_names.add(server_name)
-        else:
-            defined_server_names.add(server_name)
-
-    return conflicting_server_names
+    server_names = _get_server_names(apps_config)
+    counter = Counter(server_names)
+    return {server_name for server_name, count in counter.items() if count > 1}
 
 
 def _get_server_names(apps_config: AppsConfig) -> list[str]:
