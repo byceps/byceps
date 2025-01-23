@@ -47,7 +47,7 @@ def parse_value_from_environment(
 
 
 def read_configuration_from_file_given_in_env_var() -> (
-    tuple[AppsConfig | None, dict[str, Any]]
+    tuple[AppsConfig, dict[str, Any]]
 ):
     """Load configuration from file specified via environment variable."""
     filename_str = os.environ.get('BYCEPS_CONFIG_FILE')
