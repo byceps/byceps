@@ -60,7 +60,10 @@ def read_configuration_from_file_given_in_env_var() -> (
 
         filename_str = os.environ.get('BYCEPS_CONFIG')
         if not filename_str:
-            return apps_config, {}
+            log.error(
+                'No configuration file specified. Use environment variable `BYCEPS_CONFIG_FILE`.'
+            )
+            raise ConfigurationError('No configuration file specified')
 
         filename = Path(filename_str)
         config_overrides = _read_configuration_from_file(filename)
