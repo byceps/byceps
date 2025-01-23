@@ -8,8 +8,6 @@ Serve multiple apps together.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import os
-from pathlib import Path
 from threading import Lock
 from typing import Any
 from wsgiref.types import WSGIApplication
@@ -19,7 +17,6 @@ import structlog
 from werkzeug.exceptions import InternalServerError, NotFound
 
 from byceps.application import create_admin_app, create_api_app, create_site_app
-from byceps.config.apps import parse_app_mounts_config
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
@@ -27,7 +24,7 @@ from byceps.config.models import (
     AppsConfig,
     SiteAppConfig,
 )
-from byceps.config.util import find_duplicate_server_names, iterate_app_configs
+from byceps.config.util import iterate_app_configs
 
 from byceps.util.result import Err, Ok, Result
 
@@ -35,46 +32,6 @@ from .byceps_app import BycepsApp
 
 
 log = structlog.get_logger()
-
-
-def get_apps_config() -> Result[AppsConfig, str]:
-    return _get_apps_config_filename().and_then(_load_apps_config)
-
-
-def _get_apps_config_filename() -> Result[Path, str]:
-    filename_str = os.environ.get('BYCEPS_APPS_CONFIG')
-    if not filename_str:
-        return Err(
-            'Please set environment variable BYCEPS_APPS_CONFIG to path of application mounts configuration file'
-        )
-
-    filename = Path(filename_str)
-    return Ok(filename)
-
-
-def _load_apps_config(path: Path) -> Result[AppsConfig, str]:
-    if not path.exists():
-        return Err(f'Applications configuration file "{path}" does not exist')
-
-    toml = path.read_text()
-
-    return parse_apps_config(toml).map_err(
-        lambda e: f'Applications configuration file "{path}" contains errors:\n{e}'
-    )
-
-
-def parse_apps_config(toml: str) -> Result[AppsConfig, str]:
-    def validate_server_names(apps_config: AppsConfig):
-        duplicate_server_names = find_duplicate_server_names(apps_config)
-        if duplicate_server_names:
-            server_names_str = ', '.join(sorted(duplicate_server_names))
-            return Err(
-                f'Non-unique server names configured: {server_names_str}'
-            )
-        else:
-            return Ok(apps_config)
-
-    return parse_app_mounts_config(toml).and_then(validate_server_names)
 
 
 def create_dispatcher_app(
