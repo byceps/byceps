@@ -59,13 +59,13 @@ def read_configuration_from_file_given_in_env_var() -> (
         raise ConfigurationError('No configuration file specified')
 
     filename = Path(filename_str)
-    return _read_modern_configuration_from_file(filename)
+    return _read_configuration_from_file(filename)
 
 
-def _read_modern_configuration_from_file(
+def _read_configuration_from_file(
     filename: Path,
 ) -> tuple[AppsConfig, dict[str, Any]]:
-    """Load modern configuration from file."""
+    """Load configuration from file."""
     match parse_config(filename.read_text()):
         case Ok(config):
             apps_config = config.apps
