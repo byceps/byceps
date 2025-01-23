@@ -27,10 +27,8 @@ from byceps.config.models import (
     AppsConfig,
     SiteAppConfig,
 )
-from byceps.config.util import (
-    find_conflicting_server_names,
-    iterate_app_configs,
-)
+from byceps.config.util import find_duplicate_server_names, iterate_app_configs
+
 from byceps.util.result import Err, Ok, Result
 
 from .byceps_app import BycepsApp
@@ -67,9 +65,9 @@ def _load_apps_config(path: Path) -> Result[AppsConfig, str]:
 
 def parse_apps_config(toml: str) -> Result[AppsConfig, str]:
     def validate_server_names(apps_config: AppsConfig):
-        conflicting_server_names = find_conflicting_server_names(apps_config)
-        if conflicting_server_names:
-            server_names_str = ', '.join(sorted(conflicting_server_names))
+        duplicate_server_names = find_duplicate_server_names(apps_config)
+        if duplicate_server_names:
+            server_names_str = ', '.join(sorted(duplicate_server_names))
             return Err(
                 f'Non-unique server names configured: {server_names_str}'
             )

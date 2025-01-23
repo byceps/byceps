@@ -27,7 +27,7 @@ def iterate_app_configs(apps_config: AppsConfig) -> Iterator[AppConfig]:
     yield from apps_config.sites
 
 
-def find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
+def find_duplicate_server_names(apps_config: AppsConfig) -> set[str]:
     """Return server names configured multiple times."""
     server_names = _get_server_names(apps_config)
     counter = Counter(server_names)
