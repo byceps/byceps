@@ -297,9 +297,9 @@ def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
 
     if errors:
         return Err(errors)
-    else:
-        config = BycepsConfig(**entries)
-        return Ok(config)
+
+    config = BycepsConfig(**entries)
+    return Ok(config)
 
 
 def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
@@ -411,9 +411,9 @@ def _parse_section_fields(
 
     if errors:
         return Err(errors)
-    else:
-        config = config_class(**entries)
-        return Ok(config)
+
+    config = config_class(**entries)
+    return Ok(config)
 
 
 def _get_section_value(
