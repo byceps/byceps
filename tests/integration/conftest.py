@@ -13,13 +13,13 @@ from wsgiref.types import WSGIApplication
 from moneyed import EUR
 import pytest
 
-from byceps.app_dispatcher import create_dispatcher_app, parse_apps_config
+from byceps.app_dispatcher import create_dispatcher_app
 from byceps.application import (
     create_admin_app as _create_admin_app,
     create_site_app as _create_site_app,
 )
 from byceps.byceps_app import BycepsApp
-from byceps.config.models import AppMode
+from byceps.config.models import ApiAppConfig, AppMode, AppsConfig
 from byceps.database import db
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, Role, RoleID
@@ -100,15 +100,13 @@ def database():
         populate_database()
 
 
-APPS_CONFIG = """
-[api]
-server_name = "api.acmecon.test"
-"""
-
-
 @pytest.fixture(scope='session')
 def apps(database, data_path: Path) -> WSGIApplication:
-    apps_config = parse_apps_config(APPS_CONFIG).unwrap()
+    apps_config = AppsConfig(
+        admin=None,
+        api=ApiAppConfig(server_name='api.acmecon.test'),
+        sites=[],
+    )
 
     config_overrides = _merge_config_overrides({}, data_path, None)
 
