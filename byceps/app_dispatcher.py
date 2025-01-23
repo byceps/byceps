@@ -23,6 +23,7 @@ from byceps.config.apps import parse_app_mounts_config
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
+    AppConfig,
     AppsConfig,
     SiteAppConfig,
 )
@@ -32,9 +33,6 @@ from .byceps_app import BycepsApp
 
 
 log = structlog.get_logger()
-
-
-AppConfig = AdminAppConfig | ApiAppConfig | SiteAppConfig
 
 
 def _get_all_app_configs(apps_config: AppsConfig) -> list[AppConfig]:

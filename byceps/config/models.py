@@ -89,6 +89,9 @@ class SiteAppConfig(_BaseAppConfig):
     site_id: str
 
 
+AppConfig = AdminAppConfig | ApiAppConfig | SiteAppConfig
+
+
 @dataclass(frozen=True, slots=True)
 class DatabaseConfig:
     host: str
