@@ -275,3 +275,69 @@ def test_parse_incomplete_config():
     """
 
     assert parse_config(toml) == expected
+
+
+def test_parse_config_with_conflicting_server_names():
+    expected = Err(
+        [
+            'Non-unique server names configured: name1.test',
+        ]
+    )
+
+    toml = """\
+    locale = "en"
+    secret_key = "<RANDOM-BYTES>"
+    timezone = "Europe/London"
+
+    [apps]
+    admin = { server_name = "name1.test" }
+    api = { server_name = "api.test" }
+    sites = [
+      { server_name = "name1.test", site_id = "site1" },
+      { server_name = "site2.test", site_id = "site2" },
+    ]
+
+    [database]
+    username = "db-user"
+    password = "db-password"
+    database = "db-database"
+
+    [redis]
+    url = "redis://127.0.0.1:6379/0"
+
+    [smtp]
+    """
+
+    assert parse_config(toml) == expected
+
+
+def test_parse_config_with_conflicting_site_server_names():
+    expected = Err(
+        [
+            'Non-unique server names configured: site1.test',
+        ]
+    )
+
+    toml = """\
+    locale = "en"
+    secret_key = "<RANDOM-BYTES>"
+    timezone = "Europe/London"
+
+    [apps]
+    sites = [
+      { server_name = "site1.test", site_id = "site1" },
+      { server_name = "site1.test", site_id = "site2" },
+    ]
+
+    [database]
+    username = "db-user"
+    password = "db-password"
+    database = "db-database"
+
+    [redis]
+    url = "redis://127.0.0.1:6379/0"
+
+    [smtp]
+    """
+
+    assert parse_config(toml) == expected

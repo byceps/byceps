@@ -37,6 +37,7 @@ from .models import (
     StripeConfig,
     StyleguideConfig,
 )
+from .util import find_duplicate_server_names
 
 
 Data = dict[str, Any]
@@ -52,6 +53,8 @@ ValueType = Enum('ValueType', ['Boolean', 'Integer', 'String'])
 
 CollectionType = Enum('CollectionType', ['List'])
 
+Validator = Callable[[C], ParsingResult[None]]
+
 
 @dataclass(frozen=True, slots=True)
 class Section:
@@ -62,6 +65,7 @@ class Section:
     collection_type: CollectionType | None = None
     default: C | None = None
     subsections: list[Subsection] = dataclass_field(default_factory=list)
+    validator: Validator | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -75,6 +79,16 @@ class Field:
 class Subsection:
     section: Section
     collection_type: CollectionType | None = None
+
+
+def _validate_server_names(apps_config: AppsConfig) -> ParsingResult[None]:
+    duplicate_server_names = find_duplicate_server_names(apps_config)
+
+    if duplicate_server_names:
+        server_names_str = ', '.join(sorted(duplicate_server_names))
+        return Err([f'Non-unique server names configured: {server_names_str}'])
+
+    return Ok(None)
 
 
 _TOPLEVEL_FIELDS = [
@@ -128,6 +142,7 @@ _SECTION_DEFINITIONS = [
         fields=[],
         config_class=AppsConfig,
         required=True,
+        validator=_validate_server_names,
     ),
     Section(
         name='database',
@@ -310,6 +325,7 @@ def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
             section.fields,
             section.subsections,
             section.config_class,
+            section.validator,
         )
 
     if section.required:
@@ -356,6 +372,7 @@ def _parse_section_fields(
     fields: list[Field],
     subsections: list[Subsection],
     config_class: type[C],
+    validator: Validator[C] | None,
 ) -> ParsingResult[C]:
     entries: Data = {}
     errors: list[str] = []
@@ -413,6 +430,12 @@ def _parse_section_fields(
         return Err(errors)
 
     config = config_class(**entries)
+
+    if validator:
+        match validator(config):
+            case Err(e):
+                return Err(e)
+
     return Ok(config)
 
 
