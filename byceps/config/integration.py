@@ -11,7 +11,6 @@ import os
 from pathlib import Path
 from typing import Any
 
-import rtoml
 import structlog
 
 from byceps.byceps_app import BycepsApp
@@ -52,33 +51,15 @@ def read_configuration_from_file_given_in_env_var() -> (
 ):
     """Load configuration from file specified via environment variable."""
     filename_str = os.environ.get('BYCEPS_CONFIG_FILE')
-    if filename_str:
-        filename = Path(filename_str)
-        return _read_modern_configuration_from_file(filename)
-    else:
-        apps_config = None
 
-        filename_str = os.environ.get('BYCEPS_CONFIG')
-        if not filename_str:
-            log.error(
-                'No configuration file specified. Use environment variable `BYCEPS_CONFIG_FILE`.'
-            )
-            raise ConfigurationError('No configuration file specified')
+    if not filename_str:
+        log.error(
+            'No configuration file specified. Use environment variable `BYCEPS_CONFIG_FILE`.'
+        )
+        raise ConfigurationError('No configuration file specified')
 
-        filename = Path(filename_str)
-        config_overrides = _read_configuration_from_file(filename)
-
-        return apps_config, config_overrides
-
-
-def _read_configuration_from_file(filename: Path) -> dict[str, Any]:
-    """Load configuration from file."""
-    try:
-        with filename.open() as f:
-            return rtoml.load(f)
-    except OSError as e:
-        e.strerror = f'Unable to load configuration file ({e.strerror})'
-        raise
+    filename = Path(filename_str)
+    return _read_modern_configuration_from_file(filename)
 
 
 def _read_modern_configuration_from_file(
