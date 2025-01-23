@@ -27,26 +27,16 @@ from byceps.config.models import (
     AppsConfig,
     SiteAppConfig,
 )
+from byceps.config.util import (
+    find_conflicting_server_names,
+    iterate_app_configs,
+)
 from byceps.util.result import Err, Ok, Result
 
 from .byceps_app import BycepsApp
 
 
 log = structlog.get_logger()
-
-
-def _get_all_app_configs(apps_config: AppsConfig) -> list[AppConfig]:
-    all_app_configs: list[AppConfig] = []
-
-    if apps_config.admin:
-        all_app_configs.append(apps_config.admin)
-
-    if apps_config.api:
-        all_app_configs.append(apps_config.api)
-
-    all_app_configs.extend(apps_config.sites)
-
-    return all_app_configs
 
 
 def get_apps_config() -> Result[AppsConfig, str]:
@@ -77,7 +67,7 @@ def _load_apps_config(path: Path) -> Result[AppsConfig, str]:
 
 def parse_apps_config(toml: str) -> Result[AppsConfig, str]:
     def validate_server_names(apps_config: AppsConfig):
-        conflicting_server_names = _find_conflicting_server_names(apps_config)
+        conflicting_server_names = find_conflicting_server_names(apps_config)
         if conflicting_server_names:
             server_names_str = ', '.join(sorted(conflicting_server_names))
             return Err(
@@ -87,20 +77,6 @@ def parse_apps_config(toml: str) -> Result[AppsConfig, str]:
             return Ok(apps_config)
 
     return parse_app_mounts_config(toml).and_then(validate_server_names)
-
-
-def _find_conflicting_server_names(apps_config: AppsConfig) -> set[str]:
-    defined_server_names = set()
-    conflicting_server_names = set()
-
-    for app_config in _get_all_app_configs(apps_config):
-        server_name = app_config.server_name
-        if server_name in defined_server_names:
-            conflicting_server_names.add(server_name)
-        else:
-            defined_server_names.add(server_name)
-
-    return conflicting_server_names
 
 
 def create_dispatcher_app(
@@ -123,7 +99,7 @@ class AppDispatcher:
         self.lock = Lock()
         self.app_configs_by_host = {
             app_config.server_name: app_config
-            for app_config in _get_all_app_configs(apps_config)
+            for app_config in iterate_app_configs(apps_config)
         }
         self.config_overrides = config_overrides
         self.apps_by_host: dict[str, WSGIApplication] = {}
