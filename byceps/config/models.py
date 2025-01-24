@@ -52,6 +52,7 @@ class BycepsConfig:
     apps: AppsConfig
     database: DatabaseConfig
     debug: DebugConfig
+    development: DevelopmentConfig | None
     discord: DiscordConfig | None
     invoiceninja: InvoiceNinjaConfig | None
     jobs: JobsConfig
@@ -105,6 +106,11 @@ class DatabaseConfig:
 class DebugConfig:
     enabled: bool
     toolbar_enabled: bool
+
+
+@dataclass(frozen=True, slots=True)
+class DevelopmentConfig:
+    pass
 
 
 @dataclass(frozen=True, slots=True)

@@ -9,6 +9,7 @@ from byceps.config.models import (
     BycepsConfig,
     DatabaseConfig,
     DebugConfig,
+    DevelopmentConfig,
     InvoiceNinjaConfig,
     JobsConfig,
     MetricsConfig,
@@ -64,6 +65,7 @@ def test_convert_config():
             enabled=True,
             toolbar_enabled=True,
         ),
+        development=DevelopmentConfig(),
         discord=None,
         invoiceninja=InvoiceNinjaConfig(
             enabled=True,

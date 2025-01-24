@@ -22,6 +22,8 @@ database = "db-database"
 #enabled = false
 #toolbar_enabled = false
 
+#[development]
+
 #[discord]
 #enabled = false
 #client_id = "discord-client-id"

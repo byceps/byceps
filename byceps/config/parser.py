@@ -25,6 +25,7 @@ from .models import (
     BycepsConfig,
     DatabaseConfig,
     DebugConfig,
+    DevelopmentConfig,
     DiscordConfig,
     InvoiceNinjaConfig,
     JobsConfig,
@@ -171,6 +172,12 @@ _SECTION_DEFINITIONS = [
             enabled=False,
             toolbar_enabled=False,
         ),
+    ),
+    Section(
+        name='development',
+        fields=[],
+        config_class=DevelopmentConfig,
+        required=False,
     ),
     Section(
         name='discord',

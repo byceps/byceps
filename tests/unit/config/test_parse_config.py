@@ -11,6 +11,7 @@ from byceps.config.models import (
     BycepsConfig,
     DatabaseConfig,
     DebugConfig,
+    DevelopmentConfig,
     DiscordConfig,
     InvoiceNinjaConfig,
     JobsConfig,
@@ -62,6 +63,7 @@ def test_parse_config():
                 enabled=True,
                 toolbar_enabled=True,
             ),
+            development=DevelopmentConfig(),
             discord=DiscordConfig(
                 enabled=True,
                 client_id='discord-client-id',
@@ -135,6 +137,8 @@ def test_parse_config():
     enabled = true
     toolbar_enabled = true
 
+    [development]
+
     [discord]
     enabled = true
     client_id = "discord-client-id"
@@ -207,6 +211,7 @@ def test_parse_config_defaults():
                 enabled=False,
                 toolbar_enabled=False,
             ),
+            development=None,
             discord=None,
             invoiceninja=None,
             jobs=JobsConfig(
