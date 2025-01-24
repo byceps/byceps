@@ -24,7 +24,6 @@ from .models import (
     AppsConfig,
     BycepsConfig,
     DatabaseConfig,
-    DebugConfig,
     DevelopmentConfig,
     DiscordConfig,
     InvoiceNinjaConfig,
@@ -161,21 +160,11 @@ _SECTION_DEFINITIONS = [
         required=True,
     ),
     Section(
-        name='debug',
+        name='development',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, default=False),
+            Field('debug_enabled', type_=ValueType.Boolean, default=False),
             Field('toolbar_enabled', type_=ValueType.Boolean, default=False),
         ],
-        config_class=DebugConfig,
-        required=False,
-        default=DebugConfig(
-            enabled=False,
-            toolbar_enabled=False,
-        ),
-    ),
-    Section(
-        name='development',
-        fields=[],
         config_class=DevelopmentConfig,
         required=False,
     ),

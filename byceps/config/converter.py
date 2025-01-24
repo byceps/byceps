@@ -20,8 +20,9 @@ def convert_config(config: BycepsConfig) -> dict[str, Any]:
 
 
 def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
-    yield 'DEBUG', config.debug.enabled
-    yield 'DEBUG_TOOLBAR_ENABLED', config.debug.toolbar_enabled
+    if config.development is not None:
+        yield 'DEBUG', config.development.debug_enabled
+        yield 'DEBUG_TOOLBAR_ENABLED', config.development.toolbar_enabled
 
     yield 'LOCALE', config.locale
 

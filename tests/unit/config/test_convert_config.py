@@ -8,7 +8,6 @@ from byceps.config.models import (
     AppsConfig,
     BycepsConfig,
     DatabaseConfig,
-    DebugConfig,
     DevelopmentConfig,
     InvoiceNinjaConfig,
     JobsConfig,
@@ -61,11 +60,10 @@ def test_convert_config():
             password='dbpass',
             database='db',
         ),
-        debug=DebugConfig(
-            enabled=True,
+        development=DevelopmentConfig(
+            debug_enabled=True,
             toolbar_enabled=True,
         ),
-        development=DevelopmentConfig(),
         discord=None,
         invoiceninja=InvoiceNinjaConfig(
             enabled=True,

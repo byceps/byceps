@@ -10,7 +10,6 @@ from byceps.config.models import (
     AppsConfig,
     BycepsConfig,
     DatabaseConfig,
-    DebugConfig,
     DevelopmentConfig,
     DiscordConfig,
     InvoiceNinjaConfig,
@@ -59,11 +58,10 @@ def test_parse_config():
                 password='db-password',
                 database='db-database',
             ),
-            debug=DebugConfig(
-                enabled=True,
+            development=DevelopmentConfig(
+                debug_enabled=True,
                 toolbar_enabled=True,
             ),
-            development=DevelopmentConfig(),
             discord=DiscordConfig(
                 enabled=True,
                 client_id='discord-client-id',
@@ -133,11 +131,9 @@ def test_parse_config():
     password = "db-password"
     database = "db-database"
 
-    [debug]
-    enabled = true
-    toolbar_enabled = true
-
     [development]
+    debug_enabled = true
+    toolbar_enabled = true
 
     [discord]
     enabled = true
@@ -206,10 +202,6 @@ def test_parse_config_defaults():
                 username='db-user',
                 password='db-password',
                 database='db-database',
-            ),
-            debug=DebugConfig(
-                enabled=False,
-                toolbar_enabled=False,
             ),
             development=None,
             discord=None,

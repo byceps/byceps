@@ -21,11 +21,9 @@ username = "byceps"
 password = "byceps"
 database = "byceps"
 
-#[debug]
-#enabled = false
-#toolbar_enabled = false
-
 #[development]
+#debug_enabled = false
+#toolbar_enabled = false
 
 #[discord]
 #enabled = false
