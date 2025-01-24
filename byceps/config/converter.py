@@ -22,6 +22,7 @@ def convert_config(config: BycepsConfig) -> dict[str, Any]:
 def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     if config.development is not None:
         yield 'DEBUG', config.development.debug_enabled
+        yield 'STYLE_GUIDE_ENABLED', config.development.styleguide_enabled
         yield 'DEBUG_TOOLBAR_ENABLED', config.development.toolbar_enabled
 
     yield 'LOCALE', config.locale
@@ -53,8 +54,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'SECRET_KEY', config.secret_key
 
     yield 'SQLALCHEMY_DATABASE_URI', _build_database_url(config.database)
-
-    yield 'STYLE_GUIDE_ENABLED', config.styleguide.enabled
 
 
 def _build_database_url(db_config: DatabaseConfig) -> str:

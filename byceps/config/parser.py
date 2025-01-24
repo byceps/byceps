@@ -35,7 +35,6 @@ from .models import (
     SiteAppConfig,
     SmtpConfig,
     StripeConfig,
-    StyleguideConfig,
 )
 from .util import find_duplicate_server_names, iterate_app_configs
 
@@ -163,6 +162,7 @@ _SECTION_DEFINITIONS = [
         name='development',
         fields=[
             Field('debug_enabled', type_=ValueType.Boolean, default=False),
+            Field('styleguide_enabled', type_=ValueType.Boolean, default=False),
             Field('toolbar_enabled', type_=ValueType.Boolean, default=False),
         ],
         config_class=DevelopmentConfig,
@@ -266,17 +266,6 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=SmtpConfig,
         required=True,
-    ),
-    Section(
-        name='styleguide',
-        fields=[
-            Field('enabled', type_=ValueType.Boolean),
-        ],
-        config_class=StyleguideConfig,
-        required=False,
-        default=StyleguideConfig(
-            enabled=False,
-        ),
     ),
 ]
 

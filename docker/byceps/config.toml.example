@@ -23,6 +23,7 @@ database = "byceps"
 
 #[development]
 #debug_enabled = false
+#styleguide_enabled = false
 #toolbar_enabled = false
 
 #[discord]
@@ -56,6 +57,3 @@ url = "redis://redis/0"
 #username = "smtp-user"
 #password = "smtp-password"
 #suppress_send = false
-
-#[styleguide]
-#enabled = false

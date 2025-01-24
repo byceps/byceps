@@ -14,7 +14,6 @@ from byceps.config.models import (
     MetricsConfig,
     RedisConfig,
     SmtpConfig,
-    StyleguideConfig,
 )
 
 
@@ -62,6 +61,7 @@ def test_convert_config():
         ),
         development=DevelopmentConfig(
             debug_enabled=True,
+            styleguide_enabled=True,
             toolbar_enabled=True,
         ),
         discord=None,
@@ -88,9 +88,6 @@ def test_convert_config():
             username='smtpuser',
             password='smtppass',
             suppress_send=False,
-        ),
-        styleguide=StyleguideConfig(
-            enabled=True,
         ),
     )
 

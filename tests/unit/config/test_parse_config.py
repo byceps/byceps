@@ -21,7 +21,6 @@ from byceps.config.models import (
     SiteAppConfig,
     SmtpConfig,
     StripeConfig,
-    StyleguideConfig,
 )
 from byceps.util.result import Err, Ok
 
@@ -60,6 +59,7 @@ def test_parse_config():
             ),
             development=DevelopmentConfig(
                 debug_enabled=True,
+                styleguide_enabled=True,
                 toolbar_enabled=True,
             ),
             discord=DiscordConfig(
@@ -104,9 +104,6 @@ def test_parse_config():
                 password='smtp-password',
                 suppress_send=True,
             ),
-            styleguide=StyleguideConfig(
-                enabled=True,
-            ),
         )
     )
 
@@ -133,6 +130,7 @@ def test_parse_config():
 
     [development]
     debug_enabled = true
+    styleguide_enabled = true
     toolbar_enabled = true
 
     [discord]
@@ -174,9 +172,6 @@ def test_parse_config():
     username = "smtp-user"
     password = "smtp-password"
     suppress_send = true
-
-    [styleguide]
-    enabled = true
     """
 
     assert parse_config(toml) == expected
@@ -224,9 +219,6 @@ def test_parse_config_defaults():
                 username='',
                 password='',
                 suppress_send=False,
-            ),
-            styleguide=StyleguideConfig(
-                enabled=False,
             ),
         )
     )

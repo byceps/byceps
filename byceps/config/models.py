@@ -59,7 +59,6 @@ class BycepsConfig:
     payment_gateways: PaymentGatewaysConfig | None
     redis: RedisConfig
     smtp: SmtpConfig
-    styleguide: StyleguideConfig
 
 
 @dataclass(frozen=True, slots=True)
@@ -104,6 +103,7 @@ class DatabaseConfig:
 @dataclass(frozen=True, slots=True)
 class DevelopmentConfig:
     debug_enabled: bool
+    styleguide_enabled: bool
     toolbar_enabled: bool
 
 
@@ -167,8 +167,3 @@ class StripeConfig:
     secret_key: str
     publishable_key: str
     webhook_secret: str
-
-
-@dataclass(frozen=True, slots=True)
-class StyleguideConfig:
-    enabled: bool

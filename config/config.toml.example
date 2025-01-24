@@ -20,6 +20,7 @@ database = "db-database"
 
 #[development]
 #debug_enabled = false
+#styleguide_enabled = false
 #toolbar_enabled = false
 
 #[discord]
@@ -53,6 +54,3 @@ url = "redis://127.0.0.1:6379/0"
 #username = "smtp-user"
 #password = "smtp-password"
 #suppress_send = false
-
-#[styleguide]
-#enabled = false
