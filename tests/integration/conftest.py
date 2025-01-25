@@ -75,13 +75,6 @@ _CONFIG_DEFAULTS_FOR_TESTS = {
     'TIMEZONE': 'Europe/Berlin',
 }
 
-_CONFIG_OVERRIDES_FOR_TESTS = {
-    'MAIL_SUPPRESS_SEND': True,
-    'JOBS_ASYNC': False,
-    'SECRET_KEY': 'secret-key-for-testing-ONLY',
-    'TESTING': True,
-}
-
 
 @pytest.fixture(scope='session')
 def database():
@@ -188,7 +181,14 @@ def _merge_config_overrides(
     if _CONFIG_PATH_DATA_KEY not in merged:
         merged[_CONFIG_PATH_DATA_KEY] = data_path
 
-    merged.update(_CONFIG_OVERRIDES_FOR_TESTS)
+    merged.update(
+        {
+            'MAIL_SUPPRESS_SEND': True,
+            'JOBS_ASYNC': False,
+            'SECRET_KEY': 'secret-key-for-testing-ONLY',
+            'TESTING': True,
+        }
+    )
 
     return merged
 
