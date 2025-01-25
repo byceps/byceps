@@ -108,7 +108,7 @@ def apps(database, data_path: Path) -> WSGIApplication:
         sites=[],
     )
 
-    config_overrides = _merge_config_overrides({}, data_path, None)
+    config_overrides = _merge_config_overrides({}, data_path)
 
     return create_dispatcher_app(apps_config, config_overrides=config_overrides)
 
@@ -119,10 +119,12 @@ def make_admin_app(data_path: Path):
 
     def _wrapper(server_name: str, **config_overrides: Any) -> BycepsApp:
         merged_config_overrides = _merge_config_overrides(
-            config_overrides, data_path, server_name
+            config_overrides, data_path
         )
 
-        return _create_admin_app(config_overrides=merged_config_overrides)
+        return _create_admin_app(
+            server_name, config_overrides=merged_config_overrides
+        )
 
     return _wrapper
 
@@ -153,11 +155,11 @@ def make_site_app(admin_app, data_path: Path):
         server_name: str, site_id: SiteID, **config_overrides: Any
     ) -> BycepsApp:
         merged_config_overrides = _merge_config_overrides(
-            config_overrides, data_path, server_name
+            config_overrides, data_path
         )
 
         return _create_site_app(
-            site_id, config_overrides=merged_config_overrides
+            server_name, site_id, config_overrides=merged_config_overrides
         )
 
     return _wrapper
@@ -173,7 +175,7 @@ def site_app(database, make_site_app, site: Site) -> BycepsApp:
 
 
 def _merge_config_overrides(
-    overrides: dict[str, Any], data_path: Path, server_name: str | None
+    overrides: dict[str, Any], data_path: Path
 ) -> dict[str, Any]:
     merged: dict[str, Any] = {}
 
@@ -185,9 +187,6 @@ def _merge_config_overrides(
 
     if _CONFIG_PATH_DATA_KEY not in merged:
         merged[_CONFIG_PATH_DATA_KEY] = data_path
-
-    if server_name:
-        merged['SERVER_NAME'] = server_name
 
     merged.update(_CONFIG_OVERRIDES_FOR_TESTS)
 

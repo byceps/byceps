@@ -103,17 +103,24 @@ class AppDispatcher:
 def _create_app(
     app_config: AppConfig, *, config_overrides: dict[str, Any] | None = None
 ) -> Result[BycepsApp, str]:
+    server_name = app_config.server_name
     match app_config:
         case AdminAppConfig():
-            return Ok(create_admin_app(config_overrides=config_overrides))
+            return Ok(
+                create_admin_app(server_name, config_overrides=config_overrides)
+            )
         case ApiAppConfig():
-            return Ok(create_api_app(config_overrides=config_overrides))
+            return Ok(
+                create_api_app(server_name, config_overrides=config_overrides)
+            )
         case SiteAppConfig():
             site_id = app_config.site_id
             if not site_id:
                 return Err(f'Unknown site ID "{site_id}"')
 
-            app = create_site_app(site_id, config_overrides=config_overrides)
+            app = create_site_app(
+                server_name, site_id, config_overrides=config_overrides
+            )
             return Ok(app)
         case _:
             return Err('Unknown or unsupported app configuration type')
