@@ -66,8 +66,6 @@ from tests.helpers.shop import create_product, create_orderer
 from .database import populate_database, set_up_database, tear_down_database
 
 
-_CONFIG_PATH_DATA_KEY = 'PATH_DATA'
-
 _CONFIG_DEFAULTS_FOR_TESTS = {
     'LOCALE': 'de',
     'REDIS_URL': 'redis://127.0.0.1:6379/0',
@@ -178,13 +176,11 @@ def _merge_config_overrides(
         if key not in merged:
             merged[key] = value
 
-    if _CONFIG_PATH_DATA_KEY not in merged:
-        merged[_CONFIG_PATH_DATA_KEY] = data_path
-
     merged.update(
         {
             'MAIL_SUPPRESS_SEND': True,
             'JOBS_ASYNC': False,
+            'PATH_DATA': data_path,
             'SECRET_KEY': 'secret-key-for-testing-ONLY',
             'TESTING': True,
         }
