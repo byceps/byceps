@@ -59,7 +59,7 @@ def test_parse_config():
             ),
             development=DevelopmentConfig(
                 debug_enabled=True,
-                styleguide_enabled=True,
+                style_guide_enabled=True,
                 toolbar_enabled=True,
             ),
             discord=DiscordConfig(
@@ -130,7 +130,7 @@ def test_parse_config():
 
     [development]
     debug_enabled = true
-    styleguide_enabled = true
+    style_guide_enabled = true
     toolbar_enabled = true
 
     [discord]

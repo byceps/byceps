@@ -162,7 +162,9 @@ _SECTION_DEFINITIONS = [
         name='development',
         fields=[
             Field('debug_enabled', type_=ValueType.Boolean, default=False),
-            Field('styleguide_enabled', type_=ValueType.Boolean, default=False),
+            Field(
+                'style_guide_enabled', type_=ValueType.Boolean, default=False
+            ),
             Field('toolbar_enabled', type_=ValueType.Boolean, default=False),
         ],
         config_class=DevelopmentConfig,

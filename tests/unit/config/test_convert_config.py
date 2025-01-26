@@ -61,7 +61,7 @@ def test_convert_config():
         ),
         development=DevelopmentConfig(
             debug_enabled=True,
-            styleguide_enabled=True,
+            style_guide_enabled=True,
             toolbar_enabled=True,
         ),
         discord=None,

@@ -23,7 +23,7 @@ database = "byceps"
 
 #[development]
 #debug_enabled = false
-#styleguide_enabled = false
+#style_guide_enabled = false
 #toolbar_enabled = false
 
 #[discord]
