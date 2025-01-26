@@ -97,7 +97,6 @@ _TOPLEVEL_FIELDS = [
     Field('locale'),
     Field('propagate_exceptions', default=False),
     Field('secret_key'),
-    Field('testing', type_=ValueType.Boolean, default=False),
     Field('timezone'),
 ]
 
@@ -303,6 +302,8 @@ def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
 
     if errors:
         return Err(errors)
+
+    entries['testing'] = False
 
     config = BycepsConfig(**entries)
     return Ok(config)
