@@ -230,24 +230,41 @@ def site_app(database, make_site_app, site: Site) -> BycepsApp:
 
 
 @pytest.fixture(scope='session')
-def make_config_overrides(data_path: Path):
+def make_config_overrides(make_byceps_config):
     def _wrapper(
         apps_config: AppsConfig | None = None,
         *,
         metrics_enabled: bool = False,
         style_guide_enabled: bool = False,
     ) -> dict[str, Any]:
-        if apps_config is None:
-            apps_config = AppsConfig(admin=None, api=None, sites=[])
-
-        byceps_config = build_byceps_config(
-            data_path,
+        byceps_config = make_byceps_config(
             apps_config,
             metrics_enabled=metrics_enabled,
             style_guide_enabled=style_guide_enabled,
         )
 
         return convert_config(byceps_config)
+
+    return _wrapper
+
+
+@pytest.fixture(scope='session')
+def make_byceps_config(data_path: Path):
+    def _wrapper(
+        apps_config: AppsConfig | None = None,
+        *,
+        metrics_enabled: bool = False,
+        style_guide_enabled: bool = False,
+    ) -> BycepsConfig:
+        if apps_config is None:
+            apps_config = AppsConfig(admin=None, api=None, sites=[])
+
+        return build_byceps_config(
+            data_path,
+            apps_config,
+            metrics_enabled=metrics_enabled,
+            style_guide_enabled=style_guide_enabled,
+        )
 
     return _wrapper
 
