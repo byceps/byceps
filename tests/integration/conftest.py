@@ -82,7 +82,11 @@ _DEFAULT_DATABASE_URI = (
 )
 
 
-def build_byceps_config(apps_config: AppsConfig) -> BycepsConfig:
+def build_byceps_config(
+    apps_config: AppsConfig,
+    *,
+    metrics_enabled: bool = False,
+) -> BycepsConfig:
     return BycepsConfig(
         locale='de',
         propagate_exceptions=False,
@@ -103,7 +107,7 @@ def build_byceps_config(apps_config: AppsConfig) -> BycepsConfig:
             asynchronous=False,
         ),
         metrics=MetricsConfig(
-            enabled=False,
+            enabled=metrics_enabled,
         ),
         payment_gateways=None,
         redis=RedisConfig(
@@ -228,13 +232,15 @@ def make_config_overrides(data_path: Path):
         if apps_config is None:
             apps_config = AppsConfig(admin=None, api=None, sites=[])
 
-        byceps_config = build_byceps_config(apps_config)
+        byceps_config = build_byceps_config(
+            apps_config,
+            metrics_enabled=metrics_enabled,
+        )
 
         merged = convert_config(byceps_config)
 
         merged.update(
             {
-                'METRICS_ENABLED': metrics_enabled,
                 'PATH_DATA': data_path,
                 'STYLE_GUIDE_ENABLED': style_guide_enabled,
                 'TESTING': True,
