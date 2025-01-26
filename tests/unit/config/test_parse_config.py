@@ -60,6 +60,7 @@ def test_parse_config():
             development=DevelopmentConfig(
                 debug_enabled=True,
                 style_guide_enabled=True,
+                testing_enabled=False,
                 toolbar_enabled=True,
             ),
             discord=DiscordConfig(

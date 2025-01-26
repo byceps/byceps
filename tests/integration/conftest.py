@@ -105,6 +105,7 @@ def build_byceps_config(
         development=DevelopmentConfig(
             debug_enabled=False,
             style_guide_enabled=style_guide_enabled,
+            testing_enabled=True,
             toolbar_enabled=False,
         ),
         discord=None,
@@ -249,7 +250,6 @@ def make_config_overrides(data_path: Path):
         merged.update(
             {
                 'PATH_DATA': data_path,
-                'TESTING': True,
             }
         )
 

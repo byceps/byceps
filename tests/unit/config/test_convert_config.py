@@ -39,6 +39,7 @@ def test_convert_config():
         'SHOP_ORDER_EXPORT_TIMEZONE': 'Europe/Berlin',
         'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg://dbuser:dbpass@127.0.0.1:5432/db',
         'STYLE_GUIDE_ENABLED': True,
+        'TESTING': True,
         'TIMEZONE': 'Europe/Berlin',
     }
 
@@ -62,6 +63,7 @@ def test_convert_config():
         development=DevelopmentConfig(
             debug_enabled=True,
             style_guide_enabled=True,
+            testing_enabled=True,
             toolbar_enabled=True,
         ),
         discord=None,

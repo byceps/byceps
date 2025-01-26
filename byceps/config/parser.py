@@ -165,6 +165,7 @@ _SECTION_DEFINITIONS = [
             Field(
                 'style_guide_enabled', type_=ValueType.Boolean, default=False
             ),
+            Field('testing_enabled', type_=ValueType.Boolean, default=False),
             Field('toolbar_enabled', type_=ValueType.Boolean, default=False),
         ],
         config_class=DevelopmentConfig,

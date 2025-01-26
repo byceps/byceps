@@ -104,6 +104,7 @@ class DatabaseConfig:
 class DevelopmentConfig:
     debug_enabled: bool
     style_guide_enabled: bool
+    testing_enabled: bool
     toolbar_enabled: bool
 
 
