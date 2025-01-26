@@ -92,6 +92,7 @@ def build_byceps_config(
     return BycepsConfig(
         locale='de',
         propagate_exceptions=False,
+        testing=True,
         timezone='Europe/Berlin',
         secret_key='secret-key-for-testing-ONLY',
         apps=apps_config,
@@ -105,7 +106,6 @@ def build_byceps_config(
         development=DevelopmentConfig(
             debug_enabled=False,
             style_guide_enabled=style_guide_enabled,
-            testing_enabled=True,
             toolbar_enabled=False,
         ),
         discord=None,

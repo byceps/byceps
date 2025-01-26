@@ -31,6 +31,7 @@ def test_parse_config():
             locale='de',
             propagate_exceptions=True,
             secret_key='<RANDOM-BYTES>',
+            testing=False,
             timezone='Europe/Berlin',
             apps=AppsConfig(
                 admin=AdminAppConfig(
@@ -60,7 +61,6 @@ def test_parse_config():
             development=DevelopmentConfig(
                 debug_enabled=True,
                 style_guide_enabled=True,
-                testing_enabled=False,
                 toolbar_enabled=True,
             ),
             discord=DiscordConfig(
@@ -184,6 +184,7 @@ def test_parse_config_defaults():
             locale='en',
             propagate_exceptions=False,
             secret_key='<RANDOM-BYTES>',
+            testing=False,
             timezone='Europe/London',
             apps=AppsConfig(
                 admin=AdminAppConfig(

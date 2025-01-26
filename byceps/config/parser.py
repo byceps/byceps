@@ -97,6 +97,7 @@ _TOPLEVEL_FIELDS = [
     Field('locale'),
     Field('propagate_exceptions', default=False),
     Field('secret_key'),
+    Field('testing', type_=ValueType.Boolean, default=False),
     Field('timezone'),
 ]
 
@@ -165,7 +166,6 @@ _SECTION_DEFINITIONS = [
             Field(
                 'style_guide_enabled', type_=ValueType.Boolean, default=False
             ),
-            Field('testing_enabled', type_=ValueType.Boolean, default=False),
             Field('toolbar_enabled', type_=ValueType.Boolean, default=False),
         ],
         config_class=DevelopmentConfig,

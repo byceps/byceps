@@ -47,6 +47,7 @@ def test_convert_config():
         locale='de',
         propagate_exceptions=True,
         secret_key='<RANDOM-BYTES>',
+        testing=True,
         timezone='Europe/Berlin',
         apps=AppsConfig(
             admin=None,
@@ -63,7 +64,6 @@ def test_convert_config():
         development=DevelopmentConfig(
             debug_enabled=True,
             style_guide_enabled=True,
-            testing_enabled=True,
             toolbar_enabled=True,
         ),
         discord=None,
