@@ -26,6 +26,7 @@ from byceps.config.models import (
     AppsConfig,
     BycepsConfig,
     DatabaseConfig,
+    DevelopmentConfig,
     JobsConfig,
     MetricsConfig,
     RedisConfig,
@@ -86,6 +87,7 @@ def build_byceps_config(
     apps_config: AppsConfig,
     *,
     metrics_enabled: bool = False,
+    style_guide_enabled: bool = False,
 ) -> BycepsConfig:
     return BycepsConfig(
         locale='de',
@@ -100,7 +102,11 @@ def build_byceps_config(
             password='test',
             database='byceps_test',
         ),
-        development=None,
+        development=DevelopmentConfig(
+            debug_enabled=False,
+            style_guide_enabled=style_guide_enabled,
+            toolbar_enabled=False,
+        ),
         discord=None,
         invoiceninja=None,
         jobs=JobsConfig(
@@ -235,6 +241,7 @@ def make_config_overrides(data_path: Path):
         byceps_config = build_byceps_config(
             apps_config,
             metrics_enabled=metrics_enabled,
+            style_guide_enabled=style_guide_enabled,
         )
 
         merged = convert_config(byceps_config)
@@ -242,7 +249,6 @@ def make_config_overrides(data_path: Path):
         merged.update(
             {
                 'PATH_DATA': data_path,
-                'STYLE_GUIDE_ENABLED': style_guide_enabled,
                 'TESTING': True,
             }
         )
