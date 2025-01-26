@@ -87,26 +87,24 @@ def database():
 
 
 @pytest.fixture(scope='session')
-def apps(database, data_path: Path) -> WSGIApplication:
+def apps(database, make_config_overrides) -> WSGIApplication:
     apps_config = AppsConfig(
         admin=None,
         api=ApiAppConfig(server_name='api.acmecon.test'),
         sites=[],
     )
 
-    config_overrides = _merge_config_overrides({}, data_path)
+    config_overrides = make_config_overrides()
 
     return create_dispatcher_app(apps_config, config_overrides=config_overrides)
 
 
 @pytest.fixture(scope='session')
-def make_admin_app(data_path: Path):
+def make_admin_app(make_config_overrides):
     """Provide the admin web application."""
 
     def _wrapper(server_name: str, **config_overrides: Any) -> BycepsApp:
-        merged_config_overrides = _merge_config_overrides(
-            config_overrides, data_path
-        )
+        merged_config_overrides = make_config_overrides(**config_overrides)
 
         return _create_admin_app(
             server_name, config_overrides=merged_config_overrides
@@ -134,15 +132,13 @@ def api_app(apps, site: Site) -> BycepsApp:
 
 
 @pytest.fixture(scope='session')
-def make_site_app(admin_app, data_path: Path):
+def make_site_app(admin_app, make_config_overrides):
     """Provide a site web application."""
 
     def _wrapper(
         server_name: str, site_id: SiteID, **config_overrides: Any
     ) -> BycepsApp:
-        merged_config_overrides = _merge_config_overrides(
-            config_overrides, data_path
-        )
+        merged_config_overrides = make_config_overrides(**config_overrides)
 
         return _create_site_app(
             server_name, site_id, config_overrides=merged_config_overrides
@@ -160,29 +156,31 @@ def site_app(database, make_site_app, site: Site) -> BycepsApp:
         return app
 
 
-def _merge_config_overrides(
-    overrides: dict[str, Any], data_path: Path
-) -> dict[str, Any]:
-    merged: dict[str, Any] = {
-        'LOCALE': 'de',
-        'REDIS_URL': 'redis://127.0.0.1:6379/0',
-        'SQLALCHEMY_DATABASE_URI': _DEFAULT_DATABASE_URI,
-        'TIMEZONE': 'Europe/Berlin',
-    }
-
-    merged.update(overrides)
-
-    merged.update(
-        {
-            'MAIL_SUPPRESS_SEND': True,
-            'JOBS_ASYNC': False,
-            'PATH_DATA': data_path,
-            'SECRET_KEY': 'secret-key-for-testing-ONLY',
-            'TESTING': True,
+@pytest.fixture(scope='session')
+def make_config_overrides(data_path: Path):
+    def _wrapper(**overrides: dict[str, Any]) -> dict[str, Any]:
+        merged: dict[str, Any] = {
+            'LOCALE': 'de',
+            'REDIS_URL': 'redis://127.0.0.1:6379/0',
+            'SQLALCHEMY_DATABASE_URI': _DEFAULT_DATABASE_URI,
+            'TIMEZONE': 'Europe/Berlin',
         }
-    )
 
-    return merged
+        merged.update(overrides)
+
+        merged.update(
+            {
+                'MAIL_SUPPRESS_SEND': True,
+                'JOBS_ASYNC': False,
+                'PATH_DATA': data_path,
+                'SECRET_KEY': 'secret-key-for-testing-ONLY',
+                'TESTING': True,
+            }
+        )
+
+        return merged
+
+    return _wrapper
 
 
 @pytest.fixture(scope='session')
