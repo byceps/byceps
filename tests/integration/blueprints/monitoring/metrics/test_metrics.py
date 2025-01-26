@@ -14,18 +14,18 @@ URL = f'http://{SERVER_NAME}/metrics/'
 
 # To be overridden by test parametrization
 @pytest.fixture()
-def config_overrides():
-    return {}
+def metrics_enabled():
+    return False
 
 
 @pytest.fixture()
-def client(admin_app, config_overrides, make_admin_app):
-    app = make_admin_app(SERVER_NAME, **config_overrides)
+def client(admin_app, metrics_enabled, make_admin_app):
+    app = make_admin_app(SERVER_NAME, METRICS_ENABLED=metrics_enabled)
     with app.app_context():
         yield app.test_client()
 
 
-@pytest.mark.parametrize('config_overrides', [{'METRICS_ENABLED': True}])
+@pytest.mark.parametrize('metrics_enabled', [True])
 def test_metrics(client):
     response = client.get(URL)
 
@@ -44,7 +44,7 @@ def test_metrics(client):
     assert regex.search(response.get_data(as_text=True)) is not None
 
 
-@pytest.mark.parametrize('config_overrides', [{'METRICS_ENABLED': False}])
+@pytest.mark.parametrize('metrics_enabled', [False])
 def test_disabled_metrics(client):
     response = client.get(URL)
 
