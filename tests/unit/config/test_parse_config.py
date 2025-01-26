@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from pathlib import Path
+
 from byceps.config.parser import parse_config
 from byceps.config.models import (
     AdminAppConfig,
@@ -28,6 +30,7 @@ from byceps.util.result import Err, Ok
 def test_parse_config():
     expected = Ok(
         BycepsConfig(
+            data_path=Path('./data'),
             locale='de',
             propagate_exceptions=True,
             secret_key='<RANDOM-BYTES>',
@@ -179,6 +182,7 @@ def test_parse_config():
 def test_parse_config_defaults():
     expected = Ok(
         BycepsConfig(
+            data_path=Path('./data'),
             locale='en',
             propagate_exceptions=False,
             secret_key='<RANDOM-BYTES>',

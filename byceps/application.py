@@ -201,8 +201,6 @@ def _assemble_configuration(config_overrides: dict[str, Any]) -> dict[str, Any]:
         'PERMANENT_SESSION_LIFETIME': timedelta(14),
         'SESSION_COOKIE_SAMESITE': 'Lax',
         'SESSION_COOKIE_SECURE': True,
-        # static content files path
-        'PATH_DATA': Path('./data'),
         # Limit incoming request content.
         'MAX_CONTENT_LENGTH': 4000000,
     }

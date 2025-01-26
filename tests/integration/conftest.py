@@ -84,12 +84,14 @@ _DEFAULT_DATABASE_URI = (
 
 
 def build_byceps_config(
+    data_path: Path,
     apps_config: AppsConfig,
     *,
     metrics_enabled: bool = False,
     style_guide_enabled: bool = False,
 ) -> BycepsConfig:
     return BycepsConfig(
+        data_path=data_path,
         locale='de',
         propagate_exceptions=False,
         testing=True,
@@ -239,16 +241,13 @@ def make_config_overrides(data_path: Path):
             apps_config = AppsConfig(admin=None, api=None, sites=[])
 
         byceps_config = build_byceps_config(
+            data_path,
             apps_config,
             metrics_enabled=metrics_enabled,
             style_guide_enabled=style_guide_enabled,
         )
 
-        merged = convert_config(byceps_config)
-
-        merged['PATH_DATA'] = data_path
-
-        return merged
+        return convert_config(byceps_config)
 
     return _wrapper
 

@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from pathlib import Path
+
 from byceps.config.converter import convert_config
 from byceps.config.models import (
     AppsConfig,
@@ -32,6 +34,7 @@ def test_convert_config():
         'MAIL_USE_SSL': False,
         'MAIL_USERNAME': 'smtpuser',
         'METRICS_ENABLED': True,
+        'PATH_DATA': Path('./data'),
         'PROPAGATE_EXCEPTIONS': True,
         'REDIS_URL': 'redis://127.0.0.1:6379/0',
         'SECRET_KEY': '<RANDOM-BYTES>',
@@ -43,6 +46,7 @@ def test_convert_config():
     }
 
     config = BycepsConfig(
+        data_path=Path('./data'),
         locale='de',
         propagate_exceptions=True,
         secret_key='<RANDOM-BYTES>',

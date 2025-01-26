@@ -12,6 +12,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field as dataclass_field
 from enum import Enum
+from pathlib import Path
 from typing import Any, TypeVar
 
 import rtoml
@@ -302,6 +303,7 @@ def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
     if errors:
         return Err(errors)
 
+    entries['data_path'] = Path('./data')
     entries['testing'] = False
 
     config = BycepsConfig(**entries)

@@ -11,6 +11,7 @@ Configuration models
 from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
 
 
 class AppMode(Enum):
@@ -45,6 +46,7 @@ class AppMode(Enum):
 
 @dataclass(frozen=True, slots=True)
 class BycepsConfig:
+    data_path: Path
     locale: str
     propagate_exceptions: bool
     testing: bool
