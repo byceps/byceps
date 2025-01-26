@@ -153,9 +153,16 @@ def apps(database, make_config_overrides) -> WSGIApplication:
 def make_admin_app(make_config_overrides):
     """Provide the admin web application."""
 
-    def _wrapper(server_name: str, **config_overrides: Any) -> BycepsApp:
+    def _wrapper(
+        server_name: str,
+        *,
+        metrics_enabled: bool = False,
+        style_guide_enabled: bool = False,
+    ) -> BycepsApp:
         merged_config_overrides = make_config_overrides(
-            None, **config_overrides
+            None,
+            metrics_enabled=metrics_enabled,
+            style_guide_enabled=style_guide_enabled,
         )
 
         return _create_admin_app(
@@ -188,10 +195,10 @@ def make_site_app(admin_app, make_config_overrides):
     """Provide a site web application."""
 
     def _wrapper(
-        server_name: str, site_id: SiteID, **config_overrides: Any
+        server_name: str, site_id: SiteID, *, style_guide_enabled: bool = False
     ) -> BycepsApp:
         merged_config_overrides = make_config_overrides(
-            None, **config_overrides
+            None, style_guide_enabled=style_guide_enabled
         )
 
         return _create_site_app(
@@ -213,7 +220,10 @@ def site_app(database, make_site_app, site: Site) -> BycepsApp:
 @pytest.fixture(scope='session')
 def make_config_overrides(data_path: Path):
     def _wrapper(
-        apps_config: AppsConfig | None = None, **overrides: dict[str, Any]
+        apps_config: AppsConfig | None = None,
+        *,
+        metrics_enabled: bool = False,
+        style_guide_enabled: bool = False,
     ) -> dict[str, Any]:
         if apps_config is None:
             apps_config = AppsConfig(admin=None, api=None, sites=[])
@@ -222,11 +232,11 @@ def make_config_overrides(data_path: Path):
 
         merged = convert_config(byceps_config)
 
-        merged.update(overrides)
-
         merged.update(
             {
+                'METRICS_ENABLED': metrics_enabled,
                 'PATH_DATA': data_path,
+                'STYLE_GUIDE_ENABLED': style_guide_enabled,
                 'TESTING': True,
             }
         )

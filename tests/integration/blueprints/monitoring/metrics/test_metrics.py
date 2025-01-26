@@ -20,7 +20,7 @@ def metrics_enabled():
 
 @pytest.fixture()
 def client(admin_app, metrics_enabled, make_admin_app):
-    app = make_admin_app(SERVER_NAME, METRICS_ENABLED=metrics_enabled)
+    app = make_admin_app(SERVER_NAME, metrics_enabled=metrics_enabled)
     with app.app_context():
         yield app.test_client()
 

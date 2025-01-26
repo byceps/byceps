@@ -9,7 +9,7 @@ from tests.helpers import http_client
 # `admin_app` fixture is required because it sets up the database.
 def test_admin_style_guide_when_enabled(admin_app, make_admin_app):
     server_name = 'admin-with-styleguide.acmecon.test'
-    debug_admin_app = make_admin_app(server_name, STYLE_GUIDE_ENABLED=True)
+    debug_admin_app = make_admin_app(server_name, style_guide_enabled=True)
 
     url = 'http://admin-with-styleguide.acmecon.test/style_guide/'
     assert_response_status_code(debug_admin_app, url, 200)
@@ -23,7 +23,7 @@ def test_admin_style_guide_when_disabled(admin_app):
 def test_site_style_guide_when_enabled(make_site_app, site):
     server_name = 'site-with-styleguide.acmecon.test'
     debug_site_app = make_site_app(
-        server_name, site.id, STYLE_GUIDE_ENABLED=True
+        server_name, site.id, style_guide_enabled=True
     )
 
     url = 'http://site-with-styleguide.acmecon.test/style_guide/'
