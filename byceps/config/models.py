@@ -103,7 +103,6 @@ class DatabaseConfig:
 
 @dataclass(frozen=True, slots=True)
 class DevelopmentConfig:
-    debug_enabled: bool
     style_guide_enabled: bool
     toolbar_enabled: bool
 

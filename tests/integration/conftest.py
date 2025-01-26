@@ -104,7 +104,6 @@ def build_byceps_config(
             database='byceps_test',
         ),
         development=DevelopmentConfig(
-            debug_enabled=False,
             style_guide_enabled=style_guide_enabled,
             toolbar_enabled=False,
         ),

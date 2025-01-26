@@ -59,7 +59,6 @@ def test_parse_config():
                 database='db-database',
             ),
             development=DevelopmentConfig(
-                debug_enabled=True,
                 style_guide_enabled=True,
                 toolbar_enabled=True,
             ),
@@ -130,7 +129,6 @@ def test_parse_config():
     database = "db-database"
 
     [development]
-    debug_enabled = true
     style_guide_enabled = true
     toolbar_enabled = true
 

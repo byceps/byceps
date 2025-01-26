@@ -161,7 +161,6 @@ _SECTION_DEFINITIONS = [
     Section(
         name='development',
         fields=[
-            Field('debug_enabled', type_=ValueType.Boolean, default=False),
             Field(
                 'style_guide_enabled', type_=ValueType.Boolean, default=False
             ),

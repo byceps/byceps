@@ -21,7 +21,6 @@ def convert_config(config: BycepsConfig) -> dict[str, Any]:
 
 def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     if config.development is not None:
-        yield 'DEBUG', config.development.debug_enabled
         yield 'STYLE_GUIDE_ENABLED', config.development.style_guide_enabled
         yield 'DEBUG_TOOLBAR_ENABLED', config.development.toolbar_enabled
 

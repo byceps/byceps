@@ -19,7 +19,6 @@ from byceps.config.models import (
 
 def test_convert_config():
     expected = {
-        'DEBUG': True,
         'DEBUG_TOOLBAR_ENABLED': True,
         'INVOICENINJA_BASE_URL': 'https://invoiceninja.example',
         'INVOICENINJA_API_KEY': 'invoiceninja-api-key',
@@ -62,7 +61,6 @@ def test_convert_config():
             database='db',
         ),
         development=DevelopmentConfig(
-            debug_enabled=True,
             style_guide_enabled=True,
             toolbar_enabled=True,
         ),
