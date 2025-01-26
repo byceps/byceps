@@ -9,7 +9,6 @@ Serve multiple apps together.
 """
 
 from threading import Lock
-from typing import Any
 from wsgiref.types import WSGIApplication
 
 from flask import Flask
@@ -17,11 +16,12 @@ import structlog
 from werkzeug.exceptions import InternalServerError, NotFound
 
 from byceps.application import create_admin_app, create_api_app, create_site_app
+from byceps.config.converter import convert_config
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
     AppConfig,
-    AppsConfig,
+    BycepsConfig,
     SiteAppConfig,
 )
 from byceps.config.util import iterate_app_configs
@@ -34,29 +34,20 @@ from .byceps_app import BycepsApp
 log = structlog.get_logger()
 
 
-def create_dispatcher_app(
-    apps_config: AppsConfig,
-    *,
-    config_overrides: dict[str, Any] | None = None,
-) -> Flask:
+def create_dispatcher_app(byceps_config: BycepsConfig) -> Flask:
     app = Flask('dispatcher')
-    app.wsgi_app = AppDispatcher(apps_config, config_overrides=config_overrides)
+    app.wsgi_app = AppDispatcher(byceps_config)
     return app
 
 
 class AppDispatcher:
-    def __init__(
-        self,
-        apps_config: AppsConfig,
-        *,
-        config_overrides: dict[str, Any] | None = None,
-    ) -> None:
+    def __init__(self, byceps_config: BycepsConfig) -> None:
         self.lock = Lock()
         self.app_configs_by_host = {
             app_config.server_name: app_config
-            for app_config in iterate_app_configs(apps_config)
+            for app_config in iterate_app_configs(byceps_config.apps)
         }
-        self.config_overrides = config_overrides
+        self.byceps_config = byceps_config
         self.apps_by_host: dict[str, WSGIApplication] = {}
 
     def __call__(self, environ, start_response):
@@ -79,9 +70,7 @@ class AppDispatcher:
                 log_ctx.debug('No application configured for host')
                 return NotFound()
 
-            match _create_app(
-                app_config, config_overrides=self.config_overrides
-            ):
+            match _create_app(app_config, self.byceps_config):
                 case Ok(app):
                     self.apps_by_host[host] = app
                     mode = app.byceps_app_mode
@@ -101,9 +90,10 @@ class AppDispatcher:
 
 
 def _create_app(
-    app_config: AppConfig, *, config_overrides: dict[str, Any] | None = None
+    app_config: AppConfig, byceps_config: BycepsConfig
 ) -> Result[BycepsApp, str]:
     server_name = app_config.server_name
+    config_overrides = convert_config(byceps_config)
     match app_config:
         case AdminAppConfig():
             return Ok(

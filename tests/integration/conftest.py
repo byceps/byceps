@@ -149,16 +149,16 @@ def database():
 
 
 @pytest.fixture(scope='session')
-def apps(database, make_config_overrides) -> WSGIApplication:
+def apps(database, make_byceps_config) -> WSGIApplication:
     apps_config = AppsConfig(
         admin=None,
         api=ApiAppConfig(server_name='api.acmecon.test'),
         sites=[],
     )
 
-    config_overrides = make_config_overrides(apps_config)
+    byceps_config = make_byceps_config(apps_config)
 
-    return create_dispatcher_app(apps_config, config_overrides=config_overrides)
+    return create_dispatcher_app(byceps_config)
 
 
 @pytest.fixture(scope='session')
