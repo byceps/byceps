@@ -19,7 +19,18 @@ from byceps.application import (
     create_site_app as _create_site_app,
 )
 from byceps.byceps_app import BycepsApp
-from byceps.config.models import ApiAppConfig, AppMode, AppsConfig
+from byceps.config.converter import convert_config
+from byceps.config.models import (
+    ApiAppConfig,
+    AppMode,
+    AppsConfig,
+    BycepsConfig,
+    DatabaseConfig,
+    JobsConfig,
+    MetricsConfig,
+    RedisConfig,
+    SmtpConfig,
+)
 from byceps.database import db
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, Role, RoleID
@@ -71,6 +82,45 @@ _DEFAULT_DATABASE_URI = (
 )
 
 
+def build_byceps_config(apps_config: AppsConfig) -> BycepsConfig:
+    return BycepsConfig(
+        locale='de',
+        propagate_exceptions=False,
+        timezone='Europe/Berlin',
+        secret_key='secret-key-for-testing-ONLY',
+        apps=apps_config,
+        database=DatabaseConfig(
+            host='127.0.0.1',
+            port=5432,
+            username='byceps_test',
+            password='test',
+            database='byceps_test',
+        ),
+        development=None,
+        discord=None,
+        invoiceninja=None,
+        jobs=JobsConfig(
+            asynchronous=False,
+        ),
+        metrics=MetricsConfig(
+            enabled=False,
+        ),
+        payment_gateways=None,
+        redis=RedisConfig(
+            url='redis://127.0.0.1:6379/0',
+        ),
+        smtp=SmtpConfig(
+            host='127.0.0.1',
+            port=25,
+            starttls=False,
+            use_ssl=False,
+            username=None,
+            password=None,
+            suppress_send=True,
+        ),
+    )
+
+
 @pytest.fixture(scope='session')
 def database():
     app = BycepsApp(AppMode.metrics)
@@ -94,7 +144,7 @@ def apps(database, make_config_overrides) -> WSGIApplication:
         sites=[],
     )
 
-    config_overrides = make_config_overrides()
+    config_overrides = make_config_overrides(apps_config)
 
     return create_dispatcher_app(apps_config, config_overrides=config_overrides)
 
@@ -104,7 +154,9 @@ def make_admin_app(make_config_overrides):
     """Provide the admin web application."""
 
     def _wrapper(server_name: str, **config_overrides: Any) -> BycepsApp:
-        merged_config_overrides = make_config_overrides(**config_overrides)
+        merged_config_overrides = make_config_overrides(
+            None, **config_overrides
+        )
 
         return _create_admin_app(
             server_name, config_overrides=merged_config_overrides
@@ -138,7 +190,9 @@ def make_site_app(admin_app, make_config_overrides):
     def _wrapper(
         server_name: str, site_id: SiteID, **config_overrides: Any
     ) -> BycepsApp:
-        merged_config_overrides = make_config_overrides(**config_overrides)
+        merged_config_overrides = make_config_overrides(
+            None, **config_overrides
+        )
 
         return _create_site_app(
             server_name, site_id, config_overrides=merged_config_overrides
@@ -158,22 +212,21 @@ def site_app(database, make_site_app, site: Site) -> BycepsApp:
 
 @pytest.fixture(scope='session')
 def make_config_overrides(data_path: Path):
-    def _wrapper(**overrides: dict[str, Any]) -> dict[str, Any]:
-        merged: dict[str, Any] = {
-            'LOCALE': 'de',
-            'REDIS_URL': 'redis://127.0.0.1:6379/0',
-            'SQLALCHEMY_DATABASE_URI': _DEFAULT_DATABASE_URI,
-            'TIMEZONE': 'Europe/Berlin',
-        }
+    def _wrapper(
+        apps_config: AppsConfig | None = None, **overrides: dict[str, Any]
+    ) -> dict[str, Any]:
+        if apps_config is None:
+            apps_config = AppsConfig(admin=None, api=None, sites=[])
+
+        byceps_config = build_byceps_config(apps_config)
+
+        merged = convert_config(byceps_config)
 
         merged.update(overrides)
 
         merged.update(
             {
-                'MAIL_SUPPRESS_SEND': True,
-                'JOBS_ASYNC': False,
                 'PATH_DATA': data_path,
-                'SECRET_KEY': 'secret-key-for-testing-ONLY',
                 'TESTING': True,
             }
         )
