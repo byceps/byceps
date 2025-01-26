@@ -66,12 +66,9 @@ from tests.helpers.shop import create_product, create_orderer
 from .database import populate_database, set_up_database, tear_down_database
 
 
-_CONFIG_DEFAULTS_FOR_TESTS = {
-    'LOCALE': 'de',
-    'REDIS_URL': 'redis://127.0.0.1:6379/0',
-    'SQLALCHEMY_DATABASE_URI': 'postgresql+psycopg://byceps_test:test@127.0.0.1/byceps_test',
-    'TIMEZONE': 'Europe/Berlin',
-}
+_DEFAULT_DATABASE_URI = (
+    'postgresql+psycopg://byceps_test:test@127.0.0.1/byceps_test'
+)
 
 
 @pytest.fixture(scope='session')
@@ -79,9 +76,7 @@ def database():
     app = BycepsApp(AppMode.metrics)
 
     db_url_key = 'SQLALCHEMY_DATABASE_URI'
-    app.config[db_url_key] = os.environ.get(
-        db_url_key, _CONFIG_DEFAULTS_FOR_TESTS[db_url_key]
-    )
+    app.config[db_url_key] = os.environ.get(db_url_key, _DEFAULT_DATABASE_URI)
 
     db.init_app(app)
 
@@ -168,13 +163,14 @@ def site_app(database, make_site_app, site: Site) -> BycepsApp:
 def _merge_config_overrides(
     overrides: dict[str, Any], data_path: Path
 ) -> dict[str, Any]:
-    merged: dict[str, Any] = {}
+    merged: dict[str, Any] = {
+        'LOCALE': 'de',
+        'REDIS_URL': 'redis://127.0.0.1:6379/0',
+        'SQLALCHEMY_DATABASE_URI': _DEFAULT_DATABASE_URI,
+        'TIMEZONE': 'Europe/Berlin',
+    }
 
     merged.update(overrides)
-
-    for key, value in _CONFIG_DEFAULTS_FOR_TESTS.items():
-        if key not in merged:
-            merged[key] = value
 
     merged.update(
         {
