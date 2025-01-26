@@ -247,11 +247,7 @@ def make_config_overrides(data_path: Path):
 
         merged = convert_config(byceps_config)
 
-        merged.update(
-            {
-                'PATH_DATA': data_path,
-            }
-        )
+        merged['PATH_DATA'] = data_path
 
         return merged
 
