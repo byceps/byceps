@@ -11,10 +11,16 @@ Utilities for scripts
 from collections.abc import Callable
 
 from byceps.application import create_cli_app
+from byceps.config.converter import convert_config
+from byceps.config.integration import (
+    read_configuration_from_file_given_in_env_var,
+)
 
 
 def call_with_app_context(func: Callable) -> None:
     """Call a callable inside of an application context."""
-    app = create_cli_app()
+    config = read_configuration_from_file_given_in_env_var()
+    config_overrides = convert_config(config)
+    app = create_cli_app(config_overrides=config_overrides)
     with app.app_context():
         func()
