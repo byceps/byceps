@@ -58,6 +58,17 @@ def create_user(
     InvalidScreenNameError | InvalidEmailAddressError | None,
 ]:
     """Create a user account and related records."""
+    if email_address is not None:
+        existing_user_by_email_address = (
+            user_service.find_user_by_email_address(email_address)
+        )
+        if existing_user_by_email_address:
+            log.info(
+                'User creation failed',
+                reason='email address already in database',
+            )
+            return Err(InvalidEmailAddressError(value=email_address))
+
     result = user_creation_domain_service.create_account(
         screen_name,
         email_address,
