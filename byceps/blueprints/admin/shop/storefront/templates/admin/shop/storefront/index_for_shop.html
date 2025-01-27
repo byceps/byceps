@@ -6,25 +6,17 @@
 
 {% block body %}
 
-  <div class="row row--space-between block">
+  <div class="block row row--space-between">
     <div>
       <h1 class="title">{{ page_title }} {{ render_extra_in_heading(storefronts|length) }}</h1>
     </div>
+    {%- if has_current_user_permission('shop.create') %}
     <div>
       <div class="button-row is-right-aligned">
-        {%- if has_current_user_permission('shop.create') %}
         <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create storefront') }}</span></a>
-        {%- endif %}
-        {%- if has_current_user_permission('shop.update') %}
-        <div class="dropdown">
-          <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
-          <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} {{ _('Create order number sequence') }}</a></li>
-          </ol>
-        </div>
-        {%- endif %}
       </div>
     </div>
+    {%- endif %}
   </div>
 
   {%- if storefronts %}
@@ -62,7 +54,18 @@
   <div class="box no-data-message">{{ _('No storefronts exist.') }}</div>
   {%- endif %}
 
-  <h2 class="title">{{ _('Order Number Sequences') }} {{ render_extra_in_heading(order_number_sequences|length) }}</h2>
+  <div class="block row row--space-between is-vcentered">
+    <div>
+      <h2 class="title">{{ _('Order Number Sequences') }} {{ render_extra_in_heading(order_number_sequences|length) }}</h2>
+    </div>
+    {%- if has_current_user_permission('shop.update') %}
+    <div>
+      <div class="button-row is-compact is-right-aligned">
+        <a class="button is-compact" href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create order number sequence') }}</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
 
   {%- if order_number_sequences %}
   <table class="itemlist is-wide">
