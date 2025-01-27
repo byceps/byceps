@@ -314,7 +314,13 @@ def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
     errors: list[str] = []
 
     for field in _TOPLEVEL_FIELDS:
-        match _get_value(data, field.key, field.default):
+        result: Result[Data | Value | None, str]
+        if field.required:
+            result = _get_required_value(data, field.key)
+        else:
+            result = _get_optional_value(data, field.key, field.default)
+
+        match result:
             case Ok(toplevel_value):
                 entries[field.key] = toplevel_value
             case Err(toplevel_err):
@@ -364,7 +370,7 @@ def _parse_required_section(
 ) -> ParsingResult[T]:
     key = section.name
     return (
-        _get_value(data, key)
+        _get_required_value(data, key)
         .map_err(lambda _: f'Section "{key}" missing')
         .map_err(lambda x: [x])
         .and_then(parse)
@@ -497,12 +503,23 @@ def _get_section_value(
     return Ok(value)
 
 
-def _get_value(
-    data: Data, key: str, default: Value | None = None
-) -> Result[Data | Value, str]:
-    value = data.get(key, default)
-
-    if (value is None) and (default is not None):
+def _get_required_value(
+    data: Data, key: str
+) -> Result[Data | Value | None, str]:
+    try:
+        value = data[key]
+    except KeyError:
         return Err(f'Key "{key}" missing')
+
+    return Ok(value)
+
+
+def _get_optional_value(
+    data: Data, key: str, default: Value | None = None
+) -> Result[Data | Value | None, str]:
+    try:
+        value = data.get(key, default)
+    except KeyError:
+        value = default
 
     return Ok(value)
