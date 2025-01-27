@@ -30,9 +30,12 @@ from byceps.config.integration import (
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
+    AppConfig,
     AppMode,
     BycepsConfig,
+    CliAppConfig,
     SiteAppConfig,
+    WorkerAppConfig,
 )
 from byceps.database import db
 from byceps.paypal import paypal
@@ -55,7 +58,10 @@ def create_admin_app(
     config_overrides['SERVER_NAME'] = app_config.server_name
 
     app = _create_app(
-        AppMode.admin, byceps_config, config_overrides=config_overrides
+        AppMode.admin,
+        byceps_config,
+        app_config,
+        config_overrides=config_overrides,
     )
 
     _dispatch_apps_by_url_path(app)
@@ -73,7 +79,10 @@ def create_site_app(
     config_overrides['SITE_ID'] = app_config.site_id
 
     app = _create_app(
-        AppMode.site, byceps_config, config_overrides=config_overrides
+        AppMode.site,
+        byceps_config,
+        app_config,
+        config_overrides=config_overrides,
     )
 
     _init_site_app(app)
@@ -90,7 +99,10 @@ def create_api_app(
     config_overrides['SERVER_NAME'] = app_config.server_name
 
     app = _create_app(
-        AppMode.api, byceps_config, config_overrides=config_overrides
+        AppMode.api,
+        byceps_config,
+        app_config,
+        config_overrides=config_overrides,
     )
 
     register_api_blueprints(app)
@@ -99,7 +111,9 @@ def create_api_app(
 
 
 def create_cli_app(byceps_config: BycepsConfig) -> BycepsApp:
-    return _create_app(AppMode.cli, byceps_config)
+    app_config = CliAppConfig()
+
+    return _create_app(AppMode.cli, byceps_config, app_config)
 
 
 def create_metrics_app(database_uri: str) -> BycepsApp:
@@ -116,12 +130,15 @@ def create_metrics_app(database_uri: str) -> BycepsApp:
 
 
 def create_worker_app(byceps_config: BycepsConfig) -> BycepsApp:
-    return _create_app(AppMode.worker, byceps_config)
+    app_config = WorkerAppConfig()
+
+    return _create_app(AppMode.worker, byceps_config, app_config)
 
 
 def _create_app(
     app_mode: AppMode,
     byceps_config: BycepsConfig,
+    app_config: AppConfig,
     *,
     config_overrides: dict[str, Any] | None = None,
 ) -> BycepsApp:
