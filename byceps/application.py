@@ -58,7 +58,6 @@ def create_admin_app(
     config_overrides['SERVER_NAME'] = app_config.server_name
 
     app = _create_app(
-        AppMode.admin,
         byceps_config,
         app_config,
         config_overrides=config_overrides,
@@ -79,7 +78,6 @@ def create_site_app(
     config_overrides['SITE_ID'] = app_config.site_id
 
     app = _create_app(
-        AppMode.site,
         byceps_config,
         app_config,
         config_overrides=config_overrides,
@@ -99,7 +97,6 @@ def create_api_app(
     config_overrides['SERVER_NAME'] = app_config.server_name
 
     app = _create_app(
-        AppMode.api,
         byceps_config,
         app_config,
         config_overrides=config_overrides,
@@ -113,7 +110,7 @@ def create_api_app(
 def create_cli_app(byceps_config: BycepsConfig) -> BycepsApp:
     app_config = CliAppConfig()
 
-    return _create_app(AppMode.cli, byceps_config, app_config)
+    return _create_app(byceps_config, app_config)
 
 
 def create_metrics_app(database_uri: str) -> BycepsApp:
@@ -132,17 +129,18 @@ def create_metrics_app(database_uri: str) -> BycepsApp:
 def create_worker_app(byceps_config: BycepsConfig) -> BycepsApp:
     app_config = WorkerAppConfig()
 
-    return _create_app(AppMode.worker, byceps_config, app_config)
+    return _create_app(byceps_config, app_config)
 
 
 def _create_app(
-    app_mode: AppMode,
     byceps_config: BycepsConfig,
     app_config: AppConfig,
     *,
     config_overrides: dict[str, Any] | None = None,
 ) -> BycepsApp:
     """Create the actual Flask-based BYCEPS application."""
+    app_mode = _get_app_mode(app_config)
+
     app = BycepsApp(app_mode)
 
     if config_overrides is None:
@@ -203,6 +201,23 @@ def _create_app(
     app.byceps_feature_states['debug_toolbar'] = debug_toolbar_enabled
 
     return app
+
+
+def _get_app_mode(app_config: AppConfig) -> AppMode:
+    """Derive application mode from application config."""
+    match app_config:
+        case AdminAppConfig():
+            return AppMode.admin
+        case ApiAppConfig():
+            return AppMode.api
+        case CliAppConfig():
+            return AppMode.cli
+        case SiteAppConfig():
+            return AppMode.site
+        case WorkerAppConfig():
+            return AppMode.worker
+        case _:
+            raise ValueError('Unexpected application configuration type')
 
 
 def _configure(
