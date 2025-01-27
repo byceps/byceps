@@ -472,7 +472,7 @@ def _get_value(
 ) -> Result[Data | Value, str]:
     value = data.get(key, default)
 
-    if value is None:
+    if (value is None) and (default is not None):
         return Err(f'Key "{key}" missing')
 
     return Ok(value)
