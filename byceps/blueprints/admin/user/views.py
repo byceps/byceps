@@ -185,7 +185,7 @@ def create_account():
     screen_name = form.screen_name.data.strip()
     first_name = form.first_name.data.strip()
     last_name = form.last_name.data.strip()
-    email_address = form.email_address.data.lower()
+    email_address = form.email_address.data
     password = form.password.data
     site_id_for_email = form.site_id.data
 

@@ -182,7 +182,7 @@ def normalize_email_address(
     email_address: str,
 ) -> Result[str, InvalidEmailAddressError]:
     """Normalize the e-mail address."""
-    normalized = email_address.strip().lower()
+    normalized = email_address.strip()
 
     if not normalized or (' ' in normalized) or ('@' not in normalized):
         return Err(InvalidEmailAddressError(value=email_address))

@@ -86,7 +86,7 @@ def create():
         return create_form(form)
 
     screen_name = form.screen_name.data.strip()
-    email_address = form.email_address.data.strip().lower()
+    email_address = form.email_address.data.strip()
     password = form.password.data
 
     now_utc = datetime.utcnow()
