@@ -19,9 +19,9 @@ from byceps.application import create_admin_app, create_api_app, create_site_app
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
-    AppConfig,
     BycepsConfig,
     SiteAppConfig,
+    WebAppConfig,
 )
 from byceps.config.util import iterate_app_configs
 
@@ -89,7 +89,7 @@ class AppDispatcher:
 
 
 def _create_app(
-    app_config: AppConfig, byceps_config: BycepsConfig
+    app_config: WebAppConfig, byceps_config: BycepsConfig
 ) -> Result[BycepsApp, str]:
     server_name = app_config.server_name
     match app_config:

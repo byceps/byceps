@@ -11,11 +11,11 @@ Configuration utilities
 from collections import Counter
 from collections.abc import Iterator
 
-from .models import AppConfig, AppsConfig
+from .models import AppsConfig, WebAppConfig
 
 
-def iterate_app_configs(apps_config: AppsConfig) -> Iterator[AppConfig]:
-    """Return all application configurations contained in this
+def iterate_app_configs(apps_config: AppsConfig) -> Iterator[WebAppConfig]:
+    """Return all web application configurations contained in this
     applications configuration.
     """
     if apps_config.admin:
