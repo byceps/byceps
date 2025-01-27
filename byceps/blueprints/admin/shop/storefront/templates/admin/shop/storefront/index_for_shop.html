@@ -54,7 +54,18 @@
   <div class="box no-data-message">{{ _('No storefronts exist.') }}</div>
   {%- endif %}
 
-  <h2 class="title">{{ _('Product Number Sequences') }} {{ render_extra_in_heading(product_number_sequences|length) }}</h2>
+  <div class="block row row--space-between is-vcentered">
+    <div>
+      <h2 class="title">{{ _('Product Number Sequences') }} {{ render_extra_in_heading(product_number_sequences|length) }}</h2>
+    </div>
+    {%- if has_current_user_permission('shop_product.administrate') %}
+    <div>
+      <div class="button-row is-compact is-right-aligned">
+        <a class="button is-compact" href="{{ url_for('shop_product_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create product number sequence') }}</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
 
   {%- if product_number_sequences %}
   <table class="itemlist is-wide">
