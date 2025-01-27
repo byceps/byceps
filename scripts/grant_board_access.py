@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Grant access to a board to a user.
 
 :Copyright: 2014-2025 Jochen Kupperschmidt

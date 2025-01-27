@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Search in (the latest versions of) snippets.
 
 :Copyright: 2014-2025 Jochen Kupperschmidt

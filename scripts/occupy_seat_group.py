@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Occupy a seat group with a ticket bundle.
 
 :Copyright: 2014-2025 Jochen Kupperschmidt

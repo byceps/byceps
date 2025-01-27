@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Generate the SQL statements to remove one or more users and their
 various (but not all) traces from the database.
 

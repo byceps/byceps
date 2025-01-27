@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Wish orgas a happy birthday.
 
 Meant to be called by a daily cronjob or similar mechanism.

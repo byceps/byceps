@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Delete login user log entries older than a given number of days.
 
 :Copyright: 2014-2025 Jochen Kupperschmidt

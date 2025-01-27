@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Cancel open orders older than N days.
 
 :Copyright: 2019-2025 Jan Korneffel, Jochen Kupperschmidt
