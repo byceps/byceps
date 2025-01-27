@@ -62,6 +62,7 @@ def index_for_shop(shop_id):
         'shop': shop,
         'brand': brand,
         'storefronts': storefronts_for_admin,
+        'order_number_sequences': order_number_sequences,
     }
 
 
