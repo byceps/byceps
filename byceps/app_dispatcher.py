@@ -42,7 +42,7 @@ def create_dispatcher_app(byceps_config: BycepsConfig) -> Flask:
 class AppDispatcher:
     def __init__(self, byceps_config: BycepsConfig) -> None:
         self.lock = Lock()
-        self.app_configs_by_host = {
+        self.app_configs_by_host: dict[str, WebAppConfig] = {
             app_config.server_name: app_config
             for app_config in iterate_app_configs(byceps_config.apps)
         }
