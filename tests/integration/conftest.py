@@ -19,6 +19,7 @@ from byceps.application import (
 )
 from byceps.byceps_app import BycepsApp
 from byceps.config.models import (
+    AdminAppConfig,
     ApiAppConfig,
     AppMode,
     AppsConfig,
@@ -28,6 +29,7 @@ from byceps.config.models import (
     JobsConfig,
     MetricsConfig,
     RedisConfig,
+    SiteAppConfig,
     SmtpConfig,
 )
 from byceps.database import db
@@ -175,7 +177,11 @@ def make_admin_app(make_byceps_config):
             style_guide_enabled=style_guide_enabled,
         )
 
-        return _create_admin_app(byceps_config, server_name)
+        app_config = AdminAppConfig(
+            server_name=server_name,
+        )
+
+        return _create_admin_app(byceps_config, app_config)
 
     return _wrapper
 
@@ -209,7 +215,12 @@ def make_site_app(admin_app, make_byceps_config):
             None, style_guide_enabled=style_guide_enabled
         )
 
-        return _create_site_app(byceps_config, server_name, site_id)
+        app_config = SiteAppConfig(
+            server_name=server_name,
+            site_id=site_id,
+        )
+
+        return _create_site_app(byceps_config, app_config)
 
     return _wrapper
 

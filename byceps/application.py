@@ -27,7 +27,13 @@ from byceps.config.integration import (
     init_app as init_app_config,
     parse_value_from_environment,
 )
-from byceps.config.models import AppMode, BycepsConfig
+from byceps.config.models import (
+    AdminAppConfig,
+    ApiAppConfig,
+    AppMode,
+    BycepsConfig,
+    SiteAppConfig,
+)
 from byceps.database import db
 from byceps.paypal import paypal
 from byceps.util import templatefilters
@@ -43,10 +49,10 @@ log = structlog.get_logger()
 
 
 def create_admin_app(
-    byceps_config: BycepsConfig, server_name: str
+    byceps_config: BycepsConfig, app_config: AdminAppConfig
 ) -> BycepsApp:
     config_overrides = {}
-    config_overrides['SERVER_NAME'] = server_name
+    config_overrides['SERVER_NAME'] = app_config.server_name
 
     app = _create_app(
         AppMode.admin, byceps_config, config_overrides=config_overrides
@@ -60,11 +66,11 @@ def create_admin_app(
 
 
 def create_site_app(
-    byceps_config: BycepsConfig, server_name: str, site_id: str
+    byceps_config: BycepsConfig, app_config: SiteAppConfig
 ) -> BycepsApp:
     config_overrides = {}
-    config_overrides['SERVER_NAME'] = server_name
-    config_overrides['SITE_ID'] = site_id
+    config_overrides['SERVER_NAME'] = app_config.server_name
+    config_overrides['SITE_ID'] = app_config.site_id
 
     app = _create_app(
         AppMode.site, byceps_config, config_overrides=config_overrides
@@ -77,9 +83,11 @@ def create_site_app(
     return app
 
 
-def create_api_app(byceps_config: BycepsConfig, server_name: str) -> BycepsApp:
+def create_api_app(
+    byceps_config: BycepsConfig, app_config: ApiAppConfig
+) -> BycepsApp:
     config_overrides = {}
-    config_overrides['SERVER_NAME'] = server_name
+    config_overrides['SERVER_NAME'] = app_config.server_name
 
     app = _create_app(
         AppMode.api, byceps_config, config_overrides=config_overrides

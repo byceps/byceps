@@ -91,18 +91,17 @@ class AppDispatcher:
 def _create_app(
     app_config: WebAppConfig, byceps_config: BycepsConfig
 ) -> Result[BycepsApp, str]:
-    server_name = app_config.server_name
     match app_config:
         case AdminAppConfig():
-            return Ok(create_admin_app(byceps_config, server_name))
+            return Ok(create_admin_app(byceps_config, app_config))
         case ApiAppConfig():
-            return Ok(create_api_app(byceps_config, server_name))
+            return Ok(create_api_app(byceps_config, app_config))
         case SiteAppConfig():
             site_id = app_config.site_id
             if not site_id:
                 return Err(f'Unknown site ID "{site_id}"')
 
-            app = create_site_app(byceps_config, server_name, site_id)
+            app = create_site_app(byceps_config, app_config)
             return Ok(app)
         case _:
             return Err('Unknown or unsupported app configuration type')
