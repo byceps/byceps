@@ -96,7 +96,7 @@ def _validate_apps_config(apps_config: AppsConfig) -> ParsingResult[None]:
 
 _TOPLEVEL_FIELDS = [
     Field('locale'),
-    Field('propagate_exceptions', default=False),
+    Field('propagate_exceptions', default=None),
     Field('secret_key'),
     Field('timezone'),
 ]

@@ -93,7 +93,7 @@ def build_byceps_config(
     return BycepsConfig(
         data_path=data_path,
         locale='de',
-        propagate_exceptions=False,
+        propagate_exceptions=None,
         testing=True,
         timezone='Europe/Berlin',
         secret_key='secret-key-for-testing-ONLY',

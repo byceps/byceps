@@ -184,7 +184,7 @@ def test_parse_config_defaults():
         BycepsConfig(
             data_path=Path('./data'),
             locale='en',
-            propagate_exceptions=False,
+            propagate_exceptions=None,
             secret_key='<RANDOM-BYTES>',
             testing=False,
             timezone='Europe/London',

@@ -48,7 +48,7 @@ class AppMode(Enum):
 class BycepsConfig:
     data_path: Path
     locale: str
-    propagate_exceptions: bool
+    propagate_exceptions: bool | None
     testing: bool
     timezone: str
     secret_key: str

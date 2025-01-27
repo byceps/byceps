@@ -50,7 +50,11 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
 
     yield 'METRICS_ENABLED', config.metrics.enabled
 
-    yield 'PROPAGATE_EXCEPTIONS', config.propagate_exceptions
+    # Skip property if not explicitly set (i.e. value is `None`). In
+    # this case, Flask will propagate if debug mode or testing mode is
+    # enabled.
+    if config.propagate_exceptions is not None:
+        yield 'PROPAGATE_EXCEPTIONS', config.propagate_exceptions
 
     yield 'REDIS_URL', config.redis.url
 
