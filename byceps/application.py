@@ -35,6 +35,7 @@ from byceps.config.models import (
     BycepsConfig,
     CliAppConfig,
     SiteAppConfig,
+    WebAppConfig,
     WorkerAppConfig,
 )
 from byceps.database import db
@@ -55,7 +56,6 @@ def create_admin_app(
     byceps_config: BycepsConfig, app_config: AdminAppConfig
 ) -> BycepsApp:
     config_overrides = {}
-    config_overrides['SERVER_NAME'] = app_config.server_name
 
     app = _create_app(
         byceps_config,
@@ -74,8 +74,6 @@ def create_site_app(
     byceps_config: BycepsConfig, app_config: SiteAppConfig
 ) -> BycepsApp:
     config_overrides = {}
-    config_overrides['SERVER_NAME'] = app_config.server_name
-    config_overrides['SITE_ID'] = app_config.site_id
 
     app = _create_app(
         byceps_config,
@@ -94,7 +92,6 @@ def create_api_app(
     byceps_config: BycepsConfig, app_config: ApiAppConfig
 ) -> BycepsApp:
     config_overrides = {}
-    config_overrides['SERVER_NAME'] = app_config.server_name
 
     app = _create_app(
         byceps_config,
@@ -150,7 +147,7 @@ def _create_app(
     # unreachable, then becomes reachable again.
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True}
 
-    _configure(app, byceps_config, config_overrides)
+    _configure(app, byceps_config, app_config, config_overrides)
 
     app_mode = app.byceps_app_mode
 
@@ -223,17 +220,20 @@ def _get_app_mode(app_config: AppConfig) -> AppMode:
 def _configure(
     app: BycepsApp,
     byceps_config: BycepsConfig,
+    app_config: AppConfig,
     config_overrides: dict[str, Any],
 ) -> None:
     """Configure application from file, environment variables, and defaults."""
-    data = _assemble_configuration(byceps_config, config_overrides)
+    data = _assemble_configuration(byceps_config, app_config, config_overrides)
     app.config.from_mapping(data)
 
     init_app_config(app)
 
 
 def _assemble_configuration(
-    byceps_config: BycepsConfig, config_overrides: dict[str, Any]
+    byceps_config: BycepsConfig,
+    app_config: AppConfig,
+    config_overrides: dict[str, Any],
 ) -> dict[str, Any]:
     """Assemble configuration."""
     data = {
@@ -246,6 +246,12 @@ def _assemble_configuration(
     }
 
     data.update(convert_config(byceps_config))
+
+    if isinstance(app_config, WebAppConfig):
+        data['SERVER_NAME'] = app_config.server_name
+
+    if isinstance(app_config, SiteAppConfig):
+        data['SITE_ID'] = app_config.site_id
 
     data.update(config_overrides)
 
