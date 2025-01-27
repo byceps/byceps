@@ -72,7 +72,12 @@ class AppsConfig:
 
 
 @dataclass(frozen=True, slots=True)
-class WebAppConfig:
+class AppConfig:
+    pass
+
+
+@dataclass(frozen=True, slots=True)
+class WebAppConfig(AppConfig):
     server_name: str
 
 
@@ -87,8 +92,18 @@ class ApiAppConfig(WebAppConfig):
 
 
 @dataclass(frozen=True, slots=True)
+class CliAppConfig(AppConfig):
+    pass
+
+
+@dataclass(frozen=True, slots=True)
 class SiteAppConfig(WebAppConfig):
     site_id: str
+
+
+@dataclass(frozen=True, slots=True)
+class WorkerAppConfig(AppConfig):
+    pass
 
 
 @dataclass(frozen=True, slots=True)
