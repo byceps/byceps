@@ -7,7 +7,6 @@ byceps.application
 """
 
 from datetime import timedelta
-from pathlib import Path
 from typing import Any
 from wsgiref.types import WSGIApplication
 
@@ -22,12 +21,13 @@ from byceps.blueprints.admin.blueprints import register_admin_blueprints
 from byceps.blueprints.admin.jobs.views import enable_rq_dashboard
 from byceps.blueprints.api.blueprints import register_api_blueprints
 from byceps.blueprints.site.blueprints import register_site_blueprints
+from byceps.config.converter import convert_config
 from byceps.config.errors import ConfigurationError
 from byceps.config.integration import (
     init_app as init_app_config,
     parse_value_from_environment,
 )
-from byceps.config.models import AppMode
+from byceps.config.models import AppMode, BycepsConfig
 from byceps.database import db
 from byceps.paypal import paypal
 from byceps.util import templatefilters
@@ -43,14 +43,14 @@ log = structlog.get_logger()
 
 
 def create_admin_app(
-    server_name: str, *, config_overrides: dict[str, Any] | None = None
+    byceps_config: BycepsConfig, server_name: str
 ) -> BycepsApp:
-    if config_overrides is None:
-        config_overrides = {}
-
+    config_overrides = {}
     config_overrides['SERVER_NAME'] = server_name
 
-    app = _create_app(AppMode.admin, config_overrides=config_overrides)
+    app = _create_app(
+        AppMode.admin, byceps_config, config_overrides=config_overrides
+    )
 
     _dispatch_apps_by_url_path(app)
 
@@ -60,18 +60,15 @@ def create_admin_app(
 
 
 def create_site_app(
-    server_name: str,
-    site_id: str,
-    *,
-    config_overrides: dict[str, Any] | None = None,
+    byceps_config: BycepsConfig, server_name: str, site_id: str
 ) -> BycepsApp:
-    if config_overrides is None:
-        config_overrides = {}
-
+    config_overrides = {}
     config_overrides['SERVER_NAME'] = server_name
     config_overrides['SITE_ID'] = site_id
 
-    app = _create_app(AppMode.site, config_overrides=config_overrides)
+    app = _create_app(
+        AppMode.site, byceps_config, config_overrides=config_overrides
+    )
 
     _init_site_app(app)
 
@@ -80,25 +77,21 @@ def create_site_app(
     return app
 
 
-def create_api_app(
-    server_name: str, *, config_overrides: dict[str, Any] | None = None
-) -> BycepsApp:
-    if config_overrides is None:
-        config_overrides = {}
-
+def create_api_app(byceps_config: BycepsConfig, server_name: str) -> BycepsApp:
+    config_overrides = {}
     config_overrides['SERVER_NAME'] = server_name
 
-    app = _create_app(AppMode.api, config_overrides=config_overrides)
+    app = _create_app(
+        AppMode.api, byceps_config, config_overrides=config_overrides
+    )
 
     register_api_blueprints(app)
 
     return app
 
 
-def create_cli_app(
-    *, config_overrides: dict[str, Any] | None = None
-) -> BycepsApp:
-    return _create_app(AppMode.cli, config_overrides=config_overrides)
+def create_cli_app(byceps_config: BycepsConfig) -> BycepsApp:
+    return _create_app(AppMode.cli, byceps_config)
 
 
 def create_metrics_app(database_uri: str) -> BycepsApp:
@@ -114,14 +107,15 @@ def create_metrics_app(database_uri: str) -> BycepsApp:
     return app
 
 
-def create_worker_app(
-    *, config_overrides: dict[str, Any] | None = None
-) -> BycepsApp:
-    return _create_app(AppMode.worker, config_overrides=config_overrides)
+def create_worker_app(byceps_config: BycepsConfig) -> BycepsApp:
+    return _create_app(AppMode.worker, byceps_config)
 
 
 def _create_app(
-    app_mode: AppMode, *, config_overrides: dict[str, Any] | None = None
+    app_mode: AppMode,
+    byceps_config: BycepsConfig,
+    *,
+    config_overrides: dict[str, Any] | None = None,
 ) -> BycepsApp:
     """Create the actual Flask-based BYCEPS application."""
     app = BycepsApp(app_mode)
@@ -133,7 +127,7 @@ def _create_app(
     # unreachable, then becomes reachable again.
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True}
 
-    _configure(app, config_overrides)
+    _configure(app, byceps_config, config_overrides)
 
     app_mode = app.byceps_app_mode
 
@@ -186,15 +180,21 @@ def _create_app(
     return app
 
 
-def _configure(app: BycepsApp, config_overrides: dict[str, Any]) -> None:
+def _configure(
+    app: BycepsApp,
+    byceps_config: BycepsConfig,
+    config_overrides: dict[str, Any],
+) -> None:
     """Configure application from file, environment variables, and defaults."""
-    data = _assemble_configuration(config_overrides)
+    data = _assemble_configuration(byceps_config, config_overrides)
     app.config.from_mapping(data)
 
     init_app_config(app)
 
 
-def _assemble_configuration(config_overrides: dict[str, Any]) -> dict[str, Any]:
+def _assemble_configuration(
+    byceps_config: BycepsConfig, config_overrides: dict[str, Any]
+) -> dict[str, Any]:
     """Assemble configuration."""
     data = {
         # login sessions
@@ -204,6 +204,8 @@ def _assemble_configuration(config_overrides: dict[str, Any]) -> dict[str, Any]:
         # Limit incoming request content.
         'MAX_CONTENT_LENGTH': 4000000,
     }
+
+    data.update(convert_config(byceps_config))
 
     data.update(config_overrides)
 

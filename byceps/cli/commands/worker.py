@@ -12,7 +12,6 @@ import click
 from rq import Worker
 
 from byceps.application import create_worker_app
-from byceps.config.converter import convert_config
 from byceps.config.integration import (
     read_configuration_from_file_given_in_env_var,
 )
@@ -26,9 +25,7 @@ def worker() -> None:
     configure_sentry_from_env('worker')
 
     config = read_configuration_from_file_given_in_env_var()
-    config_overrides = convert_config(config)
-
-    app = create_worker_app(config_overrides=config_overrides)
+    app = create_worker_app(config)
 
     with app.app_context():
         queues = [get_queue(app)]

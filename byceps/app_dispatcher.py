@@ -16,7 +16,6 @@ import structlog
 from werkzeug.exceptions import InternalServerError, NotFound
 
 from byceps.application import create_admin_app, create_api_app, create_site_app
-from byceps.config.converter import convert_config
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
@@ -93,24 +92,17 @@ def _create_app(
     app_config: AppConfig, byceps_config: BycepsConfig
 ) -> Result[BycepsApp, str]:
     server_name = app_config.server_name
-    config_overrides = convert_config(byceps_config)
     match app_config:
         case AdminAppConfig():
-            return Ok(
-                create_admin_app(server_name, config_overrides=config_overrides)
-            )
+            return Ok(create_admin_app(byceps_config, server_name))
         case ApiAppConfig():
-            return Ok(
-                create_api_app(server_name, config_overrides=config_overrides)
-            )
+            return Ok(create_api_app(byceps_config, server_name))
         case SiteAppConfig():
             site_id = app_config.site_id
             if not site_id:
                 return Err(f'Unknown site ID "{site_id}"')
 
-            app = create_site_app(
-                server_name, site_id, config_overrides=config_overrides
-            )
+            app = create_site_app(byceps_config, server_name, site_id)
             return Ok(app)
         case _:
             return Err('Unknown or unsupported app configuration type')

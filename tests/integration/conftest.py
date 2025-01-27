@@ -7,7 +7,6 @@ from collections.abc import Iterator
 import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any
 from wsgiref.types import WSGIApplication
 
 from moneyed import EUR
@@ -19,7 +18,6 @@ from byceps.application import (
     create_site_app as _create_site_app,
 )
 from byceps.byceps_app import BycepsApp
-from byceps.config.converter import convert_config
 from byceps.config.models import (
     ApiAppConfig,
     AppMode,
@@ -162,7 +160,7 @@ def apps(database, make_byceps_config) -> WSGIApplication:
 
 
 @pytest.fixture(scope='session')
-def make_admin_app(make_config_overrides):
+def make_admin_app(make_byceps_config):
     """Provide the admin web application."""
 
     def _wrapper(
@@ -171,15 +169,13 @@ def make_admin_app(make_config_overrides):
         metrics_enabled: bool = False,
         style_guide_enabled: bool = False,
     ) -> BycepsApp:
-        merged_config_overrides = make_config_overrides(
+        byceps_config = make_byceps_config(
             None,
             metrics_enabled=metrics_enabled,
             style_guide_enabled=style_guide_enabled,
         )
 
-        return _create_admin_app(
-            server_name, config_overrides=merged_config_overrides
-        )
+        return _create_admin_app(byceps_config, server_name)
 
     return _wrapper
 
@@ -203,19 +199,17 @@ def api_app(apps, site: Site) -> BycepsApp:
 
 
 @pytest.fixture(scope='session')
-def make_site_app(admin_app, make_config_overrides):
+def make_site_app(admin_app, make_byceps_config):
     """Provide a site web application."""
 
     def _wrapper(
         server_name: str, site_id: SiteID, *, style_guide_enabled: bool = False
     ) -> BycepsApp:
-        merged_config_overrides = make_config_overrides(
+        byceps_config = make_byceps_config(
             None, style_guide_enabled=style_guide_enabled
         )
 
-        return _create_site_app(
-            server_name, site_id, config_overrides=merged_config_overrides
-        )
+        return _create_site_app(byceps_config, server_name, site_id)
 
     return _wrapper
 
@@ -227,25 +221,6 @@ def site_app(database, make_site_app, site: Site) -> BycepsApp:
     app = make_site_app(server_name, site.id)
     with app.app_context():
         return app
-
-
-@pytest.fixture(scope='session')
-def make_config_overrides(make_byceps_config):
-    def _wrapper(
-        apps_config: AppsConfig | None = None,
-        *,
-        metrics_enabled: bool = False,
-        style_guide_enabled: bool = False,
-    ) -> dict[str, Any]:
-        byceps_config = make_byceps_config(
-            apps_config,
-            metrics_enabled=metrics_enabled,
-            style_guide_enabled=style_guide_enabled,
-        )
-
-        return convert_config(byceps_config)
-
-    return _wrapper
 
 
 @pytest.fixture(scope='session')
