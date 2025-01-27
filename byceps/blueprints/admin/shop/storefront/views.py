@@ -198,10 +198,11 @@ def update_form(storefront_id, erroneous_form=None):
         order_sequence_service.get_order_number_sequences_for_shop(shop.id)
     )
 
+    catalog_id = storefront.catalog.id if storefront.catalog else None
     form = (
         erroneous_form
         if erroneous_form
-        else StorefrontUpdateForm(obj=storefront)
+        else StorefrontUpdateForm(obj=storefront, catalog_id=catalog_id)
     )
     form.set_catalog_choices(catalogs)
     form.set_order_number_sequence_choices(order_number_sequences)
