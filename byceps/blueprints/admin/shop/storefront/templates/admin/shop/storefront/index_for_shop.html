@@ -2,6 +2,7 @@
 {% from 'macros/admin/shop/storefront.html' import render_enabled_payment_gateways, render_storefront_status %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set page_title = _('Storefronts') %}
 
 {% block body %}
@@ -72,6 +73,7 @@
     <thead>
       <tr>
         <th>{{ _('Prefix') }}</th>
+        <th></th>
         <th class="number">{{ _('Value') }}</th>
       </tr>
     </thead>
@@ -79,6 +81,7 @@
       {%- for product_number_sequence in product_number_sequences|sort(attribute='prefix') %}
       <tr>
         <td>{{ product_number_sequence.prefix }}</td>
+        <td>{% if product_number_sequence.archived %}{{ render_tag(_('archived'), class='color-disabled', icon='archived') }}{% endif %}</td>
         <td class="number">{{ product_number_sequence.value }}</td>
       </tr>
       {%- endfor %}
