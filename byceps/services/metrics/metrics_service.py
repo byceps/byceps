@@ -23,7 +23,7 @@ from byceps.services.seating import seat_service
 from byceps.services.shop.order import order_service
 from byceps.services.shop.product import product_service as shop_product_service
 from byceps.services.shop.shop import shop_service
-from byceps.services.shop.shop.models import Shop, ShopID
+from byceps.services.shop.shop.models import Shop
 from byceps.services.ticketing import ticket_service
 from byceps.services.user import user_stats_service
 
@@ -36,15 +36,12 @@ def serialize(metrics: Iterator[Metric]) -> Iterator[str]:
 
 def collect_metrics() -> Iterator[Metric]:
     brand_ids = [brand.id for brand in brand_service.get_all_brands()]
-
     active_parties = party_service.get_active_parties()
-
     active_shops = shop_service.get_active_shops()
-    active_shop_ids = {shop.id for shop in active_shops}
 
     yield from _collect_board_metrics(brand_ids)
     yield from _collect_consent_metrics()
-    yield from _collect_shop_ordered_product_metrics(active_shop_ids)
+    yield from _collect_shop_ordered_product_metrics(active_shops)
     yield from _collect_shop_order_metrics(active_shops)
     # Copy and uncomment the following line to add all orders with the
     # given order number prefix (usually one per party) to the metrics.
@@ -84,9 +81,10 @@ def _collect_consent_metrics() -> Iterator[Metric]:
 
 
 def _collect_shop_ordered_product_metrics(
-    shop_ids: set[ShopID],
+    shops: list[Shop],
 ) -> Iterator[Metric]:
     """Provide ordered product quantities for shops."""
+    shop_ids = {shop.id for shop in shops}
     stats = shop_product_service.sum_ordered_products_by_payment_state(shop_ids)
 
     for shop_id, product_number, name, payment_state, quantity in stats:
