@@ -54,6 +54,29 @@
   <div class="box no-data-message">{{ _('No storefronts exist.') }}</div>
   {%- endif %}
 
+  <h2 class="title">{{ _('Product Number Sequences') }} {{ render_extra_in_heading(product_number_sequences|length) }}</h2>
+
+  {%- if product_number_sequences %}
+  <table class="itemlist is-wide">
+    <thead>
+      <tr>
+        <th>{{ _('Prefix') }}</th>
+        <th class="number">{{ _('Value') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for product_number_sequence in product_number_sequences|sort(attribute='prefix') %}
+      <tr>
+        <td>{{ product_number_sequence.prefix }}</td>
+        <td class="number">{{ product_number_sequence.value }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="box no-data-message">{{ _('None defined') }}</div>
+  {%- endif %}
+
   <div class="block row row--space-between is-vcentered">
     <div>
       <h2 class="title">{{ _('Order Number Sequences') }} {{ render_extra_in_heading(order_number_sequences|length) }}</h2>

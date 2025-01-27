@@ -13,6 +13,7 @@ from byceps.services.brand import brand_service
 from byceps.services.shop.catalog import catalog_service
 from byceps.services.shop.order import order_sequence_service
 from byceps.services.shop.payment import payment_gateway_service
+from byceps.services.shop.product import product_sequence_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.shop.storefront import storefront_service
@@ -46,6 +47,10 @@ def index_for_shop(shop_id):
         s.id: s.prefix for s in order_number_sequences
     }
 
+    product_number_sequences = (
+        product_sequence_service.get_product_number_sequences_for_shop(shop.id)
+    )
+
     enabled_payment_gateways_by_storefront_id = (
         payment_gateway_service.get_payment_gateways_enabled_for_storefronts(
             shop.id
@@ -63,6 +68,7 @@ def index_for_shop(shop_id):
         'brand': brand,
         'storefronts': storefronts_for_admin,
         'order_number_sequences': order_number_sequences,
+        'product_number_sequences': product_number_sequences,
     }
 
 
