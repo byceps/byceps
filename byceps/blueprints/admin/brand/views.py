@@ -14,6 +14,7 @@ from byceps.services.brand import brand_service, brand_setting_service
 from byceps.services.email import email_config_service, email_footer_service
 from byceps.services.orga import orga_service
 from byceps.services.party import party_service
+from byceps.services.shop.order import order_payment_service
 from byceps.services.shop.shop import shop_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
@@ -107,7 +108,10 @@ def create():
         contact_address=contact_address,
     )
 
-    shop_service.create_shop(brand, currency)
+    shop = shop_service.create_shop(brand, currency)
+
+    order_payment_service.create_email_payment_instructions(shop.id, g.user)
+    order_payment_service.create_html_payment_instructions(shop.id, g.user)
 
     flash_success(
         gettext('Brand "%(title)s" has been created.', title=brand.title)
