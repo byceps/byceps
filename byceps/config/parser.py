@@ -72,6 +72,7 @@ class Section:
 class Field:
     key: str
     type_: ValueType = ValueType.String
+    required: bool = True
     default: Value | None = None
 
 
@@ -95,10 +96,10 @@ def _validate_apps_config(apps_config: AppsConfig) -> ParsingResult[None]:
 
 
 _TOPLEVEL_FIELDS = [
-    Field('locale'),
-    Field('propagate_exceptions', default=None),
-    Field('secret_key'),
-    Field('timezone'),
+    Field('locale', required=True),
+    Field('propagate_exceptions', required=False, default=None),
+    Field('secret_key', required=True),
+    Field('timezone', required=True),
 ]
 
 
@@ -110,7 +111,7 @@ _SECTION_DEFINITIONS = [
                 Section(
                     name='admin',
                     fields=[
-                        Field('server_name'),
+                        Field('server_name', required=True),
                     ],
                     config_class=AdminAppConfig,
                     required=False,
@@ -121,7 +122,7 @@ _SECTION_DEFINITIONS = [
                 Section(
                     name='api',
                     fields=[
-                        Field('server_name'),
+                        Field('server_name', required=True),
                     ],
                     config_class=ApiAppConfig,
                     required=False,
@@ -132,8 +133,8 @@ _SECTION_DEFINITIONS = [
                 Section(
                     name='sites',
                     fields=[
-                        Field('server_name'),
-                        Field('site_id'),
+                        Field('server_name', required=True),
+                        Field('site_id', required=True),
                     ],
                     config_class=SiteAppConfig,
                     collection_type=CollectionType.List,
@@ -150,11 +151,13 @@ _SECTION_DEFINITIONS = [
     Section(
         name='database',
         fields=[
-            Field('host', default='localhost'),
-            Field('port', type_=ValueType.Integer, default=5432),
-            Field('username'),
-            Field('password'),
-            Field('database'),
+            Field('host', required=False, default='localhost'),
+            Field(
+                'port', required=False, type_=ValueType.Integer, default=5432
+            ),
+            Field('username', required=True),
+            Field('password', required=True),
+            Field('database', required=True),
         ],
         config_class=DatabaseConfig,
         required=True,
@@ -163,9 +166,17 @@ _SECTION_DEFINITIONS = [
         name='development',
         fields=[
             Field(
-                'style_guide_enabled', type_=ValueType.Boolean, default=False
+                'style_guide_enabled',
+                type_=ValueType.Boolean,
+                required=False,
+                default=False,
             ),
-            Field('toolbar_enabled', type_=ValueType.Boolean, default=False),
+            Field(
+                'toolbar_enabled',
+                type_=ValueType.Boolean,
+                required=False,
+                default=False,
+            ),
         ],
         config_class=DevelopmentConfig,
         required=False,
@@ -173,9 +184,9 @@ _SECTION_DEFINITIONS = [
     Section(
         name='discord',
         fields=[
-            Field('enabled', type_=ValueType.Boolean),
-            Field('client_id'),
-            Field('client_secret'),
+            Field('enabled', type_=ValueType.Boolean, required=True),
+            Field('client_id', required=True),
+            Field('client_secret', required=True),
         ],
         config_class=DiscordConfig,
         required=False,
@@ -183,9 +194,9 @@ _SECTION_DEFINITIONS = [
     Section(
         name='invoiceninja',
         fields=[
-            Field('enabled', type_=ValueType.Boolean),
-            Field('base_url'),
-            Field('api_key'),
+            Field('enabled', type_=ValueType.Boolean, required=True),
+            Field('base_url', required=True),
+            Field('api_key', required=True),
         ],
         config_class=InvoiceNinjaConfig,
         required=False,
@@ -193,7 +204,7 @@ _SECTION_DEFINITIONS = [
     Section(
         name='jobs',
         fields=[
-            Field('asynchronous', type_=ValueType.Boolean),
+            Field('asynchronous', type_=ValueType.Boolean, required=True),
         ],
         config_class=JobsConfig,
         required=False,
@@ -204,7 +215,7 @@ _SECTION_DEFINITIONS = [
     Section(
         name='metrics',
         fields=[
-            Field('enabled', type_=ValueType.Boolean),
+            Field('enabled', type_=ValueType.Boolean, required=True),
         ],
         config_class=MetricsConfig,
         required=False,
@@ -219,10 +230,12 @@ _SECTION_DEFINITIONS = [
                 Section(
                     name='paypal',
                     fields=[
-                        Field('enabled', type_=ValueType.Boolean),
-                        Field('client_id'),
-                        Field('client_secret'),
-                        Field('environment'),
+                        Field(
+                            'enabled', type_=ValueType.Boolean, required=True
+                        ),
+                        Field('client_id', required=True),
+                        Field('client_secret', required=True),
+                        Field('environment', required=True),
                     ],
                     config_class=PaypalConfig,
                     required=False,
@@ -233,10 +246,12 @@ _SECTION_DEFINITIONS = [
                 Section(
                     name='stripe',
                     fields=[
-                        Field('enabled', type_=ValueType.Boolean),
-                        Field('secret_key'),
-                        Field('publishable_key'),
-                        Field('webhook_secret'),
+                        Field(
+                            'enabled', type_=ValueType.Boolean, required=True
+                        ),
+                        Field('secret_key', required=True),
+                        Field('publishable_key', required=True),
+                        Field('webhook_secret', required=True),
                     ],
                     config_class=StripeConfig,
                     required=False,
@@ -250,7 +265,7 @@ _SECTION_DEFINITIONS = [
     Section(
         name='redis',
         fields=[
-            Field('url'),
+            Field('url', required=True),
         ],
         config_class=RedisConfig,
         required=True,
@@ -258,13 +273,28 @@ _SECTION_DEFINITIONS = [
     Section(
         name='smtp',
         fields=[
-            Field('host', default='localhost'),
-            Field('port', type_=ValueType.Integer, default=25),
-            Field('starttls', type_=ValueType.Boolean, default=False),
-            Field('use_ssl', type_=ValueType.Boolean, default=False),
-            Field('username', default=''),
-            Field('password', default=''),
-            Field('suppress_send', type_=ValueType.Boolean, default=False),
+            Field('host', required=False, default='localhost'),
+            Field('port', type_=ValueType.Integer, required=False, default=25),
+            Field(
+                'starttls',
+                type_=ValueType.Boolean,
+                required=False,
+                default=False,
+            ),
+            Field(
+                'use_ssl',
+                type_=ValueType.Boolean,
+                required=False,
+                default=False,
+            ),
+            Field('username', required=False, default=''),
+            Field('password', required=False, default=''),
+            Field(
+                'suppress_send',
+                type_=ValueType.Boolean,
+                required=False,
+                default=False,
+            ),
         ],
         config_class=SmtpConfig,
         required=True,
