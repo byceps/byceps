@@ -72,22 +72,22 @@ class AppsConfig:
 
 
 @dataclass(frozen=True, slots=True)
-class _BaseAppConfig:
+class WebAppConfig:
     server_name: str
 
 
 @dataclass(frozen=True, slots=True)
-class AdminAppConfig(_BaseAppConfig):
+class AdminAppConfig(WebAppConfig):
     pass
 
 
 @dataclass(frozen=True, slots=True)
-class ApiAppConfig(_BaseAppConfig):
+class ApiAppConfig(WebAppConfig):
     pass
 
 
 @dataclass(frozen=True, slots=True)
-class SiteAppConfig(_BaseAppConfig):
+class SiteAppConfig(WebAppConfig):
     site_id: str
 
 
