@@ -39,10 +39,12 @@ def index_for_shop(shop_id):
 
     storefronts = storefront_service.get_storefronts_for_shop(shop.id)
 
-    sequences = order_sequence_service.get_order_number_sequences_for_shop(
-        shop_id
+    order_number_sequences = (
+        order_sequence_service.get_order_number_sequences_for_shop(shop_id)
     )
-    order_number_prefixes_by_sequence_id = {s.id: s.prefix for s in sequences}
+    order_number_prefixes_by_sequence_id = {
+        s.id: s.prefix for s in order_number_sequences
+    }
 
     enabled_payment_gateways_by_storefront_id = (
         payment_gateway_service.get_payment_gateways_enabled_for_storefronts(
