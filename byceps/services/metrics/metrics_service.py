@@ -18,7 +18,7 @@ from byceps.services.brand.models import BrandID
 from byceps.services.consent import consent_service
 from byceps.services.metrics.models import Label, Metric
 from byceps.services.party import party_service
-from byceps.services.party.models import Party, PartyID
+from byceps.services.party.models import Party
 from byceps.services.seating import seat_service
 from byceps.services.shop.order import order_service
 from byceps.services.shop.product import product_service as shop_product_service
@@ -38,7 +38,6 @@ def collect_metrics() -> Iterator[Metric]:
     brand_ids = [brand.id for brand in brand_service.get_all_brands()]
 
     active_parties = party_service.get_active_parties()
-    active_party_ids = [p.id for p in active_parties]
 
     active_shops = shop_service.get_active_shops()
     active_shop_ids = {shop.id for shop in active_shops}
@@ -50,7 +49,7 @@ def collect_metrics() -> Iterator[Metric]:
     # Copy and uncomment the following line to add all orders with the
     # given order number prefix (usually one per party) to the metrics.
     #yield from _collect_shop_order_metrics_for_order_number_prefix('LAN23-B')
-    yield from _collect_seating_metrics(active_party_ids)
+    yield from _collect_seating_metrics(active_parties)
     yield from _collect_ticket_metrics(active_parties)
     yield from _collect_user_metrics()
 
@@ -144,13 +143,11 @@ def _collect_shop_order_metrics_for_order_number_prefix(
         )
 
 
-def _collect_seating_metrics(
-    active_party_ids: list[PartyID],
-) -> Iterator[Metric]:
+def _collect_seating_metrics(active_parties: list[Party]) -> Iterator[Metric]:
     """Provide seat occupation counts per party and category."""
-    for party_id in active_party_ids:
+    for party in active_parties:
         occupied_seat_counts_by_category = (
-            seat_service.count_occupied_seats_by_category(party_id)
+            seat_service.count_occupied_seats_by_category(party.id)
         )
 
         for category, count in occupied_seat_counts_by_category:
@@ -158,7 +155,7 @@ def _collect_seating_metrics(
                 'occupied_seat_count',
                 count,
                 labels=[
-                    Label('party', party_id),
+                    Label('party', party.id),
                     Label('category_title', category.title),
                 ],
             )
