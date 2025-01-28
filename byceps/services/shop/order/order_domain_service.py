@@ -8,6 +8,7 @@ byceps.services.shop.order.order_domain_service
 
 from collections.abc import Iterator
 from datetime import datetime, timedelta
+import dataclasses
 
 from moneyed import Currency, Money
 
@@ -29,7 +30,14 @@ from .errors import (
 )
 from .models.checkout import IncomingLineItem, IncomingOrder
 from .models.log import OrderLogEntry, OrderLogEntryData
-from .models.order import LineItemID, Order, Orderer, OrderID, PaymentState
+from .models.order import (
+    Address,
+    LineItemID,
+    Order,
+    Orderer,
+    OrderID,
+    PaymentState,
+)
 from .models.payment import AdditionalPaymentData, Payment
 
 
@@ -108,6 +116,98 @@ def _build_order_placed_log_entry(
         occurred_at=incoming_order.created_at,
         event_type='order-placed',
         order_id=incoming_order.id,
+        data=data,
+    )
+
+
+def update_orderer(
+    original_order: Order,
+    new_orderer: Orderer,
+    has_payments: bool,
+    initiator: User,
+) -> Result[tuple[Order, OrderLogEntry], str]:
+    """Update the order's orderer."""
+    if not original_order.is_open:
+        return Err('Orderer can only be updated on open orders.')
+
+    if has_payments:
+        return Err('Orderer can only be updated on orders without payments.')
+
+    updated_order = dataclasses.replace(
+        original_order,
+        placed_by=new_orderer.user,
+        company=new_orderer.company,
+        first_name=new_orderer.first_name,
+        last_name=new_orderer.last_name,
+        address=Address(
+            country=new_orderer.country,
+            zip_code=new_orderer.zip_code,
+            city=new_orderer.city,
+            street=new_orderer.street,
+        ),
+    )
+
+    log_entry = _build_orderer_updated_log_entry(
+        original_order, updated_order, initiator
+    )
+
+    return Ok((updated_order, log_entry))
+
+
+def _build_orderer_updated_log_entry(
+    original_order: Order,
+    updated_order: Order,
+    initiator: User,
+) -> OrderLogEntry:
+    fields = {
+        'placed_by_id': {
+            'old': str(original_order.placed_by.id),
+            'new': str(updated_order.placed_by.id),
+        },
+        'placed_by_screen_name': {
+            'old': original_order.placed_by.screen_name,
+            'new': updated_order.placed_by.screen_name,
+        },
+        'company': {
+            'old': original_order.company,
+            'new': updated_order.company,
+        },
+        'first_name': {
+            'old': original_order.first_name,
+            'new': updated_order.first_name,
+        },
+        'last_name': {
+            'old': original_order.last_name,
+            'new': updated_order.last_name,
+        },
+        'country': {
+            'old': original_order.address.country,
+            'new': updated_order.address.country,
+        },
+        'zip_code': {
+            'old': original_order.address.zip_code,
+            'new': updated_order.address.zip_code,
+        },
+        'city': {
+            'old': original_order.address.city,
+            'new': updated_order.address.city,
+        },
+        'street': {
+            'old': original_order.address.street,
+            'new': updated_order.address.street,
+        },
+    }
+
+    data = {
+        'fields': fields,
+        'initiator_id': str(initiator.id),
+    }
+
+    return OrderLogEntry(
+        id=generate_uuid7(),
+        occurred_at=datetime.utcnow(),
+        event_type='order-orderer-updated',
+        order_id=original_order.id,
         data=data,
     )
 

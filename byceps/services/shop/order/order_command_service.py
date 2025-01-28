@@ -35,13 +35,51 @@ from .dbmodels.line_item import DbLineItem
 from .dbmodels.order import DbOrder
 from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
 from .models.log import OrderLogEntry
-from .models.order import LineItemID, Order, OrderID, PaymentState
+from .models.order import LineItemID, Order, Orderer, OrderID, PaymentState
 from .models.payment import AdditionalPaymentData
 from .order_helper_service import to_order, _is_paid
 from .order_service import get_db_order
 
 
 log = structlog.get_logger()
+
+
+def update_orderer(
+    order_id: OrderID, new_orderer: Orderer, initiator: User
+) -> Result[Order, str]:
+    """Update the order's orderer."""
+    db_order = get_db_order(order_id)
+
+    original_orderer_user = user_service.get_user(db_order.placed_by_id)
+    original_order = to_order(db_order, original_orderer_user)
+
+    payments = order_payment_service.get_payments_for_order(original_order.id)
+    has_payments = bool(payments)
+
+    update_result = order_domain_service.update_orderer(
+        original_order, new_orderer, has_payments, initiator
+    )
+
+    if update_result.is_err():
+        return Err(update_result.unwrap_err())
+
+    updated_order, log_entry = update_result.unwrap()
+
+    db_order.placed_by_id = updated_order.placed_by.id
+    db_order.company = updated_order.company
+    db_order.first_name = updated_order.first_name
+    db_order.last_name = updated_order.last_name
+    db_order.country = updated_order.address.country
+    db_order.zip_code = updated_order.address.zip_code
+    db_order.city = updated_order.address.city
+    db_order.street = updated_order.address.street
+
+    db_log_entry = order_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+    return Ok(updated_order)
 
 
 def add_note(order: Order, author: User, text: str) -> None:
