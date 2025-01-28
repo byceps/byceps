@@ -47,7 +47,7 @@ dependencies = [
     "pillow>=11.1.0",
     "psycopg[binary]>=3.2.4",
     "py-moneyed==3.0",
-    "pydantic>=2.10.5",
+    "pydantic>=2.10.6",
     "qrcode==8.0",
     "redis>=5.2.1",
     "rq-dashboard>=0.8.2.2",
