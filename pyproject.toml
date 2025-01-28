@@ -57,7 +57,7 @@ dependencies = [
     "sentry-sdk[flask,httpx,rq,sqlalchemy]>=2.20.0",
     "sqlalchemy>=2.0.37",
     "stripe==5.4.0",
-    "structlog==24.4.0",
+    "structlog>=25.1.0",
     "tenacity==9.0.0",
     "uuid6==2024.7.10",
     "werkzeug>=3.1.3",
