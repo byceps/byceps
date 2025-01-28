@@ -34,23 +34,14 @@ def test_find_user_by_screen_name_case_sensitive_match(database, user):
     assert actual.screen_name == 'CarmenSandiego'
 
 
-def test_find_user_by_screen_name_case_sensitive_miss(database, user):
-    actual = user_service.find_user_by_screen_name('cARMENsANDIEGO')
-    assert actual is None
-
-
 def test_find_user_by_screen_name_case_insensitive_match(database, user):
-    actual = user_service.find_user_by_screen_name(
-        'cARMENsANDIEGO', case_insensitive=True
-    )
+    actual = user_service.find_user_by_screen_name('cARMENsANDIEGO')
     assert actual is not None
     assert actual.screen_name == 'CarmenSandiego'
 
 
 def test_find_user_by_screen_name_case_insensitive_miss(database, user):
-    actual = user_service.find_user_by_screen_name(
-        'cARMENsANDIEGOx', case_insensitive=True
-    )
+    actual = user_service.find_user_by_screen_name('cARMENsANDIEGOx')
     assert actual is None
 
 

@@ -88,9 +88,7 @@ def request_reset():
         return request_reset_form(form)
 
     screen_name = form.screen_name.data.strip()
-    user = user_service.find_user_by_screen_name(
-        screen_name, case_insensitive=True
-    )
+    user = user_service.find_user_by_screen_name(screen_name)
 
     if (user is None) or user.deleted:
         flash_error(

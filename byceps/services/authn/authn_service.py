@@ -56,5 +56,5 @@ def _find_user_by_screen_name_or_email_address(
         )
     else:
         return user_service.find_user_by_screen_name(
-            screen_name_or_email_address, case_insensitive=True
+            screen_name_or_email_address
         )

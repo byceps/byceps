@@ -74,6 +74,4 @@ class UserScreenNameField(Field):
 
 
 def _find_user_by_screen_name(screen_name: str) -> User | None:
-    return user_service.find_user_by_screen_name(
-        screen_name, case_insensitive=True
-    )
+    return user_service.find_user_by_screen_name(screen_name)

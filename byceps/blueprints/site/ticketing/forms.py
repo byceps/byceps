@@ -19,9 +19,7 @@ from byceps.util.l10n import LocalizedForm
 def validate_user(form, field):
     screen_name = field.data.strip()
 
-    db_user = user_service.find_db_user_by_screen_name(
-        screen_name, case_insensitive=True
-    )
+    db_user = user_service.find_db_user_by_screen_name(screen_name)
 
     if db_user is None:
         raise ValidationError(gettext('Unknown username'))

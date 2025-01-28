@@ -213,18 +213,14 @@ def find_user_by_email_address_md5_hash(md5_hash: str) -> User | None:
     return _user_row_to_dto(user_row)
 
 
-def find_user_by_screen_name(
-    screen_name: str, *, case_insensitive=False
-) -> User | None:
-    """Return the user with that screen name, or `None` if not found."""
-    stmt = _get_user_stmt(include_avatar=True)
+def find_user_by_screen_name(screen_name: str) -> User | None:
+    """Return the user with that screen name, or `None` if not found.
 
-    if case_insensitive:
-        stmt = stmt.filter(
-            db.func.lower(DbUser.screen_name) == screen_name.lower()
-        )
-    else:
-        stmt = stmt.filter(DbUser.screen_name == screen_name)
+    Comparison is done case-insensitively.
+    """
+    stmt = _get_user_stmt(include_avatar=True).filter(
+        db.func.lower(DbUser.screen_name) == screen_name.lower()
+    )
 
     user_row = db.session.execute(stmt).tuples().one_or_none()
 
@@ -234,18 +230,14 @@ def find_user_by_screen_name(
     return _user_row_to_dto(user_row)
 
 
-def find_db_user_by_screen_name(
-    screen_name: str, *, case_insensitive=False
-) -> DbUser | None:
-    """Return the user with that screen name, or `None` if not found."""
-    stmt = select(DbUser)
+def find_db_user_by_screen_name(screen_name: str) -> DbUser | None:
+    """Return the user with that screen name, or `None` if not found.
 
-    if case_insensitive:
-        stmt = stmt.filter(
-            db.func.lower(DbUser.screen_name) == screen_name.lower()
-        )
-    else:
-        stmt = stmt.filter_by(screen_name=screen_name)
+    Comparison is done case-insensitively.
+    """
+    stmt = select(DbUser).filter(
+        db.func.lower(DbUser.screen_name) == screen_name.lower()
+    )
 
     return db.session.scalars(stmt).one_or_none()
 
