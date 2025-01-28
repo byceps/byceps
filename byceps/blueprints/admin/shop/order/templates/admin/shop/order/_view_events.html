@@ -82,6 +82,35 @@
           ) }}
           <blockquote>{{ log_entry.data.text }}</blockquote>
         {%- endcall %}
+      {%- elif log_entry.event_type == 'order-orderer-updated' %}
+        {%- call render_log_entry('user', log_entry.occurred_at) %}
+          <div class="block">
+          {{ _(
+            '%(initiator)s has <strong>updated the orderer</strong> of order <a href="%(order_url)s">%(order_number)s</a>:',
+            initiator=render_log_user(log_entry.initiator),
+            order_url=url_for('shop_order_admin.view', order_id=log_entry.order_id),
+            order_number=log_entry.order_number,
+          ) }}
+          </div>
+          <table class="index">
+            <thead>
+              <tr>
+                <th>{{ _('Property') }}</th>
+                <th>{{ _('old') }}</th>
+                <th>{{ _('new') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+            {%- for key, values in log_entry.fields|items|sort %}
+              <tr>
+                <th>{{ key }}</th>
+                <td>{{ values['old']|fallback }}</td>
+                <td>{{ values['new']|fallback }}</td>
+              </tr>
+            {%- endfor %}
+            </tbody>
+          </table>
+        {%- endcall %}
       {%- elif log_entry.event_type == 'order-payment-created' %}
         {%- call render_log_entry('payment', log_entry.occurred_at) %}
           {{ _(

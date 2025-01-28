@@ -102,6 +102,11 @@ def _get_additional_data(
         case 'order-note-added':
             return _get_additional_data_for_order_note_added(log_entry)
 
+        case 'order-orderer-updated':
+            return _get_additional_data_for_order_orderer_updated(
+                log_entry, users_by_id
+            )
+
         case 'ticket-bundle-created':
             return _get_additional_data_for_ticket_bundle_created(log_entry)
 
@@ -157,6 +162,18 @@ def _get_additional_data_for_order_note_added(
 
     return {
         'author': author,
+    }
+
+
+def _get_additional_data_for_order_orderer_updated(
+    log_entry: OrderLogEntry, users_by_id: dict[str, User]
+) -> OrderLogEntryData:
+    fields = log_entry.data['fields']
+    initiator_id = log_entry.data['initiator_id']
+
+    return {
+        'fields': fields,
+        'initiator': users_by_id[initiator_id],
     }
 
 
