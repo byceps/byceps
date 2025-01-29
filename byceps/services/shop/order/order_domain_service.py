@@ -133,6 +133,18 @@ def update_orderer(
     if has_payments:
         return Err('Orderer can only be updated on orders without payments.')
 
+    if not all(
+        [
+            new_orderer.first_name,
+            new_orderer.last_name,
+            new_orderer.country,
+            new_orderer.zip_code,
+            new_orderer.city,
+            new_orderer.street,
+        ]
+    ):
+        return Err("New orderer's info is incomplete.")
+
     updated_order = dataclasses.replace(
         original_order,
         placed_by=new_orderer.user,
