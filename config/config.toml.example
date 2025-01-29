@@ -30,6 +30,11 @@ database = "db-database"
 #[metrics]
 #enabled = false
 
+#[payment_gateways.mollie]
+#enabled = false
+#client_id = "mollie-client-id"
+#environment = "sandbox"
+
 #[payment_gateways.paypal]
 #enabled = false
 #client_id = "paypal-client-id"

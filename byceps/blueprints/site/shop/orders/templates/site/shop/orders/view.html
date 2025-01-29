@@ -77,9 +77,15 @@
 {{ render_notification(_('Payment instructions not found.'), category='danger', icon='warning') }}
     {%- endif %}
 
-    {%- if paypal_enabled or stripe_enabled %}
+    {%- if mollie_enabled or paypal_enabled or stripe_enabled %}
   <h2>{{ _('Additional Payment Methods') }}</h2>
   <div class="main-body-box">
+
+      {%- if mollie_enabled %}
+    <p>{{ _('Mollie offers several ways to pay for the order right now.') }}</p>
+    <p>{{ _('If the order includes tickets, they will be issued immediately.') }}</p>
+    <div id="mollie-button-container" style="margin: 2rem auto 0 auto; width: 250px;"></div>
+      {%- endif %}
 
       {%- if paypal_enabled %}
     <p>{{ _('PayPal offers several ways to pay for the order right now.') }}</p>

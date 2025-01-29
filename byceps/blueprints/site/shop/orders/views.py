@@ -94,6 +94,16 @@ def view(order_id):
 
     shop = shop_service.get_shop(order.shop_id)
 
+    mollie_enabled = (
+        payment_gateway_service.is_payment_gateway_enabled_for_storefront(
+            'mollie', storefront.id
+        )
+    )
+    if mollie_enabled:
+        mollie_client_id = current_app.config.get('MOLLIE_CLIENT_ID')
+    else:
+        mollie_client_id = None
+
     paypal_enabled = (
         payment_gateway_service.is_payment_gateway_enabled_for_storefront(
             'paypal', storefront.id
@@ -123,6 +133,8 @@ def view(order_id):
     template_context = {
         'order': order,
         'shop_title': shop.title,
+        'mollie_enabled': mollie_enabled,
+        'mollie_client_id': mollie_client_id,
         'paypal_enabled': paypal_enabled,
         'paypal_client_id': paypal_client_id,
         'stripe_enabled': stripe_enabled,

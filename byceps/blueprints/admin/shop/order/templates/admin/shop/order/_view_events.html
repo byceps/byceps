@@ -30,6 +30,9 @@
         {%- call render_log_entry('success', log_entry.occurred_at) %}
           {%- set payment_method %}
             {{ render_order_payment_method(log_entry.data.payment_method) }}
+            {%- if 'mollie_payment_id' in log_entry.data %}
+            (<a href="https://mollie-payments.example/{{ log_entry.data.mollie_payment_id }}">{{ log_entry.data.mollie_payment_id }}</a>)
+            {%- endif %}
             {%- if 'paypal_transaction_id' in log_entry.data %}
             (<a href="https://www.paypal.com/activity/payment/{{ log_entry.data.paypal_transaction_id }}">{{ log_entry.data.paypal_transaction_id }}</a>)
             {%- endif %}

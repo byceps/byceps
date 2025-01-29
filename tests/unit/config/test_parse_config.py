@@ -17,6 +17,7 @@ from byceps.config.models import (
     InvoiceNinjaConfig,
     JobsConfig,
     MetricsConfig,
+    MollieConfig,
     PaymentGatewaysConfig,
     PaypalConfig,
     RedisConfig,
@@ -82,6 +83,11 @@ def test_parse_config():
                 enabled=True,
             ),
             payment_gateways=PaymentGatewaysConfig(
+                mollie=MollieConfig(
+                    enabled=True,
+                    client_id='mollie-client-id',
+                    environment='sandbox',
+                ),
                 paypal=PaypalConfig(
                     enabled=True,
                     client_id='paypal-client-id',
@@ -150,6 +156,11 @@ def test_parse_config():
 
     [metrics]
     enabled = true
+
+    [payment_gateways.mollie]
+    enabled = true
+    client_id = "mollie-client-id"
+    environment = "sandbox"
 
     [payment_gateways.paypal]
     enabled = true

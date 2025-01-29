@@ -30,6 +30,7 @@ from .models import (
     InvoiceNinjaConfig,
     JobsConfig,
     MetricsConfig,
+    MollieConfig,
     PaymentGatewaysConfig,
     PaypalConfig,
     RedisConfig,
@@ -226,6 +227,21 @@ _SECTION_DEFINITIONS = [
     Section(
         name='payment_gateways',
         subsections=[
+            Subsection(
+                Section(
+                    name='mollie',
+                    fields=[
+                        Field(
+                            'enabled', type_=ValueType.Boolean, required=True
+                        ),
+                        Field('client_id', required=True),
+                        Field('environment', required=True),
+                    ],
+                    config_class=MollieConfig,
+                    required=False,
+                    default=None,
+                ),
+            ),
             Subsection(
                 Section(
                     name='paypal',

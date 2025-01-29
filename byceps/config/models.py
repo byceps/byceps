@@ -146,7 +146,15 @@ class MetricsConfig:
 
 
 @dataclass(frozen=True, slots=True)
+class MollieConfig:
+    enabled: bool
+    client_id: str
+    environment: str
+
+
+@dataclass(frozen=True, slots=True)
 class PaymentGatewaysConfig:
+    mollie: MollieConfig | None
     paypal: PaypalConfig | None
     stripe: StripeConfig | None
 
