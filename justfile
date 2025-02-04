@@ -9,3 +9,9 @@ babel-init locale:
 
 babel-compile:
     uv run pybabel compile -d byceps/translations
+
+docs-build-clean:
+    cd ./docs && uv run make clean && cd ..
+
+docs-build-html:
+    cd ./docs && uv run make html && cd ..
