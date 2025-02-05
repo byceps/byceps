@@ -27,6 +27,11 @@ database = "db-database"
 #client_id = "discord-client-id"
 #client_secret = "discord-client-secret"
 
+#[invoiceninja]
+#enabled = false
+#api_key = "invoiceninja-api-key"
+#base_url = "https://invoiceninja.example"
+
 #[metrics]
 #enabled = false
 
