@@ -290,7 +290,7 @@ using primarily the various services (from ``byceps.services``) without
 directly accessing the database (hopefully limiting the amount of
 accidental damage).
 
-.. code:: console
+.. code-block:: console
 
     $ BYCEPS_CONFIG_FILE=config/config.toml uv run byceps shell
 

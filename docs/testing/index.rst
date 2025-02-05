@@ -10,18 +10,18 @@ well as for customization.
 
 First, install the test dependencies:
 
-.. code:: console
+.. code-block:: console
 
     $ uv sync --frozen --group test
 
 Then run the tests:
 
-.. code:: console
+.. code-block:: console
 
     $ uv run pytest
 
 To abort on encountering the first failing test case:
 
-.. code:: console
+.. code-block:: console
 
     $ uv run pytest -x
