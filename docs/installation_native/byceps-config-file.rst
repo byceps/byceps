@@ -94,11 +94,12 @@ are important here!) with a configuration like this:
 .. code-block:: toml
     :caption: excerpt from :file:`config/config.toml`
 
-    MAIL_HOST = "smtp.provider.example"
-    MAIL_PORT = 465
-    MAIL_USE_SSL = true
-    MAIL_USERNAME = "example-username"
-    MAIL_PASSWORD = "example-password"
+    [smtp]
+    host = "smtp.provider.example"
+    port = 465
+    use_ssl = true
+    username = "smtp-user"
+    password = "smtp-password"
 
 See the available ``MAIL_*`` configuration properties
 (:confval:`MAIL_HOST`, etc.).
