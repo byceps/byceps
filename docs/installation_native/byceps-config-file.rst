@@ -101,8 +101,7 @@ are important here!) with a configuration like this:
     username = "smtp-user"
     password = "smtp-password"
 
-See the available ``MAIL_*`` configuration properties
-(:confval:`MAIL_HOST`, etc.).
+See the available :ref:`SMTP configuration properties <SMTP Section>`.
 
 .. _Sendmail: https://www.proofpoint.com/us/products/email-protection/open-source-email-solution
 .. _Postfix: https://www.postfix.org/
