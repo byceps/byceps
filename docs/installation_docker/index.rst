@@ -180,8 +180,7 @@ just before, you might be logged in already as the same user.)
    `Let's Encrypt`_).
 
    To be able to login without HTTPS using above links, you can
-   temporarily disable session cookie security by setting
-   :confval:`SESSION_COOKIE_SECURE` accordingly: In :file:`compose.yaml`
+   temporarily disable session cookie security: In :file:`compose.yaml`
    add ``SESSION_COOKIE_SECURE: "false"`` on a separate, indented line
    to the section ``x-byceps-base-env``.
 
