@@ -78,11 +78,6 @@ from tests.helpers.shop import create_product, create_orderer
 from .database import populate_database, set_up_database, tear_down_database
 
 
-_DEFAULT_DATABASE_URI = (
-    'postgresql+psycopg://byceps_test:test@127.0.0.1/byceps_test'
-)
-
-
 def build_byceps_config(
     data_path: Path,
     apps_config: AppsConfig,
@@ -137,8 +132,14 @@ def build_byceps_config(
 def database():
     app = BycepsApp(AppMode.metrics)
 
-    db_url_key = 'SQLALCHEMY_DATABASE_URI'
-    app.config[db_url_key] = os.environ.get(db_url_key, _DEFAULT_DATABASE_URI)
+    pg_host = os.environ.get('POSTGRES_HOST', '127.0.0.1')
+    pg_user = os.environ.get('POSTGRES_USER', 'byceps_test')
+    pg_password = os.environ.get('POSTGRES_PASSWORD', 'test')
+    pg_db = os.environ.get('POSTGRES_DB', 'byceps_test')
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = (
+        f'postgresql+psycopg://{pg_user}:{pg_password}@{pg_host}/{pg_db}'
+    )
 
     db.init_app(app)
 

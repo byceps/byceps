@@ -22,8 +22,8 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: byceps_test
-          POSTGRES_PASSWORD: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
           POSTGRES_DB: byceps_test
         options: >-
           --health-cmd pg_isready
