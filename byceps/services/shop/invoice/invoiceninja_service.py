@@ -17,8 +17,6 @@ from moneyed import Money
 from urllib.parse import urljoin
 
 from byceps.config.models import InvoiceNinjaConfig
-from byceps.services.party import party_service
-from byceps.services.party.models import PartyID
 from byceps.services.shop.invoice import order_invoice_service
 from byceps.services.shop.invoice.errors import (
     InvoiceDeniedForFreeOrderError,
