@@ -22,10 +22,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_HOST: localhost
-          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-          POSTGRES_DB: byceps_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -81,6 +78,11 @@ jobs:
         ./cc-test-reporter before-build
 
     - name: Test with pytest and coverage
+      env:
+        POSTGRES_HOST: localhost
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: password
+        POSTGRES_DB: postgres
       run: |
         uv run coverage run --source=byceps -m pytest tests
 
