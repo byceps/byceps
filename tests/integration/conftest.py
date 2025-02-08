@@ -78,9 +78,26 @@ from tests.helpers.shop import create_product, create_orderer
 from .database import populate_database, set_up_database, tear_down_database
 
 
+@pytest.fixture(scope='session')
+def database_config():
+    pg_host = os.environ.get('POSTGRES_HOST', '127.0.0.1')
+    pg_user = os.environ.get('POSTGRES_USER', 'byceps_test')
+    pg_password = os.environ.get('POSTGRES_PASSWORD', 'test')
+    pg_db = os.environ.get('POSTGRES_DB', 'byceps_test')
+
+    return DatabaseConfig(
+        host=pg_host,
+        port=5432,
+        username=pg_user,
+        password=pg_password,
+        database=pg_db,
+    )
+
+
 def build_byceps_config(
     data_path: Path,
     apps_config: AppsConfig,
+    database_config: DatabaseConfig,
     *,
     metrics_enabled: bool = False,
     style_guide_enabled: bool = False,
@@ -93,13 +110,7 @@ def build_byceps_config(
         timezone='Europe/Berlin',
         secret_key='secret-key-for-testing-ONLY',
         apps=apps_config,
-        database=DatabaseConfig(
-            host='127.0.0.1',
-            port=5432,
-            username='byceps_test',
-            password='test',
-            database='byceps_test',
-        ),
+        database=database_config,
         development=DevelopmentConfig(
             style_guide_enabled=style_guide_enabled,
             toolbar_enabled=False,
@@ -129,17 +140,11 @@ def build_byceps_config(
 
 
 @pytest.fixture(scope='session')
-def database():
+def database(database_config: DatabaseConfig):
     app = BycepsApp(AppMode.metrics)
 
-    pg_host = os.environ.get('POSTGRES_HOST', '127.0.0.1')
-    pg_user = os.environ.get('POSTGRES_USER', 'byceps_test')
-    pg_password = os.environ.get('POSTGRES_PASSWORD', 'test')
-    pg_db = os.environ.get('POSTGRES_DB', 'byceps_test')
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = (
-        f'postgresql+psycopg://{pg_user}:{pg_password}@{pg_host}/{pg_db}'
-    )
+    db_uri = f'postgresql+psycopg://{database_config.username}:{database_config.password}@{database_config.host}:{database_config.port}/{database_config.database}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 
     db.init_app(app)
 
@@ -236,7 +241,7 @@ def site_app(database, make_site_app, site: Site) -> BycepsApp:
 
 
 @pytest.fixture(scope='session')
-def make_byceps_config(data_path: Path):
+def make_byceps_config(data_path: Path, database_config: DatabaseConfig):
     def _wrapper(
         apps_config: AppsConfig | None = None,
         *,
@@ -249,6 +254,7 @@ def make_byceps_config(data_path: Path):
         return build_byceps_config(
             data_path,
             apps_config,
+            database_config,
             metrics_enabled=metrics_enabled,
             style_guide_enabled=style_guide_enabled,
         )
