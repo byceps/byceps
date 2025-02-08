@@ -80,17 +80,17 @@ from .database import populate_database, set_up_database, tear_down_database
 
 @pytest.fixture(scope='session')
 def database_config():
-    pg_host = os.environ.get('POSTGRES_HOST', '127.0.0.1')
-    pg_user = os.environ.get('POSTGRES_USER', 'byceps_test')
-    pg_password = os.environ.get('POSTGRES_PASSWORD', 'test')
-    pg_db = os.environ.get('POSTGRES_DB', 'byceps_test')
+    host = os.environ.get('POSTGRES_HOST', '127.0.0.1')
+    username = os.environ.get('POSTGRES_USER', 'byceps_test')
+    password = os.environ.get('POSTGRES_PASSWORD', 'test')
+    database = os.environ.get('POSTGRES_DB', 'byceps_test')
 
     return DatabaseConfig(
-        host=pg_host,
+        host=host,
         port=5432,
-        username=pg_user,
-        password=pg_password,
-        database=pg_db,
+        username=username,
+        password=password,
+        database=database,
     )
 
 
