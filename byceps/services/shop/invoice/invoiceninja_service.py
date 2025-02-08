@@ -215,7 +215,7 @@ class InvoiceNinjaHttpClient:
     ) -> Result[DownloadableInvoice, InvoiceDownloadError]:
         """Download invoice from Invoice Ninja."""
         url = self._build_url(f'invoice/{invitation_key}/download')
-        response = self._client.get(url)
+        response = self._client.get(url, timeout=10.0)
         if response.status_code != 200:
             return Err(InvoiceDownloadError())
 
