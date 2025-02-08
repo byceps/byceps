@@ -17,6 +17,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: debian:bookworm-slim
 
     services:
       postgres:
