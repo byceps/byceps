@@ -95,10 +95,22 @@ def database_config():
     )
 
 
+@pytest.fixture(scope='session')
+def redis_config():
+    host = os.environ.get('REDIS_HOST', '127.0.0.1')
+    port = int(os.environ.get('REDIS_PORT', 6379))
+    database = 0
+
+    return RedisConfig(
+        url=f'redis://{host}:{port}/{database}',
+    )
+
+
 def build_byceps_config(
     data_path: Path,
     apps_config: AppsConfig,
     database_config: DatabaseConfig,
+    redis_config: RedisConfig,
     *,
     metrics_enabled: bool = False,
     style_guide_enabled: bool = False,
@@ -125,9 +137,7 @@ def build_byceps_config(
             enabled=metrics_enabled,
         ),
         payment_gateways=None,
-        redis=RedisConfig(
-            url='redis://127.0.0.1:6379/0',
-        ),
+        redis=redis_config,
         smtp=SmtpConfig(
             host='127.0.0.1',
             port=25,
@@ -242,7 +252,9 @@ def site_app(database, make_site_app, site: Site) -> BycepsApp:
 
 
 @pytest.fixture(scope='session')
-def make_byceps_config(data_path: Path, database_config: DatabaseConfig):
+def make_byceps_config(
+    data_path: Path, database_config: DatabaseConfig, redis_config: RedisConfig
+):
     def _wrapper(
         apps_config: AppsConfig | None = None,
         *,
@@ -256,6 +268,7 @@ def make_byceps_config(data_path: Path, database_config: DatabaseConfig):
             data_path,
             apps_config,
             database_config,
+            redis_config,
             metrics_enabled=metrics_enabled,
             style_guide_enabled=style_guide_enabled,
         )
