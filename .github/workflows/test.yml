@@ -28,9 +28,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          # Make accessible on localhost.
-          - 5432:5432
 
       redis:
         image: redis
@@ -39,9 +36,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          # Make accessible on localhost.
-          - 6379:6379
 
     strategy:
       fail-fast: false
@@ -75,11 +69,12 @@ jobs:
 
     - name: Test with pytest and coverage
       env:
-        POSTGRES_HOST: localhost
+        POSTGRES_HOST: postgres
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: password
         POSTGRES_DB: postgres
         PYTEST_ADDOPTS: "--color=yes"
+        REDIS_HOST: redis
       run: |
         uv run coverage run --source=byceps -m pytest tests
 
