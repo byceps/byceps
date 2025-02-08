@@ -77,7 +77,7 @@ jobs:
         PYTEST_ADDOPTS: "--color=yes"
         REDIS_HOST: redis
       run: |
-        uv run coverage run --source=byceps -m pytest tests
+        uv run coverage run --source=byceps -m pytest tests -x
 
     - name: Generate XML output from test coverage
       if: github.repository == 'byceps/byceps' && github.ref_name == 'main'
