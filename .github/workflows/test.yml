@@ -22,6 +22,7 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_HOST: localhost
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: byceps_test
