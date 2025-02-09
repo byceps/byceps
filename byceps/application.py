@@ -244,25 +244,12 @@ def _get_config_from_environment() -> dict[str, Any]:
     data = {}
 
     for key in (
-        'DEBUG',
-        'DEBUG_TOOLBAR_ENABLED',
-        'LOCALE',
-        'MAIL_HOST',
-        'MAIL_PASSWORD',
-        'MAIL_PORT',
-        'MAIL_STARTTLS',
-        'MAIL_SUPPRESS_SEND',
-        'MAIL_USE_SSL',
-        'MAIL_USERNAME',
         'METRICS_ENABLED',
-        'PROPAGATE_EXCEPTIONS',
         'REDIS_URL',
         'SECRET_KEY',
         'SESSION_COOKIE_SECURE',
         'SITE_ID',
         'SQLALCHEMY_DATABASE_URI',
-        'STYLE_GUIDE_ENABLED',
-        'TIMEZONE',
     ):
         value = parse_value_from_environment(key)
         if value is not None:
