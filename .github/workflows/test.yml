@@ -79,6 +79,7 @@ jobs:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: password
         POSTGRES_DB: postgres
+        PYTEST_ADDOPTS: "--color=yes"
       run: |
         uv run coverage run --source=byceps -m pytest tests
 
