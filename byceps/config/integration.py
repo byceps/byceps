@@ -49,10 +49,9 @@ def read_configuration_from_file_given_in_env_var() -> BycepsConfig:
     filename_str = os.environ.get('BYCEPS_CONFIG_FILE')
 
     if not filename_str:
-        log.error(
-            'No configuration file specified. Use environment variable `BYCEPS_CONFIG_FILE`.'
-        )
-        raise ConfigurationError('No configuration file specified')
+        error_message = 'No configuration file specified. Use environment variable `BYCEPS_CONFIG_FILE`.'
+        log.error(error_message)
+        raise ConfigurationError(error_message)
 
     filename = Path(filename_str)
     return _read_configuration_from_file(filename)
