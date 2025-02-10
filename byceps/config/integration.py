@@ -69,4 +69,4 @@ def _read_configuration_from_file(filename: Path) -> BycepsConfig:
                 filename=filename,
                 errors=errors,
             )
-            raise ConfigurationError('Errors found in configuration file')
+            raise ConfigurationError('Errors found in configuration file.')
