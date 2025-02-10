@@ -2,6 +2,7 @@
 .coverage
 .dockerignore
 .eggs
+.env
 .git
 .github
 .gitignore
