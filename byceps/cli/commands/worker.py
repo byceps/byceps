@@ -9,6 +9,7 @@ Start a worker to process the queue.
 """
 
 import click
+from dotenv import load_dotenv
 from rq import Worker
 
 from byceps.application import create_worker_app
@@ -22,6 +23,8 @@ from byceps.util.sentry import configure_sentry_from_env
 @click.command()
 def worker() -> None:
     """Start a worker."""
+    load_dotenv()
+
     configure_sentry_from_env('worker')
 
     config = read_configuration_from_file_given_in_env_var()

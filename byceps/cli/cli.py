@@ -9,6 +9,7 @@ Command-line interface
 """
 
 import click
+from dotenv import load_dotenv
 from flask.cli import AppGroup
 
 from .commands.create_database_tables import create_database_tables
@@ -21,6 +22,9 @@ from .commands.import_users import import_users
 from .commands.initialize_database import initialize_database
 from .commands.shell import shell
 from .commands.worker import worker
+
+
+load_dotenv()
 
 
 @click.group(cls=AppGroup)

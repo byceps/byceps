@@ -12,7 +12,7 @@ To run the applications defined in the :ref:`application mapping
 
 .. code-block:: console
 
-   $ BYCEPS_CONFIG_FILE=config/config.toml uv run flask --app=serve_apps --debug run
+   $ uv run flask --app=serve_apps --debug run
 
 If the hostname mapping (or DNS setup) is also correct, the configured
 BYCEPS applications should be accessible at their respective hostnames
@@ -33,7 +33,7 @@ To start it:
 
 .. code-block:: console
 
-   $ BYCEPS_CONFIG_FILE=config/config.toml uv run byceps worker
+   $ uv run byceps worker
 
 It should start processing any jobs in the queue right away and will
 then wait for new jobs to be enqueued.

@@ -105,3 +105,25 @@ See the available :ref:`SMTP configuration properties <SMTP Section>`.
 
 .. _Sendmail: https://www.proofpoint.com/us/products/email-protection/open-source-email-solution
 .. _Postfix: https://www.postfix.org/
+
+
+Set Environment Variable Automatically
+--------------------------------------
+
+The configuration file has to be specified when running most commands.
+This can be done by prefixing a command with the corresponding
+environment variable:
+
+.. code-block:: console
+
+    $ BYCEPS_CONFIG_FILE=config/config.toml uv run byceps
+
+To avoid doing that everytime, the environment variable can be saved to
+the :file:`.env` file in the BYCEPS project path. For example:
+
+.. code-block:: console
+
+    $ echo "BYCEPS_CONFIG_FILE=$PWD/config/config.toml" > ./.env
+
+Be sure to use an absolute path so that the file can be found even when
+running commands from a sub-directory of the BYCEPS project path.

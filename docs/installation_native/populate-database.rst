@@ -6,7 +6,7 @@ in the configuration file:
 
 .. code-block:: console
 
-    $ BYCEPS_CONFIG_FILE=config/config.toml uv run byceps initialize-database
+    $ uv run byceps initialize-database
 
 Expected output:
 
@@ -22,7 +22,7 @@ user (which will get all available roles assigned):
 
 .. code-block:: console
 
-    $ BYCEPS_CONFIG_FILE=config/config.toml uv run byceps create-superuser
+    $ uv run byceps create-superuser
 
 Enter user account details interactively:
 
