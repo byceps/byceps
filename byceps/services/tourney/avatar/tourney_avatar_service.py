@@ -10,12 +10,11 @@ from typing import BinaryIO
 from uuid import UUID
 
 from byceps.database import db
-from byceps.services.image import image_service
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
 from byceps.util import upload
 from byceps.util.image.dimensions import determine_dimensions, Dimensions
-from byceps.util.image.image_type import ImageType
+from byceps.util.image.image_type import determine_image_type, ImageType
 from byceps.util.image.thumbnail import create_thumbnail
 from byceps.util.result import Err, Ok, Result
 
@@ -34,9 +33,7 @@ def create_avatar_image(
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> Result[DbTourneyAvatar, str]:
     """Create a new avatar image."""
-    image_type_result = image_service.determine_image_type(
-        stream, allowed_types
-    )
+    image_type_result = determine_image_type(stream, allowed_types)
     if image_type_result.is_err():
         return Err(image_type_result.unwrap_err())
 

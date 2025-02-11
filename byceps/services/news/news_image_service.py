@@ -12,11 +12,10 @@ from flask import current_app
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.services.image import image_service
 from byceps.services.user.models.user import User
 from byceps.util import upload
 from byceps.util.image.dimensions import determine_dimensions, Dimensions
-from byceps.util.image.image_type import ImageType
+from byceps.util.image.image_type import determine_image_type, ImageType
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -47,9 +46,7 @@ def create_image(
     attribution: str | None = None,
 ) -> Result[NewsImage, str]:
     """Create an image for a news item."""
-    image_type_result = image_service.determine_image_type(
-        stream, ALLOWED_IMAGE_TYPES
-    )
+    image_type_result = determine_image_type(stream, ALLOWED_IMAGE_TYPES)
     if image_type_result.is_err():
         return Err(image_type_result.unwrap_err())
 

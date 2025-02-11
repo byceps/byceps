@@ -15,10 +15,9 @@ from byceps.events.user import (
     UserAvatarRemovedEvent,
     UserAvatarUpdatedEvent,
 )
-from byceps.services.image import image_service
 from byceps.util import upload
 from byceps.util.image.dimensions import determine_dimensions, Dimensions
-from byceps.util.image.image_type import ImageType
+from byceps.util.image.image_type import determine_image_type, ImageType
 from byceps.util.image.thumbnail import create_thumbnail
 from byceps.util.result import Err, Ok, Result
 
@@ -41,9 +40,7 @@ def update_avatar_image(
     """Set a new avatar image for the user."""
     db_user = user_service.get_db_user(user.id)
 
-    image_type_result = image_service.determine_image_type(
-        stream, allowed_types
-    )
+    image_type_result = determine_image_type(stream, allowed_types)
     if image_type_result.is_err():
         return Err(image_type_result.unwrap_err())
 

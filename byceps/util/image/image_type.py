@@ -10,6 +10,8 @@ from collections.abc import Iterable
 from enum import Enum
 from typing import BinaryIO
 
+from byceps.util.result import Err, Ok, Result
+
 
 ImageType = Enum('ImageType', ['gif', 'jpeg', 'png', 'svg', 'webp'])
 
@@ -17,6 +19,30 @@ ImageType = Enum('ImageType', ['gif', 'jpeg', 'png', 'svg', 'webp'])
 def get_image_type_names(types: Iterable[ImageType]) -> frozenset[str]:
     """Return the names of the image types."""
     return frozenset(t.name.upper() for t in types)
+
+
+def determine_image_type(
+    stream: BinaryIO, allowed_types: frozenset[ImageType] | set[ImageType]
+) -> Result[ImageType, str]:
+    """Extract image type from stream."""
+    image_type = guess_image_type(stream)
+
+    if (image_type is None) or (image_type not in allowed_types):
+        message = _get_image_type_prohibited_error_message(allowed_types)
+        return Err(message)
+
+    return Ok(image_type)
+
+
+def _get_image_type_prohibited_error_message(
+    allowed_types: frozenset[ImageType] | set[ImageType],
+) -> str:
+    allowed_type_names = get_image_type_names(allowed_types)
+    allowed_type_names_string = ', '.join(sorted(allowed_type_names))
+
+    return (
+        f'Image is not one of the allowed types ({allowed_type_names_string}).'
+    )
 
 
 def guess_image_type(stream: BinaryIO) -> ImageType | None:
