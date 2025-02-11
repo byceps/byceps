@@ -8,8 +8,11 @@ byceps.services.image.image_service
 
 from typing import BinaryIO
 
-from byceps.util.image.image_type import get_image_type_names, ImageType
-from byceps.util.image.typeguess import guess_image_type
+from byceps.util.image.image_type import (
+    get_image_type_names,
+    guess_image_type,
+    ImageType,
+)
 from byceps.util.result import Err, Ok, Result
 
 
