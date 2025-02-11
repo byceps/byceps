@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.util.image.models import Dimensions
+from byceps.util.image.dimensions import Dimensions
 
 
 @pytest.mark.parametrize(

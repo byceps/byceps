@@ -18,7 +18,8 @@ from byceps.events.user import (
 from byceps.services.image import image_service
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
-from byceps.util.image.models import Dimensions, ImageType
+from byceps.util.image.dimensions import Dimensions
+from byceps.util.image.models import ImageType
 from byceps.util.result import Err, Ok, Result
 
 from . import user_avatar_domain_service, user_log_service, user_service

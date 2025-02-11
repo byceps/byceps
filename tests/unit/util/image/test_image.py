@@ -8,7 +8,8 @@ from pathlib import Path
 import pytest
 
 from byceps.util.image import read_dimensions
-from byceps.util.image.models import Dimensions, ImageType
+from byceps.util.image.dimensions import Dimensions
+from byceps.util.image.models import ImageType
 from byceps.util.image.typeguess import guess_type
 
 

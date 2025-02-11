@@ -15,7 +15,8 @@ from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
-from byceps.util.image.models import Dimensions, ImageType
+from byceps.util.image.dimensions import Dimensions
+from byceps.util.image.models import ImageType
 from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbTourneyAvatar

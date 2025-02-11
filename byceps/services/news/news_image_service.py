@@ -15,7 +15,8 @@ from byceps.database import db
 from byceps.services.image import image_service
 from byceps.services.user.models.user import User
 from byceps.util import upload
-from byceps.util.image.models import Dimensions, ImageType
+from byceps.util.image.dimensions import Dimensions
+from byceps.util.image.models import ImageType
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

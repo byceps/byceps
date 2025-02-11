@@ -11,7 +11,7 @@ from typing import BinaryIO
 
 from PIL import Image, ImageFile
 
-from .models import Dimensions
+from .dimensions import Dimensions
 
 
 FilenameOrStream = str | BinaryIO
