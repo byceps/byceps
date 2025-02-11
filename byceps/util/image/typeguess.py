@@ -11,7 +11,7 @@ from typing import BinaryIO
 from .image_type import ImageType
 
 
-def guess_type(stream: BinaryIO) -> ImageType | None:
+def guess_image_type(stream: BinaryIO) -> ImageType | None:
     """Return the guessed type, or `None` if the type could not be
     guessed or is not allowed (i.e. not a member of the enum).
     """

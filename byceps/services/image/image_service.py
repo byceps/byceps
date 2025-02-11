@@ -9,7 +9,7 @@ byceps.services.image.image_service
 from typing import BinaryIO
 
 from byceps.util.image.image_type import get_image_type_names, ImageType
-from byceps.util.image.typeguess import guess_type
+from byceps.util.image.typeguess import guess_image_type
 from byceps.util.result import Err, Ok, Result
 
 
@@ -17,7 +17,7 @@ def determine_image_type(
     stream: BinaryIO, allowed_types: frozenset[ImageType] | set[ImageType]
 ) -> Result[ImageType, str]:
     """Extract image type from stream."""
-    image_type = guess_type(stream)
+    image_type = guess_image_type(stream)
 
     if (image_type is None) or (image_type not in allowed_types):
         message = _get_image_type_prohibited_error_message(allowed_types)

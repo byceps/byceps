@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from byceps.util.image.image_type import ImageType
-from byceps.util.image.typeguess import guess_type
+from byceps.util.image.typeguess import guess_image_type
 
 
 IMAGES_PATH = Path('tests/fixtures/images')
@@ -26,9 +26,9 @@ IMAGES_PATH = Path('tests/fixtures/images')
         ('image-without-xml-declaration.svg', ImageType.svg),
     ],
 )
-def test_guess_type(filename, expected):
+def test_guess_image_type(filename, expected):
     with open_image(filename) as f:
-        actual = guess_type(f)
+        actual = guess_image_type(f)
 
     assert actual == expected
 
