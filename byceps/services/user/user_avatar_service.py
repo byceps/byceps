@@ -18,7 +18,7 @@ from byceps.events.user import (
 from byceps.services.image import image_service
 from byceps.util import upload
 from byceps.util.image import create_thumbnail
-from byceps.util.image.dimensions import Dimensions
+from byceps.util.image.dimensions import determine_dimensions, Dimensions
 from byceps.util.image.models import ImageType
 from byceps.util.result import Err, Ok, Result
 
@@ -48,7 +48,7 @@ def update_avatar_image(
         return Err(image_type_result.unwrap_err())
 
     image_type = image_type_result.unwrap()
-    image_dimensions = image_service.determine_dimensions(stream)
+    image_dimensions = determine_dimensions(stream)
 
     image_too_large = image_dimensions > maximum_dimensions
     if image_too_large or not image_dimensions.is_square:

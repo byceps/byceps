@@ -9,7 +9,6 @@ byceps.services.image.image_service
 from collections.abc import Iterable
 from typing import BinaryIO
 
-from byceps.util.image.dimensions import Dimensions, read_dimensions
 from byceps.util.image.models import ImageType
 from byceps.util.image.typeguess import guess_type
 from byceps.util.result import Err, Ok, Result
@@ -42,10 +41,3 @@ def _get_image_type_prohibited_error_message(
     return (
         f'Image is not one of the allowed types ({allowed_type_names_string}).'
     )
-
-
-def determine_dimensions(stream: BinaryIO) -> Dimensions:
-    """Extract image dimensions from stream."""
-    dimensions = read_dimensions(stream)
-    stream.seek(0)
-    return dimensions

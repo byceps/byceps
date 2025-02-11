@@ -15,7 +15,7 @@ from byceps.database import db
 from byceps.services.image import image_service
 from byceps.services.user.models.user import User
 from byceps.util import upload
-from byceps.util.image.dimensions import Dimensions
+from byceps.util.image.dimensions import determine_dimensions, Dimensions
 from byceps.util.image.models import ImageType
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
@@ -56,7 +56,7 @@ def create_image(
     image_type = image_type_result.unwrap()
 
     if image_type != ImageType.svg:
-        image_dimensions = image_service.determine_dimensions(stream)
+        image_dimensions = determine_dimensions(stream)
         _check_image_dimensions(image_dimensions)
 
     image_id = NewsImageID(generate_uuid7())
