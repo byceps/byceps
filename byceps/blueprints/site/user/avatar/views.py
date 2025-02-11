@@ -9,14 +9,13 @@ byceps.blueprints.site.user.avatar.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from byceps.services.image import image_service
 from byceps.services.user import user_avatar_service
 from byceps.services.user.models.user import User
 from byceps.signals import user as user_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.image.image_type import ImageType
+from byceps.util.image.image_type import get_image_type_names, ImageType
 from byceps.util.views import redirect_to, respond_no_content
 
 from .forms import UpdateForm
@@ -42,7 +41,7 @@ def update_form(erroneous_form=None):
 
     form = erroneous_form if erroneous_form else UpdateForm()
 
-    image_type_names = image_service.get_image_type_names(ALLOWED_IMAGE_TYPES)
+    image_type_names = get_image_type_names(ALLOWED_IMAGE_TYPES)
 
     return {
         'form': form,

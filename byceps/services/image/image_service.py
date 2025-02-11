@@ -6,17 +6,11 @@ byceps.services.image.image_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterable
 from typing import BinaryIO
 
-from byceps.util.image.image_type import ImageType
+from byceps.util.image.image_type import get_image_type_names, ImageType
 from byceps.util.image.typeguess import guess_type
 from byceps.util.result import Err, Ok, Result
-
-
-def get_image_type_names(types: Iterable[ImageType]) -> frozenset[str]:
-    """Return the names of the image types."""
-    return frozenset(t.name.upper() for t in types)
 
 
 def determine_image_type(

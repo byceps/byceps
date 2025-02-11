@@ -13,7 +13,6 @@ from flask import abort, g, request
 from flask_babel import format_datetime, gettext, to_utc
 
 from byceps.services.brand import brand_service
-from byceps.services.image import image_service
 from byceps.services.news import (
     news_channel_service,
     news_image_service,
@@ -27,6 +26,7 @@ from byceps.signals import news as news_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.image.image_type import get_image_type_names
 from byceps.util.iterables import pairwise
 from byceps.util.views import (
     permission_required,
@@ -251,7 +251,7 @@ def image_create_form(item_id, erroneous_form=None):
 
     form = erroneous_form if erroneous_form else ImageCreateForm()
 
-    image_type_names = image_service.get_image_type_names(
+    image_type_names = get_image_type_names(
         news_image_service.ALLOWED_IMAGE_TYPES
     )
 
