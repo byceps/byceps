@@ -8,7 +8,7 @@ byceps.util.image.typeguess
 
 from typing import BinaryIO
 
-from .models import ImageType
+from .image_type import ImageType
 
 
 def guess_type(stream: BinaryIO) -> ImageType | None:

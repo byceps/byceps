@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.user.dbmodels.avatar import DbUserAvatar
-from byceps.util.image.models import ImageType
+from byceps.util.image.image_type import ImageType
 
 
 @pytest.mark.parametrize(

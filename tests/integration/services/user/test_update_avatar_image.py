@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from byceps.services.user import user_avatar_service
-from byceps.util.image.models import ImageType
+from byceps.util.image.image_type import ImageType
 
 
 @pytest.mark.parametrize(

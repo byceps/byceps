@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from byceps.util.image.models import ImageType
+from byceps.util.image.image_type import ImageType
 from byceps.util.image.typeguess import guess_type
 
 

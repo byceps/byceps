@@ -13,7 +13,7 @@ from byceps.services.party import party_service
 from byceps.services.tourney.avatar import tourney_avatar_service
 from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.image.models import ImageType
+from byceps.util.image.image_type import ImageType
 from byceps.util.views import respond_created, respond_no_content
 
 from .forms import CreateForm

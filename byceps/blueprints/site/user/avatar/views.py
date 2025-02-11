@@ -16,7 +16,7 @@ from byceps.signals import user as user_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.image.models import ImageType
+from byceps.util.image.image_type import ImageType
 from byceps.util.views import redirect_to, respond_no_content
 
 from .forms import UpdateForm

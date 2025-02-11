@@ -20,7 +20,7 @@ else:
 
 from byceps.database import db
 from byceps.services.user.models.user import UserAvatarID
-from byceps.util.image.models import ImageType
+from byceps.util.image.image_type import ImageType
 from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 

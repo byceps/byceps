@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any, NewType
 from uuid import UUID
 
-from byceps.util.image.models import ImageType
+from byceps.util.image.image_type import ImageType
 
 
 UserID = NewType('UserID', UUID)

@@ -11,7 +11,7 @@ from byceps.services.user import (
     user_command_service,
     user_creation_service,
 )
-from byceps.util.image.models import ImageType
+from byceps.util.image.image_type import ImageType
 
 
 def test_existent_user_with_avatar(api_client):
