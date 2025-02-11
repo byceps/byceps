@@ -23,7 +23,7 @@ def calculate_age(date_of_birth: date, today: date) -> int:
     return age
 
 
-def calculate_days_until(date: date, today: date) -> int:
+def calculate_days_until_birthday(date: date, today: date) -> int:
     """Calculate the number of days from today until the given date,
     *ignoring the year*.
 

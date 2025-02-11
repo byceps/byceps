@@ -7,7 +7,7 @@ from datetime import date
 
 import pytest
 
-from byceps.util.datetime.calc import calculate_days_until
+from byceps.util.datetime.calc import calculate_days_until_birthday
 
 
 SOME_DATE = date(1994, 3, 18)
@@ -23,6 +23,6 @@ SOME_DATE = date(1994, 3, 18)
     ],
 )
 def test_calculate_days_until(today, expected):
-    actual = calculate_days_until(SOME_DATE, today)
+    actual = calculate_days_until_birthday(SOME_DATE, today)
 
     assert actual == expected

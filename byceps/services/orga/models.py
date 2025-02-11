@@ -9,7 +9,10 @@ byceps.services.orga.models
 from dataclasses import dataclass
 from datetime import date
 
-from byceps.util.datetime.calc import calculate_age, calculate_days_until
+from byceps.util.datetime.calc import (
+    calculate_age,
+    calculate_days_until_birthday,
+)
 from byceps.util.datetime.monthday import MonthDay
 
 
@@ -25,7 +28,7 @@ class Birthday:
     @property
     def days_until_next_birthday(self) -> int | None:
         """Return the number of days until the next birthday."""
-        return calculate_days_until(self.date_of_birth, today())
+        return calculate_days_until_birthday(self.date_of_birth, today())
 
     @property
     def is_today(self) -> bool | None:
