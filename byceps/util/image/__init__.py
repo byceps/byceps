@@ -17,12 +17,6 @@ from .dimensions import Dimensions
 FilenameOrStream = str | BinaryIO
 
 
-def read_dimensions(filename_or_stream: FilenameOrStream) -> Dimensions:
-    """Return the dimensions of the image."""
-    image = Image.open(filename_or_stream)
-    return Dimensions(*image.size)
-
-
 def create_thumbnail(
     filename_or_stream: FilenameOrStream,
     image_type: str,

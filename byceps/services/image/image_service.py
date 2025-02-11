@@ -9,8 +9,7 @@ byceps.services.image.image_service
 from collections.abc import Iterable
 from typing import BinaryIO
 
-from byceps.util.image import read_dimensions
-from byceps.util.image.dimensions import Dimensions
+from byceps.util.image.dimensions import Dimensions, read_dimensions
 from byceps.util.image.models import ImageType
 from byceps.util.image.typeguess import guess_type
 from byceps.util.result import Err, Ok, Result
