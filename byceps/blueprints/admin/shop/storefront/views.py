@@ -102,7 +102,6 @@ def view(storefront_id):
         'storefront': storefront_for_admin,
         'shop': shop,
         'brand': brand,
-        'order_number_prefix': order_number_prefix,
     }
 
 
