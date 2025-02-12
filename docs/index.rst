@@ -16,7 +16,8 @@ This documentation should guide you to understand and set up BYCEPS.
   Sourcehut <https://git.sr.ht/~homeworkprod/byceps>`_.
 
 - If you have questions or suggestions, feel free to reach out on the
-  `BYCEPS Discord server <https://discord.gg/HxXbBN554U>`_.
+  `BYCEPS Discord server <https://discord.gg/HxXbBN554U>`_. Noteworthy
+  changes are also announced there.
 
   .. image:: https://discordapp.com/api/guilds/736558889767796789/widget.png?style=banner2
      :alt: Join BYCEPS on Discord
