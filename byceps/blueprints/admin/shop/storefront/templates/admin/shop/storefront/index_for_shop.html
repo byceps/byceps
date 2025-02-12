@@ -35,7 +35,7 @@
       {%- for storefront in storefronts|sort(attribute='id') %}
       <tr>
         <td><a href="{{ url_for('.view', storefront_id=storefront.id) }}"><strong>{{ storefront.id }}</strong></a></td>
-        <td>{{ storefront.order_number_prefix }}</td>
+        <td>{{ storefront.order_number_sequence.prefix }}</td>
         <td>
           {%- with catalog = storefront.catalog %}
             {%- if catalog %}

@@ -13,7 +13,10 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.shop.catalog import catalog_service
 from byceps.services.shop.catalog.models import Catalog
-from byceps.services.shop.order.models.number import OrderNumberSequenceID
+from byceps.services.shop.order.models.number import (
+    OrderNumberSequence,
+    OrderNumberSequenceID,
+)
 from byceps.services.shop.payment.models import PaymentGateway
 from byceps.services.shop.shop.models import ShopID
 
@@ -175,7 +178,7 @@ def _db_entity_to_storefront(
 
 def to_storefront_for_admin(
     storefront: Storefront,
-    order_number_prefix: str,
+    order_number_sequence: OrderNumberSequence,
     enabled_payment_gateways: set[PaymentGateway],
 ) -> StorefrontForAdmin:
     return StorefrontForAdmin(
@@ -184,14 +187,16 @@ def to_storefront_for_admin(
         catalog=storefront.catalog,
         order_number_sequence_id=storefront.order_number_sequence_id,
         closed=storefront.closed,
-        order_number_prefix=order_number_prefix,
+        order_number_sequence=order_number_sequence,
         enabled_payment_gateways=enabled_payment_gateways,
     )
 
 
 def to_storefronts_for_admin(
     storefronts: Iterable[Storefront],
-    order_number_prefixes_by_sequence_id: dict[OrderNumberSequenceID, str],
+    order_number_sequences_by_id: dict[
+        OrderNumberSequenceID, OrderNumberSequence
+    ],
     enabled_payment_gateways_by_storefront_id: dict[
         StorefrontID, set[PaymentGateway]
     ],
@@ -199,9 +204,7 @@ def to_storefronts_for_admin(
     return [
         to_storefront_for_admin(
             storefront,
-            order_number_prefixes_by_sequence_id[
-                storefront.order_number_sequence_id
-            ],
+            order_number_sequences_by_id[storefront.order_number_sequence_id],
             enabled_payment_gateways_by_storefront_id.get(storefront.id, set()),
         )
         for storefront in storefronts
