@@ -115,6 +115,7 @@
         <thead>
           <tr>
             <th>{{ _('Prefix') }}</th>
+            <th></th>
             <th class="number">{{ _('Value') }}</th>
           </tr>
         </thead>
@@ -122,6 +123,7 @@
           {%- for order_number_sequence in order_number_sequences|sort(attribute='prefix') %}
           <tr>
             <td>{{ order_number_sequence.prefix }}</td>
+            <td>{% if order_number_sequence.archived %}{{ render_tag(_('archived'), class='color-disabled', icon='archived') }}{% endif %}</td>
             <td class="number">{{ order_number_sequence.value }}</td>
           </tr>
           {%- endfor %}

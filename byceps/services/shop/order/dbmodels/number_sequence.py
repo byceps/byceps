@@ -25,6 +25,7 @@ class DbOrderNumberSequence(db.Model):
     )
     prefix: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     value: Mapped[int]
+    archived: Mapped[bool]
 
     def __init__(
         self,
@@ -32,11 +33,14 @@ class DbOrderNumberSequence(db.Model):
         shop_id: ShopID,
         prefix: str,
         value: int,
+        *,
+        archived: bool = False,
     ) -> None:
         self.id = sequence_id
         self.shop_id = shop_id
         self.prefix = prefix
         self.value = value
+        self.archived = archived
 
     def __repr__(self) -> str:
         return (

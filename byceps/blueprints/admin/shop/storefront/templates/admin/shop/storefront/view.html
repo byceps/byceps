@@ -1,6 +1,7 @@
 {% extends 'layout/admin/shop/storefront.html' %}
 {% from 'macros/admin/shop/storefront.html' import render_enabled_payment_gateways, render_storefront_status %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set page_title = [_('Storefront'), storefront.id] %}
 
 {% block body %}
@@ -26,7 +27,16 @@
       </div>
       <div>
         <div class="data-label">{{ _('Order number sequence') }}</div>
-        <div class="data-value">{{ storefront.order_number_sequence.prefix }}</div>
+        <div class="data-value">
+          <div class="row">
+            <div>{{ storefront.order_number_sequence.prefix }}</div>
+            <div>
+              {%- if storefront.order_number_sequence.archived %}
+              {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
+              {%- endif %}
+            </div>
+          </div>
+        </div>
       </div>
       <div>
         <div class="data-label">{{ _('Catalog') }}</div>

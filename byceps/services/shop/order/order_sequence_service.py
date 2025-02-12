@@ -106,4 +106,5 @@ def _db_entity_to_order_number_sequence(
         shop_id=db_sequence.shop_id,
         prefix=db_sequence.prefix,
         value=db_sequence.value,
+        archived=db_sequence.archived,
     )
