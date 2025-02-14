@@ -13,10 +13,8 @@ from sqlalchemy import select
 from byceps.database import db
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
-from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
-from .errors import UnknownListIdError
 from .models import List, ListID, Subscriber
 
 
@@ -28,16 +26,6 @@ def find_list(list_id: ListID) -> List | None:
         return None
 
     return _db_entity_to_list(db_list)
-
-
-def get_list(list_id: ListID) -> Result[List, UnknownListIdError]:
-    """Return the list with that ID."""
-    list_ = find_list(list_id)
-
-    if list_ is None:
-        return Err(UnknownListIdError(list_id))
-
-    return Ok(list_)
 
 
 def get_all_lists() -> list[List]:

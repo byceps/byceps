@@ -134,9 +134,10 @@ def _update_subscription_state(
     subscription_update: SubscriptionUpdate,
 ) -> Result[None, UnknownListIdError]:
     """Update the user's subscription state for that list."""
-    list_result = newsletter_service.get_list(subscription_update.list_id)
-    if list_result.is_err():
-        return Err(list_result.unwrap_err())
+    list_id = subscription_update.list_id
+    list_ = newsletter_service.find_list(list_id)
+    if list_ is None:
+        return Err(UnknownListIdError(list_id))
 
     db_subscription_update = DbSubscriptionUpdate(
         subscription_update.user_id,

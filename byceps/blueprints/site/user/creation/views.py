@@ -178,7 +178,7 @@ def _find_newsletter_list_for_brand() -> NewsletterList | None:
     if not list_id:
         return None
 
-    return newsletter_service.get_list(NewsletterListID(list_id)).unwrap()
+    return newsletter_service.find_list(NewsletterListID(list_id))
 
 
 def _find_brand_setting_value(setting_name: str) -> str | None:
