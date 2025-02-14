@@ -54,10 +54,8 @@ def update_brand(
 
 def delete_brand(brand_id: BrandID) -> None:
     """Delete a brand."""
-    db.session.execute(
-        delete(DbBrandSetting).where(DbBrandSetting.brand_id == brand_id)
-    )
-    db.session.execute(delete(DbBrand).where(DbBrand.id == brand_id))
+    db.session.execute(delete(DbBrandSetting).filter_by(brand_id=brand_id))
+    db.session.execute(delete(DbBrand).filter_by(id=brand_id))
     db.session.commit()
 
 
