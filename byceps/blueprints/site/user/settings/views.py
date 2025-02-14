@@ -14,7 +14,10 @@ from byceps.services.brand import brand_setting_service
 from byceps.services.external_accounts import external_accounts_service
 from byceps.services.country import country_service
 from byceps.services.newsletter import newsletter_service
-from byceps.services.newsletter.models import ListID as NewsletterListID
+from byceps.services.newsletter.models import (
+    List as NewsletterList,
+    ListID as NewsletterListID,
+)
 from byceps.services.orga_team import orga_team_service
 from byceps.services.user import (
     user_command_service,
@@ -48,11 +51,14 @@ def view():
 
     is_orga = orga_team_service.is_orga_for_party(user.id, g.party_id)
 
-    newsletter_list_id = _find_newsletter_list_for_brand()
-    newsletter_offered = newsletter_list_id is not None
+    newsletter_list = _find_newsletter_list_for_brand()
+    newsletter_offered = newsletter_list is not None
 
-    subscribed_to_newsletter = newsletter_service.is_user_subscribed_to_list(
-        user.id, newsletter_list_id
+    subscribed_to_newsletter = (
+        newsletter_offered
+        and newsletter_service.is_user_subscribed_to_list(
+            user.id, newsletter_list.id
+        )
     )
 
     discord_account = external_accounts_service.find_connected_external_account_for_user_and_service(
@@ -66,7 +72,7 @@ def view():
         'detail': detail,
         'is_orga': is_orga,
         'newsletter_offered': newsletter_offered,
-        'newsletter_list_id': newsletter_list_id,
+        'newsletter_list': newsletter_list,
         'subscribed_to_newsletter': subscribed_to_newsletter,
         'discord_account': discord_account,
     }
@@ -229,15 +235,15 @@ def details_update():
     return redirect_to('.view')
 
 
-def _find_newsletter_list_for_brand() -> NewsletterListID | None:
+def _find_newsletter_list_for_brand() -> NewsletterList | None:
     """Return the newsletter list configured for this brand, or `None`
     if none is configured.
     """
-    value = brand_setting_service.find_setting_value(
+    list_id = brand_setting_service.find_setting_value(
         g.brand_id, 'newsletter_list_id'
     )
 
-    if not value:
+    if not list_id:
         return None
 
-    return NewsletterListID(value)
+    return newsletter_service.find_list(NewsletterListID(list_id))
