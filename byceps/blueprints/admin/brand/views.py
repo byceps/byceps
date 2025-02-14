@@ -126,7 +126,9 @@ def update_form(brand_id, erroneous_form=None):
     """Show form to update a brand."""
     brand = _get_brand_or_404(brand_id)
 
-    form = erroneous_form if erroneous_form else UpdateForm(obj=brand)
+    form = (
+        erroneous_form if erroneous_form else UpdateForm(brand.title, obj=brand)
+    )
 
     return {
         'brand': brand,
@@ -140,7 +142,7 @@ def update(brand_id):
     """Update a brand."""
     brand = _get_brand_or_404(brand_id)
 
-    form = UpdateForm(request.form)
+    form = UpdateForm(brand.title, request.form)
     if not form.validate():
         return update_form(brand.id, form)
 

@@ -21,12 +21,6 @@ class _BaseForm(LocalizedForm):
         validators=[InputRequired(), Length(min=1, max=40)],
     )
 
-    @staticmethod
-    def validate_title(form, field):
-        title = field.data
-        if brand_service.find_brand_by_title(title) is not None:
-            raise ValidationError(lazy_gettext('The value is already in use.'))
-
 
 class CreateForm(_BaseForm):
     id = StringField(
@@ -38,6 +32,13 @@ class CreateForm(_BaseForm):
     def validate_id(form, field):
         brand_id = field.data
         if brand_service.find_brand(brand_id) is not None:
+            raise ValidationError(lazy_gettext('The value is already in use.'))
+
+    @staticmethod
+    def validate_title(form, field):
+        title = field.data.strip()
+
+        if brand_service.find_brand_by_title(title) is not None:
             raise ValidationError(lazy_gettext('The value is already in use.'))
 
     def set_currency_choices(self, locale: str):
@@ -61,6 +62,20 @@ class UpdateForm(_BaseForm):
         lazy_gettext('Image filename'), validators=[Optional()]
     )
     archived = BooleanField(lazy_gettext('archived'))
+
+    def __init__(self, current_title: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._current_title = current_title
+
+    @staticmethod
+    def validate_title(form, field):
+        title = field.data.strip()
+
+        if (
+            title != form._current_title
+            and brand_service.find_brand_by_title(title) is not None
+        ):
+            raise ValidationError(lazy_gettext('The value is already in use.'))
 
 
 class EmailConfigUpdateForm(LocalizedForm):
