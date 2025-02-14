@@ -15,6 +15,7 @@ from byceps.services.newsletter.models import (
     List as NewsletterList,
     ListID as NewsletterListID,
 )
+from byceps.services.party.models import PartyID
 
 from .dbmodels import DbBrand, DbBrandNewsletterList, DbBrandSetting
 from .models import Brand
@@ -34,6 +35,7 @@ def update_brand(
     brand_id: BrandID,
     title: str,
     image_filename: str | None,
+    current_party_id: PartyID,
     archived: bool,
 ) -> Brand:
     """Update a brand."""
@@ -44,6 +46,7 @@ def update_brand(
 
     db_brand.title = title
     db_brand.image_filename = image_filename
+    db_brand.current_party_id = current_party_id
     db_brand.archived = archived
 
     db.session.commit()
@@ -131,6 +134,7 @@ def _db_entity_to_brand(db_brand: DbBrand) -> Brand:
         title=db_brand.title,
         image_filename=db_brand.image_filename,
         image_url_path=image_url_path,
+        current_party_id=db_brand.current_party_id,
         archived=db_brand.archived,
     )
 

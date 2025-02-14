@@ -104,6 +104,7 @@ def brand() -> Brand:
         title=generate_token(),
         image_filename=None,
         image_url_path=None,
+        current_party_id=None,
         archived=False,
     )
 

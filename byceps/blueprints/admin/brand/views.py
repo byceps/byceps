@@ -129,6 +129,7 @@ def update_form(brand_id, erroneous_form=None):
     form = (
         erroneous_form if erroneous_form else UpdateForm(brand.title, obj=brand)
     )
+    form.set_current_party_id_choices(brand.id)
 
     return {
         'brand': brand,
@@ -143,6 +144,7 @@ def update(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     form = UpdateForm(brand.title, request.form)
+    form.set_current_party_id_choices(brand.id)
     if not form.validate():
         return update_form(brand.id, form)
 

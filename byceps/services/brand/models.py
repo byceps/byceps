@@ -6,8 +6,12 @@ byceps.services.brand.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import NewType
+from typing import NewType, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from byceps.services.party.models import PartyID
 
 
 BrandID = NewType('BrandID', str)
@@ -19,6 +23,7 @@ class Brand:
     title: str
     image_filename: str | None
     image_url_path: str | None
+    current_party_id: PartyID | None
     archived: bool
 
 

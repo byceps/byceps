@@ -11,6 +11,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from byceps.database import db
 from byceps.services.brand.models import BrandID
 from byceps.services.newsletter.models import ListID as NewsletterListID
+from byceps.services.party.models import PartyID
 from byceps.util.instances import ReprBuilder
 
 
@@ -22,6 +23,9 @@ class DbBrand(db.Model):
     id: Mapped[BrandID] = mapped_column(db.UnicodeText, primary_key=True)
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     image_filename: Mapped[str | None] = mapped_column(db.UnicodeText)
+    current_party_id: Mapped[PartyID | None] = mapped_column(
+        db.UnicodeText, db.ForeignKey('parties.id')
+    )
     archived: Mapped[bool] = mapped_column(default=False)
 
     def __init__(
