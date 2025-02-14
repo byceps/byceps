@@ -16,8 +16,7 @@ from byceps.services.newsletter.models import (
     ListID as NewsletterListID,
 )
 
-from . import brand_setting_service
-from .dbmodels import DbBrand, DbBrandSetting
+from .dbmodels import DbBrand, DbBrandNewsletterList, DbBrandSetting
 from .models import Brand
 
 
@@ -54,6 +53,9 @@ def update_brand(
 
 def delete_brand(brand_id: BrandID) -> None:
     """Delete a brand."""
+    db.session.execute(
+        delete(DbBrandNewsletterList).filter_by(brand_id=brand_id)
+    )
     db.session.execute(delete(DbBrandSetting).filter_by(brand_id=brand_id))
     db.session.execute(delete(DbBrand).filter_by(id=brand_id))
     db.session.commit()
@@ -133,15 +135,36 @@ def _db_entity_to_brand(db_brand: DbBrand) -> Brand:
     )
 
 
+def set_newsletter_list_for_brand(
+    brand_id: BrandID, newsletter_list_id: NewsletterListID
+) -> None:
+    """Set the newsletter list for the brand."""
+    brand_newsletter_list = DbBrandNewsletterList(brand_id, newsletter_list_id)
+    db.session.add(brand_newsletter_list)
+    db.session.commit()
+
+
+def unset_newsletter_list_for_brand(
+    brand_id: BrandID, newsletter_list_id: NewsletterListID
+) -> None:
+    """Unset the newsletter list for the brand."""
+    db.session.execute(
+        delete(DbBrandNewsletterList)
+        .filter_by(brand_id=brand_id)
+        .filter_by(newsletter_list_id=newsletter_list_id)
+    )
+    db.session.commit()
+
+
 def find_newsletter_list_for_brand(brand_id: BrandID) -> NewsletterList | None:
     """Return the newsletter list configured for this brand, or `None`
     if none is configured.
     """
-    list_id = brand_setting_service.find_setting_value(
-        brand_id, 'newsletter_list_id'
-    )
+    brand_newsletter_list = db.session.get(DbBrandNewsletterList, brand_id)
 
-    if not list_id:
+    if brand_newsletter_list is None:
         return None
 
-    return newsletter_service.find_list(NewsletterListID(list_id))
+    return newsletter_service.find_list(
+        brand_newsletter_list.newsletter_list_id
+    )

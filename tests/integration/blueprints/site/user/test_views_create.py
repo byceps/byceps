@@ -12,7 +12,7 @@ from byceps.database import db
 from byceps.services.authn.password.dbmodels import DbCredential
 from byceps.services.authn.session import authn_session_service
 from byceps.services.authz import authz_service
-from byceps.services.brand import brand_setting_service
+from byceps.services.brand import brand_service
 from byceps.services.consent import (
     brand_requirements_service,
     consent_service,
@@ -74,14 +74,11 @@ def privacy_policy_consent_subject_id(brand):
 def newsletter_list(brand):
     list_ = newsletter_command_service.create_list(brand.id, brand.title)
 
-    name = 'newsletter_list_id'
-    value = str(list_.id)
-
-    brand_setting_service.create_setting(brand.id, name, value)
+    brand_service.set_newsletter_list_for_brand(brand.id, list_.id)
 
     yield
 
-    brand_setting_service.remove_setting(brand.id, name)
+    brand_service.unset_newsletter_list_for_brand(brand.id, list_.id)
 
 
 @patch('byceps.services.email.email_service.send')

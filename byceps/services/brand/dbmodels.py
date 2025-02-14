@@ -10,6 +10,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
+from byceps.services.newsletter.models import ListID as NewsletterListID
 from byceps.util.instances import ReprBuilder
 
 
@@ -36,6 +37,26 @@ class DbBrand(db.Model):
 
     def __repr__(self) -> str:
         return ReprBuilder(self).add_with_lookup('id').build()
+
+
+class DbBrandNewsletterList(db.Model):
+    __tablename__ = 'brand_newsletter_lists'
+
+    brand_id: Mapped[BrandID] = mapped_column(
+        db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
+    )
+    newsletter_list_id: Mapped[NewsletterListID] = mapped_column(
+        db.UnicodeText,
+        db.ForeignKey('newsletter_lists.id'),
+        unique=True,
+        nullable=False,
+    )
+
+    def __init__(
+        self, brand_id: BrandID, newsletter_list_id: NewsletterListID
+    ) -> None:
+        self.brand_id = brand_id
+        self.newsletter_list_id = newsletter_list_id
 
 
 class DbBrandSetting(db.Model):
