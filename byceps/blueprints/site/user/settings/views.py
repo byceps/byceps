@@ -10,14 +10,10 @@ from babel import Locale
 from flask import abort, g, request
 from flask_babel import force_locale, gettext
 
-from byceps.services.brand import brand_setting_service
+from byceps.services.brand import brand_service
 from byceps.services.external_accounts import external_accounts_service
 from byceps.services.country import country_service
 from byceps.services.newsletter import newsletter_service
-from byceps.services.newsletter.models import (
-    List as NewsletterList,
-    ListID as NewsletterListID,
-)
 from byceps.services.orga_team import orga_team_service
 from byceps.services.user import (
     user_command_service,
@@ -51,7 +47,7 @@ def view():
 
     is_orga = orga_team_service.is_orga_for_party(user.id, g.party_id)
 
-    newsletter_list = _find_newsletter_list_for_brand()
+    newsletter_list = brand_service.find_newsletter_list_for_brand(g.brand_id)
     newsletter_offered = newsletter_list is not None
 
     subscribed_to_newsletter = (
@@ -233,17 +229,3 @@ def details_update():
     user_signals.details_updated.send(None, event=event)
 
     return redirect_to('.view')
-
-
-def _find_newsletter_list_for_brand() -> NewsletterList | None:
-    """Return the newsletter list configured for this brand, or `None`
-    if none is configured.
-    """
-    list_id = brand_setting_service.find_setting_value(
-        g.brand_id, 'newsletter_list_id'
-    )
-
-    if not list_id:
-        return None
-
-    return newsletter_service.find_list(NewsletterListID(list_id))

@@ -10,7 +10,13 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
+from byceps.services.newsletter import newsletter_service
+from byceps.services.newsletter.models import (
+    List as NewsletterList,
+    ListID as NewsletterListID,
+)
 
+from . import brand_setting_service
 from .dbmodels import DbBrand, DbBrandSetting
 from .models import Brand
 
@@ -127,3 +133,17 @@ def _db_entity_to_brand(db_brand: DbBrand) -> Brand:
         image_url_path=image_url_path,
         archived=db_brand.archived,
     )
+
+
+def find_newsletter_list_for_brand(brand_id: BrandID) -> NewsletterList | None:
+    """Return the newsletter list configured for this brand, or `None`
+    if none is configured.
+    """
+    list_id = brand_setting_service.find_setting_value(
+        brand_id, 'newsletter_list_id'
+    )
+
+    if not list_id:
+        return None
+
+    return newsletter_service.find_list(NewsletterListID(list_id))

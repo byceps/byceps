@@ -11,17 +11,11 @@ from datetime import datetime
 from flask import abort, g, request
 from flask_babel import gettext
 
-from byceps.services.brand import brand_setting_service
+from byceps.services.brand import brand_service
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.consent.models import ConsentSubject
-from byceps.services.newsletter import (
-    newsletter_command_service,
-    newsletter_service,
-)
-from byceps.services.newsletter.models import (
-    List as NewsletterList,
-    ListID as NewsletterListID,
-)
+from byceps.services.newsletter import newsletter_command_service
+from byceps.services.newsletter.models import List as NewsletterList
 from byceps.services.site import site_setting_service
 from byceps.services.user import user_creation_service
 from byceps.signals import user as user_signals
@@ -173,19 +167,7 @@ def _find_newsletter_list_for_brand() -> NewsletterList | None:
     """Return the newsletter list configured for this brand, or `None`
     if none is configured.
     """
-    list_id = _find_brand_setting_value('newsletter_list_id')
-
-    if not list_id:
-        return None
-
-    return newsletter_service.find_list(NewsletterListID(list_id))
-
-
-def _find_brand_setting_value(setting_name: str) -> str | None:
-    """Return the value configured for this brand and the given setting
-    name, or `None` if not configured.
-    """
-    return brand_setting_service.find_setting_value(g.brand_id, setting_name)
+    return brand_service.find_newsletter_list_for_brand(g.brand_id)
 
 
 def _find_site_setting_value(setting_name: str) -> str | None:
