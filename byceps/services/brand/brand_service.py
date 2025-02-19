@@ -157,9 +157,7 @@ def unset_newsletter_list_for_brand(
 
 
 def find_newsletter_list_for_brand(brand_id: BrandID) -> NewsletterList | None:
-    """Return the newsletter list configured for this brand, or `None`
-    if none is configured.
-    """
+    """Return the newsletter list configured for the brand."""
     db_brand_newsletter_list = db.session.get(DbBrandNewsletterList, brand_id)
 
     if db_brand_newsletter_list is None:
