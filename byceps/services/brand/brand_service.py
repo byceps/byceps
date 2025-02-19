@@ -139,8 +139,8 @@ def set_newsletter_list_for_brand(
     brand_id: BrandID, newsletter_list_id: NewsletterListID
 ) -> None:
     """Set the newsletter list for the brand."""
-    brand_newsletter_list = DbBrandNewsletterList(brand_id, newsletter_list_id)
-    db.session.add(brand_newsletter_list)
+    db_brand_newsletter_list = DbBrandNewsletterList(brand_id, newsletter_list_id)
+    db.session.add(db_brand_newsletter_list)
     db.session.commit()
 
 
@@ -160,11 +160,11 @@ def find_newsletter_list_for_brand(brand_id: BrandID) -> NewsletterList | None:
     """Return the newsletter list configured for this brand, or `None`
     if none is configured.
     """
-    brand_newsletter_list = db.session.get(DbBrandNewsletterList, brand_id)
+    db_brand_newsletter_list = db.session.get(DbBrandNewsletterList, brand_id)
 
-    if brand_newsletter_list is None:
+    if db_brand_newsletter_list is None:
         return None
 
     return newsletter_service.find_list(
-        brand_newsletter_list.newsletter_list_id
+        db_brand_newsletter_list.newsletter_list_id
     )
