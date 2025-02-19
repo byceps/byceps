@@ -53,11 +53,13 @@ def view(brand_id):
     """Show a brand."""
     brand = _get_brand_or_404(brand_id)
 
+    current_party = brand_service.find_current_party(brand.id)
     settings = brand_setting_service.get_settings(brand.id)
     email_config = email_config_service.get_config(brand.id)
 
     return {
         'brand': brand,
+        'current_party': current_party,
         'settings': settings,
         'email_config': email_config,
     }
@@ -126,9 +128,17 @@ def update_form(brand_id, erroneous_form=None):
     """Show form to update a brand."""
     brand = _get_brand_or_404(brand_id)
 
+    current_party = brand_service.find_current_party(brand.id)
+    current_party_id = current_party.id if current_party else None
+
     form = (
-        erroneous_form if erroneous_form else UpdateForm(brand.title, obj=brand)
+        erroneous_form
+        if erroneous_form
+        else UpdateForm(
+            brand.title, obj=brand, current_party_id=current_party_id
+        )
     )
+    form.set_current_party_id_choices(brand.id)
 
     return {
         'brand': brand,
@@ -143,16 +153,23 @@ def update(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     form = UpdateForm(brand.title, request.form)
+    form.set_current_party_id_choices(brand.id)
     if not form.validate():
         return update_form(brand.id, form)
 
     title = form.title.data.strip()
     image_filename = form.image_filename.data.strip() or None
+    current_party_id = form.current_party_id.data
     archived = form.archived.data
 
     brand = brand_service.update_brand(
         brand.id, title, image_filename, archived
     )
+
+    if current_party_id:
+        brand_service.set_current_party(brand.id, current_party_id)
+    else:
+        brand_service.unset_current_party(brand.id)
 
     flash_success(
         gettext('Brand "%(title)s" has been updated.', title=brand.title)

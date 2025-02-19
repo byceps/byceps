@@ -37,6 +37,16 @@
         <div class="data-label">{{ _('ID') }}</div>
         <div class="data-value">{{ brand.id }}</div>
       </div>
+      <div>
+        <div class="data-label">{{ _('Current party') }}</div>
+        <div class="data-value">
+          {%- if current_party %}
+            <a href="{{ url_for('admin_dashboard.view_party', party_id=current_party.id) }}">{{ current_party.title }}</a>
+          {%- else %}
+            {{ _('not specified')|dim }}
+          {%- endif %}
+        </div>
+      </div>
     </div>
   </div>
 

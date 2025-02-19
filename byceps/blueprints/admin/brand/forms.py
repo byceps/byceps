@@ -12,6 +12,8 @@ from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from byceps.services.brand import brand_service
+from byceps.services.brand.models import BrandID
+from byceps.services.party import party_service
 from byceps.util.l10n import LocalizedForm
 
 
@@ -61,6 +63,7 @@ class UpdateForm(_BaseForm):
     image_filename = StringField(
         lazy_gettext('Image filename'), validators=[Optional()]
     )
+    current_party_id = SelectField(lazy_gettext('Current party'), [Optional()])
     archived = BooleanField(lazy_gettext('archived'))
 
     def __init__(self, current_title: str, *args, **kwargs):
@@ -76,6 +79,15 @@ class UpdateForm(_BaseForm):
             and brand_service.find_brand_by_title(title) is not None
         ):
             raise ValidationError(lazy_gettext('The value is already in use.'))
+
+    def set_current_party_id_choices(self, brand_id: BrandID):
+        parties = party_service.get_parties_for_brand(brand_id)
+        parties.sort(key=lambda party: party.starts_at, reverse=True)
+
+        choices = [(str(party.id), party.title) for party in parties]
+        choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
+
+        self.current_party_id.choices = choices
 
 
 class EmailConfigUpdateForm(LocalizedForm):

@@ -8,15 +8,22 @@ byceps.services.brand.brand_service
 
 from sqlalchemy import delete, select
 
-from byceps.database import db
+from byceps.database import db, upsert
 from byceps.services.brand.models import BrandID
 from byceps.services.newsletter import newsletter_service
 from byceps.services.newsletter.models import (
     List as NewsletterList,
     ListID as NewsletterListID,
 )
+from byceps.services.party import party_service
+from byceps.services.party.models import Party, PartyID
 
-from .dbmodels import DbBrand, DbBrandNewsletterList, DbBrandSetting
+from .dbmodels import (
+    DbBrand,
+    DbBrandCurrentParty,
+    DbBrandNewsletterList,
+    DbBrandSetting,
+)
 from .models import Brand
 
 
@@ -135,11 +142,37 @@ def _db_entity_to_brand(db_brand: DbBrand) -> Brand:
     )
 
 
+def set_current_party(brand_id: BrandID, party_id: PartyID) -> None:
+    """Set the current party for the brand."""
+    table = DbBrandCurrentParty.__table__
+    identifier = {'brand_id': brand_id, 'party_id': party_id}
+    replacement = {'party_id': party_id}
+    upsert(table, identifier, replacement)
+
+
+def unset_current_party(brand_id: BrandID) -> None:
+    """Unset the current party for the brand."""
+    db.session.execute(delete(DbBrandCurrentParty).filter_by(brand_id=brand_id))
+    db.session.commit()
+
+
+def find_current_party(brand_id: BrandID) -> Party | None:
+    """Return the current party configured for the brand."""
+    db_current_party = db.session.get(DbBrandCurrentParty, brand_id)
+
+    if db_current_party is None:
+        return None
+
+    return party_service.find_party(db_current_party.party_id)
+
+
 def set_newsletter_list_for_brand(
     brand_id: BrandID, newsletter_list_id: NewsletterListID
 ) -> None:
     """Set the newsletter list for the brand."""
-    db_brand_newsletter_list = DbBrandNewsletterList(brand_id, newsletter_list_id)
+    db_brand_newsletter_list = DbBrandNewsletterList(
+        brand_id, newsletter_list_id
+    )
     db.session.add(db_brand_newsletter_list)
     db.session.commit()
 
