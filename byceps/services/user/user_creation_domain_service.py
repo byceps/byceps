@@ -26,7 +26,6 @@ from .models.user import User, UserID
 def create_account(
     screen_name: str | None,
     email_address: str | None,
-    password: str,
     *,
     locale: str | None = None,
     creation_method: str | None = None,

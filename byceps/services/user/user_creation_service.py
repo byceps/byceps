@@ -72,7 +72,6 @@ def create_user(
     result = user_creation_domain_service.create_account(
         screen_name,
         email_address,
-        password,
         locale=locale,
         creation_method=creation_method,
         site=site,
