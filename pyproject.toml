@@ -80,7 +80,7 @@ docs = [
 test = [
     "coverage>=7.6.11",
     "freezegun==1.5.1",
-    "pytest>=8.3.4",
+    "pytest>=8.3.5",
     "respx>=0.22.0",
 ]
 
