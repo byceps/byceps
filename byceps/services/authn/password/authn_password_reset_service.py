@@ -11,7 +11,7 @@ from flask_babel import gettext
 from byceps.events.authn import PasswordUpdatedEvent
 from byceps.services.email import email_service
 from byceps.services.email.models import NameAndAddress
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import Password, User
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import PasswordResetToken
 from byceps.util.l10n import force_user_locale
@@ -54,7 +54,7 @@ def prepare_password_reset(
 
 
 def reset_password(
-    reset_token: PasswordResetToken, password: str
+    reset_token: PasswordResetToken, password: Password
 ) -> PasswordUpdatedEvent:
     """Reset the user's password."""
     user = reset_token.user

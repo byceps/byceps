@@ -3,19 +3,20 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from secret_type import secret
+
 from byceps.services.authn import authn_service
 from byceps.services.authn.errors import AuthenticationFailedError
 from byceps.util.result import Err, Ok
 
 
-CORRECT_PASSWORD = 'opensesame'
-WRONG_PASSWORD = '123456'
+CORRECT_PASSWORD = secret('opensesame')
+IRRELEVANT_PASSWORD = secret('irrelevant-password')
+WRONG_PASSWORD = secret('123456')
 
 
 def test_unknown_username_is_rejected(make_user):
-    actual = authn_service.authenticate(
-        'unknown-username', 'irrelevant-password'
-    )
+    actual = authn_service.authenticate('unknown-username', IRRELEVANT_PASSWORD)
 
     assert actual == Err(AuthenticationFailedError.UsernameUnknown)
 

@@ -8,6 +8,7 @@ byceps.blueprints.common.authn.password.forms
 
 from flask import g
 from flask_babel import lazy_gettext
+from secret_type import secret
 from wtforms import PasswordField, StringField
 from wtforms.validators import EqualTo, InputRequired, Length, ValidationError
 
@@ -65,7 +66,7 @@ class UpdateForm(ResetForm):
     @staticmethod
     def validate_old_password(form, field):
         user_id = g.user.id
-        password = field.data
+        password = secret(field.data)
 
         if not authn_password_service.is_password_valid_for_user(
             user_id, password

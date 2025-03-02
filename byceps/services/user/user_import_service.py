@@ -13,6 +13,7 @@ import json
 import secrets
 
 from pydantic import BaseModel, ValidationError
+from secret_type import secret
 
 from . import user_creation_service
 from .models.user import User
@@ -48,7 +49,7 @@ def parse_user_json(json_data: str) -> UserToImport:
 
 
 def import_user(user_to_import: UserToImport) -> User:
-    password = secrets.token_urlsafe(24)
+    password = secret(secrets.token_urlsafe(24))
 
     user, _ = user_creation_service.create_user(
         user_to_import.screen_name,

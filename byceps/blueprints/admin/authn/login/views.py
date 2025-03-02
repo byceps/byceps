@@ -8,6 +8,7 @@ byceps.blueprints.admin.authn.login.views
 
 from flask import g, request
 from flask_babel import gettext
+from secret_type import secret
 
 from byceps.services.user import user_service
 from byceps.signals import authn as authn_signals
@@ -61,7 +62,7 @@ def log_in():
         return log_in_form(form)
 
     username = form.username.data.strip()
-    password = form.password.data
+    password = secret(form.password.data)
     permanent = form.permanent.data
 
     log_in_result = service.log_in_user(

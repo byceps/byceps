@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from secret_type import secret
+
 from byceps.database import db
 from byceps.services.authn.password.dbmodels import DbCredential
 from byceps.services.authn.session import authn_session_service
@@ -11,8 +13,8 @@ from tests.helpers import http_client, log_in_user
 
 
 def test_when_logged_in_endpoint_is_available(site_app, site, make_user):
-    old_password = 'LekkerBratworsten'
-    new_password = 'EvenMoreSecure!!1'
+    old_password = secret('LekkerBratworsten')
+    new_password = secret('EvenMoreSecure!!1')
 
     user = make_user(password=old_password)
 
@@ -29,11 +31,15 @@ def test_when_logged_in_endpoint_is_available(site_app, site, make_user):
     session_token_before = find_session_token(user.id)
     assert session_token_before is not None
 
-    form_data = {
-        'old_password': old_password,
-        'new_password': new_password,
-        'new_password_confirmation': new_password,
-    }
+    with (
+        old_password.dangerous_reveal() as old_password,
+        new_password.dangerous_reveal() as new_password,
+    ):
+        form_data = {
+            'old_password': old_password,
+            'new_password': new_password,
+            'new_password_confirmation': new_password,
+        }
 
     response = send_request(site_app, form_data, user_id=user.id)
 

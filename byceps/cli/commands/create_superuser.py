@@ -10,6 +10,7 @@ Create a superuser with admin privileges.
 
 import click
 from flask.cli import with_appcontext
+from secret_type import secret
 
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import RoleID
@@ -18,7 +19,7 @@ from byceps.services.user import (
     user_creation_service,
     user_email_address_service,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import Password, User
 
 
 @click.command()
@@ -29,7 +30,7 @@ from byceps.services.user.models.user import User
 def create_superuser(screen_name, email_address, password) -> None:
     """Create a superuser with all roles assigned."""
     click.echo(f'Creating user "{screen_name}" ... ', nl=False)
-    user = _create_user(screen_name, email_address, password)
+    user = _create_user(screen_name, email_address, secret(password))
     click.secho('done.', fg='green')
 
     click.echo(f'Initializing user "{screen_name}" ... ', nl=False)
@@ -49,7 +50,9 @@ def create_superuser(screen_name, email_address, password) -> None:
     click.secho('done.', fg='green')
 
 
-def _create_user(screen_name: str, email_address: str, password: str) -> User:
+def _create_user(
+    screen_name: str, email_address: str, password: Password
+) -> User:
     creation_result = user_creation_service.create_user(
         screen_name,
         email_address,

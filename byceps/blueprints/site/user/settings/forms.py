@@ -10,6 +10,7 @@ import re
 
 from flask import g
 from flask_babel import lazy_gettext
+from secret_type import secret
 from wtforms import DateField, PasswordField, StringField, TelField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
@@ -43,7 +44,7 @@ class ChangeEmailAddressForm(LocalizedForm):
 
     @staticmethod
     def validate_password(form, field):
-        password = field.data
+        password = secret(field.data)
 
         if not authn_password_service.is_password_valid_for_user(
             g.user.id, password
@@ -84,7 +85,7 @@ class ChangeScreenNameForm(LocalizedForm):
     @staticmethod
     def validate_password(form, field):
         user_id = g.user.id
-        password = field.data
+        password = secret(field.data)
 
         if not authn_password_service.is_password_valid_for_user(
             user_id, password

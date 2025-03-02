@@ -10,6 +10,7 @@ from datetime import datetime
 
 from flask import abort, g, request
 from flask_babel import gettext
+from secret_type import secret
 
 from byceps.services.authn.password import authn_password_service
 from byceps.services.authn.session import authn_session_service
@@ -186,7 +187,7 @@ def create_account():
     first_name = form.first_name.data.strip()
     last_name = form.last_name.data.strip()
     email_address = form.email_address.data
-    password = form.password.data
+    password = secret(form.password.data)
     site_id_for_email = form.site_id.data
 
     if site_id_for_email:
@@ -695,7 +696,7 @@ def set_password(user_id):
     if not form.validate():
         return set_password_form(user.id, form)
 
-    new_password = form.password.data
+    new_password = secret(form.password.data)
     initiator = g.user
 
     event = authn_password_service.update_password_hash(

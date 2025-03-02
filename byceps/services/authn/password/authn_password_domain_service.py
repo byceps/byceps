@@ -8,6 +8,7 @@ byceps.services.authn.password.authn_password_domain_service
 
 from datetime import datetime
 
+from secret_type import secret
 from werkzeug.security import (
     check_password_hash as _werkzeug_check_password_hash,
     generate_password_hash as _werkzeug_generate_password_hash,
@@ -16,7 +17,12 @@ from werkzeug.security import (
 from byceps.events.authn import PasswordUpdatedEvent
 from byceps.events.base import EventUser
 from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import (
+    Password,
+    PasswordHash,
+    User,
+    UserID,
+)
 from byceps.util.uuid import generate_uuid7
 
 from .models import Credential
@@ -25,14 +31,17 @@ from .models import Credential
 _PASSWORD_HASH_METHOD = 'scrypt:32768:8:1'  # noqa: S105
 
 
-def _generate_password_hash(password: str) -> str:
+def _generate_password_hash(password: Password) -> PasswordHash:
     """Generate a salted hash value based on the password."""
-    return _werkzeug_generate_password_hash(
-        password, method=_PASSWORD_HASH_METHOD
-    )
+    with password.dangerous_reveal() as password:
+        return secret(
+            _werkzeug_generate_password_hash(
+                password, method=_PASSWORD_HASH_METHOD
+            )
+        )
 
 
-def create_password_hash(user_id: UserID, password: str) -> Credential:
+def create_password_hash(user_id: UserID, password: Password) -> Credential:
     """Create a password-based credential for the user."""
     return Credential(
         user_id=user_id,
@@ -42,7 +51,7 @@ def create_password_hash(user_id: UserID, password: str) -> Credential:
 
 
 def update_password_hash(
-    user: User, password: str, initiator: User
+    user: User, password: Password, initiator: User
 ) -> tuple[Credential, PasswordUpdatedEvent, UserLogEntry]:
     """Update a password hash."""
     credential = create_password_hash(user.id, password)
@@ -81,17 +90,24 @@ def _build_password_updated_log_entry(
     )
 
 
-def check_password_hash(password_hash: str, password: str) -> bool:
+def check_password_hash(
+    password_hash: PasswordHash, password: Password
+) -> bool:
     """Hash the password and return `True` if the result matches the
     given hash, `False` otherwise.
     """
-    return (password_hash is not None) and _werkzeug_check_password_hash(
-        password_hash, password
-    )
+    with (
+        password_hash.dangerous_reveal() as password_hash,
+        password.dangerous_reveal() as password,
+    ):
+        return (password_hash is not None) and _werkzeug_check_password_hash(
+            password_hash, password
+        )
 
 
-def is_password_hash_current(password_hash: str) -> bool:
+def is_password_hash_current(password_hash: PasswordHash) -> bool:
     """Return `True` if the password hash was created with the currently
     configured method (algorithm and parameters).
     """
-    return password_hash.startswith(_PASSWORD_HASH_METHOD + '$')
+    with password_hash.dangerous_reveal() as password_hash:
+        return password_hash.startswith(_PASSWORD_HASH_METHOD + '$')

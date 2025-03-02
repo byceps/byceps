@@ -8,6 +8,7 @@ byceps.blueprints.common.authn.password.views
 
 from flask import abort, g, request
 from flask_babel import gettext
+from secret_type import secret
 
 from byceps.services.authn.password import (
     authn_password_reset_service,
@@ -56,7 +57,7 @@ def update():
     if not form.validate():
         return update_form(form)
 
-    password = form.new_password.data
+    password = secret(form.new_password.data)
 
     event = authn_password_service.update_password_hash(user, password, user)
 

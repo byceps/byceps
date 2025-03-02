@@ -4,6 +4,7 @@
 """
 
 import pytest
+from secret_type import secret
 
 from byceps.services.authn.password import authn_password_domain_service
 
@@ -28,7 +29,8 @@ from byceps.services.authn.password import authn_password_domain_service
     ],
 )
 def test_is_password_hash_current(password_hash, expected):
+    pw_hash = secret(password_hash)
     assert (
-        authn_password_domain_service.is_password_hash_current(password_hash)
+        authn_password_domain_service.is_password_hash_current(pw_hash)
         == expected
     )

@@ -11,7 +11,7 @@ from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import PasswordHash, UserID
 
 
 class DbCredential(db.Model):
@@ -26,8 +26,9 @@ class DbCredential(db.Model):
     updated_at: Mapped[datetime]
 
     def __init__(
-        self, user_id: UserID, password_hash: str, updated_at: datetime
+        self, user_id: UserID, password_hash: PasswordHash, updated_at: datetime
     ) -> None:
         self.user_id = user_id
-        self.password_hash = password_hash
+        with password_hash.dangerous_reveal() as password_hash:
+            self.password_hash = password_hash
         self.updated_at = updated_at

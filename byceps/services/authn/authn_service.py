@@ -7,7 +7,7 @@ byceps.services.authn.authn_service
 """
 
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import Password, User
 from byceps.util.result import Err, Ok, Result
 
 from .errors import AuthenticationFailedError
@@ -15,7 +15,7 @@ from .password import authn_password_service
 
 
 def authenticate(
-    screen_name_or_email_address: str, password: str
+    screen_name_or_email_address: str, password: Password
 ) -> Result[User, AuthenticationFailedError]:
     """Try to authenticate the user.
 

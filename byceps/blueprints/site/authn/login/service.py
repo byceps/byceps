@@ -19,7 +19,7 @@ from byceps.services.authn.session.authn_session_service import (
 from byceps.services.brand.models import BrandID
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.site.models import Site
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import Password, User, UserID
 from byceps.services.verification_token import verification_token_service
 from byceps.util import user_session
 from byceps.util.result import Err, Ok, Result
@@ -35,7 +35,7 @@ class ConsentRequiredError:
 
 def log_in_user(
     username: str,
-    password: str,
+    password: Password,
     permanent: bool,
     brand_id: BrandID,
     site: Site,

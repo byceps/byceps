@@ -10,6 +10,7 @@ from datetime import datetime
 
 from flask import abort, g, request
 from flask_babel import gettext
+from secret_type import secret
 
 from byceps.services.brand import brand_service
 from byceps.services.consent import consent_service, consent_subject_service
@@ -81,7 +82,7 @@ def create():
 
     screen_name = form.screen_name.data.strip()
     email_address = form.email_address.data.strip()
-    password = form.password.data
+    password = secret(form.password.data)
 
     now_utc = datetime.utcnow()
 

@@ -6,6 +6,8 @@
 import hashlib
 from pathlib import Path
 
+from secret_type import secret
+
 from byceps.services.user import (
     user_avatar_service,
     user_command_service,
@@ -48,7 +50,7 @@ def test_unrecognized_hash(api_client):
 
 
 def create_initialized_user(screen_name, email_address):
-    password = 'long enough'
+    password = secret('long enough')
     user, _ = user_creation_service.create_user(
         screen_name, email_address, password
     ).unwrap()

@@ -8,6 +8,7 @@ byceps.blueprints.site.authn.login.views
 
 from flask import abort, g, redirect, request, url_for
 from flask_babel import gettext
+from secret_type import secret
 
 from byceps.signals import authn as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
@@ -64,7 +65,7 @@ def log_in():
         abort(401, 'Username and/or password not given')
 
     username = form.username.data.strip()
-    password = form.password.data
+    password = secret(form.password.data)
     permanent = form.permanent.data
 
     log_in_result = service.log_in_user(

@@ -168,6 +168,7 @@ dependencies = [
     { name = "rq-dashboard" },
     { name = "rtoml" },
     { name = "schwifty" },
+    { name = "secret-type" },
     { name = "sentry-sdk", extra = ["flask", "httpx", "rq", "sqlalchemy"] },
     { name = "sqlalchemy" },
     { name = "stripe" },
@@ -231,6 +232,7 @@ requires-dist = [
     { name = "rq-dashboard", specifier = ">=0.8.2.2" },
     { name = "rtoml", specifier = "==0.12.0" },
     { name = "schwifty", specifier = ">=2025.1.0" },
+    { name = "secret-type", specifier = ">=0.3.0" },
     { name = "sentry-sdk", extras = ["flask", "httpx", "rq", "sqlalchemy"], specifier = ">=2.22.0" },
     { name = "sqlalchemy", specifier = ">=2.0.38" },
     { name = "stripe", specifier = "==5.4.0" },
@@ -1441,6 +1443,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/8b/90/9767a39b807a820eb08d49f82fb3ab5312f43e9f54c04c58758a0eb7eb14/schwifty-2025.1.0.tar.gz", hash = "sha256:f492f3cbea3beb1fe0bf11a89075e6e413a5f500ee1afdb29a124a9a89b1a2ca", size = 747749 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c0/a2/9bd203d22f6063694dfd0da59c0d4f5a4ab1eed2299ee773e8318a9681eb/schwifty-2025.1.0-py3-none-any.whl", hash = "sha256:dca8abc9db4b7fc7f3b73a1f581ac1c3cc226a0902257275a3b08bd8275170ed", size = 359631 },
+]
+
+[[package]]
+name = "secret-type"
+version = "0.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cryptography" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/10/f3/460f413c1a711282ea751490126cfee13bd1be3ab482557365c85370ada4/secret_type-0.3.0.tar.gz", hash = "sha256:1cda5a9d6b47eb963a9a70431165759cbb90d4260b13a0649d6fdffc74c2f7ff", size = 15371 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/15/b5/e9c55a2ec41644bbc1b386e535a7c2dc56fd82015df68f2d1e9c76601419/secret_type-0.3.0-py3-none-any.whl", hash = "sha256:44aa14b99fd274b7f58d3a3ea7ec42f96833f2e190464e85c2c903805b4f471c", size = 14306 },
 ]
 
 [[package]]

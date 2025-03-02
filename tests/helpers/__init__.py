@@ -13,6 +13,7 @@ from secrets import token_hex
 from uuid import UUID
 
 from flask import appcontext_pushed, g
+from secret_type import secret
 from uuid6 import uuid7
 
 from byceps.byceps_app import BycepsApp
@@ -95,7 +96,7 @@ def create_user(
     user, event = user_creation_service.create_user(
         screen_name,
         email_address,
-        password,
+        secret(password),
         locale=locale,
         legacy_id=legacy_id,
         first_name=first_name,

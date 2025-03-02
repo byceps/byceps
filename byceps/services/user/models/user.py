@@ -15,6 +15,8 @@ from pathlib import Path
 from typing import Any, NewType
 from uuid import UUID
 
+from secret_type import Secret
+
 from byceps.util.image.image_type import ImageType
 
 
@@ -22,6 +24,12 @@ UserID = NewType('UserID', UUID)
 
 
 UserAvatarID = NewType('UserAvatarID', UUID)
+
+
+Password = Secret[str]
+
+
+PasswordHash = Secret[str]
 
 
 @dataclass(frozen=True)

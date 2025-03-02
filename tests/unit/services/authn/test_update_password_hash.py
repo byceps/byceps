@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from secret_type import secret
+
 from byceps.services.authn.password import authn_password_domain_service
 
 
@@ -12,7 +14,7 @@ def test_update_password_hash(admin_user, user):
         event,
         log_entry,
     ) = authn_password_domain_service.update_password_hash(
-        user, 'ReplacementPassw0rd', admin_user
+        user, secret('ReplacementPassw0rd'), admin_user
     )
 
     assert credential.user_id == user.id

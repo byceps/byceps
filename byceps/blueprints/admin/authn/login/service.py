@@ -14,7 +14,7 @@ from byceps.services.authn.session import authn_session_service
 from byceps.services.authn.session.authn_session_service import (
     UserLoggedInEvent,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import Password, User
 from byceps.util import user_session
 from byceps.util.authz import get_permissions_for_user
 from byceps.util.result import Err, Ok, Result
@@ -29,7 +29,7 @@ class AuthorizationFailed:
 
 def log_in_user(
     username: str,
-    password: str,
+    password: Password,
     permanent: bool,
     *,
     ip_address: str | None = None,

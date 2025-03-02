@@ -26,7 +26,7 @@ from . import (
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
 from .errors import InvalidEmailAddressError, InvalidScreenNameError
-from .models.user import User
+from .models.user import Password, User
 
 
 log = structlog.get_logger()
@@ -35,7 +35,7 @@ log = structlog.get_logger()
 def create_user(
     screen_name: str | None,
     email_address: str | None,
-    password: str,
+    password: Password,
     *,
     locale: str | None = None,
     legacy_id: str | None = None,

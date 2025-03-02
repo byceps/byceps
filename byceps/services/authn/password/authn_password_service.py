@@ -6,6 +6,7 @@ byceps.services.authn.password.authn_password_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from secret_type import secret
 from sqlalchemy import delete
 
 from byceps.database import db
@@ -13,14 +14,14 @@ from byceps.events.authn import PasswordUpdatedEvent
 from byceps.services.authn.session import authn_session_service
 from byceps.services.user import user_log_service
 from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import Password, User, UserID
 
 from . import authn_password_domain_service
 from .dbmodels import DbCredential
 from .models import Credential
 
 
-def create_password_hash(user_id: UserID, password: str) -> None:
+def create_password_hash(user_id: UserID, password: Password) -> None:
     """Create a password-based credential and a session token for the user."""
     credential = authn_password_domain_service.create_password_hash(
         user_id, password
@@ -34,7 +35,7 @@ def create_password_hash(user_id: UserID, password: str) -> None:
 
 
 def update_password_hash(
-    user: User, password: str, initiator: User
+    user: User, password: Password, initiator: User
 ) -> PasswordUpdatedEvent:
     """Update the password hash and set a newly-generated authentication
     token for the user.
@@ -59,7 +60,8 @@ def _persist_password_hash_update(
 ) -> None:
     db_credential = _get_credential_for_user(credential.user_id)
 
-    db_credential.password_hash = credential.password_hash
+    with credential.password_hash.dangerous_reveal() as password_hash:
+        db_credential.password_hash = password_hash
     db_credential.updated_at = credential.updated_at
 
     db_log_entry = user_log_service.to_db_entry(log_entry)
@@ -68,7 +70,7 @@ def _persist_password_hash_update(
     db.session.commit()
 
 
-def is_password_valid_for_user(user_id: UserID, password: str) -> bool:
+def is_password_valid_for_user(user_id: UserID, password: Password) -> bool:
     """Return `True` if the password is valid for the user, or `False`
     otherwise.
     """
@@ -78,25 +80,28 @@ def is_password_valid_for_user(user_id: UserID, password: str) -> bool:
         # no password stored for user
         return False
 
+    password_hash = secret(db_credential.password_hash)
     return authn_password_domain_service.check_password_hash(
-        db_credential.password_hash, password
+        password_hash, password
     )
 
 
-def migrate_password_hash_if_outdated(user_id: UserID, password: str) -> None:
+def migrate_password_hash_if_outdated(
+    user_id: UserID, password: Password
+) -> None:
     """Recreate the password hash with the current algorithm and parameters."""
     db_credential = _get_credential_for_user(user_id)
 
-    if authn_password_domain_service.is_password_hash_current(
-        db_credential.password_hash
-    ):
+    password_hash = secret(db_credential.password_hash)
+    if authn_password_domain_service.is_password_hash_current(password_hash):
         return
 
     credential = authn_password_domain_service.create_password_hash(
         user_id, password
     )
 
-    db_credential.password_hash = credential.password_hash
+    with credential.password_hash.dangerous_reveal() as password_hash:
+        db_credential.password_hash = password_hash
     db_credential.updated_at = credential.updated_at
     db.session.commit()
 

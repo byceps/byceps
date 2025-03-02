@@ -9,11 +9,11 @@ byceps.services.authn.password.models
 from dataclasses import dataclass
 from datetime import datetime
 
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import PasswordHash, UserID
 
 
 @dataclass(frozen=True)
 class Credential:
     user_id: UserID
-    password_hash: str
+    password_hash: PasswordHash
     updated_at: datetime
