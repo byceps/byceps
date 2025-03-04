@@ -14,7 +14,7 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.newsletter import (
+from byceps.services.newsletter.events import (
     SubscribedToNewsletterEvent,
     UnsubscribedFromNewsletterEvent,
 )

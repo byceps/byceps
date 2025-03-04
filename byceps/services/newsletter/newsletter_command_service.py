@@ -13,16 +13,16 @@ from sqlalchemy.dialects.postgresql import insert
 import structlog
 
 from byceps.database import db
-from byceps.events.newsletter import (
-    SubscribedToNewsletterEvent,
-    UnsubscribedFromNewsletterEvent,
-)
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
 from . import newsletter_domain_service, newsletter_service
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
 from .errors import UnknownListIdError
+from .events import (
+    SubscribedToNewsletterEvent,
+    UnsubscribedFromNewsletterEvent,
+)
 from .models import List, ListID, SubscriptionUpdate
 
 

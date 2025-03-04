@@ -12,10 +12,6 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
-from byceps.events.newsletter import (
-    SubscribedToNewsletterEvent,
-    UnsubscribedFromNewsletterEvent,
-)
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.events.page import (
     PageCreatedEvent,
@@ -89,6 +85,10 @@ from byceps.services.guest_server.events import (
     GuestServerRegisteredEvent,
 )
 from byceps.services.news.events import NewsItemPublishedEvent
+from byceps.services.newsletter.events import (
+    SubscribedToNewsletterEvent,
+    UnsubscribedFromNewsletterEvent,
+)
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
     authn as authn_signals,
