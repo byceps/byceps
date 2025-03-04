@@ -11,7 +11,6 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.tourney import TourneyCreatedEvent
 from byceps.services.party.models import Party, PartyID
 from byceps.services.user.models.user import User
 
@@ -19,6 +18,7 @@ from . import tourney_category_service, tourney_domain_service
 from .dbmodels.participant import DbParticipant
 from .dbmodels.tourney import DbTourney
 from .dbmodels.tourney_category import DbTourneyCategory
+from .events import TourneyCreatedEvent
 from .models import (
     Tourney,
     TourneyCategory,

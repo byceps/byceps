@@ -11,7 +11,7 @@ Announce tourney events.
 from flask_babel import gettext
 
 from byceps.announce.helpers import with_locale
-from byceps.events.tourney import (
+from byceps.services.tourney.events import (
     EventTourneyParticipant,
     TourneyCanceledEvent,
     TourneyFinishedEvent,

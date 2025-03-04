@@ -12,21 +12,6 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
-from byceps.events.tourney import (
-    TourneyCanceledEvent,
-    TourneyFinishedEvent,
-    TourneyMatchReadyEvent,
-    TourneyMatchResetEvent,
-    TourneyMatchScoreConfirmedEvent,
-    TourneyMatchScoreRandomizedEvent,
-    TourneyMatchScoreSubmittedEvent,
-    TourneyParticipantDisqualifiedEvent,
-    TourneyParticipantEliminatedEvent,
-    TourneyParticipantReadyEvent,
-    TourneyParticipantWarnedEvent,
-    TourneyPausedEvent,
-    TourneyStartedEvent,
-)
 from byceps.events.user import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,
@@ -94,6 +79,21 @@ from byceps.services.snippet.events import (
 from byceps.services.ticketing.events import (
     TicketCheckedInEvent,
     TicketsSoldEvent,
+)
+from byceps.services.tourney.events import (
+    TourneyCanceledEvent,
+    TourneyFinishedEvent,
+    TourneyMatchReadyEvent,
+    TourneyMatchResetEvent,
+    TourneyMatchScoreConfirmedEvent,
+    TourneyMatchScoreRandomizedEvent,
+    TourneyMatchScoreSubmittedEvent,
+    TourneyParticipantDisqualifiedEvent,
+    TourneyParticipantEliminatedEvent,
+    TourneyParticipantReadyEvent,
+    TourneyParticipantWarnedEvent,
+    TourneyPausedEvent,
+    TourneyStartedEvent,
 )
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (

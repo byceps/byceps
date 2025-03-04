@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.events.tourney import EventTourney, EventTourneyParticipant
+from byceps.services.tourney.events import EventTourney, EventTourneyParticipant
 from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
 
 from tests.helpers import generate_token, generate_uuid
