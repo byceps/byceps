@@ -11,7 +11,6 @@ from collections.abc import Sequence
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.brand.dbmodels import DbBrand
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.orga import orga_domain_service
@@ -21,6 +20,10 @@ from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User, UserID
 
 from .dbmodels import DbOrgaFlag
+from .events import (
+    OrgaStatusGrantedEvent,
+    OrgaStatusRevokedEvent,
+)
 
 
 def get_person_count_by_brand_id() -> dict[BrandID, int]:

@@ -5,8 +5,11 @@
 
 import pytest
 
-from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.orga import orga_domain_service
+from byceps.services.orga.events import (
+    OrgaStatusGrantedEvent,
+    OrgaStatusRevokedEvent,
+)
 
 
 def test_grant_orga_status(user, brand, initiator):
