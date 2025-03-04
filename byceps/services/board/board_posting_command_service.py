@@ -11,12 +11,6 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.board import (
-    BoardPostingCreatedEvent,
-    BoardPostingHiddenEvent,
-    BoardPostingUnhiddenEvent,
-    BoardPostingUpdatedEvent,
-)
 from byceps.services.brand import brand_service
 from byceps.services.core.events import EventBrand, EventUser
 from byceps.services.user import user_service
@@ -31,6 +25,12 @@ from . import (
     board_topic_query_service,
 )
 from .dbmodels.posting import DbPosting, DbPostingReaction
+from .events import (
+    BoardPostingCreatedEvent,
+    BoardPostingHiddenEvent,
+    BoardPostingUnhiddenEvent,
+    BoardPostingUpdatedEvent,
+)
 from .errors import (
     ReactionDeniedError,
     ReactionDoesNotExistError,

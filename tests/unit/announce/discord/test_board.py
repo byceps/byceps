@@ -9,7 +9,10 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.board import BoardPostingCreatedEvent, BoardTopicCreatedEvent
+from byceps.services.board.events import (
+    BoardPostingCreatedEvent,
+    BoardTopicCreatedEvent,
+)
 from byceps.services.board.models import (
     BoardCategoryID,
     BoardID,

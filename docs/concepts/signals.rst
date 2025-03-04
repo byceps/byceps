@@ -34,7 +34,7 @@ the command line, e.g. for development and debugging).
 
 .. code-block:: python
 
-    from byceps.events.board import BoardTopicCreatedEvent
+    from byceps.services.board.events import BoardTopicCreatedEvent
     from byceps.signals.board import topic_created
 
     @topic_created.connect

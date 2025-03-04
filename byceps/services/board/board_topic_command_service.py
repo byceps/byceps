@@ -11,17 +11,6 @@ from datetime import datetime
 from sqlalchemy import delete
 
 from byceps.database import db
-from byceps.events.board import (
-    BoardTopicCreatedEvent,
-    BoardTopicHiddenEvent,
-    BoardTopicLockedEvent,
-    BoardTopicMovedEvent,
-    BoardTopicPinnedEvent,
-    BoardTopicUnhiddenEvent,
-    BoardTopicUnlockedEvent,
-    BoardTopicUnpinnedEvent,
-    BoardTopicUpdatedEvent,
-)
 from byceps.services.brand import brand_service
 from byceps.services.core.events import EventBrand, EventUser
 from byceps.services.user import user_service
@@ -36,6 +25,17 @@ from . import (
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbInitialTopicPostingAssociation, DbPosting
 from .dbmodels.topic import DbTopic
+from .events import (
+    BoardTopicCreatedEvent,
+    BoardTopicHiddenEvent,
+    BoardTopicLockedEvent,
+    BoardTopicMovedEvent,
+    BoardTopicPinnedEvent,
+    BoardTopicUnhiddenEvent,
+    BoardTopicUnlockedEvent,
+    BoardTopicUnpinnedEvent,
+    BoardTopicUpdatedEvent,
+)
 from .models import BoardCategoryID, PostingID, Topic, TopicID
 
 

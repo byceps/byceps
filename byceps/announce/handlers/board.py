@@ -17,7 +17,7 @@ from byceps.announce.helpers import (
     matches_selectors,
     with_locale,
 )
-from byceps.events.board import (
+from byceps.services.board.events import (
     _BoardEvent,
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,

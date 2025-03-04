@@ -12,19 +12,6 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
-from byceps.events.board import (
-    BoardPostingCreatedEvent,
-    BoardPostingHiddenEvent,
-    BoardPostingUnhiddenEvent,
-    BoardTopicCreatedEvent,
-    BoardTopicHiddenEvent,
-    BoardTopicLockedEvent,
-    BoardTopicMovedEvent,
-    BoardTopicPinnedEvent,
-    BoardTopicUnhiddenEvent,
-    BoardTopicUnlockedEvent,
-    BoardTopicUnpinnedEvent,
-)
 from byceps.events.external_accounts import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
@@ -87,6 +74,19 @@ from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.services.authz.events import (
     RoleAssignedToUserEvent,
     RoleDeassignedFromUserEvent,
+)
+from byceps.services.board.events import (
+    BoardPostingCreatedEvent,
+    BoardPostingHiddenEvent,
+    BoardPostingUnhiddenEvent,
+    BoardTopicCreatedEvent,
+    BoardTopicHiddenEvent,
+    BoardTopicLockedEvent,
+    BoardTopicMovedEvent,
+    BoardTopicPinnedEvent,
+    BoardTopicUnhiddenEvent,
+    BoardTopicUnlockedEvent,
+    BoardTopicUnpinnedEvent,
 )
 from byceps.services.core.events import _BaseEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
