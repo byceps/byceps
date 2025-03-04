@@ -12,7 +12,6 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
-from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.events.tourney import (
     TourneyCanceledEvent,
     TourneyFinishedEvent,
@@ -91,6 +90,10 @@ from byceps.services.snippet.events import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
     SnippetUpdatedEvent,
+)
+from byceps.services.ticketing.events import (
+    TicketCheckedInEvent,
+    TicketsSoldEvent,
 )
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (

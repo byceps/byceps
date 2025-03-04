@@ -10,9 +10,12 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.services.core.events import EventParty, EventUser
 from byceps.services.party.models import Party
+from byceps.services.ticketing.events import (
+    TicketCheckedInEvent,
+    TicketsSoldEvent,
+)
 from byceps.services.ticketing.models.ticket import (
     TicketCode,
     TicketID,

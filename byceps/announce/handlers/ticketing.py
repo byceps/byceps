@@ -14,9 +14,12 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.ticketing import TicketCheckedInEvent, TicketsSoldEvent
 from byceps.services.party import party_service
 from byceps.services.ticketing import ticket_service
+from byceps.services.ticketing.events import (
+    TicketCheckedInEvent,
+    TicketsSoldEvent,
+)
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 

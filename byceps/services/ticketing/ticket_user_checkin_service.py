@@ -9,7 +9,6 @@ byceps.services.ticketing.ticket_user_checkin_service
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
@@ -24,6 +23,7 @@ from .errors import (
     TicketingError,
     UserIdUnknownError,
 )
+from .events import TicketCheckedInEvent
 from .models.checkin import PotentialTicketForCheckIn, TicketCheckIn
 from .models.log import TicketLogEntry
 from .models.ticket import TicketCode, TicketID

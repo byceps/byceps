@@ -8,7 +8,6 @@ from unittest.mock import patch
 import pytest
 
 from byceps.byceps_app import BycepsApp
-from byceps.events.ticketing import TicketsSoldEvent
 from byceps.services.core.events import EventParty, EventUser
 from byceps.services.party.models import Party
 from byceps.services.shop.order import order_log_service, order_service
@@ -16,6 +15,7 @@ from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
+from byceps.services.ticketing.events import TicketsSoldEvent
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User
 

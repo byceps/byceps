@@ -9,7 +9,6 @@ byceps.services.ticketing.ticket_domain_service
 from datetime import datetime
 from typing import assert_never
 
-from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.core.events import EventUser
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
@@ -25,6 +24,7 @@ from .errors import (
     UserAccountSuspendedError,
     UserAlreadyCheckedInError,
 )
+from .events import TicketCheckedInEvent
 from .models.checkin import (
     PotentialTicketForCheckIn,
     TicketCheckIn,

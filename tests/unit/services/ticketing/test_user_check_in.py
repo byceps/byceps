@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.events.ticketing import TicketCheckedInEvent
 from byceps.services.brand.models import Brand
 from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing import ticket_domain_service
@@ -17,6 +16,7 @@ from byceps.services.ticketing.errors import (
     UserAccountSuspendedError,
     UserAlreadyCheckedInError,
 )
+from byceps.services.ticketing.events import TicketCheckedInEvent
 from byceps.services.ticketing.models.checkin import PotentialTicketForCheckIn
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
 from byceps.services.user.models.user import User
