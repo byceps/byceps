@@ -5,12 +5,12 @@
 
 from datetime import date
 
-from byceps.events.user import UserDetailsUpdatedEvent
 from byceps.services.user import (
     user_command_service,
     user_log_service,
     user_service,
 )
+from byceps.services.user.events import UserDetailsUpdatedEvent
 
 
 def test_update_user_address(database, make_user):

@@ -5,12 +5,12 @@
 
 import pytest
 
-from byceps.events.user import UserEmailAddressChangedEvent
 from byceps.services.user import (
     user_command_service,
     user_log_service,
     user_service,
 )
+from byceps.services.user.events import UserEmailAddressChangedEvent
 
 
 @pytest.fixture(scope='module')

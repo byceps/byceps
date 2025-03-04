@@ -9,7 +9,6 @@ User account anonymization and removal
 """
 
 from byceps.database import db
-from byceps.events.user import UserAccountDeletedEvent
 from byceps.services.authn.password import authn_password_service
 from byceps.services.authn.session import authn_session_service
 from byceps.services.authz import authz_service
@@ -23,6 +22,8 @@ from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import verification_token_service
+
+from .events import UserAccountDeletedEvent
 
 
 def delete_account(

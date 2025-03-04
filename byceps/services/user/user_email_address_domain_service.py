@@ -8,15 +8,15 @@ byceps.services.user.user_email_address_domain_service
 
 from datetime import datetime
 
-from byceps.events.user import (
-    UserEmailAddressChangedEvent,
-    UserEmailAddressConfirmedEvent,
-    UserEmailAddressInvalidatedEvent,
-)
 from byceps.services.core.events import EventUser
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
+from .events import (
+    UserEmailAddressChangedEvent,
+    UserEmailAddressConfirmedEvent,
+    UserEmailAddressInvalidatedEvent,
+)
 from .models.log import UserLogEntry
 from .models.user import User, UserEmailAddress
 

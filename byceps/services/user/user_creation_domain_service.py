@@ -8,7 +8,6 @@ byceps.services.user.user_creation_domain_service
 
 from datetime import datetime
 
-from byceps.events.user import UserAccountCreatedEvent
 from byceps.services.core.events import EventSite, EventUser
 from byceps.services.site.models import Site
 from byceps.util.result import Err, Ok, Result
@@ -19,6 +18,7 @@ from .errors import (
     InvalidEmailAddressError,
     InvalidScreenNameError,
 )
+from .events import UserAccountCreatedEvent
 from .models.log import UserLogEntry
 from .models.user import User, UserID
 

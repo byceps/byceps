@@ -12,16 +12,6 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
-from byceps.events.user import (
-    UserAccountCreatedEvent,
-    UserAccountDeletedEvent,
-    UserAccountSuspendedEvent,
-    UserAccountUnsuspendedEvent,
-    UserDetailsUpdatedEvent,
-    UserEmailAddressChangedEvent,
-    UserEmailAddressInvalidatedEvent,
-    UserScreenNameChangedEvent,
-)
 from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.services.authz.events import (
@@ -94,6 +84,16 @@ from byceps.services.tourney.events import (
     TourneyParticipantWarnedEvent,
     TourneyPausedEvent,
     TourneyStartedEvent,
+)
+from byceps.services.user.events import (
+    UserAccountCreatedEvent,
+    UserAccountDeletedEvent,
+    UserAccountSuspendedEvent,
+    UserAccountUnsuspendedEvent,
+    UserDetailsUpdatedEvent,
+    UserEmailAddressChangedEvent,
+    UserEmailAddressInvalidatedEvent,
+    UserScreenNameChangedEvent,
 )
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (

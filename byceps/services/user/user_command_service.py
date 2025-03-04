@@ -12,13 +12,6 @@ from warnings import warn
 from babel import Locale
 
 from byceps.database import db
-from byceps.events.user import (
-    UserAccountSuspendedEvent,
-    UserAccountUnsuspendedEvent,
-    UserDetailsUpdatedEvent,
-    UserEmailAddressChangedEvent,
-    UserScreenNameChangedEvent,
-)
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import RoleID
 
@@ -31,6 +24,13 @@ from . import (
 )
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
+from .events import (
+    UserAccountSuspendedEvent,
+    UserAccountUnsuspendedEvent,
+    UserDetailsUpdatedEvent,
+    UserEmailAddressChangedEvent,
+    UserScreenNameChangedEvent,
+)
 from .models.log import UserLogEntry
 from .models.user import User, UserID
 

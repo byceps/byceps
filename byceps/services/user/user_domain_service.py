@@ -9,16 +9,16 @@ byceps.services.user.user_domain_service
 from datetime import date, datetime
 from typing import Any
 
-from byceps.events.user import (
+from byceps.services.core.events import EventUser
+from byceps.util.uuid import generate_uuid7
+
+from .events import (
     UserAccountDeletedEvent,
     UserAccountSuspendedEvent,
     UserAccountUnsuspendedEvent,
     UserDetailsUpdatedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.services.core.events import EventUser
-from byceps.util.uuid import generate_uuid7
-
 from .models.log import UserLogEntry, UserLogEntryData
 from .models.user import User
 

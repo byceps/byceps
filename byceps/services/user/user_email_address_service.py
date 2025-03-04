@@ -9,11 +9,6 @@ byceps.services.user.user_email_address_service
 from flask_babel import gettext
 
 from byceps.database import db
-from byceps.events.user import (
-    UserEmailAddressChangedEvent,
-    UserEmailAddressConfirmedEvent,
-    UserEmailAddressInvalidatedEvent,
-)
 from byceps.services.email import email_config_service, email_service
 from byceps.services.email.models import NameAndAddress
 from byceps.services.site import site_service
@@ -33,6 +28,12 @@ from byceps.services.verification_token.models import (
 )
 from byceps.util.l10n import force_user_locale
 from byceps.util.result import Err, Ok, Result
+
+from .events import (
+    UserEmailAddressChangedEvent,
+    UserEmailAddressConfirmedEvent,
+    UserEmailAddressInvalidatedEvent,
+)
 
 
 def send_email_address_confirmation_email_for_site(

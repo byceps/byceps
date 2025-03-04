@@ -12,7 +12,6 @@ from typing import Any
 import structlog
 
 from byceps.database import db
-from byceps.events.user import UserAccountCreatedEvent
 from byceps.services.authn.password import authn_password_service
 from byceps.services.site.models import Site, SiteID
 from byceps.util.result import Err, Ok, Result
@@ -26,6 +25,7 @@ from . import (
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
 from .errors import InvalidEmailAddressError, InvalidScreenNameError
+from .events import UserAccountCreatedEvent
 from .models.user import Password, User
 
 

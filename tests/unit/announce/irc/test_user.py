@@ -7,7 +7,7 @@ from datetime import datetime
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.user import (
+from byceps.services.user.events import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,
     UserAccountSuspendedEvent,
