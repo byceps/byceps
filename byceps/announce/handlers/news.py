@@ -13,7 +13,7 @@ from functools import wraps
 from flask_babel import gettext
 
 from byceps.announce.helpers import matches_selectors, with_locale
-from byceps.events.news import NewsItemPublishedEvent
+from byceps.services.news.events import NewsItemPublishedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 

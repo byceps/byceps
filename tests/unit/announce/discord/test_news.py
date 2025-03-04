@@ -9,8 +9,8 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.core.events import EventUser
+from byceps.services.news.events import NewsItemPublishedEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
 from byceps.services.webhooks.models import OutgoingWebhook
 
