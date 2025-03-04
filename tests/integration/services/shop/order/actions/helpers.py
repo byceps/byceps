@@ -5,8 +5,8 @@
 
 from collections.abc import Sequence
 
-from byceps.events.shop import ShopOrderPaidEvent
 from byceps.services.shop.order import order_command_service
+from byceps.services.shop.order.events import ShopOrderPaidEvent
 from byceps.services.shop.order.models.order import Order, OrderID
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket

@@ -9,10 +9,13 @@ import pytest
 
 from byceps.byceps_app import BycepsApp
 from byceps.database import db
-from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from byceps.services.core.events import EventUser
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.events import (
+    ShopOrderCanceledEvent,
+    ShopOrderPaidEvent,
+)
 from byceps.services.shop.order.models.order import (
     Orderer,
     OrderID,

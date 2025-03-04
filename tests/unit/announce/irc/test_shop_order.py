@@ -9,12 +9,12 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.shop import (
+from byceps.services.core.events import EventUser
+from byceps.services.shop.order.events import (
     ShopOrderCanceledEvent,
     ShopOrderPaidEvent,
     ShopOrderPlacedEvent,
 )
-from byceps.services.core.events import EventUser
 from byceps.services.shop.order.models.order import OrderID, OrderNumber
 
 from tests.helpers import generate_uuid

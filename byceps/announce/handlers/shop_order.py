@@ -14,12 +14,12 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.shop import (
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.events import (
     ShopOrderCanceledEvent,
     ShopOrderPaidEvent,
     ShopOrderPlacedEvent,
 )
-from byceps.services.shop.order import order_service
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 

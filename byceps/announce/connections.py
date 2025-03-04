@@ -12,11 +12,6 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
-from byceps.events.shop import (
-    ShopOrderCanceledEvent,
-    ShopOrderPaidEvent,
-    ShopOrderPlacedEvent,
-)
 from byceps.events.snippet import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
@@ -91,6 +86,11 @@ from byceps.services.page.events import (
     PageCreatedEvent,
     PageDeletedEvent,
     PageUpdatedEvent,
+)
+from byceps.services.shop.order.events import (
+    ShopOrderCanceledEvent,
+    ShopOrderPaidEvent,
+    ShopOrderPlacedEvent,
 )
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (

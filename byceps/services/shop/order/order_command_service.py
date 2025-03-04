@@ -13,7 +13,6 @@ from uuid import UUID
 import structlog
 
 from byceps.database import db
-from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductType
 from byceps.services.ticketing.models.ticket import TicketCategoryID
@@ -34,6 +33,7 @@ from .actions import (
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.order import DbOrder
 from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
+from .events import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from .models.log import OrderLogEntry
 from .models.order import LineItemID, Order, Orderer, OrderID, PaymentState
 from .models.payment import AdditionalPaymentData
