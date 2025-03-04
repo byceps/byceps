@@ -8,15 +8,15 @@ byceps.services.external_accounts.external_accounts_domain_service
 
 from datetime import datetime
 
-from byceps.events.external_accounts import (
-    ExternalAccountConnectedEvent,
-    ExternalAccountDisconnectedEvent,
-)
 from byceps.services.core.events import EventUser
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
+from .events import (
+    ExternalAccountConnectedEvent,
+    ExternalAccountDisconnectedEvent,
+)
 from .models import ConnectedExternalAccount
 
 

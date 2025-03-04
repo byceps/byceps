@@ -14,7 +14,7 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.external_accounts import (
+from byceps.services.external_accounts.events import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
 )

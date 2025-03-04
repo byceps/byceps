@@ -12,10 +12,6 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
-from byceps.events.external_accounts import (
-    ExternalAccountConnectedEvent,
-    ExternalAccountDisconnectedEvent,
-)
 from byceps.events.guest_server import (
     GuestServerApprovedEvent,
     GuestServerCheckedInEvent,
@@ -89,6 +85,10 @@ from byceps.services.board.events import (
     BoardTopicUnpinnedEvent,
 )
 from byceps.services.core.events import _BaseEvent
+from byceps.services.external_accounts.events import (
+    ExternalAccountConnectedEvent,
+    ExternalAccountDisconnectedEvent,
+)
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
     authn as authn_signals,

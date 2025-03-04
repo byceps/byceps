@@ -12,16 +12,16 @@ from uuid import UUID
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.events.external_accounts import (
-    ExternalAccountConnectedEvent,
-    ExternalAccountDisconnectedEvent,
-)
 from byceps.services.user import user_service
 from byceps.services.user.models.user import UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import external_accounts_domain_service
 from .dbmodels import DbConnectedExternalAccount
+from .events import (
+    ExternalAccountConnectedEvent,
+    ExternalAccountDisconnectedEvent,
+)
 from .models import ConnectedExternalAccount
 
 
