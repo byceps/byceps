@@ -5,9 +5,9 @@
 
 import pytest
 
-from byceps.events.snippet import SnippetCreatedEvent
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.dbmodels import DbSnippetVersion
+from byceps.services.snippet.events import SnippetCreatedEvent
 from byceps.services.snippet.models import SnippetScope
 from byceps.services.user.models.user import User
 

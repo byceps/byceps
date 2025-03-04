@@ -12,11 +12,6 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.snippet import (
-    SnippetCreatedEvent,
-    SnippetDeletedEvent,
-    SnippetUpdatedEvent,
-)
 from byceps.services.core.events import EventUser
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
@@ -28,6 +23,11 @@ from .dbmodels import (
     DbSnippetVersion,
 )
 from .errors import SnippetAlreadyExistsError, SnippetNotFoundError
+from .events import (
+    SnippetCreatedEvent,
+    SnippetDeletedEvent,
+    SnippetUpdatedEvent,
+)
 from .models import SnippetID, SnippetScope, SnippetVersionID
 
 
