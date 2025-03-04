@@ -12,12 +12,6 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
-from byceps.events.guest_server import (
-    GuestServerApprovedEvent,
-    GuestServerCheckedInEvent,
-    GuestServerCheckedOutEvent,
-    GuestServerRegisteredEvent,
-)
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.events.newsletter import (
     SubscribedToNewsletterEvent,
@@ -88,6 +82,12 @@ from byceps.services.core.events import _BaseEvent
 from byceps.services.external_accounts.events import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
+)
+from byceps.services.guest_server.events import (
+    GuestServerApprovedEvent,
+    GuestServerCheckedInEvent,
+    GuestServerCheckedOutEvent,
+    GuestServerRegisteredEvent,
 )
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (

@@ -11,12 +11,6 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.guest_server import (
-    GuestServerApprovedEvent,
-    GuestServerCheckedInEvent,
-    GuestServerCheckedOutEvent,
-    GuestServerRegisteredEvent,
-)
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing import ticket_service
@@ -35,6 +29,12 @@ from .errors import (
     PartyIsOverError,
     QuantityLimitReachedError,
     UserUsesNoTicketError,
+)
+from .events import (
+    GuestServerApprovedEvent,
+    GuestServerCheckedInEvent,
+    GuestServerCheckedOutEvent,
+    GuestServerRegisteredEvent,
 )
 from .models import (
     Address,

@@ -9,13 +9,13 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.guest_server import (
+from byceps.services.core.events import EventParty, EventUser
+from byceps.services.guest_server.events import (
     GuestServerApprovedEvent,
     GuestServerCheckedInEvent,
     GuestServerCheckedOutEvent,
     GuestServerRegisteredEvent,
 )
-from byceps.services.core.events import EventParty, EventUser
 from byceps.services.guest_server.models import ServerID
 
 from tests.helpers import generate_uuid

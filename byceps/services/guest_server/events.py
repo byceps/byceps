@@ -1,6 +1,6 @@
 """
-byceps.events.guest_server
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.guest_server.events
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
