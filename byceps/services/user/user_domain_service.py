@@ -9,7 +9,6 @@ byceps.services.user.user_domain_service
 from datetime import date, datetime
 from typing import Any
 
-from byceps.events.base import EventUser
 from byceps.events.user import (
     UserAccountDeletedEvent,
     UserAccountSuspendedEvent,
@@ -17,6 +16,7 @@ from byceps.events.user import (
     UserDetailsUpdatedEvent,
     UserScreenNameChangedEvent,
 )
+from byceps.services.core.events import EventUser
 from byceps.util.uuid import generate_uuid7
 
 from .models.log import UserLogEntry, UserLogEntryData

@@ -12,12 +12,12 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.base import EventSite, EventUser
 from byceps.events.page import (
     PageCreatedEvent,
     PageDeletedEvent,
     PageUpdatedEvent,
 )
+from byceps.services.core.events import EventSite, EventUser
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
 from byceps.services.site_navigation.models import NavMenuID

@@ -9,7 +9,7 @@ byceps.events.connected_external_accounts
 from dataclasses import dataclass
 from uuid import UUID
 
-from .base import _BaseEvent, EventUser
+from byceps.services.core.events import _BaseEvent, EventUser
 
 
 @dataclass(frozen=True)

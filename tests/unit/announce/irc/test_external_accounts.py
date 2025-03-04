@@ -9,11 +9,11 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.base import EventUser
 from byceps.events.external_accounts import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
 )
+from byceps.services.core.events import EventUser
 
 from tests.helpers import generate_uuid
 

@@ -8,9 +8,9 @@ byceps.services.orga.orga_domain_service
 
 from datetime import datetime
 
-from byceps.events.base import EventBrand, EventUser
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 from byceps.services.brand.models import Brand
+from byceps.services.core.events import EventBrand, EventUser
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7

@@ -9,9 +9,8 @@ byceps.events.news
 from dataclasses import dataclass
 from datetime import datetime
 
+from byceps.services.core.events import _BaseEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
-
-from .base import _BaseEvent
 
 
 @dataclass(frozen=True)

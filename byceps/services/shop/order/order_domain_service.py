@@ -12,8 +12,8 @@ import dataclasses
 
 from moneyed import Currency, Money
 
-from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderCanceledEvent, ShopOrderPaidEvent
+from byceps.services.core.events import EventUser
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.product import product_domain_service
 from byceps.services.shop.product.models import ProductWithQuantity

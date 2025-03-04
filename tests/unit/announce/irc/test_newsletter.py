@@ -9,11 +9,11 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.base import EventUser
 from byceps.events.newsletter import (
     SubscribedToNewsletterEvent,
     UnsubscribedFromNewsletterEvent,
 )
+from byceps.services.core.events import EventUser
 from byceps.services.newsletter.models import ListID
 
 from .helpers import assert_text

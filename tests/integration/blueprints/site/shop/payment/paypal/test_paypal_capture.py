@@ -6,8 +6,8 @@ from paypalhttp import HttpError, HttpResponse
 import pytest
 
 from byceps.blueprints.site.shop.payment.paypal.views import PayPalOrderDetails
-from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderPaidEvent
+from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service

@@ -13,7 +13,7 @@ from typing import Any
 import httpx
 import structlog
 
-from byceps.events.base import _BaseEvent
+from byceps.services.core.events import _BaseEvent
 from byceps.services.webhooks import webhook_service
 from byceps.services.webhooks.models import AnnouncementRequest, OutgoingWebhook
 from byceps.util.jobqueue import enqueue, enqueue_at

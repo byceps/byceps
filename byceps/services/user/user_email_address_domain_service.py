@@ -8,12 +8,12 @@ byceps.services.user.user_email_address_domain_service
 
 from datetime import datetime
 
-from byceps.events.base import EventUser
 from byceps.events.user import (
     UserEmailAddressChangedEvent,
     UserEmailAddressConfirmedEvent,
     UserEmailAddressInvalidatedEvent,
 )
+from byceps.services.core.events import EventUser
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

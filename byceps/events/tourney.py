@@ -8,7 +8,7 @@ byceps.events.tourney
 
 from dataclasses import dataclass
 
-from .base import _BaseEvent
+from byceps.services.core.events import _BaseEvent
 
 
 @dataclass(frozen=True)

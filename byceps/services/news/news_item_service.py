@@ -15,9 +15,9 @@ from sqlalchemy.sql import Select
 import structlog
 
 from byceps.database import db, paginate, Pagination, execute_upsert
-from byceps.events.base import EventUser
 from byceps.events.news import NewsItemPublishedEvent
 from byceps.services.brand.models import BrandID
+from byceps.services.core.events import EventUser
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service

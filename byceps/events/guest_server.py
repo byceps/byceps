@@ -8,9 +8,8 @@ byceps.events.guest_server
 
 from dataclasses import dataclass
 
+from byceps.services.core.events import _BaseEvent, EventParty, EventUser
 from byceps.services.guest_server.models import ServerID
-
-from .base import _BaseEvent, EventParty, EventUser
 
 
 @dataclass(frozen=True)

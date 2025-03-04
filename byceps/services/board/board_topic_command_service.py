@@ -11,7 +11,6 @@ from datetime import datetime
 from sqlalchemy import delete
 
 from byceps.database import db
-from byceps.events.base import EventBrand, EventUser
 from byceps.events.board import (
     BoardTopicCreatedEvent,
     BoardTopicHiddenEvent,
@@ -24,6 +23,7 @@ from byceps.events.board import (
     BoardTopicUpdatedEvent,
 )
 from byceps.services.brand import brand_service
+from byceps.services.core.events import EventBrand, EventUser
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 from byceps.util.uuid import generate_uuid7

@@ -9,7 +9,6 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.base import EventBrand, EventUser
 from byceps.events.board import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -29,6 +28,7 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
+from byceps.services.core.events import EventBrand, EventUser
 
 from tests.helpers import generate_token, generate_uuid
 

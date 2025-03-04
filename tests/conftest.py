@@ -5,8 +5,13 @@
 
 import pytest
 
-from byceps.events.base import EventBrand, EventParty, EventSite, EventUser
 from byceps.services.brand.models import BrandID
+from byceps.services.core.events import (
+    EventBrand,
+    EventParty,
+    EventSite,
+    EventUser,
+)
 from byceps.services.party.models import PartyID
 from byceps.services.site.models import SiteID
 from byceps.services.user.models.user import UserID

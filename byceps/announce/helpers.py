@@ -10,7 +10,7 @@ from functools import wraps
 
 from flask_babel import force_locale, gettext
 
-from byceps.events.base import EventUser
+from byceps.services.core.events import EventUser
 from byceps.services.webhooks.models import OutgoingWebhook
 from byceps.util.l10n import get_default_locale
 

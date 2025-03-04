@@ -9,13 +9,13 @@ byceps.services.guest_server.guest_server_domain_service
 from datetime import datetime
 import dataclasses
 
-from byceps.events.base import EventParty, EventUser
 from byceps.events.guest_server import (
     GuestServerApprovedEvent,
     GuestServerCheckedInEvent,
     GuestServerCheckedOutEvent,
     GuestServerRegisteredEvent,
 )
+from byceps.services.core.events import EventParty, EventUser
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result

@@ -14,8 +14,7 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
-
-from .base import _BaseEvent, EventBrand, EventUser
+from byceps.services.core.events import _BaseEvent, EventBrand, EventUser
 
 
 @dataclass(frozen=True)

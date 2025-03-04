@@ -8,7 +8,7 @@ byceps.events.orga
 
 from dataclasses import dataclass
 
-from .base import _BaseEvent, EventBrand, EventUser
+from byceps.services.core.events import _BaseEvent, EventBrand, EventUser
 
 
 @dataclass(frozen=True)

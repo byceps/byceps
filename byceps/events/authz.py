@@ -9,8 +9,7 @@ byceps.events.authz
 from dataclasses import dataclass
 
 from byceps.services.authz.models import RoleID
-
-from .base import _BaseEvent, EventUser
+from byceps.services.core.events import _BaseEvent, EventUser
 
 
 @dataclass(frozen=True)

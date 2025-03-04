@@ -8,11 +8,11 @@ byceps.services.newsletter.newsletter_domain_service
 
 from datetime import datetime
 
-from byceps.events.base import EventUser
 from byceps.events.newsletter import (
     SubscribedToNewsletterEvent,
     UnsubscribedFromNewsletterEvent,
 )
+from byceps.services.core.events import EventUser
 from byceps.services.user.models.user import User
 
 from .models import List, SubscriptionState, SubscriptionUpdate

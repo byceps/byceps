@@ -8,13 +8,12 @@ byceps.events.snippet
 
 from dataclasses import dataclass
 
+from byceps.services.core.events import _BaseEvent
 from byceps.services.snippet.models import (
     SnippetID,
     SnippetScope,
     SnippetVersionID,
 )
-
-from .base import _BaseEvent
 
 
 @dataclass(frozen=True)

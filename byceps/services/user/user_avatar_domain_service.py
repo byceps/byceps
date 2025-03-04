@@ -8,11 +8,11 @@ byceps.services.user.user_avatar_domain_service
 
 from datetime import datetime
 
-from byceps.events.base import EventUser
 from byceps.events.user import (
     UserAvatarRemovedEvent,
     UserAvatarUpdatedEvent,
 )
+from byceps.services.core.events import EventUser
 from byceps.util.uuid import generate_uuid7
 
 from .models.log import UserLogEntry

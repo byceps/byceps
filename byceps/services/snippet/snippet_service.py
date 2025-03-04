@@ -12,12 +12,12 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.base import EventUser
 from byceps.events.snippet import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
     SnippetUpdatedEvent,
 )
+from byceps.services.core.events import EventUser
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result

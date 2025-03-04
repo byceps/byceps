@@ -9,8 +9,8 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.base import EventBrand, EventUser
 from byceps.events.orga import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
+from byceps.services.core.events import EventBrand, EventUser
 
 from .helpers import assert_text
 

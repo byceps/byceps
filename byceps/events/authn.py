@@ -8,7 +8,7 @@ byceps.events.authn
 
 from dataclasses import dataclass
 
-from .base import _BaseEvent, EventSite, EventUser
+from byceps.services.core.events import _BaseEvent, EventSite, EventUser
 
 
 @dataclass(frozen=True)

@@ -8,9 +8,8 @@ byceps.events.newsletter
 
 from dataclasses import dataclass
 
+from byceps.services.core.events import _BaseEvent, EventUser
 from byceps.services.newsletter.models import ListID
-
-from .base import _BaseEvent, EventUser
 
 
 @dataclass(frozen=True)

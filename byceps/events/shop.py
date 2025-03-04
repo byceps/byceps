@@ -8,10 +8,9 @@ byceps.events.shop
 
 from dataclasses import dataclass
 
+from byceps.services.core.events import _BaseEvent, EventUser
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
-
-from .base import _BaseEvent, EventUser
 
 
 @dataclass(frozen=True)

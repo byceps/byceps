@@ -8,9 +8,8 @@ byceps.events.page
 
 from dataclasses import dataclass
 
+from byceps.services.core.events import _BaseEvent, EventSite
 from byceps.services.page.models import PageID, PageVersionID
-
-from .base import _BaseEvent, EventSite
 
 
 @dataclass(frozen=True)

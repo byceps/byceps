@@ -8,8 +8,8 @@ byceps.services.tourney.tourney_domain_service
 
 from datetime import datetime
 
-from byceps.events.base import EventUser
 from byceps.events.tourney import EventTourney, TourneyCreatedEvent
+from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7

@@ -17,7 +17,6 @@ from byceps.events.authz import (
     RoleAssignedToUserEvent,
     RoleDeassignedFromUserEvent,
 )
-from byceps.events.base import _BaseEvent
 from byceps.events.board import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -89,6 +88,7 @@ from byceps.events.user import (
     UserScreenNameChangedEvent,
 )
 from byceps.events.user_badge import UserBadgeAwardedEvent
+from byceps.services.core.events import _BaseEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
     authn as authn_signals,

@@ -8,10 +8,9 @@ byceps.events.ticketing
 
 from dataclasses import dataclass
 
+from byceps.services.core.events import _BaseEvent, EventParty, EventUser
 from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
-
-from .base import _BaseEvent, EventParty, EventUser
 
 
 @dataclass(frozen=True)

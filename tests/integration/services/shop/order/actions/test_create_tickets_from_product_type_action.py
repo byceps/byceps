@@ -8,8 +8,8 @@ from unittest.mock import patch
 import pytest
 
 from byceps.byceps_app import BycepsApp
-from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketsSoldEvent
+from byceps.services.core.events import EventParty, EventUser
 from byceps.services.party.models import Party
 from byceps.services.shop.order import order_log_service, order_service
 from byceps.services.shop.order.models.order import Order, Orderer

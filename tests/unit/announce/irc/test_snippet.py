@@ -9,13 +9,13 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.site.models import SiteID
-from byceps.events.base import EventUser
 from byceps.events.snippet import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
     SnippetUpdatedEvent,
 )
+from byceps.services.core.events import EventUser
+from byceps.services.site.models import SiteID
 from byceps.services.snippet.models import (
     SnippetID,
     SnippetScope,

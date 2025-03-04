@@ -8,9 +8,8 @@ byceps.events.user
 
 from dataclasses import dataclass
 
+from byceps.services.core.events import _BaseEvent, EventSite, EventUser
 from byceps.services.user.models.user import UserAvatarID, UserID
-
-from .base import _BaseEvent, EventSite, EventUser
 
 
 @dataclass(frozen=True)

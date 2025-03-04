@@ -6,8 +6,8 @@ byceps.services.shop.order.actions._ticketing
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.events.base import EventParty, EventUser
 from byceps.events.ticketing import TicketsSoldEvent
+from byceps.services.core.events import EventParty, EventUser
 from byceps.services.party import party_service
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.errors import OrderNotPaidError

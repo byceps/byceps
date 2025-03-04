@@ -9,8 +9,8 @@ byceps.services.ticketing.ticket_domain_service
 from datetime import datetime
 from typing import assert_never
 
-from byceps.events.base import EventUser
 from byceps.events.ticketing import TicketCheckedInEvent
+from byceps.services.core.events import EventUser
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result

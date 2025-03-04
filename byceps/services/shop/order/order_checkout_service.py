@@ -13,8 +13,8 @@ from sqlalchemy.exc import IntegrityError
 import structlog
 
 from byceps.database import db
-from byceps.events.base import EventUser
 from byceps.events.shop import ShopOrderPlacedEvent
+from byceps.services.core.events import EventUser
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.product import product_service
 from byceps.services.shop.shop import shop_service

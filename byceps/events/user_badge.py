@@ -8,9 +8,8 @@ byceps.events.user_badge
 
 from dataclasses import dataclass
 
+from byceps.services.core.events import _BaseEvent, EventUser
 from byceps.services.user_badge.models import BadgeID
-
-from .base import _BaseEvent, EventUser
 
 
 @dataclass(frozen=True)

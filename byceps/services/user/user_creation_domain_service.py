@@ -8,8 +8,8 @@ byceps.services.user.user_creation_domain_service
 
 from datetime import datetime
 
-from byceps.events.base import EventSite, EventUser
 from byceps.events.user import UserAccountCreatedEvent
+from byceps.services.core.events import EventSite, EventUser
 from byceps.services.site.models import Site
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid4, generate_uuid7
