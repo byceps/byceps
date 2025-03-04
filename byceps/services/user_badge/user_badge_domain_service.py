@@ -9,12 +9,12 @@ byceps.services.user_badge.user_badge_domain_service
 from datetime import datetime
 from uuid import UUID
 
-from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.core.events import EventUser
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
+from .events import UserBadgeAwardedEvent
 from .models import Badge, BadgeAwarding
 
 

@@ -11,13 +11,13 @@ from collections import defaultdict
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.user import user_log_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User, UserID
 
 from . import user_badge_domain_service
 from .dbmodels import DbBadge, DbBadgeAwarding
+from .events import UserBadgeAwardedEvent
 from .models import (
     Badge,
     BadgeAwarding,

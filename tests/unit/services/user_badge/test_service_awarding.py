@@ -5,9 +5,9 @@
 
 import pytest
 
-from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.brand.models import BrandID
 from byceps.services.user_badge import user_badge_domain_service
+from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.user_badge.models import Badge, BadgeID
 
 from tests.helpers import generate_token, generate_uuid
