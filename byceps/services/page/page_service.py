@@ -12,11 +12,6 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.events.page import (
-    PageCreatedEvent,
-    PageDeletedEvent,
-    PageUpdatedEvent,
-)
 from byceps.services.core.events import EventSite, EventUser
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
@@ -27,6 +22,11 @@ from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbCurrentPageVersionAssociation, DbPage, DbPageVersion
 from .errors import PageAlreadyExistsError, PageNotFoundError
+from .events import (
+    PageCreatedEvent,
+    PageDeletedEvent,
+    PageUpdatedEvent,
+)
 from .models import (
     Page,
     PageAggregate,

@@ -5,8 +5,8 @@
 
 import pytest
 
-from byceps.events.page import PageCreatedEvent
 from byceps.services.page import page_service
+from byceps.services.page.events import PageCreatedEvent
 from byceps.services.page.models import PageVersion
 from byceps.services.site.models import Site
 from byceps.services.user.models.user import User

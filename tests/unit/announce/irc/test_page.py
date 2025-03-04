@@ -9,12 +9,12 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.page import (
+from byceps.services.core.events import EventSite, EventUser
+from byceps.services.page.events import (
     PageCreatedEvent,
     PageDeletedEvent,
     PageUpdatedEvent,
 )
-from byceps.services.core.events import EventSite, EventUser
 from byceps.services.page.models import PageID, PageVersionID
 
 from tests.helpers import generate_uuid
