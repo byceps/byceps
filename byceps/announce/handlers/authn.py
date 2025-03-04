@@ -14,7 +14,7 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.events.authn import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 

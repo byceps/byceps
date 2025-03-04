@@ -13,7 +13,7 @@ from uuid import UUID, uuid4
 from sqlalchemy import delete, select
 
 from byceps.database import db, insert_ignore_on_conflict, upsert
-from byceps.events.authn import UserLoggedInEvent
+from byceps.services.authn.events import UserLoggedInEvent
 from byceps.services.core.events import EventSite, EventUser
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user import user_log_service

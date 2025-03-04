@@ -10,10 +10,8 @@ import structlog
 
 from byceps.services.authn import authn_service
 from byceps.services.authn.errors import AuthenticationFailedError
+from byceps.services.authn.events import UserLoggedInEvent
 from byceps.services.authn.session import authn_session_service
-from byceps.services.authn.session.authn_session_service import (
-    UserLoggedInEvent,
-)
 from byceps.services.user.models.user import Password, User
 from byceps.util import user_session
 from byceps.util.authz import get_permissions_for_user

@@ -7,7 +7,7 @@ from datetime import datetime
 
 import pytest
 
-from byceps.events.authn import UserIdentityTagDeletedEvent
+from byceps.services.authn.events import UserIdentityTagDeletedEvent
 from byceps.services.authn.identity_tag import authn_identity_tag_domain_service
 from byceps.services.authn.identity_tag.models import UserIdentityTag
 from byceps.services.user.models.user import User

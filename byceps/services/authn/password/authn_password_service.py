@@ -10,7 +10,7 @@ from secret_type import secret
 from sqlalchemy import delete
 
 from byceps.database import db
-from byceps.events.authn import PasswordUpdatedEvent
+from byceps.services.authn.events import PasswordUpdatedEvent
 from byceps.services.authn.session import authn_session_service
 from byceps.services.user import user_log_service
 from byceps.services.user.models.log import UserLogEntry

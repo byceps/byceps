@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.events.authn import UserIdentityTagCreatedEvent
+from byceps.services.authn.events import UserIdentityTagCreatedEvent
 from byceps.services.authn.identity_tag import authn_identity_tag_domain_service
 
 

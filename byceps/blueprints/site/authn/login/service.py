@@ -12,10 +12,8 @@ import structlog
 
 from byceps.services.authn import authn_service
 from byceps.services.authn.errors import AuthenticationFailedError
+from byceps.services.authn.events import UserLoggedInEvent
 from byceps.services.authn.session import authn_session_service
-from byceps.services.authn.session.authn_session_service import (
-    UserLoggedInEvent,
-)
 from byceps.services.brand.models import BrandID
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.site.models import Site

@@ -8,7 +8,7 @@ byceps.services.authn.identity_tag.authn_identity_tag_domain_service
 
 from datetime import datetime
 
-from byceps.events.authn import (
+from byceps.services.authn.events import (
     UserIdentityTagCreatedEvent,
     UserIdentityTagDeletedEvent,
 )

@@ -7,7 +7,7 @@ from datetime import datetime
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.events.authn import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
 
 from .helpers import assert_text
 
