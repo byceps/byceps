@@ -12,10 +12,6 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
-from byceps.events.authz import (
-    RoleAssignedToUserEvent,
-    RoleDeassignedFromUserEvent,
-)
 from byceps.events.board import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -88,6 +84,10 @@ from byceps.events.user import (
 )
 from byceps.events.user_badge import UserBadgeAwardedEvent
 from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.services.authz.events import (
+    RoleAssignedToUserEvent,
+    RoleDeassignedFromUserEvent,
+)
 from byceps.services.core.events import _BaseEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (

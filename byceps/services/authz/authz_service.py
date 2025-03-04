@@ -13,10 +13,6 @@ from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from byceps.database import db
-from byceps.events.authz import (
-    RoleAssignedToUserEvent,
-    RoleDeassignedFromUserEvent,
-)
 from byceps.services.user import user_log_service, user_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User, UserID
@@ -24,6 +20,7 @@ from byceps.util.result import Err, Ok, Result
 
 from . import authz_domain_service
 from .dbmodels import DbRole, DbRolePermission, DbUserRole
+from .events import RoleAssignedToUserEvent, RoleDeassignedFromUserEvent
 from .models import PermissionID, Role, RoleID
 
 

@@ -8,15 +8,12 @@ byceps.services.authz.authz_domain_service
 
 from datetime import datetime
 
-from byceps.events.authz import (
-    RoleAssignedToUserEvent,
-    RoleDeassignedFromUserEvent,
-)
 from byceps.services.core.events import EventUser
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
+from .events import RoleAssignedToUserEvent, RoleDeassignedFromUserEvent
 from .models import RoleID
 
 
