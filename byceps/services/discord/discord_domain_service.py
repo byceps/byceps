@@ -6,6 +6,8 @@ byceps.services.discord.discord_domain_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from byceps.util.uuid import generate_uuid7
 
 from .models import (
@@ -14,6 +16,7 @@ from .models import (
     DiscordGuildID,
     DiscordServer,
     DiscordServerID,
+    DiscordServerPresenceStats,
 )
 
 
@@ -39,4 +42,18 @@ def create_server(
         client_id=client_id,
         client_secret=client_secret,
         enabled=enabled,
+    )
+
+
+def create_server_presence_stats(
+    server_id: DiscordServerID, member_count: int, presence_count: int
+) -> DiscordServerPresenceStats:
+    """Create a presence statistics object for the server."""
+    updated_at = datetime.utcnow()
+
+    return DiscordServerPresenceStats(
+        server_id=server_id,
+        updated_at=updated_at,
+        member_count=member_count,
+        presence_count=presence_count,
     )

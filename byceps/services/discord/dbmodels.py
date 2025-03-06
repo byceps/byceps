@@ -6,6 +6,8 @@ byceps.services.discord.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
@@ -64,3 +66,16 @@ class DbDiscordServer(db.Model):
             self.client_secret = None
 
         self.enabled = enabled
+
+
+class DbDiscordServerPresenceStats(db.Model):
+    """Presence statistics of a Discord server."""
+
+    __tablename__ = 'discord_server_presence_stats'
+
+    server_id: Mapped[DiscordServerID] = mapped_column(
+        db.Uuid, primary_key=True
+    )
+    updated_at: Mapped[datetime]
+    member_count: Mapped[int]
+    presence_count: Mapped[int]

@@ -9,10 +9,11 @@ byceps.services.discord.discord_service
 from secret_type import secret
 from sqlalchemy import select
 
-from byceps.database import db
+from byceps.database import db, upsert
+from byceps.util.result import Err, Ok, Result
 
 from . import discord_domain_service
-from .dbmodels import DbDiscordServer
+from .dbmodels import DbDiscordServer, DbDiscordServerPresenceStats
 from .models import (
     DiscordBotToken,
     DiscordClientSecret,
@@ -104,3 +105,32 @@ def _db_entity_to_server(db_server: DbDiscordServer) -> DiscordServer:
         else None,
         enabled=db_server.enabled,
     )
+
+
+# -------------------------------------------------------------------- #
+# presence statistics
+
+
+def update_server_presence_stats(
+    server_id: DiscordServerID, member_count: int, presence_count: int
+) -> Result[None, str]:
+    """Update the presence statistics for the server."""
+    presence_stats = discord_domain_service.create_server_presence_stats(
+        server_id, member_count, presence_count
+    )
+
+    db_server = _find_db_server(server_id)
+    if db_server is None:
+        raise Err(f'Unknown Discord server ID "{server_id}"')
+
+    table = DbDiscordServerPresenceStats.__table__
+    identifier = {'server_id': server_id}
+    replacement = {
+        'updated_at': presence_stats.updated_at,
+        'member_count': presence_stats.member_count,
+        'presence_count': presence_stats.presence_count,
+    }
+
+    upsert(table, identifier, replacement)
+
+    return Ok(None)

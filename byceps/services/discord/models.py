@@ -7,6 +7,7 @@ byceps.services.discord.models
 """
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
@@ -35,3 +36,11 @@ class DiscordServer:
     client_id: str | None
     client_secret: DiscordClientSecret | None
     enabled: bool
+
+
+@dataclass(frozen=True)
+class DiscordServerPresenceStats:
+    server_id: DiscordServerID
+    updated_at: datetime
+    member_count: int
+    presence_count: int
