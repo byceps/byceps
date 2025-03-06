@@ -14,13 +14,13 @@ from byceps.services.authn.password import (
     authn_password_reset_service,
     authn_password_service,
 )
+from byceps.services.authn import signals as authn_signals
 from byceps.services.email import email_config_service, email_service
 from byceps.services.email.models import NameAndAddress
 from byceps.services.global_setting import global_setting_service
 from byceps.services.user import user_service
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import PasswordResetToken
-from byceps.signals import authn as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated

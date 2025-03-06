@@ -10,8 +10,8 @@ from flask import g, request
 from flask_babel import gettext
 from secret_type import secret
 
+from byceps.services.authn import signals as authn_signals
 from byceps.services.user import user_service
-from byceps.signals import authn as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated

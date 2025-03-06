@@ -12,6 +12,7 @@ check-in at the door.
 """
 
 from byceps.services.authn.events import UserLoggedInEvent
+from byceps.services.authn.signals import user_logged_in
 from byceps.services.party.models import PartyID
 from byceps.services.site import site_service
 from byceps.services.ticketing import (
@@ -19,7 +20,6 @@ from byceps.services.ticketing import (
     ticket_user_checkin_service,
 )
 from byceps.services.user.models.user import User
-from byceps.signals.authn import user_logged_in
 from byceps.util.jobqueue import enqueue
 
 

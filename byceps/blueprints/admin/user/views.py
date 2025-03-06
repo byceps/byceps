@@ -14,6 +14,7 @@ from secret_type import secret
 
 from byceps.services.authn.password import authn_password_service
 from byceps.services.authn.session import authn_session_service
+from byceps.services.authn import signals as authn_signals
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import Permission, PermissionID, Role
 from byceps.services.country import country_service
@@ -30,7 +31,6 @@ from byceps.services.user import (
 )
 from byceps.services.user.models.user import UserFilter, UserForAdmin
 from byceps.services.user_badge import user_badge_awarding_service
-from byceps.signals import authn as authn_signals
 from byceps.signals import authz as authz_signals
 from byceps.signals import user as user_signals
 from byceps.util.authz import permission_registry
