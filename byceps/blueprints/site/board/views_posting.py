@@ -16,6 +16,7 @@ from byceps.services.board import (
     board_last_view_service,
     board_posting_command_service,
     board_posting_query_service,
+    signals as board_signals,
 )
 from byceps.services.board.errors import (
     ReactionDeniedError,
@@ -23,7 +24,6 @@ from byceps.services.board.errors import (
 )
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service
-from byceps.signals import board as board_signals
 from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated

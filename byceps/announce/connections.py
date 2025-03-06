@@ -19,6 +19,7 @@ from byceps.services.authz.events import (
     RoleAssignedToUserEvent,
     RoleDeassignedFromUserEvent,
 )
+from byceps.services.board import signals as board_signals
 from byceps.services.board.events import (
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -99,7 +100,6 @@ from byceps.services.user.events import (
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
-    board as board_signals,
     external_accounts as external_accounts_signals,
     guest_server as guest_server_signals,
     news as news_signals,

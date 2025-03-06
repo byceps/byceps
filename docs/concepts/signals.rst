@@ -35,7 +35,7 @@ the command line, e.g. for development and debugging).
 .. code-block:: python
 
     from byceps.services.board.events import BoardTopicCreatedEvent
-    from byceps.signals.board import topic_created
+    from byceps.services.board.signals import topic_created
 
     @topic_created.connect
     def celebrate_created_topic(sender, *, event: BoardTopicCreatedEvent = None) -> None:

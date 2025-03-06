@@ -20,12 +20,12 @@ from byceps.services.board import (
     board_posting_query_service,
     board_topic_command_service,
     board_topic_query_service,
+    signals as board_signals,
 )
 from byceps.services.board.models import TopicID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service
-from byceps.signals import board as board_signals
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import (
