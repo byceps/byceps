@@ -14,6 +14,7 @@ from blinker import NamedSignal
 
 from byceps.services.authn import signals as authn_signals
 from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.services.authz import signals as authz_signals
 from byceps.services.authz.events import (
     RoleAssignedToUserEvent,
     RoleDeassignedFromUserEvent,
@@ -98,7 +99,6 @@ from byceps.services.user.events import (
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
-    authz as authz_signals,
     board as board_signals,
     external_accounts as external_accounts_signals,
     guest_server as guest_server_signals,
