@@ -14,8 +14,10 @@ from urllib import parse
 from flask import current_app, g, redirect, request, url_for
 import httpx
 
-from byceps.services.external_accounts import external_accounts_service
-from byceps.signals import external_accounts as external_accounts_signals
+from byceps.services.external_accounts import (
+    external_accounts_service,
+    signals as external_accounts_signals,
+)
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.views import login_required, redirect_to, respond_no_content

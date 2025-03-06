@@ -34,6 +34,9 @@ from byceps.services.board.events import (
     BoardTopicUnpinnedEvent,
 )
 from byceps.services.core.events import _BaseEvent
+from byceps.services.external_accounts import (
+    signals as external_accounts_signals,
+)
 from byceps.services.external_accounts.events import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
@@ -100,7 +103,6 @@ from byceps.services.user.events import (
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
-    external_accounts as external_accounts_signals,
     guest_server as guest_server_signals,
     news as news_signals,
     newsletter as newsletter_signals,
