@@ -41,6 +41,7 @@ from byceps.services.external_accounts.events import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
 )
+from byceps.services.guest_server import signals as guest_server_signals
 from byceps.services.guest_server.events import (
     GuestServerApprovedEvent,
     GuestServerCheckedInEvent,
@@ -103,7 +104,6 @@ from byceps.services.user.events import (
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
-    guest_server as guest_server_signals,
     news as news_signals,
     newsletter as newsletter_signals,
     orga as orga_signals,

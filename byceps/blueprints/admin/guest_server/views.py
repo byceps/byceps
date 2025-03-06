@@ -16,6 +16,7 @@ from byceps.services.guest_server import (
     guest_server_domain_service,
     guest_server_export_service,
     guest_server_service,
+    signals as guest_server_signals,
 )
 from byceps.services.guest_server.models import (
     Address,
@@ -25,7 +26,6 @@ from byceps.services.guest_server.models import (
 )
 from byceps.services.party import party_service
 from byceps.services.user import user_service
-from byceps.signals import guest_server as guest_server_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated

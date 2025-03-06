@@ -12,7 +12,10 @@ from flask import abort, g, redirect, request
 from flask_babel import gettext
 
 from byceps.services.global_setting import global_setting_service
-from byceps.services.guest_server import guest_server_service
+from byceps.services.guest_server import (
+    guest_server_service,
+    signals as guest_server_signals,
+)
 from byceps.services.guest_server.errors import (
     PartyIsOverError,
     QuantityLimitReachedError,
@@ -21,7 +24,6 @@ from byceps.services.guest_server.errors import (
 from byceps.services.guest_server.models import Address, AddressData
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
-from byceps.signals import guest_server as guest_server_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
