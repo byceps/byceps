@@ -14,8 +14,8 @@ from flask_babel import gettext
 from byceps.services.newsletter import (
     newsletter_command_service,
     newsletter_service,
+    signals as newsletter_signals,
 )
-from byceps.signals import newsletter as newsletter_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.views import login_required, respond_no_content

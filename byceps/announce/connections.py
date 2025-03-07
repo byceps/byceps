@@ -50,6 +50,7 @@ from byceps.services.guest_server.events import (
 )
 from byceps.services.news import signals as news_signals
 from byceps.services.news.events import NewsItemPublishedEvent
+from byceps.services.newsletter import signals as newsletter_signals
 from byceps.services.newsletter.events import (
     SubscribedToNewsletterEvent,
     UnsubscribedFromNewsletterEvent,
@@ -105,7 +106,6 @@ from byceps.services.user.events import (
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
-    newsletter as newsletter_signals,
     orga as orga_signals,
     page as page_signals,
     shop as shop_signals,
