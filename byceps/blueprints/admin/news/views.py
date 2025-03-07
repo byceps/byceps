@@ -17,12 +17,12 @@ from byceps.services.news import (
     news_channel_service,
     news_image_service,
     news_item_service,
+    signals as news_signals,
 )
 from byceps.services.news.models import BodyFormat, NewsChannel
 from byceps.services.site import site_service
 from byceps.services.text_diff import text_diff_service
 from byceps.services.user import user_service
-from byceps.signals import news as news_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
