@@ -17,6 +17,7 @@ from pydantic import BaseModel, ValidationError
 from byceps.blueprints.api.decorators import api_token_required
 from byceps.services.orga_team import orga_team_service
 from byceps.services.tourney import (
+    signals as tourney_signals,
     tourney_match_comment_service,
     tourney_match_service,
 )
@@ -28,7 +29,6 @@ from byceps.services.tourney.models import (
 )
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
-from byceps.signals import tourney as tourney_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import respond_created, respond_no_content
 
