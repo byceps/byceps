@@ -10,7 +10,7 @@ from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
 from byceps.blueprints.site.page.templating import build_template_context
-from byceps.services.page import page_service
+from byceps.services.page import page_service, signals as page_signals
 from byceps.services.page.errors import (
     PageAlreadyExistsError,
     PageNotFoundError,
@@ -21,7 +21,6 @@ from byceps.services.site.models import Site, SiteID
 from byceps.services.site_navigation import site_navigation_service
 from byceps.services.text_diff import text_diff_service
 from byceps.services.user import user_service
-from byceps.signals import page as page_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
