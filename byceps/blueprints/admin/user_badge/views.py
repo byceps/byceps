@@ -12,10 +12,10 @@ from flask_babel import gettext
 from byceps.services.brand import brand_service
 from byceps.services.user import user_service
 from byceps.services.user_badge import (
+    signals as user_badge_signals,
     user_badge_awarding_service,
     user_badge_service,
 )
-from byceps.signals import user_badge as user_badge_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated

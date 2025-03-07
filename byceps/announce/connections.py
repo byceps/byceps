@@ -110,11 +110,9 @@ from byceps.services.user.events import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
+from byceps.services.user_badge import signals as user_badge_signals
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
-from byceps.signals import (
-    user_badge as user_badge_signals,
-)
 
 from .handlers import (
     authn as authn_handlers,
