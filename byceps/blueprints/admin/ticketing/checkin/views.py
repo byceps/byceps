@@ -20,6 +20,7 @@ from byceps.services.shop.order.models.order import AdminOrderListItem
 from byceps.services.shop.shop import shop_service
 from byceps.services.ticketing import (
     errors as ticketing_errors,
+    signals as ticketing_signals,
     ticket_service,
     ticket_user_checkin_service,
 )
@@ -27,7 +28,6 @@ from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.signals import ticketing as ticketing_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated

@@ -49,7 +49,7 @@ def order(
     return place_order(shop, storefront, orderer, products_with_quantity)
 
 
-@patch('byceps.signals.ticketing.tickets_sold.send')
+@patch('byceps.services.ticketing.signals.tickets_sold.send')
 def test_create_tickets(
     tickets_sold_signal_send_mock,
     admin_app: BycepsApp,

@@ -11,11 +11,13 @@ from byceps.services.party import party_service
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.errors import OrderNotPaidError
 from byceps.services.shop.order.models.order import OrderID
-from byceps.services.ticketing import ticket_category_service
+from byceps.services.ticketing import (
+    signals as ticketing_signals,
+    ticket_category_service,
+)
 from byceps.services.ticketing.events import TicketsSoldEvent
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user.models.user import User
-from byceps.signals import ticketing as ticketing_signals
 from byceps.util.result import Err, Ok, Result
 
 
