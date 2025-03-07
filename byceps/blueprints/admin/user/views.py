@@ -23,6 +23,7 @@ from byceps.services.shop.order import order_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.site import site_service
 from byceps.services.user import (
+    signals as user_signals,
     user_command_service,
     user_creation_service,
     user_deletion_service,
@@ -31,7 +32,6 @@ from byceps.services.user import (
 )
 from byceps.services.user.models.user import UserFilter, UserForAdmin
 from byceps.services.user_badge import user_badge_awarding_service
-from byceps.signals import user as user_signals
 from byceps.util.authz import permission_registry
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success

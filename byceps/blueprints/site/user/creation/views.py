@@ -18,8 +18,7 @@ from byceps.services.consent.models import ConsentSubject
 from byceps.services.newsletter import newsletter_command_service
 from byceps.services.newsletter.models import List as NewsletterList
 from byceps.services.site import site_setting_service
-from byceps.services.user import user_creation_service
-from byceps.signals import user as user_signals
+from byceps.services.user import signals as user_signals, user_creation_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated

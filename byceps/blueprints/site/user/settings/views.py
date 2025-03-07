@@ -16,11 +16,11 @@ from byceps.services.country import country_service
 from byceps.services.newsletter import newsletter_service
 from byceps.services.orga_team import orga_team_service
 from byceps.services.user import (
+    signals as user_signals,
     user_command_service,
     user_email_address_service,
     user_service,
 )
-from byceps.signals import user as user_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated

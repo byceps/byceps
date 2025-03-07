@@ -9,9 +9,8 @@ byceps.blueprints.site.user.avatar.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from byceps.services.user import user_avatar_service
+from byceps.services.user import signals as user_signals, user_avatar_service
 from byceps.services.user.models.user import User
-from byceps.signals import user as user_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated
