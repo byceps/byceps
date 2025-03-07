@@ -95,7 +95,7 @@ def order(
     'byceps.blueprints.site.shop.payment.stripe.views._check_transaction_against_order'
 )
 @patch('stripe.Webhook.construct_event')
-@patch('byceps.signals.shop.order_paid.send')
+@patch('byceps.services.shop.order.signals.order_paid.send')
 @patch(
     'byceps.services.shop.order.email.order_email_service.send_email_for_paid_order_to_orderer'
 )

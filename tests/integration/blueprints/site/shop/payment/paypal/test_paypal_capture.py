@@ -95,7 +95,7 @@ def order(
     'byceps.blueprints.site.shop.payment.paypal.views._parse_paypal_order_details'
 )
 @patch('byceps.blueprints.site.shop.payment.paypal.views.paypal.client.execute')
-@patch('byceps.signals.shop.order_paid.send')
+@patch('byceps.services.shop.order.signals.order_paid.send')
 @patch(
     'byceps.services.shop.order.email.order_email_service.send_email_for_paid_order_to_orderer'
 )

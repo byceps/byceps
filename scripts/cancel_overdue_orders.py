@@ -9,11 +9,14 @@ from datetime import timedelta
 import click
 from flask_babel import force_locale, gettext
 
-from byceps.services.shop.order import order_command_service, order_service
+from byceps.services.shop.order import (
+    order_command_service,
+    order_service,
+    signals as shop_order_signals,
+)
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import OrderAlreadyCanceledError
 from byceps.services.shop.order.models.order import Order
-from byceps.signals import shop as shop_signals
 from byceps.util.result import Err, Ok
 
 from _util import call_with_app_context
@@ -65,7 +68,7 @@ def _cancel_order(order, canceler, reason: str | None, notify: bool) -> None:
 
     match order_command_service.cancel_order(order.id, canceler, reason):
         case Ok((_, canceled_event)):
-            shop_signals.order_canceled.send(None, event=canceled_event)
+            shop_order_signals.order_canceled.send(None, event=canceled_event)
             click.secho(
                 f'Order {order.order_number} was successfully canceled.',
                 fg='green',

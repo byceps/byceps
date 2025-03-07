@@ -26,6 +26,7 @@ from byceps.services.shop.order import (
     order_command_service,
     order_payment_service,
     order_service,
+    signals as shop_order_signals,
 )
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import OrderAlreadyCanceledError
@@ -34,7 +35,6 @@ from byceps.services.shop.payment import payment_gateway_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront import storefront_service
 from byceps.services.user import user_service
-from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -246,7 +246,7 @@ def cancel(order_id):
 
     order_email_service.send_email_for_canceled_order_to_orderer(canceled_order)
 
-    shop_signals.order_canceled.send(None, event=event)
+    shop_order_signals.order_canceled.send(None, event=event)
 
     return redirect_to('.view', order_id=canceled_order.id)
 
@@ -371,7 +371,7 @@ def donate_everything(order_id):
 
     order_email_service.send_email_for_canceled_order_to_orderer(canceled_order)
 
-    shop_signals.order_canceled.send(None, event=event)
+    shop_order_signals.order_canceled.send(None, event=event)
 
     return redirect_to('.view', order_id=canceled_order.id)
 

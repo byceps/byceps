@@ -17,10 +17,13 @@ from pydantic import BaseModel, ValidationError
 import structlog
 
 from byceps.paypal import paypal
-from byceps.services.shop.order import order_command_service, order_service
+from byceps.services.shop.order import (
+    order_command_service,
+    order_service,
+    signals as shop_order_signals,
+)
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import Order
-from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.result import Err, Ok, Result
 from byceps.util.views import create_empty_json_response
@@ -154,4 +157,4 @@ def _mark_order_as_paid(
 
     order_email_service.send_email_for_paid_order_to_orderer(paid_order)
 
-    shop_signals.order_paid.send(None, event=event)
+    shop_order_signals.order_paid.send(None, event=event)

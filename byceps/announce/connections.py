@@ -66,6 +66,7 @@ from byceps.services.page.events import (
     PageDeletedEvent,
     PageUpdatedEvent,
 )
+from byceps.services.shop.order import signals as shop_order_signals
 from byceps.services.shop.order.events import (
     ShopOrderCanceledEvent,
     ShopOrderPaidEvent,
@@ -108,7 +109,6 @@ from byceps.services.user.events import (
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
-    shop as shop_signals,
     snippet as snippet_signals,
     ticketing as ticketing_signals,
     tourney as tourney_signals,
@@ -491,9 +491,9 @@ _SIGNALS: list[NamedSignal] = [
     page_signals.page_created,
     page_signals.page_deleted,
     page_signals.page_updated,
-    shop_signals.order_canceled,
-    shop_signals.order_paid,
-    shop_signals.order_placed,
+    shop_order_signals.order_canceled,
+    shop_order_signals.order_paid,
+    shop_order_signals.order_placed,
     snippet_signals.snippet_created,
     snippet_signals.snippet_deleted,
     snippet_signals.snippet_updated,

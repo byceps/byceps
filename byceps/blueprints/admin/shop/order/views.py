@@ -24,6 +24,7 @@ from byceps.services.shop.order import (
     order_log_service,
     order_sequence_service,
     order_service,
+    signals as shop_order_signals,
 )
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.errors import (
@@ -34,7 +35,6 @@ from byceps.services.shop.order.export import order_export_service
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop import shop_service
 from byceps.services.ticketing import ticket_service
-from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
@@ -392,7 +392,7 @@ def cancel(order_id):
     else:
         flash_notice(gettext('No email has been sent to the orderer.'))
 
-    shop_signals.order_canceled.send(None, event=event)
+    shop_order_signals.order_canceled.send(None, event=event)
 
     return redirect_to('.view', order_id=canceled_order.id)
 
@@ -458,7 +458,7 @@ def mark_as_paid(order_id):
 
     order_email_service.send_email_for_paid_order_to_orderer(paid_order)
 
-    shop_signals.order_paid.send(None, event=event)
+    shop_order_signals.order_paid.send(None, event=event)
 
     return redirect_to('.view', order_id=paid_order.id)
 

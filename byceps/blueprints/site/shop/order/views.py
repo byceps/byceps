@@ -16,7 +16,11 @@ from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.country import country_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.catalog import catalog_service
-from byceps.services.shop.order import order_checkout_service, order_service
+from byceps.services.shop.order import (
+    order_checkout_service,
+    order_service,
+    signals as shop_order_signals,
+)
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.product import product_domain_service, product_service
@@ -30,7 +34,6 @@ from byceps.services.shop.product.models import (
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront import storefront_service
 from byceps.services.user import user_service
-from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
@@ -392,7 +395,7 @@ def _place_order(storefront, orderer, cart) -> Result[Order, None]:
 
     order_email_service.send_email_for_incoming_order_to_orderer(order)
 
-    shop_signals.order_placed.send(None, event=event)
+    shop_order_signals.order_placed.send(None, event=event)
 
     return Ok(order)
 

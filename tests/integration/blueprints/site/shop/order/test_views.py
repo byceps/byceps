@@ -92,7 +92,7 @@ def product(make_product, admin_app: BycepsApp, shop: Shop) -> Product:
     return make_product(shop.id, total_quantity=5)
 
 
-@patch('byceps.signals.shop.order_placed.send')
+@patch('byceps.services.shop.order.signals.order_placed.send')
 @patch('byceps.blueprints.site.shop.order.views.order_email_service')
 def test_order(
     order_email_service_mock,
@@ -156,7 +156,7 @@ def test_order(
         )
 
 
-@patch('byceps.signals.shop.order_placed.send')
+@patch('byceps.services.shop.order.signals.order_placed.send')
 @patch('byceps.blueprints.site.shop.order.views.order_email_service')
 def test_order_single(
     order_email_service_mock,

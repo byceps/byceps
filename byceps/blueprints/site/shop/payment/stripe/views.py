@@ -22,11 +22,14 @@ from pydantic import BaseModel, ValidationError
 import stripe
 import structlog
 
-from byceps.services.shop.order import order_command_service, order_service
+from byceps.services.shop.order import (
+    order_command_service,
+    order_service,
+    signals as shop_order_signals,
+)
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import UserID
-from byceps.signals import shop as shop_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import create_empty_json_response
 
@@ -181,7 +184,7 @@ def _fulfill_order(session: stripe.checkout.Session):
 
     order_email_service.send_email_for_paid_order_to_orderer(paid_order)
 
-    shop_signals.order_paid.send(None, event=event)
+    shop_order_signals.order_paid.send(None, event=event)
 
 
 def _check_transaction_against_order(session, order):
