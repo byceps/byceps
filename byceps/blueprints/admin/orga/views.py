@@ -10,10 +10,13 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from byceps.services.brand import brand_service
-from byceps.services.orga import orga_birthday_service, orga_service
+from byceps.services.orga import (
+    orga_birthday_service,
+    orga_service,
+    signals as orga_signals,
+)
 from byceps.services.orga.models import Birthday
 from byceps.services.user import user_service
-from byceps.signals import orga as orga_signals
 from byceps.util.export import serialize_dicts_to_csv
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success

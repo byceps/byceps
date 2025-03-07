@@ -55,6 +55,7 @@ from byceps.services.newsletter.events import (
     SubscribedToNewsletterEvent,
     UnsubscribedFromNewsletterEvent,
 )
+from byceps.services.orga import signals as orga_signals
 from byceps.services.orga.events import (
     OrgaStatusGrantedEvent,
     OrgaStatusRevokedEvent,
@@ -106,7 +107,6 @@ from byceps.services.user.events import (
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
-    orga as orga_signals,
     page as page_signals,
     shop as shop_signals,
     snippet as snippet_signals,
