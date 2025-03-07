@@ -10,7 +10,7 @@ from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
 from byceps.blueprints.site.snippet.templating import get_rendered_snippet_body
-from byceps.services.snippet import snippet_service
+from byceps.services.snippet import snippet_service, signals as snippet_signals
 from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet.errors import (
     SnippetAlreadyExistsError,
@@ -19,7 +19,6 @@ from byceps.services.snippet.errors import (
 from byceps.services.snippet.models import SnippetScope
 from byceps.services.text_diff import text_diff_service
 from byceps.services.user import user_service
-from byceps.signals import snippet as snippet_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated

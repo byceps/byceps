@@ -72,6 +72,7 @@ from byceps.services.shop.order.events import (
     ShopOrderPaidEvent,
     ShopOrderPlacedEvent,
 )
+from byceps.services.snippet import signals as snippet_signals
 from byceps.services.snippet.events import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
@@ -109,7 +110,6 @@ from byceps.services.user.events import (
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from byceps.signals import (
-    snippet as snippet_signals,
     ticketing as ticketing_signals,
     tourney as tourney_signals,
     user as user_signals,
