@@ -1,6 +1,6 @@
 """
-byceps.permissions.jobs
-~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authn.permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,8 +12,9 @@ from byceps.util.authz import register_permissions
 
 
 register_permissions(
-    'jobs',
+    'authn_identity_tag',
     [
-        ('view', lazy_gettext('View jobs')),
+        ('administrate', lazy_gettext('Administrate user identity tags')),
+        ('view', lazy_gettext('View user identity tags')),
     ],
 )

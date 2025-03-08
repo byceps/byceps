@@ -1,6 +1,6 @@
 """
-byceps.permissions.brand
-~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.orga_presence.permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,10 +12,9 @@ from byceps.util.authz import register_permissions
 
 
 register_permissions(
-    'brand',
+    'orga_presence',
     [
-        ('create', lazy_gettext('Create brands')),
-        ('update', lazy_gettext('Edit brands')),
-        ('view', lazy_gettext('View brands')),
+        ('update', lazy_gettext('Edit orga presences')),
+        ('view', lazy_gettext('View orga presences')),
     ],
 )

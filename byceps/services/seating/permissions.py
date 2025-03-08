@@ -1,6 +1,6 @@
 """
-byceps.permissions.authn
-~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.seating.permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,9 +12,9 @@ from byceps.util.authz import register_permissions
 
 
 register_permissions(
-    'authn_identity_tag',
+    'seating',
     [
-        ('administrate', lazy_gettext('Administrate user identity tags')),
-        ('view', lazy_gettext('View user identity tags')),
+        ('administrate', lazy_gettext('Administrate seating')),
+        ('view', lazy_gettext('View seating administration')),
     ],
 )

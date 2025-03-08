@@ -1,6 +1,6 @@
 """
-byceps.permissions.orga_team
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.orga_team.permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

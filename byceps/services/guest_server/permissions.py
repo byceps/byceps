@@ -1,6 +1,6 @@
 """
-byceps.permission.timetable
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.guest_server.permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,9 +12,9 @@ from byceps.util.authz import register_permissions
 
 
 register_permissions(
-    'timetable',
+    'guest_server',
     [
-        ('administrate', lazy_gettext('Administrate timetables')),
-        ('update', lazy_gettext('Edit timetables')),
+        ('administrate', lazy_gettext('Administrate guest servers')),
+        ('view', lazy_gettext('View guest servers')),
     ],
 )

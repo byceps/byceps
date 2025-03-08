@@ -19,11 +19,18 @@ from byceps.services.user.models.user import UserID
 
 def load_permissions() -> None:
     """Load permissions from modules in the permissions package."""
-    pkg_name = 'byceps.permissions'
-    pkg_module = import_module(pkg_name)
-    mod_infos = pkgutil.iter_modules(pkg_module.__path__, prefix=f'{pkg_name}.')
-    for mod_info in mod_infos:
-        import_module(mod_info.name)
+    services_pkg_module = import_module('byceps.services')
+    services_pkg_name = services_pkg_module.__name__
+
+    service_mods = pkgutil.iter_modules(
+        services_pkg_module.__path__, prefix=f'{services_pkg_name}.'
+    )
+
+    for service_mod in service_mods:
+        try:
+            import_module(f'{service_mod.name}.permissions')
+        except ModuleNotFoundError:
+            pass
 
 
 def register_permissions(

@@ -1,5 +1,5 @@
 """
-byceps.permissions.orga_presence
+byceps.services.user.permissions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
@@ -12,9 +12,11 @@ from byceps.util.authz import register_permissions
 
 
 register_permissions(
-    'orga_presence',
+    'user',
     [
-        ('update', lazy_gettext('Edit orga presences')),
-        ('view', lazy_gettext('View orga presences')),
+        ('administrate', lazy_gettext('Administrate users')),
+        ('create', lazy_gettext('Create users')),
+        ('set_password', lazy_gettext('Set user passwords')),
+        ('view', lazy_gettext('View users')),
     ],
 )

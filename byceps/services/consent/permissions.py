@@ -1,6 +1,6 @@
 """
-byceps.permissions.api
-~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.consent.permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,8 +12,8 @@ from byceps.util.authz import register_permissions
 
 
 register_permissions(
-    'api',
+    'consent',
     [
-        ('administrate', lazy_gettext('Administrate API')),
+        ('administrate', lazy_gettext('Manage consents')),
     ],
 )

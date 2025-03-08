@@ -1,6 +1,6 @@
 """
-byceps.permissions.admin
-~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.timetable.permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,9 +12,9 @@ from byceps.util.authz import register_permissions
 
 
 register_permissions(
-    'admin',
+    'timetable',
     [
-        ('access', lazy_gettext('Access admin area')),
-        ('maintain', lazy_gettext('Carry out maintenance work')),
+        ('administrate', lazy_gettext('Administrate timetables')),
+        ('update', lazy_gettext('Edit timetables')),
     ],
 )

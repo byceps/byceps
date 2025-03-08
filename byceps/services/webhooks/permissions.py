@@ -1,6 +1,6 @@
 """
-byceps.permissions.guest_server
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.webhooks.permissions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,9 +12,9 @@ from byceps.util.authz import register_permissions
 
 
 register_permissions(
-    'guest_server',
+    'webhook',
     [
-        ('administrate', lazy_gettext('Administrate guest servers')),
-        ('view', lazy_gettext('View guest servers')),
+        ('administrate', lazy_gettext('Administrate webhooks')),
+        ('view', lazy_gettext('View webhooks')),
     ],
 )
