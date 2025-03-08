@@ -21,10 +21,9 @@ def load_permissions() -> None:
     """Load permissions from modules in the permissions package."""
     pkg_name = 'byceps.permissions'
     pkg_module = import_module(pkg_name)
-    mod_infos = pkgutil.iter_modules(pkg_module.__path__)
-    mod_names = {mod_info.name for mod_info in mod_infos}
-    for mod_name in mod_names:
-        import_module(f'{pkg_name}.{mod_name}')
+    mod_infos = pkgutil.iter_modules(pkg_module.__path__, prefix=f'{pkg_name}.')
+    for mod_info in mod_infos:
+        import_module(mod_info.name)
 
 
 def register_permissions(
