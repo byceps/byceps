@@ -191,7 +191,7 @@ def reset(token):
     if not form.validate():
         return reset_form(token, form)
 
-    password = form.new_password.data
+    password = secret(form.new_password.data)
 
     event = authn_password_reset_service.reset_password(reset_token, password)
 
