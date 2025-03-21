@@ -12,13 +12,16 @@ from collections.abc import Callable
 
 from blinker import NamedSignal
 
+from byceps.services.authn import announcing as authn_handlers
 from byceps.services.authn import signals as authn_signals
 from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.services.authz import announcing as authz_handlers
 from byceps.services.authz import signals as authz_signals
 from byceps.services.authz.events import (
     RoleAssignedToUserEvent,
     RoleDeassignedFromUserEvent,
 )
+from byceps.services.board import announcing as board_handlers
 from byceps.services.board import signals as board_signals
 from byceps.services.board.events import (
     BoardPostingCreatedEvent,
@@ -34,6 +37,7 @@ from byceps.services.board.events import (
     BoardTopicUnpinnedEvent,
 )
 from byceps.services.core.events import _BaseEvent
+from byceps.services.external_accounts import announcing as external_accounts_handlers
 from byceps.services.external_accounts import (
     signals as external_accounts_signals,
 )
@@ -41,6 +45,7 @@ from byceps.services.external_accounts.events import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
 )
+from byceps.services.guest_server import announcing as guest_server_handlers
 from byceps.services.guest_server import signals as guest_server_signals
 from byceps.services.guest_server.events import (
     GuestServerApprovedEvent,
@@ -48,41 +53,49 @@ from byceps.services.guest_server.events import (
     GuestServerCheckedOutEvent,
     GuestServerRegisteredEvent,
 )
+from byceps.services.news import announcing as news_handlers
 from byceps.services.news import signals as news_signals
 from byceps.services.news.events import NewsItemPublishedEvent
+from byceps.services.newsletter import announcing as newsletter_handler
 from byceps.services.newsletter import signals as newsletter_signals
 from byceps.services.newsletter.events import (
     SubscribedToNewsletterEvent,
     UnsubscribedFromNewsletterEvent,
 )
+from byceps.services.orga import announcing as orga_handlers
 from byceps.services.orga import signals as orga_signals
 from byceps.services.orga.events import (
     OrgaStatusGrantedEvent,
     OrgaStatusRevokedEvent,
 )
+from byceps.services.page import announcing as page_handlers
 from byceps.services.page import signals as page_signals
 from byceps.services.page.events import (
     PageCreatedEvent,
     PageDeletedEvent,
     PageUpdatedEvent,
 )
+from byceps.services.shop.order import announcing as shop_order_handlers
 from byceps.services.shop.order import signals as shop_order_signals
 from byceps.services.shop.order.events import (
     ShopOrderCanceledEvent,
     ShopOrderPaidEvent,
     ShopOrderPlacedEvent,
 )
+from byceps.services.snippet import announcing as snippet_handlers
 from byceps.services.snippet import signals as snippet_signals
 from byceps.services.snippet.events import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
     SnippetUpdatedEvent,
 )
+from byceps.services.ticketing import announcing as ticketing_handlers
 from byceps.services.ticketing import signals as ticketing_signals
 from byceps.services.ticketing.events import (
     TicketCheckedInEvent,
     TicketsSoldEvent,
 )
+from byceps.services.tourney import announcing as tourney_handlers
 from byceps.services.tourney import signals as tourney_signals
 from byceps.services.tourney.events import (
     TourneyCanceledEvent,
@@ -99,6 +112,7 @@ from byceps.services.tourney.events import (
     TourneyPausedEvent,
     TourneyStartedEvent,
 )
+from byceps.services.user import announcing as user_handlers
 from byceps.services.user import signals as user_signals
 from byceps.services.user.events import (
     UserAccountCreatedEvent,
@@ -110,27 +124,10 @@ from byceps.services.user.events import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
+from byceps.services.user_badge import announcing as user_badge_handlers
 from byceps.services.user_badge import signals as user_badge_signals
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
-
-from .handlers import (
-    authn as authn_handlers,
-    authz as authz_handlers,
-    board as board_handlers,
-    external_accounts as external_accounts_handlers,
-    guest_server as guest_server_handlers,
-    news as news_handlers,
-    newsletter as newsletter_handler,
-    orga as orga_handlers,
-    page as page_handlers,
-    shop_order as shop_order_handlers,
-    snippet as snippet_handlers,
-    ticketing as ticketing_handlers,
-    tourney as tourney_handlers,
-    user as user_handlers,
-    user_badge as user_badge_handlers,
-)
 
 
 AnnouncementEvent = type[_BaseEvent]

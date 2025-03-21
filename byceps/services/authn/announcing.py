@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.authn
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authn.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce authentication events.
 
@@ -14,8 +14,9 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import PasswordUpdatedEvent, UserLoggedInEvent
 
 
 @with_locale

@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.tourney
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.tourney.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce tourney events.
 
@@ -11,7 +11,9 @@ Announce tourney events.
 from flask_babel import gettext
 
 from byceps.announce.helpers import with_locale
-from byceps.services.tourney.events import (
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import (
     EventTourneyParticipant,
     TourneyCanceledEvent,
     TourneyFinishedEvent,
@@ -27,7 +29,6 @@ from byceps.services.tourney.events import (
     TourneyPausedEvent,
     TourneyStartedEvent,
 )
-from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 
 # -------------------------------------------------------------------- #

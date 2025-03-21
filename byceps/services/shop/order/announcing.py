@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.shop_order
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce shop order events.
 
@@ -14,13 +14,14 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.shop.order import order_service
-from byceps.services.shop.order.events import (
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from . import order_service
+from .events import (
     ShopOrderCanceledEvent,
     ShopOrderPaidEvent,
     ShopOrderPlacedEvent,
 )
-from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 
 @with_locale

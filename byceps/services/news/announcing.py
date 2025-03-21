@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.news
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.news.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce news events.
 
@@ -13,8 +13,9 @@ from functools import wraps
 from flask_babel import gettext
 
 from byceps.announce.helpers import matches_selectors, with_locale
-from byceps.services.news.events import NewsItemPublishedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import NewsItemPublishedEvent
 
 
 def apply_selectors(handler):

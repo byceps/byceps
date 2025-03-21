@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.user
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce user events.
 
@@ -14,7 +14,9 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.user.events import (
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import (
     UserAccountCreatedEvent,
     UserAccountDeletedEvent,
     UserAccountSuspendedEvent,
@@ -24,7 +26,6 @@ from byceps.services.user.events import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 
 @with_locale

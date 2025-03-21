@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.snippet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.snippet.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce snippet events.
 
@@ -14,13 +14,14 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.snippet.events import (
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
     SnippetUpdatedEvent,
 )
-from byceps.services.snippet.models import SnippetScope
-from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+from .models import SnippetScope
 
 
 @with_locale

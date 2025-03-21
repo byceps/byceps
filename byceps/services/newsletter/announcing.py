@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.newsletter
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.newsletter.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce newsletter events.
 
@@ -14,11 +14,9 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.newsletter.events import (
-    SubscribedToNewsletterEvent,
-    UnsubscribedFromNewsletterEvent,
-)
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import SubscribedToNewsletterEvent, UnsubscribedFromNewsletterEvent
 
 
 @with_locale

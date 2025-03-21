@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.authz
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authz.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce authorization events.
 
@@ -14,11 +14,9 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.authz.events import (
-    RoleAssignedToUserEvent,
-    RoleDeassignedFromUserEvent,
-)
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import RoleAssignedToUserEvent, RoleDeassignedFromUserEvent
 
 
 @with_locale

@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.orga
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.orga.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce orga events.
 
@@ -14,11 +14,9 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.orga.events import (
-    OrgaStatusGrantedEvent,
-    OrgaStatusRevokedEvent,
-)
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import OrgaStatusGrantedEvent, OrgaStatusRevokedEvent
 
 
 @with_locale

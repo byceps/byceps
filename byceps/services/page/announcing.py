@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.page
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.page.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce page events.
 
@@ -14,12 +14,9 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.page.events import (
-    PageCreatedEvent,
-    PageDeletedEvent,
-    PageUpdatedEvent,
-)
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import PageCreatedEvent, PageDeletedEvent, PageUpdatedEvent
 
 
 @with_locale

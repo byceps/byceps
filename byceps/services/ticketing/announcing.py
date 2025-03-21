@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.ticketing
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.ticketing.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce ticketing events.
 
@@ -15,12 +15,10 @@ from byceps.announce.helpers import (
     with_locale,
 )
 from byceps.services.party import party_service
-from byceps.services.ticketing import ticket_service
-from byceps.services.ticketing.events import (
-    TicketCheckedInEvent,
-    TicketsSoldEvent,
-)
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from . import ticket_service
+from .events import TicketCheckedInEvent, TicketsSoldEvent
 
 
 @with_locale

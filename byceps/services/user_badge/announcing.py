@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.user_badge
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_badge.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce user badge events.
 
@@ -14,8 +14,9 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import UserBadgeAwardedEvent
 
 
 @with_locale

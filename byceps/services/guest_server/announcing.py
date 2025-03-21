@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.guest_server
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.guest_server.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce guest server events.
 
@@ -14,13 +14,14 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.guest_server.events import (
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import (
     GuestServerApprovedEvent,
     GuestServerCheckedInEvent,
     GuestServerCheckedOutEvent,
     GuestServerRegisteredEvent,
 )
-from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 
 @with_locale

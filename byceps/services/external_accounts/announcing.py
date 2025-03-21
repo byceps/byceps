@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.external_accounts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.external_accounts.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce external account events.
 
@@ -14,11 +14,12 @@ from byceps.announce.helpers import (
     get_screen_name_or_fallback,
     with_locale,
 )
-from byceps.services.external_accounts.events import (
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
 )
-from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 
 @with_locale

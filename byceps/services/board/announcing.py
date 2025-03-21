@@ -1,6 +1,6 @@
 """
-byceps.announce.handlers.board
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.announcing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce board events.
 
@@ -17,7 +17,9 @@ from byceps.announce.helpers import (
     matches_selectors,
     with_locale,
 )
-from byceps.services.board.events import (
+from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+
+from .events import (
     _BoardEvent,
     BoardPostingCreatedEvent,
     BoardPostingHiddenEvent,
@@ -31,7 +33,6 @@ from byceps.services.board.events import (
     BoardTopicUnlockedEvent,
     BoardTopicUnpinnedEvent,
 )
-from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
 
 def apply_selectors(handler):
