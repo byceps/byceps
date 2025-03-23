@@ -25,27 +25,27 @@ def create_blueprint(name: str, import_name: str) -> Blueprint:
     )
 
 
-def get_blueprint(name: str) -> Blueprint:
+def get_blueprint(package_path: str) -> Blueprint:
     """Load the blueprint from the named module.
 
     The module is expected to be located inside the ``blueprints``
     sub-package and to contain a blueprint instance named ``blueprint``.
     """
-    module = _get_blueprint_views_module(name)
+    module = _get_blueprint_views_module(package_path)
     return module.blueprint
 
 
-def _get_blueprint_views_module(name: str) -> ModuleType:
+def _get_blueprint_views_module(package_path: str) -> ModuleType:
     """Import and return the 'views' module located in the specified
     blueprint package.
     """
-    return import_module(f'byceps.blueprints.{name}.views')
+    return import_module(f'byceps.blueprints.{package_path}.views')
 
 
 def register_blueprints(
     app: Flask | Blueprint, blueprints: Iterable[BlueprintReg]
 ) -> None:
     """Register blueprints on the application."""
-    for name, url_prefix in blueprints:
-        blueprint = get_blueprint(name)
+    for package_path, url_prefix in blueprints:
+        blueprint = get_blueprint(package_path)
         app.register_blueprint(blueprint, url_prefix=url_prefix)
