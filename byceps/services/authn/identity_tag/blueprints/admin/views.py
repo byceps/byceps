@@ -1,6 +1,6 @@
 """
-byceps.blueprints.admin.authn.identity_tag.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authn.identity_tag.blueprints.admin.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

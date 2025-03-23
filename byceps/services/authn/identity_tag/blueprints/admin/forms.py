@@ -1,6 +1,6 @@
 """
-byceps.blueprints.admin.authn.identity_tag.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authn.identity_tag.blueprints.admin.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

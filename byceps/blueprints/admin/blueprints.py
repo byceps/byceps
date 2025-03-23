@@ -23,7 +23,7 @@ def register_admin_blueprints(
         ('blueprints.admin.api', '/api'),
         ('services.attendance.blueprints.admin', '/attendance'),
         (
-            'blueprints.admin.authn.identity_tag',
+            'services.authn.identity_tag.blueprints.admin',
             '/authentication/identity_tags',
         ),
         ('blueprints.admin.authn.login', '/authentication'),
