@@ -21,7 +21,7 @@ def register_admin_blueprints(
 
     blueprints = common_blueprints + [
         ('blueprints.admin.api', '/api'),
-        ('blueprints.admin.attendance', '/attendance'),
+        ('services.attendance.blueprints.admin', '/attendance'),
         (
             'blueprints.admin.authn.identity_tag',
             '/authentication/identity_tags',
