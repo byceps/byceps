@@ -31,7 +31,7 @@ def register_admin_blueprints(
         ('services.board.blueprints.admin', '/boards'),
         ('services.brand.blueprints.admin', '/brands'),
         ('services.consent.blueprints.admin', '/consent'),
-        ('blueprints.admin.core', '/'),
+        ('services.core.blueprints.admin', '/'),
         ('blueprints.admin.dashboard', '/dashboard'),
         ('blueprints.admin.demo_data', '/demo_data'),
         ('blueprints.admin.gallery', '/galleries'),
