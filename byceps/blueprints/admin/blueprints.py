@@ -29,7 +29,7 @@ def register_admin_blueprints(
         ('services.authn.login.blueprints.admin', '/authentication'),
         ('services.authz.blueprints.admin', '/authorization'),
         ('services.board.blueprints.admin', '/boards'),
-        ('blueprints.admin.brand', '/brands'),
+        ('services.brand.blueprints.admin', '/brands'),
         ('blueprints.admin.consent', '/consent'),
         ('blueprints.admin.core', '/'),
         ('blueprints.admin.dashboard', '/dashboard'),
