@@ -26,7 +26,7 @@ def register_admin_blueprints(
             'services.authn.identity_tag.blueprints.admin',
             '/authentication/identity_tags',
         ),
-        ('blueprints.admin.authn.login', '/authentication'),
+        ('services.authn.login.blueprints.admin', '/authentication'),
         ('blueprints.admin.authz', '/authorization'),
         ('blueprints.admin.board', '/boards'),
         ('blueprints.admin.brand', '/brands'),
