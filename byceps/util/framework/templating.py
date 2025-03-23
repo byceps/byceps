@@ -71,9 +71,21 @@ def _get_template_name(
 
 def _derive_template_name(view_function: Callable) -> str:
     """Derive the template name from the view function's module and name."""
-    # Select segments between `byceps.blueprints.` and `.views`.
     module_package_name_segments = view_function.__module__.split('.')
-    blueprint_path_segments = module_package_name_segments[2:-1]
+
+    module_package_name_segments.pop(0)  # Remove leading segment `byceps`.
+    module_package_name_segments.pop()  # Remove trailing segment `views`.
+
+    discriminator = module_package_name_segments.pop(0)
+    match discriminator:
+        case 'blueprints':
+            blueprint_path_segments = module_package_name_segments
+        case 'services':
+            service = module_package_name_segments.pop()
+            module_package_name_segments.pop()  # Remove `blueprints`.
+            blueprint_path_segments = [service] + module_package_name_segments
+        case _:
+            raise ValueError('Unsupported package path')
 
     action_name = view_function.__name__
 
