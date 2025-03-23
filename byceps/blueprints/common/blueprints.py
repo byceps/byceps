@@ -13,14 +13,14 @@ def get_common_blueprints(
     *, style_guide_enabled: bool = False
 ) -> list[BlueprintReg]:
     blueprints = [
-        ('common.authn.password', '/authentication/password'),
-        ('common.core', None),
-        ('common.guest_server', None),
-        ('common.locale', '/locale'),
-        ('monitoring.healthcheck', '/health'),
+        ('blueprints.common.authn.password', '/authentication/password'),
+        ('blueprints.common.core', None),
+        ('blueprints.common.guest_server', None),
+        ('blueprints.common.locale', '/locale'),
+        ('blueprints.monitoring.healthcheck', '/health'),
     ]
 
     if style_guide_enabled:
-        blueprints.append(('common.style_guide', '/style_guide'))
+        blueprints.append(('blueprints.common.style_guide', '/style_guide'))
 
     return blueprints

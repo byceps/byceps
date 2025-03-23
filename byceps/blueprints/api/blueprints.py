@@ -12,7 +12,7 @@ from byceps.util.framework.blueprint import get_blueprint, register_blueprints
 
 
 def register_api_blueprints(app: Flask) -> None:
-    api_v1 = get_blueprint('api.v1')
+    api_v1 = get_blueprint('blueprints.api.v1')
 
     blueprints = [
         ('authn', '/authentication'),
@@ -26,7 +26,8 @@ def register_api_blueprints(app: Flask) -> None:
         ('user_badge', '/user_badges'),
     ]
     blueprints = [
-        (f'api.v1.{name}', url_prefix) for name, url_prefix in blueprints
+        (f'blueprints.api.v1.{name}', url_prefix)
+        for name, url_prefix in blueprints
     ]
 
     register_blueprints(api_v1, blueprints)
