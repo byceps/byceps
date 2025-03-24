@@ -40,7 +40,7 @@ def register_admin_blueprints(
         ('services.language.blueprints.admin', '/languages'),
         ('services.maintenance.blueprints.admin', '/maintenance'),
         ('blueprints.admin.more', '/more'),
-        ('blueprints.admin.news', '/news'),
+        ('services.news.blueprints.admin', '/news'),
         ('blueprints.admin.newsletter', '/newsletter'),
         ('blueprints.admin.orga', '/orgas'),
         ('blueprints.admin.orga_presence', '/presence'),
