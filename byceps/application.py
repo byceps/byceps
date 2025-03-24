@@ -18,7 +18,6 @@ from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from byceps.announce.announce import enable_announcements
 from byceps.blueprints.admin.blueprints import register_admin_blueprints
-from byceps.blueprints.admin.jobs.views import enable_rq_dashboard
 from byceps.blueprints.api.blueprints import register_api_blueprints
 from byceps.blueprints.site.blueprints import register_site_blueprints
 from byceps.config.converter import convert_config
@@ -40,6 +39,7 @@ from byceps.config.models import (
 )
 from byceps.database import db
 from byceps.paypal import paypal
+from byceps.services.jobs.blueprints.admin.views import enable_rq_dashboard
 from byceps.util import templatefilters
 from byceps.util.authz import load_permissions
 from byceps.util.framework.blueprint import get_blueprint

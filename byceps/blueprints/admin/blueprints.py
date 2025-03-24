@@ -36,7 +36,7 @@ def register_admin_blueprints(
         ('services.demo_data.blueprints.admin', '/demo_data'),
         ('services.gallery.blueprints.admin', '/galleries'),
         ('services.guest_server.blueprints.admin', '/guest_servers'),
-        ('blueprints.admin.jobs', '/jobs'),
+        ('services.jobs.blueprints.admin', '/jobs'),
         ('blueprints.admin.language', '/languages'),
         ('blueprints.admin.maintenance', '/maintenance'),
         ('blueprints.admin.more', '/more'),
