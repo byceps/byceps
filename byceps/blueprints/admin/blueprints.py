@@ -53,7 +53,7 @@ def register_admin_blueprints(
             'services.shop.cancellation_request.blueprints.admin',
             '/shop/cancellation_requests',
         ),
-        ('blueprints.admin.shop.catalog', '/shop/catalogs'),
+        ('services.shop.catalog.blueprints.admin', '/shop/catalogs'),
         ('blueprints.admin.shop.email', '/shop/email'),
         ('blueprints.admin.shop.order', '/shop/orders'),
         ('blueprints.admin.shop.payment', '/shop/payment'),
