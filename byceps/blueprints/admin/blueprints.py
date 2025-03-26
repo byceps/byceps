@@ -73,7 +73,7 @@ def register_admin_blueprints(
         ('services.tourney.category.blueprints.admin', '/tourney/categories'),
         ('services.tourney.tourney.blueprints.admin', '/tourney/tourneys'),
         ('services.user.blueprints.admin', '/users'),
-        ('blueprints.admin.user_badge', '/user_badges'),
+        ('services.user_badge.blueprints.admin', '/user_badges'),
         ('blueprints.admin.webhook', '/webhooks'),
     ]
 
