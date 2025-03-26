@@ -45,7 +45,7 @@ def register_admin_blueprints(
         ('services.orga.blueprints.admin', '/orgas'),
         ('services.orga_presence.blueprints.admin', '/presence'),
         ('services.orga_team.blueprints.admin', '/orga_teams'),
-        ('blueprints.admin.page', '/pages'),
+        ('services.page.blueprints.admin', '/pages'),
         ('blueprints.admin.party', '/parties'),
         ('blueprints.admin.seating', '/seating'),
         ('blueprints.admin.shop', None),
