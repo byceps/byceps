@@ -10,7 +10,6 @@ from flask import abort, g, request
 from flask_babel import gettext
 from moneyed import get_currency
 
-from byceps.blueprints.admin.shop.order.service import enrich_log_entry_data
 from byceps.services.brand import brand_service
 from byceps.services.shop.cancellation_request import (
     cancellation_request_service,
@@ -20,6 +19,7 @@ from byceps.services.shop.order import (
     order_payment_service,
     order_service,
 )
+from byceps.services.shop.order.blueprints.admin.service import enrich_log_entry_data
 from byceps.services.shop.order.models.log import OrderLogEntryData
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop import shop_service
