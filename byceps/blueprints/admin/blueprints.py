@@ -43,7 +43,7 @@ def register_admin_blueprints(
         ('services.news.blueprints.admin', '/news'),
         ('services.newsletter.blueprints.admin', '/newsletter'),
         ('services.orga.blueprints.admin', '/orgas'),
-        ('blueprints.admin.orga_presence', '/presence'),
+        ('services.orga_presence.blueprints.admin', '/presence'),
         ('blueprints.admin.orga_team', '/orga_teams'),
         ('blueprints.admin.page', '/pages'),
         ('blueprints.admin.party', '/parties'),
