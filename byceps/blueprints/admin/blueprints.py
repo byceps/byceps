@@ -62,7 +62,7 @@ def register_admin_blueprints(
         ('services.shop.shop.blueprints.admin', '/shop/shop'),
         ('services.shop.sold_products.blueprints.admin', '/shop/sold_products'),
         ('services.shop.storefront.blueprints.admin', '/shop/storefronts'),
-        ('blueprints.admin.site', '/sites'),
+        ('services.site.blueprints.admin', '/sites'),
         ('services.site.navigation.blueprints.admin', '/sites/navigation'),
         ('blueprints.admin.snippet', '/snippets'),
         ('blueprints.admin.ticketing', '/ticketing'),
