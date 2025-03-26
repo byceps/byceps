@@ -71,7 +71,7 @@ def register_admin_blueprints(
         ('services.timetable.blueprints.admin', '/timetables'),
         ('blueprints.admin.tourney', None),
         ('services.tourney.category.blueprints.admin', '/tourney/categories'),
-        ('blueprints.admin.tourney.tourney', '/tourney/tourneys'),
+        ('services.tourney.tourney.blueprints.admin', '/tourney/tourneys'),
         ('blueprints.admin.user', '/users'),
         ('blueprints.admin.user_badge', '/user_badges'),
         ('blueprints.admin.webhook', '/webhooks'),
