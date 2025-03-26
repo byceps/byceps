@@ -48,7 +48,7 @@ def register_admin_blueprints(
         ('services.page.blueprints.admin', '/pages'),
         ('services.party.blueprints.admin', '/parties'),
         ('services.seating.blueprints.admin', '/seating'),
-        ('blueprints.admin.shop', None),
+        ('services.shop.blueprints.admin', None),
         (
             'blueprints.admin.shop.cancellation_request',
             '/shop/cancellation_requests',
