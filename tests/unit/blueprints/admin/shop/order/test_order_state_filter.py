@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.blueprints.admin.shop.order.models import OrderStateFilter
+from byceps.services.shop.order.blueprints.admin.models import OrderStateFilter
 from byceps.services.shop.order.models.order import PaymentState
 
 
