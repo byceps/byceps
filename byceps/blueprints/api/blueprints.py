@@ -24,6 +24,7 @@ def register_api_blueprints(app: Flask) -> None:
         ('user', '/users'),
         ('user_avatar', '/user_avatars'),
         ('user_badge', '/user_badges'),
+        ('zammad', '/zammad'),
     ]
     blueprints = [
         (f'blueprints.api.v1.{name}', url_prefix)
