@@ -1,6 +1,6 @@
 """
-byceps.blueprints.site.board.views_posting
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.blueprints.site.views_posting
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

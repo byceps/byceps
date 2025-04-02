@@ -22,7 +22,7 @@ def register_site_blueprints(
     blueprints = common_blueprints + [
         ('services.attendance.blueprints.site', '/attendance'),
         ('services.authn.login.blueprints.site', '/authentication'),
-        ('blueprints.site.board', '/board'),
+        ('services.board.blueprints.site', '/board'),
         (
             'blueprints.site.connected_external_accounts.discord',
             '/connected_external_accounts/discord',
