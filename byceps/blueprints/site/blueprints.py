@@ -28,7 +28,7 @@ def register_site_blueprints(
             '/connected_external_accounts/discord',
         ),
         ('services.consent.blueprints.site', '/consent'),
-        ('blueprints.site.core', None),
+        ('services.core.blueprints.site', None),
         ('blueprints.site.dashboard', '/dashboard'),
         ('blueprints.site.gallery', '/galleries'),
         ('blueprints.site.guest_server', '/guest_servers'),
