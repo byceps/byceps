@@ -12,9 +12,9 @@ from collections.abc import Sequence
 
 from flask import abort, g
 
-from byceps.blueprints.site.guest_server.views import _sort_addresses
 from byceps.services.board.blueprints.site import service as board_helper_service
 from byceps.services.guest_server import guest_server_service
+from byceps.services.guest_server.blueprints.site.views import _sort_addresses
 from byceps.services.news import news_item_service
 from byceps.services.news.models import NewsHeadline
 from byceps.services.shop.order import order_service
