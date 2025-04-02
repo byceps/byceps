@@ -20,7 +20,7 @@ def register_site_blueprints(
     )
 
     blueprints = common_blueprints + [
-        ('blueprints.site.attendance', '/attendance'),
+        ('services.attendance.blueprints.site', '/attendance'),
         ('blueprints.site.authn.login', '/authentication'),
         ('blueprints.site.board', '/board'),
         (
