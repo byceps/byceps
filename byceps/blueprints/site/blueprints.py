@@ -33,7 +33,7 @@ def register_site_blueprints(
         ('services.gallery.blueprints.site', '/galleries'),
         ('services.guest_server.blueprints.site', '/guest_servers'),
         ('services.homepage.blueprints.site', '/'),
-        ('blueprints.site.news', '/news'),
+        ('services.news.blueprints.site', '/news'),
         ('blueprints.site.newsletter', '/newsletter'),
         ('blueprints.site.orga_team', '/orgas'),
         ('blueprints.site.page', None),
