@@ -1,10 +1,10 @@
 """
-byceps.blueprints.site.connected_external_accounts.discord.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.external_accounts.blueprints.site.discord.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Connector to Discord
 
-:Copyright: 2021-2023 Jan Korneffel
+:Copyright: 2021-2025 Jan Korneffel
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
