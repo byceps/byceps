@@ -29,7 +29,7 @@ def register_site_blueprints(
         ),
         ('services.consent.blueprints.site', '/consent'),
         ('services.core.blueprints.site', None),
-        ('blueprints.site.dashboard', '/dashboard'),
+        ('services.dashboard.blueprints.site', '/dashboard'),
         ('blueprints.site.gallery', '/galleries'),
         ('blueprints.site.guest_server', '/guest_servers'),
         ('blueprints.site.homepage', '/'),

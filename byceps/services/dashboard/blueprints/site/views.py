@@ -1,6 +1,6 @@
 """
-byceps.blueprints.site.dashboard.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.dashboard.blueprints.site.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Current user's dashboard
 
