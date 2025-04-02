@@ -30,7 +30,7 @@ def register_site_blueprints(
         ('services.consent.blueprints.site', '/consent'),
         ('services.core.blueprints.site', None),
         ('services.dashboard.blueprints.site', '/dashboard'),
-        ('blueprints.site.gallery', '/galleries'),
+        ('services.gallery.blueprints.site', '/galleries'),
         ('blueprints.site.guest_server', '/guest_servers'),
         ('blueprints.site.homepage', '/'),
         ('blueprints.site.news', '/news'),
