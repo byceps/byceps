@@ -49,7 +49,7 @@ def register_site_blueprints(
         ('services.timetable.blueprints.site', '/timetable'),
         ('services.tourney.blueprints.site', '/tourneys'),
         ('services.user.avatar.blueprints.site', '/users'),
-        ('blueprints.site.user.creation', '/users'),
+        ('services.user.creation.blueprints.site', '/users'),
         ('blueprints.site.user.current', '/users'),
         ('blueprints.site.user.settings', '/users/me/settings'),
         ('blueprints.site.user.email_address', '/users/email_address'),
