@@ -11,7 +11,6 @@ import dataclasses
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
-from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.board import (
     board_last_view_service,
     board_posting_command_service,
@@ -21,6 +20,9 @@ from byceps.services.board import (
 from byceps.services.board.errors import (
     ReactionDeniedError,
     ReactionExistsError,
+)
+from byceps.services.site.blueprints.site.navigation import (
+    subnavigation_for_view,
 )
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service

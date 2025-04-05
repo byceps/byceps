@@ -12,7 +12,6 @@ from flask import abort, g, request
 from flask_babel import gettext, format_percent
 from moneyed import Currency
 
-from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.country import country_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.catalog import catalog_service
@@ -33,6 +32,9 @@ from byceps.services.shop.product.models import (
 )
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront import storefront_service
+from byceps.services.site.blueprints.site.navigation import (
+    subnavigation_for_view,
+)
 from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success

@@ -11,9 +11,11 @@ from collections.abc import Iterable, Iterator
 
 from flask import abort, g
 
-from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.orga_team import orga_team_service
 from byceps.services.orga_team.models import PublicOrga
+from byceps.services.site.blueprints.site.navigation import (
+    subnavigation_for_view,
+)
 from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated

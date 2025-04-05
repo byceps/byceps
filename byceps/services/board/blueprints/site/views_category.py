@@ -9,11 +9,13 @@ byceps.services.board.blueprints.site.views_category
 from flask import abort, g, url_for
 from flask_babel import gettext
 
-from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.board import (
     board_category_query_service,
     board_last_view_service,
     board_topic_query_service,
+)
+from byceps.services.site.blueprints.site.navigation import (
+    subnavigation_for_view,
 )
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated

@@ -11,13 +11,15 @@ from typing import Any
 from flask import abort, g, request
 from flask_babel import gettext
 
-from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.seating import (
     seat_service,
     seating_area_service,
     seating_area_tickets_service,
 )
 from byceps.services.seating.models import Seat, SeatID, SeatingArea
+from byceps.services.site.blueprints.site.navigation import (
+    subnavigation_for_view,
+)
 from byceps.services.ticketing import (
     errors as ticketing_errors,
     ticket_seat_management_service,

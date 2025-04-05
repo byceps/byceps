@@ -8,10 +8,12 @@ byceps.services.news.blueprints.site.views
 
 from flask import abort, g
 
-from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.news import news_item_service
 from byceps.services.news.models import NewsChannelID, RenderedNewsItem
 from byceps.services.site import site_service, site_setting_service
+from byceps.services.site.blueprints.site.navigation import (
+    subnavigation_for_view,
+)
 from byceps.services.site.models import SiteID
 from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.blueprint import create_blueprint

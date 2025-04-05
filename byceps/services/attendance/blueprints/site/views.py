@@ -8,8 +8,10 @@ byceps.services.attendance.blueprints.site.views
 
 from flask import abort, g, request
 
-from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.attendance import attendance_service
+from byceps.services.site.blueprints.site.navigation import (
+    subnavigation_for_view,
+)
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 

@@ -43,7 +43,7 @@ def register_site_blueprints(
         ('blueprints.site.shop.orders', '/shop/orders'),
         ('blueprints.site.shop.payment.paypal', '/shop/payment/paypal'),
         ('blueprints.site.shop.payment.stripe', '/shop/payment/stripe'),
-        ('blueprints.site.site', None),
+        ('services.site.blueprints.site', None),
         ('blueprints.site.snippet', None),
         ('blueprints.site.ticketing', '/tickets'),
         ('blueprints.site.timetable', '/timetable'),

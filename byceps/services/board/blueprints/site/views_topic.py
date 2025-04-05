@@ -12,7 +12,6 @@ from datetime import datetime
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
-from byceps.blueprints.site.site.navigation import subnavigation_for_view
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
     board_category_query_service,
@@ -24,6 +23,9 @@ from byceps.services.board import (
 )
 from byceps.services.board.models import TopicID
 from byceps.services.orga_team import orga_team_service
+from byceps.services.site.blueprints.site.navigation import (
+    subnavigation_for_view,
+)
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service
 from byceps.util.framework.flash import flash_error, flash_success
