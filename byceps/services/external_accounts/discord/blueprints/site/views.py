@@ -1,5 +1,5 @@
 """
-byceps.services.external_accounts.blueprints.site.discord.views
+byceps.services.external_accounts.discord.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Connector to Discord
