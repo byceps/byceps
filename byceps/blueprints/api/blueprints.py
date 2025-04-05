@@ -6,13 +6,13 @@ byceps.application.blueprints.api.blueprints
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import Flask
+from flask import Blueprint, Flask
 
-from byceps.util.framework.blueprint import get_blueprint, register_blueprints
+from byceps.util.framework.blueprint import register_blueprints
 
 
 def register_api_blueprints(app: Flask) -> None:
-    api_v1 = get_blueprint('blueprints.api.v1')
+    api_v1 = Blueprint('v1', __name__)
 
     blueprints = [
         ('services.attendance.blueprints.api', '/attendances'),
