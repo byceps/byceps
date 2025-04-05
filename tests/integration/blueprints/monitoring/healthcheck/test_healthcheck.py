@@ -31,7 +31,7 @@ def test_healthcheck_ok(client):
     }
 
 
-@patch('byceps.blueprints.monitoring.healthcheck.views._is_rdbms_ok')
+@patch('byceps.services.healthcheck.blueprints.common.views._is_rdbms_ok')
 def test_healthcheck_fail(is_rdbms_ok_mock, client):
     expected_media_type = 'application/health+json'
 

@@ -17,7 +17,7 @@ def get_common_blueprints(
         ('services.core.blueprints.common', None),
         ('services.guest_server.blueprints.common', None),
         ('services.locale.blueprints.common', '/locale'),
-        ('blueprints.monitoring.healthcheck', '/health'),
+        ('services.healthcheck.blueprints.common', '/health'),
     ]
 
     if style_guide_enabled:
