@@ -39,7 +39,7 @@ def register_site_blueprints(
         ('services.page.blueprints.site', None),
         ('services.party_history.blueprints.site', '/party_history'),
         ('services.seating.blueprints.site', '/seating'),
-        ('blueprints.site.shop.order', '/shop'),
+        ('services.shop.order.blueprints.site', '/shop'),
         ('blueprints.site.shop.orders', '/shop/orders'),
         ('blueprints.site.shop.payment.paypal', '/shop/payment/paypal'),
         ('blueprints.site.shop.payment.stripe', '/shop/payment/stripe'),
