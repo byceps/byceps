@@ -1,6 +1,6 @@
 """
-byceps.blueprints.site.shop.payment.stripe.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.payment.stripe.blueprints.site.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2020 Jan Korneffel, Micha Ober
 :License: Revised BSD (see `LICENSE` file for details)

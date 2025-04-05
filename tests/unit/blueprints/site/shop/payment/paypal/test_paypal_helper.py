@@ -5,11 +5,6 @@ from moneyed import EUR, Money
 from paypalhttp import HttpResponse
 import pytest
 
-from byceps.blueprints.site.shop.payment.paypal.views import (
-    PayPalOrderDetails,
-    _check_transaction_against_order,
-    _parse_paypal_order_details,
-)
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import (
     Address,
@@ -18,6 +13,11 @@ from byceps.services.shop.order.models.order import (
     OrderID,
     OrderState,
     PaymentState,
+)
+from byceps.services.shop.payment.paypal.blueprints.site.views import (
+    PayPalOrderDetails,
+    _check_transaction_against_order,
+    _parse_paypal_order_details,
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID

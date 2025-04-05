@@ -92,7 +92,7 @@ def order(
 
 
 @patch(
-    'byceps.blueprints.site.shop.payment.stripe.views._check_transaction_against_order'
+    'byceps.services.shop.payment.stripe.blueprints.site.views._check_transaction_against_order'
 )
 @patch('stripe.Webhook.construct_event')
 @patch('byceps.services.shop.order.signals.order_paid.send')

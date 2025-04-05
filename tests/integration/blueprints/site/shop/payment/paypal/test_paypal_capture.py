@@ -5,13 +5,13 @@ from freezegun import freeze_time
 from paypalhttp import HttpError, HttpResponse
 import pytest
 
-from byceps.blueprints.site.shop.payment.paypal.views import PayPalOrderDetails
 from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.events import ShopOrderPaidEvent
 from byceps.services.shop.order.models.order import Order, Orderer, OrderID
+from byceps.services.shop.payment.paypal.blueprints.site.views import PayPalOrderDetails
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
@@ -89,12 +89,12 @@ def order(
 
 
 @patch(
-    'byceps.blueprints.site.shop.payment.paypal.views._check_transaction_against_order'
+    'byceps.services.shop.payment.paypal.blueprints.site.views._check_transaction_against_order'
 )
 @patch(
-    'byceps.blueprints.site.shop.payment.paypal.views._parse_paypal_order_details'
+    'byceps.services.shop.payment.paypal.blueprints.site.views._parse_paypal_order_details'
 )
-@patch('byceps.blueprints.site.shop.payment.paypal.views.paypal.client.execute')
+@patch('byceps.services.shop.payment.paypal.blueprints.site.views.paypal.client.execute')
 @patch('byceps.services.shop.order.signals.order_paid.send')
 @patch(
     'byceps.services.shop.order.email.order_email_service.send_email_for_paid_order_to_orderer'
@@ -148,12 +148,12 @@ def test_payment_success(
 
 
 @patch(
-    'byceps.blueprints.site.shop.payment.paypal.views._check_transaction_against_order'
+    'byceps.services.shop.payment.paypal.blueprints.site.views._check_transaction_against_order'
 )
 @patch(
-    'byceps.blueprints.site.shop.payment.paypal.views._parse_paypal_order_details'
+    'byceps.services.shop.payment.paypal.blueprints.site.views._parse_paypal_order_details'
 )
-@patch('byceps.blueprints.site.shop.payment.paypal.views.paypal.client.execute')
+@patch('byceps.services.shop.payment.paypal.blueprints.site.views.paypal.client.execute')
 def test_payment_manipulation_denied(
     paypal_client_mock,
     parse_paypal_order_details_mock,
@@ -177,7 +177,7 @@ def test_payment_manipulation_denied(
     assert not order_processed.is_paid
 
 
-@patch('byceps.blueprints.site.shop.payment.paypal.views.paypal.client.execute')
+@patch('byceps.services.shop.payment.paypal.blueprints.site.views.paypal.client.execute')
 def test_paypal_api_failure(
     paypal_client_mock, site_app, site: Site, order: Order
 ):

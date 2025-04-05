@@ -10,9 +10,6 @@ from types import SimpleNamespace
 from moneyed import EUR, Money
 import pytest
 
-from byceps.blueprints.site.shop.payment.stripe.views import (
-    _check_transaction_against_order,
-)
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import (
     Address,
@@ -21,6 +18,9 @@ from byceps.services.shop.order.models.order import (
     OrderID,
     OrderState,
     PaymentState,
+)
+from byceps.services.shop.payment.stripe.blueprints.site.views import (
+    _check_transaction_against_order,
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID

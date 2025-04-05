@@ -1,6 +1,6 @@
 """
-byceps.blueprints.site.shop.payment.paypal.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.payment.paypal.blueprints.site.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2020-2025 Jan Korneffel, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
