@@ -1,6 +1,6 @@
 """
-byceps.blueprints.api.v1.ticketing
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.ticketing.blueprints.api.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
