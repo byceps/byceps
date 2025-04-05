@@ -50,7 +50,7 @@ def register_site_blueprints(
         ('services.tourney.blueprints.site', '/tourneys'),
         ('services.user.avatar.blueprints.site', '/users'),
         ('services.user.creation.blueprints.site', '/users'),
-        ('blueprints.site.user.current', '/users'),
+        ('services.user.current.blueprints.site', '/users'),
         ('blueprints.site.user.settings', '/users/me/settings'),
         ('blueprints.site.user.email_address', '/users/email_address'),
         ('blueprints.site.user_profile', '/users'),
