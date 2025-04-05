@@ -14,7 +14,7 @@ def get_common_blueprints(
 ) -> list[BlueprintReg]:
     blueprints = [
         ('services.authn.password.blueprints.common', '/authentication/password'),
-        ('blueprints.common.core', None),
+        ('services.core.blueprints.common', None),
         ('blueprints.common.guest_server', None),
         ('blueprints.common.locale', '/locale'),
         ('blueprints.monitoring.healthcheck', '/health'),

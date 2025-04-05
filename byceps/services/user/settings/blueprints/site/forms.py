@@ -14,8 +14,8 @@ from secret_type import secret
 from wtforms import DateField, PasswordField, StringField, TelField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
-from byceps.blueprints.common.core.forms import ScreenNameValidator
 from byceps.services.authn.password import authn_password_service
+from byceps.services.core.blueprints.common.forms import ScreenNameValidator
 from byceps.services.user import screen_name_validator, user_service
 from byceps.util.l10n import LocalizedForm
 
