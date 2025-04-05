@@ -15,7 +15,7 @@ def get_common_blueprints(
     blueprints = [
         ('services.authn.password.blueprints.common', '/authentication/password'),
         ('services.core.blueprints.common', None),
-        ('blueprints.common.guest_server', None),
+        ('services.guest_server.blueprints.common', None),
         ('blueprints.common.locale', '/locale'),
         ('blueprints.monitoring.healthcheck', '/health'),
     ]
