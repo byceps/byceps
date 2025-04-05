@@ -1,6 +1,6 @@
 """
-byceps.blueprints.api.v1.tourney.match.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.tourney.match_comment.blueprints.api.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -39,7 +39,7 @@ from .models import (
 )
 
 
-blueprint = create_blueprint('tourney_match_comments_api', __name__)
+blueprint = create_blueprint('tourney_match_comment_api', __name__)
 
 
 @blueprint.get('/match_comments/<uuid:comment_id>')
