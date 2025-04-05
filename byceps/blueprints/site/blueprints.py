@@ -53,7 +53,7 @@ def register_site_blueprints(
         ('services.user.current.blueprints.site', '/users'),
         ('services.user.settings.blueprints.site', '/users/me/settings'),
         ('services.user.email_address.blueprints.site', '/users/email_address'),
-        ('blueprints.site.user_profile', '/users'),
+        ('services.user_profile.blueprints.site', '/users'),
         ('blueprints.site.user_badge', '/user_badges'),
         ('blueprints.site.user_group', '/user_groups'),
         ('blueprints.site.user_message', '/user_messages'),
