@@ -23,7 +23,7 @@ def register_api_blueprints(app: Flask) -> None:
         ('services.tourney.match_comment.blueprints.api', '/tourney'),
         ('services.user.blueprints.api', '/users'),
         ('services.user.avatar.blueprints.api', '/user_avatars'),
-        ('blueprints.api.v1.user_badge', '/user_badges'),
+        ('services.user_badge.blueprints.api', '/user_badges'),
     ]
 
     register_blueprints(api_v1, blueprints)
