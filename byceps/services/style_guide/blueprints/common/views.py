@@ -1,6 +1,6 @@
 """
-byceps.blueprints.common.style_guide.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.style_guide.blueprints.common.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

@@ -21,6 +21,6 @@ def get_common_blueprints(
     ]
 
     if style_guide_enabled:
-        blueprints.append(('blueprints.common.style_guide', '/style_guide'))
+        blueprints.append(('services.style_guide.blueprints.common', '/style_guide'))
 
     return blueprints
