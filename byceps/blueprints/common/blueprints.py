@@ -13,7 +13,7 @@ def get_common_blueprints(
     *, style_guide_enabled: bool = False
 ) -> list[BlueprintReg]:
     blueprints = [
-        ('blueprints.common.authn.password', '/authentication/password'),
+        ('services.authn.password.blueprints.common', '/authentication/password'),
         ('blueprints.common.core', None),
         ('blueprints.common.guest_server', None),
         ('blueprints.common.locale', '/locale'),
