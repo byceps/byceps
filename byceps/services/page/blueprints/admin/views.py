@@ -9,8 +9,10 @@ byceps.services.page.blueprints.admin.views
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
-from byceps.blueprints.site.page.templating import build_template_context
 from byceps.services.page import page_service, signals as page_signals
+from byceps.services.page.blueprints.site.templating import (
+    build_template_context,
+)
 from byceps.services.page.errors import (
     PageAlreadyExistsError,
     PageNotFoundError,

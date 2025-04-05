@@ -8,7 +8,7 @@ byceps.blueprints.site.site.views
 
 from flask import g, url_for
 
-from byceps.blueprints.site.page.templating import url_for_site_page
+from byceps.services.page.blueprints.site.templating import url_for_site_page
 from byceps.services.site_navigation import site_navigation_service
 from byceps.services.site_navigation.models import (
     NavItem,

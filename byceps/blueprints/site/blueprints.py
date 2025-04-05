@@ -36,7 +36,7 @@ def register_site_blueprints(
         ('services.news.blueprints.site', '/news'),
         ('services.newsletter.blueprints.site', '/newsletter'),
         ('services.orga_team.blueprints.site', '/orgas'),
-        ('blueprints.site.page', None),
+        ('services.page.blueprints.site', None),
         ('blueprints.site.party_history', '/party_history'),
         ('blueprints.site.seating', '/seating'),
         ('blueprints.site.shop.order', '/shop'),
