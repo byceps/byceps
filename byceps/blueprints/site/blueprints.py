@@ -51,12 +51,12 @@ def register_site_blueprints(
         ('services.user.avatar.blueprints.site', '/users'),
         ('services.user.creation.blueprints.site', '/users'),
         ('services.user.current.blueprints.site', '/users'),
-        ('services.user.settings.blueprints.site', '/users/me/settings'),
         ('services.user.email_address.blueprints.site', '/users/email_address'),
-        ('services.user_profile.blueprints.site', '/users'),
+        ('services.user.settings.blueprints.site', '/users/me/settings'),
         ('services.user_badge.blueprints.site', '/user_badges'),
         ('services.user_group.blueprints.site', '/user_groups'),
         ('services.user_message.blueprints.site', '/user_messages'),
+        ('services.user_profile.blueprints.site', '/users'),
     ]
 
     register_blueprints(app, blueprints)
