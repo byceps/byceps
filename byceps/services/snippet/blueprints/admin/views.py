@@ -9,8 +9,10 @@ byceps.services.snippet.blueprints.admin.views
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
-from byceps.blueprints.site.snippet.templating import get_rendered_snippet_body
 from byceps.services.snippet import snippet_service, signals as snippet_signals
+from byceps.services.snippet.blueprints.site.templating import (
+    get_rendered_snippet_body,
+)
 from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet.errors import (
     SnippetAlreadyExistsError,

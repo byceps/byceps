@@ -9,8 +9,10 @@ byceps.blueprints.api.v1.snippet.views
 from flask import jsonify
 
 from byceps.blueprints.api.decorators import api_token_required
-from byceps.blueprints.site.snippet.templating import get_rendered_snippet_body
 from byceps.services.snippet import snippet_service
+from byceps.services.snippet.blueprints.site.templating import (
+    get_rendered_snippet_body,
+)
 from byceps.services.snippet.models import SnippetScope
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import create_empty_json_response

@@ -12,13 +12,13 @@ from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
 import structlog
 
-from byceps.blueprints.site.snippet.templating import (
-    render_snippet_as_partial_from_template,
-)
 from byceps.services.page import page_service
 from byceps.services.page.models import Page, PageVersion
 from byceps.services.site_navigation import site_navigation_service
 from byceps.services.site_navigation.models import NavMenuID
+from byceps.services.snippet.blueprints.site.templating import (
+    render_snippet_as_partial_from_template,
+)
 from byceps.util.l10n import get_default_locale, get_locale_str
 from byceps.util.templating import load_template
 
