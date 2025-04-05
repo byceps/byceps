@@ -16,7 +16,7 @@ def register_api_blueprints(app: Flask) -> None:
 
     blueprints = [
         ('services.attendance.blueprints.api', '/attendances'),
-        ('blueprints.api.v1.authn', '/authentication'),
+        ('services.authn.api.blueprints.api', '/authentication'),
         ('blueprints.api.v1.snippet', '/snippets'),
         ('blueprints.api.v1.ticketing', '/ticketing'),
         ('blueprints.api.v1.tourney.avatar', '/tourney/avatars'),
