@@ -1,6 +1,6 @@
 """
-byceps.blueprints.site.ticketing.intranet_login_as_checkin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.ticketing.blueprints.site.intranet_login_as_checkin
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If a user logs in to a site with the check-in-on-login flag set, check
 in their ticket.
