@@ -76,7 +76,7 @@ dev = [
 ]
 docs = [
     "furo==2024.8.6",
-    "sphinx>=8.2.1",
+    "sphinx>=8.2.3",
 ]
 test = [
     "coverage>=7.6.11",
