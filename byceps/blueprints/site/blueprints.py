@@ -56,7 +56,7 @@ def register_site_blueprints(
         ('services.user_profile.blueprints.site', '/users'),
         ('services.user_badge.blueprints.site', '/user_badges'),
         ('services.user_group.blueprints.site', '/user_groups'),
-        ('blueprints.site.user_message', '/user_messages'),
+        ('services.user_message.blueprints.site', '/user_messages'),
     ]
 
     register_blueprints(app, blueprints)

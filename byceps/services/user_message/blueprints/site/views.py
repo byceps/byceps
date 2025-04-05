@@ -1,6 +1,6 @@
 """
-byceps.blueprints.site.user_message.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_message.blueprints.site.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Send messages from one user to another.
 
