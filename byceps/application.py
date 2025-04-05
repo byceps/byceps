@@ -99,7 +99,7 @@ def create_metrics_app(database_uri: str) -> BycepsApp:
 
     db.init_app(app)
 
-    blueprint = get_blueprint('blueprints.monitoring.metrics')
+    blueprint = get_blueprint('services.metrics.blueprints.metrics')
     app.register_blueprint(blueprint)
 
     return app

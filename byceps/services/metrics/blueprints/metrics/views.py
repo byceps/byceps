@@ -1,6 +1,6 @@
 """
-byceps.blueprints.monitoring.metrics
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.metrics.blueprints.metrics.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Metrics export for `Prometheus <https://prometheus.io/>`_
 
