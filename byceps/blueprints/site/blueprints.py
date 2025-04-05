@@ -52,7 +52,7 @@ def register_site_blueprints(
         ('services.user.creation.blueprints.site', '/users'),
         ('services.user.current.blueprints.site', '/users'),
         ('blueprints.site.user.settings', '/users/me/settings'),
-        ('blueprints.site.user.email_address', '/users/email_address'),
+        ('services.user.email_address.blueprints.site', '/users/email_address'),
         ('blueprints.site.user_profile', '/users'),
         ('blueprints.site.user_badge', '/user_badges'),
         ('blueprints.site.user_group', '/user_groups'),
