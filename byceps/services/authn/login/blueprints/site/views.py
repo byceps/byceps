@@ -12,7 +12,7 @@ from secret_type import secret
 
 from byceps.services.authn import signals as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_notice, flash_success
+from byceps.util.framework.flash import flash_notice
 from byceps.util.framework.templating import templated
 from byceps.util.views import redirect_to, respond_no_content
 
@@ -86,14 +86,7 @@ def log_in():
         else:
             abort(401, 'Authentication failed')
 
-    user, logged_in_event = log_in_result.unwrap()
-
-    flash_success(
-        gettext(
-            'Successfully logged in as %(screen_name)s.',
-            screen_name=user.screen_name,
-        )
-    )
+    _, logged_in_event = log_in_result.unwrap()
 
     authn_signals.user_logged_in.send(None, event=logged_in_event)
 
@@ -113,5 +106,4 @@ def log_out():
     """Log out user by deleting the corresponding cookie."""
     service.log_out_user(g.user, g.site)
 
-    flash_success(gettext('Successfully logged out.'))
     return redirect('/')

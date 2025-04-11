@@ -965,17 +965,6 @@ msgstr "Du bist bereits als Benutzer \"%(screen_name)s\" angemeldet."
 msgid "Login failed."
 msgstr "Die Anmeldung ist fehlgeschlagen."
 
-#: byceps/blueprints/admin/authn/login/views.py:77
-#: byceps/blueprints/site/authn/login/views.py:91
-#, python-format
-msgid "Successfully logged in as %(screen_name)s."
-msgstr "Erfolgreich eingeloggt als %(screen_name)s."
-
-#: byceps/blueprints/admin/authn/login/views.py:101
-#: byceps/blueprints/site/authn/login/views.py:115
-msgid "Successfully logged out."
-msgstr "Erfolgreich ausgeloggt."
-
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:5
 #: byceps/blueprints/admin/authn/login/templates/admin/authn/login/log_in_form.html:59
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:26
