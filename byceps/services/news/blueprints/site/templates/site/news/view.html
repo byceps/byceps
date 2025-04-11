@@ -21,7 +21,7 @@
 {% include 'site/news/_item.html' %}
 
   {%- if older_headline or newer_headline %}
-  <div class="row row--space-between">
+  <div class="row row--space-between row--wrap" style="gap: 2rem;">
 
     {%- if newer_headline %}
     <a href="{{ url_for('.view', slug=newer_headline.slug) }}" class="row disguised">
