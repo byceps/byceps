@@ -2060,17 +2060,17 @@ msgstr "Alle Marken"
 msgid "No active brands"
 msgstr "Keine aktiven Marken"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:6
-msgid "Active Parties"
-msgstr "Aktive Partys"
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_parties.html:6
+msgid "Current Parties"
+msgstr "Aktuelle Partys"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:9
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_parties.html:9
 msgid "All parties"
 msgstr "Alle Partys"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:21
-msgid "No active parties"
-msgstr "Keine aktiven Partys"
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_parties.html:21
+msgid "No current parties"
+msgstr "Keine aktuellen Partys"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:5
 msgid "Active Shops"

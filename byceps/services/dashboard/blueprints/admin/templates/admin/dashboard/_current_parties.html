@@ -3,7 +3,7 @@
 
 <div class="row row--space-between is-vcentered">
   <div>
-    <h2>{{ _('Active Parties') }}</h2>
+    <h2>{{ _('Current Parties') }}</h2>
   </div>
   <div>
     <a class="dashboard-section-link" href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) if brand|default else url_for('party_admin.index') }}">{{ _('All parties') }} &rarr;</a>
@@ -12,13 +12,13 @@
 
 <div class="grid">
 
-{%- if active_parties_with_stats %}
-  {%- for party, ticket_sale_stats, seat_utilization in active_parties_with_stats %}
+{%- if current_parties_with_stats %}
+  {%- for party, ticket_sale_stats, seat_utilization in current_parties_with_stats %}
   {{ render_party_cell(party, ticket_sale_stats, seat_utilization, show_brand_avatar=show_brand_avatar) }}
   {%- endfor %}
 {%- else %}
   {%- call render_cell() %}
-  <div style="display: grid; height: 100%; place-items: center;">{{ _('No active parties')|dim }}</div>
+  <div style="display: grid; height: 100%; place-items: center;">{{ _('No current parties')|dim }}</div>
   {%- endcall %}
 {%- endif %}
 

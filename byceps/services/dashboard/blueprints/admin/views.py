@@ -6,12 +6,14 @@ byceps.services.dashboard.blueprints.admin.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Iterable
 from datetime import date, timedelta
 
 from flask import abort
 
 from byceps.services.board import board_service
 from byceps.services.brand import brand_service
+from byceps.services.brand.models import Brand
 from byceps.services.consent import consent_subject_service
 from byceps.services.demo_data import demo_data_service
 from byceps.services.guest_server import (
@@ -22,6 +24,7 @@ from byceps.services.news import news_channel_service
 from byceps.services.orga import orga_birthday_service
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
+from byceps.services.party.models import Party, PartyWithBrand
 from byceps.services.seating import seat_service, seating_area_service
 from byceps.services.shop.order import order_service as shop_order_service
 from byceps.services.shop.shop import shop_service
@@ -44,14 +47,17 @@ def view_global():
     """View dashboard for global entities."""
     active_brands = brand_service.get_active_brands()
 
-    active_parties = party_service.get_active_parties(include_brands=True)
-    active_parties_with_stats = [
+    current_parties = _get_current_parties(active_brands)
+    current_parties_with_brand = _add_brands_to_parties(
+        current_parties, active_brands
+    )
+    current_parties_with_stats = [
         (
             party,
             ticket_service.get_ticket_sale_stats(party),
             seat_service.get_seat_utilization(party.id),
         )
-        for party in active_parties
+        for party in current_parties_with_brand
     ]
 
     all_brands_by_id = {
@@ -86,13 +92,33 @@ def view_global():
     return {
         'demo_data_exists': demo_data_exists,
         'active_brands': active_brands,
-        'active_parties_with_stats': active_parties_with_stats,
+        'current_parties_with_stats': current_parties_with_stats,
         'active_shops_with_brands_and_open_orders_counts': active_shops_with_brands_and_open_orders_counts,
         'recent_users': recent_users,
         'recent_users_count': recent_users_count,
         'uninitialized_user_count': uninitialized_user_count,
         'orgas_with_next_birthdays': orgas_with_next_birthdays,
     }
+
+
+def _get_current_parties(brands: Iterable[Brand]) -> list[Party]:
+    parties = (brand_service.find_current_party(brand.id) for brand in brands)
+    return [party for party in parties if party is not None]
+
+
+def _add_brands_to_parties(
+    parties: Iterable[Party], brands: Iterable[Brand]
+) -> list[PartyWithBrand]:
+    brands_by_id = {brand.id: brand for brand in brands}
+
+    parties_and_brands = (
+        (party, brands_by_id[party.brand_id]) for party in parties
+    )
+
+    return (
+        party_service.to_party_with_brand(party, brand)
+        for party, brand in parties_and_brands
+    )
 
 
 @blueprint.get('/brands/<brand_id>')
@@ -108,17 +134,19 @@ def view_brand(brand_id):
         brand_id=brand.id, include_brands=True
     )
 
-    active_parties = party_service.get_active_parties(
-        brand_id=brand.id, include_brands=True
-    )
-    active_parties_with_stats = [
-        (
-            party,
-            ticket_service.get_ticket_sale_stats(party),
-            seat_service.get_seat_utilization(party.id),
+    current_party = brand_service.find_current_party(brand.id)
+    if current_party:
+        current_party_with_brand = party_service.to_party_with_brand(
+            current_party, brand
         )
-        for party in active_parties
-    ]
+        current_party_with_stats = (
+            current_party_with_brand,
+            ticket_service.get_ticket_sale_stats(current_party),
+            seat_service.get_seat_utilization(current_party.id),
+        )
+        current_parties_with_stats = [current_party_with_stats]
+    else:
+        current_parties_with_stats = []
 
     active_news_channels = news_channel_service.get_channels_for_brand(
         brand.id, only_non_archived=True
@@ -145,7 +173,7 @@ def view_brand(brand_id):
     return {
         'brand': brand,
         'current_sites': current_sites,
-        'active_parties_with_stats': active_parties_with_stats,
+        'current_parties_with_stats': current_parties_with_stats,
         'active_news_channels': active_news_channels,
         'consent_subjects_with_consent_counts': consent_subjects_with_consent_counts,
         'shop': shop,
