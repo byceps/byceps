@@ -103,7 +103,9 @@ def view_global():
 
 def _get_current_parties(brands: Iterable[Brand]) -> list[Party]:
     parties = (brand_service.find_current_party(brand.id) for brand in brands)
-    return [party for party in parties if party is not None]
+    parties = [party for party in parties if party is not None]
+    parties.sort(key=lambda party: party.starts_at)
+    return parties
 
 
 def _add_brands_to_parties(
