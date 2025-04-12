@@ -1,0 +1,25 @@
+{% from 'macros/admin/dashboard.html' import render_cell, render_party_cell %}
+
+
+<div class="row row--space-between is-vcentered">
+  <div>
+    <h2>{{ _('Current Party') }}</h2>
+  </div>
+  <div>
+    <a class="dashboard-section-link" href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) if brand|default else url_for('party_admin.index') }}">{{ _('All parties') }} &rarr;</a>
+  </div>
+</div>
+
+<div class="grid">
+
+{%- if current_party_with_stats %}
+  {%- with party, ticket_sale_stats, seat_utilization = current_party_with_stats %}
+  {{ render_party_cell(party, ticket_sale_stats, seat_utilization, show_brand_avatar=show_brand_avatar) }}
+  {%- endwith %}
+{%- else %}
+  {%- call render_cell() %}
+  <div style="display: grid; height: 100%; place-items: center;">{{ _('No current party')|dim }}</div>
+  {%- endcall %}
+{%- endif %}
+
+</div>

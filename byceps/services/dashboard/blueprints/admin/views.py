@@ -146,9 +146,8 @@ def view_brand(brand_id):
             ticket_service.get_ticket_sale_stats(current_party),
             seat_service.get_seat_utilization(current_party.id),
         )
-        current_parties_with_stats = [current_party_with_stats]
     else:
-        current_parties_with_stats = []
+        current_party_with_stats = None
 
     active_news_channels = news_channel_service.get_channels_for_brand(
         brand.id, only_non_archived=True
@@ -175,7 +174,7 @@ def view_brand(brand_id):
     return {
         'brand': brand,
         'current_sites': current_sites,
-        'current_parties_with_stats': current_parties_with_stats,
+        'current_party_with_stats': current_party_with_stats,
         'active_news_channels': active_news_channels,
         'consent_subjects_with_consent_counts': consent_subjects_with_consent_counts,
         'shop': shop,
