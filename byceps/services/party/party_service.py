@@ -264,6 +264,10 @@ def _db_entity_to_party_with_brand(party_entity: DbParty) -> PartyWithBrand:
     party = _db_entity_to_party(party_entity)
     brand = brand_service._db_entity_to_brand(party_entity.brand)
 
+    return to_party_with_brand(party, brand)
+
+
+def to_party_with_brand(party: Party, brand: Brand) -> PartyWithBrand:
     party_tuple = dataclasses.astuple(party)
     brand_tuple = (brand,)
 
