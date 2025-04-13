@@ -24,7 +24,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
 
     if config.development is not None:
         yield 'STYLE_GUIDE_ENABLED', config.development.style_guide_enabled
-        yield 'DEBUG_TOOLBAR_ENABLED', config.development.toolbar_enabled
 
     yield 'TESTING', config.testing
 

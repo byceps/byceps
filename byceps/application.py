@@ -165,7 +165,8 @@ def _create_app(
     enable_announcements()
 
     debug_toolbar_enabled = (
-        app.config.get('DEBUG_TOOLBAR_ENABLED', False)
+        byceps_config.development
+        and byceps_config.development.toolbar_enabled
         and (app_mode.is_admin() or app_mode.is_site())
         and app.debug
     )
