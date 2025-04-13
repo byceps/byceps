@@ -147,8 +147,10 @@ def _create_app(
 
     app.byceps_feature_states['debug'] = app.debug
 
-    style_guide_enabled = app.config.get('STYLE_GUIDE_ENABLED', False) and (
-        app_mode.is_admin() or app_mode.is_site()
+    style_guide_enabled = (
+        byceps_config.development
+        and byceps_config.development.style_guide_enabled
+        and (app_mode.is_admin() or app_mode.is_site())
     )
     app.byceps_feature_states['style_guide'] = style_guide_enabled
 
