@@ -80,7 +80,7 @@ def test_convert_config():
         metrics=MetricsConfig(
             enabled=True,
         ),
-        payment_gateways={},
+        payment_gateways=None,
         redis=RedisConfig(
             url='redis://127.0.0.1:6379/0',
         ),
