@@ -71,10 +71,10 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
 
     yield 'SECRET_KEY', config.secret_key
 
-    yield 'SQLALCHEMY_DATABASE_URI', _build_database_url(config.database)
+    yield 'SQLALCHEMY_DATABASE_URI', assemble_database_uri(config.database)
 
 
-def _build_database_url(db_config: DatabaseConfig) -> str:
+def assemble_database_uri(db_config: DatabaseConfig) -> str:
     """Assemble SQLAlchemy database URL."""
     scheme = 'postgresql+psycopg'
     return f'{scheme}://{db_config.username}:{db_config.password}@{db_config.host}:{db_config.port}/{db_config.database}'

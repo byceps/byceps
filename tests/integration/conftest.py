@@ -19,6 +19,7 @@ from byceps.application import (
     create_site_app as _create_site_app,
 )
 from byceps.byceps_app import BycepsApp
+from byceps.config.converter import assemble_database_uri
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
@@ -154,8 +155,9 @@ def build_byceps_config(
 def database(database_config: DatabaseConfig):
     app = Flask('byceps')
 
-    db_uri = f'postgresql+psycopg://{database_config.username}:{database_config.password}@{database_config.host}:{database_config.port}/{database_config.database}'
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    app.config['SQLALCHEMY_DATABASE_URI'] = assemble_database_uri(
+        database_config
+    )
 
     db.init_app(app)
 
