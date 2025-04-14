@@ -5,6 +5,7 @@
 
 from datetime import datetime
 from decimal import Decimal
+from pathlib import Path
 from typing import Any
 
 from flask_babel import Babel
@@ -12,7 +13,17 @@ from moneyed import EUR, Money
 import pytest
 
 from byceps.byceps_app import BycepsApp
-from byceps.config.models import AppMode
+from byceps.config.models import (
+    AppMode,
+    AppsConfig,
+    BycepsConfig,
+    DatabaseConfig,
+    DevelopmentConfig,
+    JobsConfig,
+    MetricsConfig,
+    RedisConfig,
+    SmtpConfig,
+)
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import Party, PartyID
 from byceps.services.shop.order.models.order import Orderer
@@ -29,13 +40,65 @@ from tests.helpers import generate_token, generate_uuid
 
 
 @pytest.fixture(scope='session')
-def make_app():
+def make_byceps_config():
+    def _wrapper() -> BycepsConfig:
+        apps_config = AppsConfig(admin=None, api=None, sites=[])
+
+        return BycepsConfig(
+            data_path=Path('./data'),
+            locale='de',
+            propagate_exceptions=None,
+            testing=True,
+            timezone='Europe/Berlin',
+            secret_key='secret-key-for-testing-ONLY',
+            apps=apps_config,
+            database=DatabaseConfig(
+                host='127.0.0.1',
+                port=5432,
+                username='dbusername',
+                password='dbpassword',
+                database='database',
+            ),
+            development=DevelopmentConfig(
+                style_guide_enabled=False,
+                toolbar_enabled=False,
+            ),
+            discord=None,
+            invoiceninja=None,
+            jobs=JobsConfig(
+                asynchronous=False,
+            ),
+            metrics=MetricsConfig(
+                enabled=False,
+            ),
+            payment_gateways=None,
+            redis=RedisConfig(
+                url='redis://127.0.0.1:6379/0',
+            ),
+            smtp=SmtpConfig(
+                host='127.0.0.1',
+                port=25,
+                starttls=False,
+                use_ssl=False,
+                username=None,
+                password=None,
+                suppress_send=True,
+            ),
+        )
+
+    return _wrapper
+
+
+@pytest.fixture(scope='session')
+def make_app(make_byceps_config):
     def _wrapper(
         app_mode: AppMode,
         *,
         additional_config: dict[str, Any] | None = None,
     ) -> BycepsApp:
-        app = BycepsApp(app_mode)
+        byceps_config = make_byceps_config()
+
+        app = BycepsApp(app_mode, byceps_config)
 
         if additional_config is not None:
             app.config.from_mapping(additional_config)

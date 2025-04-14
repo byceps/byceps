@@ -99,7 +99,7 @@ def _create_app(
     """Create the actual Flask-based BYCEPS application."""
     app_mode = _get_app_mode(app_config)
 
-    app = BycepsApp(app_mode)
+    app = BycepsApp(app_mode, byceps_config)
 
     # Avoid connection errors after database becomes temporarily
     # unreachable, then becomes reachable again.

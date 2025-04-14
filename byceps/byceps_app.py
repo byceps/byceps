@@ -10,14 +10,15 @@ from flask import Flask
 from flask_babel import Babel
 from redis import Redis
 
-from byceps.config.models import AppMode
+from byceps.config.models import AppMode, BycepsConfig
 
 
 class BycepsApp(Flask):
-    def __init__(self, app_mode: AppMode) -> None:
+    def __init__(self, app_mode: AppMode, byceps_config: BycepsConfig) -> None:
         super().__init__('byceps')
 
         self.babel_instance: Babel
         self.byceps_app_mode: AppMode = app_mode
+        self.byceps_config: BycepsConfig = byceps_config
         self.byceps_feature_states: dict[str, bool] = {}
         self.redis_client: Redis
