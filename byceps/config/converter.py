@@ -48,8 +48,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'MAIL_USE_SSL', config.smtp.use_ssl
     yield 'MAIL_USERNAME', config.smtp.username
 
-    yield 'METRICS_ENABLED', config.metrics.enabled
-
     if config.payment_gateways is not None:
         paypal_config = config.payment_gateways.paypal
         if paypal_config and paypal_config.enabled:

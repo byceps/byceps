@@ -130,8 +130,7 @@ def _create_app(
     app.byceps_feature_states['debug'] = app.debug
 
     metrics_enabled = (
-        app.config.get('METRICS_ENABLED', False)
-        and app.byceps_app_mode.is_admin()
+        byceps_config.metrics.enabled and app.byceps_app_mode.is_admin()
     )
     app.byceps_feature_states['metrics'] = metrics_enabled
 
@@ -239,7 +238,6 @@ def _get_config_from_environment() -> dict[str, Any]:
     data = {}
 
     for key in (
-        'METRICS_ENABLED',
         'REDIS_URL',
         'SECRET_KEY',
         'SESSION_COOKIE_SECURE',
