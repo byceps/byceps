@@ -9,6 +9,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from wsgiref.types import WSGIApplication
 
+from flask import Flask
 from moneyed import EUR
 import pytest
 
@@ -21,7 +22,6 @@ from byceps.byceps_app import BycepsApp
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
-    AppMode,
     AppsConfig,
     BycepsConfig,
     DatabaseConfig,
@@ -152,7 +152,7 @@ def build_byceps_config(
 
 @pytest.fixture(scope='session')
 def database(database_config: DatabaseConfig):
-    app = BycepsApp(AppMode.cli)
+    app = Flask('byceps')
 
     db_uri = f'postgresql+psycopg://{database_config.username}:{database_config.password}@{database_config.host}:{database_config.port}/{database_config.database}'
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
