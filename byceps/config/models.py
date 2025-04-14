@@ -31,9 +31,6 @@ class AppMode(Enum):
     def is_cli(self) -> bool:
         return self == AppMode.cli
 
-    def is_metrics(self) -> bool:
-        return self == AppMode.metrics
-
     def is_site(self) -> bool:
         return self == AppMode.site
 

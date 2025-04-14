@@ -152,7 +152,7 @@ def build_byceps_config(
 
 @pytest.fixture(scope='session')
 def database(database_config: DatabaseConfig):
-    app = BycepsApp(AppMode.metrics)
+    app = BycepsApp(AppMode.cli)
 
     db_uri = f'postgresql+psycopg://{database_config.username}:{database_config.password}@{database_config.host}:{database_config.port}/{database_config.database}'
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

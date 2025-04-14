@@ -13,7 +13,10 @@ from byceps.util.framework.blueprint import register_blueprints
 
 
 def register_admin_blueprints(
-    app: Flask, *, style_guide_enabled: bool = False
+    app: Flask,
+    *,
+    metrics_enabled: bool = False,
+    style_guide_enabled: bool = False,
 ) -> None:
     common_blueprints = get_common_blueprints(
         style_guide_enabled=style_guide_enabled
@@ -76,5 +79,8 @@ def register_admin_blueprints(
         ('services.user_badge.blueprints.admin', '/user_badges'),
         ('services.webhooks.blueprints.admin', '/webhooks'),
     ]
+
+    if metrics_enabled:
+        blueprints.append(('services.metrics.blueprints.metrics', '/metrics'))
 
     register_blueprints(app, blueprints)

@@ -8,13 +8,11 @@ byceps.application
 
 from datetime import timedelta
 from typing import Any
-from wsgiref.types import WSGIApplication
 
 from flask_babel import Babel
 import jinja2
 from redis import Redis
 import structlog
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from byceps.announce.announce import enable_announcements
 from byceps.blueprints.admin.blueprints import register_admin_blueprints
@@ -42,7 +40,6 @@ from byceps.paypal import paypal
 from byceps.services.jobs.blueprints.admin.views import enable_rq_dashboard
 from byceps.util import templatefilters
 from byceps.util.authz import load_permissions
-from byceps.util.framework.blueprint import get_blueprint
 from byceps.util.l10n import get_current_user_locale
 from byceps.util.templating import SiteTemplateOverridesLoader
 
@@ -56,8 +53,6 @@ def create_admin_app(
     byceps_config: BycepsConfig, app_config: AdminAppConfig
 ) -> BycepsApp:
     app = _create_app(byceps_config, app_config)
-
-    _dispatch_apps_by_url_path(app)
 
     _log_app_state(app)
 
@@ -90,19 +85,6 @@ def create_cli_app(byceps_config: BycepsConfig) -> BycepsApp:
     app_config = CliAppConfig()
 
     return _create_app(byceps_config, app_config)
-
-
-def create_metrics_app(database_uri: str) -> BycepsApp:
-    app = BycepsApp(AppMode.metrics)
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
-
-    db.init_app(app)
-
-    blueprint = get_blueprint('services.metrics.blueprints.metrics')
-    app.register_blueprint(blueprint)
-
-    return app
 
 
 def create_worker_app(byceps_config: BycepsConfig) -> BycepsApp:
@@ -147,6 +129,12 @@ def _create_app(
 
     app.byceps_feature_states['debug'] = app.debug
 
+    metrics_enabled = (
+        app.config.get('METRICS_ENABLED', False)
+        and app.byceps_app_mode.is_admin()
+    )
+    app.byceps_feature_states['metrics'] = metrics_enabled
+
     style_guide_enabled = (
         byceps_config.development
         and byceps_config.development.style_guide_enabled
@@ -155,7 +143,11 @@ def _create_app(
     app.byceps_feature_states['style_guide'] = style_guide_enabled
 
     if app_mode.is_admin():
-        register_admin_blueprints(app, style_guide_enabled=style_guide_enabled)
+        register_admin_blueprints(
+            app,
+            metrics_enabled=metrics_enabled,
+            style_guide_enabled=style_guide_enabled,
+        )
         _enable_rq_dashboard(app)
     elif app_mode.is_site():
         register_site_blueprints(app, style_guide_enabled=style_guide_enabled)
@@ -290,22 +282,6 @@ def _init_site_app(app: BycepsApp) -> None:
     """Initialize site application."""
     # Incorporate site-specific template overrides.
     app.jinja_loader = SiteTemplateOverridesLoader()
-
-
-def _dispatch_apps_by_url_path(app: BycepsApp) -> None:
-    mounts: dict[str, WSGIApplication] = {}
-
-    metrics_enabled = (
-        app.config.get('METRICS_ENABLED', False)
-        and app.byceps_app_mode.is_admin()
-    )
-    if metrics_enabled:
-        metrics_app = create_metrics_app(app.config['SQLALCHEMY_DATABASE_URI'])
-        mounts['/metrics'] = metrics_app
-    app.byceps_feature_states['metrics'] = metrics_enabled
-
-    if mounts:
-        app.wsgi_app = DispatcherMiddleware(app.wsgi_app, mounts)
 
 
 def _enable_debug_toolbar(app: BycepsApp) -> None:
