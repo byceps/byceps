@@ -5,8 +5,8 @@
 
 import pytest
 
-from byceps.blueprints.api.decorators import _extract_token_from_request
 from byceps.byceps_app import BycepsApp
+from byceps.util.views import _get_bearer_token
 
 
 @pytest.mark.parametrize(
@@ -22,4 +22,4 @@ def test_extract_token_from_request(
     app: BycepsApp, header_value: str, expected: str
 ):
     with app.test_request_context(headers=[('Authorization', header_value)]):
-        assert _extract_token_from_request() == expected
+        assert _get_bearer_token() == expected
