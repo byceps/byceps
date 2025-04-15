@@ -81,10 +81,11 @@ def make_paid_order(placed_order: AdminDetailedOrder):
 def test_get_invoice_for_order_not_configured(
     placed_order: AdminDetailedOrder, admin_user: User
 ):
+    draft = True
     initiator = admin_user
 
     actual = invoiceninja_service.get_downloadable_invoice_for_order(
-        placed_order, draft=True, initiator=initiator
+        placed_order, draft, initiator
     )
 
     assert actual == Err(InvoiceProviderNotConfiguredError())
@@ -95,10 +96,11 @@ def test_get_invoice_for_order_not_enabled(
     placed_order: AdminDetailedOrder,
     admin_user: User,
 ):
+    draft = True
     initiator = admin_user
 
     actual = invoiceninja_service.get_downloadable_invoice_for_order(
-        placed_order, draft=True, initiator=initiator
+        placed_order, draft, initiator
     )
 
     assert actual == Err(InvoiceProviderNotEnabledError())
@@ -109,13 +111,14 @@ def test_get_invoice_for_free_order(
     make_paid_order,
     admin_user: User,
 ):
+    draft = True
     initiator = admin_user
 
     payment_method = 'free'
     paid_order = make_paid_order(payment_method, initiator)
 
     actual = invoiceninja_service.get_downloadable_invoice_for_order(
-        paid_order, draft=True, initiator=initiator
+        paid_order, draft, initiator
     )
 
     assert actual == Err(InvoiceDeniedForFreeOrderError())
@@ -127,6 +130,7 @@ def test_get_existing_invoice_for_order(
     make_paid_order,
     admin_user: User,
 ):
+    draft = True
     initiator = admin_user
 
     payment_method = 'bank_transfer'
@@ -165,7 +169,7 @@ def test_get_existing_invoice_for_order(
     )
 
     actual = invoiceninja_service.get_downloadable_invoice_for_order(
-        paid_order, draft=True, initiator=initiator
+        paid_order, draft, initiator
     )
 
     assert actual == Ok(
