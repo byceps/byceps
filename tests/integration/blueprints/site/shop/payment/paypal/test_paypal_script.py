@@ -76,14 +76,9 @@ def site(party: Party, storefront: Storefront) -> Site:
 def site_app(site, make_site_app):
     server_name = f'{site.id}.acmecon.test'
     app = make_site_app(server_name, site.id)
+    app.config['PAYPAL_CLIENT_ID'] = PAYPAL_CLIENT_ID
     with app.app_context():
         yield app
-
-
-@pytest.fixture(scope='module')
-def app(site_app):
-    site_app.config['PAYPAL_CLIENT_ID'] = PAYPAL_CLIENT_ID
-    yield site_app
 
 
 @pytest.fixture(scope='module')
@@ -138,10 +133,10 @@ def order(
     return order
 
 
-def test_render_paypal_script(request, app, order):
+def test_render_paypal_script(request, site_app, order):
     url = f'/shop/orders/{order.id!s}'
 
-    with http_client(app, user_id=order.placed_by.id) as client:
+    with http_client(site_app, user_id=order.placed_by.id) as client:
         response = client.get(url)
 
     filename = request.fspath.dirpath('paypal_script.html')
