@@ -15,9 +15,9 @@ from redis import Redis
 import structlog
 
 from byceps.announce.announce import enable_announcements
-from byceps.blueprints.admin.blueprints import register_admin_blueprints
-from byceps.blueprints.api.blueprints import register_api_blueprints
-from byceps.blueprints.site.blueprints import register_site_blueprints
+from byceps.blueprints.admin import register_admin_blueprints
+from byceps.blueprints.api import register_api_blueprints
+from byceps.blueprints.site import register_site_blueprints
 from byceps.config.converter import convert_config
 from byceps.config.errors import ConfigurationError
 from byceps.config.integration import (

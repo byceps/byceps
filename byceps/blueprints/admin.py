@@ -1,6 +1,6 @@
 """
-byceps.application.blueprints.admin.blueprints
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.application.blueprints.admin
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -8,8 +8,9 @@ byceps.application.blueprints.admin.blueprints
 
 from flask import Flask
 
-from byceps.blueprints.common.blueprints import get_common_blueprints
 from byceps.util.framework.blueprint import register_blueprints
+
+from .common import get_common_blueprints
 
 
 def register_admin_blueprints(
