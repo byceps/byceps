@@ -180,6 +180,10 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=DevelopmentConfig,
         required=False,
+        default=DevelopmentConfig(
+            style_guide_enabled=False,
+            toolbar_enabled=False,
+        ),
     ),
     Section(
         name='discord',

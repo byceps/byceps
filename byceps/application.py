@@ -131,10 +131,8 @@ def _create_app(
     )
     app.byceps_feature_states['metrics'] = metrics_enabled
 
-    style_guide_enabled = (
-        byceps_config.development
-        and byceps_config.development.style_guide_enabled
-        and (app_mode.is_admin() or app_mode.is_site())
+    style_guide_enabled = byceps_config.development.style_guide_enabled and (
+        app_mode.is_admin() or app_mode.is_site()
     )
     app.byceps_feature_states['style_guide'] = style_guide_enabled
 
@@ -155,8 +153,7 @@ def _create_app(
     enable_announcements()
 
     debug_toolbar_enabled = (
-        byceps_config.development
-        and byceps_config.development.toolbar_enabled
+        byceps_config.development.toolbar_enabled
         and (app_mode.is_admin() or app_mode.is_site())
         and app.debug
     )

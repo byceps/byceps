@@ -51,7 +51,7 @@ class BycepsConfig:
     secret_key: str
     apps: AppsConfig
     database: DatabaseConfig
-    development: DevelopmentConfig | None
+    development: DevelopmentConfig
     discord: DiscordConfig | None
     invoiceninja: InvoiceNinjaConfig | None
     jobs: JobsConfig

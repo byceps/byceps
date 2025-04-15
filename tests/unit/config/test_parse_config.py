@@ -202,7 +202,10 @@ def test_parse_config_defaults():
                 password='db-password',
                 database='db-database',
             ),
-            development=None,
+            development=DevelopmentConfig(
+                style_guide_enabled=False,
+                toolbar_enabled=False,
+            ),
             discord=None,
             invoiceninja=None,
             jobs=JobsConfig(
