@@ -9,7 +9,6 @@ byceps.services.user_badge.blueprints.api.views
 from flask import abort, request
 from pydantic import ValidationError
 
-from byceps.blueprints.api.decorators import api_token_required
 from byceps.services.user import user_service
 from byceps.services.user_badge import (
     signals as user_badge_signals,
@@ -17,7 +16,7 @@ from byceps.services.user_badge import (
     user_badge_service,
 )
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.views import respond_no_content
+from byceps.util.views import api_token_required, respond_no_content
 
 from .models import AwardBadgeToUserRequest
 

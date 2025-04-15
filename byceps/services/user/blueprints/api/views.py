@@ -9,14 +9,17 @@ byceps.services.user.blueprints.api.views
 from flask import abort, jsonify, request
 from pydantic import ValidationError
 
-from byceps.blueprints.api.decorators import api_token_required
 from byceps.services.user import (
     signals as user_signals,
     user_email_address_service,
     user_service,
 )
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.views import create_empty_json_response, respond_no_content
+from byceps.util.views import (
+    api_token_required,
+    create_empty_json_response,
+    respond_no_content,
+)
 
 from .models import InvalidateEmailAddressRequest
 

@@ -14,7 +14,6 @@ from typing import Any
 from flask import abort, jsonify, request, url_for
 from pydantic import BaseModel, ValidationError
 
-from byceps.blueprints.api.decorators import api_token_required
 from byceps.services.orga_team import orga_team_service
 from byceps.services.tourney import (
     signals as tourney_signals,
@@ -30,7 +29,11 @@ from byceps.services.tourney.models import (
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.views import respond_created, respond_no_content
+from byceps.util.views import (
+    api_token_required,
+    respond_created,
+    respond_no_content,
+)
 
 from .models import (
     CreateMatchCommentRequest,

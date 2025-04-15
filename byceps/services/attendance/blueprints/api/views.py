@@ -9,12 +9,11 @@ byceps.services.attendance.blueprints.api.views
 from flask import abort, request
 from pydantic import ValidationError
 
-from byceps.blueprints.api.decorators import api_token_required
 from byceps.services.party import party_service
 from byceps.services.ticketing import ticket_attendance_service
 from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.views import respond_no_content
+from byceps.util.views import api_token_required, respond_no_content
 
 from .models import CreateArchivedAttendanceRequest
 

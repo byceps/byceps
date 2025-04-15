@@ -8,10 +8,10 @@ byceps.services.authn.api.blueprints.api.views
 
 from flask import abort, jsonify, request
 
-from byceps.blueprints.api.decorators import api_token_required
 from byceps.services.authn.session import authn_session_service
 from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.views import api_token_required
 
 
 blueprint = create_blueprint('authn_api', __name__)
