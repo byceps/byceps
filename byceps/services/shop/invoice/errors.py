@@ -36,3 +36,8 @@ class InvoiceProviderConfigurationError(InvoiceError):
 @dataclass(frozen=True)
 class InvoiceProviderNotConfiguredError(InvoiceError):
     """Invoice provider is not configured."""
+
+
+@dataclass(frozen=True)
+class InvoiceProviderNotEnabledError(InvoiceError):
+    """Invoice provider is not enabled."""

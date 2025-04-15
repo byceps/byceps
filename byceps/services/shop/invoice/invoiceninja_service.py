@@ -23,6 +23,7 @@ from byceps.services.shop.invoice.errors import (
     InvoiceDownloadError,
     InvoiceError,
     InvoiceProviderNotConfiguredError,
+    InvoiceProviderNotEnabledError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import order_log_service
@@ -56,6 +57,9 @@ def get_downloadable_invoice_for_order(
     if config is None:
         return Err(InvoiceProviderNotConfiguredError())
 
+    if not config.enabled:
+        return Err(InvoiceProviderNotEnabledError())
+
     client = InvoiceNinjaHttpClient(config)
 
     invoice = client.get_or_create_invoice(order)
@@ -84,6 +88,7 @@ def get_downloadable_invoice_for_order(
 
 
 def _get_config() -> InvoiceNinjaConfig | None:
+    enabled = current_app.config.get('INVOICENINJA_ENABLED')
     base_url = current_app.config.get('INVOICENINJA_BASE_URL')
     api_key = current_app.config.get('INVOICENINJA_API_KEY')
 
@@ -92,7 +97,7 @@ def _get_config() -> InvoiceNinjaConfig | None:
         return None
 
     return InvoiceNinjaConfig(
-        enabled=True,
+        enabled=enabled,
         base_url=str(base_url),
         api_key=str(api_key),
     )

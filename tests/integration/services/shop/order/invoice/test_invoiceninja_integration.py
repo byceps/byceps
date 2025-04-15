@@ -9,6 +9,7 @@ from byceps.services.shop.invoice import invoiceninja_service
 from byceps.services.shop.invoice.errors import (
     InvoiceDeniedForFreeOrderError,
     InvoiceProviderNotConfiguredError,
+    InvoiceProviderNotEnabledError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import order_command_service, order_service
@@ -22,11 +23,26 @@ from tests.helpers.shop import place_order
 
 @pytest.fixture()
 def invoiceninja_config(admin_app):
+    admin_app.config['INVOICENINJA_ENABLED'] = True
     admin_app.config['INVOICENINJA_BASE_URL'] = 'https://invoiceninja.example'
     admin_app.config['INVOICENINJA_API_KEY'] = '12345'
 
     yield
 
+    admin_app.config['INVOICENINJA_ENABLED'] = None
+    admin_app.config.pop('INVOICENINJA_BASE_URL', None)
+    admin_app.config.pop('INVOICENINJA_API_KEY', None)
+
+
+@pytest.fixture()
+def invoiceninja_disabled_config(admin_app):
+    admin_app.config['INVOICENINJA_ENABLED'] = False
+    admin_app.config['INVOICENINJA_BASE_URL'] = 'https://invoiceninja.example'
+    admin_app.config['INVOICENINJA_API_KEY'] = '12345'
+
+    yield
+
+    admin_app.config['INVOICENINJA_ENABLED'] = None
     admin_app.config.pop('INVOICENINJA_BASE_URL', None)
     admin_app.config.pop('INVOICENINJA_API_KEY', None)
 
@@ -65,8 +81,6 @@ def make_paid_order(placed_order: AdminDetailedOrder):
 def test_get_invoice_for_order_not_configured(
     placed_order: AdminDetailedOrder, admin_user: User
 ):
-    # No Invoice Ninja configuration.
-
     initiator = admin_user
 
     actual = invoiceninja_service.get_downloadable_invoice_for_order(
@@ -74,6 +88,20 @@ def test_get_invoice_for_order_not_configured(
     )
 
     assert actual == Err(InvoiceProviderNotConfiguredError())
+
+
+def test_get_invoice_for_order_not_enabled(
+    invoiceninja_disabled_config,
+    placed_order: AdminDetailedOrder,
+    admin_user: User,
+):
+    initiator = admin_user
+
+    actual = invoiceninja_service.get_downloadable_invoice_for_order(
+        placed_order, draft=True, initiator=initiator
+    )
+
+    assert actual == Err(InvoiceProviderNotEnabledError())
 
 
 def test_get_invoice_for_free_order(

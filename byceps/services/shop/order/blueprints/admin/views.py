@@ -17,6 +17,7 @@ from byceps.services.shop.invoice.errors import (
     InvoiceError,
     InvoiceProviderConfigurationError,
     InvoiceProviderNotConfiguredError,
+    InvoiceProviderNotEnabledError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import (
@@ -207,6 +208,8 @@ def download_invoice(order_id):
                 )
             case InvoiceProviderNotConfiguredError():
                 abort(500, gettext('Invoice provider is not configured.'))
+            case InvoiceProviderNotEnabledError():
+                abort(500, gettext('Invoice provider is not enabled.'))
             case _:
                 abort(500)
 
