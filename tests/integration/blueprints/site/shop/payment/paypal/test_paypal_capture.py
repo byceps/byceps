@@ -11,7 +11,9 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.events import ShopOrderPaidEvent
 from byceps.services.shop.order.models.order import Order, Orderer, OrderID
-from byceps.services.shop.payment.paypal.blueprints.site.views import PayPalOrderDetails
+from byceps.services.shop.payment.paypal.blueprints.site.views import (
+    PayPalOrderDetails,
+)
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
@@ -94,7 +96,9 @@ def order(
 @patch(
     'byceps.services.shop.payment.paypal.blueprints.site.views._parse_paypal_order_details'
 )
-@patch('byceps.services.shop.payment.paypal.blueprints.site.views.paypal.client.execute')
+@patch(
+    'byceps.services.shop.payment.paypal.blueprints.site.views._get_paypal_order_details'
+)
 @patch('byceps.services.shop.order.signals.order_paid.send')
 @patch(
     'byceps.services.shop.order.email.order_email_service.send_email_for_paid_order_to_orderer'
@@ -102,7 +106,7 @@ def order(
 def test_payment_success(
     order_email_service_mock,
     order_paid_signal_send_mock,
-    paypal_client_mock,
+    get_paypal_order_details_mock,
     parse_paypal_order_details_mock,
     check_transaction_mock,
     site_app,
@@ -118,7 +122,7 @@ def test_payment_success(
         transaction_id='dummy-paypal-transaction-id',
     )
     check_transaction_mock.return_value = Ok(None)
-    paypal_client_mock.return_value = create_response(200)
+    get_paypal_order_details_mock.return_value = create_response_result(200)
 
     payment_state_updated_at = datetime.utcnow()
 
@@ -126,7 +130,7 @@ def test_payment_success(
         response = call_capture_api(site_app, order)
     assert response.status_code == 200
 
-    assert paypal_client_mock.call_count == 1
+    assert get_paypal_order_details_mock.call_count == 1
     assert check_transaction_mock.call_count == 1
     assert parse_paypal_order_details_mock.call_count == 1
 
@@ -153,9 +157,11 @@ def test_payment_success(
 @patch(
     'byceps.services.shop.payment.paypal.blueprints.site.views._parse_paypal_order_details'
 )
-@patch('byceps.services.shop.payment.paypal.blueprints.site.views.paypal.client.execute')
+@patch(
+    'byceps.services.shop.payment.paypal.blueprints.site.views._get_paypal_order_details'
+)
 def test_payment_manipulation_denied(
-    paypal_client_mock,
+    get_paypal_order_details_mock,
     parse_paypal_order_details_mock,
     check_transaction_mock,
     site_app,
@@ -165,35 +171,39 @@ def test_payment_manipulation_denied(
     assert not order.is_paid
 
     check_transaction_mock.return_value = Err({'status'})
-    paypal_client_mock.return_value = create_response(200)
+    get_paypal_order_details_mock.return_value = create_response_result(200)
 
     response = call_capture_api(site_app, order)
     assert response.status_code == 400
 
-    assert paypal_client_mock.call_count == 1
+    assert get_paypal_order_details_mock.call_count == 1
     assert check_transaction_mock.call_count == 1
 
     order_processed = get_order(order.id)
     assert not order_processed.is_paid
 
 
-@patch('byceps.services.shop.payment.paypal.blueprints.site.views.paypal.client.execute')
+@patch(
+    'byceps.services.shop.payment.paypal.blueprints.site.views._get_paypal_order_details'
+)
 def test_paypal_api_failure(
-    paypal_client_mock, site_app, site: Site, order: Order
+    get_paypal_order_details_mock, site_app, site: Site, order: Order
 ):
-    paypal_client_mock.side_effect = HttpError('Not found', 404, None)
+    get_paypal_order_details_mock.side_effect = HttpError(
+        'Not found', 404, None
+    )
 
     response = call_capture_api(site_app, order)
     assert response.status_code == 400
 
-    assert paypal_client_mock.call_count == 1
+    assert get_paypal_order_details_mock.call_count == 1
 
 
 # helpers
 
 
-def create_response(status_code: int):
-    return HttpResponse(
+def create_response_result(status_code: int):
+    response = HttpResponse(
         {
             'status_code': status_code,
             'result': {
@@ -202,6 +212,7 @@ def create_response(status_code: int):
         },
         status_code,
     )
+    return response.result
 
 
 def call_capture_api(app, order: Order):

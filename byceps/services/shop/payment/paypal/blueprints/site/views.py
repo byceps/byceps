@@ -9,14 +9,19 @@ byceps.services.shop.payment.paypal.blueprints.site.views
 from dataclasses import dataclass
 from uuid import UUID
 
-from flask import abort, g, jsonify, request
+from flask import abort, current_app, g, jsonify, request
+from paypalcheckoutsdk.core import (
+    LiveEnvironment,
+    PayPalHttpClient,
+    SandboxEnvironment,
+)
 from paypalcheckoutsdk.orders import OrdersGetRequest
 from paypalhttp import HttpError
 from paypalhttp.http_response import Result as HttpResult
 from pydantic import BaseModel, ValidationError
 import structlog
 
-from byceps.paypal import paypal
+from byceps.config.errors import ConfigurationError
 from byceps.services.shop.order import (
     order_command_service,
     order_service,
@@ -58,9 +63,8 @@ def capture_transaction():
     if not order or not order.is_open:
         return create_empty_json_response(400)
 
-    request = OrdersGetRequest(req.paypal_order_id)
     try:
-        paypal_result = paypal.client.execute(request).result
+        paypal_result = _get_paypal_order_details(req.paypal_order_id)
     except HttpError as e:
         log.error(
             'PayPal API returned unexpected response code',
@@ -93,6 +97,31 @@ def _parse_request() -> CapturePayPalRequest:
         return CapturePayPalRequest.model_validate(request.get_json())
     except ValidationError as e:
         abort(400, e.json())
+
+
+def _get_paypal_order_details(paypal_order_id: str) -> HttpResult:
+    client_id = current_app.config.get('PAYPAL_CLIENT_ID')
+    client_secret = current_app.config.get('PAYPAL_CLIENT_SECRET')
+
+    if client_id is not None and client_secret is None:
+        raise ConfigurationError(
+            'PayPal is enabled, but PAYPAL_CLIENT_SECRET is missing.'
+        )
+
+    if current_app.config.get('PAYPAL_ENVIRONMENT', 'sandbox') == 'live':
+        environment = LiveEnvironment(
+            client_id=client_id, client_secret=client_secret
+        )
+    else:
+        environment = SandboxEnvironment(
+            client_id=client_id, client_secret=client_secret
+        )
+
+    client = PayPalHttpClient(environment)
+
+    request = OrdersGetRequest(paypal_order_id)
+
+    return client.execute(request).result
 
 
 def _parse_paypal_order_details(result: HttpResult) -> PayPalOrderDetails:

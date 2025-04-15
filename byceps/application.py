@@ -36,7 +36,6 @@ from byceps.config.models import (
     WorkerAppConfig,
 )
 from byceps.database import db
-from byceps.paypal import paypal
 from byceps.services.jobs.blueprints.admin.views import enable_rq_dashboard
 from byceps.util import templatefilters
 from byceps.util.authz import load_permissions
@@ -122,8 +121,6 @@ def _create_app(
 
     # Initialize Redis client.
     app.redis_client = Redis.from_url(app.config['REDIS_URL'])
-
-    paypal.init_app(app)
 
     load_permissions()
 
