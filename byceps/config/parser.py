@@ -265,6 +265,10 @@ _SECTION_DEFINITIONS = [
         fields=[],
         config_class=PaymentGatewaysConfig,
         required=False,
+        default=PaymentGatewaysConfig(
+            paypal=None,
+            stripe=None,
+        ),
     ),
     Section(
         name='redis',

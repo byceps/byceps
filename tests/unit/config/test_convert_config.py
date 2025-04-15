@@ -14,6 +14,7 @@ from byceps.config.models import (
     InvoiceNinjaConfig,
     JobsConfig,
     MetricsConfig,
+    PaymentGatewaysConfig,
     RedisConfig,
     SmtpConfig,
 )
@@ -75,7 +76,10 @@ def test_convert_config():
         metrics=MetricsConfig(
             enabled=True,
         ),
-        payment_gateways=None,
+        payment_gateways=PaymentGatewaysConfig(
+            paypal=None,
+            stripe=None,
+        ),
         redis=RedisConfig(
             url='redis://127.0.0.1:6379/0',
         ),

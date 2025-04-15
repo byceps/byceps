@@ -214,7 +214,10 @@ def test_parse_config_defaults():
             metrics=MetricsConfig(
                 enabled=False,
             ),
-            payment_gateways=None,
+            payment_gateways=PaymentGatewaysConfig(
+                paypal=None,
+                stripe=None,
+            ),
             redis=RedisConfig(
                 url='redis://127.0.0.1:6379/0',
             ),

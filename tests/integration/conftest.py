@@ -29,6 +29,7 @@ from byceps.config.models import (
     DevelopmentConfig,
     JobsConfig,
     MetricsConfig,
+    PaymentGatewaysConfig,
     RedisConfig,
     SiteAppConfig,
     SmtpConfig,
@@ -137,7 +138,10 @@ def build_byceps_config(
         metrics=MetricsConfig(
             enabled=metrics_enabled,
         ),
-        payment_gateways=None,
+        payment_gateways=PaymentGatewaysConfig(
+            paypal=None,
+            stripe=None,
+        ),
         redis=redis_config,
         smtp=SmtpConfig(
             host='127.0.0.1',
