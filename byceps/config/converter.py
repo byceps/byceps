@@ -34,10 +34,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
         yield 'DISCORD_CLIENT_ID', config.discord.client_id
         yield 'DISCORD_CLIENT_SECRET', config.discord.client_secret
 
-    if (config.invoiceninja is not None) and config.invoiceninja.enabled:
-        yield 'INVOICENINJA_BASE_URL', config.invoiceninja.base_url
-        yield 'INVOICENINJA_API_KEY', config.invoiceninja.api_key
-
     yield 'JOBS_ASYNC', config.jobs.asynchronous
 
     yield 'MAIL_HOST', config.smtp.host

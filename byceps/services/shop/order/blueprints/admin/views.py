@@ -178,7 +178,9 @@ def download_invoice(order_id):
     draft_arg = request.args.get('mode', default='')
     is_draft = draft_arg == 'draft'
 
-    config = _get_invoiceninja_config()
+    config = current_app.byceps_config.invoiceninja
+    if config is None:
+        abort(500, gettext('Invoice provider is not configured.'))
 
     def serve_invoice(invoice: DownloadableInvoice) -> Response:
         response = Response(invoice.content, content_type=invoice.content_type)
@@ -219,21 +221,6 @@ def download_invoice(order_id):
         )
         .map(serve_invoice)
         .unwrap_or_else(serve_error)
-    )
-
-
-def _get_invoiceninja_config() -> InvoiceNinjaConfig:
-    enabled = current_app.config.get('INVOICENINJA_ENABLED')
-    base_url = current_app.config.get('INVOICENINJA_BASE_URL')
-    api_key = current_app.config.get('INVOICENINJA_API_KEY')
-
-    if not base_url and not api_key:
-        abort(500, gettext('Invoice provider is not configured.'))
-
-    return InvoiceNinjaConfig(
-        enabled=enabled,
-        base_url=str(base_url),
-        api_key=str(api_key),
     )
 
 

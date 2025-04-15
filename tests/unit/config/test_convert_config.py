@@ -21,8 +21,6 @@ from byceps.config.models import (
 
 def test_convert_config():
     expected = {
-        'INVOICENINJA_BASE_URL': 'https://invoiceninja.example',
-        'INVOICENINJA_API_KEY': 'invoiceninja-api-key',
         'JOBS_ASYNC': True,
         'LOCALE': 'de',
         'MAIL_HOST': 'localhost',
