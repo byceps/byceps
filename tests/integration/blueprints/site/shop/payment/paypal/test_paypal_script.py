@@ -27,6 +27,9 @@ from tests.helpers.shop import (
 )
 
 
+PAYPAL_CLIENT_ID = 'dummy-paypal-client-id'
+
+
 @pytest.fixture(scope='module')
 def shop(make_brand, make_shop, admin_user):
     brand = make_brand(title='NorthCon 2020')
@@ -79,7 +82,7 @@ def site_app(site, make_site_app):
 
 @pytest.fixture(scope='module')
 def app(site_app):
-    site_app.config['PAYPAL_CLIENT_ID'] = 'dummy-paypal-client-id'
+    site_app.config['PAYPAL_CLIENT_ID'] = PAYPAL_CLIENT_ID
     yield site_app
 
 
@@ -146,7 +149,7 @@ def test_render_paypal_script(request, app, order):
     expected_script_content_template = Template(template_source)
 
     expected_script_content = expected_script_content_template.substitute(
-        client_id=app.config['PAYPAL_CLIENT_ID'], order_id=order.id
+        client_id=PAYPAL_CLIENT_ID, order_id=order.id
     )
 
     body = response.get_data(as_text=True)
