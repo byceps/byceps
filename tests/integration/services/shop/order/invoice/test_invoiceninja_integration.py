@@ -5,10 +5,10 @@
 
 import pytest
 
+from byceps.config.models import InvoiceNinjaConfig
 from byceps.services.shop.invoice import invoiceninja_service
 from byceps.services.shop.invoice.errors import (
     InvoiceDeniedForFreeOrderError,
-    InvoiceProviderNotConfiguredError,
     InvoiceProviderNotEnabledError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
@@ -23,28 +23,20 @@ from tests.helpers.shop import place_order
 
 @pytest.fixture()
 def invoiceninja_config(admin_app):
-    admin_app.config['INVOICENINJA_ENABLED'] = True
-    admin_app.config['INVOICENINJA_BASE_URL'] = 'https://invoiceninja.example'
-    admin_app.config['INVOICENINJA_API_KEY'] = '12345'
-
-    yield
-
-    admin_app.config['INVOICENINJA_ENABLED'] = None
-    admin_app.config.pop('INVOICENINJA_BASE_URL', None)
-    admin_app.config.pop('INVOICENINJA_API_KEY', None)
+    return InvoiceNinjaConfig(
+        enabled=True,
+        base_url='https://invoiceninja.example',
+        api_key='12345',
+    )
 
 
 @pytest.fixture()
 def invoiceninja_disabled_config(admin_app):
-    admin_app.config['INVOICENINJA_ENABLED'] = False
-    admin_app.config['INVOICENINJA_BASE_URL'] = 'https://invoiceninja.example'
-    admin_app.config['INVOICENINJA_API_KEY'] = '12345'
-
-    yield
-
-    admin_app.config['INVOICENINJA_ENABLED'] = None
-    admin_app.config.pop('INVOICENINJA_BASE_URL', None)
-    admin_app.config.pop('INVOICENINJA_API_KEY', None)
+    return InvoiceNinjaConfig(
+        enabled=False,
+        base_url='https://invoiceninja.example',
+        api_key='12345',
+    )
 
 
 @pytest.fixture(scope='module')
@@ -78,19 +70,6 @@ def make_paid_order(placed_order: AdminDetailedOrder):
     return _wrapper
 
 
-def test_get_invoice_for_order_not_configured(
-    placed_order: AdminDetailedOrder, admin_user: User
-):
-    draft = True
-    initiator = admin_user
-
-    actual = invoiceninja_service.get_downloadable_invoice_for_order(
-        placed_order, draft, initiator
-    )
-
-    assert actual == Err(InvoiceProviderNotConfiguredError())
-
-
 def test_get_invoice_for_order_not_enabled(
     invoiceninja_disabled_config,
     placed_order: AdminDetailedOrder,
@@ -100,7 +79,7 @@ def test_get_invoice_for_order_not_enabled(
     initiator = admin_user
 
     actual = invoiceninja_service.get_downloadable_invoice_for_order(
-        placed_order, draft, initiator
+        placed_order, draft, initiator, invoiceninja_disabled_config
     )
 
     assert actual == Err(InvoiceProviderNotEnabledError())
@@ -118,7 +97,7 @@ def test_get_invoice_for_free_order(
     paid_order = make_paid_order(payment_method, initiator)
 
     actual = invoiceninja_service.get_downloadable_invoice_for_order(
-        paid_order, draft, initiator
+        paid_order, draft, initiator, invoiceninja_config
     )
 
     assert actual == Err(InvoiceDeniedForFreeOrderError())
@@ -169,7 +148,7 @@ def test_get_existing_invoice_for_order(
     )
 
     actual = invoiceninja_service.get_downloadable_invoice_for_order(
-        paid_order, draft, initiator
+        paid_order, draft, initiator, invoiceninja_config
     )
 
     assert actual == Ok(

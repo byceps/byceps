@@ -6,9 +6,10 @@ byceps.services.shop.order.blueprints.admin.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, request, Response
+from flask import abort, current_app, g, request, Response
 from flask_babel import gettext
 
+from byceps.config.models import InvoiceNinjaConfig
 from byceps.services.brand import brand_service
 from byceps.services.shop.invoice import order_invoice_service
 from byceps.services.shop.invoice.errors import (
@@ -16,7 +17,6 @@ from byceps.services.shop.invoice.errors import (
     InvoiceDownloadError,
     InvoiceError,
     InvoiceProviderConfigurationError,
-    InvoiceProviderNotConfiguredError,
     InvoiceProviderNotEnabledError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
@@ -178,6 +178,8 @@ def download_invoice(order_id):
     draft_arg = request.args.get('mode', default='')
     is_draft = draft_arg == 'draft'
 
+    config = _get_invoiceninja_config()
+
     def serve_invoice(invoice: DownloadableInvoice) -> Response:
         response = Response(invoice.content, content_type=invoice.content_type)
         response.headers['Content-Disposition'] = invoice.content_disposition
@@ -206,8 +208,6 @@ def download_invoice(order_id):
                         'The download of the invoice from the invoice provider failed.'
                     ),
                 )
-            case InvoiceProviderNotConfiguredError():
-                abort(500, gettext('Invoice provider is not configured.'))
             case InvoiceProviderNotEnabledError():
                 abort(500, gettext('Invoice provider is not enabled.'))
             case _:
@@ -215,10 +215,25 @@ def download_invoice(order_id):
 
     return (
         order_invoice_service.get_downloadable_invoice_for_order(
-            order, is_draft, g.user
+            order, is_draft, g.user, config
         )
         .map(serve_invoice)
         .unwrap_or_else(serve_error)
+    )
+
+
+def _get_invoiceninja_config() -> InvoiceNinjaConfig:
+    enabled = current_app.config.get('INVOICENINJA_ENABLED')
+    base_url = current_app.config.get('INVOICENINJA_BASE_URL')
+    api_key = current_app.config.get('INVOICENINJA_API_KEY')
+
+    if not base_url and not api_key:
+        abort(500, gettext('Invoice provider is not configured.'))
+
+    return InvoiceNinjaConfig(
+        enabled=enabled,
+        base_url=str(base_url),
+        api_key=str(api_key),
     )
 
 

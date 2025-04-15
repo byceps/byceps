@@ -8,6 +8,7 @@ byceps.services.shop.invoice.order_invoice_service
 
 from sqlalchemy import select
 
+from byceps.config.models import InvoiceNinjaConfig
 from byceps.database import db
 from byceps.services.shop.invoice.errors import InvoiceError
 from byceps.services.shop.invoice.models import DownloadableInvoice
@@ -73,12 +74,15 @@ def _db_entity_to_invoice(db_invoice: DbInvoice) -> Invoice:
 
 
 def get_downloadable_invoice_for_order(
-    order: AdminDetailedOrder, draft: bool, initiator: User
+    order: AdminDetailedOrder,
+    draft: bool,
+    initiator: User,
+    config: InvoiceNinjaConfig,
 ) -> Result[DownloadableInvoice, InvoiceError]:
     """Get a downloadable invoice for the order.
 
     Create it if it does not exist.
     """
     return invoiceninja_service.get_downloadable_invoice_for_order(
-        order, draft, initiator
+        order, draft, initiator, config
     )

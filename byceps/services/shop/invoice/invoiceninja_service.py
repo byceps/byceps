@@ -11,7 +11,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from flask import current_app
 from httpx import Client
 from moneyed import Money
 from urllib.parse import urljoin
@@ -22,7 +21,6 @@ from byceps.services.shop.invoice.errors import (
     InvoiceDeniedForFreeOrderError,
     InvoiceDownloadError,
     InvoiceError,
-    InvoiceProviderNotConfiguredError,
     InvoiceProviderNotEnabledError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
@@ -44,7 +42,10 @@ class InvoiceNinjaInvoice:
 
 
 def get_downloadable_invoice_for_order(
-    order: AdminDetailedOrder, draft: bool, initiator: User
+    order: AdminDetailedOrder,
+    draft: bool,
+    initiator: User,
+    config: InvoiceNinjaConfig,
 ) -> Result[DownloadableInvoice, InvoiceError]:
     """Get a downloadable invoice for the order.
 
@@ -52,10 +53,6 @@ def get_downloadable_invoice_for_order(
     """
     if order.payment_method == 'free':
         return Err(InvoiceDeniedForFreeOrderError())
-
-    config = _get_config()
-    if config is None:
-        return Err(InvoiceProviderNotConfiguredError())
 
     if not config.enabled:
         return Err(InvoiceProviderNotEnabledError())
@@ -85,22 +82,6 @@ def get_downloadable_invoice_for_order(
             )
 
     return client.download_invoice(invoice.invitation_key).map_err(lambda e: e)
-
-
-def _get_config() -> InvoiceNinjaConfig | None:
-    enabled = current_app.config.get('INVOICENINJA_ENABLED')
-    base_url = current_app.config.get('INVOICENINJA_BASE_URL')
-    api_key = current_app.config.get('INVOICENINJA_API_KEY')
-
-    if not base_url and not api_key:
-        # Not configured.
-        return None
-
-    return InvoiceNinjaConfig(
-        enabled=enabled,
-        base_url=str(base_url),
-        api_key=str(api_key),
-    )
 
 
 class InvoiceNinjaHttpClient:
