@@ -71,7 +71,7 @@ def send_email(
 
 def send(sender: str, recipients: list[str], subject: str, body: str) -> None:
     """Assemble and send e-mail."""
-    smtp_config = _load_smtp_config()
+    smtp_config = current_app.byceps_config.smtp
 
     if smtp_config.suppress_send:
         log.debug('Suppressing sending of email.')
@@ -81,20 +81,6 @@ def send(sender: str, recipients: list[str], subject: str, body: str) -> None:
 
     log.debug('Sending email.')
     _send_via_smtp(smtp_config, message)
-
-
-def _load_smtp_config() -> SmtpConfig:
-    app_config = current_app.config
-
-    return SmtpConfig(
-        host=app_config.get('MAIL_HOST', 'localhost'),
-        port=int(app_config.get('MAIL_PORT', 25)),
-        starttls=bool(app_config.get('MAIL_STARTTLS', False)),
-        use_ssl=bool(app_config.get('MAIL_USE_SSL', False)),
-        username=app_config.get('MAIL_USERNAME', None),
-        password=app_config.get('MAIL_PASSWORD', None),
-        suppress_send=app_config.get('MAIL_SUPPRESS_SEND', False),
-    )
 
 
 def _build_message(

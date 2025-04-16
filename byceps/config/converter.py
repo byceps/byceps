@@ -30,14 +30,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'SHOP_ORDER_EXPORT_TIMEZONE', timezone
     yield 'TIMEZONE', timezone
 
-    yield 'MAIL_HOST', config.smtp.host
-    yield 'MAIL_PASSWORD', config.smtp.password
-    yield 'MAIL_PORT', config.smtp.port
-    yield 'MAIL_STARTTLS', config.smtp.starttls
-    yield 'MAIL_SUPPRESS_SEND', config.smtp.suppress_send
-    yield 'MAIL_USE_SSL', config.smtp.use_ssl
-    yield 'MAIL_USERNAME', config.smtp.username
-
     # Skip property if not explicitly set (i.e. value is `None`). In
     # this case, Flask will propagate if debug mode or testing mode is
     # enabled.

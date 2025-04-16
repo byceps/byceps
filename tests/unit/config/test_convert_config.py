@@ -23,13 +23,6 @@ from byceps.config.models import (
 def test_convert_config():
     expected = {
         'LOCALE': 'de',
-        'MAIL_HOST': 'localhost',
-        'MAIL_PASSWORD': 'smtppass',
-        'MAIL_PORT': 25,
-        'MAIL_STARTTLS': True,
-        'MAIL_SUPPRESS_SEND': False,
-        'MAIL_USE_SSL': False,
-        'MAIL_USERNAME': 'smtpuser',
         'PATH_DATA': Path('./data'),
         'PROPAGATE_EXCEPTIONS': True,
         'REDIS_URL': 'redis://127.0.0.1:6379/0',
