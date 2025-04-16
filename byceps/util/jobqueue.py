@@ -17,19 +17,21 @@ from datetime import datetime, UTC
 from flask import current_app
 from rq import Queue
 
+from byceps.byceps_app import BycepsApp
 
-def get_queue(app):
+
+def get_queue(app: BycepsApp) -> Queue:
     is_async = app.config.get('JOBS_ASYNC', True)
     return Queue(connection=app.redis_client, is_async=is_async)
 
 
-def enqueue(func: Callable, *args, **kwargs):
+def enqueue(func: Callable, *args, **kwargs) -> None:
     """Add the function call to the queue as a job."""
     queue = get_queue(current_app)
     queue.enqueue(func, *args, **kwargs)
 
 
-def enqueue_at(dt: datetime, func: Callable, *args, **kwargs):
+def enqueue_at(dt: datetime, func: Callable, *args, **kwargs) -> None:
     """Add the function call to the queue as a job to be executed at the
     specific time.
     """
