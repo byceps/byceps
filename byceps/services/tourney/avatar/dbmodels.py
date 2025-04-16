@@ -72,7 +72,7 @@ class DbTourneyAvatar(db.Model):
     @property
     def path(self) -> Path:
         path = (
-            current_app.config['PATH_DATA']
+            current_app.byceps_config.data_path
             / 'parties'
             / self.party_id
             / 'tourney'

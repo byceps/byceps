@@ -23,7 +23,6 @@ from byceps.config.models import (
 def test_convert_config():
     expected = {
         'LOCALE': 'de',
-        'PATH_DATA': Path('./data'),
         'PROPAGATE_EXCEPTIONS': True,
         'REDIS_URL': 'redis://127.0.0.1:6379/0',
         'SECRET_KEY': '<RANDOM-BYTES>',

@@ -39,7 +39,7 @@ def import_images_in_gallery_path(gallery: Gallery) -> None:
 
 
 def _get_gallery_filesystem_path(gallery: Gallery) -> Path:
-    data_path = current_app.config['PATH_DATA']
+    data_path = current_app.byceps_config.data_path
     return data_path / 'brands' / gallery.brand_id / 'galleries' / gallery.slug
 
 

@@ -75,7 +75,7 @@ def create_image(
     db.session.commit()
 
     path = (
-        current_app.config['PATH_DATA']
+        current_app.byceps_config.data_path
         / 'global'
         / 'news_channels'
         / item.channel.id

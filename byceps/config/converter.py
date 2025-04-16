@@ -20,8 +20,6 @@ def convert_config(config: BycepsConfig) -> dict[str, Any]:
 
 
 def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
-    yield 'PATH_DATA', config.data_path
-
     yield 'TESTING', config.testing
 
     yield 'LOCALE', config.locale

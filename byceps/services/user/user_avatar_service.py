@@ -105,7 +105,7 @@ def remove_avatar_image(
 
 def _db_entity_to_item(db_avatar: DbUserAvatar) -> UserAvatar:
     images_path = (
-        current_app.config['PATH_DATA'] / 'global' / 'users' / 'avatars'
+        current_app.byceps_config.data_path / 'global' / 'users' / 'avatars'
     )
     path = images_path / db_avatar.filename
 
