@@ -100,15 +100,19 @@ def _parse_request() -> CapturePayPalRequest:
 
 
 def _get_paypal_order_details(paypal_order_id: str) -> HttpResult:
-    client_id = current_app.config.get('PAYPAL_CLIENT_ID')
-    client_secret = current_app.config.get('PAYPAL_CLIENT_SECRET')
+    paypal_config = current_app.byceps_config.payment_gateways.paypal
 
-    if client_id is not None and client_secret is None:
-        raise ConfigurationError(
-            'PayPal is enabled, but PAYPAL_CLIENT_SECRET is missing.'
-        )
+    if not paypal_config:
+        raise ConfigurationError('PayPal integration is not configured.')
 
-    if current_app.config.get('PAYPAL_ENVIRONMENT', 'sandbox') == 'live':
+    if not paypal_config.enabled:
+        raise ConfigurationError('PayPal integration is enabled.')
+
+    client_id = paypal_config.client_id
+    client_secret = paypal_config.client_secret
+    environment = paypal_config.environment
+
+    if environment == 'live':
         environment = LiveEnvironment(
             client_id=client_id, client_secret=client_secret
         )

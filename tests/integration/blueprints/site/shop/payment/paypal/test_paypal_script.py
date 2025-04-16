@@ -1,3 +1,4 @@
+import dataclasses
 from datetime import datetime
 from decimal import Decimal
 from string import Template
@@ -5,6 +6,7 @@ from string import Template
 from moneyed import EUR, Money
 import pytest
 
+from byceps.config.models import PaymentGatewaysConfig, PaypalConfig
 from byceps.services.party.models import Party
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service
@@ -75,8 +77,22 @@ def site(party: Party, storefront: Storefront) -> Site:
 @pytest.fixture(scope='module')
 def site_app(site, make_site_app):
     server_name = f'{site.id}.acmecon.test'
+
     app = make_site_app(server_name, site.id)
-    app.config['PAYPAL_CLIENT_ID'] = PAYPAL_CLIENT_ID
+
+    app.byceps_config = dataclasses.replace(
+        app.byceps_config,
+        payment_gateways=PaymentGatewaysConfig(
+            paypal=PaypalConfig(
+                enabled=True,
+                client_id=PAYPAL_CLIENT_ID,
+                client_secret='paypal-client-secret',
+                environment='sandbox',
+            ),
+            stripe=None,
+        ),
+    )
+
     with app.app_context():
         yield app
 

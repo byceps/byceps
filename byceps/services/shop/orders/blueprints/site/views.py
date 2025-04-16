@@ -99,8 +99,9 @@ def view(order_id):
             'paypal', storefront.id
         )
     )
-    if paypal_enabled:
-        paypal_client_id = current_app.config.get('PAYPAL_CLIENT_ID')
+    paypal_config = current_app.byceps_config.payment_gateways.paypal
+    if paypal_enabled and paypal_config and paypal_config.enabled:
+        paypal_client_id = paypal_config.client_id
     else:
         paypal_client_id = None
 
