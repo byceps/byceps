@@ -30,8 +30,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'SHOP_ORDER_EXPORT_TIMEZONE', timezone
     yield 'TIMEZONE', timezone
 
-    yield 'JOBS_ASYNC', config.jobs.asynchronous
-
     yield 'MAIL_HOST', config.smtp.host
     yield 'MAIL_PASSWORD', config.smtp.password
     yield 'MAIL_PORT', config.smtp.port

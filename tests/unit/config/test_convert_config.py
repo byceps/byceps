@@ -22,7 +22,6 @@ from byceps.config.models import (
 
 def test_convert_config():
     expected = {
-        'JOBS_ASYNC': True,
         'LOCALE': 'de',
         'MAIL_HOST': 'localhost',
         'MAIL_PASSWORD': 'smtppass',

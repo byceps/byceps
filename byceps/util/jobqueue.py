@@ -21,7 +21,7 @@ from byceps.byceps_app import BycepsApp
 
 
 def get_queue(app: BycepsApp) -> Queue:
-    is_async = app.config.get('JOBS_ASYNC', True)
+    is_async = app.byceps_config.jobs.asynchronous
     return Queue(connection=app.redis_client, is_async=is_async)
 
 
