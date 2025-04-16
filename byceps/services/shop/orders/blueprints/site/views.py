@@ -110,10 +110,9 @@ def view(order_id):
             'stripe', storefront.id
         )
     )
-    if stripe_enabled:
-        stripe_publishable_key = current_app.config.get(
-            'STRIPE_PUBLISHABLE_KEY'
-        )
+    stripe_config = current_app.byceps_config.payment_gateways.stripe
+    if stripe_enabled and stripe_config and stripe_config.enabled:
+        stripe_publishable_key = stripe_config.publishable_key
     else:
         stripe_publishable_key = None
 

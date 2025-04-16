@@ -44,12 +44,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'MAIL_USE_SSL', config.smtp.use_ssl
     yield 'MAIL_USERNAME', config.smtp.username
 
-    stripe_config = config.payment_gateways.stripe
-    if stripe_config and stripe_config.enabled:
-        yield 'STRIPE_SECRET_KEY', stripe_config.secret_key
-        yield 'STRIPE_PUBLISHABLE_KEY', stripe_config.publishable_key
-        yield 'STRIPE_WEBHOOK_SECRET', stripe_config.webhook_secret
-
     # Skip property if not explicitly set (i.e. value is `None`). In
     # this case, Flask will propagate if debug mode or testing mode is
     # enabled.

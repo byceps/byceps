@@ -2,7 +2,7 @@
 byceps.services.shop.payment.stripe.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2020 Jan Korneffel, Micha Ober
+:Copyright: 2020-2025 Jan Korneffel, Micha Ober, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -22,6 +22,8 @@ from pydantic import BaseModel, ValidationError
 import stripe
 import structlog
 
+from byceps.config.errors import ConfigurationError
+from byceps.config.models import StripeConfig
 from byceps.services.shop.order import (
     order_command_service,
     order_service,
@@ -55,9 +57,6 @@ def create_checkout_session():
     if not order or not order.is_open:
         return jsonify(error='Order does not exist or is not open'), 400
 
-    stripe.api_key = current_app.config.get('STRIPE_SECRET_KEY')
-    stripe.api_version = '2022-11-15'
-
     session = _build_checkout_session(order, g.user.id)
 
     return jsonify(id=session.id)
@@ -76,6 +75,9 @@ def _build_checkout_session(order, user_id: UserID):
         'shop_order_id': str(order.id),
         'order_number': order.order_number,
     }
+
+    stripe.api_key = _get_enabled_stripe_configuration().secret_key
+    stripe.api_version = '2022-11-15'
 
     session = stripe.checkout.Session.create(
         customer_email=email_address,
@@ -113,7 +115,7 @@ def _build_line_items(order):
 def event_webhook():
     payload = request.get_data(as_text=True)
     sig_header = request.headers.get('Stripe-Signature')
-    webhook_secret = current_app.config.get('STRIPE_WEBHOOK_SECRET')
+    webhook_secret = _get_enabled_stripe_configuration().webhook_secret
 
     try:
         event = stripe.Webhook.construct_event(
@@ -205,3 +207,15 @@ def _parse_request() -> CreatePaymentIntent:
 
 def _get_currency_code(money: Money) -> str:
     return money.currency.code.lower()
+
+
+def _get_enabled_stripe_configuration() -> StripeConfig:
+    config = current_app.byceps_config.payment_gateways.stripe
+
+    if not config:
+        raise ConfigurationError('Stripe integration is not configured.')
+
+    if not config.enabled:
+        raise ConfigurationError('Stripe integration is not enabled.')
+
+    return config

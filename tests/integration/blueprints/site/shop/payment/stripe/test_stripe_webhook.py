@@ -1,8 +1,9 @@
 """
-:Copyright: 2020 Micha Ober
+:Copyright: 2020-2025 Micha Ober, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import dataclasses
 from datetime import datetime
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -10,6 +11,7 @@ from unittest.mock import patch
 from freezegun import freeze_time
 import pytest
 
+from byceps.config.models import PaymentGatewaysConfig, StripeConfig
 from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party
 from byceps.services.shop.cart.models import Cart
@@ -59,7 +61,22 @@ def site(party: Party, storefront: Storefront) -> Site:
 @pytest.fixture(scope='module')
 def site_app(site: Site, make_site_app):
     server_name = f'{site.id}.acmecon.test'
+
     app = make_site_app(server_name, site.id)
+
+    app.byceps_config = dataclasses.replace(
+        app.byceps_config,
+        payment_gateways=PaymentGatewaysConfig(
+            paypal=None,
+            stripe=StripeConfig(
+                enabled=True,
+                secret_key='stripe-secret_key',
+                publishable_key='stripe-publishable_key',
+                webhook_secret='stripe-webhook-secret',
+            ),
+        ),
+    )
+
     with app.app_context():
         yield app
 
