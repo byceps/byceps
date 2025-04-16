@@ -14,6 +14,7 @@ from urllib import parse
 from flask import current_app, g, redirect, request, url_for
 import httpx
 
+from byceps.config.models import DiscordConfig
 from byceps.services.external_accounts import (
     external_accounts_service,
     signals as external_accounts_signals,
@@ -35,13 +36,13 @@ SERVICE_NAME = 'discord'
 @login_required
 def connect():
     """Connect account with Discord via OAuth2."""
-    client_id = current_app.config.get('DISCORD_CLIENT_ID')
-    if not client_id:
+    config = _get_enabled_discord_configuration()
+    if not config:
         flash_error('Verbindung mit Discord derzeit nicht möglich.')
         return redirect_to('user_settings.view')
 
     query_string_data = {
-        'client_id': client_id,
+        'client_id': config.client_id,
         'redirect_uri': url_for('.connect_verify', _external=True),
         'response_type': 'code',
         'scope': 'identify',
@@ -65,13 +66,12 @@ def connect_verify():
     if 'code' not in params:
         return error()
 
-    client_id = current_app.config.get('DISCORD_CLIENT_ID')
-    client_secret = current_app.config.get('DISCORD_CLIENT_SECRET')
-    if not client_id or not client_secret:
+    config = _get_enabled_discord_configuration()
+    if not config:
         flash_error('Verbindung mit Discord derzeit nicht möglich.')
         return redirect_to('user_settings.view')
 
-    auth = (client_id, client_secret)
+    auth = (config.client_id, config.client_secret)
     token_request_data = {
         'scope': 'identify',
         'redirect_uri': url_for('.connect_verify', _external=True),
@@ -147,3 +147,12 @@ def remove():
     external_accounts_signals.external_account_disconnected.send(
         None, event=event
     )
+
+
+def _get_enabled_discord_configuration() -> DiscordConfig | None:
+    config = current_app.byceps_config.discord
+
+    if not config or not config.enabled:
+        return None
+
+    return config

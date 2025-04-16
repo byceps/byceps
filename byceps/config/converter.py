@@ -30,10 +30,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'SHOP_ORDER_EXPORT_TIMEZONE', timezone
     yield 'TIMEZONE', timezone
 
-    if (config.discord is not None) and config.discord.enabled:
-        yield 'DISCORD_CLIENT_ID', config.discord.client_id
-        yield 'DISCORD_CLIENT_SECRET', config.discord.client_secret
-
     yield 'JOBS_ASYNC', config.jobs.asynchronous
 
     yield 'MAIL_HOST', config.smtp.host
