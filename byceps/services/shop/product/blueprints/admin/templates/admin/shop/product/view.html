@@ -10,6 +10,11 @@
 
 {% block head %}
 <style>
+.price {
+  font-size: 1.5rem;
+  text-align: right;
+}
+
 .progress {
   height: 0.3rem;
   margin-top: 0.5rem;
@@ -64,7 +69,7 @@
         <div>
 
           <div class="data-label">{{ _('Unit price') }}</div>
-          <div class="data-value" style="font-size: 1.5rem;">{{ product.price|moneyformat }}</div>
+          <div class="data-value price">{{ product.price|moneyformat }}</div>
 
         </div>
       </div>
