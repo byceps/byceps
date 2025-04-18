@@ -79,7 +79,7 @@ def index_for_shop(shop_id, page):
 
     search_term = request.args.get('search_term', default='').strip()
 
-    products = product_service.get_products_for_shop_paginated(
+    db_products = product_service.get_products_for_shop_paginated(
         shop.id,
         page,
         per_page,
@@ -92,16 +92,16 @@ def index_for_shop(shop_id, page):
     }
 
     totals_by_product_number = {
-        product.item_number: ordered_products_service.count_ordered_products(
-            product.id
+        db_product.item_number: ordered_products_service.count_ordered_products(
+            db_product.id
         )
-        for product in products.items
+        for db_product in db_products.items
     }
 
     return {
         'shop': shop,
         'brand': brand,
-        'products': products,
+        'products': db_products,
         'product_type_labels_by_type': product_type_labels_by_type,
         'totals_by_product_number': totals_by_product_number,
         'PaymentState': PaymentState,
@@ -115,19 +115,19 @@ def index_for_shop(shop_id, page):
 @templated
 def view(product_id):
     """Show a single product."""
-    product = product_service.find_product_with_details(product_id)
-    if product is None:
+    db_product = product_service.find_product_with_details(product_id)
+    if db_product is None:
         abort(404)
 
-    shop = shop_service.get_shop(product.shop_id)
+    shop = shop_service.get_shop(db_product.shop_id)
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    type_label = get_product_type_label(product.type_)
+    type_label = get_product_type_label(db_product.type_)
 
-    if product.type_ in (ProductType.ticket, ProductType.ticket_bundle):
+    if db_product.type_ in (ProductType.ticket, ProductType.ticket_bundle):
         ticket_category = ticket_category_service.find_category(
-            product.type_params['ticket_category_id']
+            db_product.type_params['ticket_category_id']
         )
         if ticket_category is not None:
             ticket_party = party_service.get_party(ticket_category.party_id)
@@ -137,17 +137,17 @@ def view(product_id):
         ticket_party = None
         ticket_category = None
 
-    quantities = ordered_products_service.count_ordered_products(product.id)
+    quantities = ordered_products_service.count_ordered_products(db_product.id)
     quantity_ordered = quantities[PaymentState.open]
     quantity_paid = quantities[PaymentState.paid]
 
-    images = product_service.get_images_for_product(product.id)
+    images = product_service.get_images_for_product(db_product.id)
 
-    actions = order_action_service.get_actions_for_product(product.id)
+    actions = order_action_service.get_actions_for_product(db_product.id)
     actions.sort(key=lambda a: a.payment_state.name, reverse=True)
 
     return {
-        'product': product,
+        'product': db_product,
         'shop': shop,
         'brand': brand,
         'type_label': type_label,
@@ -456,7 +456,7 @@ def _create_product(
     available_until: datetime | None = None,
     not_directly_orderable: bool = False,
     separate_order_required: bool = False,
-):
+) -> Product:
     if type_ == ProductType.ticket:
         return product_service.create_ticket_product(
             shop_id,
