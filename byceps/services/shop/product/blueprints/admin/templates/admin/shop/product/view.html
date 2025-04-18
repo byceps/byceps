@@ -128,13 +128,13 @@
         <div class="data-value">
           <div class="progress">
             {{ render_progress_bar(product.quantity, product.total_quantity, 'color--available') }}
-            {{ render_progress_bar(totals[PaymentState.open], product.total_quantity, 'color--ordered') }}
+            {{ render_progress_bar(quantity_ordered, product.total_quantity, 'color--ordered') }}
           </div>
           <div class="row row--space-between" style="font-size: 0.75rem;">
             <div>
               <strong>{{ product.quantity }}</strong> {{ _('available') }}{% if product.quantity < 1 %} {{ render_tag(_('sold out')) }}{% endif %}<br>
-              <strong>{{ totals[PaymentState.open] }}</strong> {{ _('ordered') }}<br>
-              <strong>{{ totals[PaymentState.paid] }}</strong> {{ _('paid') }}
+              <strong>{{ quantity_ordered }}</strong> {{ _('ordered') }}<br>
+              <strong>{{ quantity_paid  }}</strong> {{ _('paid') }}
             </div>
             <div class="dimmed">{{ _('of') }} {{ product.total_quantity }}</div>
           </div>

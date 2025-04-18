@@ -137,7 +137,9 @@ def view(product_id):
         ticket_party = None
         ticket_category = None
 
-    totals = ordered_products_service.count_ordered_products(product.id)
+    quantities = ordered_products_service.count_ordered_products(product.id)
+    quantity_ordered = quantities[PaymentState.open]
+    quantity_paid = quantities[PaymentState.paid]
 
     images = product_service.get_images_for_product(product.id)
 
@@ -151,8 +153,8 @@ def view(product_id):
         'type_label': type_label,
         'ticket_category': ticket_category,
         'ticket_party': ticket_party,
-        'totals': totals,
-        'PaymentState': PaymentState,
+        'quantity_ordered': quantity_ordered,
+        'quantity_paid': quantity_paid,
         'images': images,
         'actions': actions,
     }
