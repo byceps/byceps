@@ -23,14 +23,17 @@ from byceps.services.shop.order import (
 )
 from byceps.services.shop.order.models.order import Order, PaymentState
 from byceps.services.shop.product import (
+    product_domain_service,
     product_sequence_service,
     product_service,
 )
+from byceps.services.shop.product.dbmodels.product import DbProduct
 from byceps.services.shop.product.models import (
     Product,
     ProductNumber,
     ProductNumberSequence,
     ProductType,
+    ProductWithQuantity,
     get_product_type_label,
 )
 from byceps.services.shop.shop import shop_service
@@ -123,6 +126,8 @@ def view(product_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
+    price_including_attached_products = _calculate_total_amount(db_product)
+
     type_label = get_product_type_label(db_product.type_)
 
     if db_product.type_ in (ProductType.ticket, ProductType.ticket_bundle):
@@ -150,6 +155,7 @@ def view(product_id):
         'product': db_product,
         'shop': shop,
         'brand': brand,
+        'price_including_attached_products': price_including_attached_products,
         'type_label': type_label,
         'ticket_category': ticket_category,
         'ticket_party': ticket_party,
@@ -158,6 +164,19 @@ def view(product_id):
         'images': images,
         'actions': actions,
     }
+
+
+def _calculate_total_amount(db_product: DbProduct) -> Money:
+    products_with_quantities = [
+        ProductWithQuantity(db_product, 1),
+    ] + [
+        ProductWithQuantity(attached_product.product, attached_product.quantity)
+        for attached_product in db_product.attached_products
+    ]
+
+    return product_domain_service.calculate_total_amount(
+        products_with_quantities
+    )
 
 
 @blueprint.get('/<uuid:product_id>/orders')

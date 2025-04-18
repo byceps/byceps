@@ -51,14 +51,13 @@
   </div>
 
   <div class="row row--space-between row--wrap block">
-    <div class="box column--grow">
 
+    <div class="box column--grow">
       <div class="data-label">{{ pgettext('product', 'Name') }}</div>
       <div class="data-value">{{ product.name }}</div>
-
     </div>
-    <div class="box">
 
+    <div class="box">
       <div class="row row--space-between">
         <div>
 
@@ -72,9 +71,17 @@
           <div class="data-value price">{{ product.price|moneyformat }}</div>
 
         </div>
-      </div>
+        {%- if product.attached_products %}
+        <div>
 
+          <div class="data-label">{{ _('Including attached articles') }}</div>
+          <div class="data-value price">{{ price_including_attached_products|moneyformat }}</div>
+
+        </div>
+        {%- endif %}
+      </div>
     </div>
+
   </div>
 
   <div class="grid block" style="--column-min-width: 12rem;">
