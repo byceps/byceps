@@ -51,10 +51,8 @@ def prepare_request_globals() -> None:
     party_id = site.party_id
     if party_id is not None:
         party = party_service.get_party(party_id)
-        party_id = party.id
     g.party = party
-    g.party_id = party_id
-    sentry_sdk.set_tag('party_id', g.party_id)
+    sentry_sdk.set_tag('party_id', party.id if party else None)
 
     required_permissions: set[str] = set()
     g.user = get_current_user(required_permissions)

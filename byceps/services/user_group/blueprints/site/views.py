@@ -25,10 +25,10 @@ blueprint = create_blueprint('user_group', __name__)
 @templated
 def index():
     """List groups."""
-    if g.party_id is None:
+    if not g.party:
         abort(404)
 
-    groups = user_group_service.get_groups_for_party(g.party_id)
+    groups = user_group_service.get_groups_for_party(g.party.id)
 
     return {
         'groups': groups,
@@ -39,7 +39,7 @@ def index():
 @templated
 def view(group_id):
     """Show group."""
-    if g.party_id is None:
+    if not g.party:
         abort(404)
 
     group = _get_group_or_404(group_id)
@@ -54,10 +54,10 @@ def view(group_id):
 @templated
 def create_form(erroneous_form=None):
     """Show a form to create a group."""
-    if g.party_id is None:
+    if not g.party:
         abort(404)
 
-    form = erroneous_form if erroneous_form else CreateForm(g.party_id)
+    form = erroneous_form if erroneous_form else CreateForm(g.party.id)
 
     return {
         'form': form,
@@ -68,10 +68,10 @@ def create_form(erroneous_form=None):
 @login_required
 def create():
     """Create a group."""
-    if g.party_id is None:
+    if not g.party:
         abort(404)
 
-    form = CreateForm(g.party_id, request.form)
+    form = CreateForm(g.party.id, request.form)
     if not form.validate():
         return create_form(form)
 
@@ -133,7 +133,7 @@ def update(group_id):
 def _get_group_or_404(group_id):
     group = user_group_service.find_group(group_id)
 
-    if (group is None) or (group.party_id != g.party_id):
+    if (group is None) or (group.party_id != g.party.id):
         abort(404)
 
     return group

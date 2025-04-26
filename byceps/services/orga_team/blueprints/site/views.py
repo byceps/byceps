@@ -32,11 +32,11 @@ GROUP_BY_TEAM = False
 @subnavigation_for_view('orga_team')
 def index():
     """List all organizers for the current party."""
-    if g.party_id is None:
+    if not g.party:
         # No party is configured for the current site.
         abort(404)
 
-    public_orgas = orga_team_service.get_public_orgas_for_party(g.party_id)
+    public_orgas = orga_team_service.get_public_orgas_for_party(g.party.id)
 
     if GROUP_BY_TEAM:
         orgas_by_team_name = defaultdict(list)

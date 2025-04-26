@@ -34,11 +34,11 @@ def view(user_id):
     )
 
     orga_teams = orga_team_service.get_orga_teams_for_user_and_party(
-        user.id, g.party_id
+        user.id, g.party.id
     )
 
     _current_party_tickets = ticket_service.get_tickets_used_by_user(
-        user.id, g.party_id
+        user.id, g.party.id
     )
     current_party_tickets = [t for t in _current_party_tickets if not t.revoked]
 

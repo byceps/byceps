@@ -45,7 +45,7 @@ def view():
     user_locale = Locale.parse(user.locale) if user.locale else None
     detail = user_service.get_detail(user.id)
 
-    is_orga = orga_team_service.is_orga_for_party(user.id, g.party_id)
+    is_orga = orga_team_service.is_orga_for_party(user.id, g.party.id)
 
     newsletter_list = brand_service.find_newsletter_list_for_brand(
         g.site.brand_id

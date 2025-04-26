@@ -12,7 +12,9 @@ from collections.abc import Sequence
 
 from flask import abort, g
 
-from byceps.services.board.blueprints.site import service as board_helper_service
+from byceps.services.board.blueprints.site import (
+    service as board_helper_service,
+)
 from byceps.services.guest_server import guest_server_service
 from byceps.services.guest_server.blueprints.site.views import _sort_addresses
 from byceps.services.news import news_item_service
@@ -46,7 +48,7 @@ def index():
     news_headlines = _get_news_headlines()
     board_topics = board_helper_service.get_recent_topics(g.user)
     guest_servers = guest_server_service.get_servers_for_owner_and_party(
-        g.user.id, g.party_id
+        g.user.id, g.party.id
     )
 
     return {
@@ -76,10 +78,10 @@ def _get_open_orders(user_id: UserID) -> list[SiteOrderListItem]:
 
 
 def _get_tickets(user_id: UserID) -> Sequence[DbTicket]:
-    if g.party_id is None:
+    if not g.party:
         return []
 
-    return ticket_service.get_tickets_used_by_user(user_id, g.party_id)
+    return ticket_service.get_tickets_used_by_user(user_id, g.party.id)
 
 
 def _get_news_headlines() -> list[NewsHeadline] | None:

@@ -28,11 +28,11 @@ blueprint = create_blueprint('tourney', __name__)
 @templated
 def tourney_index():
     """List all tournaments for the current party."""
-    if g.party_id is None:
+    if not g.party:
         # No party is configured for the current site.
         abort(404)
 
-    party = party_service.find_party(g.party_id)
+    party = party_service.find_party(g.party.id)
     if not party:
         abort(404)
 

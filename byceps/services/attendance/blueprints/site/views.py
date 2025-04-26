@@ -25,7 +25,7 @@ blueprint = create_blueprint('attendance', __name__)
 @subnavigation_for_view('attendees')
 def attendees(page):
     """List all attendees of the current party."""
-    if g.party_id is None:
+    if not g.party:
         # No party is configured for the current site.
         abort(404)
 
@@ -33,7 +33,7 @@ def attendees(page):
     search_term = request.args.get('search_term', default='').strip()
 
     attendees = attendance_service.get_attendees_paginated(
-        g.party_id, page, per_page, search_term=search_term
+        g.party.id, page, per_page, search_term=search_term
     )
 
     return {

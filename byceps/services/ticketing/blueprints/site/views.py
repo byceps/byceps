@@ -38,7 +38,7 @@ blueprint = create_blueprint('ticketing', __name__)
 
 @blueprint.app_context_processor
 def inject_ticket_sale_stats() -> dict[str, Any]:
-    if not g.party_id:
+    if not g.party:
         return {}
 
     if g.site.is_intranet:
@@ -56,7 +56,7 @@ def inject_ticket_sale_stats() -> dict[str, Any]:
 @templated
 def index_mine():
     """List tickets related to the current user."""
-    if g.party is None:
+    if not g.party:
         # No party is configured for the current site.
         abort(404)
 
@@ -468,7 +468,7 @@ def _is_ticket_management_enabled():
     if not g.user.authenticated:
         return False
 
-    if g.party is None:
+    if not g.party:
         return False
 
     return g.party.ticket_management_enabled

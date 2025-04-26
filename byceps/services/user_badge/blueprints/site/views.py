@@ -45,9 +45,9 @@ def view(slug):
     awardee_ids = {awarding.awardee_id for awarding in awardings}
     awardees = user_service.get_users(awardee_ids, include_avatars=True)
 
-    if g.party_id is not None:
+    if not g.party:
         orga_ids = orga_team_service.select_orgas_for_party(
-            awardee_ids, g.party_id
+            awardee_ids, g.party.id
         )
     else:
         orga_ids = set()

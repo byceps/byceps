@@ -42,16 +42,16 @@ blueprint = create_blueprint('seating', __name__)
 @subnavigation_for_view('seating_plan')
 def index():
     """List areas."""
-    if g.party is None:
+    if not g.party:
         # No party is configured for the current site.
         abort(404)
 
-    areas = seating_area_service.get_areas_for_party(g.party_id)
+    areas = seating_area_service.get_areas_for_party(g.party.id)
     if len(areas) == 1:
         return _render_view_area(areas[0])
 
     areas_with_utilization = (
-        seating_area_service.get_areas_with_seat_utilization(g.party_id)
+        seating_area_service.get_areas_with_seat_utilization(g.party.id)
     )
     if not areas_with_utilization:
         abort(404)
@@ -70,11 +70,11 @@ def index():
 @blueprint.get('/areas/<slug>')
 def view_area(slug):
     """View area."""
-    if g.party is None:
+    if not g.party:
         # No party is configured for the current site.
         abort(404)
 
-    area = seating_area_service.find_area_for_party_by_slug(g.party_id, slug)
+    area = seating_area_service.find_area_for_party_by_slug(g.party.id, slug)
     if area is None:
         abort(404)
 
@@ -94,7 +94,7 @@ def _render_view_area(area: SeatingArea) -> dict[str, Any]:
         seats_with_tickets, users_by_id
     )
 
-    seat_utilization = seat_service.get_seat_utilization(g.party_id)
+    seat_utilization = seat_service.get_seat_utilization(g.party.id)
 
     return {
         'area': area,
@@ -119,7 +119,7 @@ def manage_seats_in_area(slug):
         )
         return redirect_to('.view_area', slug=slug)
 
-    area = seating_area_service.find_area_for_party_by_slug(g.party_id, slug)
+    area = seating_area_service.find_area_for_party_by_slug(g.party.id, slug)
     if area is None:
         abort(404)
 
@@ -142,7 +142,7 @@ def manage_seats_in_area(slug):
 
     if seat_manager_id is not None:
         tickets = ticket_service.get_tickets_for_seat_manager(
-            seat_manager_id, g.party_id
+            seat_manager_id, g.party.id
         )
     else:
         tickets = []
@@ -164,7 +164,7 @@ def manage_seats_in_area(slug):
     else:
         managed_tickets = []
 
-    seat_utilization = seat_service.get_seat_utilization(g.party_id)
+    seat_utilization = seat_service.get_seat_utilization(g.party.id)
 
     return {
         'area': area,
@@ -347,7 +347,7 @@ def _is_seat_management_enabled():
     if not g.user.authenticated:
         return False
 
-    if g.party_id is None:
+    if not g.party:
         return False
 
     if _is_current_user_seating_admin():
