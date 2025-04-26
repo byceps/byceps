@@ -46,15 +46,6 @@ def generate_uuid() -> UUID:
 
 
 @contextmanager
-def current_party_set(app: BycepsApp, party: Party):
-    def handler(sender, **kwargs):
-        g.party_id = party.id
-
-    with appcontext_pushed.connected_to(handler, app):
-        yield
-
-
-@contextmanager
 def current_user_set(app: BycepsApp, current_user: CurrentUser):
     def handler(sender, **kwargs):
         g.user = current_user
