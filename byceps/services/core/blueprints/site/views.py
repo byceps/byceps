@@ -13,7 +13,9 @@ from flask_babel import get_locale
 import sentry_sdk
 
 from byceps.services.party import party_service
+from byceps.services.party.models import Party
 from byceps.services.site import site_service
+from byceps.services.site.models import Site
 from byceps.services.text_markup import text_markup_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.l10n import get_locales
@@ -39,17 +41,13 @@ def url_for_site_file(filename, **kwargs) -> str | None:
 
 @blueprint.before_app_request
 def prepare_request_globals() -> None:
-    site_id = current_app.config['SITE_ID']
-    site = site_service.get_site(site_id)
+    site = _get_site()
     g.site = site
     sentry_sdk.set_tag('site_id', site.id)
 
     sentry_sdk.set_tag('brand_id', site.brand_id)
 
-    party = None
-    party_id = site.party_id
-    if party_id is not None:
-        party = party_service.get_party(party_id)
+    party = _get_party(site)
     g.party = party
     sentry_sdk.set_tag('party_id', party.id if party else None)
 
@@ -60,6 +58,18 @@ def prepare_request_globals() -> None:
     g.locales = get_locales()
     # Must only be called *after* `g.user` is set.
     g.current_locale = get_locale()
+
+
+def _get_site() -> Site:
+    site_id = current_app.config['SITE_ID']
+    return site_service.get_site(site_id)
+
+
+def _get_party(site: Site) -> Party:
+    if site.party_id is None:
+        return None
+
+    return party_service.get_party(site.party_id)
 
 
 @blueprint.app_context_processor
