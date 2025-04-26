@@ -8,7 +8,7 @@ byceps.services.core.blueprints.site.views
 
 from typing import Any
 
-from flask import current_app, g, request, url_for
+from flask import current_app, g, request, Response, url_for
 from flask_babel import get_locale
 import sentry_sdk
 
@@ -42,6 +42,9 @@ def url_for_site_file(filename, **kwargs) -> str | None:
 @blueprint.before_app_request
 def prepare_request_globals() -> None:
     site = _get_site()
+    if not site.enabled:
+        return Response(status=404)
+
     g.site = site
     sentry_sdk.set_tag('site_id', site.id)
 
