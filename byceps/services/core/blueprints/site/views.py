@@ -31,12 +31,11 @@ blueprint.add_app_template_filter(text_markup_service.render_html, 'bbcode')
 @blueprint.app_template_global()
 def url_for_site_file(filename, **kwargs) -> str | None:
     """Render URL for a static file local to the current site."""
-    site_id = getattr(g, 'site_id', None)
-
-    if site_id is None:
+    site = getattr(g, 'site', None)
+    if not site:
         return None
 
-    return url_for('site_file', site_id=site_id, filename=filename, **kwargs)
+    return url_for('site_file', site_id=site.id, filename=filename, **kwargs)
 
 
 @blueprint.before_app_request

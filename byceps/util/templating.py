@@ -59,13 +59,13 @@ class SiteTemplateOverridesLoader(BaseLoader):
     def get_source(
         self, environment: Environment, template: str
     ) -> tuple[str, str | None, Callable[[], bool] | None]:
-        site_id = getattr(g, 'site_id', None)
-        if site_id is None:
+        site = getattr(g, 'site', None)
+        if not site:
             # Site could not be determined. Thus, no site-specific
             # template loader is available.
             raise TemplateNotFound(template)
 
-        loader = self._get_loader(site_id)
+        loader = self._get_loader(site.id)
 
         try:
             return loader.get_source(environment, template)

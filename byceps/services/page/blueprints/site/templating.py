@@ -91,11 +91,11 @@ def _render_template(source: str) -> str:
 
 def url_for_page(name: str, **kwargs) -> str | None:
     """Render an URL pointing to the page's URL path."""
-    site_id = getattr(g, 'site_id', None)
-    if site_id is None:
+    site = getattr(g, 'site', None)
+    if not site:
         return None
 
-    return url_for_site_page(site_id, name, **kwargs)
+    return url_for_site_page(site.id, name, **kwargs)
 
 
 def url_for_site_page(site_id: str, name: str, **kwargs) -> str:
