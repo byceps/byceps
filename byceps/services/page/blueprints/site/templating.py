@@ -61,7 +61,7 @@ def _find_subnav_menu_id(page: Page) -> NavMenuID | None:
 
     language_code = get_locale_str() or get_default_locale()
     return site_navigation_service.find_submenu_id_for_page(
-        g.site_id, language_code, page.name
+        g.site.id, language_code, page.name
     )
 
 

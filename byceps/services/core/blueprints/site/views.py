@@ -42,8 +42,7 @@ def prepare_request_globals() -> None:
     site_id = current_app.config['SITE_ID']
     site = site_service.get_site(site_id)
     g.site = site
-    g.site_id = site.id
-    sentry_sdk.set_tag('site_id', g.site_id)
+    sentry_sdk.set_tag('site_id', site.id)
 
     sentry_sdk.set_tag('brand_id', site.brand_id)
 

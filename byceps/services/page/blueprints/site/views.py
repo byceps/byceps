@@ -41,5 +41,5 @@ def view(url_path):
 
 def _get_page_version(url_path: str, language_code: str):
     return page_service.find_current_version_for_url_path(
-        g.site_id, url_path, language_code
+        g.site.id, url_path, language_code
     )

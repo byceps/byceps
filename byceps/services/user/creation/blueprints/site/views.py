@@ -114,7 +114,7 @@ def create():
     user, event = creation_result.unwrap()
 
     user_creation_service.request_email_address_confirmation(
-        user, email_address, g.site_id
+        user, email_address, g.site.id
     ).unwrap()
 
     subject_ids = {subject.id for subject in required_consent_subjects}
@@ -176,4 +176,4 @@ def _find_site_setting_value(setting_name: str) -> str | None:
     """Return the value configured for this site and the given setting
     name, or `None` if not configured.
     """
-    return site_setting_service.find_setting_value(g.site_id, setting_name)
+    return site_setting_service.find_setting_value(g.site.id, setting_name)

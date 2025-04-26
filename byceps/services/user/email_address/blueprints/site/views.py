@@ -92,7 +92,7 @@ def request_confirmation_email():
         return request_confirmation_email_form()
 
     user_email_address_service.send_email_address_confirmation_email_for_site(
-        user, email_address.address, g.site_id
+        user, email_address.address, g.site.id
     )
 
     flash_success(

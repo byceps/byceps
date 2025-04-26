@@ -101,7 +101,7 @@ def change_email_address():
     new_email_address = form.new_email_address.data.strip()
 
     user_email_address_service.send_email_address_change_email_for_site(
-        current_user, new_email_address, g.site_id
+        current_user, new_email_address, g.site.id
     )
 
     flash_success(

@@ -74,7 +74,7 @@ def render_snippet_as_partial(
     return the result.
     """
     if scope is None:
-        scope = SnippetScope.for_site(g.site_id)
+        scope = SnippetScope.for_site(g.site.id)
 
     current_version = snippet_service.find_current_version_of_snippet_with_name(
         scope, name, language_code

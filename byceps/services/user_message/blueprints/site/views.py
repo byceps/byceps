@@ -56,7 +56,7 @@ def create(recipient_id):
     )
 
     user_message_service.send_message(
-        sender.id, recipient.id, body, sender_contact_url, g.site_id
+        sender.id, recipient.id, body, sender_contact_url, g.site.id
     )
 
     flash_success(

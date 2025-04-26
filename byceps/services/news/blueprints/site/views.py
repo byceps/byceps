@@ -115,7 +115,7 @@ def _get_channel_ids() -> frozenset[NewsChannelID] | set[NewsChannelID]:
 
 def _get_items_per_page_value() -> int:
     items_per_page = site_setting_service.find_setting_value(
-        g.site_id, 'news_items_per_page'
+        g.site.id, 'news_items_per_page'
     )
 
     if items_per_page is None:

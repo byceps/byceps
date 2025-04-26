@@ -225,7 +225,7 @@ def get_postings_per_page_value() -> int:
 
 
 def _get_site_setting_int_value(key, default_value) -> int:
-    value = site_setting_service.find_setting_value(g.site_id, key)
+    value = site_setting_service.find_setting_value(g.site.id, key)
 
     if value is None:
         return default_value

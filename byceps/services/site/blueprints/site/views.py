@@ -31,9 +31,9 @@ def get_nav_menu_items(menu_name: str) -> list[NavItemForRendering]:
         return []
 
     items = site_navigation_service.get_items_for_menu(
-        g.site_id, menu_name, locale_str
+        g.site.id, menu_name, locale_str
     )
-    return _to_items_for_rendering(g.site_id, items)
+    return _to_items_for_rendering(g.site.id, items)
 
 
 @blueprint.app_template_global()
@@ -42,7 +42,7 @@ def get_nav_menu_items_for_menu_id(
 ) -> list[NavItemForRendering]:
     """Make navigation menus accessible to templates."""
     items = site_navigation_service.get_items_for_menu_id(menu_id)
-    return _to_items_for_rendering(g.site_id, items)
+    return _to_items_for_rendering(g.site.id, items)
 
 
 def _to_items_for_rendering(
