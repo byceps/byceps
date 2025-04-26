@@ -25,7 +25,7 @@ blueprint = create_blueprint('gallery', __name__)
 @subnavigation_for_view('gallery')
 def index():
     """List all galleries for this brand."""
-    galleries = gallery_service.get_galleries_for_brand(g.brand_id)
+    galleries = gallery_service.get_galleries_for_brand(g.site.brand_id)
 
     if not _may_current_user_view_hidden():
         galleries = [g for g in galleries if not g.hidden]
@@ -38,7 +38,9 @@ def index():
 @subnavigation_for_view('gallery')
 def view(slug):
     """Show gallery for this brand with that slug."""
-    gallery = gallery_service.find_gallery_by_slug_with_images(g.brand_id, slug)
+    gallery = gallery_service.find_gallery_by_slug_with_images(
+        g.site.brand_id, slug
+    )
 
     if not gallery:
         abort(404)

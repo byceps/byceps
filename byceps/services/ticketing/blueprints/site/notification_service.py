@@ -145,7 +145,7 @@ def notify_withdrawn_seat_manager(
 
 
 def _enqueue_email(recipient: User, subject: str, body: str) -> None:
-    email_config = email_config_service.get_config(g.brand_id)
+    email_config = email_config_service.get_config(g.site.brand_id)
     sender = email_config.sender
 
     recipient_address = user_service.get_email_address(recipient.id)

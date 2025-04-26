@@ -49,7 +49,6 @@ def generate_uuid() -> UUID:
 def current_party_set(app: BycepsApp, party: Party):
     def handler(sender, **kwargs):
         g.party_id = party.id
-        g.brand_id = party.brand_id
 
     with appcontext_pushed.connected_to(handler, app):
         yield

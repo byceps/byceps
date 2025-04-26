@@ -26,7 +26,7 @@ blueprint = create_blueprint('party_history', __name__)
 @subnavigation_for_view('party_history')
 def index():
     """List archived parties."""
-    parties = party_service.get_archived_parties_for_brand(g.brand_id)
+    parties = party_service.get_archived_parties_for_brand(g.site.brand_id)
     parties = [p for p in parties if not p.canceled]
 
     return {
@@ -42,7 +42,7 @@ def view(party_id):
     party = party_service.find_party(party_id)
     if (
         (party is None)
-        or (party.brand_id != g.brand_id)
+        or (party.brand_id != g.site.brand_id)
         or not party.archived
         or party.canceled
     ):

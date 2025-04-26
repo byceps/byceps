@@ -160,14 +160,16 @@ def _is_real_name_required() -> bool:
 
 def _get_required_consent_subjects() -> set[ConsentSubject]:
     """Return the consent subjects required for this brand."""
-    return consent_subject_service.get_subjects_required_for_brand(g.brand_id)
+    return consent_subject_service.get_subjects_required_for_brand(
+        g.site.brand_id
+    )
 
 
 def _find_newsletter_list_for_brand() -> NewsletterList | None:
     """Return the newsletter list configured for this brand, or `None`
     if none is configured.
     """
-    return brand_service.find_newsletter_list_for_brand(g.brand_id)
+    return brand_service.find_newsletter_list_for_brand(g.site.brand_id)
 
 
 def _find_site_setting_value(setting_name: str) -> str | None:

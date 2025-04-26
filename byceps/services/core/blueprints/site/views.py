@@ -45,8 +45,7 @@ def prepare_request_globals() -> None:
     g.site_id = site.id
     sentry_sdk.set_tag('site_id', g.site_id)
 
-    g.brand_id = site.brand_id
-    sentry_sdk.set_tag('brand_id', g.brand_id)
+    sentry_sdk.set_tag('brand_id', site.brand_id)
 
     party = None
     party_id = site.party_id

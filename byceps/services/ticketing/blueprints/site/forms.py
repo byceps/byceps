@@ -33,7 +33,7 @@ def validate_user(form, field):
         raise ValidationError(gettext('The user account is not active.'))
 
     required_consent_subjects = (
-        consent_subject_service.get_subjects_required_for_brand(g.brand_id)
+        consent_subject_service.get_subjects_required_for_brand(g.site.brand_id)
     )
     required_consent_subject_ids = {
         subject.id for subject in required_consent_subjects

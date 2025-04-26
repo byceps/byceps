@@ -47,7 +47,9 @@ def view():
 
     is_orga = orga_team_service.is_orga_for_party(user.id, g.party_id)
 
-    newsletter_list = brand_service.find_newsletter_list_for_brand(g.brand_id)
+    newsletter_list = brand_service.find_newsletter_list_for_brand(
+        g.site.brand_id
+    )
     newsletter_offered = newsletter_list is not None
 
     subscribed_to_newsletter = (

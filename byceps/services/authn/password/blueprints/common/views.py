@@ -150,7 +150,7 @@ def request_reset():
 
 def _get_sender() -> NameAndAddress:
     if g.app_mode.is_site():
-        email_config = email_config_service.get_config(g.brand_id)
+        email_config = email_config_service.get_config(g.site.brand_id)
         return email_config.sender
     elif g.app_mode.is_admin():
         address_str = global_setting_service.find_setting_value(

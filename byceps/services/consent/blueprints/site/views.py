@@ -90,7 +90,9 @@ def consent(token):
 
 def _get_unconsented_subjects_for_user(user_id):
     required_subject_ids = (
-        consent_subject_service.get_subject_ids_required_for_brand(g.brand_id)
+        consent_subject_service.get_subject_ids_required_for_brand(
+            g.site.brand_id
+        )
     )
 
     unconsented_subject_ids = consent_service.get_unconsented_subject_ids(

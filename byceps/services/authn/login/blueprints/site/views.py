@@ -72,7 +72,7 @@ def log_in():
         username,
         password,
         permanent,
-        g.brand_id,
+        g.site.brand_id,
         site=g.site,
         ip_address=request.remote_addr,
     )

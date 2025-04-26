@@ -543,7 +543,7 @@ def request_full_refund(order_id):
 def _send_refund_request_confirmation_email(
     order_number, amount_refund: Decimal
 ) -> None:
-    email_config = email_config_service.get_config(g.brand_id)
+    email_config = email_config_service.get_config(g.site.brand_id)
 
     email_address = user_service.get_email_address_data(g.user.id)
     if (email_address is None) or not email_address.verified:
@@ -552,7 +552,7 @@ def _send_refund_request_confirmation_email(
 
     screen_name = g.user.screen_name or 'User'
 
-    brand = brand_service.get_brand(g.brand_id)
+    brand = brand_service.get_brand(g.site.brand_id)
     language_code = get_user_locale(g.user)
 
     footer_result = email_footer_service.get_footer(brand, language_code)

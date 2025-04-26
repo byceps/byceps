@@ -134,7 +134,7 @@ def topic_view(topic_id, page):
 
     is_last_page = not postings.has_next
 
-    service.enrich_creators(postings.items, g.brand_id, g.party_id)
+    service.enrich_creators(postings.items, g.site.brand_id, g.party_id)
 
     is_current_user_orga = (
         user.authenticated
