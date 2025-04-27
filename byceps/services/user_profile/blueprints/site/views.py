@@ -33,14 +33,20 @@ def view(user_id):
         user_badge_awarding_service.get_badges_awarded_to_user(user.id)
     )
 
-    orga_teams = orga_team_service.get_orga_teams_for_user_and_party(
-        user.id, g.party.id
-    )
+    if g.party:
+        orga_teams = orga_team_service.get_orga_teams_for_user_and_party(
+            user.id, g.party.id
+        )
 
-    _current_party_tickets = ticket_service.get_tickets_used_by_user(
-        user.id, g.party.id
-    )
-    current_party_tickets = [t for t in _current_party_tickets if not t.revoked]
+        _current_party_tickets = ticket_service.get_tickets_used_by_user(
+            user.id, g.party.id
+        )
+        current_party_tickets = [
+            t for t in _current_party_tickets if not t.revoked
+        ]
+    else:
+        orga_teams = []
+        current_party_tickets = []
 
     attended_parties = ticket_attendance_service.get_attended_parties(user.id)
     attended_parties = [party for party in attended_parties if not party.hidden]
