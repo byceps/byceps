@@ -22,6 +22,9 @@ blueprint = create_blueprint('timetable', __name__)
 @templated
 def index():
     """Show timetable for current party."""
+    if not g.party:
+        abort(404)
+
     timetable = _get_timetable_for_party_or_404(g.party.id)
 
     return {
