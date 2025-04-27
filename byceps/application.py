@@ -37,6 +37,7 @@ from byceps.config.models import (
 )
 from byceps.database import db
 from byceps.services.jobs.blueprints.admin.views import enable_rq_dashboard
+from byceps.services.site.models import SiteID
 from byceps.util import templatefilters
 from byceps.util.authz import load_permissions
 from byceps.util.l10n import get_current_user_locale
@@ -63,7 +64,7 @@ def create_site_app(
 ) -> BycepsApp:
     app = _create_app(byceps_config, app_config)
 
-    _init_site_app(app)
+    _init_site_app(app, app_config.site_id)
 
     _log_app_state(app)
 
@@ -270,10 +271,10 @@ def _add_static_file_url_rules(app: BycepsApp) -> None:
     )
 
 
-def _init_site_app(app: BycepsApp) -> None:
+def _init_site_app(app: BycepsApp, site_id: SiteID) -> None:
     """Initialize site application."""
     # Incorporate site-specific template overrides.
-    app.jinja_loader = create_site_template_loader()
+    app.jinja_loader = create_site_template_loader(site_id)
 
 
 def _enable_debug_toolbar(app: BycepsApp) -> None:
