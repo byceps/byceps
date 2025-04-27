@@ -40,7 +40,7 @@ from byceps.services.jobs.blueprints.admin.views import enable_rq_dashboard
 from byceps.util import templatefilters
 from byceps.util.authz import load_permissions
 from byceps.util.l10n import get_current_user_locale
-from byceps.util.templating import SiteTemplateOverridesLoader
+from byceps.util.templating import create_site_template_loader
 
 from .byceps_app import BycepsApp
 
@@ -273,7 +273,7 @@ def _add_static_file_url_rules(app: BycepsApp) -> None:
 def _init_site_app(app: BycepsApp) -> None:
     """Initialize site application."""
     # Incorporate site-specific template overrides.
-    app.jinja_loader = SiteTemplateOverridesLoader()
+    app.jinja_loader = create_site_template_loader()
 
 
 def _enable_debug_toolbar(app: BycepsApp) -> None:

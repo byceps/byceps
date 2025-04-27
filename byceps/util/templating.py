@@ -92,3 +92,7 @@ class SiteTemplateOverridesLoader(BaseLoader):
         """Create file system loader for site-specific search path."""
         search_path = SITES_PATH / site_id / 'template_overrides'
         return FileSystemLoader(search_path)
+
+
+def create_site_template_loader() -> BaseLoader:
+    return SiteTemplateOverridesLoader()
