@@ -17,6 +17,7 @@ from byceps.services.board.blueprints.site import (
 )
 from byceps.services.guest_server import guest_server_service
 from byceps.services.guest_server.blueprints.site.views import _sort_addresses
+from byceps.services.guest_server.models import Server
 from byceps.services.news import news_item_service
 from byceps.services.news.models import NewsHeadline
 from byceps.services.shop.order import order_service
@@ -47,9 +48,7 @@ def index():
     tickets = _get_tickets(user.id)
     news_headlines = _get_news_headlines()
     board_topics = board_helper_service.get_recent_topics(g.user)
-    guest_servers = guest_server_service.get_servers_for_owner_and_party(
-        g.user.id, g.party.id
-    )
+    guest_servers = _get_guest_servers()
 
     return {
         'open_orders': open_orders,
@@ -90,3 +89,12 @@ def _get_news_headlines() -> list[NewsHeadline] | None:
         return None
 
     return news_item_service.get_recent_headlines(channel_ids, limit=4)
+
+
+def _get_guest_servers() -> list[Server] | None:
+    if not g.party:
+        return None
+
+    return guest_server_service.get_servers_for_owner_and_party(
+        g.user.id, g.party.id
+    )

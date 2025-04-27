@@ -42,9 +42,11 @@
     </div>
 {%- endif %}
 
+{%- if guest_servers is not none %}
     <div class="dashboard-item">
 {% include 'site/dashboard/_guest_servers.html' %}
     </div>
+{%- endif %}
 
   </div>
 
