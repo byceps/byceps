@@ -37,7 +37,9 @@ from byceps.services.board.events import (
     BoardTopicUnpinnedEvent,
 )
 from byceps.services.core.events import _BaseEvent
-from byceps.services.external_accounts import announcing as external_accounts_handlers
+from byceps.services.external_accounts import (
+    announcing as external_accounts_handlers,
+)
 from byceps.services.external_accounts import (
     signals as external_accounts_signals,
 )

@@ -70,7 +70,10 @@ def register_admin_blueprints(
         ('services.site.navigation.blueprints.admin', '/sites/navigation'),
         ('services.snippet.blueprints.admin', '/snippets'),
         ('services.ticketing.blueprints.admin', '/ticketing'),
-        ('services.ticketing.category.blueprints.admin', '/ticketing/categories'),
+        (
+            'services.ticketing.category.blueprints.admin',
+            '/ticketing/categories',
+        ),
         ('services.ticketing.checkin.blueprints.admin', '/ticketing/checkin'),
         ('services.timetable.blueprints.admin', '/timetables'),
         ('services.tourney.blueprints.admin', None),

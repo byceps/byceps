@@ -232,9 +232,9 @@ def get_all_role_ids() -> set[RoleID]:
     return set(role_ids)
 
 
-def get_all_roles_with_permissions_and_users() -> (
-    list[tuple[Role, set[PermissionID], set[User]]]
-):
+def get_all_roles_with_permissions_and_users() -> list[
+    tuple[Role, set[PermissionID], set[User]]
+]:
     """Return all roles with titles, permission IDs, and assigned users."""
     db_roles = (
         db.session.scalars(

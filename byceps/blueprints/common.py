@@ -13,7 +13,10 @@ def get_common_blueprints(
     *, style_guide_enabled: bool = False
 ) -> list[BlueprintReg]:
     blueprints = [
-        ('services.authn.password.blueprints.common', '/authentication/password'),
+        (
+            'services.authn.password.blueprints.common',
+            '/authentication/password',
+        ),
         ('services.core.blueprints.common', None),
         ('services.guest_server.blueprints.common', None),
         ('services.locale.blueprints.common', '/locale'),
@@ -21,6 +24,8 @@ def get_common_blueprints(
     ]
 
     if style_guide_enabled:
-        blueprints.append(('services.style_guide.blueprints.common', '/style_guide'))
+        blueprints.append(
+            ('services.style_guide.blueprints.common', '/style_guide')
+        )
 
     return blueprints
