@@ -167,8 +167,7 @@ def _fulfill_order(session: stripe.checkout.Session):
 
     if not _check_transaction_against_order(session, order):
         log.error(
-            'Error processing checkout session: '
-            'Verification for order failed.',
+            'Error processing checkout session: Verification for order failed.',
             session_id=session_id,
             shop_order_id=shop_order_id,
         )

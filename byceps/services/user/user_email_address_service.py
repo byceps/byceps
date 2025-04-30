@@ -209,8 +209,7 @@ def send_email_address_change_email(
         user, new_email_address
     )
     confirmation_url = (
-        f'https://{server_name}/users/email_address/'
-        f'change/{change_token.token}'
+        f'https://{server_name}/users/email_address/change/{change_token.token}'
     )
 
     with force_user_locale(user):

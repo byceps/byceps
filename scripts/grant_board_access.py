@@ -39,8 +39,7 @@ def execute(board, user) -> None:
     board_access_control_service.grant_access_to_board(board.id, user.id)
 
     click.secho(
-        f'Access to board "{board.id}" granted '
-        f'to user "{user.screen_name}".',
+        f'Access to board "{board.id}" granted to user "{user.screen_name}".',
         fg='green',
     )
 
