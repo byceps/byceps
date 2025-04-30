@@ -39,7 +39,7 @@ def url_for_site_file(filename, **kwargs) -> str | None:
 
 
 @blueprint.before_app_request
-def prepare_request_globals() -> None:
+def prepare_request_globals():
     site = _get_site()
     if not site.enabled:
         return Response(status=404)
@@ -67,7 +67,7 @@ def _get_site() -> Site:
     return site_service.get_site(site_id)
 
 
-def _get_party(site: Site) -> Party:
+def _get_party(site: Site) -> Party | None:
     if site.party_id is None:
         return None
 
