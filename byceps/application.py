@@ -234,9 +234,7 @@ def _get_config_from_environment() -> dict[str, Any]:
 
     for key in (
         'REDIS_URL',
-        'SECRET_KEY',
         'SESSION_COOKIE_SECURE',
-        'SITE_ID',
         'SQLALCHEMY_DATABASE_URI',
     ):
         value = parse_value_from_environment(key)
