@@ -228,7 +228,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.1.0" },
     { name = "qrcode", specifier = ">=8.1" },
     { name = "redis", specifier = ">=5.3.0" },
-    { name = "rq", specifier = ">=2.3.1" },
+    { name = "rq", specifier = ">=2.3.2" },
     { name = "rq-dashboard", specifier = ">=0.8.2.2" },
     { name = "rtoml", specifier = "==0.12.0" },
     { name = "schwifty", specifier = ">=2025.1.0" },
@@ -1356,15 +1356,15 @@ wheels = [
 
 [[package]]
 name = "rq"
-version = "2.3.1"
+version = "2.3.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "redis" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8f/51/15482430f8774b6e22b24a1a51bdda52c2926ebaf8175a9936140317f56e/rq-2.3.1.tar.gz", hash = "sha256:9cb33be7a90c6b36c0d6b9a6524aaf85b8855251ace476d74a076e6dfc5684d6", size = 649084 }
+sdist = { url = "https://files.pythonhosted.org/packages/43/8d/bb57bca979f48869aea0b7b9752b0887848a7098352753021fdcbdaf0efb/rq-2.3.2.tar.gz", hash = "sha256:5bd212992724428ec1689736abde783d245e7856bca39d89845884f5d580f5f1", size = 649216 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b4/4b/ae55d7ec548d5f77cb8cfee59d78725c4e26bdf9c052b9d0b4726ceca98c/rq-2.3.1-py3-none-any.whl", hash = "sha256:2bbd48b976fdd840865dcab4bed358eb94b4dd8a02e92add75a346a909c1793d", size = 100363 },
+    { url = "https://files.pythonhosted.org/packages/3f/bf/08d99660c138354a83105efa64988ee4adc8ddc6c74866f29508aaff00f7/rq-2.3.2-py3-none-any.whl", hash = "sha256:bf4dc622a7b9d5f7d4a39444f26d89ce6de8a1d6db61b21060612114dbf8d5ff", size = 100389 },
 ]
 
 [[package]]
