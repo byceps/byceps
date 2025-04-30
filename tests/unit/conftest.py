@@ -98,11 +98,12 @@ def make_app(make_byceps_config):
     def _wrapper(
         app_mode: AppMode,
         *,
+        site_id: str | None = None,
         additional_config: dict[str, Any] | None = None,
     ) -> BycepsApp:
         byceps_config = make_byceps_config()
 
-        app = BycepsApp(app_mode, byceps_config)
+        app = BycepsApp(app_mode, byceps_config, site_id)
 
         if additional_config is not None:
             app.config.from_mapping(additional_config)

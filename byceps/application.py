@@ -98,8 +98,9 @@ def _create_app(
 ) -> BycepsApp:
     """Create the actual Flask-based BYCEPS application."""
     app_mode = _get_app_mode(app_config)
+    site_id = _get_site_id(app_config)
 
-    app = BycepsApp(app_mode, byceps_config)
+    app = BycepsApp(app_mode, byceps_config, site_id)
 
     # Avoid connection errors after database becomes temporarily
     # unreachable, then becomes reachable again.
@@ -180,6 +181,15 @@ def _get_app_mode(app_config: AppConfig) -> AppMode:
             return AppMode.worker
         case _:
             raise ValueError('Unexpected application configuration type')
+
+
+def _get_site_id(app_config: AppConfig) -> str | None:
+    """Return site ID for site application configurations, `None` otherwise."""
+    match app_config:
+        case SiteAppConfig():
+            return app_config.site_id
+        case _:
+            return None
 
 
 def _configure(
