@@ -74,7 +74,7 @@ class AppDispatcher:
                     self.apps_by_host[host] = app
                     mode = app.byceps_app_mode
                     if mode.is_site():
-                        log_ctx = log_ctx.bind(site_id=app.config['SITE_ID'])
+                        log_ctx = log_ctx.bind(site_id=app_config.site_id)
                     log_ctx.info('Application mounted', mode=mode.name)
                     return app
                 case Err(e):

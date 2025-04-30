@@ -23,12 +23,6 @@ from .parser import parse_config
 log = structlog.get_logger()
 
 
-def init_app(app: BycepsApp) -> None:
-    if app.byceps_app_mode.is_site():
-        if not app.config.get('SITE_ID'):
-            raise ConfigurationError('No site ID configured.')
-
-
 def parse_value_from_environment(
     key: str,
 ) -> bool | dict | float | int | list | str | None:

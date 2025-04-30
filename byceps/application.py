@@ -20,10 +20,7 @@ from byceps.blueprints.api import register_api_blueprints
 from byceps.blueprints.site import register_site_blueprints
 from byceps.config.converter import convert_config
 from byceps.config.errors import ConfigurationError
-from byceps.config.integration import (
-    init_app as init_app_config,
-    parse_value_from_environment,
-)
+from byceps.config.integration import parse_value_from_environment
 from byceps.config.models import (
     AdminAppConfig,
     ApiAppConfig,
@@ -199,8 +196,6 @@ def _configure(
     data = _assemble_configuration(byceps_config, app_config)
     app.config.from_mapping(data)
 
-    init_app_config(app)
-
 
 def _assemble_configuration(
     byceps_config: BycepsConfig, app_config: AppConfig
@@ -219,9 +214,6 @@ def _assemble_configuration(
 
     if isinstance(app_config, WebAppConfig):
         data['SERVER_NAME'] = app_config.server_name
-
-    if isinstance(app_config, SiteAppConfig):
-        data['SITE_ID'] = app_config.site_id
 
     # Allow configuration values to be overridden by environment variables.
     data.update(_get_config_from_environment())
@@ -316,6 +308,6 @@ def _log_app_state(app: BycepsApp) -> None:
 
     match app.byceps_app_mode:
         case AppMode.site:
-            event_kw['site_id'] = app.config['SITE_ID']
+            event_kw['site_id'] = app.site_id
 
     log.info('Application created', **event_kw)

@@ -63,8 +63,7 @@ def prepare_request_globals():
 
 
 def _get_site() -> Site:
-    site_id = current_app.config['SITE_ID']
-    return site_service.get_site(site_id)
+    return site_service.get_site(current_app.site_id)
 
 
 def _get_party(site: Site) -> Party | None:
