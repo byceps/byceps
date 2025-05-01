@@ -251,9 +251,9 @@ form.board-posting-create-form-inline .label {
   border-radius: 0 0 var(--border-radius) var(--border-radius);
   flex: 1 0 auto;
   overflow: hidden;
+  overflow-wrap: break-word;
   padding: 15px;
   text-overflow: ellipsis;
-  word-break: break-word;
 }
 
 .user-comment:target header {
