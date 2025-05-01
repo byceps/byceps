@@ -1182,36 +1182,19 @@ a.user-badge:hover {
 
 /* animation */
 
-@-webkit-keyframes spin {
-
-  from {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  to {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
-
-}
-
 @keyframes spin {
 
   from {
-    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
 
   to {
-    -webkit-transform: rotate(359deg);
     transform: rotate(359deg);
   }
 
 }
 
 .spinning {
-  -webkit-animation: spin 900ms infinite linear;
   animation: spin 900ms infinite linear;
 }
 
@@ -1270,7 +1253,6 @@ img.framed {
 }
 
 .hyphenate {
-  -webkit-hyphens: auto;
   hyphens: auto;
 }
 
