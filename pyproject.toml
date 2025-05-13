@@ -35,7 +35,7 @@ dependencies = [
     "click>=8.2.0",
     "flask-babel==4.0.0",
     "flask-sqlalchemy==3.1.1",
-    "flask>=3.1.0",
+    "flask>=3.1.1",
     "hiredis>=3.1.0",
     "httpx[http2]>=0.28.1",
     "itsdangerous==2.2.0",
