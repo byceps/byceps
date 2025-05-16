@@ -206,21 +206,24 @@ def mark_order_as_paid(
     orderer_user = user_service.get_user(db_order.placed_by_id)
     order = to_order(db_order, orderer_user)
 
-    occurred_at = datetime.utcnow()
+    payment_added_at = datetime.utcnow()
 
     order_payment_service.add_payment(
         order,
-        occurred_at,
+        payment_added_at,
         payment_method,
         order.total_amount,
         initiator,
         additional_payment_data if additional_payment_data is not None else {},
     )
 
+    # Use separate timestamp so that log events are properly ordered.
+    marked_as_paid_at = datetime.utcnow()
+
     mark_order_as_paid_result = order_domain_service.mark_order_as_paid(
         order,
         orderer_user,
-        occurred_at,
+        marked_as_paid_at,
         payment_method,
         additional_payment_data,
         initiator,
@@ -231,7 +234,9 @@ def mark_order_as_paid(
     event, log_entry = mark_order_as_paid_result.unwrap()
 
     db_order.payment_method = payment_method
-    _update_payment_state(db_order, PaymentState.paid, occurred_at, initiator)
+    _update_payment_state(
+        db_order, PaymentState.paid, marked_as_paid_at, initiator
+    )
 
     db_log_entry = order_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
