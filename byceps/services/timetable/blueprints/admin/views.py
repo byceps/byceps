@@ -6,7 +6,7 @@ byceps.services.timetable.blueprints.admin.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, request
+from flask import abort, request
 from flask_babel import gettext
 
 from byceps.services.party import party_service
@@ -167,9 +167,7 @@ def item_delete(item_id):
     """Delete a timetable item."""
     item = _get_timetable_item_or_404(item_id)
 
-    initiator = g.user
-
-    timetable_service.delete_item(item.id, initiator)
+    timetable_service.delete_item(item.id)
 
     flash_success(gettext('The object has been deleted.'))
 

@@ -13,7 +13,6 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.party.models import Party, PartyID
-from byceps.services.user.models.user import User
 
 from . import timetable_domain_service
 from .dbmodels import DbTimetable, DbTimetableItem
@@ -209,7 +208,7 @@ def update_item(
     return _db_entity_to_item(db_item)
 
 
-def delete_item(item_id: TimetableItemID, initiator: User) -> None:
+def delete_item(item_id: TimetableItemID) -> None:
     """Delete a timetable item."""
     db.session.execute(
         delete(DbTimetableItem).where(DbTimetableItem.id == item_id)
