@@ -183,7 +183,7 @@ def create_item(
 
 
 def update_item(
-    item_id: TimetableItemID,
+    item: TimetableItem,
     scheduled_at: datetime,
     description: str,
     location: str | None,
@@ -192,20 +192,30 @@ def update_item(
     hidden: bool,
 ) -> TimetableItem:
     """Update a timetable item."""
-    db_item = db.session.get(DbTimetableItem, item_id)
+    updated_item = timetable_domain_service.update_item(
+        item,
+        scheduled_at,
+        description,
+        location,
+        link_target,
+        link_label,
+        hidden,
+    )
+
+    db_item = db.session.get(DbTimetableItem, updated_item.id)
     if db_item is None:
         raise ValueError(f'Unknown item ID "{item_id}"')
 
-    db_item.scheduled_at = scheduled_at
-    db_item.description = description
-    db_item.location = location
-    db_item.link_target = link_target
-    db_item.link_label = link_label
-    db_item.hidden = hidden
+    db_item.scheduled_at = updated_item.scheduled_at
+    db_item.description = updated_item.description
+    db_item.location = updated_item.location
+    db_item.link_target = updated_item.link_target
+    db_item.link_label = updated_item.link_label
+    db_item.hidden = updated_item.hidden
 
     db.session.commit()
 
-    return _db_entity_to_item(db_item)
+    return updated_item
 
 
 def delete_item(item_id: TimetableItemID) -> None:

@@ -146,7 +146,7 @@ def item_update(item_id):
     hidden = form.hidden.data
 
     timetable_service.update_item(
-        item.id,
+        item,
         scheduled_at,
         description,
         location,
