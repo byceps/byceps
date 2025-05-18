@@ -213,7 +213,7 @@ def menu_update(menu_id):
     hidden = form.hidden.data
 
     menu = site_navigation_service.update_menu(
-        menu.id, name, language_code, hidden
+        menu, name, language_code, hidden
     ).unwrap()
 
     flash_success(gettext('Menu "%(name)s" has been updated.', name=menu.name))
@@ -417,7 +417,7 @@ def item_update(item_id):
     hidden = form.hidden.data
 
     item = site_navigation_service.update_item(
-        item.id, target_type, target, label, current_page_id, hidden
+        item, target_type, target, label, current_page_id, hidden
     ).unwrap()
 
     flash_success(

@@ -58,7 +58,7 @@ def create_menu(
 
 
 def update_menu(
-    menu_id: NavMenuID,
+    menu: NavMenu,
     name: str,
     language_code: str,
     hidden: bool,
@@ -80,7 +80,7 @@ def update_menu(
 
         return menu
 
-    return _get_db_menu(menu_id).map(_update_menu)
+    return _get_db_menu(menu.id).map(_update_menu)
 
 
 def create_item(
@@ -119,7 +119,7 @@ def create_item(
 
 
 def update_item(
-    item_id: NavItemID,
+    item: NavItem,
     target_type: NavItemTargetType,
     target: str,
     label: str,
@@ -145,7 +145,7 @@ def update_item(
 
         return item
 
-    return _get_db_item(item_id).map(_update_item)
+    return _get_db_item(item.id).map(_update_item)
 
 
 def delete_item(item_id: NavItemID) -> Result[None, str]:
