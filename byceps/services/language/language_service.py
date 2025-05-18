@@ -16,11 +16,13 @@ from .models import Language
 
 def create_language(code: str) -> Language:
     """Create a language."""
-    db_language = DbLanguage(code)
+    language = Language(code=code)
+
+    db_language = DbLanguage(language.code)
     db.session.add(db_language)
     db.session.commit()
 
-    return _db_entity_to_language(db_language)
+    return language
 
 
 def get_languages() -> list[Language]:
