@@ -14,6 +14,7 @@ from byceps.database import db
 from byceps.services.site.models import SiteID
 from byceps.util.iterables import find, index_of
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels import DbNavItem, DbNavMenu
 from .models import (
@@ -38,8 +39,15 @@ def create_menu(
     parent_menu_id: NavMenuID | None = None,
 ) -> NavMenu:
     """Create a menu."""
+    menu_id = NavMenuID(generate_uuid7())
+
     db_menu = DbNavMenu(
-        site_id, name, language_code, hidden, parent_menu_id=parent_menu_id
+        menu_id,
+        site_id,
+        name,
+        language_code,
+        hidden,
+        parent_menu_id=parent_menu_id,
     )
     db.session.add(db_menu)
     db.session.commit()
@@ -80,7 +88,10 @@ def create_item(
     """Create a menu item."""
 
     def _create_item(db_menu: DbNavMenu) -> DbNavMenu:
+        item_id = NavItemID(generate_uuid7())
+
         db_item = DbNavItem(
+            item_id,
             db_menu.id,
             parent_item_id,
             target_type,

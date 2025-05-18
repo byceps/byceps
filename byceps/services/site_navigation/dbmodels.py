@@ -21,7 +21,6 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from byceps.database import db
 from byceps.services.language.dbmodels import DbLanguage
 from byceps.services.site.models import SiteID
-from byceps.util.uuid import generate_uuid7
 
 from .models import NavItemID, NavItemTargetType, NavMenuID
 
@@ -32,9 +31,7 @@ class DbNavMenu(db.Model):
     __tablename__ = 'site_nav_menus'
     __table_args__ = (db.UniqueConstraint('site_id', 'name', 'language_code'),)
 
-    id: Mapped[NavMenuID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[NavMenuID] = mapped_column(db.Uuid, primary_key=True)
     site_id: Mapped[SiteID] = mapped_column(
         db.UnicodeText, db.ForeignKey('sites.id'), index=True
     )
@@ -52,6 +49,7 @@ class DbNavMenu(db.Model):
 
     def __init__(
         self,
+        menu_id: NavMenuID,
         site_id: SiteID,
         name: str,
         language_code: str,
@@ -59,6 +57,7 @@ class DbNavMenu(db.Model):
         *,
         parent_menu_id: NavMenuID | None = None,
     ) -> None:
+        self.id = menu_id
         self.site_id = site_id
         self.name = name
         self.language_code = language_code
@@ -74,9 +73,7 @@ class DbNavItem(db.Model):
         db.UniqueConstraint('menu_id', 'parent_item_id', 'position'),
     )
 
-    id: Mapped[NavItemID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[NavItemID] = mapped_column(db.Uuid, primary_key=True)
     menu_id: Mapped[NavMenuID] = mapped_column(
         db.Uuid, db.ForeignKey('site_nav_menus.id'), index=True
     )
@@ -102,6 +99,7 @@ class DbNavItem(db.Model):
 
     def __init__(
         self,
+        item_id: NavItemID,
         menu_id: NavMenuID,
         parent_item_id: NavItemID | None,
         target_type: NavItemTargetType,
@@ -110,6 +108,7 @@ class DbNavItem(db.Model):
         current_page_id: str,
         hidden: bool,
     ) -> None:
+        self.id = item_id
         self.menu_id = menu_id
         self.parent_item_id = parent_item_id
         self.target_type = target_type
