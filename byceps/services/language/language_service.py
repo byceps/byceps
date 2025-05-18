@@ -6,10 +6,7 @@ byceps.services.language.language_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy import select
-
-from byceps.database import db
-
+from . import language_repository
 from .dbmodels import DbLanguage
 from .models import Language
 
@@ -18,16 +15,14 @@ def create_language(code: str) -> Language:
     """Create a language."""
     language = Language(code=code)
 
-    db_language = DbLanguage(language.code)
-    db.session.add(db_language)
-    db.session.commit()
+    language_repository.create_language(language)
 
     return language
 
 
 def get_languages() -> list[Language]:
     """Return all languages."""
-    db_languages = db.session.scalars(select(DbLanguage)).all()
+    db_languages = language_repository.get_languages()
 
     return [_db_entity_to_language(db_language) for db_language in db_languages]
 
