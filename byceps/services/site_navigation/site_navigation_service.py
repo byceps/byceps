@@ -14,8 +14,8 @@ from byceps.database import db
 from byceps.services.site.models import SiteID
 from byceps.util.iterables import find, index_of
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid7
 
+from . import site_navigation_domain_service
 from .dbmodels import DbNavItem, DbNavMenu
 from .models import (
     _VIEW_TYPES,
@@ -39,20 +39,22 @@ def create_menu(
     parent_menu_id: NavMenuID | None = None,
 ) -> NavMenu:
     """Create a menu."""
-    menu_id = NavMenuID(generate_uuid7())
+    menu = site_navigation_domain_service.create_menu(
+        site_id, name, language_code, hidden, parent_menu_id
+    )
 
     db_menu = DbNavMenu(
-        menu_id,
-        site_id,
-        name,
-        language_code,
-        hidden,
-        parent_menu_id=parent_menu_id,
+        menu.id,
+        menu.site_id,
+        menu.name,
+        menu.language_code,
+        menu.hidden,
+        parent_menu_id=menu.parent_menu_id,
     )
     db.session.add(db_menu)
     db.session.commit()
 
-    return _db_entity_to_menu(db_menu)
+    return menu
 
 
 def update_menu(
@@ -63,16 +65,22 @@ def update_menu(
 ) -> Result[NavMenu, str]:
     """Update a menu."""
 
-    def _update_menu(db_menu: DbNavMenu) -> DbNavMenu:
-        db_menu.name = name
-        db_menu.language_code = language_code
-        db_menu.hidden = hidden
+    def _update_menu(db_menu: DbNavMenu) -> NavMenu:
+        menu = _db_entity_to_menu(db_menu)
+
+        updated_menu = site_navigation_domain_service.update_menu(
+            menu, name, language_code, hidden
+        )
+
+        db_menu.name = updated_menu.name
+        db_menu.language_code = updated_menu.language_code
+        db_menu.hidden = updated_menu.hidden
 
         db.session.commit()
 
-        return db_menu
+        return menu
 
-    return _get_db_menu(menu_id).map(_update_menu).map(_db_entity_to_menu)
+    return _get_db_menu(menu_id).map(_update_menu)
 
 
 def create_item(
@@ -88,17 +96,19 @@ def create_item(
     """Create a menu item."""
 
     def _create_item(db_menu: DbNavMenu) -> DbNavMenu:
-        item_id = NavItemID(generate_uuid7())
+        item = site_navigation_domain_service.create_item(
+            menu_id, target_type, target, label, current_page_id, hidden
+        )
 
         db_item = DbNavItem(
-            item_id,
-            db_menu.id,
+            item.id,
+            item.menu_id,
             parent_item_id,
-            target_type,
-            target,
-            label,
-            current_page_id,
-            hidden,
+            item.target_type,
+            item.target,
+            item.label,
+            item.current_page_id,
+            item.hidden,
         )
         db_menu.items.append(db_item)
         db.session.commit()
@@ -118,18 +128,24 @@ def update_item(
 ) -> Result[NavItem, str]:
     """Update a menu item."""
 
-    def _update_item(db_item: DbNavItem) -> DbNavItem:
-        db_item.target_type = target_type
-        db_item.target = target
-        db_item.label = label
-        db_item.current_page_id = current_page_id
-        db_item.hidden = hidden
+    def _update_item(db_item: DbNavItem) -> NavItem:
+        item = _db_entity_to_item(db_item)
+
+        updated_item = site_navigation_domain_service.update_item(
+            item, target_type, target, label, current_page_id, hidden
+        )
+
+        db_item.target_type = updated_item.target_type
+        db_item.target = updated_item.target
+        db_item.label = updated_item.label
+        db_item.current_page_id = updated_item.current_page_id
+        db_item.hidden = updated_item.hidden
 
         db.session.commit()
 
-        return db_item
+        return item
 
-    return _get_db_item(item_id).map(_update_item).map(_db_entity_to_item)
+    return _get_db_item(item_id).map(_update_item)
 
 
 def delete_item(item_id: NavItemID) -> Result[None, str]:
