@@ -9,12 +9,9 @@ byceps.services.timetable.timetable_service
 from collections import defaultdict
 from datetime import date, datetime
 
-from sqlalchemy import delete, select
-
-from byceps.database import db
 from byceps.services.party.models import Party, PartyID
 
-from . import timetable_domain_service
+from . import timetable_domain_service, timetable_repository
 from .dbmodels import DbTimetable, DbTimetableItem
 from .models import (
     Timetable,
@@ -36,20 +33,14 @@ def create_timetable(
     """Create a timetable."""
     timetable = timetable_domain_service.create_timetable(party.id, hidden)
 
-    db_timetable = DbTimetable(
-        timetable.id,
-        timetable.party_id,
-        timetable.hidden,
-    )
-    db.session.add(db_timetable)
-    db.session.commit()
+    timetable_repository.create_timetable(timetable)
 
     return timetable
 
 
 def find_timetable(timetable_id: TimetableID) -> Timetable | None:
     """Return the timetable."""
-    db_timetable = db.session.get(DbTimetable, timetable_id)
+    db_timetable = timetable_repository.find_timetable(timetable_id)
 
     if db_timetable is None:
         return None
@@ -61,9 +52,7 @@ def find_timetable(timetable_id: TimetableID) -> Timetable | None:
 
 def find_timetable_for_party(party_id: PartyID) -> Timetable | None:
     """Return the timetable for the party."""
-    db_timetable = db.session.scalars(
-        select(DbTimetable).filter_by(party_id=party_id)
-    ).one_or_none()
+    db_timetable = timetable_repository.find_timetable_for_party(party_id)
 
     if db_timetable is None:
         return None
@@ -88,9 +77,7 @@ def find_timetable_grouped_by_day_for_party(
 
 
 def _get_items(timetable_id: TimetableID) -> list[TimetableItem]:
-    db_items = db.session.scalars(
-        select(DbTimetableItem).filter_by(timetable_id=timetable_id)
-    ).all()
+    db_items = timetable_repository.get_items(timetable_id)
 
     items = [_db_entity_to_item(db_item) for db_item in db_items]
     items.sort(key=lambda item: (item.scheduled_at, item.description))
@@ -166,18 +153,7 @@ def create_item(
         hidden,
     )
 
-    db_item = DbTimetableItem(
-        item.id,
-        item.timetable_id,
-        item.scheduled_at,
-        item.description,
-        item.location,
-        item.link_target,
-        item.link_label,
-        item.hidden,
-    )
-    db.session.add(db_item)
-    db.session.commit()
+    timetable_repository.create_item(item)
 
     return item
 
@@ -202,34 +178,19 @@ def update_item(
         hidden,
     )
 
-    db_item = db.session.get(DbTimetableItem, updated_item.id)
-    if db_item is None:
-        raise ValueError(f'Unknown item ID "{item_id}"')
-
-    db_item.scheduled_at = updated_item.scheduled_at
-    db_item.description = updated_item.description
-    db_item.location = updated_item.location
-    db_item.link_target = updated_item.link_target
-    db_item.link_label = updated_item.link_label
-    db_item.hidden = updated_item.hidden
-
-    db.session.commit()
+    timetable_repository.update_item(updated_item)
 
     return updated_item
 
 
 def delete_item(item_id: TimetableItemID) -> None:
     """Delete a timetable item."""
-    db.session.execute(
-        delete(DbTimetableItem).where(DbTimetableItem.id == item_id)
-    )
-
-    db.session.commit()
+    timetable_repository.delete_item(item_id)
 
 
 def find_item(item_id: TimetableItemID) -> TimetableItem | None:
     """Return the timetable item."""
-    db_item = db.session.get(DbTimetableItem, item_id)
+    db_item = timetable_repository.find_item(item_id)
 
     if db_item is None:
         return None
