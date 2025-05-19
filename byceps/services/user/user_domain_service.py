@@ -301,18 +301,18 @@ def _build_details_updated_log_entry(
     old_phone_number: str | None,
     new_phone_number: str | None,
 ) -> UserLogEntry:
-    data = {
-        'initiator_id': str(initiator.id),
-    }
+    fields: dict[str, str] = {}
 
     def _add_if_different(
-        base_key_name: str,
+        property_key: str,
         old_value: Any | None,
         new_value: Any | None,
     ) -> None:
         if old_value != new_value:
-            data[f'old_{base_key_name}'] = _to_str_if_not_none(old_value)
-            data[f'new_{base_key_name}'] = _to_str_if_not_none(new_value)
+            fields[property_key] = {
+                'old': _to_str_if_not_none(old_value),
+                'new': _to_str_if_not_none(new_value),
+            }
 
     _add_if_different('first_name', old_first_name, new_first_name)
     _add_if_different('last_name', old_last_name, new_last_name)
@@ -322,6 +322,11 @@ def _build_details_updated_log_entry(
     _add_if_different('city', old_city, new_city)
     _add_if_different('street', old_street, new_street)
     _add_if_different('phone_number', old_phone_number, new_phone_number)
+
+    data = {
+        'fields': fields,
+        'initiator_id': str(initiator.id),
+    }
 
     return UserLogEntry(
         id=generate_uuid7(),

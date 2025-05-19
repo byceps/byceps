@@ -152,11 +152,38 @@
           {%- endcall %}
         {%- elif log_entry.event_type == 'user-details-updated' %}
           {%- call render_log_entry('edit', log_entry.occurred_at) %}
+            <div class="block">
             {{ _(
               '%(initiator)s has <strong>changed personal data</strong> of %(user)s.',
               initiator=render_log_user(log_entry.initiator),
               user=render_log_user(user),
             ) }}
+            </div>
+
+            {# new structure #}
+            {%- if log_entry.fields %}
+            <table class="index">
+              <thead>
+                <tr>
+                  <th>{{ _('Property') }}</th>
+                  <th>{{ _('old') }}</th>
+                  <th>{{ _('new') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+              {%- for key, values in log_entry.fields|items|sort %}
+                <tr>
+                  <th>{{ key }}</th>
+                  <td>{{ values['old']|fallback }}</td>
+                  <td>{{ values['new']|fallback }}</td>
+                </tr>
+              {%- endfor %}
+              </tbody>
+            </table>
+            {%- endif %}
+
+            {# old structure #}
+            {%- if log_entry.details %}
             <blockquote><table>
             {%- for key, value in log_entry.details|items|sort %}
               <tr>
@@ -165,6 +192,7 @@
               </tr>
             {%- endfor %}
             </table></blockquote>
+            {%- endif %}
           {%- endcall %}
         {%- elif log_entry.event_type == 'password-updated' %}
           {%- call render_log_entry('password', log_entry.occurred_at) %}

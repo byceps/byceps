@@ -260,6 +260,11 @@ def _get_additional_data(
         yield 'badge', badge
 
     if log_entry.event_type == 'user-details-updated':
+        # new structure
+        fields = log_entry.data.pop('fields', {})
+        yield 'fields', fields
+
+        # old structure
         details = {
             k: v
             for k, v in log_entry.data.items()
