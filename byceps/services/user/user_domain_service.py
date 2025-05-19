@@ -305,16 +305,23 @@ def _build_details_updated_log_entry(
         'initiator_id': str(initiator.id),
     }
 
-    _add_if_different(data, 'first_name', old_first_name, new_first_name)
-    _add_if_different(data, 'last_name', old_last_name, new_last_name)
-    _add_if_different(
-        data, 'date_of_birth', old_date_of_birth, new_date_of_birth
-    )
-    _add_if_different(data, 'country', old_country, new_country)
-    _add_if_different(data, 'postal_code', old_postal_code, new_postal_code)
-    _add_if_different(data, 'city', old_city, new_city)
-    _add_if_different(data, 'street', old_street, new_street)
-    _add_if_different(data, 'phone_number', old_phone_number, new_phone_number)
+    def _add_if_different(
+        base_key_name: str,
+        old_value: Any | None,
+        new_value: Any | None,
+    ) -> None:
+        if old_value != new_value:
+            data[f'old_{base_key_name}'] = _to_str_if_not_none(old_value)
+            data[f'new_{base_key_name}'] = _to_str_if_not_none(new_value)
+
+    _add_if_different('first_name', old_first_name, new_first_name)
+    _add_if_different('last_name', old_last_name, new_last_name)
+    _add_if_different('date_of_birth', old_date_of_birth, new_date_of_birth)
+    _add_if_different('country', old_country, new_country)
+    _add_if_different('postal_code', old_postal_code, new_postal_code)
+    _add_if_different('city', old_city, new_city)
+    _add_if_different('street', old_street, new_street)
+    _add_if_different('phone_number', old_phone_number, new_phone_number)
 
     return UserLogEntry(
         id=generate_uuid7(),
@@ -324,17 +331,6 @@ def _build_details_updated_log_entry(
         initiator_id=initiator.id,
         data=data,
     )
-
-
-def _add_if_different(
-    log_entry_data: UserLogEntryData,
-    base_key_name: str,
-    old_value: Any | None,
-    new_value: Any | None,
-) -> None:
-    if old_value != new_value:
-        log_entry_data[f'old_{base_key_name}'] = _to_str_if_not_none(old_value)
-        log_entry_data[f'new_{base_key_name}'] = _to_str_if_not_none(new_value)
 
 
 def _to_str_if_not_none(value: Any) -> str | None:
