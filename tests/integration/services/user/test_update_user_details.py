@@ -86,13 +86,21 @@ def test_update_user_address(database, make_user):
     details_updated_log_entry = log_entries_after[-1]
     assert details_updated_log_entry.event_type == 'user-details-updated'
     assert details_updated_log_entry.data == {
+        'fields': {
+            'postal_code': {
+                'old': old_postal_code,
+                'new': new_postal_code,
+            },
+            'city': {
+                'old': old_city,
+                'new': new_city,
+            },
+            'street': {
+                'old': old_street,
+                'new': new_street,
+            },
+        },
         'initiator_id': str(user.id),
-        'old_postal_code': old_postal_code,
-        'new_postal_code': new_postal_code,
-        'old_city': old_city,
-        'new_city': new_city,
-        'old_street': old_street,
-        'new_street': new_street,
     }
 
 
@@ -139,11 +147,17 @@ def test_update_user_real_name(database, make_user):
     details_updated_log_entry = log_entries_after[-1]
     assert details_updated_log_entry.event_type == 'user-details-updated'
     assert details_updated_log_entry.data == {
+        'fields': {
+            'first_name': {
+                'old': old_first_name,
+                'new': new_first_name,
+            },
+            'last_name': {
+                'old': old_last_name,
+                'new': new_last_name,
+            },
+        },
         'initiator_id': str(user.id),
-        'old_first_name': old_first_name,
-        'new_first_name': new_first_name,
-        'old_last_name': old_last_name,
-        'new_last_name': new_last_name,
     }
 
 
@@ -187,9 +201,15 @@ def test_remove_user_dob_and_phone_number(database, make_user):
     details_updated_log_entry = log_entries_after[-1]
     assert details_updated_log_entry.event_type == 'user-details-updated'
     assert details_updated_log_entry.data == {
+        'fields': {
+            'date_of_birth': {
+                'old': '1991-09-17',
+                'new': None,
+            },
+            'phone_number': {
+                'old': old_phone_number,
+                'new': '',
+            },
+        },
         'initiator_id': str(user.id),
-        'old_date_of_birth': '1991-09-17',
-        'new_date_of_birth': None,
-        'old_phone_number': old_phone_number,
-        'new_phone_number': '',
     }
