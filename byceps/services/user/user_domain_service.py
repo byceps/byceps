@@ -323,6 +323,9 @@ def _build_details_updated_log_entry(
     _add_if_different('street', old_street, new_street)
     _add_if_different('phone_number', old_phone_number, new_phone_number)
 
+    if not fields:
+        raise ValueError('No user details have changed.')
+
     data = {
         'fields': fields,
         'initiator_id': str(initiator.id),
