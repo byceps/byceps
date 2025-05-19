@@ -10,6 +10,7 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired
 
+from byceps.services.language import language_service
 from byceps.services.page import page_service
 from byceps.services.site.models import SiteID
 from byceps.services.site_navigation import site_navigation_service
@@ -22,19 +23,26 @@ class _MenuBaseForm(LocalizedForm):
 
 
 class MenuCreateForm(_MenuBaseForm):
-    language_code = StringField(
+    language_code = SelectField(
         lazy_gettext('Language code'), validators=[InputRequired()]
     )
+
+    def set_language_choices(self):
+        languages = language_service.get_languages()
+
+        choices = [(language.code, language.code) for language in languages]
+        choices.sort()
+        choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
+
+        self.language_code.choices = choices
 
 
 class SubMenuCreateForm(_MenuBaseForm):
     pass
 
 
-class MenuUpdateForm(_MenuBaseForm):
-    language_code = StringField(
-        lazy_gettext('Language code'), validators=[InputRequired()]
-    )
+class MenuUpdateForm(MenuCreateForm):
+    pass
 
 
 class _ItemBaseForm(LocalizedForm):

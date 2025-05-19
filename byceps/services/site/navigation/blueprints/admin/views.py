@@ -96,6 +96,7 @@ def menu_create_form(site_id, erroneous_form=None):
     brand = brand_service.get_brand(site.brand_id)
 
     form = erroneous_form if erroneous_form else MenuCreateForm()
+    form.set_language_choices()
 
     return {
         'site': site,
@@ -111,6 +112,7 @@ def menu_create(site_id):
     site = _get_site_or_404(site_id)
 
     form = MenuCreateForm(request.form)
+    form.set_language_choices()
 
     if not form.validate():
         return menu_create_form(site_id, form)
@@ -189,6 +191,7 @@ def menu_update_form(menu_id, erroneous_form=None):
     brand = brand_service.get_brand(site.brand_id)
 
     form = erroneous_form if erroneous_form else MenuUpdateForm(obj=menu)
+    form.set_language_choices()
 
     return {
         'menu': menu,
@@ -205,6 +208,7 @@ def menu_update(menu_id):
     menu = _get_menu_or_404(menu_id)
 
     form = MenuUpdateForm(request.form)
+    form.set_language_choices()
     if not form.validate():
         return menu_update_form(menu.id, form)
 
