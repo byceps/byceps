@@ -180,7 +180,7 @@ def create_orderer(user: User) -> Orderer:
         first_name=detail.first_name or 'n/a',
         last_name=detail.last_name or 'n/a',
         country=detail.country or 'n/a',
-        zip_code=detail.zip_code or 'n/a',
+        postal_code=detail.postal_code or 'n/a',
         city=detail.city or 'n/a',
         street=detail.street or 'n/a',
     )

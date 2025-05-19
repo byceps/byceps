@@ -85,7 +85,7 @@
           {{ render_icon('location') }}
           {{ user.detail.street|fallback }}
           &middot;
-          {% if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif %}
+          {% if user.detail.postal_code %}{{ user.detail.postal_code }} {% endif %}
           {{ user.detail.city|fallback }}
           &middot;
           {{ user.detail.country|fallback }}

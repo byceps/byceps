@@ -138,7 +138,7 @@ def update_orderer(
             new_orderer.first_name,
             new_orderer.last_name,
             new_orderer.country,
-            new_orderer.zip_code,
+            new_orderer.postal_code,
             new_orderer.city,
             new_orderer.street,
         ]
@@ -153,7 +153,7 @@ def update_orderer(
         last_name=new_orderer.last_name,
         address=Address(
             country=new_orderer.country,
-            zip_code=new_orderer.zip_code,
+            postal_code=new_orderer.postal_code,
             city=new_orderer.city,
             street=new_orderer.street,
         ),
@@ -196,9 +196,9 @@ def _build_orderer_updated_log_entry(
             'old': original_order.address.country,
             'new': updated_order.address.country,
         },
-        'zip_code': {
-            'old': original_order.address.zip_code,
-            'new': updated_order.address.zip_code,
+        'postal_code': {
+            'old': original_order.address.postal_code,
+            'new': updated_order.address.postal_code,
         },
         'city': {
             'old': original_order.address.city,

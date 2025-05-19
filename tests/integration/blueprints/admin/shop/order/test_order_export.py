@@ -90,7 +90,7 @@ def orderer(make_user) -> Orderer:
         first_name='Hans-Werner',
         last_name='Mustermann',
         country='Deutschland',
-        zip_code='42000',
+        postal_code='42000',
         city='Hauptstadt',
         street='Nebenstraße 23a',
     )

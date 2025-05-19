@@ -32,7 +32,7 @@ class DbUserDetail(db.Model):
     last_name: Mapped[str | None] = mapped_column(db.UnicodeText)
     date_of_birth: Mapped[date | None]
     country: Mapped[str | None] = mapped_column(db.UnicodeText)
-    zip_code: Mapped[str | None] = mapped_column(db.UnicodeText)
+    postal_code: Mapped[str | None] = mapped_column(db.UnicodeText)
     city: Mapped[str | None] = mapped_column(db.UnicodeText)
     street: Mapped[str | None] = mapped_column(db.UnicodeText)
     phone_number: Mapped[str | None] = mapped_column(db.UnicodeText)

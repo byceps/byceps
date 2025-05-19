@@ -181,7 +181,7 @@ Currently supported fields:
 - ``legacy_id``
 - ``first_name``, ``last_name``
 - ``date_of_birth``
-- ``country``, ``zip_code``, ``city``, ``street``
+- ``country``, ``postal_code``, ``city``, ``street``
 - ``phone_number``
 - ``internal_comment``
 

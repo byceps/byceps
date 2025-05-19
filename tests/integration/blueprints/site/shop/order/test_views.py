@@ -38,7 +38,7 @@ COMMON_FORM_DATA: dict[str, str] = {
     'first_name': 'Hiro',
     'last_name': 'Protagonist',
     'country': 'State of Mind',
-    'zip_code': '31337',
+    'postal_code': '31337',
     'city': 'Atrocity',
     'street': 'L33t Street 101',
 }

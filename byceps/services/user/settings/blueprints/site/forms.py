@@ -102,7 +102,7 @@ class DetailsForm(LocalizedForm):
     )
     date_of_birth = DateField(lazy_gettext('Date of birth'), [Optional()])
     country = StringField(lazy_gettext('Country'), [Optional(), Length(max=60)])
-    zip_code = StringField(lazy_gettext('Zip code'), [Optional()])
+    postal_code = StringField(lazy_gettext('Postal code'), [Optional()])
     city = StringField(lazy_gettext('City'), [Optional()])
     street = StringField(lazy_gettext('Street'), [Optional()])
     phone_number = TelField(

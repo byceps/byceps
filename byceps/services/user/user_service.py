@@ -433,7 +433,7 @@ def get_detail(user_id: UserID) -> UserDetail:
         last_name=db_detail.last_name,
         date_of_birth=db_detail.date_of_birth,
         country=db_detail.country,
-        zip_code=db_detail.zip_code,
+        postal_code=db_detail.postal_code,
         city=db_detail.city,
         street=db_detail.street,
         phone_number=db_detail.phone_number,

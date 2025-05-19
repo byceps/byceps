@@ -145,7 +145,7 @@ def export_persons(brand_id):
     field_name_last_name = gettext('Last name')
     field_name_date_of_birth = gettext('Date of birth')
     field_name_street = gettext('Street')
-    field_name_zip_code = gettext('Zip code')
+    field_name_postal_code = gettext('Postal code')
     field_name_city = gettext('City')
     field_name_country = gettext('Country')
     field_name_email_address = gettext('Email address')
@@ -157,7 +157,7 @@ def export_persons(brand_id):
         field_name_last_name,
         field_name_date_of_birth,
         field_name_street,
-        field_name_zip_code,
+        field_name_postal_code,
         field_name_city,
         field_name_country,
         field_name_email_address,
@@ -177,7 +177,7 @@ def export_persons(brand_id):
             field_name_last_name: user.detail.last_name,
             field_name_date_of_birth: date_of_birth,
             field_name_street: user.detail.street,
-            field_name_zip_code: user.detail.zip_code,
+            field_name_postal_code: user.detail.postal_code,
             field_name_city: user.detail.city,
             field_name_country: user.detail.country,
             field_name_email_address: user.email_address,

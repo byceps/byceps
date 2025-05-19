@@ -134,7 +134,7 @@ def to_site_order_list_item(
 def _get_address(db_order: DbOrder) -> Address:
     return Address(
         country=db_order.country,
-        zip_code=db_order.zip_code,
+        postal_code=db_order.postal_code,
         city=db_order.city,
         street=db_order.street,
     )

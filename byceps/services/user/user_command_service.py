@@ -228,7 +228,7 @@ def update_user_details(
     new_last_name: str | None,
     new_date_of_birth: date | None,
     new_country: str | None,
-    new_zip_code: str | None,
+    new_postal_code: str | None,
     new_city: str | None,
     new_street: str | None,
     new_phone_number: str | None,
@@ -241,7 +241,7 @@ def update_user_details(
     old_last_name = db_detail.last_name
     old_date_of_birth = db_detail.date_of_birth
     old_country = db_detail.country
-    old_zip_code = db_detail.zip_code
+    old_postal_code = db_detail.postal_code
     old_city = db_detail.city
     old_street = db_detail.street
     old_phone_number = db_detail.phone_number
@@ -257,8 +257,8 @@ def update_user_details(
         new_date_of_birth,
         old_country,
         new_country,
-        old_zip_code,
-        new_zip_code,
+        old_postal_code,
+        new_postal_code,
         old_city,
         new_city,
         old_street,
@@ -276,7 +276,7 @@ def update_user_details(
         new_last_name,
         new_date_of_birth,
         new_country,
-        new_zip_code,
+        new_postal_code,
         new_city,
         new_street,
         new_phone_number,
@@ -293,7 +293,7 @@ def _persist_details_update(
     new_last_name: str | None,
     new_date_of_birth: date | None,
     new_country: str | None,
-    new_zip_code: str | None,
+    new_postal_code: str | None,
     new_city: str | None,
     new_street: str | None,
     new_phone_number: str | None,
@@ -302,7 +302,7 @@ def _persist_details_update(
     db_detail.last_name = new_last_name
     db_detail.date_of_birth = new_date_of_birth
     db_detail.country = new_country
-    db_detail.zip_code = new_zip_code
+    db_detail.postal_code = new_postal_code
     db_detail.city = new_city
     db_detail.street = new_street
     db_detail.phone_number = new_phone_number

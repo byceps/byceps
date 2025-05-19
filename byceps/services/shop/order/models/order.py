@@ -68,7 +68,7 @@ PaymentState = Enum(
 @dataclass(frozen=True)
 class Address:
     country: str
-    zip_code: str
+    postal_code: str
     city: str
     street: str
 
@@ -82,7 +82,7 @@ class Orderer:
     first_name: str
     last_name: str
     country: str
-    zip_code: str
+    postal_code: str
     city: str
     street: str
 

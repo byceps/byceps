@@ -228,8 +228,8 @@ def update_details(
     new_date_of_birth: date | None,
     old_country: str | None,
     new_country: str | None,
-    old_zip_code: str | None,
-    new_zip_code: str | None,
+    old_postal_code: str | None,
+    new_postal_code: str | None,
     old_city: str | None,
     new_city: str | None,
     old_street: str | None,
@@ -255,8 +255,8 @@ def update_details(
         new_date_of_birth,
         old_country,
         new_country,
-        old_zip_code,
-        new_zip_code,
+        old_postal_code,
+        new_postal_code,
         old_city,
         new_city,
         old_street,
@@ -292,8 +292,8 @@ def _build_details_updated_log_entry(
     new_date_of_birth: date | None,
     old_country: str | None,
     new_country: str | None,
-    old_zip_code: str | None,
-    new_zip_code: str | None,
+    old_postal_code: str | None,
+    new_postal_code: str | None,
     old_city: str | None,
     new_city: str | None,
     old_street: str | None,
@@ -311,7 +311,7 @@ def _build_details_updated_log_entry(
         data, 'date_of_birth', old_date_of_birth, new_date_of_birth
     )
     _add_if_different(data, 'country', old_country, new_country)
-    _add_if_different(data, 'zip_code', old_zip_code, new_zip_code)
+    _add_if_different(data, 'postal_code', old_postal_code, new_postal_code)
     _add_if_different(data, 'city', old_city, new_city)
     _add_if_different(data, 'street', old_street, new_street)
     _add_if_different(data, 'phone_number', old_phone_number, new_phone_number)

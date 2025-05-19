@@ -3406,7 +3406,7 @@ msgstr "Straße"
 #: byceps/blueprints/admin/user/forms.py:161
 #: byceps/blueprints/site/shop/order/forms.py:32
 #: byceps/blueprints/site/user/settings/forms.py:104
-msgid "Zip code"
+msgid "Postal code"
 msgstr "PLZ"
 
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:56

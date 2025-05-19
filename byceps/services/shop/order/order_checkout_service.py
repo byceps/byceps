@@ -128,7 +128,7 @@ def _build_db_order(
         first_name=orderer.first_name,
         last_name=orderer.last_name,
         country=orderer.country,
-        zip_code=orderer.zip_code,
+        postal_code=orderer.postal_code,
         city=orderer.city,
         street=orderer.street,
         total_amount=incoming_order.total_amount,

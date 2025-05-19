@@ -29,9 +29,9 @@
         <td>
           <div class="data-label">{{ _('Address') }}</div>
           <div class="data-value">
-          {%- if detail.street or detail.zip_code or detail.city or detail.country %}
+          {%- if detail.street or detail.postal_code or detail.city or detail.country %}
             {%- if detail.street %}{{ detail.street }}<br>{% endif -%}
-            {%- if detail.zip_code %}{{ detail.zip_code }} {% endif %}
+            {%- if detail.postal_code %}{{ detail.postal_code }} {% endif %}
             {%- if detail.city %}{{ detail.city }}{% endif -%}
             {%- if detail.country %}<br>{{ detail.country }}{% endif -%}
           {%- else -%}

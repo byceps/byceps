@@ -77,7 +77,7 @@ def _anonymize_account(db_user: DbUser) -> None:
     db_user.detail.last_name = None
     db_user.detail.date_of_birth = None
     db_user.detail.country = None
-    db_user.detail.zip_code = None
+    db_user.detail.postal_code = None
     db_user.detail.city = None
     db_user.detail.street = None
     db_user.detail.phone_number = None

@@ -28,8 +28,8 @@ class OrderForm(LocalizedForm):
     country = StringField(
         lazy_gettext('Country'), validators=[Length(min=2, max=60)]
     )
-    zip_code = StringField(
-        lazy_gettext('Zip code'),
+    postal_code = StringField(
+        lazy_gettext('Postal code'),
         validators=[Length(min=4, max=5)],  # DE: 5 digits, AT/CH: 4 digits
     )
     city = StringField(lazy_gettext('City'), validators=[Length(min=2)])
@@ -42,7 +42,7 @@ class OrderForm(LocalizedForm):
             first_name=self.first_name.data.strip(),
             last_name=self.last_name.data.strip(),
             country=self.country.data.strip(),
-            zip_code=self.zip_code.data.strip(),
+            postal_code=self.postal_code.data.strip(),
             city=self.city.data.strip(),
             street=self.street.data.strip(),
         )

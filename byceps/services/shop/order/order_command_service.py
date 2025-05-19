@@ -70,7 +70,7 @@ def update_orderer(
     db_order.first_name = updated_order.first_name
     db_order.last_name = updated_order.last_name
     db_order.country = updated_order.address.country
-    db_order.zip_code = updated_order.address.zip_code
+    db_order.postal_code = updated_order.address.postal_code
     db_order.city = updated_order.address.city
     db_order.street = updated_order.address.street
 

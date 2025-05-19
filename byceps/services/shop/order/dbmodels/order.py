@@ -59,7 +59,7 @@ class DbOrder(db.Model):
     first_name: Mapped[str] = mapped_column(db.UnicodeText)
     last_name: Mapped[str] = mapped_column(db.UnicodeText)
     country: Mapped[str] = mapped_column(db.UnicodeText)
-    zip_code: Mapped[str] = mapped_column(db.UnicodeText)
+    postal_code: Mapped[str] = mapped_column(db.UnicodeText)
     city: Mapped[str] = mapped_column(db.UnicodeText)
     street: Mapped[str] = mapped_column(db.UnicodeText)
     _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
@@ -94,7 +94,7 @@ class DbOrder(db.Model):
         first_name: str,
         last_name: str,
         country: str,
-        zip_code: str,
+        postal_code: str,
         city: str,
         street: str,
         total_amount: Money,
@@ -110,7 +110,7 @@ class DbOrder(db.Model):
         self.first_name = first_name
         self.last_name = last_name
         self.country = country
-        self.zip_code = zip_code
+        self.postal_code = postal_code
         self.city = city
         self.street = street
         self.currency = total_amount.currency

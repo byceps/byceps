@@ -239,7 +239,7 @@ def _fill_client_data(user: User, order: AdminDetailedOrder) -> dict[str, Any]:
         'address2': '',
         'city': order.address.city,
         'state': '',
-        'postal_code': order.address.zip_code,
+        'postal_code': order.address.postal_code,
         'contacts': [
             {
                 'first_name': order.first_name,

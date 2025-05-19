@@ -49,7 +49,7 @@ def test_delete_account(admin_app, role, make_user):
     assert user_before.detail.last_name is not None
     assert user_before.detail.date_of_birth is not None
     assert user_before.detail.country is not None
-    assert user_before.detail.zip_code is not None
+    assert user_before.detail.postal_code is not None
     assert user_before.detail.city is not None
     assert user_before.detail.street is not None
     assert user_before.detail.phone_number is not None
@@ -85,7 +85,7 @@ def test_delete_account(admin_app, role, make_user):
     assert user_after.detail.last_name is None
     assert user_after.detail.date_of_birth is None
     assert user_after.detail.country is None
-    assert user_after.detail.zip_code is None
+    assert user_after.detail.postal_code is None
     assert user_after.detail.city is None
     assert user_after.detail.street is None
     assert user_after.detail.phone_number is None

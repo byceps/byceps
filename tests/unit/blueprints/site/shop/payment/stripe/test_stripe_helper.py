@@ -76,7 +76,7 @@ def create_order(
         last_name=orderer.last_name,
         address=Address(
             country=orderer.country,
-            zip_code=orderer.zip_code,
+            postal_code=orderer.postal_code,
             city=orderer.city,
             street=orderer.street,
         ),

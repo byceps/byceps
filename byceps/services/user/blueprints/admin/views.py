@@ -639,7 +639,7 @@ def change_details(user_id):
     last_name = form.last_name.data.strip()
     date_of_birth = form.date_of_birth.data
     country = form.country.data.strip()
-    zip_code = form.zip_code.data.strip()
+    postal_code = form.postal_code.data.strip()
     city = form.city.data.strip()
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
@@ -651,7 +651,7 @@ def change_details(user_id):
         last_name,
         date_of_birth,
         country,
-        zip_code,
+        postal_code,
         city,
         street,
         phone_number,

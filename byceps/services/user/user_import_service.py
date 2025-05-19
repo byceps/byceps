@@ -27,7 +27,7 @@ class UserToImport(BaseModel):
     last_name: str | None = None
     date_of_birth: date | None = None
     country: str | None = None
-    zip_code: str | None = None
+    postal_code: str | None = None
     city: str | None = None
     street: str | None = None
     phone_number: str | None = None
@@ -60,7 +60,7 @@ def import_user(user_to_import: UserToImport) -> User:
         last_name=user_to_import.last_name,
         date_of_birth=user_to_import.date_of_birth,
         country=user_to_import.country,
-        zip_code=user_to_import.zip_code,
+        postal_code=user_to_import.postal_code,
         city=user_to_import.city,
         street=user_to_import.street,
         phone_number=user_to_import.phone_number,

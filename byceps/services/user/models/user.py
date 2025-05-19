@@ -65,7 +65,7 @@ class UserDetail:
     last_name: str | None
     date_of_birth: date | None
     country: str | None
-    zip_code: str | None
+    postal_code: str | None
     city: str | None
     street: str | None
     phone_number: str | None

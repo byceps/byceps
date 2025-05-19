@@ -18,7 +18,7 @@ def test_update_user_address(database, make_user):
     old_last_name = 'Zufall'
     old_date_of_birth = None
     old_country = 'Germany'
-    old_zip_code = '22999'
+    old_postal_code = '22999'
     old_city = 'Büttenwarder'
     old_street = 'Dorfweg 23'
     old_phone_number = None
@@ -27,7 +27,7 @@ def test_update_user_address(database, make_user):
     new_last_name = 'Zufall'
     new_date_of_birth = None
     new_country = 'Germany'
-    new_zip_code = '20099'
+    new_postal_code = '20099'
     new_city = 'Hamburg'
     new_street = 'Kirchenallee 1'
     new_phone_number = None
@@ -37,7 +37,7 @@ def test_update_user_address(database, make_user):
         last_name=old_last_name,
         date_of_birth=old_date_of_birth,
         country=old_country,
-        zip_code=old_zip_code,
+        postal_code=old_postal_code,
         city=old_city,
         street=old_street,
         phone_number=old_phone_number,
@@ -54,7 +54,7 @@ def test_update_user_address(database, make_user):
         new_last_name,
         new_date_of_birth,
         new_country,
-        new_zip_code,
+        new_postal_code,
         new_city,
         new_street,
         new_phone_number,
@@ -75,7 +75,7 @@ def test_update_user_address(database, make_user):
     assert user_after.detail.last_name == new_last_name
     assert user_after.detail.date_of_birth == new_date_of_birth
     assert user_after.detail.country == new_country
-    assert user_after.detail.zip_code == new_zip_code
+    assert user_after.detail.postal_code == new_postal_code
     assert user_after.detail.city == new_city
     assert user_after.detail.street == new_street
     assert user_after.detail.phone_number == new_phone_number
@@ -87,8 +87,8 @@ def test_update_user_address(database, make_user):
     assert details_updated_log_entry.event_type == 'user-details-updated'
     assert details_updated_log_entry.data == {
         'initiator_id': str(user.id),
-        'old_zip_code': old_zip_code,
-        'new_zip_code': new_zip_code,
+        'old_postal_code': old_postal_code,
+        'new_postal_code': new_postal_code,
         'old_city': old_city,
         'new_city': new_city,
         'old_street': old_street,
@@ -120,7 +120,7 @@ def test_update_user_real_name(database, make_user):
         new_last_name,
         user_detail.date_of_birth,
         user_detail.country,
-        user_detail.zip_code,
+        user_detail.postal_code,
         user_detail.city,
         user_detail.street,
         user_detail.phone_number,
@@ -168,7 +168,7 @@ def test_remove_user_dob_and_phone_number(database, make_user):
         user_detail.last_name,
         None,
         user_detail.country,
-        user_detail.zip_code,
+        user_detail.postal_code,
         user_detail.city,
         user_detail.street,
         '',

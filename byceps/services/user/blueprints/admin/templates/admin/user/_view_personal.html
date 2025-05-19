@@ -26,7 +26,7 @@
   <div class="data-label">{{ _('Address') }}</div>
   <div class="data-value">
     {{- user.detail.street|fallback }}<br>
-    {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif %}
+    {%- if user.detail.postal_code %}{{ user.detail.postal_code }}{% endif %}
     {{ user.detail.city|fallback -}}
     <br>
     {{- user.detail.country|fallback -}}
