@@ -171,44 +171,55 @@ def _build_orderer_updated_log_entry(
     updated_order: Order,
     initiator: User,
 ) -> OrderLogEntry:
-    fields = {
-        'placed_by_id': {
-            'old': str(original_order.placed_by.id),
-            'new': str(updated_order.placed_by.id),
-        },
-        'placed_by_screen_name': {
-            'old': original_order.placed_by.screen_name,
-            'new': updated_order.placed_by.screen_name,
-        },
-        'company': {
-            'old': original_order.company,
-            'new': updated_order.company,
-        },
-        'first_name': {
-            'old': original_order.first_name,
-            'new': updated_order.first_name,
-        },
-        'last_name': {
-            'old': original_order.last_name,
-            'new': updated_order.last_name,
-        },
-        'country': {
-            'old': original_order.address.country,
-            'new': updated_order.address.country,
-        },
-        'postal_code': {
-            'old': original_order.address.postal_code,
-            'new': updated_order.address.postal_code,
-        },
-        'city': {
-            'old': original_order.address.city,
-            'new': updated_order.address.city,
-        },
-        'street': {
-            'old': original_order.address.street,
-            'new': updated_order.address.street,
-        },
-    }
+    fields: dict[str, str] = {}
+
+    def _add_if_different(
+        property_key: str,
+        old_value: str | None,
+        new_value: str | None,
+    ) -> None:
+        if old_value != new_value:
+            fields[property_key] = {'old': old_value, 'new': new_value}
+
+    placed_by_id_old = str(original_order.placed_by.id)
+    placed_by_id_new = str(updated_order.placed_by.id)
+    _add_if_different('placed_by_id', placed_by_id_old, placed_by_id_new)
+
+    placed_by_screen_name_old = original_order.placed_by.screen_name
+    placed_by_screen_name_new = updated_order.placed_by.screen_name
+    _add_if_different(
+        'placed_by_screen_name',
+        placed_by_screen_name_old,
+        placed_by_screen_name_new,
+    )
+
+    company_old = original_order.company
+    company_new = updated_order.company
+    _add_if_different('company', company_old, company_new)
+
+    first_name_old = original_order.first_name
+    first_name_new = updated_order.first_name
+    _add_if_different('first_name', first_name_old, first_name_new)
+
+    last_name_old = original_order.last_name
+    last_name_new = updated_order.last_name
+    _add_if_different('last_name', last_name_old, last_name_new)
+
+    country_old = original_order.address.country
+    country_new = updated_order.address.country
+    _add_if_different('country', country_old, country_new)
+
+    postal_code_old = original_order.address.postal_code
+    postal_code_new = updated_order.address.postal_code
+    _add_if_different('postal_code', postal_code_old, postal_code_new)
+
+    city_old = original_order.address.city
+    city_new = updated_order.address.city
+    _add_if_different('city', city_old, city_new)
+
+    street_old = original_order.address.street
+    street_new = updated_order.address.street
+    _add_if_different('street', street_old, street_new)
 
     data = {
         'fields': fields,
