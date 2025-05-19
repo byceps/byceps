@@ -159,9 +159,13 @@ def update_orderer(
         ),
     )
 
-    log_entry = _build_orderer_updated_log_entry(
+    match _build_orderer_updated_log_entry(
         original_order, updated_order, initiator
-    )
+    ):
+        case Ok(value):
+            log_entry = value
+        case Err(e):
+            return Err(e)
 
     return Ok((updated_order, log_entry))
 
@@ -170,7 +174,7 @@ def _build_orderer_updated_log_entry(
     original_order: Order,
     updated_order: Order,
     initiator: User,
-) -> OrderLogEntry:
+) -> Result[OrderLogEntry, str]:
     fields: dict[str, str] = {}
 
     def _add_if_different(
@@ -221,18 +225,23 @@ def _build_orderer_updated_log_entry(
     street_new = updated_order.address.street
     _add_if_different('street', street_old, street_new)
 
+    if not fields:
+        return Err('No orderer fields have changed.')
+
     data = {
         'fields': fields,
         'initiator_id': str(initiator.id),
     }
 
-    return OrderLogEntry(
+    log_entry = OrderLogEntry(
         id=generate_uuid7(),
         occurred_at=datetime.utcnow(),
         event_type='order-orderer-updated',
         order_id=original_order.id,
         data=data,
     )
+
+    return Ok(log_entry)
 
 
 def add_note(order: Order, author: User, text: str) -> OrderLogEntry:
