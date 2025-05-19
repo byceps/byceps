@@ -246,7 +246,7 @@ def find_menu_aggregate(menu_id: NavMenuID) -> NavMenuAggregate | None:
 
     db_items = db.session.scalars(
         select(DbNavItem).filter(DbNavItem.menu_id == db_menu.id)
-    )
+    ).all()
 
     return _db_entity_to_menu_aggregate(db_menu, db_items)
 
@@ -255,7 +255,7 @@ def get_menus(site_id: SiteID) -> list[NavMenu]:
     """Return the menus for this site."""
     db_menus = db.session.scalars(
         select(DbNavMenu).filter(DbNavMenu.site_id == site_id)
-    )
+    ).all()
 
     return [_db_entity_to_menu(db_menu) for db_menu in db_menus]
 
@@ -319,7 +319,7 @@ def get_items_for_menu_id(menu_id: NavMenuID) -> list[NavItem]:
         .filter(DbNavMenu.id == menu_id)
         .filter(DbNavMenu.hidden == False)  # noqa: E712
         .filter(DbNavItem.hidden == False)  # noqa: E712
-    )
+    ).all()
 
     return _db_entities_to_items(db_items)
 
@@ -340,7 +340,7 @@ def get_items_for_menu(
         .filter(DbNavMenu.language_code == language_code)
         .filter(DbNavMenu.hidden == False)  # noqa: E712
         .filter(DbNavItem.hidden == False)  # noqa: E712
-    )
+    ).all()
 
     return _db_entities_to_items(db_items)
 
