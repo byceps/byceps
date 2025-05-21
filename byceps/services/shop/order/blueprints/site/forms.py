@@ -30,7 +30,8 @@ class OrderForm(LocalizedForm):
     )
     postal_code = StringField(
         lazy_gettext('Postal code'),
-        validators=[Length(min=4, max=5)],  # DE: 5 digits, AT/CH: 4 digits
+        # CA: 6 digits, DE: 5 digits, AT/CH: 4 digits
+        validators=[Length(min=4, max=6)],
     )
     city = StringField(lazy_gettext('City'), validators=[Length(min=2)])
     street = StringField(lazy_gettext('Street'), validators=[Length(min=2)])

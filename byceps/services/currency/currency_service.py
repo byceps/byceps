@@ -6,10 +6,10 @@ byceps.services.currency.currency_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from moneyed import CHF, Currency, DKK, EUR, GBP, NOK, SEK, USD
+from moneyed import CAD, CHF, Currency, DKK, EUR, GBP, NOK, SEK, USD
 
 
-_CURRENCIES = [CHF, DKK, EUR, GBP, NOK, SEK, USD]
+_CURRENCIES = [CAD, CHF, DKK, EUR, GBP, NOK, SEK, USD]
 
 
 def get_currencies() -> list[Currency]:
