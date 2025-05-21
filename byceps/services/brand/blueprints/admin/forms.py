@@ -7,12 +7,12 @@ byceps.services.brand.blueprints.admin.forms
 """
 
 from flask_babel import lazy_gettext
-from moneyed import CHF, DKK, EUR, GBP, NOK, SEK, USD
 from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import BrandID
+from byceps.services.currency import currency_service
 from byceps.services.party import party_service
 from byceps.util.l10n import LocalizedForm
 
@@ -44,14 +44,13 @@ class CreateForm(_BaseForm):
             raise ValidationError(lazy_gettext('The value is already in use.'))
 
     def set_currency_choices(self, locale: str):
-        currencies = [CHF, DKK, EUR, GBP, NOK, SEK, USD]
-
         def get_label(currency) -> str:
             name = currency.get_name(locale)
             return f'{name} ({currency.code})'
 
         choices = [
-            (currency.code, get_label(currency)) for currency in currencies
+            (currency.code, get_label(currency))
+            for currency in currency_service.get_currencies()
         ]
         choices.sort(key=lambda choice: choice[1])
         choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
