@@ -8254,7 +8254,7 @@ msgstr ""
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:25
 #, python-format
 msgid ""
-"You do now own, manage, or use any tickets for party "
+"You do not own, manage, or use any tickets for party "
 "<strong>%(party_title)s</strong>."
 msgstr ""
 "Du besitzt, verwaltest und/oder nutzt <em>keine</em> Tickets für die "

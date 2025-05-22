@@ -22,7 +22,7 @@
 {{ render_tickets(tickets) }}
   </div>
   {%- else %}
-  <p>{{ _('You do now own, manage, or use any tickets for party <strong>%(party_title)s</strong>.', party_title=party_title) }}</p>
+  <p>{{ _('You do not own, manage, or use any tickets for party <strong>%(party_title)s</strong>.', party_title=party_title) }}</p>
   {%- endif %}
 
 {%- endblock %}
