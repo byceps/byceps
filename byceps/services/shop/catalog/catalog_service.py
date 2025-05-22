@@ -7,6 +7,7 @@ byceps.services.shop.catalog.catalog_service
 """
 
 from collections import defaultdict
+import dataclasses
 from datetime import datetime
 
 from sqlalchemy import delete, select
@@ -23,6 +24,7 @@ from byceps.services.shop.product.models import (
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.uuid import generate_uuid7
 
+from . import catalog_domain_service
 from .dbmodels import DbCatalog, DbCatalogProduct, DbCollection
 from .models import (
     Catalog,
@@ -38,28 +40,32 @@ from .models import (
 
 def create_catalog(shop_id: ShopID, title: str) -> Catalog:
     """Create a catalog."""
-    catalog_id = CatalogID(generate_uuid7())
+    catalog = catalog_domain_service.create_catalog(shop_id, title)
 
-    db_catalog = DbCatalog(catalog_id, shop_id, title)
+    db_catalog = DbCatalog(catalog.id, catalog.shop_id, catalog.title)
 
     db.session.add(db_catalog)
     db.session.commit()
 
-    return _db_entity_to_catalog(db_catalog)
+    return catalog
 
 
-def update_catalog(catalog_id: CatalogID, title: str) -> Catalog:
+def update_catalog(catalog: Catalog, title: str) -> Catalog:
     """Update a catalog."""
-    db_catalog = _find_db_catalog(catalog_id)
+    updated_catalog = catalog_domain_service.update_catalog(
+        catalog, title=title
+    )
+
+    db_catalog = _find_db_catalog(catalog.id)
 
     if db_catalog is None:
-        raise ValueError(f'Unknown shop catalog ID "{catalog_id}"')
+        raise ValueError(f'Unknown shop catalog ID "{catalog.id}"')
 
-    db_catalog.title = title
+    db_catalog.title = updated_catalog.title
 
     db.session.commit()
 
-    return _db_entity_to_catalog(db_catalog)
+    return updated_catalog
 
 
 def find_catalog(catalog_id: CatalogID) -> Catalog | None:
@@ -111,32 +117,38 @@ def _db_entity_to_catalog(db_catalog: DbCatalog) -> Catalog:
 
 def create_collection(catalog_id: CatalogID, title: str) -> Collection:
     """Create a collection."""
+    collection = catalog_domain_service.create_collection(catalog_id, title)
+
     db_catalog = _find_db_catalog(catalog_id)
     if db_catalog is None:
         raise ValueError(f'Unknown catalog ID "{catalog_id}"')
 
-    collection_id = CollectionID(generate_uuid7())
-
-    db_collection = DbCollection(collection_id, catalog_id, title)
+    db_collection = DbCollection(
+        collection.id, collection.catalog_id, collection.title
+    )
 
     db_catalog.collections.append(db_collection)
     db.session.commit()
 
-    return _db_entity_to_collection(db_collection)
+    return dataclasses.replace(collection, position=db_catalog.position)
 
 
-def update_collection(collection_id: CollectionID, title: str) -> Collection:
+def update_collection(collection: Collection, title: str) -> Collection:
     """Update a collection."""
-    db_collection = _find_db_collection(collection_id)
+    updated_collection = catalog_domain_service.update_collection(
+        collection, title
+    )
+
+    db_collection = _find_db_collection(collection.id)
 
     if db_collection is None:
-        raise ValueError(f'Unknown shop collection ID "{collection_id}"')
+        raise ValueError(f'Unknown shop collection ID "{collection.id}"')
 
-    db_collection.title = title
+    db_collection.title = updated_collection.title
 
     db.session.commit()
 
-    return _db_entity_to_collection(db_collection)
+    return updated_collection
 
 
 def delete_collection(collection_id: CollectionID) -> None:
