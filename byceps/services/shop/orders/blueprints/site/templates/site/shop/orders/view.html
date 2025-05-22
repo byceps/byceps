@@ -15,7 +15,7 @@
   <h1 class="title">{{ order.order_number }}</h1>
 
   {%- if cancellation_request and cancellation_request.state.name != 'accepted' %}
-{{ render_notification(_('A cancelation has been requested for this order on %(date)s at %(time)s.', date=cancellation_request.created_at|dateformat, time=cancellation_request.created_at|timeformat('short')), category='info') }}
+{{ render_notification(_('A cancellation has been requested for this order on %(date)s at %(time)s.', date=cancellation_request.created_at|dateformat, time=cancellation_request.created_at|timeformat('short')), category='info') }}
   {%- endif %}
 
   {%- if order.is_open and paypal_enabled %}

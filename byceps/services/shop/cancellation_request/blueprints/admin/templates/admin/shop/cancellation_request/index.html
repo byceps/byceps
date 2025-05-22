@@ -6,7 +6,7 @@
 {% set current_page = 'shop_cancellation_request_admin' %}
 {% set current_page_brand = brand %}
 {% set current_page_shop = shop %}
-{% set page_title = 'Stornierungsanfragen' %}
+{% set page_title = _('Cancellation requests') %}
 
 {% block head %}
 <style>
@@ -50,16 +50,16 @@
       <div style="font-size: 2.5rem;">❤️</div>
 
       <div style="text-align: center;">
-        <strong style="font-size: 1.5rem;">{{ donations_total|currencyformat('EUR') }}</strong><div>gespendet</div>
+        <strong style="font-size: 1.5rem;">{{ donations_total|currencyformat('EUR') }}</strong><div>{{ _('donated') }}</div>
       </div>
 
     </div>
     <div class="box">
 
       <div class="row row--equal-sized-centered-columns">
-        <div><strong style="font-size: 1.5rem;">{{ donation_extent_totals.everything }}</strong><div class="nowrap">❤️ alles</div></div>
-        <div><strong style="font-size: 1.5rem;">{{ donation_extent_totals.part }}</strong><div class="nowrap">👍 anteilig</div></div>
-        <div><strong style="font-size: 1.5rem;">{{ donation_extent_totals.nothing }}</strong><div class="nowrap">💸 nichts</div></div>
+        <div><strong style="font-size: 1.5rem;">{{ donation_extent_totals.everything }}</strong><div class="nowrap">❤️ {{ _('everything') }}</div></div>
+        <div><strong style="font-size: 1.5rem;">{{ donation_extent_totals.part }}</strong><div class="nowrap">👍 {{ _('partially') }}</div></div>
+        <div><strong style="font-size: 1.5rem;">{{ donation_extent_totals.nothing }}</strong><div class="nowrap">💸 {{ _('nothing') }}</div></div>
       </div>
 
       <div class="mt">
@@ -126,11 +126,11 @@
         <div class="data-label">Spendenumfang</div>
         <div class="data-value mb">
           {%- if request.donation_extent.name == 'everything' %}
-          ❤️ alles
+          ❤️ {{ _('everything') }}
           {%- elif request.donation_extent.name == 'nothing' %}
-          💸 nichts
+          💸 {{ _('nothing') }}
           {%- elif request.donation_extent.name == 'part' %}
-          👍 anteilig
+          👍 {{ _('partially') }}
           {%- else %}
           ?
           {%- endif %}
@@ -140,14 +140,14 @@
 
           {%- if request.donation_extent.name in ('part', 'nothing') %}
           <div>
-            <div class="data-label">Rückforderung</div>
+            <div class="data-label">{{ _('Reclaim') }}</div>
             <div class="data-value">{{ request.amount_refund|currencyformat('EUR') }}</div>
           </div>
           {%- endif %}
 
           {%- if request.donation_extent.name in ('everything', 'part') %}
           <div>
-            <div class="data-label">Spende</div>
+            <div class="data-label">{{ _('Donation') }}</div>
             <div class="data-value">{{ request.amount_donation|currencyformat('EUR') }}</div>
           </div>
           {%- endif %}
@@ -159,10 +159,10 @@
       {%- if request.donation_extent.name in ('part', 'nothing') %}
       <div>
 
-        <div class="data-label">Empfängername</div>
+        <div class="data-label">{{ _('Recipient name') }}</div>
         <div class="data-value">{{ request.recipient_name|fallback(_('none')) }}</div>
 
-        <div class="data-label">Empfänger-IBAN</div>
+        <div class="data-label">{{ _('Recipient IBAN') }}</div>
         <div class="data-value">{{ request.recipient_iban|fallback(_('none')) }}</div>
 
       </div>
@@ -173,7 +173,7 @@
   </div>
     {%- endfor %}
   {%- else %}
-  <div class="box no-data-message">Keine</div>
+    <div class="box no-data-message">{{ _('No cancellation requests.') }}</div>
   {%- endif %}
 
 {{ render_pagination_nav(requests, '.index', {

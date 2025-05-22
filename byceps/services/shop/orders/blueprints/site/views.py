@@ -273,7 +273,7 @@ def request_cancellation_choices(order_id):
         cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
-        flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
+        flash_error(gettext('There already is a cancellation request.'))
         return redirect_to('.view', order_id=order.id)
 
     return {
@@ -303,7 +303,7 @@ def donate_everything_form(order_id, erroneous_form=None):
         cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
-        flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
+        flash_error(gettext('There already is a cancellation request.'))
         return redirect_to('.view', order_id=order.id)
 
     return {
@@ -332,7 +332,7 @@ def donate_everything(order_id):
         cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
-        flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
+        flash_error(gettext('There already is a cancellation request.'))
         return redirect_to('.view', order_id=order.id)
 
     amount_donation = order.total_amount.amount
@@ -346,7 +346,9 @@ def donate_everything(order_id):
         )
     )
 
-    reason = 'Ticketrückgabe und Spende des Bestellbetrags in voller Höhe wie angefordert'
+    reason = gettext(
+        'Ticket return and donation of full order total as requested'
+    )
 
     cancellation_result = order_command_service.cancel_order(
         order.id, g.user, reason
@@ -398,7 +400,7 @@ def request_partial_refund_form(order_id, erroneous_form=None):
         cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
-        flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
+        flash_error(gettext('There already is a cancellation request.'))
         return redirect_to('.view', order_id=order.id)
 
     form = erroneous_form if erroneous_form else RequestPartialRefundForm(order)
@@ -430,7 +432,7 @@ def request_partial_refund(order_id):
         cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
-        flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
+        flash_error(gettext('There already is a cancellation request.'))
         return redirect_to('.view', order_id=order.id)
 
     form = RequestPartialRefundForm(order, request.form)
@@ -454,7 +456,7 @@ def request_partial_refund(order_id):
 
     _send_refund_request_confirmation_email(order.order_number, amount_refund)
 
-    flash_success('Die Stornierungsanfrage wurde übermittelt.')
+    flash_success('The cancellation request has been submitted.')
 
     return redirect_to('.view', order_id=order.id)
 
@@ -481,7 +483,7 @@ def request_full_refund_form(order_id, erroneous_form=None):
         cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
-        flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
+        flash_error(gettext('There already is a cancellation request.'))
         return redirect_to('.view', order_id=order.id)
 
     form = erroneous_form if erroneous_form else RequestFullRefundForm()
@@ -513,7 +515,7 @@ def request_full_refund(order_id):
         cancellation_request_service.get_request_for_order(order.id)
     )
     if request_for_order_number:
-        flash_error('Es liegt bereits eine Stornierungsanfrage vor.')
+        flash_error(gettext('There already is a cancellation request.'))
         return redirect_to('.view', order_id=order.id)
 
     form = RequestFullRefundForm(request.form)
@@ -535,7 +537,7 @@ def request_full_refund(order_id):
 
     _send_refund_request_confirmation_email(order.order_number, amount_refund)
 
-    flash_success('Die Stornierungsanfrage wurde übermittelt.')
+    flash_success('The cancellation request has been submitted.')
 
     return redirect_to('.view', order_id=order.id)
 
@@ -567,15 +569,22 @@ def _send_refund_request_confirmation_email(
 
     sender = email_config.sender
     recipients = [email_address.address]
-    subject = 'Eingang deiner Anfrage zur Rückerstattung von Tickets'
+    subject = gettext('Receipt of your request for ticket refund')
     body = (
-        f'Hallo {screen_name},\n\n'
-        'wir haben deine Anfrage zur Rückerstattung deiner Bestellung '
-        f'{order_number} in Höhe von {amount_refund} € erhalten.\n\n'
-        'Bitte beachte, dass die Abwicklung der Rückzahlung einige Zeit '
-        'in Anspruch nehmen kann. Danke für dein Verständnis.'
-        '\n\n'
-    ) + footer
+        gettext('Hello %(screen_name)s,', screen_name=screen_name)
+        + '\n\n'
+        + gettext(
+            'we have received your request for a refund of your order %(order_number)s in the amount of %(amount_refund)s €',
+            order_number=order_number,
+            amount_refund=amount_refund,
+        )
+        + '\n\n'
+        + gettext('Please be aware that refund processing can take a while.')
+        + ' '
+        + gettext('Thank you for your understanding.')
+        + '\n\n'
+        + footer
+    )
 
     email_service.enqueue_email(sender, recipients, subject, body)
 

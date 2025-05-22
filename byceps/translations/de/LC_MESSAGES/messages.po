@@ -604,6 +604,7 @@ msgstr "%(screen_name)s, so kannst du ein neues Passwort festlegen"
 
 #: byceps/services/authn/password/authn_password_reset_service.py:46
 #: byceps/services/shop/order/email/order_email_service.py:308
+#: byceps/services/shop/orders/blueprints/site/views.py:574
 #: byceps/services/ticketing/blueprints/site/notification_service.py:156
 #: byceps/services/user/user_email_address_service.py:79
 #: byceps/services/user/user_email_address_service.py:222
@@ -5240,7 +5241,7 @@ msgstr ""
 #: byceps/services/shop/order/blueprints/admin/views.py:381
 #: byceps/services/shop/order/blueprints/admin/views.py:457
 #: byceps/services/shop/orders/blueprints/site/views.py:240
-#: byceps/services/shop/orders/blueprints/site/views.py:363
+#: byceps/services/shop/orders/blueprints/site/views.py:365
 #: byceps/services/ticketing/checkin/blueprints/admin/views.py:168
 msgid "An unexpected error occurred."
 msgstr "Ein unvorhergesehener Fehler ist aufgetreten."
@@ -5352,11 +5353,34 @@ msgstr "Bestellungen bearbeiten"
 msgid "View shop orders"
 msgstr "Bestellungen anzeigen"
 
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:9
+msgid "Cancellation requests"
+msgstr "Stornierungsanfragen"
+
 #: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:34
 #: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:91
 #: byceps/services/shop/shop/blueprints/admin/templates/admin/shop/shop/dashboard.html:20
 msgid "accepted"
 msgstr "akzeptiert"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:53
+msgid "donated"
+msgstr "gespendet"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:60
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:129
+msgid "everything"
+msgstr "alles"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:61
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:133
+msgid "partially"
+msgstr "teilweise"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:62
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:131
+msgid "nothing"
+msgstr "nichts"
 
 #: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:116
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/_order_list.html:11
@@ -5365,6 +5389,26 @@ msgstr "akzeptiert"
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view_purchases.html:28
 msgid "Orderer"
 msgstr "Besteller"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:143
+msgid "Reclaim"
+msgstr "Rückforderung"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:150
+msgid "Donation"
+msgstr "Spende"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:162
+msgid "Recipient name"
+msgstr "Empfängername"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:165
+msgid "Recipient IBAN"
+msgstr "Empfänger-IBAN"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:176
+msgid "No cancellation requests."
+msgstr "Keine Stornierungsanfragen."
 
 #: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/index_for_shop.html:25
 msgid "No catalogs exist."
@@ -5530,7 +5574,7 @@ msgstr "Bestellung %(order_number)s wurde als nicht verschickt markiert."
 #: byceps/services/shop/order/blueprints/admin/views.py:333
 #: byceps/services/shop/order/blueprints/admin/views.py:376
 #: byceps/services/shop/orders/blueprints/site/views.py:236
-#: byceps/services/shop/orders/blueprints/site/views.py:359
+#: byceps/services/shop/orders/blueprints/site/views.py:361
 msgid ""
 "The order has already been canceled. The payment state cannot be changed "
 "anymore."
@@ -6114,10 +6158,10 @@ msgstr ""
 #: byceps/services/shop/orders/blueprints/site/views.py:265
 #: byceps/services/shop/orders/blueprints/site/views.py:295
 #: byceps/services/shop/orders/blueprints/site/views.py:324
-#: byceps/services/shop/orders/blueprints/site/views.py:390
-#: byceps/services/shop/orders/blueprints/site/views.py:422
-#: byceps/services/shop/orders/blueprints/site/views.py:473
-#: byceps/services/shop/orders/blueprints/site/views.py:505
+#: byceps/services/shop/orders/blueprints/site/views.py:392
+#: byceps/services/shop/orders/blueprints/site/views.py:424
+#: byceps/services/shop/orders/blueprints/site/views.py:475
+#: byceps/services/shop/orders/blueprints/site/views.py:507
 msgid "The order has already been canceled."
 msgstr "Die Bestellung ist bereits storniert worden."
 
@@ -6129,19 +6173,58 @@ msgstr ""
 "selbst stornieren."
 
 #: byceps/services/shop/orders/blueprints/site/views.py:245
-#: byceps/services/shop/orders/blueprints/site/views.py:370
+#: byceps/services/shop/orders/blueprints/site/views.py:372
 msgid "Order has been canceled."
 msgstr "Die Bestellung wurde storniert."
 
 #: byceps/services/shop/orders/blueprints/site/views.py:269
 #: byceps/services/shop/orders/blueprints/site/views.py:299
 #: byceps/services/shop/orders/blueprints/site/views.py:328
-#: byceps/services/shop/orders/blueprints/site/views.py:394
-#: byceps/services/shop/orders/blueprints/site/views.py:426
-#: byceps/services/shop/orders/blueprints/site/views.py:477
-#: byceps/services/shop/orders/blueprints/site/views.py:509
+#: byceps/services/shop/orders/blueprints/site/views.py:396
+#: byceps/services/shop/orders/blueprints/site/views.py:428
+#: byceps/services/shop/orders/blueprints/site/views.py:479
+#: byceps/services/shop/orders/blueprints/site/views.py:511
 msgid "The order has not been paid."
 msgstr "Die Bestellung wurde nicht bezahlt."
+
+#: byceps/services/shop/orders/blueprints/site/views.py:276
+#: byceps/services/shop/orders/blueprints/site/views.py:306
+#: byceps/services/shop/orders/blueprints/site/views.py:335
+#: byceps/services/shop/orders/blueprints/site/views.py:403
+#: byceps/services/shop/orders/blueprints/site/views.py:435
+#: byceps/services/shop/orders/blueprints/site/views.py:486
+#: byceps/services/shop/orders/blueprints/site/views.py:518
+msgid "There already is a cancellation request."
+msgstr "Es liegt bereits eine Stornierungsanfrage vor."
+
+#: byceps/services/shop/orders/blueprints/site/views.py:350
+msgid "Ticket return and donation of full order total as requested"
+msgstr ""
+"Ticketrückgabe und Spende des Bestellbetrags in voller Höhe wie "
+"angefordert"
+
+#: byceps/services/shop/orders/blueprints/site/views.py:572
+msgid "Receipt of your request for ticket refund"
+msgstr "Eingang deiner Anfrage zur Rückerstattung von Tickets"
+
+#: byceps/services/shop/orders/blueprints/site/views.py:577
+#, python-format
+msgid ""
+"we have received your request for a refund of your order %(order_number)s"
+" in the amount of %(amount_refund)s €"
+msgstr ""
+"wir haben deine Anfrage zur Rückerstattung deiner Bestellung "
+"%(order_number)s in Höhe von %(amount_refund)s € erhalten."
+
+#: byceps/services/shop/orders/blueprints/site/views.py:582
+msgid "Please be aware that refund processing can take a while."
+msgstr ""
+"Bitte beachte, dass die Abwicklung der Rückzahlung einige Zeit in "
+"Anspruch nehmen kann."
+
+#: byceps/services/shop/orders/blueprints/site/views.py:584
+msgid "Thank you for your understanding."
+msgstr "Danke für dein Verständnis."
 
 #: byceps/services/shop/orders/blueprints/site/templates/macros/shop/orders.html:9
 msgctxt "order"
@@ -6188,7 +6271,7 @@ msgstr "Bestellung"
 
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:18
 #, python-format
-msgid "A cancelation has been requested for this order on %(date)s at %(time)s."
+msgid "A cancellation has been requested for this order on %(date)s at %(time)s."
 msgstr ""
 "Zu dieser Bestellung wurde am %(date)s, %(time)s Uhr eine Stornierung "
 "angefordert."
@@ -6644,6 +6727,13 @@ msgid "order"
 msgid_plural "orders"
 msgstr[0] "Bestellung"
 msgstr[1] "Bestellungen"
+
+#: byceps/services/shop/shop/blueprints/admin/templates/admin/shop/shop/dashboard.html:19
+#: byceps/services/shop/shop/blueprints/admin/templates/admin/shop/shop/dashboard.html:20
+msgid "cancellation request"
+msgid_plural "cancellation requests"
+msgstr[0] "Stornierungsanfrage"
+msgstr[1] "Stornierungsanfragen"
 
 #: byceps/services/shop/shop/blueprints/admin/templates/admin/shop/shop/dashboard.html:23
 msgid "Recent Events"
