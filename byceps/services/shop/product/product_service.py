@@ -459,6 +459,43 @@ def get_products(product_ids: set[ProductID]) -> list[Product]:
     return [_db_entity_to_product(db_product) for db_product in db_products]
 
 
+def get_products_filtered(
+    product_ids: set[ProductID], include_unavailable_products: bool
+) -> list[DbProduct]:
+    """Return the products with some filters applied."""
+    if not product_ids:
+        return []
+
+    now = datetime.utcnow()
+
+    stmt = (
+        select(DbProduct)
+        .filter(DbProduct.id.in_(product_ids))
+        .filter_by(not_directly_orderable=False)
+        .filter_by(separate_order_required=False)
+    )
+
+    if not include_unavailable_products:
+        stmt = (
+            stmt
+            # Select only products that are available in between the
+            # temporal boundaries for this product, if specified.
+            .filter(
+                db.or_(
+                    DbProduct.available_from.is_(None),
+                    now >= DbProduct.available_from,
+                )
+            ).filter(
+                db.or_(
+                    DbProduct.available_until.is_(None),
+                    now < DbProduct.available_until,
+                )
+            )
+        )
+
+    return db.session.scalars(stmt).all()
+
+
 def get_products_for_shop(shop_id: ShopID) -> list[Product]:
     """Return all products for that shop, ordered by product number."""
     db_products = db.session.scalars(
