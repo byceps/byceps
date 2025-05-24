@@ -6,7 +6,8 @@ byceps.services.shop.catalog.blueprints.admin.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort
+from flask import abort, request
+from flask_babel import gettext
 
 from byceps.services.brand import brand_service
 from byceps.services.shop.catalog import catalog_service
@@ -14,15 +15,18 @@ from byceps.services.shop.catalog.models import Catalog, CatalogID
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import permission_required
+from byceps.util.views import permission_required, redirect_to
+
+from .forms import CatalogCreateForm, CatalogUpdateForm
 
 
 blueprint = create_blueprint('shop_catalog_admin', __name__)
 
 
 @blueprint.get('/for_shop/<shop_id>')
-@permission_required('shop.view')
+@permission_required('shop_product.view')
 @templated
 def index_for_shop(shop_id):
     """List catalogs for that shop."""
@@ -40,7 +44,7 @@ def index_for_shop(shop_id):
 
 
 @blueprint.get('/<catalog_id>')
-@permission_required('shop.view')
+@permission_required('shop_product.view')
 @templated
 def view(catalog_id):
     """Show a single catalog."""
@@ -59,6 +63,87 @@ def view(catalog_id):
         'brand': brand,
         'collections': collections,
     }
+
+
+@blueprint.get('/for_shop/<shop_id>/create')
+@permission_required('shop_product.administrate')
+@templated
+def create_form(shop_id, erroneous_form=None):
+    """Show form to create a catalog."""
+    shop = _get_shop_or_404(shop_id)
+
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = erroneous_form if erroneous_form else CatalogCreateForm()
+
+    return {
+        'shop': shop,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/for_shop/<shop_id>')
+@permission_required('shop_product.administrate')
+def create(shop_id):
+    """Create a catalog."""
+    shop = _get_shop_or_404(shop_id)
+
+    form = CatalogCreateForm(request.form)
+    if not form.validate():
+        return create_form(shop_id, form)
+
+    title = form.title.data.strip()
+
+    catalog = catalog_service.create_catalog(shop.id, title)
+
+    flash_success(
+        gettext('Catalog "%(title)s" has been created.', title=catalog.title)
+    )
+    return redirect_to('.view', catalog_id=catalog.id)
+
+
+@blueprint.get('/<catalog_id>/update')
+@permission_required('shop_product.administrate')
+@templated
+def update_form(catalog_id, erroneous_form=None):
+    """Show form to update a catalog."""
+    catalog = _get_catalog_or_404(catalog_id)
+
+    shop = shop_service.get_shop(catalog.shop_id)
+
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = erroneous_form if erroneous_form else CatalogUpdateForm(obj=catalog)
+
+    return {
+        'catalog': catalog,
+        'shop': shop,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/<catalog_id>')
+@permission_required('shop_product.administrate')
+def update(catalog_id):
+    """Update a catalog."""
+    catalog = _get_catalog_or_404(catalog_id)
+
+    form = CatalogUpdateForm(request.form)
+    if not form.validate():
+        return update_form(catalog_id, form)
+
+    title = form.title.data.strip()
+
+    updated_catalog = catalog_service.update_catalog(catalog, title)
+
+    flash_success(
+        gettext(
+            'Catalog "%(title)s" has been updated.', title=updated_catalog.title
+        )
+    )
+    return redirect_to('.view', catalog_id=updated_catalog.id)
 
 
 def _get_shop_or_404(shop_id: ShopID) -> Shop:
