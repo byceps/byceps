@@ -46,7 +46,7 @@ def index_for_shop(shop_id):
     }
 
 
-@blueprint.get('/<catalog_id>')
+@blueprint.get('/catalogs/<catalog_id>')
 @permission_required('shop_product.view')
 @templated
 def catalog_view(catalog_id):
@@ -106,7 +106,7 @@ def catalog_create(shop_id):
     return redirect_to('.catalog_view', catalog_id=catalog.id)
 
 
-@blueprint.get('/<catalog_id>/update')
+@blueprint.get('/catalogs/<catalog_id>/update')
 @permission_required('shop_product.administrate')
 @templated
 def catalog_update_form(catalog_id, erroneous_form=None):
@@ -127,7 +127,7 @@ def catalog_update_form(catalog_id, erroneous_form=None):
     }
 
 
-@blueprint.post('/<catalog_id>')
+@blueprint.post('/catalogs/<catalog_id>')
 @permission_required('shop_product.administrate')
 def catalog_update(catalog_id):
     """Update a catalog."""
