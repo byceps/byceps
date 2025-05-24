@@ -12,7 +12,7 @@
     {%- if has_current_user_permission('shop_product.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
-        <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create') }}</span></a>
+        <a class="button" href="{{ url_for('.catalog_create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create') }}</span></a>
       </div>
     </div>
     {%- endif %}
@@ -28,7 +28,7 @@
     <tbody>
       {%- for catalog in catalogs|sort(attribute='title') %}
       <tr>
-        <td><a href="{{ url_for('.view', catalog_id=catalog.id) }}"><strong>{{ catalog.title }}</strong></a></td>
+        <td><a href="{{ url_for('.catalog_view', catalog_id=catalog.id) }}"><strong>{{ catalog.title }}</strong></a></td>
       </tr>
       {%- endfor %}
     </tbody>

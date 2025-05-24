@@ -25,6 +25,9 @@ from .forms import CatalogCreateForm, CatalogUpdateForm
 blueprint = create_blueprint('shop_catalog_admin', __name__)
 
 
+# catalog
+
+
 @blueprint.get('/for_shop/<shop_id>')
 @permission_required('shop_product.view')
 @templated
@@ -46,7 +49,7 @@ def index_for_shop(shop_id):
 @blueprint.get('/<catalog_id>')
 @permission_required('shop_product.view')
 @templated
-def view(catalog_id):
+def catalog_view(catalog_id):
     """Show a single catalog."""
     catalog = _get_catalog_or_404(catalog_id)
 
@@ -68,7 +71,7 @@ def view(catalog_id):
 @blueprint.get('/for_shop/<shop_id>/create')
 @permission_required('shop_product.administrate')
 @templated
-def create_form(shop_id, erroneous_form=None):
+def catalog_create_form(shop_id, erroneous_form=None):
     """Show form to create a catalog."""
     shop = _get_shop_or_404(shop_id)
 
@@ -85,13 +88,13 @@ def create_form(shop_id, erroneous_form=None):
 
 @blueprint.post('/for_shop/<shop_id>')
 @permission_required('shop_product.administrate')
-def create(shop_id):
+def catalog_create(shop_id):
     """Create a catalog."""
     shop = _get_shop_or_404(shop_id)
 
     form = CatalogCreateForm(request.form)
     if not form.validate():
-        return create_form(shop_id, form)
+        return catalog_create_form(shop_id, form)
 
     title = form.title.data.strip()
 
@@ -100,13 +103,13 @@ def create(shop_id):
     flash_success(
         gettext('Catalog "%(title)s" has been created.', title=catalog.title)
     )
-    return redirect_to('.view', catalog_id=catalog.id)
+    return redirect_to('.catalog_view', catalog_id=catalog.id)
 
 
 @blueprint.get('/<catalog_id>/update')
 @permission_required('shop_product.administrate')
 @templated
-def update_form(catalog_id, erroneous_form=None):
+def catalog_update_form(catalog_id, erroneous_form=None):
     """Show form to update a catalog."""
     catalog = _get_catalog_or_404(catalog_id)
 
@@ -126,13 +129,13 @@ def update_form(catalog_id, erroneous_form=None):
 
 @blueprint.post('/<catalog_id>')
 @permission_required('shop_product.administrate')
-def update(catalog_id):
+def catalog_update(catalog_id):
     """Update a catalog."""
     catalog = _get_catalog_or_404(catalog_id)
 
     form = CatalogUpdateForm(request.form)
     if not form.validate():
-        return update_form(catalog_id, form)
+        return catalog_update_form(catalog_id, form)
 
     title = form.title.data.strip()
 
@@ -143,7 +146,10 @@ def update(catalog_id):
             'Catalog "%(title)s" has been updated.', title=updated_catalog.title
         )
     )
-    return redirect_to('.view', catalog_id=updated_catalog.id)
+    return redirect_to('.catalog_view', catalog_id=updated_catalog.id)
+
+
+# helpers
 
 
 def _get_shop_or_404(shop_id: ShopID) -> Shop:
