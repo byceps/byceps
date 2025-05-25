@@ -28,6 +28,7 @@ from . import catalog_domain_service, catalog_repository
 from .dbmodels import DbCatalog, DbCatalogProduct, DbCollection
 from .models import (
     Catalog,
+    CatalogProduct,
     CatalogProductID,
     CatalogID,
     Collection,
@@ -159,11 +160,10 @@ def get_product_collections_for_catalog(
 
     collections = get_collections_for_catalog(catalog_id)
 
-    db_catalog_products = catalog_repository.get_catalog_products(catalog_id)
+    catalog_products = _get_catalog_products(catalog_id)
 
     product_ids = {
-        db_catalog_product.product_id
-        for db_catalog_product in db_catalog_products
+        catalog_product.product_id for catalog_product in catalog_products
     }
 
     products = product_service.get_products_filtered(
@@ -174,9 +174,9 @@ def get_product_collections_for_catalog(
 
     collection_ids_to_products = defaultdict(list)
 
-    for db_catalog_product in db_catalog_products:
-        collection_id = db_catalog_product.collection_id
-        product_id = db_catalog_product.product_id
+    for catalog_product in catalog_products:
+        collection_id = catalog_product.collection_id
+        product_id = catalog_product.product_id
 
         product = products_indexed_by_id.get(product_id)
         if not product:
@@ -246,3 +246,24 @@ def remove_product_from_collection(
 ) -> None:
     """Remove product from collection."""
     catalog_repository.remove_product_from_collection(catalog_product_id)
+
+
+def _get_catalog_products(catalog_id: CatalogID) -> list[CatalogProduct]:
+    """Return the catalog's catalog products."""
+    db_catalog_products = catalog_repository.get_catalog_products(catalog_id)
+
+    return [
+        _db_entity_to_catalog_product(db_catalog_product)
+        for db_catalog_product in db_catalog_products
+    ]
+
+
+def _db_entity_to_catalog_product(
+    db_catalog_product: DbCatalogProduct,
+) -> CatalogProduct:
+    return CatalogProduct(
+        id=db_catalog_product.id,
+        collection_id=db_catalog_product.collection_id,
+        product_id=db_catalog_product.product_id,
+        position=db_catalog_product.position,
+    )
