@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from byceps.services.shop.product.models import ProductNumber
+from byceps.services.shop.product.models import ProductID, ProductNumber
 from byceps.services.shop.shop.models import ShopID
 
 
@@ -43,5 +43,5 @@ class Collection:
 class CatalogProduct:
     id: CatalogProductID
     collection_id: CollectionID
-    product_number: ProductNumber
+    product_id: ProductID
     position: int
