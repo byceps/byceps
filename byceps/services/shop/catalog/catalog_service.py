@@ -140,6 +140,16 @@ def find_collection(collection_id: CollectionID) -> Collection | None:
     return _db_entity_to_collection(db_collection)
 
 
+def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
+    """Return the catalog's collections."""
+    db_collections = catalog_repository.get_collections_for_catalog(catalog_id)
+
+    return [
+        _db_entity_to_collection(db_collection)
+        for db_collection in db_collections
+    ]
+
+
 def get_product_collections_for_catalog(
     catalog_id: CatalogID, *, include_unavailable_products: bool
 ) -> list[ProductCollection]:
@@ -147,11 +157,7 @@ def get_product_collections_for_catalog(
     # Attention: Products attached to products assigned to a catalog
     # will not be included at this time!
 
-    db_collections = catalog_repository.get_collections_for_catalog(catalog_id)
-    collections = [
-        _db_entity_to_collection(db_collection)
-        for db_collection in db_collections
-    ]
+    collections = get_collections_for_catalog(catalog_id)
 
     db_catalog_products = catalog_repository.get_catalog_products(catalog_id)
 
