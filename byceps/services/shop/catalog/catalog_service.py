@@ -148,6 +148,10 @@ def get_product_collections_for_catalog(
     # will not be included at this time!
 
     db_collections = catalog_repository.get_collections_for_catalog(catalog_id)
+    collections = [
+        _db_entity_to_collection(db_collection)
+        for db_collection in db_collections
+    ]
 
     db_catalog_products = catalog_repository.get_catalog_products(catalog_id)
 
@@ -180,10 +184,10 @@ def get_product_collections_for_catalog(
         collection_ids_to_products[collection_id].append(product)
 
     return [
-        _db_entity_to_product_collection(
-            db_collection, collection_ids_to_products[db_collection.id]
+        _collection_to_product_collection(
+            collection, collection_ids_to_products[collection.id]
         )
-        for db_collection in db_collections
+        for collection in collections
     ]
 
 
@@ -197,15 +201,15 @@ def _db_entity_to_collection(db_collection: DbCollection) -> Collection:
     )
 
 
-def _db_entity_to_product_collection(
-    db_collection: DbCollection, products: list[Product]
+def _collection_to_product_collection(
+    collection: Collection, products: list[Product]
 ) -> ProductCollection:
     items = [
         _product_to_product_collection_item(product) for product in products
     ]
 
     return ProductCollection(
-        title=db_collection.title,
+        title=collection.title,
         items=items,
     )
 
