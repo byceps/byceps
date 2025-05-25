@@ -13,13 +13,25 @@ from wtforms.validators import InputRequired
 from byceps.util.l10n import LocalizedForm
 
 
-class _BaseForm(LocalizedForm):
+class _CatalogBaseForm(LocalizedForm):
     title = StringField(lazy_gettext('Title'), validators=[InputRequired()])
 
 
-class CatalogCreateForm(_BaseForm):
+class CatalogCreateForm(_CatalogBaseForm):
     pass
 
 
-class CatalogUpdateForm(_BaseForm):
+class CatalogUpdateForm(_CatalogBaseForm):
+    pass
+
+
+class _CollectionBaseForm(LocalizedForm):
+    title = StringField(lazy_gettext('Title'), validators=[InputRequired()])
+
+
+class CollectionCreateForm(_CollectionBaseForm):
+    pass
+
+
+class CollectionUpdateForm(_CollectionBaseForm):
     pass

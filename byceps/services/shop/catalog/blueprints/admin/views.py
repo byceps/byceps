@@ -11,7 +11,12 @@ from flask_babel import gettext
 
 from byceps.services.brand import brand_service
 from byceps.services.shop.catalog import catalog_service
-from byceps.services.shop.catalog.models import Catalog, CatalogID
+from byceps.services.shop.catalog.models import (
+    Catalog,
+    CatalogID,
+    Collection,
+    CollectionID,
+)
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.util.framework.blueprint import create_blueprint
@@ -19,7 +24,12 @@ from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required, redirect_to
 
-from .forms import CatalogCreateForm, CatalogUpdateForm
+from .forms import (
+    CatalogCreateForm,
+    CatalogUpdateForm,
+    CollectionCreateForm,
+    CollectionUpdateForm,
+)
 
 
 blueprint = create_blueprint('shop_catalog_admin', __name__)
@@ -105,6 +115,7 @@ def catalog_create(shop_id):
     flash_success(
         gettext('Catalog "%(title)s" has been created.', title=catalog.title)
     )
+
     return redirect_to('.catalog_view', catalog_id=catalog.id)
 
 
@@ -148,7 +159,105 @@ def catalog_update(catalog_id):
             'Catalog "%(title)s" has been updated.', title=updated_catalog.title
         )
     )
+
     return redirect_to('.catalog_view', catalog_id=updated_catalog.id)
+
+
+# collection
+
+
+@blueprint.get('/catalogs/<catalog_id>/collections/create')
+@permission_required('shop_product.administrate')
+@templated
+def collection_create_form(catalog_id, erroneous_form=None):
+    """Show form to create a collection."""
+    catalog = _get_catalog_or_404(catalog_id)
+
+    shop = _get_shop_or_404(catalog.shop_id)
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = erroneous_form if erroneous_form else CollectionCreateForm()
+
+    return {
+        'catalog': catalog,
+        'shop': shop,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/catalogs/<catalog_id>/collections')
+@permission_required('shop_product.administrate')
+def collection_create(catalog_id):
+    """Create a collection."""
+    catalog = _get_catalog_or_404(catalog_id)
+
+    form = CollectionCreateForm(request.form)
+    if not form.validate():
+        return collection_create_form(catalog_id, form)
+
+    title = form.title.data.strip()
+
+    collection = catalog_service.create_collection(catalog.id, title)
+
+    flash_success(
+        gettext(
+            'Collection "%(title)s" has been created.', title=collection.title
+        )
+    )
+
+    return redirect_to('.catalog_view', catalog_id=collection.catalog_id)
+
+
+@blueprint.get('/collections/<collection_id>/update')
+@permission_required('shop_product.administrate')
+@templated
+def collection_update_form(collection_id, erroneous_form=None):
+    """Show form to update a collection."""
+    collection = _get_collection_or_404(collection_id)
+
+    catalog = catalog_service.get_catalog(collection.catalog_id)
+    shop = shop_service.get_shop(catalog.shop_id)
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else CollectionUpdateForm(obj=collection)
+    )
+
+    return {
+        'collection': collection,
+        'shop': shop,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/collections/<collection_id>')
+@permission_required('shop_product.administrate')
+def collection_update(collection_id):
+    """Update a collection."""
+    collection = _get_collection_or_404(collection_id)
+
+    form = CollectionUpdateForm(request.form)
+    if not form.validate():
+        return collection_update_form(collection_id, form)
+
+    title = form.title.data.strip()
+
+    updated_collection = catalog_service.update_collection(collection, title)
+
+    flash_success(
+        gettext(
+            'Collection "%(title)s" has been updated.',
+            title=updated_collection.title,
+        )
+    )
+
+    return redirect_to(
+        '.catalog_view', catalog_id=updated_collection.catalog_id
+    )
 
 
 # helpers
@@ -170,3 +279,12 @@ def _get_catalog_or_404(catalog_id: CatalogID) -> Catalog:
         abort(404)
 
     return catalog
+
+
+def _get_collection_or_404(collection_id: CollectionID) -> Collection:
+    collection = catalog_service.find_collection(collection_id)
+
+    if collection is None:
+        abort(404)
+
+    return collection

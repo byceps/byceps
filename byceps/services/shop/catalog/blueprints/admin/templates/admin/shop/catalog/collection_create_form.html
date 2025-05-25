@@ -1,0 +1,22 @@
+{% extends 'layout/admin/shop/catalog.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set page_title = _('Create collection') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.catalog_view', catalog_id=catalog.id), _('Catalog')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1 class="title">{{ page_title }}</h1>
+
+  <form action="{{ url_for('.collection_create', catalog_id=catalog.id) }}" method="post">
+    <div class="box">
+      {{ form_field(form.title, autofocus='autofocus') }}
+    </div>
+
+    {{ form_buttons(_('Create')) }}
+  </form>
+
+{%- endblock %}
