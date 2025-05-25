@@ -56,15 +56,17 @@ def catalog_view(catalog_id):
     shop = shop_service.get_shop(catalog.shop_id)
     brand = brand_service.get_brand(shop.brand_id)
 
-    collections = catalog_service.get_product_collections_for_catalog(
-        catalog.id, include_unavailable_products=True
+    collections_and_products = (
+        catalog_service.get_collections_and_products_for_catalog(
+            catalog.id, include_unavailable_products=True
+        )
     )
 
     return {
         'catalog': catalog,
         'shop': shop,
         'brand': brand,
-        'collections': collections,
+        'collections_and_products': collections_and_products,
     }
 
 

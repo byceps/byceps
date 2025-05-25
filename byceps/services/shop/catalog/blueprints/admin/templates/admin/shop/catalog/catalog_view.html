@@ -26,12 +26,12 @@
 
   </div>
 
-  <h2>{{ _('Collections') }} {{ render_extra_in_heading(collections|length) }}</h2>
+  <h2>{{ _('Collections') }} {{ render_extra_in_heading(collections_and_products|length) }}</h2>
 
-  {%- for collection in collections %}
-  <h3>{{ collection.title }} {{ render_extra_in_heading(collection.items|length, label=ngettext('product', 'products', collection.items|length)) }}</h3>
+  {%- for collection, products in collections_and_products %}
+  <h3>{{ collection.title }} {{ render_extra_in_heading(products|length, label=ngettext('product', 'products', products|length)) }}</h3>
 
-    {%- if collection.items %}
+    {%- if products %}
   <table class="itemlist is-vcentered is-wide">
     <thead>
       <th>{{ _('Item number') }}</th>
@@ -39,14 +39,12 @@
       <th>{{ _('Period') }}</th>
     </thead>
     <tbody>
-      {%- for item in collection.items %}
-        {%- with product = item.product %}
+      {%- for product in products %}
       <tr>
         <td><strong>{{ render_product_link(product) }}</strong></td>
         <td>{{ product.name }}</td>
         <td>{{ render_product_temporal_availability(product) }}</td>
       </tr>
-        {%- endwith %}
       {%- endfor %}
     </tbody>
   </table>
