@@ -151,10 +151,10 @@ def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
     ]
 
 
-def get_product_collections_for_catalog(
+def get_collections_and_products_for_catalog(
     catalog_id: CatalogID, *, include_unavailable_products: bool
-) -> list[ProductCollection]:
-    """Return the catalog's collections."""
+) -> list[tuple[Collection, list[Product]]]:
+    """Return the catalog's collections and their products."""
     # Attention: Products attached to products assigned to a catalog
     # will not be included at this time!
 
@@ -185,10 +185,24 @@ def get_product_collections_for_catalog(
         collection_ids_to_products[collection_id].append(product)
 
     return [
-        _collection_to_product_collection(
-            collection, collection_ids_to_products[collection.id]
-        )
+        (collection, collection_ids_to_products[collection.id])
         for collection in collections
+    ]
+
+
+def get_product_collections_for_catalog(
+    catalog_id: CatalogID, *, include_unavailable_products: bool
+) -> list[ProductCollection]:
+    """Return the catalog's collections."""
+    # Attention: Products attached to products assigned to a catalog
+    # will not be included at this time!
+
+    return [
+        _collection_to_product_collection(collection, products)
+        for collection, products in get_collections_and_products_for_catalog(
+            catalog_id,
+            include_unavailable_products=include_unavailable_products,
+        )
     ]
 
 
