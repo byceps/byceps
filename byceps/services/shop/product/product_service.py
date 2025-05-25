@@ -461,7 +461,7 @@ def get_products(product_ids: set[ProductID]) -> list[Product]:
 
 def get_products_filtered(
     product_ids: set[ProductID], include_unavailable_products: bool
-) -> list[DbProduct]:
+) -> list[Product]:
     """Return the products with some filters applied."""
     if not product_ids:
         return []
@@ -493,7 +493,9 @@ def get_products_filtered(
             )
         )
 
-    return db.session.scalars(stmt).all()
+    db_products = db.session.scalars(stmt).all()
+
+    return [_db_entity_to_product(db_product) for db_product in db_products]
 
 
 def get_products_for_shop(shop_id: ShopID) -> list[Product]:

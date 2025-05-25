@@ -166,14 +166,9 @@ def get_product_collections_for_catalog(
         for db_catalog_product in db_catalog_products
     }
 
-    db_products = product_service.get_products_filtered(
+    products = product_service.get_products_filtered(
         product_ids, include_unavailable_products
     )
-
-    products = [
-        product_service._db_entity_to_product(db_product)
-        for db_product in db_products
-    ]
 
     products_indexed_by_id = {product.id: product for product in products}
 
