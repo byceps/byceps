@@ -140,7 +140,7 @@ def find_collection(collection_id: CollectionID) -> Collection | None:
     return _db_entity_to_collection(db_collection)
 
 
-def get_collections_for_catalog(
+def get_product_collections_for_catalog(
     catalog_id: CatalogID, *, include_unavailable_products: bool
 ) -> list[ProductCollection]:
     """Return the catalog's collections."""

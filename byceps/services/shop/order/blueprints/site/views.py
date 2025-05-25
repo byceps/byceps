@@ -68,7 +68,7 @@ def order_form(erroneous_form=None):
         return {'collections': None}
 
     if storefront.catalog:
-        collections = catalog_service.get_collections_for_catalog(
+        collections = catalog_service.get_product_collections_for_catalog(
             storefront.catalog.id, include_unavailable_products=False
         )
     else:
@@ -151,7 +151,7 @@ def order():
         return order_form()
 
     if storefront.catalog:
-        collections = catalog_service.get_collections_for_catalog(
+        collections = catalog_service.get_product_collections_for_catalog(
             storefront.catalog.id, include_unavailable_products=False
         )
     else:
