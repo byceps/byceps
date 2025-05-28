@@ -39,7 +39,7 @@
         <td>
           {%- with catalog = storefront.catalog %}
             {%- if catalog %}
-          <a href="{{ url_for('shop_catalog_admin.view', catalog_id=catalog.id) }}">{{ catalog.title }}</a>
+          <a href="{{ url_for('shop_catalog_admin.catalog_view', catalog_id=catalog.id) }}">{{ catalog.title }}</a>
             {%- else %}
           {{ None|fallback }}
             {%- endif %}
