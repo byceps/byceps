@@ -7,9 +7,11 @@ byceps.services.shop.catalog.blueprints.admin.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import StringField
+from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired
 
+from byceps.services.shop.product import product_service
+from byceps.services.shop.shop.models import ShopID
 from byceps.util.l10n import LocalizedForm
 
 
@@ -35,3 +37,22 @@ class CollectionCreateForm(_CollectionBaseForm):
 
 class CollectionUpdateForm(_CollectionBaseForm):
     pass
+
+
+class ProductAddForm(LocalizedForm):
+    product_id = SelectField(
+        lazy_gettext('Product'), validators=[InputRequired()]
+    )
+
+    def set_product_id_choices(self, shop_id: ShopID):
+        products = product_service.get_products_for_shop(shop_id)
+        products = [product for product in products if not product.archived]
+        products.sort(key=lambda product: product.item_number)
+
+        def to_label(product):
+            return f'{product.item_number} – {product.name}'
+
+        choices = [(str(product.id), to_label(product)) for product in products]
+        choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
+
+        self.product_id.choices = choices

@@ -17,6 +17,7 @@ from byceps.services.shop.catalog.models import (
     Collection,
     CollectionID,
 )
+from byceps.services.shop.product import product_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.util.framework.blueprint import create_blueprint
@@ -29,6 +30,7 @@ from .forms import (
     CatalogUpdateForm,
     CollectionCreateForm,
     CollectionUpdateForm,
+    ProductAddForm,
 )
 
 
@@ -258,6 +260,62 @@ def collection_update(collection_id):
     return redirect_to(
         '.catalog_view', catalog_id=updated_collection.catalog_id
     )
+
+
+# product assignment
+
+
+@blueprint.get('/collections/<collection_id>/products/create')
+@permission_required('shop_product.administrate')
+@templated
+def product_add_form(collection_id, erroneous_form=None):
+    """Show form to add a product to a collection."""
+    collection = _get_collection_or_404(collection_id)
+
+    catalog = catalog_service.get_catalog(collection.catalog_id)
+    shop = _get_shop_or_404(catalog.shop_id)
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = erroneous_form if erroneous_form else ProductAddForm()
+    form.set_product_id_choices(shop.id)
+
+    return {
+        'collection': collection,
+        'shop': shop,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/collections/<collection_id>/products')
+@permission_required('shop_product.administrate')
+def product_add(collection_id):
+    """Add a product to a collection."""
+    collection = _get_collection_or_404(collection_id)
+
+    catalog = catalog_service.get_catalog(collection.catalog_id)
+
+    form = ProductAddForm(request.form)
+    form.set_product_id_choices(catalog.shop_id)
+
+    if not form.validate():
+        return product_add_form(catalog_id, form)
+
+    product_id = form.product_id.data
+
+    product = product_service.get_product(product_id)
+
+    catalog_service.add_product_to_collection(product.id, collection.id)
+
+    flash_success(
+        gettext(
+            'Product "%(product_name)s" has been added to collection "%(collection_title)s".',
+            product_name=product.name,
+            collection_title=collection.title,
+        )
+    )
+
+    return redirect_to('.catalog_view', catalog_id=collection.catalog_id)
 
 
 # helpers

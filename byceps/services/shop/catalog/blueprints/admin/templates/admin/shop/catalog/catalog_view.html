@@ -49,6 +49,7 @@
     <div>
       <div class="button-row is-compact is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.collection_update_form', collection_id=collection.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+        <a class="button is-compact" href="{{ url_for('.product_add_form', collection_id=collection.id) }}">{{ render_icon('add') }} <span>{{ _('Add product') }}</span></a>
       </div>
     </div>
     {%- endif %}
