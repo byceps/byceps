@@ -22,6 +22,7 @@ from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from . import news_channel_service, news_html_service, news_image_service
 from .dbmodels import (
@@ -62,7 +63,12 @@ def create_item(
     """Create a news item, a version, and set the version as the item's
     current one.
     """
-    db_item = DbNewsItem(channel.brand_id, channel.id, slug)
+    item_id = NewsItemID(generate_uuid7())
+    created_at = datetime.utcnow()
+
+    db_item = DbNewsItem(
+        item_id, created_at, channel.brand_id, channel.id, slug
+    )
     db.session.add(db_item)
 
     db_version = _create_version(
@@ -122,7 +128,12 @@ def _create_version(
     body: str,
     body_format: BodyFormat,
 ) -> DbNewsItemVersion:
-    return DbNewsItemVersion(db_item, creator.id, title, body, body_format)
+    version_id = NewsItemVersionID(generate_uuid7())
+    created_at = datetime.utcnow()
+
+    return DbNewsItemVersion(
+        version_id, db_item, created_at, creator.id, title, body, body_format
+    )
 
 
 def set_featured_image(item_id: NewsItemID, image_id: NewsImageID) -> None:

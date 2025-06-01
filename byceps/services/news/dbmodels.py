@@ -30,7 +30,6 @@ from byceps.services.site.models import SiteID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 
 class DbNewsChannel(db.Model):
@@ -81,10 +80,8 @@ class DbNewsItem(db.Model):
     __tablename__ = 'news_items'
     __table_args__ = (db.UniqueConstraint('brand_id', 'slug'),)
 
-    id: Mapped[NewsItemID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    id: Mapped[NewsItemID] = mapped_column(db.Uuid, primary_key=True)
+    created_at: Mapped[datetime]
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id')
     )
@@ -102,8 +99,15 @@ class DbNewsItem(db.Model):
     featured_image = association_proxy('featured_image_association', 'image')
 
     def __init__(
-        self, brand_id: BrandID, channel_id: NewsChannelID, slug: str
+        self,
+        item_id: NewsItemID,
+        created_at: datetime,
+        brand_id: BrandID,
+        channel_id: NewsChannelID,
+        slug: str,
     ) -> None:
+        self.id = item_id
+        self.created_at = created_at
         self.brand_id = brand_id
         self.channel_id = channel_id
         self.slug = slug
@@ -132,14 +136,12 @@ class DbNewsItemVersion(db.Model):
 
     __tablename__ = 'news_item_versions'
 
-    id: Mapped[NewsItemVersionID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[NewsItemVersionID] = mapped_column(db.Uuid, primary_key=True)
     item_id: Mapped[NewsItemID] = mapped_column(
         db.Uuid, db.ForeignKey('news_items.id'), index=True
     )
     item: Mapped[DbNewsItem] = relationship(DbNewsItem)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
@@ -150,13 +152,17 @@ class DbNewsItemVersion(db.Model):
 
     def __init__(
         self,
+        version_id: NewsItemVersionID,
         item: DbNewsItem,
+        created_at: datetime,
         creator_id: UserID,
         title: str,
         body: str,
         body_format: BodyFormat,
     ) -> None:
+        self.id = version_id
         self.item = item
+        self.created_at = created_at
         self.creator_id = creator_id
         self.title = title
         self.body = body
