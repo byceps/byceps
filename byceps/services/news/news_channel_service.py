@@ -23,9 +23,7 @@ def create_channel(
     announcement_site_id: SiteID | None = None,
 ) -> NewsChannel:
     """Create a channel for that brand."""
-    db_channel = DbNewsChannel(
-        channel_id, brand.id, announcement_site_id=announcement_site_id
-    )
+    db_channel = DbNewsChannel(channel_id, brand.id, announcement_site_id)
 
     db.session.add(db_channel)
     db.session.commit()

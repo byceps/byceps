@@ -51,8 +51,7 @@ class DbNewsChannel(db.Model):
         self,
         channel_id: NewsChannelID,
         brand_id: BrandID,
-        *,
-        announcement_site_id: SiteID | None = None,
+        announcement_site_id: SiteID | None,
     ) -> None:
         self.id = channel_id
         self.brand_id = brand_id
