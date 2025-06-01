@@ -84,7 +84,7 @@ class DbNewsItem(db.Model):
     id: Mapped[NewsItemID] = mapped_column(
         db.Uuid, default=generate_uuid7, primary_key=True
     )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id')
     )
@@ -234,6 +234,7 @@ class DbNewsImage(db.Model):
     def __init__(
         self,
         image_id: NewsImageID,
+        created_at: datetime,
         creator_id: UserID,
         item_id: NewsItemID,
         number: int,
@@ -244,6 +245,7 @@ class DbNewsImage(db.Model):
         attribution: str | None = None,
     ) -> None:
         self.id = image_id
+        self.created_at = created_at
         self.creator_id = creator_id
         self.item_id = item_id
         self.number = number

@@ -6,6 +6,7 @@ byceps.services.news.news_image_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
 from pathlib import Path
 from typing import BinaryIO
 
@@ -58,11 +59,13 @@ def create_image(
         _check_image_dimensions(image_dimensions)
 
     image_id = NewsImageID(generate_uuid7())
+    created_at = datetime.utcnow()
     number = _get_next_available_number(item.id)
     filename = f'{image_id}.{image_type.name}'
 
     db_image = DbNewsImage(
         image_id,
+        created_at,
         creator.id,
         item.id,
         number,
