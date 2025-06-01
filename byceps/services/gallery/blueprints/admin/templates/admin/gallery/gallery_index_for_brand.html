@@ -34,7 +34,7 @@
       {%- for gallery in galleries|sort(attribute='position') %}
       <tr>
         <td>{{ gallery.slug }}</td>
-        <td>{{ gallery.title }}</td>
+        <td><a href="{{ url_for('.gallery_view', gallery_id=gallery.id) }}">{{ gallery.title }}</a></td>
         <td>{% if gallery.hidden %}{{ render_tag(_('hidden')) }}{% endif %}</td>
       </tr>
       {%- endfor %}

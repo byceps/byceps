@@ -12,6 +12,7 @@ from flask_babel import gettext
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.gallery import gallery_service
+from byceps.services.gallery.models import Gallery, GalleryID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
@@ -35,6 +36,21 @@ def gallery_index_for_brand(brand_id):
     return {
         'brand': brand,
         'galleries': galleries,
+    }
+
+
+@blueprint.get('/galleries/<uuid:gallery_id>')
+@permission_required('gallery.administrate')
+@templated
+def gallery_view(gallery_id):
+    """List galleries for that brand."""
+    gallery = _get_gallery_or_404(gallery_id)
+
+    brand = brand_service.get_brand(gallery.brand_id)
+
+    return {
+        'gallery': gallery,
+        'brand': brand,
     }
 
 
@@ -85,3 +101,12 @@ def _get_brand_or_404(brand_id: BrandID) -> Brand:
         abort(404)
 
     return brand
+
+
+def _get_gallery_or_404(gallery_id: GalleryID) -> Gallery:
+    gallery = gallery_service.find_gallery(gallery_id)
+
+    if gallery is None:
+        abort(404)
+
+    return gallery
