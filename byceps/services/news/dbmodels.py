@@ -84,7 +84,7 @@ class DbNewsItem(db.Model):
     id: Mapped[NewsItemID] = mapped_column(
         db.Uuid, default=generate_uuid7, primary_key=True
     )
-    created_at: Mapped[datetime]
+    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id')
     )
@@ -217,7 +217,7 @@ class DbNewsImage(db.Model):
     __table_args__ = (db.UniqueConstraint('item_id', 'number'),)
 
     id: Mapped[NewsImageID] = mapped_column(db.Uuid, primary_key=True)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
