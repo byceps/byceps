@@ -10,6 +10,7 @@ from flask import abort, request
 from flask_babel import gettext
 
 from byceps.services.brand import brand_service
+from byceps.services.brand.models import Brand, BrandID
 from byceps.services.gallery import gallery_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
@@ -77,7 +78,7 @@ def gallery_create(brand_id):
 # helpers
 
 
-def _get_brand_or_404(brand_id):
+def _get_brand_or_404(brand_id: BrandID) -> Brand:
     brand = brand_service.find_brand(brand_id)
 
     if brand is None:
