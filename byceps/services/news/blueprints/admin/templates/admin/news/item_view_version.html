@@ -166,8 +166,10 @@
                   <ol class="dropdown-menu dropdown-menu--right">
                     {%- if (item.featured_image is not none) and (image.id == item.featured_image.id) %}
                     <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}">{{ _('Unset image as featured') }}</a></li>
+                    <li><span class="dropdown-label dimmed">{{ _('Delete image') }}</span></li>
                     {%- else %}
                     <li><a class="dropdown-item" data-action="image-set-featured" href="{{ url_for('.image_set_featured', image_id=image.id) }}">{{ _('Set image as featured') }}</a></li>
+                    <li><a class="dropdown-item" data-action="image-delete" href="{{ url_for('.image_delete', image_id=image.id) }}">{{ _('Delete image') }}</a></li>
                     {%- endif %}
                   </ol>
                 </div>
@@ -207,6 +209,7 @@
     confirmed_post_on_click_then_reload('[data-action="item-unpublish"]', '{{ _('Unpublish news post?') }}');
     confirmed_post_on_click_then_reload('[data-action="image-set-featured"]', '{{ _('Set image as featured?') }}');
     confirmed_delete_on_click_then_reload('[data-action="image-unset-featured"]', '{{ _('Unset image as featured?') }}');
+    confirmed_delete_on_click_then_reload('[data-action="image-delete"]', '{{ _('Delete image?') }}');
   });
 </script>
 {% endblock %}

@@ -385,6 +385,18 @@ def image_unset_featured(item_id):
     flash_success(gettext('Featured image has been unset.'))
 
 
+@blueprint.delete('/images/<uuid:image_id>')
+@permission_required('news_item.update')
+@respond_no_content
+def image_delete(image_id):
+    """Delete a news image."""
+    image = _get_image_or_404(image_id)
+
+    result = news_image_service.delete_image(image.id)
+
+    flash_success(gettext('News image has been deleted.'))
+
+
 # -------------------------------------------------------------------- #
 # items
 

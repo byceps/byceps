@@ -136,6 +136,20 @@ def update_image(
     return _db_entity_to_image(db_image, db_image.item.channel_id)
 
 
+def delete_image(image_id: NewsImageID) -> None:
+    """Delete a news image."""
+    db_image = _get_db_image(image_id)
+
+    # Delete file.
+    channel_id = db_image.item.channel_id
+    path = _assemble_image_file_path(channel_id, db_image.filename)
+    upload.delete(path)
+
+    # Delete database record.
+    db.session.delete(db_image)
+    db.session.commit()
+
+
 def find_image(image_id: NewsImageID) -> NewsImage | None:
     """Return the image with that id, or `None` if not found."""
     db_image = _find_db_image(image_id)
