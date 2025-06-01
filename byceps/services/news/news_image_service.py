@@ -78,12 +78,12 @@ def create_image(
     db.session.add(db_image)
     db.session.commit()
 
-    path = _assemble_image_file_path(item.channel.id, filename)
+    image = _db_entity_to_image(db_image, item.channel.id)
+
+    path = _assemble_image_file_path(item.channel.id, image.filename)
 
     # Might raise `FileExistsError`.
     upload.store(stream, path, create_parent_path_if_nonexistent=True)
-
-    image = _db_entity_to_image(db_image, item.channel.id)
 
     return Ok(image)
 
