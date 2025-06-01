@@ -23,7 +23,11 @@ from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import permission_required, redirect_to
+from byceps.util.views import (
+    permission_required,
+    redirect_to,
+    respond_no_content,
+)
 
 from .forms import (
     CatalogCreateForm,
@@ -316,6 +320,28 @@ def product_add(collection_id):
     )
 
     return redirect_to('.catalog_view', catalog_id=collection.catalog_id)
+
+
+@blueprint.delete('/collections/<collection_id>/products/<product_id>')
+@permission_required('shop_product.administrate')
+@respond_no_content
+def product_remove(collection_id, product_id):
+    """Remove a product from a collection."""
+    collection = _get_collection_or_404(collection_id)
+
+    product = product_service.get_product(product_id)
+    if not product:
+        abort(404)
+
+    catalog_service.remove_product_from_collection(product_id, collection_id)
+
+    flash_success(
+        gettext(
+            'Product "%(product_name)s" has been removed from collection "%(collection_title)s".',
+            product_name=product.name,
+            collection_title=collection.title,
+        )
+    )
 
 
 # helpers

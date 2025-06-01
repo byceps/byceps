@@ -143,13 +143,14 @@ def add_product_to_collection(
 
 
 def remove_product_from_collection(
-    catalog_product_id: CatalogProductID,
+    product_id: ProductID,
+    collection_id: CollectionID,
 ) -> None:
     """Remove product from collection."""
     db.session.execute(
-        delete(DbCatalogProduct).where(
-            DbCatalogProduct.id == catalog_product_id
-        )
+        delete(DbCatalogProduct)
+        .filter_by(collection_id=collection_id)
+        .filter_by(product_id=product_id)
     )
     db.session.commit()
 

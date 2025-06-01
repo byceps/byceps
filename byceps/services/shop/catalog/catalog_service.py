@@ -256,10 +256,10 @@ def add_product_to_collection(
 
 
 def remove_product_from_collection(
-    catalog_product_id: CatalogProductID,
+    product_id: ProductID, collection_id: CollectionID
 ) -> None:
     """Remove product from collection."""
-    catalog_repository.remove_product_from_collection(catalog_product_id)
+    catalog_repository.remove_product_from_collection(product_id, collection_id)
 
 
 def _get_catalog_products(catalog_id: CatalogID) -> list[CatalogProduct]:
