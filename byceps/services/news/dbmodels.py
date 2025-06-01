@@ -45,17 +45,19 @@ class DbNewsChannel(db.Model):
     announcement_site_id: Mapped[SiteID | None] = mapped_column(
         db.UnicodeText, db.ForeignKey('sites.id')
     )
-    archived: Mapped[bool] = mapped_column(default=False)
+    archived: Mapped[bool]
 
     def __init__(
         self,
         channel_id: NewsChannelID,
         brand_id: BrandID,
         announcement_site_id: SiteID | None,
+        archived: bool,
     ) -> None:
         self.id = channel_id
         self.brand_id = brand_id
         self.announcement_site_id = announcement_site_id
+        self.archived = archived
 
     def __repr__(self) -> str:
         return (
