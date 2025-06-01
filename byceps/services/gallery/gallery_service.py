@@ -6,13 +6,10 @@ byceps.services.gallery.gallery_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy import select
-
 from byceps.database import db
-from byceps.services.brand import brand_service
 from byceps.services.brand.models import BrandID
 
-from . import gallery_domain_service
+from . import gallery_domain_service, gallery_repository
 from .dbmodels import DbGallery, DbGalleryImage
 from .models import Gallery, GalleryID, GalleryImage, GalleryWithImages
 
@@ -28,31 +25,18 @@ def create_gallery(
     hidden: bool,
 ) -> Gallery:
     """Create a gallery."""
-    db_brand = brand_service._find_db_brand(brand_id)
-    if db_brand is None:
-        raise ValueError(f'Unknown brand ID "{brand_id}"')
-
     gallery = gallery_domain_service.create_gallery(
         brand_id, slug, title, hidden
     )
 
-    db_gallery = DbGallery(
-        gallery.id,
-        gallery.created_at,
-        gallery.brand_id,
-        gallery.slug,
-        gallery.title,
-        gallery.hidden,
-    )
-    db_brand.galleries.append(db_gallery)
-    db.session.commit()
+    gallery_repository.create_gallery(gallery)
 
     return gallery
 
 
 def find_gallery(gallery_id: GalleryID) -> Gallery | None:
     """Return the gallery, if found."""
-    db_gallery = _find_db_gallery(gallery_id)
+    db_gallery = gallery_repository.find_gallery(gallery_id)
 
     if db_gallery is None:
         return None
@@ -60,28 +44,9 @@ def find_gallery(gallery_id: GalleryID) -> Gallery | None:
     return _db_entity_to_gallery(db_gallery)
 
 
-def _find_db_gallery(gallery_id: GalleryID) -> DbGallery | None:
-    return db.session.get(DbGallery, gallery_id)
-
-
-def _get_db_gallery(gallery_id: GalleryID) -> DbGallery:
-    db_gallery = _find_db_gallery(gallery_id)
-
-    if db_gallery is None:
-        raise ValueError(f'Unknown gallery ID "{gallery_id}"')
-
-    return db_gallery
-
-
 def find_gallery_by_slug(brand_id: BrandID, slug: str) -> Gallery | None:
     """Return the gallery of that brand and with that slug, if found."""
-    db_gallery = (
-        db.session.scalars(
-            select(DbGallery).filter_by(brand_id=brand_id).filter_by(slug=slug)
-        )
-        .unique()
-        .one_or_none()
-    )
+    db_gallery = gallery_repository.find_gallery_by_slug(brand_id, slug)
 
     if db_gallery is None:
         return None
@@ -95,15 +60,8 @@ def find_gallery_by_slug_with_images(
     """Return the gallery of that brand and with that slug, if found,
     with images.
     """
-    db_gallery = (
-        db.session.scalars(
-            select(DbGallery)
-            .options(db.joinedload(DbGallery.images))
-            .filter_by(brand_id=brand_id)
-            .filter_by(slug=slug)
-        )
-        .unique()
-        .one_or_none()
+    db_gallery = gallery_repository.find_gallery_by_slug_with_images(
+        brand_id, slug
     )
 
     if db_gallery is None:
@@ -114,26 +72,12 @@ def find_gallery_by_slug_with_images(
 
 def is_slug_available(brand_id: BrandID, slug: str) -> bool:
     """Check if the slug is yet unused."""
-    return not db.session.scalar(
-        select(
-            db.exists()
-            .where(DbGallery.brand_id == brand_id)
-            .where(db.func.lower(DbGallery.slug) == slug.lower())
-        )
-    )
+    return gallery_repository.is_slug_available(brand_id, slug)
 
 
 def get_galleries_for_brand(brand_id: BrandID) -> list[Gallery]:
     """Return all galeries for the brand."""
-    db_galleries = (
-        db.session.scalars(
-            select(DbGallery)
-            .filter_by(brand_id=brand_id)
-            .order_by(DbGallery.position)
-        )
-        .unique()
-        .all()
-    )
+    db_galleries = gallery_repository.get_galleries_for_brand(brand_id)
 
     return [_db_entity_to_gallery(db_gallery) for db_gallery in db_galleries]
 
@@ -142,15 +86,8 @@ def get_galleries_for_brand_with_images(
     brand_id: BrandID,
 ) -> list[GalleryWithImages]:
     """Return all galeries for the brand, with images."""
-    db_galleries = (
-        db.session.scalars(
-            select(DbGallery)
-            .options(db.joinedload(DbGallery.images))
-            .filter(DbGallery.brand_id == brand_id)
-            .order_by(DbGallery.position)
-        )
-        .unique()
-        .all()
+    db_galleries = gallery_repository.get_galleries_for_brand_with_images(
+        brand_id
     )
 
     return [
@@ -211,26 +148,13 @@ def create_image(
     hidden: bool = False,
 ) -> GalleryImage:
     """Add an image to a gallery."""
-    db_gallery = _get_db_gallery(gallery.id)
-
     image = gallery_domain_service.create_image(
         gallery, filename_full, filename_preview, caption, hidden
     )
 
-    db_image = DbGalleryImage(
-        image.id,
-        image.created_at,
-        image.gallery_id,
-        image.filename_full,
-        image.filename_preview,
-        image.caption,
-        image.hidden,
-    )
-    db_gallery.images.append(db_image)
+    gallery_repository.create_image(image)
 
-    db.session.commit()
-
-    return _db_entity_to_image(db_image, db_gallery)
+    return image
 
 
 def _db_entity_to_image(
