@@ -127,10 +127,7 @@ def update_image(
     attribution: str | None = None,
 ) -> NewsImage:
     """Update a news image."""
-    db_image = _find_db_image(image_id)
-
-    if db_image is None:
-        raise ValueError(f'Unknown news image ID "{image_id}".')
+    db_image = _get_db_image(image_id)
 
     db_image.alt_text = alt_text
     db_image.caption = caption
@@ -160,6 +157,16 @@ def _find_db_image(image_id: NewsImageID) -> DbNewsImage | None:
             db.joinedload(DbNewsImage.item).load_only(DbNewsItem.channel_id)
         )
     ).one_or_none()
+
+
+def _get_db_image(image_id: NewsImageID) -> DbNewsImage:
+    """Return the image with that id."""
+    db_image = _find_db_image(image_id)
+
+    if db_image is None:
+        raise ValueError(f'Unknown news image ID "{image_id}".')
+
+    return db_image
 
 
 def _db_entity_to_image(
