@@ -6,6 +6,7 @@ byceps.services.news.news_image_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from pathlib import Path
 from typing import BinaryIO
 
 from flask import current_app
@@ -74,13 +75,7 @@ def create_image(
     db.session.add(db_image)
     db.session.commit()
 
-    path = (
-        current_app.byceps_config.data_path
-        / 'global'
-        / 'news_channels'
-        / item.channel.id
-        / filename
-    )
+    path = _assemble_image_file_path(item.channel.id, filename)
 
     # Might raise `FileExistsError`.
     upload.store(stream, path, create_parent_path_if_nonexistent=True)
@@ -167,6 +162,16 @@ def _get_db_image(image_id: NewsImageID) -> DbNewsImage:
         raise ValueError(f'Unknown news image ID "{image_id}".')
 
     return db_image
+
+
+def _assemble_image_file_path(channel_id: NewsChannelID, filename: str) -> Path:
+    return (
+        current_app.byceps_config.data_path
+        / 'global'
+        / 'news_channels'
+        / channel_id
+        / filename
+    )
 
 
 def _db_entity_to_image(
