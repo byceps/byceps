@@ -10,10 +10,6 @@ from collections import defaultdict
 import dataclasses
 from datetime import datetime
 
-from sqlalchemy import delete, select
-
-from byceps.database import db
-from byceps.services.shop.product.dbmodels.product import DbProduct
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import (
     Product,
@@ -113,15 +109,6 @@ def update_collection(collection: Collection, title: str) -> Collection:
     )
 
     catalog_repository.update_collection(collection)
-
-    db_collection = catalog_repository.find_collection(collection.id)
-
-    if db_collection is None:
-        raise ValueError(f'Unknown shop collection ID "{collection.id}"')
-
-    db_collection.title = updated_collection.title
-
-    db.session.commit()
 
     return updated_collection
 
