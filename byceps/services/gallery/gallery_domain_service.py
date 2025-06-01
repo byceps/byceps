@@ -40,6 +40,15 @@ def create_gallery(
     )
 
 
+def update_gallery(
+    gallery: Gallery, slug: str, title: str, archived: bool
+) -> Gallery:
+    """Update a gallery."""
+    return dataclasses.replace(
+        gallery, slug=slug, title=title, archived=archived
+    )
+
+
 def create_image(
     gallery: Gallery,
     filename_full: str,

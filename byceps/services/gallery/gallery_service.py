@@ -34,6 +34,19 @@ def create_gallery(
     return gallery
 
 
+def update_gallery(
+    gallery: Gallery, slug: str, title: str, hidden: bool
+) -> Gallery:
+    """Update a gallery."""
+    gallery = gallery_domain_service.update_gallery(
+        gallery, slug, title, hidden
+    )
+
+    gallery_repository.update_gallery(gallery)
+
+    return gallery
+
+
 def find_gallery(gallery_id: GalleryID) -> Gallery | None:
     """Return the gallery, if found."""
     db_gallery = gallery_repository.find_gallery(gallery_id)

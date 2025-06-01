@@ -39,6 +39,17 @@ def create_gallery(gallery: Gallery) -> None:
     db.session.commit()
 
 
+def update_gallery(gallery: Gallery) -> None:
+    """Update a gallery."""
+    db_gallery = get_gallery(gallery.id)
+
+    db_gallery.slug = gallery.slug
+    db_gallery.title = gallery.title
+    db_gallery.hidden = gallery.hidden
+
+    db.session.commit()
+
+
 def find_gallery(gallery_id: GalleryID) -> DbGallery | None:
     """Return the gallery, if found."""
     return db.session.get(DbGallery, gallery_id)
