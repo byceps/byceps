@@ -6,6 +6,7 @@ byceps.services.gallery.gallery_domain_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import dataclasses
 from datetime import datetime
 
 from byceps.services.brand.models import BrandID
@@ -41,12 +42,10 @@ def create_gallery(
 
 
 def update_gallery(
-    gallery: Gallery, slug: str, title: str, archived: bool
+    gallery: Gallery, slug: str, title: str, hidden: bool
 ) -> Gallery:
     """Update a gallery."""
-    return dataclasses.replace(
-        gallery, slug=slug, title=title, archived=archived
-    )
+    return dataclasses.replace(gallery, slug=slug, title=title, hidden=hidden)
 
 
 def create_image(
