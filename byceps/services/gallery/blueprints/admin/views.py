@@ -18,7 +18,7 @@ from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required, redirect_to
 
-from .forms import GalleryCreateForm
+from .forms import GalleryCreateForm, GalleryUpdateForm
 
 
 blueprint = create_blueprint('gallery_admin', __name__)
@@ -88,6 +88,46 @@ def gallery_create(brand_id):
     flash_success(gettext('Gallery has been created.'))
 
     return redirect_to('.gallery_index_for_brand', brand_id=brand.id)
+
+
+@blueprint.get('/galleries/<uuid:gallery_id>/update')
+@permission_required('gallery.administrate')
+@templated
+def gallery_update_form(gallery_id, erroneous_form=None):
+    """Show form to update a gallery."""
+    gallery = _get_gallery_or_404(gallery_id)
+
+    brand = brand_service.get_brand(gallery.brand_id)
+
+    form = erroneous_form if erroneous_form else GalleryUpdateForm(obj=gallery)
+
+    return {
+        'gallery': gallery,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/galleries/<uuid:gallery_id>')
+@permission_required('gallery.administrate')
+def gallery_update(gallery_id):
+    """Update a gallery."""
+    gallery = _get_gallery_or_404(gallery_id)
+
+    form = GalleryUpdateForm(request.form)
+    if not form.validate():
+        return gallery_update_form(gallery_id, form)
+
+    title = form.title.data.strip()
+    hidden = form.hidden.data
+
+    updated_gallery = gallery_service.update_gallery(
+        gallery, gallery.slug, title, hidden
+    )
+
+    flash_success(gettext('Gallery has been updated.'))
+
+    return redirect_to('.gallery_index_for_brand', brand_id=gallery.brand_id)
 
 
 # -------------------------------------------------------------------- #

@@ -15,10 +15,13 @@ from byceps.services.gallery import gallery_service
 from byceps.util.l10n import LocalizedForm
 
 
-class GalleryCreateForm(LocalizedForm):
-    slug = StringField(lazy_gettext('Slug'), [InputRequired()])
+class _GalleryBaseForm(LocalizedForm):
     title = StringField(lazy_gettext('Title'), [InputRequired()])
     hidden = BooleanField(lazy_gettext('hidden'))
+
+
+class GalleryCreateForm(_GalleryBaseForm):
+    slug = StringField(lazy_gettext('Slug'), [InputRequired()])
 
     def __init__(self, brand_id: BrandID, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -34,3 +37,7 @@ class GalleryCreateForm(LocalizedForm):
                     'This value is not available. Please choose another.'
                 )
             )
+
+
+class GalleryUpdateForm(_GalleryBaseForm):
+    pass
