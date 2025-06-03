@@ -22,11 +22,11 @@ class ImageFilenameSet:
     preview: str
 
 
-def import_images_in_gallery_path(gallery: Gallery) -> None:
+def import_images_in_gallery_path(
+    gallery: Gallery, *, image_suffix='jpg', preview_marker='_preview'
+) -> None:
     """Import all matching files in the gallery's path as images."""
     gallery_path = _get_gallery_filesystem_path(gallery)
-    image_suffix = 'jpg'
-    preview_marker = '_preview'
 
     image_filename_sets = _get_filename_sets(
         gallery_path, image_suffix, preview_marker
