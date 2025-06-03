@@ -22,16 +22,25 @@ class ImageFilenameSet:
     preview: str
 
 
-def import_images_in_gallery_path(
+def get_image_filename_sets(
     gallery: Gallery, *, image_suffix='jpg', preview_marker='_preview'
-) -> None:
-    """Import all matching files in the gallery's path as images."""
+) -> list[ImageFilenameSet]:
+    """Get sets of image filenames found in the gallery's filesystem path."""
     gallery_path = _get_gallery_filesystem_path(gallery)
 
-    image_filename_sets = _get_filename_sets(
-        gallery_path, image_suffix, preview_marker
+    image_filename_sets = list(
+        _get_filename_sets(gallery_path, image_suffix, preview_marker)
     )
+    image_filename_sets.sort()
 
+    return image_filename_sets
+
+
+def import_images_in_gallery_path(
+    gallery: Gallery,
+    image_filename_sets: list[ImageFilenameSet],
+) -> None:
+    """Import all matching files in the gallery's path as images."""
     for image_filename_set in sorted(image_filename_sets):
         gallery_service.create_image(
             gallery, image_filename_set.full, image_filename_set.preview
