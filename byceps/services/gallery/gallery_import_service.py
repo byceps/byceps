@@ -23,7 +23,10 @@ class ImageFilenameSet:
 
 
 def get_image_filename_sets(
-    gallery: Gallery, *, image_suffix='jpg', preview_marker='_preview'
+    gallery: Gallery,
+    *,
+    image_suffix: str = 'jpg',
+    preview_marker: str = '_preview',
 ) -> list[ImageFilenameSet]:
     """Get sets of image filenames found in the gallery's filesystem path."""
     gallery_path = _get_gallery_filesystem_path(gallery)
