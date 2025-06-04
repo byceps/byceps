@@ -21,15 +21,21 @@ def test_get_image_file_sets(fs):
     expected = [
         ImageFileSet(
             full_filename='cozylan-2025_001.jpg',
+            full_exists=True,
             preview_filename='cozylan-2025_001_preview.jpg',
+            preview_exists=True,
         ),
         ImageFileSet(
             full_filename='cozylan-2025_002.jpg',
+            full_exists=True,
             preview_filename='cozylan-2025_002_preview.jpg',
+            preview_exists=True,
         ),
         ImageFileSet(
             full_filename='cozylan-2025_003.jpg',
+            full_exists=True,
             preview_filename='cozylan-2025_003_preview.jpg',
+            preview_exists=True,
         ),
     ]
 

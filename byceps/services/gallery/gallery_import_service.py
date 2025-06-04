@@ -19,7 +19,9 @@ from .models import Gallery
 @dataclass(frozen=True, order=True)
 class ImageFileSet:
     full_filename: str
+    full_exists: bool
     preview_filename: str
+    preview_exists: bool
 
 
 def get_image_file_sets(
@@ -90,10 +92,15 @@ def _create_image_file_set(
     image_file: Path, preview_marker: str
 ) -> ImageFileSet:
     full_filename = image_file.name
-    preview_filename = image_file.with_stem(
-        image_file.stem + preview_marker
-    ).name
+    full_exists = image_file.exists()
+
+    preview_file = image_file.with_stem(image_file.stem + preview_marker)
+    preview_filename = preview_file.name
+    preview_exists = preview_file.exists()
 
     return ImageFileSet(
-        full_filename=full_filename, preview_filename=preview_filename
+        full_filename=full_filename,
+        full_exists=full_exists,
+        preview_filename=preview_filename,
+        preview_exists=preview_exists,
     )
