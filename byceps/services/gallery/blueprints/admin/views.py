@@ -11,7 +11,7 @@ from flask_babel import gettext
 
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import Brand, BrandID
-from byceps.services.gallery import gallery_service
+from byceps.services.gallery import gallery_import_service, gallery_service
 from byceps.services.gallery.models import Gallery, GalleryID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
@@ -22,6 +22,10 @@ from .forms import GalleryCreateForm, GalleryUpdateForm
 
 
 blueprint = create_blueprint('gallery_admin', __name__)
+
+
+# -------------------------------------------------------------------- #
+# gallery
 
 
 @blueprint.get('/brands/<brand_id>')
@@ -128,6 +132,44 @@ def gallery_update(gallery_id):
     flash_success(gettext('Gallery has been updated.'))
 
     return redirect_to('.gallery_index_for_brand', brand_id=gallery.brand_id)
+
+
+# -------------------------------------------------------------------- #
+# image import
+
+
+@blueprint.get('/galleries/<uuid:gallery_id>/scan_images')
+@permission_required('gallery.administrate')
+@templated
+def scan_images(gallery_id):
+    """Scan for images to import in the gallery's filesystem path."""
+    gallery = _get_gallery_or_404(gallery_id)
+
+    brand = brand_service.get_brand(gallery.brand_id)
+
+    image_file_sets = gallery_import_service.get_image_file_sets(gallery)
+
+    return {
+        'image_file_sets': image_file_sets,
+        'gallery': gallery,
+        'brand': brand,
+    }
+
+
+@blueprint.post('/galleries/<uuid:gallery_id>/import_images')
+@permission_required('gallery.administrate')
+def import_images(gallery_id):
+    """Import images into the gallery."""
+    gallery = _get_gallery_or_404(gallery_id)
+
+    image_file_sets = gallery_import_service.get_image_file_sets(gallery)
+    gallery_import_service.import_images_in_gallery_path(
+        gallery, image_file_sets
+    )
+
+    flash_success(gettext('Images have been imported.'))
+
+    return redirect_to('.gallery_view', gallery_id=gallery.id)
 
 
 # -------------------------------------------------------------------- #

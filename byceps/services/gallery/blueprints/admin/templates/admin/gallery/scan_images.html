@@ -1,0 +1,60 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page = 'gallery_admin' %}
+{% set current_page_brand = brand %}
+{% set page_title = _('Import gallery images') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.gallery_index_for_brand', brand_id=brand.id), _('Galleries')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1 class="title">{{ page_title }}</h1>
+
+  {%- if image_file_sets %}
+  <div class="block">
+    {%- with image_count = image_file_sets|length %}
+    <strong>{{ image_count }}</strong> {{ ngettext('image', 'images', image_count) }} {{ _('found') }}
+    {%- endwith %}
+  </div>
+  <table class="itemlist is-wide">
+    <thead>
+      <tr>
+        <th colspan="2">{{ _('Image') }}</th>
+        <th colspan="2">{{ _('Preview') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for image_file_set in image_file_sets %}
+      <tr>
+        <td>{{ image_file_set.full_filename }}</td>
+        <td class="centered">{{ render_existance_tag(image_file_set.full_exists) }}</td>
+        <td>{{ image_file_set.preview_filename }}</td>
+        <td class="centered">{{ render_existance_tag(image_file_set.preview_exists) }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+    {%- if has_current_user_permission('gallery.administrate') %}
+  <form action="{{ url_for('.import_images', gallery_id=gallery.id) }}" method="post">
+    {{ form_buttons(_('Import')) }}
+  </form>
+    {%- endif %}
+  {%- else %}
+  <div class="box no-data-message">{{ _('No images found.') }}</div>
+  {%- endif %}
+
+{%- endblock %}
+
+
+{% macro render_existance_tag(exists) -%}
+  {%- if exists %}
+  {{ render_tag(_('exists'), class='color-success', icon='success') }}
+  {%- else %}
+  {{ render_tag(_('missing'), class='color-danger', icon='remove') }}
+  {%- endif %}
+{%- endmacro %}
