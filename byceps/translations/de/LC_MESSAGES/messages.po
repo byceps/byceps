@@ -4190,12 +4190,28 @@ msgstr "News-Archiv"
 msgid "Archive"
 msgstr "Archiv"
 
-#: byceps/services/newsletter/announcing.py:32
+#: byceps/services/newsletter/announcing.py:34
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has subscribed %(user_screen_name)s to "
+"newsletter \"%(list_title)s\"."
+msgstr "%(initiator_screen_name)s hat den Newsletter \"%(list_title)s\" abonniert."
+
+#: byceps/services/newsletter/announcing.py:41
 #, python-format
 msgid "%(user_screen_name)s has subscribed to newsletter \"%(list_title)s\"."
 msgstr "%(user_screen_name)s hat den Newsletter \"%(list_title)s\" abonniert."
 
-#: byceps/services/newsletter/announcing.py:50
+#: byceps/services/newsletter/announcing.py:61
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has unsubscribed %(user_screen_name)s from "
+"newsletter \"%(list_title)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat den Newsletter \"%(list_title)s\" "
+"abbestellt."
+
+#: byceps/services/newsletter/announcing.py:68
 #, python-format
 msgid "%(user_screen_name)s has unsubscribed from newsletter \"%(list_title)s\"."
 msgstr "%(user_screen_name)s hat den Newsletter \"%(list_title)s\" abbestellt."

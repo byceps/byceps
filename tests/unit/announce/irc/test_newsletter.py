@@ -37,6 +37,28 @@ def test_subscribed_to_newsletter_announced(
     assert_text(actual, expected_text)
 
 
+def test_subscribed_to_newsletter_by_admin_announced(
+    app: BycepsApp,
+    now: datetime,
+    admin: EventUser,
+    user: EventUser,
+    webhook_for_irc,
+):
+    expected_text = 'Admin has subscribed User to newsletter "CozyLAN Updates".'
+
+    event = SubscribedToNewsletterEvent(
+        occurred_at=now,
+        initiator=admin,
+        user=user,
+        list_id=ListID('cozylan-updates'),
+        list_title='CozyLAN Updates',
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
+
+
 def test_unsubscribed_from_newsletter_announced(
     app: BycepsApp, now: datetime, user: EventUser, webhook_for_irc
 ):
@@ -55,7 +77,36 @@ def test_unsubscribed_from_newsletter_announced(
     assert_text(actual, expected_text)
 
 
+def test_unsubscribed_from_newsletter_by_admin_announced(
+    app: BycepsApp,
+    now: datetime,
+    admin: EventUser,
+    user: EventUser,
+    webhook_for_irc,
+):
+    expected_text = (
+        'Admin has unsubscribed User from newsletter "CozyLAN Updates".'
+    )
+
+    event = UnsubscribedFromNewsletterEvent(
+        occurred_at=now,
+        initiator=admin,
+        user=user,
+        list_id=ListID('cozylan-updates'),
+        list_title='CozyLAN Updates',
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
+
+
 # helpers
+
+
+@pytest.fixture(scope='module')
+def admin(make_event_user) -> EventUser:
+    return make_event_user(screen_name='Admin')
 
 
 @pytest.fixture(scope='module')
