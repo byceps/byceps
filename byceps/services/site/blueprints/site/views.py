@@ -17,7 +17,7 @@ from byceps.services.site_navigation.models import (
     NavMenuID,
 )
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.l10n import get_locale_str
+from byceps.util.l10n import get_default_locale, get_locale_str
 
 
 blueprint = create_blueprint('site', __name__)
@@ -36,7 +36,18 @@ def get_nav_menu_items(menu_name: str) -> list[NavItemForRendering]:
         )
         return _to_items_for_rendering(g.site.id, items)
 
-    return get_items(locale_str)
+    items = get_items(locale_str)
+    if items:
+        return items
+
+    # This fallback is a bit rough, though. What if, for example, the
+    # original language's menu is intentionally hidden?
+    if not items:
+        default_locale_str = get_default_locale()
+        if default_locale_str != locale_str:
+            return get_items(default_locale_str)
+
+    return []
 
 
 @blueprint.app_template_global()
