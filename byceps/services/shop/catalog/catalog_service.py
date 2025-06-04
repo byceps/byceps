@@ -108,7 +108,7 @@ def update_collection(collection: Collection, title: str) -> Collection:
         collection, title
     )
 
-    catalog_repository.update_collection(collection)
+    catalog_repository.update_collection(updated_collection)
 
     return updated_collection
 
