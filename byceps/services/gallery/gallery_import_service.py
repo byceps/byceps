@@ -65,36 +65,33 @@ def _get_gallery_filesystem_path(
 def _get_file_sets(
     gallery_path: Path, suffix: str, preview_marker: str
 ) -> Iterator[ImageFileSet]:
-    image_filenames = _get_image_filenames(gallery_path, suffix)
+    image_files = _get_image_files(gallery_path, suffix)
 
-    full_image_filenames = _select_full_image_filenames(
-        image_filenames, preview_marker
-    )
+    full_image_files = _select_full_image_files(image_files, preview_marker)
 
-    for full_image_filename in full_image_filenames:
-        yield _create_image_file_set(full_image_filename, preview_marker)
+    for full_image_file in full_image_files:
+        yield _create_image_file_set(full_image_file, preview_marker)
 
 
-def _get_image_filenames(gallery_path: Path, suffix: str) -> Iterator[Path]:
-    for image_path in gallery_path.glob(f'*.{suffix}'):
-        yield Path(image_path.name)
+def _get_image_files(gallery_path: Path, suffix: str) -> Iterator[Path]:
+    yield from gallery_path.glob(f'*.{suffix}')
 
 
-def _select_full_image_filenames(
-    image_filenames: Iterable[Path], preview_marker: str
+def _select_full_image_files(
+    image_files: Iterable[Path], preview_marker: str
 ) -> Iterator[Path]:
-    def is_full_image_file(filename: Path) -> bool:
-        return not filename.stem.endswith(preview_marker)
+    def is_full_image_file(image_file: Path) -> bool:
+        return not image_file.stem.endswith(preview_marker)
 
-    return filter(is_full_image_file, image_filenames)
+    return filter(is_full_image_file, image_files)
 
 
 def _create_image_file_set(
-    image_filename: Path, preview_marker: str
+    image_file: Path, preview_marker: str
 ) -> ImageFileSet:
-    full_filename = image_filename.name
-    preview_filename = image_filename.with_stem(
-        image_filename.stem + preview_marker
+    full_filename = image_file.name
+    preview_filename = image_file.with_stem(
+        image_file.stem + preview_marker
     ).name
 
     return ImageFileSet(
