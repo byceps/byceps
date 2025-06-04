@@ -57,7 +57,7 @@
     <thead>
       <tr>
         <th>{{ _('Item number') }}</th>
-        <th>{{ pgettext('product', 'Name') }}</th>
+        <th colspan="2">{{ pgettext('product', 'Name') }}</th>
         <th>{{ _('Type') }}</th>
         <th class="hyphenate number" style="width: 15%;">{{ _('Unit price') }}<br>{{ _('Tax rate') }}</th>
         <th class="hyphenate number" style="width: 11%;">{{ _('Quantity') }}<br>{{ _('available') }}</th>
@@ -77,10 +77,6 @@
         <td>
           {{ product.name }}
 
-          {%- if product.archived %}
-          {{ render_tag(_('archived'), icon='archived', class='color-disabled') }}
-          {%- endif %}
-
           {%- if product.not_directly_orderable %}
           <br>{{ render_icon('info') }} {{ _('can only be ordered indirectly')|dim }}
           {%- endif %}
@@ -96,6 +92,11 @@
           {%- if product.available_until %}
           <br>{{ render_icon('time') }} {% filter dim %}{{ _('until') }} {{ product.available_until|datetimeformat }}{% endfilter %}
           {%- endif %}
+        </td>
+        <td>
+          {%- if product.archived %}
+          {{ render_tag(_('archived'), icon='archived', class='color-disabled nowrap') }}
+          {%- endif -%}
         </td>
         <td>{{ product_type_labels_by_type[product.type_] }}</td>
         <td class="nowrap number">
