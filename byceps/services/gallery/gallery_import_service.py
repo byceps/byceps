@@ -18,8 +18,8 @@ from .models import Gallery
 
 @dataclass(frozen=True, order=True)
 class ImageFileSet:
-    full: str
-    preview: str
+    full_filename: str
+    preview_filename: str
 
 
 def get_image_file_sets(
@@ -47,7 +47,9 @@ def import_images_in_gallery_path(
     """Import all matching files in the gallery's path as images."""
     for image_file_set in sorted(image_file_sets):
         gallery_service.create_image(
-            gallery, image_file_set.full, image_file_set.preview
+            gallery,
+            image_file_set.full_filename,
+            image_file_set.preview_filename,
         )
 
 
@@ -99,4 +101,6 @@ def _create_image_file_set(
         image_filename.stem + preview_marker
     ).name
 
-    return ImageFileSet(full=full_filename, preview=preview_filename)
+    return ImageFileSet(
+        full_filename=full_filename, preview_filename=preview_filename
+    )

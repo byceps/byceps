@@ -20,13 +20,16 @@ def test_get_image_file_sets(fs):
 
     expected = [
         ImageFileSet(
-            full='cozylan-2025_001.jpg', preview='cozylan-2025_001_preview.jpg'
+            full_filename='cozylan-2025_001.jpg',
+            preview_filename='cozylan-2025_001_preview.jpg',
         ),
         ImageFileSet(
-            full='cozylan-2025_002.jpg', preview='cozylan-2025_002_preview.jpg'
+            full_filename='cozylan-2025_002.jpg',
+            preview_filename='cozylan-2025_002_preview.jpg',
         ),
         ImageFileSet(
-            full='cozylan-2025_003.jpg', preview='cozylan-2025_003_preview.jpg'
+            full_filename='cozylan-2025_003.jpg',
+            preview_filename='cozylan-2025_003_preview.jpg',
         ),
     ]
 
