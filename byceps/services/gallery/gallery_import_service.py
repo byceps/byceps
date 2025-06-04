@@ -17,37 +17,37 @@ from .models import Gallery
 
 
 @dataclass(frozen=True, order=True)
-class ImageFilenameSet:
+class ImageFileSet:
     full: str
     preview: str
 
 
-def get_image_filename_sets(
+def get_image_file_sets(
     gallery: Gallery,
     *,
     data_path: Path | None = None,
     image_suffix: str = 'jpg',
     preview_marker: str = '_preview',
-) -> list[ImageFilenameSet]:
+) -> list[ImageFileSet]:
     """Get sets of image filenames found in the gallery's filesystem path."""
     gallery_path = _get_gallery_filesystem_path(data_path, gallery)
 
-    image_filename_sets = list(
-        _get_filename_sets(gallery_path, image_suffix, preview_marker)
+    image_file_sets = list(
+        _get_file_sets(gallery_path, image_suffix, preview_marker)
     )
-    image_filename_sets.sort()
+    image_file_sets.sort()
 
-    return image_filename_sets
+    return image_file_sets
 
 
 def import_images_in_gallery_path(
     gallery: Gallery,
-    image_filename_sets: list[ImageFilenameSet],
+    image_file_sets: list[ImageFileSet],
 ) -> None:
     """Import all matching files in the gallery's path as images."""
-    for image_filename_set in sorted(image_filename_sets):
+    for image_file_set in sorted(image_file_sets):
         gallery_service.create_image(
-            gallery, image_filename_set.full, image_filename_set.preview
+            gallery, image_file_set.full, image_file_set.preview
         )
 
 
@@ -60,9 +60,9 @@ def _get_gallery_filesystem_path(
     return data_path / 'brands' / gallery.brand_id / 'galleries' / gallery.slug
 
 
-def _get_filename_sets(
+def _get_file_sets(
     gallery_path: Path, suffix: str, preview_marker: str
-) -> Iterator[ImageFilenameSet]:
+) -> Iterator[ImageFileSet]:
     image_filenames = _get_image_filenames(gallery_path, suffix)
 
     full_image_filenames = _select_full_image_filenames(
@@ -70,7 +70,7 @@ def _get_filename_sets(
     )
 
     for full_image_filename in full_image_filenames:
-        yield _create_image_filename_set(full_image_filename, preview_marker)
+        yield _create_image_file_set(full_image_filename, preview_marker)
 
 
 def _get_image_filenames(gallery_path: Path, suffix: str) -> Iterator[Path]:
@@ -91,12 +91,12 @@ def _select_full_image_filenames(
     return filter(is_full_image_file, image_filenames)
 
 
-def _create_image_filename_set(
+def _create_image_file_set(
     image_filename: Path, preview_marker: str
-) -> ImageFilenameSet:
+) -> ImageFileSet:
     full_filename = image_filename.name
     preview_filename = image_filename.with_stem(
         image_filename.stem + preview_marker
     ).name
 
-    return ImageFilenameSet(full=full_filename, preview=preview_filename)
+    return ImageFileSet(full=full_filename, preview=preview_filename)

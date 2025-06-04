@@ -10,22 +10,22 @@ from byceps.services.gallery import (
     gallery_domain_service,
     gallery_import_service,
 )
-from byceps.services.gallery.gallery_import_service import ImageFilenameSet
+from byceps.services.gallery.gallery_import_service import ImageFileSet
 
 
-def test_get_image_filename_sets(fs):
+def test_get_image_file_sets(fs):
     gallery = gallery_domain_service.create_gallery(
         'cozylan', 'cozylan-2025', 'CozyLAN 2025', False
     )
 
     expected = [
-        ImageFilenameSet(
+        ImageFileSet(
             full='cozylan-2025_001.jpg', preview='cozylan-2025_001_preview.jpg'
         ),
-        ImageFilenameSet(
+        ImageFileSet(
             full='cozylan-2025_002.jpg', preview='cozylan-2025_002_preview.jpg'
         ),
-        ImageFilenameSet(
+        ImageFileSet(
             full='cozylan-2025_003.jpg', preview='cozylan-2025_003_preview.jpg'
         ),
     ]
@@ -41,7 +41,7 @@ def test_get_image_filename_sets(fs):
     ]:
         fs.create_file(f'./data/brands/cozylan/galleries/cozylan-2025/{fn}')
 
-    actual = gallery_import_service.get_image_filename_sets(
+    actual = gallery_import_service.get_image_file_sets(
         gallery, data_path=Path('./data')
     )
 
