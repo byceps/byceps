@@ -25,11 +25,12 @@ class ImageFilenameSet:
 def get_image_filename_sets(
     gallery: Gallery,
     *,
+    data_path: Path | None = None,
     image_suffix: str = 'jpg',
     preview_marker: str = '_preview',
 ) -> list[ImageFilenameSet]:
     """Get sets of image filenames found in the gallery's filesystem path."""
-    gallery_path = _get_gallery_filesystem_path(gallery)
+    gallery_path = _get_gallery_filesystem_path(data_path, gallery)
 
     image_filename_sets = list(
         _get_filename_sets(gallery_path, image_suffix, preview_marker)
@@ -50,8 +51,12 @@ def import_images_in_gallery_path(
         )
 
 
-def _get_gallery_filesystem_path(gallery: Gallery) -> Path:
-    data_path = current_app.byceps_config.data_path
+def _get_gallery_filesystem_path(
+    data_path: Path | None, gallery: Gallery
+) -> Path:
+    if data_path is None:
+        data_path = current_app.byceps_config.data_path
+
     return data_path / 'brands' / gallery.brand_id / 'galleries' / gallery.slug
 
 

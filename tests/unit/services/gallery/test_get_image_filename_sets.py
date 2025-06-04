@@ -1,0 +1,48 @@
+"""
+:Copyright: 2014-2025 Jochen Kupperschmidt
+:License: Revised BSD (see `LICENSE` file for details)
+"""
+
+from datetime import datetime
+from pathlib import Path
+
+from byceps.services.gallery import (
+    gallery_domain_service,
+    gallery_import_service,
+)
+from byceps.services.gallery.gallery_import_service import ImageFilenameSet
+
+
+def test_get_image_filename_sets(fs):
+    gallery = gallery_domain_service.create_gallery(
+        'cozylan', 'cozylan-2025', 'CozyLAN 2025', False
+    )
+
+    expected = [
+        ImageFilenameSet(
+            full='cozylan-2025_001.jpg', preview='cozylan-2025_001_preview.jpg'
+        ),
+        ImageFilenameSet(
+            full='cozylan-2025_002.jpg', preview='cozylan-2025_002_preview.jpg'
+        ),
+        ImageFilenameSet(
+            full='cozylan-2025_003.jpg', preview='cozylan-2025_003_preview.jpg'
+        ),
+    ]
+
+    for fn in [
+        'cozylan-2025_001.jpg',
+        'cozylan-2025_001_preview.jpg',
+        'cozylan-2025_002.jpg',
+        'cozylan-2025_002_preview.jpg',
+        'cozylan-2025_003.jpg',
+        'cozylan-2025_003_preview.jpg',
+        'cozylan-2025_004.gif',  # file extension ignored
+    ]:
+        fs.create_file(f'./data/brands/cozylan/galleries/cozylan-2025/{fn}')
+
+    actual = gallery_import_service.get_image_filename_sets(
+        gallery, data_path=Path('./data')
+    )
+
+    assert actual == expected
