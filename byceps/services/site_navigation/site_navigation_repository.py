@@ -87,7 +87,7 @@ def update_item(item: NavItem) -> Result[None, str]:
 
         db.session.commit()
 
-    return _get_db_item(item_id).map(_update_item)
+    return _get_db_item(item.id).map(_update_item)
 
 
 def delete_item(item_id: NavItemID) -> Result[None, str]:
