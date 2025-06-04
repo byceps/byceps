@@ -76,12 +76,8 @@ def _get_file_sets(
 
 
 def _get_image_filenames(gallery_path: Path, suffix: str) -> Iterator[Path]:
-    image_paths = gallery_path.glob(f'*.{suffix}')
-
-    def to_filename_path(image_path: Path) -> Path:
-        return Path(image_path.name)
-
-    return map(to_filename_path, image_paths)
+    for image_path in gallery_path.glob(f'*.{suffix}'):
+        yield Path(image_path.name)
 
 
 def _select_full_image_filenames(
