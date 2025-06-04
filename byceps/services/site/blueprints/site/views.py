@@ -30,10 +30,13 @@ def get_nav_menu_items(menu_name: str) -> list[NavItemForRendering]:
     if locale_str is None:  # outside of request
         return []
 
-    items = site_navigation_service.get_items_for_menu(
-        g.site.id, menu_name, locale_str
-    )
-    return _to_items_for_rendering(g.site.id, items)
+    def get_items(language_code: str) -> list[NavItemForRendering]:
+        items = site_navigation_service.get_items_for_menu(
+            g.site.id, menu_name, language_code
+        )
+        return _to_items_for_rendering(g.site.id, items)
+
+    return get_items(locale_str)
 
 
 @blueprint.app_template_global()
