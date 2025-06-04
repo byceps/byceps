@@ -667,7 +667,7 @@ form .invalid {
 .form-errors {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0.25rem 0 0 0;
 }
 
 .form-errors li {
@@ -680,10 +680,6 @@ form .form-form-errors li {
 
 form .invalid .form-errors li {
   margin-top: 0.25rem;
-}
-
-.form-errors li span {
-  font-style: italic;
 }
 
 form.single-row {
