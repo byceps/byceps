@@ -44,9 +44,12 @@ REACTION_KINDS_IN_ORDER = [
     'thumbsup',
     'thumbsdown',
     'heart',
+    'amused',
 ]
 
 REACTION_KINDS_TO_SYMBOLS = {
+    # in alphabetical order
+    'amused': '😄',
     'heart': '❤️',
     'thumbsdown': '👎',
     'thumbsup': '👍',
