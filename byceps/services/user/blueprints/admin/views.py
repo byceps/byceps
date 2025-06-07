@@ -30,12 +30,14 @@ from byceps.services.user import (
     user_email_address_service,
     user_service,
 )
+from byceps.services.user.errors import NothingChangedError
 from byceps.services.user.models.user import UserFilter, UserForAdmin
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.util.authz import permission_registry
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -645,7 +647,7 @@ def change_details(user_id):
     phone_number = form.phone_number.data.strip()
     initiator = g.user
 
-    event = user_command_service.update_user_details(
+    update_result = user_command_service.update_user_details(
         user.id,
         first_name,
         last_name,
@@ -658,9 +660,14 @@ def change_details(user_id):
         initiator,
     )
 
-    flash_success(gettext('Changes have been saved.'))
-
-    user_signals.details_updated.send(None, event=event)
+    match update_result:
+        case Ok(event):
+            flash_success(gettext('Changes have been saved.'))
+            user_signals.details_updated.send(None, event=event)
+        case Err(NothingChangedError()):
+            flash_notice(gettext('Nothing has been changed.'))
+        case Err(msg):
+            flash_error(gettext('An unexpected error occurred.'))
 
     return redirect_to('.view', user_id=user.id)
 

@@ -10,8 +10,10 @@ from datetime import date, datetime
 from typing import Any
 
 from byceps.services.core.events import EventUser
+from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
+from .errors import NothingChangedError
 from .events import (
     UserAccountDeletedEvent,
     UserAccountSuspendedEvent,
@@ -237,13 +239,13 @@ def update_details(
     old_phone_number: str | None,
     new_phone_number: str | None,
     initiator: User,
-) -> tuple[UserDetailsUpdatedEvent, UserLogEntry]:
+) -> Result[tuple[UserDetailsUpdatedEvent, UserLogEntry], NothingChangedError]:
     """Update the user's details."""
     occurred_at = datetime.utcnow()
 
     event = _build_details_updated_event(occurred_at, initiator, user)
 
-    log_entry = _build_details_updated_log_entry(
+    log_entry_result = _build_details_updated_log_entry(
         occurred_at,
         initiator,
         user,
@@ -264,8 +266,12 @@ def update_details(
         old_phone_number,
         new_phone_number,
     )
+    if log_entry_result.is_err():
+        return Err(log_entry_result.unwrap_err())
 
-    return event, log_entry
+    log_entry = log_entry_result.unwrap()
+
+    return Ok((event, log_entry))
 
 
 def _build_details_updated_event(
@@ -300,7 +306,7 @@ def _build_details_updated_log_entry(
     new_street: str | None,
     old_phone_number: str | None,
     new_phone_number: str | None,
-) -> UserLogEntry:
+) -> Result[UserLogEntry, NothingChangedError]:
     fields: dict[str, str] = {}
 
     def _add_if_different(
@@ -324,14 +330,14 @@ def _build_details_updated_log_entry(
     _add_if_different('phone_number', old_phone_number, new_phone_number)
 
     if not fields:
-        raise ValueError('No user details have changed.')
+        return Err(NothingChangedError())
 
     data = {
         'fields': fields,
         'initiator_id': str(initiator.id),
     }
 
-    return UserLogEntry(
+    entry = UserLogEntry(
         id=generate_uuid7(),
         occurred_at=occurred_at,
         event_type='user-details-updated',
@@ -339,6 +345,8 @@ def _build_details_updated_log_entry(
         initiator_id=initiator.id,
         data=data,
     )
+
+    return Ok(entry)
 
 
 def _to_str_if_not_none(value: Any) -> str | None:

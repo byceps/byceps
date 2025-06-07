@@ -59,7 +59,7 @@ def test_update_user_address(database, make_user):
         new_street,
         new_phone_number,
         user,
-    )
+    ).unwrap()
 
     # -------------------------------- #
 
@@ -133,7 +133,7 @@ def test_update_user_real_name(database, make_user):
         user_detail.street,
         user_detail.phone_number,
         user,
-    )
+    ).unwrap()
 
     # -------------------------------- #
 
@@ -187,7 +187,7 @@ def test_remove_user_dob_and_phone_number(database, make_user):
         user_detail.street,
         '',
         user,
-    )
+    ).unwrap()
 
     # -------------------------------- #
 

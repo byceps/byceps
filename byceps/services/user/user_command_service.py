@@ -14,6 +14,7 @@ from babel import Locale
 from byceps.database import db
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import RoleID
+from byceps.util.result import Err, Ok, Result
 
 from . import (
     user_creation_domain_service,
@@ -24,6 +25,7 @@ from . import (
 )
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
+from .errors import NothingChangedError
 from .events import (
     UserAccountSuspendedEvent,
     UserAccountUnsuspendedEvent,
@@ -233,7 +235,7 @@ def update_user_details(
     new_street: str | None,
     new_phone_number: str | None,
     initiator: User,
-) -> UserDetailsUpdatedEvent:
+) -> Result[UserDetailsUpdatedEvent, NothingChangedError]:
     """Update the user's details."""
     db_detail = _get_db_user_detail(user_id)
 
@@ -247,7 +249,7 @@ def update_user_details(
     old_phone_number = db_detail.phone_number
 
     user = user_service.get_user(user_id)
-    event, log_entry = user_domain_service.update_details(
+    domain_update_result = user_domain_service.update_details(
         user,
         old_first_name,
         new_first_name,
@@ -267,6 +269,10 @@ def update_user_details(
         new_phone_number,
         initiator,
     )
+    if domain_update_result.is_err():
+        return Err(domain_update_result.unwrap_err())
+
+    event, log_entry = domain_update_result.unwrap()
 
     _persist_details_update(
         event,
@@ -282,7 +288,7 @@ def update_user_details(
         new_phone_number,
     )
 
-    return event
+    return Ok(event)
 
 
 def _persist_details_update(
