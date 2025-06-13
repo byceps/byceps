@@ -7,6 +7,7 @@ byceps.services.seating.models
 """
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
@@ -75,3 +76,15 @@ class SeatToImport:
     label: str | None = None
     type_: str | None = None
     group_title: str | None = None
+
+
+@dataclass(frozen=True)
+class SeatReservationPrecondition:
+    minimum_ticket_quantity: int
+    at_earliest: datetime
+
+    def is_met(self, ticket_quantity: int, now: datetime) -> bool:
+        return (
+            ticket_quantity >= self.minimum_ticket_quantity
+            and now >= self.at_earliest
+        )
