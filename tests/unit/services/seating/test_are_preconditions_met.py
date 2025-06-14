@@ -7,10 +7,13 @@ from datetime import datetime
 
 import pytest
 
+from byceps.services.party.models import PartyID
 from byceps.services.seating.models import SeatReservationPrecondition
 from byceps.services.seating.seat_reservation_service import (
     are_preconditions_met,
 )
+
+from tests.helpers import generate_uuid
 
 
 @pytest.mark.parametrize(
@@ -43,16 +46,24 @@ def test_are_preconditions_met(preconditions, ticket_quantity, now, expected):
 
 @pytest.fixture(scope='module')
 def preconditions() -> set[SeatReservationPrecondition]:
+    party_id = PartyID('party-2025')
+
     return {
         SeatReservationPrecondition(
+            id=generate_uuid(),
+            party_id=party_id,
             minimum_ticket_quantity=10,
             at_earliest=datetime(2025, 6, 17, 18, 0, 0),
         ),
         SeatReservationPrecondition(
+            id=generate_uuid(),
+            party_id=party_id,
             minimum_ticket_quantity=5,
             at_earliest=datetime(2025, 6, 18, 18, 0, 0),
         ),
         SeatReservationPrecondition(
+            id=generate_uuid(),
+            party_id=party_id,
             minimum_ticket_quantity=1,
             at_earliest=datetime(2025, 6, 19, 18, 0, 0),
         ),

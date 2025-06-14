@@ -80,6 +80,8 @@ class SeatToImport:
 
 @dataclass(frozen=True)
 class SeatReservationPrecondition:
+    id: UUID
+    party_id: PartyID
     minimum_ticket_quantity: int
     at_earliest: datetime
 
