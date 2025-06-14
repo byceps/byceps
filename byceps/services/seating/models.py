@@ -82,11 +82,11 @@ class SeatToImport:
 class SeatReservationPrecondition:
     id: UUID
     party_id: PartyID
-    minimum_ticket_quantity: int
     at_earliest: datetime
+    minimum_ticket_quantity: int
 
-    def is_met(self, ticket_quantity: int, now: datetime) -> bool:
+    def is_met(self, now: datetime, ticket_quantity: int) -> bool:
         return (
-            ticket_quantity >= self.minimum_ticket_quantity
-            and now >= self.at_earliest
+            now >= self.at_earliest
+            and ticket_quantity >= self.minimum_ticket_quantity
         )

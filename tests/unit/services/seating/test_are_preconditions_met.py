@@ -16,30 +16,30 @@ from byceps.services.seating.seat_reservation_domain_service import (
 
 
 @pytest.mark.parametrize(
-    ('ticket_quantity', 'now', 'expected'),
+    ('now', 'ticket_quantity', 'expected'),
     [
-        (11, datetime(2025, 6, 16, 18, 0, 0), False),  # too early
-        (11, datetime(2025, 6, 17, 18, 0, 0), True),
-        (10, datetime(2025, 6, 17, 18, 0, 0), True),
-        (10, datetime(2025, 6, 17, 18, 0, 0), True),
-        (10, datetime(2025, 6, 17, 17, 59, 59), False),  # too early
-        (9, datetime(2025, 6, 17, 18, 0, 0), False),  # too few tickets
-        (6, datetime(2025, 6, 18, 18, 0, 0), True),
-        (5, datetime(2025, 6, 18, 18, 0, 0), True),
-        (5, datetime(2025, 6, 18, 18, 0, 0), True),
-        (5, datetime(2025, 6, 18, 17, 59, 59), False),  # too early
-        (4, datetime(2025, 6, 18, 18, 0, 0), False),  # too few tickets
-        (2, datetime(2025, 6, 19, 18, 0, 0), True),
-        (1, datetime(2025, 6, 19, 18, 0, 0), True),
-        (1, datetime(2025, 6, 19, 18, 0, 0), True),
-        (1, datetime(2025, 6, 19, 17, 59, 59), False),  # too early
-        (0, datetime(2025, 6, 19, 18, 0, 0), False),  # too few tickets
-        (1, datetime(2025, 6, 20, 18, 0, 0), True),
-        (0, datetime(2025, 6, 20, 18, 0, 0), False),  # too few tickets
+        (datetime(2025, 6, 16, 18, 0, 0), 11, False),  # too early
+        (datetime(2025, 6, 17, 18, 0, 0), 11, True),
+        (datetime(2025, 6, 17, 18, 0, 0), 10, True),
+        (datetime(2025, 6, 17, 18, 0, 0), 10, True),
+        (datetime(2025, 6, 17, 17, 59, 59), 10, False),  # too early
+        (datetime(2025, 6, 17, 18, 0, 0), 9, False),  # too few tickets
+        (datetime(2025, 6, 18, 18, 0, 0), 6, True),
+        (datetime(2025, 6, 18, 18, 0, 0), 5, True),
+        (datetime(2025, 6, 18, 18, 0, 0), 5, True),
+        (datetime(2025, 6, 18, 17, 59, 59), 5, False),  # too early
+        (datetime(2025, 6, 18, 18, 0, 0), 4, False),  # too few tickets
+        (datetime(2025, 6, 19, 18, 0, 0), 2, True),
+        (datetime(2025, 6, 19, 18, 0, 0), 1, True),
+        (datetime(2025, 6, 19, 18, 0, 0), 1, True),
+        (datetime(2025, 6, 19, 17, 59, 59), 1, False),  # too early
+        (datetime(2025, 6, 19, 18, 0, 0), 0, False),  # too few tickets
+        (datetime(2025, 6, 20, 18, 0, 0), 1, True),
+        (datetime(2025, 6, 20, 18, 0, 0), 0, False),  # too few tickets
     ],
 )
-def test_are_preconditions_met(preconditions, ticket_quantity, now, expected):
-    actual = are_preconditions_met(preconditions, ticket_quantity, now)
+def test_are_preconditions_met(preconditions, now, ticket_quantity, expected):
+    actual = are_preconditions_met(preconditions, now, ticket_quantity)
     assert actual == expected
 
 
@@ -48,15 +48,15 @@ def preconditions() -> set[SeatReservationPrecondition]:
     party_id = PartyID('party-2025')
 
     return {
-        create_precondition(party_id, 10, datetime(2025, 6, 17, 18, 0, 0)),
-        create_precondition(party_id, 5, datetime(2025, 6, 18, 18, 0, 0)),
-        create_precondition(party_id, 1, datetime(2025, 6, 19, 18, 0, 0)),
+        create_precondition(party_id, datetime(2025, 6, 17, 18, 0, 0), 10),
+        create_precondition(party_id, datetime(2025, 6, 18, 18, 0, 0), 5),
+        create_precondition(party_id, datetime(2025, 6, 19, 18, 0, 0), 1),
     }
 
 
 def test_reservation_without_preconditions_is_denied():
     preconditions = {}
-    ticket_quantity = 99
     now = datetime(2025, 6, 20, 18, 0, 0)
+    ticket_quantity = 99
 
-    assert not are_preconditions_met(preconditions, ticket_quantity, now)
+    assert not are_preconditions_met(preconditions, now, ticket_quantity)

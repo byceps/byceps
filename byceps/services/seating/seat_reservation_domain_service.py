@@ -16,22 +16,22 @@ from .models import SeatReservationPrecondition
 
 def create_precondition(
     party_id: PartyID,
-    minimum_ticket_quantity: int,
     at_earliest: datetime,
+    minimum_ticket_quantity: int,
 ) -> SeatReservationPrecondition:
     """Create a seat reservation precondition for the party."""
     return SeatReservationPrecondition(
         id=generate_uuid7(),
         party_id=party_id,
-        minimum_ticket_quantity=minimum_ticket_quantity,
         at_earliest=at_earliest,
+        minimum_ticket_quantity=minimum_ticket_quantity,
     )
 
 
 def are_preconditions_met(
     preconditions: set[SeatReservationPrecondition],
-    ticket_quantity: int,
     now: datetime,
+    ticket_quantity: int,
 ) -> bool:
     """Return `True` if at least one of the preconditions is met."""
-    return any(map(lambda p: p.is_met(ticket_quantity, now), preconditions))
+    return any(map(lambda p: p.is_met(now, ticket_quantity), preconditions))
