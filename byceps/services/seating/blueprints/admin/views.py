@@ -12,6 +12,7 @@ from flask_babel import gettext
 from byceps.services.party import party_service
 from byceps.services.seating import (
     seat_group_service,
+    seat_reservation_service,
     seat_service,
     seating_area_service,
     seating_area_tickets_service,
@@ -43,12 +44,17 @@ def index_for_party(party_id):
     )
     group_count = seat_group_service.count_seat_groups_for_party(party.id)
 
+    reservation_preconditions = seat_reservation_service.get_preconditions(
+        party.id
+    )
+
     return {
         'party': party,
         'seat_count': seat_count,
         'area_count': area_count,
         'category_count': category_count,
         'group_count': group_count,
+        'reservation_preconditions': reservation_preconditions,
     }
 
 

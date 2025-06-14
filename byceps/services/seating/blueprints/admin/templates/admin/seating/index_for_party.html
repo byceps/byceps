@@ -33,4 +33,26 @@
     </div>
   </div>
 
+  <h2 class="title">{{ _('Reservation Preconditions') }}</h2>
+  {%- if reservation_preconditions %}
+  <table class="itemlist is-vcentered">
+    <thead>
+      <tr>
+        <th>{{ _('At earliest') }}</th>
+        <th>{{ _('Minimum number of tickets') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for precondition in reservation_preconditions|sort(attribute='at_earliest,minimum_ticket_quantity') %}
+      <tr>
+        <td>{{ precondition.at_earliest|datetimeformat }}</td>
+        <td class="bignumber number">{{ precondition.minimum_ticket_quantity }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="box no-data-message">{{ _('No entries') }}</div>
+  {%- endif %}
+
 {%- endblock %}
