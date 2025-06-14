@@ -9,7 +9,7 @@ import pytest
 
 from byceps.services.party.models import PartyID
 from byceps.services.seating.models import SeatReservationPrecondition
-from byceps.services.seating.seat_reservation_service import (
+from byceps.services.seating.seat_reservation_domain_service import (
     are_preconditions_met,
 )
 
