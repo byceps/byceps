@@ -54,7 +54,7 @@ def _db_entity_to_precondition(
 
 
 def is_reservation_allowed(
-    party_id: PartyID, ticket_quantity: int, now: datetime
+    party_id: PartyID, now: datetime, ticket_quantity: int
 ) -> bool:
     """Return `True` if at least one of the preconditions is met."""
     preconditions = seat_reservation_repository.get_preconditions(party_id)
