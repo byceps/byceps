@@ -8,7 +8,24 @@ byceps.services.seating.seat_reservation_domain_service
 
 from datetime import datetime
 
+from byceps.services.party.models import PartyID
+from byceps.util.uuid import generate_uuid7
+
 from .models import SeatReservationPrecondition
+
+
+def create_precondition(
+    party_id: PartyID,
+    minimum_ticket_quantity: int,
+    at_earliest: datetime,
+) -> SeatReservationPrecondition:
+    """Create a seat reservation precondition for the party."""
+    return SeatReservationPrecondition(
+        id=generate_uuid7(),
+        party_id=party_id,
+        minimum_ticket_quantity=minimum_ticket_quantity,
+        at_earliest=at_earliest,
+    )
 
 
 def are_preconditions_met(
