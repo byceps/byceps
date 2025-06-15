@@ -6,6 +6,8 @@ byceps.services.seating.blueprints.admin.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 from flask import abort, request
 from flask_babel import gettext
 
@@ -17,12 +19,20 @@ from byceps.services.seating import (
     seating_area_service,
     seating_area_tickets_service,
 )
-from byceps.services.seating.models import SeatingArea, SeatingAreaID
+from byceps.services.seating.models import (
+    SeatingArea,
+    SeatingAreaID,
+    SeatReservationPrecondition,
+)
 from byceps.services.ticketing import ticket_category_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import permission_required, redirect_to
+from byceps.util.views import (
+    permission_required,
+    redirect_to,
+    respond_no_content,
+)
 
 from .forms import (
     AreaCreateForm,
@@ -271,6 +281,18 @@ def reservation_precondition_create(party_id):
     return redirect_to('.index_for_party', party_id=party.id)
 
 
+@blueprint.delete('/reservation_preconditions/<uuid:precondition_id>')
+@permission_required('seating.administrate')
+@respond_no_content
+def reservation_precondition_delete(precondition_id):
+    """Delete a reservation precondition."""
+    precondition = _get_reservation_precondition_or_404(precondition_id)
+
+    seat_reservation_service.delete_precondition(precondition.id)
+
+    flash_success(gettext('The object has been deleted.'))
+
+
 # helpers
 
 
@@ -290,3 +312,14 @@ def _get_area_or_404(area_id: SeatingAreaID) -> SeatingArea:
         abort(404)
 
     return area
+
+
+def _get_reservation_precondition_or_404(
+    precondition_id: UUID,
+) -> SeatReservationPrecondition:
+    precondition = seat_reservation_service.find_precondition(precondition_id)
+
+    if precondition is None:
+        abort(404)
+
+    return precondition

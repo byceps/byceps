@@ -6,7 +6,9 @@ byceps.services.seating.seat_reservation_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy import select
+from uuid import UUID
+
+from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -27,6 +29,22 @@ def create_precondition(
     )
     db.session.add(db_precondition)
     db.session.commit()
+
+
+def delete_precondition(precondition_id: UUID) -> None:
+    """Delete a reservation precondition."""
+    db.session.execute(
+        delete(DbSeatReservationPrecondition).filter_by(id=precondition_id)
+    )
+
+    db.session.commit()
+
+
+def find_precondition(
+    precondition_id: UUID,
+) -> DbSeatReservationPrecondition | None:
+    """Return a reservation precondition."""
+    return db.session.get(DbSeatReservationPrecondition, precondition_id)
 
 
 def get_preconditions(

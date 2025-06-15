@@ -7,6 +7,7 @@ byceps.services.seating.seat_reservation_service
 """
 
 from datetime import datetime
+from uuid import UUID
 
 from byceps.services.party.models import PartyID
 
@@ -28,6 +29,25 @@ def create_precondition(
     seat_reservation_repository.create_precondition(precondition)
 
     return precondition
+
+
+def delete_precondition(precondition_id: UUID) -> None:
+    """Delete a reservation precondition."""
+    seat_reservation_repository.delete_precondition(precondition_id)
+
+
+def find_precondition(
+    precondition_id: UUID,
+) -> SeatReservationPrecondition | None:
+    """Return a reservation precondition."""
+    db_precondition = seat_reservation_repository.find_precondition(
+        precondition_id
+    )
+
+    if not db_precondition:
+        return None
+
+    return _db_entity_to_precondition(db_precondition)
 
 
 def get_preconditions(
