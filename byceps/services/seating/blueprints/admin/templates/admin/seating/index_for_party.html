@@ -1,4 +1,6 @@
 {% extends 'layout/admin/seating.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page_party = party %}
@@ -34,13 +36,25 @@
     </div>
   </div>
 
-  <h2 class="title">{{ _('Reservation Preconditions') }}</h2>
+  <div class="row row--space-between block">
+    <div>
+      <h2 class="title">{{ _('Reservation Preconditions') }} {{ render_extra_in_heading(reservation_preconditions|length) }}</h2>
+    </div>
+    {%- if has_current_user_permission('seating.administrate') %}
+    <div>
+      <div class="button-row is-compact is-right-aligned">
+        <a class="button is-compact" href="{{ url_for('.reservation_precondition_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create') }}</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
+
   {%- if reservation_preconditions %}
-  <table class="itemlist is-vcentered">
+  <table class="itemlist is-vcentered is-wide">
     <thead>
       <tr>
         <th colspan="2">{{ _('At earliest') }}</th>
-        <th>{{ _('Minimum number of tickets') }}</th>
+        <th class="number">{{ _('Minimum number of tickets') }}</th>
       </tr>
     </thead>
     <tbody>

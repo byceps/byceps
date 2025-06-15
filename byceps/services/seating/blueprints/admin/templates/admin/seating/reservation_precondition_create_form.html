@@ -1,0 +1,25 @@
+{% extends 'layout/admin/seating.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set current_page_party = party %}
+{% set current_tab = 'overview' %}
+{% set page_title = _('Create reservation precondition') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index_for_party', party_id=party.id), _('Overview')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1 class="title">{{ page_title }}</h1>
+
+  <form action="{{ url_for('.reservation_precondition_create', party_id=party.id) }}" method="post">
+    <div class="box">
+      {{ form_field(form.at_earliest, autofocus='autofocus') }}
+      {{ form_field(form.minimum_ticket_quantity, style='width: 4rem;') }}
+    </div>
+
+    {{ form_buttons(_('Create')) }}
+  </form>
+
+{%- endblock %}

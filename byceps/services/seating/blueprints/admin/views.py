@@ -24,7 +24,11 @@ from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required, redirect_to
 
-from .forms import AreaCreateForm, AreaUpdateForm
+from .forms import (
+    AreaCreateForm,
+    AreaUpdateForm,
+    ReservationPreconditionCreateForm,
+)
 
 
 blueprint = create_blueprint('seating_admin', __name__)
@@ -56,6 +60,9 @@ def index_for_party(party_id):
         'group_count': group_count,
         'reservation_preconditions': reservation_preconditions,
     }
+
+
+# area
 
 
 @blueprint.get('/parties/<party_id>/areas')
@@ -202,6 +209,9 @@ def area_update(area_id):
     return redirect_to('.area_view', area_id=area.id)
 
 
+# seat group
+
+
 @blueprint.get('/parties/<party_id>/seat_groups')
 @permission_required('seating.view')
 @templated
@@ -215,6 +225,53 @@ def seat_group_index(party_id):
         'party': party,
         'groups': groups,
     }
+
+
+# reservation precondition
+
+
+@blueprint.get('/parties/<party_id>/reservation_preconditions/create')
+@permission_required('seating.administrate')
+@templated
+def reservation_precondition_create_form(party_id, erroneous_form=None):
+    """Show form to create a reservation precondition."""
+    party = _get_party_or_404(party_id)
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else ReservationPreconditionCreateForm()
+    )
+
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.post('/parties/<party_id>/reservation_preconditions')
+@permission_required('seating.administrate')
+def reservation_precondition_create(party_id):
+    """Create a reservation precondition."""
+    party = _get_party_or_404(party_id)
+
+    form = ReservationPreconditionCreateForm(request.form)
+    if not form.validate():
+        return reservation_precondition_create_form(party.id, form)
+
+    at_earliest = form.at_earliest.data
+    minimum_ticket_quantity = form.minimum_ticket_quantity.data
+
+    seat_reservation_service.create_precondition(
+        party.id, at_earliest, minimum_ticket_quantity
+    )
+
+    flash_success(gettext('The object has been created.'))
+
+    return redirect_to('.index_for_party', party_id=party.id)
+
+
+# helpers
 
 
 def _get_party_or_404(party_id):

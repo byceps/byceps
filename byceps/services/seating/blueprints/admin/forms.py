@@ -7,7 +7,7 @@ byceps.services.seating.blueprints.admin.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import IntegerField, StringField
+from wtforms import DateTimeLocalField, IntegerField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
 from byceps.util.l10n import LocalizedForm
@@ -35,3 +35,12 @@ class AreaCreateForm(_AreaFormBase):
 
 class AreaUpdateForm(_AreaFormBase):
     pass
+
+
+class ReservationPreconditionCreateForm(LocalizedForm):
+    at_earliest = DateTimeLocalField(
+        lazy_gettext('At earliest'), validators=[InputRequired()]
+    )
+    minimum_ticket_quantity = IntegerField(
+        lazy_gettext('Minimum number of tickets'), validators=[InputRequired()]
+    )
