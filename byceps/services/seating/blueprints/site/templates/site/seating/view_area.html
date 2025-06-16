@@ -27,22 +27,27 @@
   {%- endif %}
   <h1 class="title">{{ _('Seat management') if manage_mode else _('Seating plan') }} – {{ area.title }}</h1>
 
-  <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive block">
-    <input type="search" name="search_term" placeholder="{{ _('Username') }}" class="form-control" style="width: 12rem;">
-    <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
-  </form>
-
-  <div class="main-body-box">
-
-  {%- if seat_management_enabled and g.user.authenticated %}
-    {%- if manage_mode %}
-{% include 'site/seating/_ticket_selector.html' %}
-    {%- else %}
-    <div class="button-row is-right-aligned">
-      <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">{{ _('Manage seats') }}</a>
+  <div class="block row row--space-between">
+    <div>
+      <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive block">
+        <input type="search" name="search_term" placeholder="{{ _('Username') }}" class="form-control" style="width: 12rem;">
+        <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
+      </form>
+    </div>
+    {%- if g.user.authenticated and seat_management_enabled and not manage_mode %}
+    <div>
+      <div class="button-row is-right-aligned">
+        <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">{{ _('Manage seats') }}</a>
+      </div>
     </div>
     {%- endif %}
+  </div>
+
+  {%- if g.user.authenticated and seat_management_enabled and manage_mode %}
+{% include 'site/seating/_ticket_selector.html' %}
   {%- endif %}
+
+  <div class="main-body-box">
 
     <div class="block">
 {{ render_area(area, seats_and_tickets) }}
