@@ -77,7 +77,7 @@ def is_reservation_allowed(
     party_id: PartyID, now: datetime, ticket_quantity: int
 ) -> bool:
     """Return `True` if at least one of the preconditions is met."""
-    preconditions = seat_reservation_repository.get_preconditions(party_id)
+    preconditions = get_preconditions(party_id)
 
     if not preconditions:
         # Allow reservation if no preconditions are defined.
