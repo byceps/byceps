@@ -6,12 +6,14 @@ byceps.services.seating.blueprints.site.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
 from typing import Any
 
 from flask import abort, g, request
 from flask_babel import gettext
 
 from byceps.services.seating import (
+    seat_reservation_service,
     seat_service,
     seating_area_service,
     seating_area_tickets_service,
@@ -353,11 +355,27 @@ def _is_seat_management_enabled():
     if _is_current_user_seating_admin():
         return True
 
-    return g.party.seat_management_enabled
+    if not g.party.seat_management_enabled:
+        return False
+
+    return _user_manages_enough_tickets()
 
 
 def _is_current_user_seating_admin() -> bool:
     return has_current_user_permission('ticketing.administrate_seat_occupancy')
+
+
+def _user_manages_enough_tickets() -> bool:
+    now_utc = datetime.utcnow()
+
+    managed_tickets = ticket_service.get_tickets_for_seat_manager(
+        g.user.id, g.party.id
+    )
+    managed_ticket_quantity = len(managed_tickets)
+
+    return seat_reservation_service.is_reservation_allowed(
+        g.party.id, now_utc, managed_ticket_quantity
+    )
 
 
 def _get_ticket_or_404(ticket_id: TicketID) -> DbTicket:
