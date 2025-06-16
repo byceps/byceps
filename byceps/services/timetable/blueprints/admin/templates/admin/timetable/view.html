@@ -43,7 +43,7 @@
   </thead>
   <tbody>
     {%- for item in items %}
-      <tr>
+    <tr>
       <td class="nowrap{% if item.hidden %} dimmed{% endif %}">{{ item.scheduled_at|timeformat('short', rebase=False) }}</td>
       <td{% if item.hidden %} class="dimmed"{% endif %}>{{ item.description|safe }}</td>
       <td{% if item.hidden %} class="dimmed"{% endif %}>
