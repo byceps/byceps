@@ -9,7 +9,7 @@ byceps.services.seating.blueprints.admin.views
 from uuid import UUID
 
 from flask import abort, request
-from flask_babel import gettext
+from flask_babel import gettext, to_utc
 
 from byceps.services.party import party_service
 from byceps.services.seating import (
@@ -269,11 +269,11 @@ def reservation_precondition_create(party_id):
     if not form.validate():
         return reservation_precondition_create_form(party.id, form)
 
-    at_earliest = form.at_earliest.data
+    at_earliest_utc = to_utc(form.at_earliest.data)
     minimum_ticket_quantity = form.minimum_ticket_quantity.data
 
     seat_reservation_service.create_precondition(
-        party.id, at_earliest, minimum_ticket_quantity
+        party.id, at_earliest_utc, minimum_ticket_quantity
     )
 
     flash_success(gettext('The object has been created.'))
