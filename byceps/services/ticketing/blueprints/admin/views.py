@@ -151,7 +151,7 @@ def update_code_form(ticket_id, erroneous_form=None):
 
     party = party_service.get_party(ticket.party_id)
 
-    form = erroneous_form if erroneous_form else UpdateCodeForm()
+    form = erroneous_form if erroneous_form else UpdateCodeForm(party.id)
 
     return {
         'party': party,
@@ -174,7 +174,7 @@ def update_code(ticket_id):
         )
         return redirect_to('.view_ticket', ticket_id=ticket.id)
 
-    form = UpdateCodeForm(request.form)
+    form = UpdateCodeForm(ticket.party_id, request.form)
     if not form.validate():
         return update_code_form(ticket.id, form)
 
