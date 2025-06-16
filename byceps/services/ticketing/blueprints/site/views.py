@@ -336,7 +336,7 @@ def withdraw_user_manager(ticket_id):
     if not ticket.is_owned_by(manager.id):
         abort(403)
 
-    user = ticket.user_managed_by
+    previous_manager = ticket.user_managed_by
 
     result = ticket_user_management_service.withdraw_user_manager(
         ticket.id, manager.id
@@ -353,7 +353,10 @@ def withdraw_user_manager(ticket_id):
         )
     )
 
-    notification_service.notify_withdrawn_user_manager(ticket, user, manager)
+    if previous_manager:
+        notification_service.notify_withdrawn_user_manager(
+            ticket, previous_manager, manager
+        )
 
 
 # -------------------------------------------------------------------- #
@@ -435,7 +438,7 @@ def withdraw_seat_manager(ticket_id):
     if not ticket.is_owned_by(manager.id):
         abort(403)
 
-    user = ticket.seat_managed_by
+    previous_manager = ticket.seat_managed_by
 
     result = ticket_seat_management_service.withdraw_seat_manager(
         ticket.id, manager.id
@@ -452,7 +455,10 @@ def withdraw_seat_manager(ticket_id):
         )
     )
 
-    notification_service.notify_withdrawn_seat_manager(ticket, user, manager)
+    if previous_manager:
+        notification_service.notify_withdrawn_seat_manager(
+            ticket, previous_manager, manager
+        )
 
 
 # -------------------------------------------------------------------- #
