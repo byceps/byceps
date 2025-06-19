@@ -21,7 +21,6 @@ from byceps.services.ticketing.models.ticket import (
     TicketCategoryID,
 )
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 from .seat import DbSeat
 
@@ -32,9 +31,7 @@ class DbSeatGroup(db.Model):
     __tablename__ = 'seat_groups'
     __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
-    id: Mapped[SeatGroupID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[SeatGroupID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -49,11 +46,13 @@ class DbSeatGroup(db.Model):
 
     def __init__(
         self,
+        group_id: SeatGroupID,
         party_id: PartyID,
         ticket_category_id: TicketCategoryID,
         seat_quantity: int,
         title: str,
     ) -> None:
+        self.id = group_id
         self.party_id = party_id
         self.ticket_category_id = ticket_category_id
         self.seat_quantity = seat_quantity
@@ -76,9 +75,7 @@ class DbSeatGroupAssignment(db.Model):
 
     __tablename__ = 'seat_group_assignments'
 
-    id: Mapped[UUID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     group_id: Mapped[SeatGroupID] = mapped_column(
         db.Uuid, db.ForeignKey('seat_groups.id'), index=True
     )
@@ -95,7 +92,10 @@ class DbSeatGroupAssignment(db.Model):
         DbSeat, backref=db.backref('assignment', uselist=False)
     )
 
-    def __init__(self, group: DbSeatGroup, seat_id: SeatID) -> None:
+    def __init__(
+        self, assignment_id: UUID, group: DbSeatGroup, seat_id: SeatID
+    ) -> None:
+        self.id = assignment_id
         self.group = group
         self.seat_id = seat_id
 
@@ -114,9 +114,7 @@ class DbSeatGroupOccupancy(db.Model):
 
     __tablename__ = 'seat_group_occupancies'
 
-    id: Mapped[UUID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     seat_group_id: Mapped[SeatGroupID] = mapped_column(
         db.Uuid,
         db.ForeignKey('seat_groups.id'),
@@ -137,8 +135,12 @@ class DbSeatGroupOccupancy(db.Model):
     )
 
     def __init__(
-        self, seat_group_id: SeatGroupID, ticket_bundle_id: TicketBundleID
+        self,
+        occupancy_id: UUID,
+        seat_group_id: SeatGroupID,
+        ticket_bundle_id: TicketBundleID,
     ) -> None:
+        self.id = occupancy_id
         self.seat_group_id = seat_group_id
         self.ticket_bundle_id = ticket_bundle_id
 

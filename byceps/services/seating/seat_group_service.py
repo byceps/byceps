@@ -19,6 +19,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketCategoryID,
 )
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.seat import DbSeat
 from .dbmodels.seat_group import (
@@ -49,11 +50,16 @@ def create_seat_group(
             SeatingError("Seats' ticket category IDs do not match the group's.")
         )
 
-    db_group = DbSeatGroup(party_id, ticket_category_id, seat_quantity, title)
+    group_id = SeatGroupID(generate_uuid7())
+
+    db_group = DbSeatGroup(
+        group_id, party_id, ticket_category_id, seat_quantity, title
+    )
     db.session.add(db_group)
 
     for seat in seats:
-        db_assignment = DbSeatGroupAssignment(db_group, seat.id)
+        assignment_id = generate_uuid7()
+        db_assignment = DbSeatGroupAssignment(assignment_id, db_group, seat.id)
         db.session.add(db_assignment)
 
     db.session.commit()
@@ -90,7 +96,10 @@ def occupy_seat_group(
     if actual_quantities_match_result.is_err():
         return Err(actual_quantities_match_result.unwrap_err())
 
-    db_occupancy = DbSeatGroupOccupancy(db_seat_group.id, db_ticket_bundle.id)
+    occupancy_id = generate_uuid7()
+    db_occupancy = DbSeatGroupOccupancy(
+        occupancy_id, db_seat_group.id, db_ticket_bundle.id
+    )
     db.session.add(db_occupancy)
 
     occupy_seats_result = _occupy_seats(db_seats, db_tickets)

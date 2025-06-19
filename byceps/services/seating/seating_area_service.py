@@ -11,6 +11,7 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.util.uuid import generate_uuid4
 
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
@@ -27,7 +28,10 @@ def create_area(
     image_height: int | None = None,
 ) -> SeatingArea:
     """Create an area."""
+    area_id = SeatingAreaID(generate_uuid4())
+
     db_area = DbSeatingArea(
+        area_id,
         party_id,
         slug,
         title,

@@ -28,9 +28,7 @@ class DbSeatingArea(db.Model):
         db.UniqueConstraint('party_id', 'title'),
     )
 
-    id: Mapped[SeatingAreaID] = mapped_column(
-        db.Uuid, default=generate_uuid4, primary_key=True
-    )
+    id: Mapped[SeatingAreaID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -42,6 +40,7 @@ class DbSeatingArea(db.Model):
 
     def __init__(
         self,
+        area_id: SeatingAreaID,
         party_id: PartyID,
         slug: str,
         title: str,
@@ -50,6 +49,7 @@ class DbSeatingArea(db.Model):
         image_width: int | None = None,
         image_height: int | None = None,
     ) -> None:
+        self.id = area_id
         self.party_id = party_id
         self.slug = slug
         self.title = title

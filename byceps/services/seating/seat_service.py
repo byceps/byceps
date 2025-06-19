@@ -18,6 +18,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketCategory,
     TicketCategoryID,
 )
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
@@ -35,7 +36,10 @@ def create_seat(
     type_: str | None = None,
 ) -> Seat:
     """Create a seat."""
+    seat_id = SeatID(generate_uuid7())
+
     db_seat = DbSeat(
+        seat_id,
         area_id,
         category_id,
         coord_x=coord_x,
@@ -55,6 +59,7 @@ def create_seats(seats: Iterator[Seat]) -> None:
     """Create multiple seats at once."""
     db_seats = [
         DbSeat(
+            SeatID(generate_uuid7()),
             seat.area_id,
             seat.category_id,
             coord_x=seat.coord_x,

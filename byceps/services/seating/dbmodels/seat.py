@@ -21,7 +21,6 @@ from byceps.services.seating.models import SeatID, SeatingAreaID
 from byceps.services.ticketing.dbmodels.category import DbTicketCategory
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 from .area import DbSeatingArea
 
@@ -36,9 +35,7 @@ class DbSeat(db.Model):
 
     __tablename__ = 'seats'
 
-    id: Mapped[SeatID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[SeatID] = mapped_column(db.Uuid, primary_key=True)
     area_id: Mapped[SeatingAreaID] = mapped_column(
         db.Uuid, db.ForeignKey('seating_areas.id'), index=True
     )
@@ -57,6 +54,7 @@ class DbSeat(db.Model):
 
     def __init__(
         self,
+        seat_id: SeatID,
         area_id: SeatingAreaID,
         category_id: TicketCategoryID,
         *,
@@ -66,6 +64,7 @@ class DbSeat(db.Model):
         label: str | None = None,
         type_: str | None = None,
     ) -> None:
+        self.id = seat_id
         self.area_id = area_id
         self.coord_x = coord_x
         self.coord_y = coord_y
