@@ -6,7 +6,7 @@ byceps.services.seating.seat_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterable
 
 from sqlalchemy import delete, select
 
@@ -62,26 +62,6 @@ def create_seat(
     db.session.commit()
 
     return seat
-
-
-def create_seats(seats: Iterator[Seat]) -> None:
-    """Create multiple seats at once."""
-    db_seats = [
-        DbSeat(
-            SeatID(generate_uuid7()),
-            seat.area_id,
-            seat.category_id,
-            coord_x=seat.coord_x,
-            coord_y=seat.coord_y,
-            rotation=seat.rotation,
-            label=seat.label,
-            type_=seat.type_,
-        )
-        for seat in seats
-    ]
-
-    db.session.add_all(db_seats)
-    db.session.commit()
 
 
 def delete_seat(seat_id: SeatID) -> None:
