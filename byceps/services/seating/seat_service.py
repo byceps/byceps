@@ -20,6 +20,7 @@ from byceps.services.ticketing.models.ticket import (
 )
 from byceps.util.uuid import generate_uuid7
 
+from . import seat_domain_service
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
 from .models import Seat, SeatID, SeatingAreaID, SeatUtilization
@@ -36,23 +37,31 @@ def create_seat(
     type_: str | None = None,
 ) -> Seat:
     """Create a seat."""
-    seat_id = SeatID(generate_uuid7())
-
-    db_seat = DbSeat(
-        seat_id,
+    seat = seat_domain_service.create_seat(
         area_id,
+        coord_x,
+        coord_y,
         category_id,
-        coord_x=coord_x,
-        coord_y=coord_y,
         rotation=rotation,
         label=label,
         type_=type_,
     )
 
+    db_seat = DbSeat(
+        seat.id,
+        seat.area_id,
+        seat.category_id,
+        coord_x=seat.coord_x,
+        coord_y=seat.coord_y,
+        rotation=seat.rotation,
+        label=seat.label,
+        type_=seat.type_,
+    )
+
     db.session.add(db_seat)
     db.session.commit()
 
-    return _db_entity_to_seat(db_seat)
+    return seat
 
 
 def create_seats(seats: Iterator[Seat]) -> None:
@@ -152,10 +161,7 @@ def aggregate_seat_utilizations(
     seat_utilizations: Iterable[SeatUtilization],
 ) -> SeatUtilization:
     """Aggregate multiple seat utilizations into one."""
-    return SeatUtilization(
-        occupied=sum(su.occupied for su in seat_utilizations),
-        total=sum(su.total for su in seat_utilizations),
-    )
+    return seat_domain_service.aggregate_seat_utilizations(seat_utilizations)
 
 
 def find_seat(seat_id: SeatID) -> Seat | None:
