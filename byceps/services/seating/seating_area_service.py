@@ -11,8 +11,8 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.util.uuid import generate_uuid4
 
+from . import seating_area_domain_service
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
 from .models import SeatingArea, SeatingAreaID, SeatUtilization
@@ -28,10 +28,7 @@ def create_area(
     image_height: int | None = None,
 ) -> SeatingArea:
     """Create an area."""
-    area_id = SeatingAreaID(generate_uuid4())
-
-    db_area = DbSeatingArea(
-        area_id,
+    area = seating_area_domain_service.create_area(
         party_id,
         slug,
         title,
@@ -40,14 +37,24 @@ def create_area(
         image_height=image_height,
     )
 
+    db_area = DbSeatingArea(
+        area.id,
+        area.party_id,
+        area.slug,
+        area.title,
+        image_filename=area.image_filename,
+        image_width=area.image_width,
+        image_height=area.image_height,
+    )
+
     db.session.add(db_area)
     db.session.commit()
 
-    return _db_entity_to_area(db_area)
+    return area
 
 
 def update_area(
-    area_id: SeatingAreaID,
+    area: SeatingArea,
     slug: str,
     title: str,
     image_filename: str | None,
@@ -55,20 +62,23 @@ def update_area(
     image_height: int | None,
 ) -> SeatingArea:
     """Update an area."""
-    db_area = _find_db_area(area_id)
+    updated_area = seating_area_domain_service.update_area(
+        area, slug, title, image_filename, image_width, image_height
+    )
 
+    db_area = _find_db_area(updated_area.id)
     if db_area is None:
         raise ValueError(f'Unknown seating area ID "{area_id}"')
 
-    db_area.slug = slug
-    db_area.title = title
-    db_area.image_filename = image_filename
-    db_area.image_width = image_width
-    db_area.image_height = image_height
+    db_area.slug = updated_area.slug
+    db_area.title = updated_area.title
+    db_area.image_filename = updated_area.image_filename
+    db_area.image_width = updated_area.image_width
+    db_area.image_height = updated_area.image_height
 
     db.session.commit()
 
-    return _db_entity_to_area(db_area)
+    return updated_area
 
 
 def delete_area(area_id: SeatingAreaID) -> None:

@@ -204,7 +204,7 @@ def area_update(area_id):
     image_height = form.image_height.data
 
     area = seating_area_service.update_area(
-        area.id,
+        area,
         slug,
         title,
         image_filename=image_filename,
