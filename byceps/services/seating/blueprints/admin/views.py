@@ -82,8 +82,8 @@ def area_index(party_id):
     """List seating areas for that party."""
     party = _get_party_or_404(party_id)
 
-    areas_with_utilization = (
-        seating_area_service.get_areas_with_seat_utilization(party.id)
+    areas_with_utilization = seating_area_service.get_areas_with_utilization(
+        party.id
     )
 
     seat_utilizations = [awu[1] for awu in areas_with_utilization]

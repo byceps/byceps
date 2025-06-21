@@ -91,17 +91,17 @@ def get_areas_for_party(party_id: PartyID) -> list[SeatingArea]:
     return [_db_entity_to_area(db_area) for db_area in db_areas]
 
 
-def get_areas_with_seat_utilization(
+def get_areas_with_utilization(
     party_id: PartyID,
 ) -> list[tuple[SeatingArea, SeatUtilization]]:
-    """Return all areas and their seat utilization for that party."""
-    db_areas_with_seat_utilization = (
-        seating_area_repository.get_areas_with_seat_utilization(party_id)
+    """Return all areas and their utilization for that party."""
+    db_areas_with_utilization = (
+        seating_area_repository.get_areas_with_utilization(party_id)
     )
 
     return [
-        (_db_entity_to_area(db_area), seat_utilization)
-        for db_area, seat_utilization in db_areas_with_seat_utilization
+        (_db_entity_to_area(db_area), utilization)
+        for db_area, utilization in db_areas_with_utilization
     ]
 
 

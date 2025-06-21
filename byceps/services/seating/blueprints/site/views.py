@@ -52,8 +52,8 @@ def index():
     if len(areas) == 1:
         return _render_view_area(areas[0])
 
-    areas_with_utilization = (
-        seating_area_service.get_areas_with_seat_utilization(g.party.id)
+    areas_with_utilization = seating_area_service.get_areas_with_utilization(
+        g.party.id
     )
     if not areas_with_utilization:
         abort(404)

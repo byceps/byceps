@@ -75,10 +75,10 @@ def get_areas_for_party(party_id: PartyID) -> list[DbSeatingArea]:
     ).all()
 
 
-def get_areas_with_seat_utilization(
+def get_areas_with_utilization(
     party_id: PartyID,
 ) -> list[tuple[DbSeatingArea, SeatUtilization]]:
-    """Return all areas and their seat utilization for that party."""
+    """Return all areas and their utilization for that party."""
     area = db.aliased(DbSeatingArea)
 
     subquery_occupied_seat_count = (
