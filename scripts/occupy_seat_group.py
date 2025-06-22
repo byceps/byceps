@@ -10,14 +10,13 @@ from _util import call_with_app_context
 import click
 
 from byceps.services.seating import seat_group_service
-from byceps.services.seating.dbmodels.seat_group import DbSeatGroup
-from byceps.services.seating.models import SeatGroupID
+from byceps.services.seating.models import SeatGroup, SeatGroupID
 from byceps.services.ticketing import ticket_bundle_service
 from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from byceps.services.ticketing.models.ticket import TicketBundleID
 
 
-def validate_seat_group(ctx, param, seat_group_id_value: str) -> DbSeatGroup:
+def validate_seat_group(ctx, param, seat_group_id_value: str) -> SeatGroup:
     try:
         seat_group_id = SeatGroupID(UUID(seat_group_id_value))
     except ValueError as exc:
