@@ -140,4 +140,7 @@ def _db_entity_to_seat(db_seat: DbSeat) -> Seat:
         category_id=db_seat.category_id,
         label=db_seat.label,
         type_=db_seat.type_,
+        occupied_by_ticket_id=db_seat.occupied_by_ticket.id
+        if db_seat.occupied_by_ticket
+        else None,
     )

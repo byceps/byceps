@@ -14,7 +14,7 @@ from uuid import UUID
 from pydantic import BaseModel
 
 from byceps.services.party.models import PartyID
-from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.services.ticketing.models.ticket import TicketCategoryID, TicketID
 
 
 SeatingAreaID = NewType('SeatingAreaID', UUID)
@@ -44,6 +44,7 @@ class Seat:
     category_id: TicketCategoryID
     label: str | None
     type_: str | None
+    occupied_by_ticket_id: TicketID | None
 
 
 SeatGroupID = NewType('SeatGroupID', UUID)

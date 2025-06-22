@@ -8,9 +8,7 @@ byceps.services.seating.seat_domain_service
 
 from collections.abc import Iterable
 
-from byceps.services.ticketing.models.ticket import (
-    TicketCategoryID,
-)
+from byceps.services.ticketing.models.ticket import TicketCategoryID, TicketID
 from byceps.util.uuid import generate_uuid7
 
 from .models import Seat, SeatID, SeatingAreaID, SeatUtilization
@@ -25,6 +23,7 @@ def create_seat(
     rotation: int | None = None,
     label: str | None = None,
     type_: str | None = None,
+    occupied_by_ticket_id: TicketID | None = None,
 ) -> Seat:
     """Create a seat."""
     seat_id = SeatID(generate_uuid7())
@@ -38,6 +37,7 @@ def create_seat(
         category_id=category_id,
         label=label,
         type_=type_,
+        occupied_by_ticket_id=occupied_by_ticket_id,
     )
 
 
