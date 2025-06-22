@@ -51,6 +51,15 @@ SeatGroupID = NewType('SeatGroupID', UUID)
 
 
 @dataclass(frozen=True)
+class SeatGroup:
+    id: SeatGroupID
+    party_id: PartyID
+    ticket_category_id: TicketCategoryID
+    title: str
+    seats: list[Seat]
+
+
+@dataclass(frozen=True)
 class SeatUtilization:
     occupied: int
     total: int

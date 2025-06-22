@@ -127,9 +127,10 @@ def _import_seat_groups(
             )
             continue
 
-        db_group = group_creation_result.unwrap()
+        group = group_creation_result.unwrap()
+        seat_quantity = len(group.seats)
 
         click.secho(
-            f'Imported seat group "{db_group.title}" with {db_group.seat_quantity} seats (category_id="{db_group.ticket_category_id}")',
+            f'Imported seat group "{group.title}" with {seat_quantity} seats (category_id="{group.ticket_category_id}")',
             fg='green',
         )

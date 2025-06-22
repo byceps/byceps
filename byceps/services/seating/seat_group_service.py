@@ -28,7 +28,7 @@ from .dbmodels.seat_group import (
     DbSeatGroupOccupancy,
 )
 from .errors import SeatingError
-from .models import Seat, SeatGroupID, SeatID
+from .models import Seat, SeatGroup, SeatGroupID, SeatID
 
 
 def create_seat_group(
@@ -36,7 +36,7 @@ def create_seat_group(
     ticket_category_id: TicketCategoryID,
     title: str,
     seats: Sequence[Seat],
-) -> Result[DbSeatGroup, SeatingError]:
+) -> Result[SeatGroup, SeatingError]:
     """Create a seat group and assign the given seats."""
     seat_quantity = len(seats)
     if seat_quantity == 0:
@@ -52,8 +52,20 @@ def create_seat_group(
 
     group_id = SeatGroupID(generate_uuid7())
 
+    group = SeatGroup(
+        id=group_id,
+        party_id=party_id,
+        ticket_category_id=ticket_category_id,
+        title=title,
+        seats=list(seats),
+    )
+
     db_group = DbSeatGroup(
-        group_id, party_id, ticket_category_id, seat_quantity, title
+        group.id,
+        group.party_id,
+        group.ticket_category_id,
+        seat_quantity,
+        group.title,
     )
     db.session.add(db_group)
 
@@ -64,7 +76,7 @@ def create_seat_group(
 
     db.session.commit()
 
-    return Ok(db_group)
+    return Ok(group)
 
 
 def occupy_seat_group(
