@@ -123,7 +123,7 @@ def get_seat(seat_id: SeatID) -> Seat:
     return db_seat
 
 
-def find_seats(seat_ids: set[SeatID]) -> list[Seat]:
+def get_seats(seat_ids: set[SeatID]) -> list[Seat]:
     """Return the seats with those IDs."""
     if not seat_ids:
         return []
