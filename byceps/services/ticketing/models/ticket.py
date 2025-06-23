@@ -44,8 +44,8 @@ class TicketBundle:
     ticket_category: TicketCategory
     ticket_quantity: int
     owned_by: User
-    seat_managed_by: User | None
-    user_managed_by: User | None
+    seats_managed_by: User | None
+    users_managed_by: User | None
     label: str | None
     revoked: bool
     ticket_ids: set[TicketID]
