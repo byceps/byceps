@@ -12,11 +12,14 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
+from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from byceps.services.ticketing.models.ticket import (
+    TicketBundle,
     TicketBundleID,
     TicketCategoryID,
+    TicketID,
 )
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
@@ -85,17 +88,19 @@ def occupy_group(
     group: SeatGroup, db_ticket_bundle: DbTicketBundle
 ) -> Result[DbSeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
+    ticket_bundle = ticket_service.db_entity_to_ticket_bundle(db_ticket_bundle)
+
     db_tickets = db_ticket_bundle.tickets
 
     group_availability_result = _ensure_group_is_available(group)
     if group_availability_result.is_err():
         return Err(group_availability_result.unwrap_err())
 
-    categories_match_result = _ensure_categories_match(group, db_ticket_bundle)
+    categories_match_result = _ensure_categories_match(group, ticket_bundle)
     if categories_match_result.is_err():
         return Err(categories_match_result.unwrap_err())
 
-    quantities_match_result = _ensure_quantities_match(group, db_ticket_bundle)
+    quantities_match_result = _ensure_quantities_match(group, ticket_bundle)
     if quantities_match_result.is_err():
         return Err(quantities_match_result.unwrap_err())
 
@@ -107,7 +112,7 @@ def occupy_group(
 
     occupancy_id = generate_uuid7()
     db_occupancy = DbSeatGroupOccupancy(
-        occupancy_id, group.id, db_ticket_bundle.id
+        occupancy_id, group.id, ticket_bundle.id
     )
     db.session.add(db_occupancy)
 
@@ -125,6 +130,8 @@ def switch_group(
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
     db_ticket_bundle = db_occupancy.ticket_bundle
+    ticket_bundle = ticket_service.db_entity_to_ticket_bundle(db_ticket_bundle)
+
     db_tickets = db_ticket_bundle.tickets
 
     group_availability_result = _ensure_group_is_available(target_group)
@@ -132,13 +139,13 @@ def switch_group(
         return Err(group_availability_result.unwrap_err())
 
     categories_match_result = _ensure_categories_match(
-        target_group, db_ticket_bundle
+        target_group, ticket_bundle
     )
     if categories_match_result.is_err():
         return Err(categories_match_result.unwrap_err())
 
     quantities_match_result = _ensure_quantities_match(
-        target_group, db_ticket_bundle
+        target_group, ticket_bundle
     )
     if quantities_match_result.is_err():
         return Err(quantities_match_result.unwrap_err())
@@ -172,24 +179,24 @@ def _ensure_group_is_available(
 
 
 def _ensure_categories_match(
-    group: SeatGroup, db_ticket_bundle: DbTicketBundle
+    group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
     """Return an error if the seat group's and the ticket bundle's
     categories don't match.
     """
-    if group.ticket_category_id != db_ticket_bundle.ticket_category_id:
+    if group.ticket_category_id != ticket_bundle.ticket_category.id:
         return Err(SeatingError('Seat and ticket categories do not match.'))
 
     return Ok(None)
 
 
 def _ensure_quantities_match(
-    group: SeatGroup, db_ticket_bundle: DbTicketBundle
+    group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
     """Return an error if the seat group's and the ticket bundle's
     quantities don't match.
     """
-    if group.seat_quantity != db_ticket_bundle.ticket_quantity:
+    if group.seat_quantity != ticket_bundle.ticket_quantity:
         return Err(SeatingError('Seat and ticket quantities do not match.'))
 
     return Ok(None)
