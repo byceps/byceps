@@ -24,7 +24,7 @@ def validate_seat_group(ctx, param, seat_group_id_value: str) -> SeatGroup:
             f'Invalid seat group ID "{seat_group_id_value}": {exc}'
         ) from exc
 
-    seat_group = seat_group_service.find_seat_group(seat_group_id)
+    seat_group = seat_group_service.find_group(seat_group_id)
 
     if not seat_group:
         raise click.BadParameter(f'Unknown seat group ID "{seat_group_id}".')
@@ -56,9 +56,7 @@ def validate_ticket_bundle(
 @click.argument('seat_group', callback=validate_seat_group)
 @click.argument('ticket_bundle', callback=validate_ticket_bundle)
 def execute(seat_group, ticket_bundle) -> None:
-    occupy_result = seat_group_service.occupy_seat_group(
-        seat_group, ticket_bundle
-    )
+    occupy_result = seat_group_service.occupy_group(seat_group, ticket_bundle)
 
     if occupy_result.is_err():
         error_str = occupy_result.unwrap_err().message

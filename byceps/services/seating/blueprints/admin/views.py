@@ -56,7 +56,7 @@ def index_for_party(party_id):
     category_count = ticket_category_service.count_categories_for_party(
         party.id
     )
-    group_count = seat_group_service.count_seat_groups_for_party(party.id)
+    group_count = seat_group_service.count_groups_for_party(party.id)
 
     reservation_preconditions = seat_reservation_service.get_preconditions(
         party.id
@@ -229,7 +229,7 @@ def seat_group_index(party_id):
     """List seat groups for that party."""
     party = _get_party_or_404(party_id)
 
-    groups = seat_group_service.get_all_seat_groups_for_party(party.id)
+    groups = seat_group_service.get_all_groups_for_party(party.id)
 
     return {
         'party': party,

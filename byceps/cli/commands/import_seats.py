@@ -115,7 +115,7 @@ def _import_seat_groups(
             seats_by_group_title[group_title].append(seat)
 
     for group_title, seats in seats_by_group_title.items():
-        group_creation_result = seat_group_service.create_seat_group(
+        group_creation_result = seat_group_service.create_group(
             party_id, seats[0].category_id, group_title, seats
         )
 
