@@ -181,9 +181,29 @@ def _ensure_categories_match(
 def _ensure_quantities_match(
     group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
-    """Return an error if the seat group's and the ticket bundle's
-    quantities or the totals of seats and tickets don't match.
+    """Return an error if
+
+    - the defined and actual seat quantity of the seat group or
+    - the defined and actual ticket quantity of the ticket bundle or
+    - the defined quantities of the seat group and the ticket bundle or
+    - the actual quantities of seats and tickets
+
+    don't match.
     """
+    if group.seat_quantity != len(group.seats):
+        return Err(
+            SeatingError(
+                'Defined and actual seat quantities in seat group do not match.'
+            )
+        )
+
+    if ticket_bundle.ticket_quantity != len(ticket_bundle.ticket_ids):
+        return Err(
+            SeatingError(
+                'Defined and actual ticket quantities in tucket bundle do not match.'
+            )
+        )
+
     if group.seat_quantity != ticket_bundle.ticket_quantity:
         return Err(SeatingError('Seat and ticket quantities do not match.'))
 
