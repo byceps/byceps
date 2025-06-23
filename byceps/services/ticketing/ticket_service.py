@@ -16,18 +16,14 @@ from byceps.services.party.models import Party, PartyID
 from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.seating.models import SeatID
 from byceps.services.shop.order.models.number import OrderNumber
-from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import UserID
 
-from . import ticket_category_service, ticket_code_service, ticket_log_service
+from . import ticket_code_service, ticket_log_service
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.log import DbTicketLogEntry
 from .dbmodels.ticket import DbTicket
-from .dbmodels.ticket_bundle import DbTicketBundle
 from .models.ticket import (
-    TicketBundle,
-    TicketCategory,
     TicketCategoryID,
     TicketCode,
     TicketID,
@@ -385,59 +381,3 @@ def find_ticket_occupying_seat(seat_id: SeatID) -> DbTicket | None:
     return db.session.scalars(
         select(DbTicket).filter_by(occupied_seat_id=seat_id)
     ).one_or_none()
-
-
-def db_entity_to_ticket_bundle(
-    db_ticket_bundle: DbTicketBundle,
-) -> TicketBundle:
-    ticket_category = ticket_category_service.get_category(
-        db_ticket_bundle.ticket_category_id
-    )
-
-    owner = user_service.get_user(db_ticket_bundle.owned_by.id)
-
-    seats_manager = (
-        user_service.get_user(db_ticket_bundle.seats_managed_by.id)
-        if db_ticket_bundle.seats_managed_by
-        else None
-    )
-
-    users_manager = (
-        user_service.get_user(db_ticket_bundle.users_managed_by.id)
-        if db_ticket_bundle.users_managed_by
-        else None
-    )
-
-    ticket_ids = {db_ticket.id for db_ticket in db_ticket_bundle.tickets}
-
-    return _db_entity_to_ticket_bundle(
-        db_ticket_bundle,
-        ticket_category,
-        owner,
-        seats_manager,
-        users_manager,
-        ticket_ids,
-    )
-
-
-def _db_entity_to_ticket_bundle(
-    db_ticket_bundle: DbTicketBundle,
-    ticket_category: TicketCategory,
-    owner: User,
-    seats_manager: User | None,
-    users_manager: User | None,
-    ticket_ids: set[TicketID],
-) -> TicketBundle:
-    return TicketBundle(
-        id=db_ticket_bundle.id,
-        created_at=db_ticket_bundle.created_at,
-        party_id=db_ticket_bundle.party_id,
-        ticket_category=ticket_category,
-        ticket_quantity=db_ticket_bundle.ticket_quantity,
-        owned_by=owner,
-        seats_managed_by=seats_manager,
-        users_managed_by=users_manager,
-        label=db_ticket_bundle.label,
-        revoked=db_ticket_bundle.revoked,
-        ticket_ids=ticket_ids,
-    )
