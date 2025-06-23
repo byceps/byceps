@@ -56,6 +56,7 @@ def create_seat_group(
         id=group_id,
         party_id=party_id,
         ticket_category_id=ticket_category_id,
+        seat_quantity=seat_quantity,
         title=title,
         seats=list(seats),
     )

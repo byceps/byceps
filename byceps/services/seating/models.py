@@ -55,6 +55,7 @@ class SeatGroup:
     id: SeatGroupID
     party_id: PartyID
     ticket_category_id: TicketCategoryID
+    seat_quantity: int
     title: str
     seats: list[Seat]
 
