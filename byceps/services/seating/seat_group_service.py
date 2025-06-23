@@ -104,12 +104,6 @@ def occupy_group(
     if quantities_match_result.is_err():
         return Err(quantities_match_result.unwrap_err())
 
-    actual_quantities_match_result = _ensure_actual_quantities_match(
-        group, ticket_bundle
-    )
-    if actual_quantities_match_result.is_err():
-        return Err(actual_quantities_match_result.unwrap_err())
-
     occupancy_id = generate_uuid7()
     db_occupancy = DbSeatGroupOccupancy(
         occupancy_id, group.id, ticket_bundle.id
@@ -150,12 +144,6 @@ def switch_group(
     if quantities_match_result.is_err():
         return Err(quantities_match_result.unwrap_err())
 
-    actual_quantities_match_result = _ensure_actual_quantities_match(
-        target_group, ticket_bundle
-    )
-    if actual_quantities_match_result.is_err():
-        return Err(actual_quantities_match_result.unwrap_err())
-
     db_occupancy.seat_group_id = target_group.id
 
     occupy_seats_result = _occupy_seats(target_group.seats, db_tickets)
@@ -194,18 +182,11 @@ def _ensure_quantities_match(
     group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
     """Return an error if the seat group's and the ticket bundle's
-    quantities don't match.
+    quantities or the totals of seats and tickets don't match.
     """
     if group.seat_quantity != ticket_bundle.ticket_quantity:
         return Err(SeatingError('Seat and ticket quantities do not match.'))
 
-    return Ok(None)
-
-
-def _ensure_actual_quantities_match(
-    group: SeatGroup, ticket_bundle: TicketBundle
-) -> Result[None, SeatingError]:
-    """Return an error if the totals of seats and tickets don't match."""
     if len(group.seats) != len(ticket_bundle.ticket_ids):
         return Err(
             SeatingError(
