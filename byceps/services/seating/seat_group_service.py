@@ -213,7 +213,6 @@ def _occupy_seats(
     seats: list[Seat], db_tickets: Sequence[DbTicket]
 ) -> Result[None, SeatingError]:
     """Occupy all seats in the group with all tickets from the bundle."""
-    seats = _sort_seats(seats)
     for seat in seats:
         already_occupying_ticket = seat.occupied_by_ticket_id is not None
         if already_occupying_ticket:
@@ -223,7 +222,6 @@ def _occupy_seats(
                 )
             )
 
-    db_tickets = _sort_tickets(db_tickets)
     for db_ticket in db_tickets:
         if db_ticket.revoked:
             return Err(
@@ -231,6 +229,9 @@ def _occupy_seats(
                     f'Ticket {db_ticket.id} is revoked; it cannot be used to occupy a seat.'
                 )
             )
+
+    seats = _sort_seats(seats)
+    db_tickets = _sort_tickets(db_tickets)
 
     for seat, db_ticket in zip(seats, db_tickets, strict=True):
         db_ticket.occupied_seat_id = seat.id
