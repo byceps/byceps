@@ -67,7 +67,7 @@ def _cancel_order(order, canceler, reason: str | None, notify: bool) -> None:
         )
 
     match order_command_service.cancel_order(order.id, canceler, reason):
-        case Ok((_, canceled_event)):
+        case Ok((canceled_order, canceled_event)):
             shop_order_signals.order_canceled.send(None, event=canceled_event)
             click.secho(
                 f'Order {order.order_number} was successfully canceled.',
@@ -75,7 +75,7 @@ def _cancel_order(order, canceler, reason: str | None, notify: bool) -> None:
             )
 
             if notify:
-                _notify_orderer(order)
+                _notify_orderer(canceled_order)
         case Err(e):
             if isinstance(e, OrderAlreadyCanceledError):
                 message = (
