@@ -21,8 +21,6 @@ from .models import Seat
 @dataclass(frozen=True)
 class SeatTicket:
     id: TicketID
-    code: TicketCode
-    category_label: str
     user: User | None
 
 
@@ -83,8 +81,6 @@ def _build_seat_ticket(
 
     return SeatTicket(
         id=ticket.id,
-        code=TicketCode(ticket.code),
-        category_label=ticket.category.title,
         user=user,
     )
 
