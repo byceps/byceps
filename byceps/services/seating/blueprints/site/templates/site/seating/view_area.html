@@ -34,10 +34,14 @@
         <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
       </form>
     </div>
-    {%- if g.user.authenticated and seat_management_enabled and not manage_mode %}
+    {%- if g.user.authenticated and seat_management_enabled %}
     <div>
       <div class="button-row is-right-aligned">
+        {%- if manage_mode %}
+        <a class="button" href="{{ url_for('.view_area', slug=area.slug) }}">{{ _('Leave seat management') }}</a>
+        {%- else %}
         <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">{{ _('Manage seats') }}</a>
+        {%- endif %}
       </div>
     </div>
     {%- endif %}
