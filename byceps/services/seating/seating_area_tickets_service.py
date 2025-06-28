@@ -29,6 +29,8 @@ class ManagedTicket:
     id: TicketID
     code: TicketCode
     category_label: str
+    occupies_seat: bool
+    seat_label: str | None
     user: User | None
 
 
@@ -87,22 +89,22 @@ def _build_seat_ticket(
 
 def get_managed_tickets(
     tickets: Iterable[DbTicket], users_by_id: dict[UserID, User]
-) -> Iterator[tuple[ManagedTicket, bool, str | None]]:
+) -> Iterator[ManagedTicket]:
     for ticket in tickets:
-        managed_ticket = _build_managed_ticket(ticket, users_by_id)
-        occupies_seat = ticket.occupied_seat is not None
-        seat_label = (
-            ticket.occupied_seat.label
-            if (ticket.occupied_seat is not None)
-            else None
-        )
-
-        yield managed_ticket, occupies_seat, seat_label
+        yield _build_managed_ticket(ticket, users_by_id)
 
 
 def _build_managed_ticket(
     ticket: DbTicket, users_by_id: dict[UserID, User]
 ) -> ManagedTicket:
+    occupies_seat = ticket.occupied_seat is not None
+
+    seat_label = (
+        ticket.occupied_seat.label
+        if (ticket.occupied_seat is not None)
+        else None
+    )
+
     user: User | None
     if ticket.used_by_id is not None:
         user = users_by_id[ticket.used_by_id]
@@ -113,5 +115,7 @@ def _build_managed_ticket(
         id=ticket.id,
         code=TicketCode(ticket.code),
         category_label=ticket.category.title,
+        occupies_seat=occupies_seat,
+        seat_label=seat_label,
         user=user,
     )
