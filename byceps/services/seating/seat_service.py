@@ -101,14 +101,14 @@ def get_seat(seat_id: SeatID) -> Seat:
     return _db_entity_to_seat(db_seat)
 
 
-def get_seats(seat_ids: set[SeatID]) -> set[Seat]:
+def get_seats(seat_ids: set[SeatID]) -> list[Seat]:
     """Return the seats with those IDs."""
     if not seat_ids:
-        return set()
+        return []
 
     db_seats = seat_repository.get_seats(seat_ids)
 
-    return {_db_entity_to_seat(db_seat) for db_seat in db_seats}
+    return [_db_entity_to_seat(db_seat) for db_seat in db_seats]
 
 
 def get_seats_with_tickets_for_area(
