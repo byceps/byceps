@@ -6,6 +6,7 @@ byceps.services.seating.seat_reservation_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
 from uuid import UUID
 
 from sqlalchemy import delete, select
@@ -49,10 +50,8 @@ def find_precondition(
 
 def get_preconditions(
     party_id: PartyID,
-) -> set[DbSeatReservationPrecondition]:
+) -> Sequence[DbSeatReservationPrecondition]:
     """Return all reservation preconditions for that party."""
-    return set(
-        db.session.scalars(
-            select(DbSeatReservationPrecondition).filter_by(party_id=party_id)
-        ).all()
-    )
+    return db.session.scalars(
+        select(DbSeatReservationPrecondition).filter_by(party_id=party_id)
+    ).all()
