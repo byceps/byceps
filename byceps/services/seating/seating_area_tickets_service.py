@@ -49,7 +49,7 @@ def get_seats_and_tickets(
 
 
 def _get_users(
-    seats_with_db_tickets: Iterable[tuple[Seat, DbTicket]],
+    seats_with_db_tickets: Iterable[tuple[Seat, DbTicket | None]],
 ) -> dict[UserID, User]:
     db_tickets = _get_seat_tickets(seats_with_db_tickets)
     user_ids = set(_get_ticket_user_ids(db_tickets))
@@ -57,7 +57,7 @@ def _get_users(
 
 
 def _get_seat_tickets(
-    seats_with_db_tickets: Iterable[tuple[Seat, DbTicket]],
+    seats_with_db_tickets: Iterable[tuple[Seat, DbTicket | None]],
 ) -> Iterator[DbTicket]:
     for _, db_ticket in seats_with_db_tickets:
         if (db_ticket is not None) and (db_ticket.used_by_id is not None):
@@ -72,7 +72,7 @@ def _get_ticket_user_ids(db_tickets: Iterable[DbTicket]) -> Iterator[UserID]:
 
 
 def _get_seats_and_tickets(
-    seats_with_db_tickets: Iterable[tuple[Seat, DbTicket]],
+    seats_with_db_tickets: Iterable[tuple[Seat, DbTicket | None]],
     users_by_id: dict[UserID, User],
 ) -> Iterator[tuple[Seat, SeatTicket | None]]:
     for seat, db_ticket in seats_with_db_tickets:
