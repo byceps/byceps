@@ -19,13 +19,11 @@ from byceps.services.ticketing.models.ticket import (
     TicketBundle,
     TicketBundleID,
     TicketCategoryID,
-    TicketID,
 )
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from . import seat_service
-from .dbmodels.seat import DbSeat
 from .dbmodels.seat_group import (
     DbSeatGroup,
     DbSeatGroupAssignment,
