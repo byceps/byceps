@@ -88,7 +88,7 @@ def _build_seat_ticket(
 
 def get_managed_tickets(
     seat_manager_id: UserID, party_id: PartyID
-) -> Iterator[ManagedTicket]:
+) -> list[ManagedTicket]:
     db_tickets = ticket_service.get_tickets_for_seat_manager(
         seat_manager_id, party_id
     )
@@ -101,8 +101,10 @@ def get_managed_tickets(
         user_ids, include_avatars=False
     )
 
-    for db_ticket in db_tickets:
-        yield _build_managed_ticket(db_ticket, users_by_id)
+    return [
+        _build_managed_ticket(db_ticket, users_by_id)
+        for db_ticket in db_tickets
+    ]
 
 
 def _build_managed_ticket(

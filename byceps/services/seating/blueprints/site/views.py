@@ -149,10 +149,8 @@ def manage_seats_in_area(slug):
     )
 
     if seat_management_enabled and (seat_manager_id is not None):
-        managed_tickets = list(
-            seating_area_tickets_service.get_managed_tickets(
-                seat_manager_id, g.party.id
-            )
+        managed_tickets = seating_area_tickets_service.get_managed_tickets(
+            seat_manager_id, g.party.id
         )
     else:
         managed_tickets = []
