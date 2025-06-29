@@ -224,11 +224,12 @@ def _occupy_seats(
 ) -> Result[None, SeatingError]:
     """Occupy all seats in the group with all tickets from the bundle."""
     for seat in seats:
-        already_occupying_ticket = seat.occupied_by_ticket_id is not None
+        occupying_ticket_id = seat.occupied_by_ticket_id
+        already_occupying_ticket = occupying_ticket_id is not None
         if already_occupying_ticket:
             return Err(
                 SeatingError(
-                    f'Seat {seat.id} is already occupied by ticket {already_occupying_ticket.id}; seat cannot be occupied.'
+                    f'Seat {seat.id} is already occupied by ticket {occupying_ticket_id}; seat cannot be occupied.'
                 )
             )
 
