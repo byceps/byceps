@@ -52,8 +52,7 @@ def _get_users(
     seats_with_db_tickets: Iterable[tuple[Seat, DbTicket | None]],
 ) -> dict[UserID, User]:
     db_tickets = _get_seat_tickets(seats_with_db_tickets)
-    user_ids = set(_get_ticket_user_ids(db_tickets))
-    return user_service.get_users_indexed_by_id(user_ids, include_avatars=True)
+    return _get_ticket_users_by_id(db_tickets, include_avatars=True)
 
 
 def _get_seat_tickets(
@@ -62,13 +61,6 @@ def _get_seat_tickets(
     for _, db_ticket in seats_with_db_tickets:
         if (db_ticket is not None) and (db_ticket.used_by_id is not None):
             yield db_ticket
-
-
-def _get_ticket_user_ids(db_tickets: Iterable[DbTicket]) -> Iterator[UserID]:
-    for db_ticket in db_tickets:
-        user_id = db_ticket.used_by_id
-        if user_id is not None:
-            yield user_id
 
 
 def _get_seats_and_tickets(
@@ -106,13 +98,7 @@ def get_managed_tickets(
         seat_manager_id, party_id
     )
 
-    user_ids = {
-        db_ticket.used_by_id for db_ticket in db_tickets if db_ticket.used_by_id
-    }
-
-    users_by_id = user_service.get_users_indexed_by_id(
-        user_ids, include_avatars=False
-    )
+    users_by_id = _get_ticket_users_by_id(db_tickets, include_avatars=False)
 
     return [
         _build_managed_ticket(db_ticket, users_by_id)
@@ -144,4 +130,16 @@ def _build_managed_ticket(
         occupies_seat=occupies_seat,
         seat_label=seat_label,
         user=user,
+    )
+
+
+def _get_ticket_users_by_id(
+    db_tickets: Iterable[DbTicket], *, include_avatars: bool
+) -> dict[UserID, User]:
+    user_ids = {
+        db_ticket.used_by_id for db_ticket in db_tickets if db_ticket.used_by_id
+    }
+
+    return user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=include_avatars
     )
