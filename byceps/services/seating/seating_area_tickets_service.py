@@ -43,18 +43,15 @@ def get_seats_and_tickets(
         area_id
     )
 
-    db_tickets = _get_seat_tickets(seats_with_db_tickets)
+    db_tickets = [
+        db_ticket
+        for _, db_ticket in seats_with_db_tickets
+        if db_ticket is not None
+    ]
+
     users_by_id = _get_ticket_users_by_id(db_tickets, include_avatars=True)
 
     return _get_seats_and_tickets(seats_with_db_tickets, users_by_id)
-
-
-def _get_seat_tickets(
-    seats_with_db_tickets: Iterable[tuple[Seat, DbTicket | None]],
-) -> Iterator[DbTicket]:
-    for _, db_ticket in seats_with_db_tickets:
-        if db_ticket is not None:
-            yield db_ticket
 
 
 def _get_seats_and_tickets(
