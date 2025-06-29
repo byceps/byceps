@@ -9,6 +9,8 @@ byceps.services.seating.seating_area_tickets_service
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 
+from byceps.services.party.models import PartyID
+from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
 from byceps.services.user import user_service
@@ -85,8 +87,12 @@ def _build_seat_ticket(
 
 
 def get_managed_tickets(
-    db_tickets: Iterable[DbTicket],
+    seat_manager_id: UserID, party_id: PartyID
 ) -> Iterator[ManagedTicket]:
+    db_tickets = ticket_service.get_tickets_for_seat_manager(
+        seat_manager_id, party_id
+    )
+
     user_ids = {
         db_ticket.used_by_id for db_ticket in db_tickets if db_ticket.used_by_id
     }

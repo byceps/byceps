@@ -142,22 +142,17 @@ def manage_seats_in_area(slug):
 
     seats_with_tickets = seat_service.get_seats_with_tickets_for_area(area.id)
 
-    if seat_manager_id is not None:
-        tickets = ticket_service.get_tickets_for_seat_manager(
-            seat_manager_id, g.party.id
-        )
-    else:
-        tickets = []
-
     users_by_id = seating_area_tickets_service.get_users(seats_with_tickets)
 
     seats_and_tickets = seating_area_tickets_service.get_seats_and_tickets(
         seats_with_tickets, users_by_id
     )
 
-    if seat_management_enabled:
+    if seat_management_enabled and (seat_manager_id is not None):
         managed_tickets = list(
-            seating_area_tickets_service.get_managed_tickets(tickets)
+            seating_area_tickets_service.get_managed_tickets(
+                seat_manager_id, g.party.id
+            )
         )
     else:
         managed_tickets = []
