@@ -53,7 +53,7 @@ def _get_seat_tickets(
     seats_with_db_tickets: Iterable[tuple[Seat, DbTicket | None]],
 ) -> Iterator[DbTicket]:
     for _, db_ticket in seats_with_db_tickets:
-        if (db_ticket is not None) and (db_ticket.used_by_id is not None):
+        if db_ticket is not None:
             yield db_ticket
 
 
