@@ -344,6 +344,11 @@ def is_seat_part_of_a_group(seat_id: SeatID) -> bool:
 
 
 def _db_entity_to_group(db_group: DbSeatGroup, seats: list[Seat]) -> SeatGroup:
+    if db_group.seat_quantity != len(seats):
+        raise ValueError(
+            'Expected seat quantity in group does not match number of seats'
+        )
+
     return SeatGroup(
         id=db_group.id,
         party_id=db_group.party_id,
