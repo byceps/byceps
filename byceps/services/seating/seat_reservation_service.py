@@ -50,9 +50,7 @@ def find_precondition(
     return _db_entity_to_precondition(db_precondition)
 
 
-def get_preconditions(
-    party_id: PartyID,
-) -> set[DbSeatReservationPrecondition]:
+def get_preconditions(party_id: PartyID) -> set[SeatReservationPrecondition]:
     """Return all reservation preconditions for that party."""
     db_preconditions = seat_reservation_repository.get_preconditions(party_id)
 

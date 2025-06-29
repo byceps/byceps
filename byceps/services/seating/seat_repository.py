@@ -6,6 +6,8 @@ byceps.services.seating.seat_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
@@ -19,7 +21,7 @@ from .dbmodels.seat import DbSeat
 from .models import Seat, SeatID, SeatingAreaID
 
 
-def create_seat(seat: Seat) -> Seat:
+def create_seat(seat: Seat) -> None:
     """Create a seat."""
     db_seat = DbSeat(
         seat.id,
@@ -106,7 +108,7 @@ def find_seat(seat_id: SeatID) -> DbSeat | None:
     return db.session.get(DbSeat, seat_id)
 
 
-def get_seat(seat_id: SeatID) -> Seat:
+def get_seat(seat_id: SeatID) -> DbSeat:
     """Return the seat with that id, or raise an exception."""
     db_seat = find_seat(seat_id)
 
@@ -116,7 +118,7 @@ def get_seat(seat_id: SeatID) -> Seat:
     return db_seat
 
 
-def get_seats(seat_ids: set[SeatID]) -> list[Seat]:
+def get_seats(seat_ids: set[SeatID]) -> Sequence[DbSeat]:
     """Return the seats with those IDs."""
     if not seat_ids:
         return []
@@ -126,7 +128,7 @@ def get_seats(seat_ids: set[SeatID]) -> list[Seat]:
     ).all()
 
 
-def get_seats_with_tickets_for_area(area_id: SeatingAreaID) -> list[DbSeat]:
+def get_seats_with_tickets_for_area(area_id: SeatingAreaID) -> Sequence[DbSeat]:
     """Return the seats and their associated tickets (if available) for
     that area.
     """

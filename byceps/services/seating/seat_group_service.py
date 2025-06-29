@@ -287,7 +287,7 @@ def count_groups_for_party(party_id: PartyID) -> int:
     )
 
 
-def find_group(group_id: SeatGroupID) -> DbSeatGroup | None:
+def find_group(group_id: SeatGroupID) -> SeatGroup | None:
     """Return the seat group with that id, or `None` if not found."""
     db_group = db.session.get(DbSeatGroup, group_id)
 

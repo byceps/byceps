@@ -6,6 +6,8 @@ byceps.services.seating.seating_area_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
@@ -68,7 +70,7 @@ def find_area_for_party_by_slug(
     ).first()
 
 
-def get_areas_for_party(party_id: PartyID) -> list[DbSeatingArea]:
+def get_areas_for_party(party_id: PartyID) -> Sequence[DbSeatingArea]:
     """Return all areas for that party."""
     return db.session.scalars(
         select(DbSeatingArea).filter_by(party_id=party_id)
