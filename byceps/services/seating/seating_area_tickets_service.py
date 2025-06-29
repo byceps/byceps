@@ -8,7 +8,6 @@ byceps.services.seating.seating_area_tickets_service
 
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
-from itertools import chain
 
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
@@ -36,10 +35,8 @@ class ManagedTicket:
 
 def get_users(
     seats_with_db_tickets: Iterable[tuple[Seat, DbTicket]],
-    managed_db_tickets: Iterable[DbTicket],
 ) -> dict[UserID, User]:
-    seat_db_tickets = _get_seat_tickets(seats_with_db_tickets)
-    db_tickets = chain(seat_db_tickets, managed_db_tickets)
+    db_tickets = _get_seat_tickets(seats_with_db_tickets)
     user_ids = set(_get_ticket_user_ids(db_tickets))
     return user_service.get_users_indexed_by_id(user_ids, include_avatars=True)
 
@@ -88,8 +85,16 @@ def _build_seat_ticket(
 
 
 def get_managed_tickets(
-    db_tickets: Iterable[DbTicket], users_by_id: dict[UserID, User]
+    db_tickets: Iterable[DbTicket],
 ) -> Iterator[ManagedTicket]:
+    user_ids = {
+        db_ticket.used_by_id for db_ticket in db_tickets if db_ticket.used_by_id
+    }
+
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=False
+    )
+
     for db_ticket in db_tickets:
         yield _build_managed_ticket(db_ticket, users_by_id)
 
