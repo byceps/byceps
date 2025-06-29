@@ -348,6 +348,7 @@ def _db_entity_to_group(db_group: DbSeatGroup, seats: list[Seat]) -> SeatGroup:
         id=db_group.id,
         party_id=db_group.party_id,
         ticket_category_id=db_group.ticket_category_id,
+        seat_quantity=db_group.seat_quantity,
         title=db_group.title,
         seats=seats,
     )
