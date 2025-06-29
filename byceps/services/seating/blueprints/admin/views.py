@@ -107,12 +107,8 @@ def area_view(area_id):
 
     party = party_service.get_party(area.party_id)
 
-    seats_with_tickets = seat_service.get_seats_with_tickets_for_area(area.id)
-
-    users_by_id = seating_area_tickets_service.get_users(seats_with_tickets)
-
     seats_and_tickets = seating_area_tickets_service.get_seats_and_tickets(
-        seats_with_tickets, users_by_id
+        area.id
     )
 
     return {

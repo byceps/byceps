@@ -16,7 +16,8 @@ from byceps.services.ticketing.models.ticket import TicketCode, TicketID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 
-from .models import Seat
+from . import seat_service
+from .models import Seat, SeatingAreaID
 
 
 @dataclass(frozen=True)
@@ -35,7 +36,19 @@ class ManagedTicket:
     user: User | None
 
 
-def get_users(
+def get_seats_and_tickets(
+    area_id: SeatingAreaID,
+) -> Iterator[tuple[Seat, SeatTicket | None]]:
+    seats_with_db_tickets = seat_service.get_seats_with_tickets_for_area(
+        area_id
+    )
+
+    users_by_id = _get_users(seats_with_db_tickets)
+
+    return _get_seats_and_tickets(seats_with_db_tickets, users_by_id)
+
+
+def _get_users(
     seats_with_db_tickets: Iterable[tuple[Seat, DbTicket]],
 ) -> dict[UserID, User]:
     db_tickets = _get_seat_tickets(seats_with_db_tickets)
@@ -58,7 +71,7 @@ def _get_ticket_user_ids(db_tickets: Iterable[DbTicket]) -> Iterator[UserID]:
             yield user_id
 
 
-def get_seats_and_tickets(
+def _get_seats_and_tickets(
     seats_with_db_tickets: Iterable[tuple[Seat, DbTicket]],
     users_by_id: dict[UserID, User],
 ) -> Iterator[tuple[Seat, SeatTicket | None]]:
