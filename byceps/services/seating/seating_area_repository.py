@@ -39,7 +39,7 @@ def update_area(area: SeatingArea) -> None:
     """Update an area."""
     db_area = find_area(area.id)
     if db_area is None:
-        raise ValueError(f'Unknown seating area ID "{area_id}"')
+        raise ValueError(f'Unknown seating area ID "{area.id}"')
 
     db_area.slug = area.slug
     db_area.title = area.title
