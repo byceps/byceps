@@ -21,7 +21,7 @@ from .models import Seat, SeatingAreaID
 
 
 @dataclass(frozen=True)
-class SeatWithUser(Seat):
+class AreaSeat(Seat):
     occupied_by_user: User | None
 
     @property
@@ -39,7 +39,7 @@ class ManagedTicket:
     user: User | None
 
 
-def get_seats_with_users(area_id: SeatingAreaID) -> list[SeatWithUser]:
+def get_area_seats(area_id: SeatingAreaID) -> list[AreaSeat]:
     seats_with_db_tickets = seat_service.get_seats_with_tickets_for_area(
         area_id
     )
@@ -53,14 +53,14 @@ def get_seats_with_users(area_id: SeatingAreaID) -> list[SeatWithUser]:
     users_by_id = _get_ticket_users_by_id(db_tickets, include_avatars=True)
 
     return [
-        _build_seat_with_user(seat, db_ticket, users_by_id)
+        _build_area_seat(seat, db_ticket, users_by_id)
         for seat, db_ticket in seats_with_db_tickets
     ]
 
 
-def _build_seat_with_user(
+def _build_area_seat(
     seat: Seat, db_ticket: DbTicket | None, users_by_id: dict[UserID, User]
-) -> SeatWithUser:
+) -> AreaSeat:
     ticket_id: TicketID | None = None
     user: User | None = None
     if db_ticket:
@@ -69,7 +69,7 @@ def _build_seat_with_user(
         if user_id:
             user = users_by_id[user_id]
 
-    return SeatWithUser(
+    return AreaSeat(
         id=seat.id,
         area_id=seat.area_id,
         coord_x=seat.coord_x,
