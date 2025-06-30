@@ -17,11 +17,18 @@ from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 
 from . import seat_service
-from .models import Seat, SeatingAreaID
+from .models import Seat, SeatID, SeatingAreaID
 
 
 @dataclass(frozen=True)
-class AreaSeat(Seat):
+class AreaSeat:
+    id: SeatID
+    coord_x: int
+    coord_y: int
+    rotation: int | None
+    label: str | None
+    type_: str | None
+    occupied_by_ticket_id: TicketID | None
     occupied_by_user: User | None
 
     @property
@@ -71,11 +78,9 @@ def _build_area_seat(
 
     return AreaSeat(
         id=seat.id,
-        area_id=seat.area_id,
         coord_x=seat.coord_x,
         coord_y=seat.coord_y,
         rotation=seat.rotation,
-        category_id=seat.category_id,
         label=seat.label,
         type_=seat.type_,
         occupied_by_ticket_id=ticket_id,
