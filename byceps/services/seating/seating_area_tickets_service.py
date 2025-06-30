@@ -20,7 +20,7 @@ from . import seat_service
 from .models import Seat, SeatID, SeatingAreaID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class AreaSeat:
     id: SeatID
     coord_x: int
