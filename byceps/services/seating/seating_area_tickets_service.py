@@ -6,7 +6,7 @@ byceps.services.seating.seating_area_tickets_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterable
 from dataclasses import dataclass
 
 from byceps.services.party.models import PartyID
@@ -21,9 +21,12 @@ from .models import Seat, SeatingAreaID
 
 
 @dataclass(frozen=True)
-class SeatTicket:
-    id: TicketID
-    user: User | None
+class SeatWithUser(Seat):
+    occupied_by_user: User | None
+
+    @property
+    def occupied(self) -> bool:
+        return self.occupied_by_ticket_id is not None
 
 
 @dataclass(frozen=True)
@@ -36,9 +39,7 @@ class ManagedTicket:
     user: User | None
 
 
-def get_seats_and_tickets(
-    area_id: SeatingAreaID,
-) -> Iterator[tuple[Seat, SeatTicket | None]]:
+def get_seats_with_users(area_id: SeatingAreaID) -> list[SeatWithUser]:
     seats_with_db_tickets = seat_service.get_seats_with_tickets_for_area(
         area_id
     )
@@ -51,34 +52,34 @@ def get_seats_and_tickets(
 
     users_by_id = _get_ticket_users_by_id(db_tickets, include_avatars=True)
 
-    return _get_seats_and_tickets(seats_with_db_tickets, users_by_id)
+    return [
+        _build_seat_with_user(seat, db_ticket, users_by_id)
+        for seat, db_ticket in seats_with_db_tickets
+    ]
 
 
-def _get_seats_and_tickets(
-    seats_with_db_tickets: Iterable[tuple[Seat, DbTicket | None]],
-    users_by_id: dict[UserID, User],
-) -> Iterator[tuple[Seat, SeatTicket | None]]:
-    for seat, db_ticket in seats_with_db_tickets:
-        if db_ticket is not None:
-            seat_ticket = _build_seat_ticket(db_ticket, users_by_id)
-        else:
-            seat_ticket = None
+def _build_seat_with_user(
+    seat: Seat, db_ticket: DbTicket | None, users_by_id: dict[UserID, User]
+) -> SeatWithUser:
+    ticket_id: TicketID | None = None
+    user: User | None = None
+    if db_ticket:
+        ticket_id = db_ticket.id
+        user_id = db_ticket.used_by_id
+        if user_id:
+            user = users_by_id[user_id]
 
-        yield seat, seat_ticket
-
-
-def _build_seat_ticket(
-    db_ticket: DbTicket, users_by_id: dict[UserID, User]
-) -> SeatTicket:
-    user: User | None
-    if db_ticket.used_by_id is not None:
-        user = users_by_id[db_ticket.used_by_id]
-    else:
-        user = None
-
-    return SeatTicket(
-        id=db_ticket.id,
-        user=user,
+    return SeatWithUser(
+        id=seat.id,
+        area_id=seat.area_id,
+        coord_x=seat.coord_x,
+        coord_y=seat.coord_y,
+        rotation=seat.rotation,
+        category_id=seat.category_id,
+        label=seat.label,
+        type_=seat.type_,
+        occupied_by_ticket_id=ticket_id,
+        occupied_by_user=user,
     )
 
 

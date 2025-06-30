@@ -88,16 +88,14 @@ def view_area(slug):
 def _render_view_area(area: SeatingArea) -> dict[str, Any]:
     seat_management_enabled = _is_seat_management_enabled()
 
-    seats_and_tickets = seating_area_tickets_service.get_seats_and_tickets(
-        area.id
-    )
+    seats = seating_area_tickets_service.get_seats_with_users(area.id)
 
     seat_utilization = seat_service.get_seat_utilization(g.party.id)
 
     return {
         'area': area,
         'seat_management_enabled': seat_management_enabled,
-        'seats_and_tickets': seats_and_tickets,
+        'seats': seats,
         'seat_utilization': seat_utilization,
         'manage_mode': False,
     }
@@ -136,9 +134,7 @@ def manage_seats_in_area(slug):
     elif seat_management_enabled:
         seat_manager_id = g.user.id
 
-    seats_and_tickets = seating_area_tickets_service.get_seats_and_tickets(
-        area.id
-    )
+    seats = seating_area_tickets_service.get_seats_with_users(area.id)
 
     if seat_management_enabled and (seat_manager_id is not None):
         managed_tickets = seating_area_tickets_service.get_managed_tickets(
@@ -151,7 +147,7 @@ def manage_seats_in_area(slug):
 
     return {
         'area': area,
-        'seats_and_tickets': seats_and_tickets,
+        'seats': seats,
         'seat_utilization': seat_utilization,
         'manage_mode': True,
         'seat_management_enabled': seat_management_enabled,
