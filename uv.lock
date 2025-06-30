@@ -232,7 +232,7 @@ requires-dist = [
     { name = "rq", specifier = ">=2.3.3" },
     { name = "rq-dashboard", specifier = ">=0.8.2.2" },
     { name = "rtoml", specifier = "==0.12.0" },
-    { name = "schwifty", specifier = ">=2025.1.0" },
+    { name = "schwifty", specifier = ">=2025.6.0" },
     { name = "secret-type", specifier = ">=0.3.0" },
     { name = "sentry-sdk", extras = ["flask", "httpx", "rq", "sqlalchemy"], specifier = ">=2.27.0" },
     { name = "sqlalchemy", specifier = "==2.0.40" },
@@ -1491,16 +1491,16 @@ wheels = [
 
 [[package]]
 name = "schwifty"
-version = "2025.1.0"
+version = "2025.6.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "importlib-resources", marker = "python_full_version < '3.12'" },
     { name = "pycountry" },
     { name = "rstr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8b/90/9767a39b807a820eb08d49f82fb3ab5312f43e9f54c04c58758a0eb7eb14/schwifty-2025.1.0.tar.gz", hash = "sha256:f492f3cbea3beb1fe0bf11a89075e6e413a5f500ee1afdb29a124a9a89b1a2ca", size = 747749, upload-time = "2025-01-21T12:00:17.694Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/74/d0/037955c406d3f014db41f9f82153d9d96071fa03e4b22162cf68a85c6955/schwifty-2025.6.0.tar.gz", hash = "sha256:abad87f782a38f637d6e71e7dd7bb1986bb0911785234160bebbe717fbecb8b4", size = 748100, upload-time = "2025-06-12T19:48:55.006Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c0/a2/9bd203d22f6063694dfd0da59c0d4f5a4ab1eed2299ee773e8318a9681eb/schwifty-2025.1.0-py3-none-any.whl", hash = "sha256:dca8abc9db4b7fc7f3b73a1f581ac1c3cc226a0902257275a3b08bd8275170ed", size = 359631, upload-time = "2025-01-21T12:00:16.168Z" },
+    { url = "https://files.pythonhosted.org/packages/c6/d1/e314ec5880958f628db43b6d43f8384e9c93ebbe8fad8712cd109d4d0da1/schwifty-2025.6.0-py3-none-any.whl", hash = "sha256:678a68d36237b2d23ef2c1e92265e32da9dcd8e3122554ff93bae6b9a47e3a0f", size = 359717, upload-time = "2025-06-12T19:48:56.468Z" },
 ]
 
 [[package]]
