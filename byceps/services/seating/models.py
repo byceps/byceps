@@ -15,6 +15,7 @@ from pydantic import BaseModel
 
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import TicketCategoryID, TicketID
+from byceps.services.user.models.user import User
 
 
 SeatingAreaID = NewType('SeatingAreaID', UUID)
@@ -45,6 +46,23 @@ class Seat:
     label: str | None
     type_: str | None
     occupied_by_ticket_id: TicketID | None
+
+
+# For assembling a visual seat plan without unused fields.
+@dataclass(frozen=True, slots=True)
+class AreaSeat:
+    id: SeatID
+    coord_x: int
+    coord_y: int
+    rotation: int | None
+    label: str | None
+    type_: str | None
+    occupied_by_ticket_id: TicketID | None
+    occupied_by_user: User | None
+
+    @property
+    def occupied(self) -> bool:
+        return self.occupied_by_ticket_id is not None
 
 
 SeatGroupID = NewType('SeatGroupID', UUID)

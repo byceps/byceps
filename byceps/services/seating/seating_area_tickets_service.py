@@ -17,23 +17,7 @@ from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 
 from . import seat_service
-from .models import Seat, SeatID, SeatingAreaID
-
-
-@dataclass(frozen=True, slots=True)
-class AreaSeat:
-    id: SeatID
-    coord_x: int
-    coord_y: int
-    rotation: int | None
-    label: str | None
-    type_: str | None
-    occupied_by_ticket_id: TicketID | None
-    occupied_by_user: User | None
-
-    @property
-    def occupied(self) -> bool:
-        return self.occupied_by_ticket_id is not None
+from .models import AreaSeat, Seat, SeatingAreaID
 
 
 @dataclass(frozen=True)
