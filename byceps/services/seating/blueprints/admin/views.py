@@ -17,7 +17,6 @@ from byceps.services.seating import (
     seat_reservation_service,
     seat_service,
     seating_area_service,
-    seating_area_tickets_service,
 )
 from byceps.services.seating.models import (
     SeatingArea,
@@ -107,7 +106,7 @@ def area_view(area_id):
 
     party = party_service.get_party(area.party_id)
 
-    seats = seating_area_tickets_service.get_area_seats(area.id)
+    seats = seat_service.get_area_seats(area.id)
 
     return {
         'party': party,

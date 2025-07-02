@@ -14,11 +14,14 @@ from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import (
     TicketCategory,
     TicketCategoryID,
+    TicketID,
 )
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User, UserID
 
 from . import seat_domain_service, seat_repository
 from .dbmodels.seat import DbSeat
-from .models import Seat, SeatID, SeatingAreaID, SeatUtilization
+from .models import AreaSeat, Seat, SeatID, SeatingAreaID, SeatUtilization
 
 
 def create_seat(
@@ -111,18 +114,56 @@ def get_seats(seat_ids: set[SeatID]) -> list[Seat]:
     return [_db_entity_to_seat(db_seat) for db_seat in db_seats]
 
 
-def get_seats_with_tickets_for_area(
-    area_id: SeatingAreaID,
-) -> list[tuple[Seat, DbTicket | None]]:
-    """Return the seats and their associated tickets (if available) for
-    that area.
+def get_area_seats(area_id: SeatingAreaID) -> list[AreaSeat]:
+    """Return the area's seats and their associated tickets (if
+    available) to create a visual representation from.
     """
     db_seats = seat_repository.get_seats_with_tickets_for_area(area_id)
 
-    return [
+    seats_with_db_tickets = [
         (_db_entity_to_seat(db_seat), db_seat.occupied_by_ticket)
         for db_seat in db_seats
     ]
+
+    db_tickets = [
+        db_ticket
+        for _, db_ticket in seats_with_db_tickets
+        if db_ticket is not None
+    ]
+    user_ids = {
+        db_ticket.used_by_id for db_ticket in db_tickets if db_ticket.used_by_id
+    }
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
+
+    return [
+        _build_area_seat(seat, db_ticket, users_by_id)
+        for seat, db_ticket in seats_with_db_tickets
+    ]
+
+
+def _build_area_seat(
+    seat: Seat, db_ticket: DbTicket | None, users_by_id: dict[UserID, User]
+) -> AreaSeat:
+    ticket_id: TicketID | None = None
+    user: User | None = None
+    if db_ticket:
+        ticket_id = db_ticket.id
+        user_id = db_ticket.used_by_id
+        if user_id:
+            user = users_by_id[user_id]
+
+    return AreaSeat(
+        id=seat.id,
+        coord_x=seat.coord_x,
+        coord_y=seat.coord_y,
+        rotation=seat.rotation,
+        label=seat.label,
+        type_=seat.type_,
+        occupied_by_ticket_id=ticket_id,
+        occupied_by_user=user,
+    )
 
 
 def _db_entity_to_seat(db_seat: DbSeat) -> Seat:

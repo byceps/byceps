@@ -11,54 +11,11 @@ from collections.abc import Iterable
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.services.ticketing.models.ticket import TicketCode, TicketID
+from byceps.services.ticketing.models.ticket import TicketCode
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 
-from . import seat_service
-from .models import AreaSeat, ManagedTicket, Seat, SeatingAreaID
-
-
-def get_area_seats(area_id: SeatingAreaID) -> list[AreaSeat]:
-    seats_with_db_tickets = seat_service.get_seats_with_tickets_for_area(
-        area_id
-    )
-
-    db_tickets = [
-        db_ticket
-        for _, db_ticket in seats_with_db_tickets
-        if db_ticket is not None
-    ]
-
-    users_by_id = _get_ticket_users_by_id(db_tickets, include_avatars=True)
-
-    return [
-        _build_area_seat(seat, db_ticket, users_by_id)
-        for seat, db_ticket in seats_with_db_tickets
-    ]
-
-
-def _build_area_seat(
-    seat: Seat, db_ticket: DbTicket | None, users_by_id: dict[UserID, User]
-) -> AreaSeat:
-    ticket_id: TicketID | None = None
-    user: User | None = None
-    if db_ticket:
-        ticket_id = db_ticket.id
-        user_id = db_ticket.used_by_id
-        if user_id:
-            user = users_by_id[user_id]
-
-    return AreaSeat(
-        id=seat.id,
-        coord_x=seat.coord_x,
-        coord_y=seat.coord_y,
-        rotation=seat.rotation,
-        label=seat.label,
-        type_=seat.type_,
-        occupied_by_ticket_id=ticket_id,
-        occupied_by_user=user,
-    )
+from .models import ManagedTicket
 
 
 def get_managed_tickets(
