@@ -7,7 +7,6 @@ byceps.services.seating.seating_area_tickets_service
 """
 
 from collections.abc import Iterable
-from dataclasses import dataclass
 
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_service
@@ -17,17 +16,7 @@ from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 
 from . import seat_service
-from .models import AreaSeat, Seat, SeatingAreaID
-
-
-@dataclass(frozen=True)
-class ManagedTicket:
-    id: TicketID
-    code: TicketCode
-    category_label: str
-    occupies_seat: bool
-    seat_label: str | None
-    user: User | None
+from .models import AreaSeat, ManagedTicket, Seat, SeatingAreaID
 
 
 def get_area_seats(area_id: SeatingAreaID) -> list[AreaSeat]:

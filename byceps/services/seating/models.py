@@ -14,7 +14,11 @@ from uuid import UUID
 from pydantic import BaseModel
 
 from byceps.services.party.models import PartyID
-from byceps.services.ticketing.models.ticket import TicketCategoryID, TicketID
+from byceps.services.ticketing.models.ticket import (
+    TicketCategoryID,
+    TicketCode,
+    TicketID,
+)
 from byceps.services.user.models.user import User
 
 
@@ -119,3 +123,13 @@ class SeatReservationPrecondition:
             now >= self.at_earliest
             and ticket_quantity >= self.minimum_ticket_quantity
         )
+
+
+@dataclass(frozen=True)
+class ManagedTicket:
+    id: TicketID
+    code: TicketCode
+    category_label: str
+    occupies_seat: bool
+    seat_label: str | None
+    user: User | None
