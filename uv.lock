@@ -174,7 +174,6 @@ dependencies = [
     { name = "structlog" },
     { name = "tenacity" },
     { name = "uuid6" },
-    { name = "uwsgi" },
     { name = "werkzeug" },
     { name = "wtforms" },
 ]
@@ -240,8 +239,7 @@ requires-dist = [
     { name = "structlog", specifier = ">=25.4.0" },
     { name = "tenacity", specifier = ">=9.1.2" },
     { name = "uuid6", specifier = ">=2025.0.1" },
-    { name = "uwsgi", specifier = ">=2.0.29" },
-    { name = "uwsgi", marker = "extra == 'wsgiserver'", specifier = ">=2.0.28" },
+    { name = "uwsgi", marker = "extra == 'wsgiserver'", specifier = ">=2.0.29" },
     { name = "werkzeug", specifier = ">=3.1.3" },
     { name = "wtforms", specifier = "==3.2.1" },
 ]

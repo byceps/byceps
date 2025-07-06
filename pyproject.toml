@@ -64,7 +64,6 @@ dependencies = [
     "wtforms==3.2.1",
     "python-dotenv>=1.1.1",
     "secret-type>=0.3.0",
-    "uwsgi>=2.0.29",
 ]
 
 [dependency-groups]
@@ -89,7 +88,7 @@ test = [
 
 [project.optional-dependencies]
 wsgiserver = [
-    "uwsgi>=2.0.28",
+    "uwsgi>=2.0.29",
 ]
 
 [project.scripts]
