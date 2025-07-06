@@ -44,7 +44,7 @@ dependencies = [
     "mistletoe==1.4.0",
     "paypal-checkout-serversdk==1.0.3",
     "paypalhttp==1.0.1",
-    "pillow>=11.2.1",
+    "pillow>=11.3.0",
     "psycopg[binary]>=3.2.9",
     "py-moneyed==3.0",
     "pydantic>=2.11.7",
