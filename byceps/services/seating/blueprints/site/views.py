@@ -16,7 +16,6 @@ from byceps.services.seating import (
     seat_reservation_service,
     seat_service,
     seating_area_service,
-    seating_area_tickets_service,
 )
 from byceps.services.seating.models import Seat, SeatID, SeatingArea
 from byceps.services.site.blueprints.site.navigation import (
@@ -137,7 +136,7 @@ def manage_seats_in_area(slug):
     seats = seat_service.get_area_seats(area.id)
 
     if seat_management_enabled and (seat_manager_id is not None):
-        managed_tickets = seating_area_tickets_service.get_managed_tickets(
+        managed_tickets = seat_reservation_service.get_managed_tickets(
             seat_manager_id, g.party.id
         )
     else:

@@ -10,10 +10,18 @@ from datetime import datetime
 from uuid import UUID
 
 from byceps.services.party.models import PartyID
+from byceps.services.ticketing import ticket_service
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
+from byceps.services.ticketing.models.ticket import TicketCode
+from byceps.services.user import user_service
+from byceps.services.user.models.user import User, UserID
 
 from . import seat_reservation_domain_service, seat_reservation_repository
 from .dbmodels.reservation import DbSeatReservationPrecondition
-from .models import SeatReservationPrecondition
+from .models import ManagedTicket, SeatReservationPrecondition
+
+
+# preconditions
 
 
 def create_precondition(
@@ -83,4 +91,55 @@ def is_reservation_allowed(
 
     return seat_reservation_domain_service.are_preconditions_met(
         preconditions, now, ticket_quantity
+    )
+
+
+# managed tickets
+
+
+def get_managed_tickets(
+    seat_manager_id: UserID, party_id: PartyID
+) -> list[ManagedTicket]:
+    db_tickets = ticket_service.get_tickets_for_seat_manager(
+        seat_manager_id, party_id
+    )
+
+    user_ids = {
+        db_ticket.used_by_id for db_ticket in db_tickets if db_ticket.used_by_id
+    }
+
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=False
+    )
+
+    return [
+        _build_managed_ticket(db_ticket, users_by_id)
+        for db_ticket in db_tickets
+    ]
+
+
+def _build_managed_ticket(
+    db_ticket: DbTicket, users_by_id: dict[UserID, User]
+) -> ManagedTicket:
+    occupies_seat = db_ticket.occupied_seat is not None
+
+    seat_label = (
+        db_ticket.occupied_seat.label
+        if (db_ticket.occupied_seat is not None)
+        else None
+    )
+
+    user: User | None
+    if db_ticket.used_by_id is not None:
+        user = users_by_id[db_ticket.used_by_id]
+    else:
+        user = None
+
+    return ManagedTicket(
+        id=db_ticket.id,
+        code=TicketCode(db_ticket.code),
+        category_label=db_ticket.category.title,
+        occupies_seat=occupies_seat,
+        seat_label=seat_label,
+        user=user,
     )
