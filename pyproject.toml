@@ -88,7 +88,7 @@ test = [
 
 [project.optional-dependencies]
 wsgiserver = [
-    "uwsgi>=2.0.29",
+    "uwsgi>=2.0.30",
 ]
 
 [project.scripts]

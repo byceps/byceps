@@ -239,7 +239,7 @@ requires-dist = [
     { name = "structlog", specifier = ">=25.4.0" },
     { name = "tenacity", specifier = ">=9.1.2" },
     { name = "uuid6", specifier = ">=2025.0.1" },
-    { name = "uwsgi", marker = "extra == 'wsgiserver'", specifier = ">=2.0.29" },
+    { name = "uwsgi", marker = "extra == 'wsgiserver'", specifier = ">=2.0.30" },
     { name = "werkzeug", specifier = ">=3.1.3" },
     { name = "wtforms", specifier = "==3.2.1" },
 ]
@@ -1896,9 +1896,9 @@ wheels = [
 
 [[package]]
 name = "uwsgi"
-version = "2.0.29"
+version = "2.0.30"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/af/74/34f5411f1c1dc55cbcba3d817d1723b920484d2aeede4663bbaa5be7ee22/uwsgi-2.0.29.tar.gz", hash = "sha256:6bd150ae60d0d9947429ea7dc8e5f868de027e5eb38355fb613b9413732c432f", size = 822515, upload-time = "2025-04-11T19:22:00.407Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6f/f0/d794e9c7359f488b158e88c9e718c5600efdb74a0daf77331e5ffb6c87c4/uwsgi-2.0.30.tar.gz", hash = "sha256:c12aa652124f062ac216077da59f6d247bd7ef938234445881552e58afb1eb5f", size = 822560, upload-time = "2025-06-03T08:13:53.772Z" }
 
 [[package]]
 name = "wcwidth"
