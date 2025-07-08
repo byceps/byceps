@@ -12,8 +12,7 @@ import click
 from byceps.services.seating import seat_group_service
 from byceps.services.seating.models import SeatGroup, SeatGroupID
 from byceps.services.ticketing import ticket_bundle_service
-from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
-from byceps.services.ticketing.models.ticket import TicketBundleID
+from byceps.services.ticketing.models.ticket import TicketBundle, TicketBundleID
 
 
 def validate_seat_group(ctx, param, seat_group_id_value: str) -> SeatGroup:
@@ -34,7 +33,7 @@ def validate_seat_group(ctx, param, seat_group_id_value: str) -> SeatGroup:
 
 def validate_ticket_bundle(
     ctx, param, ticket_bundle_id_value: str
-) -> DbTicketBundle:
+) -> TicketBundle:
     try:
         ticket_bundle_id = TicketBundleID(UUID(ticket_bundle_id_value))
     except ValueError as exc:
@@ -42,14 +41,13 @@ def validate_ticket_bundle(
             f'Invalid ticket bundle ID "{ticket_bundle_id_value}": {exc}'
         ) from exc
 
-    ticket_bundle = ticket_bundle_service.find_bundle(ticket_bundle_id)
-
-    if not ticket_bundle:
+    db_ticket_bundle = ticket_bundle_service.find_bundle(ticket_bundle_id)
+    if not db_ticket_bundle:
         raise click.BadParameter(
             f'Unknown ticket bundle ID "{ticket_bundle_id}".'
         )
 
-    return ticket_bundle
+    return ticket_bundle_service.db_entity_to_ticket_bundle(db_ticket_bundle)
 
 
 @click.command()

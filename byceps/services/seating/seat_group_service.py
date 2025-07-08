@@ -14,7 +14,6 @@ from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_bundle_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from byceps.services.ticketing.models.ticket import (
     TicketBundle,
     TicketBundleID,
@@ -83,13 +82,9 @@ def create_group(
 
 
 def occupy_group(
-    group: SeatGroup, db_ticket_bundle: DbTicketBundle
+    group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[DbSeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
-    ticket_bundle = ticket_bundle_service.db_entity_to_ticket_bundle(
-        db_ticket_bundle
-    )
-
     db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle.id)
 
     group_availability_result = _ensure_group_is_available(group)
