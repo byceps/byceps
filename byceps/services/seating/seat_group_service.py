@@ -118,9 +118,8 @@ def switch_group(
     db_occupancy: DbSeatGroupOccupancy, target_group: SeatGroup
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
-    db_ticket_bundle = db_occupancy.ticket_bundle
     ticket_bundle = ticket_bundle_service.db_entity_to_ticket_bundle(
-        db_ticket_bundle
+        db_occupancy.ticket_bundle
     )
 
     db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle.id)
