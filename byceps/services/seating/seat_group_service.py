@@ -90,7 +90,7 @@ def occupy_group(
         db_ticket_bundle
     )
 
-    db_tickets = db_ticket_bundle.tickets
+    db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle.id)
 
     group_availability_result = _ensure_group_is_available(group)
     if group_availability_result.is_err():
@@ -128,7 +128,7 @@ def switch_group(
         db_ticket_bundle
     )
 
-    db_tickets = db_ticket_bundle.tickets
+    db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle.id)
 
     group_availability_result = _ensure_group_is_available(target_group)
     if group_availability_result.is_err():
@@ -268,7 +268,10 @@ def release_group(
     if db_occupancy is None:
         return Err(SeatingError('Seat group is not occupied.'))
 
-    for db_ticket in db_occupancy.ticket_bundle.tickets:
+    db_tickets = ticket_bundle_service.get_tickets_for_bundle(
+        db_occupancy.ticket_bundle_id
+    )
+    for db_ticket in db_tickets:
         db_ticket.occupied_seat = None
 
     db.session.delete(db_occupancy)
