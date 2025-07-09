@@ -120,11 +120,11 @@ def occupy_group(
 
 
 def switch_group(
-    db_occupancy: DbSeatGroupOccupancy, target_group: SeatGroup
+    occupancy: SeatGroupOccupancy, target_group: SeatGroup
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
     db_ticket_bundle = ticket_bundle_service.get_bundle(
-        db_occupancy.ticket_bundle_id
+        occupancy.ticket_bundle_id
     )
     ticket_bundle = ticket_bundle_service.db_entity_to_ticket_bundle(
         db_ticket_bundle
@@ -147,6 +147,12 @@ def switch_group(
     )
     if quantities_match_result.is_err():
         return Err(quantities_match_result.unwrap_err())
+
+    db_occupancy = db.session.execute(
+        select(DbSeatGroupOccupancy).filter_by(seat_group_id=occupancy.group_id)
+    ).scalar_one_or_none()
+    if db_occupancy is None:
+        return Err(SeatingError('Seat group occupancy not found in database.'))
 
     db_occupancy.seat_group_id = target_group.id
 
