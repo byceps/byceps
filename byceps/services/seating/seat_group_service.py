@@ -263,19 +263,17 @@ def release_group(
     group_id: SeatGroupID,
 ) -> Result[None, SeatingError]:
     """Release a seat group so it becomes available again."""
-    db_occupancy = find_occupancy_for_group(group_id)
-    if db_occupancy is None:
+    occupancy = find_occupancy_for_group(group_id)
+    if occupancy is None:
         return Err(SeatingError('Seat group is not occupied.'))
 
     db_tickets = ticket_bundle_service.get_tickets_for_bundle(
-        db_occupancy.ticket_bundle_id
+        occupancy.ticket_bundle_id
     )
     for db_ticket in db_tickets:
         db_ticket.occupied_seat = None
 
-    db.session.execute(
-        delete(DbSeatGroupOccupancy).filter_by(id=db_occupancy.id)
-    )
+    db.session.execute(delete(DbSeatGroupOccupancy).filter_by(id=occupancy.id))
 
     db.session.commit()
 
@@ -320,11 +318,16 @@ def find_group_occupied_by_ticket_bundle(
 
 def find_occupancy_for_group(
     group_id: SeatGroupID,
-) -> DbSeatGroupOccupancy | None:
+) -> SeatGroupOccupancy | None:
     """Return the occupancy for that seat group, or `None` if not found."""
-    return db.session.execute(
+    db_occupancy = db.session.execute(
         select(DbSeatGroupOccupancy).filter_by(seat_group_id=group_id)
     ).scalar_one_or_none()
+
+    if db_occupancy is None:
+        return None
+
+    return _db_entity_to_occupancy(db_occupancy)
 
 
 def get_all_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
@@ -361,4 +364,14 @@ def _db_entity_to_group(db_group: DbSeatGroup, seats: list[Seat]) -> SeatGroup:
         seat_quantity=db_group.seat_quantity,
         title=db_group.title,
         seats=seats,
+    )
+
+
+def _db_entity_to_occupancy(
+    db_occupancy: DbSeatGroupOccupancy,
+) -> SeatGroupOccupancy:
+    return SeatGroupOccupancy(
+        id=db_occupancy.id,
+        group_id=db_occupancy.group_id,
+        ticket_bundle_id=db_occupancy.ticket_bundle_id,
     )
