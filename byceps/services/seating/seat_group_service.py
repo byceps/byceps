@@ -29,7 +29,7 @@ from .dbmodels.seat_group import (
     DbSeatGroupOccupancy,
 )
 from .errors import SeatingError
-from .models import Seat, SeatGroup, SeatGroupID, SeatID
+from .models import Seat, SeatGroup, SeatGroupID, SeatGroupOccupancy, SeatID
 
 
 def create_group(
@@ -83,7 +83,7 @@ def create_group(
 
 def occupy_group(
     group: SeatGroup, ticket_bundle: TicketBundle
-) -> Result[DbSeatGroupOccupancy, SeatingError]:
+) -> Result[SeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
     db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle.id)
 
@@ -99,9 +99,14 @@ def occupy_group(
     if quantities_match_result.is_err():
         return Err(quantities_match_result.unwrap_err())
 
-    occupancy_id = generate_uuid7()
+    occupancy = SeatGroupOccupancy(
+        id=generate_uuid7(),
+        group_id=group.id,
+        ticket_bundle_id=ticket_bundle.id,
+    )
+
     db_occupancy = DbSeatGroupOccupancy(
-        occupancy_id, group.id, ticket_bundle.id
+        occupancy.id, occupancy.group_id, occupancy.ticket_bundle_id
     )
     db.session.add(db_occupancy)
 
@@ -111,7 +116,7 @@ def occupy_group(
 
     db.session.commit()
 
-    return Ok(db_occupancy)
+    return Ok(occupancy)
 
 
 def switch_group(

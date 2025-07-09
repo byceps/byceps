@@ -15,6 +15,7 @@ from pydantic import BaseModel
 
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import (
+    TicketBundleID,
     TicketCategoryID,
     TicketCode,
     TicketID,
@@ -80,6 +81,13 @@ class SeatGroup:
     seat_quantity: int
     title: str
     seats: list[Seat]
+
+
+@dataclass(frozen=True)
+class SeatGroupOccupancy:
+    id: UUID
+    group_id: SeatGroupID
+    ticket_bundle_id: TicketBundleID
 
 
 @dataclass(frozen=True)
