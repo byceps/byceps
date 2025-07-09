@@ -8,7 +8,7 @@ byceps.services.seating.seat_group_service
 
 from collections.abc import Sequence
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -268,7 +268,9 @@ def release_group(
     for db_ticket in db_tickets:
         db_ticket.occupied_seat = None
 
-    db.session.delete(db_occupancy)
+    db.session.execute(
+        delete(DbSeatGroupOccupancy).filter_by(id=db_occupancy.id)
+    )
 
     db.session.commit()
 
