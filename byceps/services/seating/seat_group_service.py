@@ -150,16 +150,6 @@ def _occupy_seats(
     seats: list[Seat], ticket_bundle_id: TicketBundleID
 ) -> Result[None, SeatingError]:
     """Occupy all seats in the group with all tickets from the bundle."""
-    for seat in seats:
-        occupying_ticket_id = seat.occupied_by_ticket_id
-        already_occupying_ticket = occupying_ticket_id is not None
-        if already_occupying_ticket:
-            return Err(
-                SeatingError(
-                    f'Seat {seat.id} is already occupied by ticket {occupying_ticket_id}; seat cannot be occupied.'
-                )
-            )
-
     db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle_id)
     for db_ticket in db_tickets:
         if db_ticket.revoked:

@@ -63,6 +63,10 @@ def occupy_group(
     if quantities_match_result.is_err():
         return Err(quantities_match_result.unwrap_err())
 
+    unoccupied_check_result = _ensure_seats_are_unoccupied(group)
+    if unoccupied_check_result.is_err():
+        return Err(unoccupied_check_result.unwrap_err())
+
     occupancy = SeatGroupOccupancy(
         id=generate_uuid7(),
         group_id=group.id,
@@ -87,6 +91,10 @@ def switch_group(
     )
     if quantities_match_result.is_err():
         return Err(quantities_match_result.unwrap_err())
+
+    unoccupied_check_result = _ensure_seats_are_unoccupied(target_group)
+    if unoccupied_check_result.is_err():
+        return Err(unoccupied_check_result.unwrap_err())
 
     return Ok(None)
 
@@ -138,5 +146,21 @@ def _ensure_quantities_match(
                 'The actual quantities of seats and tickets do not match.'
             )
         )
+
+    return Ok(None)
+
+
+def _ensure_seats_are_unoccupied(
+    group: SeatGroup,
+) -> Result[None, SeatingError]:
+    """Return an error if any of the seats is occupied."""
+    for seat in group.seats:
+        occupying_ticket_id = seat.occupied_by_ticket_id
+        if occupying_ticket_id:
+            return Err(
+                SeatingError(
+                    f'Seat {seat.id} is already occupied by ticket {occupying_ticket_id}; seat cannot be occupied.'
+                )
+            )
 
     return Ok(None)
