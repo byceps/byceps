@@ -22,7 +22,7 @@ from byceps.services.ticketing.models.ticket import (
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import seat_service
+from . import seat_group_domain_service, seat_service
 from .dbmodels.seat_group import (
     DbSeatGroup,
     DbSeatGroupAssignment,
@@ -36,42 +36,28 @@ def create_group(
     party_id: PartyID,
     ticket_category_id: TicketCategoryID,
     title: str,
-    seats: Sequence[Seat],
+    seats: list[Seat],
 ) -> Result[SeatGroup, SeatingError]:
     """Create a seat group and assign the given seats."""
-    seat_quantity = len(seats)
-    if seat_quantity == 0:
-        return Err(SeatingError('No seats specified.'))
-
-    ticket_category_ids = {seat.category_id for seat in seats}
-    if len(ticket_category_ids) != 1 or (
-        ticket_category_id not in ticket_category_ids
-    ):
-        return Err(
-            SeatingError("Seats' ticket category IDs do not match the group's.")
-        )
-
-    group_id = SeatGroupID(generate_uuid7())
-
-    group = SeatGroup(
-        id=group_id,
-        party_id=party_id,
-        ticket_category_id=ticket_category_id,
-        seat_quantity=seat_quantity,
-        title=title,
-        seats=list(seats),
+    creation_result = seat_group_domain_service.create_group(
+        party_id, ticket_category_id, title, seats
     )
+    match creation_result:
+        case Ok(g):
+            group = g
+        case Err(e):
+            return Err(e)
 
     db_group = DbSeatGroup(
         group.id,
         group.party_id,
         group.ticket_category_id,
-        seat_quantity,
+        group.seat_quantity,
         group.title,
     )
     db.session.add(db_group)
 
-    for seat in seats:
+    for seat in group.seats:
         assignment_id = generate_uuid7()
         db_assignment = DbSeatGroupAssignment(assignment_id, db_group, seat.id)
         db.session.add(db_assignment)
@@ -89,19 +75,14 @@ def occupy_group(
     if group_availability_result.is_err():
         return Err(group_availability_result.unwrap_err())
 
-    categories_match_result = _ensure_categories_match(group, ticket_bundle)
-    if categories_match_result.is_err():
-        return Err(categories_match_result.unwrap_err())
-
-    quantities_match_result = _ensure_quantities_match(group, ticket_bundle)
-    if quantities_match_result.is_err():
-        return Err(quantities_match_result.unwrap_err())
-
-    occupancy = SeatGroupOccupancy(
-        id=generate_uuid7(),
-        group_id=group.id,
-        ticket_bundle_id=ticket_bundle.id,
+    occupation_result = seat_group_domain_service.occupy_group(
+        group, ticket_bundle
     )
+    match occupation_result:
+        case Ok(sgo):
+            occupancy = sgo
+        case Err(e):
+            return Err(e)
 
     db_occupancy = DbSeatGroupOccupancy(
         occupancy.id, occupancy.group_id, occupancy.ticket_bundle_id
@@ -132,17 +113,12 @@ def switch_group(
     if group_availability_result.is_err():
         return Err(group_availability_result.unwrap_err())
 
-    categories_match_result = _ensure_categories_match(
+    switch_result = seat_group_domain_service.switch_group(
         target_group, ticket_bundle
     )
-    if categories_match_result.is_err():
-        return Err(categories_match_result.unwrap_err())
-
-    quantities_match_result = _ensure_quantities_match(
-        target_group, ticket_bundle
-    )
-    if quantities_match_result.is_err():
-        return Err(quantities_match_result.unwrap_err())
+    match switch_result:
+        case Err(e):
+            return Err(e)
 
     db_occupancy = db.session.execute(
         select(DbSeatGroupOccupancy).filter_by(seat_group_id=occupancy.group_id)
@@ -161,64 +137,11 @@ def switch_group(
     return Ok(None)
 
 
-def _ensure_group_is_available(
-    group: SeatGroup,
-) -> Result[None, SeatingError]:
+def _ensure_group_is_available(group: SeatGroup) -> Result[None, SeatingError]:
     """Return an error if the seat group is occupied."""
     occupancy = find_occupancy_for_group(group.id)
     if occupancy is not None:
         return Err(SeatingError('Seat group is already occupied.'))
-
-    return Ok(None)
-
-
-def _ensure_categories_match(
-    group: SeatGroup, ticket_bundle: TicketBundle
-) -> Result[None, SeatingError]:
-    """Return an error if the seat group's and the ticket bundle's
-    categories don't match.
-    """
-    if group.ticket_category_id != ticket_bundle.ticket_category.id:
-        return Err(SeatingError('Seat and ticket categories do not match.'))
-
-    return Ok(None)
-
-
-def _ensure_quantities_match(
-    group: SeatGroup, ticket_bundle: TicketBundle
-) -> Result[None, SeatingError]:
-    """Return an error if
-
-    - the defined and actual seat quantity of the seat group or
-    - the defined and actual ticket quantity of the ticket bundle or
-    - the defined quantities of the seat group and the ticket bundle or
-    - the actual quantities of seats and tickets
-
-    don't match.
-    """
-    if group.seat_quantity != len(group.seats):
-        return Err(
-            SeatingError(
-                'Defined and actual seat quantities in seat group do not match.'
-            )
-        )
-
-    if ticket_bundle.ticket_quantity != len(ticket_bundle.ticket_ids):
-        return Err(
-            SeatingError(
-                'Defined and actual ticket quantities in tucket bundle do not match.'
-            )
-        )
-
-    if group.seat_quantity != ticket_bundle.ticket_quantity:
-        return Err(SeatingError('Seat and ticket quantities do not match.'))
-
-    if len(group.seats) != len(ticket_bundle.ticket_ids):
-        return Err(
-            SeatingError(
-                'The actual quantities of seats and tickets do not match.'
-            )
-        )
 
     return Ok(None)
 
@@ -255,7 +178,7 @@ def _occupy_seats(
     return Ok(None)
 
 
-def _sort_seats(seats: list[Seat]) -> list[Seat]:
+def _sort_seats(seats: Sequence[Seat]) -> list[Seat]:
     """Create a list of the seats sorted by their respective coordinates."""
     return list(sorted(seats, key=lambda s: (s.coord_x, s.coord_y)))
 
