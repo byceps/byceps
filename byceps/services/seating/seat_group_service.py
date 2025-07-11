@@ -85,8 +85,6 @@ def occupy_group(
     group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[SeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
-    db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle.id)
-
     group_availability_result = _ensure_group_is_available(group)
     if group_availability_result.is_err():
         return Err(group_availability_result.unwrap_err())
@@ -110,7 +108,7 @@ def occupy_group(
     )
     db.session.add(db_occupancy)
 
-    occupy_seats_result = _occupy_seats(group.seats, db_tickets)
+    occupy_seats_result = _occupy_seats(group.seats, ticket_bundle.id)
     if occupy_seats_result.is_err():
         return Err(occupy_seats_result.unwrap_err())
 
@@ -129,8 +127,6 @@ def switch_group(
     ticket_bundle = ticket_bundle_service.db_entity_to_ticket_bundle(
         db_ticket_bundle
     )
-
-    db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle.id)
 
     group_availability_result = _ensure_group_is_available(target_group)
     if group_availability_result.is_err():
@@ -156,7 +152,7 @@ def switch_group(
 
     db_occupancy.seat_group_id = target_group.id
 
-    occupy_seats_result = _occupy_seats(target_group.seats, db_tickets)
+    occupy_seats_result = _occupy_seats(target_group.seats, ticket_bundle.id)
     if occupy_seats_result.is_err():
         return Err(occupy_seats_result.unwrap_err())
 
@@ -228,7 +224,7 @@ def _ensure_quantities_match(
 
 
 def _occupy_seats(
-    seats: list[Seat], db_tickets: Sequence[DbTicket]
+    seats: list[Seat], ticket_bundle_id: TicketBundleID
 ) -> Result[None, SeatingError]:
     """Occupy all seats in the group with all tickets from the bundle."""
     for seat in seats:
@@ -241,6 +237,7 @@ def _occupy_seats(
                 )
             )
 
+    db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle_id)
     for db_ticket in db_tickets:
         if db_ticket.revoked:
             return Err(
