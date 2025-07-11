@@ -8,26 +8,17 @@ byceps.services.seating.seat_group_service
 
 from collections.abc import Sequence
 
-from sqlalchemy import delete, select
-
-from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_bundle_service
-from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import (
     TicketBundle,
     TicketBundleID,
     TicketCategoryID,
 )
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid7
 
-from . import seat_group_domain_service, seat_service
-from .dbmodels.seat_group import (
-    DbSeatGroup,
-    DbSeatGroupAssignment,
-    DbSeatGroupOccupancy,
-)
+from . import seat_group_domain_service, seat_group_repository, seat_service
+from .dbmodels.seat_group import DbSeatGroup, DbSeatGroupOccupancy
 from .errors import SeatingError
 from .models import Seat, SeatGroup, SeatGroupID, SeatGroupOccupancy, SeatID
 
@@ -48,21 +39,7 @@ def create_group(
         case Err(e):
             return Err(e)
 
-    db_group = DbSeatGroup(
-        group.id,
-        group.party_id,
-        group.ticket_category_id,
-        group.seat_quantity,
-        group.title,
-    )
-    db.session.add(db_group)
-
-    for seat in group.seats:
-        assignment_id = generate_uuid7()
-        db_assignment = DbSeatGroupAssignment(assignment_id, db_group, seat.id)
-        db.session.add(db_assignment)
-
-    db.session.commit()
+    seat_group_repository.create_group(group)
 
     return Ok(group)
 
@@ -84,16 +61,14 @@ def occupy_group(
         case Err(e):
             return Err(e)
 
-    db_occupancy = DbSeatGroupOccupancy(
-        occupancy.id, occupancy.group_id, occupancy.ticket_bundle_id
+    db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle.id)
+
+    db_occupation_result = seat_group_repository.occupy_group(
+        group, occupancy, db_tickets
     )
-    db.session.add(db_occupancy)
-
-    occupy_seats_result = _occupy_seats(group.seats, ticket_bundle.id)
-    if occupy_seats_result.is_err():
-        return Err(occupy_seats_result.unwrap_err())
-
-    db.session.commit()
+    match db_occupation_result:
+        case Err(e):
+            return Err(e)
 
     return Ok(occupancy)
 
@@ -120,19 +95,16 @@ def switch_group(
         case Err(e):
             return Err(e)
 
-    db_occupancy = db.session.execute(
-        select(DbSeatGroupOccupancy).filter_by(seat_group_id=occupancy.group_id)
-    ).scalar_one_or_none()
-    if db_occupancy is None:
-        return Err(SeatingError('Seat group occupancy not found in database.'))
+    db_tickets = ticket_bundle_service.get_tickets_for_bundle(
+        occupancy.ticket_bundle_id
+    )
 
-    db_occupancy.seat_group_id = target_group.id
-
-    occupy_seats_result = _occupy_seats(target_group.seats, ticket_bundle.id)
-    if occupy_seats_result.is_err():
-        return Err(occupy_seats_result.unwrap_err())
-
-    db.session.commit()
+    db_switch_result = seat_group_repository.switch_group(
+        occupancy, target_group, db_tickets
+    )
+    match db_switch_result:
+        case Err(e):
+            return Err(e)
 
     return Ok(None)
 
@@ -146,77 +118,26 @@ def _ensure_group_is_available(group: SeatGroup) -> Result[None, SeatingError]:
     return Ok(None)
 
 
-def _occupy_seats(
-    seats: list[Seat], ticket_bundle_id: TicketBundleID
-) -> Result[None, SeatingError]:
-    """Occupy all seats in the group with all tickets from the bundle."""
-    db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle_id)
-    for db_ticket in db_tickets:
-        if db_ticket.revoked:
-            return Err(
-                SeatingError(
-                    f'Ticket {db_ticket.id} is revoked; it cannot be used to occupy a seat.'
-                )
-            )
-
-    seats = _sort_seats(seats)
-    db_tickets = _sort_tickets(db_tickets)
-
-    for seat, db_ticket in zip(seats, db_tickets, strict=True):
-        db_ticket.occupied_seat_id = seat.id
-
-    return Ok(None)
-
-
-def _sort_seats(seats: Sequence[Seat]) -> list[Seat]:
-    """Create a list of the seats sorted by their respective coordinates."""
-    return list(sorted(seats, key=lambda s: (s.coord_x, s.coord_y)))
-
-
-def _sort_tickets(db_tickets: Sequence[DbTicket]) -> list[DbTicket]:
-    """Create a list of the tickets sorted by creation time (ascending)."""
-    return list(sorted(db_tickets, key=lambda t: t.created_at))
-
-
 def release_group(
     group_id: SeatGroupID,
 ) -> Result[None, SeatingError]:
     """Release a seat group so it becomes available again."""
-    occupancy = find_occupancy_for_group(group_id)
-    if occupancy is None:
-        return Err(SeatingError('Seat group is not occupied.'))
-
-    db_tickets = ticket_bundle_service.get_tickets_for_bundle(
-        occupancy.ticket_bundle_id
-    )
-    for db_ticket in db_tickets:
-        db_ticket.occupied_seat = None
-
-    db.session.execute(delete(DbSeatGroupOccupancy).filter_by(id=occupancy.id))
-
-    db.session.commit()
-
-    return Ok(None)
+    return seat_group_repository.release_group(group_id)
 
 
 def count_groups_for_party(party_id: PartyID) -> int:
     """Return the number of seat groups for that party."""
-    return (
-        db.session.scalar(
-            select(db.func.count(DbSeatGroup.id)).filter_by(party_id=party_id)
-        )
-        or 0
-    )
+    return seat_group_repository.count_groups_for_party(party_id)
 
 
 def find_group(group_id: SeatGroupID) -> SeatGroup | None:
     """Return the seat group with that id, or `None` if not found."""
-    db_group = db.session.get(DbSeatGroup, group_id)
+    db_group_and_seat_ids = seat_group_repository.find_group(group_id)
 
-    if db_group is None:
+    if db_group_and_seat_ids is None:
         return None
 
-    seat_ids = {db_seat.id for db_seat in db_group.seats}
+    db_group, seat_ids = db_group_and_seat_ids
     seats = seat_service.get_seats(seat_ids)
 
     return _db_entity_to_group(db_group, seats)
@@ -228,20 +149,16 @@ def find_group_occupied_by_ticket_bundle(
     """Return the ID of the seat group occupied by that ticket bundle,
     or `None` if not found.
     """
-    return db.session.execute(
-        select(DbSeatGroupOccupancy.seat_group_id).filter_by(
-            ticket_bundle_id=ticket_bundle_id
-        )
-    ).scalar_one_or_none()
+    return seat_group_repository.find_group_occupied_by_ticket_bundle(
+        ticket_bundle_id
+    )
 
 
 def find_occupancy_for_group(
     group_id: SeatGroupID,
 ) -> SeatGroupOccupancy | None:
     """Return the occupancy for that seat group, or `None` if not found."""
-    db_occupancy = db.session.execute(
-        select(DbSeatGroupOccupancy).filter_by(seat_group_id=group_id)
-    ).scalar_one_or_none()
+    db_occupancy = seat_group_repository.find_occupancy_for_group(group_id)
 
     if db_occupancy is None:
         return None
@@ -251,23 +168,12 @@ def find_occupancy_for_group(
 
 def get_all_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
     """Return all seat groups for that party."""
-    return db.session.scalars(
-        select(DbSeatGroup).filter_by(party_id=party_id)
-    ).all()
+    return seat_group_repository.get_all_groups_for_party(party_id)
 
 
 def is_seat_part_of_a_group(seat_id: SeatID) -> bool:
     """Return whether or not the seat is part of a seat group."""
-    return (
-        db.session.scalar(
-            select(
-                select(DbSeatGroupAssignment)
-                .filter_by(seat_id=seat_id)
-                .exists()
-            )
-        )
-        or False
-    )
+    return seat_group_repository.is_seat_part_of_a_group(seat_id)
 
 
 def _db_entity_to_group(db_group: DbSeatGroup, seats: list[Seat]) -> SeatGroup:
