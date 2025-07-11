@@ -24,7 +24,12 @@ from . import ticket_category_service
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
-from .models.ticket import TicketBundle, TicketBundleID, TicketCategory, TicketID
+from .models.ticket import (
+    TicketBundle,
+    TicketBundleID,
+    TicketCategory,
+    TicketID,
+)
 from .ticket_creation_service import build_tickets, TicketCreationFailedError
 from .ticket_revocation_service import build_ticket_revoked_log_entry
 
