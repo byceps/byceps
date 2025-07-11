@@ -97,9 +97,9 @@ def test_get_settings(admin_app):
 
     all_settings_after_create = global_setting_service.get_settings()
     assert all_settings_after_create == {
-        GlobalSetting('name6a', 'value6a'),
-        GlobalSetting('name6b', 'value6b'),
-        GlobalSetting('name6c', 'value6c'),
+        GlobalSetting(name='name6a', value='value6a'),
+        GlobalSetting(name='name6b', value='value6b'),
+        GlobalSetting(name='name6c', value='value6c'),
     }
 
 

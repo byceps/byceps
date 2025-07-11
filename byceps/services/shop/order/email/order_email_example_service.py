@@ -141,7 +141,12 @@ def _build_order(
 
     first_name = 'Bella-Bernadine'
     last_name = 'Ballerwurm'
-    address = Address('Germany', '22999', 'Büttenwarder', 'Deichweg 23')
+    address = Address(
+        country='Germany',
+        postal_code='22999',
+        city='Büttenwarder',
+        street='Deichweg 23',
+    )
 
     total_amount = Money('42.95', EUR)
     line_items: list[LineItem] = []

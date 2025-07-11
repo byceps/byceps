@@ -94,7 +94,7 @@ def get_settings(site_id: SiteID) -> set[SiteSetting]:
 
 def _db_entity_to_site_setting(db_setting: DbSiteSetting) -> SiteSetting:
     return SiteSetting(
-        db_setting.site_id,
-        db_setting.name,
-        db_setting.value,
+        site_id=db_setting.site_id,
+        name=db_setting.name,
+        value=db_setting.value,
     )

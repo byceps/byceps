@@ -74,10 +74,10 @@ def count_seats_for_party(party_id: PartyID) -> int:
 
 def get_seat_utilization(party_id: PartyID) -> SeatUtilization:
     """Return how many seats of how many in total are occupied."""
-    occupied_seat_count = count_occupied_seats_for_party(party_id)
-    total_seat_count = count_seats_for_party(party_id)
+    occupied = count_occupied_seats_for_party(party_id)
+    total = count_seats_for_party(party_id)
 
-    return SeatUtilization(occupied_seat_count, total_seat_count)
+    return SeatUtilization(occupied=occupied, total=total)
 
 
 def aggregate_seat_utilizations(

@@ -122,9 +122,9 @@ def test_get_settings(party):
 
     all_settings_after_create = party_setting_service.get_settings(party_id)
     assert all_settings_after_create == {
-        PartySetting(party_id, 'name6a', 'value6a'),
-        PartySetting(party_id, 'name6b', 'value6b'),
-        PartySetting(party_id, 'name6c', 'value6c'),
+        PartySetting(party_id=party_id, name='name6a', value='value6a'),
+        PartySetting(party_id=party_id, name='name6b', value='value6b'),
+        PartySetting(party_id=party_id, name='name6c', value='value6c'),
     }
 
 

@@ -127,9 +127,9 @@ def test_get_settings(site):
 
     all_settings_after_create = site_setting_service.get_settings(site_id)
     assert all_settings_after_create == {
-        SiteSetting(site_id, 'name6a', 'value6a'),
-        SiteSetting(site_id, 'name6b', 'value6b'),
-        SiteSetting(site_id, 'name6c', 'value6c'),
+        SiteSetting(site_id=site_id, name='name6a', value='value6a'),
+        SiteSetting(site_id=site_id, name='name6b', value='value6b'),
+        SiteSetting(site_id=site_id, name='name6c', value='value6c'),
     }
 
 

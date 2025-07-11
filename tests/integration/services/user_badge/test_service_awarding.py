@@ -112,8 +112,16 @@ def test_get_awardings_of_badge(
     actual = user_badge_awarding_service.get_awardings_of_badge(badge.id)
 
     assert actual == {
-        QuantifiedBadgeAwarding(badge.id, user1.id, 2),
-        QuantifiedBadgeAwarding(badge.id, user2.id, 1),
+        QuantifiedBadgeAwarding(
+            badge_id=badge.id,
+            awardee_id=user1.id,
+            quantity=2,
+        ),
+        QuantifiedBadgeAwarding(
+            badge_id=badge.id,
+            awardee_id=user2.id,
+            quantity=1,
+        ),
     }
 
 

@@ -163,7 +163,11 @@ class ProductCompilationBuilder:
     def append_product(
         self, product: Product, *, fixed_quantity: int | None = None
     ) -> None:
-        item = ProductCompilationItem(product, fixed_quantity=fixed_quantity)
+        item = ProductCompilationItem(
+            product=product,
+            fixed_quantity=fixed_quantity,
+        )
+
         self._items.append(item)
 
     def build(self) -> ProductCompilation:

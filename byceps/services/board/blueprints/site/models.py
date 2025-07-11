@@ -25,18 +25,18 @@ class CategoryWithLastUpdateAndUnseenFlag(BoardCategoryWithLastUpdate):
         contains_unseen_postings: bool,
     ) -> Self:
         return cls(
-            category.id,
-            category.board_id,
-            category.position,
-            category.slug,
-            category.title,
-            category.description,
-            category.topic_count,
-            category.posting_count,
-            category.hidden,
-            category.last_posting_updated_at,
-            category.last_posting_updated_by,
-            contains_unseen_postings,
+            id=category.id,
+            board_id=category.board_id,
+            position=category.position,
+            slug=category.slug,
+            title=category.title,
+            description=category.description,
+            topic_count=category.topic_count,
+            posting_count=category.posting_count,
+            hidden=category.hidden,
+            last_posting_updated_at=category.last_posting_updated_at,
+            last_posting_updated_by=category.last_posting_updated_by,
+            contains_unseen_postings=contains_unseen_postings,
         )
 
 

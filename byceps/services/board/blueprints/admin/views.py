@@ -59,9 +59,15 @@ def board_index_for_brand(brand_id):
 
     stats_by_board_id = {
         board_id: BoardStats(
-            board_category_query_service.count_categories_for_board(board_id),
-            board_topic_query_service.count_topics_for_board(board_id),
-            board_posting_query_service.count_postings_for_board(board_id),
+            category_count=board_category_query_service.count_categories_for_board(
+                board_id
+            ),
+            topic_count=board_topic_query_service.count_topics_for_board(
+                board_id
+            ),
+            posting_count=board_posting_query_service.count_postings_for_board(
+                board_id
+            ),
         )
         for board_id in board_ids
     }

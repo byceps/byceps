@@ -30,4 +30,10 @@ def test_award_badge(api_client, api_client_authz_header, user, admin_user):
     assert response.status_code == 204
 
     actual = user_badge_awarding_service.get_awardings_of_badge(badge.id)
-    assert actual == {QuantifiedBadgeAwarding(badge.id, user.id, 1)}
+    assert actual == {
+        QuantifiedBadgeAwarding(
+            badge_id=badge.id,
+            awardee_id=user.id,
+            quantity=1,
+        )
+    }

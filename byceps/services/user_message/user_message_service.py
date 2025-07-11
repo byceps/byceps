@@ -65,7 +65,12 @@ def create_message(
             email_config.contact_address,
         )
 
-    return Message(email_config.sender, recipients, subject, body)
+    return Message(
+        sender=email_config.sender,
+        recipients=recipients,
+        subject=subject,
+        body=body,
+    )
 
 
 def _get_user(user_id: UserID) -> User:

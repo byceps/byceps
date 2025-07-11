@@ -122,9 +122,9 @@ def test_get_settings(brand):
 
     all_settings_after_create = brand_setting_service.get_settings(brand_id)
     assert all_settings_after_create == {
-        BrandSetting(brand_id, 'name6a', 'value6a'),
-        BrandSetting(brand_id, 'name6b', 'value6b'),
-        BrandSetting(brand_id, 'name6c', 'value6c'),
+        BrandSetting(brand_id=brand_id, name='name6a', value='value6a'),
+        BrandSetting(brand_id=brand_id, name='name6b', value='value6b'),
+        BrandSetting(brand_id=brand_id, name='name6c', value='value6c'),
     }
 
 

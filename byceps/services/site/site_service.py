@@ -233,10 +233,10 @@ def _db_entity_to_site_with_brand(db_site: DbSite) -> SiteWithBrand:
     site = _db_entity_to_site(db_site)
     brand = brand_service._db_entity_to_brand(db_site.brand)
 
-    site_tuple = dataclasses.astuple(site)
-    brand_tuple = (brand,)
+    d = dataclasses.asdict(site)
+    d['brand'] = brand
 
-    return SiteWithBrand(*(site_tuple + brand_tuple))
+    return SiteWithBrand(**d)
 
 
 def add_news_channel(site_id: SiteID, news_channel_id: NewsChannelID) -> None:

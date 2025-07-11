@@ -95,7 +95,7 @@ def get_settings(brand_id: BrandID) -> set[BrandSetting]:
 
 def _db_entity_to_brand_setting(db_setting: DbBrandSetting) -> BrandSetting:
     return BrandSetting(
-        db_setting.brand_id,
-        db_setting.name,
-        db_setting.value,
+        brand_id=db_setting.brand_id,
+        name=db_setting.name,
+        value=db_setting.value,
     )

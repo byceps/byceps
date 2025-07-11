@@ -98,10 +98,10 @@ def _sites_to_sites_with_brand(
 
 
 def _site_to_site_with_brand(site: Site, brand: Brand) -> SiteWithBrand:
-    site_tuple = dataclasses.astuple(site)
-    brand_tuple = (brand,)
+    d = dataclasses.asdict(site)
+    d['brand'] = brand
 
-    return SiteWithBrand(*(site_tuple + brand_tuple))
+    return SiteWithBrand(**d)
 
 
 def _get_storefronts_by_id(sites) -> dict[StorefrontID, Storefront]:

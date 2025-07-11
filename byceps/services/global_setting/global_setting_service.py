@@ -81,6 +81,6 @@ def get_settings() -> set[GlobalSetting]:
 
 def _db_entity_to_global_setting(db_setting: DbGlobalSetting) -> GlobalSetting:
     return GlobalSetting(
-        db_setting.name,
-        db_setting.value,
+        name=db_setting.name,
+        value=db_setting.value,
     )

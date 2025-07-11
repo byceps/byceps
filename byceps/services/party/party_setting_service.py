@@ -95,7 +95,7 @@ def get_settings(party_id: PartyID) -> set[PartySetting]:
 
 def _db_entity_to_party_setting(db_setting: DbPartySetting) -> PartySetting:
     return PartySetting(
-        db_setting.party_id,
-        db_setting.name,
-        db_setting.value,
+        party_id=db_setting.party_id,
+        name=db_setting.name,
+        value=db_setting.value,
     )

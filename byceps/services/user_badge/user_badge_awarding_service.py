@@ -99,7 +99,11 @@ def get_awardings_of_badge(badge_id: BadgeID) -> set[QuantifiedBadgeAwarding]:
     ).all()
 
     return {
-        QuantifiedBadgeAwarding(badge_id, awardee_id, quantity)
+        QuantifiedBadgeAwarding(
+            badge_id=badge_id,
+            awardee_id=awardee_id,
+            quantity=quantity,
+        )
         for badge_id, awardee_id, quantity in rows
     }
 

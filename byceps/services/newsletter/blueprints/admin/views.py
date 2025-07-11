@@ -56,7 +56,11 @@ def index():
 def _add_subscriber_count(list_: List) -> ListWithStats:
     subscriber_count = newsletter_service.count_subscribers_to_list(list_.id)
 
-    return ListWithStats(list_.id, list_.title, subscriber_count)
+    return ListWithStats(
+        id=list_.id,
+        title=list_.title,
+        subscriber_count=subscriber_count,
+    )
 
 
 @blueprint.get('/for_brand/<brand_id>/create')

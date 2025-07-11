@@ -135,12 +135,12 @@ def _db_entity_to_badge(db_badge: DbBadge) -> Badge:
     image_url_path = f'/data/global/users/badges/{db_badge.image_filename}'
 
     return Badge(
-        db_badge.id,
-        db_badge.slug,
-        db_badge.label,
-        db_badge.description,
-        db_badge.image_filename,
-        image_url_path,
-        db_badge.brand_id,
-        db_badge.featured,
+        id=db_badge.id,
+        slug=db_badge.slug,
+        label=db_badge.label,
+        description=db_badge.description,
+        image_filename=db_badge.image_filename,
+        image_url_path=image_url_path,
+        brand_id=db_badge.brand_id,
+        featured=db_badge.featured,
     )
