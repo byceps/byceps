@@ -23,14 +23,14 @@ CollectionID = NewType('CollectionID', UUID)
 CatalogProductID = NewType('CatalogProductID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Catalog:
     id: CatalogID
     shop_id: ShopID
     title: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Collection:
     id: CollectionID
     catalog_id: CatalogID
@@ -39,7 +39,7 @@ class Collection:
     product_numbers: list[ProductNumber]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class CatalogProduct:
     id: CatalogProductID
     collection_id: CollectionID

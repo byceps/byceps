@@ -13,7 +13,7 @@ from typing import NewType
 BrandID = NewType('BrandID', str)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Brand:
     id: BrandID
     title: str
@@ -22,7 +22,7 @@ class Brand:
     archived: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class BrandSetting:
     brand_id: BrandID
     name: str

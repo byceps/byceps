@@ -12,27 +12,27 @@ from byceps.services.core.events import _BaseEvent, EventParty, EventUser
 from byceps.services.guest_server.models import ServerID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class _GuestServerEvent(_BaseEvent):
     owner: EventUser
     server_id: ServerID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class GuestServerRegisteredEvent(_GuestServerEvent):
     party: EventParty
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class GuestServerApprovedEvent(_GuestServerEvent):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class GuestServerCheckedInEvent(_GuestServerEvent):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class GuestServerCheckedOutEvent(_GuestServerEvent):
     pass

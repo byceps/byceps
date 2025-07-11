@@ -20,7 +20,7 @@ import structlog
 log = structlog.get_logger()
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SentryAppConfig:
     dsn: str
     environment: str

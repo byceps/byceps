@@ -22,7 +22,7 @@ PageID = NewType('PageID', UUID)
 PageVersionID = NewType('PageVersionID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Page:
     id: PageID
     site_id: SiteID
@@ -37,7 +37,7 @@ class Page:
         return 'page_' + self.name
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PageVersion:
     id: PageVersionID
     page_id: PageID
@@ -48,7 +48,7 @@ class PageVersion:
     body: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PageAggregate(Page):
     title: str
     head: str | None

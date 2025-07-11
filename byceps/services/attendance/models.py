@@ -13,14 +13,14 @@ from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user.models.user import User
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class AttendeeSeat:
     id: SeatID
     area: SeatingArea
     label: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class AttendeeTicket:
     id: TicketID
     category_title: str
@@ -28,7 +28,7 @@ class AttendeeTicket:
     checked_in: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Attendee:
     user: User
     is_orga: bool

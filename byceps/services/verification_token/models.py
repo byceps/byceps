@@ -24,34 +24,34 @@ Purpose = Enum(
 )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class _BaseVerificationToken:
     token: str
     created_at: datetime
     user: User
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class VerificationToken(_BaseVerificationToken):
     purpose: Purpose
     data: dict[str, str]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ConsentToken(_BaseVerificationToken):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class EmailAddressChangeToken(_BaseVerificationToken):
     new_email_address: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class EmailAddressConfirmationToken(_BaseVerificationToken):
     email_address: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PasswordResetToken(_BaseVerificationToken):
     pass

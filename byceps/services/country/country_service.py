@@ -12,7 +12,7 @@ import json
 from flask import current_app
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Country:
     name: str
     alpha2: str

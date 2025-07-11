@@ -16,7 +16,7 @@ from byceps.services.snippet.models import (
 )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class _SnippetEvent(_BaseEvent):
     snippet_id: SnippetID
     scope: SnippetScope
@@ -24,16 +24,16 @@ class _SnippetEvent(_BaseEvent):
     language_code: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SnippetCreatedEvent(_SnippetEvent):
     snippet_version_id: SnippetVersionID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SnippetUpdatedEvent(_SnippetEvent):
     snippet_version_id: SnippetVersionID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SnippetDeletedEvent(_SnippetEvent):
     pass

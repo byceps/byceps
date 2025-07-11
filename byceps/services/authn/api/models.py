@@ -14,7 +14,7 @@ from byceps.services.authz.models import PermissionID
 from byceps.services.user.models.user import UserID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ApiToken:
     id: UUID
     created_at: datetime

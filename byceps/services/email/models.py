@@ -24,14 +24,14 @@ class NameAndAddress:
         return formataddr((self.name, self.address))
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class EmailConfig:
     brand_id: BrandID
     sender: NameAndAddress
     contact_address: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Message:
     sender: NameAndAddress
     recipients: list[str]

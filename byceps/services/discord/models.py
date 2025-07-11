@@ -26,7 +26,7 @@ DiscordGuildID = NewType('DiscordGuildID', str)
 DiscordServerID = NewType('DiscordServerID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class DiscordServer:
     id: DiscordServerID
     name: str
@@ -38,7 +38,7 @@ class DiscordServer:
     enabled: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class DiscordServerPresenceStats:
     server_id: DiscordServerID
     updated_at: datetime

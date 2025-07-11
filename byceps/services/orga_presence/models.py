@@ -20,7 +20,7 @@ from byceps.util.datetime.range import DateTimeRange
 TimeSlotType = Enum('TimeSlotType', ['party', 'presence', 'task'])
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TimeSlot:
     type: TimeSlotType
     starts_at: datetime
@@ -31,7 +31,7 @@ class TimeSlot:
         return DateTimeRange(self.starts_at, self.ends_at)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PartyTimeSlot(TimeSlot):
     party: Party
 
@@ -45,7 +45,7 @@ class PartyTimeSlot(TimeSlot):
         )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PresenceTimeSlot(TimeSlot):
     id: UUID
     orga: User
@@ -67,7 +67,7 @@ class PresenceTimeSlot(TimeSlot):
         )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TaskTimeSlot(TimeSlot):
     id: UUID
     title: str

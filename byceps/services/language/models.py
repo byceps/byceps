@@ -9,6 +9,6 @@ byceps.services.language.models
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Language:
     code: str

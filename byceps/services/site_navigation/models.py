@@ -29,7 +29,7 @@ NavItemTargetType = Enum(
 )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NavMenu:
     id: NavMenuID
     site_id: SiteID
@@ -39,7 +39,7 @@ class NavMenu:
     parent_menu_id: NavMenuID | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NavItem:
     id: NavItemID
     menu_id: NavMenuID
@@ -51,7 +51,7 @@ class NavItem:
     hidden: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NavItemForRendering:
     target: str
     label: str
@@ -64,7 +64,7 @@ class NavMenuAggregate(NavMenu):
     items: list[NavItem]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ViewType:
     name: str
     endpoint: str
@@ -119,7 +119,7 @@ _VIEW_TYPES = [
 ]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NavMenuTree:
     menu: NavMenu
     submenus: list[NavMenu]

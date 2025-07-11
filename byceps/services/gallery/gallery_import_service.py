@@ -16,7 +16,7 @@ from . import gallery_service
 from .models import Gallery
 
 
-@dataclass(frozen=True, order=True)
+@dataclass(frozen=True, kw_only=True, order=True)
 class ImageFileSet:
     full_filename: str
     full_exists: bool

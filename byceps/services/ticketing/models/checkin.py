@@ -17,7 +17,7 @@ from byceps.services.user.models.user import User, UserID
 from .ticket import TicketCode, TicketID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PotentialTicketForCheckIn:
     id: TicketID
     party_id: PartyID
@@ -28,7 +28,7 @@ class PotentialTicketForCheckIn:
     user_checked_in: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ValidTicketForCheckIn:
     id: TicketID
     code: TicketCode
@@ -36,7 +36,7 @@ class ValidTicketForCheckIn:
     occupied_seat_id: SeatID | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TicketCheckIn:
     id: UUID
     occurred_at: datetime

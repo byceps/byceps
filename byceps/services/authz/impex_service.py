@@ -26,7 +26,7 @@ from .models import PermissionID, RoleID
 # import
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ImportedRoleCounts:
     imported: int
     skipped: int

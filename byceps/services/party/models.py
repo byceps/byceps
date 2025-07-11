@@ -16,7 +16,7 @@ from byceps.services.brand.models import Brand, BrandID
 PartyID = NewType('PartyID', str)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Party:
     id: PartyID
     brand_id: BrandID
@@ -36,12 +36,12 @@ class Party:
         return self.ends_at < datetime.utcnow()
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PartyWithBrand(Party):
     brand: Brand
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PartySetting:
     party_id: PartyID
     name: str

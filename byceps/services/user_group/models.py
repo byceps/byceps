@@ -14,7 +14,7 @@ from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class UserGroup:
     id: UUID
     party_id: PartyID

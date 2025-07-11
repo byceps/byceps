@@ -37,7 +37,7 @@ CancellationRequestState = Enum(
 )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class CancellationRequest:
     id: UUID
     created_at: datetime
@@ -52,7 +52,7 @@ class CancellationRequest:
     state: CancellationRequestState
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class CancellationRequestQuantitiesByState:
     open: int
     accepted: int

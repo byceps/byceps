@@ -12,7 +12,7 @@ from datetime import datetime
 from byceps.services.user.models.user import PasswordHash, UserID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Credential:
     user_id: UserID
     password_hash: PasswordHash

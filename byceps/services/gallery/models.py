@@ -21,7 +21,7 @@ GalleryID = NewType('GalleryID', UUID)
 GalleryImageID = NewType('GalleryImageID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Gallery:
     id: GalleryID
     created_at: datetime
@@ -33,7 +33,7 @@ class Gallery:
     hidden: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class GalleryImage:
     id: GalleryImageID
     created_at: datetime
@@ -59,6 +59,6 @@ class GalleryImage:
         return f'{self._url_path_base}/{self.filename_preview}'
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class GalleryWithImages(Gallery):
     images: list[GalleryImage]

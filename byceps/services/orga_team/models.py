@@ -17,7 +17,7 @@ from byceps.services.user.models.user import User, UserID
 OrgaTeamID = NewType('OrgaTeamID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class OrgaTeam:
     id: OrgaTeamID
     party_id: PartyID
@@ -27,7 +27,7 @@ class OrgaTeam:
 MembershipID = NewType('MembershipID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Membership:
     id: MembershipID
     orga_team_id: OrgaTeamID
@@ -35,26 +35,26 @@ class Membership:
     duties: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Member:
     membership: Membership
     user: User
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TeamAndDuties:
     team_title: str
     duties: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class OrgaActivity:
     user_id: UserID
     party: Party
     teams_and_duties: frozenset[TeamAndDuties]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PublicOrga:
     user: User
     full_name: str

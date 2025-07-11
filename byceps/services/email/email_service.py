@@ -23,7 +23,7 @@ from .models import Message, NameAndAddress
 log = structlog.get_logger()
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SmtpConfig:
     host: str
     port: int

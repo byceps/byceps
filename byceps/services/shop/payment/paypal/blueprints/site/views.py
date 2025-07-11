@@ -45,7 +45,7 @@ class CapturePayPalRequest(BaseModel):
     paypal_order_id: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PayPalOrderDetails:
     id: str
     transaction_id: str

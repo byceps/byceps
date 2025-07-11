@@ -9,7 +9,7 @@ byceps.services.global_setting.models
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class GlobalSetting:
     name: str
     value: str

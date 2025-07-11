@@ -19,7 +19,7 @@ from byceps.services.shop.storefront.models import StorefrontID
 SiteID = NewType('SiteID', str)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Site:
     id: SiteID
     title: str
@@ -37,12 +37,12 @@ class Site:
     archived: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SiteWithBrand(Site):
     brand: Brand
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SiteSetting:
     site_id: SiteID
     name: str

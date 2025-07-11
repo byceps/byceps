@@ -20,7 +20,7 @@ from byceps.services.user.models.user import User
 TicketCategoryID = NewType('TicketCategoryID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TicketCategory:
     id: TicketCategoryID
     party_id: PartyID
@@ -36,7 +36,7 @@ TicketID = NewType('TicketID', UUID)
 TicketBundleID = NewType('TicketBundleID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TicketBundle:
     id: TicketBundleID
     created_at: datetime
@@ -51,7 +51,7 @@ class TicketBundle:
     ticket_ids: set[TicketID]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TicketSaleStats:
     tickets_max: int | None
     tickets_sold: int

@@ -12,18 +12,18 @@ from byceps.services.core.events import _BaseEvent, EventUser
 from byceps.services.newsletter.models import ListID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NewsletterEvent(_BaseEvent):
     user: EventUser
     list_id: ListID
     list_title: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SubscribedToNewsletterEvent(NewsletterEvent):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class UnsubscribedFromNewsletterEvent(NewsletterEvent):
     pass

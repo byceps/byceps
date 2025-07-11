@@ -17,7 +17,7 @@ from .ticket import TicketID
 TicketLogEntryData = dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TicketLogEntry:
     id: UUID
     occurred_at: datetime

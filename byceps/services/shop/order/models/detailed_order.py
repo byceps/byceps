@@ -16,7 +16,7 @@ from .order import Address, BaseOrder, LineItem
 from .payment import Payment
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class DetailedOrder(BaseOrder):
     shop_id: ShopID
     storefront_id: StorefrontID
@@ -32,7 +32,7 @@ class DetailedOrder(BaseOrder):
     cancellation_reason: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class AdminDetailedOrder(DetailedOrder):
     invoices: list[Invoice]
     payments: list[Payment]

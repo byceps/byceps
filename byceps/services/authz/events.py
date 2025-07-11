@@ -12,17 +12,17 @@ from byceps.services.authz.models import RoleID
 from byceps.services.core.events import _BaseEvent, EventUser
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class _AuthzUserRoleEvent(_BaseEvent):
     user: EventUser
     role_id: RoleID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class RoleAssignedToUserEvent(_AuthzUserRoleEvent):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class RoleDeassignedFromUserEvent(_AuthzUserRoleEvent):
     pass

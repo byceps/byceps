@@ -65,7 +65,7 @@ PaymentState = Enum(
 )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Address:
     country: str
     postal_code: str
@@ -73,7 +73,7 @@ class Address:
     street: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Orderer:
     """Someone who orders products."""
 
@@ -87,7 +87,7 @@ class Orderer:
     street: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class LineItem:
     id: LineItemID
     order_number: OrderNumber
@@ -105,7 +105,7 @@ class LineItem:
     processing_state: LineItemProcessingState
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class BaseOrder:
     id: OrderID
     created_at: datetime
@@ -120,7 +120,7 @@ class BaseOrder:
     is_overdue: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Order(BaseOrder):
     shop_id: ShopID
     storefront_id: StorefrontID
@@ -136,7 +136,7 @@ class Order(BaseOrder):
     cancellation_reason: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class AdminOrderListItem(BaseOrder):
     first_name: str
     last_name: str
@@ -145,6 +145,6 @@ class AdminOrderListItem(BaseOrder):
     is_processed: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SiteOrderListItem(BaseOrder):
     pass

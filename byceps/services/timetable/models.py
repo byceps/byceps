@@ -21,7 +21,7 @@ TimetableID = NewType('TimetableID', UUID)
 TimetableItemID = NewType('TimetableItemID', UUID)
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class Timetable:
     id: TimetableID
     party_id: PartyID
@@ -29,7 +29,7 @@ class Timetable:
     items: list[TimetableItem]
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class TimetableGroupedByDay:
     id: TimetableID
     party_id: PartyID
@@ -37,7 +37,7 @@ class TimetableGroupedByDay:
     items: list[tuple[date, list[TimetableItem]]]
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class TimetableItem:
     id: TimetableItemID
     timetable_id: TimetableID

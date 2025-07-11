@@ -17,7 +17,7 @@ from .order import OrderID
 OrderLogEntryData = dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class OrderLogEntry:
     id: UUID
     occurred_at: datetime

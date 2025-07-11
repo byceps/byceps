@@ -17,7 +17,7 @@ from byceps.services.site.models import Site
 from byceps.util.authz import has_current_user_permission
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class MoreItem:
     label: str
     icon: str

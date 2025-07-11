@@ -12,7 +12,7 @@ from uuid import UUID
 from byceps.services.core.events import _BaseEvent, EventUser
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class _ExternalAccountConnectionEvent(_BaseEvent):
     connected_external_account_id: UUID
     user: EventUser
@@ -21,11 +21,11 @@ class _ExternalAccountConnectionEvent(_BaseEvent):
     external_name: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ExternalAccountConnectedEvent(_ExternalAccountConnectionEvent):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ExternalAccountDisconnectedEvent(_ExternalAccountConnectionEvent):
     pass

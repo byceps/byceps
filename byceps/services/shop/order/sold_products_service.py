@@ -25,13 +25,13 @@ from byceps.util.export import serialize_tuples_to_csv
 from byceps.util.iterables import find
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class ProductQuantity:
     item_number: ProductNumber
     quantity: int
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class OrderSummary:
     order_id: OrderID
     order_number: OrderNumber
@@ -39,7 +39,7 @@ class OrderSummary:
     product_quantities: list[ProductQuantity]
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class SoldProductsReport:
     products: list[Product]
     order_summaries: list[OrderSummary]

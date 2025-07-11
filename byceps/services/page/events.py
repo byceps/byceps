@@ -12,7 +12,7 @@ from byceps.services.core.events import _BaseEvent, EventSite
 from byceps.services.page.models import PageID, PageVersionID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class _PageEvent(_BaseEvent):
     page_id: PageID
     site: EventSite
@@ -20,16 +20,16 @@ class _PageEvent(_BaseEvent):
     language_code: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PageCreatedEvent(_PageEvent):
     page_version_id: PageVersionID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PageUpdatedEvent(_PageEvent):
     page_version_id: PageVersionID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PageDeletedEvent(_PageEvent):
     pass

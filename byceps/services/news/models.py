@@ -52,7 +52,7 @@ class PublicationStatusPublished(PublicationStatus):
     pass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NewsChannel:
     id: NewsChannelID
     brand_id: BrandID
@@ -62,7 +62,7 @@ class NewsChannel:
     archived: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NewsImage:
     id: NewsImageID
     created_at: datetime
@@ -76,7 +76,7 @@ class NewsImage:
     attribution: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NewsItem:
     id: NewsItemID
     brand_id: BrandID
@@ -112,7 +112,7 @@ class NewsItem:
                 raise ValueError('unknown publication status')
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class RenderedNewsItem:
     channel: NewsChannel
     slug: str
@@ -124,7 +124,7 @@ class RenderedNewsItem:
     body_html: Result[str, str]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NewsHeadline:
     slug: str
     published_at: datetime | None
@@ -132,12 +132,12 @@ class NewsHeadline:
     title: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NewsTeaser(NewsHeadline):
     featured_image: NewsImage | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class AdminListNewsItem:
     id: NewsItemID
     created_at: datetime

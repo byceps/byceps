@@ -18,7 +18,7 @@ from byceps.services.user.models.user import User
 TourneyCategoryID = NewType('TourneyCategoryID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TourneyCategory:
     id: TourneyCategoryID
     party_id: PartyID
@@ -29,7 +29,7 @@ class TourneyCategory:
 TourneyID = NewType('TourneyID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Tourney:
     id: TourneyID
     party_id: PartyID
@@ -43,7 +43,7 @@ class Tourney:
     registration_open: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TourneyWithCategory(Tourney):
     category: TourneyCategory
 
@@ -78,7 +78,7 @@ MatchCommentID = NewType('MatchCommentID', UUID)
 ParticipantID = NewType('ParticipantID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Participant:
     id: ParticipantID
     tourney_id: TourneyID
@@ -86,12 +86,12 @@ class Participant:
     logo_url: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Match:
     id: MatchID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class MatchComment:
     id: MatchCommentID
     match_id: MatchID

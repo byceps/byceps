@@ -32,7 +32,7 @@ from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class InvoiceNinjaInvoice:
     id: str
     invitation_key: str

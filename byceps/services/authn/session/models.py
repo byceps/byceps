@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from byceps.services.user.models.user import User
 
 
-@dataclass(eq=False, frozen=True)
+@dataclass(eq=False, frozen=True, kw_only=True)
 class CurrentUser(User):
     """The current user, anonymous or logged in."""
 

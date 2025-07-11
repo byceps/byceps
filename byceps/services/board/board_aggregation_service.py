@@ -20,7 +20,7 @@ from .dbmodels.topic import DbTopic
 from .models import BoardCategoryID, TopicID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class LatestPostingInfo:
     created_at: datetime
     creator_id: UserID

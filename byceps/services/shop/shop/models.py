@@ -17,7 +17,7 @@ from byceps.services.brand.models import BrandID
 ShopID = NewType('ShopID', str)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Shop:
     id: ShopID
     brand_id: BrandID

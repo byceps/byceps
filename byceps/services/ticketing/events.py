@@ -13,19 +13,19 @@ from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class _TicketEvent(_BaseEvent):
     ticket_id: TicketID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TicketCheckedInEvent(_TicketEvent):
     ticket_code: TicketCode
     occupied_seat_id: SeatID | None
     user: EventUser | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class TicketsSoldEvent(_BaseEvent):
     party: EventParty
     owner: EventUser | None

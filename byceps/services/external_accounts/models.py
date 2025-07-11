@@ -13,7 +13,7 @@ from uuid import UUID
 from byceps.services.user.models.user import UserID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ConnectedExternalAccount:
     id: UUID
     created_at: datetime

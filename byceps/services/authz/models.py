@@ -16,13 +16,13 @@ PermissionID = NewType('PermissionID', str)
 RoleID = NewType('RoleID', str)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Permission:
     id: PermissionID
     title: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Role:
     id: RoleID
     title: str

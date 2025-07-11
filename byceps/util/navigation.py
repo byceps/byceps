@@ -12,7 +12,7 @@ from typing import Self
 from .authz import has_current_user_permission
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NavigationItem:
     endpoint: str
     label: str

@@ -16,7 +16,7 @@ from byceps.services.site.models import Site, SiteID
 from byceps.services.user.models.user import User, UserID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class EventBrand:
     id: BrandID
     title: str
@@ -29,7 +29,7 @@ class EventBrand:
         )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class EventParty:
     id: PartyID
     title: str
@@ -42,7 +42,7 @@ class EventParty:
         )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class EventSite:
     id: SiteID
     title: str
@@ -55,7 +55,7 @@ class EventSite:
         )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class EventUser:
     id: UserID
     screen_name: str | None
@@ -68,7 +68,7 @@ class EventUser:
         )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class _BaseEvent:
     occurred_at: datetime
     initiator: EventUser | None

@@ -23,7 +23,7 @@ from byceps.services.shop.storefront.models import StorefrontID
 from .order import LineItemID, Orderer, OrderID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class IncomingLineItem:
     id: LineItemID
     product_id: ProductID
@@ -37,7 +37,7 @@ class IncomingLineItem:
     processing_required: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class IncomingOrder:
     id: OrderID
     created_at: datetime

@@ -16,7 +16,7 @@ from byceps.services.shop.shop.models import ShopID
 OrderNumberSequenceID = NewType('OrderNumberSequenceID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class OrderNumberSequence:
     id: OrderNumberSequenceID
     shop_id: ShopID

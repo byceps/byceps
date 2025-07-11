@@ -14,7 +14,7 @@ from byceps.services.user.models.user import User, UserID
 from byceps.services.user_badge.models import Badge
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class CategoryWithLastUpdateAndUnseenFlag(BoardCategoryWithLastUpdate):
     contains_unseen_postings: bool
 
@@ -40,12 +40,12 @@ class CategoryWithLastUpdateAndUnseenFlag(BoardCategoryWithLastUpdate):
         )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Ticket:
     party_title: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Creator(User):
     is_orga: bool
     badges: set[Badge]

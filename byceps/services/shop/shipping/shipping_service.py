@@ -37,7 +37,7 @@ def get_products_to_ship(shop_id: ShopID) -> list[ProductToShip]:
     )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class LineItemQuantity:
     product_id: ProductID
     payment_state: PaymentState

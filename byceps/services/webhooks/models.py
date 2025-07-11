@@ -18,7 +18,7 @@ WebhookID = NewType('WebhookID', UUID)
 EventFilters = dict[str, dict[str, list[str]] | None]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class OutgoingWebhook:
     id: WebhookID
     event_types: set[str]
@@ -37,7 +37,7 @@ class Announcement:
     announce_at: datetime | None = None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class AnnouncementRequest:
     webhook_id: WebhookID
     url: str

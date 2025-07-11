@@ -26,7 +26,7 @@ from byceps.services.user.models.user import User
 SeatingAreaID = NewType('SeatingAreaID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SeatingArea:
     id: SeatingAreaID
     party_id: PartyID
@@ -40,7 +40,7 @@ class SeatingArea:
 SeatID = NewType('SeatID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Seat:
     id: SeatID
     area_id: SeatingAreaID
@@ -54,7 +54,7 @@ class Seat:
 
 
 # For assembling a visual seat plan without unused fields.
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, slots=True, kw_only=True)
 class AreaSeat:
     id: SeatID
     coord_x: int
@@ -73,7 +73,7 @@ class AreaSeat:
 SeatGroupID = NewType('SeatGroupID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SeatGroup:
     id: SeatGroupID
     party_id: PartyID
@@ -83,14 +83,14 @@ class SeatGroup:
     seats: list[Seat]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SeatGroupOccupancy:
     id: UUID
     group_id: SeatGroupID
     ticket_bundle_id: TicketBundleID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SeatUtilization:
     occupied: int
     total: int
@@ -107,7 +107,7 @@ class SerializableSeatToImport(BaseModel):
     group_title: str | None = None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SeatToImport:
     area_id: SeatingAreaID
     coord_x: int
@@ -119,7 +119,7 @@ class SeatToImport:
     group_title: str | None = None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SeatReservationPrecondition:
     id: UUID
     party_id: PartyID
@@ -133,7 +133,7 @@ class SeatReservationPrecondition:
         )
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ManagedTicket:
     id: TicketID
     code: TicketCode

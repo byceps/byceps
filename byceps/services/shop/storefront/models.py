@@ -21,7 +21,7 @@ from byceps.services.shop.shop.models import ShopID
 StorefrontID = NewType('StorefrontID', str)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Storefront:
     id: StorefrontID
     shop_id: ShopID
@@ -30,7 +30,7 @@ class Storefront:
     closed: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class StorefrontForAdmin(Storefront):
     order_number_sequence: OrderNumberSequence
     enabled_payment_gateways: set[PaymentGateway]

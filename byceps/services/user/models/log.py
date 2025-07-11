@@ -17,7 +17,7 @@ from byceps.services.user.models.user import UserID
 UserLogEntryData = dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class UserLogEntry:
     id: UUID
     occurred_at: datetime

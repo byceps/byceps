@@ -27,14 +27,14 @@ PostingID = NewType('PostingID', UUID)
 TopicID = NewType('TopicID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Board:
     id: BoardID
     brand_id: BrandID
     access_restricted: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class BoardCategory:
     id: BoardCategoryID
     board_id: BoardID
@@ -47,13 +47,13 @@ class BoardCategory:
     hidden: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class BoardCategoryWithLastUpdate(BoardCategory):
     last_posting_updated_at: datetime | None
     last_posting_updated_by: User | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Topic:
     id: TopicID
     category_id: BoardCategoryID
@@ -77,7 +77,7 @@ class Topic:
     muted: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PostingReaction:
     id: UUID
     created_at: datetime
@@ -86,7 +86,7 @@ class PostingReaction:
     kind: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PostingReactionUser:
     id: UserID
     screen_name: str | None

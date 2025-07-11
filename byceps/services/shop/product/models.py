@@ -31,7 +31,7 @@ ProductNumber = NewType('ProductNumber', str)
 ProductNumberSequenceID = NewType('ProductNumberSequenceID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ProductNumberSequence:
     id: ProductNumberSequenceID
     shop_id: ShopID
@@ -67,7 +67,7 @@ ProductImageID = NewType('ProductImageID', UUID)
 AttachedProductID = NewType('AttachedProductID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Product:
     id: ProductID
     shop_id: ShopID
@@ -88,7 +88,7 @@ class Product:
     archived: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ProductImage:
     id: ProductImageID
     product_id: ProductID
@@ -97,19 +97,19 @@ class ProductImage:
     position: int
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ProductAttachment:
     attached_product: Product
     attached_quantity: int
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ProductCollection:
     title: str
     items: list[ProductCollectionItem]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ProductCollectionItem:
     product: Product
     fixed_quantity: int | None
@@ -129,7 +129,7 @@ class ProductWithQuantity:
         object.__setattr__(self, 'amount', self.product.price * self.quantity)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ProductCompilationItem:
     product: Product
     fixed_quantity: int | None = None

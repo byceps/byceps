@@ -18,7 +18,7 @@ from byceps.services.user.models.user import UserID
 BadgeID = NewType('BadgeID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Badge:
     id: BadgeID
     slug: str
@@ -30,7 +30,7 @@ class Badge:
     featured: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class BadgeAwarding:
     id: UUID
     badge_id: BadgeID
@@ -38,7 +38,7 @@ class BadgeAwarding:
     awarded_at: datetime
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class QuantifiedBadgeAwarding:
     badge_id: BadgeID
     awardee_id: UserID

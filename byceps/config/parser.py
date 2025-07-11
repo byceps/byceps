@@ -56,7 +56,7 @@ CollectionType = Enum('CollectionType', ['List'])
 Validator = Callable[[C], ParsingResult[None]]
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class Section:
     name: str
     fields: list[Field]

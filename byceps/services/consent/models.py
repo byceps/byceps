@@ -17,7 +17,7 @@ from byceps.services.user.models.user import UserID
 ConsentSubjectID = NewType('ConsentSubjectID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ConsentSubject:
     id: ConsentSubjectID
     name: str
@@ -26,7 +26,7 @@ class ConsentSubject:
     checkbox_link_target: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Consent:
     user_id: UserID
     subject_id: ConsentSubjectID

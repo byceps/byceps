@@ -41,7 +41,7 @@ class AppMode(Enum):
         return f'{self.__class__.__name__}[{self.name}]'
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class BycepsConfig:
     data_path: Path
     locale: str
@@ -61,49 +61,49 @@ class BycepsConfig:
     smtp: SmtpConfig
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class AppsConfig:
     admin: AdminAppConfig | None
     api: ApiAppConfig | None
     sites: list[SiteAppConfig]
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class AppConfig:
     pass
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class WebAppConfig(AppConfig):
     server_name: str
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class AdminAppConfig(WebAppConfig):
     pass
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class ApiAppConfig(WebAppConfig):
     pass
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class CliAppConfig(AppConfig):
     pass
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class SiteAppConfig(WebAppConfig):
     site_id: str
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class WorkerAppConfig(AppConfig):
     pass
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class DatabaseConfig:
     host: str
     port: int
@@ -112,43 +112,43 @@ class DatabaseConfig:
     database: str
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class DevelopmentConfig:
     style_guide_enabled: bool
     toolbar_enabled: bool
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class DiscordConfig:
     enabled: bool
     client_id: str
     client_secret: str
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class InvoiceNinjaConfig:
     enabled: bool
     base_url: str
     api_key: str
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class JobsConfig:
     asynchronous: bool
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class MetricsConfig:
     enabled: bool
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class PaymentGatewaysConfig:
     paypal: PaypalConfig | None
     stripe: StripeConfig | None
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class PaypalConfig:
     enabled: bool
     client_id: str
@@ -156,12 +156,12 @@ class PaypalConfig:
     environment: str
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class RedisConfig:
     url: str
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class SmtpConfig:
     host: str
     port: int
@@ -172,7 +172,7 @@ class SmtpConfig:
     suppress_send: bool
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, kw_only=True, slots=True)
 class StripeConfig:
     enabled: bool
     secret_key: str

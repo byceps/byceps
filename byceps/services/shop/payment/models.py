@@ -9,7 +9,7 @@ byceps.services.shop.payment.models
 from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class PaymentGateway:
     id: str
     name: str

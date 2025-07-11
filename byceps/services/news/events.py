@@ -13,7 +13,7 @@ from byceps.services.core.events import _BaseEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class NewsItemPublishedEvent(_BaseEvent):
     item_id: NewsItemID
     channel_id: NewsChannelID

@@ -12,7 +12,7 @@ from uuid import UUID
 from byceps.services.shop.order.models.order import OrderID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Invoice:
     id: UUID
     order_id: OrderID
@@ -20,7 +20,7 @@ class Invoice:
     url: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class DownloadableInvoice:
     content_disposition: str
     content_type: str

@@ -36,7 +36,7 @@ from byceps.util.result import Err, Ok, Result
 log = structlog.get_logger()
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class OrderEmailData:
     sender: NameAndAddress
     order: Order
@@ -45,7 +45,7 @@ class OrderEmailData:
     orderer_email_address: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class OrderEmailText:
     subject: str
     body_main_part: str

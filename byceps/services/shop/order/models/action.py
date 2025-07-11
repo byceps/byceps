@@ -18,7 +18,7 @@ from .order import PaymentState
 ActionParameters = dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Action:
     id: UUID
     product_id: ProductID

@@ -33,7 +33,7 @@ ServerStatus = Enum(
 AddressID = NewType('AddressID', UUID)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Setting:
     party_id: PartyID
     netmask: IPAddress | None
@@ -43,7 +43,7 @@ class Setting:
     domain: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Server:
     id: ServerID
     party_id: PartyID
@@ -72,7 +72,7 @@ class Server:
             return ServerStatus.pending
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ServerQuantitiesByStatus:
     pending: int
     approved: int
@@ -81,7 +81,7 @@ class ServerQuantitiesByStatus:
     total: int
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Address:
     id: AddressID
     server_id: ServerID
@@ -92,7 +92,7 @@ class Address:
     gateway: IPAddress | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class AddressData:
     ip_address: IPAddress | None
     hostname: str | None

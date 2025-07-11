@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from byceps.services.shop.product.models import ProductID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class ProductToShip:
     product_id: ProductID
     name: str

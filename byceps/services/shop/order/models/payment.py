@@ -18,7 +18,7 @@ from .order import OrderID
 AdditionalPaymentData = dict[str, str]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Payment:
     id: UUID
     order_id: OrderID

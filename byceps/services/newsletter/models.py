@@ -17,13 +17,13 @@ from byceps.services.user.models.user import UserID
 ListID = NewType('ListID', str)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class List:
     id: ListID
     title: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class Subscriber:
     screen_name: str
     email_address: str
@@ -32,7 +32,7 @@ class Subscriber:
 SubscriptionState = Enum('SubscriptionState', ['requested', 'declined'])
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class SubscriptionUpdate:
     user_id: UserID
     list_id: ListID

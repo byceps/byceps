@@ -12,7 +12,7 @@ from byceps.services.core.events import _BaseEvent, EventUser
 from byceps.services.user_badge.models import BadgeID
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class UserBadgeAwardedEvent(_BaseEvent):
     badge_id: BadgeID
     badge_label: str

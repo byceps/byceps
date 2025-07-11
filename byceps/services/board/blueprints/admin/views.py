@@ -36,7 +36,7 @@ from .forms import BoardCreateForm, CategoryCreateForm, CategoryUpdateForm
 blueprint = create_blueprint('board_admin', __name__)
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class BoardStats:
     category_count: int
     topic_count: int

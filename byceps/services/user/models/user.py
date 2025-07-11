@@ -32,7 +32,7 @@ Password = Secret[str]
 PasswordHash = Secret[str]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class UserAvatar:
     id: UserAvatarID
     created_at: datetime
@@ -42,7 +42,7 @@ class UserAvatar:
     url: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class User:
     id: UserID
     screen_name: str | None
@@ -53,13 +53,13 @@ class User:
     avatar_url: str | None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class UserEmailAddress:
     address: str | None
     verified: bool
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class UserDetail:
     first_name: str | None
     last_name: str | None
@@ -78,13 +78,13 @@ class UserDetail:
         return ' '.join(filter(None, names)) or None
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class UserForAdmin(User):
     created_at: datetime
     detail: UserForAdminDetail
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, kw_only=True)
 class UserForAdminDetail:
     full_name: str | None
 
