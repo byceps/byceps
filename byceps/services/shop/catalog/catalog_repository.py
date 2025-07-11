@@ -6,6 +6,8 @@ byceps.services.shop.catalog.catalog_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
@@ -58,7 +60,7 @@ def get_catalog(catalog_id: CatalogID) -> DbCatalog:
     return db_catalog
 
 
-def get_catalogs_for_shop(shop_id: ShopID) -> list[DbCatalog]:
+def get_catalogs_for_shop(shop_id: ShopID) -> Sequence[DbCatalog]:
     """Return all catalogs for that shop."""
     return db.session.scalars(
         select(DbCatalog).filter_by(shop_id=shop_id)
@@ -114,7 +116,9 @@ def get_collection(collection_id: CollectionID) -> DbCollection:
     return db_collection
 
 
-def get_collections_for_catalog(catalog_id: CatalogID) -> list[DbCollection]:
+def get_collections_for_catalog(
+    catalog_id: CatalogID,
+) -> Sequence[DbCollection]:
     """Return the catalog's collections."""
     return db.session.scalars(
         select(DbCollection)
@@ -155,7 +159,7 @@ def remove_product_from_collection(
     db.session.commit()
 
 
-def get_catalog_products(catalog_id: CatalogID) -> list[DbProduct]:
+def get_catalog_products(catalog_id: CatalogID) -> Sequence[DbProduct]:
     """Return the products in the catalog's collections."""
     # Attention: Products attached to products assigned to a catalog
     # will not be included at this time!
