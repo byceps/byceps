@@ -8,7 +8,6 @@ byceps.services.shop.catalog.catalog_service
 
 from collections import defaultdict
 import dataclasses
-from datetime import datetime
 
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import (
