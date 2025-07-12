@@ -173,7 +173,7 @@ def enrich_creators(
 
         ticket: Ticket | None
         if (party is not None) and (user_id in ticket_users):
-            ticket = Ticket(party.title)
+            ticket = Ticket(party_title=party.title)
         else:
             ticket = None
 
