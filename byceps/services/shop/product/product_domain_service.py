@@ -6,6 +6,7 @@ byceps.services.shop.product.product_domain_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import dataclasses
 from datetime import datetime
 from decimal import Decimal
 
@@ -68,6 +69,35 @@ def create_product(
         separate_order_required=separate_order_required,
         processing_required=processing_required,
         archived=False,
+    )
+
+
+def update_product(
+    product: Product,
+    name: str,
+    price: Money,
+    tax_rate: Decimal,
+    available_from: datetime | None,
+    available_until: datetime | None,
+    total_quantity: int,
+    max_quantity_per_order: int,
+    not_directly_orderable: bool,
+    separate_order_required: bool,
+    archived: bool,
+) -> Product:
+    """Update the product."""
+    return dataclasses.replace(
+        product,
+        name=name,
+        price=price,
+        tax_rate=tax_rate,
+        available_from=available_from,
+        available_until=available_until,
+        total_quantity=total_quantity,
+        max_quantity_per_order=max_quantity_per_order,
+        not_directly_orderable=not_directly_orderable,
+        separate_order_required=separate_order_required,
+        archived=archived,
     )
 
 

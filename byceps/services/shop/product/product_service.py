@@ -201,23 +201,39 @@ def update_product(
     archived: bool,
 ) -> Product:
     """Update the product."""
-    db_product = _get_db_product(product_id)
+    product = get_product(product_id)
 
-    db_product.name = name
-    db_product.price_amount = price.amount
-    db_product.price_currency = price.currency
-    db_product.tax_rate = tax_rate
-    db_product.available_from = available_from
-    db_product.available_until = available_until
-    db_product.total_quantity = total_quantity
-    db_product.max_quantity_per_order = max_quantity_per_order
-    db_product.not_directly_orderable = not_directly_orderable
-    db_product.separate_order_required = separate_order_required
-    db_product.archived = archived
+    product_domain_service.update_product(
+        product,
+        name,
+        price,
+        tax_rate,
+        available_from,
+        available_until,
+        total_quantity,
+        max_quantity_per_order,
+        not_directly_orderable,
+        separate_order_required,
+        archived,
+    )
+
+    db_product = _get_db_product(product.id)
+
+    db_product.name = product.name
+    db_product.price_amount = product.price.amount
+    db_product.price_currency = product.price.currency
+    db_product.tax_rate = product.tax_rate
+    db_product.available_from = product.available_from
+    db_product.available_until = product.available_until
+    db_product.total_quantity = product.total_quantity
+    db_product.max_quantity_per_order = product.max_quantity_per_order
+    db_product.not_directly_orderable = product.not_directly_orderable
+    db_product.separate_order_required = product.separate_order_required
+    db_product.archived = product.archived
 
     db.session.commit()
 
-    return _db_entity_to_product(db_product)
+    return product
 
 
 def create_product_image(
