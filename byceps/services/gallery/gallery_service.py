@@ -6,7 +6,6 @@ byceps.services.gallery.gallery_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.database import db
 from byceps.services.brand.models import BrandID
 
 from . import gallery_domain_service, gallery_repository
