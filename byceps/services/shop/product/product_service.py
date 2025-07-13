@@ -11,19 +11,14 @@ from datetime import datetime
 from decimal import Decimal
 
 from moneyed import Money
-from sqlalchemy import delete, select, update
-from sqlalchemy.sql import Select
 
-from byceps.database import db, paginate, Pagination
-from byceps.services.shop.order.dbmodels.line_item import DbLineItem
-from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.database import Pagination
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid7
 
-from . import product_domain_service
+from . import product_domain_service, product_repository
 from .dbmodels.product import DbProduct, DbProductImage
 from .dbmodels.attached_product import DbAttachedProduct
 from .errors import NoProductsAvailableError
@@ -82,27 +77,7 @@ def create_product(
         separate_order_required=separate_order_required,
     )
 
-    db_product = DbProduct(
-        product.id,
-        product.shop_id,
-        product.item_number,
-        product.type_,
-        product.name,
-        product.price,
-        product.tax_rate,
-        product.total_quantity,
-        product.quantity,
-        product.max_quantity_per_order,
-        product.processing_required,
-        type_params=product.type_params,
-        available_from=product.available_from,
-        available_until=product.available_until,
-        not_directly_orderable=product.not_directly_orderable,
-        separate_order_required=product.separate_order_required,
-    )
-
-    db.session.add(db_product)
-    db.session.commit()
+    product_repository.create_product(product)
 
     return product
 
@@ -217,21 +192,7 @@ def update_product(
         archived,
     )
 
-    db_product = _get_db_product(product.id)
-
-    db_product.name = product.name
-    db_product.price_amount = product.price.amount
-    db_product.price_currency = product.price.currency
-    db_product.tax_rate = product.tax_rate
-    db_product.available_from = product.available_from
-    db_product.available_until = product.available_until
-    db_product.total_quantity = product.total_quantity
-    db_product.max_quantity_per_order = product.max_quantity_per_order
-    db_product.not_directly_orderable = product.not_directly_orderable
-    db_product.separate_order_required = product.separate_order_required
-    db_product.archived = product.archived
-
-    db.session.commit()
+    product_repository.update_product(product)
 
     return product
 
@@ -240,22 +201,11 @@ def create_product_image(
     product: Product, url: str, url_preview: str, position: int
 ) -> ProductImage:
     """Create an image for a product."""
-    # Verify if product exists.
-    _get_db_product(product.id)
-
     image = product_domain_service.create_product_image(
         product, url, url_preview, position
     )
 
-    db_image = DbProductImage(
-        image.id,
-        image.product_id,
-        image.url,
-        image.url_preview,
-        image.position,
-    )
-    db.session.add(db_image)
-    db.session.commit()
+    product_repository.create_product_image(image)
 
     return image
 
@@ -266,64 +216,42 @@ def attach_product(
     product_id_to_attach_to: ProductID,
 ) -> None:
     """Attach a product to another product."""
-    attached_product_id = AttachedProductID(generate_uuid7())
-
-    db_attached_product = DbAttachedProduct(
-        attached_product_id,
-        product_id_to_attach,
-        quantity,
-        product_id_to_attach_to,
+    product_repository.attach_product(
+        product_id_to_attach, quantity, product_id_to_attach_to
     )
-
-    db.session.add(db_attached_product)
-    db.session.commit()
 
 
 def unattach_product(attached_product_id: AttachedProductID) -> None:
     """Unattach a product from another."""
-    db.session.execute(
-        delete(DbAttachedProduct).filter_by(id=attached_product_id)
-    )
-    db.session.commit()
+    product_repository.unattach_product(attached_product_id)
 
 
 def increase_quantity(
     product_id: ProductID, quantity_to_increase_by: int, *, commit: bool = True
 ) -> None:
     """Increase product quantity by the given value."""
-    db.session.execute(
-        update(DbProduct)
-        .where(DbProduct.id == product_id)
-        .values(quantity=DbProduct.quantity + quantity_to_increase_by)
+    product_repository.increase_quantity(
+        product_id, quantity_to_increase_by, commit
     )
-
-    if commit:
-        db.session.commit()
 
 
 def decrease_quantity(
     product_id: ProductID, quantity_to_decrease_by: int, *, commit: bool = True
 ) -> None:
     """Decrease product quantity by the given value."""
-    db.session.execute(
-        update(DbProduct)
-        .where(DbProduct.id == product_id)
-        .values(quantity=DbProduct.quantity - quantity_to_decrease_by)
+    product_repository.decrease_quantity(
+        product_id, quantity_to_decrease_by, commit
     )
-
-    if commit:
-        db.session.commit()
 
 
 def delete_product(product_id: ProductID) -> None:
     """Delete a product."""
-    db.session.execute(delete(DbProduct).filter_by(id=product_id))
-    db.session.commit()
+    product_repository.delete_product(product_id)
 
 
 def find_product(product_id: ProductID) -> Product | None:
     """Return the product with that ID, or `None` if not found."""
-    db_product = find_db_product(product_id)
+    db_product = product_repository.find_product(product_id)
 
     if db_product is None:
         return None
@@ -348,7 +276,7 @@ def find_db_product(product_id: ProductID) -> DbProduct | None:
     """Return the database entity for the product with that ID, or
     `None` if not found.
     """
-    return db.session.get(DbProduct, product_id)
+    return product_repository.find_db_product(product_id)
 
 
 def _get_db_product(product_id: ProductID) -> DbProduct:
@@ -366,40 +294,17 @@ def _get_db_product(product_id: ProductID) -> DbProduct:
 
 def find_product_with_details(product_id: ProductID) -> DbProduct | None:
     """Return the product with that ID, or `None` if not found."""
-    return (
-        db.session.execute(
-            select(DbProduct)
-            .options(
-                db.joinedload(DbProduct.products_attached_to).joinedload(
-                    DbAttachedProduct.product
-                ),
-                db.joinedload(DbProduct.attached_products).joinedload(
-                    DbAttachedProduct.product
-                ),
-            )
-            .filter_by(id=product_id)
-        )
-        .unique()
-        .scalar_one_or_none()
-    )
+    return product_repository.find_product_with_details(product_id)
 
 
 def is_name_available(shop_id: ShopID, name: str) -> bool:
     """Check if the name is yet unused."""
-    return not db.session.scalar(
-        select(
-            db.exists()
-            .where(DbProduct.shop_id == shop_id)
-            .where(db.func.lower(DbProduct.name) == name.lower())
-        )
-    )
+    return product_repository.is_name_available(shop_id, name)
 
 
 def get_images_for_product(product_id: ProductID) -> list[ProductImage]:
     """Return images for the product."""
-    db_images = db.session.scalars(
-        select(DbProductImage).filter_by(product_id=product_id)
-    ).all()
+    db_images = product_repository.get_images_for_product(product_id)
 
     return [_db_entity_to_product_image(db_image) for db_image in db_images]
 
@@ -408,11 +313,7 @@ def get_images_for_products(
     product_ids: set[ProductID],
 ) -> dict[ProductID, list[ProductImage]]:
     """Return the images (if any) for each of the products."""
-    db_images = db.session.scalars(
-        select(DbProductImage).filter(
-            DbProductImage.product_id.in_(product_ids)
-        )
-    ).all()
+    db_images = product_repository.get_images_for_products(product_ids)
 
     images = [_db_entity_to_product_image(db_image) for db_image in db_images]
 
@@ -429,48 +330,26 @@ def find_attached_product(
     attached_product_id: AttachedProductID,
 ) -> DbAttachedProduct | None:
     """Return the attached product with that ID, or `None` if not found."""
-    return db.session.get(DbAttachedProduct, attached_product_id)
+    return product_repository.find_attached_product(attached_product_id)
 
 
 def get_attached_products_for_products(
     product_ids: set[ProductID],
 ) -> dict[ProductID, list[DbAttachedProduct]]:
     """Return the attached product with that ID, or `None` if not found."""
-    if not product_ids:
-        return {}
-
-    rows = db.session.execute(
-        select(DbAttachedProduct.attached_to_product_id, DbAttachedProduct)
-        .filter(DbAttachedProduct.attached_to_product_id.in_(product_ids))
-        .options(db.joinedload(DbAttachedProduct.product))
-    ).all()
-
-    attached_products_by_attached_to_product_id = defaultdict(list)
-    for attached_to_product_id, db_attached_product in rows:
-        attached_products_by_attached_to_product_id[
-            attached_to_product_id
-        ].append(db_attached_product)
-
-    return attached_products_by_attached_to_product_id
+    return product_repository.get_attached_products_for_products(product_ids)
 
 
 def get_product_by_number(product_number: ProductNumber) -> Product:
     """Return the product with that item number."""
-    db_product = db.session.execute(
-        select(DbProduct).filter_by(item_number=product_number)
-    ).scalar_one()
+    db_product = product_repository.get_product_by_number(product_number)
 
     return _db_entity_to_product(db_product)
 
 
 def get_products(product_ids: set[ProductID]) -> list[Product]:
     """Return the products with those IDs."""
-    if not product_ids:
-        return []
-
-    db_products = db.session.scalars(
-        select(DbProduct).filter(DbProduct.id.in_(product_ids))
-    ).all()
+    db_products = product_repository.get_products(product_ids)
 
     return [_db_entity_to_product(db_product) for db_product in db_products]
 
@@ -479,48 +358,16 @@ def get_products_filtered(
     product_ids: set[ProductID], include_unavailable_products: bool
 ) -> list[Product]:
     """Return the products with some filters applied."""
-    if not product_ids:
-        return []
-
-    now = datetime.utcnow()
-
-    stmt = (
-        select(DbProduct)
-        .filter(DbProduct.id.in_(product_ids))
-        .filter_by(not_directly_orderable=False)
-        .filter_by(separate_order_required=False)
+    db_products = product_repository.get_products_filtered(
+        product_ids, include_unavailable_products
     )
-
-    if not include_unavailable_products:
-        stmt = (
-            stmt
-            # Select only products that are available in between the
-            # temporal boundaries for this product, if specified.
-            .filter(
-                db.or_(
-                    DbProduct.available_from.is_(None),
-                    now >= DbProduct.available_from,
-                )
-            ).filter(
-                db.or_(
-                    DbProduct.available_until.is_(None),
-                    now < DbProduct.available_until,
-                )
-            )
-        )
-
-    db_products = db.session.scalars(stmt).all()
 
     return [_db_entity_to_product(db_product) for db_product in db_products]
 
 
 def get_products_for_shop(shop_id: ShopID) -> list[Product]:
     """Return all products for that shop, ordered by product number."""
-    db_products = db.session.scalars(
-        select(DbProduct)
-        .filter_by(shop_id=shop_id)
-        .order_by(DbProduct.item_number)
-    ).all()
+    db_products = product_repository.get_products_for_shop(shop_id)
 
     return [_db_entity_to_product(db_product) for db_product in db_products]
 
@@ -530,37 +377,14 @@ def get_products_for_shop_paginated(
     page: int,
     per_page: int,
     *,
-    search_term=None,
+    search_term: str | None = None,
 ) -> Pagination:
     """Return all products for that shop, paginated.
 
     Ordered by product number, reversed.
     """
-    stmt = (
-        select(DbProduct)
-        .filter_by(shop_id=shop_id)
-        .order_by(DbProduct.item_number.desc())
-    )
-
-    if search_term:
-        stmt = _filter_by_search_term(stmt, search_term)
-
-    return paginate(stmt, page, per_page)
-
-
-def _filter_by_search_term(stmt: Select, search_term: str) -> Select:
-    terms = search_term.split(' ')
-    clauses = map(_generate_search_clauses_for_term, terms)
-
-    return stmt.filter(db.and_(*clauses))
-
-
-def _generate_search_clauses_for_term(search_term: str) -> Select:
-    ilike_pattern = f'%{search_term}%'
-
-    return db.or_(
-        DbProduct.item_number.ilike(ilike_pattern),
-        DbProduct.name.ilike(ilike_pattern),
+    return product_repository.get_products_for_shop_paginated(
+        shop_id, page, per_page, search_term
     )
 
 
@@ -571,30 +395,7 @@ def get_product_compilation_for_orderable_products(
     that shop, less the ones that are only orderable in a dedicated
     order.
     """
-    now = datetime.utcnow()
-
-    db_orderable_products = db.session.scalars(
-        select(DbProduct)
-        .filter_by(shop_id=shop_id)
-        .filter_by(not_directly_orderable=False)
-        .filter_by(separate_order_required=False)
-        # Select only products that are available in between the
-        # temporal boundaries for this product, if specified.
-        .filter(
-            db.or_(
-                DbProduct.available_from.is_(None),
-                now >= DbProduct.available_from,
-            )
-        )
-        .filter(
-            db.or_(
-                DbProduct.available_until.is_(None),
-                now < DbProduct.available_until,
-            )
-        )
-        .order_by(DbProduct.name)
-    ).all()
-
+    db_orderable_products = product_repository.get_orderable_products(shop_id)
     if not db_orderable_products:
         return Err(NoProductsAvailableError())
 
@@ -652,9 +453,7 @@ def get_product_compilations_for_single_products(
 
     compilations_by_product_id: dict[ProductID, ProductCompilation] = {}
 
-    db_products = db.session.scalars(
-        select(DbProduct).filter(DbProduct.id.in_(product_ids))
-    ).all()
+    db_products = product_repository.get_products(product_ids)
 
     attached_products_by_attached_to_product_id = (
         get_attached_products_for_products(product_ids)
@@ -685,24 +484,7 @@ def get_product_compilations_for_single_products(
 
 def get_attachable_products(product_id: ProductID) -> list[Product]:
     """Return the products that can be attached to that product."""
-    db_product = _get_db_product(product_id)
-
-    db_attached_products = {
-        db_attached.product for db_attached in db_product.attached_products
-    }
-
-    db_unattachable_products = {db_product}.union(db_attached_products)
-
-    unattachable_product_ids = {
-        db_product.id for db_product in db_unattachable_products
-    }
-
-    db_products = db.session.scalars(
-        select(DbProduct)
-        .filter_by(shop_id=db_product.shop_id)
-        .filter(db.not_(DbProduct.id.in_(unattachable_product_ids)))
-        .order_by(DbProduct.item_number)
-    ).all()
+    db_products = product_repository.get_attachable_products(product_id)
 
     return [_db_entity_to_product(db_product) for db_product in db_products]
 
@@ -728,71 +510,7 @@ def sum_ordered_products_by_payment_state(
     shop_ids: set[ShopID],
 ) -> list[tuple[ShopID, ProductNumber, str, PaymentState, int]]:
     """Sum ordered products for those shops, grouped by order payment state."""
-    subquery = (
-        select(
-            DbLineItem.product_id,
-            DbOrder._payment_state.label('payment_state'),
-            db.func.sum(DbLineItem.quantity).label('quantity'),
-        )
-        .join(DbOrder)
-        .group_by(DbLineItem.product_id, DbOrder._payment_state)
-        .subquery()
-    )
-
-    rows = db.session.execute(
-        select(
-            DbProduct.shop_id,
-            DbProduct.item_number,
-            DbProduct.name,
-            subquery.c.payment_state,
-            subquery.c.quantity,
-        )
-        .outerjoin(
-            subquery,
-            db.and_(DbProduct.id == subquery.c.product_id),
-        )
-        .filter(DbProduct.shop_id.in_(shop_ids))
-        .order_by(DbProduct.item_number, subquery.c.payment_state)
-    ).all()
-
-    shop_ids_and_product_numbers_and_names = {
-        (row[0], row[1], row[2]) for row in rows
-    }  # Remove duplicates.
-
-    quantities = {}
-
-    for (
-        shop_id,
-        product_number,
-        name,
-        payment_state_name,
-        quantity,
-    ) in rows:
-        if payment_state_name is None:
-            continue
-
-        payment_state = PaymentState[payment_state_name]
-        key = (shop_id, product_number, name, payment_state)
-
-        quantities[key] = quantity
-
-    def generate():
-        for shop_id, product_number, name in sorted(
-            shop_ids_and_product_numbers_and_names
-        ):
-            for payment_state in PaymentState:
-                key = (shop_id, product_number, name, payment_state)
-                quantity = quantities.get(key, 0)
-
-                yield (
-                    shop_id,
-                    product_number,
-                    name,
-                    payment_state,
-                    quantity,
-                )
-
-    return list(generate())
+    return product_repository.sum_ordered_products_by_payment_state(shop_ids)
 
 
 def _db_entity_to_product(db_product: DbProduct) -> Product:
