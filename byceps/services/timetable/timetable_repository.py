@@ -66,7 +66,7 @@ def update_item(item: TimetableItem) -> None:
     """Update a timetable item."""
     db_item = db.session.get(DbTimetableItem, item.id)
     if db_item is None:
-        raise ValueError(f'Unknown item ID "{item_id}"')
+        raise ValueError(f'Unknown item ID "{item.id}"')
 
     db_item.scheduled_at = item.scheduled_at
     db_item.description = item.description
