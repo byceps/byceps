@@ -229,7 +229,7 @@ requires-dist = [
     { name = "qrcode", specifier = ">=8.2" },
     { name = "redis", specifier = ">=6.2.0" },
     { name = "rq", specifier = ">=2.4.0" },
-    { name = "rq-dashboard", specifier = ">=0.8.3.2" },
+    { name = "rq-dashboard", specifier = ">=0.8.4" },
     { name = "rtoml", specifier = "==0.12.0" },
     { name = "schwifty", specifier = ">=2025.6.0" },
     { name = "secret-type", specifier = ">=0.3.0" },
@@ -1421,7 +1421,7 @@ wheels = [
 
 [[package]]
 name = "rq-dashboard"
-version = "0.8.3.2"
+version = "0.8.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "arrow" },
@@ -1430,9 +1430,9 @@ dependencies = [
     { name = "redis-sentinel-url" },
     { name = "rq" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/37/0e/36923f7b4cb1aa0e83fa370b492043fb496be1a7f49700b744e631d38aec/rq_dashboard-0.8.3.2.tar.gz", hash = "sha256:7bc8b225cff64b00fcea071c46931cfa247fb16813bd5972c49f001364280caf", size = 206088, upload-time = "2025-06-02T12:31:30.532Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9a/cf/6fc299ac82e653f87e56569a7b6e0fa0ca7815a743b84c0dd0715d4ea9a0/rq_dashboard-0.8.4.tar.gz", hash = "sha256:10420e0d2e70d1338dcbdb18c7b1a7a247aa79e842ea6c4a6f849a86297b170b", size = 206106, upload-time = "2025-07-07T07:57:35.267Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a1/55/c3e633b0461252d6dc7116b6cf2e2eb67457cea0a88986a49b325083d98b/rq_dashboard-0.8.3.2-py2.py3-none-any.whl", hash = "sha256:896170e6c2bb156680b9ac3e9f1966afc385018312c038905a3bd58686f1390f", size = 210520, upload-time = "2025-06-02T12:31:29.277Z" },
+    { url = "https://files.pythonhosted.org/packages/6b/2f/8764bb76c3ba61e9ddeb10f75ee86c0b810f390981a79e3c555404f91b69/rq_dashboard-0.8.4-py2.py3-none-any.whl", hash = "sha256:7a2cc43f23cd4c01dc4ead8a94e887cc64466b597085f5275bea7cc234696909", size = 210485, upload-time = "2025-07-07T07:57:33.809Z" },
 ]
 
 [[package]]
