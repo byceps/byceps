@@ -13,7 +13,7 @@ from pathlib import Path
 from flask import current_app
 
 from . import gallery_service
-from .models import Gallery
+from .models import Gallery, GalleryImage
 
 
 @dataclass(frozen=True, kw_only=True, order=True)
@@ -47,8 +47,21 @@ def import_images_in_gallery_path(
     image_file_sets: list[ImageFileSet],
 ) -> None:
     """Import all matching files in the gallery's path as images."""
-    for image_file_set in sorted(image_file_sets):
-        gallery_service.create_image(
+    if not image_file_sets:
+        return None
+
+    images = list(_create_images(sorted(image_file_sets)))
+    title_image = images[0]
+
+    gallery_service.set_gallery_title_image(gallery.id, title_image.id)
+
+
+def _create_images(
+    gallery: Gallery, image_file_sets: list[ImageFileSet]
+) -> Iterator[GalleryImage]:
+    """Create images for all matching files in the gallery's path as images."""
+    for image_file_set in image_file_sets:
+        yield gallery_service.create_image(
             gallery,
             image_file_set.full_filename,
             image_file_set.preview_filename,
