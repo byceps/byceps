@@ -326,6 +326,7 @@ def get_products_for_shop_paginated(
     shop_id: ShopID,
     page: int,
     per_page: int,
+    include_archived: bool,
     search_term: str | None,
 ) -> Pagination:
     """Return all products for that shop, paginated.
@@ -337,6 +338,9 @@ def get_products_for_shop_paginated(
         .filter_by(shop_id=shop_id)
         .order_by(DbProduct.item_number.desc())
     )
+
+    if not include_archived:
+        stmt = stmt.filter_by(archived=False)
 
     if search_term:
         stmt = _filter_by_search_term(stmt, search_term)

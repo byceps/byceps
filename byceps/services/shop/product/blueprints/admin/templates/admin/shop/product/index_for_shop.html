@@ -46,11 +46,24 @@
     {%- endif %}
   </div>
 
-  <form action="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="single-row block">
-    <input type="search" name="search_term" placeholder="{{ _('Product number') }}, {{ pgettext('product', 'name') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} class="form-control" autofocus>
-    <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
-    <a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
-  </form>
+  <div class="row row--space-between is-vcentered block">
+    <div class="column--grow">
+      <form action="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="single-row block">
+        <input type="search" name="search_term" placeholder="{{ _('Product number') }}, {{ pgettext('product', 'name') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} class="form-control" autofocus>
+        <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
+        <a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
+      </form>
+    </div>
+    <div>
+      <div class="button-row is-right-aligned">
+        {%- if archived_included %}
+        <a class="button is-compact" href="{{ url_for('.index_for_shop', shop_id=shop.id, per_page=per_page, search_term=search_term if search_term else None) }}">{{ render_icon('hidden') }} <span>{{ _('Hide archived') }}</span></a>
+        {%- else %}
+        <a class="button is-compact" href="{{ url_for('.index_for_shop', shop_id=shop.id, per_page=per_page, include_archived='yes', search_term=search_term if search_term else None) }}">{{ render_icon('view') }} <span>{{ _('Show archived') }}</span></a>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
 
   {%- if products.items %}
   <table class="itemlist is-vcentered is-wide">
@@ -123,6 +136,7 @@
 {{ render_pagination_nav(products, '.index_for_shop', {
   'shop_id': shop.id,
   'per_page': per_page,
+  'include_archived': 'yes' if archived_included else None,
   'search_term': search_term if search_term else None,
 }) }}
 

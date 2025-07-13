@@ -377,6 +377,7 @@ def get_products_for_shop_paginated(
     page: int,
     per_page: int,
     *,
+    include_archived: bool = False,
     search_term: str | None = None,
 ) -> Pagination:
     """Return all products for that shop, paginated.
@@ -384,7 +385,7 @@ def get_products_for_shop_paginated(
     Ordered by product number, reversed.
     """
     return product_repository.get_products_for_shop_paginated(
-        shop_id, page, per_page, search_term
+        shop_id, page, per_page, include_archived, search_term
     )
 
 

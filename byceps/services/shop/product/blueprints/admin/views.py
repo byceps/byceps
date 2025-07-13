@@ -80,12 +80,17 @@ def index_for_shop(shop_id, page):
 
     per_page = request.args.get('per_page', type=int, default=15)
 
+    include_archived = (
+        request.args.get('include_archived', default='no') == 'yes'
+    )
+
     search_term = request.args.get('search_term', default='').strip()
 
     db_products = product_service.get_products_for_shop_paginated(
         shop.id,
         page,
         per_page,
+        include_archived=include_archived,
         search_term=search_term,
     )
 
@@ -109,6 +114,7 @@ def index_for_shop(shop_id, page):
         'totals_by_product_number': totals_by_product_number,
         'PaymentState': PaymentState,
         'per_page': per_page,
+        'archived_included': include_archived,
         'search_term': search_term,
     }
 
