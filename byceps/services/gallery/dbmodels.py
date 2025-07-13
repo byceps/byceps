@@ -118,7 +118,7 @@ class DbGalleryTitleImage(db.Model):
         backref=backref('title_image_association', uselist=False),
     )
     image_id: Mapped[GalleryImageID] = mapped_column(
-        db.Uuid, db.ForeignKey('gallery_images.id'), unique=True
+        db.Uuid, db.ForeignKey('gallery_images.id')
     )
     image: Mapped[DbGalleryImage] = relationship(DbGalleryImage)
 
