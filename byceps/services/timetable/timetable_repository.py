@@ -6,6 +6,8 @@ byceps.services.timetable.timetable_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
@@ -92,7 +94,7 @@ def find_item(item_id: TimetableItemID) -> DbTimetableItem | None:
     return db.session.get(DbTimetableItem, item_id)
 
 
-def get_items(timetable_id: TimetableID) -> list[DbTimetableItem]:
+def get_items(timetable_id: TimetableID) -> Sequence[DbTimetableItem]:
     return db.session.scalars(
         select(DbTimetableItem).filter_by(timetable_id=timetable_id)
     ).all()
