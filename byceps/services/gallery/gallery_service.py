@@ -10,7 +10,13 @@ from byceps.services.brand.models import BrandID
 
 from . import gallery_domain_service, gallery_repository
 from .dbmodels import DbGallery, DbGalleryImage
-from .models import Gallery, GalleryID, GalleryImage, GalleryWithImages
+from .models import (
+    Gallery,
+    GalleryID,
+    GalleryImage,
+    GalleryImageID,
+    GalleryWithImages,
+)
 
 
 # -------------------------------------------------------------------- #
@@ -44,6 +50,18 @@ def update_gallery(
     gallery_repository.update_gallery(gallery)
 
     return gallery
+
+
+def set_gallery_title_image(
+    gallery_id: GalleryID, image_id: GalleryImageID
+) -> None:
+    """Set a title image for the gallery."""
+    gallery_repository.set_gallery_title_image(gallery_id, image_id)
+
+
+def remove_gallery_title_image(gallery_id: GalleryID) -> None:
+    """Remove the title image for the gallery."""
+    gallery_repository.remove_gallery_title_image(gallery_id)
 
 
 def find_gallery(gallery_id: GalleryID) -> Gallery | None:

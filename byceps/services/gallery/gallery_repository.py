@@ -8,14 +8,14 @@ byceps.services.gallery.gallery_repository
 
 from collections.abc import Sequence
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
-from byceps.database import db
+from byceps.database import db, upsert
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import BrandID
 
-from .dbmodels import DbGallery, DbGalleryImage
-from .models import Gallery, GalleryID, GalleryImage
+from .dbmodels import DbGallery, DbGalleryImage, DbGalleryTitleImage
+from .models import Gallery, GalleryID, GalleryImage, GalleryImageID
 
 
 # -------------------------------------------------------------------- #
@@ -49,6 +49,25 @@ def update_gallery(gallery: Gallery) -> None:
     db_gallery.title = gallery.title
     db_gallery.hidden = gallery.hidden
 
+    db.session.commit()
+
+
+def set_gallery_title_image(
+    gallery_id: GalleryID, image_id: GalleryImageID
+) -> None:
+    """Set a title image for the gallery."""
+    table = DbGalleryTitleImage.__table__
+    identifier = {'gallery_id': gallery_id}
+    replacement = {'image_id': image_id}
+
+    upsert(table, identifier, replacement)
+
+
+def remove_gallery_title_image(gallery_id: GalleryID) -> None:
+    """Remove the title image for the gallery."""
+    db.session.execute(
+        delete(DbGalleryTitleImage).filter_by(gallery_id=gallery_id)
+    )
     db.session.commit()
 
 
