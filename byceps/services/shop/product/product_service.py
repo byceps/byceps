@@ -104,7 +104,7 @@ def create_product(
     db.session.add(db_product)
     db.session.commit()
 
-    return _db_entity_to_product(db_product)
+    return product
 
 
 def create_ticket_product(
