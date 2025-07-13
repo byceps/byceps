@@ -69,12 +69,15 @@ class _ProductBaseForm(LocalizedForm):
     archived = BooleanField(lazy_gettext('archived'))
 
     @staticmethod
-    def validate_available_until_date(form, field):
+    def validate_available_until(form, field):
         """Ensure that the availability range's begin is before its end."""
+        available_from = form.available_from.data
+        available_until = form.available_until.data
+
         if (
-            (form.available_from is not None)
-            and (form.available_until is not None)
-            and (form.available_from >= form.available_until)
+            available_from
+            and available_until
+            and (available_from >= available_until)
         ):
             raise ValidationError(
                 gettext(
