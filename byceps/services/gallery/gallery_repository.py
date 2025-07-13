@@ -6,6 +6,8 @@ byceps.services.gallery.gallery_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from sqlalchemy import select
 
 from byceps.database import db
@@ -105,7 +107,7 @@ def is_slug_available(brand_id: BrandID, slug: str) -> bool:
     )
 
 
-def get_galleries_for_brand(brand_id: BrandID) -> list[DbGallery]:
+def get_galleries_for_brand(brand_id: BrandID) -> Sequence[DbGallery]:
     """Return all galeries for the brand."""
     return (
         db.session.scalars(
@@ -118,7 +120,9 @@ def get_galleries_for_brand(brand_id: BrandID) -> list[DbGallery]:
     )
 
 
-def get_galleries_for_brand_with_images(brand_id: BrandID) -> list[DbGallery]:
+def get_galleries_for_brand_with_images(
+    brand_id: BrandID,
+) -> Sequence[DbGallery]:
     """Return all galeries for the brand, with images."""
     return (
         db.session.scalars(
