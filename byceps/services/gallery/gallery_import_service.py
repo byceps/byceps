@@ -50,7 +50,7 @@ def import_images_in_gallery_path(
     if not image_file_sets:
         return None
 
-    images = list(_create_images(sorted(image_file_sets)))
+    images = list(_create_images(gallery, sorted(image_file_sets)))
     title_image = images[0]
 
     gallery_service.set_gallery_title_image(gallery.id, title_image.id)
