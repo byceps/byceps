@@ -6,8 +6,6 @@ byceps.services.seating.seat_group_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Sequence
-
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_bundle_service
 from byceps.services.ticketing.models.ticket import (
@@ -166,9 +164,9 @@ def find_occupancy_for_group(
     return _db_entity_to_occupancy(db_occupancy)
 
 
-def get_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
+def get_groups_for_party(party_id: PartyID) -> list[DbSeatGroup]:
     """Return all seat groups for that party."""
-    return seat_group_repository.get_groups_for_party(party_id)
+    return list(seat_group_repository.get_groups_for_party(party_id))
 
 
 def is_seat_part_of_a_group(seat_id: SeatID) -> bool:
