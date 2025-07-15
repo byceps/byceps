@@ -237,7 +237,7 @@ def seat_group_index(party_id):
 @permission_required('ticketing.administrate_seat_occupancy')
 @respond_no_content
 def seat_group_release(group_id):
-    """Remove the menu item."""
+    """Release the seat group."""
     group = _get_seat_group_or_404(group_id)
 
     seat_group_service.release_group(group.id)
