@@ -129,7 +129,7 @@ def get_teams_and_members_for_party(
         membership = _db_entity_to_membership(db_membership)
         user = users_by_id[membership.user_id]
 
-        return Member(membership, user)
+        return Member(membership=membership, user=user)
 
     return [
         (
