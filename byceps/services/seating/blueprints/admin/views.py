@@ -33,6 +33,7 @@ from byceps.util.views import (
     respond_no_content,
 )
 
+from . import service
 from .forms import (
     AreaCreateForm,
     AreaUpdateForm,
@@ -222,11 +223,11 @@ def seat_group_index(party_id):
     """List seat groups for that party."""
     party = _get_party_or_404(party_id)
 
-    db_groups = seat_group_service.get_db_groups_for_party(party.id)
+    groups_for_admin = service.get_seat_groups_for_admin(party.id)
 
     return {
         'party': party,
-        'groups': db_groups,
+        'groups': groups_for_admin,
     }
 
 
