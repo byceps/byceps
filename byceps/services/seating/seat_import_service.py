@@ -89,7 +89,7 @@ def _get_category_ids_by_title(
 
 def _get_seat_group_titles(party_id: PartyID) -> set[str]:
     """Get the party's seat groups' titles."""
-    groups = seat_group_service.get_all_groups_for_party(party_id)
+    groups = seat_group_service.get_groups_for_party(party_id)
     return {group.title for group in groups}
 
 

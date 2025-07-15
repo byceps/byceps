@@ -181,7 +181,7 @@ def find_occupancy_for_group(
     ).scalar_one_or_none()
 
 
-def get_all_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
+def get_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
     """Return all seat groups for that party."""
     return db.session.scalars(
         select(DbSeatGroup).filter_by(party_id=party_id)

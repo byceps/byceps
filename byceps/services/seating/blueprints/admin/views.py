@@ -222,7 +222,7 @@ def seat_group_index(party_id):
     """List seat groups for that party."""
     party = _get_party_or_404(party_id)
 
-    groups = seat_group_service.get_all_groups_for_party(party.id)
+    groups = seat_group_service.get_groups_for_party(party.id)
 
     return {
         'party': party,
