@@ -27,6 +27,10 @@
       <div class="data-label">{{ _('Seats') }}</div>
       <div class="data-value">{{ group.seat_quantity }}</div>
     </div>
+    <div>
+      <div class="data-label">{{ _('Status') }}</div>
+      <div class="data-value">{{ render_tag(_('occupied'), class='color-danger') if group.occupied else render_tag(_('available'), class='color-success') }}</div>
+    </div>
   </div>
 
   <table class="itemlist is-vcentered is-wide">

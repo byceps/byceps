@@ -46,6 +46,7 @@ class SeatGroupForAdmin:
     seat_quantity: int
     title: str
     seats: list[SeatGroupSeatForAdmin]
+    occupied: bool
 
 
 def get_seat_groups_for_admin(party_id: PartyID) -> list[SeatGroupForAdmin]:
@@ -72,6 +73,7 @@ def get_seat_groups_for_admin(party_id: PartyID) -> list[SeatGroupForAdmin]:
                 )
                 for seat in group.seats
             ],
+            occupied=any(seat.occupied_by_ticket_id for seat in group.seats),
         )
         for group in groups
     ]
