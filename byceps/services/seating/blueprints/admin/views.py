@@ -21,6 +21,8 @@ from byceps.services.seating import (
 from byceps.services.seating.models import (
     SeatingArea,
     SeatingAreaID,
+    SeatGroup,
+    SeatGroupID,
     SeatReservationPrecondition,
 )
 from byceps.services.ticketing import ticket_category_service
@@ -231,6 +233,20 @@ def seat_group_index(party_id):
     }
 
 
+@blueprint.delete('/seat_groups/<uuid:group_id>/release')
+@permission_required('ticketing.administrate_seat_occupancy')
+@respond_no_content
+def seat_group_release(group_id):
+    """Remove the menu item."""
+    group = _get_seat_group_or_404(group_id)
+
+    seat_group_service.release_group(group.id)
+
+    flash_success(
+        gettext('Seat group "%(title)s" has been released.', title=group.title)
+    )
+
+
 # reservation precondition
 
 
@@ -306,6 +322,15 @@ def _get_area_or_404(area_id: SeatingAreaID) -> SeatingArea:
         abort(404)
 
     return area
+
+
+def _get_seat_group_or_404(group_id: SeatGroupID) -> SeatGroup:
+    group = seat_group_service.find_group(group_id)
+
+    if group is None:
+        abort(404)
+
+    return group
 
 
 def _get_reservation_precondition_or_404(

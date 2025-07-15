@@ -1,6 +1,7 @@
 {% extends 'layout/admin/seating.html' %}
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page_party = party %}
 {% set current_tab = 'seat_groups' %}
@@ -14,22 +15,39 @@
     {%- for group in groups|sort(attribute='title') %}
   <h2 class="title">{{ group.title }}</h2>
 
-  <div class="block row">
+  <div class="block row row--space-between is-vcentered">
     <div>
-      <div class="data-label">{{ _('ID') }}</div>
-      <div class="data-value">{{ group.id }}</div>
+
+      <div class="block row">
+        <div>
+          <div class="data-label">{{ _('ID') }}</div>
+          <div class="data-value">{{ group.id }}</div>
+        </div>
+        <div>
+          <div class="data-label">{{ _('Ticket category') }}</div>
+          <div class="data-value">{{ group.ticket_category.title }}</div>
+        </div>
+        <div>
+          <div class="data-label">{{ _('Seats') }}</div>
+          <div class="data-value">{{ group.seat_quantity }}</div>
+        </div>
+        <div>
+          <div class="data-label">{{ _('Status') }}</div>
+          <div class="data-value">{{ render_tag(_('occupied'), class='color-danger') if group.occupied else render_tag(_('available'), class='color-success') }}</div>
+        </div>
+      </div>
+
     </div>
     <div>
-      <div class="data-label">{{ _('Ticket category') }}</div>
-      <div class="data-value">{{ group.ticket_category.title }}</div>
-    </div>
-    <div>
-      <div class="data-label">{{ _('Seats') }}</div>
-      <div class="data-value">{{ group.seat_quantity }}</div>
-    </div>
-    <div>
-      <div class="data-label">{{ _('Status') }}</div>
-      <div class="data-value">{{ render_tag(_('occupied'), class='color-danger') if group.occupied else render_tag(_('available'), class='color-success') }}</div>
+
+      {%- if has_current_user_permission('ticketing.administrate_seat_occupancy') %}
+      <div class="button-row is-compact is-right-aligned">
+        {%- if group.occupied %}
+        <a class="button is-compact" data-action="seat-group-release" href="{{ url_for('.seat_group_release', group_id=group.id) }}">{{ render_icon('remove') }} {{ _('Release') }}</a></li>
+        {%- endif %}
+      </div>
+      {%- endif %}
+
     </div>
   </div>
 
@@ -74,4 +92,12 @@
   <div class="box no-data-message">{{ _('No seat groups exist for this party.') }}</div>
   {%- endif %}
 
+{%- endblock %}
+
+{% block scripts %}
+<script>
+onDomReady(() => {
+  confirmed_delete_on_click_then_reload('[data-action="seat-group-release"]', '{{ _('Release group?') }}');
+});
+</script>
 {%- endblock %}
