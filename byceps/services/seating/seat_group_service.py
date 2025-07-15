@@ -164,6 +164,19 @@ def find_occupancy_for_group(
     return _db_entity_to_occupancy(db_occupancy)
 
 
+def get_groups_for_party(party_id: PartyID) -> list[SeatGroup]:
+    """Return all seat groups for that party."""
+
+    def _db_seat_group_to_seat_group(db_group: DbSeatGroup) -> SeatGroup:
+        seat_ids = {db_seat.id for db_seat in db_group.seats}
+        seats = seat_service.get_seats(seat_ids)
+
+        return _db_entity_to_group(db_group, seats)
+
+    db_groups = get_db_groups_for_party(party_id)
+    return [_db_seat_group_to_seat_group(db_group) for db_group in db_groups]
+
+
 def get_db_groups_for_party(party_id: PartyID) -> list[DbSeatGroup]:
     """Return all seat groups for that party."""
     return list(seat_group_repository.get_groups_for_party(party_id))

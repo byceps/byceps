@@ -89,8 +89,8 @@ def _get_category_ids_by_title(
 
 def _get_seat_group_titles(party_id: PartyID) -> set[str]:
     """Get the party's seat groups' titles."""
-    db_groups = seat_group_service.get_db_groups_for_party(party_id)
-    return {db_group.title for db_group in db_groups}
+    groups = seat_group_service.get_groups_for_party(party_id)
+    return {group.title for group in groups}
 
 
 class _SeatsImportParser:
