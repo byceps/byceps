@@ -164,7 +164,7 @@ def find_occupancy_for_group(
     return _db_entity_to_occupancy(db_occupancy)
 
 
-def get_groups_for_party(party_id: PartyID) -> list[DbSeatGroup]:
+def get_db_groups_for_party(party_id: PartyID) -> list[DbSeatGroup]:
     """Return all seat groups for that party."""
     return list(seat_group_repository.get_groups_for_party(party_id))
 
