@@ -10,8 +10,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import NewType
+from typing import NewType, TYPE_CHECKING
 from uuid import UUID
+
+if TYPE_CHECKING:
+    from byceps.services.seating.models import SeatGroupID
 
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
@@ -49,6 +52,7 @@ class TicketBundle:
     label: str | None
     revoked: bool
     ticket_ids: set[TicketID]
+    occupied_seat_group_id: SeatGroupID | None
 
 
 @dataclass(frozen=True, kw_only=True)

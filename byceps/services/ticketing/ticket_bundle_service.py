@@ -15,6 +15,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 from byceps.database import db, paginate, Pagination
 from byceps.services.party.models import PartyID
 from byceps.services.seating import seat_group_service
+from byceps.services.seating.models import SeatGroupID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
@@ -93,6 +94,7 @@ def create_bundle(
         label=label,
         revoked=False,
         ticket_ids=ticket_ids,
+        occupied_seat_group_id=_find_occupied_seat_group_id(db_bundle),
     )
 
     return bundle
@@ -240,4 +242,12 @@ def _db_entity_to_ticket_bundle(
         label=db_bundle.label,
         revoked=db_bundle.revoked,
         ticket_ids=ticket_ids,
+        occupied_seat_group_id=_find_occupied_seat_group_id(db_bundle),
     )
+
+
+def _find_occupied_seat_group_id(
+    db_bundle: DbTicketBundle,
+) -> SeatGroupID | None:
+    occupied_seat_group = db_bundle.occupied_seat_group
+    return occupied_seat_group.id if occupied_seat_group else None
