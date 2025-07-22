@@ -1,0 +1,35 @@
+{% extends 'layout/admin/seating.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set current_page_party = party %}
+{% set current_tab = 'seat_groups' %}
+{% set page_title = [_('Occupy seat group'), party.title] %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.seat_group_index', party_id=party.id), _('Seat Groups')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1 class="title">{{ _('Occupy seat group') }}</h1>
+
+  <div class="block row">
+    <div>
+      <div class="data-label">{{ _('Title') }}</div>
+      <div class="data-value">{{ group.title }}</div>
+    </div>
+    <div>
+      <div class="data-label">{{ _('Seats') }}</div>
+      <div class="data-value">{{ group.seat_quantity }}</div>
+    </div>
+  </div>
+
+  <form action="{{ url_for('.seat_group_occupy', group_id=group.id) }}" method="post">
+    <div class="box">
+      {{ form_field(form.ticket_bundle_id, class='is-wide', autofocus='autofocus') }}
+    </div>
+
+    {{ form_buttons(_('Occupy')) }}
+  </form>
+
+{%- endblock %}

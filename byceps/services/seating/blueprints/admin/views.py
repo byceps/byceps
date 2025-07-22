@@ -25,10 +25,14 @@ from byceps.services.seating.models import (
     SeatGroupID,
     SeatReservationPrecondition,
 )
-from byceps.services.ticketing import ticket_category_service
+from byceps.services.ticketing import (
+    ticket_bundle_service,
+    ticket_category_service,
+)
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_success
+from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -40,6 +44,7 @@ from .forms import (
     AreaCreateForm,
     AreaUpdateForm,
     ReservationPreconditionCreateForm,
+    SeatGroupOccupyForm,
 )
 
 
@@ -231,6 +236,70 @@ def seat_group_index(party_id):
         'party': party,
         'groups': groups_for_admin,
     }
+
+
+@blueprint.get('/seat_groups/<uuid:group_id>/occupy')
+@permission_required('ticketing.administrate_seat_occupancy')
+@templated
+def seat_group_occupy_form(group_id, erroneous_form=None):
+    """Show form to occupy a seat group."""
+    group = _get_seat_group_or_404(group_id)
+
+    party = party_service.get_party(group.party_id)
+
+    form = erroneous_form if erroneous_form else SeatGroupOccupyForm()
+    form.set_ticket_bundle_id_choices(group)
+
+    return {
+        'party': party,
+        'group': group,
+        'form': form,
+    }
+
+
+@blueprint.post('/seat_groups/<uuid:group_id>/occupy')
+@permission_required('ticketing.administrate_seat_occupancy')
+def seat_group_occupy(group_id, erroneous_form=None):
+    """Occupy a seat group."""
+    group = _get_seat_group_or_404(group_id)
+
+    party = party_service.get_party(group.party_id)
+
+    form = SeatGroupOccupyForm(request.form)
+    form.set_ticket_bundle_id_choices(group)
+
+    if not form.validate():
+        return seat_group_occupy_form(group.id, form)
+
+    ticket_bundle_id = form.ticket_bundle_id.data
+
+    db_ticket_bundle = ticket_bundle_service.find_bundle(ticket_bundle_id)
+    if not db_ticket_bundle:
+        flash_error(gettext('Ticket bundle not found.'))
+        return redirect_to('.seat_group_index', party_id=party.id)
+
+    ticket_bundle = ticket_bundle_service.db_entity_to_ticket_bundle(
+        db_ticket_bundle
+    )
+
+    match seat_group_service.occupy_group(group, ticket_bundle):
+        case Ok(_):
+            flash_success(
+                gettext(
+                    'Seat group "%(title)s" has been occupied.',
+                    title=group.title,
+                )
+            )
+        case Err(error):
+            flash_error(
+                gettext(
+                    'Seat group "%(title)s" could not be occupied: %(error)s',
+                    title=group.title,
+                    error=error.message,
+                )
+            )
+
+    return redirect_to('.seat_group_index', party_id=party.id)
 
 
 @blueprint.delete('/seat_groups/<uuid:group_id>/release')

@@ -7,9 +7,12 @@ byceps.services.seating.blueprints.admin.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import DateTimeLocalField, IntegerField, StringField
+from wtforms import DateTimeLocalField, IntegerField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
+from byceps.services.seating.models import SeatGroup
+from byceps.services.ticketing import ticket_bundle_service
+from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from byceps.util.l10n import LocalizedForm
 
 
@@ -35,6 +38,56 @@ class AreaCreateForm(_AreaFormBase):
 
 class AreaUpdateForm(_AreaFormBase):
     pass
+
+
+class SeatGroupOccupyForm(LocalizedForm):
+    ticket_bundle_id = SelectField(
+        lazy_gettext('Ticket bundle'), [InputRequired()]
+    )
+
+    def set_ticket_bundle_id_choices(self, group: SeatGroup) -> None:
+        def get_label(db_bundle: DbTicketBundle) -> str:
+            bundle_title = db_bundle.label or lazy_gettext('unnamed')
+            ticket_category_title_label = lazy_gettext('category')
+            ticket_category_title = db_bundle.ticket_category.title
+            ticket_quantity_label = lazy_gettext('tickets')
+            ticket_quantity = db_bundle.ticket_quantity
+            bundle_id_label = lazy_gettext('ID')
+            bundle_id = str(db_bundle.id)
+
+            return (
+                f'{bundle_title} ('
+                f'{ticket_category_title_label}: {ticket_category_title}, '
+                f'{ticket_quantity} {ticket_quantity_label}, '
+                f'{bundle_id_label}: {bundle_id})'
+            )
+
+        db_bundles = _get_matching_db_ticket_bundles(group)
+
+        choices = [
+            (str(db_bundle.id), get_label(db_bundle))
+            for db_bundle in db_bundles
+        ]
+        choices.sort(key=lambda choice: choice[1])
+        choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
+
+        self.ticket_bundle_id.choices = choices
+
+
+def _get_matching_db_ticket_bundles(group: SeatGroup) -> list[DbTicketBundle]:
+    db_bundles = ticket_bundle_service.get_bundles_for_party(group.party_id)
+    return [
+        db_bundle
+        for db_bundle in db_bundles
+        if _is_matching_bundle(db_bundle, group)
+    ]
+
+
+def _is_matching_bundle(db_bundle: DbTicketBundle, group: SeatGroup) -> bool:
+    return (
+        db_bundle.ticket_category.id == group.ticket_category_id
+        and db_bundle.ticket_quantity == group.seat_quantity
+    )
 
 
 class ReservationPreconditionCreateForm(LocalizedForm):

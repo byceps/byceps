@@ -619,6 +619,7 @@ textarea.form-control {
 }
 
 input.form-control:not([size]):not([type='checkbox']):not([type='date']):not([type='datetime-local']):not([type='radio']):not([type='time']),
+select.form-control.is-wide,
 textarea.form-control {
   width: 100%;
 }

@@ -9,7 +9,7 @@ byceps.services.ticketing.ticket_bundle_service
 from collections.abc import Sequence
 from datetime import datetime
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, Select
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
 from byceps.database import db, paginate, Pagination
@@ -162,11 +162,22 @@ def get_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
     ).all()
 
 
+def get_bundles_for_party(party_id: PartyID) -> Sequence[DbTicketBundle]:
+    """Return the party's ticket bundles to show on the specified page."""
+    stmt = _get_bundles_for_party_stmt(party_id)
+    return db.session.scalars(stmt).all()
+
+
 def get_bundles_for_party_paginated(
     party_id: PartyID, page: int, per_page: int
 ) -> Pagination:
     """Return the party's ticket bundles to show on the specified page."""
-    stmt = (
+    stmt = _get_bundles_for_party_stmt(party_id)
+    return paginate(stmt, page, per_page)
+
+
+def _get_bundles_for_party_stmt(party_id: PartyID) -> Select:
+    return (
         select(DbTicketBundle)
         .join(DbTicketCategory)
         .filter(DbTicketCategory.party_id == party_id)
@@ -176,8 +187,6 @@ def get_bundles_for_party_paginated(
         )
         .order_by(DbTicketBundle.created_at.desc())
     )
-
-    return paginate(stmt, page, per_page)
 
 
 def db_entity_to_ticket_bundle(
