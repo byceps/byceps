@@ -208,6 +208,6 @@ def _db_entity_to_occupancy(
 ) -> SeatGroupOccupancy:
     return SeatGroupOccupancy(
         id=db_occupancy.id,
-        group_id=db_occupancy.group_id,
+        group_id=db_occupancy.seat_group_id,
         ticket_bundle_id=db_occupancy.ticket_bundle_id,
     )
