@@ -189,31 +189,29 @@ def _get_bundles_for_party_stmt(party_id: PartyID) -> Select:
     )
 
 
-def db_entity_to_ticket_bundle(
-    db_ticket_bundle: DbTicketBundle,
-) -> TicketBundle:
+def db_entity_to_ticket_bundle(db_bundle: DbTicketBundle) -> TicketBundle:
     ticket_category = ticket_category_service.get_category(
-        db_ticket_bundle.ticket_category_id
+        db_bundle.ticket_category_id
     )
 
-    owner = user_service.get_user(db_ticket_bundle.owned_by.id)
+    owner = user_service.get_user(db_bundle.owned_by.id)
 
     seats_manager = (
-        user_service.get_user(db_ticket_bundle.seats_managed_by.id)
-        if db_ticket_bundle.seats_managed_by
+        user_service.get_user(db_bundle.seats_managed_by.id)
+        if db_bundle.seats_managed_by
         else None
     )
 
     users_manager = (
-        user_service.get_user(db_ticket_bundle.users_managed_by.id)
-        if db_ticket_bundle.users_managed_by
+        user_service.get_user(db_bundle.users_managed_by.id)
+        if db_bundle.users_managed_by
         else None
     )
 
-    ticket_ids = {db_ticket.id for db_ticket in db_ticket_bundle.tickets}
+    ticket_ids = {db_ticket.id for db_ticket in db_bundle.tickets}
 
     return _db_entity_to_ticket_bundle(
-        db_ticket_bundle,
+        db_bundle,
         ticket_category,
         owner,
         seats_manager,
@@ -223,7 +221,7 @@ def db_entity_to_ticket_bundle(
 
 
 def _db_entity_to_ticket_bundle(
-    db_ticket_bundle: DbTicketBundle,
+    db_bundle: DbTicketBundle,
     ticket_category: TicketCategory,
     owner: User,
     seats_manager: User | None,
@@ -231,15 +229,15 @@ def _db_entity_to_ticket_bundle(
     ticket_ids: set[TicketID],
 ) -> TicketBundle:
     return TicketBundle(
-        id=db_ticket_bundle.id,
-        created_at=db_ticket_bundle.created_at,
-        party_id=db_ticket_bundle.party_id,
+        id=db_bundle.id,
+        created_at=db_bundle.created_at,
+        party_id=db_bundle.party_id,
         ticket_category=ticket_category,
-        ticket_quantity=db_ticket_bundle.ticket_quantity,
+        ticket_quantity=db_bundle.ticket_quantity,
         owned_by=owner,
         seats_managed_by=seats_manager,
         users_managed_by=users_manager,
-        label=db_ticket_bundle.label,
-        revoked=db_ticket_bundle.revoked,
+        label=db_bundle.label,
+        revoked=db_bundle.revoked,
         ticket_ids=ticket_ids,
     )
