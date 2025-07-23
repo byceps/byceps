@@ -55,19 +55,7 @@ def occupy_group(
     group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[SeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
-    match _ensure_ticket_bundle_is_available(ticket_bundle):
-        case Err(e):
-            return Err(e)
-
-    match _ensure_categories_match(group, ticket_bundle):
-        case Err(e):
-            return Err(e)
-
-    match _ensure_quantities_match(group, ticket_bundle):
-        case Err(e):
-            return Err(e)
-
-    match _ensure_seats_are_unoccupied(group):
+    match _ensure_ticket_bundle_can_occupy_seat_group(group, ticket_bundle):
         case Err(e):
             return Err(e)
 
@@ -84,19 +72,34 @@ def switch_group(
     target_group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
+    match _ensure_ticket_bundle_can_occupy_seat_group(
+        target_group, ticket_bundle
+    ):
+        case Err(e):
+            return Err(e)
+
+    return Ok(None)
+
+
+def _ensure_ticket_bundle_can_occupy_seat_group(
+    group: SeatGroup, ticket_bundle: TicketBundle
+) -> Result[None, SeatingError]:
+    """Return an error if reasons are found why the ticket bundle cannot
+    occupy the seat group.
+    """
     match _ensure_ticket_bundle_is_available(ticket_bundle):
         case Err(e):
             return Err(e)
 
-    match _ensure_categories_match(target_group, ticket_bundle):
+    match _ensure_categories_match(group, ticket_bundle):
         case Err(e):
             return Err(e)
 
-    match _ensure_quantities_match(target_group, ticket_bundle):
+    match _ensure_quantities_match(group, ticket_bundle):
         case Err(e):
             return Err(e)
 
-    match _ensure_seats_are_unoccupied(target_group):
+    match _ensure_seats_are_unoccupied(group):
         case Err(e):
             return Err(e)
 
