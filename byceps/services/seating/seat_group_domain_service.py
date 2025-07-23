@@ -55,6 +55,12 @@ def occupy_group(
     group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[SeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
+    bundle_availability_result = _ensure_ticket_bundle_is_available(
+        ticket_bundle
+    )
+    if bundle_availability_result.is_err():
+        return Err(bundle_availability_result.unwrap_err())
+
     categories_match_result = _ensure_categories_match(group, ticket_bundle)
     if categories_match_result.is_err():
         return Err(categories_match_result.unwrap_err())
@@ -80,6 +86,12 @@ def switch_group(
     target_group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
+    bundle_availability_result = _ensure_ticket_bundle_is_available(
+        ticket_bundle
+    )
+    if bundle_availability_result.is_err():
+        return Err(bundle_availability_result.unwrap_err())
+
     categories_match_result = _ensure_categories_match(
         target_group, ticket_bundle
     )
@@ -95,6 +107,16 @@ def switch_group(
     unoccupied_check_result = _ensure_seats_are_unoccupied(target_group)
     if unoccupied_check_result.is_err():
         return Err(unoccupied_check_result.unwrap_err())
+
+    return Ok(None)
+
+
+def _ensure_ticket_bundle_is_available(
+    bundle: TicketBundle,
+) -> Result[None, SeatingError]:
+    """Return an error if the ticket bundle already occupies a seat group."""
+    if bundle.occupied_seat_group_id:
+        return Err(SeatingError('Ticket bundle already occupies a seat group.'))
 
     return Ok(None)
 
