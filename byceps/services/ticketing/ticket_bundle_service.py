@@ -164,10 +164,12 @@ def get_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
     ).all()
 
 
-def get_bundles_for_party(party_id: PartyID) -> Sequence[DbTicketBundle]:
-    """Return the party's ticket bundles to show on the specified page."""
+def get_bundles_for_party(party_id: PartyID) -> list[TicketBundle]:
+    """Return the party's ticket bundles."""
     stmt = _get_bundles_for_party_stmt(party_id)
-    return db.session.scalars(stmt).all()
+    db_bundles = db.session.scalars(stmt).all()
+
+    return [db_entity_to_ticket_bundle(db_bundle) for db_bundle in db_bundles]
 
 
 def get_bundles_for_party_paginated(
