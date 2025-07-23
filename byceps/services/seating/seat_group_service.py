@@ -129,6 +129,13 @@ def release_group(
     if not group:
         return Err(SeatingError('Seat group to release not found.'))
 
+    party = party_service.get_party(group.party_id)
+
+    release_result = seat_group_domain_service.release_group(party, group)
+    match release_result:
+        case Err(e):
+            return Err(e)
+
     return seat_group_repository.release_group(group_id)
 
 

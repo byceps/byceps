@@ -83,6 +83,15 @@ def switch_group(
     return Ok(None)
 
 
+def release_group(party: Party, group: SeatGroup) -> Result[None, SeatingError]:
+    """Release a seat group so it becomes available again."""
+    match _ensure_party_is_not_archived(party):
+        case Err(e):
+            return Err(e)
+
+    return Ok(None)
+
+
 def _ensure_ticket_bundle_can_occupy_seat_group(
     party: Party, group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
