@@ -6,7 +6,7 @@ byceps.services.seating.seat_group_domain_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.party.models import PartyID
+from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing.models.ticket import (
     TicketBundle,
     TicketCategoryID,
@@ -52,10 +52,12 @@ def create_group(
 
 
 def occupy_group(
-    group: SeatGroup, ticket_bundle: TicketBundle
+    party: Party, group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[SeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
-    match _ensure_ticket_bundle_can_occupy_seat_group(group, ticket_bundle):
+    match _ensure_ticket_bundle_can_occupy_seat_group(
+        party, group, ticket_bundle
+    ):
         case Err(e):
             return Err(e)
 
@@ -69,11 +71,11 @@ def occupy_group(
 
 
 def switch_group(
-    target_group: SeatGroup, ticket_bundle: TicketBundle
+    party: Party, target_group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
     match _ensure_ticket_bundle_can_occupy_seat_group(
-        target_group, ticket_bundle
+        party, target_group, ticket_bundle
     ):
         case Err(e):
             return Err(e)
@@ -82,11 +84,15 @@ def switch_group(
 
 
 def _ensure_ticket_bundle_can_occupy_seat_group(
-    group: SeatGroup, ticket_bundle: TicketBundle
+    party: Party, group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
     """Return an error if reasons are found why the ticket bundle cannot
     occupy the seat group.
     """
+    match _ensure_party_is_not_archived(party):
+        case Err(e):
+            return Err(e)
+
     match _ensure_ticket_bundle_is_available(ticket_bundle):
         case Err(e):
             return Err(e)
@@ -102,6 +108,18 @@ def _ensure_ticket_bundle_can_occupy_seat_group(
     match _ensure_seats_are_unoccupied(group):
         case Err(e):
             return Err(e)
+
+    return Ok(None)
+
+
+def _ensure_party_is_not_archived(party: Party) -> Result[None, SeatingError]:
+    """Return an error if the party is archived."""
+    if not party.archived:
+        return Err(
+            SeatingError(
+                'Seat group cannot be changed because party is archived.'
+            )
+        )
 
     return Ok(None)
 

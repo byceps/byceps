@@ -6,6 +6,7 @@ byceps.services.seating.seat_group_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.services.party import party_service
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_bundle_service
 from byceps.services.ticketing.models.ticket import (
@@ -50,8 +51,10 @@ def occupy_group(
     if group_availability_result.is_err():
         return Err(group_availability_result.unwrap_err())
 
+    party = party_service.get_party(group.party_id)
+
     occupation_result = seat_group_domain_service.occupy_group(
-        group, ticket_bundle
+        party, group, ticket_bundle
     )
     match occupation_result:
         case Ok(sgo):
@@ -86,8 +89,10 @@ def switch_group(
     if group_availability_result.is_err():
         return Err(group_availability_result.unwrap_err())
 
+    party = party_service.get_party(target_group.party_id)
+
     switch_result = seat_group_domain_service.switch_group(
-        target_group, ticket_bundle
+        party, target_group, ticket_bundle
     )
     match switch_result:
         case Err(e):
