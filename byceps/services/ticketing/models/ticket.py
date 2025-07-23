@@ -54,6 +54,10 @@ class TicketBundle:
     ticket_ids: set[TicketID]
     occupied_seat_group_id: SeatGroupID | None
 
+    @property
+    def occupies_seat_group(self) -> bool:
+        return self.occupied_seat_group_id is not None
+
 
 @dataclass(frozen=True, kw_only=True)
 class TicketSaleStats:

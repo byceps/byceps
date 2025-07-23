@@ -137,7 +137,7 @@ def _ensure_ticket_bundle_is_available(
     bundle: TicketBundle,
 ) -> Result[None, SeatingError]:
     """Return an error if the ticket bundle already occupies a seat group."""
-    if bundle.occupied_seat_group_id:
+    if bundle.occupies_seat_group:
         return Err(SeatingError('Ticket bundle already occupies a seat group.'))
 
     return Ok(None)
