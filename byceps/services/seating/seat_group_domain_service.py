@@ -55,23 +55,21 @@ def occupy_group(
     group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[SeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
-    bundle_availability_result = _ensure_ticket_bundle_is_available(
-        ticket_bundle
-    )
-    if bundle_availability_result.is_err():
-        return Err(bundle_availability_result.unwrap_err())
+    match _ensure_ticket_bundle_is_available(ticket_bundle):
+        case Err(e):
+            return Err(e)
 
-    categories_match_result = _ensure_categories_match(group, ticket_bundle)
-    if categories_match_result.is_err():
-        return Err(categories_match_result.unwrap_err())
+    match _ensure_categories_match(group, ticket_bundle):
+        case Err(e):
+            return Err(e)
 
-    quantities_match_result = _ensure_quantities_match(group, ticket_bundle)
-    if quantities_match_result.is_err():
-        return Err(quantities_match_result.unwrap_err())
+    match _ensure_quantities_match(group, ticket_bundle):
+        case Err(e):
+            return Err(e)
 
-    unoccupied_check_result = _ensure_seats_are_unoccupied(group)
-    if unoccupied_check_result.is_err():
-        return Err(unoccupied_check_result.unwrap_err())
+    match _ensure_seats_are_unoccupied(group):
+        case Err(e):
+            return Err(e)
 
     occupancy = SeatGroupOccupancy(
         id=generate_uuid7(),
@@ -86,27 +84,21 @@ def switch_group(
     target_group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
-    bundle_availability_result = _ensure_ticket_bundle_is_available(
-        ticket_bundle
-    )
-    if bundle_availability_result.is_err():
-        return Err(bundle_availability_result.unwrap_err())
+    match _ensure_ticket_bundle_is_available(ticket_bundle):
+        case Err(e):
+            return Err(e)
 
-    categories_match_result = _ensure_categories_match(
-        target_group, ticket_bundle
-    )
-    if categories_match_result.is_err():
-        return Err(categories_match_result.unwrap_err())
+    match _ensure_categories_match(target_group, ticket_bundle):
+        case Err(e):
+            return Err(e)
 
-    quantities_match_result = _ensure_quantities_match(
-        target_group, ticket_bundle
-    )
-    if quantities_match_result.is_err():
-        return Err(quantities_match_result.unwrap_err())
+    match _ensure_quantities_match(target_group, ticket_bundle):
+        case Err(e):
+            return Err(e)
 
-    unoccupied_check_result = _ensure_seats_are_unoccupied(target_group)
-    if unoccupied_check_result.is_err():
-        return Err(unoccupied_check_result.unwrap_err())
+    match _ensure_seats_are_unoccupied(target_group):
+        case Err(e):
+            return Err(e)
 
     return Ok(None)
 
