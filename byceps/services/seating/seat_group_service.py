@@ -129,6 +129,10 @@ def release_group(
     if not group:
         return Err(SeatingError('Seat group to release not found.'))
 
+    occupancy = find_occupancy_for_group(group.id)
+    if not occupancy:
+        return Err(SeatingError('Seat group to release is not occupied.'))
+
     party = party_service.get_party(group.party_id)
 
     release_result = seat_group_domain_service.release_group(party, group)
