@@ -78,7 +78,8 @@ def _get_matching_ticket_bundles(group: SeatGroup) -> list[TicketBundle]:
 
 def _is_matching_bundle(bundle: TicketBundle, group: SeatGroup) -> bool:
     return (
-        bundle.ticket_category.id == group.ticket_category_id
+        not bundle.occupies_seat_group
+        and bundle.ticket_category.id == group.ticket_category_id
         and bundle.ticket_quantity == group.seat_quantity
     )
 
