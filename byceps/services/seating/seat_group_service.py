@@ -125,6 +125,10 @@ def release_group(
     group_id: SeatGroupID,
 ) -> Result[None, SeatingError]:
     """Release a seat group so it becomes available again."""
+    group = find_group(group_id)
+    if not group:
+        return Err(SeatingError('Seat group to release not found.'))
+
     return seat_group_repository.release_group(group_id)
 
 
