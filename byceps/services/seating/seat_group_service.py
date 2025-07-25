@@ -29,10 +29,9 @@ def create_group(
     seats: list[Seat],
 ) -> Result[SeatGroup, SeatingError]:
     """Create a seat group and assign the given seats."""
-    creation_result = seat_group_domain_service.create_group(
+    match seat_group_domain_service.create_group(
         party_id, ticket_category_id, title, seats
-    )
-    match creation_result:
+    ):
         case Ok(g):
             group = g
         case Err(e):
@@ -47,16 +46,13 @@ def occupy_group(
     group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[SeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
-    group_availability_result = _ensure_group_is_available(group)
-    if group_availability_result.is_err():
-        return Err(group_availability_result.unwrap_err())
+    match _ensure_group_is_available(group):
+        case Err(e):
+            return Err(e)
 
     party = party_service.get_party(group.party_id)
 
-    occupation_result = seat_group_domain_service.occupy_group(
-        party, group, ticket_bundle
-    )
-    match occupation_result:
+    match seat_group_domain_service.occupy_group(party, group, ticket_bundle):
         case Ok(occupancy):
             pass
         case Err(e):
@@ -64,10 +60,7 @@ def occupy_group(
 
     db_tickets = ticket_bundle_service.get_tickets_for_bundle(ticket_bundle.id)
 
-    db_occupation_result = seat_group_repository.occupy_group(
-        group, occupancy, db_tickets
-    )
-    match db_occupation_result:
+    match seat_group_repository.occupy_group(group, occupancy, db_tickets):
         case Err(e):
             return Err(e)
 
@@ -85,16 +78,15 @@ def switch_group(
         db_ticket_bundle
     )
 
-    group_availability_result = _ensure_group_is_available(target_group)
-    if group_availability_result.is_err():
-        return Err(group_availability_result.unwrap_err())
+    match _ensure_group_is_available(target_group):
+        case Err(e):
+            return Err(e)
 
     party = party_service.get_party(target_group.party_id)
 
-    switch_result = seat_group_domain_service.switch_group(
+    match seat_group_domain_service.switch_group(
         party, target_group, ticket_bundle
-    )
-    match switch_result:
+    ):
         case Err(e):
             return Err(e)
 
@@ -102,10 +94,9 @@ def switch_group(
         occupancy.ticket_bundle_id
     )
 
-    db_switch_result = seat_group_repository.switch_group(
+    match seat_group_repository.switch_group(
         occupancy, target_group, db_tickets
-    )
-    match db_switch_result:
+    ):
         case Err(e):
             return Err(e)
 
@@ -135,8 +126,7 @@ def release_group(
 
     party = party_service.get_party(group.party_id)
 
-    release_result = seat_group_domain_service.release_group(party, group)
-    match release_result:
+    match seat_group_domain_service.release_group(party, group):
         case Err(e):
             return Err(e)
 
