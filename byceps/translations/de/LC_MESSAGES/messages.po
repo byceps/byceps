@@ -5139,6 +5139,26 @@ msgstr "Party-Historie"
 msgid "There haven't been any parties yet."
 msgstr "Es haben noch keine Partys stattgefunden."
 
+#: byceps/services/seating/announcing.py:30
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has occupied seat group "
+"\"%(seat_group_title)s\" with ticket bundle %(ticket_bundle_id)s owned by"
+" %(ticket_bundle_owner_screen_name)s."
+msgstr ""
+"%(initiator_screen_name)s hat Sitzplatz-Gruppe \"%(seat_group_title)s\" "
+"mit Ticketpaket %(ticket_bundle_id)s von "
+"%(ticket_bundle_owner_screen_name)s belegt."
+
+#: byceps/services/seating/announcing.py:48
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has released seat group "
+"\"%(seat_group_title)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat Sitzplatz-Gruppe \"%(seat_group_title)s\" "
+"freigegeben."
+
 #: byceps/services/seating/permissions.py:17
 msgid "Administrate seating"
 msgstr "Sitzpläne und -plätze verwalten"

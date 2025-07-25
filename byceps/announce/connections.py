@@ -77,6 +77,12 @@ from byceps.services.page.events import (
     PageDeletedEvent,
     PageUpdatedEvent,
 )
+from byceps.services.seating import announcing as seating_handlers
+from byceps.services.seating import signals as seating_signals
+from byceps.services.seating.events import (
+    SeatGroupOccupiedEvent,
+    SeatGroupReleasedEvent,
+)
 from byceps.services.shop.order import announcing as shop_order_handlers
 from byceps.services.shop.order import signals as shop_order_signals
 from byceps.services.shop.order.events import (
@@ -305,6 +311,16 @@ for event, name, handler in [
     (PageDeletedEvent, 'page-deleted', page_handlers.announce_page_deleted),
     (PageUpdatedEvent, 'page-updated', page_handlers.announce_page_updated),
     (
+        SeatGroupOccupiedEvent,
+        'seat-group-occupied',
+        seating_handlers.announce_seat_group_occupied,
+    ),
+    (
+        SeatGroupReleasedEvent,
+        'seat-group-released',
+        seating_handlers.announce_seat_group_released,
+    ),
+    (
         ShopOrderCanceledEvent,
         'shop-order-canceled',
         shop_order_handlers.announce_order_canceled,
@@ -488,6 +504,8 @@ _SIGNALS: list[NamedSignal] = [
     page_signals.page_created,
     page_signals.page_deleted,
     page_signals.page_updated,
+    seating_signals.seat_group_occupied,
+    seating_signals.seat_group_released,
     shop_order_signals.order_canceled,
     shop_order_signals.order_paid,
     shop_order_signals.order_placed,
