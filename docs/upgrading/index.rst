@@ -6,3 +6,4 @@ Upgrading
    :maxdepth: 2
 
    python-packages
+   database
