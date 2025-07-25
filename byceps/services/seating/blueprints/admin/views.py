@@ -293,6 +293,7 @@ def seat_group_occupy(group_id, erroneous_form=None):
                     title=group.title,
                 )
             )
+            signals.seat_group_occupied.send(None, event=event)
         case Err(error):
             flash_error(
                 gettext(
@@ -301,8 +302,6 @@ def seat_group_occupy(group_id, erroneous_form=None):
                     error=error.message,
                 )
             )
-
-    signals.seat_group_occupied.send(None, event=event)
 
     return redirect_to('.seat_group_index', party_id=party.id)
 
@@ -324,6 +323,7 @@ def seat_group_release(group_id):
                     title=group.title,
                 )
             )
+            signals.seat_group_released.send(None, event=event)
         case Err(error):
             flash_error(
                 gettext(
@@ -332,8 +332,6 @@ def seat_group_release(group_id):
                     error=error.message,
                 )
             )
-
-    signals.seat_group_released.send(None, event=event)
 
 
 # reservation precondition
