@@ -176,10 +176,10 @@ def update_product(
     archived: bool,
 ) -> Product:
     """Update the product."""
-    product = get_product(product_id)
+    original_product = get_product(product_id)
 
-    product_domain_service.update_product(
-        product,
+    updated_product = product_domain_service.update_product(
+        original_product,
         name,
         price,
         tax_rate,
@@ -192,9 +192,9 @@ def update_product(
         archived,
     )
 
-    product_repository.update_product(product)
+    product_repository.update_product(updated_product)
 
-    return product
+    return updated_product
 
 
 def create_product_image(
