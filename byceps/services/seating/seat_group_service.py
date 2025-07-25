@@ -57,8 +57,8 @@ def occupy_group(
         party, group, ticket_bundle
     )
     match occupation_result:
-        case Ok(sgo):
-            occupancy = sgo
+        case Ok(occupancy):
+            pass
         case Err(e):
             return Err(e)
 
