@@ -73,6 +73,7 @@ def occupy_group(
 
 def switch_group(
     party: Party,
+    old_group: SeatGroup,
     new_group: SeatGroup,
     ticket_bundle: TicketBundle,
     initiator: User,

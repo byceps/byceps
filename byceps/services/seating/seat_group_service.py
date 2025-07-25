@@ -81,6 +81,14 @@ def switch_group(
         db_ticket_bundle
     )
 
+    old_group_id = ticket_bundle.occupied_seat_group_id
+    if not old_group_id:
+        return Err(SeatingError('Ticket bundle occupies no seat group.'))
+
+    old_group = find_group(old_group_id)
+    if not old_group:
+        return Err(SeatingError('Seat group to switch away from not found.'))
+
     match _ensure_group_is_available(new_group):
         case Err(e):
             return Err(e)
@@ -88,7 +96,7 @@ def switch_group(
     party = party_service.get_party(new_group.party_id)
 
     match seat_group_domain_service.switch_group(
-        party, new_group, ticket_bundle, initiator
+        party, old_group, new_group, ticket_bundle, initiator
     ):
         case Err(e):
             return Err(e)
