@@ -71,11 +71,11 @@ def occupy_group(
 
 
 def switch_group(
-    party: Party, target_group: SeatGroup, ticket_bundle: TicketBundle
+    party: Party, new_group: SeatGroup, ticket_bundle: TicketBundle
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
     match _ensure_ticket_bundle_can_occupy_seat_group(
-        party, target_group, ticket_bundle
+        party, new_group, ticket_bundle
     ):
         case Err(e):
             return Err(e)

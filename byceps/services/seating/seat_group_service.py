@@ -68,7 +68,7 @@ def occupy_group(
 
 
 def switch_group(
-    occupancy: SeatGroupOccupancy, target_group: SeatGroup
+    occupancy: SeatGroupOccupancy, new_group: SeatGroup
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
     db_ticket_bundle = ticket_bundle_service.get_bundle(
@@ -78,14 +78,14 @@ def switch_group(
         db_ticket_bundle
     )
 
-    match _ensure_group_is_available(target_group):
+    match _ensure_group_is_available(new_group):
         case Err(e):
             return Err(e)
 
-    party = party_service.get_party(target_group.party_id)
+    party = party_service.get_party(new_group.party_id)
 
     match seat_group_domain_service.switch_group(
-        party, target_group, ticket_bundle
+        party, new_group, ticket_bundle
     ):
         case Err(e):
             return Err(e)
@@ -94,9 +94,7 @@ def switch_group(
         occupancy.ticket_bundle_id
     )
 
-    match seat_group_repository.switch_group(
-        occupancy, target_group, db_tickets
-    ):
+    match seat_group_repository.switch_group(occupancy, new_group, db_tickets):
         case Err(e):
             return Err(e)
 

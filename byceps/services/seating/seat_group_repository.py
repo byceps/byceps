@@ -67,7 +67,7 @@ def occupy_group(
 
 def switch_group(
     occupancy: SeatGroupOccupancy,
-    target_group: SeatGroup,
+    new_group: SeatGroup,
     db_tickets: Sequence[DbTicket],
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
@@ -77,9 +77,9 @@ def switch_group(
     if db_occupancy is None:
         return Err(SeatingError('Seat group occupancy not found in database.'))
 
-    db_occupancy.seat_group_id = target_group.id
+    db_occupancy.seat_group_id = new_group.id
 
-    occupy_seats_result = _occupy_seats(target_group.seats, db_tickets)
+    occupy_seats_result = _occupy_seats(new_group.seats, db_tickets)
     if occupy_seats_result.is_err():
         return Err(occupy_seats_result.unwrap_err())
 
