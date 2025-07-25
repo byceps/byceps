@@ -309,11 +309,22 @@ def seat_group_release(group_id):
     """Release the seat group."""
     group = _get_seat_group_or_404(group_id)
 
-    seat_group_service.release_group(group.id)
-
-    flash_success(
-        gettext('Seat group "%(title)s" has been released.', title=group.title)
-    )
+    match seat_group_service.release_group(group.id):
+        case Ok(_):
+            flash_success(
+                gettext(
+                    'Seat group "%(title)s" has been released.',
+                    title=group.title,
+                )
+            )
+        case Err(error):
+            flash_error(
+                gettext(
+                    'Seat group "%(title)s" could not be released: %(error)s',
+                    title=group.title,
+                    error=error.message,
+                )
+            )
 
 
 # reservation precondition

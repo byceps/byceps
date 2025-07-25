@@ -5222,6 +5222,11 @@ msgstr "Sitzplatz-Gruppe \"%(title)s\" konnte nicht belegt werden: %(error)s"
 msgid "Seat group \"%(title)s\" has been released."
 msgstr "Sitzplatz-Gruppe \"%(title)s\" wurde freigegeben."
 
+#: byceps/services/seating/blueprints/admin/views.py:323
+#, python-format
+msgid "Seat group \"%(title)s\" could not be released: %(error)s"
+msgstr "Sitzplatz-Gruppe \"%(title)s\" konnte nicht freigegeben werden: %(error)s"
+
 #: byceps/services/seating/blueprints/admin/templates/admin/seating/area_create_form.html:6
 #: byceps/services/seating/blueprints/admin/templates/admin/seating/area_index.html:18
 msgid "Create area"
