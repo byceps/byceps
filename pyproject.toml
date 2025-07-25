@@ -52,7 +52,7 @@ dependencies = [
     "qrcode>=8.2",
     "redis>=6.2.0",
     "rq-dashboard>=0.8.4",
-    "rq>=2.4.0",
+    "rq>=2.4.1",
     "rtoml==0.12.0",
     "schwifty>=2025.6.0",
     "secret-type>=0.3.0",
