@@ -20,6 +20,7 @@ from byceps.util.result import Err, Ok, Result
 from . import seat_group_domain_service, seat_group_repository, seat_service
 from .dbmodels.seat_group import DbSeatGroup, DbSeatGroupOccupancy
 from .errors import SeatingError
+from .events import SeatGroupOccupiedEvent, SeatGroupReleasedEvent
 from .models import Seat, SeatGroup, SeatGroupID, SeatGroupOccupancy, SeatID
 
 
@@ -45,7 +46,7 @@ def create_group(
 
 def occupy_group(
     group: SeatGroup, ticket_bundle: TicketBundle, initiator: User
-) -> Result[SeatGroupOccupancy, SeatingError]:
+) -> Result[tuple[SeatGroupOccupancy, SeatGroupOccupiedEvent], SeatingError]:
     """Occupy the seat group with that ticket bundle."""
     match _ensure_group_is_available(group):
         case Err(e):
@@ -56,7 +57,7 @@ def occupy_group(
     match seat_group_domain_service.occupy_group(
         party, group, ticket_bundle, initiator
     ):
-        case Ok(occupancy):
+        case Ok((occupancy, event)):
             pass
         case Err(e):
             return Err(e)
@@ -67,12 +68,14 @@ def occupy_group(
         case Err(e):
             return Err(e)
 
-    return Ok(occupancy)
+    return Ok((occupancy, event))
 
 
 def switch_group(
     occupancy: SeatGroupOccupancy, new_group: SeatGroup, initiator: User
-) -> Result[None, SeatingError]:
+) -> Result[
+    tuple[SeatGroupReleasedEvent, SeatGroupOccupiedEvent], SeatingError
+]:
     """Switch ticket bundle to another seat group."""
     db_ticket_bundle = ticket_bundle_service.get_bundle(
         occupancy.ticket_bundle_id
@@ -98,6 +101,8 @@ def switch_group(
     match seat_group_domain_service.switch_group(
         party, old_group, new_group, ticket_bundle, initiator
     ):
+        case Ok((release_event, occupation_event)):
+            pass
         case Err(e):
             return Err(e)
 
@@ -109,7 +114,7 @@ def switch_group(
         case Err(e):
             return Err(e)
 
-    return Ok(None)
+    return Ok((release_event, occupation_event))
 
 
 def _ensure_group_is_available(group: SeatGroup) -> Result[None, SeatingError]:
@@ -123,7 +128,7 @@ def _ensure_group_is_available(group: SeatGroup) -> Result[None, SeatingError]:
 
 def release_group(
     group_id: SeatGroupID, initiator: User
-) -> Result[None, SeatingError]:
+) -> Result[SeatGroupReleasedEvent, SeatingError]:
     """Release a seat group so it becomes available again."""
     group = find_group(group_id)
     if not group:
@@ -136,6 +141,8 @@ def release_group(
     party = party_service.get_party(group.party_id)
 
     match seat_group_domain_service.release_group(party, group, initiator):
+        case Ok(event):
+            pass
         case Err(e):
             return Err(e)
 
@@ -143,7 +150,7 @@ def release_group(
         case Err(e):
             return Err(e)
 
-    return Ok(None)
+    return Ok(event)
 
 
 def count_groups_for_party(party_id: PartyID) -> int:

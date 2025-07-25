@@ -17,6 +17,7 @@ from byceps.services.seating import (
     seat_reservation_service,
     seat_service,
     seating_area_service,
+    signals,
 )
 from byceps.services.seating.models import (
     SeatingArea,
@@ -285,7 +286,7 @@ def seat_group_occupy(group_id, erroneous_form=None):
     initiator = g.user
 
     match seat_group_service.occupy_group(group, ticket_bundle, initiator):
-        case Ok(_):
+        case Ok((_, event)):
             flash_success(
                 gettext(
                     'Seat group "%(title)s" has been occupied.',
@@ -301,6 +302,8 @@ def seat_group_occupy(group_id, erroneous_form=None):
                 )
             )
 
+    signals.seat_group_occupied.send(None, event=event)
+
     return redirect_to('.seat_group_index', party_id=party.id)
 
 
@@ -314,7 +317,7 @@ def seat_group_release(group_id):
     initiator = g.user
 
     match seat_group_service.release_group(group.id, initiator):
-        case Ok(_):
+        case Ok(event):
             flash_success(
                 gettext(
                     'Seat group "%(title)s" has been released.',
@@ -329,6 +332,8 @@ def seat_group_release(group_id):
                     error=error.message,
                 )
             )
+
+    signals.seat_group_released.send(None, event=event)
 
 
 # reservation precondition

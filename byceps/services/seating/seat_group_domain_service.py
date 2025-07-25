@@ -6,6 +6,9 @@ byceps.services.seating.seat_group_domain_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
+from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing.models.ticket import (
     TicketBundle,
@@ -16,6 +19,7 @@ from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from .errors import SeatingError
+from .events import SeatGroupOccupiedEvent, SeatGroupReleasedEvent
 from .models import Seat, SeatGroup, SeatGroupID, SeatGroupOccupancy
 
 
@@ -54,7 +58,7 @@ def create_group(
 
 def occupy_group(
     party: Party, group: SeatGroup, ticket_bundle: TicketBundle, initiator: User
-) -> Result[SeatGroupOccupancy, SeatingError]:
+) -> Result[tuple[SeatGroupOccupancy, SeatGroupOccupiedEvent], SeatingError]:
     """Occupy the seat group with that ticket bundle."""
     match _ensure_ticket_bundle_can_occupy_seat_group(
         party, group, ticket_bundle
@@ -68,7 +72,9 @@ def occupy_group(
         ticket_bundle_id=ticket_bundle.id,
     )
 
-    return Ok(occupancy)
+    event = _build_occupation_event(group, ticket_bundle, initiator)
+
+    return Ok((occupancy, event))
 
 
 def switch_group(
@@ -77,7 +83,9 @@ def switch_group(
     new_group: SeatGroup,
     ticket_bundle: TicketBundle,
     initiator: User,
-) -> Result[None, SeatingError]:
+) -> Result[
+    tuple[SeatGroupReleasedEvent, SeatGroupOccupiedEvent], SeatingError
+]:
     """Switch ticket bundle to another seat group."""
     match _ensure_ticket_bundle_can_occupy_seat_group(
         party, new_group, ticket_bundle
@@ -85,18 +93,25 @@ def switch_group(
         case Err(e):
             return Err(e)
 
-    return Ok(None)
+    release_event = _build_release_event(old_group, initiator)
+    occupation_event = _build_occupation_event(
+        new_group, ticket_bundle, initiator
+    )
+
+    return Ok((release_event, occupation_event))
 
 
 def release_group(
     party: Party, group: SeatGroup, initiator: User
-) -> Result[None, SeatingError]:
+) -> Result[SeatGroupReleasedEvent, SeatingError]:
     """Release a seat group so it becomes available again."""
     match _ensure_party_is_not_archived(party):
         case Err(e):
             return Err(e)
 
-    return Ok(None)
+    event = _build_release_event(group, initiator)
+
+    return Ok(event)
 
 
 def _ensure_ticket_bundle_can_occupy_seat_group(
@@ -215,3 +230,27 @@ def _ensure_seats_are_unoccupied(
             )
 
     return Ok(None)
+
+
+def _build_occupation_event(
+    group: SeatGroup, ticket_bundle: TicketBundle, initiator: User
+) -> SeatGroupOccupiedEvent:
+    return SeatGroupOccupiedEvent(
+        occurred_at=datetime.utcnow(),
+        initiator=EventUser.from_user(initiator),
+        seat_group_id=group.id,
+        seat_group_title=group.title,
+        ticket_bundle_id=ticket_bundle.id,
+        ticket_bundle_owner=EventUser.from_user(ticket_bundle.owned_by),
+    )
+
+
+def _build_release_event(
+    group: SeatGroup, initiator: User
+) -> SeatGroupReleasedEvent:
+    return SeatGroupReleasedEvent(
+        occurred_at=datetime.utcnow(),
+        initiator=EventUser.from_user(initiator),
+        seat_group_id=group.id,
+        seat_group_title=group.title,
+    )
