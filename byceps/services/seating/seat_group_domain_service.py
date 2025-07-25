@@ -145,7 +145,7 @@ def _ensure_ticket_bundle_can_occupy_seat_group(
 
 def _ensure_party_is_not_archived(party: Party) -> Result[None, SeatingError]:
     """Return an error if the party is archived."""
-    if not party.archived:
+    if party.archived:
         return Err(
             SeatingError(
                 'Seat group cannot be changed because party is archived.'
