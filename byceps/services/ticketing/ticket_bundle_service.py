@@ -115,7 +115,9 @@ def revoke_bundle(
         db_bundle.id
     )
     if seat_group_id is not None:
-        release_result = seat_group_service.release_group(seat_group_id)
+        release_result = seat_group_service.release_group(
+            seat_group_id, initiator
+        )
         if release_result.is_err():
             error_msg = release_result.unwrap_err().message
             raise ValueError(

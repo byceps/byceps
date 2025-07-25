@@ -14,6 +14,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
     TicketCategoryID,
 )
+from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
 from . import seat_group_domain_service, seat_group_repository, seat_service
@@ -43,7 +44,7 @@ def create_group(
 
 
 def occupy_group(
-    group: SeatGroup, ticket_bundle: TicketBundle
+    group: SeatGroup, ticket_bundle: TicketBundle, initiator: User
 ) -> Result[SeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
     match _ensure_group_is_available(group):
@@ -52,7 +53,9 @@ def occupy_group(
 
     party = party_service.get_party(group.party_id)
 
-    match seat_group_domain_service.occupy_group(party, group, ticket_bundle):
+    match seat_group_domain_service.occupy_group(
+        party, group, ticket_bundle, initiator
+    ):
         case Ok(occupancy):
             pass
         case Err(e):
@@ -68,7 +71,7 @@ def occupy_group(
 
 
 def switch_group(
-    occupancy: SeatGroupOccupancy, new_group: SeatGroup
+    occupancy: SeatGroupOccupancy, new_group: SeatGroup, initiator: User
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
     db_ticket_bundle = ticket_bundle_service.get_bundle(
@@ -85,7 +88,7 @@ def switch_group(
     party = party_service.get_party(new_group.party_id)
 
     match seat_group_domain_service.switch_group(
-        party, new_group, ticket_bundle
+        party, new_group, ticket_bundle, initiator
     ):
         case Err(e):
             return Err(e)
@@ -111,7 +114,7 @@ def _ensure_group_is_available(group: SeatGroup) -> Result[None, SeatingError]:
 
 
 def release_group(
-    group_id: SeatGroupID,
+    group_id: SeatGroupID, initiator: User
 ) -> Result[None, SeatingError]:
     """Release a seat group so it becomes available again."""
     group = find_group(group_id)
@@ -124,7 +127,7 @@ def release_group(
 
     party = party_service.get_party(group.party_id)
 
-    match seat_group_domain_service.release_group(party, group):
+    match seat_group_domain_service.release_group(party, group, initiator):
         case Err(e):
             return Err(e)
 

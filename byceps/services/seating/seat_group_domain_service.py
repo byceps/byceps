@@ -11,6 +11,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketBundle,
     TicketCategoryID,
 )
+from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -52,7 +53,7 @@ def create_group(
 
 
 def occupy_group(
-    party: Party, group: SeatGroup, ticket_bundle: TicketBundle
+    party: Party, group: SeatGroup, ticket_bundle: TicketBundle, initiator: User
 ) -> Result[SeatGroupOccupancy, SeatingError]:
     """Occupy the seat group with that ticket bundle."""
     match _ensure_ticket_bundle_can_occupy_seat_group(
@@ -71,7 +72,10 @@ def occupy_group(
 
 
 def switch_group(
-    party: Party, new_group: SeatGroup, ticket_bundle: TicketBundle
+    party: Party,
+    new_group: SeatGroup,
+    ticket_bundle: TicketBundle,
+    initiator: User,
 ) -> Result[None, SeatingError]:
     """Switch ticket bundle to another seat group."""
     match _ensure_ticket_bundle_can_occupy_seat_group(
@@ -83,7 +87,9 @@ def switch_group(
     return Ok(None)
 
 
-def release_group(party: Party, group: SeatGroup) -> Result[None, SeatingError]:
+def release_group(
+    party: Party, group: SeatGroup, initiator: User
+) -> Result[None, SeatingError]:
     """Release a seat group so it becomes available again."""
     match _ensure_party_is_not_archived(party):
         case Err(e):

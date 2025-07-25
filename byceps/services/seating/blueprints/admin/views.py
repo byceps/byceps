@@ -8,7 +8,7 @@ byceps.services.seating.blueprints.admin.views
 
 from uuid import UUID
 
-from flask import abort, request
+from flask import abort, g, request
 from flask_babel import gettext, to_utc
 
 from byceps.services.party import party_service
@@ -282,7 +282,9 @@ def seat_group_occupy(group_id, erroneous_form=None):
         db_ticket_bundle
     )
 
-    match seat_group_service.occupy_group(group, ticket_bundle):
+    initiator = g.user
+
+    match seat_group_service.occupy_group(group, ticket_bundle, initiator):
         case Ok(_):
             flash_success(
                 gettext(
@@ -309,7 +311,9 @@ def seat_group_release(group_id):
     """Release the seat group."""
     group = _get_seat_group_or_404(group_id)
 
-    match seat_group_service.release_group(group.id):
+    initiator = g.user
+
+    match seat_group_service.release_group(group.id, initiator):
         case Ok(_):
             flash_success(
                 gettext(
