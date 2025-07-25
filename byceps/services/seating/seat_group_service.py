@@ -130,7 +130,11 @@ def release_group(
         case Err(e):
             return Err(e)
 
-    return seat_group_repository.release_group(group_id)
+    match seat_group_repository.release_group(group_id):
+        case Err(e):
+            return Err(e)
+
+    return Ok(None)
 
 
 def count_groups_for_party(party_id: PartyID) -> int:
