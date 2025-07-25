@@ -79,7 +79,7 @@ docs = [
     "sphinx>=8.2.3",
 ]
 test = [
-    "coverage>=7.9.1",
+    "coverage>=7.10.0",
     "freezegun>=1.5.3",
     "pyfakefs>=5.9.1",
     "pytest>=8.4.1",
