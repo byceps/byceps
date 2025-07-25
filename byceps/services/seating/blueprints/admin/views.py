@@ -286,8 +286,7 @@ def seat_group_occupy(group_id, erroneous_form=None):
     initiator = g.user
 
     match seat_group_service.occupy_group(group, ticket_bundle, initiator):
-        case Ok((_, _event)):
-            event = _event
+        case Ok((_, event)):
             flash_success(
                 gettext(
                     'Seat group "%(title)s" has been occupied.',
@@ -318,8 +317,7 @@ def seat_group_release(group_id):
     initiator = g.user
 
     match seat_group_service.release_group(group.id, initiator):
-        case Ok(_event):
-            event = _event
+        case Ok(event):
             flash_success(
                 gettext(
                     'Seat group "%(title)s" has been released.',

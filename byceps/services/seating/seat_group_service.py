@@ -34,8 +34,8 @@ def create_group(
     match seat_group_domain_service.create_group(
         party_id, ticket_category_id, title, seats
     ):
-        case Ok(_group):
-            group = _group
+        case Ok(group):
+            pass
         case Err(e):
             return Err(e)
 
@@ -57,9 +57,8 @@ def occupy_group(
     match seat_group_domain_service.occupy_group(
         party, group, ticket_bundle, initiator
     ):
-        case Ok((_occupancy, _event)):
-            occupancy = _occupancy
-            event = _event
+        case Ok((occupancy, event)):
+            pass
         case Err(e):
             return Err(e)
 
@@ -102,9 +101,8 @@ def switch_group(
     match seat_group_domain_service.switch_group(
         party, old_group, new_group, ticket_bundle, initiator
     ):
-        case Ok((_release_event, _occupation_event)):
-            release_event = _release_event
-            occupation_event = _occupation_event
+        case Ok((release_event, occupation_event)):
+            pass
         case Err(e):
             return Err(e)
 
@@ -143,8 +141,8 @@ def release_group(
     party = party_service.get_party(group.party_id)
 
     match seat_group_domain_service.release_group(party, group, initiator):
-        case Ok(_event):
-            event = _event
+        case Ok(event):
+            pass
         case Err(e):
             return Err(e)
 
