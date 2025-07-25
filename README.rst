@@ -70,7 +70,7 @@ Code Status
 |badge_rtd-build|
 |badge_scrutinizer-ci_coverage|
 |badge_scrutinizer-ci_quality-score|
-|badge_code-climate_maintainability|
+|badge_qlty_maintainability|
 
 
 .. |badge_github-action-test| image:: https://img.shields.io/github/actions/workflow/status/byceps/byceps/test.yml?branch=main
@@ -89,9 +89,9 @@ Code Status
    :alt: Scrutinizer Code Quality
    :target: https://scrutinizer-ci.com/g/byceps/byceps/?branch=main
 
-.. |badge_code-climate_maintainability| image:: https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg
-   :alt: Code Climate
-   :target: https://codeclimate.com/github/byceps/byceps
+.. |badge_qlty_maintainability| image:: https://qlty.sh/gh/byceps/projects/byceps/maintainability.svg
+   :alt: Qlty
+   :target: https://qlty.sh/gh/byceps/projects/byceps
 
 
 Author
