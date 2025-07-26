@@ -306,7 +306,7 @@ def product_add(collection_id):
     form.set_product_id_choices(catalog.shop_id)
 
     if not form.validate():
-        return product_add_form(catalog_id, form)
+        return product_add_form(catalog.id, form)
 
     product_id = form.product_id.data
 
