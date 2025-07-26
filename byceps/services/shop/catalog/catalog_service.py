@@ -184,7 +184,11 @@ def get_collections_and_products_for_catalog(
 
 
 def get_product_collections_for_catalog(
-    catalog_id: CatalogID, *, only_currently_available: bool
+    catalog_id: CatalogID,
+    *,
+    only_currently_available: bool,
+    only_directly_orderable: bool,
+    only_not_requiring_separate_order: bool,
 ) -> list[ProductCollection]:
     """Return the catalog's collections."""
     # Attention: Products attached to products assigned to a catalog
@@ -195,8 +199,8 @@ def get_product_collections_for_catalog(
         for collection, products in get_collections_and_products_for_catalog(
             catalog_id,
             only_currently_available=only_currently_available,
-            only_directly_orderable=True,
-            only_not_requiring_separate_order=True,
+            only_directly_orderable=only_directly_orderable,
+            only_not_requiring_separate_order=only_not_requiring_separate_order,
         )
     ]
 

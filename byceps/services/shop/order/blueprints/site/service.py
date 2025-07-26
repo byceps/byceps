@@ -46,7 +46,10 @@ def _get_collections_from_catalog(
     catalog_id: CatalogID,
 ) -> list[ProductCollection]:
     return catalog_service.get_product_collections_for_catalog(
-        catalog_id, only_currently_available=True
+        catalog_id,
+        only_currently_available=True,
+        only_directly_orderable=True,
+        only_not_requiring_separate_order=True,
     )
 
 
