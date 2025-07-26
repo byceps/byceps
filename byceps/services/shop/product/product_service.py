@@ -355,11 +355,11 @@ def get_products(product_ids: set[ProductID]) -> list[Product]:
 
 
 def get_products_filtered(
-    product_ids: set[ProductID], only_currently_available: bool
+    product_ids: set[ProductID], *, only_currently_available: bool
 ) -> list[Product]:
     """Return the products with some filters applied."""
     db_products = product_repository.get_products_filtered(
-        product_ids, only_currently_available
+        product_ids, only_currently_available=only_currently_available
     )
 
     return [_db_entity_to_product(db_product) for db_product in db_products]

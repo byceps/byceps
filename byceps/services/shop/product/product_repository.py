@@ -277,7 +277,7 @@ def get_products(product_ids: set[ProductID]) -> Sequence[DbProduct]:
 
 
 def get_products_filtered(
-    product_ids: set[ProductID], only_currently_available: bool
+    product_ids: set[ProductID], *, only_currently_available: bool
 ) -> Sequence[DbProduct]:
     """Return the products with some filters applied."""
     if not product_ids:
