@@ -347,22 +347,15 @@ def get_product_by_number(product_number: ProductNumber) -> Product:
     return _db_entity_to_product(db_product)
 
 
-def get_products(product_ids: set[ProductID]) -> list[Product]:
-    """Return the products with those IDs."""
-    db_products = product_repository.get_products(product_ids)
-
-    return [_db_entity_to_product(db_product) for db_product in db_products]
-
-
-def get_products_filtered(
+def get_products(
     product_ids: set[ProductID],
     *,
     only_currently_available: bool,
     only_directly_orderable: bool,
     only_not_requiring_separate_order: bool,
 ) -> list[Product]:
-    """Return the products with some filters applied."""
-    db_products = product_repository.get_products_filtered(
+    """Return the products with those IDs."""
+    db_products = product_repository.get_products(
         product_ids,
         only_currently_available=only_currently_available,
         only_directly_orderable=only_directly_orderable,

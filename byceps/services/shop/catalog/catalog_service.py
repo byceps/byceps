@@ -152,7 +152,7 @@ def get_collections_and_products_for_catalog(
         catalog_product.product_id for catalog_product in catalog_products
     }
 
-    products = product_service.get_products_filtered(
+    products = product_service.get_products(
         product_ids,
         only_currently_available=only_currently_available,
         only_directly_orderable=True,

@@ -266,24 +266,14 @@ def get_product_by_number(product_number: ProductNumber) -> DbProduct:
     ).scalar_one()
 
 
-def get_products(product_ids: set[ProductID]) -> Sequence[DbProduct]:
-    """Return the products with those IDs."""
-    if not product_ids:
-        return []
-
-    return db.session.scalars(
-        select(DbProduct).filter(DbProduct.id.in_(product_ids))
-    ).all()
-
-
-def get_products_filtered(
+def get_products(
     product_ids: set[ProductID],
     *,
     only_currently_available: bool,
     only_directly_orderable: bool,
     only_not_requiring_separate_order: bool,
 ) -> Sequence[DbProduct]:
-    """Return the products with some filters applied."""
+    """Return the products with those IDs."""
     if not product_ids:
         return []
 
