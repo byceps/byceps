@@ -277,18 +277,17 @@ def get_products(product_ids: set[ProductID]) -> Sequence[DbProduct]:
 
 
 def get_products_filtered(
-    product_ids: set[ProductID], *, only_currently_available: bool
+    product_ids: set[ProductID],
+    *,
+    only_currently_available: bool,
+    only_directly_orderable: bool,
+    only_not_requiring_separate_order: bool,
 ) -> Sequence[DbProduct]:
     """Return the products with some filters applied."""
     if not product_ids:
         return []
 
-    stmt = (
-        select(DbProduct)
-        .filter(DbProduct.id.in_(product_ids))
-        .filter_by(not_directly_orderable=False)
-        .filter_by(separate_order_required=False)
-    )
+    stmt = select(DbProduct).filter(DbProduct.id.in_(product_ids))
 
     if only_currently_available:
         now = datetime.utcnow()
@@ -309,6 +308,12 @@ def get_products_filtered(
                 )
             )
         )
+
+    if only_directly_orderable:
+        stmt = stmt.filter_by(not_directly_orderable=False)
+
+    if only_not_requiring_separate_order:
+        stmt = stmt.filter_by(separate_order_required=False)
 
     return db.session.scalars(stmt).all()
 

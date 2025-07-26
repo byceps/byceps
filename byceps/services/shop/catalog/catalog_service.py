@@ -153,7 +153,10 @@ def get_collections_and_products_for_catalog(
     }
 
     products = product_service.get_products_filtered(
-        product_ids, only_currently_available=only_currently_available
+        product_ids,
+        only_currently_available=only_currently_available,
+        only_directly_orderable=True,
+        only_not_requiring_separate_order=True,
     )
 
     products_indexed_by_id = {product.id: product for product in products}
