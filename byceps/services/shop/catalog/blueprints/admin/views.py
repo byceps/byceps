@@ -76,8 +76,8 @@ def catalog_view(catalog_id):
         catalog_service.get_collections_and_products_for_catalog(
             catalog.id,
             only_currently_available=False,
-            only_directly_orderable=True,
-            only_not_requiring_separate_order=True,
+            only_directly_orderable=False,
+            only_not_requiring_separate_order=False,
         )
     )
 

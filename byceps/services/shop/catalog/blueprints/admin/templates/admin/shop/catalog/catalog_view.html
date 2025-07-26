@@ -2,6 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/product.html' import render_product_link, render_product_temporal_availability %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set page_title = [_('Catalog'), catalog.id] %}
 
 {% block body %}
@@ -67,7 +68,21 @@
       {%- for product in products %}
       <tr>
         <td><strong>{{ render_product_link(product) }}</strong></td>
-        <td>{{ product.name }}</td>
+        <td>
+          {{ product.name }}
+
+          {%- if product.not_directly_orderable or product.separate_order_required %}
+          <br>
+          {%- endif %}
+
+          {%- if product.not_directly_orderable %}
+          {{ render_tag(_('can only be ordered indirectly'), icon='warning', class='color-danger') }}
+          {%- endif %}
+
+          {%- if product.separate_order_required %}
+          {{ render_tag(_('must be ordered separately'), icon='warning', class='color-danger') }}
+          {%- endif %}
+        </td>
         <td>{{ render_product_temporal_availability(product) }}</td>
         <td class="number"><a data-action="product-remove" href="{{ url_for('.product_remove', product_id=product.id, collection_id=collection.id) }}" class="button is-compact" title="{{ _('Remove product') }}">{{ render_icon('remove') }}</a></td>
       </tr>
