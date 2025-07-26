@@ -61,7 +61,6 @@ def tax_rate_as_percentage(tax_rate) -> str:
 def order_form(erroneous_form=None):
     """Show a form to order products."""
     storefront = _get_storefront_or_404()
-    shop = shop_service.get_shop(storefront.shop_id)
 
     if storefront.closed:
         flash_notice(gettext('The shop is closed.'))
@@ -74,7 +73,7 @@ def order_form(erroneous_form=None):
     else:
         compilation_result = (
             product_service.get_product_compilation_for_orderable_products(
-                shop.id
+                storefront.shop_id
             )
         )
 
@@ -144,7 +143,6 @@ def list_products(collections: list[ProductCollection]):
 def order():
     """Order products."""
     storefront = _get_storefront_or_404()
-    shop = shop_service.get_shop(storefront.shop_id)
 
     if storefront.closed:
         flash_notice(gettext('The shop is closed.'))
@@ -157,7 +155,7 @@ def order():
     else:
         compilation_result = (
             product_service.get_product_compilation_for_orderable_products(
-                shop.id
+                storefront.shop_id
             )
         )
 
@@ -225,7 +223,6 @@ def order_single_form(product_id, erroneous_form=None):
     product = _get_product_or_404(product_id)
 
     storefront = _get_storefront_or_404()
-    shop = shop_service.get_shop(storefront.shop_id)
 
     user = g.user
     detail = user_service.get_detail(user.id)
@@ -257,7 +254,7 @@ def order_single_form(product_id, erroneous_form=None):
             'product': None,
         }
 
-    if order_service.has_user_placed_orders(user.id, shop.id):
+    if order_service.has_user_placed_orders(user.id, storefront.shop_id):
         flash_error(gettext('You cannot place another order.'))
         return {
             'form': form,
