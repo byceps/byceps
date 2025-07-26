@@ -283,8 +283,6 @@ def get_products_filtered(
     if not product_ids:
         return []
 
-    now = datetime.utcnow()
-
     stmt = (
         select(DbProduct)
         .filter(DbProduct.id.in_(product_ids))
@@ -293,6 +291,8 @@ def get_products_filtered(
     )
 
     if not include_unavailable_products:
+        now = datetime.utcnow()
+
         stmt = (
             stmt
             # Select only products that are available in between the
