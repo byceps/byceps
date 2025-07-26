@@ -138,7 +138,11 @@ def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
 
 
 def get_collections_and_products_for_catalog(
-    catalog_id: CatalogID, *, only_currently_available: bool
+    catalog_id: CatalogID,
+    *,
+    only_currently_available: bool,
+    only_directly_orderable: bool,
+    only_not_requiring_separate_order: bool,
 ) -> list[tuple[Collection, list[Product]]]:
     """Return the catalog's collections and their products."""
     # Attention: Products attached to products assigned to a catalog
@@ -155,8 +159,8 @@ def get_collections_and_products_for_catalog(
     products = product_service.get_products(
         product_ids,
         only_currently_available=only_currently_available,
-        only_directly_orderable=True,
-        only_not_requiring_separate_order=True,
+        only_directly_orderable=only_directly_orderable,
+        only_not_requiring_separate_order=only_not_requiring_separate_order,
     )
 
     products_indexed_by_id = {product.id: product for product in products}
@@ -191,6 +195,8 @@ def get_product_collections_for_catalog(
         for collection, products in get_collections_and_products_for_catalog(
             catalog_id,
             only_currently_available=only_currently_available,
+            only_directly_orderable=True,
+            only_not_requiring_separate_order=True,
         )
     ]
 
