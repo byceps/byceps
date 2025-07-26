@@ -74,7 +74,7 @@ def catalog_view(catalog_id):
 
     collections_and_products = (
         catalog_service.get_collections_and_products_for_catalog(
-            catalog.id, include_unavailable_products=True
+            catalog.id, only_currently_available=False
         )
     )
 

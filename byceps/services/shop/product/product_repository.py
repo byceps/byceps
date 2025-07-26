@@ -277,7 +277,7 @@ def get_products(product_ids: set[ProductID]) -> Sequence[DbProduct]:
 
 
 def get_products_filtered(
-    product_ids: set[ProductID], include_unavailable_products: bool
+    product_ids: set[ProductID], only_currently_available: bool
 ) -> Sequence[DbProduct]:
     """Return the products with some filters applied."""
     if not product_ids:
@@ -290,7 +290,7 @@ def get_products_filtered(
         .filter_by(separate_order_required=False)
     )
 
-    if not include_unavailable_products:
+    if only_currently_available:
         now = datetime.utcnow()
 
         stmt = (

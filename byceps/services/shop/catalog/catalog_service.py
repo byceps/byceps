@@ -138,7 +138,7 @@ def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
 
 
 def get_collections_and_products_for_catalog(
-    catalog_id: CatalogID, *, include_unavailable_products: bool
+    catalog_id: CatalogID, *, only_currently_available: bool
 ) -> list[tuple[Collection, list[Product]]]:
     """Return the catalog's collections and their products."""
     # Attention: Products attached to products assigned to a catalog
@@ -153,7 +153,7 @@ def get_collections_and_products_for_catalog(
     }
 
     products = product_service.get_products_filtered(
-        product_ids, include_unavailable_products
+        product_ids, only_currently_available
     )
 
     products_indexed_by_id = {product.id: product for product in products}
@@ -177,7 +177,7 @@ def get_collections_and_products_for_catalog(
 
 
 def get_product_collections_for_catalog(
-    catalog_id: CatalogID, *, include_unavailable_products: bool
+    catalog_id: CatalogID, *, only_currently_available: bool
 ) -> list[ProductCollection]:
     """Return the catalog's collections."""
     # Attention: Products attached to products assigned to a catalog
@@ -187,7 +187,7 @@ def get_product_collections_for_catalog(
         _collection_to_product_collection(collection, products)
         for collection, products in get_collections_and_products_for_catalog(
             catalog_id,
-            include_unavailable_products=include_unavailable_products,
+            only_currently_available=only_currently_available,
         )
     ]
 

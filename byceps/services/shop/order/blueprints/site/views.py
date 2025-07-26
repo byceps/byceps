@@ -69,7 +69,7 @@ def order_form(erroneous_form=None):
 
     if storefront.catalog:
         collections = catalog_service.get_product_collections_for_catalog(
-            storefront.catalog.id, include_unavailable_products=False
+            storefront.catalog.id, only_currently_available=True
         )
     else:
         compilation_result = (
@@ -152,7 +152,7 @@ def order():
 
     if storefront.catalog:
         collections = catalog_service.get_product_collections_for_catalog(
-            storefront.catalog.id, include_unavailable_products=False
+            storefront.catalog.id, only_currently_available=True
         )
     else:
         compilation_result = (
