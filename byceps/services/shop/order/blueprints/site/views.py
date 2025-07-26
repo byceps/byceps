@@ -15,6 +15,7 @@ from moneyed import Currency
 from byceps.services.country import country_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.catalog import catalog_service
+from byceps.services.shop.catalog.models import CatalogID
 from byceps.services.shop.order import (
     order_checkout_service,
     order_service,
@@ -31,7 +32,9 @@ from byceps.services.shop.product.models import (
     ProductCompilationBuilder,
 )
 from byceps.services.shop.shop import shop_service
+from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront import storefront_service
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.blueprints.site.navigation import (
     subnavigation_for_view,
 )
@@ -66,35 +69,12 @@ def order_form(erroneous_form=None):
         flash_notice(gettext('The shop is closed.'))
         return {'collections': None}
 
-    if storefront.catalog:
-        collections = catalog_service.get_product_collections_for_catalog(
-            storefront.catalog.id, only_currently_available=True
-        )
-    else:
-        compilation_result = (
-            product_service.get_product_compilation_for_orderable_products(
-                storefront.shop_id
-            )
-        )
-
-        match compilation_result:
-            case Err(e):
-                if isinstance(e, NoProductsAvailableError):
-                    error_message = gettext('No products are available.')
-                else:
-                    error_message = gettext('An unknown error has occurred.')
-
-                flash_error(error_message)
-                return {'collections': None}
-
-        compilation = compilation_result.unwrap()
-
-        collection = (
-            product_service.get_product_collection_for_product_compilation(
-                '', compilation
-            )
-        )
-        collections = [collection]
+    match _get_collections(storefront):
+        case Ok(collections):
+            pass
+        case Err(error_message):
+            flash_error(error_message)
+            return {'collections': None}
 
     products = _get_products_from_collections(collections)
 
@@ -148,35 +128,12 @@ def order():
         flash_notice(gettext('The shop is closed.'))
         return order_form()
 
-    if storefront.catalog:
-        collections = catalog_service.get_product_collections_for_catalog(
-            storefront.catalog.id, only_currently_available=True
-        )
-    else:
-        compilation_result = (
-            product_service.get_product_compilation_for_orderable_products(
-                storefront.shop_id
-            )
-        )
-
-        match compilation_result:
-            case Err(e):
-                if isinstance(e, NoProductsAvailableError):
-                    error_message = gettext('No products are available.')
-                else:
-                    error_message = gettext('An unknown error has occurred.')
-
-                flash_error(error_message)
-                return order_form()
-
-        compilation = compilation_result.unwrap()
-
-        collection = (
-            product_service.get_product_collection_for_product_compilation(
-                '', compilation
-            )
-        )
-        collections = [collection]
+    match _get_collections(storefront):
+        case Ok(collections):
+            pass
+        case Err(error_message):
+            flash_error(error_message)
+            return order_form()
 
     products = _get_products_from_collections(collections)
 
@@ -212,6 +169,43 @@ def order():
     _flash_order_success(order)
 
     return redirect_to('shop_orders.view', order_id=order.id)
+
+
+def _get_collections(
+    storefront: Storefront,
+) -> Result[list[ProductCollection], str]:
+    if storefront.catalog:
+        return Ok(_get_collections_from_catalog(storefront.catalog.id))
+    else:
+        return _get_collections_from_shop(storefront.shop_id)
+
+
+def _get_collections_from_catalog(
+    catalog_id: CatalogID,
+) -> list[ProductCollection]:
+    return catalog_service.get_product_collections_for_catalog(
+        catalog_id, only_currently_available=True
+    )
+
+
+def _get_collections_from_shop(
+    shop_id: ShopID,
+) -> Result[list[ProductCollection], str]:
+    match product_service.get_product_compilation_for_orderable_products(
+        shop_id
+    ):
+        case Ok(compilation):
+            collection = (
+                product_service.get_product_collection_for_product_compilation(
+                    '', compilation
+                )
+            )
+            return Ok([collection])
+        case Err(e):
+            if isinstance(e, NoProductsAvailableError):
+                return Err(gettext('No products are available.'))
+            else:
+                return Err(gettext('An unknown error has occurred.'))
 
 
 @blueprint.get('/order_single/<uuid:product_id>')
