@@ -7,6 +7,7 @@ byceps.services.shop.catalog.catalog_service
 """
 
 from collections import defaultdict
+from collections.abc import Iterable
 import dataclasses
 
 from byceps.services.shop.product import product_service
@@ -124,17 +125,14 @@ def find_collection(collection_id: CollectionID) -> Collection | None:
     if db_collection is None:
         return None
 
-    return _db_entity_to_collection(db_collection)
+    return _db_entities_to_collections([db_collection])[0]
 
 
 def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
     """Return the catalog's collections."""
     db_collections = catalog_repository.get_collections_for_catalog(catalog_id)
 
-    return [
-        _db_entity_to_collection(db_collection)
-        for db_collection in db_collections
-    ]
+    return _db_entities_to_collections(db_collections)
 
 
 def get_collections_and_products_for_catalog(
@@ -205,13 +203,33 @@ def get_product_collections_for_catalog(
     ]
 
 
-def _db_entity_to_collection(db_collection: DbCollection) -> Collection:
+def _db_entities_to_collections(
+    db_collections: Iterable[DbCollection],
+) -> list[Collection]:
+    collection_ids = {db_collection.id for db_collection in db_collections}
+
+    product_ids_by_collection_id = (
+        catalog_repository.get_product_numbers_for_collections(collection_ids)
+    )
+
+    return [
+        _db_entity_to_collection(
+            db_collection,
+            product_ids_by_collection_id.get(db_collection.id, set()),
+        )
+        for db_collection in db_collections
+    ]
+
+
+def _db_entity_to_collection(
+    db_collection: DbCollection, product_ids: set[ProductID]
+) -> Collection:
     return Collection(
         id=db_collection.id,
         catalog_id=db_collection.catalog_id,
         title=db_collection.title,
         position=db_collection.position,
-        product_ids=set(),
+        product_ids=set(product_ids),
     )
 
 

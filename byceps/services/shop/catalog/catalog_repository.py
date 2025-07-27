@@ -6,6 +6,7 @@ byceps.services.shop.catalog.catalog_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections import defaultdict
 from collections.abc import Sequence
 
 from sqlalchemy import delete, select
@@ -170,3 +171,23 @@ def get_catalog_products(catalog_id: CatalogID) -> Sequence[DbProduct]:
         .filter(DbCollection.catalog_id == catalog_id)
         .order_by(DbCatalogProduct.position)
     ).all()
+
+
+def get_product_numbers_for_collections(
+    collection_ids: set[CollectionID],
+) -> dict[CollectionID, set[ProductID]]:
+    """Return a mapping of the IDs of collections to the IDs of the
+    products in each.
+    """
+    rows = db.session.execute(
+        select(
+            DbCatalogProduct.collection_id, DbCatalogProduct.product_id
+        ).filter(DbCatalogProduct.collection_id.in_(collection_ids))
+    ).all()
+
+    product_ids_by_collection_id = defaultdict(set)
+
+    for collection_id, product_id in rows:
+        product_ids_by_collection_id[collection_id].add(product_id)
+
+    return dict(product_ids_by_collection_id)
