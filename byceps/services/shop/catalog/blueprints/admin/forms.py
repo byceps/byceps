@@ -10,7 +10,9 @@ from flask_babel import lazy_gettext
 from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired
 
+from byceps.services.shop.catalog.models import Collection
 from byceps.services.shop.product import product_service
+from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.l10n import LocalizedForm
 
@@ -44,9 +46,14 @@ class ProductAddForm(LocalizedForm):
         lazy_gettext('Product'), validators=[InputRequired()]
     )
 
-    def set_product_id_choices(self, shop_id: ShopID):
+    def set_product_id_choices(self, collection: Collection, shop_id: ShopID):
+        def include_product(product: Product) -> bool:
+            return not product.archived and (
+                product.id not in collection.product_ids
+            )
+
         products = product_service.get_products_for_shop(shop_id)
-        products = [product for product in products if not product.archived]
+        products = [product for product in products if include_product(product)]
         products.sort(key=lambda product: product.item_number)
 
         def to_label(product):

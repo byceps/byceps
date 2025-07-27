@@ -284,7 +284,7 @@ def product_add_form(collection_id, erroneous_form=None):
     brand = brand_service.get_brand(shop.brand_id)
 
     form = erroneous_form if erroneous_form else ProductAddForm()
-    form.set_product_id_choices(shop.id)
+    form.set_product_id_choices(collection, shop.id)
 
     return {
         'collection': collection,
@@ -303,7 +303,7 @@ def product_add(collection_id):
     catalog = catalog_service.get_catalog(collection.catalog_id)
 
     form = ProductAddForm(request.form)
-    form.set_product_id_choices(catalog.shop_id)
+    form.set_product_id_choices(collection, catalog.shop_id)
 
     if not form.validate():
         return product_add_form(catalog.id, form)
