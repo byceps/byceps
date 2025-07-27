@@ -13,7 +13,7 @@ x-byceps-base-env: &byceps-base-env
 services:
 
   db:
-    image: "postgres:15"
+    image: "postgres:17"
     restart: unless-stopped
     volumes:
       - db-data:/var/lib/postgresql/data
