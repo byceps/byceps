@@ -211,7 +211,7 @@ def _db_entity_to_collection(db_collection: DbCollection) -> Collection:
         catalog_id=db_collection.catalog_id,
         title=db_collection.title,
         position=db_collection.position,
-        product_numbers=[],
+        product_ids=set(),
     )
 
 

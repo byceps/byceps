@@ -45,7 +45,7 @@ def create_collection(catalog_id: CatalogID, title: str) -> Collection:
         catalog_id=catalog_id,
         title=title,
         position=-1,
-        product_numbers=[],
+        product_ids=set(),
     )
 
 

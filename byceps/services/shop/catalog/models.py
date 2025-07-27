@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from byceps.services.shop.product.models import ProductID, ProductNumber
+from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.shop.models import ShopID
 
 
@@ -36,7 +36,7 @@ class Collection:
     catalog_id: CatalogID
     title: str
     position: int
-    product_numbers: list[ProductNumber]
+    product_ids: set[ProductID]
 
 
 @dataclass(frozen=True, kw_only=True)
