@@ -9,7 +9,7 @@ byceps.services.user.avatar.blueprints.api.views
 from flask import redirect
 
 from byceps.services.user import user_service
-from byceps.services.user.models.user import FALLBACK_AVATAR_URL_PATH
+from byceps.services.user.models.user import USER_FALLBACK_AVATAR_URL_PATH
 from byceps.util.framework.blueprint import create_blueprint
 
 
@@ -38,6 +38,6 @@ def get_avatar_url_by_email_address_hash(md5_hash):
     avatar_url = user.avatar_url if user else None
 
     if avatar_url is None:
-        avatar_url = FALLBACK_AVATAR_URL_PATH
+        avatar_url = USER_FALLBACK_AVATAR_URL_PATH
 
     return redirect(avatar_url)
