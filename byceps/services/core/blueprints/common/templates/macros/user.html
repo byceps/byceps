@@ -1,6 +1,6 @@
 {% macro render_user_avatar(user, size, orga=False) -%}
 <div class="avatar size-{{ size }}{% if size >= 32 and orga %} orga{% endif %}"{% if not user.deleted %} title="{{ user.screen_name }}"{% endif %}>
-  {{- render_user_avatar_image_with_fallback(user) }}
+  {{- render_user_avatar_image(user) }}
 </div>
 {%- endmacro %}
 
@@ -15,9 +15,8 @@
 {%- endmacro %}
 
 
-{% macro render_user_avatar_image_with_fallback(user) -%}
-  {%- set avatar_url = user.avatar_url or url_for('static', filename='user_avatar_fallback.svg') -%}
-  <img src="{{ avatar_url }}" alt="{{ _('Avatar of %(screen_name)s', screen_name=user.screen_name) if not user.deleted else _('Avatar of deleted user') }}" loading="lazy">
+{% macro render_user_avatar_image(user) -%}
+  <img src="{{ user.avatar_url }}" alt="{{ _('Avatar of %(screen_name)s', screen_name=user.screen_name) if not user.deleted else _('Avatar of deleted user') }}" loading="lazy">
 {%- endmacro %}
 
 

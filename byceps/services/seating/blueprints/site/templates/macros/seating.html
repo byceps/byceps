@@ -4,22 +4,21 @@
 
 
 {% macro render_area(area, seats) -%}
-  {%- set avatar_url_fallback = url_for('static', filename='user_avatar_fallback.svg') %}
   <div class="area" style="background-image: url(/data/parties/{{ area.party_id }}/seating/areas/{{ area.image_filename }}); height: {{ area.image_height }}px; width: {{ area.image_width }}px;">
     {%- for seat in seats|sort(attribute='coord_y')|sort(attribute='coord_x') %}
-    {{ render_seat_with_tooltip(seat, avatar_url_fallback) }}
+    {{ render_seat_with_tooltip(seat) }}
     {%- endfor %}
   </div>
 {%- endmacro %}
 
 
-{% macro render_seat_with_tooltip(seat, avatar_url_fallback) -%}
+{% macro render_seat_with_tooltip(seat) -%}
     <div id="seat-{{ seat.id }}" class="seat-with-tooltip" style="left: {{ seat.coord_x }}px; top: {{ seat.coord_y }}px;" data-seat-id="{{ seat.id }}" data-label="{{ seat.label }}"
       {%- if seat.occupied %}
       {{- ' ' }}data-ticket-id="{{ seat.occupied_by_ticket_id }}"
         {%- if seat.occupied_by_user %}
           {%- with occupier = seat.occupied_by_user %}
-      {{- ' ' }}data-occupier-avatar="{{ occupier.avatar_url or avatar_url_fallback }}" data-occupier-name="{{ occupier.screen_name }}"
+      {{- ' ' }}data-occupier-avatar="{{ occupier.avatar_url }}" data-occupier-name="{{ occupier.screen_name }}"
           {%- endwith %}
         {%- endif %}
       {%- endif -%}

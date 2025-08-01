@@ -11,7 +11,11 @@ from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
-from byceps.services.user.models.user import UserAvatarID, UserID
+from byceps.services.user.models.user import (
+    UserAvatarID,
+    UserID,
+    USER_FALLBACK_AVATAR_URL_PATH,
+)
 from byceps.util.instances import ReprBuilder
 
 from .avatar import DbUserAvatar
@@ -61,7 +65,11 @@ class DbUser(db.Model):
     @property
     def avatar_url(self) -> str | None:
         avatar = self.avatar
-        return avatar.url if (avatar is not None) else None
+        return (
+            avatar.url
+            if (avatar is not None)
+            else USER_FALLBACK_AVATAR_URL_PATH
+        )
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)

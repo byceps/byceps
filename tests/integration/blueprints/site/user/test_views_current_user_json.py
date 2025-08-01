@@ -21,7 +21,7 @@ def test_when_logged_in(site_app, site, user):
     response_data = response.json
     assert response_data['id'] == str(user.id)
     assert response_data['screen_name'] == user.screen_name
-    assert response_data['avatar_url'] is None
+    assert response_data['avatar_url'] == '/static/user_avatar_fallback.svg'
 
 
 def test_when_not_logged_in(site_app, site):

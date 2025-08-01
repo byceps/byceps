@@ -1,5 +1,5 @@
 {% from 'macros/misc.html' import render_tag %}
-{% from 'macros/user.html' import render_user_avatar, render_user_avatar_image_with_fallback, render_user_screen_name %}
+{% from 'macros/user.html' import render_user_avatar, render_user_avatar_image, render_user_screen_name %}
 
 
 {% macro render_user_admin_link(user, disguised=false) -%}
@@ -15,7 +15,7 @@
 {% macro render_user_microcard(user, full_name=None, tiny_avatar=False, show_flags=True) -%}
 <div class="user-microcard{% if tiny_avatar %} user-microcard--tiny-avatar{% endif %}{% if user.deleted %} dimmed{% endif %}">
   <div class="user-microcard-avatar">
-    <div class="avatar">{{ render_user_avatar_image_with_fallback(user) }}</div>
+    <div class="avatar">{{ render_user_avatar_image(user) }}</div>
   </div>
   <div class="user-microcard-names">
     <div class="user-microcard-screen-name">

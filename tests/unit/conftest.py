@@ -139,7 +139,7 @@ def make_user():
             suspended=suspended,
             deleted=deleted,
             locale=None,
-            avatar_url=None,
+            avatar_url='/static/user_avatar_fallback.svg',
         )
 
     return _wrapper

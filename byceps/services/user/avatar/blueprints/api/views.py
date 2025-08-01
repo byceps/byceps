@@ -35,9 +35,6 @@ def get_avatar_url_by_email_address_hash(md5_hash):
 
     user = user_service.find_user_by_email_address_md5_hash(md5_hash)
 
-    avatar_url = user.avatar_url if user else None
-
-    if avatar_url is None:
-        avatar_url = USER_FALLBACK_AVATAR_URL_PATH
+    avatar_url = user.avatar_url if user else USER_FALLBACK_AVATAR_URL_PATH
 
     return redirect(avatar_url)

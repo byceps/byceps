@@ -26,7 +26,11 @@ from byceps.services.shop.order.models.order import (
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.snippet.errors import SnippetNotFoundError
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import (
+    User,
+    UserID,
+    USER_FALLBACK_AVATAR_URL_PATH,
+)
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid4
 
@@ -136,7 +140,7 @@ def _build_order(
         suspended=False,
         deleted=False,
         locale=None,
-        avatar_url=None,
+        avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
     )
 
     first_name = 'Bella-Bernadine'

@@ -16,7 +16,7 @@ def test_with_existent_user(api_client, user):
     response_data = response.json
     assert response_data['id'] == str(user.id)
     assert response_data['screen_name'] == 'User'
-    assert response_data['avatar_url'] is None
+    assert response_data['avatar_url'] == '/static/user_avatar_fallback.svg'
 
 
 def test_with_not_uninitialized_user(api_client, uninitialized_user):

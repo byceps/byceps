@@ -24,6 +24,7 @@ from .models.user import (
     UserFilter,
     UserForAdmin,
     UserForAdminDetail,
+    USER_FALLBACK_AVATAR_URL_PATH,
 )
 
 
@@ -155,14 +156,17 @@ def _get_user_stmt(include_avatar: bool) -> Select:
 
 
 def _user_row_to_dto(
-    user_row: tuple[
-        UserID, str, bool, bool, bool, str | None, DbUserAvatar | None
-    ],
+    user_row: tuple[UserID, str, bool, bool, bool, str | None, DbUserAvatar],
 ) -> User:
     user_id, screen_name, initialized, suspended, deleted, locale, db_avatar = (
         user_row
     )
-    avatar_url = db_avatar.url if (db_avatar is not None) else None
+
+    avatar_url = (
+        db_avatar.url
+        if (db_avatar is not None)
+        else USER_FALLBACK_AVATAR_URL_PATH
+    )
 
     return User(
         id=user_id,
@@ -335,12 +339,15 @@ def _db_entity_to_user(db_user: DbUser) -> User:
         suspended=db_user.suspended,
         deleted=db_user.deleted,
         locale=db_user.locale,
-        avatar_url=None,
+        avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
     )
 
 
 def _db_entity_to_user_for_admin(db_user: DbUser) -> UserForAdmin:
     full_name = db_user.detail.full_name if db_user.detail is not None else None
+    avatar_url = (
+        db_user.avatar.url if db_user.avatar else USER_FALLBACK_AVATAR_URL_PATH
+    )
     detail = UserForAdminDetail(full_name=full_name)
 
     return UserForAdmin(
@@ -350,7 +357,7 @@ def _db_entity_to_user_for_admin(db_user: DbUser) -> UserForAdmin:
         suspended=db_user.suspended,
         deleted=db_user.deleted,
         locale=db_user.locale,
-        avatar_url=db_user.avatar.url if db_user.avatar else None,
+        avatar_url=avatar_url,
         created_at=db_user.created_at,
         detail=detail,
     )

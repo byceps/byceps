@@ -18,7 +18,11 @@ from byceps.services.core.events import EventSite, EventUser
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user import user_log_service
 from byceps.services.user.dbmodels.log import DbUserLogEntry
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import (
+    User,
+    UserID,
+    USER_FALLBACK_AVATAR_URL_PATH,
+)
 
 from .dbmodels import DbRecentLogin, DbSessionToken
 from .models import CurrentUser
@@ -237,7 +241,7 @@ def get_anonymous_current_user(locale: str | None) -> CurrentUser:
         suspended=False,
         deleted=False,
         locale=locale,
-        avatar_url=None,
+        avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
         authenticated=False,
         permissions=frozenset(),
     )

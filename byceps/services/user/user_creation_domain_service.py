@@ -20,7 +20,7 @@ from .errors import (
 )
 from .events import UserAccountCreatedEvent
 from .models.log import UserLogEntry
-from .models.user import User, UserID
+from .models.user import User, UserID, USER_FALLBACK_AVATAR_URL_PATH
 
 
 def create_account(
@@ -71,7 +71,7 @@ def create_account(
         suspended=False,
         deleted=False,
         locale=locale,
-        avatar_url=None,
+        avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
     )
 
     event = _build_account_created_event(occurred_at, initiator, user, site)

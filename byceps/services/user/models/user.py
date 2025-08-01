@@ -53,7 +53,7 @@ class User:
     suspended: bool
     deleted: bool
     locale: str | None
-    avatar_url: str | None
+    avatar_url: str
 
 
 @dataclass(frozen=True, kw_only=True)
