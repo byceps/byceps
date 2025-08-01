@@ -27,7 +27,7 @@
   {%- endif %}
   <h1 class="title">{{ _('Seat management') if manage_mode else _('Seating plan') }} – {{ area.title }}</h1>
 
-  <div class="block row row--space-between">
+  <div class="block row row--space-between row--wrap">
     <div>
       <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive block">
         <input type="search" name="search_term" placeholder="{{ _('Username') }}" class="form-control" style="width: 12rem;">
