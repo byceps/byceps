@@ -27,8 +27,6 @@ from byceps.util.uuid import generate_uuid7
 
 _ABSOLUTE_URL_PATH_PREFIX = '/data/global/users/avatars/'
 
-FALLBACK_AVATAR_URL_PATH = '/static/avatar_fallback.svg'
-
 
 class DbUserAvatar(db.Model):
     """An avatar image uploaded by a user."""

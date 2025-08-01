@@ -20,6 +20,9 @@ from secret_type import Secret
 from byceps.util.image.image_type import ImageType
 
 
+FALLBACK_AVATAR_URL_PATH = '/static/avatar_fallback.svg'
+
+
 UserID = NewType('UserID', UUID)
 
 
