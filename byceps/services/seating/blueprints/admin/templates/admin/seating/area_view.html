@@ -5,7 +5,7 @@
 {% set page_title = [_('Area'), area.title] %}
 
 {% macro render_area(area, seats) -%}
-  {%- set avatar_url_fallback = url_for('static', filename='avatar_fallback.svg') %}
+  {%- set avatar_url_fallback = url_for('static', filename='user_avatar_fallback.svg') %}
   <div class="area" style="background-color: #111111; background-image: url(/data/parties/{{ area.party_id }}/seating/areas/{{ area.image_filename }}); height: {{ area.image_height }}px; width: {{ area.image_width }}px;">
     {%- for seat in seats|sort(attribute='coord_y')|sort(attribute='coord_x') %}
     {{ render_seat_with_tooltip(seat, avatar_url_fallback) }}
