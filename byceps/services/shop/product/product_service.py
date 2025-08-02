@@ -350,9 +350,9 @@ def get_product_by_number(product_number: ProductNumber) -> Product:
 def get_products(
     product_ids: set[ProductID],
     *,
-    only_currently_available: bool,
-    only_directly_orderable: bool,
-    only_not_requiring_separate_order: bool,
+    only_currently_available: bool = False,
+    only_directly_orderable: bool = False,
+    only_not_requiring_separate_order: bool = False,
 ) -> list[Product]:
     """Return the products with those IDs."""
     db_products = product_repository.get_products(

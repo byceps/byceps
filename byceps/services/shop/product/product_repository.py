@@ -269,9 +269,9 @@ def get_product_by_number(product_number: ProductNumber) -> DbProduct:
 def get_products(
     product_ids: set[ProductID],
     *,
-    only_currently_available: bool,
-    only_directly_orderable: bool,
-    only_not_requiring_separate_order: bool,
+    only_currently_available: bool = False,
+    only_directly_orderable: bool = False,
+    only_not_requiring_separate_order: bool = False,
 ) -> Sequence[DbProduct]:
     """Return the products with those IDs."""
     if not product_ids:
