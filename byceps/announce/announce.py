@@ -142,7 +142,7 @@ def _assemble_request_data(
             if not room_id:
                 log.warning('No room ID specified with Matrix webhook.')
 
-            return {'key': key, 'room_id': room_id, 'text': text}
+            return {'key': key, 'room_id': room_id, 'body': text}
 
         case _:
             return {}
