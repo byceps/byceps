@@ -6,7 +6,7 @@ byceps.services.whereabouts.whereabouts_sound_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.user.models.user import UserID
