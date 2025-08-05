@@ -124,7 +124,7 @@ def whereabouts_create(party_id):
 
     flash_success(gettext('The object has been created.'))
 
-    return redirect_to('.index', party_id=party.id)
+    return redirect_to('.whereabouts_index', party_id=party.id)
 
 
 # -------------------------------------------------------------------- #
