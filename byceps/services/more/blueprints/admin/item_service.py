@@ -109,6 +109,12 @@ def get_global_items() -> list[MoreItem]:
             url=url_for('maintenance_admin.index'),
             required_permission='admin.maintain',
         ),
+        MoreItem(
+            label=gettext('Orga Whereabouts'),
+            icon='location',
+            url=url_for('whereabouts_admin.client_index'),
+            required_permission='whereabouts.administrate',
+        ),
     ]
 
 

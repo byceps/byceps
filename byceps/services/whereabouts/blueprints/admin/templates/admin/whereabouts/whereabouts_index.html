@@ -1,0 +1,52 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink, render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page = 'whereabouts_admin' %}
+{% set current_page_party = party %}
+{% set page_title = 'Orga-Verbleibe' %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index', party_id=party.id), 'Zurück') }}
+{%- endblock %}
+
+{% block body %}
+
+<div class="block row row--space-between">
+  <div>
+    <h1 class="title">{{ page_title }} {{ render_extra_in_heading(whereabouts_list|length) }}</h1>
+  </div>
+  {%- if has_current_user_permission('whereabouts.administrate') %}
+  <div>
+    <div class="button-row is-right-aligned">
+      <a class="button" href="{{ url_for('.whereabouts_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
+    </div>
+  </div>
+  {%- endif %}
+</div>
+
+  {%- if whereabouts_list %}
+  <table class="itemlist is-vcentered is-wide">
+    <thead>
+      <tr>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Description') }}</th>
+        <th colspan="2">{{ _('Visibility') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for whereabouts in whereabouts_list|sort(attribute='position') %}
+      <tr>
+        <td class="monospace">{{ whereabouts.name }}</td>
+        <td>{{ whereabouts.description }}</td>
+        <td>{{ render_tag(_('Hidden if empty'), class='color-success') if whereabouts.hidden_if_empty else '' }}</td>
+        <td>{{ render_tag(_('Secret'), class='color-info') if whereabouts.secret else '' }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+<div class="box no-data-message">{{ _('No whereabouts defined.') }}</div>
+  {%- endif %}
+
+{%- endblock %}

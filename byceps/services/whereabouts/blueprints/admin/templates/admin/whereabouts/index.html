@@ -1,0 +1,87 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/user.html' import render_user_admin_link %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user.html' import render_user_avatar %}
+{% set current_page = 'whereabouts_admin' %}
+{% set current_page_party = party %}
+{% set page_title = 'Orga-Verbleib' %}
+
+{% block head %}
+<meta http-equiv="refresh" content="10">
+<style>
+.grid.statuses {
+  --column-min-width: 8rem;
+}
+
+.grid:is(.statuses, .whereabouts) {
+  gap: 1.5rem;
+}
+
+.statuses .row {
+  gap: 0.5rem;
+}
+</style>
+{%- endblock %}
+
+{% block body %}
+
+<div class="block row row--space-between">
+  <div>
+    <h1 class="title">{{ page_title }}</h1>
+  </div>
+  {%- if has_current_user_permission('whereabouts.administrate') %}
+  <div>
+    <div class="button-row is-right-aligned">
+      <a class="button" href="{{ url_for('.whereabouts_index', party_id=party.id) }}">{{ render_icon('administrate') }} <span>{{ _('Manage') }}</span></a>
+    </div>
+  </div>
+  {%- endif %}
+</div>
+
+{%- if whereabouts_list %}
+  <div class="block grid whereabouts" style="--column-min-width: 24rem;">
+  {%- for whereabouts in whereabouts_list|sort(attribute='position') %}
+    {%- with statuses = recent_statuses_by_whereabouts[whereabouts.id] %}
+      {%- if statuses or not whereabouts.hidden_if_empty %}
+    <div>
+      <h2 class="title">{{ whereabouts.description }} {{ render_extra_in_heading(statuses|length) }}</h2>
+
+        {%- if statuses %}
+{{ render_statuses(statuses) }}
+        {%- else %}
+      <div class="box dimmed">{{ _('nobody') }}</div>
+        {%- endif %}
+    </div>
+      {%- endif %}
+    {%- endwith %}
+  {%- endfor %}
+  </div>
+
+  {% if stale_statuses %}
+  <h2 class="title">🙁 Long time no see</h2>
+{{ render_statuses(stale_statuses) }}
+  {% endif %}
+{%- else %}
+<div class="box no-data-message">{{ _('No whereabouts defined.') }}</div>
+{%- endif %}
+
+{%- endblock %}
+
+{% macro render_statuses(statuses) -%}
+  <div class="box grid statuses">
+    {%- for status in statuses|sort(attribute='set_at') %}
+    {{ render_status(status) }}
+    {%- endfor %}
+  </div>
+{%- endmacro %}
+
+{% macro render_status(status) -%}
+  <div class="block row">
+    <div>{{ render_user_avatar(status.user, size=40) }}</div>
+    <div>
+      {{ render_user_admin_link(status.user, disguised=true) }}<br>
+      <small class="dimmed">{{ _('since') }} {{ status.set_at|timedeltaformat }}</small>
+    </div>
+  </div>
+{%- endmacro %}

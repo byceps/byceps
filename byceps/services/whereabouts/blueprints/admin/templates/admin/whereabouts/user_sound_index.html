@@ -1,0 +1,45 @@
+{% extends 'layout/admin/whereabouts.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'whereabouts_admin' %}
+{% set current_tab = 'user_sounds' %}
+{% set page_title = 'User Sounds' %}
+
+{% block body %}
+
+<div class="block row row--space-between">
+  <div>
+    <h2 class="title">{{ page_title }} {{ render_extra_in_heading(user_sounds|length) }}</h2>
+  </div>
+  {%- if has_current_user_permission('whereabouts.administrate') %}
+  <div>
+    <div class="button-row is-right-aligned">
+      <a class="button is-compact" href="{{ url_for('.user_sound_create_form') }}">{{ render_icon('add') }} <span>{{ _('Add sound') }}</span></a>
+    </div>
+  </div>
+  {%- endif %}
+</div>
+
+{%- if user_sounds %}
+<table class="itemlist is-vcentered is-wide">
+  <thead>
+    <tr>
+      <th>{{ _('User') }}</th>
+      <th>{{ _('Sound name') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%- for user_sound in user_sounds|sort(attribute='user.screen_name') %}
+    <tr>
+      <td>{{ render_user_avatar_and_admin_link(user_sound.user, size=32) }}</td>
+      <td>{{ user_sound.name|fallback }}</td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+{%- else %}
+<div class="box no-data-message">{{ _('None defined') }}</div>
+{%- endif %}
+
+{%- endblock %}

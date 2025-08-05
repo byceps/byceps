@@ -24,6 +24,7 @@ def register_api_blueprints(app: Flask) -> None:
         ('services.user.blueprints.api', '/users'),
         ('services.user.avatar.blueprints.api', '/user_avatars'),
         ('services.user_badge.blueprints.api', '/user_badges'),
+        ('services.whereabouts.blueprints.api', '/whereabouts'),
     ]
 
     register_blueprints(api_v1, blueprints)

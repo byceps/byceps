@@ -9,6 +9,12 @@
       required_permission='party.view',
       icon='dashboard')
     .add_item(
+      url_for('whereabouts_admin.index', party_id=party.id),
+      _('Orga Whereabouts'),
+      id='whereabouts_admin',
+      required_permission='whereabouts.view',
+      icon='location')
+    .add_item(
       url_for('orga_team_admin.teams_for_party', party_id=party.id),
       _('Organizers'),
       id='orga_team_admin.teams',

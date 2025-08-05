@@ -1,0 +1,27 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_check %}
+{% set current_page = 'whereabouts_admin' %}
+{% set current_page_party = party %}
+{% set page_title = 'Orga-Verbleib hinzufügen' %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index', party_id=party.id), 'Zurück') }}
+{%- endblock %}
+
+{% block body %}
+
+<h1 class="title">{{ page_title }}</h1>
+
+<form action="{{ url_for('.whereabouts_create', party_id=party.id) }}" method="post">
+  <div class="box">
+    {{ form_field(form.name, autofocus=true) }}
+    {{ form_field(form.description) }}
+    {{ form_field_check(form.hidden_if_empty) }}
+    {{ form_field_check(form.secret) }}
+  </div>
+
+  {{ form_buttons(_('Create')) }}
+</form>
+
+{%- endblock %}

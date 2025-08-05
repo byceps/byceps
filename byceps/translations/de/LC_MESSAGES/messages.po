@@ -73,6 +73,11 @@ msgstr "Berechtigungen"
 #: byceps/services/user_group/blueprints/site/forms.py:23
 #: byceps/services/user_group/blueprints/site/templates/site/user_group/view.html:34
 #: byceps/services/webhooks/blueprints/admin/forms.py:28
+#: byceps/services/whereabouts/blueprints/admin/forms.py:20
+#: byceps/services/whereabouts/blueprints/admin/forms.py:25
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:94
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:134
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:33
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -148,6 +153,8 @@ msgstr "API-Tokens"
 #: byceps/services/user_group/blueprints/site/templates/site/user_group/create_form.html:17
 #: byceps/services/user_group/blueprints/site/templates/site/user_group/index.html:16
 #: byceps/services/webhooks/blueprints/admin/templates/admin/webhooks/create_form.html:23
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/user_sound_create_form.html:22
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_create_form.html:24
 msgid "Create"
 msgstr "Erstellen"
 
@@ -231,7 +238,7 @@ msgid "Delete API token?"
 msgstr "API-Token löschen?"
 
 #: byceps/services/attendance/blueprints/admin/templates/admin/attendance/view_for_brand.html:5
-#: byceps/services/more/blueprints/admin/item_service.py:140
+#: byceps/services/more/blueprints/admin/item_service.py:146
 msgid "Most Frequent Attendees"
 msgstr "Häufigste Teilnehmer"
 
@@ -253,6 +260,7 @@ msgstr "Neueste enthaltene Party"
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:103
 #: byceps/services/ticketing/checkin/blueprints/admin/templates/admin/ticketing/checkin/_ticket_list.html:21
 #: byceps/services/user_badge/blueprints/admin/templates/admin/user_badge/award_form.html:19
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/user_sound_index.html:28
 msgid "User"
 msgstr "Benutzer"
 
@@ -288,6 +296,7 @@ msgstr "Teilnehmer"
 #: byceps/services/user/creation/blueprints/site/forms.py:41
 #: byceps/services/user/email_address/blueprints/site/forms.py:17
 #: byceps/services/user/settings/blueprints/site/templates/site/user/settings/_account.html:32
+#: byceps/services/whereabouts/blueprints/admin/forms.py:49
 msgid "Username"
 msgstr "Benutzername"
 
@@ -388,6 +397,7 @@ msgstr "Benutzerkennzeichen anzeigen"
 #: byceps/services/authn/identity_tag/blueprints/admin/forms.py:24
 #: byceps/services/orga/blueprints/admin/forms.py:24
 #: byceps/services/ticketing/blueprints/site/forms.py:25
+#: byceps/services/whereabouts/blueprints/admin/forms.py:36
 #: byceps/util/forms.py:59 byceps/util/forms.py:71
 msgid "Unknown username"
 msgstr "Unbekannter Benutzername"
@@ -425,6 +435,8 @@ msgstr "Dieser Wert kann nicht verwendet werden. Bitte einen anderen wählen."
 #: byceps/services/seating/blueprints/admin/views.py:376
 #: byceps/services/timetable/blueprints/admin/views.py:54
 #: byceps/services/timetable/blueprints/admin/views.py:104
+#: byceps/services/whereabouts/blueprints/admin/views.py:125
+#: byceps/services/whereabouts/blueprints/admin/views.py:291
 msgid "The object has been created."
 msgstr "Das Objekt wurde angelegt."
 
@@ -478,6 +490,7 @@ msgstr "Benutzer-, Vor-, Nachname, E-Mail-Adresse"
 #: byceps/services/orga_presence/blueprints/admin/templates/admin/orga_presence/view.html:64
 #: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/product_add_form.html:19
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/add_note_form.html:19
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:22
 msgid "Add"
 msgstr "Hinzufügen"
 
@@ -494,6 +507,9 @@ msgstr "Hinzufügen"
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_account_actions.html:27
 #: byceps/services/user/blueprints/admin/templates/admin/user/delete_account_form.html:22
 #: byceps/services/webhooks/blueprints/admin/templates/admin/webhooks/index.html:40
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:75
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:115
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:150
 msgid "Delete"
 msgstr "Löschen"
 
@@ -504,6 +520,7 @@ msgstr "Löschen"
 #: byceps/services/gallery/blueprints/admin/templates/admin/gallery/gallery_index_for_brand.html:44
 #: byceps/services/shop/storefront/blueprints/admin/templates/admin/shop/storefront/index_for_shop.html:94
 #: byceps/services/shop/storefront/blueprints/admin/templates/admin/shop/storefront/index_for_shop.html:133
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/user_sound_index.html:42
 msgid "None defined"
 msgstr "Keine festgelegt"
 
@@ -759,6 +776,7 @@ msgstr "Anfordern"
 #: byceps/services/user_badge/blueprints/admin/templates/admin/user_badge/update_form.html:25
 #: byceps/services/user_group/blueprints/site/templates/site/user_group/update_form.html:17
 #: byceps/services/webhooks/blueprints/admin/templates/admin/webhooks/update_form.html:26
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_update_form.html:22
 msgid "Save"
 msgstr "Speichern"
 
@@ -1089,6 +1107,9 @@ msgstr "Beiträge im Forum bearbeiten"
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:64
 #: byceps/services/ticketing/category/blueprints/admin/templates/admin/ticketing/category/index.html:27
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_account.html:19
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:59
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:91
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:131
 msgid "ID"
 msgstr "ID"
 
@@ -1372,6 +1393,7 @@ msgstr "versteckt"
 #: byceps/services/user_badge/blueprints/admin/templates/admin/user_badge/view.html:54
 #: byceps/services/user_group/blueprints/site/templates/site/user_group/view.html:21
 #: byceps/services/webhooks/blueprints/admin/templates/admin/webhooks/index.html:35
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:114
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1785,6 +1807,7 @@ msgstr "Beitrag von %(creator)s im Thema &quot;%(topic)s&quot;"
 #: byceps/services/board/blueprints/site/templates/site/board/posting_moderate_form.html:28
 #: byceps/services/board/blueprints/site/templates/site/board/topic_moderate_form.html:29
 #: byceps/services/timetable/blueprints/admin/templates/admin/timetable/view.html:40
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:34
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
@@ -2125,6 +2148,8 @@ msgstr "Marke erstellen"
 #: byceps/services/snippet/blueprints/admin/templates/admin/snippet/index_for_scope.html:29
 #: byceps/services/user/settings/blueprints/site/templates/site/user/settings/_details_personal.html:11
 #: byceps/services/user_group/blueprints/site/templates/site/user_group/index.html:26
+#: byceps/services/whereabouts/blueprints/admin/forms.py:24
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:32
 msgid "Name"
 msgstr "Name"
 
@@ -2139,7 +2164,7 @@ msgstr "Partys"
 
 #: byceps/services/brand/blueprints/admin/templates/admin/brand/index.html:30
 #: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_brand.html:37
-#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:13
+#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:19
 #: byceps/services/orga/blueprints/admin/templates/admin/orga/persons_for_brand.html:8
 msgid "Organizers"
 msgstr "Organisatoren"
@@ -2179,7 +2204,7 @@ msgstr "nicht angegeben"
 
 #: byceps/services/brand/blueprints/admin/templates/admin/brand/view.html:53
 #: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_brand.html:43
-#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:43
+#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:49
 #: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_shop.html:49
 #: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_site.html:38
 #: byceps/services/core/blueprints/site/templates/layout/_current_user_menu_items.html:22
@@ -2274,7 +2299,7 @@ msgstr "Zustimmungen"
 
 #: byceps/services/consent/blueprints/admin/templates/admin/consent/requirement_index.html:6
 #: byceps/services/dashboard/blueprints/admin/templates/admin/dashboard/view_brand.html:42
-#: byceps/services/more/blueprints/admin/item_service.py:156
+#: byceps/services/more/blueprints/admin/item_service.py:162
 msgid "Required Consents"
 msgstr "Erforderliche Zustimmungen"
 
@@ -2420,7 +2445,7 @@ msgstr "News"
 
 #: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_brand.html:49
 #: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_global.html:37
-#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:49
+#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:55
 #: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_site.html:44
 #: byceps/services/more/blueprints/admin/templates/admin/more/view_brand.html:5
 #: byceps/services/more/blueprints/admin/templates/admin/more/view_global.html:4
@@ -2449,7 +2474,12 @@ msgstr "Global"
 msgid "Users"
 msgstr "Benutzer"
 
-#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:19
+#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:13
+#: byceps/services/more/blueprints/admin/item_service.py:113
+msgid "Orga Whereabouts"
+msgstr "Orga-Verbleib"
+
+#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:25
 #: byceps/services/core/blueprints/site/templates/layout/_current_user_menu_items.html:23
 #: byceps/services/dashboard/blueprints/site/templates/site/dashboard/_tickets.html:5
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/view.html:134
@@ -2467,19 +2497,19 @@ msgstr "Benutzer"
 msgid "Tickets"
 msgstr "Tickets"
 
-#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:25
+#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:31
 #: byceps/services/seating/blueprints/admin/templates/admin/seating/index_for_party.html:8
 #: byceps/services/seating/blueprints/admin/templates/admin/seating/index_for_party.html:12
 msgid "Seating Plans"
 msgstr "Sitzpläne"
 
-#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:31
+#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:37
 #: byceps/services/ticketing/checkin/blueprints/admin/templates/admin/ticketing/checkin/index.html:7
 #: byceps/services/ticketing/checkin/blueprints/admin/templates/admin/ticketing/checkin/index.html:11
 msgid "Check-In"
 msgstr "Check-In"
 
-#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:37
+#: byceps/services/core/blueprints/admin/templates/layout/admin/_header_nav_party.html:43
 #: byceps/services/dashboard/blueprints/admin/templates/admin/dashboard/view_party.html:84
 #: byceps/services/dashboard/blueprints/site/templates/site/dashboard/_guest_servers.html:4
 #: byceps/services/dashboard/blueprints/site/templates/site/dashboard/_guest_servers.html:37
@@ -2875,6 +2905,7 @@ msgstr "Tickets eingecheckt"
 #: byceps/services/guest_server/blueprints/admin/templates/macros/admin/guest_server.html:25
 #: byceps/services/guest_server/blueprints/site/templates/site/guest_server/index.html:60
 #: byceps/services/shop/order/blueprints/admin/templates/macros/admin/shop/order.html:9
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:11
 msgid "pending"
 msgstr "wartend"
 
@@ -2913,6 +2944,7 @@ msgstr "Benutzerregistrierung"
 #: byceps/services/site/blueprints/admin/templates/admin/site/view.html:54
 #: byceps/services/site/blueprints/admin/templates/macros/admin/site.html:44
 #: byceps/services/site/blueprints/admin/templates/macros/admin/site.html:50
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:21
 msgid "open"
 msgstr "offen"
 
@@ -2926,6 +2958,7 @@ msgstr "offen"
 #: byceps/services/site/blueprints/admin/templates/admin/site/view.html:54
 #: byceps/services/site/blueprints/admin/templates/macros/admin/site.html:46
 #: byceps/services/site/blueprints/admin/templates/macros/admin/site.html:52
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:23
 msgid "closed"
 msgstr "geschlossen"
 
@@ -2955,7 +2988,7 @@ msgstr "Newskanäle"
 
 #: byceps/services/dashboard/blueprints/site/templates/site/dashboard/_board.html:4
 #: byceps/services/dashboard/blueprints/site/templates/site/dashboard/_board.html:37
-#: byceps/services/more/blueprints/admin/item_service.py:196
+#: byceps/services/more/blueprints/admin/item_service.py:202
 msgid "Discussion Board"
 msgstr "Forum"
 
@@ -2967,6 +3000,7 @@ msgstr "Es gibt noch keine Themen."
 #: byceps/services/guest_server/blueprints/admin/templates/admin/guest_server/server_index.html:51
 #: byceps/services/guest_server/blueprints/admin/templates/macros/admin/guest_server.html:23
 #: byceps/services/guest_server/blueprints/site/templates/site/guest_server/index.html:58
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:13
 msgid "approved"
 msgstr "genehmigt"
 
@@ -3028,6 +3062,7 @@ msgstr "Betrag"
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_newsletter.html:10
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_orders.html:13
 #: byceps/services/user/settings/blueprints/site/templates/site/user/settings/_newsletter.html:7
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:96
 msgid "Status"
 msgstr "Status"
 
@@ -3121,7 +3156,7 @@ msgstr "Galerie hinzufügen"
 #: byceps/services/gallery/blueprints/site/templates/site/gallery/view.html:5
 #: byceps/services/gallery/blueprints/site/templates/site/gallery/view.html:9
 #: byceps/services/gallery/blueprints/site/templates/site/gallery/view.html:26
-#: byceps/services/more/blueprints/admin/item_service.py:132
+#: byceps/services/more/blueprints/admin/item_service.py:138
 #: byceps/services/site_navigation/models.py:117
 msgid "Galleries"
 msgstr "Galerien"
@@ -3433,6 +3468,7 @@ msgid "Check in"
 msgstr "Einchecken"
 
 #: byceps/services/guest_server/blueprints/admin/templates/admin/guest_server/server_view.html:47
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:74
 msgid "Approve"
 msgstr "Genehmigen"
 
@@ -3683,39 +3719,39 @@ msgstr "Bezahldienste"
 msgid "Webhooks"
 msgstr "Webhooks"
 
-#: byceps/services/more/blueprints/admin/item_service.py:118
+#: byceps/services/more/blueprints/admin/item_service.py:124
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_newsletter.html:3
 msgid "Newsletter Subscriptions"
 msgstr "Newsletter-Abos"
 
-#: byceps/services/more/blueprints/admin/item_service.py:126
+#: byceps/services/more/blueprints/admin/item_service.py:132
 msgid "Discussion Boards"
 msgstr "Foren"
 
-#: byceps/services/more/blueprints/admin/item_service.py:146
+#: byceps/services/more/blueprints/admin/item_service.py:152
 msgid "Brand Snippets"
 msgstr "Marken-Snippets"
 
-#: byceps/services/more/blueprints/admin/item_service.py:167
+#: byceps/services/more/blueprints/admin/item_service.py:173
 #: byceps/services/orga_presence/blueprints/admin/templates/admin/orga_presence/create_form.html:6
 #: byceps/services/orga_presence/blueprints/admin/templates/admin/orga_presence/view.html:7
 msgid "Organizer Presence"
 msgstr "Orga-Anwesenheit"
 
-#: byceps/services/more/blueprints/admin/item_service.py:173
+#: byceps/services/more/blueprints/admin/item_service.py:179
 #: byceps/services/shop/sold_products/blueprints/admin/templates/admin/shop/sold_products/index.html:5
 #: byceps/services/shop/sold_products/blueprints/admin/templates/admin/shop/sold_products/view.html:6
 msgid "Sold Products"
 msgstr "Verkaufte Produkte"
 
-#: byceps/services/more/blueprints/admin/item_service.py:179
+#: byceps/services/more/blueprints/admin/item_service.py:185
 #: byceps/services/site_navigation/models.py:114
 #: byceps/services/timetable/blueprints/admin/templates/admin/timetable/view.html:7
 #: byceps/services/timetable/blueprints/site/templates/site/timetable/index.html:3
 msgid "Timetable"
 msgstr "Zeitplan"
 
-#: byceps/services/more/blueprints/admin/item_service.py:185
+#: byceps/services/more/blueprints/admin/item_service.py:191
 msgid "Tournaments"
 msgstr "Turniere"
 
@@ -5802,6 +5838,8 @@ msgid "Cancellation"
 msgstr "Stornierung"
 
 #: byceps/services/shop/email/blueprints/admin/templates/admin/shop/email/view_for_shop.html:38
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:95
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:135
 msgid "Configuration"
 msgstr "Konfiguration"
 
@@ -7804,6 +7842,7 @@ msgstr "eigenständig"
 
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:108
 #: byceps/services/ticketing/checkin/blueprints/admin/templates/admin/ticketing/checkin/_ticket_list.html:38
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/index.html:53
 msgid "nobody"
 msgstr "niemand"
 
@@ -8185,6 +8224,9 @@ msgid "Point in time"
 msgstr "Zeitpunkt"
 
 #: byceps/services/timetable/blueprints/admin/forms.py:23
+#: byceps/services/whereabouts/blueprints/admin/forms.py:19
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:94
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:134
 msgid "Location"
 msgstr "Ort"
 
@@ -8197,6 +8239,7 @@ msgid "Link label"
 msgstr "Linktitel"
 
 #: byceps/services/timetable/blueprints/admin/views.py:158
+#: byceps/services/whereabouts/blueprints/admin/views.py:230
 msgid "The object has been updated."
 msgstr "Das Objekt wurde aktualisiert."
 
@@ -8859,6 +8902,7 @@ msgstr "nicht aktiviert"
 #: byceps/services/user/blueprints/admin/templates/admin/user/index.html:34
 #: byceps/services/user/blueprints/admin/templates/macros/admin/user.html:32
 #: byceps/services/user/blueprints/admin/templates/macros/admin/user.html:40
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:15
 msgid "deleted"
 msgstr "gelöscht"
 
@@ -9588,6 +9632,191 @@ msgstr "Webhook bearbeiten"
 #: byceps/services/webhooks/blueprints/admin/templates/admin/webhooks/update_form.html:21
 msgid "Valid JSON or empty"
 msgstr "Gültiges JSON oder leer"
+
+#: byceps/services/whereabouts/announcing.py:44
+#, python-format
+msgid "Whereabouts client \"%(client_id)s\" has been registered."
+msgstr "Verbleiber-Client \"%(client_id)s\" wurde registriert."
+
+#: byceps/services/whereabouts/announcing.py:62
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has approved whereabouts client "
+"\"%(client_id)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat Verbleiber-Client \"%(client_id)s\" "
+"genehmigt."
+
+#: byceps/services/whereabouts/announcing.py:80
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has deleted whereabouts client "
+"\"%(client_id)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat Verbleiber-Client \"%(client_id)s\" "
+"gelöscht."
+
+#: byceps/services/whereabouts/announcing.py:96
+#, python-format
+msgid "Whereabouts client \"%(client_id)s\" has signed on."
+msgstr "Verbleiber-Client \"%(client_id)s\" hat sich angemeldet."
+
+#: byceps/services/whereabouts/announcing.py:111
+#, python-format
+msgid "Whereabouts client \"%(client_id)s\" has signed off."
+msgstr "Verbleiber-Client \"%(client_id)s\" hat sich abgemeldet."
+
+#: byceps/services/whereabouts/announcing.py:131
+#, python-format
+msgid ""
+"%(user_screen_name)s's whereabouts changed to "
+"\"%(whereabouts_description)s\"."
+msgstr ""
+"Der Verbleib von %(user_screen_name)s hat sich geändert zu "
+"\"%(whereabouts_description)s\"."
+
+#: byceps/services/whereabouts/permissions.py:17
+msgid "Administrate whereabouts"
+msgstr "Orga-Verbleib verwalten"
+
+#: byceps/services/whereabouts/permissions.py:18
+msgid "Update whereabouts"
+msgstr "Orga-Verbleib setzen"
+
+#: byceps/services/whereabouts/permissions.py:19
+msgid "View whereabouts"
+msgstr "Orga-Verbleib anzeigen"
+
+#: byceps/services/whereabouts/blueprints/admin/forms.py:26
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:42
+msgid "Hidden if empty"
+msgstr "Versteckt wenn leer"
+
+#: byceps/services/whereabouts/blueprints/admin/forms.py:27
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:43
+msgid "Secret"
+msgstr "Secret"
+
+#: byceps/services/whereabouts/blueprints/admin/forms.py:41
+msgid "The user already has a sound assigned."
+msgstr "Dem Benutzer ist bereits ein Sound zugeordnet."
+
+#: byceps/services/whereabouts/blueprints/admin/forms.py:52
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/user_sound_index.html:29
+msgid "Sound name"
+msgstr "Soundname"
+
+#: byceps/services/whereabouts/blueprints/admin/views.py:182
+msgid "Client has been approved."
+msgstr "Der Client wurde genehmigt."
+
+#: byceps/services/whereabouts/blueprints/admin/views.py:197
+msgid "Client candidate has been deleted."
+msgstr "Der Client-Kandidat wurde gelöscht."
+
+#: byceps/services/whereabouts/blueprints/admin/views.py:245
+msgid "Client has been deleted."
+msgstr "Der Client wurde gelöscht."
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:32
+msgid "buttons"
+msgstr "Tasten"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:33
+msgid "audio output"
+msgstr "Tonausgabe"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:40
+msgid "Client registration"
+msgstr "Client-Registrierung"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:54
+msgid "Pending Clients"
+msgstr "Wartende Clients"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:60
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:92
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:132
+msgid "Registered at"
+msgstr "Registriert"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:61
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:93
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:133
+msgid "Interactivity"
+msgstr "Interaktivität"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:69
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:105
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:143
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/index.html:84
+msgid "since"
+msgstr "seit"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:86
+msgid "Approved Clients"
+msgstr "Genehmigte Clients"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:97
+msgid "Last activity at"
+msgstr "Letzte Aktivität"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:109
+msgid "Signed on"
+msgstr "Angemeldet"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:109
+msgid "Signed off"
+msgstr "Abgemeldet"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:126
+msgid "Deleted Clients"
+msgstr "Gelöschte Clients"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:161
+msgid "No clients registered."
+msgstr "Es sind keine Clients registriert."
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:170
+msgid "Approve client?"
+msgstr "Client genehmigen?"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:171
+msgid "Delete client candidate?"
+msgstr "Client-Kandidat löschen?"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:172
+msgid "Delete client?"
+msgstr "Client löschen?"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_update_form.html:6
+msgid "Update Client"
+msgstr "Client bearbeiten"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_update_form.html:9
+msgid "Clients"
+msgstr "Clients"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/index.html:36
+msgid "Manage"
+msgstr "Verwalten"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/index.html:66
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:49
+msgid "No whereabouts defined."
+msgstr "Es sind keine Verbleibe definiert."
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/user_sound_create_form.html:6
+msgid "Add sound for user"
+msgstr "Sound für Nutzer/in zuweisen"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/user_sound_create_form.html:19
+msgid "Filename without suffix"
+msgstr "Dateiname ohne Endung"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/user_sound_index.html:18
+msgid "Add sound"
+msgstr "Sound hinzufügen"
 
 #: byceps/util/views.py:75
 msgid "Please log in."

@@ -1,0 +1,16 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_main_tabs %}
+{% set current_page = 'whereabouts_admin' %}
+
+{% block before_body %}
+<h1 class="title">Orga-Verbleib</h1>
+
+{{
+  render_main_tabs(
+    Navigation(None)
+      .add_item(url_for('.client_index'), 'Clients', id='clients', required_permission='whereabouts.administrate')
+      .add_item(url_for('.user_sound_index'), 'User Sounds', id='user_sounds', required_permission='whereabouts.administrate')
+    , current_tab
+  )
+}}
+{%- endblock %}

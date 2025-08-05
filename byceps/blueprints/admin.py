@@ -82,6 +82,7 @@ def register_admin_blueprints(
         ('services.user.blueprints.admin', '/users'),
         ('services.user_badge.blueprints.admin', '/user_badges'),
         ('services.webhooks.blueprints.admin', '/webhooks'),
+        ('services.whereabouts.blueprints.admin', '/whereabouts'),
     ]
 
     if metrics_enabled:

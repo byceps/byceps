@@ -1,0 +1,175 @@
+{% extends 'layout/admin/whereabouts.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page = 'whereabouts_admin' %}
+{% set current_tab = 'clients' %}
+{% set page_title = 'Clients' %}
+
+{% macro render_authority_status_icon(status_name) %}
+  {%- if status_name == 'pending' -%}
+  {{ render_tag('', icon='pending', title=_('pending'), class='color-info icon-only') }}
+  {%- elif status_name == 'approved' -%}
+  {{ render_tag('', icon='enabled', title=_('approved'), class='color-success icon-only') }}
+  {%- elif status_name == 'deleted' -%}
+  {{ render_tag('', icon='delete', title=_('deleted'), class='color-disabled icon-only') }}
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro render_registration_status(open) -%}
+  {%- if open %}
+  {{ render_tag(_('open'), icon='enabled', class='color-success') }}
+  {%- else %}
+  {{ render_tag(_('closed'), icon='disabled', class='color-disabled') }}
+  {%- endif %}
+{%- endmacro %}
+
+{% macro render_client_id(client) -%}
+  <abbr title="{{ client.id }}">{{ client.id.hex[-12:] }}</abbr>
+{%- endmacro %}
+
+{% macro render_interactivity(client) -%}
+  {{ client.button_count }} {{ _('buttons') }}
+  {%- if client.audio_output %}, {{ _('audio output') }}{% endif %}
+{%- endmacro %}
+
+{% block body %}
+
+<table class="itemlist is-vcentered" style="margin-left: auto;">
+  <tr>
+    <td>{{ _('Client registration') }}</td>
+    <td>
+      <div class="dropdown">
+        <button class="dropdown-toggle button is-clear">{{ render_registration_status(registration_open) }} {{ render_icon('caret-down') }}</button>
+        <ol class="dropdown-menu">
+          <li><a class="dropdown-item" href="{{ url_for('.open_client_registration') }}" data-action="update-client-registration-status">{{ render_registration_status(true) }}</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('.close_client_registration') }}" data-action="update-client-registration-status">{{ render_registration_status(false) }}</a></li>
+        </ol>
+      </div>
+    </td>
+  </tr>
+</table>
+
+{%- if pending_clients %}
+<h2 class="title">{{ render_authority_status_icon('pending') }} {{ _('Pending Clients') }} {{ render_extra_in_heading(pending_clients|length) }}</h2>
+
+<table class="itemlist is-vcentered is-wide">
+  <thead>
+    <tr>
+      <th>{{ _('ID') }}</th>
+      <th>{{ _('Registered at') }}</th>
+      <th class="centered">{{ _('Interactivity') }}<br></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {%- for client in pending_clients|sort(attribute='registered_at', reverse=True) %}
+    <tr>
+      <td>{{ render_client_id(client) }}</td>
+      <td><time datetime="{{ client.registered_at.isoformat() }}" title="{{ client.registered_at|datetimeformat }}">{{ _('since') }} {{ client.registered_at|timedeltaformat }}</time></td>
+      <td class="centered">{{ render_interactivity(client) }}</td>
+      <td>
+        {%- if has_current_user_permission('whereabouts.administrate') %}
+        <div class="button-row is-compact button-row--nowrap is-right-aligned">
+          <a class="button is-compact color-success" href="{{ url_for('.client_approve', client_id=client.id) }}" data-action="approve-client">{{ render_icon('success') }} <span>{{ _('Approve') }}</span></a>
+          <a class="button is-compact color-danger" href="{{ url_for('.client_candidate_delete', client_id=client.id) }}" data-action="delete-client-candidate">{{ render_icon('delete') }} <span>{{ _('Delete') }}</span></a>
+        </div>
+        {%- endif %}
+      </td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+{%- endif %}
+
+{%- if approved_clients %}
+<h2 class="title">{{ render_authority_status_icon('approved') }} {{ _('Approved Clients') }} {{ render_extra_in_heading(approved_clients|length) }}</h2>
+
+<table class="itemlist is-vcentered is-wide">
+  <thead>
+    <tr>
+      <th>{{ _('ID') }}</th>
+      <th class="nowrap">{{ _('Registered at') }}</th>
+      <th class="centered">{{ _('Interactivity') }}<br></th>
+      <th>{{ _('Location') }}<br>{{ _('Description') }}</th>
+      <th>{{ _('Configuration') }}</th>
+      <th>{{ _('Status') }}</th>
+      <th>{{ _('Last activity at') }}</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {%- for client in approved_clients|sort(attribute='registered_at', reverse=True) %}
+    <tr>
+      <td>{{ render_client_id(client) }}</td>
+      <td class="nowrap"><time datetime="{{ client.registered_at.isoformat() }}" title="{{ client.registered_at|datetimeformat }}">{{ _('since') }} {{ client.registered_at|timedeltaformat }}</time></td>
+      <td class="centered">{{ render_interactivity(client) }}</td>
+      <td>{{ client.location|fallback }}<br>{{ client.description|fallback }}</td>
+      <td>{{ client.config_id|fallback }}</td>
+      <td class="nowrap">{{ render_tag(_('Signed on'), class='color-success') if client.signed_on else render_tag(_('Signed off'), class='color-disabled') }}</td>
+      <td>{{ client.latest_activity_at|datetimeformat }}</td>
+      <td>
+        {%- if has_current_user_permission('whereabouts.administrate') %}
+        <div class="button-row is-compact button-row--nowrap is-right-aligned">
+          <a class="button is-compact" href="{{ url_for('.client_update_form', client_id=client.id) }}" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
+          <a class="button is-compact color-danger" href="{{ url_for('.client_delete', client_id=client.id) }}" data-action="delete-client" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a>
+        </div>
+        {%- endif %}
+      </td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+{%- endif %}
+
+{%- if deleted_clients %}
+<h2 class="title">{{ render_authority_status_icon('deleted') }} {{ _('Deleted Clients') }} {{ render_extra_in_heading(deleted_clients|length) }}</h2>
+
+<table class="itemlist is-vcentered is-wide">
+  <thead>
+    <tr>
+      <th>{{ _('ID') }}</th>
+      <th class="nowrap">{{ _('Registered at') }}</th>
+      <th class="centered">{{ _('Interactivity') }}<br></th>
+      <th>{{ _('Location') }}<br>{{ _('Description') }}</th>
+      <th>{{ _('Configuration') }}</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {%- for client in deleted_clients|sort(attribute='registered_at', reverse=True) %}
+    <tr>
+      <td>{{ render_client_id(client) }}</td>
+      <td><time datetime="{{ client.registered_at.isoformat() }}" title="{{ client.registered_at|datetimeformat }}">{{ _('since') }} {{ client.registered_at|timedeltaformat }}</time></td>
+      <td class="centered">{{ render_interactivity(client) }}</td>
+      <td>{{ client.location|fallback }}<br>{{ client.description|fallback }}</td>
+      <td>{{ client.config_id|fallback }}</td>
+      <td>
+        {%- if has_current_user_permission('whereabouts.administrate') %}
+        <div class="button-row is-compact button-row--nowrap is-right-aligned">
+          <a class="button is-compact color-danger" href="{{ url_for('.client_delete', client_id=client.id) }}" data-action="delete-client" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a>
+        </div>
+        {%- endif %}
+      </td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+{%- endif %}
+
+{%- if not pending_clients and not approved_clients and not deleted_clients %}
+<div class="box no-data-message">{{ _('No clients registered.') }}</div>
+{%- endif %}
+
+{%- endblock %}
+
+{% block scripts %}
+<script>
+  onDomReady(() => {
+    post_on_click_then_reload('[data-action="update-client-registration-status"]');
+    confirmed_post_on_click_then_reload('[data-action="approve-client"]', '{{ _('Approve client?') }}');
+    confirmed_delete_on_click_then_reload('[data-action="delete-client-candidate"]', '{{ _('Delete client candidate?') }}');
+    confirmed_delete_on_click_then_reload('[data-action="delete-client"]', '{{ _('Delete client?') }}');
+  });
+</script>
+{% endblock %}

@@ -136,6 +136,16 @@ from byceps.services.user_badge import announcing as user_badge_handlers
 from byceps.services.user_badge import signals as user_badge_signals
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+from byceps.services.whereabouts import announcing as whereabouts_handlers
+from byceps.services.whereabouts import signals as whereabouts_signals
+from byceps.services.whereabouts.events import (
+    WhereaboutsClientApprovedEvent,
+    WhereaboutsClientDeletedEvent,
+    WhereaboutsClientRegisteredEvent,
+    WhereaboutsClientSignedOffEvent,
+    WhereaboutsClientSignedOnEvent,
+    WhereaboutsStatusUpdatedEvent,
+)
 
 
 AnnouncementEvent = type[_BaseEvent]
@@ -470,6 +480,36 @@ for event, name, handler in [
         'user-screen-name-changed',
         user_handlers.announce_user_screen_name_changed,
     ),
+    (
+        WhereaboutsClientApprovedEvent,
+        'whereabouts-client-approved',
+        whereabouts_handlers.announce_whereabouts_client_approved,
+    ),
+    (
+        WhereaboutsClientDeletedEvent,
+        'whereabouts-client-deleted',
+        whereabouts_handlers.announce_whereabouts_client_deleted,
+    ),
+    (
+        WhereaboutsClientRegisteredEvent,
+        'whereabouts-client-registered',
+        whereabouts_handlers.announce_whereabouts_client_registered,
+    ),
+    (
+        WhereaboutsClientSignedOnEvent,
+        'whereabouts-client-signed-on',
+        whereabouts_handlers.announce_whereabouts_client_signed_on,
+    ),
+    (
+        WhereaboutsClientSignedOffEvent,
+        'whereabouts-client-signed-off',
+        whereabouts_handlers.announce_whereabouts_client_signed_off,
+    ),
+    (
+        WhereaboutsStatusUpdatedEvent,
+        'whereabouts-status-updated',
+        whereabouts_handlers.announce_whereabouts_status_updated,
+    ),
 ]:
     registry.register_event(event, name, handler)
 
@@ -536,6 +576,12 @@ _SIGNALS: list[NamedSignal] = [
     user_signals.email_address_invalidated,
     user_signals.screen_name_changed,
     user_badge_signals.user_badge_awarded,
+    whereabouts_signals.whereabouts_client_approved,
+    whereabouts_signals.whereabouts_client_deleted,
+    whereabouts_signals.whereabouts_client_registered,
+    whereabouts_signals.whereabouts_client_signed_off,
+    whereabouts_signals.whereabouts_client_signed_on,
+    whereabouts_signals.whereabouts_status_updated,
 ]
 
 
