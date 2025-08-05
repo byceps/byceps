@@ -28,6 +28,8 @@ def create_user_sound(user_sound: WhereaboutsUserSound) -> None:
 def update_user_sound(user_sound: WhereaboutsUserSound) -> None:
     """Update a users-specific sound."""
     db_user_sound = find_sound_for_user(user_sound.user.id)
+    if not db_user_sound:
+        raise ValueError(f'Unknown user sound ID "{user_sound.user.id}"')
 
     db_user_sound.name = user_sound.name
 
