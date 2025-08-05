@@ -123,16 +123,6 @@ def _assemble_request_data(
         case 'discord':
             return {'content': text}
 
-        case 'weitersager':
-            channel = webhook.extra_fields.get('channel')
-            if not channel:
-                log.warning('No channel specified with IRC webhook.')
-
-            return {'channel': channel, 'text': text}
-
-        case 'mattermost':
-            return {'text': text}
-
         case 'matrix_webhook':
             key = webhook.extra_fields.get('key')
             if not key:
@@ -143,6 +133,16 @@ def _assemble_request_data(
                 log.warning('No room ID specified with Matrix webhook.')
 
             return {'key': key, 'room_id': room_id, 'body': text}
+
+        case 'mattermost':
+            return {'text': text}
+
+        case 'weitersager':
+            channel = webhook.extra_fields.get('channel')
+            if not channel:
+                log.warning('No channel specified with IRC webhook.')
+
+            return {'channel': channel, 'text': text}
 
         case _:
             return {}
@@ -180,7 +180,7 @@ def call_webhook(announcement_request: AnnouncementRequest) -> None:
 
 _EXPECTED_RESPONSE_STATUS_CODES = {
     'discord': HTTPStatus.NO_CONTENT,
-    'mattermost': HTTPStatus.OK,
     'matrix_webhook': HTTPStatus.OK,
+    'mattermost': HTTPStatus.OK,
     'weitersager': HTTPStatus.ACCEPTED,
 }
