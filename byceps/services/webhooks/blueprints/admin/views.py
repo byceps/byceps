@@ -14,7 +14,12 @@ from flask_babel import gettext
 
 from byceps.announce.announce import assemble_announcement_request, call_webhook
 from byceps.services.webhooks import webhook_service
-from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
+from byceps.services.webhooks.models import (
+    get_outgoing_webhook_format_label,
+    OutgoingWebhook,
+    OutgoingWebhookFormat,
+    WebhookID,
+)
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -41,6 +46,7 @@ def index():
 
     return {
         'webhooks': webhooks,
+        'get_outgoing_webhook_format_label': get_outgoing_webhook_format_label,
     }
 
 
@@ -97,6 +103,7 @@ def update_form(webhook_id, erroneous_form=None):
         form = erroneous_form
     else:
         data = dataclasses.asdict(webhook)
+        data['format'] = webhook.format.name
         data['extra_fields'] = json.dumps(webhook.extra_fields)
         form = UpdateForm(data=data)
 
@@ -121,7 +128,7 @@ def update(webhook_id):
     # Event filters cannot be edited at the moment,
     # but at least don't remove them on update.
     event_filters = webhook.event_filters
-    format = form.format.data.strip()
+    format = OutgoingWebhookFormat[form.format.data.strip()]
     url = form.url.data.strip()
     text_prefix = form.text_prefix.data.lstrip()  # Allow trailing whitespace.
     extra_fields_str = form.extra_fields.data.strip()

@@ -6,6 +6,7 @@
 from byceps.services.webhooks.models import (
     AnnouncementRequest,
     OutgoingWebhook,
+    OutgoingWebhookFormat,
     WebhookID,
 )
 
@@ -19,7 +20,7 @@ def build_webhook(
         id=WebhookID(generate_uuid()),
         event_types=event_types,
         event_filters=event_filters,
-        format='discord',
+        format=OutgoingWebhookFormat.discord,
         text_prefix=text_prefix,
         extra_fields={},
         url=url,

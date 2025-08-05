@@ -17,7 +17,11 @@ from byceps.announce.helpers import (
     matches_selectors,
     with_locale,
 )
-from byceps.services.webhooks.models import Announcement, OutgoingWebhook
+from byceps.services.webhooks.models import (
+    Announcement,
+    OutgoingWebhook,
+    OutgoingWebhookFormat,
+)
 
 from .events import (
     _BoardEvent,
@@ -334,16 +338,23 @@ def announce_board_posting_unhidden(
 # helpers
 
 
-def _get_board_label_segment(brand_title: str, webhook_format: str) -> str:
-    if webhook_format != 'weitersager':
+def _get_board_label_segment(
+    brand_title: str, webhook_format: OutgoingWebhookFormat
+) -> str:
+    if webhook_format != OutgoingWebhookFormat.weitersager:
         return ''
+    else:
+        board_label = gettext(
+            '"%(brand_title)s" board', brand_title=brand_title
+        )
+        return gettext(' in %(board_label)s', board_label=board_label)
 
-    board_label = gettext('"%(brand_title)s" board', brand_title=brand_title)
-    return gettext(' in %(board_label)s', board_label=board_label)
 
-
-def _format_url(url: str, webhook_format: str) -> str:
-    return _escape_url_for_discord(url) if webhook_format == 'discord' else url
+def _format_url(url: str, webhook_format: OutgoingWebhookFormat) -> str:
+    if webhook_format == OutgoingWebhookFormat.discord:
+        return _escape_url_for_discord(url)
+    else:
+        return url
 
 
 def _escape_url_for_discord(url: str) -> str:

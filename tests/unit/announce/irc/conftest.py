@@ -6,7 +6,11 @@
 import pytest
 
 from byceps.services.tourney.events import EventTourney, EventTourneyParticipant
-from byceps.services.webhooks.models import OutgoingWebhook, WebhookID
+from byceps.services.webhooks.models import (
+    OutgoingWebhook,
+    OutgoingWebhookFormat,
+    WebhookID,
+)
 
 from tests.helpers import generate_token, generate_uuid
 
@@ -107,7 +111,7 @@ def webhook_for_irc() -> OutgoingWebhook:
             'user-logged-in',
         },
         event_filters={},
-        format='weitersager',
+        format=OutgoingWebhookFormat.weitersager,
         text_prefix=None,
         extra_fields={'channel': '#eventlog'},
         url='http://127.0.0.1:12345/',

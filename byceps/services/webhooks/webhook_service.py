@@ -14,13 +14,18 @@ from byceps.database import db
 from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbOutgoingWebhook
-from .models import EventFilters, OutgoingWebhook, WebhookID
+from .models import (
+    EventFilters,
+    OutgoingWebhook,
+    OutgoingWebhookFormat,
+    WebhookID,
+)
 
 
 def create_outgoing_webhook(
     event_types: set[str],
     event_filters: EventFilters,
-    format: str,
+    format: OutgoingWebhookFormat,
     url: str,
     enabled: bool,
     *,
@@ -50,7 +55,7 @@ def update_outgoing_webhook(
     webhook_id: WebhookID,
     event_types: set[str],
     event_filters: EventFilters,
-    format: str,
+    format: OutgoingWebhookFormat,
     text_prefix: str | None,
     extra_fields: dict[str, Any] | None,
     url: str,

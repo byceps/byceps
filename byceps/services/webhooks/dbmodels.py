@@ -20,7 +20,7 @@ from sqlalchemy.ext.mutable import MutableDict, MutableList
 from byceps.database import db
 from byceps.util.uuid import generate_uuid4
 
-from .models import EventFilters, WebhookID
+from .models import EventFilters, OutgoingWebhookFormat, WebhookID
 
 
 class DbOutgoingWebhook(db.Model):
@@ -37,7 +37,7 @@ class DbOutgoingWebhook(db.Model):
     event_filters: Mapped[Any | None] = mapped_column(
         MutableDict.as_mutable(db.JSONB)
     )
-    format: Mapped[str] = mapped_column(db.UnicodeText)
+    _format: Mapped[str] = mapped_column('format', db.UnicodeText)
     text_prefix: Mapped[str | None] = mapped_column(db.UnicodeText)
     extra_fields: Mapped[Any | None] = mapped_column(
         MutableDict.as_mutable(db.JSONB)
@@ -50,7 +50,7 @@ class DbOutgoingWebhook(db.Model):
         self,
         event_types: set[str],
         event_filters: EventFilters,
-        format: str,
+        format: OutgoingWebhookFormat,
         url: str,
         enabled: bool,
         *,
@@ -60,7 +60,7 @@ class DbOutgoingWebhook(db.Model):
     ) -> None:
         self.event_types = event_types
         self.event_filters = event_filters
-        self.format = format
+        self._format = format.name
         self.text_prefix = text_prefix
         self.extra_fields = extra_fields
         self.url = url
@@ -74,3 +74,11 @@ class DbOutgoingWebhook(db.Model):
     @event_types.setter
     def event_types(self, event_types: set[str]) -> None:
         self._event_types = list(event_types)
+
+    @hybrid_property
+    def format(self) -> OutgoingWebhookFormat:
+        return OutgoingWebhookFormat[self._format]
+
+    @format.setter
+    def format(self, format: OutgoingWebhookFormat) -> None:
+        self._format = format.name

@@ -52,7 +52,7 @@
       <div style="overflow-x: auto;">
 
         <div class="data-label">{{ _('Format') }}</div>
-        <div class="data-value">{{ webhook.format }}</div>
+        <div class="data-value">{{ get_outgoing_webhook_format_label(webhook.format) }}</div>
 
         <div class="data-label">{{ _('Additional fields') }}</div>
         <div class="data-value">{{ webhook.extra_fields|fallback }}</div>
