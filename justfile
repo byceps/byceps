@@ -2,7 +2,7 @@ _default:
     @just --list
 
 babel-extract:
-    uv run pybabel extract -F babel.cfg --keywords 'lazy_gettext lazy_ngettext lazy_pgettext lazy_npgettext' -o messages.pot . && uv run pybabel update --ignore-pot-creation-date -i messages.pot -d byceps/translations
+    uv run pybabel extract -F babel.cfg --keywords 'lazy_gettext lazy_ngettext:1,2 lazy_pgettext:1c,2 lazy_npgettext:1c,2,3' -o messages.pot . && uv run pybabel update --ignore-pot-creation-date -i messages.pot -d byceps/translations
 
 babel-init locale:
     uv run pybabel init -i messages.pot -d byceps/translations -l {{locale}}

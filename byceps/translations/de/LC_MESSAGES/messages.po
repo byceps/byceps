@@ -2835,6 +2835,7 @@ msgid "until"
 msgstr "bis"
 
 #: byceps/services/dashboard/blueprints/admin/templates/admin/dashboard/view_party.html:29
+#: byceps/services/party/blueprints/admin/forms.py:59
 #: byceps/services/party/blueprints/admin/templates/admin/party/view.html:20
 #: byceps/services/party/blueprints/admin/templates/macros/admin/party.html:29
 msgctxt "party"
@@ -5107,10 +5108,6 @@ msgstr "Ticketverwaltung geöffnet"
 #: byceps/services/party/blueprints/admin/forms.py:57
 msgid "Seat management open"
 msgstr "Sitzplatzverwaltung geöffnet"
-
-#: byceps/services/party/blueprints/admin/forms.py:59
-msgid "party"
-msgstr "Party"
 
 #: byceps/services/party/blueprints/admin/views.py:164
 #, python-format
