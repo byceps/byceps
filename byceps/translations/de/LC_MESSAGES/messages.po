@@ -9686,13 +9686,14 @@ msgstr "Orga-Verbleib anzeigen"
 
 #: byceps/services/whereabouts/blueprints/admin/forms.py:26
 #: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:42
-msgid "Hidden if empty"
-msgstr "Versteckt wenn leer"
+msgid "hidden if empty"
+msgstr "versteckt wenn leer"
 
 #: byceps/services/whereabouts/blueprints/admin/forms.py:27
 #: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:43
-msgid "Secret"
-msgstr "Secret"
+msgctxt "whereabouts"
+msgid "secret"
+msgstr "geheim"
 
 #: byceps/services/whereabouts/blueprints/admin/forms.py:41
 msgid "The user already has a sound assigned."

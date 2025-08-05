@@ -6,7 +6,7 @@ byceps.services.whereabouts.blueprints.admin.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask_babel import lazy_gettext
+from flask_babel import lazy_gettext, lazy_pgettext
 from wtforms import BooleanField, StringField
 from wtforms.validators import InputRequired, Optional, ValidationError
 
@@ -23,8 +23,8 @@ class ClientUpdateForm(LocalizedForm):
 class WhereaboutsCreateForm(LocalizedForm):
     name = StringField(lazy_gettext('Name'), [InputRequired()])
     description = StringField(lazy_gettext('Description'), [InputRequired()])
-    hidden_if_empty = BooleanField(lazy_gettext('Hidden if empty'))
-    secret = BooleanField(lazy_gettext('Secret'))
+    hidden_if_empty = BooleanField(lazy_gettext('hidden if empty'))
+    secret = BooleanField(lazy_pgettext('whereabouts', 'secret'))
 
 
 def validate_user_screen_name(form, field):

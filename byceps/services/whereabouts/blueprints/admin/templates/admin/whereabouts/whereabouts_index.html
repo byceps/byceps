@@ -39,8 +39,8 @@
       <tr>
         <td class="monospace">{{ whereabouts.name }}</td>
         <td>{{ whereabouts.description }}</td>
-        <td>{{ render_tag(_('Hidden if empty'), class='color-success') if whereabouts.hidden_if_empty else '' }}</td>
-        <td>{{ render_tag(_('Secret'), class='color-info') if whereabouts.secret else '' }}</td>
+        <td>{{ render_tag(_('hidden if empty'), class='color-success') if whereabouts.hidden_if_empty else '' }}</td>
+        <td>{{ render_tag(pgettext('whereabouts', 'secret'), class='color-info') if whereabouts.secret else '' }}</td>
       </tr>
       {%- endfor %}
     </tbody>
