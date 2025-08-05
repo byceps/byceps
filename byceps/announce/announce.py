@@ -133,7 +133,7 @@ def _assemble_request_data(
         case 'mattermost':
             return {'text': text}
 
-        case 'matrix':
+        case 'matrix_webhook':
             key = webhook.extra_fields.get('key')
             if not key:
                 log.warning('No API key specified with Matrix webhook.')
@@ -181,6 +181,6 @@ def call_webhook(announcement_request: AnnouncementRequest) -> None:
 _EXPECTED_RESPONSE_STATUS_CODES = {
     'discord': HTTPStatus.NO_CONTENT,
     'mattermost': HTTPStatus.OK,
-    'matrix': HTTPStatus.OK,
+    'matrix_webhook': HTTPStatus.OK,
     'weitersager': HTTPStatus.ACCEPTED,
 }
