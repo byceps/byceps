@@ -6,6 +6,8 @@ byceps.services.whereabouts.whereabouts_sound_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
@@ -48,6 +50,6 @@ def find_sound_for_user(user_id: UserID) -> DbWhereaboutsUserSound | None:
     ).one_or_none()
 
 
-def get_all_user_sounds() -> list[DbWhereaboutsUserSound]:
+def get_all_user_sounds() -> Sequence[DbWhereaboutsUserSound]:
     """Return all user sounds."""
     return db.session.scalars(select(DbWhereaboutsUserSound)).all()
