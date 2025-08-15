@@ -1,4 +1,4 @@
-FROM python:3.11-bookworm
+FROM python:3.11-trixie
 
 # Install Debian dependencies.
 # A final `apt-get clean` is part of the Debian base image.
