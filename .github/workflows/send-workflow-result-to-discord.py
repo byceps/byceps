@@ -70,14 +70,7 @@ def _get_webhook_data(result: Result) -> dict:
     commit_hash = os.environ['GITHUB_SHA']
     commit_hash_short = commit_hash[:7]
     commit_url = f'{github_server_url}/{github_repository}/commit/{commit_hash}'
-
-    git_log_output = subprocess.run(
-        ['/usr/bin/git', 'log', '-1', '--pretty=%s', commit_hash],
-        capture_output=True,
-        check=True,
-        text=True,
-    )
-    commit_subject = git_log_output.stdout
+    commit_subject = _get_commit_subject(commit_hash)
 
     run_id = os.environ['GITHUB_RUN_ID']
     run_number = os.environ['GITHUB_RUN_NUMBER']
@@ -93,6 +86,16 @@ def _get_webhook_data(result: Result) -> dict:
         commit_url,
         commit_subject,
     )
+
+
+def _get_commit_subject(commit_hash: str) -> str:
+    git_log_output = subprocess.run(
+        ['/usr/bin/git', 'log', '-1', '--pretty=%s', commit_hash],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    return git_log_output.stdout
 
 
 def _assemble_discord_payload(
