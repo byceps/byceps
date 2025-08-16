@@ -298,5 +298,5 @@ Expected output:
 
 .. code-block:: none
 
-    Welcome to the interactive BYCEPS shell on Python 3.11.2!
+    Welcome to the interactive BYCEPS shell on Python 3.13.5!
     >>>
