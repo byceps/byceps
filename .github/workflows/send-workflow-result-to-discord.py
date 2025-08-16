@@ -83,7 +83,7 @@ def _get_webhook_data(result: Result) -> dict:
     run_number = os.environ['GITHUB_RUN_NUMBER']
     run_url = f'{github_server_url}/{github_repository}/actions/runs/{run_id}'
 
-    _assemble_discord_payload(
+    return _assemble_discord_payload(
         result,
         run_number,
         run_url,
