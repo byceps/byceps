@@ -10,6 +10,7 @@
 # ///
 
 from argparse import ArgumentParser
+from dataclasses import dataclass
 import json
 import os
 import subprocess
@@ -17,17 +18,24 @@ import subprocess
 import httpx
 
 
-RESULT_COLORS = {
-    'success': '3066993',
-    'failure': '15158332',
-}
+@dataclass
+class ResultPresentation:
+    color: str
+    label: str
+
 
 UNICODE_GREEN_HEART = '\U0001f49a'  # 💚
 UNICODE_BROKEN_HEART = '\U0001f494'  # 💔
 
-RESULT_LABELS = {
-    'success': f'{UNICODE_GREEN_HEART} SUCCESS',
-    'failure': f'{UNICODE_BROKEN_HEART} FAILURE',
+RESULT_PRESENTATIONS = {
+    'success': ResultPresentation(
+        color='3066993',
+        label=f'{UNICODE_GREEN_HEART} SUCCESS',
+    ),
+    'failure': ResultPresentation(
+        color='15158332',
+        label=f'{UNICODE_BROKEN_HEART} FAILURE',
+    ),
 }
 
 
@@ -92,13 +100,12 @@ def _assemble_discord_payload(
     commit_url: str,
     commit_subject: str,
 ) -> dict:
-    result_color = RESULT_COLORS[result]
-    result_label = RESULT_LABELS[result]
+    result_presentation = RESULT_PRESENTATIONS[result]
 
     return {
         'embeds': [
             {
-                'color': result_color,
+                'color': result_presentation.color,
                 'fields': [
                     {
                         'name': 'Run',
@@ -107,7 +114,7 @@ def _assemble_discord_payload(
                     },
                     {
                         'name': 'Result',
-                        'value': result_label,
+                        'value': result_presentation.label,
                         'inline': 'true',
                     },
                     {
