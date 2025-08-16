@@ -23,6 +23,18 @@ Result = Enum('Result', ['success', 'failure'])
 
 
 @dataclass
+class RunDetails:
+    run_number: str
+    run_url: str
+    ref_type: str
+    ref_name: str
+    commit_hash: str
+    commit_subject: str
+    commit_url: str
+    result: Result
+
+
+@dataclass
 class ResultPresentation:
     color: str
     label: str
@@ -46,7 +58,8 @@ RESULT_PRESENTATIONS = {
 def main() -> None:
     args = _parse_args()
     result = Result[args.result]
-    webhook_data = _get_webhook_data(result)
+    run_details = _get_run_details(result)
+    webhook_data = _assemble_discord_payload(run_details)
     _call_webhook(args.webhook_url, webhook_data)
     print('Webhook called.')
 
@@ -60,31 +73,30 @@ def _parse_args():
     return parser.parse_args()
 
 
-def _get_webhook_data(result: Result) -> dict:
+def _get_run_details(result: Result) -> RunDetails:
     github_server_url = os.environ['GITHUB_SERVER_URL']  # "https://github.com"
     github_repository = os.environ['GITHUB_REPOSITORY']  # <user>/<repo>
-
-    ref_name = os.environ['GITHUB_REF_NAME']  # "main"
-    ref_type = os.environ['GITHUB_REF_TYPE']  # {"branch", "tag"}
-
-    commit_hash = os.environ['GITHUB_SHA']
-    commit_hash_short = commit_hash[:7]
-    commit_url = f'{github_server_url}/{github_repository}/commit/{commit_hash}'
-    commit_subject = _get_commit_subject(commit_hash)
 
     run_id = os.environ['GITHUB_RUN_ID']
     run_number = os.environ['GITHUB_RUN_NUMBER']
     run_url = f'{github_server_url}/{github_repository}/actions/runs/{run_id}'
 
-    return _assemble_discord_payload(
-        result,
-        run_number,
-        run_url,
-        ref_type,
-        ref_name,
-        commit_hash_short,
-        commit_url,
-        commit_subject,
+    ref_name = os.environ['GITHUB_REF_NAME']  # "main"
+    ref_type = os.environ['GITHUB_REF_TYPE']  # {"branch", "tag"}
+
+    commit_hash = os.environ['GITHUB_SHA']
+    commit_subject = _get_commit_subject(commit_hash)
+    commit_url = f'{github_server_url}/{github_repository}/commit/{commit_hash}'
+
+    return RunDetails(
+        run_number=run_number,
+        run_url=run_url,
+        ref_type=ref_type,
+        ref_name=ref_name,
+        commit_hash=commit_hash,
+        commit_subject=commit_subject,
+        commit_url=commit_url,
+        result=result,
     )
 
 
@@ -98,17 +110,9 @@ def _get_commit_subject(commit_hash: str) -> str:
     return git_log_output.stdout
 
 
-def _assemble_discord_payload(
-    result: Result,
-    run_number: str,
-    run_url: str,
-    ref_type: str,
-    ref_name: str,
-    commit_hash_short: str,
-    commit_url: str,
-    commit_subject: str,
-) -> dict:
-    result_presentation = RESULT_PRESENTATIONS[result]
+def _assemble_discord_payload(run_details: RunDetails) -> dict:
+    commit_hash_short = run_details.commit_hash[:7]
+    result_presentation = RESULT_PRESENTATIONS[run_details.result]
 
     return {
         'embeds': [
@@ -117,7 +121,7 @@ def _assemble_discord_payload(
                 'fields': [
                     {
                         'name': 'Run',
-                        'value': f'[#{run_number}]({run_url})',
+                        'value': f'[#{run_details.run_number}]({run_details.run_url})',
                         'inline': 'true',
                     },
                     {
@@ -126,18 +130,18 @@ def _assemble_discord_payload(
                         'inline': 'true',
                     },
                     {
-                        'name': ref_type.title(),
-                        'value': ref_name,
+                        'name': run_details.ref_type.title(),
+                        'value': run_details.ref_name,
                         'inline': 'true',
                     },
                     {
                         'name': 'Commit',
-                        'value': f'[{commit_hash_short}]({commit_url})',
+                        'value': f'[{commit_hash_short}]({run_details.commit_url})',
                         'inline': 'true',
                     },
                     {
                         'name': 'Commit Message',
-                        'value': commit_subject,
+                        'value': run_details.commit_subject,
                         'inline': 'true',
                     },
                 ],
