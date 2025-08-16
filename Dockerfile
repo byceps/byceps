@@ -1,4 +1,4 @@
-FROM python:3.11-trixie
+FROM python:3.13-trixie
 
 # Install Debian dependencies.
 # A final `apt-get clean` is part of the Debian base image.
