@@ -167,3 +167,7 @@ order-by-type = false
 [tool.uv]
 default-groups = []
 required-version = ">=0.8.11"
+
+[tool.uv.build-backend]
+module-name = "byceps"
+module-root = ""
