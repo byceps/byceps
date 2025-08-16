@@ -166,4 +166,4 @@ order-by-type = false
 
 [tool.uv]
 default-groups = []
-required-version = ">=0.7.2"
+required-version = ">=0.8.11"
