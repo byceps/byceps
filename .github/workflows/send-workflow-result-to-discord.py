@@ -32,20 +32,20 @@ RESULT_LABELS = {
 
 
 def main() -> None:
-    args = parse_args()
-    webhook_data = get_webhook_data(args.result)
-    call_webhook(args.webhook_url, webhook_data)
+    args = _parse_args()
+    webhook_data = _get_webhook_data(args.result)
+    _call_webhook(args.webhook_url, webhook_data)
     print('Webhook called.')
 
 
-def parse_args():
+def _parse_args():
     parser = ArgumentParser()
     parser.add_argument('result', choices={'success', 'failure'})
     parser.add_argument('webhook_url')
     return parser.parse_args()
 
 
-def get_webhook_data(result: str) -> dict:
+def _get_webhook_data(result: str) -> dict:
     github_server_url = os.environ['GITHUB_SERVER_URL']  # "https://github.com"
     github_repository = os.environ['GITHUB_REPOSITORY']  # <user>/<repo>
 
@@ -107,7 +107,7 @@ def get_webhook_data(result: str) -> dict:
     }
 
 
-def call_webhook(url: str, data: dict) -> None:
+def _call_webhook(url: str, data: dict) -> None:
     print('Request data:')
     print(json.dumps(data, indent=2))
 
