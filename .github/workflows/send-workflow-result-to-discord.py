@@ -68,6 +68,28 @@ def _get_webhook_data(result: str) -> dict:
     run_number = os.environ['GITHUB_RUN_NUMBER']
     run_url = f'{github_server_url}/{github_repository}/actions/runs/{run_id}'
 
+    _assemble_discord_payload(
+        result,
+        run_number,
+        run_url,
+        ref_type,
+        ref_name,
+        commit_hash_short,
+        commit_url,
+        commit_subject,
+    )
+
+
+def _assemble_discord_payload(
+    result: str,
+    run_number: str,
+    run_url: str,
+    ref_type: str,
+    ref_name: str,
+    commit_hash_short: str,
+    commit_url: str,
+    commit_subject: str,
+) -> dict:
     result_color = RESULT_COLORS[result]
     result_label = RESULT_LABELS[result]
 
@@ -108,11 +130,17 @@ def _get_webhook_data(result: str) -> dict:
 
 
 def _call_webhook(url: str, data: dict) -> None:
-    print('Request data:')
+    _print_webhook_request_body(data)
+    response = httpx.post(url, json=data, timeout=10)
+    _print_webhook_response(response)
+
+
+def _print_webhook_request_body(data) -> None:
+    print('Request body:')
     print(json.dumps(data, indent=2))
 
-    response = httpx.post(url, json=data, timeout=10)
 
+def _print_webhook_response(response) -> None:
     print('Response:')
     print(response)
     print(response.text)
