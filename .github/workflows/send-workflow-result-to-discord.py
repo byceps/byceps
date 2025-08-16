@@ -3,7 +3,7 @@
 """Notify Discord via webhook about workflow result."""
 
 # /// script
-# requires-python = ">=3.11"
+# requires-python = ">=3.13"
 # dependencies = [
 #     "httpx",
 # ]
