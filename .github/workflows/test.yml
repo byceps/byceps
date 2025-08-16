@@ -94,4 +94,4 @@ jobs:
       env:
         JOB_RESULT: ${{ job.status }}
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      run: uv run ./.github/workflows/send-workflow-result-to-discord.py $JOB_RESULT $DISCORD_WEBHOOK_URL
+      run: uv run ./.github/workflows/send-workflow-result-to-discord.py --result $JOB_RESULT --webhook-url $DISCORD_WEBHOOK_URL

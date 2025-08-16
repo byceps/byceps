@@ -40,8 +40,10 @@ def main() -> None:
 
 def _parse_args():
     parser = ArgumentParser()
-    parser.add_argument('result', choices={'success', 'failure'})
-    parser.add_argument('webhook_url')
+    parser.add_argument(
+        '--result', choices={'success', 'failure'}, required=True
+    )
+    parser.add_argument('--webhook-url', metavar='URL', required=True)
     return parser.parse_args()
 
 
