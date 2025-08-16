@@ -11,11 +11,15 @@
 
 from argparse import ArgumentParser
 from dataclasses import dataclass
+from enum import Enum
 import json
 import os
 import subprocess
 
 import httpx
+
+
+Result = Enum('Result', ['success', 'failure'])
 
 
 @dataclass
@@ -28,11 +32,11 @@ UNICODE_GREEN_HEART = '\U0001f49a'  # 💚
 UNICODE_BROKEN_HEART = '\U0001f494'  # 💔
 
 RESULT_PRESENTATIONS = {
-    'success': ResultPresentation(
+    Result.success: ResultPresentation(
         color='3066993',
         label=f'{UNICODE_GREEN_HEART} SUCCESS',
     ),
-    'failure': ResultPresentation(
+    Result.failure: ResultPresentation(
         color='15158332',
         label=f'{UNICODE_BROKEN_HEART} FAILURE',
     ),
@@ -41,7 +45,8 @@ RESULT_PRESENTATIONS = {
 
 def main() -> None:
     args = _parse_args()
-    webhook_data = _get_webhook_data(args.result)
+    result = Result[args.result]
+    webhook_data = _get_webhook_data(result)
     _call_webhook(args.webhook_url, webhook_data)
     print('Webhook called.')
 
@@ -49,13 +54,13 @@ def main() -> None:
 def _parse_args():
     parser = ArgumentParser()
     parser.add_argument(
-        '--result', choices={'success', 'failure'}, required=True
+        '--result', choices=[r.name for r in Result], required=True
     )
     parser.add_argument('--webhook-url', metavar='URL', required=True)
     return parser.parse_args()
 
 
-def _get_webhook_data(result: str) -> dict:
+def _get_webhook_data(result: Result) -> dict:
     github_server_url = os.environ['GITHUB_SERVER_URL']  # "https://github.com"
     github_repository = os.environ['GITHUB_REPOSITORY']  # <user>/<repo>
 
@@ -91,7 +96,7 @@ def _get_webhook_data(result: str) -> dict:
 
 
 def _assemble_discord_payload(
-    result: str,
+    result: Result,
     run_number: str,
     run_url: str,
     ref_type: str,
