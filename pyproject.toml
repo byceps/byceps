@@ -1,12 +1,11 @@
 [project]
 name = "BYCEPS"
 version = "0.0"
-requires-python = ">=3.11"
+description = "LAN party web platform"
+readme = "README.rst"
 authors = [
     { name = "Jochen Kupperschmidt", email = "homework@nwsnet.de" },
 ]
-description = "LAN party web platform"
-readme = "README.rst"
 license = { text = "Revised BSD License" }
 keywords = [ "lanparty" ]
 classifiers = [
@@ -29,6 +28,7 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Message Boards",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
 ]
+requires-python = ">=3.11"
 dependencies = [
     "babel>=2.17.0",
     "bbcode==1.1.0",
