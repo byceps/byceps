@@ -35,16 +35,16 @@ def create_tourney(
     current_participant_count = 0
 
     tourney = Tourney(
-        tourney_id,
-        party.id,
-        title,
-        subtitle,
-        logo_url,
-        category.id,
-        current_participant_count,
-        max_participant_count,
-        starts_at,
-        registration_open,
+        id=tourney_id,
+        party_id=party.id,
+        title=title,
+        subtitle=subtitle,
+        logo_url=logo_url,
+        category_id=category.id,
+        current_participant_count=current_participant_count,
+        max_participant_count=max_participant_count,
+        starts_at=starts_at,
+        registration_open=registration_open,
     )
 
     event = _build_tourney_created_event(tourney, occurred_at, creator)
