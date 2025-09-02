@@ -109,19 +109,24 @@
   <h2>{{ _('Billing address') }}</h2>
   <div class="main-body-box">
 
-    {%- if order.company %}
-    <div class="data-label">{{ _('Company') }}</div>
-    <div class="data-value">{{ order.company }}</div>
-    {%- endif %}
+    <div class="block row row--wrap">
+      <div>
+        {%- if order.company %}
+        <div class="data-label">{{ _('Company') }}</div>
+        <div class="data-value">{{ order.company }}</div>
+        {%- endif %}
 
-    <div class="data-label">{{ _('Full name') }}</div>
-    <div class="data-value">{{ order.first_name }} {{ order.last_name }}</div>
-
-    <div class="data-label">{{ _('Address') }}</div>
-    <div class="data-value">
-      {{ order.address.street }}<br>
-      {{ order.address.postal_code }} {{ order.address.city }}<br>
-      {{ order.address.country }}
+        <div class="data-label">{{ _('Full name') }}</div>
+        <div class="data-value">{{ order.first_name }} {{ order.last_name }}</div>
+      </div>
+      <div>
+        <div class="data-label">{{ _('Address') }}</div>
+        <div class="data-value">
+          {{ order.address.street }}<br>
+          {{ order.address.postal_code }} {{ order.address.city }}<br>
+          {{ order.address.country }}
+        </div>
+      </div>
     </div>
 
   </div>
