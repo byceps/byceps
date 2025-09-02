@@ -83,7 +83,7 @@ docs = [
 test = [
     "coverage>=7.10.6",
     "freezegun>=1.5.5",
-    "pyfakefs>=5.9.1",
+    "pyfakefs>=5.9.3",
     "pytest>=8.4.1",
     "respx>=0.22.0",
 ]
