@@ -44,7 +44,10 @@ def test_success(setting_registration_open, api_client):
 
     client_id = response.location.removeprefix(LOCATION_PREFIX)
     client = whereabouts_client_service.find_client(client_id)
-    assert response.json == {'token': client.token}
+    assert response.json == {
+        'client_id': client_id,
+        'token': client.token,
+    }
 
 
 def send_request(api_client, payload: dict[str, bool | int | str]):
