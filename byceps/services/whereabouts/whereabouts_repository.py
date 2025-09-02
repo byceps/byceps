@@ -6,6 +6,8 @@ byceps.services.whereabouts.whereabouts_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
+
 from sqlalchemy import select
 
 from byceps.database import db, execute_upsert
@@ -71,7 +73,7 @@ def find_db_whereabouts_by_name(
     ).one_or_none()
 
 
-def get_db_whereabouts_list(party_id: PartyID) -> list[DbWhereabouts]:
+def get_db_whereabouts_list(party_id: PartyID) -> Sequence[DbWhereabouts]:
     """Return possible whereabouts."""
     return db.session.scalars(
         select(DbWhereabouts).filter_by(party_id=party_id)
@@ -121,7 +123,7 @@ def find_db_status(
     ).one_or_none()
 
 
-def get_db_statuses(party_id: PartyID) -> list[DbWhereaboutsStatus]:
+def get_db_statuses(party_id: PartyID) -> Sequence[DbWhereaboutsStatus]:
     """Return user statuses."""
     return db.session.scalars(
         select(DbWhereaboutsStatus)

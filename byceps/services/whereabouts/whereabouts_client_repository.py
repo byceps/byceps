@@ -6,6 +6,7 @@ byceps.services.whereabouts.whereabouts_client_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Sequence
 from datetime import datetime
 
 from sqlalchemy import select
@@ -128,15 +129,19 @@ def find_db_client_by_token(token: str) -> DbWhereaboutsClient | None:
     ).one_or_none()
 
 
-def get_db_all_clients() -> list[
+def get_db_all_clients() -> Sequence[
     tuple[DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus]
 ]:
     """Return all clients."""
-    return db.session.execute(
-        select(DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus).join(
-            DbWhereaboutsClientLivelinessStatus, isouter=True
+    return (
+        db.session.execute(
+            select(
+                DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus
+            ).join(DbWhereaboutsClientLivelinessStatus, isouter=True)
         )
-    ).all()
+        .tuples()
+        .all()
+    )
 
 
 # -------------------------------------------------------------------- #
@@ -156,6 +161,6 @@ def persist_client_config(config: WhereaboutsClientConfig) -> None:
     db.session.commit()
 
 
-def get_all_client_configs() -> list[DbWhereaboutsClientConfig]:
+def get_all_client_configs() -> Sequence[DbWhereaboutsClientConfig]:
     """Return all client configurations."""
     return db.session.scalars(select(DbWhereaboutsClientConfig)).all()
