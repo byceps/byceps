@@ -6,7 +6,6 @@ byceps.services.whereabouts.whereabouts_client_repository
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import dataclasses
 from datetime import datetime
 
 from sqlalchemy import select
@@ -24,7 +23,6 @@ from .models import (
     WhereaboutsClientCandidate,
     WhereaboutsClientConfig,
     WhereaboutsClientID,
-    WhereaboutsClientWithLivelinessStatus,
 )
 
 
