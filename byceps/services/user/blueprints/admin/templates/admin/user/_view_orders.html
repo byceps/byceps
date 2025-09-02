@@ -7,18 +7,18 @@
 <table class="itemlist is-wide">
   <thead>
     <tr>
+      <th>{{ _('Order number') }}</th>
       <th>{{ _('Date') }}</th>
       <th>{{ _('Shop') }}</th>
-      <th>{{ _('Order number') }}</th>
       <th>{{ _('Status') }}</th>
     </tr>
   </thead>
   <tbody>
     {%- for order in orders %}
     <tr>
+      <td><strong><a href="{{ url_for('shop_order_admin.view', order_id=order.id) }}">{{ order.order_number }}</a></strong></td>
       <td>{{ order.created_at|datetimeformat }}</td>
       <td>{{ shops_by_id[order.shop_id].title }}</td>
-      <td><a href="{{ url_for('shop_order_admin.view', order_id=order.id) }}">{{ order.order_number }}</a></td>
       <td>{{ render_order_payment_state(order.payment_state) }}</td>
     </tr>
     {%- endfor %}
