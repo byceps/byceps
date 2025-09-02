@@ -10,6 +10,9 @@ babel-init locale:
 babel-compile:
     uv run pybabel compile -d byceps/translations
 
+deps-outdated:
+    uv tree --all-groups --depth 1 --no-dev --outdated
+
 docs-build-clean:
     cd ./docs && uv run make clean && cd ..
 
