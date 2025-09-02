@@ -55,7 +55,7 @@ def register_client():
 
     url = url_for('.get_client_registration_status', client_id=candidate.id)
 
-    response = jsonify({'token': candidate.token})
+    response = jsonify({'client_id': candidate.id, 'token': candidate.token})
     response.status_code = 201
     response.headers['Location'] = url
     return response
