@@ -50,6 +50,8 @@ def create_whereabouts(whereabouts: Whereabouts) -> None:
 def update_whereabouts(whereabouts: Whereabouts) -> None:
     """Update whereabouts."""
     db_whereabouts = find_db_whereabouts(whereabouts.id)
+    if db_whereabouts is None:
+        raise ValueError(f'Unknown whereabouts ID: {whereabouts.id}')
 
     db_whereabouts.name = whereabouts.name
     db_whereabouts.description = whereabouts.description
