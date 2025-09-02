@@ -52,7 +52,7 @@ dependencies = [
     "pydantic>=2.11.7",
     "python-dotenv>=1.1.1",
     "qrcode>=8.2",
-    "redis>=6.2.0",
+    "redis>=6.4.0",
     "rq-dashboard>=0.8.4",
     "rq>=2.4.1",
     "rtoml==0.12.0",
