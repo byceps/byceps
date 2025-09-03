@@ -494,22 +494,6 @@ ul.compact {
 
 /* tags */
 
-.tag.order-payment-state--canceled-before-paid {
-  background-color: #999999 !important;
-}
-
-.tag.order-payment-state--canceled-after-paid {
-  background-color: #666666 !important;
-}
-
-.tag.order-payment-state--open {
-  background-color: var(--color-warning) !important;
-}
-
-.tag.order-payment-state--paid {
-  background-color: #11aa22 !important;
-}
-
 .tag.order-waiting-for-shipping {
   background-color: var(--color-info) !important;
 }

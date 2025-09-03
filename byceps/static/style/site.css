@@ -393,21 +393,6 @@ form.board-posting-create-form-inline .label {
 }
 
 
-/* shop */
-
-.tag.order-payment-state--canceled {
-  background-color: #999999 !important;
-}
-
-.tag.order-payment-state--open {
-  background-color: #ffcc11 !important;
-}
-
-.tag.order-payment-state--paid {
-  background-color: #11aa22 !important;
-}
-
-
 /* user avatars */
 
 .avatar.orga {
