@@ -498,26 +498,6 @@ ul.compact {
   background-color: var(--color-info) !important;
 }
 
-h1 .tag {
-  font-size: 0.75rem !important; /* 12px / 16px */
-  padding: 0.4rem 0.6rem;
-  vertical-align: 0.4rem;
-}
-
-h2 .tag {
-  font-size: 0.625rem !important; /* 10px / 16px */
-  padding: 0.3rem 0.4rem;
-  vertical-align: 0.2rem;
-}
-
-:is(h1, h2) .tag .icon {
-  margin-right: 0.125rem;
-}
-
-:is(h1, h2) .tag.icon-only .icon {
-  margin-left: 0.125rem;
-}
-
 
 /* buttons */
 
