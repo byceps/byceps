@@ -12,7 +12,7 @@
       <li><a href="{{ url_for('.index') }}">{{ _('Your orders') }}</a></li>
     </ol>
   </nav>
-  <h1 class="title">{{ order.order_number }}</h1>
+  <h1 class="title">{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }} {{ order.order_number }}</h1>
 
   {%- if cancellation_request and cancellation_request.state.name != 'accepted' %}
 {{ render_notification(_('A cancellation has been requested for this order on %(date)s at %(time)s.', date=cancellation_request.created_at|dateformat, time=cancellation_request.created_at|timeformat('short')), category='info') }}
@@ -35,10 +35,6 @@
           <div>
             <div class="data-label">{{ _('Date') }}</div>
             <div class="data-value">{{ order.created_at|dateformat }}, {{ order.created_at|timeformat('short') }}</div>
-          </div>
-          <div>
-            <div class="data-label">{{ _('Payment state') }}</div>
-            <div class="data-value">{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }}</div>
           </div>
           <div>
           {%- if order.payment_method %}
