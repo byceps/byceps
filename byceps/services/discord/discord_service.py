@@ -121,7 +121,7 @@ def update_server_presence_stats(
 
     db_server = _find_db_server(server_id)
     if db_server is None:
-        raise Err(f'Unknown Discord server ID "{server_id}"')
+        return Err(f'Unknown Discord server ID "{server_id}"')
 
     table = DbDiscordServerPresenceStats.__table__
     identifier = {'server_id': server_id}
