@@ -11,6 +11,7 @@ from flask_babel import gettext
 
 from byceps.services.brand import brand_service
 from byceps.services.shop.catalog import catalog_service
+from byceps.services.shop.catalog.errors import CollectionNotEmptyError
 from byceps.services.shop.catalog.models import (
     Catalog,
     CatalogID,
@@ -21,8 +22,9 @@ from byceps.services.shop.product import product_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_success
+from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -276,14 +278,23 @@ def collection_delete(collection_id):
     """Delete a collection."""
     collection = _get_collection_or_404(collection_id)
 
-    catalog_service.delete_collection(collection_id)
-
-    flash_success(
-        gettext(
-            'Collection "%(title)s" has been deleted.',
-            collection_title=collection.title,
-        )
-    )
+    match catalog_service.delete_collection(collection):
+        case Ok(_):
+            flash_success(
+                gettext(
+                    'Collection "%(title)s" has been deleted.',
+                    title=collection.title,
+                )
+            )
+        case Err(CollectionNotEmptyError()):
+            flash_error(
+                gettext(
+                    'Collection "%(title)s" cannot be deleted as it contains products.',
+                    title=collection.title,
+                )
+            )
+        case Err(_):
+            flash_error(gettext('An unexpected error occurred.'))
 
 
 # product assignment

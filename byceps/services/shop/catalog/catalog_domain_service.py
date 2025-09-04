@@ -9,8 +9,10 @@ byceps.services.shop.catalog.catalog_domain_service
 import dataclasses
 
 from byceps.services.shop.shop.models import ShopID
+from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
+from .errors import CollectionNotEmptyError
 from .models import Catalog, CatalogID, Collection, CollectionID
 
 
@@ -52,3 +54,13 @@ def create_collection(catalog_id: CatalogID, title: str) -> Collection:
 def update_collection(collection: Collection, title: str) -> Collection:
     """Update a collection."""
     return dataclasses.replace(collection, title=title)
+
+
+def delete_collection(
+    collection: Collection,
+) -> Result[None, CollectionNotEmptyError]:
+    """Delete a collection."""
+    if collection.product_ids:
+        return Err(CollectionNotEmptyError())
+    else:
+        return Ok(None)

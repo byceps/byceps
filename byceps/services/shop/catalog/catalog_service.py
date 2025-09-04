@@ -18,10 +18,12 @@ from byceps.services.shop.product.models import (
     ProductID,
 )
 from byceps.services.shop.shop.models import ShopID
+from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from . import catalog_domain_service, catalog_repository
 from .dbmodels import DbCatalog, DbCatalogProduct, DbCollection
+from .errors import CollectionNotEmptyError
 from .models import (
     Catalog,
     CatalogProduct,
@@ -113,9 +115,16 @@ def update_collection(collection: Collection, title: str) -> Collection:
     return updated_collection
 
 
-def delete_collection(collection_id: CollectionID) -> None:
+def delete_collection(
+    collection: Collection,
+) -> Result[None, CollectionNotEmptyError]:
     """Delete the collection."""
-    catalog_repository.delete_collection(collection_id)
+    match catalog_domain_service.delete_collection(collection):
+        case Ok(_):
+            catalog_repository.delete_collection(collection.id)
+            return Ok(None)
+        case Err(e):
+            return Err(e)
 
 
 def find_collection(collection_id: CollectionID) -> Collection | None:

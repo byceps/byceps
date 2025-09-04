@@ -53,7 +53,11 @@
           <button class="dropdown-toggle button is-compact"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.collection_update_form', collection_id=collection.id) }}">{{ render_icon('edit') }} {{ _('Edit collection') }}</a></li>
+            {%- if products %}
+            <li><span class="dropdown-label dimmed">{{ render_icon('delete') }} {{ _('Delete collection') }}</span></li>
+            {%- else %}
             <li><a class="dropdown-item" href="{{ url_for('.collection_delete', collection_id=collection.id) }}" data-action="collection-delete">{{ render_icon('delete') }} {{ _('Delete collection') }}</a></td>
+            {%- endif %}
             <li class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ url_for('.product_add_form', collection_id=collection.id) }}">{{ render_icon('add') }} {{ _('Add product') }}</a></li>
           </ol>
