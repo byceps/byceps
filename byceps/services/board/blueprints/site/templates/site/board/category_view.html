@@ -74,7 +74,7 @@
     {%- endif %}
 
     {%- if g.user.authenticated %}
-    <button class="button" data-action="mark-all-topics-in-category-as-viewed" href="{{ url_for('.mark_all_topics_in_category_as_viewed', category_id=category.id) }}" title="{{ _('Mark all topics in this category as unread') }}">{{ render_icon('view') }}</button>
+    <button class="button" href="{{ url_for('.mark_all_topics_in_category_as_viewed', category_id=category.id) }}" data-action="mark-all-topics-in-category-as-viewed" title="{{ _('Mark all topics in this category as unread') }}">{{ render_icon('view') }}</button>
     {%- endif %}
 
   </div>

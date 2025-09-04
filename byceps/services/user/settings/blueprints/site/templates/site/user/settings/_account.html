@@ -19,7 +19,7 @@
               <ol class="dropdown-menu dropdown-menu--right">
                 <li><a class="dropdown-item" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} {{ _('Upload') }}</a></li>
                 {%- if user.avatar_url %}
-                <li><a class="dropdown-item" data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} {{ _('Remove') }}</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('user_avatar.delete', _method='DELETE') }}" data-action="avatar-delete">{{ render_icon('delete') }} {{ _('Remove') }}</a></li>
                 {%- endif %}
               </ol>
             </div>
@@ -69,10 +69,10 @@
               <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
               <ol class="dropdown-menu dropdown-menu--right">
               {% for locale in g.locales %}
-                <li><a class="dropdown-item" data-action="locale-update" href="{{ url_for('.update_locale', locale=locale.language) }}">{{ locale.get_display_name(g.user.locale) }}</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('.update_locale', locale=locale.language) }}" data-action="locale-update">{{ locale.get_display_name(g.user.locale) }}</a></li>
               {% endfor %}
                 <li class="dropdown-divider"></li>
-                <li><a class="dropdown-item" data-action="locale-update" href="{{ url_for('.update_locale') }}">{{ _('no preference') }}</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('.update_locale') }}" data-action="locale-update">{{ _('no preference') }}</a></li>
               </ol>
             </div>
           </div>

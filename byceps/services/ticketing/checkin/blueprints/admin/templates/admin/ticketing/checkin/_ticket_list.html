@@ -56,7 +56,7 @@
         {%- elif ticket.used_by and ticket.used_by.suspended -%}
         <div class="button is-compact is-disabled color-danger"><div>{{ _('No entry!') }}<br><small>{{ _('Account is suspended.') }}</small></div></div>
         {%- elif ticket.used_by -%}
-        <a class="button button-check-in color-primary" data-action="check-in-user" href="{{ url_for('ticketing_checkin_admin.check_in_user', party_id=party.id, ticket_id=ticket.id) }}">{{ render_icon('ticketing-checkin') }} <span>{{ _('Check in') }}</span></a>
+        <a class="button button-check-in color-primary" href="{{ url_for('ticketing_checkin_admin.check_in_user', party_id=party.id, ticket_id=ticket.id) }}" data-action="check-in-user">{{ render_icon('ticketing-checkin') }} <span>{{ _('Check in') }}</span></a>
         {%- endif -%}
       </td>
     </tr>

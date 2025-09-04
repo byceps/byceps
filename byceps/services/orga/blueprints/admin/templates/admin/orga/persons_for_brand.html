@@ -102,7 +102,7 @@
           <div class="dropdown">
             <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
-              <li><a class="dropdown-item" data-action="orga-status-revoke" href="{{ url_for('.revoke_orga_status', brand_id=brand.id, user_id=user.id) }}">{{ render_icon('remove') }} {{ _('Revoke organizer status') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.revoke_orga_status', brand_id=brand.id, user_id=user.id) }}" data-action="orga-status-revoke">{{ render_icon('remove') }} {{ _('Revoke organizer status') }}</a></li>
             </ol>
           </div>
           {%- endif %}

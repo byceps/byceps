@@ -16,7 +16,7 @@
         <li class="dropdown-divider"></li>
 
           {%- if order.is_open %}
-        <li><a class="dropdown-item" data-action="order-resend-incoming-notification" href="{{ url_for('.resend_email_for_incoming_order_to_orderer', order_id=order.id) }}">{{ render_icon('email') }} {{ _('Resend confirmation email') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.resend_email_for_incoming_order_to_orderer', order_id=order.id) }}" data-action="order-resend-incoming-notification">{{ render_icon('email') }} {{ _('Resend confirmation email') }}</a></li>
           {%- endif %}
 
           {%- if order.is_open and has_current_user_permission('shop_order.mark_as_paid') %}
@@ -32,9 +32,9 @@
         {%- if order.is_processing_required %}
         <li class="dropdown-divider"></li>
           {%- if order.is_processed %}
-        <li><a class="dropdown-item" data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} {{ _('Mark as <strong>not</strong> shipped')|safe }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}" data-action="order-unflag-shipped">{{ render_icon('shipping') }} {{ _('Mark as <strong>not</strong> shipped')|safe }}</a></li>
           {%- else %}
-        <li><a class="dropdown-item" data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} {{ _('Mark as shipped') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}" data-action="order-flag-shipped">{{ render_icon('shipping') }} {{ _('Mark as shipped') }}</a></li>
           {%- endif %}
         {%- endif %}
 

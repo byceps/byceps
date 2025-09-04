@@ -81,7 +81,7 @@
       <tr>
         <td class="nowrap">{{ presence.starts_at|dateformat }}, {{ presence.starts_at|timeformat('short') }}</td>
         <td class="nowrap">{{ presence.ends_at|dateformat }}, {{ presence.ends_at|timeformat('short') }}</td>
-        <td><a class="button is-compact" data-action="time-slot-delete" href="{{ url_for('.time_slot_delete', time_slot_id=presence.id) }}" title="{{ _('Remove presence') }}">{{ render_icon('remove') }}</a></td>
+        <td><a class="button is-compact" href="{{ url_for('.time_slot_delete', time_slot_id=presence.id) }}" data-action="time-slot-delete" title="{{ _('Remove presence') }}">{{ render_icon('remove') }}</a></td>
       </tr>
     {%- endfor %}
     </tbody>

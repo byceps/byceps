@@ -57,15 +57,15 @@
             <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
               <li><a class="dropdown-item" href="{{ url_for('.category_update_form', category_id=category.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
-              <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.category_move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
-              <li><a class="dropdown-item" data-action="category-move-down" href="{{ url_for('.category_move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.category_move_up', category_id=category.id) }}" data-action="category-move-up">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.category_move_down', category_id=category.id) }}" data-action="category-move-down">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
               {%- if category.hidden %}
-              <li><a class="dropdown-item" data-action="category-unhide" href="{{ url_for('.category_unhide', category_id=category.id) }}">{{ render_icon('view') }} {{ _('Make visible') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.category_unhide', category_id=category.id) }}" data-action="category-unhide">{{ render_icon('view') }} {{ _('Make visible') }}</a></li>
               {%- else %}
-              <li><a class="dropdown-item" data-action="category-hide" href="{{ url_for('.category_hide', category_id=category.id) }}">{{ render_icon('hidden') }} {{ _('Hide') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.category_hide', category_id=category.id) }}" data-action="category-hide">{{ render_icon('hidden') }} {{ _('Hide') }}</a></li>
               {%- endif %}
               {%- if category.topic_count == 0 %}
-              <li><a class="dropdown-item" data-action="category-delete" href="{{ url_for('.category_delete', category_id=category.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.category_delete', category_id=category.id) }}" data-action="category-delete">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
               {%- endif %}
             </ol>
           </div>

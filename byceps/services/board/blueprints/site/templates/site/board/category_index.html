@@ -89,7 +89,7 @@
 
   {%- if g.user.authenticated %}
   <div class="button-row is-right-aligned">
-    <button class="button" data-action="mark-all-topics-as-viewed" href="{{ url_for('.mark_all_topics_as_viewed') }}" title="{{ _('Mark all topics as unread') }}">{{ render_icon('view') }}</button>
+    <button class="button" href="{{ url_for('.mark_all_topics_as_viewed') }}" data-action="mark-all-topics-as-viewed" title="{{ _('Mark all topics as unread') }}">{{ render_icon('view') }}</button>
   </div>
   {%- endif %}
 

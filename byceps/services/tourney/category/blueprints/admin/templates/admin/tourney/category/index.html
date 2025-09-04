@@ -40,8 +40,8 @@
             <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ url_for('.update_form', category_id=category.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
-              <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
-              <li><a class="dropdown-item" data-action="category-move-down" href="{{ url_for('.move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.move_up', category_id=category.id) }}" data-action="category-move-up">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.move_down', category_id=category.id) }}" data-action="category-move-down">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
             </ol>
           </div>
           {%- endif -%}

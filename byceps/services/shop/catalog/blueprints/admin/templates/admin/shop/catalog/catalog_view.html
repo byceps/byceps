@@ -84,7 +84,7 @@
           {%- endif %}
         </td>
         <td>{{ render_product_temporal_availability(product) }}</td>
-        <td class="number"><a data-action="product-remove" href="{{ url_for('.product_remove', product_id=product.id, collection_id=collection.id) }}" class="button is-compact" title="{{ _('Remove product') }}">{{ render_icon('remove') }}</a></td>
+        <td class="number"><a href="{{ url_for('.product_remove', product_id=product.id, collection_id=collection.id) }}" class="button is-compact" title="{{ _('Remove product') }}" data-action="product-remove">{{ render_icon('remove') }}</a></td>
       </tr>
       {%- endfor %}
     </tbody>

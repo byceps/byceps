@@ -40,9 +40,9 @@
     <div class="button-row is-compact mt">
     {%- if topic.hidden %}
       <span class="button is-disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>
-      <a class="button" data-action="topic-unhide" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>
+      <a class="button" href="{{ url_for('.topic_unhide', topic_id=topic.id) }}" data-action="topic-unhide">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>
     {%- else %}
-      <a class="button" data-action="topic-hide" href="{{ url_for('.topic_hide', topic_id=topic.id) }}">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></a>
+      <a class="button" href="{{ url_for('.topic_hide', topic_id=topic.id) }}" data-action="topic-hide">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></a>
       <span class="button is-disabled">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></span>
     {%- endif %}
     </div>
@@ -65,9 +65,9 @@
     <div class="button-row is-compact mt">
     {%- if topic.locked %}
       <span class="button is-disabled">{{ render_icon('lock') }} <span>{{ _('Lock') }}</span></span>
-      <a class="button" data-action="topic-unlock" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}">{{ render_icon('unlock') }} <span>{{ _('Unlock') }}</span></a>
+      <a class="button" href="{{ url_for('.topic_unlock', topic_id=topic.id) }}" data-action="topic-unlock">{{ render_icon('unlock') }} <span>{{ _('Unlock') }}</span></a>
     {%- else %}
-      <a class="button" data-action="topic-lock" href="{{ url_for('.topic_lock', topic_id=topic.id) }}">{{ render_icon('lock') }} <span>{{ _('Lock') }}</span></a>
+      <a class="button" href="{{ url_for('.topic_lock', topic_id=topic.id) }}" data-action="topic-lock">{{ render_icon('lock') }} <span>{{ _('Lock') }}</span></a>
       <span class="button is-disabled">{{ render_icon('unlock') }} <span>{{ _('Unlock') }}</span></span>
     {%- endif %}
     </div>
@@ -90,9 +90,9 @@
     <div class="button-row is-compact mt">
     {%- if topic.pinned %}
       <span class="button is-disabled">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></span>
-      <a class="button" data-action="topic-unpin" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></a>
+      <a class="button" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}" data-action="topic-unpin">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></a>
     {%- else %}
-      <a class="button" data-action="topic-pin" href="{{ url_for('.topic_pin', topic_id=topic.id) }}">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></a>
+      <a class="button" href="{{ url_for('.topic_pin', topic_id=topic.id) }}" data-action="topic-pin">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></a>
       <span class="button is-disabled">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></span>
     {%- endif %}
     </div>
@@ -142,9 +142,9 @@
     <div class="button-row is-compact mt">
     {%- if topic.posting_limited_to_moderators %}
       <span class="button is-disabled">{{ render_icon('announce') }} <span>{{ _('Limit to announcements') }}</span></span>
-      <a class="button" data-action="topic-remove-limit-to-announcements" href="{{ url_for('.topic_remove_limit_to_announcements', topic_id=topic.id) }}">{{ render_icon('board') }} <span>{{ _('Open for all postings') }}</span></a>
+      <a class="button" href="{{ url_for('.topic_remove_limit_to_announcements', topic_id=topic.id) }}" data-action="topic-remove-limit-to-announcements">{{ render_icon('board') }} <span>{{ _('Open for all postings') }}</span></a>
     {%- else %}
-      <a class="button" data-action="topic-limit-to-announcements" href="{{ url_for('.topic_limit_to_announcements', topic_id=topic.id) }}">{{ render_icon('announce') }} <span>{{ _('Limit to announcements') }}</span></a>
+      <a class="button" href="{{ url_for('.topic_limit_to_announcements', topic_id=topic.id) }}" data-action="topic-limit-to-announcements">{{ render_icon('announce') }} <span>{{ _('Limit to announcements') }}</span></a>
       <span class="button is-disabled">{{ render_icon('board') }} <span>{{ _('Open for all postings') }}</span></span>
     {%- endif %}
     </div>

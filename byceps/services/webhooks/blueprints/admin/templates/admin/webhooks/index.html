@@ -33,11 +33,11 @@
       <div>
         <div class="button-row is-compact is-right-aligned">
           <a class="button" href="{{ url_for('.update_form', webhook_id=webhook.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
-          <a class="button" data-action="webhook-test" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
+          <a class="button" href="{{ url_for('.test', webhook_id=webhook.id) }}" data-action="webhook-test">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
           <div class="dropdown">
             <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
             <ol class="dropdown-menu dropdown-menu--right">
-              <li><a class="dropdown-item" data-action="webhook-delete" href="{{ url_for('.delete', webhook_id=webhook.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.delete', webhook_id=webhook.id) }}" data-action="webhook-delete">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
             </ol>
           </div>
         </div>

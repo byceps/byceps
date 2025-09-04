@@ -46,10 +46,10 @@
           <button class="dropdown-toggle button"><span>{{ render_icon('published') }} {{ _('Publish') }} {{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
             {%- if not item.published %}
-            <li><a class="dropdown-item" data-action="item-publish-now" href="{{ url_for('.item_publish_now', item_id=item.id) }}">{{ _('Publish now') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.item_publish_now', item_id=item.id) }}" data-action="item-publish-now">{{ _('Publish now') }}</a></li>
             <li><a class="dropdown-item" href="{{ url_for('.item_publish_later_form', item_id=item.id) }}">{{ _('Publish later') }}</a></li>
             {%- else %}
-            <li><a class="dropdown-item" data-action="item-unpublish" href="{{ url_for('.item_unpublish', item_id=item.id) }}">{{ _('Unpublish') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.item_unpublish', item_id=item.id) }}" data-action="item-unpublish">{{ _('Unpublish') }}</a></li>
             {%- endif %}
           </ol>
         </div>
@@ -118,7 +118,7 @@
           <button class="dropdown-toggle button is-compact"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
             {%- if item.featured_image is not none %}
-            <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}">{{ _('Unset featured image') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.image_unset_featured', item_id=item.id) }}" data-action="image-unset-featured">{{ _('Unset featured image') }}</a></li>
             {%- else %}
             <li><span class="dropdown-label dimmed">{{ _('Unset featured image') }}</span></li>
             {%- endif %}
@@ -165,11 +165,11 @@
                   <button class="dropdown-toggle button is-compact"><span>{{ render_icon('chevron-down') }}</span></button>
                   <ol class="dropdown-menu dropdown-menu--right">
                     {%- if (item.featured_image is not none) and (image.id == item.featured_image.id) %}
-                    <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}">{{ _('Unset image as featured') }}</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('.image_unset_featured', item_id=item.id) }}" data-action="image-unset-featured">{{ _('Unset image as featured') }}</a></li>
                     <li><span class="dropdown-label dimmed">{{ _('Delete image') }}</span></li>
                     {%- else %}
-                    <li><a class="dropdown-item" data-action="image-set-featured" href="{{ url_for('.image_set_featured', image_id=image.id) }}">{{ _('Set image as featured') }}</a></li>
-                    <li><a class="dropdown-item" data-action="image-delete" href="{{ url_for('.image_delete', image_id=image.id) }}">{{ _('Delete image') }}</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('.image_set_featured', image_id=image.id) }}" data-action="image-set-featured">{{ _('Set image as featured') }}</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('.image_delete', image_id=image.id) }}" data-action="image-delete">{{ _('Delete image') }}</a></li>
                     {%- endif %}
                   </ol>
                 </div>

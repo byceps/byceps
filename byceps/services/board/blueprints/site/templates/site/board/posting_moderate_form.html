@@ -39,9 +39,9 @@
     <div class="button-row is-compact mt">
     {%- if posting.hidden %}
       <span class="button is-disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>
-      <a class="button" data-action="posting-unhide" href="{{ url_for('.posting_unhide', posting_id=posting.id) }}">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>
+      <a class="button" href="{{ url_for('.posting_unhide', posting_id=posting.id) }}" data-action="posting-unhide">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></a>
     {%- else %}
-      <a class="button" data-action="posting-hide" href="{{ url_for('.posting_hide', posting_id=posting.id) }}">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></a>
+      <a class="button" href="{{ url_for('.posting_hide', posting_id=posting.id) }}" data-action="posting-hide">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></a>
       <span class="button is-disabled">{{ render_icon('view') }} <span>{{ _('Make visible') }}</span></span>
     {%- endif %}
     </div>

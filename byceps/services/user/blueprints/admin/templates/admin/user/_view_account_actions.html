@@ -11,7 +11,7 @@
         {%- if has_current_user_permission('user.administrate') %}
 
           {%- if not user.initialized %}
-        <li><a class="dropdown-item" data-action="user-initialize" href="{{ url_for('.initialize_account', user_id=user.id) }}">{{ render_icon('enabled') }} {{ _('Initialize') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.initialize_account', user_id=user.id) }}" data-action="user-initialize">{{ render_icon('enabled') }} {{ _('Initialize') }}</a></li>
           {%- endif %}
 
           {%- if not user.suspended %}

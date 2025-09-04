@@ -23,4 +23,4 @@
       <li><a class="dropdown-item" href="{{ url_for('ticketing.index_mine') }}">{{ render_icon('ticket') }} {{ _('Tickets') }}</a></li>
       <li><a class="dropdown-item" href="{{ url_for('shop_orders.index') }}">{{ render_icon('invoice') }} {{ _('Orders') }}</a></li>
       <li class="dropdown-divider"></li>
-      <li><a class="dropdown-item" data-action="log-out" data-redirect-target="{{ url_for('authn_login.log_in') }}" href="{{ url_for('authn_login.log_out', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
+      <li><a class="dropdown-item" href="{{ url_for('authn_login.log_out', _method='POST') }}" data-action="log-out" data-redirect-target="{{ url_for('authn_login.log_in') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
