@@ -269,6 +269,23 @@ def collection_update(collection_id):
     )
 
 
+@blueprint.delete('/collections/<collection_id>')
+@permission_required('shop_product.administrate')
+@respond_no_content
+def collection_delete(collection_id):
+    """Delete a collection."""
+    collection = _get_collection_or_404(collection_id)
+
+    catalog_service.delete_collection(collection_id)
+
+    flash_success(
+        gettext(
+            'Collection "%(title)s" has been deleted.',
+            collection_title=collection.title,
+        )
+    )
+
+
 # product assignment
 
 

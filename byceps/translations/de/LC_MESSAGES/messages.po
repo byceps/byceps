@@ -5703,7 +5703,12 @@ msgstr "Die Kollektion \"%(title)s\" wurde angelegt."
 msgid "Collection \"%(title)s\" has been updated."
 msgstr "Die Kollektion \"%(title)s\" wurde aktualisiert."
 
-#: byceps/services/shop/catalog/blueprints/admin/views.py:319
+#: byceps/services/shop/catalog/blueprints/admin/views.py:283
+#, python-format
+msgid "Collection \"%(title)s\" has been deleted."
+msgstr "Die Kollektion \"%(title)s\" wurde gelösct."
+
+#: byceps/services/shop/catalog/blueprints/admin/views.py:336
 #, python-format
 msgid ""
 "Product \"%(product_name)s\" has been added to collection "
@@ -5712,7 +5717,7 @@ msgstr ""
 "Das Produkt \"%(product_name)s\" wurde zur "
 "Kollektion\"%(collection_title)s\" hinzugefügt."
 
-#: byceps/services/shop/catalog/blueprints/admin/views.py:343
+#: byceps/services/shop/catalog/blueprints/admin/views.py:360
 #, python-format
 msgid ""
 "Product \"%(product_name)s\" has been removed from collection "
@@ -5749,17 +5754,26 @@ msgid_plural "products"
 msgstr[0] "Produkt"
 msgstr[1] "Produkte"
 
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:53
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:55
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/collection_update_form.html:4
+msgid "Edit collection"
+msgstr "Kollektion bearbeiten"
+
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:56
+msgid "Delete collection"
+msgstr "Kollektion löschen"
+
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:58
 msgid "Add product"
 msgstr "Produkt hinzufügen"
 
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:62
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:69
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/_view_products.html:8
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/index_for_shop.html:72
 msgid "Item number"
 msgstr "Artikelnummer"
 
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:63
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:70
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/_view_products.html:9
 #: byceps/services/shop/order/blueprints/site/templates/site/shop/order/_order_form_products.html:27
 #: byceps/services/shop/order/blueprints/site/templates/site/shop/order/list_products.html:31
@@ -5772,42 +5786,42 @@ msgctxt "product"
 msgid "Name"
 msgstr "Bezeichnung"
 
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:64
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:71
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view.html:157
 msgid "Period"
 msgstr "Zeitraum"
 
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:79
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:86
 #: byceps/services/shop/product/blueprints/admin/forms.py:64
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/index_for_shop.html:94
 msgid "can only be ordered indirectly"
 msgstr "nur indirekt bestellbar"
 
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:83
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:90
 #: byceps/services/shop/product/blueprints/admin/forms.py:67
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/index_for_shop.html:98
 msgid "must be ordered separately"
 msgstr "muss separat bestellt werden"
 
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:87
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:94
 msgid "Remove product"
 msgstr "Produkt entfernen"
 
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:94
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:101
 msgid "No products assigned."
 msgstr "Keine Produkte zugewiesen."
 
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:105
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:112
+msgid "Delete collection?"
+msgstr "Kollektion löschen?"
+
+#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/catalog_view.html:113
 msgid "Remove product?"
 msgstr "Produkt entfernen?"
 
 #: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/collection_create_form.html:4
 msgid "Create collection"
 msgstr "Kollektion anlegen"
-
-#: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/collection_update_form.html:4
-msgid "Edit collection"
-msgstr "Kollektion bearbeiten"
 
 #: byceps/services/shop/catalog/blueprints/admin/templates/admin/shop/catalog/index_for_shop.html:37
 msgid "No catalogs exist."
