@@ -49,8 +49,14 @@
     {%- if has_current_user_permission('shop_product.administrate') %}
     <div>
       <div class="button-row is-compact is-right-aligned">
-        <a class="button is-compact" href="{{ url_for('.collection_update_form', collection_id=collection.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
-        <a class="button is-compact" href="{{ url_for('.product_add_form', collection_id=collection.id) }}">{{ render_icon('add') }} <span>{{ _('Add product') }}</span></a>
+        <div class="dropdown">
+          <button class="dropdown-toggle button is-compact"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" href="{{ url_for('.collection_update_form', collection_id=collection.id) }}">{{ render_icon('edit') }} {{ _('Edit collection') }}</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('.product_add_form', collection_id=collection.id) }}">{{ render_icon('add') }} {{ _('Add product') }}</a></li>
+          </ol>
+        </div>
       </div>
     </div>
     {%- endif %}
