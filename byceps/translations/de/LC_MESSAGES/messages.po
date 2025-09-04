@@ -2404,7 +2404,7 @@ msgstr "Site"
 #: byceps/services/shop/shop/blueprints/admin/templates/admin/shop/shop/view_for_brand.html:5
 #: byceps/services/shop/storefront/blueprints/admin/templates/admin/shop/storefront/view.html:25
 #: byceps/services/site_navigation/models.py:97
-#: byceps/services/user/blueprints/admin/templates/admin/user/_view_orders.html:11
+#: byceps/services/user/blueprints/admin/templates/admin/user/_view_orders.html:12
 msgid "Shop"
 msgstr "Shop"
 
@@ -2546,7 +2546,7 @@ msgstr "Kataloge"
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/view.html:94
 #: byceps/services/shop/order/blueprints/site/templates/site/shop/order/_order_form_products.html:3
 #: byceps/services/shop/order/blueprints/site/templates/site/shop/order/list_products.html:21
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:130
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:90
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/_create_form_base.html:7
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/create_number_sequence_form.html:8
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/index_for_shop.html:7
@@ -2820,10 +2820,10 @@ msgstr ""
 #: byceps/services/news/blueprints/site/templates/site/news/archive.html:21
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/_order_list.html:10
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/index.html:21
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:35
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:36
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view_orders.html:27
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view_purchases.html:27
-#: byceps/services/user/blueprints/admin/templates/admin/user/_view_orders.html:10
+#: byceps/services/user/blueprints/admin/templates/admin/user/_view_orders.html:11
 msgid "Date"
 msgstr "Datum"
 
@@ -3033,7 +3033,7 @@ msgstr "Offene Bestellungen"
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view_orders.html:27
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view_purchases.html:27
 #: byceps/services/shop/sold_products/blueprints/admin/templates/admin/shop/sold_products/view.html:24
-#: byceps/services/user/blueprints/admin/templates/admin/user/_view_orders.html:12
+#: byceps/services/user/blueprints/admin/templates/admin/user/_view_orders.html:10
 msgid "Order number"
 msgstr "Bestellnummer"
 
@@ -3565,7 +3565,6 @@ msgid "Further Settings"
 msgstr "Weitere Einstellungen"
 
 #: byceps/services/homepage/blueprints/site/templates/site/homepage/index.html:3
-#: sites/cozylan/template_overrides/site/homepage/index.html:3
 msgid "Home"
 msgstr "Home"
 
@@ -4468,7 +4467,7 @@ msgid "as Excel CSV"
 msgstr "als Excel-CSV"
 
 #: byceps/services/orga/blueprints/admin/templates/admin/orga/persons_for_brand.html:51
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:118
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:75
 #: byceps/services/user/blueprints/admin/templates/admin/user/_user_list.html:7
 msgid "Full name"
 msgstr "Voller Name"
@@ -6046,7 +6045,7 @@ msgstr "E-Mail-Bestätigung erneut senden"
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/cancel_form.html:5
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/cancel_form.html:16
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/cancel_form.html:23
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:62
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:57
 msgid "Cancel order"
 msgstr "Bestellung stornieren"
 
@@ -6225,12 +6224,12 @@ msgstr "Noch keine Daten."
 
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/services/shop/order/blueprints/site/forms.py:21
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:114
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:71
 msgid "Company"
 msgstr "Firma"
 
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/_view_orderer.html:14
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:121
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:79
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_personal.html:26
 #: byceps/services/user/settings/blueprints/site/templates/site/user/settings/_details_personal.html:30
 msgid "Address"
@@ -6304,7 +6303,7 @@ msgstr[0] "Rechnung"
 msgstr[1] "Rechnungen"
 
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/view.html:85
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:53
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:48
 msgid "Reason for cancellation"
 msgstr "Grund für Stornierung"
 
@@ -6315,7 +6314,7 @@ msgstr[0] "Zahlung"
 msgstr[1] "Zahlungen"
 
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/view.html:103
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:46
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:41
 msgid "Payment method"
 msgstr "Zahlungsart"
 
@@ -6434,7 +6433,7 @@ msgstr ""
 "wurde entgegengenommen. Vielen Dank!"
 
 #: byceps/services/shop/order/blueprints/site/templates/site/shop/order/_order_form_orderer.html:3
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:110
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:65
 msgid "Billing address"
 msgstr "Rechnungsadresse"
 
@@ -6661,35 +6660,30 @@ msgstr "Die Zahlung ist fehlgeschlagen."
 msgid "Payment is being processed, please wait …"
 msgstr "Die Zahlung wird verarbeitet, bitte warten …"
 
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:41
-#: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view.html:275
-msgid "Payment state"
-msgstr "Bezahlstatus"
-
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:71
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:94
 msgid "Payment notes"
 msgstr "Zahlungshinweis"
 
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:77
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:100
 msgid "Payment instructions not found."
 msgstr "Zahlungsanweisungen nicht gefunden."
 
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:81
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:104
 msgid "Additional Payment Methods"
 msgstr "Weitere Zahlungsarten"
 
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:85
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:108
 msgid "PayPal offers several ways to pay for the order right now."
 msgstr ""
 "Über den Zahlungsdienstleister PayPal kannst du verschiedene "
 "Zahlungsarten nutzen, um die Bestellung jetzt gleich zu bezahlen:"
 
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:86
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:95
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:109
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:118
 msgid "If the order includes tickets, they will be issued immediately."
 msgstr "Wenn die Bestellung Tickets enthält, werden diese sofort freigeschaltet."
 
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:91
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:114
 msgid ""
 "You can use the following payment methods through payment provider Stripe"
 " to pay for the order right now:"
@@ -6697,17 +6691,17 @@ msgstr ""
 "Über den Zahlungsdienstleister Stripe kannst du folgende Zahlungsarten "
 "nutzen, um die Bestellung jetzt gleich zu bezahlen:"
 
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:93
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:116
 msgid "credit card (Apple Pay and Google Pay as well)"
 msgstr "Kreditkarte (auch Apple Pay und Google Pay)"
 
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:97
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:120
 msgid "The payment process could not be started. Please try again later."
 msgstr ""
 "Der Bezahlvorgang konnte nicht gestartet werden. Bitte probiere es später"
 " erneut."
 
-#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:101
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:124
 msgid "Start real-time payment"
 msgstr "Echtzeitzahlung starten"
 
@@ -7000,6 +6994,10 @@ msgstr ""
 "Eine Aktion wird ausgelöst, wenn eine Bestellung ein mit einer Aktion "
 "verknüpftes Produkt enthält und der Bestellstatus auf einen der für das "
 "Produkt aufgeführten Zustände geändert wird."
+
+#: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view.html:275
+msgid "Payment state"
+msgstr "Bezahlstatus"
 
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view.html:276
 msgid "Procedure"
