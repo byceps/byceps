@@ -5535,6 +5535,28 @@ msgstr "%(seat_label)s wurde freigegeben."
 msgid "Legend"
 msgstr "Legende"
 
+#: byceps/services/seating/blueprints/site/templates/site/seating/_legend.html:4
+msgctxt "seat"
+msgid "available"
+msgstr "verfügbar"
+
+#: byceps/services/seating/blueprints/site/templates/site/seating/_legend.html:6
+msgid "occupied by a ticket not managed by you"
+msgstr "belegt durch ein nicht von dir verwaltetes Ticket"
+
+#: byceps/services/seating/blueprints/site/templates/site/seating/_legend.html:7
+msgid "occupied by a ticket managed by you"
+msgstr "belegt durch ein von dir verwaltetes Ticket"
+
+#: byceps/services/seating/blueprints/site/templates/site/seating/_legend.html:8
+msgid "occupied by a ticket managed by you and currently selected"
+msgstr "belegt durch ein von dir verwaltetes und aktuell ausgewähltes Ticket"
+
+#: byceps/services/seating/blueprints/site/templates/site/seating/_legend.html:10
+msgctxt "seat"
+msgid "occupied"
+msgstr "belegt"
+
 #: byceps/services/seating/blueprints/site/templates/site/seating/_ticket_selector.html:7
 msgid "You are managing this ticket as a seating administrator."
 msgstr "Du verwaltest dieses Ticket als Sitzplatz-Administrator."

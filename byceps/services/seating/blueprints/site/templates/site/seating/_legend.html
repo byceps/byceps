@@ -1,13 +1,13 @@
     <small class="seats-legend">
       <p><strong>{{ _('Legend') }}</strong></p>
       <ol class="bare">
-        <li><div class="seat"></div> frei</li>
+        <li><div class="seat"></div> {{ pgettext('seat', 'available') }}</li>
         {%- if manage_mode %}
-        <li><div class="seat seat--occupied"></div> belegt durch ein nicht von dir verwaltetes Ticket</li>
-        <li><div class="seat seat--managed"></div> belegt durch ein von dir verwaltetes Ticket</li>
-        <li><div class="seat seat--managed-current"></div> belegt durch ein von dir verwaltetes und aktuell ausgewähltes Ticket</li>
+        <li><div class="seat seat--occupied"></div> {{ _('occupied by a ticket not managed by you') }}</li>
+        <li><div class="seat seat--managed"></div> {{ _('occupied by a ticket managed by you') }}</li>
+        <li><div class="seat seat--managed-current"></div> {{ _('occupied by a ticket managed by you and currently selected') }}</li>
         {%- else %}
-        <li><div class="seat seat--occupied"></div> belegt</li>
+        <li><div class="seat seat--occupied"></div> {{ pgettext('seat', 'occupied') }}</li>
         {%- endif %}
       </ol>
     </small>
