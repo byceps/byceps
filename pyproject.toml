@@ -56,7 +56,7 @@ dependencies = [
     "rq-dashboard>=0.8.5",
     "rq>=2.6.0",
     "rtoml==0.12.0",
-    "schwifty>=2025.6.0",
+    "schwifty>=2025.7.0",
     "secret-type>=0.3.0",
     "sentry-sdk[flask,httpx,rq,sqlalchemy]>=2.33.2",
     "sqlalchemy>=2.0.43",
