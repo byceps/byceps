@@ -15,6 +15,7 @@ from byceps.database import db
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductID
 from byceps.services.user.models.user import User
+from byceps.util.result import Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from .actions.award_badge import award_badge
@@ -23,6 +24,7 @@ from .actions.create_tickets import create_tickets
 from .actions.revoke_ticket_bundles import revoke_ticket_bundles
 from .actions.revoke_tickets import revoke_tickets
 from .dbmodels.order_action import DbOrderAction
+from .errors import OrderActionFailedError
 from .models.action import Action, ActionParameters
 from .models.order import LineItem, Order, PaymentState
 
@@ -109,19 +111,23 @@ def _db_entity_to_action(db_action: DbOrderAction) -> Action:
 # execution
 
 
-def execute_creation_actions(order: Order, initiator: User) -> None:
+def execute_creation_actions(
+    order: Order, initiator: User
+) -> Result[None, OrderActionFailedError]:
     """Execute item creation actions for this order."""
-    _execute_actions(order, PaymentState.paid, initiator)
+    return _execute_actions(order, PaymentState.paid, initiator)
 
 
-def execute_revocation_actions(order: Order, initiator: User) -> None:
+def execute_revocation_actions(
+    order: Order, initiator: User
+) -> Result[None, OrderActionFailedError]:
     """Execute item revocation actions for this order."""
-    _execute_actions(order, PaymentState.canceled_after_paid, initiator)
+    return _execute_actions(order, PaymentState.canceled_after_paid, initiator)
 
 
 def _execute_actions(
     order: Order, payment_state: PaymentState, initiator: User
-) -> None:
+) -> Result[None, OrderActionFailedError]:
     """Execute relevant actions for this order in its new payment state."""
     product_ids = {line_item.product_id for line_item in order.line_items}
 
@@ -135,6 +141,8 @@ def _execute_actions(
 
         procedure = _get_procedure(action.procedure_name, action.product_id)
         procedure(order, line_item, initiator, action.parameters)
+
+    return Ok(None)
 
 
 def _get_actions(

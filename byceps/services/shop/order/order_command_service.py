@@ -32,7 +32,11 @@ from .actions import (
 )
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.order import DbOrder
-from .errors import OrderAlreadyCanceledError, OrderAlreadyMarkedAsPaidError
+from .errors import (
+    OrderActionFailedError,
+    OrderAlreadyCanceledError,
+    OrderAlreadyMarkedAsPaidError,
+)
 from .events import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from .models.log import OrderLogEntry
 from .models.order import LineItemID, Order, Orderer, OrderID, PaymentState
@@ -138,7 +142,10 @@ def _persist_shipped_flag(
 
 def cancel_order(
     order_id: OrderID, initiator: User, reason: str
-) -> Result[tuple[Order, ShopOrderCanceledEvent], OrderAlreadyCanceledError]:
+) -> Result[
+    tuple[Order, ShopOrderCanceledEvent],
+    OrderActionFailedError | OrderAlreadyCanceledError,
+]:
     """Cancel the order.
 
     Reserved quantities of products from that order are made available
@@ -186,7 +193,9 @@ def cancel_order(
     canceled_order = to_order(db_order, orderer_user)
 
     if payment_state_to == PaymentState.canceled_after_paid:
-        _execute_product_revocation_actions(canceled_order, initiator)
+        match _execute_product_revocation_actions(canceled_order, initiator):
+            case Err(e):
+                return Err(e)
 
     log.info('Order canceled', shop_order_canceled_event=event)
 
@@ -199,7 +208,10 @@ def mark_order_as_paid(
     initiator: User,
     *,
     additional_payment_data: AdditionalPaymentData | None = None,
-) -> Result[tuple[Order, ShopOrderPaidEvent], OrderAlreadyMarkedAsPaidError]:
+) -> Result[
+    tuple[Order, ShopOrderPaidEvent],
+    OrderActionFailedError | OrderAlreadyMarkedAsPaidError,
+]:
     """Mark the order as paid."""
     db_order = get_db_order(order_id)
 
@@ -245,7 +257,9 @@ def mark_order_as_paid(
 
     paid_order = to_order(db_order, orderer_user)
 
-    _execute_product_creation_actions(paid_order, initiator)
+    match _execute_product_creation_actions(paid_order, initiator):
+        case Err(e):
+            return Err(e)
 
     log.info('Order paid', shop_order_paid_event=event)
 
@@ -263,7 +277,9 @@ def _update_payment_state(
     db_order.payment_state_updated_by_id = initiator.id
 
 
-def _execute_product_creation_actions(order: Order, initiator: User) -> None:
+def _execute_product_creation_actions(
+    order: Order, initiator: User
+) -> Result[None, OrderActionFailedError]:
     # based on product type
     for line_item in order.line_items:
         if line_item.product_type in (
@@ -296,10 +312,12 @@ def _execute_product_creation_actions(order: Order, initiator: User) -> None:
                 )
 
     # based on order action registered for product number
-    order_action_service.execute_creation_actions(order, initiator)
+    return order_action_service.execute_creation_actions(order, initiator)
 
 
-def _execute_product_revocation_actions(order: Order, initiator: User) -> None:
+def _execute_product_revocation_actions(
+    order: Order, initiator: User
+) -> Result[None, OrderActionFailedError]:
     # based on product type
     for line_item in order.line_items:
         if line_item.product_type == ProductType.ticket:
@@ -310,7 +328,7 @@ def _execute_product_revocation_actions(order: Order, initiator: User) -> None:
             )
 
     # based on order action registered for product number
-    order_action_service.execute_revocation_actions(order, initiator)
+    return order_action_service.execute_revocation_actions(order, initiator)
 
 
 def update_line_item_processing_result(

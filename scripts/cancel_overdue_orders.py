@@ -15,7 +15,10 @@ from byceps.services.shop.order import (
     signals as shop_order_signals,
 )
 from byceps.services.shop.order.email import order_email_service
-from byceps.services.shop.order.errors import OrderAlreadyCanceledError
+from byceps.services.shop.order.errors import (
+    OrderActionFailedError,
+    OrderAlreadyCanceledError,
+)
 from byceps.services.shop.order.models.order import Order
 from byceps.util.result import Err, Ok
 
@@ -81,6 +84,8 @@ def _cancel_order(order, canceler, reason: str | None, notify: bool) -> None:
                 message = (
                     f'Order {order.order_number} has already been canceled.'
                 )
+            elif isinstance(e, OrderActionFailedError):
+                message = f'An error occurred on action execution for order {order.order_number}: {e.details}'
             else:
                 message = f'Order {order.order_number} could not be canceled.'
             click.secho(message, fg='red')
