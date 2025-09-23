@@ -6,9 +6,11 @@ byceps.services.shop.order.actions.revoke_tickets
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import LineItem, Order
 from byceps.services.user.models.user import User
+from byceps.util.result import Ok, Result
 
 from . import ticket
 
@@ -18,6 +20,8 @@ def revoke_tickets(
     line_item: LineItem,
     initiator: User,
     parameters: ActionParameters,
-) -> None:
+) -> Result[None, OrderActionFailedError]:
     """Revoke all tickets in the order."""
     ticket.revoke_tickets(order, line_item, initiator)
+
+    return Ok(None)

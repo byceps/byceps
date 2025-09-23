@@ -15,7 +15,7 @@ from byceps.database import db
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductID
 from byceps.services.user.models.user import User
-from byceps.util.result import Ok, Result
+from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from .actions.award_badge import award_badge
@@ -29,7 +29,10 @@ from .models.action import Action, ActionParameters
 from .models.order import LineItem, Order, PaymentState
 
 
-OrderActionType = Callable[[Order, LineItem, User, ActionParameters], None]
+OrderActionType = Callable[
+    [Order, LineItem, User, ActionParameters],
+    Result[None, OrderActionFailedError],
+]
 
 
 PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
@@ -140,7 +143,9 @@ def _execute_actions(
             continue
 
         procedure = _get_procedure(action.procedure_name, action.product_id)
-        procedure(order, line_item, initiator, action.parameters)
+        match procedure(order, line_item, initiator, action.parameters):
+            case Err(e):
+                return Err(e)
 
     return Ok(None)
 

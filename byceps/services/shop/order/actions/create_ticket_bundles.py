@@ -6,9 +6,11 @@ byceps.services.shop.order.actions.create_ticket_bundles
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import LineItem, Order
 from byceps.services.user.models.user import User
+from byceps.util.result import Ok, Result
 
 from . import ticket_bundle
 
@@ -18,7 +20,7 @@ def create_ticket_bundles(
     line_item: LineItem,
     initiator: User,
     parameters: ActionParameters,
-) -> None:
+) -> Result[None, OrderActionFailedError]:
     """Create ticket bundles."""
     ticket_category_id = parameters['category_id']
     ticket_quantity_per_bundle = parameters['ticket_quantity']
@@ -30,3 +32,5 @@ def create_ticket_bundles(
         ticket_quantity_per_bundle,
         initiator,
     )
+
+    return Ok(None)

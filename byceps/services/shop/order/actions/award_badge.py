@@ -7,6 +7,7 @@ byceps.services.shop.order.actions.award_badge
 """
 
 from byceps.services.shop.order import order_log_service
+from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import LineItem, Order, OrderID
 from byceps.services.user.models.user import User
@@ -15,6 +16,7 @@ from byceps.services.user_badge import (
     user_badge_service,
 )
 from byceps.services.user_badge.models import BadgeAwarding
+from byceps.util.result import Ok, Result
 
 
 def award_badge(
@@ -22,7 +24,7 @@ def award_badge(
     line_item: LineItem,
     initiator: User,
     parameters: ActionParameters,
-) -> None:
+) -> Result[None, OrderActionFailedError]:
     """Award badge to user."""
     badge = user_badge_service.get_badge(parameters['badge_id'])
     awardee = order.placed_by
@@ -33,6 +35,8 @@ def award_badge(
         )
 
         _create_order_log_entry(order.id, awarding)
+
+    return Ok(None)
 
 
 def _create_order_log_entry(order_id: OrderID, awarding: BadgeAwarding) -> None:
