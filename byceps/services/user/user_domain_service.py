@@ -21,7 +21,7 @@ from .events import (
     UserDetailsUpdatedEvent,
     UserScreenNameChangedEvent,
 )
-from .models.log import UserLogEntry, UserLogEntryData
+from .models.log import UserLogEntry
 from .models.user import User
 
 

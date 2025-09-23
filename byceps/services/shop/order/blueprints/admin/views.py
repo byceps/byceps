@@ -9,7 +9,6 @@ byceps.services.shop.order.blueprints.admin.views
 from flask import abort, current_app, g, request, Response
 from flask_babel import gettext
 
-from byceps.config.models import InvoiceNinjaConfig
 from byceps.services.brand import brand_service
 from byceps.services.shop.invoice import order_invoice_service
 from byceps.services.shop.invoice.errors import (
