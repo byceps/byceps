@@ -44,6 +44,7 @@ def view(slug):
     awardings = user_badge_awarding_service.get_awardings_of_badge(badge.id)
     awardee_ids = {awarding.awardee_id for awarding in awardings}
     awardees = user_service.get_users(awardee_ids, include_avatars=True)
+    awardees = list(sorted(awardees, key=lambda r: r.screen_name or ''))
 
     if not g.party:
         orga_ids = orga_team_service.select_orgas_for_party(

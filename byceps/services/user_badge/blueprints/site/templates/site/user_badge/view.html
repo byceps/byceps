@@ -39,7 +39,7 @@ a.awardee:hover .avatar {
   <h2>{{ _('Awarded to %(awardee_count)s users', awardee_count=awardees|length) }}</h2>
   <div class="main-body-box">
     <ul class="list-grid">
-      {%- for awardee in awardees|sort(attribute='screen_name') %}
+      {%- for awardee in awardees %}
       <li><a class="awardee" href="{{ url_for('user_profile.view', user_id=awardee.id) }}">
 {{ render_user_avatar(awardee, size=64, orga=awardee.id in orga_ids) }}
       </a></li>
