@@ -80,7 +80,7 @@ def view(badge_id):
         brand = None
 
     awardings = user_badge_awarding_service.get_awardings_of_badge(badge.id)
-    awardee_ids = [awarding.awardee_id for awarding in awardings]
+    awardee_ids = {awarding.awardee_id for awarding in awardings}
     awardees = user_service.get_users(awardee_ids, include_avatars=True)
     awardees = list(sorted(awardees, key=lambda r: r.screen_name or ''))
 
