@@ -56,13 +56,12 @@ def occupy_group(
     )
     db.session.add(db_occupancy)
 
-    occupy_seats_result = _occupy_seats(group.seats, db_tickets)
-    if occupy_seats_result.is_err():
-        return Err(occupy_seats_result.unwrap_err())
-
-    db.session.commit()
-
-    return Ok(None)
+    match _occupy_seats(group.seats, db_tickets):
+        case Ok(_):
+            db.session.commit()
+            return Ok(None)
+        case Err(e):
+            return Err(e)
 
 
 def switch_group(
@@ -79,13 +78,12 @@ def switch_group(
 
     db_occupancy.seat_group_id = new_group.id
 
-    occupy_seats_result = _occupy_seats(new_group.seats, db_tickets)
-    if occupy_seats_result.is_err():
-        return Err(occupy_seats_result.unwrap_err())
-
-    db.session.commit()
-
-    return Ok(None)
+    match _occupy_seats(new_group.seats, db_tickets):
+        case Ok(_):
+            db.session.commit()
+            return Ok(None)
+        case Err(e):
+            return Err(e)
 
 
 def _occupy_seats(
