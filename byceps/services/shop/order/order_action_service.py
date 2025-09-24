@@ -142,8 +142,11 @@ def _execute_actions(
         if action is None:
             continue
 
-        procedure = _get_procedure(action.procedure_name, action.product_id)
-        match procedure(order, line_item, initiator, action.parameters):
+        match _get_procedure(action.procedure_name, action.product_id):
+            case Ok(procedure):
+                match procedure(order, line_item, initiator, action.parameters):
+                    case Err(e):
+                        return Err(e)
             case Err(e):
                 return Err(e)
 
@@ -166,7 +169,9 @@ def _get_actions(
     return [_db_entity_to_action(db_action) for db_action in db_actions]
 
 
-def _get_procedure(name: str, product_id: ProductID) -> OrderActionType:
+def _get_procedure(
+    name: str, product_id: ProductID
+) -> Result[OrderActionType, OrderActionFailedError]:
     """Return procedure with that name, or raise an exception if the
     name is not registered.
     """
@@ -174,9 +179,11 @@ def _get_procedure(name: str, product_id: ProductID) -> OrderActionType:
 
     if procedure is None:
         product = product_service.get_product(product_id)
-        raise Exception(
-            f"Unknown procedure '{name}' configured "
-            f"for product number '{product.item_number}'."
+        return Err(
+            OrderActionFailedError(
+                f"Unknown procedure '{name}' configured "
+                f"for product number '{product.item_number}'."
+            )
         )
 
-    return procedure
+    return Ok(procedure)
