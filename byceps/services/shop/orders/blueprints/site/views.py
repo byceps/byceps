@@ -39,6 +39,7 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.l10n import get_user_locale
+from byceps.util.result import Err, Ok
 from byceps.util.views import login_required, redirect_to
 
 from .forms import CancelForm, RequestFullRefundForm, RequestPartialRefundForm
@@ -159,17 +160,16 @@ def _is_cancellation_requesting_enabled() -> bool:
 def _get_payment_instructions(order) -> str | None:
     language_code = get_user_locale(g.user)
 
-    result = order_payment_service.get_html_payment_instructions(
+    match order_payment_service.get_html_payment_instructions(
         order, language_code
-    )
-    if result.is_err():
-        log.error(
-            'Sending refund request confirmation email failed',
-            error=result.unwrap_err(),
-        )
-        return None
-
-    return result.unwrap()
+    ):
+        case Ok(html):
+            return html
+        case Err(e):
+            log.error(
+                'Sending refund request confirmation email failed', error=e
+            )
+            return None
 
 
 @blueprint.get('/<uuid:order_id>/cancel')

@@ -38,6 +38,7 @@ from byceps.services.ticketing import ticket_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -279,11 +280,10 @@ def set_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator = g.user
 
-    result = order_command_service.set_shipped_flag(order, initiator)
-
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
+    match order_command_service.set_shipped_flag(order, initiator):
+        case Err(e):
+            flash_error(e)
+            return
 
     flash_success(
         gettext(
@@ -301,11 +301,10 @@ def unset_shipped_flag(order_id):
     order = _get_order_or_404(order_id)
     initiator = g.user
 
-    result = order_command_service.unset_shipped_flag(order, initiator)
-
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
+    match order_command_service.unset_shipped_flag(order, initiator):
+        case Err(e):
+            flash_error(e)
+            return
 
     flash_success(
         gettext(

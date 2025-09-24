@@ -55,51 +55,42 @@ def send_email_for_incoming_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
-    message_result = assemble_email_for_incoming_order_to_orderer(
-        data, language_code
-    )
-    if message_result.is_err():
-        log.error(
-            'Assembling email for incoming order to orderer failed',
-            error=message_result.unwrap_err(),
-        )
-        return
-
-    _send_email(message_result.unwrap())
+    match assemble_email_for_incoming_order_to_orderer(data, language_code):
+        case Ok(message):
+            _send_email(message)
+        case Err(e):
+            log.error(
+                'Assembling email for incoming order to orderer failed', error=e
+            )
+            return
 
 
 def send_email_for_canceled_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
-    message_result = assemble_email_for_canceled_order_to_orderer(
-        data, language_code
-    )
-    if message_result.is_err():
-        log.error(
-            'Assembling email for canceled order to orderer failed',
-            error=message_result.unwrap_err(),
-        )
-        return
-
-    _send_email(message_result.unwrap())
+    match assemble_email_for_canceled_order_to_orderer(data, language_code):
+        case Ok(message):
+            _send_email(message)
+        case Err(e):
+            log.error(
+                'Assembling email for canceled order to orderer failed', error=e
+            )
+            return
 
 
 def send_email_for_paid_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
     language_code = get_user_locale(data.orderer)
 
-    message_result = assemble_email_for_paid_order_to_orderer(
-        data, language_code
-    )
-    if message_result.is_err():
-        log.error(
-            'Assembling email for paid order to orderer failed',
-            error=message_result.unwrap_err(),
-        )
-        return
-
-    _send_email(message_result.unwrap())
+    match assemble_email_for_paid_order_to_orderer(data, language_code):
+        case Ok(message):
+            _send_email(message)
+        case Err(e):
+            log.error(
+                'Assembling email for paid order to orderer failed', error=e
+            )
+            return
 
 
 def assemble_email_for_incoming_order_to_orderer(

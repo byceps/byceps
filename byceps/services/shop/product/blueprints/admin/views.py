@@ -43,6 +43,7 @@ from byceps.services.user_badge import user_badge_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -457,14 +458,13 @@ def _get_create_form(type_: ProductType, shop_id: ShopID, request):
 
 
 def _get_item_number(product_number_sequence_id) -> ProductNumber:
-    generation_result = product_sequence_service.generate_product_number(
+    match product_sequence_service.generate_product_number(
         product_number_sequence_id
-    )
-
-    if generation_result.is_err():
-        abort(500, generation_result.unwrap_err())
-
-    return generation_result.unwrap()
+    ):
+        case Ok(item_number):
+            return item_number
+        case Err(e):
+            abort(500, e)
 
 
 def _create_product(
