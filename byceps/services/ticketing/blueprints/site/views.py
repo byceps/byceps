@@ -24,6 +24,7 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.iterables import find
+from byceps.util.result import Err
 from byceps.util.views import login_required, redirect_to, respond_no_content
 
 from . import (
@@ -185,13 +186,12 @@ def appoint_user(ticket_id):
     previous_user = ticket.used_by if ticket.used_by_id != g.user.id else None
     new_user = form.user.data
 
-    result = ticket_user_management_service.appoint_user(
+    match ticket_user_management_service.appoint_user(
         ticket.id, new_user.id, manager.id
-    )
-
-    if result.is_err():
-        flash_error(result.unwrap_err().message)
-        return redirect_to('.index_mine')
+    ):
+        case Err(e):
+            flash_error(e.message)
+            return redirect_to('.index_mine')
 
     flash_success(
         gettext(
@@ -230,13 +230,12 @@ def withdraw_user(ticket_id):
 
     # Intentionally assign the ticket user manager as the new
     # ticket user instead of removing the ticket user.
-    result = ticket_user_management_service.appoint_user(
+    match ticket_user_management_service.appoint_user(
         ticket.id, manager.id, manager.id
-    )
-
-    if result.is_err():
-        flash_error(result.unwrap_err().message)
-        return
+    ):
+        case Err(e):
+            flash_error(e.message)
+            return
 
     flash_success(
         gettext(
@@ -299,13 +298,12 @@ def appoint_user_manager(ticket_id):
 
     user = form.user.data
 
-    result = ticket_user_management_service.appoint_user_manager(
+    match ticket_user_management_service.appoint_user_manager(
         ticket.id, user.id, manager.id
-    )
-
-    if result.is_err():
-        flash_error(result.unwrap_err().message)
-        return redirect_to('.index_mine')
+    ):
+        case Err(e):
+            flash_error(e.message)
+            return redirect_to('.index_mine')
 
     flash_success(
         gettext(
@@ -338,13 +336,12 @@ def withdraw_user_manager(ticket_id):
 
     previous_manager = ticket.user_managed_by
 
-    result = ticket_user_management_service.withdraw_user_manager(
+    match ticket_user_management_service.withdraw_user_manager(
         ticket.id, manager.id
-    )
-
-    if result.is_err():
-        flash_error(result.unwrap_err().message)
-        return
+    ):
+        case Err(e):
+            flash_error(e.message)
+            return
 
     flash_success(
         gettext(
@@ -403,13 +400,12 @@ def appoint_seat_manager(ticket_id):
 
     user = form.user.data
 
-    result = ticket_seat_management_service.appoint_seat_manager(
+    match ticket_seat_management_service.appoint_seat_manager(
         ticket.id, user.id, manager.id
-    )
-
-    if result.is_err():
-        flash_error(result.unwrap_err().message)
-        return redirect_to('.index_mine')
+    ):
+        case Err(e):
+            flash_error(e.message)
+            return redirect_to('.index_mine')
 
     flash_success(
         gettext(
@@ -440,13 +436,12 @@ def withdraw_seat_manager(ticket_id):
 
     previous_manager = ticket.seat_managed_by
 
-    result = ticket_seat_management_service.withdraw_seat_manager(
+    match ticket_seat_management_service.withdraw_seat_manager(
         ticket.id, manager.id
-    )
-
-    if result.is_err():
-        flash_error(result.unwrap_err().message)
-        return
+    ):
+        case Err(e):
+            flash_error(e.message)
+            return
 
     flash_success(
         gettext(

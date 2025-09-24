@@ -21,13 +21,11 @@ def generate_ticket_codes(
     codes: set[TicketCode] = set()
 
     for _ in range(requested_quantity):
-        generation_result = _generate_ticket_code_not_in(codes)
-
-        if generation_result.is_err():
-            return Err(generation_result.unwrap_err())
-
-        code = generation_result.unwrap()
-        codes.add(code)
+        match _generate_ticket_code_not_in(codes):
+            case Ok(code):
+                codes.add(code)
+            case Err(e):
+                return Err(e)
 
     # Check if the requested quantity of codes has been generated.
     actual_quantity = len(codes)

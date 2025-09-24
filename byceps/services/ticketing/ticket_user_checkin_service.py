@@ -62,11 +62,11 @@ def check_in_user(
 
     check_in, event, log_entry = check_in_result.unwrap()
 
-    persist_result = _persist_check_in(db_ticket, check_in, event, log_entry)
-    if persist_result.is_err():
-        return Err(persist_result.unwrap_err())
-
-    return Ok(event)
+    match _persist_check_in(db_ticket, check_in, event, log_entry):
+        case Ok(_):
+            return Ok(event)
+        case Err(e):
+            return Err(e)
 
 
 def _persist_check_in(

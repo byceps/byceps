@@ -19,6 +19,7 @@ from byceps.services.seating.models import SeatGroupID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
+from byceps.util.result import Err
 from byceps.util.uuid import generate_uuid7
 
 from . import ticket_category_service
@@ -115,14 +116,11 @@ def revoke_bundle(
         db_bundle.id
     )
     if seat_group_id is not None:
-        release_result = seat_group_service.release_group(
-            seat_group_id, initiator
-        )
-        if release_result.is_err():
-            error_msg = release_result.unwrap_err().message
-            raise ValueError(
-                f'Could not release seat group {seat_group_id}: {error_msg}'
-            )
+        match seat_group_service.release_group(seat_group_id, initiator):
+            case Err(e):
+                raise ValueError(
+                    f'Could not release seat group {seat_group_id}: {e.message}'
+                )
 
     for db_ticket in db_bundle.tickets:
         db_ticket.revoked = True

@@ -21,6 +21,7 @@ from byceps.services.ticketing.ticket_service import FilterMode
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err
 from byceps.util.views import permission_required, redirect_to
 
 from . import service
@@ -227,13 +228,12 @@ def appoint_user(ticket_id):
     user = form.user.data
     manager = g.user
 
-    result = ticket_user_management_service.appoint_user(
+    match ticket_user_management_service.appoint_user(
         ticket.id, user.id, manager.id
-    )
-
-    if result.is_err():
-        flash_error(result.unwrap_err().message)
-        return redirect_to('.view_ticket', ticket_id=ticket.id)
+    ):
+        case Err(e):
+            flash_error(e.message)
+            return redirect_to('.view_ticket', ticket_id=ticket.id)
 
     flash_success(
         gettext(

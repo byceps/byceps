@@ -16,6 +16,7 @@ from byceps.database import db
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok
 from byceps.util.uuid import generate_uuid7
 
 from . import ticket_code_service
@@ -95,23 +96,20 @@ def build_tickets(
 
     created_at = datetime.utcnow()
 
-    generation_result = ticket_code_service.generate_ticket_codes(quantity)
+    match ticket_code_service.generate_ticket_codes(quantity):
+        case Ok(codes):
+            for code in codes:
+                ticket_id = TicketID(generate_uuid7())
 
-    if generation_result.is_err():
-        raise TicketCreationFailedError(generation_result.unwrap_err())
-
-    codes = generation_result.unwrap()
-
-    for code in codes:
-        ticket_id = TicketID(generate_uuid7())
-
-        yield DbTicket(
-            ticket_id,
-            created_at,
-            category,
-            code,
-            owner.id,
-            bundle_id=bundle_id,
-            order_number=order_number,
-            used_by_id=user.id if user else None,
-        )
+                yield DbTicket(
+                    ticket_id,
+                    created_at,
+                    category,
+                    code,
+                    owner.id,
+                    bundle_id=bundle_id,
+                    order_number=order_number,
+                    used_by_id=user.id if user else None,
+                )
+        case Err(e):
+            raise TicketCreationFailedError(e)
