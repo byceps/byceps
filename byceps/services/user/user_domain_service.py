@@ -245,7 +245,7 @@ def update_details(
 
     event = _build_details_updated_event(occurred_at, initiator, user)
 
-    log_entry_result = _build_details_updated_log_entry(
+    match _build_details_updated_log_entry(
         occurred_at,
         initiator,
         user,
@@ -265,13 +265,11 @@ def update_details(
         new_street,
         old_phone_number,
         new_phone_number,
-    )
-    if log_entry_result.is_err():
-        return Err(log_entry_result.unwrap_err())
-
-    log_entry = log_entry_result.unwrap()
-
-    return Ok((event, log_entry))
+    ):
+        case Ok(log_entry):
+            return Ok((event, log_entry))
+        case Err(e):
+            return Err(e)
 
 
 def _build_details_updated_event(

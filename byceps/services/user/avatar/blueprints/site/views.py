@@ -15,6 +15,7 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.image.image_type import get_image_type_names, ImageType
+from byceps.util.result import Err
 from byceps.util.views import redirect_to, respond_no_content
 
 from .forms import UpdateForm
@@ -79,11 +80,11 @@ def _update(user: User, image) -> None:
         abort(400, 'No file to upload has been specified.')
 
     try:
-        update_result = user_avatar_service.update_avatar_image(
+        match user_avatar_service.update_avatar_image(
             user, image.stream, ALLOWED_IMAGE_TYPES, user
-        )
-        if update_result.is_err():
-            abort(400, update_result.unwrap_err())
+        ):
+            case Err(e):
+                abort(400, e)
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 
