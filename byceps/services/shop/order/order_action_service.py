@@ -172,8 +172,8 @@ def _get_actions(
 def _get_procedure(
     name: str, product_id: ProductID
 ) -> Result[OrderActionType, OrderActionFailedError]:
-    """Return procedure with that name, or raise an exception if the
-    name is not registered.
+    """Return the procedure with that name, or an error if the name is
+    not registered.
     """
     procedure = PROCEDURES_BY_NAME.get(name)
 
