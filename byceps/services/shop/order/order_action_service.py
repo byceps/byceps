@@ -137,11 +137,7 @@ def _execute_actions(
     order: Order, payment_state: PaymentState, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     """Execute relevant actions for this order in its new payment state."""
-    product_ids = {line_item.product_id for line_item in order.line_items}
-
-    actions_by_product_id: dict[ProductID, list[Action]] = defaultdict(list)
-    for action in _get_actions(product_ids, payment_state):
-        actions_by_product_id[action.product_id].append(action)
+    actions_by_product_id = _get_actions_by_product_id(order, payment_state)
 
     for line_item in order.line_items:
         actions = actions_by_product_id.get(line_item.product_id)
@@ -156,6 +152,18 @@ def _execute_actions(
                     return Err(e)
 
     return Ok(None)
+
+
+def _get_actions_by_product_id(
+    order: Order, payment_state: PaymentState
+) -> dict[ProductID, set[Action]]:
+    product_ids = {line_item.product_id for line_item in order.line_items}
+
+    actions_by_product_id: dict[ProductID, list[Action]] = defaultdict(list)
+    for action in _get_actions(product_ids, payment_state):
+        actions_by_product_id[action.product_id].append(action)
+
+    return dict(actions_by_product_id)
 
 
 def _get_actions(
