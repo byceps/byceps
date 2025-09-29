@@ -10,6 +10,7 @@ from collections.abc import Callable
 from uuid import UUID
 
 from sqlalchemy import delete, select
+import structlog
 
 from byceps.database import db
 from byceps.services.shop.product import product_service
@@ -27,6 +28,9 @@ from .dbmodels.order_action import DbOrderAction
 from .errors import OrderActionFailedError
 from .models.action import Action, ActionParameters
 from .models.order import LineItem, Order, PaymentState
+
+
+log = structlog.get_logger()
 
 
 OrderActionType = Callable[
@@ -142,7 +146,9 @@ def _execute_actions(
         if action is None:
             continue
 
-        match _execute_action(action, order, line_item, initiator):
+        match _execute_action(
+            action, order, payment_state, line_item, initiator
+        ):
             case Err(e):
                 return Err(e)
 
@@ -166,7 +172,11 @@ def _get_actions(
 
 
 def _execute_action(
-    action: Action, order: Order, line_item: LineItem, initiator: User
+    action: Action,
+    order: Order,
+    payment_state: PaymentState,
+    line_item: LineItem,
+    initiator: User,
 ) -> Result[None, OrderActionFailedError]:
     match _get_procedure(action.procedure_name, action.product_id):
         case Ok(procedure):
@@ -174,8 +184,24 @@ def _execute_action(
                 case Ok(_):
                     return Ok(None)
                 case Err(e):
+                    log.error(
+                        'Order action execution failed',
+                        order_id=str(order.id),
+                        order_number=order.order_number,
+                        payment_state=payment_state.name,
+                        initiator=initiator.screen_name,
+                        error_details=e.details,
+                    )
                     return Err(e)
         case Err(e):
+            log.error(
+                'Unknown order action configured',
+                order_id=str(order.id),
+                order_number=order.order_number,
+                payment_state=payment_state.name,
+                initiator=initiator.screen_name,
+                error_details=e.details,
+            )
             return Err(e)
 
 
