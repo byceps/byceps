@@ -142,11 +142,7 @@ def _execute_actions(
         if action is None:
             continue
 
-        match _get_procedure(action.procedure_name, action.product_id):
-            case Ok(procedure):
-                match procedure(order, line_item, initiator, action.parameters):
-                    case Err(e):
-                        return Err(e)
+        match _execute_action(action, order, line_item, initiator):
             case Err(e):
                 return Err(e)
 
@@ -167,6 +163,20 @@ def _get_actions(
     ).all()
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
+
+
+def _execute_action(
+    action: Action, order: Order, line_item: LineItem, initiator: User
+) -> Result[None, OrderActionFailedError]:
+    match _get_procedure(action.procedure_name, action.product_id):
+        case Ok(procedure):
+            match procedure(order, line_item, initiator, action.parameters):
+                case Ok(_):
+                    return Ok(None)
+                case Err(e):
+                    return Err(e)
+        case Err(e):
+            return Err(e)
 
 
 def _get_procedure(
