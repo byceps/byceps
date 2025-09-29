@@ -6,6 +6,7 @@ byceps.services.shop.order.order_action_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections import defaultdict
 from collections.abc import Callable
 from uuid import UUID
 
@@ -138,19 +139,21 @@ def _execute_actions(
     """Execute relevant actions for this order in its new payment state."""
     product_ids = {line_item.product_id for line_item in order.line_items}
 
-    actions = _get_actions(product_ids, payment_state)
-    actions_by_product_id = {action.product_id: action for action in actions}
+    actions_by_product_id: dict[ProductID, list[Action]] = defaultdict(list)
+    for action in _get_actions(product_ids, payment_state):
+        actions_by_product_id[action.product_id].append(action)
 
     for line_item in order.line_items:
-        action = actions_by_product_id.get(line_item.product_id)
-        if action is None:
+        actions = actions_by_product_id.get(line_item.product_id)
+        if not actions:
             continue
 
-        match _execute_action(
-            action, order, payment_state, line_item, initiator
-        ):
-            case Err(e):
-                return Err(e)
+        for action in actions:
+            match _execute_action(
+                action, order, payment_state, line_item, initiator
+            ):
+                case Err(e):
+                    return Err(e)
 
     return Ok(None)
 
