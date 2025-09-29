@@ -16,6 +16,7 @@ from byceps.services.user_badge import (
     user_badge_service,
 )
 from byceps.util.framework.blueprint import create_blueprint
+from byceps.util.result import Err, Ok
 from byceps.util.views import api_token_required, respond_no_content
 
 from .models import AwardBadgeToUserRequest
@@ -49,8 +50,10 @@ def award_badge_to_user():
     if not initiator:
         abort(400, 'Initiator ID unknown')
 
-    _, event = user_badge_awarding_service.award_badge_to_user(
+    match user_badge_awarding_service.award_badge_to_user(
         badge, awardee, initiator=initiator
-    )
-
-    user_badge_signals.user_badge_awarded.send(None, event=event)
+    ):
+        case Ok((_, event)):
+            user_badge_signals.user_badge_awarded.send(None, event=event)
+        case Err(e):
+            return Err(e)

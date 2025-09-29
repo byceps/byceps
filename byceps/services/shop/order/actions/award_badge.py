@@ -16,7 +16,7 @@ from byceps.services.user_badge import (
     user_badge_service,
 )
 from byceps.services.user_badge.models import BadgeAwarding
-from byceps.util.result import Ok, Result
+from byceps.util.result import Err, Ok, Result
 
 
 def award_badge(
@@ -30,11 +30,11 @@ def award_badge(
     awardee = order.placed_by
 
     for _ in range(line_item.quantity):
-        awarding, _ = user_badge_awarding_service.award_badge_to_user(
-            badge, awardee
-        )
-
-        _create_order_log_entry(order.id, awarding)
+        match user_badge_awarding_service.award_badge_to_user(badge, awardee):
+            case Ok((awarding, _)):
+                _create_order_log_entry(order.id, awarding)
+            case Err(e):
+                return Err(OrderActionFailedError(details=e))
 
     return Ok(None)
 

@@ -17,8 +17,9 @@ from byceps.services.user_badge import (
     user_badge_service,
 )
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_success
+from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err
 from byceps.util.views import permission_required, redirect_to
 
 from .forms import AwardForm, CreateForm, UpdateForm
@@ -243,9 +244,19 @@ def award(awardee_id):
 
     initiator = g.user
 
-    _, event = user_badge_awarding_service.award_badge_to_user(
+    awarding_result = user_badge_awarding_service.award_badge_to_user(
         badge, awardee, initiator=initiator
     )
+
+    match awarding_result:
+        case Err(_):
+            flash_error(
+                gettext(
+                    'Badge "%(badge_label)s" could not be awarded to %(screen_name)s because of an error.',
+                    badge_label=badge.label,
+                    screen_name=awardee.screen_name,
+                )
+            )
 
     flash_success(
         gettext(
@@ -254,6 +265,8 @@ def award(awardee_id):
             screen_name=awardee.screen_name,
         )
     )
+
+    _, event = awarding_result.unwrap()
 
     user_badge_signals.user_badge_awarded.send(None, event=event)
 

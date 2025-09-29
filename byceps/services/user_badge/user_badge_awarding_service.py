@@ -9,14 +9,17 @@ byceps.services.user_badge.user_badge_awarding_service
 from collections import defaultdict
 
 from sqlalchemy import select
+import structlog
 
 from byceps.database import db
 from byceps.services.user import user_log_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User, UserID
+from byceps.util.result import Err, Ok, Result
 
 from . import user_badge_domain_service
 from .dbmodels import DbBadge, DbBadgeAwarding
+from .errors import BadgeAwardingFailedError
 from .events import UserBadgeAwardedEvent
 from .models import (
     Badge,
@@ -27,17 +30,37 @@ from .models import (
 from .user_badge_service import _db_entity_to_badge, get_badges
 
 
+log = structlog.get_logger()
+
+
 def award_badge_to_user(
     badge: Badge, awardee: User, *, initiator: User | None = None
-) -> tuple[BadgeAwarding, UserBadgeAwardedEvent]:
+) -> Result[
+    tuple[BadgeAwarding, UserBadgeAwardedEvent], BadgeAwardingFailedError
+]:
     """Award the badge to the user."""
-    awarding, event, log_entry = user_badge_domain_service.award_badge(
+    awarding_result = user_badge_domain_service.award_badge(
         badge, awardee, initiator=initiator
     )
 
+    match awarding_result:
+        case Err(e):
+            log.error(
+                'User badge awarding failed',
+                badge_id=str(badge.id),
+                badge_label=badge.label,
+                awardee_id=str(awardee.id),
+                awardee_screen_name=awardee.screen_name,
+                initiator=initiator.screen_name if initiator else None,
+                error_details=e.message,
+            )
+            return Err(e)
+
+    awarding, event, log_entry = awarding_result.unwrap()
+
     _persist_awarding(awarding, log_entry)
 
-    return awarding, event
+    return Ok((awarding, event))
 
 
 def _persist_awarding(

@@ -12,15 +12,34 @@ from uuid import UUID
 from byceps.services.core.events import EventUser
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
+from .errors import BadgeAwardingFailedError
 from .events import UserBadgeAwardedEvent
 from .models import Badge, BadgeAwarding
 
 
 def award_badge(
     badge: Badge, awardee: User, *, initiator: User | None = None
-) -> tuple[BadgeAwarding, UserBadgeAwardedEvent, UserLogEntry]:
+) -> Result[
+    tuple[BadgeAwarding, UserBadgeAwardedEvent, UserLogEntry],
+    BadgeAwardingFailedError,
+]:
+    if not awardee.initialized:
+        return Err(
+            BadgeAwardingFailedError(
+                f'User account {awardee.id} is not initialized.'
+            )
+        )
+
+    if awardee.deleted:
+        return Err(
+            BadgeAwardingFailedError(
+                f'User account {awardee.id} has been deleted.'
+            )
+        )
+
     awarding_id = generate_uuid7()
     occurred_at = datetime.utcnow()
 
@@ -30,7 +49,7 @@ def award_badge(
         occurred_at, badge, awardee, initiator
     )
 
-    return awarding, event, log_entry
+    return Ok((awarding, event, log_entry))
 
 
 def _build_awarding(

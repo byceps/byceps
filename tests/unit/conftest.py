@@ -124,16 +124,20 @@ def app(make_app):
 def make_user():
     def _wrapper(
         *,
+        user_id: UserID | None = None,
         screen_name: str | None = '__random__',
         initialized: bool = True,
         suspended: bool = False,
         deleted: bool = False,
     ) -> User:
+        if user_id is None:
+            user_id = UserID(generate_uuid())
+
         if screen_name == '__random__':
             screen_name = generate_token()
 
         return User(
-            id=UserID(generate_uuid()),
+            id=user_id,
             screen_name=screen_name,
             initialized=initialized,
             suspended=suspended,
