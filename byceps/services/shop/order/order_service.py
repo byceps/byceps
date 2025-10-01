@@ -19,7 +19,7 @@ from byceps.services.shop.shop.dbmodels import DbShop
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import (
@@ -326,10 +326,7 @@ def get_orders_for_shop_paginated(
 def _to_admin_order_list_items(
     db_orders: list[DbOrder],
 ) -> list[AdminOrderListItem]:
-    orderer_ids = {db_order.placed_by_id for db_order in db_orders}
-    orderers_by_id = user_service.get_users_indexed_by_id(
-        orderer_ids, include_avatars=True
-    )
+    orderers_by_id = _get_orderers_by_id(db_orders, include_avatars=True)
 
     return [
         to_admin_order_list_item(db_order, orderers_by_id)
@@ -357,8 +354,7 @@ def get_overdue_orders(
         .all()
     )
 
-    orderer_ids = {db_order.placed_by_id for db_order in db_orders}
-    orderers_by_id = user_service.get_users_indexed_by_id(orderer_ids)
+    orderers_by_id = _get_orderers_by_id(db_orders)
 
     return [
         to_order(db_order, orderers_by_id[db_order.placed_by_id])
@@ -402,8 +398,7 @@ def get_orders_placed_by_user_for_storefront(
         .all()
     )
 
-    orderer_ids = {db_order.placed_by_id for db_order in db_orders}
-    orderers_by_id = user_service.get_users_indexed_by_id(orderer_ids)
+    orderers_by_id = _get_orderers_by_id(db_orders)
 
     return [
         to_site_order_list_item(db_order, orderers_by_id)
@@ -454,12 +449,19 @@ def get_payment_date(order_id: OrderID) -> Result[datetime, OrderNotPaidError]:
 def _db_orders_to_transfer_objects_with_orderer_users(
     db_orders: Sequence[DbOrder], *, include_avatars: bool = False
 ) -> list[Order]:
-    orderer_ids = {db_order.placed_by_id for db_order in db_orders}
-    orderers_by_id = user_service.get_users_indexed_by_id(
-        orderer_ids, include_avatars=True
-    )
+    orderers_by_id = _get_orderers_by_id(db_orders, include_avatars=True)
 
     return [
         to_order(db_order, orderers_by_id[db_order.placed_by_id])
         for db_order in db_orders
     ]
+
+
+def _get_orderers_by_id(
+    db_orders: Sequence[DbOrder], *, include_avatars: bool = False
+) -> dict[UserID, User]:
+    orderer_ids = {db_order.placed_by_id for db_order in db_orders}
+
+    return user_service.get_users_indexed_by_id(
+        orderer_ids, include_avatars=include_avatars
+    )
