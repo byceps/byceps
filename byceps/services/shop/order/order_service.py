@@ -452,7 +452,7 @@ def get_payment_date(order_id: OrderID) -> Result[datetime, OrderNotPaidError]:
 
 
 def _db_orders_to_transfer_objects_with_orderer_users(
-    db_orders: Sequence[DbOrder], *, include_avatars=False
+    db_orders: Sequence[DbOrder], *, include_avatars: bool = False
 ) -> list[Order]:
     orderer_ids = {db_order.placed_by_id for db_order in db_orders}
     orderers_by_id = user_service.get_users_indexed_by_id(
