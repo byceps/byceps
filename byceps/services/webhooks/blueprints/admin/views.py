@@ -73,7 +73,7 @@ def create():
 
     event_types = set(form.event_types.data)
     event_filters = {}
-    format = form.format.data.strip()
+    format = OutgoingWebhookFormat[form.format.data.strip()]
     url = form.url.data.strip()
     description = form.description.data.strip()
     enabled = False
