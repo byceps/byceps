@@ -351,6 +351,7 @@ def get_overdue_orders(
             .filter_by(_payment_state=PaymentState.open.name)
             .filter(DbOrder.created_at + older_than < now)
             .order_by(DbOrder.created_at)
+            .limit(limit)
         )
         .unique()
         .all()
