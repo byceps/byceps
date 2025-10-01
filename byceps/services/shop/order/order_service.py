@@ -334,6 +334,31 @@ def _to_admin_order_list_items(
     ]
 
 
+def get_open_orders(
+    shop_id: ShopID, *, limit: int | None = None
+) -> list[Order]:
+    """Return all open orders for that shop, ordered by creation date."""
+    db_orders = (
+        db.session.scalars(
+            select(DbOrder)
+            .options(db.joinedload(DbOrder.line_items))
+            .filter_by(shop_id=shop_id)
+            .filter_by(_payment_state=PaymentState.open.name)
+            .order_by(DbOrder.created_at)
+            .limit(limit)
+        )
+        .unique()
+        .all()
+    )
+
+    orderers_by_id = _get_orderers_by_id(db_orders)
+
+    return [
+        to_order(db_order, orderers_by_id[db_order.placed_by_id])
+        for db_order in db_orders
+    ]
+
+
 def get_overdue_orders(
     shop_id: ShopID, older_than: timedelta, *, limit: int | None = None
 ) -> list[Order]:
