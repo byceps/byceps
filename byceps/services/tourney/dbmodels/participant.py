@@ -44,7 +44,7 @@ class DbParticipant(db.Model):
         name: str,
         max_size: int,
     ) -> None:
-        self.participant_id = participant_id
+        self.id = participant_id
         self.tourney_id = tourney_id
         self.name = name
         self.max_size = max_size
