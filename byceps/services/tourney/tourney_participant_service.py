@@ -9,6 +9,7 @@ byceps.services.tourney.tourney_participant_service
 from sqlalchemy import delete, select
 
 from byceps.database import db
+from byceps.services.user.models.user import UserID
 from byceps.util.uuid import generate_uuid7
 
 from . import tourney_service
@@ -17,14 +18,16 @@ from .models import Participant, ParticipantID, TourneyID
 
 
 def create_participant(
-    tourney_id: TourneyID, name: str, max_size: int
+    tourney_id: TourneyID, name: str, max_size: int, creator_id: UserID
 ) -> Participant:
     """Create a participant."""
     tourney = tourney_service.get_tourney(tourney_id)
 
     participant_id = ParticipantID(generate_uuid7())
 
-    db_participant = DbParticipant(participant_id, tourney.id, name, max_size)
+    db_participant = DbParticipant(
+        participant_id, tourney.id, creator_id, name, max_size
+    )
 
     db.session.add(db_participant)
     db.session.commit()

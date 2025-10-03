@@ -41,11 +41,13 @@ class DbParticipant(db.Model):
         self,
         participant_id: ParticipantID,
         tourney_id: TourneyID,
+        creator_id: UserID,
         name: str,
         max_size: int,
     ) -> None:
         self.id = participant_id
         self.tourney_id = tourney_id
+        self.created_by_id = creator_id
         self.name = name
         self.max_size = max_size
 
