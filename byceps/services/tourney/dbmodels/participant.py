@@ -29,7 +29,7 @@ class DbParticipant(db.Model):
         db.Uuid, db.ForeignKey('tourneys.id'), index=True
     )
     tourney: Mapped[DbTourney] = relationship(DbTourney)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     created_by_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
@@ -41,12 +41,14 @@ class DbParticipant(db.Model):
         self,
         participant_id: ParticipantID,
         tourney_id: TourneyID,
+        created_at: datetime,
         creator_id: UserID,
         name: str,
         max_size: int,
     ) -> None:
         self.id = participant_id
         self.tourney_id = tourney_id
+        self.created_at = created_at
         self.created_by_id = creator_id
         self.name = name
         self.max_size = max_size

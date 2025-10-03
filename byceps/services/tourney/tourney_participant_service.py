@@ -6,6 +6,8 @@ byceps.services.tourney.tourney_participant_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
@@ -24,9 +26,10 @@ def create_participant(
     tourney = tourney_service.get_tourney(tourney_id)
 
     participant_id = ParticipantID(generate_uuid7())
+    created_at = datetime.utcnow()
 
     db_participant = DbParticipant(
-        participant_id, tourney.id, creator_id, name, max_size
+        participant_id, tourney.id, created_at, creator_id, name, max_size
     )
 
     db.session.add(db_participant)
