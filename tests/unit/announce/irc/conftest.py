@@ -19,17 +19,15 @@ from tests.helpers import generate_token, generate_uuid
 def make_event_tourney():
     def _wrapper(
         *,
-        id: str | None = None,
         title: str | None = None,
     ) -> EventTourney:
-        if id is None:
-            id = str(generate_uuid())
+        tourney_id = str(generate_uuid())
 
         if title is None:
             title = generate_token()
 
         return EventTourney(
-            id=id,
+            id=tourney_id,
             title=title,
         )
 
@@ -40,17 +38,15 @@ def make_event_tourney():
 def make_event_tourney_participant():
     def _wrapper(
         *,
-        id: str | None = None,
         name: str | None = None,
     ) -> EventTourneyParticipant:
-        if id is None:
-            id = str(generate_uuid())
+        participant_id = str(generate_uuid())
 
         if name is None:
             name = generate_token()
 
         return EventTourneyParticipant(
-            id=id,
+            id=participant_id,
             name=name,
         )
 
