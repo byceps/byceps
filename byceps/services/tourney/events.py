@@ -63,6 +63,19 @@ class TourneyFinishedEvent(_TourneyEvent):
     pass
 
 
+# participant
+
+
+@dataclass(frozen=True, kw_only=True)
+class _TourneyParticipantEvent(_BaseTourneyEvent):
+    participant: EventTourneyParticipant
+
+
+@dataclass(frozen=True, kw_only=True)
+class TourneyParticipantCreatedEvent(_TourneyParticipantEvent):
+    pass
+
+
 # match
 
 
