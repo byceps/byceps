@@ -12,8 +12,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.tourney.models import ParticipantID, TourneyID
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
 
 from .tourney import DbTourney
@@ -30,10 +28,6 @@ class DbParticipant(db.Model):
     )
     tourney: Mapped[DbTourney] = relationship(DbTourney)
     created_at: Mapped[datetime]
-    created_by_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
-    created_by: Mapped[DbUser] = relationship(DbUser)
     name: Mapped[str] = mapped_column(db.UnicodeText)
     max_size: Mapped[int | None]
 
@@ -42,14 +36,12 @@ class DbParticipant(db.Model):
         participant_id: ParticipantID,
         tourney_id: TourneyID,
         created_at: datetime,
-        creator_id: UserID,
         name: str,
         max_size: int,
     ) -> None:
         self.id = participant_id
         self.tourney_id = tourney_id
         self.created_at = created_at
-        self.created_by_id = creator_id
         self.name = name
         self.max_size = max_size
 
