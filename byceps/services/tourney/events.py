@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 from byceps.services.core.events import _BaseEvent
 
-from .models import ParticipantID, TourneyID
+from .models import MatchID, ParticipantID, TourneyID
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -68,7 +68,7 @@ class TourneyFinishedEvent(_TourneyEvent):
 
 @dataclass(frozen=True, kw_only=True)
 class _TourneyMatchEvent(_BaseTourneyEvent):
-    match_id: str
+    match_id: MatchID
     participant1: EventTourneyParticipant | None
     participant2: EventTourneyParticipant | None
 
@@ -103,7 +103,7 @@ class TourneyMatchScoreRandomizedEvent(_TourneyMatchEvent):
 
 @dataclass(frozen=True, kw_only=True)
 class _TourneyMatchParticipantEvent(_BaseTourneyEvent):
-    match_id: str
+    match_id: MatchID
     participant: EventTourneyParticipant
 
 

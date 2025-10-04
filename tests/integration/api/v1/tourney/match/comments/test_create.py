@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 import pytest
 from sqlalchemy import select
 
@@ -12,6 +14,7 @@ from byceps.services.tourney import (
     tourney_match_service,
 )
 from byceps.services.tourney.dbmodels.match_comment import DbMatchComment
+from byceps.services.tourney.models import MatchID
 
 
 def test_create_comment(api_client, api_client_authz_header, user, match):
@@ -39,7 +42,7 @@ def test_create_comment(api_client, api_client_authz_header, user, match):
 def test_create_comment_on_nonexistent_match(
     api_client, api_client_authz_header, user
 ):
-    unknown_match_id = '00000000-0000-0000-0000-000000000000'
+    unknown_match_id = MatchID(UUID('00000000-0000-0000-0000-000000000000'))
 
     response = request_comment_creation(
         api_client, api_client_authz_header, unknown_match_id, user.id

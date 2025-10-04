@@ -17,13 +17,14 @@ from byceps.services.tourney.events import (
     TourneyMatchParticipantReadyEvent,
     TourneyMatchParticipantWarnedEvent,
 )
+from byceps.services.tourney.models import MatchID
 
 from tests.helpers import generate_uuid
 
 from .helpers import assert_text
 
 
-MATCH_ID = str(generate_uuid())
+MATCH_ID = MatchID(generate_uuid())
 
 
 def test_announce_participant_ready(
