@@ -8,7 +8,7 @@ byceps.services.tourney.tourney_participant_service
 
 from datetime import datetime
 
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from . import (
     tourney_participant_domain_service,
@@ -20,7 +20,7 @@ from .models import Participant, ParticipantID, TourneyID
 
 
 def create_participant(
-    tourney_id: TourneyID, name: str, max_size: int, creator_id: UserID
+    tourney_id: TourneyID, name: str, max_size: int, initiator: User
 ) -> Participant:
     """Create a participant."""
     tourney = tourney_service.get_tourney(tourney_id)
@@ -32,7 +32,7 @@ def create_participant(
     created_at = datetime.utcnow()
 
     tourney_participant_repository.create_participant(
-        participant, created_at, creator_id, max_size
+        participant, created_at, initiator.id, max_size
     )
 
     return participant
