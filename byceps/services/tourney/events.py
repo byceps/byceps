@@ -10,10 +10,12 @@ from dataclasses import dataclass
 
 from byceps.services.core.events import _BaseEvent
 
+from .models import TourneyID
+
 
 @dataclass(frozen=True, kw_only=True)
 class EventTourney:
-    id: str
+    id: TourneyID
     title: str
 
 
