@@ -19,10 +19,7 @@ from .models import Participant, ParticipantID, TourneyID
 
 
 def create_participant(
-    participant: Participant,
-    created_at: datetime,
-    creator_id: UserID,
-    max_size: int,
+    participant: Participant, created_at: datetime, creator_id: UserID
 ) -> None:
     """Create a participant."""
     db_participant = DbParticipant(
@@ -31,7 +28,6 @@ def create_participant(
         created_at,
         creator_id,
         participant.name,
-        max_size,
     )
 
     db.session.add(db_participant)

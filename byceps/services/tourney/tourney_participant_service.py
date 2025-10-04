@@ -14,7 +14,7 @@ from .models import Participant, ParticipantID, Tourney, TourneyID
 
 
 def create_participant(
-    tourney: Tourney, name: str, max_size: int, initiator: User
+    tourney: Tourney, name: str, initiator: User
 ) -> Participant:
     """Create a participant."""
     participant, event = tourney_participant_domain_service.create_participant(
@@ -24,7 +24,7 @@ def create_participant(
     created_at = event.occurred_at
 
     tourney_participant_repository.create_participant(
-        participant, created_at, initiator.id, max_size
+        participant, created_at, initiator.id
     )
 
     return participant

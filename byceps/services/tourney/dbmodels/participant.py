@@ -29,7 +29,6 @@ class DbParticipant(db.Model):
     tourney: Mapped[DbTourney] = relationship(DbTourney)
     created_at: Mapped[datetime]
     name: Mapped[str] = mapped_column(db.UnicodeText)
-    max_size: Mapped[int | None]
 
     def __init__(
         self,
@@ -37,19 +36,16 @@ class DbParticipant(db.Model):
         tourney_id: TourneyID,
         created_at: datetime,
         name: str,
-        max_size: int,
     ) -> None:
         self.id = participant_id
         self.tourney_id = tourney_id
         self.created_at = created_at
         self.name = name
-        self.max_size = max_size
 
     def __repr__(self) -> str:
         return (
             ReprBuilder(self)
             .add_with_lookup('tourney')
             .add_with_lookup('name')
-            .add_with_lookup('max_size')
             .build()
         )
