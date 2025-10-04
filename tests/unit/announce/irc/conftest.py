@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.tourney.events import EventTourney, EventTourneyParticipant
-from byceps.services.tourney.models import TourneyID
+from byceps.services.tourney.models import ParticipantID, TourneyID
 from byceps.services.webhooks.models import (
     OutgoingWebhook,
     OutgoingWebhookFormat,
@@ -41,7 +41,7 @@ def make_event_tourney_participant():
         *,
         name: str | None = None,
     ) -> EventTourneyParticipant:
-        participant_id = str(generate_uuid())
+        participant_id = ParticipantID(generate_uuid())
 
         if name is None:
             name = generate_token()
