@@ -10,21 +10,15 @@ from datetime import datetime
 
 from byceps.services.user.models.user import User
 
-from . import (
-    tourney_participant_domain_service,
-    tourney_participant_repository,
-    tourney_service,
-)
+from . import tourney_participant_domain_service, tourney_participant_repository
 from .dbmodels.participant import DbParticipant
-from .models import Participant, ParticipantID, TourneyID
+from .models import Participant, ParticipantID, Tourney, TourneyID
 
 
 def create_participant(
-    tourney_id: TourneyID, name: str, max_size: int, initiator: User
+    tourney: Tourney, name: str, max_size: int, initiator: User
 ) -> Participant:
     """Create a participant."""
-    tourney = tourney_service.get_tourney(tourney_id)
-
     participant = tourney_participant_domain_service.create_participant(
         tourney, name
     )
