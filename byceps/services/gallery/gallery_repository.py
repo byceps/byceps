@@ -71,6 +71,16 @@ def remove_gallery_title_image(gallery_id: GalleryID) -> None:
     db.session.commit()
 
 
+def delete_gallery(gallery_id: GalleryID) -> None:
+    """Delete a gallery and all associated records."""
+    db.session.execute(
+        delete(DbGalleryTitleImage).filter_by(gallery_id=gallery_id)
+    )
+    db.session.execute(delete(DbGalleryImage).filter_by(gallery_id=gallery_id))
+    db.session.execute(delete(DbGallery).filter_by(id=gallery_id))
+    db.session.commit()
+
+
 def find_gallery(gallery_id: GalleryID) -> DbGallery | None:
     """Return the gallery, if found."""
     return db.session.get(DbGallery, gallery_id)
