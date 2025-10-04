@@ -96,30 +96,30 @@ class TourneyMatchScoreRandomizedEvent(_TourneyMatchEvent):
     pass
 
 
-# participant
+# match participant
 
 
 @dataclass(frozen=True, kw_only=True)
-class _TourneyParticipantEvent(_BaseTourneyEvent):
+class _TourneyMatchParticipantEvent(_BaseTourneyEvent):
     match_id: str
     participant: EventTourneyParticipant
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyParticipantReadyEvent(_TourneyParticipantEvent):
+class TourneyMatchParticipantReadyEvent(_TourneyMatchParticipantEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyParticipantEliminatedEvent(_TourneyParticipantEvent):
+class TourneyMatchParticipantEliminatedEvent(_TourneyMatchParticipantEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyParticipantWarnedEvent(_TourneyParticipantEvent):
+class TourneyMatchParticipantWarnedEvent(_TourneyMatchParticipantEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyParticipantDisqualifiedEvent(_TourneyParticipantEvent):
+class TourneyMatchParticipantDisqualifiedEvent(_TourneyMatchParticipantEvent):
     pass

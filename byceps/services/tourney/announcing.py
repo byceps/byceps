@@ -17,15 +17,15 @@ from .events import (
     EventTourneyParticipant,
     TourneyCanceledEvent,
     TourneyFinishedEvent,
+    TourneyMatchParticipantDisqualifiedEvent,
+    TourneyMatchParticipantEliminatedEvent,
+    TourneyMatchParticipantReadyEvent,
+    TourneyMatchParticipantWarnedEvent,
     TourneyMatchReadyEvent,
     TourneyMatchResetEvent,
     TourneyMatchScoreConfirmedEvent,
     TourneyMatchScoreRandomizedEvent,
     TourneyMatchScoreSubmittedEvent,
-    TourneyParticipantDisqualifiedEvent,
-    TourneyParticipantEliminatedEvent,
-    TourneyParticipantReadyEvent,
-    TourneyParticipantWarnedEvent,
     TourneyPausedEvent,
     TourneyStartedEvent,
 )
@@ -169,7 +169,7 @@ def announce_match_score_randomized(
 @with_locale
 def announce_participant_ready(
     event_name: str,
-    event: TourneyParticipantReadyEvent,
+    event: TourneyMatchParticipantReadyEvent,
     webhook: OutgoingWebhook,
 ) -> Announcement | None:
     text = gettext(
@@ -184,7 +184,7 @@ def announce_participant_ready(
 @with_locale
 def announce_participant_eliminated(
     event_name: str,
-    event: TourneyParticipantEliminatedEvent,
+    event: TourneyMatchParticipantEliminatedEvent,
     webhook: OutgoingWebhook,
 ) -> Announcement | None:
     text = gettext(
@@ -199,7 +199,7 @@ def announce_participant_eliminated(
 @with_locale
 def announce_participant_warned(
     event_name: str,
-    event: TourneyParticipantWarnedEvent,
+    event: TourneyMatchParticipantWarnedEvent,
     webhook: OutgoingWebhook,
 ) -> Announcement | None:
     yellow_card_irc = ' \x038,8 \x03'
@@ -219,7 +219,7 @@ def announce_participant_warned(
 @with_locale
 def announce_participant_disqualified(
     event_name: str,
-    event: TourneyParticipantDisqualifiedEvent,
+    event: TourneyMatchParticipantDisqualifiedEvent,
     webhook: OutgoingWebhook,
 ) -> Announcement | None:
     red_card_irc = ' \x034,4 \x03'

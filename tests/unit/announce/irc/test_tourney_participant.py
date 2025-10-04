@@ -12,10 +12,10 @@ from byceps.byceps_app import BycepsApp
 from byceps.services.tourney.events import (
     EventTourney,
     EventTourneyParticipant,
-    TourneyParticipantDisqualifiedEvent,
-    TourneyParticipantEliminatedEvent,
-    TourneyParticipantReadyEvent,
-    TourneyParticipantWarnedEvent,
+    TourneyMatchParticipantDisqualifiedEvent,
+    TourneyMatchParticipantEliminatedEvent,
+    TourneyMatchParticipantReadyEvent,
+    TourneyMatchParticipantWarnedEvent,
 )
 
 from tests.helpers import generate_uuid
@@ -37,7 +37,7 @@ def test_announce_participant_ready(
         '"Le Supern00bs" in tourney Burrito Blaster (3on3) is ready to play.'
     )
 
-    event = TourneyParticipantReadyEvent(
+    event = TourneyMatchParticipantReadyEvent(
         occurred_at=now,
         initiator=None,
         tourney=tourney,
@@ -62,7 +62,7 @@ def test_announce_participant_eliminated(
         'from tourney Burrito Blaster (3on3).'
     )
 
-    event = TourneyParticipantEliminatedEvent(
+    event = TourneyMatchParticipantEliminatedEvent(
         occurred_at=now,
         initiator=None,
         tourney=tourney,
@@ -87,7 +87,7 @@ def test_announce_participant_warned(
         'has been warned. \x038,8 \x03'
     )
 
-    event = TourneyParticipantWarnedEvent(
+    event = TourneyMatchParticipantWarnedEvent(
         occurred_at=now,
         initiator=None,
         tourney=tourney,
@@ -112,7 +112,7 @@ def test_announce_participant_disqualified(
         'has been disqualified. \x034,4 \x03'
     )
 
-    event = TourneyParticipantDisqualifiedEvent(
+    event = TourneyMatchParticipantDisqualifiedEvent(
         occurred_at=now,
         initiator=None,
         tourney=tourney,
