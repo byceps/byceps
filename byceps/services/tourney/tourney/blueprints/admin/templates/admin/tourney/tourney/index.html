@@ -27,6 +27,7 @@
       <tr>
         <th>{{ _('Title') }}<br>{{ _('Subtitle') }}</th>
         <th>{{ _('Category') }}</th>
+        <th>{{ _('Team size') }}</th>
         <th colspan="3">{{ _('Participants') }}</th>
         <th>{{ _('Start') }}</th>
         <th>{{ _('Status') }}</th>
@@ -41,6 +42,7 @@
           <small>{{ tourney.subtitle|fallback('') }}</small>
         </td>
         <td>{{ tourney.category.title }}</td>
+        <td class="centered">{{ tourney.team_size }}</td>
         <td class="bignumber number" style="padding-right: 0;">{{ tourney.current_participant_count }}</td>
         <td class="bignumber dimmed" style="padding-left: 0.25rem; padding-right: 0.25rem;">/</td>
         <td class="bignumber">{{ tourney.max_participant_count }}</td>

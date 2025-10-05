@@ -21,7 +21,7 @@ from byceps.services.tourney import tourney_category_service
 from byceps.util.l10n import LocalizedForm
 
 
-class CreateForm(LocalizedForm):
+class _BaseForm(LocalizedForm):
     title = StringField(
         lazy_gettext('Title'), [InputRequired(), Length(max=40)]
     )
@@ -49,6 +49,16 @@ class CreateForm(LocalizedForm):
             (category.id, category.title) for category in categories
         ]
 
+    pass
 
-class UpdateForm(CreateForm):
+
+class CreateForm(_BaseForm):
+    team_size = SelectField(
+        lazy_gettext('Team size'),
+        [InputRequired()],
+        choices=[(value, value) for value in range(1, 17)],
+    )
+
+
+class UpdateForm(_BaseForm):
     pass

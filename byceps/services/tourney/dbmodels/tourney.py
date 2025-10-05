@@ -41,6 +41,7 @@ class DbTourney(db.Model):
         nullable=False,
     )
     category: Mapped[DbTourneyCategory] = relationship(DbTourneyCategory)
+    team_size: Mapped[int]
     max_participant_count: Mapped[int]
     starts_at: Mapped[datetime]
     registration_open: Mapped[bool]
@@ -50,6 +51,7 @@ class DbTourney(db.Model):
         party_id: PartyID,
         title: str,
         category_id: TourneyCategoryID,
+        team_size: int,
         max_participant_count: int,
         starts_at: datetime,
         registration_open: bool,
@@ -62,6 +64,7 @@ class DbTourney(db.Model):
         self.subtitle = subtitle
         self.logo_url = logo_url
         self.category_id = category_id
+        self.team_size = team_size
         self.max_participant_count = max_participant_count
         self.starts_at = starts_at
         self.registration_open = registration_open

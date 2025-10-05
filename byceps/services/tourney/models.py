@@ -38,6 +38,7 @@ class Tourney:
     logo_url: str | None
     category_id: TourneyCategoryID
     current_participant_count: int
+    team_size: int
     max_participant_count: int
     starts_at: datetime
     registration_open: bool
@@ -61,6 +62,7 @@ class TourneyWithCategory(Tourney):
             subtitle=tourney.subtitle,
             logo_url=tourney.logo_url,
             category_id=tourney.category_id,
+            team_size=tourney.team_size,
             current_participant_count=current_participant_count,
             max_participant_count=tourney.max_participant_count,
             starts_at=tourney.starts_at,

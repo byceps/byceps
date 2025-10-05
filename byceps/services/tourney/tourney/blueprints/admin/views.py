@@ -71,6 +71,7 @@ def create(party_id):
     subtitle = form.subtitle.data.strip()
     logo_url = form.logo_url.data.strip()
     category_id = form.category_id.data
+    team_size = form.team_size.data
     max_participant_count = form.max_participant_count.data
     starts_at_local = form.starts_at.data
     starts_at_utc = to_utc(starts_at_local)
@@ -83,6 +84,7 @@ def create(party_id):
         creator,
         title,
         category,
+        team_size,
         max_participant_count,
         starts_at_utc,
         subtitle=subtitle,
