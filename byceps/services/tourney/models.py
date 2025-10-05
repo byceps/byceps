@@ -86,6 +86,7 @@ class Participant:
     tourney_id: TourneyID
     name: str
     logo_url: str | None
+    manager: User
 
 
 @dataclass(frozen=True, kw_only=True)

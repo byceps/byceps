@@ -12,6 +12,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.tourney.models import ParticipantID, TourneyID
+from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
 
 from .tourney import DbTourney
@@ -29,6 +31,10 @@ class DbParticipant(db.Model):
     tourney: Mapped[DbTourney] = relationship(DbTourney)
     created_at: Mapped[datetime]
     name: Mapped[str] = mapped_column(db.UnicodeText)
+    manager_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    manager: Mapped[DbUser] = relationship(DbUser)
 
     def __init__(
         self,
@@ -36,11 +42,13 @@ class DbParticipant(db.Model):
         tourney_id: TourneyID,
         created_at: datetime,
         name: str,
+        manager_id: UserID,
     ) -> None:
         self.id = participant_id
         self.tourney_id = tourney_id
         self.created_at = created_at
         self.name = name
+        self.manager_id = manager_id
 
     def __repr__(self) -> str:
         return (

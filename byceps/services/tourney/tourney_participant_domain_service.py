@@ -21,7 +21,10 @@ from .models import Participant, ParticipantID, Tourney
 
 
 def create_participant(
-    tourney: Tourney, name: str, initiator: User
+    tourney: Tourney,
+    name: str,
+    manager: User,
+    initiator: User,
 ) -> tuple[Participant, TourneyParticipantCreatedEvent]:
     """Create a participant."""
     participant_id = ParticipantID(generate_uuid7())
@@ -32,6 +35,7 @@ def create_participant(
         tourney_id=tourney.id,
         name=name,
         logo_url=None,
+        manager=manager,
     )
 
     event = _build_participant_created_event(
