@@ -101,7 +101,7 @@
   <div class="main-body-box">
   {%- if participants %}
     <ul>
-      {%- for participant in participants %}
+      {%- for participant in participants|sort(attribute='name') %}
       <li>{{ participant.name }}</li>
       {%- endfor %}
     </ul>
