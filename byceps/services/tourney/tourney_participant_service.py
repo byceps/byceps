@@ -29,9 +29,7 @@ def create_participant(
 
     created_at = event.occurred_at
 
-    tourney_participant_repository.create_participant(
-        participant, created_at, initiator.id
-    )
+    tourney_participant_repository.create_participant(participant, created_at)
 
     return participant
 

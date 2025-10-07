@@ -12,22 +12,19 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.user.models.user import UserID
 
 from .dbmodels.participant import DbParticipant
 from .models import Participant, ParticipantID, TourneyID
 
 
-def create_participant(
-    participant: Participant, created_at: datetime, creator_id: UserID
-) -> None:
+def create_participant(participant: Participant, created_at: datetime) -> None:
     """Create a participant."""
     db_participant = DbParticipant(
         participant.id,
         participant.tourney_id,
         created_at,
-        creator_id,
         participant.name,
+        participant.manager.id,
     )
 
     db.session.add(db_participant)
