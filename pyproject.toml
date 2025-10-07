@@ -42,7 +42,7 @@ dependencies = [
     "httpx[http2]>=0.28.1",
     "itsdangerous==2.2.0",
     "jinja2>=3.1.6",
-    "markupsafe==3.0.2",
+    "markupsafe==3.0.3",
     "mistletoe==1.4.0",
     "paypal-checkout-serversdk==1.0.3",
     "paypalhttp==1.0.1",
