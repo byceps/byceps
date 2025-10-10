@@ -52,6 +52,16 @@ def update_gallery(gallery: Gallery) -> None:
     db.session.commit()
 
 
+def delete_gallery(gallery_id: GalleryID) -> None:
+    """Delete a gallery and all associated records."""
+    db.session.execute(
+        delete(DbGalleryTitleImage).filter_by(gallery_id=gallery_id)
+    )
+    db.session.execute(delete(DbGalleryImage).filter_by(gallery_id=gallery_id))
+    db.session.execute(delete(DbGallery).filter_by(id=gallery_id))
+    db.session.commit()
+
+
 def set_gallery_title_image(
     gallery_id: GalleryID, image_id: GalleryImageID
 ) -> None:
