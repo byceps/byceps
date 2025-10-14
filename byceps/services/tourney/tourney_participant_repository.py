@@ -8,13 +8,14 @@ byceps.services.tourney.tourney_participant_repository
 
 from collections.abc import Sequence
 from datetime import datetime
+from uuid import UUID
 
 from sqlalchemy import delete, select
 
 from byceps.database import db
 
-from .dbmodels.participant import DbParticipant
-from .models import Participant, ParticipantID, TourneyID
+from .dbmodels.participant import DbParticipant, DbParticipantMembership
+from .models import Participant, ParticipantID, ParticipantMembership, TourneyID
 
 
 def create_participant(participant: Participant, created_at: datetime) -> None:
@@ -53,3 +54,24 @@ def get_participants_for_tourney(
     return db.session.scalars(
         select(DbParticipant).filter_by(tourney_id=tourney_id)
     ).all()
+
+
+def add_player_to_participant(membership: ParticipantMembership) -> None:
+    """Add a player to a participant."""
+    db_membership = DbParticipantMembership(
+        membership.id,
+        membership.participant_id,
+        membership.player.id,
+        membership.status,
+    )
+
+    db.session.add(db_membership)
+    db.session.commit()
+
+
+def delete_participant_membership(membership_id: UUID) -> None:
+    """Remove a player from a participant."""
+    db.session.execute(
+        delete(DbParticipantMembership).filter_by(id=membership_id)
+    )
+    db.session.commit()

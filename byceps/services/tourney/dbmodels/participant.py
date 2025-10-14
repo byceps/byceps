@@ -7,11 +7,22 @@ byceps.services.tourney.dbmodels.participant
 """
 
 from datetime import datetime
+from typing import TYPE_CHECKING
+from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
+
 from byceps.database import db
-from byceps.services.tourney.models import ParticipantID, TourneyID
+from byceps.services.tourney.models import (
+    ParticipantID,
+    ParticipantMembershipStatus,
+    TourneyID,
+)
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
@@ -57,3 +68,40 @@ class DbParticipant(db.Model):
             .add_with_lookup('name')
             .build()
         )
+
+
+class DbParticipantMembership(db.Model):
+    """A user who is a member of, or a membership candidate for, a
+    participant.
+    """
+
+    __tablename__ = 'tourney_participant_memberships'
+
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    participant_id: Mapped[ParticipantID] = mapped_column(
+        db.Uuid, db.ForeignKey('tourney_participants.id')
+    )
+    player_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id')
+    )
+    _status: Mapped[str] = mapped_column('status', db.UnicodeText)
+
+    def __init__(
+        self,
+        membership_id: UUID,
+        participant_id: ParticipantID,
+        player_id: UserID,
+        status: ParticipantMembershipStatus,
+    ) -> None:
+        self.id = membership_id
+        self.participant_id = participant_id
+        self.player_id = player_id
+        self.status = status
+
+    @hybrid_property
+    def status(self) -> ParticipantMembershipStatus:
+        return ParticipantMembershipStatus[self._status]
+
+    @status.setter
+    def status(self, status: ParticipantMembershipStatus) -> None:
+        self._status = status.name

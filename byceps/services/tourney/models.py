@@ -8,6 +8,7 @@ byceps.services.tourney.models
 
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
 from typing import NewType, Self
 from uuid import UUID
 
@@ -87,6 +88,17 @@ class Participant:
     name: str
     logo_url: str | None
     manager: User
+
+
+ParticipantMembershipStatus = Enum('ParticipantMembershipStatus', ['approved'])
+
+
+@dataclass(frozen=True, kw_only=True)
+class ParticipantMembership:
+    id: UUID
+    participant_id: ParticipantID
+    player: User
+    status: ParticipantMembershipStatus
 
 
 @dataclass(frozen=True, kw_only=True)

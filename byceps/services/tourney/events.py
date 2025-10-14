@@ -8,9 +8,14 @@ byceps.services.tourney.events
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import _BaseEvent, EventUser
 
-from .models import MatchID, ParticipantID, TourneyID
+from .models import (
+    MatchID,
+    ParticipantID,
+    ParticipantMembershipStatus,
+    TourneyID,
+)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -74,6 +79,17 @@ class _TourneyParticipantEvent(_BaseTourneyEvent):
 @dataclass(frozen=True, kw_only=True)
 class TourneyParticipantCreatedEvent(_TourneyParticipantEvent):
     pass
+
+
+@dataclass(frozen=True, kw_only=True)
+class TourneyParticipantMembershipCreatedEvent(_TourneyParticipantEvent):
+    player: EventUser
+    status: ParticipantMembershipStatus
+
+
+@dataclass(frozen=True, kw_only=True)
+class TourneyParticipantMembershipDeletedEvent(_TourneyParticipantEvent):
+    player: EventUser
 
 
 # match

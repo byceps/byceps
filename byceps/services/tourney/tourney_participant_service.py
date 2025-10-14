@@ -7,13 +7,21 @@ byceps.services.tourney.tourney_participant_service
 """
 
 from collections.abc import Sequence
+from uuid import UUID
 
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 
 from . import tourney_participant_domain_service, tourney_participant_repository
 from .dbmodels.participant import DbParticipant
-from .models import Participant, ParticipantID, Tourney, TourneyID
+from .models import (
+    Participant,
+    ParticipantID,
+    ParticipantMembership,
+    ParticipantMembershipStatus,
+    Tourney,
+    TourneyID,
+)
 
 
 def create_participant(
@@ -91,3 +99,36 @@ def _db_entity_to_participant(
         logo_url=None,
         manager=manager,
     )
+
+
+def add_player_to_participant(
+    tourney: Tourney,
+    participant: Participant,
+    player: User,
+    status: ParticipantMembershipStatus,
+    initiator: User,
+) -> ParticipantMembership:
+    """Add a player to a participant."""
+    membership, event = (
+        tourney_participant_domain_service.add_player_to_participant(
+            tourney, participant, player, status, initiator
+        )
+    )
+
+    tourney_participant_repository.add_player_to_participant(membership)
+
+    return membership
+
+
+def remove_player_from_participant(
+    tourney: Tourney,
+    participant: Participant,
+    membership: ParticipantMembership,
+    initiator: User,
+) -> None:
+    """Remove a player from a participant."""
+    event = tourney_participant_domain_service.delete_participant_membership(
+        tourney, participant, membership, initiator
+    )
+
+    tourney_participant_repository.delete_participant_membership(membership.id)
