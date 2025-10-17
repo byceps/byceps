@@ -88,7 +88,11 @@ def view(order_id):
     if not _is_order_placed_by_current_user(order):
         abort(404)
 
-    storefront = storefront_service.get_storefront(g.site.storefront_id)
+    storefront_id = g.site.storefront_id
+    if storefront_id is None:
+        abort(404)
+
+    storefront = storefront_service.get_storefront(storefront_id)
     if order.storefront_id != storefront.id:
         # Order does not belong to the current site's storefront.
         abort(404)
