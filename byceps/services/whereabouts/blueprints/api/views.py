@@ -6,6 +6,7 @@ byceps.services.whereabouts.blueprints.api.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
 from ipaddress import ip_address
 
 from flask import abort, g, jsonify, request, Request, url_for
@@ -116,6 +117,8 @@ def get_tag(identifier):
     identity_tag = authn_identity_tag_service.find_tag_by_identifier(identifier)
     if identity_tag is None:
         event = WhereaboutsUnknownTagDetectedEvent(
+            occurred_at=datetime.utcnow(),
+            initiator=None,
             client_id=g.client.id,
             client_location=g.client.location,
             tag_identifier=identifier,
