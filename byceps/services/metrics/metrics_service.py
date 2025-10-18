@@ -35,7 +35,7 @@ def serialize(metrics: Iterator[Metric]) -> Iterator[str]:
 
 
 def collect_metrics() -> Iterator[Metric]:
-    brand_ids = [brand.id for brand in brand_service.get_all_brands()]
+    brand_ids = [brand.id for brand in brand_service.get_active_brands()]
     active_parties = party_service.get_active_parties()
     active_shops = shop_service.get_active_shops()
 
