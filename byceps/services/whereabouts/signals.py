@@ -29,6 +29,10 @@ whereabouts_client_signed_off = whereabouts_signals.signal(
     'whereabouts-client-signed-off'
 )
 
+whereabouts_unknown_tag_detected = whereabouts_signals.signal(
+    'whereabouts-unknown-tag-detected'
+)
+
 whereabouts_status_updated = whereabouts_signals.signal(
     'whereabouts-status-updated'
 )

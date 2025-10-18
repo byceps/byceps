@@ -25,6 +25,7 @@ from .events import (
     WhereaboutsClientSignedOffEvent,
     WhereaboutsClientSignedOnEvent,
     WhereaboutsStatusUpdatedEvent,
+    WhereaboutsUnknownTagDetectedEvent,
 )
 
 
@@ -110,6 +111,27 @@ def announce_whereabouts_client_signed_off(
     text = gettext(
         'Whereabouts client "%(client_id)s" has signed off.',
         client_id=event.client_id,
+    )
+
+    return Announcement(text)
+
+
+# tag
+
+
+@with_locale
+def announce_whereabouts_unknown_tag_detected(
+    event_name: str,
+    event: WhereaboutsUnknownTagDetectedEvent,
+    webhook: OutgoingWebhook,
+) -> Announcement | None:
+    """Announce that an unknown tag has been detected."""
+    text = gettext(
+        'Unknown tag "%(tag_identifier)s" has been detected by whereabouts '
+        'client "%(client_id)s" at location "%(client_location)s".',
+        client_id=event.client_id,
+        client_location=event.client_location,
+        tag_identifier=event.tag_identifier,
     )
 
     return Announcement(text)

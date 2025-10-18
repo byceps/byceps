@@ -20,6 +20,9 @@ from byceps.services.whereabouts import (
     whereabouts_service,
     whereabouts_sound_service,
 )
+from byceps.services.whereabouts.events import (
+    WhereaboutsUnknownTagDetectedEvent,
+)
 from byceps.services.whereabouts.models import IPAddress
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import create_empty_json_response, respond_no_content
@@ -112,6 +115,15 @@ def get_tag(identifier):
     """Get details for tag."""
     identity_tag = authn_identity_tag_service.find_tag_by_identifier(identifier)
     if identity_tag is None:
+        event = WhereaboutsUnknownTagDetectedEvent(
+            client_id=client.id,
+            client_location=client.location,
+            tag_identifier=identifier,
+        )
+        whereabouts_signals.whereabouts_unknown_tag_detected.send(
+            None, event=event
+        )
+
         return create_empty_json_response(404)
 
     user_sound = whereabouts_sound_service.find_sound_for_user(

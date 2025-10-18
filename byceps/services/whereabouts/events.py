@@ -45,6 +45,13 @@ class WhereaboutsClientSignedOffEvent(_WhereaboutsClientEvent):
 
 
 @dataclass(frozen=True, kw_only=True)
+class WhereaboutsUnknownTagDetectedEvent(_BaseEvent):
+    client_id: WhereaboutsClientID
+    client_location: str | None
+    tag_identifier: str
+
+
+@dataclass(frozen=True, kw_only=True)
 class WhereaboutsStatusUpdatedEvent(_BaseEvent):
     party: EventParty
     user: EventUser
