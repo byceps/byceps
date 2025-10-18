@@ -588,6 +588,7 @@ _SIGNALS: list[NamedSignal] = [
     whereabouts_signals.whereabouts_client_signed_off,
     whereabouts_signals.whereabouts_client_signed_on,
     whereabouts_signals.whereabouts_status_updated,
+    whereabouts_signals.whereabouts_unknown_tag_detected,
 ]
 
 
