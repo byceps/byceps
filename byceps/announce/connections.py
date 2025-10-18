@@ -145,6 +145,7 @@ from byceps.services.whereabouts.events import (
     WhereaboutsClientSignedOffEvent,
     WhereaboutsClientSignedOnEvent,
     WhereaboutsStatusUpdatedEvent,
+    WhereaboutsUnknownTagDetectedEvent,
 )
 
 
@@ -509,6 +510,11 @@ for event, name, handler in [
         WhereaboutsStatusUpdatedEvent,
         'whereabouts-status-updated',
         whereabouts_handlers.announce_whereabouts_status_updated,
+    ),
+    (
+        WhereaboutsUnknownTagDetectedEvent,
+        'whereabouts-unknown-tag-detected',
+        whereabouts_handlers.announce_whereabouts_unknown_tag_detected,
     ),
 ]:
     registry.register_event(event, name, handler)
