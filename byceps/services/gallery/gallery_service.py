@@ -52,6 +52,11 @@ def update_gallery(
     return gallery
 
 
+def delete_gallery(gallery_id: GalleryID) -> None:
+    """Delete a gallery."""
+    gallery_repository.delete_gallery(gallery_id)
+
+
 def set_gallery_title_image(
     gallery_id: GalleryID, image_id: GalleryImageID
 ) -> None:
