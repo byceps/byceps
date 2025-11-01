@@ -63,6 +63,9 @@ def remove_gallery_title_image(gallery_id: GalleryID) -> None:
     """Remove the title image for the gallery."""
     gallery_repository.remove_gallery_title_image(gallery_id)
 
+def delete_gallery(gallery_id: GalleryID) -> None:
+    """Delete a gallery."""
+    gallery_repository.delete_gallery(gallery_id)
 
 def find_gallery(gallery_id: GalleryID) -> Gallery | None:
     """Return the gallery, if found."""

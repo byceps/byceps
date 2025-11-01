@@ -6,7 +6,7 @@ byceps.services.gallery.blueprints.admin.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, request
+from flask import abort, request, url_for
 from flask_babel import gettext
 
 from byceps.services.brand import brand_service
@@ -16,7 +16,11 @@ from byceps.services.gallery.models import Gallery, GalleryID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.views import permission_required, redirect_to
+from byceps.util.views import (
+    permission_required,
+    redirect_to,
+    respond_no_content_with_location,
+)
 
 from .forms import GalleryCreateForm, GalleryUpdateForm
 
@@ -132,6 +136,21 @@ def gallery_update(gallery_id):
     flash_success(gettext('Gallery has been updated.'))
 
     return redirect_to('.gallery_index_for_brand', brand_id=gallery.brand_id)
+
+
+@blueprint.delete('/galleries/<uuid:gallery_id>')
+@permission_required('gallery.administrate')
+@respond_no_content_with_location
+def gallery_delete(gallery_id):
+    """Delete a gallery."""
+    gallery = _get_gallery_or_404(gallery_id)
+    brand_id = gallery.brand_id
+
+    gallery_service.delete_gallery(gallery_id)
+
+    flash_success(gettext('Gallery has been deleted.'))
+
+    return url_for('.gallery_index_for_brand', brand_id=brand_id)
 
 
 # -------------------------------------------------------------------- #
