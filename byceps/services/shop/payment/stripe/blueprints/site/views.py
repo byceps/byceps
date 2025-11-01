@@ -81,7 +81,7 @@ def _build_checkout_session(order, user_id: UserID):
 
     session = stripe.checkout.Session.create(
         customer_email=email_address,
-        payment_method_types=['card', 'giropay'],
+        payment_method_types=['card'],
         line_items=line_items,
         mode='payment',
         success_url=redirect_url,
