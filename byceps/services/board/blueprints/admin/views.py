@@ -19,11 +19,16 @@ from byceps.services.board import (
     board_service,
     board_topic_query_service,
 )
+from byceps.services.board.errors import (
+    BoardCategoryAlreadyAtBottomError,
+    BoardCategoryAlreadyAtTopError,
+)
 from byceps.services.board.models import Board, BoardCategory, BoardCategoryID
 from byceps.services.brand import brand_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -303,23 +308,13 @@ def category_move_up(category_id):
     """Move the category upwards by one position."""
     category = _get_category_or_404(category_id)
 
-    result = board_category_command_service.move_category_up(category.id)
-
-    if result.is_err():
-        flash_error(
-            gettext(
-                'Category "%(title)s" is already at the top.',
-                title=category.title,
+    match board_category_command_service.move_category_up(category.id):
+        case Ok(_):
+            flash_success(
+                gettext('Category has been moved upwards by one position.')
             )
-        )
-        return
-
-    flash_success(
-        gettext(
-            'Category "%(title)s" has been moved upwards by one position.',
-            title=category.title,
-        )
-    )
+        case Err(BoardCategoryAlreadyAtTopError()):
+            flash_error(gettext('Category is already at the top.'))
 
 
 @blueprint.post('/categories/<uuid:category_id>/down')
@@ -329,23 +324,13 @@ def category_move_down(category_id):
     """Move the category downwards by one position."""
     category = _get_category_or_404(category_id)
 
-    result = board_category_command_service.move_category_down(category.id)
-
-    if result.is_err():
-        flash_error(
-            gettext(
-                'Category "%(title)s" is already at the bottom.',
-                title=category.title,
+    match board_category_command_service.move_category_down(category.id):
+        case Ok(_):
+            flash_success(
+                gettext('Category has been moved downwards by one position.')
             )
-        )
-        return
-
-    flash_success(
-        gettext(
-            'Category "%(title)s" has been moved downwards by one position.',
-            title=category.title,
-        )
-    )
+        case Err(BoardCategoryAlreadyAtBottomError()):
+            flash_error(gettext('Category is already at the bottom.'))
 
 
 @blueprint.delete('/categories/<uuid:category_id>')

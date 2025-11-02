@@ -6,6 +6,18 @@ byceps.services.board.errors
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class BoardCategoryAlreadyAtBottomError:
+    pass
+
+
+@dataclass(frozen=True)
+class BoardCategoryAlreadyAtTopError:
+    pass
+
 
 class ReactionDeniedError:
     """User's reaction to a posting has been denied.

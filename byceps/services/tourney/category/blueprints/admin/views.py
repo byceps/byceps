@@ -11,9 +11,14 @@ from flask_babel import gettext
 
 from byceps.services.party import party_service
 from byceps.services.tourney import tourney_category_service
+from byceps.services.tourney.errors import (
+    TourneyCategoryAlreadyAtBottomError,
+    TourneyCategoryAlreadyAtTopError,
+)
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -121,22 +126,13 @@ def move_up(category_id):
     """Move a category upwards by one position."""
     category = _get_category_or_404(category_id)
 
-    try:
-        tourney_category_service.move_category_up(category.id)
-    except ValueError:
-        flash_error(
-            gettext(
-                'Category "%(title)s" is already at the top.',
-                title=category.title,
+    match tourney_category_service.move_category_up(category.id):
+        case Ok(_):
+            flash_success(
+                gettext('Category has been moved upwards by one position.')
             )
-        )
-    else:
-        flash_success(
-            gettext(
-                'Category "%(title)s" has been moved upwards by one position.',
-                title=category.title,
-            )
-        )
+        case Err(TourneyCategoryAlreadyAtTopError()):
+            flash_error(gettext('Category is already at the top.'))
 
 
 @blueprint.post('/categories/<uuid:category_id>/down')
@@ -146,22 +142,13 @@ def move_down(category_id):
     """Move a category downwards by one position."""
     category = _get_category_or_404(category_id)
 
-    try:
-        tourney_category_service.move_category_down(category.id)
-    except ValueError:
-        flash_error(
-            gettext(
-                'Category "%(title)s" is already at the bottom.',
-                title=category.title,
+    match tourney_category_service.move_category_down(category.id):
+        case Ok(_):
+            flash_success(
+                gettext('Category has been moved downwards by one position.')
             )
-        )
-    else:
-        flash_success(
-            gettext(
-                'Category "%(title)s" has been moved downwards by one position.',
-                title=category.title,
-            )
-        )
+        case Err(TourneyCategoryAlreadyAtBottomError()):
+            flash_error(gettext('Category is already at the bottom.'))
 
 
 def _get_party_or_404(party_id):

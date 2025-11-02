@@ -13,6 +13,10 @@ from byceps.util.uuid import generate_uuid4
 from . import board_topic_query_service
 from .dbmodels.board import DbBoard
 from .dbmodels.category import DbBoardCategory
+from .errors import (
+    BoardCategoryAlreadyAtBottomError,
+    BoardCategoryAlreadyAtTopError,
+)
 from .models import BoardCategory, BoardCategoryID, BoardID
 
 
@@ -67,14 +71,16 @@ def unhide_category(category_id: BoardCategoryID) -> None:
     db.session.commit()
 
 
-def move_category_up(category_id: BoardCategoryID) -> Result[None, str]:
+def move_category_up(
+    category_id: BoardCategoryID,
+) -> Result[None, BoardCategoryAlreadyAtTopError]:
     """Move a category upwards by one position."""
     db_category = _get_db_category(category_id)
 
     category_list = db_category.board.categories
 
     if db_category.position == 1:
-        return Err('Category already is at the top.')
+        return Err(BoardCategoryAlreadyAtTopError())
 
     db_popped_category = category_list.pop(db_category.position - 1)
     category_list.insert(db_popped_category.position - 2, db_popped_category)
@@ -84,14 +90,16 @@ def move_category_up(category_id: BoardCategoryID) -> Result[None, str]:
     return Ok(None)
 
 
-def move_category_down(category_id: BoardCategoryID) -> Result[None, str]:
+def move_category_down(
+    category_id: BoardCategoryID,
+) -> Result[None, BoardCategoryAlreadyAtBottomError]:
     """Move a category downwards by one position."""
     db_category = _get_db_category(category_id)
 
     category_list = db_category.board.categories
 
     if db_category.position == len(category_list):
-        return Err('Category already is at the bottom.')
+        return Err(BoardCategoryAlreadyAtBottomError())
 
     db_popped_category = category_list.pop(db_category.position - 1)
     category_list.insert(db_popped_category.position, db_popped_category)
