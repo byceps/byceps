@@ -68,8 +68,8 @@ def move_category_down(category_id: TourneyCategoryID) -> TourneyCategory:
     if db_category.position == len(db_category_list):
         raise ValueError('Category already is at the bottom.')
 
-    popped_category = db_category_list.pop(db_category.position - 1)
-    db_category_list.insert(popped_category.position, popped_category)
+    db_popped_category = db_category_list.pop(db_category.position - 1)
+    db_category_list.insert(db_popped_category.position, db_popped_category)
 
     db.session.commit()
 

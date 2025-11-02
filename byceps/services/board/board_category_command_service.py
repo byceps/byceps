@@ -76,8 +76,8 @@ def move_category_up(category_id: BoardCategoryID) -> Result[None, str]:
     if db_category.position == 1:
         return Err('Category already is at the top.')
 
-    popped_category = category_list.pop(db_category.position - 1)
-    category_list.insert(popped_category.position - 2, popped_category)
+    db_popped_category = category_list.pop(db_category.position - 1)
+    category_list.insert(db_popped_category.position - 2, db_popped_category)
 
     db.session.commit()
 
@@ -93,8 +93,8 @@ def move_category_down(category_id: BoardCategoryID) -> Result[None, str]:
     if db_category.position == len(category_list):
         return Err('Category already is at the bottom.')
 
-    popped_category = category_list.pop(db_category.position - 1)
-    category_list.insert(popped_category.position, popped_category)
+    db_popped_category = category_list.pop(db_category.position - 1)
+    category_list.insert(db_popped_category.position, db_popped_category)
 
     db.session.commit()
 
