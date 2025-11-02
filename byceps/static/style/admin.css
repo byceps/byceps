@@ -536,6 +536,14 @@ ul.compact {
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
 }
 
+.dropdown-item.color--danger {
+  background-color: var(--color-danger-light);
+}
+
+.dropdown-item.color--danger:hover {
+  box-shadow: 0 0 1px var(--color-danger);
+}
+
 
 /* filters */
 

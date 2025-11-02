@@ -29,7 +29,7 @@
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.gallery_delete', gallery_id=gallery.id) }}" data-action="delete-gallery">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+            <li><a class="dropdown-item color--danger" href="{{ url_for('.gallery_delete', gallery_id=gallery.id) }}" data-action="delete-gallery">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
           </ol>
         </div>
       </div>
