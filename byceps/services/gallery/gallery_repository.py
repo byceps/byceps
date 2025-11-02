@@ -72,7 +72,9 @@ def remove_gallery_title_image(gallery_id: GalleryID) -> None:
 
 
 def delete_gallery(gallery_id: GalleryID) -> None:
-    """Delete a gallery and all associated records."""
+    """Delete a gallery and its associated image records, but not the
+    image files.
+    """
     db.session.execute(
         delete(DbGalleryTitleImage).filter_by(gallery_id=gallery_id)
     )

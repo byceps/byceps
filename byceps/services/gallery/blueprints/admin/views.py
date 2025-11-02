@@ -142,8 +142,9 @@ def gallery_update(gallery_id):
 @permission_required('gallery.administrate')
 @respond_no_content_with_location
 def gallery_delete(gallery_id):
-    """Delete a gallery."""
+    """Delete a gallery (but not the image files)."""
     gallery = _get_gallery_or_404(gallery_id)
+
     brand_id = gallery.brand_id
 
     gallery_service.delete_gallery(gallery_id)
