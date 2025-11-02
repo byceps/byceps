@@ -13,8 +13,10 @@ from sqlalchemy import delete, select
 from byceps.database import db, upsert
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import BrandID
+from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbGallery, DbGalleryImage, DbGalleryTitleImage
+from .errors import GalleryAlreadyAtBottomError, GalleryAlreadyAtTopError
 from .models import Gallery, GalleryID, GalleryImage, GalleryImageID
 
 
@@ -50,6 +52,44 @@ def update_gallery(gallery: Gallery) -> None:
     db_gallery.hidden = gallery.hidden
 
     db.session.commit()
+
+
+def move_gallery_up(
+    gallery_id: GalleryID,
+) -> Result[None, GalleryAlreadyAtTopError]:
+    """Move a gallery upwards by one position."""
+    db_gallery = get_gallery(gallery_id)
+
+    db_gallery_list = db_gallery.brand.galleries
+
+    if db_gallery.position == 1:
+        return Err(GalleryAlreadyAtTopError())
+
+    db_popped_category = db_gallery_list.pop(db_gallery.position - 1)
+    db_gallery_list.insert(db_popped_category.position - 2, db_popped_category)
+
+    db.session.commit()
+
+    return Ok(None)
+
+
+def move_gallery_down(
+    gallery_id: GalleryID,
+) -> Result[None, GalleryAlreadyAtBottomError]:
+    """Move a gallery downwards by one position."""
+    db_gallery = get_gallery(gallery_id)
+
+    db_gallery_list = db_gallery.brand.galleries
+
+    if db_gallery.position == len(db_gallery_list):
+        return Err(GalleryAlreadyAtBottomError())
+
+    db_popped_category = db_gallery_list.pop(db_gallery.position - 1)
+    db_gallery_list.insert(db_popped_category.position, db_popped_category)
+
+    db.session.commit()
+
+    return Ok(None)
 
 
 def set_gallery_title_image(

@@ -7,9 +7,11 @@ byceps.services.gallery.gallery_service
 """
 
 from byceps.services.brand.models import BrandID
+from byceps.util.result import Result
 
 from . import gallery_domain_service, gallery_repository
 from .dbmodels import DbGallery, DbGalleryImage
+from .errors import GalleryAlreadyAtBottomError, GalleryAlreadyAtTopError
 from .models import (
     Gallery,
     GalleryID,
@@ -50,6 +52,18 @@ def update_gallery(
     gallery_repository.update_gallery(gallery)
 
     return gallery
+
+
+def move_gallery_up(gallery: Gallery) -> Result[None, GalleryAlreadyAtTopError]:
+    """Move a gallery upwards by one position."""
+    return gallery_repository.move_gallery_up(gallery.id)
+
+
+def move_gallery_down(
+    gallery: Gallery,
+) -> Result[None, GalleryAlreadyAtBottomError]:
+    """Move a gallery downwards by one position."""
+    return gallery_repository.move_gallery_down(gallery.id)
 
 
 def set_gallery_title_image(

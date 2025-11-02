@@ -28,6 +28,7 @@
         <th>{{ _('Slug') }}</th>
         <th>{{ _('Title') }}</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -36,6 +37,28 @@
         <td>{{ gallery.slug }}</td>
         <td><a href="{{ url_for('.gallery_view', gallery_id=gallery.id) }}">{{ gallery.title }}</a></td>
         <td>{% if gallery.hidden %}{{ render_tag(_('hidden')) }}{% endif %}</td>
+        <td>
+          {%- if has_current_user_permission('gallery.administrate') -%}
+          <div class="button-row is-compact is-right-aligned">
+            <div class="dropdown">
+              <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
+              <ol class="dropdown-menu dropdown-menu--right">
+                {%- if not loop.first %}
+                <li><a class="dropdown-item" href="{{ url_for('.gallery_move_up', gallery_id=gallery.id) }}" data-action="gallery-move-up">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+                {%- else %}
+                <li><span class="dropdown-label dimmed">{{ render_icon('arrow-up') }} {{ _('Move up') }}</span></li>
+                {%- endif %}
+
+                {%- if not loop.last %}
+                <li><a class="dropdown-item" href="{{ url_for('.gallery_move_down', gallery_id=gallery.id) }}" data-action="gallery-move-down">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+                {%- else %}
+                <li><span class="dropdown-label dimmed">{{ render_icon('arrow-down') }} {{ _('Move down') }}</span></li>
+                {%- endif %}
+              </ol>
+            </div>
+          </div>
+          {%- endif -%}
+        </td>
       </tr>
       {%- endfor %}
     </tbody>
@@ -45,3 +68,12 @@
   {%- endif %}
 
 {%- endblock %}
+
+{% block scripts %}
+<script>
+onDomReady(() => {
+  post_on_click_then_reload('[data-action="gallery-move-up"]');
+  post_on_click_then_reload('[data-action="gallery-move-down"]');
+});
+</script>
+{% endblock %}

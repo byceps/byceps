@@ -12,13 +12,19 @@ from flask_babel import gettext
 from byceps.services.brand import brand_service
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.gallery import gallery_import_service, gallery_service
+from byceps.services.gallery.errors import (
+    GalleryAlreadyAtBottomError,
+    GalleryAlreadyAtTopError,
+)
 from byceps.services.gallery.models import Gallery, GalleryID
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.framework.flash import flash_success
+from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
+    respond_no_content,
     respond_no_content_with_location,
 )
 
@@ -134,6 +140,38 @@ def gallery_update(gallery_id):
     flash_success(gettext('Gallery has been updated.'))
 
     return redirect_to('.gallery_index_for_brand', brand_id=gallery.brand_id)
+
+
+@blueprint.post('/galleries/<uuid:gallery_id>/up')
+@permission_required('gallery.administrate')
+@respond_no_content
+def gallery_move_up(gallery_id):
+    """Move the gallery upwards by one position."""
+    gallery = _get_gallery_or_404(gallery_id)
+
+    match gallery_service.move_gallery_up(gallery):
+        case Ok(_):
+            flash_success(
+                gettext('Gallery has been moved upwards by one position.')
+            )
+        case Err(GalleryAlreadyAtTopError()):
+            flash_error(gettext('Gallery is already at the top.'))
+
+
+@blueprint.post('/galleries/<uuid:gallery_id>/down')
+@permission_required('gallery.administrate')
+@respond_no_content
+def gallery_move_down(gallery_id):
+    """Move the gallery downwards by one position."""
+    gallery = _get_gallery_or_404(gallery_id)
+
+    match gallery_service.move_gallery_down(gallery):
+        case Ok(_):
+            flash_success(
+                gettext('Gallery has been moved downwards by one position.')
+            )
+        case Err(GalleryAlreadyAtBottomError()):
+            flash_error(gettext('Gallery is already at the bottom.'))
 
 
 @blueprint.delete('/galleries/<uuid:gallery_id>')
