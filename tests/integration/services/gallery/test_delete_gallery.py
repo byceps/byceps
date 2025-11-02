@@ -13,35 +13,34 @@ from byceps.services.gallery.models import Gallery, GalleryID
 @pytest.fixture(scope='module')
 def gallery(admin_app, brand: Brand) -> Gallery:
     """Create a test gallery."""
-    gallery = gallery_service.create_gallery(
+    return gallery_service.create_gallery(
         brand.id,
         'test-gallery',
         'Test Gallery',
         False,
     )
-    yield gallery
 
 
 def test_delete_gallery(admin_app, brand: Brand, gallery: Gallery) -> None:
     """Test that deleting a gallery removes it and its associations."""
     gallery_id: GalleryID = gallery.id
 
-    # Verify gallery exists.
-    found_gallery = gallery_service.find_gallery(gallery_id)
-    assert found_gallery is not None
-    assert found_gallery.id == gallery_id
+    # Verify that gallery exists.
+    gallery_before = gallery_service.find_gallery(gallery_id)
+    assert gallery_before is not None
+    assert gallery_before.id == gallery_id
 
     # Delete gallery.
     gallery_service.delete_gallery(gallery_id)
 
-    # Verify gallery is deleted.
-    found_gallery_after = gallery_service.find_gallery(gallery_id)
-    assert found_gallery_after is None
+    # Verify that gallery is deleted.
+    gallery_after = gallery_service.find_gallery(gallery_id)
+    assert gallery_after is None
 
 
 def test_delete_gallery_with_images(admin_app, brand: Brand) -> None:
     """Test that deleting a gallery also deletes its images."""
-    # Create gallery
+    # Create gallery.
     gallery: Gallery = gallery_service.create_gallery(
         brand.id,
         'gallery-with-images',
@@ -56,7 +55,7 @@ def test_delete_gallery_with_images(admin_app, brand: Brand) -> None:
         'image001.jpg',
         'image001_preview.jpg',
     )
-    image2 = gallery_service.create_image(
+    _ = gallery_service.create_image(
         gallery,
         'image002.jpg',
         'image002_preview.jpg',
@@ -66,14 +65,14 @@ def test_delete_gallery_with_images(admin_app, brand: Brand) -> None:
     gallery_service.set_gallery_title_image(gallery_id, image1.id)
 
     # Verify gallery and images exist.
-    found_gallery = gallery_service.find_gallery(gallery_id)
-    assert found_gallery is not None
-    assert found_gallery.title_image is not None
-    assert found_gallery.title_image.id == image1.id
+    gallery_before = gallery_service.find_gallery(gallery_id)
+    assert gallery_before is not None
+    assert gallery_before.title_image is not None
+    assert gallery_before.title_image.id == image1.id
 
     # Delete gallery.
     gallery_service.delete_gallery(gallery_id)
 
     # Verify that gallery is deleted.
-    found_gallery_after = gallery_service.find_gallery(gallery_id)
-    assert found_gallery_after is None
+    gallery_after = gallery_service.find_gallery(gallery_id)
+    assert gallery_after is None
