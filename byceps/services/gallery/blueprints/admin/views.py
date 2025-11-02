@@ -129,9 +129,7 @@ def gallery_update(gallery_id):
     title = form.title.data.strip()
     hidden = form.hidden.data
 
-    updated_gallery = gallery_service.update_gallery(
-        gallery, gallery.slug, title, hidden
-    )
+    gallery_service.update_gallery(gallery, gallery.slug, title, hidden)
 
     flash_success(gettext('Gallery has been updated.'))
 
