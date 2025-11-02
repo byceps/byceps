@@ -41,6 +41,8 @@
             <ol class="dropdown-menu">
               <li><a class="dropdown-item" href="{{ url_for('.update_form', category_id=category.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
 
+              <li class="dropdown-divider"></li>
+
               {%- if not loop.first %}
               <li><a class="dropdown-item" href="{{ url_for('.move_up', category_id=category.id) }}" data-action="category-move-up">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
               {%- else %}
