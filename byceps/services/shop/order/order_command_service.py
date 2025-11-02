@@ -282,27 +282,31 @@ def _execute_product_creation_actions(
 ) -> Result[None, OrderActionFailedError]:
     # based on product type
     for line_item in order.line_items:
-        if line_item.product_type in (
-            ProductType.ticket,
-            ProductType.ticket_bundle,
-        ):
-            product = product_service.get_product(line_item.product_id)
+        match line_item.product_type:
+            case ProductType.ticket:
+                product = product_service.get_product(line_item.product_id)
 
-            ticket_category_id = TicketCategoryID(
-                UUID(str(product.type_params['ticket_category_id']))
-            )
+                ticket_category_id = TicketCategoryID(
+                    UUID(str(product.type_params['ticket_category_id']))
+                )
 
-            if line_item.product_type == ProductType.ticket:
                 ticket_actions.create_tickets(
                     order,
                     line_item,
                     ticket_category_id,
                     initiator,
                 )
-            elif line_item.product_type == ProductType.ticket_bundle:
+            case ProductType.ticket_bundle:
+                product = product_service.get_product(line_item.product_id)
+
+                ticket_category_id = TicketCategoryID(
+                    UUID(str(product.type_params['ticket_category_id']))
+                )
+
                 ticket_quantity_per_bundle = int(
                     product.type_params['ticket_quantity']
                 )
+
                 ticket_bundle_actions.create_ticket_bundles(
                     order,
                     line_item,
@@ -320,12 +324,13 @@ def _execute_product_revocation_actions(
 ) -> Result[None, OrderActionFailedError]:
     # based on product type
     for line_item in order.line_items:
-        if line_item.product_type == ProductType.ticket:
-            ticket_actions.revoke_tickets(order, line_item, initiator)
-        elif line_item.product_type == ProductType.ticket_bundle:
-            ticket_bundle_actions.revoke_ticket_bundles(
-                order, line_item, initiator
-            )
+        match line_item.product_type:
+            case ProductType.ticket:
+                ticket_actions.revoke_tickets(order, line_item, initiator)
+            case ProductType.ticket_bundle:
+                ticket_bundle_actions.revoke_ticket_bundles(
+                    order, line_item, initiator
+                )
 
     # based on order action registered for product number
     return order_action_service.execute_revocation_actions(order, initiator)
