@@ -56,8 +56,6 @@ from .forms import (
     ProductNumberSequenceCreateForm,
     ProductUpdateForm,
     RegisterBadgeAwardingActionForm,
-    RegisterTicketBundlesCreationActionForm,
-    RegisterTicketsCreationActionForm,
     TicketProductCreateForm,
     TicketBundleProductCreateForm,
 )
@@ -753,114 +751,6 @@ def action_create_for_badge_awarding(product_id):
     badge = user_badge_service.get_badge(badge_id)
 
     order_action_registry_service.register_badge_awarding(product.id, badge.id)
-
-    flash_success(gettext('Action has been added.'))
-
-    return redirect_to('.view', product_id=product.id)
-
-
-@blueprint.get('/<uuid:product_id>/actions/tickets_creation/create')
-@permission_required('shop_product.administrate')
-@templated
-def action_create_form_for_tickets_creation(product_id, erroneous_form=None):
-    """Show form to register a tickets creation action for the product."""
-    product = _get_product_or_404(product_id)
-
-    shop = shop_service.get_shop(product.shop_id)
-    brand = brand_service.get_brand(shop.brand_id)
-
-    form = (
-        erroneous_form
-        if erroneous_form
-        else RegisterTicketsCreationActionForm()
-    )
-    form.set_category_choices(brand.id)
-
-    return {
-        'product': product,
-        'shop': shop,
-        'brand': brand,
-        'form': form,
-    }
-
-
-@blueprint.post('/<uuid:product_id>/actions/tickets_creation')
-@permission_required('shop_product.administrate')
-def action_create_for_tickets_creation(product_id):
-    """Register a tickets creation action for the product."""
-    product = _get_product_or_404(product_id)
-
-    shop = shop_service.get_shop(product.shop_id)
-    brand = brand_service.get_brand(shop.brand_id)
-
-    form = RegisterTicketsCreationActionForm(request.form)
-    form.set_category_choices(brand.id)
-
-    if not form.validate():
-        return action_create_form_for_tickets_creation(product_id, form)
-
-    category_id = form.category_id.data
-    category = ticket_category_service.get_category(category_id)
-
-    order_action_registry_service.register_tickets_creation(
-        product.id, category.id
-    )
-
-    flash_success(gettext('Action has been added.'))
-
-    return redirect_to('.view', product_id=product.id)
-
-
-@blueprint.get('/<uuid:product_id>/actions/ticket_bundles_creation/create')
-@permission_required('shop_product.administrate')
-@templated
-def action_create_form_for_ticket_bundles_creation(
-    product_id, erroneous_form=None
-):
-    """Show form to register a ticket bundles creation action for the product."""
-    product = _get_product_or_404(product_id)
-
-    shop = shop_service.get_shop(product.shop_id)
-    brand = brand_service.get_brand(shop.brand_id)
-
-    form = (
-        erroneous_form
-        if erroneous_form
-        else RegisterTicketBundlesCreationActionForm()
-    )
-    form.set_category_choices(brand.id)
-
-    return {
-        'product': product,
-        'shop': shop,
-        'brand': brand,
-        'form': form,
-    }
-
-
-@blueprint.post('/<uuid:product_id>/actions/ticket_bundles_creation')
-@permission_required('shop_product.administrate')
-def action_create_for_ticket_bundles_creation(product_id):
-    """Register a ticket bundles creation action for the product."""
-    product = _get_product_or_404(product_id)
-
-    shop = shop_service.get_shop(product.shop_id)
-    brand = brand_service.get_brand(shop.brand_id)
-
-    form = RegisterTicketBundlesCreationActionForm(request.form)
-    form.set_category_choices(brand.id)
-
-    if not form.validate():
-        return action_create_form_for_ticket_bundles_creation(product_id, form)
-
-    category_id = form.category_id.data
-    category = ticket_category_service.get_category(category_id)
-
-    ticket_quantity = form.ticket_quantity.data
-
-    order_action_registry_service.register_ticket_bundles_creation(
-        product.id, category.id, ticket_quantity
-    )
 
     flash_success(gettext('Action has been added.'))
 

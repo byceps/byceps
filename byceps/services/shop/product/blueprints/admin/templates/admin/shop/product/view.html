@@ -255,10 +255,6 @@
           <button class="dropdown-toggle button is-compact"><span>{{ render_icon('add') }} {{ _('Add action') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.action_create_form_for_badge_awarding', product_id=product.id) }}">{{ _('Award badge') }}</a></li>
-            {%- if product.type_.name not in ('ticket', 'ticket_bundle') %}
-            <li><a class="dropdown-item" href="{{ url_for('.action_create_form_for_tickets_creation', product_id=product.id) }}">{{ _('Create tickets') }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.action_create_form_for_ticket_bundles_creation', product_id=product.id) }}">{{ _('Create ticket bundles') }}</a></li>
-            {%- endif %}
           </ol>
         </div>
       </div>

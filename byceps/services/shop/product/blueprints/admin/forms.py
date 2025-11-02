@@ -192,23 +192,6 @@ class RegisterBadgeAwardingActionForm(LocalizedForm):
         self.badge_id.choices = choices
 
 
-class RegisterTicketsCreationActionForm(LocalizedForm):
-    category_id = SelectField(lazy_gettext('Category'), [InputRequired()])
-
-    def set_category_choices(self, brand_id: BrandID) -> None:
-        self.category_id.choices = _get_ticket_category_choices(brand_id)
-
-
-class RegisterTicketBundlesCreationActionForm(LocalizedForm):
-    category_id = SelectField(lazy_gettext('Category'), [InputRequired()])
-    ticket_quantity = IntegerField(
-        lazy_gettext('Ticket quantity'), [InputRequired()]
-    )
-
-    def set_category_choices(self, brand_id: BrandID) -> None:
-        self.category_id.choices = _get_ticket_category_choices(brand_id)
-
-
 def _get_ticket_category_choices(brand_id: BrandID) -> list[tuple[str, str]]:
     choices = [
         (str(category.id), f'{party.title}: {category.title}')
