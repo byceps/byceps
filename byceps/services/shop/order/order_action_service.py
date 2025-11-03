@@ -20,11 +20,11 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles
 from .actions.create_tickets import create_tickets
 from .actions.revoke_ticket_bundles import revoke_ticket_bundles
 from .actions.revoke_tickets import revoke_tickets
+from .actions.user_badge import award_badge
 from .dbmodels.order_action import DbOrderAction
 from .errors import OrderActionFailedError
 from .models.action import Action, ActionParameters
