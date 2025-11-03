@@ -15,7 +15,7 @@ from byceps.util.result import Ok, Result
 from . import ticket_bundle
 
 
-def create_ticket_bundles(
+def on_payment(
     order: Order,
     line_item: LineItem,
     initiator: User,

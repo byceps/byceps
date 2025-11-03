@@ -15,7 +15,7 @@ from byceps.util.result import Ok, Result
 from . import ticket_bundle
 
 
-def revoke_ticket_bundles(
+def on_cancellation(
     order: Order,
     line_item: LineItem,
     initiator: User,

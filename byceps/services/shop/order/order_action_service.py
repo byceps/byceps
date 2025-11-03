@@ -20,11 +20,11 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from .actions.create_ticket_bundles import create_ticket_bundles
-from .actions.create_tickets import create_tickets
-from .actions.revoke_ticket_bundles import revoke_ticket_bundles
-from .actions.revoke_tickets import revoke_tickets
-from .actions.user_badge import award_badge
+from .actions import create_ticket_bundles
+from .actions import create_tickets
+from .actions import revoke_ticket_bundles
+from .actions import revoke_tickets
+from .actions import user_badge as user_badge_actions
 from .dbmodels.order_action import DbOrderAction
 from .errors import OrderActionFailedError
 from .models.action import Action, ActionParameters
@@ -41,11 +41,11 @@ OrderActionType = Callable[
 
 
 PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
-    'award_badge': award_badge,
-    'create_ticket_bundles': create_ticket_bundles,
-    'revoke_ticket_bundles': revoke_ticket_bundles,
-    'create_tickets': create_tickets,
-    'revoke_tickets': revoke_tickets,
+    'award_badge': user_badge_actions.on_payment,
+    'create_ticket_bundles': create_ticket_bundles.on_payment,
+    'revoke_ticket_bundles': revoke_ticket_bundles.on_cancellation,
+    'create_tickets': create_tickets.on_payment,
+    'revoke_tickets': revoke_tickets.on_cancellation,
 }
 
 

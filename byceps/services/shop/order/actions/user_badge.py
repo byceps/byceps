@@ -19,7 +19,7 @@ from byceps.services.user_badge.models import BadgeAwarding
 from byceps.util.result import Err, Ok, Result
 
 
-def award_badge(
+def on_payment(
     order: Order,
     line_item: LineItem,
     initiator: User,
