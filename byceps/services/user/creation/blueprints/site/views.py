@@ -8,7 +8,7 @@ byceps.services.user.creation.blueprints.site.views
 
 from datetime import datetime
 
-from flask import abort, g, request
+from flask import abort, g, request, current_app
 from flask_babel import gettext
 from secret_type import secret
 
@@ -23,6 +23,8 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import redirect_to
+
+from byceps.util.turnstile import get_public_options, verify_token, best_remote_ip
 
 from .forms import assemble_user_create_form
 
@@ -55,6 +57,7 @@ def create_form(erroneous_form=None):
     return {
         'form': form,
         'required_consent_subjects': required_consent_subjects,
+        'turnstile': get_public_options(),
     }
 
 
@@ -78,6 +81,21 @@ def create():
 
     if not form.validate():
         return create_form(form)
+
+    if current_app.config.get('TURNSTILE_ENABLED'):
+        token = (request.form.get('cf-turnstile-response') or '').strip()
+        if not token:
+            flash_error(gettext('Captcha token missing.'))
+            return create_form(form)
+        ok = verify_token(
+            token,
+            remoteip=best_remote_ip(request),
+            timeout=3.0,
+            expected_action='user_create',
+        )
+        if not ok:
+            flash_error(gettext('Captcha verification failed.'))
+            return create_form(form)
 
     screen_name = form.screen_name.data.strip()
     email_address = form.email_address.data.strip()
