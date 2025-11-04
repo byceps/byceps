@@ -6,7 +6,7 @@ byceps.services.user.email_address.blueprints.site.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import g, request
+from flask import g, request, current_app
 from flask_babel import gettext
 
 from byceps.services.user import (
@@ -25,6 +25,8 @@ from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import redirect_to
 
+from byceps.util.turnstile import get_public_options, verify_token, best_remote_ip
+
 from .forms import RequestConfirmationEmailForm
 
 
@@ -34,21 +36,34 @@ blueprint = create_blueprint('user_email_address', __name__)
 @blueprint.get('/confirmation_email/request')
 @templated
 def request_confirmation_email_form(erroneous_form=None):
-    """Show a form to request the email address confirmation email for the user
-    account again.
-    """
+    """Show a form to request the email address confirmation email for the user account again."""
     form = erroneous_form if erroneous_form else RequestConfirmationEmailForm()
-    return {'form': form}
+    return {
+        'form': form,
+        'turnstile': get_public_options(),
+    }
 
 
 @blueprint.post('/confirmation_email/request')
 def request_confirmation_email():
-    """Request the email address confirmation email for the user account
-    again.
-    """
+    """Request the email address confirmation email for the user account again."""
     form = RequestConfirmationEmailForm(request.form)
     if not form.validate():
         return request_confirmation_email_form(form)
+
+    if current_app.config.get('TURNSTILE_ENABLED'):
+        token = (request.form.get('cf-turnstile-response') or '').strip()
+        if not token:
+            flash_error(gettext('Captcha token missing.'))
+            return request_confirmation_email_form(form)
+        ok = verify_token(
+            token,
+            remoteip=best_remote_ip(),
+            timeout=3.0,
+        )
+        if not ok:
+            flash_error(gettext('Captcha verification failed.'))
+            return request_confirmation_email_form(form)
 
     screen_name = form.screen_name.data.strip()
     user = user_service.find_user_by_screen_name(screen_name)
@@ -97,8 +112,7 @@ def request_confirmation_email():
 
     flash_success(
         gettext(
-            'The link to verify the email address for user "%(screen_name)s" '
-            'has been sent again.',
+            'The link to verify the email address for user "%(screen_name)s" has been sent again.',
             screen_name=user.screen_name,
         )
     )
@@ -109,9 +123,7 @@ def request_confirmation_email():
 @blueprint.get('/confirmation/<token>')
 @templated
 def confirm_form(token):
-    """Show form to confirm e-mail address of the user account assigned
-    with the verification token.
-    """
+    """Show form to confirm e-mail address of the user account assigned with the verification token."""
     confirmation_token = _find_valid_confirmation_token(token)
     if not confirmation_token:
         flash_error(gettext('No valid token specified.'))
@@ -125,9 +137,7 @@ def confirm_form(token):
 
 @blueprint.post('/confirmation/<token>')
 def confirm(token):
-    """Confirm e-mail address of the user account assigned with the
-    verification token.
-    """
+    """Confirm e-mail address of the user account assigned with the verification token."""
     confirmation_token = _find_valid_confirmation_token(token)
     if not confirmation_token:
         return confirm_form(token)
@@ -181,9 +191,7 @@ def _find_valid_confirmation_token(
 @blueprint.get('/change/<token>')
 @templated
 def change_form(token):
-    """Show form to confirm and change e-mail address of the user
-    account assigned with the verification token.
-    """
+    """Show form to confirm and change e-mail address of the user account assigned with the verification token."""
     change_token = _find_valid_change_token(token)
     if not change_token:
         flash_error(gettext('No valid token specified.'))
@@ -197,9 +205,7 @@ def change_form(token):
 
 @blueprint.post('/change/<token>')
 def change(token):
-    """Confirm and change e-mail address of the user account assigned
-    with the verification token.
-    """
+    """Confirm and change e-mail address of the user account assigned with the verification token."""
     change_token = _find_valid_change_token(token)
     if not change_token:
         return change_form(token)
