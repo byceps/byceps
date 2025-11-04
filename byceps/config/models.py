@@ -59,6 +59,7 @@ class BycepsConfig:
     payment_gateways: PaymentGatewaysConfig | None
     redis: RedisConfig
     smtp: SmtpConfig
+    turnstile: TurnstileConfig | None = None
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -178,3 +179,10 @@ class StripeConfig:
     secret_key: str
     publishable_key: str
     webhook_secret: str
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
+class TurnstileConfig:
+    enabled: bool
+    sitekey: str
+    secret: str
