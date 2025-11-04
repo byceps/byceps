@@ -58,3 +58,9 @@ url = "redis://127.0.0.1:6379/0"
 #username = "smtp-user"
 #password = "smtp-password"
 #suppress_send = false
+
+#[turnstile]
+#enabled = false
+#sitekey = "1x00000000000000000000AA"
+#secret = "1x0000000000000000000000000000000AA"
+
