@@ -6,7 +6,7 @@ byceps.services.authn.password.blueprints.common.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, request
+from flask import abort, g, request, current_app
 from flask_babel import gettext
 from secret_type import secret
 
@@ -26,15 +26,13 @@ from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import redirect_to
 
+
+from byceps.util.turnstile import get_public_options, verify_token, best_remote_ip
+
 from .forms import RequestResetForm, ResetForm, UpdateForm
 
 
 blueprint = create_blueprint('authn_password', __name__)
-
-
-# -------------------------------------------------------------------- #
-# password update
-
 
 @blueprint.get('/update')
 @templated
@@ -68,17 +66,16 @@ def update():
     return _redirect_to_login_form()
 
 
-# -------------------------------------------------------------------- #
-# password reset
-
-
 @blueprint.get('/reset/request')
 @templated
 def request_reset_form(erroneous_form=None):
     """Show a form to request a password reset."""
     form = erroneous_form if erroneous_form else RequestResetForm()
 
-    return {'form': form}
+    return {
+        'form': form,
+        'turnstile': get_public_options(),  
+    }
 
 
 @blueprint.post('/reset/request')
@@ -87,6 +84,21 @@ def request_reset():
     form = RequestResetForm(request.form)
     if not form.validate():
         return request_reset_form(form)
+
+    if current_app.config.get('TURNSTILE_ENABLED'):
+        token = (request.form.get('cf-turnstile-response') or '').strip()
+        if not token:
+            flash_error(gettext('Captcha token missing.'))
+            return request_reset_form(form)
+        ok = verify_token(
+            token,
+            remoteip=best_remote_ip(request),
+            timeout=3.0,
+            expected_action='password_reset_request',
+        )
+        if not ok:
+            flash_error(gettext('Captcha verification failed.'))
+            return request_reset_form(form)
 
     screen_name = form.screen_name.data.strip()
     user = user_service.find_user_by_screen_name(screen_name)
@@ -179,6 +191,7 @@ def reset_form(token, erroneous_form=None):
     return {
         'form': form,
         'token': token,
+        'turnstile': get_public_options(),  
     }
 
 
@@ -190,6 +203,21 @@ def reset(token):
     form = ResetForm(request.form)
     if not form.validate():
         return reset_form(token, form)
+
+    if current_app.config.get('TURNSTILE_ENABLED'):
+        token_resp = (request.form.get('cf-turnstile-response') or '').strip()
+        if not token_resp:
+            flash_error(gettext('Captcha token missing.'))
+            return reset_form(token, form)
+        ok = verify_token(
+            token_resp,
+            remoteip=best_remote_ip(request),
+            timeout=3.0,
+            expected_action='password_reset',
+        )
+        if not ok:
+            flash_error(gettext('Captcha verification failed.'))
+            return reset_form(token, form)
 
     password = secret(form.new_password.data)
 
@@ -225,9 +253,6 @@ def _verify_reset_token(token: str) -> PasswordResetToken:
 
     return reset_token
 
-
-# -------------------------------------------------------------------- #
-# helpers
 
 
 def _get_current_user_or_404():
