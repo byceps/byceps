@@ -11,14 +11,11 @@ from uuid import UUID
 
 from byceps.services.shop.order import order_command_service, order_log_service
 from byceps.services.shop.order.models.order import LineItem, Order, OrderID
-from byceps.services.ticketing import (
-    ticket_bundle_service,
-    ticket_category_service,
-)
+from byceps.services.ticketing import ticket_bundle_service
 from byceps.services.ticketing.models.ticket import (
     TicketBundle,
     TicketBundleID,
-    TicketCategoryID,
+    TicketCategory,
 )
 from byceps.services.user.models.user import User
 
@@ -28,7 +25,7 @@ from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 def create_ticket_bundles(
     order: Order,
     line_item: LineItem,
-    ticket_category_id: TicketCategoryID,
+    ticket_category: TicketCategory,
     ticket_quantity_per_bundle: int,
     initiator: User,
 ) -> None:
@@ -36,8 +33,6 @@ def create_ticket_bundles(
     owner = order.placed_by
     order_number = order.order_number
     bundle_quantity = line_item.quantity
-
-    ticket_category = ticket_category_service.get_category(ticket_category_id)
 
     bundle_ids = set()
     for _ in range(bundle_quantity):

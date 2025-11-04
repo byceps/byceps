@@ -16,6 +16,7 @@ from byceps.database import db
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductType
 from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.services.ticketing import ticket_category_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
@@ -289,11 +290,14 @@ def _execute_product_creation_actions(
                 ticket_category_id = TicketCategoryID(
                     UUID(str(product.type_params['ticket_category_id']))
                 )
+                ticket_category = ticket_category_service.get_category(
+                    ticket_category_id
+                )
 
                 ticket_actions.create_tickets(
                     order,
                     line_item,
-                    ticket_category_id,
+                    ticket_category,
                     initiator,
                 )
             case ProductType.ticket_bundle:
@@ -301,6 +305,9 @@ def _execute_product_creation_actions(
 
                 ticket_category_id = TicketCategoryID(
                     UUID(str(product.type_params['ticket_category_id']))
+                )
+                ticket_category = ticket_category_service.get_category(
+                    ticket_category_id
                 )
 
                 ticket_quantity_per_bundle = int(
@@ -310,7 +317,7 @@ def _execute_product_creation_actions(
                 ticket_bundle_actions.create_ticket_bundles(
                     order,
                     line_item,
-                    ticket_category_id,
+                    ticket_category,
                     ticket_quantity_per_bundle,
                     initiator,
                 )

@@ -13,13 +13,12 @@ from uuid import UUID
 from byceps.services.shop.order import order_command_service, order_log_service
 from byceps.services.shop.order.models.order import LineItem, Order, OrderID
 from byceps.services.ticketing import (
-    ticket_category_service,
     ticket_creation_service,
     ticket_revocation_service,
     ticket_service,
 )
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.services.ticketing.models.ticket import TicketCategoryID, TicketID
+from byceps.services.ticketing.models.ticket import TicketCategory, TicketID
 from byceps.services.user.models.user import User
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
@@ -28,15 +27,13 @@ from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 def create_tickets(
     order: Order,
     line_item: LineItem,
-    ticket_category_id: TicketCategoryID,
+    ticket_category: TicketCategory,
     initiator: User,
 ) -> None:
     """Create tickets."""
     owner = order.placed_by
     order_number = order.order_number
     ticket_quantity = line_item.quantity
-
-    ticket_category = ticket_category_service.get_category(ticket_category_id)
 
     tickets = ticket_creation_service.create_tickets(
         ticket_category,
