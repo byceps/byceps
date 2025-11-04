@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
+{% from 'macros/turnstile.html' import render_turnstile %}
 {% set simple_layout = true %}
 {% set current_page = 'user.create' %}
 {% set page_title = _('Create user account') %}
@@ -43,7 +44,14 @@
       <div style="display: none;">{{ form_field_check(form.is_bot, _('I am a bot.')) }}</div>
     </div>
 
+    {{ render_turnstile('user_create') }}
     {{ form_buttons(_('Create')) }}
   </form>
 
 {%- endblock %}
+
+{% block scripts %}
+  {% if config.get('TURNSTILE_ENABLED') and config.get('TURNSTILE_SITEKEY') %}
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+{% endif %}
+{% endblock %}
