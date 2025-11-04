@@ -6,7 +6,7 @@ byceps.services.authn.login.blueprints.site.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, redirect, request, url_for
+from flask import abort, current_app, g, redirect, request, url_for
 from flask_babel import gettext
 from secret_type import secret
 
@@ -15,6 +15,8 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice
 from byceps.util.framework.templating import templated
 from byceps.util.views import redirect_to, respond_no_content
+
+from byceps.util.turnstile import get_public_options, verify_token, best_remote_ip
 
 from . import service
 from .forms import LogInForm
@@ -40,6 +42,7 @@ def log_in_form():
     if not g.site.login_enabled:
         return {
             'login_enabled': False,
+            'turnstile': get_public_options(),
         }
 
     form = LogInForm()
@@ -47,6 +50,7 @@ def log_in_form():
     return {
         'login_enabled': True,
         'form': form,
+        'turnstile': get_public_options(),
     }
 
 
@@ -63,6 +67,20 @@ def log_in():
     form = LogInForm(request.form)
     if not form.validate():
         abort(401, 'Username and/or password not given')
+
+    # --- Turnstile nur prüfen, wenn aktiviert ---
+    if current_app.config.get('TURNSTILE_ENABLED'):
+        token = (request.form.get('cf-turnstile-response') or '').strip()
+        if not token:
+            abort(400, 'Captcha token missing')
+        ok = verify_token(
+            token,
+            remoteip=best_remote_ip(request), 
+            timeout=3.0,
+        )
+        if not ok:
+            abort(401, 'Turnstile verification failed')
+    # --- /Turnstile ---
 
     username = form.username.data.strip()
     password = secret(form.password.data)
@@ -87,7 +105,6 @@ def log_in():
             abort(401, 'Authentication failed')
 
     _, logged_in_event = log_in_result.unwrap()
-
     authn_signals.user_logged_in.send(None, event=logged_in_event)
 
     return [('Location', url_for('dashboard.index'))]
@@ -105,5 +122,4 @@ def log_out_form():
 def log_out():
     """Log out user by deleting the corresponding cookie."""
     service.log_out_user(g.user, g.site)
-
     return redirect('/')
