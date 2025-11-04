@@ -1,0 +1,9 @@
+{% macro render_turnstile(action=None) -%}
+  {% if config.get('TURNSTILE_ENABLED') and config.get('TURNSTILE_SITEKEY') %}
+    <div class="cf-turnstile"
+         data-sitekey="{{ config.get('TURNSTILE_SITEKEY') }}"
+         {% if action %}data-action="{{ action }}"{% endif %}
+         data-theme="auto"></div>
+  {% endif %}
+{%- endmacro %}
+
