@@ -11,12 +11,9 @@ from byceps.services.party import party_service
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.errors import OrderNotPaidError
 from byceps.services.shop.order.models.order import OrderID
-from byceps.services.ticketing import (
-    signals as ticketing_signals,
-    ticket_category_service,
-)
+from byceps.services.ticketing import signals as ticketing_signals
 from byceps.services.ticketing.events import TicketsSoldEvent
-from byceps.services.ticketing.models.ticket import TicketCategoryID
+from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
@@ -24,7 +21,7 @@ from byceps.util.result import Err, Ok, Result
 def create_tickets_sold_event(
     order_id: OrderID,
     initiator: User,
-    category_id: TicketCategoryID,
+    category: TicketCategory,
     owner: User,
     quantity: int,
 ) -> Result[TicketsSoldEvent, OrderNotPaidError]:
@@ -33,7 +30,6 @@ def create_tickets_sold_event(
         return Err(order_paid_at_result.unwrap_err())
 
     paid_at = order_paid_at_result.unwrap()
-    category = ticket_category_service.get_category(category_id)
     party = party_service.get_party(category.party_id)
 
     event = TicketsSoldEvent(
