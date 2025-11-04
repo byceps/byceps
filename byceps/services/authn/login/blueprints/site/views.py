@@ -68,7 +68,6 @@ def log_in():
     if not form.validate():
         abort(401, 'Username and/or password not given')
 
-    # --- Turnstile nur prüfen, wenn aktiviert ---
     if current_app.config.get('TURNSTILE_ENABLED'):
         token = (request.form.get('cf-turnstile-response') or '').strip()
         if not token:
@@ -80,7 +79,6 @@ def log_in():
         )
         if not ok:
             abort(401, 'Turnstile verification failed')
-    # --- /Turnstile ---
 
     username = form.username.data.strip()
     password = secret(form.password.data)
