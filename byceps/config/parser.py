@@ -308,13 +308,10 @@ _SECTION_DEFINITIONS = [
         config_class=SmtpConfig,
         required=True,
     ),
-    # --- NEU: Cloudflare Turnstile (optional, default: disabled) ---
     Section(
         name='turnstile',
         fields=[
             Field('enabled', type_=ValueType.Boolean, required=False, default=False),
-            # Wenn enabled=false, sind Strings egal; wir setzen leere Defaults,
-            # damit der Parser nicht meckert, wenn die Keys fehlen.
             Field('sitekey', required=False, default=''),
             Field('secret',  required=False, default=''),
         ],
