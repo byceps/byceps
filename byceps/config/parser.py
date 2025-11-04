@@ -311,17 +311,13 @@ _SECTION_DEFINITIONS = [
     Section(
         name='turnstile',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, required=False, default=False),
-            Field('sitekey', required=False, default=''),
-            Field('secret',  required=False, default=''),
+            Field('enabled', type_=ValueType.Boolean, required=True),
+            Field('sitekey', required=True),
+            Field('secret',  required=True),
         ],
         config_class=TurnstileConfig,
         required=False,
-        default=TurnstileConfig(
-            enabled=False,
-            sitekey='',
-            secret='',
-        ),
+        default=False, 
     ),
 ]
 
