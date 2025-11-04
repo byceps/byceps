@@ -322,3 +322,16 @@ table {
 .pagination-item.pagination--current span {
   background-color: var(--bg-color-light);
 }
+
+.cf-turnstile{
+  display: flex;             
+  justify-content: center;
+  margin: 12px auto 8px;     
+  min-height: 70px;          
+}
+
+@media (max-width: 480px){
+  .cf-turnstile{
+    margin: 10px auto 6px;
+  }
+}
