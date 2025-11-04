@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/turnstile.html' import render_turnstile %}
 {% set simple_layout = true %}
 {% set current_page = 'user_email_address.request_confirmation_email' %}
 {% set page_title = _('Request verification email again') %}
@@ -13,7 +14,14 @@
       {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
     </div>
 
+    {{ render_turnstile('request_confirmation_email') }}
     {{ form_buttons(_('Request')) }}
   </form>
 
 {%- endblock %}
+
+{% block scripts %}
+  {% if config.get('TURNSTILE_ENABLED') and config.get('TURNSTILE_SITEKEY') %}
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+{% endif %}
+{% endblock %}
