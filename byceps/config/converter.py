@@ -13,6 +13,12 @@ from typing import Any
 
 from .models import BycepsConfig, DatabaseConfig
 
+try:
+    # TurnstileConfig ist in deinem Fork neu – Import optional absichern,
+    # damit ältere Umgebungen nicht crashen.
+    from .models import TurnstileConfig  # type: ignore
+except Exception:  # pragma: no cover
+    TurnstileConfig = None  # type: ignore[misc]
 
 def convert_config(config: BycepsConfig) -> dict[str, Any]:
     """Convert configuration to dictionary accepted by Flask."""
@@ -40,6 +46,25 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
 
     yield 'SQLALCHEMY_DATABASE_URI', assemble_database_uri(config.database)
 
+    # --- Cloudflare Turnstile in app.config spiegeln ---
+    # parser.py liefert dir config.turnstile (optional, mit Defaults).
+    ts = getattr(config, 'turnstile', None)
+    if ts is not None:
+        enabled = bool(getattr(ts, 'enabled', False))
+        sitekey = getattr(ts, 'sitekey', '') or ''
+        secret  = getattr(ts, 'secret',  '') or ''
+
+        # Uppercase Keys: für Zugriff via config.get('TURNSTILE_ENABLED') in Jinja/Views
+        yield 'TURNSTILE_ENABLED', enabled
+        yield 'TURNSTILE_SITEKEY', sitekey
+        yield 'TURNSTILE_SECRET',  secret
+
+        # Optional als Dict (falls du es in Templates hübsch brauchst: {{ turnstile.enabled }})
+        yield 'turnstile', {
+            'enabled': enabled,
+            'sitekey': sitekey,
+            'secret':  secret,
+        }
 
 def assemble_database_uri(db_config: DatabaseConfig) -> str:
     """Assemble SQLAlchemy database URL."""
