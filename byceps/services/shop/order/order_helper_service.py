@@ -87,9 +87,12 @@ def to_order(db_order: DbOrder, placed_by: User) -> Order:
 
 def to_paid_order(db_order: DbOrder, placed_by: User) -> PaidOrder:
     """Create paid order transfer object from database entity."""
+    if db_order.payment_state != PaymentState.paid:
+        raise ValueError('Order payment state is not paid')
+
     paid_at = db_order.payment_state_updated_at
     if paid_at is None:
-        raise ValueError('Order is not marked as paid')
+        raise ValueError('Order lacks time of payment')
 
     order = to_order(db_order, placed_by)
     return PaidOrder(
