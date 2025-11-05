@@ -24,6 +24,7 @@ from .models import (
     ApiAppConfig,
     AppsConfig,
     BycepsConfig,
+    CloudflareTurnstileConfig,  # NEW
     DatabaseConfig,
     DevelopmentConfig,
     DiscordConfig,
@@ -36,7 +37,6 @@ from .models import (
     SiteAppConfig,
     SmtpConfig,
     StripeConfig,
-    TurnstileConfig,
 )
 from .util import find_duplicate_server_names, iterate_app_configs
 
@@ -111,9 +111,7 @@ _SECTION_DEFINITIONS = [
             Subsection(
                 Section(
                     name='admin',
-                    fields=[
-                        Field('server_name', required=True),
-                    ],
+                    fields=[Field('server_name', required=True)],
                     config_class=AdminAppConfig,
                     required=False,
                     default=None,
@@ -122,9 +120,7 @@ _SECTION_DEFINITIONS = [
             Subsection(
                 Section(
                     name='api',
-                    fields=[
-                        Field('server_name', required=True),
-                    ],
+                    fields=[Field('server_name', required=True)],
                     config_class=ApiAppConfig,
                     required=False,
                     default=None,
@@ -133,10 +129,8 @@ _SECTION_DEFINITIONS = [
             Subsection(
                 Section(
                     name='sites',
-                    fields=[
-                        Field('server_name', required=True),
-                        Field('site_id', required=True),
-                    ],
+                    fields=[Field('server_name', required=True),
+                            Field('site_id', required=True)],
                     config_class=SiteAppConfig,
                     collection_type=CollectionType.List,
                     required=False,
@@ -153,9 +147,7 @@ _SECTION_DEFINITIONS = [
         name='database',
         fields=[
             Field('host', required=False, default='localhost'),
-            Field(
-                'port', required=False, type_=ValueType.Integer, default=5432
-            ),
+            Field('port', required=False, type_=ValueType.Integer, default=5432),
             Field('username', required=True),
             Field('password', required=True),
             Field('database', required=True),
@@ -166,32 +158,19 @@ _SECTION_DEFINITIONS = [
     Section(
         name='development',
         fields=[
-            Field(
-                'style_guide_enabled',
-                type_=ValueType.Boolean,
-                required=False,
-                default=False,
-            ),
-            Field(
-                'toolbar_enabled',
-                type_=ValueType.Boolean,
-                required=False,
-                default=False,
-            ),
+            Field('style_guide_enabled', type_=ValueType.Boolean, required=False, default=False),
+            Field('toolbar_enabled',     type_=ValueType.Boolean, required=False, default=False),
         ],
         config_class=DevelopmentConfig,
         required=False,
-        default=DevelopmentConfig(
-            style_guide_enabled=False,
-            toolbar_enabled=False,
-        ),
+        default=DevelopmentConfig(style_guide_enabled=False, toolbar_enabled=False),
     ),
     Section(
         name='discord',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, required=True),
-            Field('client_id', required=True),
-            Field('client_secret', required=True),
+            Field('enabled',      type_=ValueType.Boolean, required=True),
+            Field('client_id',    required=True),
+            Field('client_secret',required=True),
         ],
         config_class=DiscordConfig,
         required=False,
@@ -199,34 +178,26 @@ _SECTION_DEFINITIONS = [
     Section(
         name='invoiceninja',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, required=True),
+            Field('enabled',  type_=ValueType.Boolean, required=True),
             Field('base_url', required=True),
-            Field('api_key', required=True),
+            Field('api_key',  required=True),
         ],
         config_class=InvoiceNinjaConfig,
         required=False,
     ),
     Section(
         name='jobs',
-        fields=[
-            Field('asynchronous', type_=ValueType.Boolean, required=True),
-        ],
+        fields=[Field('asynchronous', type_=ValueType.Boolean, required=True)],
         config_class=JobsConfig,
         required=False,
-        default=JobsConfig(
-            asynchronous=True,
-        ),
+        default=JobsConfig(asynchronous=True),
     ),
     Section(
         name='metrics',
-        fields=[
-            Field('enabled', type_=ValueType.Boolean, required=True),
-        ],
+        fields=[Field('enabled', type_=ValueType.Boolean, required=True)],
         config_class=MetricsConfig,
         required=False,
-        default=MetricsConfig(
-            enabled=False,
-        ),
+        default=MetricsConfig(enabled=False),
     ),
     Section(
         name='payment_gateways',
@@ -235,12 +206,10 @@ _SECTION_DEFINITIONS = [
                 Section(
                     name='paypal',
                     fields=[
-                        Field(
-                            'enabled', type_=ValueType.Boolean, required=True
-                        ),
-                        Field('client_id', required=True),
+                        Field('enabled',       type_=ValueType.Boolean, required=True),
+                        Field('client_id',     required=True),
                         Field('client_secret', required=True),
-                        Field('environment', required=True),
+                        Field('environment',   required=True),
                     ],
                     config_class=PaypalConfig,
                     required=False,
@@ -251,12 +220,10 @@ _SECTION_DEFINITIONS = [
                 Section(
                     name='stripe',
                     fields=[
-                        Field(
-                            'enabled', type_=ValueType.Boolean, required=True
-                        ),
-                        Field('secret_key', required=True),
+                        Field('enabled',         type_=ValueType.Boolean, required=True),
+                        Field('secret_key',      required=True),
                         Field('publishable_key', required=True),
-                        Field('webhook_secret', required=True),
+                        Field('webhook_secret',  required=True),
                     ],
                     config_class=StripeConfig,
                     required=False,
@@ -266,70 +233,49 @@ _SECTION_DEFINITIONS = [
         fields=[],
         config_class=PaymentGatewaysConfig,
         required=False,
-        default=PaymentGatewaysConfig(
-            paypal=None,
-            stripe=None,
-        ),
+        default=PaymentGatewaysConfig(paypal=None, stripe=None),
     ),
     Section(
         name='redis',
-        fields=[
-            Field('url', required=True),
-        ],
+        fields=[Field('url', required=True)],
         config_class=RedisConfig,
         required=True,
     ),
     Section(
         name='smtp',
         fields=[
-            Field('host', required=False, default='localhost'),
-            Field('port', type_=ValueType.Integer, required=False, default=25),
-            Field(
-                'starttls',
-                type_=ValueType.Boolean,
-                required=False,
-                default=False,
-            ),
-            Field(
-                'use_ssl',
-                type_=ValueType.Boolean,
-                required=False,
-                default=False,
-            ),
-            Field('username', required=False, default=''),
-            Field('password', required=False, default=''),
-            Field(
-                'suppress_send',
-                type_=ValueType.Boolean,
-                required=False,
-                default=False,
-            ),
+            Field('host',         required=False, default='localhost'),
+            Field('port',         type_=ValueType.Integer, required=False, default=25),
+            Field('starttls',     type_=ValueType.Boolean, required=False, default=False),
+            Field('use_ssl',      type_=ValueType.Boolean, required=False, default=False),
+            Field('username',     required=False, default=''),
+            Field('password',     required=False, default=''),
+            Field('suppress_send',type_=ValueType.Boolean, required=False, default=False),
         ],
         config_class=SmtpConfig,
         required=True,
     ),
+    # NEW: optional Cloudflare Turnstile section (correct defaults)
     Section(
-        name='turnstile',
+        name='cloudflare_turnstile',
         fields=[
-            Field('enabled', type_=ValueType.Boolean, required=True),
-            Field('sitekey', required=True),
-            Field('secret',  required=True),
+            Field('enabled',    type_=ValueType.Boolean, required=False, default=False),
+            Field('sitekey',    required=False, default=''),
+            Field('secret_key', required=False, default=''),
         ],
-        config_class=TurnstileConfig,
+        config_class=CloudflareTurnstileConfig,
         required=False,
-        default=False, 
+        default=CloudflareTurnstileConfig(enabled=False, sitekey='', secret_key=''),
     ),
 ]
 
 
 def parse_config(toml: str) -> ParsingResult[BycepsConfig]:
-    """Parse configuration in TOML format."""
     data = rtoml.loads(toml)
     return _parse_config_dict(data)
 
 
 def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
-    """Parse configuration from dictionary."""
     entries: Data = {}
     errors: list[str] = []
 
@@ -403,7 +349,6 @@ def _parse_optional_section(
     parse: Callable[[Data], ParsingResult[T | None]],
 ) -> ParsingResult[T | None]:
     key = section.name
-
     section_data = data.get(key, None)
 
     if section_data is None:
@@ -497,49 +442,36 @@ def _get_section_value(
     default: Value | None = None,
 ) -> Result[Value, str]:
     value = section_data.get(key, default)
-
     if value is None:
         return Err(f'Key "{key}" missing in section "{section_name}"')
 
     match type_:
         case ValueType.Boolean:
             if not isinstance(value, bool):
-                return Err(
-                    f'Value "{value!r}" for key "{key}" in section "{section_name}" is not of type boolean'
-                )
+                return Err(f'Value "{value!r}" for key "{key}" in section "{section_name}" is not of type boolean')
         case ValueType.Integer:
             if not isinstance(value, int):
-                return Err(
-                    f'Value "{value!r}" for key "{key}" in section "{section_name}" is not of type integer'
-                )
+                return Err(f'Value "{value!r}" for key "{key}" in section "{section_name}" is not of type integer')
         case ValueType.String:
             if not isinstance(value, str):
-                return Err(
-                    f'Value "{value!r}" for key "{key}" in section "{section_name}" is not of type string'
-                )
+                return Err(f'Value "{value!r}" for key "{key}" in section "{section_name}" is not of type string')
         case _:
             raise Exception(f'Invalid value type "{type_}"')
 
     return Ok(value)
 
 
-def _get_required_value(
-    data: Data, key: str
-) -> Result[Data | Value | None, str]:
+def _get_required_value(data: Data, key: str) -> Result[Data | Value | None, str]:
     try:
         value = data[key]
     except KeyError:
         return Err(f'Key "{key}" missing')
-
     return Ok(value)
 
 
-def _get_optional_value(
-    data: Data, key: str, default: Value | None = None
-) -> Result[Data | Value | None, str]:
+def _get_optional_value(data: Data, key: str, default: Value | None = None) -> Result[Data | Value | None, str]:
     try:
         value = data.get(key, default)
     except KeyError:
         value = default
-
     return Ok(value)
