@@ -131,9 +131,9 @@ def test_stripe_webhook_payment_intent_succeeded(
     webhook_event = create_event('checkout.session.completed', order.id)
     stripe_webhook_construct_mock.return_value = webhook_event
 
-    payment_state_updated_at = datetime.utcnow()
+    paid_at = datetime.utcnow()
 
-    with freeze_time(payment_state_updated_at):
+    with freeze_time(paid_at):
         response = call_webhook(site_app)
     assert response.status_code == 200
 
@@ -149,7 +149,7 @@ def test_stripe_webhook_payment_intent_succeeded(
     order_email_service_mock.assert_called_once_with(order_processed)
 
     event = ShopOrderPaidEvent(
-        occurred_at=payment_state_updated_at,
+        occurred_at=paid_at,
         initiator=EventUser.from_user(orderer_user),
         order_id=order.id,
         order_number=order.order_number,
