@@ -10,7 +10,7 @@ from byceps.services.party.models import Party
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
 from byceps.services.shop.order.events import ShopOrderPaidEvent
-from byceps.services.shop.order.models.order import Order, Orderer, OrderID
+from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.payment.paypal.blueprints.site.views import (
     PayPalOrderDetails,
 )
@@ -134,7 +134,7 @@ def test_payment_success(
     assert check_transaction_mock.call_count == 1
     assert parse_paypal_order_details_mock.call_count == 1
 
-    order_processed = get_order(order.id)
+    order_processed = order_service.get_order(order.id)
     assert order_processed.is_paid
     assert order_processed.payment_method == 'paypal'
 
@@ -179,7 +179,7 @@ def test_payment_manipulation_denied(
     assert get_paypal_order_details_mock.call_count == 1
     assert check_transaction_mock.call_count == 1
 
-    order_processed = get_order(order.id)
+    order_processed = order_service.get_order(order.id)
     assert not order_processed.is_paid
 
 
@@ -223,7 +223,3 @@ def call_capture_api(app, order: Order):
 
     with http_client(app, user_id=order.placed_by.id) as client:
         return client.post('/shop/payment/paypal/capture', json=payload)
-
-
-def get_order(order_id: OrderID) -> Order:
-    return order_service.get_order(order_id)
