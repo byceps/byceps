@@ -156,7 +156,7 @@ def _execute_actions(
 
 def _get_actions_by_product_id(
     order: Order, payment_state: PaymentState
-) -> dict[ProductID, set[Action]]:
+) -> dict[ProductID, list[Action]]:
     product_ids = {line_item.product_id for line_item in order.line_items}
 
     actions_by_product_id: dict[ProductID, list[Action]] = defaultdict(list)
