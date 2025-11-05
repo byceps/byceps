@@ -12,7 +12,6 @@ from byceps.services.user_badge.models import BadgeID
 
 from . import order_action_service
 from .models.action import ActionParameters
-from .models.order import PaymentState
 
 
 def register_badge_awarding(product_id: ProductID, badge_id: BadgeID) -> None:
@@ -20,8 +19,8 @@ def register_badge_awarding(product_id: ProductID, badge_id: BadgeID) -> None:
     params_create = {
         'badge_id': str(badge_id),
     }
-    order_action_service.create_action(
-        product_id, PaymentState.paid, 'award_badge', params_create
+    order_action_service.create_on_payment_action(
+        product_id, 'award_badge', params_create
     )
 
 
@@ -35,16 +34,15 @@ def register_ticket_bundles_creation(
         'category_id': str(ticket_category_id),
         'ticket_quantity': ticket_quantity,
     }
-    order_action_service.create_action(
-        product_id, PaymentState.paid, 'create_ticket_bundles', params_create
+    order_action_service.create_on_payment_action(
+        product_id, 'create_ticket_bundles', params_create
     )
 
     # Revoke ticket bundles that have been created for the order when it
     # is canceled after being marked as paid.
     params_revoke: ActionParameters = {}
-    order_action_service.create_action(
+    order_action_service.create_on_cancellation_after_payment_action(
         product_id,
-        PaymentState.canceled_after_paid,
         'revoke_ticket_bundles',
         params_revoke,
     )
@@ -58,16 +56,15 @@ def register_tickets_creation(
     params_create = {
         'category_id': str(ticket_category_id),
     }
-    order_action_service.create_action(
-        product_id, PaymentState.paid, 'create_tickets', params_create
+    order_action_service.create_on_payment_action(
+        product_id, 'create_tickets', params_create
     )
 
     # Revoke tickets that have been created for the order when it is
     # canceled after being marked as paid.
     params_revoke: ActionParameters = {}
-    order_action_service.create_action(
+    order_action_service.create_on_cancellation_after_payment_action(
         product_id,
-        PaymentState.canceled_after_paid,
         'revoke_tickets',
         params_revoke,
     )

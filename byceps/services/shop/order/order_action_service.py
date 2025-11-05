@@ -53,7 +53,27 @@ PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
 # creation/removal
 
 
-def create_action(
+def create_on_payment_action(
+    product_id: ProductID,
+    procedure_name: str,
+    parameters: ActionParameters,
+) -> None:
+    """Create an order action to run on payment."""
+    _create_action(product_id, PaymentState.paid, procedure_name, parameters)
+
+
+def create_on_cancellation_after_payment_action(
+    product_id: ProductID,
+    procedure_name: str,
+    parameters: ActionParameters,
+) -> None:
+    """Create an order action to run on cancellation."""
+    _create_action(
+        product_id, PaymentState.canceled_after_paid, procedure_name, parameters
+    )
+
+
+def _create_action(
     product_id: ProductID,
     payment_state: PaymentState,
     procedure_name: str,
