@@ -15,7 +15,7 @@ from byceps.util.result import Ok, Result
 from . import ticket
 
 
-def on_cancellation(
+def on_cancellation_after_payment(
     order: Order,
     line_item: LineItem,
     initiator: User,

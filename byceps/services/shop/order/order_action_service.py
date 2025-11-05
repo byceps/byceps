@@ -43,9 +43,9 @@ OrderActionType = Callable[
 PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
     'award_badge': user_badge_actions.on_payment,
     'create_ticket_bundles': create_ticket_bundles.on_payment,
-    'revoke_ticket_bundles': revoke_ticket_bundles.on_cancellation,
+    'revoke_ticket_bundles': revoke_ticket_bundles.on_cancellation_after_payment,
     'create_tickets': create_tickets.on_payment,
-    'revoke_tickets': revoke_tickets.on_cancellation,
+    'revoke_tickets': revoke_tickets.on_cancellation_after_payment,
 }
 
 
