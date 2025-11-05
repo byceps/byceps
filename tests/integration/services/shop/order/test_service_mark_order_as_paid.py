@@ -12,7 +12,7 @@ from byceps.services.shop.order import (
     order_service,
 )
 from byceps.services.shop.order.events import ShopOrderPaidEvent
-from byceps.services.shop.order.models.order import PaymentState
+from byceps.services.shop.order.models.order import PaidOrder, PaymentState
 from byceps.util.iterables import find
 
 from tests.helpers.shop import place_order
@@ -45,7 +45,9 @@ def test_mark_order_as_paid(order, admin_user):
         order.id, 'cash', admin_user
     ).unwrap()
 
+    assert isinstance(paid_order, PaidOrder)
     assert paid_order.id == order.id
+    assert paid_order.paid_at is not None
 
     assert isinstance(paid_event, ShopOrderPaidEvent)
     assert paid_event.initiator.id == admin_user.id

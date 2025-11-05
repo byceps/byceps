@@ -137,6 +137,11 @@ class Order(BaseOrder):
 
 
 @dataclass(frozen=True, kw_only=True)
+class PaidOrder(Order):
+    paid_at: datetime
+
+
+@dataclass(frozen=True, kw_only=True)
 class AdminOrderListItem(BaseOrder):
     first_name: str
     last_name: str

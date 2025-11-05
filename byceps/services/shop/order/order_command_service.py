@@ -40,9 +40,16 @@ from .errors import (
 )
 from .events import ShopOrderCanceledEvent, ShopOrderPaidEvent
 from .models.log import OrderLogEntry
-from .models.order import LineItemID, Order, Orderer, OrderID, PaymentState
+from .models.order import (
+    LineItemID,
+    Order,
+    Orderer,
+    OrderID,
+    PaidOrder,
+    PaymentState,
+)
 from .models.payment import AdditionalPaymentData
-from .order_helper_service import to_order, _is_paid
+from .order_helper_service import to_order, to_paid_order, _is_paid
 from .order_service import get_db_order
 
 
@@ -210,7 +217,7 @@ def mark_order_as_paid(
     *,
     additional_payment_data: AdditionalPaymentData | None = None,
 ) -> Result[
-    tuple[Order, ShopOrderPaidEvent],
+    tuple[PaidOrder, ShopOrderPaidEvent],
     OrderActionFailedError | OrderAlreadyMarkedAsPaidError,
 ]:
     """Mark the order as paid."""
@@ -256,7 +263,7 @@ def mark_order_as_paid(
 
     db.session.commit()
 
-    paid_order = to_order(db_order, orderer_user)
+    paid_order = to_paid_order(db_order, orderer_user)
 
     match _execute_product_creation_actions(paid_order, initiator):
         case Err(e):

@@ -21,6 +21,7 @@ from .models.order import (
     LineItemProcessingState,
     Order,
     OrderState,
+    PaidOrder,
     PaymentState,
     SiteOrderListItem,
 )
@@ -81,6 +82,41 @@ def to_order(db_order: DbOrder, placed_by: User) -> Order:
         is_processing_required=db_order.processing_required,
         is_processed=_is_processed(db_order),
         cancellation_reason=db_order.cancellation_reason,
+    )
+
+
+def to_paid_order(db_order: DbOrder, placed_by: User) -> PaidOrder:
+    """Create paid order transfer object from database entity."""
+    paid_at = db_order.payment_state_updated_at
+    if paid_at is None:
+        raise ValueError('Order is not marked as paid')
+
+    order = to_order(db_order, placed_by)
+    return PaidOrder(
+        id=order.id,
+        created_at=order.created_at,
+        shop_id=order.shop_id,
+        storefront_id=order.storefront_id,
+        order_number=order.order_number,
+        placed_by=placed_by,
+        company=order.company,
+        first_name=order.first_name,
+        last_name=order.last_name,
+        address=order.address,
+        total_amount=order.total_amount,
+        line_items=order.line_items,
+        payment_method=order.payment_method,
+        payment_state=order.payment_state,
+        state=order.state,
+        is_open=order.is_open,
+        is_canceled=order.is_canceled,
+        is_paid=order.is_paid,
+        is_invoiced=order.is_invoiced,
+        is_overdue=order.is_overdue,
+        is_processing_required=order.is_processing_required,
+        is_processed=order.is_processed,
+        cancellation_reason=order.cancellation_reason,
+        paid_at=paid_at,
     )
 
 
