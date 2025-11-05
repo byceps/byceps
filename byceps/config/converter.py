@@ -13,10 +13,6 @@ from typing import Any
 
 from .models import BycepsConfig, DatabaseConfig
 
-try:
-    from .models import TurnstileConfig  
-except Exception:  
-    TurnstileConfig = None  
 
 def convert_config(config: BycepsConfig) -> dict[str, Any]:
     """Convert configuration to dictionary accepted by Flask."""
@@ -32,6 +28,9 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
     yield 'SHOP_ORDER_EXPORT_TIMEZONE', timezone
     yield 'TIMEZONE', timezone
 
+    # Skip property if not explicitly set (i.e. value is `None`). In
+    # this case, Flask will propagate if debug mode or testing mode is
+    # enabled.
     if config.propagate_exceptions is not None:
         yield 'PROPAGATE_EXCEPTIONS', config.propagate_exceptions
 
@@ -41,21 +40,6 @@ def _generate_entries(config: BycepsConfig) -> Iterator[tuple[str, Any]]:
 
     yield 'SQLALCHEMY_DATABASE_URI', assemble_database_uri(config.database)
 
-    ts = getattr(config, 'turnstile', None)
-    if ts is not None:
-        enabled = bool(getattr(ts, 'enabled', False))
-        sitekey = getattr(ts, 'sitekey', '') or ''
-        secret  = getattr(ts, 'secret',  '') or ''
-
-        yield 'TURNSTILE_ENABLED', enabled
-        yield 'TURNSTILE_SITEKEY', sitekey
-        yield 'TURNSTILE_SECRET',  secret
-
-        yield 'turnstile', {
-            'enabled': enabled,
-            'sitekey': sitekey,
-            'secret':  secret,
-        }
 
 def assemble_database_uri(db_config: DatabaseConfig) -> str:
     """Assemble SQLAlchemy database URL."""
