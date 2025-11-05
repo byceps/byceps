@@ -111,19 +111,13 @@ def revoke_bundle(
     """Revoke the tickets included in this bundle."""
     db_bundle = get_bundle(bundle_id)
 
-    db_bundle.revoked = True
+    match seat_group_service.release_potential_group_for_bundle(
+        bundle_id, initiator
+    ):
+        case Err(e):
+            return Err(e)
 
-    seat_group_id = seat_group_service.find_group_occupied_by_ticket_bundle(
-        db_bundle.id
-    )
-    if seat_group_id is not None:
-        match seat_group_service.release_group(seat_group_id, initiator):
-            case Err(e):
-                return Err(
-                    SeatingError(
-                        f'Could not release seat group {seat_group_id}: {e.message}'
-                    )
-                )
+    db_bundle.revoked = True
 
     for db_ticket in db_bundle.tickets:
         db_ticket.revoked = True

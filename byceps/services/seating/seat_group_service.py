@@ -153,6 +153,23 @@ def release_group(
     return Ok(event)
 
 
+def release_potential_group_for_bundle(
+    ticket_bundle_id: TicketBundleID, initiator: User
+) -> Result[None, SeatingError]:
+    """Release the seat group associated with the ticket bundle, if one exists."""
+    seat_group_id = find_group_occupied_by_ticket_bundle(ticket_bundle_id)
+    if seat_group_id is not None:
+        match release_group(seat_group_id, initiator):
+            case Err(e):
+                return Err(
+                    SeatingError(
+                        f'Could not release seat group {seat_group_id}: {e.message}'
+                    )
+                )
+
+    return Ok(None)
+
+
 def count_groups_for_party(party_id: PartyID) -> int:
     """Return the number of seat groups for that party."""
     return seat_group_repository.count_groups_for_party(party_id)
