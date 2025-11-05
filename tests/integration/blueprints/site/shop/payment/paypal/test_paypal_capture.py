@@ -134,7 +134,7 @@ def test_payment_success(
     assert check_transaction_mock.call_count == 1
     assert parse_paypal_order_details_mock.call_count == 1
 
-    order_processed = order_service.get_order(order.id)
+    order_processed = order_service.get_paid_order(order.id)
     assert order_processed.is_paid
     assert order_processed.payment_method == 'paypal'
 

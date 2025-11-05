@@ -35,6 +35,7 @@ from .models.order import (
     AdminOrderListItem,
     Order,
     OrderID,
+    PaidOrder,
     PaymentState,
     SiteOrderListItem,
 )
@@ -43,6 +44,7 @@ from .order_helper_service import (
     to_admin_order_list_item,
     to_detailed_order,
     to_order,
+    to_paid_order,
     to_site_order_list_item,
 )
 
@@ -130,6 +132,16 @@ def get_order(order_id: OrderID) -> Order:
     db_order = get_db_order(order_id)
     orderer_user = user_service.get_user(db_order.placed_by_id)
     return to_order(db_order, orderer_user)
+
+
+def get_paid_order(order_id: OrderID) -> PaidOrder:
+    """Return the paid order with that id, or raise an exception."""
+    db_order = get_db_order(order_id)
+    if db_order is None:
+        raise ValueError(f'Unknown order ID "{order_id}"')
+
+    orderer_user = user_service.get_user(db_order.placed_by_id)
+    return to_paid_order(db_order, orderer_user)
 
 
 def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:

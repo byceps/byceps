@@ -245,7 +245,7 @@ def test_mark_order_as_paid(
         shop_order_admin.id,
     )
 
-    order_afterwards = order_service.get_order(placed_order.id)
+    order_afterwards = order_service.get_paid_order(placed_order.id)
 
     order_email_service_mock.send_email_for_paid_order_to_orderer.assert_called_once_with(
         order_afterwards

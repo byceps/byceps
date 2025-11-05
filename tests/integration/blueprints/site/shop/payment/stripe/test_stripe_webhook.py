@@ -142,7 +142,7 @@ def test_stripe_webhook_payment_intent_succeeded(
         webhook_event.data.object, order
     )
 
-    order_processed = order_service.get_order(order.id)
+    order_processed = order_service.get_paid_order(order.id)
     assert order_processed.is_paid
     assert order_processed.payment_method == 'stripe'
 
