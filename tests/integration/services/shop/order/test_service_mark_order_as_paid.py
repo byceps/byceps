@@ -11,6 +11,7 @@ from byceps.services.shop.order import (
     order_payment_service,
     order_service,
 )
+from byceps.services.shop.order.events import ShopOrderPaidEvent
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.util.iterables import find
 
@@ -40,9 +41,18 @@ def test_mark_order_as_paid(order, admin_user):
     payments_before = order_payment_service.get_payments_for_order(order.id)
     assert not payments_before
 
-    order_command_service.mark_order_as_paid(
+    paid_order, paid_event = order_command_service.mark_order_as_paid(
         order.id, 'cash', admin_user
     ).unwrap()
+
+    assert paid_order.id == order.id
+
+    assert isinstance(paid_event, ShopOrderPaidEvent)
+    assert paid_event.initiator.id == admin_user.id
+    assert paid_event.order_id == order.id
+    assert paid_event.order_number == order.order_number
+    assert paid_event.orderer.id == order.placed_by.id
+    assert paid_event.payment_method == 'cash'
 
     order_after = order_service.get_order(order.id)
     assert order_after.payment_method == 'cash'
