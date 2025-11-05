@@ -252,7 +252,7 @@ def test_mark_order_as_paid(
     )
 
     event = ShopOrderPaidEvent(
-        occurred_at=db_order_afterwards.payment_state_updated_at,
+        occurred_at=order_afterwards.paid_at,
         initiator=EventUser.from_user(shop_order_admin),
         order_id=placed_order.id,
         order_number=placed_order.order_number,
