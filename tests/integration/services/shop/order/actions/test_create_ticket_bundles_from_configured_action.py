@@ -10,10 +10,7 @@ import pytest
 from byceps.byceps_app import BycepsApp
 from byceps.services.core.events import EventParty, EventUser
 from byceps.services.party.models import Party
-from byceps.services.shop.order import (
-    order_action_registry_service,
-    order_log_service,
-)
+from byceps.services.shop.order import order_log_service
 from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import Shop
@@ -22,14 +19,18 @@ from byceps.services.ticketing.events import TicketsSoldEvent
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User
 
-from tests.helpers.shop import place_order
+from tests.helpers.shop import create_ticket_bundle_product, place_order
 
 from .helpers import get_tickets_for_order, mark_order_as_paid
 
 
 @pytest.fixture()
-def product(make_product, shop: Shop) -> Product:
-    return make_product(shop.id)
+def product(
+    shop: Shop, ticket_category: TicketCategory, ticket_quantity_per_bundle: int
+) -> Product:
+    return create_ticket_bundle_product(
+        shop.id, ticket_category.id, ticket_quantity_per_bundle
+    )
 
 
 @pytest.fixture(scope='module')
@@ -54,19 +55,6 @@ def order(
     return place_order(shop, storefront, orderer, products_with_quantity)
 
 
-@pytest.fixture()
-def order_action(
-    product: Product,
-    ticket_category: TicketCategory,
-    ticket_quantity_per_bundle: int,
-) -> None:
-    order_action_registry_service.register_ticket_bundles_creation(
-        product.id,
-        ticket_category.id,
-        ticket_quantity_per_bundle,
-    )
-
-
 @patch('byceps.services.ticketing.signals.tickets_sold.send')
 def test_create_ticket_bundles(
     tickets_sold_signal_send_mock,
@@ -74,12 +62,10 @@ def test_create_ticket_bundles(
     product: Product,
     party: Party,
     ticket_category: TicketCategory,
-    ticket_quantity_per_bundle: int,
     bundle_quantity: int,
     admin_user: User,
     orderer: Orderer,
     order: Order,
-    order_action,
 ) -> None:
     expected_ticket_total = 10
 

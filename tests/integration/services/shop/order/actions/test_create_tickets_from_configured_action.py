@@ -10,10 +10,7 @@ import pytest
 from byceps.byceps_app import BycepsApp
 from byceps.services.core.events import EventParty, EventUser
 from byceps.services.party.models import Party
-from byceps.services.shop.order import (
-    order_action_registry_service,
-    order_log_service,
-)
+from byceps.services.shop.order import order_log_service
 from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import Shop
@@ -25,14 +22,14 @@ from byceps.services.ticketing.ticket_creation_service import (
 )
 from byceps.services.user.models.user import User
 
-from tests.helpers.shop import place_order
+from tests.helpers.shop import create_ticket_product, place_order
 
 from .helpers import get_tickets_for_order, mark_order_as_paid
 
 
 @pytest.fixture()
-def product(make_product, shop: Shop) -> Product:
-    return make_product(shop.id)
+def product(shop: Shop, ticket_category: TicketCategory) -> Product:
+    return create_ticket_product(shop.id, ticket_category.id)
 
 
 @pytest.fixture(scope='module')
@@ -52,13 +49,6 @@ def order(
     return place_order(shop, storefront, orderer, products_with_quantity)
 
 
-@pytest.fixture()
-def order_action(product: Product, ticket_category: TicketCategory) -> None:
-    order_action_registry_service.register_tickets_creation(
-        product.id, ticket_category.id
-    )
-
-
 @patch('byceps.services.ticketing.signals.tickets_sold.send')
 def test_create_tickets(
     tickets_sold_signal_send_mock,
@@ -70,7 +60,6 @@ def test_create_tickets(
     admin_user: User,
     orderer: Orderer,
     order: Order,
-    order_action,
 ) -> None:
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
@@ -112,7 +101,6 @@ def test_create_tickets_with_same_code_fails(
     admin_user: User,
     orderer: Orderer,
     order: Order,
-    order_action,
 ) -> None:
     generate_ticket_code_mock.side_effect = lambda: 'EQUAL'  # noqa: E731
 
@@ -130,7 +118,6 @@ def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
     admin_user: User,
     orderer: Orderer,
     order: Order,
-    order_action,
 ) -> None:
     code_generation_retries = 4  # Depends on implemented default value.
     necessary_outer_retries = 5  # Depends on argument to `retry` decorator.
