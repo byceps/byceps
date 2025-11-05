@@ -3,9 +3,6 @@ byceps.config.models
 ~~~~~~~~~~~~~~~~~~~~
 
 Configuration models
-
-:Copyright: 2014-2025 Jochen Kupperschmidt
-:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from __future__ import annotations
@@ -59,7 +56,8 @@ class BycepsConfig:
     payment_gateways: PaymentGatewaysConfig | None
     redis: RedisConfig
     smtp: SmtpConfig
-    turnstile: TurnstileConfig | None = None
+    # New optional section for Cloudflare Turnstile
+    cloudflare_turnstile: CloudflareTurnstileConfig | None = None
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -181,8 +179,9 @@ class StripeConfig:
     webhook_secret: str
 
 
+# Renamed + clarified for Cloudflare Turnstile
 @dataclass(frozen=True, kw_only=True, slots=True)
-class TurnstileConfig:
+class CloudflareTurnstileConfig:
     enabled: bool
     sitekey: str
-    secret: str
+    secret_key: str
