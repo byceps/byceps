@@ -15,11 +15,12 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 from byceps.database import db, paginate, Pagination
 from byceps.services.party.models import PartyID
 from byceps.services.seating import seat_group_service
+from byceps.services.seating.errors import SeatingError
 from byceps.services.seating.models import SeatGroupID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.util.result import Err
+from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from . import ticket_category_service
@@ -106,7 +107,7 @@ def revoke_bundle(
     initiator: User,
     *,
     reason: str | None = None,
-) -> None:
+) -> Result[None, SeatingError]:
     """Revoke the tickets included in this bundle."""
     db_bundle = get_bundle(bundle_id)
 
@@ -118,8 +119,10 @@ def revoke_bundle(
     if seat_group_id is not None:
         match seat_group_service.release_group(seat_group_id, initiator):
             case Err(e):
-                raise ValueError(
-                    f'Could not release seat group {seat_group_id}: {e.message}'
+                return Err(
+                    SeatingError(
+                        f'Could not release seat group {seat_group_id}: {e.message}'
+                    )
                 )
 
     for db_ticket in db_bundle.tickets:
@@ -131,6 +134,8 @@ def revoke_bundle(
         db.session.add(db_log_entry)
 
     db.session.commit()
+
+    return Ok(None)
 
 
 def delete_bundle(bundle_id: TicketBundleID) -> None:

@@ -342,9 +342,11 @@ def _execute_product_revocation_actions(
             case ProductType.ticket:
                 ticket_actions.revoke_tickets(order, line_item, initiator)
             case ProductType.ticket_bundle:
-                ticket_bundle_actions.revoke_ticket_bundles(
+                match ticket_bundle_actions.revoke_ticket_bundles(
                     order, line_item, initiator
-                )
+                ):
+                    case Err(e):
+                        return Err(OrderActionFailedError(e))
 
     # based on order action registered for product number
     return order_action_service.execute_revocation_actions(order, initiator)

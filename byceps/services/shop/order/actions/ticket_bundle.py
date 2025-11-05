@@ -9,6 +9,7 @@ byceps.services.shop.order.actions.ticket_bundle
 from typing import Any
 from uuid import UUID
 
+from byceps.services.seating.errors import SeatingError
 from byceps.services.shop.order import (
     order_command_service,
     order_event_service,
@@ -22,6 +23,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketCategory,
 )
 from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok, Result
 
 
 def create_ticket_bundles(
@@ -85,7 +87,7 @@ def _create_creation_order_log_entry(
 
 def revoke_ticket_bundles(
     order: Order, line_item: LineItem, initiator: User
-) -> None:
+) -> Result[None, SeatingError]:
     """Revoke all ticket bundles related to the line item."""
     bundle_id_strs = line_item.processing_result['ticket_bundle_ids']
     bundle_ids = {
@@ -93,8 +95,13 @@ def revoke_ticket_bundles(
     }
 
     for bundle_id in bundle_ids:
-        ticket_bundle_service.revoke_bundle(bundle_id, initiator)
+        match ticket_bundle_service.revoke_bundle(bundle_id, initiator):
+            case Err(e):
+                return Err(e)
+
         _create_revocation_order_log_entry(order.id, bundle_id, initiator)
+
+    return Ok(None)
 
 
 def _create_revocation_order_log_entry(

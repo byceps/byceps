@@ -10,7 +10,7 @@ from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import LineItem, Order
 from byceps.services.user.models.user import User
-from byceps.util.result import Ok, Result
+from byceps.util.result import Err, Ok, Result
 
 from . import ticket_bundle
 
@@ -22,6 +22,8 @@ def on_cancellation_after_payment(
     parameters: ActionParameters,
 ) -> Result[None, OrderActionFailedError]:
     """Revoke all ticket bundles in this order."""
-    ticket_bundle.revoke_ticket_bundles(order, line_item, initiator)
-
-    return Ok(None)
+    match ticket_bundle.revoke_ticket_bundles(order, line_item, initiator):
+        case Ok(_):
+            return Ok(None)
+        case Err(e):
+            return Err(OrderActionFailedError(e))

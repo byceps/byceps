@@ -9,6 +9,7 @@ from byceps.services.ticketing import (
     ticket_bundle_service as bundle_service,
     ticket_log_service,
 )
+from byceps.util.result import Ok
 
 
 def test_revoke_bundle(admin_app, bundle, ticketing_admin):
@@ -30,7 +31,7 @@ def test_revoke_bundle(admin_app, bundle, ticketing_admin):
 
     # -------------------------------- #
 
-    bundle_service.revoke_bundle(bundle.id, ticketing_admin)
+    assert bundle_service.revoke_bundle(bundle.id, ticketing_admin) == Ok(None)
 
     # -------------------------------- #
 
