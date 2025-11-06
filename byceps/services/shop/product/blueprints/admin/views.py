@@ -154,7 +154,7 @@ def view(product_id):
     images = product_service.get_images_for_product(db_product.id)
 
     actions = order_action_service.get_actions_for_product(db_product.id)
-    actions.sort(key=lambda a: a.payment_state.name, reverse=True)
+    actions.sort(key=lambda a: a.procedure_name)
 
     return {
         'product': db_product,

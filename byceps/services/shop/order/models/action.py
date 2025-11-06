@@ -6,13 +6,17 @@ byceps.services.shop.order.models.action
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 from uuid import UUID
 
+from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.product.models import ProductID
+from byceps.services.user.models.user import User
+from byceps.util.result import Result
 
-from .order import PaymentState
+from .order import LineItem, Order
 
 
 ActionParameters = dict[str, Any]
@@ -22,6 +26,17 @@ ActionParameters = dict[str, Any]
 class Action:
     id: UUID
     product_id: ProductID
-    payment_state: PaymentState
     procedure_name: str
     parameters: ActionParameters
+
+
+@dataclass(frozen=True, kw_only=True)
+class ActionProcedure:
+    on_payment: Callable[
+        [Order, LineItem, User, ActionParameters],
+        Result[None, OrderActionFailedError],
+    ]
+    on_cancellation_after_payment: Callable[
+        [Order, LineItem, User, ActionParameters],
+        Result[None, OrderActionFailedError],
+    ]

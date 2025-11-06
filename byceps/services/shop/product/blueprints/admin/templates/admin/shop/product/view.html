@@ -1,7 +1,6 @@
 {% extends 'layout/admin/shop/product.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/product.html' import render_product_link, render_product_temporal_availability %}
-{% from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_progress_bar, render_tag %}
 {% set current_page_shop = shop %}
@@ -268,16 +267,16 @@
   <table class="itemlist is-vcentered is-wide">
     <thead>
       <tr>
-        <th>{{ _('Payment state') }}</th>
-        <th>{{ _('Procedure') }}<br>{{ _('Parameters') }}</th>
+        <th>{{ _('Procedure') }}</th>
+        <th>{{ _('Parameters') }}</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       {%- for action in actions %}
       <tr>
-        <td>{{ render_order_payment_state(action.payment_state) }}</td>
-        <td class="monospace">{{ action.procedure_name }}<br>{{ action.parameters }}</td>
+        <td class="monospace">{{ action.procedure_name }}</td>
+        <td class="monospace">{{ action.parameters }}</td>
         <td>
           {%- if has_current_user_permission('shop_product.administrate') %}
           <div class="button-row is-compact is-right-aligned">

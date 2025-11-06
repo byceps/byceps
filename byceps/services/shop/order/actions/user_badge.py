@@ -57,3 +57,12 @@ def _build_badge_awarded_log_entry(
     }
 
     return order_log_service.build_entry(event_type, order_id, data)
+
+
+def on_cancellation_after_payment(
+    order: Order,
+    line_item: LineItem,
+    initiator: User,
+    parameters: ActionParameters,
+) -> Result[None, OrderActionFailedError]:
+    return Ok(None)
