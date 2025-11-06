@@ -15,6 +15,7 @@ from byceps.services.shop.order import (
     order_event_service,
     order_log_service,
 )
+from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import LineItem, Order, OrderID
 from byceps.services.ticketing import ticket_bundle_service
 from byceps.services.ticketing.models.ticket import (
@@ -73,6 +74,13 @@ def create_ticket_bundles(
 def _create_creation_order_log_entry(
     order_id: OrderID, ticket_bundle: TicketBundle
 ) -> None:
+    log_entry = _build_ticket_bundle_created_log_entry(order_id, ticket_bundle)
+    order_log_service.persist_entry(log_entry)
+
+
+def _build_ticket_bundle_created_log_entry(
+    order_id: OrderID, ticket_bundle: TicketBundle
+) -> OrderLogEntry:
     event_type = 'ticket-bundle-created'
 
     data = {
@@ -82,7 +90,7 @@ def _create_creation_order_log_entry(
         'ticket_bundle_owner_id': str(ticket_bundle.owned_by.id),
     }
 
-    order_log_service.create_db_entry(event_type, order_id, data)
+    return order_log_service.build_entry(event_type, order_id, data)
 
 
 def revoke_ticket_bundles(
@@ -105,13 +113,22 @@ def revoke_ticket_bundles(
 
 
 def _create_revocation_order_log_entry(
-    order_id: OrderID, bundle_id: TicketBundleID, initiator: User
+    order_id: OrderID, ticket_bundle_id: TicketBundleID, initiator: User
 ) -> None:
+    log_entry = _build_ticket_bundle_revoked_log_entry(
+        order_id, ticket_bundle_id, initiator
+    )
+    order_log_service.persist_entry(log_entry)
+
+
+def _build_ticket_bundle_revoked_log_entry(
+    order_id: OrderID, ticket_bundle_id: TicketBundleID, initiator: User
+) -> OrderLogEntry:
     event_type = 'ticket-bundle-revoked'
 
     data = {
-        'ticket_bundle_id': str(bundle_id),
+        'ticket_bundle_id': str(ticket_bundle_id),
         'initiator_id': str(initiator.id),
     }
 
-    order_log_service.create_db_entry(event_type, order_id, data)
+    return order_log_service.build_entry(event_type, order_id, data)

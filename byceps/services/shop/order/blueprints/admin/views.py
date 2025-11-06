@@ -481,13 +481,14 @@ def resend_email_for_incoming_order_to_orderer(order_id):
 
     order_email_service.send_email_for_incoming_order_to_orderer(order)
 
-    order_log_service.create_db_entry(
+    log_entry = order_log_service.build_entry(
         'order-placed-confirmation-email-resent',
         order.id,
         {
             'initiator_id': str(initiator_id),
         },
     )
+    order_log_service.persist_entry(log_entry)
 
     flash_success(
         gettext('Email confirmation for placed order has been sent again.')

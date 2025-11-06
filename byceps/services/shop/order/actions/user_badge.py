@@ -9,6 +9,7 @@ byceps.services.shop.order.actions.award_badge
 from byceps.services.shop.order import order_log_service
 from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
+from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import LineItem, Order, OrderID
 from byceps.services.user.models.user import User
 from byceps.services.user_badge import (
@@ -40,11 +41,19 @@ def on_payment(
 
 
 def _create_order_log_entry(order_id: OrderID, awarding: BadgeAwarding) -> None:
+    log_entry = _build_badge_awarded_log_entry(order_id, awarding)
+    order_log_service.persist_entry(log_entry)
+
+
+def _build_badge_awarded_log_entry(
+    order_id: OrderID, awarding: BadgeAwarding
+) -> OrderLogEntry:
     event_type = 'badge-awarded'
+
     data = {
         'awarding_id': str(awarding.id),
         'badge_id': str(awarding.badge_id),
         'awardee_id': str(awarding.awardee_id),
     }
 
-    order_log_service.create_db_entry(event_type, order_id, data)
+    return order_log_service.build_entry(event_type, order_id, data)

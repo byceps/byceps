@@ -22,46 +22,40 @@ from .models.log import OrderLogEntry, OrderLogEntryData
 from .models.order import OrderID
 
 
-def create_db_entry(
+def build_entry(
     event_type: str,
     order_id: OrderID,
     data: OrderLogEntryData,
     *,
     occurred_at: datetime | None = None,
-) -> None:
-    """Create an order log entry."""
-    db_entry = build_db_entry(
-        event_type, order_id, data, occurred_at=occurred_at
-    )
-
-    db.session.add(db_entry)
-    db.session.commit()
-
-
-def create_db_entries(
-    event_type: str, order_id: OrderID, datas: Iterable[OrderLogEntryData]
-) -> None:
-    """Create a sequence of order log entries."""
-    db_entries = [build_db_entry(event_type, order_id, data) for data in datas]
-
-    db.session.add_all(db_entries)
-    db.session.commit()
-
-
-def build_db_entry(
-    event_type: str,
-    order_id: OrderID,
-    data: OrderLogEntryData,
-    *,
-    occurred_at: datetime | None = None,
-) -> DbOrderLogEntry:
-    """Assemble, but not persist, an order log entry."""
+) -> OrderLogEntry:
+    """Assemble an order log entry."""
     entry_id = generate_uuid7()
 
     if occurred_at is None:
         occurred_at = datetime.utcnow()
 
-    return DbOrderLogEntry(entry_id, occurred_at, event_type, order_id, data)
+    return OrderLogEntry(
+        id=entry_id,
+        occurred_at=occurred_at,
+        event_type=event_type,
+        order_id=order_id,
+        data=data,
+    )
+
+
+def persist_entry(entry: OrderLogEntry) -> None:
+    """Store an order log entry."""
+    db_entry = to_db_entry(entry)
+    db.session.add(db_entry)
+    db.session.commit()
+
+
+def persist_entries(entries: Iterable[OrderLogEntry]) -> None:
+    """Store multiple order log entries."""
+    db_entries = [to_db_entry(entry) for entry in entries]
+    db.session.add_all(db_entries)
+    db.session.commit()
 
 
 def to_db_entry(entry: OrderLogEntry) -> DbOrderLogEntry:
