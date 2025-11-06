@@ -7,6 +7,7 @@ byceps.services.shop.order.order_action_service
 """
 
 from collections import defaultdict
+from collections.abc import Iterator
 from uuid import UUID
 
 from sqlalchemy import delete, select
@@ -131,13 +132,7 @@ def _execute_actions(
     order: Order, payment_state: PaymentState, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     """Execute relevant actions for this order in its new payment state."""
-    actions_by_product_id = _get_actions_by_product_id(order)
-
-    for line_item in order.line_items:
-        actions = actions_by_product_id.get(line_item.product_id)
-        if not actions:
-            continue
-
+    for line_item, actions in _get_line_items_with_actions(order):
         for action in actions:
             match _execute_action(
                 action, order, payment_state, line_item, initiator
@@ -148,14 +143,19 @@ def _execute_actions(
     return Ok(None)
 
 
-def _get_actions_by_product_id(order: Order) -> dict[ProductID, list[Action]]:
+def _get_line_items_with_actions(
+    order: Order,
+) -> Iterator[tuple[LineItem, list[Action]]]:
     product_ids = {line_item.product_id for line_item in order.line_items}
 
     actions_by_product_id: dict[ProductID, list[Action]] = defaultdict(list)
     for action in _get_actions(product_ids):
         actions_by_product_id[action.product_id].append(action)
 
-    return dict(actions_by_product_id)
+    for line_item in order.line_items:
+        actions = actions_by_product_id.get(line_item.product_id)
+        if actions:
+            yield line_item, actions
 
 
 def _get_actions(product_ids: set[ProductID]) -> list[Action]:
