@@ -25,6 +25,36 @@
           </div>
           {%- endif %}
         </div>
+      <div class="data-label">Steam</div>
+      <div class="row mb">
+        {%- if steam_account %}
+        <div class="column-auto column-auto--grow">
+          <div class="data-value">
+            {{ render_icon('enabled', color='#009900') }}
+            {{ _('connected as') }} <strong>{{ steam_account.external_name }}</strong>
+          </div>
+        </div>
+        <div class="column-auto">
+          <a class="button is-compact"
+             href="{{ url_for('connected_external_accounts_steam.remove') }}"
+             data-action="steam-remove"
+             title="{{ _('Disconnect account') }}">
+            {{ render_icon('remove', color='#cc0000') }}
+          </a>
+        </div>
+        {%- else -%}
+        <div class="column-auto column-auto--grow">
+          <div class="data-value dimmed">{{ _('not connected') }}</div>
+        </div>
+        <div class="column-auto">
+          <a class="button is-compact"
+             href="{{ url_for('connected_external_accounts_steam.connect') }}"
+             title="{{ _('Connect account') }}">
+            {{ render_icon('add') }}
+          </a>
+        </div>
+        {%- endif %}
+      </div>
 
       </div>
     </div>

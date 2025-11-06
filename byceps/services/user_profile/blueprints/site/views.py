@@ -10,6 +10,7 @@ from operator import attrgetter
 
 from flask import abort, g
 
+from byceps.services.external_accounts import external_accounts_service
 from byceps.services.orga_team import orga_team_service
 from byceps.services.ticketing import ticket_attendance_service, ticket_service
 from byceps.services.user import user_service
@@ -52,10 +53,19 @@ def view(user_id):
     attended_parties = [party for party in attended_parties if not party.hidden]
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
 
+    discord_account = external_accounts_service.find_connected_external_account_for_user_and_service(
+        user.id, 'discord'
+    )
+    steam_account = external_accounts_service.find_connected_external_account_for_user_and_service(
+        user.id, 'steam'
+    )
+
     return {
         'user': user,
         'badges_with_awarding_quantity': badges_with_awarding_quantity,
         'orga_teams': orga_teams,
         'current_party_tickets': current_party_tickets,
         'attended_parties': attended_parties,
+        'discord_account': discord_account,   
+        'steam_account': steam_account,       
     }

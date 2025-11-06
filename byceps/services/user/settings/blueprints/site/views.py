@@ -65,6 +65,10 @@ def view():
         g.user.id, 'discord'
     )
 
+    steam_account = external_accounts_service.find_connected_external_account_for_user_and_service(
+        g.user.id, 'steam'
+    )
+
     return {
         'user': user,
         'user_locale': user_locale,
@@ -75,6 +79,7 @@ def view():
         'newsletter_list': newsletter_list,
         'subscribed_to_newsletter': subscribed_to_newsletter,
         'discord_account': discord_account,
+        'steam_account': steam_account,      # ← NEU
     }
 
 

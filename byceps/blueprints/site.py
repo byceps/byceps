@@ -28,6 +28,10 @@ def register_site_blueprints(
             'services.external_accounts.discord.blueprints.site',
             '/connected_external_accounts/discord',
         ),
+        (
+            'services.external_accounts.steam.blueprints.site',
+            '/connected_external_accounts/steam',
+        ),
         ('services.consent.blueprints.site', '/consent'),
         ('services.core.blueprints.site', None),
         ('services.dashboard.blueprints.site', '/dashboard'),

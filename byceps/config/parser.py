@@ -35,6 +35,7 @@ from .models import (
     RedisConfig,
     SiteAppConfig,
     SmtpConfig,
+    SteamConfig,
     StripeConfig,
 )
 from .util import find_duplicate_server_names, iterate_app_configs
@@ -193,6 +194,15 @@ _SECTION_DEFINITIONS = [
             Field('client_secret', required=True),
         ],
         config_class=DiscordConfig,
+        required=False,
+    ),
+    Section(
+        name='steam',
+        fields=[
+            Field('enabled', type_=ValueType.Boolean, required=True),
+            Field('api_key', required=False, default=''),
+        ],
+        config_class=SteamConfig,
         required=False,
     ),
     Section(

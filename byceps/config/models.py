@@ -53,6 +53,7 @@ class BycepsConfig:
     database: DatabaseConfig
     development: DevelopmentConfig
     discord: DiscordConfig | None
+    steam: SteamConfig | None = None
     invoiceninja: InvoiceNinjaConfig | None
     jobs: JobsConfig
     metrics: MetricsConfig
@@ -124,6 +125,10 @@ class DiscordConfig:
     client_id: str
     client_secret: str
 
+@dataclass(frozen=True)
+class SteamConfig:
+    enabled: bool
+    api_key: str | None = None
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class InvoiceNinjaConfig:

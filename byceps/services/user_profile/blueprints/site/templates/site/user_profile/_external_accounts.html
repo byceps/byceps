@@ -1,0 +1,36 @@
+{% from 'macros/icons.html' import render_icon %}
+
+{# Zeigt die öffentlich sichtbaren, verknüpften Accounts eines Users. #}
+{% set has_any = discord_account or steam_account %}
+
+<div class="block">
+  <h2 class="title">{{ _('Accounts') }}</h2>
+
+  {% if has_any %}
+  <table class="itemlist is-compact is-wide">
+    {% if discord_account %}
+    <tr>
+      <th>Discord</th>
+      <td>
+        {# Discord hat i. d. R. kein öffentliches Profilziel – wir zeigen den Namen. #}
+        <span>{{ discord_account.external_name }}</span>
+      </td>
+    </tr>
+    {% endif %}
+
+    {% if steam_account %}
+    <tr>
+    <th>Steam</th>
+    <td>
+        <a href="https://steamcommunity.com/profiles/{{ steam_account.external_id }}"
+        target="_blank" rel="noopener">
+        {{ steam_account.external_name or steam_account.external_id }}
+        </a>
+    </td>
+    </tr>
+    {% endif %}
+  </table>
+  {% else %}
+    <p class="dimmed">{{ _('No accounts connected.') }}</p>
+  {% endif %}
+</div>
