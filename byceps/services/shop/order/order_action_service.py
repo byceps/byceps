@@ -118,24 +118,29 @@ def execute_creation_actions(
     order: Order, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     """Execute item creation actions for this order."""
-    return _execute_actions(order, PaymentState.paid, initiator)
+    for line_item, actions in _get_line_items_with_actions(order):
+        for action in actions:
+            match _execute_action(
+                action, order, PaymentState.paid, line_item, initiator
+            ):
+                case Err(e):
+                    return Err(e)
+
+    return Ok(None)
 
 
 def execute_revocation_actions(
     order: Order, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     """Execute item revocation actions for this order."""
-    return _execute_actions(order, PaymentState.canceled_after_paid, initiator)
-
-
-def _execute_actions(
-    order: Order, payment_state: PaymentState, initiator: User
-) -> Result[None, OrderActionFailedError]:
-    """Execute relevant actions for this order in its new payment state."""
     for line_item, actions in _get_line_items_with_actions(order):
         for action in actions:
             match _execute_action(
-                action, order, payment_state, line_item, initiator
+                action,
+                order,
+                PaymentState.canceled_after_paid,
+                line_item,
+                initiator,
             ):
                 case Err(e):
                     return Err(e)
