@@ -18,20 +18,26 @@ from .models.log import TicketLogEntry, TicketLogEntryData
 from .models.ticket import TicketID
 
 
-def build_db_entry(
+def build_entry(
     event_type: str,
     ticket_id: TicketID,
     data: TicketLogEntryData,
     *,
     occurred_at: datetime | None = None,
-) -> DbTicketLogEntry:
-    """Assemble, but not persist, a ticket log entry."""
+) -> TicketLogEntry:
+    """Assemble a ticket log entry."""
     entry_id = generate_uuid7()
 
     if occurred_at is None:
         occurred_at = datetime.utcnow()
 
-    return DbTicketLogEntry(entry_id, occurred_at, event_type, ticket_id, data)
+    return TicketLogEntry(
+        id=entry_id,
+        occurred_at=occurred_at,
+        event_type=event_type,
+        ticket_id=ticket_id,
+        data=data,
+    )
 
 
 def to_db_entry(entry: TicketLogEntry) -> DbTicketLogEntry:

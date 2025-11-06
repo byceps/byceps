@@ -110,7 +110,7 @@ def revert_user_check_in(ticket_id: TicketID, initiator: User) -> None:
 
     db_ticket.user_checked_in = False
 
-    db_log_entry = ticket_log_service.build_db_entry(
+    log_entry = ticket_log_service.build_entry(
         'user-check-in-reverted',
         db_ticket.id,
         {
@@ -118,6 +118,7 @@ def revert_user_check_in(ticket_id: TicketID, initiator: User) -> None:
             'initiator_id': str(initiator.id),
         },
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()

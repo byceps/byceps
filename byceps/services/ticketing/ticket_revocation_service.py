@@ -73,4 +73,7 @@ def build_ticket_revoked_log_entry(
     if reason:
         data['reason'] = reason
 
-    return ticket_log_service.build_db_entry('ticket-revoked', ticket_id, data)
+    log_entry = ticket_log_service.build_entry(
+        'ticket-revoked', ticket_id, data
+    )
+    return ticket_log_service.to_db_entry(log_entry)

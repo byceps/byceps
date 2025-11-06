@@ -44,7 +44,7 @@ def update_ticket_code(
 
     db_ticket.code = code
 
-    db_log_entry = ticket_log_service.build_db_entry(
+    log_entry = ticket_log_service.build_entry(
         'ticket-code-changed',
         db_ticket.id,
         {
@@ -53,6 +53,7 @@ def update_ticket_code(
             'initiator_id': str(initiator_id),
         },
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()

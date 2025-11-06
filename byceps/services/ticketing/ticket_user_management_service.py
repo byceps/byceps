@@ -35,7 +35,7 @@ def appoint_user_manager(
 
     db_ticket.user_managed_by_id = manager_id
 
-    db_log_entry = ticket_log_service.build_db_entry(
+    log_entry = ticket_log_service.build_entry(
         'user-manager-appointed',
         db_ticket.id,
         {
@@ -43,6 +43,7 @@ def appoint_user_manager(
             'initiator_id': str(initiator_id),
         },
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()
@@ -63,13 +64,14 @@ def withdraw_user_manager(
 
     db_ticket.user_managed_by_id = None
 
-    db_log_entry = ticket_log_service.build_db_entry(
+    log_entry = ticket_log_service.build_entry(
         'user-manager-withdrawn',
         db_ticket.id,
         {
             'initiator_id': str(initiator_id),
         },
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()
@@ -108,7 +110,7 @@ def appoint_user(
 
     db_ticket.used_by_id = user_id
 
-    db_log_entry = ticket_log_service.build_db_entry(
+    log_entry = ticket_log_service.build_entry(
         'user-appointed',
         db_ticket.id,
         {
@@ -116,6 +118,7 @@ def appoint_user(
             'initiator_id': str(initiator_id),
         },
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()
@@ -143,13 +146,14 @@ def withdraw_user(
 
     db_ticket.used_by_id = None
 
-    db_log_entry = ticket_log_service.build_db_entry(
+    log_entry = ticket_log_service.build_entry(
         'user-withdrawn',
         db_ticket.id,
         {
             'initiator_id': str(initiator_id),
         },
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()
