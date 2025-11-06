@@ -16,7 +16,12 @@ from byceps.services.shop.order import (
     order_log_service,
 )
 from byceps.services.shop.order.models.log import OrderLogEntry
-from byceps.services.shop.order.models.order import LineItem, Order, OrderID
+from byceps.services.shop.order.models.order import (
+    LineItem,
+    Order,
+    OrderID,
+    PaidOrder,
+)
 from byceps.services.ticketing import (
     ticket_creation_service,
     ticket_revocation_service,
@@ -28,7 +33,7 @@ from byceps.services.user.models.user import User
 
 
 def create_tickets(
-    order: Order,
+    order: PaidOrder,
     line_item: LineItem,
     ticket_category: TicketCategory,
     initiator: User,

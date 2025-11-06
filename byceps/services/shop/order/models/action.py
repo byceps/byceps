@@ -16,7 +16,7 @@ from byceps.services.shop.product.models import ProductID
 from byceps.services.user.models.user import User
 from byceps.util.result import Result
 
-from .order import LineItem, Order
+from .order import LineItem, Order, PaidOrder
 
 
 ActionParameters = dict[str, Any]
@@ -33,7 +33,7 @@ class Action:
 @dataclass(frozen=True, kw_only=True)
 class ActionProcedure:
     on_payment: Callable[
-        [Order, LineItem, User, ActionParameters],
+        [PaidOrder, LineItem, User, ActionParameters],
         Result[None, OrderActionFailedError],
     ]
     on_cancellation_after_payment: Callable[

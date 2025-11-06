@@ -10,7 +10,12 @@ from byceps.services.shop.order import order_log_service
 from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.log import OrderLogEntry
-from byceps.services.shop.order.models.order import LineItem, Order, OrderID
+from byceps.services.shop.order.models.order import (
+    LineItem,
+    Order,
+    OrderID,
+    PaidOrder,
+)
 from byceps.services.user.models.user import User
 from byceps.services.user_badge import (
     user_badge_awarding_service,
@@ -21,7 +26,7 @@ from byceps.util.result import Err, Ok, Result
 
 
 def on_payment(
-    order: Order,
+    order: PaidOrder,
     line_item: LineItem,
     initiator: User,
     parameters: ActionParameters,

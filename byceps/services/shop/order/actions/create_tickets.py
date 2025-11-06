@@ -8,7 +8,7 @@ byceps.services.shop.order.actions.create_tickets
 
 from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
-from byceps.services.shop.order.models.order import LineItem, Order
+from byceps.services.shop.order.models.order import LineItem, PaidOrder
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Ok, Result
@@ -17,7 +17,7 @@ from . import ticket
 
 
 def on_payment(
-    order: Order,
+    order: PaidOrder,
     line_item: LineItem,
     initiator: User,
     parameters: ActionParameters,

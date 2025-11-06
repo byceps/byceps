@@ -28,7 +28,7 @@ from .actions import user_badge as user_badge_actions
 from .dbmodels.order_action import DbOrderAction
 from .errors import OrderActionFailedError
 from .models.action import Action, ActionParameters, ActionProcedure
-from .models.order import LineItem, Order, PaymentState
+from .models.order import LineItem, Order, PaidOrder, PaymentState
 
 
 log = structlog.get_logger()
@@ -115,7 +115,7 @@ def _db_entity_to_action(db_action: DbOrderAction) -> Action:
 
 
 def execute_creation_actions(
-    order: Order, initiator: User
+    order: PaidOrder, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     """Execute item creation actions for this order."""
     for line_item, actions in _get_line_items_with_actions(order):
@@ -177,7 +177,7 @@ def _get_actions(product_ids: set[ProductID]) -> list[Action]:
 
 def _execute_creation_action(
     action: Action,
-    order: Order,
+    order: PaidOrder,
     payment_state: PaymentState,
     line_item: LineItem,
     initiator: User,

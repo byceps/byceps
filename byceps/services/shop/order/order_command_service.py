@@ -286,7 +286,7 @@ def _update_payment_state(
 
 
 def _execute_product_creation_actions(
-    order: Order, initiator: User
+    order: PaidOrder, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     # based on product type
     for line_item in order.line_items:
