@@ -24,6 +24,7 @@ from .models import (
     ApiAppConfig,
     AppsConfig,
     BycepsConfig,
+    CloudflareTurnstileConfig,  # NEW
     DatabaseConfig,
     DevelopmentConfig,
     DiscordConfig,
@@ -306,6 +307,18 @@ _SECTION_DEFINITIONS = [
         ],
         config_class=SmtpConfig,
         required=True,
+    ),
+    # Cloudflare Turnstile
+    Section(
+        name='cloudflare_turnstile',
+        fields=[
+            Field('enabled',     type_=ValueType.Boolean, required=False, default=False),
+            Field('sitekey',     required=False, default=""),
+            Field('secret_key',  required=False, default=""),
+        ],
+        config_class=CloudflareTurnstileConfig,
+        required=False,
+        default=CloudflareTurnstileConfig(),
     ),
 ]
 

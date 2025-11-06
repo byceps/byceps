@@ -10,6 +10,7 @@ Configuration models
 
 from __future__ import annotations
 from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 
@@ -41,6 +42,14 @@ class AppMode(Enum):
         return f'{self.__class__.__name__}[{self.name}]'
 
 
+# First define Turnstile configuration
+@dataclass(frozen=True, kw_only=True, slots=True)
+class CloudflareTurnstileConfig:
+    enabled: bool = False
+    sitekey: str = ""    
+    secret_key: str = ""   
+
+
 @dataclass(frozen=True, kw_only=True, slots=True)
 class BycepsConfig:
     data_path: Path
@@ -59,6 +68,9 @@ class BycepsConfig:
     payment_gateways: PaymentGatewaysConfig | None
     redis: RedisConfig
     smtp: SmtpConfig
+    cloudflare_turnstile: CloudflareTurnstileConfig = field(
+        default_factory=CloudflareTurnstileConfig
+    )
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
