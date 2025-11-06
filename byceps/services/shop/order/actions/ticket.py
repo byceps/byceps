@@ -59,8 +59,8 @@ def create_tickets(
     order_command_service.update_line_item_processing_result(line_item.id, data)
 
     tickets_sold_event = order_event_service.create_tickets_sold_event(
-        order.id, initiator, ticket_category, owner, ticket_quantity
-    ).unwrap()
+        order, initiator, ticket_category, owner, ticket_quantity
+    )
     order_event_service.send_tickets_sold_event(tickets_sold_event)
 
 

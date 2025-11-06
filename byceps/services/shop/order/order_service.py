@@ -20,15 +20,11 @@ from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
-from byceps.util.result import Err, Ok, Result
 
 from . import (
     order_payment_service,
 )
 from .dbmodels.order import DbOrder
-from .errors import (
-    OrderNotPaidError,
-)
 from .models.detailed_order import AdminDetailedOrder, DetailedOrder
 from .models.number import OrderNumber
 from .models.order import (
@@ -469,18 +465,6 @@ def find_payment_method_label(payment_method: str) -> str | None:
     """Return a label for the payment method."""
     label = _PAYMENT_METHOD_LABELS.get(payment_method)
     return label or payment_method
-
-
-def get_payment_date(order_id: OrderID) -> Result[datetime, OrderNotPaidError]:
-    """Return the date the order has been marked as paid."""
-    paid_at = db.session.scalar(
-        select(DbOrder.payment_state_updated_at).filter_by(id=order_id)
-    )
-
-    if not paid_at:
-        return Err(OrderNotPaidError())
-
-    return Ok(paid_at)
 
 
 def _db_orders_to_transfer_objects_with_orderer_users(

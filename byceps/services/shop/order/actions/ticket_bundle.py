@@ -67,12 +67,12 @@ def create_ticket_bundles(
 
     total_quantity = ticket_quantity_per_bundle * bundle_quantity
     tickets_sold_event = order_event_service.create_tickets_sold_event(
-        order.id,
+        order,
         initiator,
         ticket_category,
         owner,
         total_quantity,
-    ).unwrap()
+    )
     order_event_service.send_tickets_sold_event(tickets_sold_event)
 
 
