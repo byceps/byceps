@@ -61,6 +61,7 @@ class WhereaboutsClient:
     audio_output: bool
     authority_status: WhereaboutsClientAuthorityStatus
     token: str | None
+    name: str | None
     location: str | None
     description: str | None
     config_id: WhereaboutsClientConfigID | None

@@ -88,7 +88,7 @@
 <table class="itemlist is-vcentered is-wide">
   <thead>
     <tr>
-      <th>{{ _('ID') }}</th>
+      <th>{{ _('Name') }}<br>{{ _('ID') }}</th>
       <th class="nowrap">{{ _('Registered at') }}</th>
       <th class="centered">{{ _('Interactivity') }}<br></th>
       <th>{{ _('Location') }}<br>{{ _('Description') }}</th>
@@ -101,7 +101,7 @@
   <tbody>
     {%- for client in approved_clients|sort(attribute='registered_at', reverse=True) %}
     <tr>
-      <td>{{ render_client_id(client) }}</td>
+      <td><strong>{{ client.name|fallback }}</strong><br>{{ render_client_id(client) }}</td>
       <td class="nowrap"><time datetime="{{ client.registered_at.isoformat() }}" title="{{ client.registered_at|datetimeformat }}">{{ _('since') }} {{ client.registered_at|timedeltaformat }}</time></td>
       <td class="centered">{{ render_interactivity(client) }}</td>
       <td>{{ client.location|fallback }}<br>{{ client.description|fallback }}</td>
@@ -128,7 +128,7 @@
 <table class="itemlist is-vcentered is-wide">
   <thead>
     <tr>
-      <th>{{ _('ID') }}</th>
+      <th>{{ _('Name') }}<br>{{ _('ID') }}</th>
       <th class="nowrap">{{ _('Registered at') }}</th>
       <th class="centered">{{ _('Interactivity') }}<br></th>
       <th>{{ _('Location') }}<br>{{ _('Description') }}</th>
@@ -139,7 +139,7 @@
   <tbody>
     {%- for client in deleted_clients|sort(attribute='registered_at', reverse=True) %}
     <tr>
-      <td>{{ render_client_id(client) }}</td>
+      <td><strong>{{ client.name|fallback }}</strong><br>{{ render_client_id(client) }}</td>
       <td><time datetime="{{ client.registered_at.isoformat() }}" title="{{ client.registered_at|datetimeformat }}">{{ _('since') }} {{ client.registered_at|timedeltaformat }}</time></td>
       <td class="centered">{{ render_interactivity(client) }}</td>
       <td>{{ client.location|fallback }}<br>{{ client.description|fallback }}</td>

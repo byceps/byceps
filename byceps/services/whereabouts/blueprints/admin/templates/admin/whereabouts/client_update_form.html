@@ -15,7 +15,8 @@
 
   <form action="{{ url_for('.client_update', client_id=client.id) }}" method="post">
     <div class="box">
-      {{ form_field(form.location, autofocus='autofocus') }}
+      {{ form_field(form.name, autofocus='autofocus') }}
+      {{ form_field(form.location) }}
       {{ form_field(form.description) }}
     </div>
 

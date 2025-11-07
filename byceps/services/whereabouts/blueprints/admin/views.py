@@ -222,10 +222,13 @@ def client_update(client_id):
     if not form.validate():
         return client_update_form(client.id, form)
 
+    name = form.name.data.strip() or None
     location = form.location.data.strip() or None
     description = form.description.data.strip() or None
 
-    whereabouts_client_service.update_client(client, location, description)
+    whereabouts_client_service.update_client(
+        client, name, location, description
+    )
 
     flash_success(gettext('The object has been updated.'))
 

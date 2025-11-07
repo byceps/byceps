@@ -74,6 +74,7 @@ class DbWhereaboutsClient(db.Model):
     token: Mapped[str | None] = mapped_column(
         db.UnicodeText, unique=True, index=True
     )
+    name: Mapped[str | None] = mapped_column(db.UnicodeText, unique=True)
     location: Mapped[str | None] = mapped_column(db.UnicodeText)
     description: Mapped[str | None] = mapped_column(db.UnicodeText)
     config_id: Mapped[WhereaboutsClientConfigID | None] = mapped_column(

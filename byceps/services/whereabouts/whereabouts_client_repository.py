@@ -63,6 +63,7 @@ def persist_client_update(client: WhereaboutsClient) -> None:
 
     db_client.authority_status = client.authority_status
     db_client.token = client.token
+    db_client.name = client.name
     db_client.location = client.location
     db_client.description = client.description
 

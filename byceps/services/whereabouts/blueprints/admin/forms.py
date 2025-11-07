@@ -16,6 +16,7 @@ from byceps.util.l10n import LocalizedForm
 
 
 class ClientUpdateForm(LocalizedForm):
+    name = StringField(lazy_gettext('Name'), [Optional()])
     location = StringField(lazy_gettext('Location'), [Optional()])
     description = StringField(lazy_gettext('Description'), [Optional()])
 

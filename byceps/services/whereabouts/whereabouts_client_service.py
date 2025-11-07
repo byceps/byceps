@@ -121,11 +121,14 @@ def delete_client_candidate(client: WhereaboutsClient, initiator: User) -> None:
 
 
 def update_client(
-    client: WhereaboutsClient, location: str | None, description: str | None
+    client: WhereaboutsClient,
+    name: str | None,
+    location: str | None,
+    description: str | None,
 ) -> None:
     """Update a client."""
     updated_client = whereabouts_client_domain_service.update_client(
-        client, location, description
+        client, name, location, description
     )
 
     whereabouts_client_repository.persist_client_update(updated_client)
@@ -259,6 +262,7 @@ def _db_entity_to_client(db_client: DbWhereaboutsClient) -> WhereaboutsClient:
         audio_output=db_client.audio_output,
         authority_status=db_client.authority_status,
         token=db_client.token,
+        name=db_client.name,
         location=db_client.location,
         description=db_client.description,
         config_id=db_client.config_id,

@@ -71,6 +71,7 @@ def approve_client(
         audio_output=candidate.audio_output,
         authority_status=WhereaboutsClientAuthorityStatus.approved,
         token=candidate.token,
+        name=None,
         location=None,
         description=None,
         config_id=None,
@@ -86,11 +87,14 @@ def approve_client(
 
 
 def update_client(
-    client: WhereaboutsClient, location: str | None, description: str | None
+    client: WhereaboutsClient,
+    name: str | None,
+    location: str | None,
+    description: str | None,
 ) -> WhereaboutsClient:
     """Update a client."""
     return dataclasses.replace(
-        client, location=location, description=description
+        client, name=name, location=location, description=description
     )
 
 

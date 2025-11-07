@@ -93,6 +93,7 @@ def make_client():
             audio_output=True,
             authority_status=authority_status,
             token=generate_token(),
+            name=None,
             location=None,
             description=None,
             config_id=None,
