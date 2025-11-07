@@ -10,7 +10,7 @@ from byceps.database import db
 from byceps.services.user.models.user import UserID
 
 from . import ticket_log_service, ticket_seat_management_service, ticket_service
-from .dbmodels.log import DbTicketLogEntry
+from .models.log import TicketLogEntry
 from .models.ticket import TicketID
 
 
@@ -28,9 +28,10 @@ def revoke_ticket(
 
     db_ticket.revoked = True
 
-    db_log_entry = build_ticket_revoked_log_entry(
+    log_entry = build_ticket_revoked_log_entry(
         db_ticket.id, initiator_id, reason
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()
@@ -55,9 +56,10 @@ def revoke_tickets(
     for db_ticket in db_tickets:
         db_ticket.revoked = True
 
-        db_log_entry = build_ticket_revoked_log_entry(
+        log_entry = build_ticket_revoked_log_entry(
             db_ticket.id, initiator_id, reason
         )
+        db_log_entry = ticket_log_service.to_db_entry(log_entry)
         db.session.add(db_log_entry)
 
     db.session.commit()
@@ -65,7 +67,7 @@ def revoke_tickets(
 
 def build_ticket_revoked_log_entry(
     ticket_id: TicketID, initiator_id: UserID, reason: str | None = None
-) -> DbTicketLogEntry:
+) -> TicketLogEntry:
     data = {
         'initiator_id': str(initiator_id),
     }
@@ -73,7 +75,4 @@ def build_ticket_revoked_log_entry(
     if reason:
         data['reason'] = reason
 
-    log_entry = ticket_log_service.build_entry(
-        'ticket-revoked', ticket_id, data
-    )
-    return ticket_log_service.to_db_entry(log_entry)
+    return ticket_log_service.build_entry('ticket-revoked', ticket_id, data)

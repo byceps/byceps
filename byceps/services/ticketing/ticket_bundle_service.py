@@ -23,7 +23,7 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import ticket_category_service
+from . import ticket_category_service, ticket_log_service
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
@@ -122,9 +122,10 @@ def revoke_bundle(
     for db_ticket in db_bundle.tickets:
         db_ticket.revoked = True
 
-        db_log_entry = build_ticket_revoked_log_entry(
+        log_entry = build_ticket_revoked_log_entry(
             db_ticket.id, initiator.id, reason
         )
+        db_log_entry = ticket_log_service.to_db_entry(log_entry)
         db.session.add(db_log_entry)
 
     db.session.commit()
