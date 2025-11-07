@@ -15,7 +15,7 @@ from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
-from .models import List, ListID, Subscriber
+from .models import List, ListID, Subscriber, SubscriptionUpdate
 
 
 def find_list(list_id: ListID) -> List | None:
@@ -89,9 +89,14 @@ def get_subscription_updates_for_user(
     user_id: UserID,
 ) -> Sequence[DbSubscriptionUpdate]:
     """Return subscription updates made by the user, for any list."""
-    return db.session.scalars(
+    db_subscription_updates = db.session.scalars(
         select(DbSubscriptionUpdate).filter_by(user_id=user_id)
     ).all()
+
+    return [
+        _db_entity_to_subscription_update(db_subscription_update)
+        for db_subscription_update in db_subscription_updates
+    ]
 
 
 def get_lists_user_is_subscribed_to(user_id: UserID) -> set[List]:
@@ -121,4 +126,15 @@ def _db_entity_to_list(db_list: DbList) -> List:
     return List(
         id=db_list.id,
         title=db_list.title,
+    )
+
+
+def _db_entity_to_subscription_update(
+    db_subscription_update: DbSubscriptionUpdate,
+) -> SubscriptionUpdate:
+    return SubscriptionUpdate(
+        user_id=db_subscription_update.user_id,
+        list_id=db_subscription_update.list_id,
+        expressed_at=db_subscription_update.expressed_at,
+        state=db_subscription_update.state,
     )
