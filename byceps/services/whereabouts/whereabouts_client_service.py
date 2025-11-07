@@ -247,15 +247,12 @@ def _db_entity_to_client_with_liveliness_status(
 ) -> WhereaboutsClientWithLivelinessStatus:
     client = _db_entity_to_client(db_client)
 
-    signed_on = (
-        db_liveliness_status.signed_on if db_liveliness_status else False
-    )
-
-    latest_activity_at = (
-        db_liveliness_status.latest_activity_at
-        if db_liveliness_status
-        else client.registered_at
-    )
+    if db_liveliness_status:
+        signed_on = db_liveliness_status.signed_on
+        latest_activity_at = db_liveliness_status.latest_activity_at
+    else:
+        signed_on = False
+        latest_activity_at = client.registered_at
 
     return WhereaboutsClientWithLivelinessStatus(
         **dataclasses.asdict(client),
