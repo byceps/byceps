@@ -15,6 +15,8 @@ from byceps.services.shop.order import (
     order_event_service,
     order_log_service,
 )
+from byceps.services.shop.order.errors import OrderActionFailedError
+from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import (
     LineItem,
@@ -22,7 +24,10 @@ from byceps.services.shop.order.models.order import (
     OrderID,
     PaidOrder,
 )
-from byceps.services.ticketing import ticket_bundle_service
+from byceps.services.ticketing import (
+    ticket_bundle_service,
+    ticket_category_service,
+)
 from byceps.services.ticketing.models.ticket import (
     TicketBundle,
     TicketBundleID,
@@ -30,6 +35,43 @@ from byceps.services.ticketing.models.ticket import (
 )
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
+
+
+def on_payment(
+    order: PaidOrder,
+    line_item: LineItem,
+    initiator: User,
+    parameters: ActionParameters,
+) -> Result[None, OrderActionFailedError]:
+    """Create ticket bundles."""
+    ticket_category_id = parameters['category_id']
+    ticket_category = ticket_category_service.get_category(ticket_category_id)
+
+    ticket_quantity_per_bundle = parameters['ticket_quantity']
+
+    create_ticket_bundles(
+        order,
+        line_item,
+        ticket_category,
+        ticket_quantity_per_bundle,
+        initiator,
+    )
+
+    return Ok(None)
+
+
+def on_cancellation_after_payment(
+    order: Order,
+    line_item: LineItem,
+    initiator: User,
+    parameters: ActionParameters,
+) -> Result[None, OrderActionFailedError]:
+    """Revoke all ticket bundles in this order."""
+    match revoke_ticket_bundles(order, line_item, initiator):
+        case Ok(_):
+            return Ok(None)
+        case Err(e):
+            return Err(OrderActionFailedError(e))
 
 
 def create_ticket_bundles(

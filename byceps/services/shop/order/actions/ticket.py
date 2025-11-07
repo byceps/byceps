@@ -15,6 +15,8 @@ from byceps.services.shop.order import (
     order_event_service,
     order_log_service,
 )
+from byceps.services.shop.order.errors import OrderActionFailedError
+from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import (
     LineItem,
@@ -23,6 +25,7 @@ from byceps.services.shop.order.models.order import (
     PaidOrder,
 )
 from byceps.services.ticketing import (
+    ticket_category_service,
     ticket_creation_service,
     ticket_revocation_service,
     ticket_service,
@@ -30,6 +33,34 @@ from byceps.services.ticketing import (
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketCategory, TicketID
 from byceps.services.user.models.user import User
+from byceps.util.result import Ok, Result
+
+
+def on_payment(
+    order: PaidOrder,
+    line_item: LineItem,
+    initiator: User,
+    parameters: ActionParameters,
+) -> Result[None, OrderActionFailedError]:
+    """Create tickets."""
+    ticket_category_id = parameters['category_id']
+    ticket_category = ticket_category_service.get_category(ticket_category_id)
+
+    create_tickets(order, line_item, ticket_category, initiator)
+
+    return Ok(None)
+
+
+def on_cancellation_after_payment(
+    order: Order,
+    line_item: LineItem,
+    initiator: User,
+    parameters: ActionParameters,
+) -> Result[None, OrderActionFailedError]:
+    """Revoke all tickets in the order."""
+    revoke_tickets(order, line_item, initiator)
+
+    return Ok(None)
 
 
 def create_tickets(

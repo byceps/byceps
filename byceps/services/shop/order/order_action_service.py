@@ -20,10 +20,8 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from .actions import create_ticket_bundles
-from .actions import create_tickets
-from .actions import revoke_ticket_bundles
-from .actions import revoke_tickets
+from .actions import ticket as ticket_actions
+from .actions import ticket_bundle as ticket_bundle_actions
 from .actions import user_badge as user_badge_actions
 from .dbmodels.order_action import DbOrderAction
 from .errors import OrderActionFailedError
@@ -40,12 +38,12 @@ PROCEDURES_BY_NAME: dict[str, ActionProcedure] = {
         on_cancellation_after_payment=user_badge_actions.on_cancellation_after_payment,
     ),
     'create_ticket_bundles': ActionProcedure(
-        on_payment=create_ticket_bundles.on_payment,
-        on_cancellation_after_payment=revoke_ticket_bundles.on_cancellation_after_payment,
+        on_payment=ticket_bundle_actions.on_payment,
+        on_cancellation_after_payment=ticket_bundle_actions.on_cancellation_after_payment,
     ),
     'create_tickets': ActionProcedure(
-        on_payment=create_tickets.on_payment,
-        on_cancellation_after_payment=revoke_tickets.on_cancellation_after_payment,
+        on_payment=ticket_actions.on_payment,
+        on_cancellation_after_payment=ticket_actions.on_cancellation_after_payment,
     ),
 }
 
