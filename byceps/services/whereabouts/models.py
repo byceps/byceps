@@ -78,6 +78,13 @@ class WhereaboutsClient:
 
 
 @dataclass(frozen=True, kw_only=True)
+class WhereaboutsClientLivelinessStatus:
+    client_id: WhereaboutsClientID
+    signed_on: bool
+    latest_activity_at: datetime
+
+
+@dataclass(frozen=True, kw_only=True)
 class WhereaboutsClientWithLivelinessStatus(WhereaboutsClient):
     signed_on: bool
     latest_activity_at: datetime

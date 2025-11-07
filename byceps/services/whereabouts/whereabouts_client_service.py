@@ -32,6 +32,7 @@ from .models import (
     WhereaboutsClientCandidate,
     WhereaboutsClientConfig,
     WhereaboutsClientID,
+    WhereaboutsClientLivelinessStatus,
     WhereaboutsClientWithLivelinessStatus,
 )
 
@@ -273,6 +274,16 @@ def _db_entity_to_client(db_client: DbWhereaboutsClient) -> WhereaboutsClient:
         location=db_client.location,
         description=db_client.description,
         config_id=db_client.config_id,
+    )
+
+
+def _db_entity_to_client_liveliness_status(
+    db_liveliness_status: DbWhereaboutsClientLivelinessStatus,
+) -> WhereaboutsClientLivelinessStatus:
+    return WhereaboutsClientLivelinessStatus(
+        client_id=db_liveliness_status.client_id,
+        signed_on=db_liveliness_status.signed_on,
+        latest_activity_at=db_liveliness_status.latest_activity_at,
     )
 
 
