@@ -11,7 +11,10 @@ from wtforms import BooleanField, StringField
 from wtforms.validators import InputRequired, Optional, ValidationError
 
 from byceps.services.user import user_service
-from byceps.services.whereabouts import whereabouts_sound_service
+from byceps.services.whereabouts import (
+    whereabouts_client_service,
+    whereabouts_sound_service,
+)
 from byceps.util.l10n import LocalizedForm
 
 
@@ -19,6 +22,12 @@ class ClientUpdateForm(LocalizedForm):
     name = StringField(lazy_gettext('Name'), [Optional()])
     location = StringField(lazy_gettext('Location'), [Optional()])
     description = StringField(lazy_gettext('Description'), [Optional()])
+
+    @staticmethod
+    def validate_name(form, field):
+        name = field.data
+        if whereabouts_client_service.find_client_by_name(name) is not None:
+            raise ValidationError(lazy_gettext('The value is already in use.'))
 
 
 class WhereaboutsCreateForm(LocalizedForm):

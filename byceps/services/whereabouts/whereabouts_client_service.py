@@ -217,6 +217,16 @@ def find_client_by_token(token: str) -> WhereaboutsClient | None:
     return _db_entity_to_client(db_client)
 
 
+def find_client_by_name(name: str) -> WhereaboutsClient | None:
+    """Return client with that name, if found."""
+    db_client = whereabouts_client_repository.find_db_client_by_name(name)
+
+    if db_client is None:
+        return None
+
+    return _db_entity_to_client(db_client)
+
+
 def get_all_clients() -> list[WhereaboutsClientWithLivelinessStatus]:
     """Return all clients."""
     db_clients_with_liveliness_status = (

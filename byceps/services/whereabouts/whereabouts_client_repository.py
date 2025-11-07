@@ -130,6 +130,13 @@ def find_db_client_by_token(token: str) -> DbWhereaboutsClient | None:
     ).one_or_none()
 
 
+def find_db_client_by_name(name: str) -> DbWhereaboutsClient | None:
+    """Return client with that name, if found."""
+    return db.session.scalars(
+        select(DbWhereaboutsClient).filter_by(name=name)
+    ).one_or_none()
+
+
 def get_db_all_clients() -> Sequence[
     tuple[DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus]
 ]:
