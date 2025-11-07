@@ -19,7 +19,7 @@ from byceps.services.seating.errors import SeatingError
 from byceps.services.seating.models import SeatGroupID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -27,6 +27,7 @@ from . import ticket_category_service, ticket_log_service
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
+from .models.log import TicketLogEntry
 from .models.ticket import (
     TicketBundle,
     TicketBundleID,
@@ -34,7 +35,6 @@ from .models.ticket import (
     TicketID,
 )
 from .ticket_creation_service import build_tickets, TicketCreationFailedError
-from .ticket_revocation_service import build_ticket_revoked_log_entry
 
 
 @retry(
@@ -122,7 +122,7 @@ def revoke_bundle(
     for db_ticket in db_bundle.tickets:
         db_ticket.revoked = True
 
-        log_entry = build_ticket_revoked_log_entry(
+        log_entry = _build_ticket_revoked_log_entry(
             db_ticket.id, initiator.id, reason
         )
         db_log_entry = ticket_log_service.to_db_entry(log_entry)
@@ -131,6 +131,19 @@ def revoke_bundle(
     db.session.commit()
 
     return Ok(None)
+
+
+def _build_ticket_revoked_log_entry(
+    ticket_id: TicketID, initiator_id: UserID, reason: str | None = None
+) -> TicketLogEntry:
+    data = {
+        'initiator_id': str(initiator_id),
+    }
+
+    if reason:
+        data['reason'] = reason
+
+    return ticket_log_service.build_entry('ticket-revoked', ticket_id, data)
 
 
 def delete_bundle(bundle_id: TicketBundleID) -> None:
