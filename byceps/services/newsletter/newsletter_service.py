@@ -6,21 +6,18 @@ byceps.services.newsletter.newsletter_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterator, Sequence
+from collections.abc import Iterator
 
-from sqlalchemy import select
-
-from byceps.database import db
-from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 
-from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
+from . import newsletter_repository
+from .dbmodels import DbList, DbSubscriptionUpdate
 from .models import List, ListID, Subscriber, SubscriptionUpdate
 
 
 def find_list(list_id: ListID) -> List | None:
     """Return the list with that ID, or `None` if not found."""
-    db_list = db.session.get(DbList, list_id)
+    db_list = newsletter_repository.find_list(list_id)
 
     if db_list is None:
         return None
@@ -30,27 +27,14 @@ def find_list(list_id: ListID) -> List | None:
 
 def get_all_lists() -> list[List]:
     """Return all lists."""
-    db_lists = db.session.scalars(select(DbList)).all()
+    db_lists = newsletter_repository.get_all_lists()
 
     return [_db_entity_to_list(db_list) for db_list in db_lists]
 
 
 def count_subscribers_to_list(list_id: ListID) -> int:
     """Return the number of users that are currently subscribed to that list."""
-    return (
-        db.session.scalar(
-            select(db.func.count())
-            .select_from(DbUser)
-            .join(DbSubscription)
-            .filter(DbSubscription.list_id == list_id)
-            .filter(DbUser.email_address.is_not(None))
-            .filter(DbUser.initialized == True)  # noqa: E712
-            .filter(DbUser.email_address_verified == True)  # noqa: E712
-            .filter(DbUser.suspended == False)  # noqa: E712
-            .filter(DbUser.deleted == False)  # noqa: E712
-        )
-        or 0
-    )
+    return newsletter_repository.count_subscribers_to_list(list_id)
 
 
 def get_subscribers_to_list(list_id: ListID) -> Iterator[Subscriber]:
@@ -63,35 +47,24 @@ def get_subscribers_to_list(list_id: ListID) -> Iterator[Subscriber]:
     - are suspended, or
     - have been deleted.
     """
-    rows = db.session.execute(
-        select(
-            DbUser.screen_name,
-            DbUser.email_address,
-        )
-        .join(DbSubscription)
-        .filter(DbSubscription.list_id == list_id)
-        .filter(DbUser.email_address.is_not(None))
-        .filter(DbUser.initialized == True)  # noqa: E712
-        .filter(DbUser.email_address_verified == True)  # noqa: E712
-        .filter(DbUser.suspended == False)  # noqa: E712
-        .filter(DbUser.deleted == False)  # noqa: E712
-        .order_by(DbUser.email_address)
-    ).all()
+    screen_names_and_email_addresses = (
+        newsletter_repository.get_subscribers_to_list(list_id)
+    )
 
-    for row in rows:
+    for screen_name, email_address in screen_names_and_email_addresses:
         yield Subscriber(
-            screen_name=row.screen_name,
-            email_address=row.email_address,
+            screen_name=screen_name or 'unnamed',
+            email_address=email_address,
         )
 
 
 def get_subscription_updates_for_user(
     user_id: UserID,
-) -> Sequence[DbSubscriptionUpdate]:
+) -> list[SubscriptionUpdate]:
     """Return subscription updates made by the user, for any list."""
-    db_subscription_updates = db.session.scalars(
-        select(DbSubscriptionUpdate).filter_by(user_id=user_id)
-    ).all()
+    db_subscription_updates = (
+        newsletter_repository.get_subscription_updates_for_user(user_id)
+    )
 
     return [
         _db_entity_to_subscription_update(db_subscription_update)
@@ -110,16 +83,7 @@ def get_lists_user_is_subscribed_to(user_id: UserID) -> set[List]:
 
 def is_user_subscribed_to_list(user_id: UserID, list_id: ListID) -> bool:
     """Return if the user is subscribed to the list or not."""
-    return (
-        db.session.scalar(
-            select(
-                db.exists()
-                .where(DbSubscription.user_id == user_id)
-                .where(DbSubscription.list_id == list_id)
-            )
-        )
-        or False
-    )
+    return newsletter_repository.is_user_subscribed_to_list(user_id, list_id)
 
 
 def _db_entity_to_list(db_list: DbList) -> List:
