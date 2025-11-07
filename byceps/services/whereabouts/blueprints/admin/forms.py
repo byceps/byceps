@@ -37,26 +37,25 @@ class WhereaboutsCreateForm(LocalizedForm):
     secret = BooleanField(lazy_pgettext('whereabouts', 'secret'))
 
 
-def validate_user_screen_name(form, field):
-    screen_name = field.data.strip()
-
-    user = user_service.find_user_by_screen_name(screen_name)
-
-    if user is None:
-        raise ValidationError(lazy_gettext('Unknown username'))
-
-    existing_user_sound = whereabouts_sound_service.find_sound_for_user(user.id)
-    if existing_user_sound:
-        raise ValidationError(
-            lazy_gettext('The user already has a sound assigned.')
-        )
-
-    field.data = user
-
-
 class UserSoundCreateForm(LocalizedForm):
-    user = StringField(
-        lazy_gettext('Username'),
-        [InputRequired(), validate_user_screen_name],
-    )
+    user = StringField(lazy_gettext('Username'), [InputRequired()])
     name = StringField(lazy_gettext('Sound name'), [InputRequired()])
+
+    @staticmethod
+    def validate_user(form, field):
+        screen_name = field.data.strip()
+
+        user = user_service.find_user_by_screen_name(screen_name)
+
+        if user is None:
+            raise ValidationError(lazy_gettext('Unknown username'))
+
+        existing_user_sound = whereabouts_sound_service.find_sound_for_user(
+            user.id
+        )
+        if existing_user_sound:
+            raise ValidationError(
+                lazy_gettext('The user already has a sound assigned.')
+            )
+
+        field.data = user
