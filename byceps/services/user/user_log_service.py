@@ -18,39 +18,35 @@ from .dbmodels.log import DbUserLogEntry
 from .models.log import UserLogEntry, UserLogEntryData
 
 
-def create_db_entry(
-    event_type: str,
-    user_id: UserID,
-    data: UserLogEntryData,
-    *,
-    occurred_at: datetime | None = None,
-) -> None:
-    """Create a user log entry."""
-    db_entry = build_db_entry(
-        event_type, user_id, data, occurred_at=occurred_at
-    )
-
-    db.session.add(db_entry)
-    db.session.commit()
-
-
-def build_db_entry(
+def build_entry(
     event_type: str,
     user_id: UserID,
     data: UserLogEntryData,
     *,
     occurred_at: datetime | None = None,
     initiator_id: UserID | None = None,
-) -> DbUserLogEntry:
-    """Assemble, but not persist, a user log entry."""
+) -> UserLogEntry:
+    """Assemble a user log entry."""
     entry_id = generate_uuid7()
 
     if occurred_at is None:
         occurred_at = datetime.utcnow()
 
-    return DbUserLogEntry(
-        entry_id, occurred_at, event_type, user_id, initiator_id, data
+    return UserLogEntry(
+        id=entry_id,
+        occurred_at=occurred_at,
+        event_type=event_type,
+        user_id=user_id,
+        initiator_id=initiator_id,
+        data=data,
     )
+
+
+def persist_entry(entry: UserLogEntry) -> None:
+    """Store a user log entry."""
+    db_entry = to_db_entry(entry)
+    db.session.add(db_entry)
+    db.session.commit()
 
 
 def to_db_entry(entry: UserLogEntry) -> DbUserLogEntry:

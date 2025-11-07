@@ -18,6 +18,7 @@ from byceps.services.core.events import EventSite, EventUser
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user import user_log_service
 from byceps.services.user.dbmodels.log import DbUserLogEntry
+from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import (
     User,
     UserID,
@@ -119,12 +120,14 @@ def log_in_user(
 
     occurred_at = datetime.utcnow()
 
-    _create_login_log_entry(
+    log_entry = _build_login_log_entry(
         user.id,
         occurred_at,
         ip_address=ip_address,
         site_id=site.id if site else None,
     )
+    user_log_service.persist_entry(log_entry)
+
     _record_recent_login(user.id, occurred_at)
 
     event = UserLoggedInEvent(
@@ -136,13 +139,13 @@ def log_in_user(
     return session_token.token, event
 
 
-def _create_login_log_entry(
+def _build_login_log_entry(
     user_id: UserID,
     occurred_at: datetime,
     *,
     ip_address: str | None = None,
     site_id: SiteID | None = None,
-) -> None:
+) -> UserLogEntry:
     """Create a log entry that represents a user login."""
     data = {}
 
@@ -152,7 +155,7 @@ def _create_login_log_entry(
     if site_id:
         data['site_id'] = site_id
 
-    user_log_service.create_db_entry(
+    return user_log_service.build_entry(
         'user-logged-in', user_id, data, occurred_at=occurred_at
     )
 
