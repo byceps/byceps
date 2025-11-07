@@ -57,11 +57,9 @@ def subscribe_user_to_list(
         )
     )
 
-    update_subscription_state_result = _update_subscription_state(
-        subscription_update
-    )
-    if update_subscription_state_result.is_err():
-        return Err(update_subscription_state_result.unwrap_err())
+    match _update_subscription_state(subscription_update):
+        case Err(e):
+            return Err(e)
 
     table = DbSubscription.__table__
     query = (
@@ -93,11 +91,9 @@ def unsubscribe_user_from_list(
         )
     )
 
-    update_subscription_state_result = _update_subscription_state(
-        subscription_update
-    )
-    if update_subscription_state_result.is_err():
-        return Err(update_subscription_state_result.unwrap_err())
+    match _update_subscription_state(subscription_update):
+        case Err(e):
+            return Err(e)
 
     db.session.execute(
         delete(DbSubscription)
