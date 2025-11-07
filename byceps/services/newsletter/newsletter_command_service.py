@@ -68,8 +68,8 @@ def subscribe_user_to_list(
         insert(table)
         .values(
             {
-                'user_id': str(user.id),
-                'list_id': str(list_.id),
+                'user_id': str(subscription_update.user_id),
+                'list_id': str(subscription_update.list_id),
             }
         )
         .on_conflict_do_nothing(constraint=table.primary_key)
@@ -101,8 +101,8 @@ def unsubscribe_user_from_list(
 
     db.session.execute(
         delete(DbSubscription)
-        .where(DbSubscription.user_id == user.id)
-        .where(DbSubscription.list_id == list_.id)
+        .where(DbSubscription.user_id == subscription_update.user_id)
+        .where(DbSubscription.list_id == subscription_update.list_id)
     )
     db.session.commit()
 
