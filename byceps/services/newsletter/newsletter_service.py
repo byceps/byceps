@@ -75,6 +75,7 @@ def get_subscribers_to_list(list_id: ListID) -> Iterator[Subscriber]:
         .filter(DbUser.email_address_verified == True)  # noqa: E712
         .filter(DbUser.suspended == False)  # noqa: E712
         .filter(DbUser.deleted == False)  # noqa: E712
+        .order_by(DbUser.email_address)
     ).all()
 
     for row in rows:
