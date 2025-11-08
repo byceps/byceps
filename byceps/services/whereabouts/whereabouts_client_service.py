@@ -243,7 +243,7 @@ def get_all_clients() -> list[WhereaboutsClientWithLivelinessStatus]:
 
 def _db_entity_to_client_with_liveliness_status(
     db_client: DbWhereaboutsClient,
-    db_liveliness_status: DbWhereaboutsClientLivelinessStatus,
+    db_liveliness_status: DbWhereaboutsClientLivelinessStatus | None,
 ) -> WhereaboutsClientWithLivelinessStatus:
     client = _db_entity_to_client(db_client)
 

@@ -138,7 +138,7 @@ def find_db_client_by_name(name: str) -> DbWhereaboutsClient | None:
 
 
 def get_db_all_clients() -> Sequence[
-    tuple[DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus]
+    tuple[DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus | None]
 ]:
     """Return all clients."""
     return (
