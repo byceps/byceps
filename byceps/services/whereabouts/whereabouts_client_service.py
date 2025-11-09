@@ -6,8 +6,6 @@ byceps.services.whereabouts.whereabouts_client_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import dataclasses
-
 import structlog
 
 from byceps.services.global_setting import global_setting_service
@@ -255,10 +253,14 @@ def _db_entity_to_client_with_liveliness_status(
         signed_on = False
         latest_activity_at = client.registered_at
 
-    return WhereaboutsClientWithLivelinessStatus(
-        **dataclasses.asdict(client),
+    liveliness_status = WhereaboutsClientLivelinessStatus(
+        client_id=client.id,
         signed_on=signed_on,
         latest_activity_at=latest_activity_at,
+    )
+
+    return WhereaboutsClientWithLivelinessStatus.from_client(
+        client, liveliness_status
     )
 
 

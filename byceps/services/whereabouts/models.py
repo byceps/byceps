@@ -8,11 +8,12 @@ byceps.services.whereabouts.models
 
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from ipaddress import IPv4Address, IPv6Address
-from typing import NewType
+from typing import NewType, Self
 from uuid import UUID
 
 from byceps.services.party.models import Party
@@ -88,6 +89,18 @@ class WhereaboutsClientLivelinessStatus:
 class WhereaboutsClientWithLivelinessStatus(WhereaboutsClient):
     signed_on: bool
     latest_activity_at: datetime
+
+    @classmethod
+    def from_client(
+        cls,
+        client: WhereaboutsClient,
+        liveliness_status: WhereaboutsClientLivelinessStatus,
+    ) -> Self:
+        return cls(
+            **dataclasses.asdict(client),
+            signed_on=liveliness_status.signed_on,
+            latest_activity_at=liveliness_status.latest_activity_at,
+        )
 
 
 @dataclass(frozen=True, kw_only=True)
