@@ -142,16 +142,15 @@ def client_index():
     """List clients."""
     registration_open = whereabouts_client_service.is_registration_open()
 
-    clients = whereabouts_client_service.get_all_clients()
+    client_candidates = whereabouts_client_service.get_client_candidates()
 
-    pending_clients, handled_clients = partition(clients, lambda c: c.pending)
-    approved_clients, deleted_clients = partition(
-        handled_clients, lambda c: c.approved
-    )
+    clients = whereabouts_client_service.get_clients()
+
+    approved_clients, deleted_clients = partition(clients, lambda c: c.approved)
 
     return {
         'registration_open': registration_open,
-        'pending_clients': pending_clients,
+        'client_candidates': client_candidates,
         'approved_clients': approved_clients,
         'deleted_clients': deleted_clients,
     }

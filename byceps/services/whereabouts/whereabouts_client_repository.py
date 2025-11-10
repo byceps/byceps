@@ -101,6 +101,15 @@ def update_liveliness_status(
     db.session.commit()
 
 
+def get_client_candidates() -> Sequence[DbWhereaboutsClient]:
+    """Return all client candidates."""
+    return db.session.scalars(
+        select(DbWhereaboutsClient).filter_by(
+            _authority_status=WhereaboutsClientAuthorityStatus.pending.name
+        )
+    ).all()
+
+
 def find_client(
     client_id: WhereaboutsClientID,
 ) -> DbWhereaboutsClient | None:
@@ -137,15 +146,18 @@ def find_client_by_name(name: str) -> DbWhereaboutsClient | None:
     ).one_or_none()
 
 
-def get_all_clients() -> Sequence[
+def get_clients() -> Sequence[
     tuple[DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus | None]
 ]:
-    """Return all clients."""
+    """Return all (non-candidate) clients."""
     return (
         db.session.execute(
-            select(
-                DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus
-            ).join(DbWhereaboutsClientLivelinessStatus, isouter=True)
+            select(DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus)
+            .join(DbWhereaboutsClientLivelinessStatus, isouter=True)
+            .filter(
+                DbWhereaboutsClient._authority_status
+                != WhereaboutsClientAuthorityStatus.pending.name
+            )
         )
         .tuples()
         .all()

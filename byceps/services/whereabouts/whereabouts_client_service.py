@@ -196,6 +196,16 @@ def sign_off_client(
     return event
 
 
+def get_client_candidates() -> list[WhereaboutsClientCandidate]:
+    """Return all client candidates."""
+    db_candidates = whereabouts_client_repository.get_client_candidates()
+
+    return [
+        _db_entity_to_client_candidate(db_candidate)
+        for db_candidate in db_candidates
+    ]
+
+
 def find_client(client_id: WhereaboutsClientID) -> WhereaboutsClient | None:
     """Return client, if found."""
     db_client = whereabouts_client_repository.find_client(client_id)
@@ -226,10 +236,10 @@ def find_client_by_name(name: str) -> WhereaboutsClient | None:
     return _db_entity_to_client(db_client)
 
 
-def get_all_clients() -> list[WhereaboutsClientWithLivelinessStatus]:
-    """Return all clients."""
+def get_clients() -> list[WhereaboutsClientWithLivelinessStatus]:
+    """Return all (non-candidate) clients."""
     db_clients_with_liveliness_status = (
-        whereabouts_client_repository.get_all_clients()
+        whereabouts_client_repository.get_clients()
     )
 
     return [
@@ -238,6 +248,18 @@ def get_all_clients() -> list[WhereaboutsClientWithLivelinessStatus]:
         )
         for db_client, db_liveliness_status in db_clients_with_liveliness_status
     ]
+
+
+def _db_entity_to_client_candidate(
+    db_client: DbWhereaboutsClient,
+) -> WhereaboutsClientCandidate:
+    return WhereaboutsClientCandidate(
+        id=db_client.id,
+        registered_at=db_client.registered_at,
+        button_count=db_client.button_count,
+        audio_output=db_client.audio_output,
+        token=db_client.token or '',
+    )
 
 
 def _db_entity_to_client_with_liveliness_status(

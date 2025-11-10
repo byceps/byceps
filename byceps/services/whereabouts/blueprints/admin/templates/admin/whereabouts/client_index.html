@@ -50,8 +50,8 @@
   </tr>
 </table>
 
-{%- if pending_clients %}
-<h2 class="title">{{ render_authority_status_icon('pending') }} {{ _('Pending Clients') }} {{ render_extra_in_heading(pending_clients|length) }}</h2>
+{%- if client_candidates %}
+<h2 class="title">{{ render_authority_status_icon('pending') }} {{ _('Pending Clients') }} {{ render_extra_in_heading(client_candidates|length) }}</h2>
 
 <table class="itemlist is-vcentered is-wide">
   <thead>
@@ -63,16 +63,16 @@
     </tr>
   </thead>
   <tbody>
-    {%- for client in pending_clients|sort(attribute='registered_at', reverse=True) %}
+    {%- for candidate in client_candidates|sort(attribute='registered_at', reverse=True) %}
     <tr>
-      <td>{{ render_client_id(client) }}</td>
-      <td><time datetime="{{ client.registered_at.isoformat() }}" title="{{ client.registered_at|datetimeformat }}">{{ _('since') }} {{ client.registered_at|timedeltaformat }}</time></td>
-      <td class="centered">{{ render_interactivity(client) }}</td>
+      <td>{{ render_client_id(candidate) }}</td>
+      <td><time datetime="{{ candidate.registered_at.isoformat() }}" title="{{ candidate.registered_at|datetimeformat }}">{{ _('since') }} {{ candidate.registered_at|timedeltaformat }}</time></td>
+      <td class="centered">{{ render_interactivity(candidate) }}</td>
       <td>
         {%- if has_current_user_permission('whereabouts.administrate') %}
         <div class="button-row is-compact button-row--nowrap is-right-aligned">
-          <a class="button is-compact color-success" href="{{ url_for('.client_approve', client_id=client.id) }}" data-action="approve-client">{{ render_icon('success') }} <span>{{ _('Approve') }}</span></a>
-          <a class="button is-compact color-danger" href="{{ url_for('.client_candidate_delete', client_id=client.id) }}" data-action="delete-client-candidate">{{ render_icon('delete') }} <span>{{ _('Delete') }}</span></a>
+          <a class="button is-compact color-success" href="{{ url_for('.client_approve', client_id=candidate.id) }}" data-action="approve-client">{{ render_icon('success') }} <span>{{ _('Approve') }}</span></a>
+          <a class="button is-compact color-danger" href="{{ url_for('.client_candidate_delete', client_id=candidate.id) }}" data-action="delete-client-candidate">{{ render_icon('delete') }} <span>{{ _('Delete') }}</span></a>
         </div>
         {%- endif %}
       </td>
@@ -157,7 +157,7 @@
 </table>
 {%- endif %}
 
-{%- if not pending_clients and not approved_clients and not deleted_clients %}
+{%- if not client_candidates and not approved_clients and not deleted_clients %}
 <div class="box no-data-message">{{ _('No clients registered.') }}</div>
 {%- endif %}
 
