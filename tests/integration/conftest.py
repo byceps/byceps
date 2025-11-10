@@ -83,7 +83,7 @@ from .database import populate_database, set_up_database, tear_down_database
 @pytest.fixture(scope='session')
 def database_config():
     host = os.environ.get('POSTGRES_HOST', '127.0.0.1')
-    port = int(os.environ.get('POSTGRES_PORT', 5432))
+    port = int(os.environ.get('POSTGRES_PORT', '5432'))
     username = os.environ.get('POSTGRES_USER', 'byceps_test')
     password = os.environ.get('POSTGRES_PASSWORD', 'test')
     database = os.environ.get('POSTGRES_DB', 'byceps_test')
@@ -100,7 +100,7 @@ def database_config():
 @pytest.fixture(scope='session')
 def redis_config():
     host = os.environ.get('REDIS_HOST', '127.0.0.1')
-    port = int(os.environ.get('REDIS_PORT', 6379))
+    port = int(os.environ.get('REDIS_PORT', '6379'))
     database = 0
 
     return RedisConfig(
