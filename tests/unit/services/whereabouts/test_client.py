@@ -86,9 +86,11 @@ def make_client():
     def _wrapper(
         authority_status: WhereaboutsClientAuthorityStatus,
     ) -> WhereaboutsClient:
+        registered_at = datetime.utcnow()
+
         return WhereaboutsClient(
             id=WhereaboutsClientID(generate_uuid()),
-            registered_at=datetime.utcnow(),
+            registered_at=registered_at,
             button_count=3,
             audio_output=True,
             authority_status=authority_status,
@@ -97,6 +99,8 @@ def make_client():
             location=None,
             description=None,
             config_id=None,
+            signed_on=False,
+            latest_activity_at=registered_at,
         )
 
     return _wrapper
