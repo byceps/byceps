@@ -71,8 +71,8 @@
       <td>
         {%- if has_current_user_permission('whereabouts.administrate') %}
         <div class="button-row is-compact button-row--nowrap is-right-aligned">
-          <a class="button is-compact color-success" href="{{ url_for('.client_approve', client_id=candidate.id) }}" data-action="approve-client">{{ render_icon('success') }} <span>{{ _('Approve') }}</span></a>
-          <a class="button is-compact color-danger" href="{{ url_for('.client_candidate_delete', client_id=candidate.id) }}" data-action="delete-client-candidate">{{ render_icon('delete') }} <span>{{ _('Delete') }}</span></a>
+          <a class="button is-compact color-success" href="{{ url_for('.client_candidate_approve', candidate_id=candidate.id) }}" data-action="approve-client-candidate">{{ render_icon('success') }} <span>{{ _('Approve') }}</span></a>
+          <a class="button is-compact color-danger" href="{{ url_for('.client_candidate_delete', candidate_id=candidate.id) }}" data-action="delete-client-candidate">{{ render_icon('delete') }} <span>{{ _('Delete') }}</span></a>
         </div>
         {%- endif %}
       </td>
@@ -167,7 +167,7 @@
 <script>
   onDomReady(() => {
     post_on_click_then_reload('[data-action="update-client-registration-status"]');
-    confirmed_post_on_click_then_reload('[data-action="approve-client"]', '{{ _('Approve client?') }}');
+    confirmed_post_on_click_then_reload('[data-action="approve-client-candidate"]', '{{ _('Approve client candidate?') }}');
     confirmed_delete_on_click_then_reload('[data-action="delete-client-candidate"]', '{{ _('Delete client candidate?') }}');
     confirmed_delete_on_click_then_reload('[data-action="delete-client"]', '{{ _('Delete client?') }}');
   });

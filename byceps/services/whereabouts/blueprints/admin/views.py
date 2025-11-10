@@ -22,6 +22,7 @@ from byceps.services.whereabouts import (
 )
 from byceps.services.whereabouts.models import (
     WhereaboutsClient,
+    WhereaboutsClientCandidate,
     WhereaboutsStatus,
 )
 from byceps.util.framework.blueprint import create_blueprint
@@ -172,30 +173,30 @@ def close_client_registration():
     whereabouts_client_service.close_registration()
 
 
-@blueprint.post('/clients/<uuid:client_id>/approve')
+@blueprint.post('/client_candidates/<uuid:candidate_id>/approve')
 @permission_required('whereabouts.administrate')
 @respond_no_content
-def client_approve(client_id):
-    """Approve a client."""
-    client = _get_client_or_404(client_id)
+def client_candidate_approve(candidate_id):
+    """Approve a client candidate."""
+    candidate = _get_client_candidate_or_404(candidate_id)
     initiator = g.user
 
-    _, event = whereabouts_client_service.approve_client(client, initiator)
+    _, event = whereabouts_client_service.approve_client(candidate, initiator)
 
-    flash_success(gettext('Client has been approved.'))
+    flash_success(gettext('Client candidate has been approved.'))
 
     whereabouts_signals.whereabouts_client_approved.send(None, event=event)
 
 
-@blueprint.delete('/client_candidates/<uuid:client_id>')
+@blueprint.delete('/client_candidates/<uuid:candidate_id>')
 @permission_required('whereabouts.administrate')
 @respond_no_content
-def client_candidate_delete(client_id):
+def client_candidate_delete(candidate_id):
     """Delete a client candidate."""
-    client = _get_client_or_404(client_id)
+    candidate = _get_client_candidate_or_404(candidate_id)
     initiator = g.user
 
-    whereabouts_client_service.delete_client_candidate(client, initiator)
+    whereabouts_client_service.delete_client_candidate(candidate, initiator)
 
     flash_success(gettext('Client candidate has been deleted.'))
 
@@ -310,6 +311,17 @@ def _get_party_or_404(party_id) -> Party:
         abort(404)
 
     return party
+
+
+def _get_client_candidate_or_404(client_id) -> WhereaboutsClientCandidate:
+    client_candidate = whereabouts_client_service.find_client_candidate(
+        client_id
+    )
+
+    if client_candidate is None:
+        abort(404)
+
+    return client_candidate
 
 
 def _get_client_or_404(client_id) -> WhereaboutsClient:

@@ -46,12 +46,9 @@ def persist_client_registration(candidate: WhereaboutsClientCandidate) -> None:
     db.session.commit()
 
 
-def delete_client_candidate(client: WhereaboutsClient) -> None:
+def delete_client_candidate(candidate: WhereaboutsClientCandidate) -> None:
     """Delete a client candidate."""
-    if client.approved:
-        raise ValueError('An approved client must not be deleted')
-
-    db_client = get_client(client.id)
+    db_client = get_client(candidate.id)
 
     db.session.delete(db_client)
     db.session.commit()

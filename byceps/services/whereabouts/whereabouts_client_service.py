@@ -27,6 +27,7 @@ from .events import (
 from .models import (
     IPAddress,
     WhereaboutsClient,
+    WhereaboutsClientAuthorityStatus,
     WhereaboutsClientCandidate,
     WhereaboutsClientConfig,
     WhereaboutsClientID,
@@ -108,13 +109,15 @@ def approve_client(
     return client, event
 
 
-def delete_client_candidate(client: WhereaboutsClient, initiator: User) -> None:
+def delete_client_candidate(
+    candidate: WhereaboutsClientCandidate, initiator: User
+) -> None:
     """Delete a client candidate."""
-    whereabouts_client_repository.delete_client_candidate(client)
+    whereabouts_client_repository.delete_client_candidate(candidate)
 
     log.info(
         'Whereabouts client candidate deleted',
-        id=str(client.id),
+        id=str(candidate.id),
         deleted_by=initiator.screen_name,
     )
 
@@ -194,6 +197,21 @@ def sign_off_client(
     )
 
     return event
+
+
+def find_client_candidate(
+    client_id: WhereaboutsClientID,
+) -> WhereaboutsClientCandidate | None:
+    """Return client candidate, if found."""
+    db_client = whereabouts_client_repository.find_db_client(client_id)
+
+    if db_client is None:
+        return None
+
+    if db_client.authority_status != WhereaboutsClientAuthorityStatus.pending:
+        return None
+
+    return _db_entity_to_client_candidate(db_client)
 
 
 def get_client_candidates() -> list[WhereaboutsClientCandidate]:
