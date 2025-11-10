@@ -198,7 +198,7 @@ def sign_off_client(
 
 def find_client(client_id: WhereaboutsClientID) -> WhereaboutsClient | None:
     """Return client, if found."""
-    db_client = whereabouts_client_repository.find_db_client(client_id)
+    db_client = whereabouts_client_repository.find_client(client_id)
 
     if db_client is None:
         return None
@@ -208,7 +208,7 @@ def find_client(client_id: WhereaboutsClientID) -> WhereaboutsClient | None:
 
 def find_client_by_token(token: str) -> WhereaboutsClient | None:
     """Return client with that token, if found."""
-    db_client = whereabouts_client_repository.find_db_client_by_token(token)
+    db_client = whereabouts_client_repository.find_client_by_token(token)
 
     if db_client is None:
         return None
@@ -218,7 +218,7 @@ def find_client_by_token(token: str) -> WhereaboutsClient | None:
 
 def find_client_by_name(name: str) -> WhereaboutsClient | None:
     """Return client with that name, if found."""
-    db_client = whereabouts_client_repository.find_db_client_by_name(name)
+    db_client = whereabouts_client_repository.find_client_by_name(name)
 
     if db_client is None:
         return None
@@ -229,7 +229,7 @@ def find_client_by_name(name: str) -> WhereaboutsClient | None:
 def get_all_clients() -> list[WhereaboutsClientWithLivelinessStatus]:
     """Return all clients."""
     db_clients_with_liveliness_status = (
-        whereabouts_client_repository.get_db_all_clients()
+        whereabouts_client_repository.get_all_clients()
     )
 
     return [
