@@ -157,6 +157,18 @@ def client_index():
     }
 
 
+@blueprint.get('/clients/<uuid:client_id>')
+@permission_required('whereabouts.administrate')
+@templated
+def client_view(client_id):
+    """Show single client."""
+    client = _get_client_or_404(client_id)
+
+    return {
+        'client': client,
+    }
+
+
 @blueprint.post('/client_registration/open')
 @permission_required('whereabouts.administrate')
 @respond_no_content
@@ -327,7 +339,7 @@ def _get_client_candidate_or_404(client_id) -> WhereaboutsClientCandidate:
 def _get_client_or_404(client_id) -> WhereaboutsClient:
     client = whereabouts_client_service.find_client(client_id)
 
-    if client is None:
+    if (client is None) or client.pending:
         abort(404)
 
     return client

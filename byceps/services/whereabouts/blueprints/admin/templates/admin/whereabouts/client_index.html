@@ -24,6 +24,10 @@
   {%- endif %}
 {%- endmacro %}
 
+{% macro render_client_view_link(client) -%}
+  <a href="{{ url_for('.client_view', client_id=client.id) }}" class="disguised">{{ caller() }}</a>
+{%- endmacro %}
+
 {% macro render_client_id(client) -%}
   <abbr title="{{ client.id }}">{{ client.id.hex[-12:] }}</abbr>
 {%- endmacro %}
@@ -101,7 +105,7 @@
   <tbody>
     {%- for client in approved_clients|sort(attribute='registered_at', reverse=True) %}
     <tr>
-      <td><strong>{{ client.name|fallback }}</strong><br>{{ render_client_id(client) }}</td>
+      <td>{% call render_client_view_link(client) %}<strong>{{ client.name|fallback }}</strong><br>{{ render_client_id(client) }}{% endcall %}</td>
       <td class="nowrap"><time datetime="{{ client.registered_at.isoformat() }}" title="{{ client.registered_at|datetimeformat }}">{{ _('since') }} {{ client.registered_at|timedeltaformat }}</time></td>
       <td class="centered">{{ render_interactivity(client) }}</td>
       <td>{{ client.location|fallback }}<br>{{ client.description|fallback }}</td>
@@ -138,7 +142,7 @@
   <tbody>
     {%- for client in deleted_clients|sort(attribute='registered_at', reverse=True) %}
     <tr>
-      <td><strong>{{ client.name|fallback }}</strong><br>{{ render_client_id(client) }}</td>
+      <td>{% call render_client_view_link(client) %}<strong>{{ client.name|fallback }}</strong><br>{{ render_client_id(client) }}{% endcall %}</td>
       <td><time datetime="{{ client.registered_at.isoformat() }}" title="{{ client.registered_at|datetimeformat }}">{{ _('since') }} {{ client.registered_at|timedeltaformat }}</time></td>
       <td class="centered">{{ render_interactivity(client) }}</td>
       <td>{{ client.location|fallback }}<br>{{ client.description|fallback }}</td>
