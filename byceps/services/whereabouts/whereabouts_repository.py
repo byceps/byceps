@@ -49,7 +49,7 @@ def create_whereabouts(whereabouts: Whereabouts) -> None:
 
 def update_whereabouts(whereabouts: Whereabouts) -> None:
     """Update whereabouts."""
-    db_whereabouts = find_db_whereabouts(whereabouts.id)
+    db_whereabouts = find_whereabouts(whereabouts.id)
     if db_whereabouts is None:
         raise ValueError(f'Unknown whereabouts ID: {whereabouts.id}')
 
@@ -61,12 +61,12 @@ def update_whereabouts(whereabouts: Whereabouts) -> None:
     db.session.commit()
 
 
-def find_db_whereabouts(whereabouts_id: WhereaboutsID) -> DbWhereabouts | None:
+def find_whereabouts(whereabouts_id: WhereaboutsID) -> DbWhereabouts | None:
     """Return whereabouts, if found."""
     return db.session.get(DbWhereabouts, whereabouts_id)
 
 
-def find_db_whereabouts_by_name(
+def find_whereabouts_by_name(
     party_id: PartyID, name: str
 ) -> DbWhereabouts | None:
     """Return whereabouts wi, if found."""
@@ -75,7 +75,7 @@ def find_db_whereabouts_by_name(
     ).one_or_none()
 
 
-def get_db_whereabouts_list(party_id: PartyID) -> Sequence[DbWhereabouts]:
+def get_whereabouts_list(party_id: PartyID) -> Sequence[DbWhereabouts]:
     """Return possible whereabouts."""
     return db.session.scalars(
         select(DbWhereabouts).filter_by(party_id=party_id)
@@ -113,7 +113,7 @@ def persist_update(
     db.session.commit()
 
 
-def find_db_status(
+def find_status(
     user_id: UserID, party_id: PartyID
 ) -> DbWhereaboutsStatus | None:
     """Return user's status for the party, if known."""
@@ -125,7 +125,7 @@ def find_db_status(
     ).one_or_none()
 
 
-def get_db_statuses(party_id: PartyID) -> Sequence[DbWhereaboutsStatus]:
+def get_statuses(party_id: PartyID) -> Sequence[DbWhereaboutsStatus]:
     """Return user statuses."""
     return db.session.scalars(
         select(DbWhereaboutsStatus)

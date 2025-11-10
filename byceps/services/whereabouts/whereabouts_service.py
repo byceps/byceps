@@ -92,7 +92,7 @@ def update_whereabouts(
 
 def find_whereabouts(whereabouts_id: WhereaboutsID) -> Whereabouts | None:
     """Return whereabouts, if found."""
-    db_whereabouts = whereabouts_repository.find_db_whereabouts(whereabouts_id)
+    db_whereabouts = whereabouts_repository.find_whereabouts(whereabouts_id)
 
     if db_whereabouts is None:
         return None
@@ -104,7 +104,7 @@ def find_whereabouts(whereabouts_id: WhereaboutsID) -> Whereabouts | None:
 
 def find_whereabouts_by_name(party: Party, name: str) -> Whereabouts | None:
     """Return whereabouts wi, if found."""
-    db_whereabouts = whereabouts_repository.find_db_whereabouts_by_name(
+    db_whereabouts = whereabouts_repository.find_whereabouts_by_name(
         party.id, name
     )
 
@@ -116,9 +116,7 @@ def find_whereabouts_by_name(party: Party, name: str) -> Whereabouts | None:
 
 def get_whereabouts_list(party: Party) -> list[Whereabouts]:
     """Return possible whereabouts."""
-    db_whereabouts_list = whereabouts_repository.get_db_whereabouts_list(
-        party.id
-    )
+    db_whereabouts_list = whereabouts_repository.get_whereabouts_list(party.id)
 
     return [
         _db_entity_to_whereabouts(db_whereabouts, party)
@@ -167,7 +165,7 @@ def set_status(
 
 def find_status(user: User, party: Party) -> WhereaboutsStatus | None:
     """Return user's status for the party, if known."""
-    db_status = whereabouts_repository.find_db_status(user.id, party.id)
+    db_status = whereabouts_repository.find_status(user.id, party.id)
 
     if db_status is None:
         return None
@@ -179,7 +177,7 @@ def find_status(user: User, party: Party) -> WhereaboutsStatus | None:
 
 def get_statuses(party: Party) -> list[WhereaboutsStatus]:
     """Return user statuses."""
-    db_statuses = whereabouts_repository.get_db_statuses(party.id)
+    db_statuses = whereabouts_repository.get_statuses(party.id)
 
     user_ids = {db_status.user_id for db_status in db_statuses}
     users_by_id = user_service.get_users_indexed_by_id(
