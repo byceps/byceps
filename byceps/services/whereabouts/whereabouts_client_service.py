@@ -31,8 +31,6 @@ from .models import (
     WhereaboutsClientCandidate,
     WhereaboutsClientConfig,
     WhereaboutsClientID,
-    WhereaboutsClientLivelinessStatus,
-    WhereaboutsClientWithLivelinessStatus,
 )
 
 
@@ -254,16 +252,14 @@ def find_client_by_name(name: str) -> WhereaboutsClient | None:
     return _db_entity_to_client(db_client)
 
 
-def get_clients() -> list[WhereaboutsClientWithLivelinessStatus]:
+def get_clients() -> list[WhereaboutsClient]:
     """Return all (non-candidate) clients."""
     db_clients_with_liveliness_status = (
         whereabouts_client_repository.get_clients()
     )
 
     return [
-        _db_entity_to_client_with_liveliness_status(
-            db_client, db_liveliness_status
-        )
+        _db_entity_to_client(db_client, db_liveliness_status)
         for db_client, db_liveliness_status in db_clients_with_liveliness_status
     ]
 
@@ -280,31 +276,17 @@ def _db_entity_to_client_candidate(
     )
 
 
-def _db_entity_to_client_with_liveliness_status(
+def _db_entity_to_client(
     db_client: DbWhereaboutsClient,
-    db_liveliness_status: DbWhereaboutsClientLivelinessStatus | None,
-) -> WhereaboutsClientWithLivelinessStatus:
-    client = _db_entity_to_client(db_client)
-
+    db_liveliness_status: DbWhereaboutsClientLivelinessStatus | None = None,
+) -> WhereaboutsClient:
     if db_liveliness_status:
         signed_on = db_liveliness_status.signed_on
         latest_activity_at = db_liveliness_status.latest_activity_at
     else:
         signed_on = False
-        latest_activity_at = client.registered_at
+        latest_activity_at = db_client.registered_at
 
-    liveliness_status = WhereaboutsClientLivelinessStatus(
-        client_id=client.id,
-        signed_on=signed_on,
-        latest_activity_at=latest_activity_at,
-    )
-
-    return WhereaboutsClientWithLivelinessStatus.from_client(
-        client, liveliness_status
-    )
-
-
-def _db_entity_to_client(db_client: DbWhereaboutsClient) -> WhereaboutsClient:
     return WhereaboutsClient(
         id=db_client.id,
         registered_at=db_client.registered_at,
@@ -316,16 +298,8 @@ def _db_entity_to_client(db_client: DbWhereaboutsClient) -> WhereaboutsClient:
         location=db_client.location,
         description=db_client.description,
         config_id=db_client.config_id,
-    )
-
-
-def _db_entity_to_client_liveliness_status(
-    db_liveliness_status: DbWhereaboutsClientLivelinessStatus,
-) -> WhereaboutsClientLivelinessStatus:
-    return WhereaboutsClientLivelinessStatus(
-        client_id=db_liveliness_status.client_id,
-        signed_on=db_liveliness_status.signed_on,
-        latest_activity_at=db_liveliness_status.latest_activity_at,
+        signed_on=signed_on,
+        latest_activity_at=latest_activity_at,
     )
 
 

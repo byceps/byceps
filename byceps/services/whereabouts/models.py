@@ -8,7 +8,6 @@ byceps.services.whereabouts.models
 
 from __future__ import annotations
 
-import dataclasses
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
@@ -66,6 +65,8 @@ class WhereaboutsClient:
     location: str | None
     description: str | None
     config_id: WhereaboutsClientConfigID | None
+    signed_on: bool
+    latest_activity_at: datetime
 
     @property
     def pending(self) -> bool:
@@ -75,31 +76,6 @@ class WhereaboutsClient:
     def approved(self) -> bool:
         return (
             self.authority_status == WhereaboutsClientAuthorityStatus.approved
-        )
-
-
-@dataclass(frozen=True, kw_only=True)
-class WhereaboutsClientLivelinessStatus:
-    client_id: WhereaboutsClientID
-    signed_on: bool
-    latest_activity_at: datetime
-
-
-@dataclass(frozen=True, kw_only=True)
-class WhereaboutsClientWithLivelinessStatus(WhereaboutsClient):
-    signed_on: bool
-    latest_activity_at: datetime
-
-    @classmethod
-    def from_client(
-        cls,
-        client: WhereaboutsClient,
-        liveliness_status: WhereaboutsClientLivelinessStatus,
-    ) -> Self:
-        return cls(
-            **dataclasses.asdict(client),
-            signed_on=liveliness_status.signed_on,
-            latest_activity_at=liveliness_status.latest_activity_at,
         )
 
 

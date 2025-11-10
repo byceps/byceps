@@ -75,6 +75,8 @@ def approve_client(
         location=None,
         description=None,
         config_id=None,
+        signed_on=False,
+        latest_activity_at=candidate.registered_at,
     )
 
     event = WhereaboutsClientApprovedEvent(
