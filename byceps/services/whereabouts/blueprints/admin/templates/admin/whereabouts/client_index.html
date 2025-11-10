@@ -133,7 +133,6 @@
       <th class="centered">{{ _('Interactivity') }}<br></th>
       <th>{{ _('Location') }}<br>{{ _('Description') }}</th>
       <th>{{ _('Configuration') }}</th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -144,13 +143,6 @@
       <td class="centered">{{ render_interactivity(client) }}</td>
       <td>{{ client.location|fallback }}<br>{{ client.description|fallback }}</td>
       <td>{{ client.config_id|fallback }}</td>
-      <td>
-        {%- if has_current_user_permission('whereabouts.administrate') %}
-        <div class="button-row is-compact button-row--nowrap is-right-aligned">
-          <a class="button is-compact color-danger" href="{{ url_for('.client_delete', client_id=client.id) }}" data-action="delete-client" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a>
-        </div>
-        {%- endif %}
-      </td>
     </tr>
     {%- endfor %}
   </tbody>
