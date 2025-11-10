@@ -17,6 +17,7 @@ from byceps.services.whereabouts.events import (
 from byceps.services.whereabouts.models import (
     WhereaboutsClient,
     WhereaboutsClientAuthorityStatus,
+    WhereaboutsClientCandidate,
     WhereaboutsClientID,
 )
 
@@ -39,13 +40,11 @@ def test_register_client():
     assert actual_event.client_id is not None
 
 
-def test_approve_client(make_client, admin_user):
-    pending_client = make_client(WhereaboutsClientAuthorityStatus.pending)
+def test_approve_client(make_client_candidate, admin_user):
+    candidate = make_client_candidate(WhereaboutsClientAuthorityStatus.pending)
 
     actual_client, actual_event = (
-        whereabouts_client_domain_service.approve_client(
-            pending_client, admin_user
-        )
+        whereabouts_client_domain_service.approve_client(candidate, admin_user)
     )
 
     assert (
@@ -79,6 +78,24 @@ def test_delete_client(make_client, admin_user):
     assert actual_event.occurred_at is not None
     assert actual_event.initiator == EventUser.from_user(admin_user)
     assert actual_event.client_id is not None
+
+
+@pytest.fixture(scope='module')
+def make_client_candidate():
+    def _wrapper(
+        authority_status: WhereaboutsClientAuthorityStatus,
+    ) -> WhereaboutsClientCandidate:
+        registered_at = datetime.utcnow()
+
+        return WhereaboutsClientCandidate(
+            id=WhereaboutsClientID(generate_uuid()),
+            registered_at=registered_at,
+            button_count=3,
+            audio_output=True,
+            token=generate_token(),
+        )
+
+    return _wrapper
 
 
 @pytest.fixture(scope='module')
