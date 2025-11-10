@@ -13,13 +13,17 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from byceps.services.party import party_service
+from byceps.services.party.models import Party
 from byceps.services.whereabouts import (
     signals as whereabouts_signals,
     whereabouts_client_service,
     whereabouts_service,
     whereabouts_sound_service,
 )
-from byceps.services.whereabouts.models import WhereaboutsStatus
+from byceps.services.whereabouts.models import (
+    WhereaboutsClient,
+    WhereaboutsStatus,
+)
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
@@ -300,7 +304,7 @@ def user_sound_create():
 # helpers
 
 
-def _get_party_or_404(party_id):
+def _get_party_or_404(party_id) -> Party:
     party = party_service.find_party(party_id)
 
     if party is None:
@@ -309,7 +313,7 @@ def _get_party_or_404(party_id):
     return party
 
 
-def _get_client_or_404(client_id):
+def _get_client_or_404(client_id) -> WhereaboutsClient:
     client = whereabouts_client_service.find_client(client_id)
 
     if client is None:
