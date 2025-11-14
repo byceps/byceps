@@ -111,8 +111,9 @@ plugins = "sqlalchemy.ext.mypy.plugin"
 ignore_missing_imports = true
 no_implicit_optional = true
 
-[tool.pytest.ini_options]
-addopts = "-vv -ra"
+[tool.pytest]
+minversion = "9.0"
+addopts = ["-ra", "-vv"]
 testpaths = ["tests/unit", "tests/integration"]
 
 [tool.ruff]
