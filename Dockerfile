@@ -2,8 +2,7 @@ FROM python:3.13-trixie
 
 # Install Debian dependencies.
 # A final `apt-get clean` is part of the Debian base image.
-RUN apt-get update && \
-    apt-get install --no-install-recommends --yes \
+RUN apt-get install --no-install-recommends --update --yes \
         locales-all \
     && \
     rm -rf /var/lib/apt/lists/*
