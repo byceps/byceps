@@ -7,7 +7,7 @@ byceps.services.ticketing.ticket_revocation_service
 """
 
 from byceps.database import db
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 from . import ticket_log_service, ticket_seat_management_service, ticket_service
 from .models.log import TicketLogEntry
@@ -15,7 +15,7 @@ from .models.ticket import TicketID
 
 
 def revoke_ticket(
-    ticket_id: TicketID, initiator_id: UserID, *, reason: str | None = None
+    ticket_id: TicketID, initiator: User, *, reason: str | None = None
 ) -> None:
     """Revoke the ticket."""
     db_ticket = ticket_service.get_ticket(ticket_id)
@@ -23,14 +23,12 @@ def revoke_ticket(
     # Release seat.
     if db_ticket.occupied_seat_id:
         ticket_seat_management_service.release_seat(
-            db_ticket.id, initiator_id
+            db_ticket.id, initiator.id
         ).unwrap()
 
     db_ticket.revoked = True
 
-    log_entry = build_ticket_revoked_log_entry(
-        db_ticket.id, initiator_id, reason
-    )
+    log_entry = build_ticket_revoked_log_entry(db_ticket.id, initiator, reason)
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
@@ -39,7 +37,7 @@ def revoke_ticket(
 
 def revoke_tickets(
     ticket_ids: set[TicketID],
-    initiator_id: UserID,
+    initiator: User,
     *,
     reason: str | None = None,
 ) -> None:
@@ -50,14 +48,14 @@ def revoke_tickets(
     for db_ticket in db_tickets:
         if db_ticket.occupied_seat_id:
             ticket_seat_management_service.release_seat(
-                db_ticket.id, initiator_id
+                db_ticket.id, initiator.id
             ).unwrap()
 
     for db_ticket in db_tickets:
         db_ticket.revoked = True
 
         log_entry = build_ticket_revoked_log_entry(
-            db_ticket.id, initiator_id, reason
+            db_ticket.id, initiator, reason
         )
         db_log_entry = ticket_log_service.to_db_entry(log_entry)
         db.session.add(db_log_entry)
@@ -66,10 +64,10 @@ def revoke_tickets(
 
 
 def build_ticket_revoked_log_entry(
-    ticket_id: TicketID, initiator_id: UserID, reason: str | None = None
+    ticket_id: TicketID, initiator: User, reason: str | None = None
 ) -> TicketLogEntry:
     data = {
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     }
 
     if reason:

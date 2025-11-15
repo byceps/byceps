@@ -127,7 +127,7 @@ def revoke_tickets(order: Order, line_item: LineItem, initiator: User) -> None:
     }
     tickets = ticket_service.get_tickets(ticket_ids)
 
-    ticket_revocation_service.revoke_tickets(ticket_ids, initiator.id)
+    ticket_revocation_service.revoke_tickets(ticket_ids, initiator)
 
     _create_revocation_order_log_entries(order.id, tickets, initiator)
 

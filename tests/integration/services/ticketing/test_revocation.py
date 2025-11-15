@@ -65,7 +65,7 @@ def test_revoke_ticket(admin_app, ticket, ticketing_admin):
 
     ticket_id = ticket_before.id
 
-    ticket_revocation_service.revoke_ticket(ticket_id, ticketing_admin.id)
+    ticket_revocation_service.revoke_ticket(ticket_id, ticketing_admin)
 
     # -------------------------------- #
 
@@ -99,7 +99,7 @@ def test_revoke_tickets(admin_app, tickets, ticketing_admin):
 
     ticket_ids = {ticket.id for ticket in tickets_before}
 
-    ticket_revocation_service.revoke_tickets(ticket_ids, ticketing_admin.id)
+    ticket_revocation_service.revoke_tickets(ticket_ids, ticketing_admin)
 
     # -------------------------------- #
 
@@ -134,7 +134,7 @@ def test_revoke_ticket_with_seat(
 
     # -------------------------------- #
 
-    ticket_revocation_service.revoke_ticket(ticket.id, ticketing_admin.id)
+    ticket_revocation_service.revoke_ticket(ticket.id, ticketing_admin)
 
     # -------------------------------- #
 
@@ -159,7 +159,7 @@ def test_revoke_tickets_with_seats(
 
     # -------------------------------- #
 
-    ticket_revocation_service.revoke_tickets(ticket_ids, ticketing_admin.id)
+    ticket_revocation_service.revoke_tickets(ticket_ids, ticketing_admin)
 
     # -------------------------------- #
 
