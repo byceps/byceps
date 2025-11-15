@@ -19,7 +19,7 @@ from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import User, UserID
 
-from . import ticket_code_service, ticket_log_service
+from . import ticket_code_service, ticket_log_domain_service, ticket_log_service
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.log import DbTicketLogEntry
 from .dbmodels.ticket import DbTicket
@@ -42,7 +42,7 @@ def update_ticket_code(ticket_id: TicketID, code: str, initiator: User) -> None:
 
     db_ticket.code = code
 
-    log_entry = ticket_log_service.build_entry(
+    log_entry = ticket_log_domain_service.build_entry(
         'ticket-code-changed',
         db_ticket.id,
         {

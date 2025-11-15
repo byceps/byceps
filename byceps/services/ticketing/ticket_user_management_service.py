@@ -10,7 +10,7 @@ from byceps.database import db
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
-from . import ticket_log_service, ticket_service
+from . import ticket_log_domain_service, ticket_log_service, ticket_service
 from .errors import (
     TicketingError,
     TicketIsRevokedError,
@@ -33,7 +33,7 @@ def appoint_user_manager(
 
     db_ticket.user_managed_by_id = manager.id
 
-    log_entry = ticket_log_service.build_entry(
+    log_entry = ticket_log_domain_service.build_entry(
         'user-manager-appointed',
         db_ticket.id,
         {
@@ -62,7 +62,7 @@ def withdraw_user_manager(
 
     db_ticket.user_managed_by_id = None
 
-    log_entry = ticket_log_service.build_entry(
+    log_entry = ticket_log_domain_service.build_entry(
         'user-manager-withdrawn',
         db_ticket.id,
         {
@@ -104,7 +104,7 @@ def appoint_user(
 
     db_ticket.used_by_id = user.id
 
-    log_entry = ticket_log_service.build_entry(
+    log_entry = ticket_log_domain_service.build_entry(
         'user-appointed',
         db_ticket.id,
         {
@@ -140,7 +140,7 @@ def withdraw_user(
 
     db_ticket.used_by_id = None
 
-    log_entry = ticket_log_service.build_entry(
+    log_entry = ticket_log_domain_service.build_entry(
         'user-withdrawn',
         db_ticket.id,
         {

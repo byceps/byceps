@@ -16,7 +16,12 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import ticket_domain_service, ticket_log_service, ticket_service
+from . import (
+    ticket_domain_service,
+    ticket_log_domain_service,
+    ticket_log_service,
+    ticket_service,
+)
 from .dbmodels.ticket import DbTicket
 from .errors import (
     InitiatorNotSpecifiedError,
@@ -110,7 +115,7 @@ def revert_user_check_in(ticket_id: TicketID, initiator: User) -> None:
 
     db_ticket.user_checked_in = False
 
-    log_entry = ticket_log_service.build_entry(
+    log_entry = ticket_log_domain_service.build_entry(
         'user-check-in-reverted',
         db_ticket.id,
         {

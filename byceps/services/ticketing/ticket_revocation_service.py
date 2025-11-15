@@ -9,7 +9,12 @@ byceps.services.ticketing.ticket_revocation_service
 from byceps.database import db
 from byceps.services.user.models.user import User
 
-from . import ticket_log_service, ticket_seat_management_service, ticket_service
+from . import (
+    ticket_log_domain_service,
+    ticket_log_service,
+    ticket_seat_management_service,
+    ticket_service,
+)
 from .models.log import TicketLogEntry
 from .models.ticket import TicketID
 
@@ -73,4 +78,6 @@ def build_ticket_revoked_log_entry(
     if reason:
         data['reason'] = reason
 
-    return ticket_log_service.build_entry('ticket-revoked', ticket_id, data)
+    return ticket_log_domain_service.build_entry(
+        'ticket-revoked', ticket_id, data
+    )
