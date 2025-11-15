@@ -19,7 +19,7 @@ from byceps.services.seating.errors import SeatingError
 from byceps.services.seating.models import SeatGroupID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -123,7 +123,7 @@ def revoke_bundle(
         db_ticket.revoked = True
 
         log_entry = _build_ticket_revoked_log_entry(
-            db_ticket.id, initiator.id, reason
+            db_ticket.id, initiator, reason
         )
         db_log_entry = ticket_log_service.to_db_entry(log_entry)
         db.session.add(db_log_entry)
@@ -134,10 +134,10 @@ def revoke_bundle(
 
 
 def _build_ticket_revoked_log_entry(
-    ticket_id: TicketID, initiator_id: UserID, reason: str | None = None
+    ticket_id: TicketID, initiator: User, reason: str | None = None
 ) -> TicketLogEntry:
     data = {
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     }
 
     if reason:
