@@ -31,7 +31,6 @@ from . import (
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
-from .models.log import TicketLogEntry
 from .models.ticket import (
     TicketBundle,
     TicketBundleID,
@@ -126,7 +125,7 @@ def revoke_bundle(
     for db_ticket in db_bundle.tickets:
         db_ticket.revoked = True
 
-        log_entry = _build_ticket_revoked_log_entry(
+        log_entry = ticket_log_domain_service.build_ticket_revoked_entry(
             db_ticket.id, initiator, reason
         )
         db_log_entry = ticket_log_service.to_db_entry(log_entry)
@@ -135,21 +134,6 @@ def revoke_bundle(
     db.session.commit()
 
     return Ok(None)
-
-
-def _build_ticket_revoked_log_entry(
-    ticket_id: TicketID, initiator: User, reason: str | None = None
-) -> TicketLogEntry:
-    data = {
-        'initiator_id': str(initiator.id),
-    }
-
-    if reason:
-        data['reason'] = reason
-
-    return ticket_log_domain_service.build_entry(
-        'ticket-revoked', ticket_id, data
-    )
 
 
 def delete_bundle(bundle_id: TicketBundleID) -> None:

@@ -50,3 +50,17 @@ def build_ticket_code_changed_entry(
             'initiator_id': str(initiator.id),
         },
     )
+
+
+def build_ticket_revoked_entry(
+    ticket_id: TicketID, initiator: User, reason: str | None = None
+) -> TicketLogEntry:
+    """Assemble a 'ticket revoked' log entry."""
+    data = {
+        'initiator_id': str(initiator.id),
+    }
+
+    if reason:
+        data['reason'] = reason
+
+    return build_entry('ticket-revoked', ticket_id, data)
