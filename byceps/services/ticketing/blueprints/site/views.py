@@ -401,7 +401,7 @@ def appoint_seat_manager(ticket_id):
     user = form.user.data
 
     match ticket_seat_management_service.appoint_seat_manager(
-        ticket.id, user.id, manager.id
+        ticket.id, user, manager
     ):
         case Err(e):
             flash_error(e.message)
@@ -437,7 +437,7 @@ def withdraw_seat_manager(ticket_id):
     previous_manager = ticket.seat_managed_by
 
     match ticket_seat_management_service.withdraw_seat_manager(
-        ticket.id, manager.id
+        ticket.id, manager
     ):
         case Err(e):
             flash_error(e.message)

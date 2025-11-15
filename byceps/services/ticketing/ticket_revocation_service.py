@@ -23,7 +23,7 @@ def revoke_ticket(
     # Release seat.
     if db_ticket.occupied_seat_id:
         ticket_seat_management_service.release_seat(
-            db_ticket.id, initiator.id
+            db_ticket.id, initiator
         ).unwrap()
 
     db_ticket.revoked = True
@@ -48,7 +48,7 @@ def revoke_tickets(
     for db_ticket in db_tickets:
         if db_ticket.occupied_seat_id:
             ticket_seat_management_service.release_seat(
-                db_ticket.id, initiator.id
+                db_ticket.id, initiator
             ).unwrap()
 
     for db_ticket in db_tickets:

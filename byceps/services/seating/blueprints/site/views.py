@@ -220,7 +220,7 @@ def occupy_seat(ticket_id, seat_id):
 
     try:
         occupy_seat_result = ticket_seat_management_service.occupy_seat(
-            ticket.id, seat.id, manager.id
+            ticket.id, seat, manager
         )
     except ValueError:
         abort(404)
@@ -297,7 +297,7 @@ def release_seat(ticket_id):
     seat = ticket.occupied_seat
 
     release_seat_result = ticket_seat_management_service.release_seat(
-        ticket.id, manager.id
+        ticket.id, manager
     )
 
     if release_seat_result.is_err():
