@@ -9,7 +9,7 @@ byceps.services.ticketing.ticket_log_domain_service
 from datetime import datetime
 
 from byceps.services.seating.models import SeatID
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User, UserID
 from byceps.util.uuid import generate_uuid7
 
 from .models.log import TicketLogEntry, TicketLogEntryData
@@ -177,6 +177,41 @@ def build_release_seat_entry(
         ticket_id,
         {
             'seat_id': str(seat_id),
+            'initiator_id': str(initiator.id),
+        },
+    )
+
+
+def build_user_checked_in_entry(
+    ticket_id: TicketID,
+    user: User,
+    initiator: User,
+    *,
+    occurred_at: datetime | None = None,
+) -> TicketLogEntry:
+    """Assemble a 'user checked in' log entry."""
+    return build_entry(
+        'user-checked-in',
+        ticket_id,
+        {
+            'checked_in_user_id': str(user.id),
+            'initiator_id': str(initiator.id),
+        },
+        occurred_at=occurred_at,
+    )
+
+
+def build_user_check_in_reverted_entry(
+    ticket_id: TicketID,
+    user_id: UserID,
+    initiator: User,
+) -> TicketLogEntry:
+    """Assemble a 'user check-in reverted' log entry."""
+    return build_entry(
+        'user-check-in-reverted',
+        ticket_id,
+        {
+            'checked_in_user_id': str(user_id),
             'initiator_id': str(initiator.id),
         },
     )

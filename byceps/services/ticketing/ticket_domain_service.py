@@ -15,6 +15,7 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
+from . import ticket_log_domain_service
 from .errors import (
     TicketBelongsToDifferentPartyError,
     TicketingError,
@@ -30,8 +31,7 @@ from .models.checkin import (
     TicketCheckIn,
     ValidTicketForCheckIn,
 )
-from .models.log import TicketLogEntry, TicketLogEntryData
-from .models.ticket import TicketID
+from .models.log import TicketLogEntry
 
 
 def check_in_user(
@@ -109,14 +109,8 @@ def _check_in_user(
 
     check_in = _build_check_in(occurred_at, ticket, initiator)
     event = _build_check_in_event(occurred_at, ticket, initiator)
-    log_entry = _build_check_in_log_entry(
-        occurred_at,
-        'user-checked-in',
-        ticket.id,
-        {
-            'checked_in_user_id': str(ticket.used_by.id),
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_user_checked_in_entry(
+        ticket.id, ticket.used_by, initiator, occurred_at=occurred_at
     )
 
     return check_in, event, log_entry
@@ -143,19 +137,4 @@ def _build_check_in_event(
         ticket_code=ticket.code,
         occupied_seat_id=ticket.occupied_seat_id,
         user=EventUser.from_user(ticket.used_by),
-    )
-
-
-def _build_check_in_log_entry(
-    occurred_at: datetime,
-    event_type: str,
-    ticket_id: TicketID,
-    data: TicketLogEntryData,
-) -> TicketLogEntry:
-    return TicketLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type=event_type,
-        ticket_id=ticket_id,
-        data=data.copy(),
     )
