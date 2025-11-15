@@ -8,6 +8,7 @@ byceps.services.ticketing.ticket_log_domain_service
 
 from datetime import datetime
 
+from byceps.services.seating.models import SeatID
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
@@ -115,6 +116,67 @@ def build_user_withdrawn_entry(
         'user-withdrawn',
         ticket_id,
         {
+            'initiator_id': str(initiator.id),
+        },
+    )
+
+
+def build_seat_manager_appointed_entry(
+    ticket_id: TicketID, manager: User, initiator: User
+) -> TicketLogEntry:
+    """Assemble a 'seat manager appointed' log entry."""
+    return build_entry(
+        'seat-manager-appointed',
+        ticket_id,
+        {
+            'appointed_seat_manager_id': str(manager.id),
+            'initiator_id': str(initiator.id),
+        },
+    )
+
+
+def build_seat_manager_withdrawn_entry(
+    ticket_id: TicketID, initiator: User
+) -> TicketLogEntry:
+    """Assemble a 'seat manager withdrawn' log entry."""
+    return build_entry(
+        'seat-manager-withdrawn',
+        ticket_id,
+        {
+            'initiator_id': str(initiator.id),
+        },
+    )
+
+
+def build_occupy_seat_entry(
+    ticket_id: TicketID,
+    seat_id: SeatID,
+    previous_seat_id: SeatID | None,
+    initiator: User,
+) -> TicketLogEntry:
+    """Assemble an 'occupy seat' log entry."""
+    data = {
+        'seat_id': str(seat_id),
+        'initiator_id': str(initiator.id),
+    }
+
+    if previous_seat_id is not None:
+        data['previous_seat_id'] = str(previous_seat_id)
+
+    return build_entry('seat-occupied', ticket_id, data)
+
+
+def build_release_seat_entry(
+    ticket_id: TicketID,
+    seat_id: SeatID,
+    initiator: User,
+) -> TicketLogEntry:
+    """Assemble a 'release seat' log entry."""
+    return build_entry(
+        'seat-released',
+        ticket_id,
+        {
+            'seat_id': str(seat_id),
             'initiator_id': str(initiator.id),
         },
     )

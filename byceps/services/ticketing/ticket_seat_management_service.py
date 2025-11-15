@@ -39,13 +39,8 @@ def appoint_seat_manager(
 
     db_ticket.seat_managed_by_id = manager.id
 
-    log_entry = ticket_log_domain_service.build_entry(
-        'seat-manager-appointed',
-        db_ticket.id,
-        {
-            'appointed_seat_manager_id': str(manager.id),
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_seat_manager_appointed_entry(
+        db_ticket.id, manager, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -67,12 +62,8 @@ def withdraw_seat_manager(
 
     db_ticket.seat_managed_by_id = None
 
-    log_entry = ticket_log_domain_service.build_entry(
-        'seat-manager-withdrawn',
-        db_ticket.id,
-        {
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_seat_manager_withdrawn_entry(
+        db_ticket.id, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -117,15 +108,8 @@ def occupy_seat(
 
     db_ticket.occupied_seat_id = seat.id
 
-    log_entry_data = {
-        'seat_id': str(seat.id),
-        'initiator_id': str(initiator.id),
-    }
-    if previous_seat_id is not None:
-        log_entry_data['previous_seat_id'] = str(previous_seat_id)
-
-    log_entry = ticket_log_domain_service.build_entry(
-        'seat-occupied', db_ticket.id, log_entry_data
+    log_entry = ticket_log_domain_service.build_occupy_seat_entry(
+        db_ticket.id, seat.id, previous_seat_id, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -166,13 +150,8 @@ def release_seat(
 
     db_ticket.occupied_seat_id = None
 
-    log_entry = ticket_log_domain_service.build_entry(
-        'seat-released',
-        db_ticket.id,
-        {
-            'seat_id': str(seat.id),
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_release_seat_entry(
+        db_ticket.id, seat.id, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
