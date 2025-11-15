@@ -182,7 +182,7 @@ def update_code(ticket_id):
     code = form.code.data
     manager = g.user
 
-    ticket_service.update_ticket_code(ticket.id, code, manager.id)
+    ticket_service.update_ticket_code(ticket.id, code, manager)
 
     flash_success(
         gettext(

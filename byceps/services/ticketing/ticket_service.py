@@ -17,7 +17,7 @@ from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.seating.models import SeatID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User, UserID
 
 from . import ticket_code_service, ticket_log_service
 from .dbmodels.category import DbTicketCategory
@@ -31,9 +31,7 @@ from .models.ticket import (
 )
 
 
-def update_ticket_code(
-    ticket_id: TicketID, code: str, initiator_id: UserID
-) -> None:
+def update_ticket_code(ticket_id: TicketID, code: str, initiator: User) -> None:
     """Set a custom code for the ticket."""
     db_ticket = get_ticket(ticket_id)
 
@@ -50,7 +48,7 @@ def update_ticket_code(
         {
             'old_code': old_code,
             'new_code': code,
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         },
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
