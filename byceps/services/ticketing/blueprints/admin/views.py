@@ -228,9 +228,7 @@ def appoint_user(ticket_id):
     user = form.user.data
     manager = g.user
 
-    match ticket_user_management_service.appoint_user(
-        ticket.id, user.id, manager.id
-    ):
+    match ticket_user_management_service.appoint_user(ticket.id, user, manager):
         case Err(e):
             flash_error(e.message)
             return redirect_to('.view_ticket', ticket_id=ticket.id)

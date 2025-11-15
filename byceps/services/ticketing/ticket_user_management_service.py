@@ -7,8 +7,7 @@ byceps.services.ticketing.ticket_user_management_service
 """
 
 from byceps.database import db
-from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
 from . import ticket_log_service, ticket_service
@@ -17,13 +16,12 @@ from .errors import (
     TicketIsRevokedError,
     UserAccountSuspendedError,
     UserAlreadyCheckedInError,
-    UserIdUnknownError,
 )
 from .models.ticket import TicketID
 
 
 def appoint_user_manager(
-    ticket_id: TicketID, manager_id: UserID, initiator_id: UserID
+    ticket_id: TicketID, manager: User, initiator: User
 ) -> Result[None, TicketingError]:
     """Appoint the user as the ticket's user manager."""
     db_ticket = ticket_service.get_ticket(ticket_id)
@@ -33,14 +31,14 @@ def appoint_user_manager(
             TicketIsRevokedError(f'Ticket {ticket_id} has been revoked.')
         )
 
-    db_ticket.user_managed_by_id = manager_id
+    db_ticket.user_managed_by_id = manager.id
 
     log_entry = ticket_log_service.build_entry(
         'user-manager-appointed',
         db_ticket.id,
         {
-            'appointed_user_manager_id': str(manager_id),
-            'initiator_id': str(initiator_id),
+            'appointed_user_manager_id': str(manager.id),
+            'initiator_id': str(initiator.id),
         },
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
@@ -52,7 +50,7 @@ def appoint_user_manager(
 
 
 def withdraw_user_manager(
-    ticket_id: TicketID, initiator_id: UserID
+    ticket_id: TicketID, initiator: User
 ) -> Result[None, TicketingError]:
     """Withdraw the ticket's custom user manager."""
     db_ticket = ticket_service.get_ticket(ticket_id)
@@ -68,7 +66,7 @@ def withdraw_user_manager(
         'user-manager-withdrawn',
         db_ticket.id,
         {
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         },
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
@@ -80,7 +78,7 @@ def withdraw_user_manager(
 
 
 def appoint_user(
-    ticket_id: TicketID, user_id: UserID, initiator_id: UserID
+    ticket_id: TicketID, user: User, initiator: User
 ) -> Result[None, TicketingError]:
     """Appoint the user as the ticket's user."""
     db_ticket = ticket_service.get_ticket(ticket_id)
@@ -97,10 +95,6 @@ def appoint_user(
             )
         )
 
-    user = user_service.find_user(user_id)
-    if user is None:
-        return Err(UserIdUnknownError(f"Unknown user ID '{user_id}'"))
-
     if user.suspended:
         return Err(
             UserAccountSuspendedError(
@@ -108,14 +102,14 @@ def appoint_user(
             )
         )
 
-    db_ticket.used_by_id = user_id
+    db_ticket.used_by_id = user.id
 
     log_entry = ticket_log_service.build_entry(
         'user-appointed',
         db_ticket.id,
         {
-            'appointed_user_id': str(user_id),
-            'initiator_id': str(initiator_id),
+            'appointed_user_id': str(user.id),
+            'initiator_id': str(initiator.id),
         },
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
@@ -127,7 +121,7 @@ def appoint_user(
 
 
 def withdraw_user(
-    ticket_id: TicketID, initiator_id: UserID
+    ticket_id: TicketID, initiator: User
 ) -> Result[None, TicketingError]:
     """Withdraw the ticket's user."""
     db_ticket = ticket_service.get_ticket(ticket_id)
@@ -150,7 +144,7 @@ def withdraw_user(
         'user-withdrawn',
         db_ticket.id,
         {
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         },
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)

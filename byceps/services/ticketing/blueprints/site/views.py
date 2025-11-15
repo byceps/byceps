@@ -187,7 +187,7 @@ def appoint_user(ticket_id):
     new_user = form.user.data
 
     match ticket_user_management_service.appoint_user(
-        ticket.id, new_user.id, manager.id
+        ticket.id, new_user, manager
     ):
         case Err(e):
             flash_error(e.message)
@@ -231,7 +231,7 @@ def withdraw_user(ticket_id):
     # Intentionally assign the ticket user manager as the new
     # ticket user instead of removing the ticket user.
     match ticket_user_management_service.appoint_user(
-        ticket.id, manager.id, manager.id
+        ticket.id, manager, manager
     ):
         case Err(e):
             flash_error(e.message)
@@ -299,7 +299,7 @@ def appoint_user_manager(ticket_id):
     user = form.user.data
 
     match ticket_user_management_service.appoint_user_manager(
-        ticket.id, user.id, manager.id
+        ticket.id, user, manager
     ):
         case Err(e):
             flash_error(e.message)
@@ -337,7 +337,7 @@ def withdraw_user_manager(ticket_id):
     previous_manager = ticket.user_managed_by
 
     match ticket_user_management_service.withdraw_user_manager(
-        ticket.id, manager.id
+        ticket.id, manager
     ):
         case Err(e):
             flash_error(e.message)
