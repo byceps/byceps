@@ -42,14 +42,8 @@ def update_ticket_code(ticket_id: TicketID, code: str, initiator: User) -> None:
 
     db_ticket.code = code
 
-    log_entry = ticket_log_domain_service.build_entry(
-        'ticket-code-changed',
-        db_ticket.id,
-        {
-            'old_code': old_code,
-            'new_code': code,
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_ticket_code_changed_entry(
+        db_ticket.id, old_code, code, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
