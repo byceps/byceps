@@ -33,13 +33,8 @@ def appoint_user_manager(
 
     db_ticket.user_managed_by_id = manager.id
 
-    log_entry = ticket_log_domain_service.build_entry(
-        'user-manager-appointed',
-        db_ticket.id,
-        {
-            'appointed_user_manager_id': str(manager.id),
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_user_manager_appointed_entry(
+        db_ticket.id, manager, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -62,12 +57,8 @@ def withdraw_user_manager(
 
     db_ticket.user_managed_by_id = None
 
-    log_entry = ticket_log_domain_service.build_entry(
-        'user-manager-withdrawn',
-        db_ticket.id,
-        {
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_user_manager_withdrawn_entry(
+        db_ticket.id, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -104,13 +95,8 @@ def appoint_user(
 
     db_ticket.used_by_id = user.id
 
-    log_entry = ticket_log_domain_service.build_entry(
-        'user-appointed',
-        db_ticket.id,
-        {
-            'appointed_user_id': str(user.id),
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_user_appointed_entry(
+        db_ticket.id, user, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
@@ -140,12 +126,8 @@ def withdraw_user(
 
     db_ticket.used_by_id = None
 
-    log_entry = ticket_log_domain_service.build_entry(
-        'user-withdrawn',
-        db_ticket.id,
-        {
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_user_withdrawn_entry(
+        db_ticket.id, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)

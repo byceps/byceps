@@ -64,3 +64,57 @@ def build_ticket_revoked_entry(
         data['reason'] = reason
 
     return build_entry('ticket-revoked', ticket_id, data)
+
+
+def build_user_manager_appointed_entry(
+    ticket_id: TicketID, manager: User, initiator: User
+) -> TicketLogEntry:
+    """Assemble a 'user manager appointed' log entry."""
+    return build_entry(
+        'user-manager-appointed',
+        ticket_id,
+        {
+            'appointed_user_manager_id': str(manager.id),
+            'initiator_id': str(initiator.id),
+        },
+    )
+
+
+def build_user_manager_withdrawn_entry(
+    ticket_id: TicketID, initiator: User
+) -> TicketLogEntry:
+    """Assemble a 'user manager withdrawn' log entry."""
+    return build_entry(
+        'user-manager-withdrawn',
+        ticket_id,
+        {
+            'initiator_id': str(initiator.id),
+        },
+    )
+
+
+def build_user_appointed_entry(
+    ticket_id: TicketID, user: User, initiator: User
+) -> TicketLogEntry:
+    """Assemble a 'user appointed' log entry."""
+    return build_entry(
+        'user-appointed',
+        ticket_id,
+        {
+            'appointed_user_id': str(user.id),
+            'initiator_id': str(initiator.id),
+        },
+    )
+
+
+def build_user_withdrawn_entry(
+    ticket_id: TicketID, initiator: User
+) -> TicketLogEntry:
+    """Assemble a 'user withdrawn' log entry."""
+    return build_entry(
+        'user-withdrawn',
+        ticket_id,
+        {
+            'initiator_id': str(initiator.id),
+        },
+    )
