@@ -16,7 +16,7 @@ from .models.log import TicketLogEntry, TicketLogEntryData
 from .models.ticket import TicketID
 
 
-def build_entry(
+def _build_entry(
     event_type: str,
     ticket_id: TicketID,
     data: TicketLogEntryData,
@@ -42,7 +42,7 @@ def build_ticket_code_changed_entry(
     ticket_id: TicketID, old_code: str, new_code: str, initiator: User
 ) -> TicketLogEntry:
     """Assemble a 'ticket code changed' log entry."""
-    return build_entry(
+    return _build_entry(
         'ticket-code-changed',
         ticket_id,
         {
@@ -64,14 +64,14 @@ def build_ticket_revoked_entry(
     if reason:
         data['reason'] = reason
 
-    return build_entry('ticket-revoked', ticket_id, data)
+    return _build_entry('ticket-revoked', ticket_id, data)
 
 
 def build_user_manager_appointed_entry(
     ticket_id: TicketID, manager: User, initiator: User
 ) -> TicketLogEntry:
     """Assemble a 'user manager appointed' log entry."""
-    return build_entry(
+    return _build_entry(
         'user-manager-appointed',
         ticket_id,
         {
@@ -85,7 +85,7 @@ def build_user_manager_withdrawn_entry(
     ticket_id: TicketID, initiator: User
 ) -> TicketLogEntry:
     """Assemble a 'user manager withdrawn' log entry."""
-    return build_entry(
+    return _build_entry(
         'user-manager-withdrawn',
         ticket_id,
         {
@@ -98,7 +98,7 @@ def build_user_appointed_entry(
     ticket_id: TicketID, user: User, initiator: User
 ) -> TicketLogEntry:
     """Assemble a 'user appointed' log entry."""
-    return build_entry(
+    return _build_entry(
         'user-appointed',
         ticket_id,
         {
@@ -112,7 +112,7 @@ def build_user_withdrawn_entry(
     ticket_id: TicketID, initiator: User
 ) -> TicketLogEntry:
     """Assemble a 'user withdrawn' log entry."""
-    return build_entry(
+    return _build_entry(
         'user-withdrawn',
         ticket_id,
         {
@@ -125,7 +125,7 @@ def build_seat_manager_appointed_entry(
     ticket_id: TicketID, manager: User, initiator: User
 ) -> TicketLogEntry:
     """Assemble a 'seat manager appointed' log entry."""
-    return build_entry(
+    return _build_entry(
         'seat-manager-appointed',
         ticket_id,
         {
@@ -139,7 +139,7 @@ def build_seat_manager_withdrawn_entry(
     ticket_id: TicketID, initiator: User
 ) -> TicketLogEntry:
     """Assemble a 'seat manager withdrawn' log entry."""
-    return build_entry(
+    return _build_entry(
         'seat-manager-withdrawn',
         ticket_id,
         {
@@ -163,7 +163,7 @@ def build_occupy_seat_entry(
     if previous_seat_id is not None:
         data['previous_seat_id'] = str(previous_seat_id)
 
-    return build_entry('seat-occupied', ticket_id, data)
+    return _build_entry('seat-occupied', ticket_id, data)
 
 
 def build_release_seat_entry(
@@ -172,7 +172,7 @@ def build_release_seat_entry(
     initiator: User,
 ) -> TicketLogEntry:
     """Assemble a 'release seat' log entry."""
-    return build_entry(
+    return _build_entry(
         'seat-released',
         ticket_id,
         {
@@ -190,7 +190,7 @@ def build_user_checked_in_entry(
     occurred_at: datetime | None = None,
 ) -> TicketLogEntry:
     """Assemble a 'user checked in' log entry."""
-    return build_entry(
+    return _build_entry(
         'user-checked-in',
         ticket_id,
         {
@@ -207,7 +207,7 @@ def build_user_check_in_reverted_entry(
     initiator: User,
 ) -> TicketLogEntry:
     """Assemble a 'user check-in reverted' log entry."""
-    return build_entry(
+    return _build_entry(
         'user-check-in-reverted',
         ticket_id,
         {
