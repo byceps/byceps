@@ -19,7 +19,8 @@ from byceps.services.user_badge.models import BadgeAwarding
 from byceps.util.uuid import generate_uuid7
 
 from .models.log import OrderLogEntry, OrderLogEntryData
-from .models.order import OrderID
+from .models.order import OrderID, PaymentState
+from .models.payment import AdditionalPaymentData, Payment
 
 
 def _build_entry(
@@ -44,6 +45,17 @@ def _build_entry(
     )
 
 
+def build_order_placed_entry(
+    occurred_at: datetime, order_id: OrderID, initiator: User
+) -> OrderLogEntry:
+    """Assemble an 'order placed' log entry."""
+    data = {
+        'initiator_id': str(initiator.id),
+    }
+
+    return _build_entry('order-placed', order_id, data, occurred_at=occurred_at)
+
+
 def build_order_placed_confirmation_email_resent_entry(
     order_id: OrderID, initiator: User
 ) -> OrderLogEntry:
@@ -55,6 +67,128 @@ def build_order_placed_confirmation_email_resent_entry(
     return _build_entry(
         'order-placed-confirmation-email-resent', order_id, data
     )
+
+
+def build_orderer_updated_entry(
+    order_id: OrderID,
+    fields: dict[str, str],
+    initiator: User,
+) -> OrderLogEntry:
+    """Assemble an 'orderer updated' log entry."""
+    data = {
+        'fields': fields,
+        'initiator_id': str(initiator.id),
+    }
+
+    return _build_entry('order-orderer-updated', order_id, data)
+
+
+def build_note_added_entry(
+    order_id: OrderID, author: User, text: str
+) -> OrderLogEntry:
+    """Assemble a 'note added' log entry."""
+    data = {
+        'author_id': str(author.id),
+        'text': text,
+    }
+
+    return _build_entry('order-note-added', order_id, data)
+
+
+def build_set_shipped_flag_entry(
+    order_id: OrderID, initiator: User
+) -> OrderLogEntry:
+    """Assemble a 'set shipped flag' log entry."""
+    data = {
+        'initiator_id': str(initiator.id),
+    }
+
+    return _build_entry('order-shipped', order_id, data)
+
+
+def build_unset_shipped_flag_entry(
+    order_id: OrderID, initiator: User
+) -> OrderLogEntry:
+    """Assemble an 'unset shipped flag' log entry."""
+    data = {
+        'initiator_id': str(initiator.id),
+    }
+
+    return _build_entry('order-shipped-withdrawn', order_id, data)
+
+
+def build_payment_created_entry(
+    payment: Payment, initiator: User
+) -> OrderLogEntry:
+    """Assemble a 'payment created' log entry."""
+    data = {
+        'payment_id': str(payment.id),
+        'initiator_id': str(initiator.id),
+    }
+
+    return _build_entry(
+        'order-payment-created',
+        payment.order_id,
+        data,
+        occurred_at=payment.created_at,
+    )
+
+
+def build_order_paid_entry(
+    occurred_at: datetime,
+    order_id: OrderID,
+    payment_state_from: PaymentState,
+    payment_method: str,
+    additional_payment_data: AdditionalPaymentData | None,
+    initiator: User,
+) -> OrderLogEntry:
+    """Assemble an 'order paid' log entry."""
+    data: OrderLogEntryData = {}
+
+    # Add required, internally set properties after given additional
+    # ones to ensure the former are not overridden by the latter.
+
+    if additional_payment_data is not None:
+        data.update(additional_payment_data)
+
+    data.update(
+        {
+            'former_payment_state': payment_state_from.name,
+            'payment_method': payment_method,
+            'initiator_id': str(initiator.id),
+        }
+    )
+
+    return _build_entry(
+        'order-paid',
+        order_id,
+        data,
+        occurred_at=occurred_at,
+    )
+
+
+def build_order_canceled_entry(
+    occurred_at: datetime,
+    order_id: OrderID,
+    has_order_been_paid: bool,
+    payment_state_from: PaymentState,
+    reason: str,
+    initiator: User,
+) -> OrderLogEntry:
+    """Assemble an 'order canceled' log entry."""
+    event_type = (
+        'order-canceled-after-paid'
+        if has_order_been_paid
+        else 'order-canceled-before-paid'
+    )
+
+    data = {
+        'former_payment_state': payment_state_from.name,
+        'reason': reason,
+        'initiator_id': str(initiator.id),
+    }
+
+    return _build_entry(event_type, order_id, data, occurred_at=occurred_at)
 
 
 def build_ticket_created_entry(
