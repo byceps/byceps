@@ -8,6 +8,7 @@ byceps.services.shop.order.order_log_domain_service
 
 from datetime import datetime
 
+from byceps.services.shop.invoice.models import Invoice
 from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
     TicketCategoryID,
@@ -189,6 +190,18 @@ def build_order_canceled_entry(
     }
 
     return _build_entry(event_type, order_id, data, occurred_at=occurred_at)
+
+
+def build_invoice_created_entry(
+    invoice: Invoice, initiator: User
+) -> OrderLogEntry:
+    """Assemble an 'invoice created' log entry."""
+    data = {
+        'invoice_number': invoice.number,
+        'initiator_id': str(initiator.id),
+    }
+
+    return _build_entry('order-invoice-created', invoice.order_id, data)
 
 
 def build_ticket_created_entry(
