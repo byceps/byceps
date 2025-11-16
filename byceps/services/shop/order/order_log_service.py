@@ -7,41 +7,17 @@ byceps.services.shop.order.order_log_service
 """
 
 from collections.abc import Iterable
-from datetime import datetime
 
 from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.user.models.user import UserID
-from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
-from .models.log import OrderLogEntry, OrderLogEntryData
+from .models.log import OrderLogEntry
 from .models.order import OrderID
-
-
-def build_entry(
-    event_type: str,
-    order_id: OrderID,
-    data: OrderLogEntryData,
-    *,
-    occurred_at: datetime | None = None,
-) -> OrderLogEntry:
-    """Assemble an order log entry."""
-    entry_id = generate_uuid7()
-
-    if occurred_at is None:
-        occurred_at = datetime.utcnow()
-
-    return OrderLogEntry(
-        id=entry_id,
-        occurred_at=occurred_at,
-        event_type=event_type,
-        order_id=order_id,
-        data=data,
-    )
 
 
 def persist_entry(entry: OrderLogEntry) -> None:

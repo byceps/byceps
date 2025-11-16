@@ -21,6 +21,7 @@ from byceps.services.shop.invoice.errors import (
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import (
     order_command_service,
+    order_log_domain_service,
     order_log_service,
     order_sequence_service,
     order_service,
@@ -477,16 +478,12 @@ def resend_email_for_incoming_order_to_orderer(order_id):
     """Resend the e-mail to the orderer to confirm that the order was placed."""
     order = _get_order_or_404(order_id)
 
-    initiator_id = g.user.id
+    initiator = g.user
 
     order_email_service.send_email_for_incoming_order_to_orderer(order)
 
-    log_entry = order_log_service.build_entry(
-        'order-placed-confirmation-email-resent',
-        order.id,
-        {
-            'initiator_id': str(initiator_id),
-        },
+    log_entry = order_log_domain_service.build_order_placed_confirmation_email_resent_entry(
+        order.id, initiator
     )
     order_log_service.persist_entry(log_entry)
 

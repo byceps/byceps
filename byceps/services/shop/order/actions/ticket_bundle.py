@@ -13,11 +13,11 @@ from byceps.services.seating.errors import SeatingError
 from byceps.services.shop.order import (
     order_command_service,
     order_event_service,
+    order_log_domain_service,
     order_log_service,
 )
 from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
-from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import (
     LineItem,
     Order,
@@ -121,23 +121,15 @@ def create_ticket_bundles(
 def _create_creation_order_log_entry(
     order_id: OrderID, ticket_bundle: TicketBundle
 ) -> None:
-    log_entry = _build_ticket_bundle_created_log_entry(order_id, ticket_bundle)
+    log_entry = order_log_domain_service.build_ticket_bundle_created_entry(
+        order_id,
+        ticket_bundle.id,
+        ticket_bundle.ticket_category.id,
+        ticket_bundle.ticket_quantity,
+        ticket_bundle.owned_by.id,
+    )
+
     order_log_service.persist_entry(log_entry)
-
-
-def _build_ticket_bundle_created_log_entry(
-    order_id: OrderID, ticket_bundle: TicketBundle
-) -> OrderLogEntry:
-    event_type = 'ticket-bundle-created'
-
-    data = {
-        'ticket_bundle_id': str(ticket_bundle.id),
-        'ticket_bundle_category_id': str(ticket_bundle.ticket_category.id),
-        'ticket_bundle_ticket_quantity': ticket_bundle.ticket_quantity,
-        'ticket_bundle_owner_id': str(ticket_bundle.owned_by.id),
-    }
-
-    return order_log_service.build_entry(event_type, order_id, data)
 
 
 def revoke_ticket_bundles(
@@ -162,20 +154,8 @@ def revoke_ticket_bundles(
 def _create_revocation_order_log_entry(
     order_id: OrderID, ticket_bundle_id: TicketBundleID, initiator: User
 ) -> None:
-    log_entry = _build_ticket_bundle_revoked_log_entry(
+    log_entry = order_log_domain_service.build_ticket_bundle_revoked_entry(
         order_id, ticket_bundle_id, initiator
     )
+
     order_log_service.persist_entry(log_entry)
-
-
-def _build_ticket_bundle_revoked_log_entry(
-    order_id: OrderID, ticket_bundle_id: TicketBundleID, initiator: User
-) -> OrderLogEntry:
-    event_type = 'ticket-bundle-revoked'
-
-    data = {
-        'ticket_bundle_id': str(ticket_bundle_id),
-        'initiator_id': str(initiator.id),
-    }
-
-    return order_log_service.build_entry(event_type, order_id, data)

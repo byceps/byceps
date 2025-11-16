@@ -13,11 +13,11 @@ from uuid import UUID
 from byceps.services.shop.order import (
     order_command_service,
     order_event_service,
+    order_log_domain_service,
     order_log_service,
 )
 from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
-from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import (
     LineItem,
     Order,
@@ -31,7 +31,11 @@ from byceps.services.ticketing import (
     ticket_service,
 )
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.services.ticketing.models.ticket import TicketCategory, TicketID
+from byceps.services.ticketing.models.ticket import (
+    TicketCategory,
+    TicketCode,
+    TicketID,
+)
 from byceps.services.user.models.user import User
 from byceps.util.result import Ok, Result
 
@@ -99,24 +103,17 @@ def _create_creation_order_log_entries(
     order_id: OrderID, tickets: Iterable[DbTicket]
 ) -> None:
     log_entries = [
-        _build_ticket_created_log_entry(order_id, ticket) for ticket in tickets
+        order_log_domain_service.build_ticket_created_entry(
+            order_id,
+            ticket.id,
+            TicketCode(ticket.code),
+            ticket.category_id,
+            ticket.owned_by_id,
+        )
+        for ticket in tickets
     ]
+
     order_log_service.persist_entries(log_entries)
-
-
-def _build_ticket_created_log_entry(
-    order_id: OrderID, ticket: DbTicket
-) -> OrderLogEntry:
-    event_type = 'ticket-created'
-
-    data = {
-        'ticket_id': str(ticket.id),
-        'ticket_code': ticket.code,
-        'ticket_category_id': str(ticket.category_id),
-        'ticket_owner_id': str(ticket.owned_by_id),
-    }
-
-    return order_log_service.build_entry(event_type, order_id, data)
 
 
 def revoke_tickets(order: Order, line_item: LineItem, initiator: User) -> None:
@@ -136,21 +133,10 @@ def _create_revocation_order_log_entries(
     order_id: OrderID, tickets: Iterable[DbTicket], initiator: User
 ) -> None:
     log_entries = [
-        _build_ticket_revoked_log_entry(order_id, ticket, initiator)
+        order_log_domain_service.build_ticket_revoked_entry(
+            order_id, ticket.id, TicketCode(ticket.code), initiator
+        )
         for ticket in tickets
     ]
+
     order_log_service.persist_entries(log_entries)
-
-
-def _build_ticket_revoked_log_entry(
-    order_id: OrderID, ticket: DbTicket, initiator: User
-) -> OrderLogEntry:
-    event_type = 'ticket-revoked'
-
-    data = {
-        'ticket_id': str(ticket.id),
-        'ticket_code': ticket.code,
-        'initiator_id': str(initiator.id),
-    }
-
-    return order_log_service.build_entry(event_type, order_id, data)
