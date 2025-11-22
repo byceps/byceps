@@ -16,7 +16,7 @@ from byceps.database import db, insert_ignore_on_conflict, upsert
 from byceps.services.authn.events import UserLoggedInEvent
 from byceps.services.core.events import EventSite, EventUser
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user import user_log_service
+from byceps.services.user import user_log_domain_service, user_log_service
 from byceps.services.user.dbmodels.log import DbUserLogEntry
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import (
@@ -155,7 +155,7 @@ def _build_login_log_entry(
     if site_id:
         data['site_id'] = site_id
 
-    return user_log_service.build_entry(
+    return user_log_domain_service.build_entry(
         'user-logged-in', user_id, data, occurred_at=occurred_at
     )
 
