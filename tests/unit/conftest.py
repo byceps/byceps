@@ -151,12 +151,12 @@ def make_user():
 
 @pytest.fixture(scope='session')
 def admin_user(make_user) -> User:
-    return make_user()
+    return make_user(screen_name='Admin')
 
 
 @pytest.fixture(scope='session')
 def user(make_user):
-    return make_user()
+    return make_user(screen_name='User')
 
 
 @pytest.fixture(scope='session')
