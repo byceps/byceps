@@ -667,7 +667,7 @@ def change_details(user_id):
         case Err(NothingChangedError()):
             flash_notice(gettext('Nothing has been changed.'))
         case Err(msg):
-            flash_error(gettext('An unexpected error occurred.'))
+            flash_error(gettext('An unexpected error occurred.') + '\n' + msg)
 
     return redirect_to('.view', user_id=user.id)
 
