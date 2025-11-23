@@ -9,8 +9,8 @@ byceps.services.user.user_avatar_domain_service
 from datetime import datetime
 
 from byceps.services.core.events import EventUser
-from byceps.util.uuid import generate_uuid7
 
+from . import user_log_domain_service
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
 from .models.log import UserLogEntry
 from .models.user import User, UserAvatar
@@ -53,16 +53,15 @@ def _build_avatar_updated_log_entry(
     initiator: User,
     avatar: UserAvatar,
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-avatar-updated',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
+    return user_log_domain_service.build_entry(
+        'user-avatar-updated',
+        user.id,
+        {
             'avatar_id': str(avatar.id),
             'filename': str(avatar.filename),
         },
+        occurred_at=occurred_at,
+        initiator_id=initiator.id,
     )
 
 
@@ -101,14 +100,13 @@ def _build_avatar_removed_log_entry(
     initiator: User,
     avatar: UserAvatar,
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-avatar-removed',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
+    return user_log_domain_service.build_entry(
+        'user-avatar-removed',
+        user.id,
+        {
             'avatar_id': str(avatar.id),
             'filename': str(avatar.filename),
         },
+        occurred_at=occurred_at,
+        initiator_id=initiator.id,
     )

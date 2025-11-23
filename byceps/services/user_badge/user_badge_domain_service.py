@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from byceps.services.core.events import EventUser
+from byceps.services.user import user_log_domain_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
@@ -82,11 +83,10 @@ def _build_awarding_log_entry(
     if initiator:
         data['initiator_id'] = str(initiator.id)
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-badge-awarded',
+        awardee.id,
+        data,
         occurred_at=occurred_at,
-        event_type='user-badge-awarded',
-        user_id=awardee.id,
         initiator_id=initiator.id if initiator else None,
-        data=data,
     )

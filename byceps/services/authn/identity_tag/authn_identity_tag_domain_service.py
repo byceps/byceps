@@ -13,6 +13,7 @@ from byceps.services.authn.events import (
     UserIdentityTagDeletedEvent,
 )
 from byceps.services.core.events import EventUser
+from byceps.services.user import user_log_domain_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
@@ -66,13 +67,12 @@ def _build_tag_created_event(
 
 
 def _build_tag_created_log_entry(tag: UserIdentityTag) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-identity-tag-created',
+        tag.user.id,
+        {'tag_id': str(tag.id)},
         occurred_at=tag.created_at,
-        event_type='user-identity-tag-created',
-        user_id=tag.user.id,
         initiator_id=tag.creator.id,
-        data={'tag_id': str(tag.id)},
     )
 
 
@@ -102,11 +102,10 @@ def _build_tag_deleted_event(
 def _build_tag_deleted_log_entry(
     tag: UserIdentityTag, occurred_at: datetime, initiator: User
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-identity-tag-deleted',
+        tag.user.id,
+        {'tag_id': str(tag.id)},
         occurred_at=occurred_at,
-        event_type='user-identity-tag-deleted',
-        user_id=tag.user.id,
         initiator_id=initiator.id,
-        data={'tag_id': str(tag.id)},
     )

@@ -11,8 +11,9 @@ from datetime import datetime
 from byceps.services.core.events import EventSite, EventUser
 from byceps.services.site.models import Site
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid4, generate_uuid7
+from byceps.util.uuid import generate_uuid4
 
+from . import user_log_domain_service
 from .errors import (
     AccountAlreadyInitializedError,
     InvalidEmailAddressError,
@@ -119,13 +120,12 @@ def _build_account_created_log_entry(
     if ip_address:
         data['ip_address'] = ip_address
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-created',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='user-created',
-        user_id=user.id,
         initiator_id=initiator.id if initiator else None,
-        data=data,
     )
 
 
@@ -155,13 +155,12 @@ def _build_account_initialized_log_entry(
     if initiator:
         data['initiator_id'] = str(initiator.id)
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-initialized',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='user-initialized',
-        user_id=user.id,
         initiator_id=initiator.id if initiator else None,
-        data=data,
     )
 
 

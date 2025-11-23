@@ -10,9 +10,9 @@ from datetime import datetime
 
 from byceps.services.brand.models import Brand
 from byceps.services.core.events import EventBrand, EventUser
+from byceps.services.user import user_log_domain_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
-from byceps.util.uuid import generate_uuid7
 
 from .events import (
     OrgaStatusGrantedEvent,
@@ -55,13 +55,12 @@ def _build_orga_status_granted_log_entry(
         'initiator_id': str(initiator.id),
     }
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'orgaflag-added',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='orgaflag-added',
-        user_id=user.id,
         initiator_id=initiator.id,
-        data=data,
     )
 
 
@@ -100,11 +99,10 @@ def _build_orga_status_revoked_log_entry(
         'initiator_id': str(initiator.id),
     }
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'orgaflag-removed',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='orgaflag-removed',
-        user_id=user.id,
         initiator_id=initiator.id,
-        data=data,
     )

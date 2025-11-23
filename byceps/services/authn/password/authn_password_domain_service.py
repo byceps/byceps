@@ -16,6 +16,7 @@ from werkzeug.security import (
 
 from byceps.services.authn.events import PasswordUpdatedEvent
 from byceps.services.core.events import EventUser
+from byceps.services.user import user_log_domain_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import (
     Password,
@@ -23,7 +24,6 @@ from byceps.services.user.models.user import (
     User,
     UserID,
 )
-from byceps.util.uuid import generate_uuid7
 
 from .models import Credential
 
@@ -80,13 +80,12 @@ def _build_password_updated_event(
 def _build_password_updated_log_entry(
     occurred_at: datetime, initiator: User, user: User
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'password-updated',
+        user.id,
+        {'initiator_id': str(initiator.id)},
         occurred_at=occurred_at,
-        event_type='password-updated',
-        user_id=user.id,
         initiator_id=initiator.id,
-        data={'initiator_id': str(initiator.id)},
     )
 
 

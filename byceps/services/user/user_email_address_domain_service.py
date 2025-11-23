@@ -10,8 +10,8 @@ from datetime import datetime
 
 from byceps.services.core.events import EventUser
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid7
 
+from . import user_log_domain_service
 from .events import (
     UserEmailAddressChangedEvent,
     UserEmailAddressConfirmedEvent,
@@ -76,13 +76,12 @@ def _build_email_address_changed_log_entry(
     if reason:
         data['reason'] = reason
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-email-address-changed',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='user-email-address-changed',
-        user_id=user.id,
         initiator_id=initiator.id,
-        data=data,
     )
 
 
@@ -128,13 +127,12 @@ def _build_email_address_confirmed_log_entry(
     user: User,
     email_address: str,
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-email-address-confirmed',
+        user.id,
+        {'email_address': email_address},
         occurred_at=occurred_at,
-        event_type='user-email-address-confirmed',
-        user_id=user.id,
         initiator_id=user.id,
-        data={'email_address': email_address},
     )
 
 
@@ -190,11 +188,10 @@ def _build_email_address_invalidated_log_entry(
     if initiator:
         data['initiator_id'] = str(initiator.id)
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-email-address-invalidated',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='user-email-address-invalidated',
-        user_id=user.id,
         initiator_id=initiator.id if initiator else None,
-        data=data,
     )

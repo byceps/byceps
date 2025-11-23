@@ -9,9 +9,9 @@ byceps.services.authz.authz_domain_service
 from datetime import datetime
 
 from byceps.services.core.events import EventUser
+from byceps.services.user import user_log_domain_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
-from byceps.util.uuid import generate_uuid7
 
 from .events import RoleAssignedToUserEvent, RoleDeassignedFromUserEvent
 from .models import RoleID
@@ -51,13 +51,12 @@ def _build_role_assigned_log_entry(
     if initiator:
         data['initiator_id'] = str(initiator.id)
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'role-assigned',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='role-assigned',
-        user_id=user.id,
         initiator_id=initiator.id if initiator else None,
-        data=data,
     )
 
 
@@ -95,11 +94,10 @@ def _build_role_deassigned_log_entry(
     if initiator:
         data['initiator_id'] = str(initiator.id)
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'role-deassigned',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='role-deassigned',
-        user_id=user.id,
         initiator_id=initiator.id if initiator else None,
-        data=data,
     )

@@ -11,8 +11,8 @@ from typing import Any
 
 from byceps.services.core.events import EventUser
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid7
 
+from . import user_log_domain_service
 from .errors import NothingChangedError
 from .events import (
     UserAccountDeletedEvent,
@@ -53,16 +53,15 @@ def _build_account_suspended_event(
 def _build_account_suspended_log_entry(
     occurred_at: datetime, initiator: User, user: User, reason: str
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-suspended',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
+    return user_log_domain_service.build_entry(
+        'user-suspended',
+        user.id,
+        {
             'initiator_id': str(initiator.id),
             'reason': reason,
         },
+        occurred_at=occurred_at,
+        initiator_id=initiator.id,
     )
 
 
@@ -94,16 +93,15 @@ def _build_account_unsuspended_event(
 def _build_account_unsuspended_log_entry(
     occurred_at: datetime, initiator: User, user: User, reason: str
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-unsuspended',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
+    return user_log_domain_service.build_entry(
+        'user-unsuspended',
+        user.id,
+        {
             'initiator_id': str(initiator.id),
             'reason': reason,
         },
+        occurred_at=occurred_at,
+        initiator_id=initiator.id,
     )
 
 
@@ -142,16 +140,15 @@ def _build_account_deleted_log_entry(
     user: User,
     reason: str,
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-deleted',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
+    return user_log_domain_service.build_entry(
+        'user-deleted',
+        user.id,
+        {
             'initiator_id': str(initiator.id),
             'reason': reason,
         },
+        occurred_at=occurred_at,
+        initiator_id=initiator.id,
     )
 
 
@@ -210,13 +207,12 @@ def _build_screen_name_changed_log_entry(
     if reason:
         data['reason'] = reason
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-screen-name-changed',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='user-screen-name-changed',
-        user_id=user.id,
         initiator_id=initiator.id,
-        data=data,
     )
 
 
@@ -335,13 +331,12 @@ def _build_details_updated_log_entry(
         'initiator_id': str(initiator.id),
     }
 
-    entry = UserLogEntry(
-        id=generate_uuid7(),
+    entry = user_log_domain_service.build_entry(
+        'user-details-updated',
+        user.id,
+        data,
         occurred_at=occurred_at,
-        event_type='user-details-updated',
-        user_id=user.id,
         initiator_id=initiator.id,
-        data=data,
     )
 
     return Ok(entry)
