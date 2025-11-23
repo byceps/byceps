@@ -19,7 +19,8 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
-from byceps.services.core.events import EventBrand, EventUser
+from byceps.services.core.events import EventBrand
+from byceps.services.user.models.user import User
 from byceps.services.webhooks.models import OutgoingWebhook
 
 from tests.helpers import generate_token, generate_uuid
@@ -37,7 +38,7 @@ POSTING_ID = PostingID(generate_uuid())
 
 
 def test_announce_topic_created(
-    app: BycepsApp, now: datetime, author: EventUser, brand: EventBrand
+    app: BycepsApp, now: datetime, author: User, brand: EventBrand
 ):
     expected_url = f'https://website.test/board/topics/{TOPIC_ID}'
     expected_text = (
@@ -65,7 +66,7 @@ def test_announce_topic_created(
 
 
 def test_announce_posting_created(
-    app: BycepsApp, now: datetime, author: EventUser, brand: EventBrand
+    app: BycepsApp, now: datetime, author: User, brand: EventBrand
 ):
     expected_url = f'https://website.test/board/postings/{POSTING_ID}'
     expected_text = (
@@ -98,8 +99,8 @@ def test_announce_posting_created(
 
 
 @pytest.fixture(scope='module')
-def author(make_event_user) -> EventUser:
-    return make_event_user(screen_name='RocketRandy')
+def author(make_user) -> User:
+    return make_user(screen_name='RocketRandy')
 
 
 @pytest.fixture(scope='module')

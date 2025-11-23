@@ -12,7 +12,6 @@ from byceps.services.authn.events import (
     UserIdentityTagCreatedEvent,
     UserIdentityTagDeletedEvent,
 )
-from byceps.services.core.events import EventUser
 from byceps.services.user import user_log_domain_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
@@ -60,9 +59,9 @@ def _build_tag_created_event(
 ) -> UserIdentityTagCreatedEvent:
     return UserIdentityTagCreatedEvent(
         occurred_at=tag.created_at,
-        initiator=EventUser.from_user(tag.creator),
+        initiator=tag.creator,
         identifier=tag.identifier,
-        user=EventUser.from_user(tag.user),
+        user=tag.user,
     )
 
 
@@ -93,9 +92,9 @@ def _build_tag_deleted_event(
 ) -> UserIdentityTagDeletedEvent:
     return UserIdentityTagDeletedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         identifier=tag.identifier,
-        user=EventUser.from_user(tag.user),
+        user=tag.user,
     )
 
 

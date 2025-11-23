@@ -8,7 +8,6 @@ byceps.services.newsletter.newsletter_domain_service
 
 from datetime import datetime
 
-from byceps.services.core.events import EventUser
 from byceps.services.user.models.user import User
 
 from .events import (
@@ -41,8 +40,8 @@ def _build_subscribed_to_newsletter_event(
 ) -> SubscribedToNewsletterEvent:
     return SubscribedToNewsletterEvent(
         occurred_at=expressed_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         list_id=list_.id,
         list_title=list_.title,
     )
@@ -71,8 +70,8 @@ def _build_unsubscribed_from_newsletter_event(
 ) -> UnsubscribedFromNewsletterEvent:
     return UnsubscribedFromNewsletterEvent(
         occurred_at=expressed_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         list_id=list_.id,
         list_title=list_.title,
     )

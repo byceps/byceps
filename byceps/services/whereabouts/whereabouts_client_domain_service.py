@@ -12,7 +12,6 @@ import dataclasses
 from datetime import datetime
 import secrets
 
-from byceps.services.core.events import EventUser
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
@@ -81,7 +80,7 @@ def approve_client(
 
     event = WhereaboutsClientApprovedEvent(
         occurred_at=approved_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         client_id=client.id,
     )
 
@@ -114,7 +113,7 @@ def delete_client(
 
     event = WhereaboutsClientDeletedEvent(
         occurred_at=deleted_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         client_id=client.id,
     )
 

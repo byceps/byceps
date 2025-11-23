@@ -12,7 +12,7 @@ from datetime import datetime
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.core.events import EventSite, EventUser
+from byceps.services.core.events import EventSite
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
 from byceps.services.site_navigation.models import NavMenuID
@@ -96,7 +96,7 @@ def create_page(
 
     event = PageCreatedEvent(
         occurred_at=db_version.created_at,
-        initiator=EventUser.from_user(creator),
+        initiator=creator,
         page_id=db_page.id,
         site=EventSite.from_site(site),
         page_name=db_page.name,
@@ -133,7 +133,7 @@ def update_page(
 
     event = PageUpdatedEvent(
         occurred_at=db_version.created_at,
-        initiator=EventUser.from_user(creator),
+        initiator=creator,
         page_id=db_page.id,
         site=EventSite.from_site(site),
         page_name=db_page.name,
@@ -182,7 +182,7 @@ def delete_page(
 
     event = PageDeletedEvent(
         occurred_at=datetime.utcnow(),
-        initiator=EventUser.from_user(initiator) if initiator else None,
+        initiator=initiator,
         page_id=page_id,
         site=EventSite.from_site(site),
         page_name=page_name,

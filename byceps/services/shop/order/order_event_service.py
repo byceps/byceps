@@ -6,7 +6,7 @@ byceps.services.shop.order.order_event_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.core.events import EventParty, EventUser
+from byceps.services.core.events import EventParty
 from byceps.services.party import party_service
 from byceps.services.shop.order.models.order import PaidOrder
 from byceps.services.ticketing import signals as ticketing_signals
@@ -26,9 +26,9 @@ def create_tickets_sold_event(
 
     return TicketsSoldEvent(
         occurred_at=order.paid_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         party=EventParty.from_party(party),
-        owner=EventUser.from_user(owner),
+        owner=owner,
         quantity=quantity,
     )
 

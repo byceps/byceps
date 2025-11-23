@@ -28,7 +28,8 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
-from byceps.services.core.events import EventBrand, EventUser
+from byceps.services.core.events import EventBrand
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token, generate_uuid
 
@@ -47,7 +48,7 @@ POSTING_ID = PostingID(generate_uuid())
 def test_announce_topic_created(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
+    author: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -76,8 +77,8 @@ def test_announce_topic_created(
 def test_announce_topic_hidden(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
-    moderator: EventUser,
+    author: User,
+    moderator: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -108,8 +109,8 @@ def test_announce_topic_hidden(
 def test_announce_topic_unhidden(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
-    moderator: EventUser,
+    author: User,
+    moderator: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -140,8 +141,8 @@ def test_announce_topic_unhidden(
 def test_announce_topic_locked(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
-    moderator: EventUser,
+    author: User,
+    moderator: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -172,8 +173,8 @@ def test_announce_topic_locked(
 def test_announce_topic_unlocked(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
-    moderator: EventUser,
+    author: User,
+    moderator: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -204,8 +205,8 @@ def test_announce_topic_unlocked(
 def test_announce_topic_pinned(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
-    moderator: EventUser,
+    author: User,
+    moderator: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -236,8 +237,8 @@ def test_announce_topic_pinned(
 def test_announce_topic_unpinned(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
-    moderator: EventUser,
+    author: User,
+    moderator: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -268,8 +269,8 @@ def test_announce_topic_unpinned(
 def test_announce_topic_moved(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
-    moderator: EventUser,
+    author: User,
+    moderator: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -305,7 +306,7 @@ def test_announce_topic_moved(
 def test_announce_posting_created(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
+    author: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -336,7 +337,7 @@ def test_announce_posting_created(
 def test_announce_posting_created_on_muted_topic(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
+    author: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -363,8 +364,8 @@ def test_announce_posting_created_on_muted_topic(
 def test_announce_posting_hidden(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
-    moderator: EventUser,
+    author: User,
+    moderator: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -396,8 +397,8 @@ def test_announce_posting_hidden(
 def test_announce_posting_unhidden(
     app: BycepsApp,
     now: datetime,
-    author: EventUser,
-    moderator: EventUser,
+    author: User,
+    moderator: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -430,13 +431,13 @@ def test_announce_posting_unhidden(
 
 
 @pytest.fixture(scope='module')
-def author(make_event_user) -> EventUser:
-    return make_event_user(screen_name='TheShadow999')
+def author(make_user) -> User:
+    return make_user(screen_name='TheShadow999')
 
 
 @pytest.fixture(scope='module')
-def moderator(make_event_user) -> EventUser:
-    return make_event_user(screen_name='TheModerator')
+def moderator(make_user) -> User:
+    return make_user(screen_name='TheModerator')
 
 
 @pytest.fixture(scope='module')

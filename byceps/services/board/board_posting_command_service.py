@@ -12,7 +12,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.brand import brand_service
-from byceps.services.core.events import EventBrand, EventUser
+from byceps.services.core.events import EventBrand
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 from byceps.util.result import Err, Ok, Result
@@ -57,11 +57,11 @@ def create_posting(
     brand = brand_service.get_brand(db_category.board.brand_id)
     event = BoardPostingCreatedEvent(
         occurred_at=db_posting.created_at,
-        initiator=EventUser.from_user(creator),
+        initiator=creator,
         brand=EventBrand.from_brand(brand),
         board_id=db_category.board_id,
         posting_id=db_posting.id,
-        posting_creator=EventUser.from_user(creator),
+        posting_creator=creator,
         topic_id=db_topic.id,
         topic_title=db_topic.title,
         topic_muted=db_topic.muted,
@@ -91,14 +91,14 @@ def update_posting(
     posting_creator = _get_user(db_posting.creator_id)
     return BoardPostingUpdatedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(editor),
+        initiator=editor,
         brand=EventBrand.from_brand(brand),
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
-        posting_creator=EventUser.from_user(posting_creator),
+        posting_creator=posting_creator,
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
-        editor=EventUser.from_user(editor),
+        editor=editor,
         url=None,
     )
 
@@ -122,14 +122,14 @@ def hide_posting(
     posting_creator = _get_user(db_posting.creator_id)
     event = BoardPostingHiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
-        posting_creator=EventUser.from_user(posting_creator),
+        posting_creator=posting_creator,
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=None,
     )
 
@@ -156,14 +156,14 @@ def unhide_posting(
     posting_creator = _get_user(db_posting.creator_id)
     event = BoardPostingUnhiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
-        posting_creator=EventUser.from_user(posting_creator),
+        posting_creator=posting_creator,
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=None,
     )
 

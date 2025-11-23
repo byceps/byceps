@@ -8,12 +8,13 @@ byceps.services.orga.events
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventBrand, EventUser
+from byceps.services.core.events import _BaseEvent, EventBrand
+from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
 class _OrgaEvent(_BaseEvent):
-    user: EventUser
+    user: User
     brand: EventBrand
 
 

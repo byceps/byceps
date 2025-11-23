@@ -8,7 +8,6 @@ byceps.services.authz.authz_domain_service
 
 from datetime import datetime
 
-from byceps.services.core.events import EventUser
 from byceps.services.user import user_log_domain_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
@@ -38,8 +37,8 @@ def _build_role_assigned_to_user_event(
 ) -> RoleAssignedToUserEvent:
     return RoleAssignedToUserEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         role_id=role_id,
     )
 
@@ -81,8 +80,8 @@ def _build_role_deassigned_from_user_event(
 ) -> RoleDeassignedFromUserEvent:
     return RoleDeassignedFromUserEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         role_id=role_id,
     )
 

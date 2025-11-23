@@ -9,7 +9,6 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventUser
 from byceps.services.site.models import SiteID
 from byceps.services.snippet.events import (
     SnippetCreatedEvent,
@@ -21,6 +20,7 @@ from byceps.services.snippet.models import (
     SnippetScope,
     SnippetVersionID,
 )
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -33,7 +33,7 @@ SNIPPET_VERSION_ID = SnippetVersionID(generate_uuid())
 
 
 def test_announce_snippet_created(
-    app: BycepsApp, now: datetime, editor: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, editor: User, webhook_for_irc
 ):
     expected_text = (
         'Dr.Schnipsel has created snippet "team_intro" (de) '
@@ -56,7 +56,7 @@ def test_announce_snippet_created(
 
 
 def test_announce_snippet_updated(
-    app: BycepsApp, now: datetime, editor: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, editor: User, webhook_for_irc
 ):
     expected_text = (
         'Dr.Schnipsel has updated snippet "team_intro" (de) '
@@ -79,7 +79,7 @@ def test_announce_snippet_updated(
 
 
 def test_announce_snippet_deleted(
-    app: BycepsApp, now: datetime, editor: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, editor: User, webhook_for_irc
 ):
     expected_text = (
         'Dr.Schnipsel has deleted snippet "outdated_info" (de) '
@@ -104,5 +104,5 @@ def test_announce_snippet_deleted(
 
 
 @pytest.fixture(scope='module')
-def editor(make_event_user) -> EventUser:
-    return make_event_user(screen_name='Dr.Schnipsel')
+def editor(make_user) -> User:
+    return make_user(screen_name='Dr.Schnipsel')

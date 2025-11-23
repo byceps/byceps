@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventParty, EventUser
+from byceps.services.core.events import EventParty
 from byceps.services.party.models import Party
 from byceps.services.shop.order import order_log_service, order_service
 from byceps.services.shop.order.models.order import Order, Orderer
@@ -103,9 +103,9 @@ def test_create_ticket_bundles(
 
     tickets_sold_event = TicketsSoldEvent(
         occurred_at=shop_order_paid_event.occurred_at,
-        initiator=EventUser.from_user(admin_user),
+        initiator=admin_user,
         party=EventParty.from_party(party),
-        owner=EventUser.from_user(orderer.user),
+        owner=orderer.user,
         quantity=expected_ticket_total,
     )
     tickets_sold_signal_send_mock.assert_called_once_with(

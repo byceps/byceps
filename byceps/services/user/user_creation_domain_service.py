@@ -8,7 +8,7 @@ byceps.services.user.user_creation_domain_service
 
 from datetime import datetime
 
-from byceps.services.core.events import EventSite, EventUser
+from byceps.services.core.events import EventSite
 from byceps.services.site.models import Site
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid4
@@ -92,8 +92,8 @@ def _build_account_created_event(
 ) -> UserAccountCreatedEvent:
     return UserAccountCreatedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         site=EventSite.from_site(site) if site else None,
     )
 

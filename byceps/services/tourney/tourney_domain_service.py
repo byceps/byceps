@@ -8,7 +8,6 @@ byceps.services.tourney.tourney_domain_service
 
 from datetime import datetime
 
-from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
@@ -59,6 +58,6 @@ def _build_tourney_created_event(
 ) -> TourneyCreatedEvent:
     return TourneyCreatedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(creator),
+        initiator=creator,
         tourney=EventTourney(id=tourney.id, title=tourney.title),
     )

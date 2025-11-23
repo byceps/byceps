@@ -12,7 +12,6 @@ import dataclasses
 
 from moneyed import Currency, Money
 
-from byceps.services.core.events import EventUser
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.product import product_domain_service
 from byceps.services.shop.product.models import ProductWithQuantity
@@ -333,10 +332,10 @@ def _build_order_paid_event(
 ) -> ShopOrderPaidEvent:
     return ShopOrderPaidEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
         payment_method=payment_method,
     )
 
@@ -382,10 +381,10 @@ def _build_order_canceled_event(
 ) -> ShopOrderCanceledEvent:
     return ShopOrderCanceledEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
 
 

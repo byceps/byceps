@@ -8,7 +8,6 @@ byceps.services.user.user_email_address_domain_service
 
 from datetime import datetime
 
-from byceps.services.core.events import EventUser
 from byceps.util.result import Err, Ok, Result
 
 from . import user_log_domain_service
@@ -54,8 +53,8 @@ def _build_email_address_changed_event(
 ) -> UserEmailAddressChangedEvent:
     return UserEmailAddressChangedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
     )
 
 
@@ -117,8 +116,8 @@ def _build_email_address_confirmed_event(
 ) -> UserEmailAddressConfirmedEvent:
     return UserEmailAddressConfirmedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(user),
-        user=EventUser.from_user(user),
+        initiator=user,
+        user=user,
     )
 
 
@@ -168,8 +167,8 @@ def _build_email_address_invalidated_event(
 ) -> UserEmailAddressInvalidatedEvent:
     return UserEmailAddressInvalidatedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
     )
 
 

@@ -9,11 +9,12 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventBrand, EventUser
+from byceps.services.core.events import EventBrand
 from byceps.services.orga.events import (
     OrgaStatusGrantedEvent,
     OrgaStatusRevokedEvent,
 )
+from byceps.services.user.models.user import User
 
 from .helpers import assert_text
 
@@ -21,8 +22,8 @@ from .helpers import assert_text
 def test_orga_status_granted_announced(
     app: BycepsApp,
     now: datetime,
-    admin: EventUser,
-    trainee: EventUser,
+    admin_user: User,
+    trainee: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -32,7 +33,7 @@ def test_orga_status_granted_announced(
 
     event = OrgaStatusGrantedEvent(
         occurred_at=now,
-        initiator=admin,
+        initiator=admin_user,
         user=trainee,
         brand=brand,
     )
@@ -45,8 +46,8 @@ def test_orga_status_granted_announced(
 def test_orga_status_revoked_announced(
     app: BycepsApp,
     now: datetime,
-    admin: EventUser,
-    trainee: EventUser,
+    admin_user: User,
+    trainee: User,
     brand: EventBrand,
     webhook_for_irc,
 ):
@@ -56,7 +57,7 @@ def test_orga_status_revoked_announced(
 
     event = OrgaStatusRevokedEvent(
         occurred_at=now,
-        initiator=admin,
+        initiator=admin_user,
         user=trainee,
         brand=brand,
     )
@@ -70,13 +71,8 @@ def test_orga_status_revoked_announced(
 
 
 @pytest.fixture(scope='module')
-def admin(make_event_user) -> EventUser:
-    return make_event_user(screen_name='Admin')
-
-
-@pytest.fixture(scope='module')
-def trainee(make_event_user) -> EventUser:
-    return make_event_user(screen_name='Trainee')
+def trainee(make_user) -> User:
+    return make_user(screen_name='Trainee')
 
 
 @pytest.fixture(scope='module')

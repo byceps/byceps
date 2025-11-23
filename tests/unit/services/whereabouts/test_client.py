@@ -7,7 +7,6 @@ from datetime import datetime
 
 import pytest
 
-from byceps.services.core.events import EventUser
 from byceps.services.whereabouts import whereabouts_client_domain_service
 from byceps.services.whereabouts.events import (
     WhereaboutsClientApprovedEvent,
@@ -55,7 +54,7 @@ def test_approve_client(make_client_candidate, admin_user):
 
     assert isinstance(actual_event, WhereaboutsClientApprovedEvent)
     assert actual_event.occurred_at is not None
-    assert actual_event.initiator == EventUser.from_user(admin_user)
+    assert actual_event.initiator == admin_user
     assert actual_event.client_id is not None
 
 
@@ -76,7 +75,7 @@ def test_delete_client(make_client, admin_user):
 
     assert isinstance(actual_event, WhereaboutsClientDeletedEvent)
     assert actual_event.occurred_at is not None
-    assert actual_event.initiator == EventUser.from_user(admin_user)
+    assert actual_event.initiator == admin_user
     assert actual_event.client_id is not None
 
 

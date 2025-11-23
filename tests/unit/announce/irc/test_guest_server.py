@@ -9,7 +9,7 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventParty, EventUser
+from byceps.services.core.events import EventParty
 from byceps.services.guest_server.events import (
     GuestServerApprovedEvent,
     GuestServerCheckedInEvent,
@@ -17,6 +17,7 @@ from byceps.services.guest_server.events import (
     GuestServerRegisteredEvent,
 )
 from byceps.services.guest_server.models import ServerID
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -29,8 +30,8 @@ SERVER_ID = ServerID(generate_uuid())
 def test_guest_server_registered(
     app: BycepsApp,
     now: datetime,
-    event_admin: EventUser,
-    event_owner: EventUser,
+    admin_user: User,
+    owner: User,
     event_party: EventParty,
     webhook_for_irc,
 ):
@@ -41,9 +42,9 @@ def test_guest_server_registered(
 
     event = GuestServerRegisteredEvent(
         occurred_at=now,
-        initiator=event_admin,
+        initiator=admin_user,
         party=event_party,
-        owner=event_owner,
+        owner=owner,
         server_id=SERVER_ID,
     )
 
@@ -55,16 +56,16 @@ def test_guest_server_registered(
 def test_guest_server_approved(
     app: BycepsApp,
     now: datetime,
-    event_admin: EventUser,
-    event_owner: EventUser,
+    admin_user: User,
+    owner: User,
     webhook_for_irc,
 ):
     expected_text = 'Admin has approved a guest server owned by Owner.'
 
     event = GuestServerApprovedEvent(
         occurred_at=now,
-        initiator=event_admin,
-        owner=event_owner,
+        initiator=admin_user,
+        owner=owner,
         server_id=SERVER_ID,
     )
 
@@ -76,16 +77,16 @@ def test_guest_server_approved(
 def test_guest_server_checked_in(
     app: BycepsApp,
     now: datetime,
-    event_admin: EventUser,
-    event_owner: EventUser,
+    admin_user: User,
+    owner: User,
     webhook_for_irc,
 ):
     expected_text = 'Admin has checked in a guest server owned by Owner.'
 
     event = GuestServerCheckedInEvent(
         occurred_at=now,
-        initiator=event_admin,
-        owner=event_owner,
+        initiator=admin_user,
+        owner=owner,
         server_id=SERVER_ID,
     )
 
@@ -97,16 +98,16 @@ def test_guest_server_checked_in(
 def test_guest_server_checked_out(
     app: BycepsApp,
     now: datetime,
-    event_admin: EventUser,
-    event_owner: EventUser,
+    admin_user: User,
+    owner: User,
     webhook_for_irc,
 ):
     expected_text = 'Admin has checked out a guest server owned by Owner.'
 
     event = GuestServerCheckedOutEvent(
         occurred_at=now,
-        initiator=event_admin,
-        owner=event_owner,
+        initiator=admin_user,
+        owner=owner,
         server_id=SERVER_ID,
     )
 
@@ -119,13 +120,8 @@ def test_guest_server_checked_out(
 
 
 @pytest.fixture(scope='module')
-def event_admin(make_event_user) -> EventUser:
-    return make_event_user(screen_name='Admin')
-
-
-@pytest.fixture(scope='module')
-def event_owner(make_event_user) -> EventUser:
-    return make_event_user(screen_name='Owner')
+def owner(make_user) -> User:
+    return make_user(screen_name='Owner')
 
 
 @pytest.fixture(scope='module')

@@ -9,7 +9,6 @@ byceps.services.user_badge.user_badge_domain_service
 from datetime import datetime
 from uuid import UUID
 
-from byceps.services.core.events import EventUser
 from byceps.services.user import user_log_domain_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
@@ -69,10 +68,10 @@ def _build_awarding_event(
 ) -> UserBadgeAwardedEvent:
     return UserBadgeAwardedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
+        initiator=initiator,
         badge_id=badge.id,
         badge_label=badge.label,
-        awardee=EventUser.from_user(awardee),
+        awardee=awardee,
     )
 
 

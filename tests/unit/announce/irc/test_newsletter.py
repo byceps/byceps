@@ -5,22 +5,20 @@
 
 from datetime import datetime
 
-import pytest
-
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventUser
 from byceps.services.newsletter.events import (
     SubscribedToNewsletterEvent,
     UnsubscribedFromNewsletterEvent,
 )
 from byceps.services.newsletter.models import ListID
+from byceps.services.user.models.user import User
 
 from .helpers import assert_text
 
 
 def test_subscribed_to_newsletter_announced(
-    app: BycepsApp, now: datetime, user: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, user: User, webhook_for_irc
 ):
     expected_text = 'User has subscribed to newsletter "CozyLAN Updates".'
 
@@ -40,15 +38,15 @@ def test_subscribed_to_newsletter_announced(
 def test_subscribed_to_newsletter_by_admin_announced(
     app: BycepsApp,
     now: datetime,
-    admin: EventUser,
-    user: EventUser,
+    admin_user: User,
+    user: User,
     webhook_for_irc,
 ):
     expected_text = 'Admin has subscribed User to newsletter "CozyLAN Updates".'
 
     event = SubscribedToNewsletterEvent(
         occurred_at=now,
-        initiator=admin,
+        initiator=admin_user,
         user=user,
         list_id=ListID('cozylan-updates'),
         list_title='CozyLAN Updates',
@@ -60,7 +58,7 @@ def test_subscribed_to_newsletter_by_admin_announced(
 
 
 def test_unsubscribed_from_newsletter_announced(
-    app: BycepsApp, now: datetime, user: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, user: User, webhook_for_irc
 ):
     expected_text = 'User has unsubscribed from newsletter "CozyLAN Updates".'
 
@@ -80,8 +78,8 @@ def test_unsubscribed_from_newsletter_announced(
 def test_unsubscribed_from_newsletter_by_admin_announced(
     app: BycepsApp,
     now: datetime,
-    admin: EventUser,
-    user: EventUser,
+    admin_user: User,
+    user: User,
     webhook_for_irc,
 ):
     expected_text = (
@@ -90,7 +88,7 @@ def test_unsubscribed_from_newsletter_by_admin_announced(
 
     event = UnsubscribedFromNewsletterEvent(
         occurred_at=now,
-        initiator=admin,
+        initiator=admin_user,
         user=user,
         list_id=ListID('cozylan-updates'),
         list_title='CozyLAN Updates',
@@ -99,16 +97,3 @@ def test_unsubscribed_from_newsletter_by_admin_announced(
     actual = build_announcement_request(event, webhook_for_irc)
 
     assert_text(actual, expected_text)
-
-
-# helpers
-
-
-@pytest.fixture(scope='module')
-def admin(make_event_user) -> EventUser:
-    return make_event_user(screen_name='Admin')
-
-
-@pytest.fixture(scope='module')
-def user(make_event_user) -> EventUser:
-    return make_event_user(screen_name='User')

@@ -16,7 +16,6 @@ import structlog
 
 from byceps.database import db, paginate, Pagination, execute_upsert
 from byceps.services.brand.models import BrandID
-from byceps.services.core.events import EventUser
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
@@ -189,7 +188,7 @@ def publish_item(
 
     event = NewsItemPublishedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(initiator) if initiator else None,
+        initiator=initiator,
         item_id=item.id,
         channel_id=item.channel.id,
         published_at=publish_at,

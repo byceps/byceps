@@ -17,14 +17,14 @@ from .helpers import assert_text
 
 
 def test_role_assigned_to_user_announced(
-    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = 'AuthzAdmin has assigned role "orga" to FreshOrga.'
 
     event = RoleAssignedToUserEvent(
         occurred_at=now,
-        initiator=make_event_user(screen_name='AuthzAdmin'),
-        user=make_event_user(screen_name='FreshOrga'),
+        initiator=make_user(screen_name='AuthzAdmin'),
+        user=make_user(screen_name='FreshOrga'),
         role_id=RoleID('orga'),
     )
 
@@ -34,7 +34,7 @@ def test_role_assigned_to_user_announced(
 
 
 def test_role_deassigned_from_user_announced(
-    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = (
         'AuthzAdmin has deassigned role "board_moderator" from FormerOrga.'
@@ -42,8 +42,8 @@ def test_role_deassigned_from_user_announced(
 
     event = RoleDeassignedFromUserEvent(
         occurred_at=now,
-        initiator=make_event_user(screen_name='AuthzAdmin'),
-        user=make_event_user(screen_name='FormerOrga'),
+        initiator=make_user(screen_name='AuthzAdmin'),
+        user=make_user(screen_name='FormerOrga'),
         role_id=RoleID('board_moderator'),
     )
 

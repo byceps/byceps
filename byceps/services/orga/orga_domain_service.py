@@ -9,7 +9,7 @@ byceps.services.orga.orga_domain_service
 from datetime import datetime
 
 from byceps.services.brand.models import Brand
-from byceps.services.core.events import EventBrand, EventUser
+from byceps.services.core.events import EventBrand
 from byceps.services.user import user_log_domain_service
 from byceps.services.user.models.log import UserLogEntry
 from byceps.services.user.models.user import User
@@ -41,8 +41,8 @@ def _build_orga_status_granted_event(
 ) -> OrgaStatusGrantedEvent:
     return OrgaStatusGrantedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         brand=EventBrand.from_brand(brand),
     )
 
@@ -85,8 +85,8 @@ def _build_orga_status_revoked_event(
 ) -> OrgaStatusRevokedEvent:
     return OrgaStatusRevokedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         brand=EventBrand.from_brand(brand),
     )
 

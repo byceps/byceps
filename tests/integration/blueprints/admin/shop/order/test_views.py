@@ -9,7 +9,6 @@ import pytest
 
 from byceps.byceps_app import BycepsApp
 from byceps.database import db
-from byceps.services.core.events import EventUser
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.events import (
@@ -158,10 +157,10 @@ def test_cancel_before_paid(
 
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator=EventUser.from_user(shop_order_admin),
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -201,10 +200,10 @@ def test_cancel_before_paid_without_sending_email(
 
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator=EventUser.from_user(shop_order_admin),
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -253,10 +252,10 @@ def test_mark_order_as_paid(
 
     event = ShopOrderPaidEvent(
         occurred_at=order_afterwards.paid_at,
-        initiator=EventUser.from_user(shop_order_admin),
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
         payment_method='direct_debit',
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)
@@ -319,10 +318,10 @@ def test_cancel_after_paid(
 
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator=EventUser.from_user(shop_order_admin),
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 

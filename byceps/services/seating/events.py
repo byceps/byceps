@@ -8,9 +8,10 @@ byceps.services.seating.events
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventUser
+from byceps.services.core.events import _BaseEvent
 from byceps.services.seating.models import SeatGroupID
 from byceps.services.ticketing.models.ticket import TicketBundleID
+from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -27,7 +28,7 @@ class _SeatGroupEvent(_BaseEvent):
 @dataclass(frozen=True, kw_only=True)
 class SeatGroupOccupiedEvent(_SeatGroupEvent):
     ticket_bundle_id: TicketBundleID
-    ticket_bundle_owner: EventUser
+    ticket_bundle_owner: User
 
 
 @dataclass(frozen=True, kw_only=True)

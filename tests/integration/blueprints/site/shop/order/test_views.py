@@ -10,7 +10,6 @@ from moneyed import Money
 import pytest
 
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventUser
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.events import ShopOrderPlacedEvent
 from byceps.services.shop.order.models.number import OrderNumber
@@ -139,10 +138,10 @@ def test_order(
 
     event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
-        initiator=EventUser.from_user(orderer_user),
+        initiator=orderer_user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
@@ -201,10 +200,10 @@ def test_order_single(
 
     event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
-        initiator=EventUser.from_user(orderer_user),
+        initiator=orderer_user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 

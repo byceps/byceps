@@ -12,7 +12,6 @@ from freezegun import freeze_time
 import pytest
 
 from byceps.config.models import PaymentGatewaysConfig, StripeConfig
-from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
@@ -150,10 +149,10 @@ def test_stripe_webhook_payment_intent_succeeded(
 
     event = ShopOrderPaidEvent(
         occurred_at=paid_at,
-        initiator=EventUser.from_user(orderer_user),
+        initiator=orderer_user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
         payment_method='stripe',
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)

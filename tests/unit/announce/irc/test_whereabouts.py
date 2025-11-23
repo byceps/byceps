@@ -26,10 +26,7 @@ CLIENT_ID = WhereaboutsClientID(UUID('371aba195a922c74c5b1273766bca016'))
 
 
 def test_whereabouts_client_registered(
-    app: BycepsApp,
-    now: datetime,
-    make_event_user,
-    webhook_for_irc,
+    app: BycepsApp, now: datetime, webhook_for_irc
 ):
     expected_text = f'Whereabouts client "{CLIENT_ID}" has been registered.'
 
@@ -47,16 +44,14 @@ def test_whereabouts_client_registered(
 def test_whereabouts_client_approved(
     app: BycepsApp,
     now: datetime,
-    make_event_user,
+    admin_user,
     webhook_for_irc,
 ):
     expected_text = f'Admin has approved whereabouts client "{CLIENT_ID}".'
 
-    initiator = make_event_user(screen_name='Admin')
-
     event = WhereaboutsClientApprovedEvent(
         occurred_at=now,
-        initiator=initiator,
+        initiator=admin_user,
         client_id=CLIENT_ID,
     )
 
@@ -68,16 +63,14 @@ def test_whereabouts_client_approved(
 def test_whereabouts_client_deleted(
     app: BycepsApp,
     now: datetime,
-    make_event_user,
+    admin_user,
     webhook_for_irc,
 ):
     expected_text = f'Admin has deleted whereabouts client "{CLIENT_ID}".'
 
-    initiator = make_event_user(screen_name='Admin')
-
     event = WhereaboutsClientDeletedEvent(
         occurred_at=now,
-        initiator=initiator,
+        initiator=admin_user,
         client_id=CLIENT_ID,
     )
 
@@ -122,12 +115,12 @@ def test_whereabouts_status_updated(
     app: BycepsApp,
     now: datetime,
     party: EventParty,
-    make_event_user,
+    make_user,
     webhook_for_irc,
 ):
     expected_text = 'Dingo\'s whereabouts changed to "backstage area".'
 
-    user = make_event_user(screen_name='Dingo')
+    user = make_user(screen_name='Dingo')
 
     event = WhereaboutsStatusUpdatedEvent(
         occurred_at=now,

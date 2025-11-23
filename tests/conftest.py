@@ -6,17 +6,11 @@
 import pytest
 
 from byceps.services.brand.models import BrandID
-from byceps.services.core.events import (
-    EventBrand,
-    EventParty,
-    EventSite,
-    EventUser,
-)
+from byceps.services.core.events import EventBrand, EventParty, EventSite
 from byceps.services.party.models import PartyID
 from byceps.services.site.models import SiteID
-from byceps.services.user.models.user import UserID
 
-from tests.helpers import generate_token, generate_uuid
+from tests.helpers import generate_token
 
 
 @pytest.fixture(scope='session')
@@ -77,23 +71,6 @@ def make_event_site():
         return EventSite(
             id=SiteID(id),
             title=title,
-        )
-
-    return _wrapper
-
-
-@pytest.fixture(scope='session')
-def make_event_user():
-    def _wrapper(
-        *,
-        screen_name: str | None = '__random__',
-    ) -> EventUser:
-        if screen_name == '__random__':
-            screen_name = generate_token()
-
-        return EventUser(
-            id=UserID(generate_uuid()),
-            screen_name=screen_name,
         )
 
     return _wrapper

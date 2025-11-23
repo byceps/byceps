@@ -8,13 +8,14 @@ byceps.services.guest_server.events
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventParty, EventUser
+from byceps.services.core.events import _BaseEvent, EventParty
 from byceps.services.guest_server.models import ServerID
+from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
 class _GuestServerEvent(_BaseEvent):
-    owner: EventUser
+    owner: User
     server_id: ServerID
 
 

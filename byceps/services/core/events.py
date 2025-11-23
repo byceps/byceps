@@ -13,7 +13,7 @@ from typing import Self
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import Party, PartyID
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -56,19 +56,6 @@ class EventSite:
 
 
 @dataclass(frozen=True, kw_only=True)
-class EventUser:
-    id: UserID
-    screen_name: str | None
-
-    @classmethod
-    def from_user(cls, user: User) -> Self:
-        return cls(
-            id=user.id,
-            screen_name=user.screen_name,
-        )
-
-
-@dataclass(frozen=True, kw_only=True)
 class _BaseEvent:
     occurred_at: datetime
-    initiator: EventUser | None
+    initiator: User | None

@@ -9,11 +9,11 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventUser
 from byceps.services.external_accounts.events import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
 )
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -23,7 +23,7 @@ from .helpers import assert_text
 def test_external_account_connected(
     app: BycepsApp,
     now: datetime,
-    event_user: EventUser,
+    user: User,
     webhook_for_irc,
 ):
     expected_text = 'Connector has connected an external account on "discord" for Connector.'
@@ -31,8 +31,8 @@ def test_external_account_connected(
     event = ExternalAccountConnectedEvent(
         connected_external_account_id=generate_uuid(),
         occurred_at=now,
-        initiator=event_user,
-        user=event_user,
+        initiator=user,
+        user=user,
         service='discord',
         external_id=None,
         external_name=None,
@@ -46,7 +46,7 @@ def test_external_account_connected(
 def test_external_account_disconnected(
     app: BycepsApp,
     now: datetime,
-    event_user: EventUser,
+    user: User,
     webhook_for_irc,
 ):
     expected_text = 'Connector has disconnected an external account on "discord" for Connector.'
@@ -54,8 +54,8 @@ def test_external_account_disconnected(
     event = ExternalAccountDisconnectedEvent(
         connected_external_account_id=generate_uuid(),
         occurred_at=now,
-        initiator=event_user,
-        user=event_user,
+        initiator=user,
+        user=user,
         service='discord',
         external_id=None,
         external_name=None,
@@ -70,5 +70,5 @@ def test_external_account_disconnected(
 
 
 @pytest.fixture(scope='module')
-def event_user(make_event_user) -> EventUser:
-    return make_event_user(screen_name='Connector')
+def user(make_user) -> User:
+    return make_user(screen_name='Connector')

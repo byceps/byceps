@@ -13,7 +13,6 @@ from sqlalchemy.exc import IntegrityError
 import structlog
 
 from byceps.database import db
-from byceps.services.core.events import EventUser
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.product import product_service
 from byceps.services.shop.shop import shop_service
@@ -100,10 +99,10 @@ def place_order(
 
     event = ShopOrderPlacedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(orderer.user),
+        initiator=orderer.user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer.user),
+        orderer=orderer.user,
     )
 
     log.info('Order placed', shop_order_placed_event=event)

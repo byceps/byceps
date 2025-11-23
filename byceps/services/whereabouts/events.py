@@ -10,7 +10,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventParty, EventUser
+from byceps.services.core.events import _BaseEvent, EventParty
+from byceps.services.user.models.user import User
 from byceps.services.whereabouts.models import WhereaboutsClientID
 
 
@@ -54,5 +55,5 @@ class WhereaboutsUnknownTagDetectedEvent(_BaseEvent):
 @dataclass(frozen=True, kw_only=True)
 class WhereaboutsStatusUpdatedEvent(_BaseEvent):
     party: EventParty
-    user: EventUser
+    user: User
     whereabouts_description: str

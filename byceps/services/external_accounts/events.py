@@ -9,13 +9,14 @@ byceps.services.connected_external_accounts.events
 from dataclasses import dataclass
 from uuid import UUID
 
-from byceps.services.core.events import _BaseEvent, EventUser
+from byceps.services.core.events import _BaseEvent
+from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
 class _ExternalAccountConnectionEvent(_BaseEvent):
     connected_external_account_id: UUID
-    user: EventUser
+    user: User
     service: str
     external_id: str | None
     external_name: str | None

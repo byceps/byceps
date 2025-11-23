@@ -9,7 +9,6 @@ byceps.services.ticketing.ticket_domain_service
 from datetime import datetime
 from typing import assert_never
 
-from byceps.services.core.events import EventUser
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
@@ -132,9 +131,9 @@ def _build_check_in_event(
 ) -> TicketCheckedInEvent:
     return TicketCheckedInEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         ticket_id=ticket.id,
         ticket_code=ticket.code,
         occupied_seat_id=ticket.occupied_seat_id,
-        user=EventUser.from_user(ticket.used_by),
+        user=ticket.used_by,
     )

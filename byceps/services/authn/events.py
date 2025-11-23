@@ -8,18 +8,19 @@ byceps.services.authn.events
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventSite, EventUser
+from byceps.services.core.events import _BaseEvent, EventSite
+from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
 class PasswordUpdatedEvent(_BaseEvent):
-    user: EventUser
+    user: User
 
 
 @dataclass(frozen=True, kw_only=True)
 class _UserIdentityTagEvent(_BaseEvent):
     identifier: str
-    user: EventUser
+    user: User
 
 
 @dataclass(frozen=True, kw_only=True)

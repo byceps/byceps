@@ -9,13 +9,13 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventUser
 from byceps.services.seating.events import (
     SeatGroupOccupiedEvent,
     SeatGroupReleasedEvent,
 )
 from byceps.services.seating.models import SeatGroupID
 from byceps.services.ticketing.models.ticket import TicketBundleID
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -25,13 +25,13 @@ from .helpers import assert_text
 def test_seat_group_occupied(
     app: BycepsApp,
     now: datetime,
-    event_admin: EventUser,
-    make_event_user,
+    admin_user: User,
+    make_user,
     webhook_for_irc,
 ):
     seat_group_id = SeatGroupID(generate_uuid())
     ticket_bundle_id = TicketBundleID(generate_uuid())
-    ticket_bundle_owner = make_event_user(screen_name='ClanLeader')
+    ticket_bundle_owner = make_user(screen_name='ClanLeader')
 
     expected_text = (
         'SeatingAdmin has occupied seat group "Clan Area 1" '
@@ -40,7 +40,7 @@ def test_seat_group_occupied(
 
     event = SeatGroupOccupiedEvent(
         occurred_at=now,
-        initiator=event_admin,
+        initiator=admin_user,
         seat_group_id=seat_group_id,
         seat_group_title='Clan Area 1',
         ticket_bundle_id=ticket_bundle_id,
@@ -55,8 +55,7 @@ def test_seat_group_occupied(
 def test_seat_group_released(
     app: BycepsApp,
     now: datetime,
-    event_admin: EventUser,
-    make_event_user,
+    admin_user: User,
     webhook_for_irc,
 ):
     seat_group_id = SeatGroupID(generate_uuid())
@@ -65,7 +64,7 @@ def test_seat_group_released(
 
     event = SeatGroupReleasedEvent(
         occurred_at=now,
-        initiator=event_admin,
+        initiator=admin_user,
         seat_group_id=seat_group_id,
         seat_group_title='Clan Area 1',
     )
@@ -79,5 +78,5 @@ def test_seat_group_released(
 
 
 @pytest.fixture(scope='module')
-def event_admin(make_event_user) -> EventUser:
-    return make_event_user(screen_name='SeatingAdmin')
+def admin_user(make_user) -> User:
+    return make_user(screen_name='SeatingAdmin')

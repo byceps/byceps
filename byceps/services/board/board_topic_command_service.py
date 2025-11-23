@@ -12,7 +12,7 @@ from sqlalchemy import delete
 
 from byceps.database import db
 from byceps.services.brand import brand_service
-from byceps.services.core.events import EventBrand, EventUser
+from byceps.services.core.events import EventBrand
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
 from byceps.util.uuid import generate_uuid7
@@ -65,11 +65,11 @@ def create_topic(
 
     event = BoardTopicCreatedEvent(
         occurred_at=topic.created_at,
-        initiator=EventUser.from_user(creator),
+        initiator=creator,
         brand=EventBrand.from_brand(brand),
         board_id=db_category.board_id,
         topic_id=topic.id,
-        topic_creator=EventUser.from_user(creator),
+        topic_creator=creator,
         topic_title=topic.title,
         url=None,
     )
@@ -95,13 +95,13 @@ def update_topic(
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUpdatedEvent(
         occurred_at=posting_event.occurred_at,
-        initiator=EventUser.from_user(editor),
+        initiator=editor,
         brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator=EventUser.from_user(topic_creator),
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        editor=EventUser.from_user(editor),
+        editor=editor,
         url=None,
     )
 
@@ -123,13 +123,13 @@ def hide_topic(topic_id: TopicID, moderator: User) -> BoardTopicHiddenEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicHiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator=EventUser.from_user(topic_creator),
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=None,
     )
 
@@ -152,13 +152,13 @@ def unhide_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnhiddenEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUnhiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator=EventUser.from_user(topic_creator),
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=None,
     )
 
@@ -178,13 +178,13 @@ def lock_topic(topic_id: TopicID, moderator: User) -> BoardTopicLockedEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicLockedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator=EventUser.from_user(topic_creator),
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=None,
     )
 
@@ -205,13 +205,13 @@ def unlock_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnlockedEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUnlockedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator=EventUser.from_user(topic_creator),
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=None,
     )
 
@@ -231,13 +231,13 @@ def pin_topic(topic_id: TopicID, moderator: User) -> BoardTopicPinnedEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicPinnedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator=EventUser.from_user(topic_creator),
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=None,
     )
 
@@ -258,13 +258,13 @@ def unpin_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnpinnedEvent:
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicUnpinnedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator=EventUser.from_user(topic_creator),
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=None,
     )
 
@@ -290,17 +290,17 @@ def move_topic(
     topic_creator = _get_user(db_topic.creator_id)
     return BoardTopicMovedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_topic.category.board_id,
         topic_id=db_topic.id,
-        topic_creator=EventUser.from_user(topic_creator),
+        topic_creator=topic_creator,
         topic_title=db_topic.title,
         old_category_id=db_old_category.id,
         old_category_title=db_old_category.title,
         new_category_id=db_new_category.id,
         new_category_title=db_new_category.title,
-        moderator=EventUser.from_user(moderator),
+        moderator=moderator,
         url=None,
     )
 

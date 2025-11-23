@@ -19,7 +19,7 @@ BADGE_ID = BadgeID(generate_uuid())
 
 
 def test_user_badge_awarding_announced_without_initiator(
-    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = 'Someone has awarded badge "First Post!" to Erster.'
 
@@ -28,7 +28,7 @@ def test_user_badge_awarding_announced_without_initiator(
         initiator=None,
         badge_id=BADGE_ID,
         badge_label='First Post!',
-        awardee=make_event_user(screen_name='Erster'),
+        awardee=make_user(screen_name='Erster'),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -37,16 +37,16 @@ def test_user_badge_awarding_announced_without_initiator(
 
 
 def test_user_badge_awarding_announced_with_initiator(
-    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = 'Admin has awarded badge "Glanzleistung" to PathFinder.'
 
     event = UserBadgeAwardedEvent(
         occurred_at=now,
-        initiator=make_event_user(screen_name='Admin'),
+        initiator=make_user(screen_name='Admin'),
         badge_id=BADGE_ID,
         badge_label='Glanzleistung',
-        awardee=make_event_user(screen_name='PathFinder'),
+        awardee=make_user(screen_name='PathFinder'),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

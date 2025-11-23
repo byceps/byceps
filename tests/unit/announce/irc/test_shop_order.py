@@ -9,13 +9,13 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventUser
 from byceps.services.shop.order.events import (
     ShopOrderCanceledEvent,
     ShopOrderPaidEvent,
     ShopOrderPlacedEvent,
 )
 from byceps.services.shop.order.models.order import OrderID, OrderNumber
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_uuid
 
@@ -26,7 +26,7 @@ ORDER_ID = OrderID(generate_uuid())
 
 
 def test_shop_order_placed_announced(
-    app: BycepsApp, now: datetime, orderer_user: EventUser, webhook_for_irc
+    app: BycepsApp, now: datetime, orderer_user: User, webhook_for_irc
 ):
     expected_text = 'Ken_von_Kaufkraft has placed order ORDER-00001.'
 
@@ -46,8 +46,8 @@ def test_shop_order_placed_announced(
 def test_shop_order_canceled_announced(
     app: BycepsApp,
     now: datetime,
-    shop_admin: EventUser,
-    orderer_user: EventUser,
+    shop_admin: User,
+    orderer_user: User,
     webhook_for_irc,
 ):
     expected_text = (
@@ -70,8 +70,8 @@ def test_shop_order_canceled_announced(
 def test_shop_order_paid_announced(
     app: BycepsApp,
     now: datetime,
-    shop_admin: EventUser,
-    orderer_user: EventUser,
+    shop_admin: User,
+    orderer_user: User,
     webhook_for_irc,
 ):
     expected_text = (
@@ -97,10 +97,10 @@ def test_shop_order_paid_announced(
 
 
 @pytest.fixture(scope='module')
-def shop_admin(make_event_user) -> EventUser:
-    return make_event_user(screen_name='ShoppingSheriff')
+def shop_admin(make_user) -> User:
+    return make_user(screen_name='ShoppingSheriff')
 
 
 @pytest.fixture(scope='module')
-def orderer_user(make_event_user) -> EventUser:
-    return make_event_user(screen_name='Ken_von_Kaufkraft')
+def orderer_user(make_user) -> User:
+    return make_user(screen_name='Ken_von_Kaufkraft')

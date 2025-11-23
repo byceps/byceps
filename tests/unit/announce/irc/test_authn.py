@@ -13,14 +13,14 @@ from .helpers import assert_text
 
 
 def test_password_updated_announced(
-    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = 'AuthAdmin has updated the password for ForgetfulFred.'
 
     event = PasswordUpdatedEvent(
         occurred_at=now,
-        initiator=make_event_user(screen_name='AuthAdmin'),
-        user=make_event_user(screen_name='ForgetfulFred'),
+        initiator=make_user(screen_name='AuthAdmin'),
+        user=make_user(screen_name='ForgetfulFred'),
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -29,13 +29,13 @@ def test_password_updated_announced(
 
 
 def test_user_logged_in_into_admin_app_announced(
-    app: BycepsApp, now: datetime, make_event_user, webhook_for_irc
+    app: BycepsApp, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = 'Logvogel has logged in.'
 
     event = UserLoggedInEvent(
         occurred_at=now,
-        initiator=make_event_user(screen_name='Logvogel'),
+        initiator=make_user(screen_name='Logvogel'),
         site=None,
     )
 
@@ -48,14 +48,14 @@ def test_user_logged_in_into_site_app_announced(
     app: BycepsApp,
     now: datetime,
     make_event_site,
-    make_event_user,
+    make_user,
     webhook_for_irc,
 ):
     expected_text = 'Logvogel has logged in on site "ACMECon 2014 website".'
 
     event = UserLoggedInEvent(
         occurred_at=now,
-        initiator=make_event_user(screen_name='Logvogel'),
+        initiator=make_user(screen_name='Logvogel'),
         site=make_event_site(title='ACMECon 2014 website'),
     )
 

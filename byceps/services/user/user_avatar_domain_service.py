@@ -8,8 +8,6 @@ byceps.services.user.user_avatar_domain_service
 
 from datetime import datetime
 
-from byceps.services.core.events import EventUser
-
 from . import user_log_domain_service
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
 from .models.log import UserLogEntry
@@ -41,8 +39,8 @@ def _build_avatar_updated_event(
 ) -> UserAvatarUpdatedEvent:
     return UserAvatarUpdatedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         avatar_id=avatar.id,
     )
 
@@ -88,8 +86,8 @@ def _build_avatar_removed_event(
 ) -> UserAvatarRemovedEvent:
     return UserAvatarRemovedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         avatar_id=avatar.id,
     )
 
