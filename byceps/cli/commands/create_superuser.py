@@ -63,7 +63,7 @@ def _create_user(
         error_message = creation_result.unwrap_err()
         raise click.UsageError(f'User creation failed: {error_message}')
 
-    user, event = creation_result.unwrap()
+    user, _ = creation_result.unwrap()
 
     return user
 

@@ -146,7 +146,7 @@ def create():
     }
     notes = form.notes.data.strip()
 
-    server, event = guest_server_service.register_server(
+    _, event = guest_server_service.register_server(
         party,
         g.user,
         g.user,

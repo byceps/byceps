@@ -29,7 +29,7 @@ def create_tag(
     suspended: bool = False,
 ) -> UserIdentityTag:
     """Create a tag."""
-    tag, event, log_entry = authn_identity_tag_domain_service.create_tag(
+    tag, _, log_entry = authn_identity_tag_domain_service.create_tag(
         creator, identifier, user, note=note, suspended=suspended
     )
 
@@ -60,7 +60,7 @@ def _persist_tag_creation(
 
 def delete_tag(tag: UserIdentityTag, initiator: User) -> None:
     """Delete a tag."""
-    event, log_entry = authn_identity_tag_domain_service.delete_tag(
+    _, log_entry = authn_identity_tag_domain_service.delete_tag(
         tag, initiator
     )
 
