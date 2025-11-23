@@ -83,7 +83,7 @@ def create_user(
     if not email_address:
         email_address = f'user{generate_token(6)}@users.test'
 
-    user, event = user_creation_service.create_user(
+    user, _ = user_creation_service.create_user(
         screen_name,
         email_address,
         secret(password),

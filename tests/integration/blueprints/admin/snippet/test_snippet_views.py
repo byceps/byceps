@@ -27,7 +27,7 @@ def test_view_current_version(snippet_admin_client, make_snippet):
 
 
 def test_view_version(snippet_admin_client, make_snippet):
-    version, event = make_snippet()
+    version, _ = make_snippet()
 
     url = f'{BASE_URL}/snippets/versions/{version.id}'
     response = snippet_admin_client.get(url)

@@ -77,7 +77,7 @@ def create_posting(
     if body is None:
         body = f'Inhalt von Beitrag {number}.'
 
-    posting, event = board_posting_command_service.create_posting(
+    posting, _ = board_posting_command_service.create_posting(
         topic_id, creator, body
     )
 
