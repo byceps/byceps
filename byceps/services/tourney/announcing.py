@@ -16,6 +16,7 @@ from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 from .events import (
     EventTourneyParticipant,
     TourneyCanceledEvent,
+    TourneyContinuedEvent,
     TourneyFinishedEvent,
     TourneyMatchParticipantDisqualifiedEvent,
     TourneyMatchParticipantEliminatedEvent,
@@ -27,12 +28,42 @@ from .events import (
     TourneyMatchScoreRandomizedEvent,
     TourneyMatchScoreSubmittedEvent,
     TourneyPausedEvent,
+    TourneyRegistrationClosedEvent,
+    TourneyRegistrationOpenedEvent,
     TourneyStartedEvent,
 )
 
 
 # -------------------------------------------------------------------- #
 # tourney
+
+
+@with_locale
+def announce_tourney_registration_opened(
+    event_name: str,
+    event: TourneyRegistrationOpenedEvent,
+    webhook: OutgoingWebhook,
+) -> Announcement | None:
+    text = gettext(
+        'Registration for tourney %(tourney_title)s has been opened.',
+        tourney_title=event.tourney.title,
+    )
+
+    return Announcement(text)
+
+
+@with_locale
+def announce_tourney_registration_closed(
+    event_name: str,
+    event: TourneyRegistrationClosedEvent,
+    webhook: OutgoingWebhook,
+) -> Announcement | None:
+    text = gettext(
+        'Registration for tourney %(tourney_title)s has been closed.',
+        tourney_title=event.tourney.title,
+    )
+
+    return Announcement(text)
 
 
 @with_locale
@@ -53,6 +84,18 @@ def announce_tourney_paused(
 ) -> Announcement | None:
     text = gettext(
         'Tourney %(tourney_title)s has been paused.',
+        tourney_title=event.tourney.title,
+    )
+
+    return Announcement(text)
+
+
+@with_locale
+def announce_tourney_continued(
+    event_name: str, event: TourneyContinuedEvent, webhook: OutgoingWebhook
+) -> Announcement | None:
+    text = gettext(
+        'Tourney %(tourney_title)s has been continued.',
         tourney_title=event.tourney.title,
     )
 

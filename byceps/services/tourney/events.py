@@ -49,12 +49,27 @@ class TourneyCreatedEvent(_TourneyEvent):
 
 
 @dataclass(frozen=True, kw_only=True)
+class TourneyRegistrationOpenedEvent(_TourneyEvent):
+    pass
+
+
+@dataclass(frozen=True, kw_only=True)
+class TourneyRegistrationClosedEvent(_TourneyEvent):
+    pass
+
+
+@dataclass(frozen=True, kw_only=True)
 class TourneyStartedEvent(_TourneyEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
 class TourneyPausedEvent(_TourneyEvent):
+    pass
+
+
+@dataclass(frozen=True, kw_only=True)
+class TourneyContinuedEvent(_TourneyEvent):
     pass
 
 

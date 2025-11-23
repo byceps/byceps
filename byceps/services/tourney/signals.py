@@ -13,10 +13,13 @@ tourney_signals = Namespace()
 
 
 # fmt: off
-tourney_started  = tourney_signals.signal('tourney-started')
-tourney_paused   = tourney_signals.signal('tourney-paused')
-tourney_canceled = tourney_signals.signal('tourney-canceled')
-tourney_finished = tourney_signals.signal('tourney-finished')
+tourney_registration_opened = tourney_signals.signal('tourney-registration-opened')
+tourney_registration_closed = tourney_signals.signal('tourney-registration-closed')
+tourney_started             = tourney_signals.signal('tourney-started')
+tourney_paused              = tourney_signals.signal('tourney-paused')
+tourney_continued           = tourney_signals.signal('tourney-continued')
+tourney_canceled            = tourney_signals.signal('tourney-canceled')
+tourney_finished            = tourney_signals.signal('tourney-finished')
 
 match_ready            = tourney_signals.signal('tourney-match-ready')
 match_reset            = tourney_signals.signal('tourney-match-reset')

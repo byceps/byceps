@@ -107,6 +107,7 @@ from byceps.services.tourney import announcing as tourney_handlers
 from byceps.services.tourney import signals as tourney_signals
 from byceps.services.tourney.events import (
     TourneyCanceledEvent,
+    TourneyContinuedEvent,
     TourneyFinishedEvent,
     TourneyMatchParticipantDisqualifiedEvent,
     TourneyMatchParticipantEliminatedEvent,
@@ -118,6 +119,8 @@ from byceps.services.tourney.events import (
     TourneyMatchScoreRandomizedEvent,
     TourneyMatchScoreSubmittedEvent,
     TourneyPausedEvent,
+    TourneyRegistrationClosedEvent,
+    TourneyRegistrationOpenedEvent,
     TourneyStartedEvent,
 )
 from byceps.services.user import announcing as user_handlers
@@ -377,6 +380,11 @@ for event, name, handler in [
         tourney_handlers.announce_tourney_canceled,
     ),
     (
+        TourneyContinuedEvent,
+        'tourney-continued',
+        tourney_handlers.announce_tourney_continued,
+    ),
+    (
         TourneyFinishedEvent,
         'tourney-finished',
         tourney_handlers.announce_tourney_finished,
@@ -385,6 +393,16 @@ for event, name, handler in [
         TourneyPausedEvent,
         'tourney-paused',
         tourney_handlers.announce_tourney_paused,
+    ),
+    (
+        TourneyRegistrationClosedEvent,
+        'tourney-registration-closed',
+        tourney_handlers.announce_tourney_registration_closed,
+    ),
+    (
+        TourneyRegistrationOpenedEvent,
+        'tourney-registration-opened',
+        tourney_handlers.announce_tourney_registration_opened,
     ),
     (
         TourneyStartedEvent,
@@ -561,8 +579,11 @@ _SIGNALS: list[NamedSignal] = [
     ticketing_signals.ticket_checked_in,
     ticketing_signals.tickets_sold,
     tourney_signals.tourney_canceled,
+    tourney_signals.tourney_continued,
     tourney_signals.tourney_finished,
     tourney_signals.tourney_paused,
+    tourney_signals.tourney_registration_closed,
+    tourney_signals.tourney_registration_opened,
     tourney_signals.tourney_started,
     tourney_signals.match_ready,
     tourney_signals.match_reset,

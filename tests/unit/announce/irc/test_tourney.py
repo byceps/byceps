@@ -12,12 +12,51 @@ from byceps.byceps_app import BycepsApp
 from byceps.services.tourney.events import (
     EventTourney,
     TourneyCanceledEvent,
+    TourneyContinuedEvent,
     TourneyFinishedEvent,
     TourneyPausedEvent,
+    TourneyRegistrationClosedEvent,
+    TourneyRegistrationOpenedEvent,
     TourneyStartedEvent,
 )
 
 from .helpers import assert_text
+
+
+def test_announce_tourney_registration_opened(
+    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+):
+    expected_text = (
+        'Registration for tourney Taco Arena (1on1) has been opened.'
+    )
+
+    event = TourneyRegistrationOpenedEvent(
+        occurred_at=now,
+        initiator=None,
+        tourney=tourney,
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
+
+
+def test_announce_tourney_registration_closed(
+    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+):
+    expected_text = (
+        'Registration for tourney Taco Arena (1on1) has been closed.'
+    )
+
+    event = TourneyRegistrationClosedEvent(
+        occurred_at=now,
+        initiator=None,
+        tourney=tourney,
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
 
 
 def test_announce_tourney_started(
@@ -42,6 +81,22 @@ def test_announce_tourney_paused(
     expected_text = 'Tourney Taco Arena (1on1) has been paused.'
 
     event = TourneyPausedEvent(
+        occurred_at=now,
+        initiator=None,
+        tourney=tourney,
+    )
+
+    actual = build_announcement_request(event, webhook_for_irc)
+
+    assert_text(actual, expected_text)
+
+
+def test_announce_tourney_continued(
+    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+):
+    expected_text = 'Tourney Taco Arena (1on1) has been continued.'
+
+    event = TourneyContinuedEvent(
         occurred_at=now,
         initiator=None,
         tourney=tourney,
