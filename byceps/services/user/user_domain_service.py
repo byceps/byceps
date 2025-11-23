@@ -301,7 +301,7 @@ def _build_details_updated_log_entry(
     old_phone_number: str | None,
     new_phone_number: str | None,
 ) -> Result[UserLogEntry, NothingChangedError]:
-    fields: dict[str, str] = {}
+    fields: dict[str, dict[str, str | None]] = {}
 
     def _add_if_different(
         property_key: str,
