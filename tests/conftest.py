@@ -17,17 +17,17 @@ from tests.helpers import generate_token
 def make_event_brand():
     def _wrapper(
         *,
-        id: str | None = None,
+        brand_id: str | None = None,
         title: str | None = None,
     ) -> EventBrand:
-        if id is None:
-            id = generate_token()
+        if brand_id is None:
+            brand_id = generate_token()
 
         if title is None:
             title = generate_token()
 
         return EventBrand(
-            id=BrandID(id),
+            id=BrandID(brand_id),
             title=title,
         )
 
@@ -38,17 +38,17 @@ def make_event_brand():
 def make_event_party():
     def _wrapper(
         *,
-        id: str | None = None,
+        party_id: str | None = None,
         title: str | None = None,
     ) -> EventParty:
-        if id is None:
-            id = generate_token()
+        if party_id is None:
+            party_id = generate_token()
 
         if title is None:
             title = generate_token()
 
         return EventParty(
-            id=PartyID(id),
+            id=PartyID(party_id),
             title=title,
         )
 
@@ -59,17 +59,17 @@ def make_event_party():
 def make_event_site():
     def _wrapper(
         *,
-        id: str | None = None,
+        site_id: str | None = None,
         title: str | None = None,
     ) -> EventSite:
-        if id is None:
-            id = generate_token()
+        if site_id is None:
+            site_id = generate_token()
 
         if title is None:
             title = generate_token()
 
         return EventSite(
-            id=SiteID(id),
+            id=SiteID(site_id),
             title=title,
         )
 

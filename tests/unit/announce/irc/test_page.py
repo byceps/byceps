@@ -118,5 +118,5 @@ def editor(make_user) -> User:
 @pytest.fixture(scope='module')
 def site(make_event_site) -> EventSite:
     return make_event_site(
-        id='acmecon-2014-website', title='ACMECon 2014 website'
+        site_id='acmecon-2014-website', title='ACMECon 2014 website'
     )

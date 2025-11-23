@@ -169,4 +169,4 @@ def test_multiple_tickets_sold(
 
 @pytest.fixture(scope='module')
 def event_party(make_event_party, party: Party) -> EventParty:
-    return make_event_party(id=party.id, title=party.title)
+    return make_event_party(party_id=party.id, title=party.title)
