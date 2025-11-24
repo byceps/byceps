@@ -53,13 +53,13 @@ def _build_avatar_updated_log_entry(
 ) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-avatar-updated',
-        user.id,
+        user,
         {
             'avatar_id': str(avatar.id),
             'filename': str(avatar.filename),
         },
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
 
 
@@ -100,11 +100,11 @@ def _build_avatar_removed_log_entry(
 ) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-avatar-removed',
-        user.id,
+        user,
         {
             'avatar_id': str(avatar.id),
             'filename': str(avatar.filename),
         },
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )

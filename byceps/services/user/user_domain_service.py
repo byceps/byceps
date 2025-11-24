@@ -54,13 +54,13 @@ def _build_account_suspended_log_entry(
 ) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-suspended',
-        user.id,
+        user,
         {
             'initiator_id': str(initiator.id),
             'reason': reason,
         },
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
 
 
@@ -94,13 +94,13 @@ def _build_account_unsuspended_log_entry(
 ) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-unsuspended',
-        user.id,
+        user,
         {
             'initiator_id': str(initiator.id),
             'reason': reason,
         },
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
 
 
@@ -141,13 +141,13 @@ def _build_account_deleted_log_entry(
 ) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-deleted',
-        user.id,
+        user,
         {
             'initiator_id': str(initiator.id),
             'reason': reason,
         },
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
 
 
@@ -208,10 +208,10 @@ def _build_screen_name_changed_log_entry(
 
     return user_log_domain_service.build_entry(
         'user-screen-name-changed',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
 
 
@@ -332,10 +332,10 @@ def _build_details_updated_log_entry(
 
     entry = user_log_domain_service.build_entry(
         'user-details-updated',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
 
     return Ok(entry)

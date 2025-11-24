@@ -77,10 +77,10 @@ def _build_email_address_changed_log_entry(
 
     return user_log_domain_service.build_entry(
         'user-email-address-changed',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
 
 
@@ -128,10 +128,10 @@ def _build_email_address_confirmed_log_entry(
 ) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-email-address-confirmed',
-        user.id,
+        user,
         {'email_address': email_address},
         occurred_at=occurred_at,
-        initiator_id=user.id,
+        initiator=user,
     )
 
 
@@ -189,8 +189,8 @@ def _build_email_address_invalidated_log_entry(
 
     return user_log_domain_service.build_entry(
         'user-email-address-invalidated',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
+        initiator=initiator,
     )

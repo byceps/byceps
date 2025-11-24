@@ -84,8 +84,8 @@ def _build_awarding_log_entry(
 
     return user_log_domain_service.build_entry(
         'user-badge-awarded',
-        awardee.id,
+        awardee,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
+        initiator=initiator,
     )

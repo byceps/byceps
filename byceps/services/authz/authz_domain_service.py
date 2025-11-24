@@ -52,10 +52,10 @@ def _build_role_assigned_log_entry(
 
     return user_log_domain_service.build_entry(
         'role-assigned',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
+        initiator=initiator,
     )
 
 
@@ -95,8 +95,8 @@ def _build_role_deassigned_log_entry(
 
     return user_log_domain_service.build_entry(
         'role-deassigned',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
+        initiator=initiator,
     )

@@ -121,7 +121,7 @@ def log_in_user(
     occurred_at = datetime.utcnow()
 
     log_entry = _build_login_log_entry(
-        user.id,
+        user,
         occurred_at,
         ip_address=ip_address,
         site_id=site.id if site else None,
@@ -140,7 +140,7 @@ def log_in_user(
 
 
 def _build_login_log_entry(
-    user_id: UserID,
+    user: User,
     occurred_at: datetime,
     *,
     ip_address: str | None = None,
@@ -156,7 +156,7 @@ def _build_login_log_entry(
         data['site_id'] = site_id
 
     return user_log_domain_service.build_entry(
-        'user-logged-in', user_id, data, occurred_at=occurred_at
+        'user-logged-in', user, data, occurred_at=occurred_at
     )
 
 

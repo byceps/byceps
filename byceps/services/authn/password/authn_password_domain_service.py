@@ -81,10 +81,10 @@ def _build_password_updated_log_entry(
 ) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'password-updated',
-        user.id,
+        user,
         {'initiator_id': str(initiator.id)},
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
 
 

@@ -122,10 +122,10 @@ def _build_account_created_log_entry(
 
     return user_log_domain_service.build_entry(
         'user-created',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
+        initiator=initiator,
     )
 
 
@@ -157,10 +157,10 @@ def _build_account_initialized_log_entry(
 
     return user_log_domain_service.build_entry(
         'user-initialized',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id if initiator else None,
+        initiator=initiator,
     )
 
 

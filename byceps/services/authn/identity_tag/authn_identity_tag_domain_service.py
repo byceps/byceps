@@ -68,10 +68,10 @@ def _build_tag_created_event(
 def _build_tag_created_log_entry(tag: UserIdentityTag) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-identity-tag-created',
-        tag.user.id,
+        tag.user,
         {'tag_id': str(tag.id)},
         occurred_at=tag.created_at,
-        initiator_id=tag.creator.id,
+        initiator=tag.creator,
     )
 
 
@@ -103,8 +103,8 @@ def _build_tag_deleted_log_entry(
 ) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-identity-tag-deleted',
-        tag.user.id,
+        tag.user,
         {'tag_id': str(tag.id)},
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )

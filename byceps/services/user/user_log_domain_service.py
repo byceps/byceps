@@ -8,7 +8,7 @@ byceps.services.user.user_log_domain_service
 
 from datetime import datetime
 
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
 from .models.log import UserLogEntry, UserLogEntryData
@@ -16,11 +16,11 @@ from .models.log import UserLogEntry, UserLogEntryData
 
 def build_entry(
     event_type: str,
-    user_id: UserID,
+    user: User,
     data: UserLogEntryData,
     *,
     occurred_at: datetime | None = None,
-    initiator_id: UserID | None = None,
+    initiator: User | None = None,
 ) -> UserLogEntry:
     """Assemble a user log entry."""
     entry_id = generate_uuid7()
@@ -32,7 +32,7 @@ def build_entry(
         id=entry_id,
         occurred_at=occurred_at,
         event_type=event_type,
-        user_id=user_id,
-        initiator_id=initiator_id,
+        user_id=user.id,
+        initiator_id=initiator.id if initiator else None,
         data=data,
     )

@@ -57,10 +57,10 @@ def _build_orga_status_granted_log_entry(
 
     return user_log_domain_service.build_entry(
         'orgaflag-added',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
 
 
@@ -101,8 +101,8 @@ def _build_orga_status_revoked_log_entry(
 
     return user_log_domain_service.build_entry(
         'orgaflag-removed',
-        user.id,
+        user,
         data,
         occurred_at=occurred_at,
-        initiator_id=initiator.id,
+        initiator=initiator,
     )
