@@ -49,8 +49,6 @@ class _BaseForm(LocalizedForm):
             (category.id, category.title) for category in categories
         ]
 
-    pass
-
 
 class CreateForm(_BaseForm):
     team_size = SelectField(
