@@ -7,14 +7,17 @@ byceps.services.tourney.events
 """
 
 from dataclasses import dataclass
+from typing import Self
 
 from byceps.services.core.events import _BaseEvent
 from byceps.services.user.models.user import User
 
 from .models import (
     MatchID,
+    Participant,
     ParticipantID,
     ParticipantMembershipStatus,
+    Tourney,
     TourneyID,
 )
 
@@ -24,11 +27,25 @@ class EventTourney:
     id: TourneyID
     title: str
 
+    @classmethod
+    def from_tourney(cls, tourney: Tourney) -> Self:
+        return cls(
+            id=tourney.id,
+            title=tourney.title,
+        )
+
 
 @dataclass(frozen=True, kw_only=True)
 class EventTourneyParticipant:
     id: ParticipantID
     name: str
+
+    @classmethod
+    def from_participant(cls, participant: Participant) -> Self:
+        return cls(
+            id=participant.id,
+            name=participant.name,
+        )
 
 
 @dataclass(frozen=True, kw_only=True)
