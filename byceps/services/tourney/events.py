@@ -13,26 +13,12 @@ from byceps.services.core.events import _BaseEvent
 from byceps.services.user.models.user import User
 
 from .models import (
+    BasicTourney,
     MatchID,
     Participant,
     ParticipantID,
     ParticipantMembershipStatus,
-    Tourney,
-    TourneyID,
 )
-
-
-@dataclass(frozen=True, kw_only=True)
-class EventTourney:
-    id: TourneyID
-    title: str
-
-    @classmethod
-    def from_tourney(cls, tourney: Tourney) -> Self:
-        return cls(
-            id=tourney.id,
-            title=tourney.title,
-        )
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -50,7 +36,7 @@ class EventTourneyParticipant:
 
 @dataclass(frozen=True, kw_only=True)
 class _BaseTourneyEvent(_BaseEvent):
-    tourney: EventTourney
+    tourney: BasicTourney
 
 
 # tourney

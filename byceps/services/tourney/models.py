@@ -31,6 +31,12 @@ TourneyID = NewType('TourneyID', UUID)
 
 
 @dataclass(frozen=True, kw_only=True)
+class BasicTourney:
+    id: TourneyID
+    title: str
+
+
+@dataclass(frozen=True, kw_only=True)
 class Tourney:
     id: TourneyID
     party_id: PartyID
@@ -43,6 +49,12 @@ class Tourney:
     max_participant_count: int
     starts_at: datetime
     registration_open: bool
+
+    def to_basic_tourney(self) -> BasicTourney:
+        return BasicTourney(
+            id=self.id,
+            title=self.title,
+        )
 
 
 @dataclass(frozen=True, kw_only=True)

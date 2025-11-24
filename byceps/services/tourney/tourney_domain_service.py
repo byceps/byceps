@@ -12,7 +12,7 @@ from byceps.services.party.models import Party
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
-from .events import EventTourney, TourneyCreatedEvent
+from .events import TourneyCreatedEvent
 from .models import Tourney, TourneyID, TourneyCategory
 
 
@@ -59,5 +59,5 @@ def _build_tourney_created_event(
     return TourneyCreatedEvent(
         occurred_at=occurred_at,
         initiator=creator,
-        tourney=EventTourney(id=tourney.id, title=tourney.title),
+        tourney=tourney.to_basic_tourney(),
     )

@@ -12,7 +12,6 @@ from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
 from .events import (
-    EventTourney,
     EventTourneyParticipant,
     TourneyParticipantCreatedEvent,
     TourneyParticipantMembershipCreatedEvent,
@@ -61,7 +60,7 @@ def _build_participant_created_event(
     return TourneyParticipantCreatedEvent(
         occurred_at=occurred_at,
         initiator=initiator,
-        tourney=EventTourney(id=tourney.id, title=tourney.title),
+        tourney=tourney.to_basic_tourney(),
         participant=EventTourneyParticipant(
             id=participant.id,
             name=participant.name,
@@ -104,7 +103,7 @@ def _build_participant_membership_created_event(
     return TourneyParticipantMembershipCreatedEvent(
         occurred_at=occurred_at,
         initiator=initiator,
-        tourney=EventTourney(id=tourney.id, title=tourney.title),
+        tourney=tourney.to_basic_tourney(),
         participant=EventTourneyParticipant(
             id=participant.id,
             name=participant.name,
@@ -140,7 +139,7 @@ def _build_participant_membership_deleted_event(
     return TourneyParticipantMembershipDeletedEvent(
         occurred_at=occurred_at,
         initiator=initiator,
-        tourney=EventTourney(id=tourney.id, title=tourney.title),
+        tourney=tourney.to_basic_tourney(),
         participant=EventTourneyParticipant(
             id=participant.id,
             name=participant.name,
