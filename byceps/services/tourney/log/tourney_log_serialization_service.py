@@ -34,7 +34,7 @@ def serialize_tourney_created_event(
         occurred_at=event.occurred_at,
         event_type='tourney-created',
         tourney_id=event.tourney.id,
-        initiator_id=event.initiator.id if event.initiator else None,
+        initiator=event.initiator,
         data={},
     )
 
@@ -49,7 +49,7 @@ def serialize_tourney_registration_opened_event(
         occurred_at=event.occurred_at,
         event_type='tourney-registration-opened',
         tourney_id=event.tourney.id,
-        initiator_id=event.initiator.id if event.initiator else None,
+        initiator=event.initiator,
         data={},
     )
 
@@ -64,7 +64,7 @@ def serialize_tourney_registration_closed_event(
         occurred_at=event.occurred_at,
         event_type='tourney-registration-closed',
         tourney_id=event.tourney.id,
-        initiator_id=event.initiator.id if event.initiator else None,
+        initiator=event.initiator,
         data={},
     )
 
@@ -79,7 +79,7 @@ def serialize_tourney_started_event(
         occurred_at=event.occurred_at,
         event_type='tourney-started',
         tourney_id=event.tourney.id,
-        initiator_id=event.initiator.id if event.initiator else None,
+        initiator=event.initiator,
         data={},
     )
 
@@ -94,7 +94,7 @@ def serialize_tourney_paused_event(
         occurred_at=event.occurred_at,
         event_type='tourney-paused',
         tourney_id=event.tourney.id,
-        initiator_id=event.initiator.id if event.initiator else None,
+        initiator=event.initiator,
         data={},
     )
 
@@ -109,7 +109,7 @@ def serialize_tourney_continued_event(
         occurred_at=event.occurred_at,
         event_type='tourney-continued',
         tourney_id=event.tourney.id,
-        initiator_id=event.initiator.id if event.initiator else None,
+        initiator=event.initiator,
         data={},
     )
 
@@ -124,7 +124,7 @@ def serialize_tourney_canceled_event(
         occurred_at=event.occurred_at,
         event_type='tourney-canceled',
         tourney_id=event.tourney.id,
-        initiator_id=event.initiator.id if event.initiator else None,
+        initiator=event.initiator,
         data={},
     )
 
@@ -139,6 +139,6 @@ def serialize_tourney_finished_event(
         occurred_at=event.occurred_at,
         event_type='tourney-finished',
         tourney_id=event.tourney.id,
-        initiator_id=event.initiator.id if event.initiator else None,
+        initiator=event.initiator,
         data={},
     )

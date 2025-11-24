@@ -12,7 +12,7 @@ from typing import Any
 from uuid import UUID
 
 from byceps.services.tourney.models import MatchID, ParticipantID, TourneyID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User
 
 
 LogEntryData = dict[str, Any]
@@ -24,7 +24,7 @@ class TourneyLogEntry:
     occurred_at: datetime
     event_type: str
     tourney_id: TourneyID
-    initiator_id: UserID | None
+    initiator: User | None
     data: LogEntryData
 
 
@@ -34,7 +34,7 @@ class TourneyParticipantLogEntry:
     occurred_at: datetime
     event_type: str
     participant_id: ParticipantID
-    initiator_id: UserID | None
+    initiator: User | None
     data: LogEntryData
 
 
@@ -44,5 +44,5 @@ class TourneyMatchLogEntry:
     occurred_at: datetime
     event_type: str
     match_id: MatchID
-    initiator_id: UserID | None
+    initiator: User | None
     data: LogEntryData

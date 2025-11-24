@@ -39,7 +39,7 @@ def build_tourney_entry(
         occurred_at=occurred_at,
         event_type=event_type,
         tourney_id=tourney_id,
-        initiator_id=initiator.id if initiator else None,
+        initiator=initiator,
         data=data,
     )
 
@@ -63,7 +63,7 @@ def build_tourney_participant_entry(
         occurred_at=occurred_at,
         event_type=event_type,
         participant_id=participant_id,
-        initiator_id=initiator.id if initiator else None,
+        initiator=initiator,
         data=data,
     )
 
@@ -87,6 +87,6 @@ def build_tourney_match_entry(
         occurred_at=occurred_at,
         event_type=event_type,
         match_id=match_id,
-        initiator_id=initiator.id if initiator else None,
+        initiator=initiator,
         data=data,
     )
