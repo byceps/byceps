@@ -62,7 +62,6 @@ def send_email_for_incoming_order_to_orderer(order: Order) -> None:
             log.error(
                 'Assembling email for incoming order to orderer failed', error=e
             )
-            return
 
 
 def send_email_for_canceled_order_to_orderer(order: Order) -> None:
@@ -76,7 +75,6 @@ def send_email_for_canceled_order_to_orderer(order: Order) -> None:
             log.error(
                 'Assembling email for canceled order to orderer failed', error=e
             )
-            return
 
 
 def send_email_for_paid_order_to_orderer(order: Order) -> None:
@@ -90,7 +88,6 @@ def send_email_for_paid_order_to_orderer(order: Order) -> None:
             log.error(
                 'Assembling email for paid order to orderer failed', error=e
             )
-            return
 
 
 def assemble_email_for_incoming_order_to_orderer(
