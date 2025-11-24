@@ -10,18 +10,44 @@ from byceps.services.tourney.events import (
     TourneyCanceledEvent,
     TourneyContinuedEvent,
     TourneyCreatedEvent,
+    TourneyEvent,
     TourneyFinishedEvent,
     TourneyPausedEvent,
     TourneyRegistrationClosedEvent,
     TourneyRegistrationOpenedEvent,
     TourneyStartedEvent,
 )
+from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
 from .models import TourneyLogEntry
 
 
 # tourney
+
+
+def serialize_tourney_event(
+    event: TourneyEvent,
+) -> Result[TourneyLogEntry, str]:
+    match event:
+        case TourneyCreatedEvent():
+            return Ok(serialize_tourney_created_event(event))
+        case TourneyRegistrationOpenedEvent():
+            return Ok(serialize_tourney_registration_opened_event(event))
+        case TourneyRegistrationClosedEvent():
+            return Ok(serialize_tourney_registration_closed_event(event))
+        case TourneyStartedEvent():
+            return Ok(serialize_tourney_started_event(event))
+        case TourneyPausedEvent():
+            return Ok(serialize_tourney_paused_event(event))
+        case TourneyContinuedEvent():
+            return Ok(serialize_tourney_continued_event(event))
+        case TourneyCanceledEvent():
+            return Ok(serialize_tourney_canceled_event(event))
+        case TourneyFinishedEvent():
+            return Ok(serialize_tourney_finished_event(event))
+        case _:
+            return Err(f'Could not serialize event: {event!r}')
 
 
 def serialize_tourney_created_event(
