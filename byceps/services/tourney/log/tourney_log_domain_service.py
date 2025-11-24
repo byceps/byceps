@@ -8,7 +8,7 @@ byceps.services.tourney.log.tourney_log_domain_service
 
 from datetime import datetime
 
-from byceps.services.tourney.models import MatchID, ParticipantID, TourneyID
+from byceps.services.tourney.models import MatchID, ParticipantID, Tourney
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
@@ -22,7 +22,7 @@ from .models import (
 
 def build_tourney_entry(
     event_type: str,
-    tourney_id: TourneyID,
+    tourney: Tourney,
     data: LogEntryData,
     *,
     occurred_at: datetime | None = None,
@@ -38,7 +38,7 @@ def build_tourney_entry(
         id=entry_id,
         occurred_at=occurred_at,
         event_type=event_type,
-        tourney_id=tourney_id,
+        tourney=tourney.to_basic_tourney(),
         initiator=initiator,
         data=data,
     )

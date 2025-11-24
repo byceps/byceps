@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from byceps.services.tourney.models import MatchID, ParticipantID, TourneyID
+from byceps.services.tourney.models import BasicTourney, MatchID, ParticipantID
 from byceps.services.user.models.user import User
 
 
@@ -23,7 +23,7 @@ class TourneyLogEntry:
     id: UUID
     occurred_at: datetime
     event_type: str
-    tourney_id: TourneyID
+    tourney: BasicTourney
     initiator: User | None
     data: LogEntryData
 
