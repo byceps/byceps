@@ -63,7 +63,7 @@ def place_order(
         created_at = datetime.utcnow()
 
     place_order_result = order_domain_service.place_order(
-        created_at, shop.id, storefront.id, orderer, shop.currency, cart
+        created_at, shop.id, storefront.id, orderer, cart
     )
     if place_order_result.is_err():
         error_message = 'Cart must not be empty'

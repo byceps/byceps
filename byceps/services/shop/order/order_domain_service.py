@@ -10,7 +10,7 @@ from collections.abc import Iterator
 from datetime import datetime, timedelta
 import dataclasses
 
-from moneyed import Currency, Money
+from moneyed import Money
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.product import product_domain_service
@@ -49,7 +49,6 @@ def place_order(
     shop_id: ShopID,
     storefront_id: StorefrontID,
     orderer: Orderer,
-    currency: Currency,
     cart: Cart,
 ) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmptyError]:
     """Place an order."""

@@ -98,10 +98,5 @@ def place_order(
     orderer: Orderer, cart: Cart
 ) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmptyError]:
     return order_domain_service.place_order(
-        datetime.utcnow(),
-        SHOP_ID,
-        STOREFRONT_ID,
-        orderer,
-        EUR,
-        cart,
+        datetime.utcnow(), SHOP_ID, STOREFRONT_ID, orderer, cart
     )
