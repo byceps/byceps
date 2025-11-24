@@ -247,9 +247,8 @@ def _get_order_state(db_order: DbOrder) -> OrderState:
     if is_canceled:
         return OrderState.canceled
 
-    if is_paid:
-        if not is_processing_required or is_processed:
-            return OrderState.complete
+    if is_paid and (not is_processing_required or is_processed):
+        return OrderState.complete
 
     return OrderState.open
 
