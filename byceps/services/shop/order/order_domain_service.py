@@ -162,7 +162,7 @@ def _build_orderer_updated_log_entry(
     updated_order: Order,
     initiator: User,
 ) -> Result[OrderLogEntry, str]:
-    fields: dict[str, str] = {}
+    fields: dict[str, dict[str, str | None]] = {}
 
     def _add_if_different(
         property_key: str,
