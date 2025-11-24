@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from ipaddress import IPv4Address, IPv6Address
-from typing import NewType, Self
+from typing import NewType
 from uuid import UUID
 
 from byceps.services.party.models import Party

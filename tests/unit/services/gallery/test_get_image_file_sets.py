@@ -3,7 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime
 from pathlib import Path
 
 from byceps.services.gallery import (

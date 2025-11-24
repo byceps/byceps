@@ -7,7 +7,6 @@ byceps.services.tourney.tourney_participant_service
 """
 
 from collections.abc import Sequence
-from uuid import UUID
 
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID

@@ -18,11 +18,7 @@ from . import (
     whereabouts_domain_service,
     whereabouts_repository,
 )
-from .dbmodels import (
-    DbWhereabouts,
-    DbWhereaboutsStatus,
-    DbWhereaboutsUpdate,
-)
+from .dbmodels import DbWhereabouts, DbWhereaboutsStatus
 from .events import WhereaboutsStatusUpdatedEvent
 from .models import (
     IPAddress,

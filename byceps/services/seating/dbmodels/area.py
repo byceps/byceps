@@ -12,7 +12,6 @@ from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.seating.models import SeatingAreaID
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid4
 
 
 class DbSeatingArea(db.Model):
