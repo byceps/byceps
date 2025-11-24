@@ -37,5 +37,5 @@ def _get_icon_names():
         tree = ET.parse(f)  # noqa: S314
 
     svg_namespace = 'http://www.w3.org/2000/svg'
-    symbol_elems = tree.iterfind('.//{%s}symbol' % svg_namespace)
+    symbol_elems = tree.iterfind(f'.//{{{svg_namespace}}}symbol')
     return {elem.get('id') for elem in symbol_elems}
