@@ -3,6 +3,9 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
+from freezegun import freeze_time
 import pytest
 
 from byceps.services.party.models import Party
@@ -30,13 +33,16 @@ def test_success(
     status_before = whereabouts_service.find_status(user, party)
     assert status_before is None
 
+    now = datetime(2025, 11, 24, 20, 44, 35)
+
     payload = {
         'user_id': str(user.id),
         'party_id': str(party.id),
         'whereabouts_name': str(whereabouts.name),
     }
 
-    response = send_request(api_client, client_token_header, payload)
+    with freeze_time(now):
+        response = send_request(api_client, client_token_header, payload)
 
     assert response.status_code == 204
 
@@ -46,7 +52,7 @@ def test_success(
     assert status_after.user.screen_name == user.screen_name
     assert status_after.user.avatar_url == user.avatar_url
     assert status_after.whereabouts_id == whereabouts.id
-    assert status_after.set_at == status_after.set_at
+    assert status_after.set_at == now
 
 
 def test_unauthorized(api_client):
