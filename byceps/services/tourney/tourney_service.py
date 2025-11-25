@@ -12,6 +12,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.party.models import Party, PartyID
+from byceps.services.tourney.log import tourney_log_service
 from byceps.services.user.models.user import User
 
 from . import tourney_category_service, tourney_domain_service
@@ -42,7 +43,7 @@ def create_tourney(
     registration_open: bool = False,
 ) -> tuple[Tourney, TourneyCreatedEvent]:
     """Create a tourney."""
-    tourney, event = tourney_domain_service.create_tourney(
+    tourney, event, log_entry = tourney_domain_service.create_tourney(
         party,
         creator,
         title,
@@ -56,6 +57,8 @@ def create_tourney(
     )
 
     _persist_tourney_creation(tourney)
+
+    tourney_log_service.persist_entry(log_entry)
 
     return tourney, event
 

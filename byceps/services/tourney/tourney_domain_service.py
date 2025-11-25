@@ -9,6 +9,8 @@ byceps.services.tourney.tourney_domain_service
 from datetime import datetime
 
 from byceps.services.party.models import Party
+from byceps.services.tourney.log import tourney_log_serialization_service
+from byceps.services.tourney.log.models import TourneyLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
@@ -28,7 +30,7 @@ def create_tourney(
     subtitle: str | None = None,
     logo_url: str | None = None,
     registration_open: bool = False,
-) -> tuple[Tourney, TourneyCreatedEvent]:
+) -> tuple[Tourney, TourneyCreatedEvent, TourneyLogEntry]:
     """Create a tourney."""
     tourney_id = TourneyID(generate_uuid7())
     occurred_at = datetime.utcnow()
@@ -50,7 +52,11 @@ def create_tourney(
 
     event = _build_tourney_created_event(tourney, occurred_at, creator)
 
-    return tourney, event
+    log_entry = (
+        tourney_log_serialization_service.serialize_tourney_created_event(event)
+    )
+
+    return tourney, event, log_entry
 
 
 def _build_tourney_created_event(
