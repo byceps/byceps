@@ -10,7 +10,6 @@ import pytest
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
 from byceps.services.tourney.events import (
-    EventTourney,
     TourneyCanceledEvent,
     TourneyContinuedEvent,
     TourneyFinishedEvent,
@@ -19,12 +18,13 @@ from byceps.services.tourney.events import (
     TourneyRegistrationOpenedEvent,
     TourneyStartedEvent,
 )
+from byceps.services.tourney.models import BasicTourney
 
 from .helpers import assert_text
 
 
 def test_announce_tourney_registration_opened(
-    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: BasicTourney, webhook_for_irc
 ):
     expected_text = (
         'Registration for tourney Taco Arena (1on1) has been opened.'
@@ -42,7 +42,7 @@ def test_announce_tourney_registration_opened(
 
 
 def test_announce_tourney_registration_closed(
-    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: BasicTourney, webhook_for_irc
 ):
     expected_text = (
         'Registration for tourney Taco Arena (1on1) has been closed.'
@@ -60,7 +60,7 @@ def test_announce_tourney_registration_closed(
 
 
 def test_announce_tourney_started(
-    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: BasicTourney, webhook_for_irc
 ):
     expected_text = 'Tourney Taco Arena (1on1) has been started.'
 
@@ -76,7 +76,7 @@ def test_announce_tourney_started(
 
 
 def test_announce_tourney_paused(
-    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: BasicTourney, webhook_for_irc
 ):
     expected_text = 'Tourney Taco Arena (1on1) has been paused.'
 
@@ -92,7 +92,7 @@ def test_announce_tourney_paused(
 
 
 def test_announce_tourney_continued(
-    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: BasicTourney, webhook_for_irc
 ):
     expected_text = 'Tourney Taco Arena (1on1) has been continued.'
 
@@ -108,7 +108,7 @@ def test_announce_tourney_continued(
 
 
 def test_announce_tourney_canceled(
-    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: BasicTourney, webhook_for_irc
 ):
     expected_text = 'Tourney Taco Arena (1on1) has been canceled.'
 
@@ -124,7 +124,7 @@ def test_announce_tourney_canceled(
 
 
 def test_announce_tourney_finished(
-    app: BycepsApp, now: datetime, tourney: EventTourney, webhook_for_irc
+    app: BycepsApp, now: datetime, tourney: BasicTourney, webhook_for_irc
 ):
     expected_text = 'Tourney Taco Arena (1on1) has been finished.'
 
@@ -143,5 +143,5 @@ def test_announce_tourney_finished(
 
 
 @pytest.fixture(scope='module')
-def tourney(make_event_tourney) -> EventTourney:
-    return make_event_tourney(title='Taco Arena (1on1)')
+def tourney(make_basic_tourney) -> BasicTourney:
+    return make_basic_tourney(title='Taco Arena (1on1)')

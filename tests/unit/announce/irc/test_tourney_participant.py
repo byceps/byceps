@@ -10,14 +10,13 @@ import pytest
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
 from byceps.services.tourney.events import (
-    EventTourney,
     EventTourneyParticipant,
     TourneyMatchParticipantDisqualifiedEvent,
     TourneyMatchParticipantEliminatedEvent,
     TourneyMatchParticipantReadyEvent,
     TourneyMatchParticipantWarnedEvent,
 )
-from byceps.services.tourney.models import MatchID
+from byceps.services.tourney.models import BasicTourney, MatchID
 
 from tests.helpers import generate_uuid
 
@@ -30,7 +29,7 @@ MATCH_ID = MatchID(generate_uuid())
 def test_announce_participant_ready(
     app: BycepsApp,
     now: datetime,
-    tourney: EventTourney,
+    tourney: BasicTourney,
     participant: EventTourneyParticipant,
     webhook_for_irc,
 ):
@@ -54,7 +53,7 @@ def test_announce_participant_ready(
 def test_announce_participant_eliminated(
     app: BycepsApp,
     now: datetime,
-    tourney: EventTourney,
+    tourney: BasicTourney,
     participant: EventTourneyParticipant,
     webhook_for_irc,
 ):
@@ -79,7 +78,7 @@ def test_announce_participant_eliminated(
 def test_announce_participant_warned(
     app: BycepsApp,
     now: datetime,
-    tourney: EventTourney,
+    tourney: BasicTourney,
     participant: EventTourneyParticipant,
     webhook_for_irc,
 ):
@@ -104,7 +103,7 @@ def test_announce_participant_warned(
 def test_announce_participant_disqualified(
     app: BycepsApp,
     now: datetime,
-    tourney: EventTourney,
+    tourney: BasicTourney,
     participant: EventTourneyParticipant,
     webhook_for_irc,
 ):
@@ -130,8 +129,8 @@ def test_announce_participant_disqualified(
 
 
 @pytest.fixture(scope='module')
-def tourney(make_event_tourney) -> EventTourney:
-    return make_event_tourney(title='Burrito Blaster (3on3)')
+def tourney(make_basic_tourney) -> BasicTourney:
+    return make_basic_tourney(title='Burrito Blaster (3on3)')
 
 
 @pytest.fixture(scope='module')

@@ -10,7 +10,6 @@ import pytest
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
 from byceps.services.tourney.events import (
-    EventTourney,
     EventTourneyParticipant,
     TourneyMatchReadyEvent,
     TourneyMatchResetEvent,
@@ -18,7 +17,7 @@ from byceps.services.tourney.events import (
     TourneyMatchScoreRandomizedEvent,
     TourneyMatchScoreSubmittedEvent,
 )
-from byceps.services.tourney.models import MatchID
+from byceps.services.tourney.models import BasicTourney, MatchID
 
 from tests.helpers import generate_uuid
 
@@ -31,7 +30,7 @@ MATCH_ID = MatchID(generate_uuid())
 def test_announce_match_ready(
     app: BycepsApp,
     now: datetime,
-    tourney: EventTourney,
+    tourney: BasicTourney,
     participant1: EventTourneyParticipant,
     participant2: EventTourneyParticipant,
     webhook_for_irc,
@@ -59,7 +58,7 @@ def test_announce_match_ready(
 def test_announce_match_reset(
     app: BycepsApp,
     now: datetime,
-    tourney: EventTourney,
+    tourney: BasicTourney,
     participant1: EventTourneyParticipant,
     participant2: EventTourneyParticipant,
     webhook_for_irc,
@@ -87,7 +86,7 @@ def test_announce_match_reset(
 def test_announce_match_score_submitted(
     app: BycepsApp,
     now: datetime,
-    tourney: EventTourney,
+    tourney: BasicTourney,
     participant1: EventTourneyParticipant,
     participant2: EventTourneyParticipant,
     webhook_for_irc,
@@ -115,7 +114,7 @@ def test_announce_match_score_submitted(
 def test_announce_match_score_confirmed(
     app: BycepsApp,
     now: datetime,
-    tourney: EventTourney,
+    tourney: BasicTourney,
     participant1: EventTourneyParticipant,
     participant2: EventTourneyParticipant,
     webhook_for_irc,
@@ -144,7 +143,7 @@ def test_announce_match_score_confirmed(
 def test_announce_match_score_randomized(
     app: BycepsApp,
     now: datetime,
-    tourney: EventTourney,
+    tourney: BasicTourney,
     participant1: EventTourneyParticipant,
     participant2: EventTourneyParticipant,
     webhook_for_irc,
@@ -173,8 +172,8 @@ def test_announce_match_score_randomized(
 
 
 @pytest.fixture(scope='module')
-def tourney(make_event_tourney) -> EventTourney:
-    return make_event_tourney(title='Octo-Highlander (8on8)')
+def tourney(make_basic_tourney) -> BasicTourney:
+    return make_basic_tourney(title='Octo-Highlander (8on8)')
 
 
 @pytest.fixture(scope='module')

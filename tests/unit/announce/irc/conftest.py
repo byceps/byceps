@@ -5,8 +5,12 @@
 
 import pytest
 
-from byceps.services.tourney.events import EventTourney, EventTourneyParticipant
-from byceps.services.tourney.models import ParticipantID, TourneyID
+from byceps.services.tourney.events import EventTourneyParticipant
+from byceps.services.tourney.models import (
+    BasicTourney,
+    ParticipantID,
+    TourneyID,
+)
 from byceps.services.webhooks.models import (
     OutgoingWebhook,
     OutgoingWebhookFormat,
@@ -17,17 +21,17 @@ from tests.helpers import generate_token, generate_uuid
 
 
 @pytest.fixture(scope='session')
-def make_event_tourney():
+def make_basic_tourney():
     def _wrapper(
         *,
         title: str | None = None,
-    ) -> EventTourney:
+    ) -> BasicTourney:
         tourney_id = TourneyID(generate_uuid())
 
         if title is None:
             title = generate_token()
 
-        return EventTourney(
+        return BasicTourney(
             id=tourney_id,
             title=title,
         )
