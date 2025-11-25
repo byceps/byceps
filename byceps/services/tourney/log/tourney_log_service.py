@@ -6,11 +6,13 @@ byceps.services.tourney.log.tourney_log_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.services.tourney.events import TourneyEvent
 from byceps.services.tourney.models import Tourney
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
+from byceps.util.result import Err, Ok, Result
 
-from . import tourney_log_repository
+from . import tourney_log_repository, tourney_log_serialization_service
 from .dbmodels import DbTourneyLogEntry
 from .models import TourneyLogEntry
 
@@ -57,3 +59,20 @@ def _db_entity_to_entry(
         initiator=user_service._db_entity_to_user(db_initiator),
         data=db_entry.data.copy(),
     )
+
+
+def get_events_for_tourney(tourney: Tourney) -> Result[list[TourneyEvent], str]:
+    """Return the events for that tourney."""
+    entries = get_entries_for_tourney(tourney)
+
+    events = []
+    for entry in entries:
+        match tourney_log_serialization_service.deserialize_tourney_event(
+            entry
+        ):
+            case Ok(event):
+                events.append(event)
+            case Err(e):
+                return Err(e)
+
+    return Ok(events)
