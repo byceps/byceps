@@ -50,6 +50,32 @@ def serialize_tourney_event(
             return Err(f'Could not serialize event: {event!r}')
 
 
+def deserialize_tourney_event(
+    log_entry: TourneyLogEntry,
+) -> Result[TourneyEvent, str]:
+    match log_entry.event_type:
+        case 'tourney-created':
+            return Ok(deserialize_tourney_created_event(log_entry))
+        case 'tourney-registration-opened':
+            return Ok(deserialize_tourney_registration_opened_event(log_entry))
+        case 'tourney-registration-closed':
+            return Ok(deserialize_tourney_registration_closed_event(log_entry))
+        case 'tourney-started':
+            return Ok(deserialize_tourney_started_event(log_entry))
+        case 'tourney-paused':
+            return Ok(deserialize_tourney_paused_event(log_entry))
+        case 'tourney-continued':
+            return Ok(deserialize_tourney_continued_event(log_entry))
+        case 'tourney-canceled':
+            return Ok(deserialize_tourney_canceled_event(log_entry))
+        case 'tourney-finished':
+            return Ok(deserialize_tourney_finished_event(log_entry))
+        case _:
+            return Err(
+                f'Could not deserialize event type from log entry: {log_entry!r}'
+            )
+
+
 def serialize_tourney_created_event(
     event: TourneyCreatedEvent,
 ) -> TourneyLogEntry:
@@ -62,6 +88,16 @@ def serialize_tourney_created_event(
         tourney=event.tourney,
         initiator=event.initiator,
         data={},
+    )
+
+
+def deserialize_tourney_created_event(
+    log_entry: TourneyLogEntry,
+) -> TourneyCreatedEvent:
+    return TourneyCreatedEvent(
+        occurred_at=log_entry.occurred_at,
+        initiator=log_entry.initiator,
+        tourney=log_entry.tourney,
     )
 
 
@@ -80,6 +116,16 @@ def serialize_tourney_registration_opened_event(
     )
 
 
+def deserialize_tourney_registration_opened_event(
+    log_entry: TourneyLogEntry,
+) -> TourneyRegistrationOpenedEvent:
+    return TourneyRegistrationOpenedEvent(
+        occurred_at=log_entry.occurred_at,
+        initiator=log_entry.initiator,
+        tourney=log_entry.tourney,
+    )
+
+
 def serialize_tourney_registration_closed_event(
     event: TourneyRegistrationClosedEvent,
 ) -> TourneyLogEntry:
@@ -92,6 +138,16 @@ def serialize_tourney_registration_closed_event(
         tourney=event.tourney,
         initiator=event.initiator,
         data={},
+    )
+
+
+def deserialize_tourney_registration_closed_event(
+    log_entry: TourneyLogEntry,
+) -> TourneyRegistrationClosedEvent:
+    return TourneyRegistrationClosedEvent(
+        occurred_at=log_entry.occurred_at,
+        initiator=log_entry.initiator,
+        tourney=log_entry.tourney,
     )
 
 
@@ -110,6 +166,16 @@ def serialize_tourney_started_event(
     )
 
 
+def deserialize_tourney_started_event(
+    log_entry: TourneyLogEntry,
+) -> TourneyStartedEvent:
+    return TourneyStartedEvent(
+        occurred_at=log_entry.occurred_at,
+        initiator=log_entry.initiator,
+        tourney=log_entry.tourney,
+    )
+
+
 def serialize_tourney_paused_event(
     event: TourneyPausedEvent,
 ) -> TourneyLogEntry:
@@ -122,6 +188,16 @@ def serialize_tourney_paused_event(
         tourney=event.tourney,
         initiator=event.initiator,
         data={},
+    )
+
+
+def deserialize_tourney_paused_event(
+    log_entry: TourneyLogEntry,
+) -> TourneyPausedEvent:
+    return TourneyPausedEvent(
+        occurred_at=log_entry.occurred_at,
+        initiator=log_entry.initiator,
+        tourney=log_entry.tourney,
     )
 
 
@@ -140,6 +216,16 @@ def serialize_tourney_continued_event(
     )
 
 
+def deserialize_tourney_continued_event(
+    log_entry: TourneyLogEntry,
+) -> TourneyContinuedEvent:
+    return TourneyContinuedEvent(
+        occurred_at=log_entry.occurred_at,
+        initiator=log_entry.initiator,
+        tourney=log_entry.tourney,
+    )
+
+
 def serialize_tourney_canceled_event(
     event: TourneyCanceledEvent,
 ) -> TourneyLogEntry:
@@ -155,6 +241,16 @@ def serialize_tourney_canceled_event(
     )
 
 
+def deserialize_tourney_canceled_event(
+    log_entry: TourneyLogEntry,
+) -> TourneyCanceledEvent:
+    return TourneyCanceledEvent(
+        occurred_at=log_entry.occurred_at,
+        initiator=log_entry.initiator,
+        tourney=log_entry.tourney,
+    )
+
+
 def serialize_tourney_finished_event(
     event: TourneyFinishedEvent,
 ) -> TourneyLogEntry:
@@ -167,4 +263,14 @@ def serialize_tourney_finished_event(
         tourney=event.tourney,
         initiator=event.initiator,
         data={},
+    )
+
+
+def deserialize_tourney_finished_event(
+    log_entry: TourneyLogEntry,
+) -> TourneyFinishedEvent:
+    return TourneyFinishedEvent(
+        occurred_at=log_entry.occurred_at,
+        initiator=log_entry.initiator,
+        tourney=log_entry.tourney,
     )
