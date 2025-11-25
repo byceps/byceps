@@ -62,6 +62,7 @@ def create_tourney(
 
 def _persist_tourney_creation(tourney: Tourney) -> None:
     db_tourney = DbTourney(
+        tourney.id,
         tourney.party_id,
         tourney.title,
         tourney.category_id,
