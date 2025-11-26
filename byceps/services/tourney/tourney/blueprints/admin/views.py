@@ -41,6 +41,21 @@ def index(party_id):
     }
 
 
+@blueprint.get('/tourneys/<tourney_id>')
+@permission_required('tourney.view')
+@templated
+def view(tourney_id):
+    """Show a tourney."""
+    tourney = _get_tourney_or_404(tourney_id)
+
+    party = party_service.get_party(tourney.party_id)
+
+    return {
+        'party': party,
+        'tourney': tourney,
+    }
+
+
 @blueprint.get('/for_party/<party_id>/create')
 @permission_required('tourney.administrate')
 @templated
@@ -97,7 +112,7 @@ def create(party_id):
         gettext('Tourney "%(title)s" has been created.', title=tourney.title)
     )
 
-    return redirect_to('.index', party_id=tourney.party_id)
+    return redirect_to('.view', tourney_id=tourney.id)
 
 
 @blueprint.get('/tourneys/<tourney_id>/update')
@@ -159,7 +174,7 @@ def update(tourney_id):
         gettext('Tourney "%(title)s" has been updated.', title=tourney.title)
     )
 
-    return redirect_to('.index', party_id=tourney.party_id)
+    return redirect_to('.view', tourney_id=tourney.id)
 
 
 def _get_party_or_404(party_id) -> Party:

@@ -38,8 +38,10 @@
     {%- for tourney in tourneys|sort(attribute='title') %}
       <tr>
         <td>
-          <strong>{{ tourney.title }}</strong><br>
-          <small>{{ tourney.subtitle|fallback('') }}</small>
+          <a href="{{ url_for('.view', tourney_id=tourney.id) }}" class="disguised">
+            <strong>{{ tourney.title }}</strong><br>
+            <small>{{ tourney.subtitle|fallback('') }}</small>
+          </a>
         </td>
         <td>{{ tourney.category.title }}</td>
         <td class="centered">{{ tourney.team_size }}</td>
