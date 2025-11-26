@@ -14,10 +14,12 @@ from flask_babel import gettext, to_user_timezone, to_utc
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
 from byceps.services.tourney import tourney_category_service, tourney_service
+from byceps.services.tourney.log import tourney_log_service
 from byceps.services.tourney.models import TourneyWithCategory
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm, UpdateForm
@@ -50,9 +52,16 @@ def view(tourney_id):
 
     party = party_service.get_party(tourney.party_id)
 
+    match tourney_log_service.get_events_for_tourney(tourney):
+        case Ok(events):
+            pass
+        case Err(_):
+            events = []
+
     return {
         'party': party,
         'tourney': tourney,
+        'events': events,
     }
 
 
