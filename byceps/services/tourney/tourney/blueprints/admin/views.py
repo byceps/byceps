@@ -12,7 +12,9 @@ from flask import abort, g, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
 from byceps.services.party import party_service
+from byceps.services.party.models import Party
 from byceps.services.tourney import tourney_category_service, tourney_service
+from byceps.services.tourney.models import Tourney
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
@@ -160,7 +162,7 @@ def update(tourney_id):
     return redirect_to('.index', party_id=tourney.party_id)
 
 
-def _get_party_or_404(party_id):
+def _get_party_or_404(party_id) -> Party:
     party = party_service.find_party(party_id)
 
     if party is None:
@@ -169,7 +171,7 @@ def _get_party_or_404(party_id):
     return party
 
 
-def _get_tourney_or_404(tourney_id):
+def _get_tourney_or_404(tourney_id) -> Tourney:
     tourney = tourney_service.find_tourney(tourney_id)
 
     if tourney is None:
