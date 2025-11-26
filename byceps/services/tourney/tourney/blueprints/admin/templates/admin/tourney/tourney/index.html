@@ -31,7 +31,6 @@
         <th colspan="3">{{ _('Participants') }}</th>
         <th>{{ _('Start') }}</th>
         <th>{{ _('Status') }}</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -53,13 +52,6 @@
         {%- if tourney.registration_open %}
           {{ render_tag(_('Registration open'), class='color-info') }}
         {%- endif %}
-        </td>
-        <td>
-          {%- if has_current_user_permission('tourney.administrate') %}
-          <div class="button-row is-compact">
-            <a class="button is-compact" href="{{ url_for('.update_form', tourney_id=tourney.id) }}">{{ render_icon('edit', title=_('Edit tourney')) }}</a>
-          </div>
-          {%- endif %}
         </td>
       </tr>
     {%- endfor %}
