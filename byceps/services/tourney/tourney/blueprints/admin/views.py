@@ -105,7 +105,7 @@ def update_form(tourney_id, erroneous_form=None):
     """Show form to update the tourney."""
     tourney = _get_tourney_or_404(tourney_id)
 
-    party = party_service.find_party(tourney.party_id)
+    party = party_service.get_party(tourney.party_id)
 
     data = dataclasses.asdict(tourney)
     starts_at_local = to_user_timezone(tourney.starts_at)
