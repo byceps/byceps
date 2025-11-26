@@ -14,12 +14,17 @@ from byceps.database import db
 from byceps.services.party.models import Party, PartyID
 from byceps.services.tourney.log import tourney_log_service
 from byceps.services.user.models.user import User
+from byceps.util.result import Err, Ok, Result
 
 from . import tourney_category_service, tourney_domain_service
 from .dbmodels.participant import DbParticipant
 from .dbmodels.tourney import DbTourney
 from .dbmodels.tourney_category import DbTourneyCategory
-from .events import TourneyCreatedEvent
+from .events import (
+    TourneyCreatedEvent,
+    TourneyRegistrationClosedEvent,
+    TourneyRegistrationOpenedEvent,
+)
 from .models import (
     Tourney,
     TourneyCategory,
@@ -89,7 +94,6 @@ def update_tourney(
     category_id: TourneyCategoryID,
     max_participant_count: int,
     starts_at: datetime,
-    registration_open: bool,
 ) -> Tourney:
     """Update tourney."""
     db_tourney = _get_db_tourney(tourney_id)
@@ -100,11 +104,52 @@ def update_tourney(
     db_tourney.category_id = category_id
     db_tourney.max_participant_count = max_participant_count
     db_tourney.starts_at = starts_at
-    db_tourney.registration_open = registration_open
 
     db.session.commit()
 
     return _db_entity_to_tourney(db_tourney)
+
+
+def open_registration(
+    tourney: Tourney, initiator: User
+) -> Result[tuple[Tourney, TourneyRegistrationOpenedEvent], str]:
+    """Open the registration for a tourney."""
+    db_tourney = _get_db_tourney(tourney.id)
+
+    result = tourney_domain_service.open_registration(tourney, initiator)
+    match result:
+        case Err(e):
+            return Err(e)
+
+    updated_tourney, event, log_entry = result.unwrap()
+
+    db_tourney.registration_open = updated_tourney.registration_open
+    db.session.commit()
+
+    tourney_log_service.persist_entry(log_entry)
+
+    return Ok((updated_tourney, event))
+
+
+def close_registration(
+    tourney: Tourney, initiator: User
+) -> Result[tuple[Tourney, TourneyRegistrationClosedEvent], str]:
+    """Close the registration for a tourney."""
+    db_tourney = _get_db_tourney(tourney.id)
+
+    result = tourney_domain_service.close_registration(tourney, initiator)
+    match result:
+        case Err(e):
+            return Err(e)
+
+    updated_tourney, event, log_entry = result.unwrap()
+
+    db_tourney.registration_open = updated_tourney.registration_open
+    db.session.commit()
+
+    tourney_log_service.persist_entry(log_entry)
+
+    return Ok((updated_tourney, event))
 
 
 def delete_tourney(tourney_id: TourneyID) -> None:
