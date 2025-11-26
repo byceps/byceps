@@ -14,7 +14,7 @@ from flask_babel import gettext, to_user_timezone, to_utc
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
 from byceps.services.tourney import tourney_category_service, tourney_service
-from byceps.services.tourney.models import Tourney
+from byceps.services.tourney.models import TourneyWithCategory
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
@@ -171,8 +171,8 @@ def _get_party_or_404(party_id) -> Party:
     return party
 
 
-def _get_tourney_or_404(tourney_id) -> Tourney:
-    tourney = tourney_service.find_tourney(tourney_id)
+def _get_tourney_or_404(tourney_id) -> TourneyWithCategory:
+    tourney = tourney_service.find_tourney_with_category(tourney_id)
 
     if tourney is None:
         abort(404)

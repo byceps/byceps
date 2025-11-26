@@ -151,6 +151,38 @@ def _get_db_tourney(tourney_id: TourneyID) -> DbTourney:
     return db_tourney
 
 
+def find_tourney_with_category(
+    tourney_id: TourneyID,
+) -> TourneyWithCategory | None:
+    """Return the tourney with that id, or `None` if not found."""
+    row = _find_db_tourney_with_category(tourney_id)
+
+    if row is None:
+        return None
+
+    db_tourney, db_category, participant_count = row
+
+    return _to_tourney_with_category(db_tourney, db_category, participant_count)
+
+
+def _find_db_tourney_with_category(
+    tourney_id: TourneyID,
+) -> tuple[DbTourney, DbTourneyCategory, int] | None:
+    return (
+        db.session.execute(
+            select(
+                DbTourney, DbTourneyCategory, db.func.count(DbParticipant.id)
+            )
+            .join(DbTourneyCategory)
+            .join(DbParticipant, isouter=True)
+            .filter(DbTourney.id == tourney_id)
+            .group_by(DbTourney.id, DbTourneyCategory)
+        )
+        .tuples()
+        .one_or_none()
+    )
+
+
 def get_tourneys_for_party(party_id: PartyID) -> list[TourneyWithCategory]:
     """Return the tourneys for that party."""
     rows = db.session.execute(
