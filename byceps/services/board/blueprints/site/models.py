@@ -9,7 +9,10 @@ byceps.services.board.blueprints.site.models
 from dataclasses import dataclass
 from typing import Self
 
-from byceps.services.board.models import BoardCategoryWithLastUpdate
+from byceps.services.board.models import (
+    BoardCategoryWithLastUpdate,
+    ReactionKind,
+)
 from byceps.services.user.models.user import User, UserID
 from byceps.services.user_badge.models import Badge
 
@@ -71,3 +74,16 @@ class Creator(User):
             badges=badges,
             ticket=ticket,
         )
+
+
+@dataclass(frozen=True, kw_only=True)
+class ReactionKindPresentation:
+    kind: ReactionKind
+    symbol: str
+
+
+def build_reaction_kind_presentation(
+    kind_str: str, symbol: str
+) -> ReactionKindPresentation:
+    kind = ReactionKind(kind_str)
+    return ReactionKindPresentation(kind=kind, symbol=symbol)

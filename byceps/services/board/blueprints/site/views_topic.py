@@ -21,7 +21,7 @@ from byceps.services.board import (
     board_topic_query_service,
     signals as board_signals,
 )
-from byceps.services.board.models import ReactionKind, TopicID
+from byceps.services.board.models import TopicID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.site.blueprints.site.navigation import (
     subnavigation_for_view,
@@ -38,22 +38,15 @@ from byceps.util.views import (
 from . import _helpers as h, service
 from .blueprint import blueprint
 from .forms import PostingCreateForm, TopicCreateForm, TopicUpdateForm
+from .models import build_reaction_kind_presentation
 
 
-REACTION_KINDS_IN_ORDER = [
-    ReactionKind('thumbsup'),
-    ReactionKind('thumbsdown'),
-    ReactionKind('heart'),
-    ReactionKind('amused'),
+_REACTION_KIND_PRESENTATIONS_IN_ORDER = [
+    build_reaction_kind_presentation('thumbsup', '👍'),
+    build_reaction_kind_presentation('thumbsdown', '👎'),
+    build_reaction_kind_presentation('heart', '❤️'),
+    build_reaction_kind_presentation('amused', '😄'),
 ]
-
-REACTION_KINDS_TO_SYMBOLS = {
-    # in alphabetical order
-    ReactionKind('amused'): '😄',
-    ReactionKind('heart'): '❤️',
-    ReactionKind('thumbsdown'): '👎',
-    ReactionKind('thumbsup'): '👍',
-}
 
 
 @blueprint.get('/topics', defaults={'page': 1})
@@ -151,8 +144,7 @@ def topic_view(topic_id, page):
         'may_topic_be_updated_by_current_user': service.may_topic_be_updated_by_current_user,
         'may_posting_be_updated_by_current_user': service.may_posting_be_updated_by_current_user,
         'is_current_user_orga': is_current_user_orga,
-        'reaction_kinds_in_order': REACTION_KINDS_IN_ORDER,
-        'reaction_kinds_to_symbols': REACTION_KINDS_TO_SYMBOLS,
+        'reaction_kind_presentations_in_order': _REACTION_KIND_PRESENTATIONS_IN_ORDER,
     }
 
     if is_last_page:
