@@ -8,15 +8,12 @@ byceps.services.shop.order.order_command_service
 
 from datetime import datetime
 from typing import Any
-from uuid import UUID
 
 import structlog
 
 from byceps.database import db
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductType
-from byceps.services.ticketing.models.ticket import TicketCategoryID
-from byceps.services.ticketing import ticket_category_service
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
@@ -296,39 +293,32 @@ def _execute_actions_on_payment(
             case ProductType.ticket:
                 product = product_service.get_product(line_item.product_id)
 
-                ticket_category_id = TicketCategoryID(
-                    UUID(str(product.type_params['ticket_category_id']))
-                )
-                ticket_category = ticket_category_service.get_category(
-                    ticket_category_id
-                )
+                ticket_category_id = product.type_params['ticket_category_id']
 
-                ticket_actions.create_tickets(
+                ticket_actions.on_payment(
                     order,
                     line_item,
-                    ticket_category,
                     initiator,
+                    {
+                        'category_id': ticket_category_id,
+                    },
                 )
             case ProductType.ticket_bundle:
                 product = product_service.get_product(line_item.product_id)
 
-                ticket_category_id = TicketCategoryID(
-                    UUID(str(product.type_params['ticket_category_id']))
-                )
-                ticket_category = ticket_category_service.get_category(
-                    ticket_category_id
-                )
-
+                ticket_category_id = product.type_params['ticket_category_id']
                 ticket_quantity_per_bundle = int(
                     product.type_params['ticket_quantity']
                 )
 
-                ticket_bundle_actions.create_ticket_bundles(
+                ticket_bundle_actions.on_payment(
                     order,
                     line_item,
-                    ticket_category,
-                    ticket_quantity_per_bundle,
                     initiator,
+                    {
+                        'category_id': ticket_category_id,
+                        'ticket_quantity': ticket_quantity_per_bundle,
+                    },
                 )
 
     # based on order action registered for product number
@@ -342,10 +332,12 @@ def _execute_actions_on_cancellation_after_payment(
     for line_item in order.line_items:
         match line_item.product_type:
             case ProductType.ticket:
-                ticket_actions.revoke_tickets(order, line_item, initiator)
+                ticket_actions.on_cancellation_after_payment(
+                    order, line_item, initiator, {}
+                )
             case ProductType.ticket_bundle:
-                match ticket_bundle_actions.revoke_ticket_bundles(
-                    order, line_item, initiator
+                match ticket_bundle_actions.on_cancellation_after_payment(
+                    order, line_item, initiator, {}
                 ):
                     case Err(e):
                         return Err(OrderActionFailedError(e))
