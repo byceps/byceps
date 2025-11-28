@@ -112,13 +112,13 @@ def _db_entity_to_action(db_action: DbOrderAction) -> Action:
 # execution
 
 
-def execute_creation_actions(
+def execute_actions_on_payment(
     order: PaidOrder, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     """Execute item creation actions for this order."""
     for line_item, actions in _get_line_items_with_actions(order):
         for action in actions:
-            match _execute_creation_action(
+            match _execute_action_on_payment(
                 action, order, PaymentState.paid, line_item, initiator
             ):
                 case Err(e):
@@ -127,13 +127,13 @@ def execute_creation_actions(
     return Ok(None)
 
 
-def execute_revocation_actions(
+def execute_actions_on_cancellation_after_payment(
     order: Order, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     """Execute item revocation actions for this order."""
     for line_item, actions in _get_line_items_with_actions(order):
         for action in actions:
-            match _execute_revocation_action(
+            match _execute_action_on_cancellation_after_payment(
                 action,
                 order,
                 PaymentState.canceled_after_paid,
@@ -173,7 +173,7 @@ def _get_actions(product_ids: set[ProductID]) -> list[Action]:
     return [_db_entity_to_action(db_action) for db_action in db_actions]
 
 
-def _execute_creation_action(
+def _execute_action_on_payment(
     action: Action,
     order: PaidOrder,
     payment_state: PaymentState,
@@ -209,7 +209,7 @@ def _execute_creation_action(
             return Err(e)
 
 
-def _execute_revocation_action(
+def _execute_action_on_cancellation_after_payment(
     action: Action,
     order: Order,
     payment_state: PaymentState,

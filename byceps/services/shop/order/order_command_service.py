@@ -201,7 +201,9 @@ def cancel_order(
     canceled_order = to_order(db_order, orderer_user)
 
     if payment_state_to == PaymentState.canceled_after_paid:
-        match _execute_product_revocation_actions(canceled_order, initiator):
+        match _execute_actions_on_cancellation_after_payment(
+            canceled_order, initiator
+        ):
             case Err(e):
                 return Err(e)
 
@@ -265,7 +267,7 @@ def mark_order_as_paid(
 
     paid_order = to_paid_order(db_order, orderer_user)
 
-    match _execute_product_creation_actions(paid_order, initiator):
+    match _execute_actions_on_payment(paid_order, initiator):
         case Err(e):
             return Err(e)
 
@@ -285,7 +287,7 @@ def _update_payment_state(
     db_order.payment_state_updated_by_id = initiator.id
 
 
-def _execute_product_creation_actions(
+def _execute_actions_on_payment(
     order: PaidOrder, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     # based on product type
@@ -330,10 +332,10 @@ def _execute_product_creation_actions(
                 )
 
     # based on order action registered for product number
-    return order_action_service.execute_creation_actions(order, initiator)
+    return order_action_service.execute_actions_on_payment(order, initiator)
 
 
-def _execute_product_revocation_actions(
+def _execute_actions_on_cancellation_after_payment(
     order: Order, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     # based on product type
@@ -349,7 +351,9 @@ def _execute_product_revocation_actions(
                         return Err(OrderActionFailedError(e))
 
     # based on order action registered for product number
-    return order_action_service.execute_revocation_actions(order, initiator)
+    return order_action_service.execute_actions_on_cancellation_after_payment(
+        order, initiator
+    )
 
 
 def update_line_item_processing_result(
