@@ -116,7 +116,6 @@
         {%- if has_current_user_permission('whereabouts.administrate') %}
         <div class="button-row is-compact button-row--nowrap is-right-aligned">
           <a class="button is-compact" href="{{ url_for('.client_update_form', client_id=client.id) }}" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
-          <a class="button is-compact color-danger" href="{{ url_for('.client_delete', client_id=client.id) }}" data-action="delete-client" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a>
         </div>
         {%- endif %}
       </td>
@@ -165,7 +164,6 @@
     post_on_click_then_reload('[data-action="update-client-registration-status"]');
     confirmed_post_on_click_then_reload('[data-action="approve-client-candidate"]', '{{ _('Approve client candidate?') }}');
     confirmed_delete_on_click_then_reload('[data-action="delete-client-candidate"]', '{{ _('Delete client candidate?') }}');
-    confirmed_delete_on_click_then_reload('[data-action="delete-client"]', '{{ _('Delete client?') }}');
   });
 </script>
 {% endblock %}
