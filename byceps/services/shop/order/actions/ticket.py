@@ -50,7 +50,7 @@ def on_payment(
     ticket_category_id = parameters['category_id']
     ticket_category = ticket_category_service.get_category(ticket_category_id)
 
-    create_tickets(order, line_item, ticket_category, initiator)
+    _create_tickets(order, line_item, ticket_category, initiator)
 
     return Ok(None)
 
@@ -62,12 +62,12 @@ def on_cancellation_after_payment(
     parameters: ActionParameters,
 ) -> Result[None, OrderActionFailedError]:
     """Revoke all tickets in the order."""
-    revoke_tickets(order, line_item, initiator)
+    _revoke_tickets(order, line_item, initiator)
 
     return Ok(None)
 
 
-def create_tickets(
+def _create_tickets(
     order: PaidOrder,
     line_item: LineItem,
     ticket_category: TicketCategory,
@@ -116,7 +116,7 @@ def _create_creation_order_log_entries(
     order_log_service.persist_entries(log_entries)
 
 
-def revoke_tickets(order: Order, line_item: LineItem, initiator: User) -> None:
+def _revoke_tickets(order: Order, line_item: LineItem, initiator: User) -> None:
     """Revoke all tickets related to the line item."""
     ticket_id_strs = line_item.processing_result['ticket_ids']
     ticket_ids = {

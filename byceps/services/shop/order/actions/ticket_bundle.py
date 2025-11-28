@@ -49,7 +49,7 @@ def on_payment(
 
     ticket_quantity_per_bundle = parameters['ticket_quantity']
 
-    create_ticket_bundles(
+    _create_ticket_bundles(
         order,
         line_item,
         ticket_category,
@@ -67,14 +67,14 @@ def on_cancellation_after_payment(
     parameters: ActionParameters,
 ) -> Result[None, OrderActionFailedError]:
     """Revoke all ticket bundles in this order."""
-    match revoke_ticket_bundles(order, line_item, initiator):
+    match _revoke_ticket_bundles(order, line_item, initiator):
         case Ok(_):
             return Ok(None)
         case Err(e):
             return Err(OrderActionFailedError(e))
 
 
-def create_ticket_bundles(
+def _create_ticket_bundles(
     order: PaidOrder,
     line_item: LineItem,
     ticket_category: TicketCategory,
@@ -132,7 +132,7 @@ def _create_creation_order_log_entry(
     order_log_service.persist_entry(log_entry)
 
 
-def revoke_ticket_bundles(
+def _revoke_ticket_bundles(
     order: Order, line_item: LineItem, initiator: User
 ) -> Result[None, SeatingError]:
     """Revoke all ticket bundles related to the line item."""
