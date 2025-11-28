@@ -197,12 +197,19 @@ def cancel_order(
 
     canceled_order = to_order(db_order, orderer_user)
 
-    if payment_state_to == PaymentState.canceled_after_paid:
-        match _execute_actions_on_cancellation_after_payment(
-            canceled_order, initiator
-        ):
-            case Err(e):
-                return Err(e)
+    match payment_state_to:
+        case PaymentState.canceled_before_paid:
+            match _execute_actions_on_cancellation_before_payment(
+                canceled_order, initiator
+            ):
+                case Err(e):
+                    return Err(e)
+        case PaymentState.canceled_after_paid:
+            match _execute_actions_on_cancellation_after_payment(
+                canceled_order, initiator
+            ):
+                case Err(e):
+                    return Err(e)
 
     log.info('Order canceled', shop_order_canceled_event=event)
 
@@ -323,6 +330,21 @@ def _execute_actions_on_payment(
 
     # based on order action registered for product number
     return order_action_service.execute_actions_on_payment(order, initiator)
+
+
+def _execute_actions_on_cancellation_before_payment(
+    order: Order, initiator: User
+) -> Result[None, OrderActionFailedError]:
+    # based on product type
+    for line_item in order.line_items:
+        match line_item.product_type:
+            case _:
+                pass  # No actions use this, yet.
+
+    # based on order action registered for product number
+    return order_action_service.execute_actions_on_cancellation_before_payment(
+        order, initiator
+    )
 
 
 def _execute_actions_on_cancellation_after_payment(

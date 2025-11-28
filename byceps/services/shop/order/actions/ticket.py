@@ -55,6 +55,15 @@ def on_payment(
     return Ok(None)
 
 
+def on_cancellation_before_payment(
+    order: Order,
+    line_item: LineItem,
+    initiator: User,
+    parameters: ActionParameters,
+) -> Result[None, OrderActionFailedError]:
+    return Ok(None)
+
+
 def on_cancellation_after_payment(
     order: Order,
     line_item: LineItem,

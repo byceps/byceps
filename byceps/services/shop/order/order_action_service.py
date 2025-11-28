@@ -35,14 +35,17 @@ log = structlog.get_logger()
 PROCEDURES_BY_NAME: dict[str, ActionProcedure] = {
     'award_badge': ActionProcedure(
         on_payment=user_badge_actions.on_payment,
+        on_cancellation_before_payment=user_badge_actions.on_cancellation_before_payment,
         on_cancellation_after_payment=user_badge_actions.on_cancellation_after_payment,
     ),
     'create_ticket_bundles': ActionProcedure(
         on_payment=ticket_bundle_actions.on_payment,
+        on_cancellation_before_payment=ticket_bundle_actions.on_cancellation_before_payment,
         on_cancellation_after_payment=ticket_bundle_actions.on_cancellation_after_payment,
     ),
     'create_tickets': ActionProcedure(
         on_payment=ticket_actions.on_payment,
+        on_cancellation_before_payment=ticket_actions.on_cancellation_before_payment,
         on_cancellation_after_payment=ticket_actions.on_cancellation_after_payment,
     ),
 }
@@ -127,6 +130,25 @@ def execute_actions_on_payment(
     return Ok(None)
 
 
+def execute_actions_on_cancellation_before_payment(
+    order: Order, initiator: User
+) -> Result[None, OrderActionFailedError]:
+    """Execute item revocation actions for this order."""
+    for line_item, actions in _get_line_items_with_actions(order):
+        for action in actions:
+            match _execute_action_on_cancellation_before_payment(
+                action,
+                order,
+                PaymentState.canceled_after_paid,
+                line_item,
+                initiator,
+            ):
+                case Err(e):
+                    return Err(e)
+
+    return Ok(None)
+
+
 def execute_actions_on_cancellation_after_payment(
     order: Order, initiator: User
 ) -> Result[None, OrderActionFailedError]:
@@ -183,6 +205,42 @@ def _execute_action_on_payment(
     match _get_procedure(action.procedure_name, action.product_id):
         case Ok(procedure):
             match procedure.on_payment(
+                order, line_item, initiator, action.parameters
+            ):
+                case Ok(_):
+                    return Ok(None)
+                case Err(e):
+                    log.error(
+                        'Order action execution failed',
+                        order_id=str(order.id),
+                        order_number=order.order_number,
+                        payment_state=payment_state.name,
+                        initiator=initiator.screen_name,
+                        error_details=e.details,
+                    )
+                    return Err(e)
+        case Err(e):
+            log.error(
+                'Unknown order action configured',
+                order_id=str(order.id),
+                order_number=order.order_number,
+                payment_state=payment_state.name,
+                initiator=initiator.screen_name,
+                error_details=e.details,
+            )
+            return Err(e)
+
+
+def _execute_action_on_cancellation_before_payment(
+    action: Action,
+    order: Order,
+    payment_state: PaymentState,
+    line_item: LineItem,
+    initiator: User,
+) -> Result[None, OrderActionFailedError]:
+    match _get_procedure(action.procedure_name, action.product_id):
+        case Ok(procedure):
+            match procedure.on_cancellation_before_payment(
                 order, line_item, initiator, action.parameters
             ):
                 case Ok(_):

@@ -36,6 +36,10 @@ class ActionProcedure:
         [PaidOrder, LineItem, User, ActionParameters],
         Result[None, OrderActionFailedError],
     ]
+    on_cancellation_before_payment: Callable[
+        [Order, LineItem, User, ActionParameters],
+        Result[None, OrderActionFailedError],
+    ]
     on_cancellation_after_payment: Callable[
         [Order, LineItem, User, ActionParameters],
         Result[None, OrderActionFailedError],
