@@ -1,3 +1,8 @@
+{% macro render_reaction_kind_symbol(kind) -%}
+<span class="symbol">{{ reaction_kinds_to_symbols[kind] }}</span>
+{%- endmacro %}
+
+
     {%- with may_react = g.user.authenticated and g.user.id != posting.creator_id %}
       {%- with reaction_tag = 'button' if may_react else 'span' %}
       <div class="reactions mt">
@@ -14,7 +19,7 @@
           data-url-remove="{{ url_for('.remove_reaction', posting_id=posting.id, kind=kind) }}"
           {%- endif %}
           title="{{ reactions|map(attribute='screen_name')|select|join(', ') }}"
-          ><span class="symbol">{{ reaction_kinds_to_symbols[kind] }}</span></{{ reaction_tag }}>
+          >{{ render_reaction_kind_symbol(kind) }}</{{ reaction_tag }}>
               {%- endwith %}
             {%- endif %}
           {%- endwith %}
