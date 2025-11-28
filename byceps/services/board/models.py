@@ -27,6 +27,9 @@ PostingID = NewType('PostingID', UUID)
 TopicID = NewType('TopicID', UUID)
 
 
+ReactionKind = NewType('ReactionKind', str)
+
+
 @dataclass(frozen=True, kw_only=True)
 class Board:
     id: BoardID
@@ -83,7 +86,7 @@ class PostingReaction:
     created_at: datetime
     posting_id: PostingID
     user_id: UserID
-    kind: str
+    kind: ReactionKind
 
 
 @dataclass(frozen=True, kw_only=True)

@@ -11,14 +11,16 @@ from byceps.services.board.errors import (
     ReactionDoesNotExistError,
     ReactionExistsError,
 )
-from byceps.services.board.models import PostingID
+from byceps.services.board.models import PostingID, ReactionKind
 from byceps.services.user.models.user import UserID
 from byceps.util.result import Ok
 
 from tests.helpers import generate_uuid
 
 
-def test_add_reaction_success(posting_id, posting_creator_id, user, kind):
+def test_add_reaction_success(
+    posting_id, posting_creator_id, user, kind: ReactionKind
+):
     reaction_exists = False
 
     result = board_posting_domain_service.add_reaction(
@@ -35,7 +37,9 @@ def test_add_reaction_success(posting_id, posting_creator_id, user, kind):
     assert actual.kind == kind
 
 
-def test_add_reaction_reaction_denied_error(posting_id, user, kind):
+def test_add_reaction_reaction_denied_error(
+    posting_id, user, kind: ReactionKind
+):
     posting_creator_id = user.id
     reaction_exists = False
 
@@ -48,7 +52,7 @@ def test_add_reaction_reaction_denied_error(posting_id, user, kind):
 
 
 def test_add_reaction_reaction_exists_error(
-    posting_id, posting_creator_id, user, kind
+    posting_id, posting_creator_id, user, kind: ReactionKind
 ):
     reaction_exists = True
 
@@ -60,7 +64,9 @@ def test_add_reaction_reaction_exists_error(
     assert isinstance(actual.unwrap_err(), ReactionExistsError)
 
 
-def test_remove_reaction_success(posting_id, posting_creator_id, user, kind):
+def test_remove_reaction_success(
+    posting_id, posting_creator_id, user, kind: ReactionKind
+):
     reaction_exists = True
 
     actual = board_posting_domain_service.remove_reaction(
@@ -70,7 +76,9 @@ def test_remove_reaction_success(posting_id, posting_creator_id, user, kind):
     assert actual == Ok(None)
 
 
-def test_remove_reaction_reaction_denied_error(posting_id, user, kind):
+def test_remove_reaction_reaction_denied_error(
+    posting_id, user, kind: ReactionKind
+):
     posting_creator_id = user.id
     reaction_exists = True
 
@@ -83,7 +91,7 @@ def test_remove_reaction_reaction_denied_error(posting_id, user, kind):
 
 
 def test_remove_reaction_reaction_does_not_exist_error(
-    posting_id, posting_creator_id, user, kind
+    posting_id, posting_creator_id, user, kind: ReactionKind
 ):
     reaction_exists = False
 
@@ -111,5 +119,5 @@ def user(make_user):
 
 
 @pytest.fixture(scope='module')
-def kind():
-    return 'heart'
+def kind() -> ReactionKind:
+    return ReactionKind('heart')

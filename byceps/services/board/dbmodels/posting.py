@@ -12,7 +12,7 @@ from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
-from byceps.services.board.models import PostingID, TopicID
+from byceps.services.board.models import PostingID, ReactionKind, TopicID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
@@ -119,7 +119,7 @@ class DbPostingReaction(db.Model):
     )
     user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
     user: Mapped[DbUser] = relationship(DbUser)
-    kind: Mapped[str] = mapped_column(db.UnicodeText)
+    kind: Mapped[ReactionKind] = mapped_column(db.UnicodeText)
 
     def __init__(
         self,
@@ -127,7 +127,7 @@ class DbPostingReaction(db.Model):
         created_at: datetime,
         posting_id: PostingID,
         user_id: UserID,
-        kind: str,
+        kind: ReactionKind,
     ) -> None:
         self.id = reaction_id
         self.created_at = created_at

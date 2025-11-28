@@ -17,14 +17,14 @@ from .errors import (
     ReactionDoesNotExistError,
     ReactionExistsError,
 )
-from .models import PostingID, PostingReaction
+from .models import PostingID, PostingReaction, ReactionKind
 
 
 def add_reaction(
     posting_id: PostingID,
     posting_creator_id: UserID,
     user: User,
-    kind: str,
+    kind: ReactionKind,
     reaction_exists: bool,
 ) -> Result[PostingReaction, ReactionDeniedError | ReactionExistsError]:
     """Add user reaction to the posting."""
@@ -52,7 +52,7 @@ def remove_reaction(
     posting_id: PostingID,
     posting_creator_id: UserID,
     user: User,
-    kind: str,
+    kind: ReactionKind,
     reaction_exists: bool,
 ) -> Result[None, ReactionDeniedError | ReactionDoesNotExistError]:
     """Remove user reaction from the posting."""

@@ -36,7 +36,7 @@ from .errors import (
     ReactionDoesNotExistError,
     ReactionExistsError,
 )
-from .models import PostingID, PostingReaction, TopicID
+from .models import PostingID, PostingReaction, ReactionKind, TopicID
 
 
 def create_posting(
@@ -177,7 +177,7 @@ def delete_posting(posting_id: PostingID) -> None:
 
 
 def add_reaction(
-    db_posting: DbPosting, user: User, kind: str
+    db_posting: DbPosting, user: User, kind: ReactionKind
 ) -> Result[PostingReaction, ReactionDeniedError | ReactionExistsError]:
     """Add user reaction to the posting."""
     reaction_exists = _is_reaction_existing(db_posting.id, user.id, kind)
@@ -205,7 +205,7 @@ def add_reaction(
 
 
 def remove_reaction(
-    db_posting: DbPosting, user: User, kind: str
+    db_posting: DbPosting, user: User, kind: ReactionKind
 ) -> Result[None, ReactionDeniedError | ReactionDoesNotExistError]:
     """Remove user reaction from the posting."""
     reaction_exists = _is_reaction_existing(db_posting.id, user.id, kind)

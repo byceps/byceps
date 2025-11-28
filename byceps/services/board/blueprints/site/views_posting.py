@@ -21,6 +21,7 @@ from byceps.services.board.errors import (
     ReactionDeniedError,
     ReactionExistsError,
 )
+from byceps.services.board.models import ReactionKind
 from byceps.services.site.blueprints.site.navigation import (
     subnavigation_for_view,
 )
@@ -301,7 +302,7 @@ def add_reaction(posting_id, kind):
     db_posting = h.get_db_posting_or_404(posting_id)
 
     result = board_posting_command_service.add_reaction(
-        db_posting, g.user, kind
+        db_posting, g.user, ReactionKind(kind)
     )
 
     match result:
@@ -322,7 +323,7 @@ def remove_reaction(posting_id, kind):
     db_posting = h.get_db_posting_or_404(posting_id)
 
     result = board_posting_command_service.remove_reaction(
-        db_posting, g.user, kind
+        db_posting, g.user, ReactionKind(kind)
     )
 
     match result:

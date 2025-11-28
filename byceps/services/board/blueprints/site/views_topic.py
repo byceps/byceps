@@ -21,7 +21,7 @@ from byceps.services.board import (
     board_topic_query_service,
     signals as board_signals,
 )
-from byceps.services.board.models import TopicID
+from byceps.services.board.models import ReactionKind, TopicID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.site.blueprints.site.navigation import (
     subnavigation_for_view,
@@ -41,18 +41,18 @@ from .forms import PostingCreateForm, TopicCreateForm, TopicUpdateForm
 
 
 REACTION_KINDS_IN_ORDER = [
-    'thumbsup',
-    'thumbsdown',
-    'heart',
-    'amused',
+    ReactionKind('thumbsup'),
+    ReactionKind('thumbsdown'),
+    ReactionKind('heart'),
+    ReactionKind('amused'),
 ]
 
 REACTION_KINDS_TO_SYMBOLS = {
     # in alphabetical order
-    'amused': '😄',
-    'heart': '❤️',
-    'thumbsdown': '👎',
-    'thumbsup': '👍',
+    ReactionKind('amused'): '😄',
+    ReactionKind('heart'): '❤️',
+    ReactionKind('thumbsdown'): '👎',
+    ReactionKind('thumbsup'): '👍',
 }
 
 
