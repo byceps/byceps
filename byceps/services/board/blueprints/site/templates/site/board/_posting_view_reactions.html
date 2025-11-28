@@ -1,5 +1,11 @@
 {% macro render_reaction_kind_symbol(kind_presentation) -%}
-<span class="symbol">{{ kind_presentation.symbol }}</span>
+<span class="symbol">
+  {%- if kind_presentation.symbol.type_ == 'emoji' -%}
+    {{ kind_presentation.symbol.value }}
+  {%- elif kind_presentation.symbol.type_ == 'image' -%}
+    <img src="{{ url_for('static', filename='reactions/' ~ kind_presentation.symbol.filename) }}" alt="{{ kind_presentation.kind }}">
+  {%- endif -%}
+</span>
 {%- endmacro %}
 
 

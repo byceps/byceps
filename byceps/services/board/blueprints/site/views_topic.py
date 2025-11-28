@@ -42,10 +42,10 @@ from .models import build_reaction_kind_presentation
 
 
 _REACTION_KIND_PRESENTATIONS_IN_ORDER = [
-    build_reaction_kind_presentation('thumbsup', '👍'),
-    build_reaction_kind_presentation('thumbsdown', '👎'),
-    build_reaction_kind_presentation('heart', '❤️'),
-    build_reaction_kind_presentation('amused', '😄'),
+    build_reaction_kind_presentation('thumbsup', emoji='👍'),
+    build_reaction_kind_presentation('thumbsdown', emoji='👎'),
+    build_reaction_kind_presentation('heart', emoji='❤️'),
+    build_reaction_kind_presentation('amused', emoji='😄'),
 ]
 
 

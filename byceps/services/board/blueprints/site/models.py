@@ -77,13 +77,45 @@ class Creator(User):
 
 
 @dataclass(frozen=True, kw_only=True)
+class ReactionKindEmojiSymbol:
+    value: str
+
+    @property
+    def type_(self) -> str:
+        return 'emoji'
+
+
+@dataclass(frozen=True, kw_only=True)
+class ReactionKindImageSymbol:
+    filename: str
+
+    @property
+    def type_(self) -> str:
+        return 'image'
+
+
+ReactionKindSymbol = ReactionKindEmojiSymbol | ReactionKindImageSymbol
+
+
+@dataclass(frozen=True, kw_only=True)
 class ReactionKindPresentation:
     kind: ReactionKind
-    symbol: str
+    symbol: ReactionKindSymbol
 
 
 def build_reaction_kind_presentation(
-    kind_str: str, symbol: str
+    kind_str: str, *, emoji: str | None = None, image: str | None = None
 ) -> ReactionKindPresentation:
     kind = ReactionKind(kind_str)
+    symbol: ReactionKindSymbol
+
+    if emoji and image:
+        raise ValueError('Either emoji or image must be specified, not both')
+    elif emoji:
+        symbol = ReactionKindEmojiSymbol(value=emoji)
+    elif image:
+        symbol = ReactionKindImageSymbol(filename=image)
+    else:
+        raise ValueError('Either emoji or image must be specified')
+
     return ReactionKindPresentation(kind=kind, symbol=symbol)
