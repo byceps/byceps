@@ -93,6 +93,7 @@ def test_screen_name_change_announced(
         user_id=UserID(generate_uuid()),
         old_screen_name='DrJekyll',
         new_screen_name='MrHyde',
+        reason='The serum.',
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -165,6 +166,7 @@ def test_suspended_account_announced(
         occurred_at=now,
         initiator=make_user(screen_name='She-Ra'),
         user=make_user(screen_name='Skeletor'),
+        reason='Is a supervillain.',
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -181,6 +183,7 @@ def test_unsuspended_account_announced(
         occurred_at=now,
         initiator=make_user(screen_name='TheBoss'),
         user=make_user(screen_name='RambaZamba'),
+        reason='This is fine.',
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -201,6 +204,7 @@ def test_deleted_account_announced(
         occurred_at=now,
         initiator=make_user(screen_name='Uberino'),
         user=user,
+        reason='Sus',
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

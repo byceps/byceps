@@ -24,17 +24,17 @@ class UserAccountCreatedEvent(_UserEvent):
 
 @dataclass(frozen=True, kw_only=True)
 class UserAccountDeletedEvent(_UserEvent):
-    pass
+    reason: str
 
 
 @dataclass(frozen=True, kw_only=True)
 class UserAccountSuspendedEvent(_UserEvent):
-    pass
+    reason: str
 
 
 @dataclass(frozen=True, kw_only=True)
 class UserAccountUnsuspendedEvent(_UserEvent):
-    pass
+    reason: str
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -77,3 +77,4 @@ class UserScreenNameChangedEvent(_BaseEvent):
     user_id: UserID
     old_screen_name: str | None
     new_screen_name: str | None
+    reason: str | None

@@ -30,7 +30,7 @@ def suspend_account(
     """Suspend the user account."""
     occurred_at = datetime.utcnow()
 
-    event = _build_account_suspended_event(occurred_at, initiator, user)
+    event = _build_account_suspended_event(occurred_at, initiator, user, reason)
 
     log_entry = _build_account_suspended_log_entry(
         occurred_at, initiator, user, reason
@@ -40,12 +40,13 @@ def suspend_account(
 
 
 def _build_account_suspended_event(
-    occurred_at: datetime, initiator: User, user: User
+    occurred_at: datetime, initiator: User, user: User, reason: str
 ) -> UserAccountSuspendedEvent:
     return UserAccountSuspendedEvent(
         occurred_at=occurred_at,
         initiator=initiator,
         user=user,
+        reason=reason,
     )
 
 
@@ -70,7 +71,9 @@ def unsuspend_account(
     """Unsuspend the user account."""
     occurred_at = datetime.utcnow()
 
-    event = _build_account_unsuspended_event(occurred_at, initiator, user)
+    event = _build_account_unsuspended_event(
+        occurred_at, initiator, user, reason
+    )
 
     log_entry = _build_account_unsuspended_log_entry(
         occurred_at, initiator, user, reason
@@ -80,12 +83,13 @@ def unsuspend_account(
 
 
 def _build_account_unsuspended_event(
-    occurred_at: datetime, initiator: User, user: User
+    occurred_at: datetime, initiator: User, user: User, reason: str
 ) -> UserAccountUnsuspendedEvent:
     return UserAccountUnsuspendedEvent(
         occurred_at=occurred_at,
         initiator=initiator,
         user=user,
+        reason=reason,
     )
 
 
@@ -112,7 +116,7 @@ def delete_account(
     """Delete the user account."""
     occurred_at = datetime.utcnow()
 
-    event = _build_account_deleted_event(occurred_at, initiator, user)
+    event = _build_account_deleted_event(occurred_at, initiator, user, reason)
 
     log_entry = _build_account_deleted_log_entry(
         occurred_at, initiator, user, reason
@@ -125,11 +129,13 @@ def _build_account_deleted_event(
     occurred_at: datetime,
     initiator: User,
     user: User,
+    reason: str,
 ) -> UserAccountDeletedEvent:
     return UserAccountDeletedEvent(
         occurred_at=occurred_at,
         initiator=initiator,
         user=user,
+        reason=reason,
     )
 
 
@@ -163,7 +169,7 @@ def change_screen_name(
     old_screen_name = user.screen_name
 
     event = _build_screen_name_changed_event(
-        occurred_at, initiator, user, old_screen_name, new_screen_name
+        occurred_at, initiator, user, old_screen_name, new_screen_name, reason
     )
 
     log_entry = _build_screen_name_changed_log_entry(
@@ -179,6 +185,7 @@ def _build_screen_name_changed_event(
     user: User,
     old_screen_name: str | None,
     new_screen_name: str | None,
+    reason: str | None,
 ) -> UserScreenNameChangedEvent:
     return UserScreenNameChangedEvent(
         occurred_at=occurred_at,
@@ -186,6 +193,7 @@ def _build_screen_name_changed_event(
         user_id=user.id,
         old_screen_name=old_screen_name,
         new_screen_name=new_screen_name,
+        reason=reason,
     )
 
 
