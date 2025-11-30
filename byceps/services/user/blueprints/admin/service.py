@@ -87,8 +87,8 @@ def get_newsletter_subscription_states(
         yield list_, is_subscribed
 
 
-def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
-    log_entries = _collect_log_entries(user_id)
+def get_log_entries(user: User) -> Iterator[UserLogEntryData]:
+    log_entries = _collect_log_entries(user)
 
     users_by_id = _get_users_indexed_by_id(log_entries)
 
@@ -105,20 +105,18 @@ def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
         yield data
 
 
-def _collect_log_entries(user_id: UserID) -> list[UserLogEntry]:
-    log_entries = user_log_service.get_entries_for_user(user_id)
-    log_entries.extend(_fake_consent_log_entries(user_id))
-    log_entries.extend(
-        _fake_newsletter_subscription_update_log_entries(user_id)
-    )
-    log_entries.extend(_get_order_log_entries(user_id))
+def _collect_log_entries(user: User) -> list[UserLogEntry]:
+    log_entries = user_log_service.get_entries_for_user(user.id)
+    log_entries.extend(_fake_consent_log_entries(user))
+    log_entries.extend(_fake_newsletter_subscription_update_log_entries(user))
+    log_entries.extend(_get_order_log_entries(user))
 
     return log_entries
 
 
-def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
+def _fake_consent_log_entries(user: User) -> Iterator[UserLogEntry]:
     """Yield the user's consents as volatile log entries."""
-    consents = consent_service.get_consents_by_user(user_id)
+    consents = consent_service.get_consents_by_user(user.id)
 
     subject_ids = {consent.subject_id for consent in consents}
     subjects = consent_subject_service.get_subjects(subject_ids)
@@ -126,7 +124,7 @@ def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
 
     for consent in consents:
         data = {
-            'initiator_id': str(user_id),
+            'initiator_id': str(user.id),
             'subject_title': subjects_titles_by_id[consent.subject_id],
         }
 
@@ -134,20 +132,20 @@ def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
             id=UUID('00000000-0000-0000-0000-000000000001'),
             occurred_at=consent.expressed_at,
             event_type='consent-expressed',
-            user_id=user_id,
-            initiator_id=user_id,
+            user_id=user.id,
+            initiator_id=user.id,
             data=data,
         )
 
 
 def _fake_newsletter_subscription_update_log_entries(
-    user_id: UserID,
+    user: User,
 ) -> Iterator[UserLogEntry]:
     """Yield the user's newsletter subscription updates as volatile log entries."""
     lists = newsletter_service.get_all_lists()
     lists_by_id = {list_.id: list_ for list_ in lists}
 
-    updates = newsletter_service.get_subscription_updates_for_user(user_id)
+    updates = newsletter_service.get_subscription_updates_for_user(user.id)
 
     for update in updates:
         event_type = f'newsletter-{update.state.name}'
@@ -156,20 +154,20 @@ def _fake_newsletter_subscription_update_log_entries(
 
         data = {
             'list_': list_,
-            'initiator_id': str(user_id),
+            'initiator_id': str(user.id),
         }
 
         yield UserLogEntry(
             id=UUID('00000000-0000-0000-0000-000000000001'),
             occurred_at=update.expressed_at,
             event_type=event_type,
-            user_id=user_id,
-            initiator_id=user_id,
+            user_id=user.id,
+            initiator_id=user.id,
             data=data,
         )
 
 
-def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
+def _get_order_log_entries(initiator: User) -> Iterator[UserLogEntry]:
     """Yield orders log entries initiated by the user."""
     event_types = frozenset(
         [
@@ -180,7 +178,7 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
         ]
     )
     log_entries = order_log_service.get_entries_by_initiator(
-        initiator_id, event_types
+        initiator.id, event_types
     )
 
     order_ids = frozenset([entry.order_id for entry in log_entries])
@@ -190,7 +188,7 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
     for entry in log_entries:
         order = orders_by_id[entry.order_id]
         data = {
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
             'order_id': str(order.id),
             'order_number': order.order_number,
         }
@@ -199,8 +197,8 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
             id=UUID('00000000-0000-0000-0000-000000000001'),
             occurred_at=entry.occurred_at,
             event_type=entry.event_type,
-            user_id=initiator_id,
-            initiator_id=initiator_id,
+            user_id=initiator.id,
+            initiator_id=initiator.id,
             data=data,
         )
 

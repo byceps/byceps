@@ -846,7 +846,7 @@ def view_events(user_id):
     """Show user's events."""
     user = _get_user_for_admin_or_404(user_id)
 
-    log_entries = list(service.get_log_entries(user.id))
+    log_entries = list(service.get_log_entries(user))
 
     include_logins = request.args.get('include_logins', default='yes') == 'yes'
     if not include_logins:
