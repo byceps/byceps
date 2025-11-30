@@ -8,9 +8,10 @@ byceps.services.user.user_avatar_domain_service
 
 from datetime import datetime
 
-from . import user_log_domain_service
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
+
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
-from .models.log import UserLogEntry
 from .models.user import User, UserAvatar
 
 

@@ -1,5 +1,5 @@
 """
-byceps.services.user.dbmodels.log
+byceps.services.user.log.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
@@ -12,9 +12,10 @@ from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.services.user.models.log import UserLogEntryData
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
+
+from .models import UserLogEntryData
 
 
 class DbUserLogEntry(db.Model):

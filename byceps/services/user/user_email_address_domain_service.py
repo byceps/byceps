@@ -8,15 +8,15 @@ byceps.services.user.user_email_address_domain_service
 
 from datetime import datetime
 
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.util.result import Err, Ok, Result
 
-from . import user_log_domain_service
 from .events import (
     UserEmailAddressChangedEvent,
     UserEmailAddressConfirmedEvent,
     UserEmailAddressInvalidatedEvent,
 )
-from .models.log import UserLogEntry
 from .models.user import User, UserEmailAddress
 
 

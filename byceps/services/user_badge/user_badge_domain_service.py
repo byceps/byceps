@@ -9,8 +9,8 @@ byceps.services.user_badge.user_badge_domain_service
 from datetime import datetime
 from uuid import UUID
 
-from byceps.services.user import user_log_domain_service
-from byceps.services.user.models.log import UserLogEntry
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7

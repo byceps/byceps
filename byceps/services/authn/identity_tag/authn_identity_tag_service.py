@@ -11,8 +11,9 @@ from uuid import UUID
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.user import user_log_service, user_service
-from byceps.services.user.models.log import UserLogEntry
+from byceps.services.user import user_service
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.services.user.models.user import User
 
 from . import authn_identity_tag_domain_service

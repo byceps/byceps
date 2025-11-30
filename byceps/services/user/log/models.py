@@ -1,5 +1,5 @@
 """
-byceps.services.user.models.log
+byceps.services.user.log.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt

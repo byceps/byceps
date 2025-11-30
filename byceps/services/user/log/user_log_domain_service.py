@@ -1,6 +1,6 @@
 """
-byceps.services.user.user_log_domain_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user.log.user_log_domain_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,7 +11,7 @@ from datetime import datetime
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 
-from .models.log import UserLogEntry, UserLogEntryData
+from .models import UserLogEntry, UserLogEntryData
 
 
 def build_entry(

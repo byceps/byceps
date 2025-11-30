@@ -14,13 +14,14 @@ from babel import Locale
 from byceps.database import db
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import RoleID
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.util.result import Err, Ok, Result
 
 from . import (
     user_creation_domain_service,
     user_domain_service,
     user_email_address_domain_service,
-    user_log_service,
     user_service,
 )
 from .dbmodels.detail import DbUserDetail
@@ -33,7 +34,6 @@ from .events import (
     UserEmailAddressChangedEvent,
     UserScreenNameChangedEvent,
 )
-from .models.log import UserLogEntry
 from .models.user import User, UserID
 
 

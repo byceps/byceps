@@ -1,6 +1,6 @@
 """
-byceps.services.user.user_log_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user.log.user_log_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,8 +11,8 @@ from sqlalchemy import select
 from byceps.database import db
 from byceps.services.user.models.user import UserID
 
-from .dbmodels.log import DbUserLogEntry
-from .models.log import UserLogEntry
+from .dbmodels import DbUserLogEntry
+from .models import UserLogEntry
 
 
 def persist_entry(entry: UserLogEntry) -> None:

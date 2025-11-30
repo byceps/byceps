@@ -8,8 +8,8 @@ byceps.services.authz.authz_domain_service
 
 from datetime import datetime
 
-from byceps.services.user import user_log_domain_service
-from byceps.services.user.models.log import UserLogEntry
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.services.user.models.user import User
 
 from .events import RoleAssignedToUserEvent, RoleDeassignedFromUserEvent

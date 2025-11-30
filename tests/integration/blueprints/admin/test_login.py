@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.authn.session import authn_session_service
-from byceps.services.user import user_log_service
+from byceps.services.user.log import user_log_service
 
 
 BASE_URL = 'http://admin.acmecon.test'

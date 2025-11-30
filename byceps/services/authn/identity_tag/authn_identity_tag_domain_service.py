@@ -12,8 +12,8 @@ from byceps.services.authn.events import (
     UserIdentityTagCreatedEvent,
     UserIdentityTagDeletedEvent,
 )
-from byceps.services.user import user_log_domain_service
-from byceps.services.user.models.log import UserLogEntry
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.util.uuid import generate_uuid7
 

@@ -13,13 +13,10 @@ from byceps.services.authn.password import authn_password_service
 from byceps.services.authn.session import authn_session_service
 from byceps.services.authz import authz_service
 from byceps.services.newsletter import newsletter_command_service
-from byceps.services.user import (
-    user_domain_service,
-    user_log_service,
-    user_service,
-)
+from byceps.services.user import user_domain_service, user_service
+from byceps.services.user.log import user_log_service
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.log import UserLogEntry
+from byceps.services.user.log.models import UserLogEntry
 from byceps.services.user.models.user import User
 from byceps.services.verification_token import verification_token_service
 

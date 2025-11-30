@@ -14,12 +14,12 @@ import structlog
 from byceps.database import db
 from byceps.services.authn.password import authn_password_service
 from byceps.services.site.models import Site, SiteID
+from byceps.services.user.log import user_log_service
 from byceps.util.result import Err, Ok, Result
 
 from . import (
     user_creation_domain_service,
     user_email_address_service,
-    user_log_service,
     user_service,
 )
 from .dbmodels.detail import DbUserDetail

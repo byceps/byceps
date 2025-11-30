@@ -9,9 +9,10 @@ byceps.services.user.user_domain_service
 from datetime import date, datetime
 from typing import Any
 
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.util.result import Err, Ok, Result
 
-from . import user_log_domain_service
 from .errors import NothingChangedError
 from .events import (
     UserAccountDeletedEvent,
@@ -20,7 +21,6 @@ from .events import (
     UserDetailsUpdatedEvent,
     UserScreenNameChangedEvent,
 )
-from .models.log import UserLogEntry
 from .models.user import User
 
 

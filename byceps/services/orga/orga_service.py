@@ -14,9 +14,9 @@ from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.orga import orga_domain_service
-from byceps.services.user import user_log_service
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.log import UserLogEntry
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.services.user.models.user import User, UserID
 
 from .dbmodels import DbOrgaFlag

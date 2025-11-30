@@ -11,13 +11,14 @@ from typing import BinaryIO
 from flask import current_app
 
 from byceps.database import db
+from byceps.services.user.log import user_log_service
 from byceps.util import upload
 from byceps.util.image.dimensions import determine_dimensions, Dimensions
 from byceps.util.image.image_type import determine_image_type, ImageType
 from byceps.util.image.thumbnail import create_thumbnail
 from byceps.util.result import Err, Ok, Result
 
-from . import user_avatar_domain_service, user_log_service, user_service
+from . import user_avatar_domain_service, user_service
 from .dbmodels.avatar import DbUserAvatar
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
 from .models.user import User, UserAvatar

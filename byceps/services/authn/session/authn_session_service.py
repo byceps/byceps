@@ -16,9 +16,9 @@ from byceps.database import db, insert_ignore_on_conflict, upsert
 from byceps.services.authn.events import UserLoggedInEvent
 from byceps.services.core.events import EventSite
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user import user_log_domain_service, user_log_service
-from byceps.services.user.dbmodels.log import DbUserLogEntry
-from byceps.services.user.models.log import UserLogEntry
+from byceps.services.user.log import user_log_domain_service, user_log_service
+from byceps.services.user.log.dbmodels import DbUserLogEntry
+from byceps.services.user.log.models import UserLogEntry
 from byceps.services.user.models.user import (
     User,
     UserID,

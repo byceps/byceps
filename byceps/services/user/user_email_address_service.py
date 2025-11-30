@@ -16,10 +16,10 @@ from byceps.services.site.models import SiteID
 from byceps.services.user import (
     user_command_service,
     user_email_address_domain_service,
-    user_log_service,
     user_service,
 )
-from byceps.services.user.models.log import UserLogEntry
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.services.user.models.user import User, UserID
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import (

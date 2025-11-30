@@ -6,11 +6,8 @@
 import pytest
 
 from byceps.services.authz import authz_service
-from byceps.services.user import (
-    user_command_service,
-    user_log_service,
-    user_service,
-)
+from byceps.services.user import user_command_service, user_service
+from byceps.services.user.log import user_log_service
 
 
 @pytest.fixture(scope='module')

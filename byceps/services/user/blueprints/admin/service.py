@@ -22,11 +22,12 @@ from byceps.services.shop.order.log import order_log_service
 from byceps.services.site import site_service
 from byceps.services.ticketing import ticket_attendance_service, ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.services.user import user_log_service, user_service
+from byceps.services.user import user_service
 from byceps.services.user.dbmodels.avatar import (
     get_absolute_url_path as get_absolute_url_path_for_avatar,
 )
-from byceps.services.user.models.log import UserLogEntry, UserLogEntryData
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry, UserLogEntryData
 from byceps.services.user.models.user import User, UserID
 from byceps.services.user_badge import user_badge_service
 

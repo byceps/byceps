@@ -10,7 +10,7 @@ from byceps.services.consent import (
     brand_requirements_service,
     consent_subject_service,
 )
-from byceps.services.user import user_log_service
+from byceps.services.user.log import user_log_service
 
 from tests.helpers import generate_token
 
