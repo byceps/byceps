@@ -13,10 +13,12 @@ from uuid import UUID
 from byceps.services.shop.order import (
     order_command_service,
     order_event_service,
+)
+from byceps.services.shop.order.errors import OrderActionFailedError
+from byceps.services.shop.order.log import (
     order_log_domain_service,
     order_log_service,
 )
-from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import (
     LineItem,

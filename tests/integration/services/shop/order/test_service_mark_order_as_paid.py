@@ -7,11 +7,11 @@ import pytest
 
 from byceps.services.shop.order import (
     order_command_service,
-    order_log_service,
     order_payment_service,
     order_service,
 )
 from byceps.services.shop.order.events import ShopOrderPaidEvent
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.order.models.order import PaidOrder, PaymentState
 from byceps.util.iterables import find
 

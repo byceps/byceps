@@ -17,7 +17,8 @@ from byceps.services.newsletter import newsletter_service
 from byceps.services.newsletter.models import List as NewsletterList
 from byceps.services.party import party_service
 from byceps.services.party.models import Party, PartyID
-from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.site import site_service
 from byceps.services.ticketing import ticket_attendance_service, ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket

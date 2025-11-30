@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.order_log_domain_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.log.order_log_domain_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,6 +9,11 @@ byceps.services.shop.order.order_log_domain_service
 from datetime import datetime
 
 from byceps.services.shop.invoice.models import Invoice
+from byceps.services.shop.order.models.order import OrderID, PaymentState
+from byceps.services.shop.order.models.payment import (
+    AdditionalPaymentData,
+    Payment,
+)
 from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
     TicketCategoryID,
@@ -19,9 +24,7 @@ from byceps.services.user.models.user import User, UserID
 from byceps.services.user_badge.models import BadgeAwarding
 from byceps.util.uuid import generate_uuid7
 
-from .models.log import OrderLogEntry, OrderLogEntryData
-from .models.order import OrderID, PaymentState
-from .models.payment import AdditionalPaymentData, Payment
+from .models import OrderLogEntry, OrderLogEntryData
 
 
 def _build_entry(

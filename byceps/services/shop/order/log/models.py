@@ -1,5 +1,5 @@
 """
-byceps.services.shop.order.models.log
+byceps.services.shop.order.log.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from .order import OrderID
+from byceps.services.shop.order.models.order import OrderID
 
 
 OrderLogEntryData = dict[str, Any]

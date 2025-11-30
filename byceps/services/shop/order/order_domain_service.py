@@ -21,15 +21,15 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import order_log_domain_service
 from .errors import (
     CartEmptyError,
     OrderAlreadyCanceledError,
     OrderAlreadyMarkedAsPaidError,
 )
 from .events import ShopOrderCanceledEvent, ShopOrderPaidEvent
+from .log import order_log_domain_service
+from .log.models import OrderLogEntry
 from .models.checkout import IncomingLineItem, IncomingOrder
-from .models.log import OrderLogEntry
 from .models.order import (
     Address,
     LineItemID,

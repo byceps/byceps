@@ -24,7 +24,7 @@ from byceps.services.shop.invoice.errors import (
     InvoiceProviderNotEnabledError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
-from byceps.services.shop.order import order_log_service
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.order.models.detailed_order import AdminDetailedOrder
 from byceps.services.shop.order.models.order import LineItem, OrderID
 from byceps.services.user import user_command_service, user_service

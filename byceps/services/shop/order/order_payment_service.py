@@ -13,6 +13,8 @@ from moneyed import Money
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.shop.order.log import order_log_service
+from byceps.services.shop.order.log.models import OrderLogEntry
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.errors import SnippetNotFoundError
@@ -22,9 +24,8 @@ from byceps.util.l10n import format_money
 from byceps.util.result import Err, Ok, Result
 from byceps.util.templating import load_template
 
-from . import order_domain_service, order_log_service
+from . import order_domain_service
 from .dbmodels.payment import DbPayment
-from .models.log import OrderLogEntry
 from .models.order import Order, OrderID
 from .models.payment import AdditionalPaymentData, Payment
 

@@ -1,5 +1,5 @@
 """
-byceps.services.shop.order.dbmodels.log
+byceps.services.shop.order.log.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
@@ -12,7 +12,7 @@ from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.services.shop.order.models.log import OrderLogEntryData
+from byceps.services.shop.order.log.models import OrderLogEntryData
 from byceps.services.shop.order.models.order import OrderID
 from byceps.util.instances import ReprBuilder
 

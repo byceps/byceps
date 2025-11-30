@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.order_log_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.log.order_log_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,13 +11,13 @@ from collections.abc import Iterable
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.user.models.user import UserID
 
-from .dbmodels.log import DbOrderLogEntry
-from .dbmodels.order import DbOrder
-from .models.log import OrderLogEntry
-from .models.order import OrderID
+from .dbmodels import DbOrderLogEntry
+from .models import OrderLogEntry
 
 
 def persist_entry(entry: OrderLogEntry) -> None:

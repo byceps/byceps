@@ -12,8 +12,8 @@ from byceps.config.models import InvoiceNinjaConfig
 from byceps.database import db
 from byceps.services.shop.invoice.errors import InvoiceError
 from byceps.services.shop.invoice.models import DownloadableInvoice
-from byceps.services.shop.order import order_log_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.order.models.detailed_order import AdminDetailedOrder
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.user.models.user import User

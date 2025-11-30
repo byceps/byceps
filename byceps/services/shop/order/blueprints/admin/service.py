@@ -12,8 +12,9 @@ from uuid import UUID
 from byceps.services.shop.cancellation_request import (
     cancellation_request_service,
 )
-from byceps.services.shop.order import order_log_service, order_service
-from byceps.services.shop.order.models.log import (
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.log import order_log_service
+from byceps.services.shop.order.log.models import (
     OrderLogEntry,
     OrderLogEntryData,
 )

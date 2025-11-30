@@ -14,15 +14,12 @@ from byceps.services.brand import brand_service
 from byceps.services.shop.cancellation_request import (
     cancellation_request_service,
 )
-from byceps.services.shop.order import (
-    order_log_service,
-    order_payment_service,
-    order_service,
-)
+from byceps.services.shop.order import order_payment_service, order_service
 from byceps.services.shop.order.blueprints.admin.service import (
     enrich_log_entry_data,
 )
-from byceps.services.shop.order.models.log import OrderLogEntryData
+from byceps.services.shop.order.log import order_log_service
+from byceps.services.shop.order.log.models import OrderLogEntryData
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import ShopID

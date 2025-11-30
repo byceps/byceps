@@ -21,8 +21,6 @@ from byceps.services.shop.invoice.errors import (
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import (
     order_command_service,
-    order_log_domain_service,
-    order_log_service,
     order_sequence_service,
     order_service,
     signals as shop_order_signals,
@@ -33,6 +31,10 @@ from byceps.services.shop.order.errors import (
     OrderAlreadyMarkedAsPaidError,
 )
 from byceps.services.shop.order.export import order_export_service
+from byceps.services.shop.order.log import (
+    order_log_domain_service,
+    order_log_service,
+)
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop import shop_service
 from byceps.services.ticketing import ticket_service

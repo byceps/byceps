@@ -14,17 +14,13 @@ import structlog
 
 from byceps.database import db
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.product import product_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront.models import Storefront
 from byceps.util.result import Err, Ok, Result
 
-from . import (
-    order_domain_service,
-    order_helper_service,
-    order_log_service,
-    order_sequence_service,
-)
+from . import order_domain_service, order_helper_service, order_sequence_service
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.order import DbOrder
 from .events import ShopOrderPlacedEvent

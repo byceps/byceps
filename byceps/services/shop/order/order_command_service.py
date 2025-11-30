@@ -12,18 +12,15 @@ from typing import Any
 import structlog
 
 from byceps.database import db
+from byceps.services.shop.order.log import order_log_service
+from byceps.services.shop.order.log.models import OrderLogEntry
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductType
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
-from . import (
-    order_action_service,
-    order_domain_service,
-    order_log_service,
-    order_payment_service,
-)
+from . import order_action_service, order_domain_service, order_payment_service
 from .actions import (
     ticket as ticket_actions,
     ticket_bundle as ticket_bundle_actions,
@@ -36,7 +33,6 @@ from .errors import (
     OrderAlreadyMarkedAsPaidError,
 )
 from .events import ShopOrderCanceledEvent, ShopOrderPaidEvent
-from .models.log import OrderLogEntry
 from .models.order import (
     LineItemID,
     Order,

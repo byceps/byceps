@@ -10,7 +10,8 @@ import pytest
 from byceps.byceps_app import BycepsApp
 from byceps.services.core.events import EventParty
 from byceps.services.party.models import Party
-from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import Shop

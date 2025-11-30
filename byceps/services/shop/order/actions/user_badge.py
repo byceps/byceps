@@ -6,11 +6,11 @@ byceps.services.shop.order.actions.award_badge
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.shop.order import (
+from byceps.services.shop.order.errors import OrderActionFailedError
+from byceps.services.shop.order.log import (
     order_log_domain_service,
     order_log_service,
 )
-from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.order.models.action import ActionParameters
 from byceps.services.shop.order.models.order import (
     LineItem,
