@@ -60,9 +60,7 @@ def _persist_tag_creation(
 
 def delete_tag(tag: UserIdentityTag, initiator: User) -> None:
     """Delete a tag."""
-    _, log_entry = authn_identity_tag_domain_service.delete_tag(
-        tag, initiator
-    )
+    _, log_entry = authn_identity_tag_domain_service.delete_tag(tag, initiator)
 
     db.session.execute(
         delete(DbUserIdentityTag).where(DbUserIdentityTag.id == tag.id)
