@@ -67,7 +67,6 @@ def _build_email_address_changed_log_entry(
     reason: str | None,
 ) -> UserLogEntry:
     data = {
-        'initiator_id': str(initiator.id),
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
     }
@@ -183,9 +182,6 @@ def _build_email_address_invalidated_log_entry(
         'email_address': email_address,
         'reason': reason,
     }
-
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
 
     return user_log_domain_service.build_entry(
         'user-email-address-invalidated',

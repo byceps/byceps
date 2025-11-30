@@ -49,10 +49,7 @@ def test_suspend(admin_app, cheater, admin_user):
 
     suspended_log_entry = log_entries_after[-1]
     assert suspended_log_entry.event_type == 'user-suspended'
-    assert suspended_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-        'reason': reason,
-    }
+    assert suspended_log_entry.data == {'reason': reason}
 
 
 def test_unsuspend(admin_app, remorseful_user, admin_user):
@@ -82,7 +79,4 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
 
     unsuspended_log_entry = log_entries_after[-1]
     assert unsuspended_log_entry.event_type == 'user-unsuspended'
-    assert unsuspended_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-        'reason': reason,
-    }
+    assert unsuspended_log_entry.data == {'reason': reason}

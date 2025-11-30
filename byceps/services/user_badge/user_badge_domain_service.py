@@ -79,8 +79,6 @@ def _build_awarding_log_entry(
     occurred_at: datetime, badge: Badge, awardee: User, initiator: User | None
 ) -> UserLogEntry:
     data = {'badge_id': str(badge.id)}
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
 
     return user_log_domain_service.build_entry(
         'user-badge-awarded',

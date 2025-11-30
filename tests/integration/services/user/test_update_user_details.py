@@ -97,7 +97,6 @@ def test_update_user_address(database, make_user):
                 'new': new_street,
             },
         },
-        'initiator_id': str(user.id),
     }
 
 
@@ -154,7 +153,6 @@ def test_update_user_real_name(database, make_user):
                 'new': new_last_name,
             },
         },
-        'initiator_id': str(user.id),
     }
 
 
@@ -208,5 +206,4 @@ def test_remove_user_dob_and_phone_number(database, make_user):
                 'new': '',
             },
         },
-        'initiator_id': str(user.id),
     }

@@ -108,9 +108,6 @@ def _build_account_created_log_entry(
 ) -> UserLogEntry:
     data = {}
 
-    if initiator is not None:
-        data['initiator_id'] = str(initiator.id)
-
     if creation_method:
         data['creation_method'] = creation_method
 
@@ -150,15 +147,10 @@ def initialize_account(
 def _build_account_initialized_log_entry(
     occurred_at: datetime, initiator: User | None, user: User
 ) -> UserLogEntry:
-    data = {}
-
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
-
     return user_log_domain_service.build_entry(
         'user-initialized',
         user,
-        data,
+        {},
         occurred_at=occurred_at,
         initiator=initiator,
     )

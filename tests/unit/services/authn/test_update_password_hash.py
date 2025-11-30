@@ -27,4 +27,4 @@ def test_update_password_hash(admin_user, user):
     assert event.user.screen_name == user.screen_name
 
     assert log_entry.event_type == 'password-updated'
-    assert log_entry.data == {'initiator_id': str(admin_user.id)}
+    assert log_entry.data == {}

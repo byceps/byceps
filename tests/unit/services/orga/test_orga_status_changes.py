@@ -30,10 +30,7 @@ def test_grant_orga_status(user, brand, initiator):
     assert log_entry.occurred_at is not None
     assert log_entry.event_type == 'orgaflag-added'
     assert log_entry.user == user
-    assert log_entry.data == {
-        'brand_id': str(brand.id),
-        'initiator_id': str(initiator.id),
-    }
+    assert log_entry.data == {'brand_id': str(brand.id)}
 
 
 def test_revoke_orga_status(user, brand, initiator):
@@ -54,10 +51,7 @@ def test_revoke_orga_status(user, brand, initiator):
     assert log_entry.occurred_at is not None
     assert log_entry.event_type == 'orgaflag-removed'
     assert log_entry.user == user
-    assert log_entry.data == {
-        'brand_id': str(brand.id),
-        'initiator_id': str(initiator.id),
-    }
+    assert log_entry.data == {'brand_id': str(brand.id)}
 
 
 @pytest.fixture(scope='module')

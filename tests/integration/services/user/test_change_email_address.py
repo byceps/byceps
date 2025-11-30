@@ -60,7 +60,6 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     assert user_enabled_log_entry.data == {
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
-        'initiator_id': str(admin_user.id),
         'reason': reason,
     }
 
@@ -92,5 +91,4 @@ def test_change_email_address_without_reason(admin_app, make_user, admin_user):
     assert user_enabled_log_entry.data == {
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
-        'initiator_id': str(admin_user.id),
     }

@@ -93,10 +93,7 @@ def test_delete_account(admin_app, role, make_user):
 
     user_enabled_log_entry = log_entries_after[-1]
     assert user_enabled_log_entry.event_type == 'user-deleted'
-    assert user_enabled_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-        'reason': reason,
-    }
+    assert user_enabled_log_entry.data == {'reason': reason}
 
     # authorization
     assert authz_service.find_role_ids_for_user(user_id) == set()

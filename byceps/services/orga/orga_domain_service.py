@@ -52,7 +52,6 @@ def _build_orga_status_granted_log_entry(
 ) -> UserLogEntry:
     data = {
         'brand_id': str(brand.id),
-        'initiator_id': str(initiator.id),
     }
 
     return user_log_domain_service.build_entry(
@@ -96,7 +95,6 @@ def _build_orga_status_revoked_log_entry(
 ) -> UserLogEntry:
     data = {
         'brand_id': str(brand.id),
-        'initiator_id': str(initiator.id),
     }
 
     return user_log_domain_service.build_entry(

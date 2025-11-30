@@ -100,16 +100,11 @@ def test_initialize_account_as_admin(
 
     user_enabled_log_entry = log_entries_after[-2]
     assert user_enabled_log_entry.event_type == 'user-initialized'
-    assert user_enabled_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-    }
+    assert user_enabled_log_entry.data == {}
 
     role_assigned_log_entry = log_entries_after[-1]
     assert role_assigned_log_entry.event_type == 'role-assigned'
-    assert role_assigned_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-        'role_id': 'board_user',
-    }
+    assert role_assigned_log_entry.data == {'role_id': 'board_user'}
 
     role_ids_after = authz_service.find_role_ids_for_user(user.id)
     assert role_ids_after == {'board_user'}

@@ -91,10 +91,7 @@ def test_award_badge_with_initiator(badge, awardee, initiator):
     assert log_entry.occurred_at is not None
     assert log_entry.event_type == 'user-badge-awarded'
     assert log_entry.user == awardee
-    assert log_entry.data == {
-        'badge_id': str(badge.id),
-        'initiator_id': str(initiator.id),
-    }
+    assert log_entry.data == {'badge_id': str(badge.id)}
 
 
 @pytest.fixture(scope='module')

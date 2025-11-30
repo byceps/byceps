@@ -55,7 +55,6 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     assert user_enabled_log_entry.data == {
         'old_screen_name': old_screen_name,
         'new_screen_name': new_screen_name,
-        'initiator_id': str(admin_user.id),
         'reason': reason,
     }
 
@@ -81,5 +80,4 @@ def test_change_screen_name_without_reason(admin_app, make_user, admin_user):
     assert user_enabled_log_entry.data == {
         'old_screen_name': old_screen_name,
         'new_screen_name': new_screen_name,
-        'initiator_id': str(admin_user.id),
     }

@@ -57,7 +57,6 @@ def _build_account_suspended_log_entry(
         'user-suspended',
         user,
         {
-            'initiator_id': str(initiator.id),
             'reason': reason,
         },
         occurred_at=occurred_at,
@@ -100,7 +99,6 @@ def _build_account_unsuspended_log_entry(
         'user-unsuspended',
         user,
         {
-            'initiator_id': str(initiator.id),
             'reason': reason,
         },
         occurred_at=occurred_at,
@@ -149,7 +147,6 @@ def _build_account_deleted_log_entry(
         'user-deleted',
         user,
         {
-            'initiator_id': str(initiator.id),
             'reason': reason,
         },
         occurred_at=occurred_at,
@@ -206,7 +203,6 @@ def _build_screen_name_changed_log_entry(
     reason: str | None,
 ) -> UserLogEntry:
     data = {
-        'initiator_id': str(initiator.id),
         'old_screen_name': old_screen_name,
         'new_screen_name': new_screen_name,
     }
@@ -335,7 +331,6 @@ def _build_details_updated_log_entry(
 
     data = {
         'fields': fields,
-        'initiator_id': str(initiator.id),
     }
 
     entry = user_log_domain_service.build_entry(

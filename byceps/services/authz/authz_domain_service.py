@@ -47,8 +47,6 @@ def _build_role_assigned_log_entry(
     occurred_at: datetime, user: User, role_id: RoleID, initiator: User | None
 ) -> UserLogEntry:
     data = {'role_id': str(role_id)}
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
 
     return user_log_domain_service.build_entry(
         'role-assigned',
@@ -90,8 +88,6 @@ def _build_role_deassigned_log_entry(
     occurred_at: datetime, user: User, role_id: RoleID, initiator: User | None
 ) -> UserLogEntry:
     data = {'role_id': str(role_id)}
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
 
     return user_log_domain_service.build_entry(
         'role-deassigned',
