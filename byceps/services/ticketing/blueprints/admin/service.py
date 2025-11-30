@@ -11,8 +11,9 @@ from typing import Any
 from uuid import UUID
 
 from byceps.services.seating import seat_service
-from byceps.services.ticketing import ticket_log_service, ticket_service
-from byceps.services.ticketing.models.log import (
+from byceps.services.ticketing import ticket_service
+from byceps.services.ticketing.log import ticket_log_service
+from byceps.services.ticketing.log.models import (
     TicketLogEntry,
     TicketLogEntryData,
 )

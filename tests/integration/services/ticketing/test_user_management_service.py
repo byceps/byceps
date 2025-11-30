@@ -7,9 +7,9 @@ import pytest
 
 from byceps.services.ticketing import (
     ticket_creation_service,
-    ticket_log_service,
     ticket_user_management_service,
 )
+from byceps.services.ticketing.log import ticket_log_service
 
 
 @pytest.fixture()

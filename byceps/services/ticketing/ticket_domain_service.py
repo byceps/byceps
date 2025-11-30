@@ -14,7 +14,6 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import ticket_log_domain_service
 from .errors import (
     TicketBelongsToDifferentPartyError,
     TicketingError,
@@ -25,12 +24,13 @@ from .errors import (
     UserAlreadyCheckedInError,
 )
 from .events import TicketCheckedInEvent
+from .log import ticket_log_domain_service
+from .log.models import TicketLogEntry
 from .models.checkin import (
     PotentialTicketForCheckIn,
     TicketCheckIn,
     ValidTicketForCheckIn,
 )
-from .models.log import TicketLogEntry
 
 
 def check_in_user(

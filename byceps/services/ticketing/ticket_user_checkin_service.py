@@ -16,12 +16,7 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import (
-    ticket_domain_service,
-    ticket_log_domain_service,
-    ticket_log_service,
-    ticket_service,
-)
+from . import ticket_domain_service, ticket_service
 from .dbmodels.ticket import DbTicket
 from .errors import (
     InitiatorNotSpecifiedError,
@@ -29,8 +24,9 @@ from .errors import (
     UserIdUnknownError,
 )
 from .events import TicketCheckedInEvent
+from .log import ticket_log_domain_service, ticket_log_service
+from .log.models import TicketLogEntry
 from .models.checkin import PotentialTicketForCheckIn, TicketCheckIn
-from .models.log import TicketLogEntry
 from .models.ticket import TicketCode, TicketID
 
 

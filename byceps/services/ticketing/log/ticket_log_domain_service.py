@@ -1,6 +1,6 @@
 """
-byceps.services.ticketing.ticket_log_domain_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.ticketing.log.ticket_log_domain_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,11 +9,11 @@ byceps.services.ticketing.ticket_log_domain_service
 from datetime import datetime
 
 from byceps.services.seating.models import SeatID
+from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user.models.user import User, UserID
 from byceps.util.uuid import generate_uuid7
 
-from .models.log import TicketLogEntry, TicketLogEntryData
-from .models.ticket import TicketID
+from .models import TicketLogEntry, TicketLogEntryData
 
 
 def _build_entry(

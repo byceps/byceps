@@ -12,11 +12,11 @@ from byceps.services.seating import seat_service, seating_area_service
 import byceps.services.seating.dbmodels.seat_group  # noqa: F401
 from byceps.services.ticketing import (
     ticket_creation_service,
-    ticket_log_service,
     ticket_revocation_service,
     ticket_seat_management_service,
     ticket_service,
 )
+from byceps.services.ticketing.log import ticket_log_service
 
 from tests.helpers import generate_token
 

@@ -15,7 +15,7 @@ from byceps.services.seating.models import Seat, SeatID
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
-from . import ticket_log_domain_service, ticket_log_service, ticket_service
+from . import ticket_service
 from .dbmodels.ticket import DbTicket
 from .errors import (
     SeatChangeDeniedForBundledTicketError,
@@ -24,6 +24,7 @@ from .errors import (
     TicketingError,
     TicketIsRevokedError,
 )
+from .log import ticket_log_domain_service, ticket_log_service
 from .models.ticket import TicketID
 
 

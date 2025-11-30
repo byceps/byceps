@@ -9,12 +9,8 @@ byceps.services.ticketing.ticket_revocation_service
 from byceps.database import db
 from byceps.services.user.models.user import User
 
-from . import (
-    ticket_log_domain_service,
-    ticket_log_service,
-    ticket_seat_management_service,
-    ticket_service,
-)
+from . import ticket_seat_management_service, ticket_service
+from .log import ticket_log_domain_service, ticket_log_service
 from .models.ticket import TicketID
 
 

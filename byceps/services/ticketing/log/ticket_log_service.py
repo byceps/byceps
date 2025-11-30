@@ -1,6 +1,6 @@
 """
-byceps.services.ticketing.ticket_log_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.ticketing.log.ticket_log_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,10 +9,10 @@ byceps.services.ticketing.ticket_log_service
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.ticketing.models.ticket import TicketID
 
-from .dbmodels.log import DbTicketLogEntry
-from .models.log import TicketLogEntry
-from .models.ticket import TicketID
+from .dbmodels import DbTicketLogEntry
+from .models import TicketLogEntry
 
 
 def to_db_entry(entry: TicketLogEntry) -> DbTicketLogEntry:

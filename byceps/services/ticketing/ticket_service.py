@@ -19,10 +19,11 @@ from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import User, UserID
 
-from . import ticket_code_service, ticket_log_domain_service, ticket_log_service
+from . import ticket_code_service
 from .dbmodels.category import DbTicketCategory
-from .dbmodels.log import DbTicketLogEntry
 from .dbmodels.ticket import DbTicket
+from .log import ticket_log_domain_service, ticket_log_service
+from .log.dbmodels import DbTicketLogEntry
 from .models.ticket import (
     TicketCategoryID,
     TicketCode,

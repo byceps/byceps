@@ -5,10 +5,8 @@
 
 import pytest
 
-from byceps.services.ticketing import (
-    ticket_bundle_service as bundle_service,
-    ticket_log_service,
-)
+from byceps.services.ticketing import ticket_bundle_service as bundle_service
+from byceps.services.ticketing.log import ticket_log_service
 from byceps.util.result import Ok
 
 

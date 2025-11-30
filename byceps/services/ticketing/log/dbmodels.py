@@ -1,5 +1,5 @@
 """
-byceps.services.ticketing.dbmodels.log
+byceps.services.ticketing.log.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
@@ -12,9 +12,10 @@ from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.services.ticketing.models.log import TicketLogEntryData
 from byceps.services.ticketing.models.ticket import TicketID
 from byceps.util.instances import ReprBuilder
+
+from .models import TicketLogEntryData
 
 
 class DbTicketLogEntry(db.Model):

@@ -23,14 +23,11 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import (
-    ticket_category_service,
-    ticket_log_domain_service,
-    ticket_log_service,
-)
+from . import ticket_category_service
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
+from .log import ticket_log_domain_service, ticket_log_service
 from .models.ticket import (
     TicketBundle,
     TicketBundleID,

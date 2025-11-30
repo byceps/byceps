@@ -10,13 +10,14 @@ from byceps.database import db
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
-from . import ticket_log_domain_service, ticket_log_service, ticket_service
+from . import ticket_service
 from .errors import (
     TicketingError,
     TicketIsRevokedError,
     UserAccountSuspendedError,
     UserAlreadyCheckedInError,
 )
+from .log import ticket_log_domain_service, ticket_log_service
 from .models.ticket import TicketID
 
 
