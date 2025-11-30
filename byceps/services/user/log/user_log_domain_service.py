@@ -32,7 +32,7 @@ def build_entry(
         id=entry_id,
         occurred_at=occurred_at,
         event_type=event_type,
-        user_id=user.id,
+        user=user,
         initiator_id=initiator.id if initiator else None,
         data=data,
     )

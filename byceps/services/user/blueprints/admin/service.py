@@ -132,7 +132,7 @@ def _fake_consent_log_entries(user: User) -> Iterator[UserLogEntry]:
             id=UUID('00000000-0000-0000-0000-000000000001'),
             occurred_at=consent.expressed_at,
             event_type='consent-expressed',
-            user_id=user.id,
+            user=user,
             initiator_id=user.id,
             data=data,
         )
@@ -161,7 +161,7 @@ def _fake_newsletter_subscription_update_log_entries(
             id=UUID('00000000-0000-0000-0000-000000000001'),
             occurred_at=update.expressed_at,
             event_type=event_type,
-            user_id=user.id,
+            user=user,
             initiator_id=user.id,
             data=data,
         )
@@ -197,7 +197,7 @@ def _get_order_log_entries(initiator: User) -> Iterator[UserLogEntry]:
             id=UUID('00000000-0000-0000-0000-000000000001'),
             occurred_at=entry.occurred_at,
             event_type=entry.event_type,
-            user_id=initiator.id,
+            user=initiator,
             initiator_id=initiator.id,
             data=data,
         )

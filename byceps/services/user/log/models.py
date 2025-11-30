@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models.user import User, UserID
 
 
 UserLogEntryData = dict[str, Any]
@@ -22,6 +22,6 @@ class UserLogEntry:
     id: UUID
     occurred_at: datetime
     event_type: str
-    user_id: UserID
+    user: User
     initiator_id: UserID | None
     data: UserLogEntryData

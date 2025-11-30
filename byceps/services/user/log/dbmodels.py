@@ -9,9 +9,10 @@ byceps.services.user.log.dbmodels
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
+from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
 
@@ -29,6 +30,7 @@ class DbUserLogEntry(db.Model):
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
+    user: Mapped[DbUser] = relationship(DbUser, foreign_keys=[user_id])
     initiator_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )

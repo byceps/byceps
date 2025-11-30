@@ -9,6 +9,7 @@ byceps.services.user.log.user_log_service
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.user import user_service
 from byceps.services.user.models.user import UserID
 
 from .dbmodels import DbUserLogEntry
@@ -28,7 +29,7 @@ def to_db_entry(entry: UserLogEntry) -> DbUserLogEntry:
         entry.id,
         entry.occurred_at,
         entry.event_type,
-        entry.user_id,
+        entry.user.id,
         entry.initiator_id,
         entry.data,
     )
@@ -38,6 +39,7 @@ def get_entries_for_user(user_id: UserID) -> list[UserLogEntry]:
     """Return the log entries for that user."""
     db_entries = db.session.scalars(
         select(DbUserLogEntry)
+        .options(db.joinedload(DbUserLogEntry.user))
         .filter_by(user_id=user_id)
         .order_by(DbUserLogEntry.occurred_at)
     ).all()
@@ -51,6 +53,7 @@ def get_entries_of_type_for_user(
     """Return the log entries of that type for that user."""
     db_entries = db.session.scalars(
         select(DbUserLogEntry)
+        .options(db.joinedload(DbUserLogEntry.user))
         .filter_by(user_id=user_id)
         .filter_by(event_type=event_type)
         .order_by(DbUserLogEntry.occurred_at)
@@ -64,7 +67,7 @@ def _db_entity_to_entry(db_entry: DbUserLogEntry) -> UserLogEntry:
         id=db_entry.id,
         occurred_at=db_entry.occurred_at,
         event_type=db_entry.event_type,
-        user_id=db_entry.user_id,
+        user=user_service._db_entity_to_user(db_entry.user),
         initiator_id=db_entry.initiator_id,
         data=db_entry.data.copy(),
     )
