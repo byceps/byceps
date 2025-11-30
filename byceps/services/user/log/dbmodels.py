@@ -34,6 +34,9 @@ class DbUserLogEntry(db.Model):
     initiator_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
+    initiator: Mapped[DbUser] = relationship(
+        DbUser, foreign_keys=[initiator_id]
+    )
     data: Mapped[UserLogEntryData] = mapped_column(db.JSONB)
 
     def __init__(

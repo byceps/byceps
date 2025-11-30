@@ -30,7 +30,7 @@ def to_db_entry(entry: UserLogEntry) -> DbUserLogEntry:
         entry.occurred_at,
         entry.event_type,
         entry.user.id,
-        entry.initiator_id,
+        entry.initiator.id if entry.initiator else None,
         entry.data,
     )
 
@@ -39,7 +39,10 @@ def get_entries_for_user(user_id: UserID) -> list[UserLogEntry]:
     """Return the log entries for that user."""
     db_entries = db.session.scalars(
         select(DbUserLogEntry)
-        .options(db.joinedload(DbUserLogEntry.user))
+        .options(
+            db.joinedload(DbUserLogEntry.user),
+            db.joinedload(DbUserLogEntry.initiator),
+        )
         .filter_by(user_id=user_id)
         .order_by(DbUserLogEntry.occurred_at)
     ).all()
@@ -53,7 +56,10 @@ def get_entries_of_type_for_user(
     """Return the log entries of that type for that user."""
     db_entries = db.session.scalars(
         select(DbUserLogEntry)
-        .options(db.joinedload(DbUserLogEntry.user))
+        .options(
+            db.joinedload(DbUserLogEntry.user),
+            db.joinedload(DbUserLogEntry.initiator),
+        )
         .filter_by(user_id=user_id)
         .filter_by(event_type=event_type)
         .order_by(DbUserLogEntry.occurred_at)
@@ -68,6 +74,8 @@ def _db_entity_to_entry(db_entry: DbUserLogEntry) -> UserLogEntry:
         occurred_at=db_entry.occurred_at,
         event_type=db_entry.event_type,
         user=user_service._db_entity_to_user(db_entry.user),
-        initiator_id=db_entry.initiator_id,
+        initiator=user_service._db_entity_to_user(db_entry.initiator)
+        if db_entry.initiator
+        else None,
         data=db_entry.data.copy(),
     )

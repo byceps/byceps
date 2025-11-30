@@ -133,7 +133,7 @@ def _fake_consent_log_entries(user: User) -> Iterator[UserLogEntry]:
             occurred_at=consent.expressed_at,
             event_type='consent-expressed',
             user=user,
-            initiator_id=user.id,
+            initiator=user,
             data=data,
         )
 
@@ -162,7 +162,7 @@ def _fake_newsletter_subscription_update_log_entries(
             occurred_at=update.expressed_at,
             event_type=event_type,
             user=user,
-            initiator_id=user.id,
+            initiator=user,
             data=data,
         )
 
@@ -198,7 +198,7 @@ def _get_order_log_entries(initiator: User) -> Iterator[UserLogEntry]:
             occurred_at=entry.occurred_at,
             event_type=entry.event_type,
             user=initiator,
-            initiator_id=initiator.id,
+            initiator=initiator,
             data=data,
         )
 
@@ -283,15 +283,16 @@ def _get_additional_data(
 def _get_additional_data_for_user_initiated_log_entry(
     log_entry: UserLogEntry, users_by_id: dict[UserID, User]
 ) -> Iterator[tuple[str, Any]]:
-    initiator_id = log_entry.initiator_id
+    initiator = log_entry.initiator
 
-    if initiator_id is None:
+    if initiator is None:
         initiator_id_str = log_entry.data.get('initiator_id')
         if initiator_id_str is not None:
             initiator_id = _to_user_id(initiator_id_str)
+            initiator = users_by_id[initiator_id]
 
-    if initiator_id is not None:
-        yield 'initiator', users_by_id[initiator_id]
+    if initiator is not None:
+        yield 'initiator', initiator
 
 
 def _to_user_id(id_str: str) -> UserID:
