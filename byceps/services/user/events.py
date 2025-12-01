@@ -13,62 +13,62 @@ from byceps.services.user.models.user import User, UserAvatarID, UserID
 
 
 @dataclass(frozen=True, kw_only=True)
-class _UserEvent(_BaseEvent):
+class UserEvent(_BaseEvent):
     user: User
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAccountCreatedEvent(_UserEvent):
+class UserAccountCreatedEvent(UserEvent):
     site: EventSite | None
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAccountDeletedEvent(_UserEvent):
+class UserAccountDeletedEvent(UserEvent):
     reason: str
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAccountSuspendedEvent(_UserEvent):
+class UserAccountSuspendedEvent(UserEvent):
     reason: str
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAccountUnsuspendedEvent(_UserEvent):
+class UserAccountUnsuspendedEvent(UserEvent):
     reason: str
 
 
 @dataclass(frozen=True, kw_only=True)
-class _UserAvatarEvent(_UserEvent):
+class UserAvatarEvent(UserEvent):
     avatar_id: UserAvatarID
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAvatarRemovedEvent(_UserAvatarEvent):
+class UserAvatarRemovedEvent(UserAvatarEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAvatarUpdatedEvent(_UserAvatarEvent):
+class UserAvatarUpdatedEvent(UserAvatarEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserDetailsUpdatedEvent(_UserEvent):
+class UserDetailsUpdatedEvent(UserEvent):
     fields: dict[str, dict[str, str | None]]
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserEmailAddressChangedEvent(_UserEvent):
+class UserEmailAddressChangedEvent(UserEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserEmailAddressConfirmedEvent(_UserEvent):
+class UserEmailAddressConfirmedEvent(UserEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserEmailAddressInvalidatedEvent(_UserEvent):
+class UserEmailAddressInvalidatedEvent(UserEvent):
     pass
 
 
