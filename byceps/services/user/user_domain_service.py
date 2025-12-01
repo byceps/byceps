@@ -242,10 +242,7 @@ def update_details(
     """Update the user's details."""
     occurred_at = datetime.utcnow()
 
-    match _build_details_updated_event(
-        occurred_at,
-        initiator,
-        user,
+    match _determine_details_difference(
         old_first_name,
         new_first_name,
         old_last_name,
@@ -263,149 +260,51 @@ def update_details(
         old_phone_number,
         new_phone_number,
     ):
-        case Ok(event):
+        case Ok(fields):
             pass
         case Err(e):
             return Err(e)
 
-    match _build_details_updated_log_entry(
-        occurred_at,
-        initiator,
-        user,
-        old_first_name,
-        new_first_name,
-        old_last_name,
-        new_last_name,
-        old_date_of_birth,
-        new_date_of_birth,
-        old_country,
-        new_country,
-        old_postal_code,
-        new_postal_code,
-        old_city,
-        new_city,
-        old_street,
-        new_street,
-        old_phone_number,
-        new_phone_number,
-    ):
-        case Ok(log_entry):
-            return Ok((event, log_entry))
-        case Err(e):
-            return Err(e)
+    event = _build_details_updated_event(occurred_at, initiator, user, fields)
+
+    log_entry = _build_details_updated_log_entry(
+        occurred_at, initiator, user, fields
+    )
+
+    return Ok((event, log_entry))
 
 
 def _build_details_updated_event(
     occurred_at: datetime,
     initiator: User,
     user: User,
-    old_first_name: str | None,
-    new_first_name: str | None,
-    old_last_name: str | None,
-    new_last_name: str | None,
-    old_date_of_birth: date | None,
-    new_date_of_birth: date | None,
-    old_country: str | None,
-    new_country: str | None,
-    old_postal_code: str | None,
-    new_postal_code: str | None,
-    old_city: str | None,
-    new_city: str | None,
-    old_street: str | None,
-    new_street: str | None,
-    old_phone_number: str | None,
-    new_phone_number: str | None,
-) -> Result[UserDetailsUpdatedEvent, NothingChangedError]:
-    match _determine_details_difference(
-        old_first_name,
-        new_first_name,
-        old_last_name,
-        new_last_name,
-        old_date_of_birth,
-        new_date_of_birth,
-        old_country,
-        new_country,
-        old_postal_code,
-        new_postal_code,
-        old_city,
-        new_city,
-        old_street,
-        new_street,
-        old_phone_number,
-        new_phone_number,
-    ):
-        case Ok(fields):
-            pass
-        case Err(e):
-            return Err(e)
-
-    event = UserDetailsUpdatedEvent(
+    fields: dict[str, dict[str, str | None]],
+) -> UserDetailsUpdatedEvent:
+    return UserDetailsUpdatedEvent(
         occurred_at=occurred_at,
         initiator=initiator,
         user=user,
         fields=fields,
     )
 
-    return Ok(event)
-
 
 def _build_details_updated_log_entry(
     occurred_at: datetime,
     initiator: User,
     user: User,
-    old_first_name: str | None,
-    new_first_name: str | None,
-    old_last_name: str | None,
-    new_last_name: str | None,
-    old_date_of_birth: date | None,
-    new_date_of_birth: date | None,
-    old_country: str | None,
-    new_country: str | None,
-    old_postal_code: str | None,
-    new_postal_code: str | None,
-    old_city: str | None,
-    new_city: str | None,
-    old_street: str | None,
-    new_street: str | None,
-    old_phone_number: str | None,
-    new_phone_number: str | None,
-) -> Result[UserLogEntry, NothingChangedError]:
-    match _determine_details_difference(
-        old_first_name,
-        new_first_name,
-        old_last_name,
-        new_last_name,
-        old_date_of_birth,
-        new_date_of_birth,
-        old_country,
-        new_country,
-        old_postal_code,
-        new_postal_code,
-        old_city,
-        new_city,
-        old_street,
-        new_street,
-        old_phone_number,
-        new_phone_number,
-    ):
-        case Ok(fields):
-            pass
-        case Err(e):
-            return Err(e)
-
+    fields: dict[str, dict[str, str | None]],
+) -> UserLogEntry:
     data = {
         'fields': fields,
     }
 
-    entry = user_log_domain_service.build_entry(
+    return user_log_domain_service.build_entry(
         'user-details-updated',
         user,
         data,
         occurred_at=occurred_at,
         initiator=initiator,
     )
-
-    return Ok(entry)
 
 
 def _determine_details_difference(
