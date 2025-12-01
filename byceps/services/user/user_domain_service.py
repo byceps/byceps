@@ -304,6 +304,62 @@ def _build_details_updated_log_entry(
     old_phone_number: str | None,
     new_phone_number: str | None,
 ) -> Result[UserLogEntry, NothingChangedError]:
+    match _determine_details_difference(
+        old_first_name,
+        new_first_name,
+        old_last_name,
+        new_last_name,
+        old_date_of_birth,
+        new_date_of_birth,
+        old_country,
+        new_country,
+        old_postal_code,
+        new_postal_code,
+        old_city,
+        new_city,
+        old_street,
+        new_street,
+        old_phone_number,
+        new_phone_number,
+    ):
+        case Ok(fields):
+            pass
+        case Err(e):
+            return Err(e)
+
+    data = {
+        'fields': fields,
+    }
+
+    entry = user_log_domain_service.build_entry(
+        'user-details-updated',
+        user,
+        data,
+        occurred_at=occurred_at,
+        initiator=initiator,
+    )
+
+    return Ok(entry)
+
+
+def _determine_details_difference(
+    old_first_name: str | None,
+    new_first_name: str | None,
+    old_last_name: str | None,
+    new_last_name: str | None,
+    old_date_of_birth: date | None,
+    new_date_of_birth: date | None,
+    old_country: str | None,
+    new_country: str | None,
+    old_postal_code: str | None,
+    new_postal_code: str | None,
+    old_city: str | None,
+    new_city: str | None,
+    old_street: str | None,
+    new_street: str | None,
+    old_phone_number: str | None,
+    new_phone_number: str | None,
+) -> Result[dict[str, dict[str, str | None]], NothingChangedError]:
     fields: dict[str, dict[str, str | None]] = {}
 
     def _add_if_different(
@@ -329,19 +385,7 @@ def _build_details_updated_log_entry(
     if not fields:
         return Err(NothingChangedError())
 
-    data = {
-        'fields': fields,
-    }
-
-    entry = user_log_domain_service.build_entry(
-        'user-details-updated',
-        user,
-        data,
-        occurred_at=occurred_at,
-        initiator=initiator,
-    )
-
-    return Ok(entry)
+    return Ok(fields)
 
 
 def _to_str_if_not_none(value: Any) -> str | None:
