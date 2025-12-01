@@ -9,7 +9,7 @@ byceps.services.user.events
 from dataclasses import dataclass
 
 from byceps.services.core.events import _BaseEvent, EventSite
-from byceps.services.user.models.user import User, UserAvatarID, UserID
+from byceps.services.user.models.user import User, UserAvatarID
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -35,6 +35,13 @@ class UserAccountSuspendedEvent(UserEvent):
 @dataclass(frozen=True, kw_only=True)
 class UserAccountUnsuspendedEvent(UserEvent):
     reason: str
+
+
+@dataclass(frozen=True, kw_only=True)
+class UserScreenNameChangedEvent(UserEvent):
+    old_screen_name: str | None
+    new_screen_name: str | None
+    reason: str | None
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -70,11 +77,3 @@ class UserEmailAddressConfirmedEvent(UserEvent):
 @dataclass(frozen=True, kw_only=True)
 class UserEmailAddressInvalidatedEvent(UserEvent):
     pass
-
-
-@dataclass(frozen=True, kw_only=True)
-class UserScreenNameChangedEvent(_BaseEvent):
-    user_id: UserID
-    old_screen_name: str | None
-    new_screen_name: str | None
-    reason: str | None

@@ -187,7 +187,7 @@ def _build_screen_name_changed_event(
     return UserScreenNameChangedEvent(
         occurred_at=occurred_at,
         initiator=initiator,
-        user_id=user.id,
+        user=user,
         old_screen_name=old_screen_name,
         new_screen_name=new_screen_name,
         reason=reason,

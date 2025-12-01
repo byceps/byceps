@@ -163,7 +163,7 @@ def change_screen_name(
 def _persist_screen_name_change(
     event: UserScreenNameChangedEvent, log_entry: UserLogEntry
 ) -> None:
-    db_user = _get_db_user(event.user_id)
+    db_user = _get_db_user(event.user.id)
 
     db_user.screen_name = event.new_screen_name
 

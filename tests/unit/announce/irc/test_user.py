@@ -17,9 +17,6 @@ from byceps.services.user.events import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.services.user.models.user import UserID
-
-from tests.helpers import generate_uuid
 
 from .helpers import assert_text
 
@@ -90,7 +87,7 @@ def test_screen_name_change_announced(
     event = UserScreenNameChangedEvent(
         occurred_at=now,
         initiator=make_user(screen_name='ElAdmin'),
-        user_id=UserID(generate_uuid()),
+        user=make_user(screen_name='MrHyde'),
         old_screen_name='DrJekyll',
         new_screen_name='MrHyde',
         reason='The serum.',
