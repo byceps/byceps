@@ -220,7 +220,7 @@ def occupy_seat(ticket_id, seat_id):
 
     try:
         occupy_seat_result = ticket_seat_management_service.occupy_seat(
-            ticket.id, seat, manager
+            ticket.id, seat.id, manager
         )
     except ValueError:
         abort(404)
