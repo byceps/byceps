@@ -66,6 +66,20 @@ def test_update_user_address(database, make_user):
     assert event.initiator.screen_name == user.screen_name
     assert event.user.id == user.id
     assert event.user.screen_name == user.screen_name
+    assert event.fields == {
+        'postal_code': {
+            'old': old_postal_code,
+            'new': new_postal_code,
+        },
+        'city': {
+            'old': old_city,
+            'new': new_city,
+        },
+        'street': {
+            'old': old_street,
+            'new': new_street,
+        },
+    }
 
     user_after = user_service.get_db_user(user.id)
     assert user_after.detail.first_name == new_first_name

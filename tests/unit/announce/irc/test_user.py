@@ -150,6 +150,7 @@ def test_user_details_updated_announced(
         occurred_at=now,
         initiator=make_user(screen_name='Chameleon'),
         user=make_user(screen_name='Chameleon'),
+        fields={},
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

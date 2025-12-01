@@ -54,7 +54,7 @@ class UserAvatarUpdatedEvent(_UserAvatarEvent):
 
 @dataclass(frozen=True, kw_only=True)
 class UserDetailsUpdatedEvent(_UserEvent):
-    pass
+    fields: dict[str, dict[str, str | None]]
 
 
 @dataclass(frozen=True, kw_only=True)
