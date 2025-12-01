@@ -5,7 +5,7 @@ byceps.services.ticketing.blueprints.site.intranet_login_as_checkin
 If a user logs in to a site with the check-in-on-login flag set, check
 in their ticket.
 
-This is useful for a party's intranet site when they don't have a
+This is useful for a party's intranet site when the party has no
 check-in at the door.
 
 :Copyright: 2014-2025 Jochen Kupperschmidt
