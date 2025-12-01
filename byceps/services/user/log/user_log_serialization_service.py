@@ -14,8 +14,8 @@ from byceps.services.user.events import (
     UserEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.util.uuid import generate_uuid7
 
+from . import user_log_domain_service
 from .models import UserLogEntry, UserLogEntryData
 
 
@@ -86,16 +86,13 @@ def _serialize_user_event(
     event_type: str,
     data: UserLogEntryData | None = None,
 ) -> UserLogEntry:
-    entry_id = generate_uuid7()
-
     if data is None:
         data = {}
 
-    return UserLogEntry(
-        id=entry_id,
+    return user_log_domain_service.build_entry(
+        event_type,
+        event.user,
+        data,
         occurred_at=event.occurred_at,
-        event_type=event_type,
-        user=event.user,
         initiator=event.initiator,
-        data=data,
     )
