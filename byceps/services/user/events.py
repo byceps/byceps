@@ -8,12 +8,12 @@ byceps.services.user.events
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventSite
+from byceps.services.core.events import BaseEvent, EventSite
 from byceps.services.user.models.user import User, UserAvatarID
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserEvent(_BaseEvent):
+class UserEvent(BaseEvent):
     user: User
 
 

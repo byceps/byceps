@@ -14,12 +14,12 @@ from byceps.services.board.models import (
     PostingID,
     TopicID,
 )
-from byceps.services.core.events import _BaseEvent, EventBrand
+from byceps.services.core.events import BaseEvent, EventBrand
 from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
-class _BoardEvent(_BaseEvent):
+class _BoardEvent(BaseEvent):
     brand: EventBrand
     board_id: BoardID
 

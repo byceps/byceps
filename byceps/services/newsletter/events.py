@@ -8,13 +8,13 @@ byceps.services.newsletter.events
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import BaseEvent
 from byceps.services.newsletter.models import ListID
 from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
-class NewsletterEvent(_BaseEvent):
+class NewsletterEvent(BaseEvent):
     user: User
     list_id: ListID
     list_title: str

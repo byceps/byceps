@@ -9,12 +9,12 @@ byceps.services.authz.events
 from dataclasses import dataclass
 
 from byceps.services.authz.models import RoleID
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import BaseEvent
 from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
-class _AuthzUserRoleEvent(_BaseEvent):
+class _AuthzUserRoleEvent(BaseEvent):
     user: User
     role_id: RoleID
 

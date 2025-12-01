@@ -36,7 +36,7 @@ from byceps.services.board.events import (
     BoardTopicUnlockedEvent,
     BoardTopicUnpinnedEvent,
 )
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import BaseEvent
 from byceps.services.external_accounts import (
     announcing as external_accounts_handlers,
 )
@@ -152,9 +152,9 @@ from byceps.services.whereabouts.events import (
 )
 
 
-AnnouncementEvent = type[_BaseEvent]
+AnnouncementEvent = type[BaseEvent]
 AnnouncementEventHandler = Callable[
-    [str, _BaseEvent, OutgoingWebhook], Announcement | None
+    [str, BaseEvent, OutgoingWebhook], Announcement | None
 ]
 
 
@@ -174,7 +174,7 @@ class AnnouncementEventRegistry:
         self._event_types_to_names[event] = name
         self._event_types_to_handlers[event] = handler
 
-    def get_event_name(self, event: _BaseEvent) -> str:
+    def get_event_name(self, event: BaseEvent) -> str:
         event_type = type(event)
         return self._event_types_to_names[event_type]
 

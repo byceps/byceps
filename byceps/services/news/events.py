@@ -9,12 +9,12 @@ byceps.services.news.events
 from dataclasses import dataclass
 from datetime import datetime
 
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import BaseEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
 
 
 @dataclass(frozen=True, kw_only=True)
-class NewsItemPublishedEvent(_BaseEvent):
+class NewsItemPublishedEvent(BaseEvent):
     item_id: NewsItemID
     channel_id: NewsChannelID
     published_at: datetime

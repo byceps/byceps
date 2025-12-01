@@ -9,7 +9,7 @@ byceps.services.tourney.events
 from dataclasses import dataclass
 from typing import Self
 
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import BaseEvent
 from byceps.services.user.models.user import User
 
 from .models import (
@@ -35,7 +35,7 @@ class EventTourneyParticipant:
 
 
 @dataclass(frozen=True, kw_only=True)
-class _BaseTourneyEvent(_BaseEvent):
+class _BaseTourneyEvent(BaseEvent):
     tourney: BasicTourney
 
 

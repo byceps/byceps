@@ -13,7 +13,7 @@ from typing import Any
 import httpx
 import structlog
 
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import BaseEvent
 from byceps.services.webhooks import webhook_service
 from byceps.services.webhooks.models import (
     AnnouncementRequest,
@@ -40,7 +40,7 @@ def enable_announcements() -> None:
         signal.connect(_receive_signal)
 
 
-def _receive_signal(sender, *, event: _BaseEvent | None = None) -> None:
+def _receive_signal(sender, *, event: BaseEvent | None = None) -> None:
     if event is None:
         return None
 
@@ -54,7 +54,7 @@ def get_event_names() -> set[str]:
     return registry.get_event_names()
 
 
-def get_name_for_event(event: _BaseEvent) -> str:
+def get_name_for_event(event: BaseEvent) -> str:
     """Return the name for the event type.
 
     Raise exception if no name is defined for the event type.
@@ -71,7 +71,7 @@ def _get_webhooks(event_name: str) -> list[OutgoingWebhook]:
     return webhooks
 
 
-def _handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:
+def _handle_event(event: BaseEvent, webhook: OutgoingWebhook) -> None:
     announcement_request = build_announcement_request(event, webhook)
     if announcement_request is None:
         return
@@ -80,7 +80,7 @@ def _handle_event(event: _BaseEvent, webhook: OutgoingWebhook) -> None:
 
 
 def build_announcement_request(
-    event: _BaseEvent, webhook: OutgoingWebhook
+    event: BaseEvent, webhook: OutgoingWebhook
 ) -> AnnouncementRequest | None:
     event_type = type(event)
 

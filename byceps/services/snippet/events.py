@@ -8,7 +8,7 @@ byceps.services.snippet.events
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import BaseEvent
 from byceps.services.snippet.models import (
     SnippetID,
     SnippetScope,
@@ -17,7 +17,7 @@ from byceps.services.snippet.models import (
 
 
 @dataclass(frozen=True, kw_only=True)
-class _SnippetEvent(_BaseEvent):
+class _SnippetEvent(BaseEvent):
     snippet_id: SnippetID
     scope: SnippetScope
     snippet_name: str

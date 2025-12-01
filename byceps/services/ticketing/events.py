@@ -8,14 +8,14 @@ byceps.services.ticketing.events
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventParty
+from byceps.services.core.events import BaseEvent, EventParty
 from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
 from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
-class _TicketEvent(_BaseEvent):
+class _TicketEvent(BaseEvent):
     ticket_id: TicketID
 
 
@@ -27,7 +27,7 @@ class TicketCheckedInEvent(_TicketEvent):
 
 
 @dataclass(frozen=True, kw_only=True)
-class TicketsSoldEvent(_BaseEvent):
+class TicketsSoldEvent(BaseEvent):
     party: EventParty
     owner: User | None
     quantity: int

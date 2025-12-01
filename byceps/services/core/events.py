@@ -56,6 +56,6 @@ class EventSite:
 
 
 @dataclass(frozen=True, kw_only=True)
-class _BaseEvent:
+class BaseEvent:
     occurred_at: datetime
     initiator: User | None
