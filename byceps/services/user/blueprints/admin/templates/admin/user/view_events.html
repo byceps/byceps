@@ -171,11 +171,11 @@
                 </tr>
               </thead>
               <tbody>
-              {%- for key, values in log_entry.fields|items|sort %}
+              {%- for key, difference in log_entry.fields|items|sort %}
                 <tr>
                   <th>{{ key }}</th>
-                  <td>{{ values['old']|fallback }}</td>
-                  <td>{{ values['new']|fallback }}</td>
+                  <td>{{ difference.old|fallback }}</td>
+                  <td>{{ difference.new|fallback }}</td>
                 </tr>
               {%- endfor %}
               </tbody>
