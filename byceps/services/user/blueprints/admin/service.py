@@ -28,7 +28,7 @@ from byceps.services.user.dbmodels.avatar import (
 )
 from byceps.services.user.log import user_log_service
 from byceps.services.user.log.models import UserLogEntry, UserLogEntryData
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models.user import User, UserDetailDifference, UserID
 from byceps.services.user_badge import user_badge_service
 
 
@@ -261,7 +261,12 @@ def _get_additional_data(
 
     if log_entry.event_type == 'user-details-updated':
         # new structure
-        fields = log_entry.data.pop('fields', {})
+        fields = {
+            key: UserDetailDifference(
+                old=difference['old'], new=difference['new']
+            )
+            for key, difference in log_entry.data.pop('fields', {}).items()
+        }
         yield 'fields', fields
 
         # old structure
