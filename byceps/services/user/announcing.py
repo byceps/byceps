@@ -122,10 +122,27 @@ def announce_user_details_updated(
     initiator_screen_name = get_screen_name_or_fallback(event.initiator)
     user_screen_name = get_screen_name_or_fallback(event.user)
 
+    field_names_and_labels = [
+        ('first_name', gettext('first name')),
+        ('last_name', gettext('last name')),
+        ('date_of_birth', gettext('date of birth')),
+        ('country', gettext('country')),
+        ('postal_code', gettext('postal code')),
+        ('city', gettext('city')),
+        ('street', gettext('street')),
+        ('phone_number', gettext('phone number')),
+    ]
+
+    changed_fields = [
+        label for name, label in field_names_and_labels if name in event.fields
+    ]
+    changed_fields_str = ', '.join(changed_fields)
+
     text = gettext(
-        '%(initiator_screen_name)s has changed personal data of user account "%(user_screen_name)s".',
+        '%(initiator_screen_name)s has changed personal data (%(changed_fields)s) of user account "%(user_screen_name)s".',
         initiator_screen_name=initiator_screen_name,
         user_screen_name=user_screen_name,
+        changed_fields=changed_fields_str,
     )
 
     return Announcement(text)

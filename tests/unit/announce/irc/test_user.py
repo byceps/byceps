@@ -17,6 +17,7 @@ from byceps.services.user.events import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
+from byceps.services.user.models.user import UserDetailDifference
 
 from .helpers import assert_text
 
@@ -140,14 +141,21 @@ def test_user_details_updated_announced(
     app: BycepsApp, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = (
-        'Chameleon has changed personal data of user account "Chameleon".'
+        'Chameleon has changed personal data '
+        '(date of birth, postal code, city, street) '
+        'of user account "Chameleon".'
     )
 
     event = UserDetailsUpdatedEvent(
         occurred_at=now,
         initiator=make_user(screen_name='Chameleon'),
         user=make_user(screen_name='Chameleon'),
-        fields={},
+        fields={
+            'date_of_birth': UserDetailDifference(old=None, new='1986-04-26'),
+            'postal_code': UserDetailDifference(old='22999', new='20099'),
+            'city': UserDetailDifference(old='Büttenwarder', new='Hamburg'),
+            'street': UserDetailDifference(old='Südweg 7', new='Raboisen 1'),
+        },
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
