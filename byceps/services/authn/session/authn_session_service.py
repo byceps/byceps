@@ -15,7 +15,7 @@ from sqlalchemy import delete, select
 from byceps.database import db, insert_ignore_on_conflict, upsert
 from byceps.services.authn.events import UserLoggedInEvent
 from byceps.services.core.events import EventSite
-from byceps.services.site.models import Site, SiteID
+from byceps.services.site.models import Site
 from byceps.services.user.log import user_log_domain_service, user_log_service
 from byceps.services.user.log.dbmodels import DbUserLogEntry
 from byceps.services.user.log.models import UserLogEntry
@@ -128,12 +128,7 @@ def log_in_user(
         site=EventSite.from_site(site) if site else None,
     )
 
-    log_entry = _build_login_log_entry(
-        user,
-        occurred_at,
-        ip_address=ip_address,
-        site_id=site.id if site else None,
-    )
+    log_entry = _build_login_log_entry(event)
     user_log_service.persist_entry(log_entry)
 
     _record_recent_login(user.id, occurred_at)
@@ -141,24 +136,18 @@ def log_in_user(
     return session_token.token, event
 
 
-def _build_login_log_entry(
-    user: User,
-    occurred_at: datetime,
-    *,
-    ip_address: str | None = None,
-    site_id: SiteID | None = None,
-) -> UserLogEntry:
+def _build_login_log_entry(event: UserLoggedInEvent) -> UserLogEntry:
     """Create a log entry that represents a user login."""
     data = {}
 
-    if ip_address:
-        data['ip_address'] = ip_address
+    if event.ip_address:
+        data['ip_address'] = event.ip_address
 
-    if site_id:
-        data['site_id'] = site_id
+    if event.site:
+        data['site_id'] = event.site.id
 
     return user_log_domain_service.build_entry(
-        'user-logged-in', user, data, occurred_at=occurred_at
+        'user-logged-in', event.user, data, occurred_at=event.occurred_at
     )
 
 
