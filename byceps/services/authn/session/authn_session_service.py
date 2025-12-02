@@ -134,6 +134,7 @@ def log_in_user(
         occurred_at=occurred_at,
         initiator=user,
         user=user,
+        ip_address=ip_address,
         site=EventSite.from_site(site) if site else None,
     )
 

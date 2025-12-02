@@ -39,6 +39,7 @@ def test_user_logged_in_into_admin_app_announced(
         occurred_at=now,
         initiator=user,
         user=user,
+        ip_address=None,
         site=None,
     )
 
@@ -62,6 +63,7 @@ def test_user_logged_in_into_site_app_announced(
         occurred_at=now,
         initiator=user,
         user=user,
+        ip_address=None,
         site=make_event_site(title='ACMECon 2014 website'),
     )
 
