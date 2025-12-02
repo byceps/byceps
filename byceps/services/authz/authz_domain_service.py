@@ -25,9 +25,8 @@ def assign_role_to_user(
     event = _build_role_assigned_to_user_event(
         occurred_at, user, role_id, initiator
     )
-    log_entry = _build_role_assigned_log_entry(
-        occurred_at, user, role_id, initiator
-    )
+
+    log_entry = _build_role_assigned_log_entry(event)
 
     return event, log_entry
 
@@ -44,16 +43,16 @@ def _build_role_assigned_to_user_event(
 
 
 def _build_role_assigned_log_entry(
-    occurred_at: datetime, user: User, role_id: RoleID, initiator: User | None
+    event: RoleAssignedToUserEvent,
 ) -> UserLogEntry:
-    data = {'role_id': str(role_id)}
+    data = {'role_id': str(event.role_id)}
 
     return user_log_domain_service.build_entry(
         'role-assigned',
-        user,
+        event.user,
         data,
-        occurred_at=occurred_at,
-        initiator=initiator,
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )
 
 
@@ -66,9 +65,8 @@ def deassign_role_from_user(
     event = _build_role_deassigned_from_user_event(
         occurred_at, user, role_id, initiator
     )
-    log_entry = _build_role_deassigned_log_entry(
-        occurred_at, user, role_id, initiator
-    )
+
+    log_entry = _build_role_deassigned_log_entry(event)
 
     return event, log_entry
 
@@ -85,14 +83,14 @@ def _build_role_deassigned_from_user_event(
 
 
 def _build_role_deassigned_log_entry(
-    occurred_at: datetime, user: User, role_id: RoleID, initiator: User | None
+    event: RoleDeassignedFromUserEvent,
 ) -> UserLogEntry:
-    data = {'role_id': str(role_id)}
+    data = {'role_id': str(event.role_id)}
 
     return user_log_domain_service.build_entry(
         'role-deassigned',
-        user,
+        event.user,
         data,
-        occurred_at=occurred_at,
-        initiator=initiator,
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )
