@@ -12,6 +12,8 @@ from operator import attrgetter
 from typing import Any
 from uuid import UUID
 
+from flask_babel import gettext
+
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.newsletter import newsletter_service
 from byceps.services.newsletter.models import List as NewsletterList
@@ -267,7 +269,24 @@ def _get_additional_data(
             )
             for key, difference in log_entry.data.pop('fields', {}).items()
         }
-        yield 'fields', fields
+
+        field_names_to_labels = {
+            'first_name': gettext('first name'),
+            'last_name': gettext('last name'),
+            'date_of_birth': gettext('date of birth'),
+            'country': gettext('country'),
+            'postal_code': gettext('postal code'),
+            'city': gettext('city'),
+            'street': gettext('street'),
+            'phone_number': gettext('phone number'),
+        }
+
+        labeled_fields = {
+            field_names_to_labels[name]: difference
+            for name, difference in fields.items()
+        }
+
+        yield 'fields', labeled_fields
 
         # old structure
         details = {
