@@ -22,22 +22,27 @@
     {%- for menu_tree in menu_trees|sort(attribute='menu.name,menu.language_code') %}
   <table class="itemlist is-wide">
     <colgroup>
-      <col style="width: 40%;"/>
+      <col style="width: 15%;"/>
       <col/>
       <col/>
     </colgroup>
     <thead>
       <tr>
-        <th>{{ _('Name') }}</th>
+        <th>{{ _('Menu name') }}</th>
         <th>{{ _('Language') }}</th>
-        <th></th>
-        <th></th>
+        <th>{{ _('Position') }}</th>
+        <th>{{ _('Label') }}</th>
+        <th>{{ _('Target type') }}</th>
+        <th>{{ _('Target') }}</th>
+        <th>{{ _('Current page ID') }}</th>
+        <th></th>{# tags #}
+        <th></th>{# actions #}
       </tr>
     </thead>
     <tbody>
-{{ render_menu_table_row(menu_tree.menu) }}
+{{ render_menu_table_rows(menu_tree.menu) }}
       {%- for menu in menu_tree.submenus|sort(attribute='name,language_code') %}
-{{ render_menu_table_row(menu) }}
+{{ render_menu_table_rows(menu) }}
       {%- endfor %}
     </tbody>
   </table>
@@ -48,13 +53,14 @@
 
 {%- endblock %}
 
-{% macro render_menu_table_row(menu) -%}
+{% macro render_menu_table_rows(menu) -%}
       <tr>
         <td>
           {% if menu.parent_menu_id %}&#x2ba1;{% endif %}
           <a href="{{ url_for('.view', menu_id=menu.id) }}"><strong>{{ menu.name }}</strong></a>
         </td>
         <td>{{ menu.language_code }}</td>
+        <td colspan="5"></td>{# only for menu items #}
         <td class="nowrap">
           {%- if menu.hidden -%}
           {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
@@ -71,6 +77,54 @@
             </div>
           </div>
           {%- endif -%}
+        </td>
+      </tr>
+{%- with menu_aggregate = menu_aggregates[menu.id] %}
+  {%- if menu_aggregate and menu_aggregate.items %}
+      {%- for item in menu_aggregate.items|sort(attribute='position') %}
+      <tr>
+        <td colspan="2"></td>{# only for menus #}
+        <td>{{ item.position }}</td>
+        <td><strong>{{ item.label }}</strong></td>
+        <td>
+          {%- if item.target_type.name == 'endpoint' -%}
+          {{- _('Endpoint') -}}
+          {%- elif item.target_type.name == 'page' -%}
+          {{- _('Page') -}}
+          {%- elif item.target_type.name == 'url' -%}
+          {{- _('URL') -}}
+          {%- elif item.target_type.name == 'view' -%}
+          {{- _('View') -}}
+          {%- else -%}
+          {{- '?' -}}
+          {%- endif -%}
+        </td>
+        <td>{{ item.target }}</td>
+        <td>{{ item.current_page_id }}</td>
+        <td>
+          {%- if item.hidden -%}
+          {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+          {%- endif -%}
+        </td>
+        <td>
+          {%- if has_current_user_permission('site_navigation.administrate') -%}
+          <div class="button-row is-right-aligned">
+            <div class="dropdown">
+              <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
+              <ol class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('.item_move_up', item_id=item.id) }}" data-action="item-move-up">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('.item_move_down', item_id=item.id) }}" data-action="item-move-down">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('.item_delete', item_id=item.id) }}" data-action="item-delete">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+              </ol>
+            </div>
+          </div>
+          {%- endif -%}
+        </td>
+      </tr>
+      {%- endfor %}
+  {%- endif %}
+{%- endwith %}
         </td>
       </tr>
 {%- endmacro %}
