@@ -23,17 +23,17 @@ class PasswordUpdatedEvent(UserAuthenticationEvent):
 
 
 @dataclass(frozen=True, kw_only=True)
-class _UserIdentityTagEvent(UserAuthenticationEvent):
+class UserIdentityTagEvent(UserAuthenticationEvent):
     identifier: str
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserIdentityTagCreatedEvent(_UserIdentityTagEvent):
+class UserIdentityTagCreatedEvent(UserIdentityTagEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserIdentityTagDeletedEvent(_UserIdentityTagEvent):
+class UserIdentityTagDeletedEvent(UserIdentityTagEvent):
     pass
 
 
