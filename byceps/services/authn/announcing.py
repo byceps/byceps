@@ -41,7 +41,7 @@ def announce_user_logged_in(
     event_name: str, event: UserLoggedInEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
     """Announce that a user has logged in."""
-    screen_name = get_screen_name_or_fallback(event.initiator)
+    screen_name = get_screen_name_or_fallback(event.user)
 
     if event.site:
         text = gettext(

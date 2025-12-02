@@ -33,9 +33,12 @@ def test_user_logged_in_into_admin_app_announced(
 ):
     expected_text = 'Logvogel has logged in.'
 
+    user = make_user(screen_name='Logvogel')
+
     event = UserLoggedInEvent(
         occurred_at=now,
-        initiator=make_user(screen_name='Logvogel'),
+        initiator=user,
+        user=user,
         site=None,
     )
 
@@ -53,9 +56,12 @@ def test_user_logged_in_into_site_app_announced(
 ):
     expected_text = 'Logvogel has logged in on site "ACMECon 2014 website".'
 
+    user = make_user(screen_name='Logvogel')
+
     event = UserLoggedInEvent(
         occurred_at=now,
-        initiator=make_user(screen_name='Logvogel'),
+        initiator=user,
+        user=user,
         site=make_event_site(title='ACMECon 2014 website'),
     )
 

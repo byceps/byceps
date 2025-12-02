@@ -35,4 +35,5 @@ class UserIdentityTagDeletedEvent(_UserIdentityTagEvent):
 
 @dataclass(frozen=True, kw_only=True)
 class UserLoggedInEvent(BaseEvent):
+    user: User
     site: EventSite | None

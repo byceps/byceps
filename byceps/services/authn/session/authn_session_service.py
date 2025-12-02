@@ -133,6 +133,7 @@ def log_in_user(
     event = UserLoggedInEvent(
         occurred_at=occurred_at,
         initiator=user,
+        user=user,
         site=EventSite.from_site(site) if site else None,
     )
 
