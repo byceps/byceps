@@ -29,9 +29,8 @@ def grant_orga_status(
     event = _build_orga_status_granted_event(
         occurred_at, user, brand, initiator
     )
-    log_entry = _build_orga_status_granted_log_entry(
-        occurred_at, user, brand, initiator
-    )
+
+    log_entry = _build_orga_status_granted_log_entry(event)
 
     return event, log_entry
 
@@ -48,18 +47,16 @@ def _build_orga_status_granted_event(
 
 
 def _build_orga_status_granted_log_entry(
-    occurred_at: datetime, user: User, brand: Brand, initiator: User
+    event: OrgaStatusGrantedEvent,
 ) -> UserLogEntry:
-    data = {
-        'brand_id': str(brand.id),
-    }
+    data = {'brand_id': str(event.brand.id)}
 
     return user_log_domain_service.build_entry(
         'orgaflag-added',
-        user,
+        event.user,
         data,
-        occurred_at=occurred_at,
-        initiator=initiator,
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )
 
 
@@ -72,9 +69,8 @@ def revoke_orga_status(
     event = _build_orga_status_revoked_event(
         occurred_at, user, brand, initiator
     )
-    log_entry = _build_orga_status_revoked_log_entry(
-        occurred_at, user, brand, initiator
-    )
+
+    log_entry = _build_orga_status_revoked_log_entry(event)
 
     return event, log_entry
 
@@ -91,16 +87,14 @@ def _build_orga_status_revoked_event(
 
 
 def _build_orga_status_revoked_log_entry(
-    occurred_at: datetime, user: User, brand: Brand, initiator: User
+    event: OrgaStatusRevokedEvent,
 ) -> UserLogEntry:
-    data = {
-        'brand_id': str(brand.id),
-    }
+    data = {'brand_id': str(event.brand.id)}
 
     return user_log_domain_service.build_entry(
         'orgaflag-removed',
-        user,
+        event.user,
         data,
-        occurred_at=occurred_at,
-        initiator=initiator,
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )
