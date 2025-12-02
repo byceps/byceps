@@ -70,14 +70,17 @@ def index_for_site(site_id):
 @templated
 def view(menu_id):
     """Show a single menu."""
-    menu = _get_menu_aggregate_or_404(menu_id)
+    menu = _get_menu_or_404(menu_id)
+
+    menu_aggregate = site_navigation_service.get_menu_with_unfiltered_items(
+        menu
+    )
 
     site = site_service.get_site(menu.site_id)
-
     brand = brand_service.get_brand(site.brand_id)
 
     return {
-        'menu': menu,
+        'menu': menu_aggregate,
         'site': site,
         'brand': brand,
     }
@@ -501,15 +504,6 @@ def _get_site_or_404(site_id: SiteID) -> Site:
 
 def _get_menu_or_404(menu_id: NavMenuID) -> NavMenu:
     menu = site_navigation_service.find_menu(menu_id)
-
-    if menu is None:
-        abort(404)
-
-    return menu
-
-
-def _get_menu_aggregate_or_404(menu_id: NavMenuID) -> NavMenuAggregate:
-    menu = site_navigation_service.find_menu_aggregate(menu_id)
 
     if menu is None:
         abort(404)

@@ -148,14 +148,10 @@ def get_menu(menu_id: NavMenuID) -> Result[NavMenu, str]:
     return site_navigation_repository.get_menu(menu_id).map(_db_entity_to_menu)
 
 
-def find_menu_aggregate(menu_id: NavMenuID) -> NavMenuAggregate | None:
-    """Return the menu aggregate, or `None` if not found."""
-    menu = find_menu(menu_id)
-    if menu is None:
-        return None
-
+def get_menu_with_unfiltered_items(menu: NavMenu) -> NavMenuAggregate:
+    """Return the menu aggregate."""
     db_items = site_navigation_repository.get_items_for_menu_id_unfiltered(
-        menu_id
+        menu.id
     )
     items = _db_entities_to_items(db_items)
 
