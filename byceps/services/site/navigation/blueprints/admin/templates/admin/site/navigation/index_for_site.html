@@ -55,10 +55,15 @@
           {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
           {%- endif -%}
         </td>
-        <td style="text-align: right;">
+        <td>
           {%- if not menu.parent_menu_id and has_current_user_permission('site_navigation.administrate') %}
           <div class="button-row is-right-aligned">
-            <a class="button is-compact" href="{{ url_for('.submenu_create_form', site_id=site.id, parent_menu_id=menu.id) }}">{{ render_icon('add') }} <span>{{ _('Create submenu') }}</span></a>
+            <div class="dropdown">
+              <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
+              <ol class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('.submenu_create_form', site_id=site.id, parent_menu_id=menu.id) }}">{{ render_icon('add') }} {{ _('Create submenu') }}</a></li>
+              </ol>
+            </div>
           </div>
           {%- endif -%}
         </td>
