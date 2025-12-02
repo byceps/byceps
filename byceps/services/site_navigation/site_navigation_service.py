@@ -159,15 +159,7 @@ def find_menu_aggregate(menu_id: NavMenuID) -> NavMenuAggregate | None:
     )
     items = _db_entities_to_items(db_items)
 
-    return NavMenuAggregate(
-        id=menu.id,
-        site_id=menu.site_id,
-        name=menu.name,
-        language_code=menu.language_code,
-        hidden=menu.hidden,
-        parent_menu_id=menu.parent_menu_id,
-        items=items,
-    )
+    return NavMenuAggregate.from_menu_and_items(menu, items)
 
 
 def get_menus(site_id: SiteID) -> list[NavMenu]:

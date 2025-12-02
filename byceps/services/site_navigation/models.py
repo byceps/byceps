@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import NewType
+from typing import NewType, Self
 from uuid import UUID
 
 from flask_babel import lazy_gettext
@@ -62,6 +62,18 @@ class NavItemForRendering:
 @dataclass(frozen=True)
 class NavMenuAggregate(NavMenu):
     items: list[NavItem]
+
+    @classmethod
+    def from_menu_and_items(cls, menu: NavMenu, items: list[NavItem]) -> Self:
+        return cls(
+            id=menu.id,
+            site_id=menu.site_id,
+            name=menu.name,
+            language_code=menu.language_code,
+            hidden=menu.hidden,
+            parent_menu_id=menu.parent_menu_id,
+            items=items,
+        )
 
 
 @dataclass(frozen=True, kw_only=True)
