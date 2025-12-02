@@ -76,7 +76,10 @@ def serialize_details_updated_event(
         event,
         'user-details-updated',
         {
-            'fields': event.fields,
+            'fields': {
+                name: {'old': difference.old, 'new': difference.new}
+                for name, difference in event.fields.items()
+            },
         },
     )
 

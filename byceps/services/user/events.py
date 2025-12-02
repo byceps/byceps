@@ -9,7 +9,11 @@ byceps.services.user.events
 from dataclasses import dataclass
 
 from byceps.services.core.events import BaseEvent, EventSite
-from byceps.services.user.models.user import User, UserAvatarID
+from byceps.services.user.models.user import (
+    User,
+    UserAvatarID,
+    UserDetailDifference,
+)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -61,7 +65,7 @@ class UserAvatarUpdatedEvent(UserAvatarEvent):
 
 @dataclass(frozen=True, kw_only=True)
 class UserDetailsUpdatedEvent(UserEvent):
-    fields: dict[str, dict[str, str | None]]
+    fields: dict[str, UserDetailDifference]
 
 
 @dataclass(frozen=True, kw_only=True)

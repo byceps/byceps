@@ -21,7 +21,7 @@ from .events import (
     UserDetailsUpdatedEvent,
     UserScreenNameChangedEvent,
 )
-from .models.user import User
+from .models.user import User, UserDetailDifference
 
 
 def suspend_account(
@@ -212,7 +212,7 @@ def _build_details_updated_event(
     occurred_at: datetime,
     initiator: User,
     user: User,
-    fields: dict[str, dict[str, str | None]],
+    fields: dict[str, UserDetailDifference],
 ) -> UserDetailsUpdatedEvent:
     return UserDetailsUpdatedEvent(
         occurred_at=occurred_at,
@@ -239,8 +239,8 @@ def _determine_details_difference(
     new_street: str | None,
     old_phone_number: str | None,
     new_phone_number: str | None,
-) -> Result[dict[str, dict[str, str | None]], NothingChangedError]:
-    fields: dict[str, dict[str, str | None]] = {}
+) -> Result[dict[str, UserDetailDifference], NothingChangedError]:
+    fields: dict[str, UserDetailDifference] = {}
 
     def _add_if_different(
         property_key: str,
@@ -248,10 +248,10 @@ def _determine_details_difference(
         new_value: Any | None,
     ) -> None:
         if old_value != new_value:
-            fields[property_key] = {
-                'old': _to_str_if_not_none(old_value),
-                'new': _to_str_if_not_none(new_value),
-            }
+            fields[property_key] = UserDetailDifference(
+                old=_to_str_if_not_none(old_value),
+                new=_to_str_if_not_none(new_value),
+            )
 
     _add_if_different('first_name', old_first_name, new_first_name)
     _add_if_different('last_name', old_last_name, new_last_name)

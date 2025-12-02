@@ -83,6 +83,12 @@ class UserDetail:
 
 
 @dataclass(frozen=True, kw_only=True)
+class UserDetailDifference:
+    old: str | None
+    new: str | None
+
+
+@dataclass(frozen=True, kw_only=True)
 class UserForAdmin(User):
     created_at: datetime
     detail: UserForAdminDetail
