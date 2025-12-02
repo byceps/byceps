@@ -19,7 +19,13 @@
   </div>
 
   {%- if menu_trees %}
+    {%- for menu_tree in menu_trees|sort(attribute='menu.name,menu.language_code') %}
   <table class="itemlist is-wide">
+    <colgroup>
+      <col style="width: 40%;"/>
+      <col/>
+      <col/>
+    </colgroup>
     <thead>
       <tr>
         <th>{{ _('Name') }}</th>
@@ -29,14 +35,13 @@
       </tr>
     </thead>
     <tbody>
-    {%- for menu_tree in menu_trees|sort(attribute='menu.name,menu.language_code') %}
 {{ render_menu_table_row(menu_tree.menu) }}
       {%- for menu in menu_tree.submenus|sort(attribute='name,language_code') %}
 {{ render_menu_table_row(menu) }}
       {%- endfor %}
-    {%- endfor %}
     </tbody>
   </table>
+    {%- endfor %}
   {%- else %}
   <div class="box no-data-message">{{ _('No menus exist.') }}</div>
   {%- endif %}
@@ -50,7 +55,7 @@
           <a href="{{ url_for('.view', menu_id=menu.id) }}"><strong>{{ menu.name }}</strong></a>
         </td>
         <td>{{ menu.language_code }}</td>
-        <td>
+        <td class="nowrap">
           {%- if menu.hidden -%}
           {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
           {%- endif -%}
