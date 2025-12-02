@@ -120,6 +120,14 @@ def log_in_user(
 
     occurred_at = datetime.utcnow()
 
+    event = UserLoggedInEvent(
+        occurred_at=occurred_at,
+        initiator=user,
+        user=user,
+        ip_address=ip_address,
+        site=EventSite.from_site(site) if site else None,
+    )
+
     log_entry = _build_login_log_entry(
         user,
         occurred_at,
@@ -129,14 +137,6 @@ def log_in_user(
     user_log_service.persist_entry(log_entry)
 
     _record_recent_login(user.id, occurred_at)
-
-    event = UserLoggedInEvent(
-        occurred_at=occurred_at,
-        initiator=user,
-        user=user,
-        ip_address=ip_address,
-        site=EventSite.from_site(site) if site else None,
-    )
 
     return session_token.token, event
 
