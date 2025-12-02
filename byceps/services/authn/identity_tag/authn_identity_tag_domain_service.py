@@ -30,8 +30,9 @@ def create_tag(
 ) -> tuple[UserIdentityTag, UserIdentityTagCreatedEvent, UserLogEntry]:
     """Create a tag."""
     tag = _build_tag(creator, identifier, user, note, suspended)
+
     event = _build_tag_created_event(tag)
-    log_entry = _build_tag_created_log_entry(tag)
+    log_entry = _build_tag_created_log_entry(event)
 
     return tag, event, log_entry
 
@@ -66,13 +67,15 @@ def _build_tag_created_event(
     )
 
 
-def _build_tag_created_log_entry(tag: UserIdentityTag) -> UserLogEntry:
+def _build_tag_created_log_entry(
+    event: UserIdentityTagCreatedEvent,
+) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-identity-tag-created',
-        tag.user,
-        {'tag_id': str(tag.id)},
-        occurred_at=tag.created_at,
-        initiator=tag.creator,
+        event.user,
+        {'tag_id': str(event.tag_id)},
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )
 
 
@@ -83,7 +86,7 @@ def delete_tag(
     occurred_at = datetime.utcnow()
 
     event = _build_tag_deleted_event(tag, occurred_at, initiator)
-    log_entry = _build_tag_deleted_log_entry(tag, occurred_at, initiator)
+    log_entry = _build_tag_deleted_log_entry(event)
 
     return event, log_entry
 
@@ -101,12 +104,12 @@ def _build_tag_deleted_event(
 
 
 def _build_tag_deleted_log_entry(
-    tag: UserIdentityTag, occurred_at: datetime, initiator: User
+    event: UserIdentityTagDeletedEvent,
 ) -> UserLogEntry:
     return user_log_domain_service.build_entry(
         'user-identity-tag-deleted',
-        tag.user,
-        {'tag_id': str(tag.id)},
-        occurred_at=occurred_at,
-        initiator=initiator,
+        event.user,
+        {'tag_id': str(event.tag_id)},
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )
