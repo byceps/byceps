@@ -45,9 +45,7 @@ def award_badge(
 
     awarding = _build_awarding(awarding_id, badge, awardee, occurred_at)
     event = _build_awarding_event(occurred_at, badge, awardee, initiator)
-    log_entry = _build_awarding_log_entry(
-        occurred_at, badge, awardee, initiator
-    )
+    log_entry = _build_awarding_log_entry(event)
 
     return Ok((awarding, event, log_entry))
 
@@ -75,15 +73,13 @@ def _build_awarding_event(
     )
 
 
-def _build_awarding_log_entry(
-    occurred_at: datetime, badge: Badge, awardee: User, initiator: User | None
-) -> UserLogEntry:
-    data = {'badge_id': str(badge.id)}
+def _build_awarding_log_entry(event: UserBadgeAwardedEvent) -> UserLogEntry:
+    data = {'badge_id': str(event.badge_id)}
 
     return user_log_domain_service.build_entry(
         'user-badge-awarded',
-        awardee,
+        event.awardee,
         data,
-        occurred_at=occurred_at,
-        initiator=initiator,
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )
