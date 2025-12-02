@@ -13,14 +13,18 @@ from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)
-class PasswordUpdatedEvent(BaseEvent):
+class UserAuthenticationEvent(BaseEvent):
     user: User
 
 
 @dataclass(frozen=True, kw_only=True)
-class _UserIdentityTagEvent(BaseEvent):
+class PasswordUpdatedEvent(UserAuthenticationEvent):
+    pass
+
+
+@dataclass(frozen=True, kw_only=True)
+class _UserIdentityTagEvent(UserAuthenticationEvent):
     identifier: str
-    user: User
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -34,6 +38,5 @@ class UserIdentityTagDeletedEvent(_UserIdentityTagEvent):
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserLoggedInEvent(BaseEvent):
-    user: User
+class UserLoggedInEvent(UserAuthenticationEvent):
     site: EventSite | None

@@ -60,8 +60,8 @@ def _build_tag_created_event(
     return UserIdentityTagCreatedEvent(
         occurred_at=tag.created_at,
         initiator=tag.creator,
-        identifier=tag.identifier,
         user=tag.user,
+        identifier=tag.identifier,
     )
 
 
@@ -93,8 +93,8 @@ def _build_tag_deleted_event(
     return UserIdentityTagDeletedEvent(
         occurred_at=occurred_at,
         initiator=initiator,
-        identifier=tag.identifier,
         user=tag.user,
+        identifier=tag.identifier,
     )
 
 
