@@ -61,6 +61,7 @@ def _build_tag_created_event(
         occurred_at=tag.created_at,
         initiator=tag.creator,
         user=tag.user,
+        tag_id=tag.id,
         identifier=tag.identifier,
     )
 
@@ -94,6 +95,7 @@ def _build_tag_deleted_event(
         occurred_at=occurred_at,
         initiator=initiator,
         user=tag.user,
+        tag_id=tag.id,
         identifier=tag.identifier,
     )
 

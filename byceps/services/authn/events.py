@@ -7,6 +7,7 @@ byceps.services.authn.events
 """
 
 from dataclasses import dataclass
+from uuid import UUID
 
 from byceps.services.core.events import BaseEvent, EventSite
 from byceps.services.user.models.user import User
@@ -24,6 +25,7 @@ class PasswordUpdatedEvent(UserAuthenticationEvent):
 
 @dataclass(frozen=True, kw_only=True)
 class UserIdentityTagEvent(UserAuthenticationEvent):
+    tag_id: UUID
     identifier: str
 
 
