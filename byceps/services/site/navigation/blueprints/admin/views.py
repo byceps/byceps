@@ -56,14 +56,11 @@ def index_for_site(site_id):
 
     brand = brand_service.get_brand(site.brand_id)
 
-    menus = site_navigation_service.get_menus(site.id)
-
     menu_trees = site_navigation_service.get_menu_trees(site.id)
 
     return {
         'site': site,
         'brand': brand,
-        'menus': menus,
         'menu_trees': menu_trees,
     }
 
