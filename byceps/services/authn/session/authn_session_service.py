@@ -111,8 +111,8 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
 
 def log_in_user(
     user: User,
+    ip_address: str | None,
     *,
-    ip_address: str | None = None,
     site: Site | None = None,
 ) -> tuple[str, UserLoggedInEvent]:
     """Create a session token and record the log in."""

@@ -35,10 +35,9 @@ def log_in_user(
     username: str,
     password: Password,
     permanent: bool,
+    ip_address: str | None,
     brand_id: BrandID,
     site: Site,
-    *,
-    ip_address: str | None = None,
 ) -> Result[
     tuple[User, UserLoggedInEvent],
     AuthenticationFailedError | ConsentRequiredError,
@@ -63,7 +62,7 @@ def log_in_user(
         return Err(ConsentRequiredError(consent_token.token))
 
     auth_token, logged_in_event = authn_session_service.log_in_user(
-        user, ip_address=ip_address, site=site
+        user, ip_address, site=site
     )
     user_session.start(user.id, auth_token, permanent=permanent)
 

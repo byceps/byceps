@@ -26,11 +26,7 @@ class AuthorizationFailed:
 
 
 def log_in_user(
-    username: str,
-    password: Password,
-    permanent: bool,
-    *,
-    ip_address: str | None = None,
+    username: str, password: Password, permanent: bool, ip_address: str | None
 ) -> Result[
     tuple[User, UserLoggedInEvent],
     AuthenticationFailedError | AuthorizationFailed,
@@ -61,7 +57,7 @@ def log_in_user(
     # Authorization succeeded.
 
     auth_token, logged_in_event = authn_session_service.log_in_user(
-        user, ip_address=ip_address
+        user, ip_address
     )
     user_session.start(user.id, auth_token, permanent=permanent)
 

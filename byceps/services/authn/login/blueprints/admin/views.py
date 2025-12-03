@@ -66,7 +66,7 @@ def log_in():
     permanent = form.permanent.data
 
     log_in_result = service.log_in_user(
-        username, password, permanent, ip_address=request.remote_addr
+        username, password, permanent, request.remote_addr
     )
     if log_in_result.is_err():
         form.form_errors.append(gettext('Login failed.'))
