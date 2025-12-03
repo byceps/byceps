@@ -18,7 +18,7 @@ from uuid6 import uuid7
 
 from byceps.byceps_app import BycepsApp
 from byceps.database import db
-from byceps.services.authn.session import authn_session_service
+from byceps.services.authn.session import authn_session_repository
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, RoleID
@@ -200,7 +200,9 @@ def http_client(app: BycepsApp, *, user_id: UserID | None = None):
 
 
 def _add_user_credentials_to_session(client, user_id: UserID) -> None:
-    session_token = authn_session_service.find_session_token_for_user(user_id)
+    session_token = authn_session_repository.find_session_token_for_user(
+        user_id
+    )
     if session_token is None:
         raise Exception(f'Could not find session token for user ID "{user_id}"')
 
@@ -211,4 +213,4 @@ def _add_user_credentials_to_session(client, user_id: UserID) -> None:
 
 def log_in_user(user_id: UserID) -> None:
     """Authenticate the user to create a session."""
-    authn_session_service.get_session_token(user_id)
+    authn_session_repository.get_session_token(user_id)

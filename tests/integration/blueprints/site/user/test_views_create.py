@@ -10,7 +10,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.authn.password.dbmodels import DbCredential
-from byceps.services.authn.session import authn_session_service
+from byceps.services.authn.session import authn_session_repository
 from byceps.services.authz import authz_service
 from byceps.services.brand import brand_service
 from byceps.services.consent import (
@@ -130,7 +130,9 @@ def test_create(
     assert_password_credentials_created(user.id)
 
     # Session token should not have been created at this point.
-    session_token = authn_session_service.find_session_token_for_user(user.id)
+    session_token = authn_session_repository.find_session_token_for_user(
+        user.id
+    )
     assert session_token is None
 
     # avatar
