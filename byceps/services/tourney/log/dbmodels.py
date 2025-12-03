@@ -19,7 +19,7 @@ from .models import LogEntryData
 
 
 class DbTourneyLogEntry(db.Model):
-    """A log entry regarding a user."""
+    """A log entry for a tourney."""
 
     __tablename__ = 'tourney_log_entries'
 
