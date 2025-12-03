@@ -17,8 +17,8 @@ from byceps.services.user.dbmodels.user import DbUser
 from .dbmodels import DbTourneyLogEntry
 
 
-def persist_entry(db_entry: DbTourneyLogEntry) -> None:
-    """Store a log entry."""
+def persist_tourney_entry(db_entry: DbTourneyLogEntry) -> None:
+    """Store a log entry for a tourney."""
     db.session.add(db_entry)
     db.session.commit()
 

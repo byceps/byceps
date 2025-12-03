@@ -17,15 +17,15 @@ from .dbmodels import DbTourneyLogEntry
 from .models import TourneyLogEntry
 
 
-def persist_entry(entry: TourneyLogEntry) -> None:
-    """Store a log entry."""
-    db_entry = to_db_entry(entry)
+def persist_tourney_entry(entry: TourneyLogEntry) -> None:
+    """Store a log entry for a tourney."""
+    db_entry = to_tourney_db_entry(entry)
 
-    tourney_log_repository.persist_entry(db_entry)
+    tourney_log_repository.persist_tourney_entry(db_entry)
 
 
-def to_db_entry(entry: TourneyLogEntry) -> DbTourneyLogEntry:
-    """Convert log entry to database entity."""
+def to_tourney_db_entry(entry: TourneyLogEntry) -> DbTourneyLogEntry:
+    """Convert tourney log entry to database entity."""
     return DbTourneyLogEntry(
         entry.id,
         entry.occurred_at,
@@ -43,12 +43,12 @@ def get_entries_for_tourney(tourney: Tourney) -> list[TourneyLogEntry]:
     )
 
     return [
-        _db_entity_to_entry(db_entry, tourney, db_initiator)
+        _db_entity_to_tourney_entry(db_entry, tourney, db_initiator)
         for db_entry, db_initiator in db_entries_and_initiators
     ]
 
 
-def _db_entity_to_entry(
+def _db_entity_to_tourney_entry(
     db_entry: DbTourneyLogEntry, tourney: Tourney, db_initiator: DbUser
 ) -> TourneyLogEntry:
     return TourneyLogEntry(

@@ -63,7 +63,7 @@ def create_tourney(
 
     tourney_repository.create_tourney(tourney)
 
-    tourney_log_service.persist_entry(log_entry)
+    tourney_log_service.persist_tourney_entry(log_entry)
 
     return tourney, event
 
@@ -104,7 +104,7 @@ def open_registration(
 
     tourney_repository.open_registration(updated_tourney)
 
-    tourney_log_service.persist_entry(log_entry)
+    tourney_log_service.persist_tourney_entry(log_entry)
 
     return Ok((updated_tourney, event))
 
@@ -122,7 +122,7 @@ def close_registration(
 
     tourney_repository.close_registration(updated_tourney)
 
-    tourney_log_service.persist_entry(log_entry)
+    tourney_log_service.persist_tourney_entry(log_entry)
 
     return Ok((updated_tourney, event))
 
