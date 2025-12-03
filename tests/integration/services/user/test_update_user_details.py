@@ -8,6 +8,7 @@ from datetime import date
 from byceps.services.user import user_command_service, user_service
 from byceps.services.user.events import UserDetailsUpdatedEvent
 from byceps.services.user.log import user_log_service
+from byceps.services.user.models.user import UserDetailDifference
 
 
 def test_update_user_address(database, make_user):
@@ -67,18 +68,18 @@ def test_update_user_address(database, make_user):
     assert event.user.id == user.id
     assert event.user.screen_name == user.screen_name
     assert event.fields == {
-        'postal_code': {
-            'old': old_postal_code,
-            'new': new_postal_code,
-        },
-        'city': {
-            'old': old_city,
-            'new': new_city,
-        },
-        'street': {
-            'old': old_street,
-            'new': new_street,
-        },
+        'postal_code': UserDetailDifference(
+            old=old_postal_code,
+            new=new_postal_code,
+        ),
+        'city': UserDetailDifference(
+            old=old_city,
+            new=new_city,
+        ),
+        'street': UserDetailDifference(
+            old=old_street,
+            new=new_street,
+        ),
     }
 
     user_after = user_service.get_db_user(user.id)
