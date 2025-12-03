@@ -44,7 +44,7 @@ def build_tourney_entry(
     )
 
 
-def build_tourney_participant_entry(
+def build_participant_entry(
     event_type: str,
     participant_id: ParticipantID,
     data: LogEntryData,
@@ -68,7 +68,7 @@ def build_tourney_participant_entry(
     )
 
 
-def build_tourney_match_entry(
+def build_match_entry(
     event_type: str,
     match_id: MatchID,
     data: LogEntryData,
