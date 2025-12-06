@@ -28,7 +28,7 @@ def test_password_updated_announced(
     assert_text(actual, expected_text)
 
 
-def test_user_logged_in_into_admin_app_announced(
+def test_user_logged_in_to_admin_app_announced(
     app: BycepsApp, now: datetime, make_user, webhook_for_irc
 ):
     expected_text = 'Logvogel has logged in.'
@@ -48,7 +48,7 @@ def test_user_logged_in_into_admin_app_announced(
     assert_text(actual, expected_text)
 
 
-def test_user_logged_in_into_site_app_announced(
+def test_user_logged_in_to_site_app_announced(
     app: BycepsApp,
     now: datetime,
     make_event_site,
