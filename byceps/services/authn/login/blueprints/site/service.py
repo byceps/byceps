@@ -61,7 +61,7 @@ def log_in_user(
         consent_token = verification_token_service.create_for_consent(user)
         return Err(ConsentRequiredError(consent_token.token))
 
-    auth_token, logged_in_event = authn_session_service.log_in_user(
+    auth_token, logged_in_event = authn_session_service.log_in_user_to_site(
         user, ip_address, site=site
     )
     user_session.start(user.id, auth_token, permanent=permanent)

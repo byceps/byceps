@@ -56,7 +56,7 @@ def log_in_user(
 
     # Authorization succeeded.
 
-    auth_token, logged_in_event = authn_session_service.log_in_user(
+    auth_token, logged_in_event = authn_session_service.log_in_user_to_admin(
         user, ip_address
     )
     user_session.start(user.id, auth_token, permanent=permanent)

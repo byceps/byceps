@@ -51,13 +51,10 @@ def is_session_valid(user_id: UserID, auth_token: str) -> bool:
     return authn_session_repository.is_token_valid_for_user(auth_token, user_id)
 
 
-def log_in_user(
-    user: User,
-    ip_address: str | None,
-    *,
-    site: Site | None = None,
+def log_in_user_to_admin(
+    user: User, ip_address: str | None
 ) -> tuple[str, UserLoggedInEvent]:
-    """Create a session token and record the log in."""
+    """Create a session token and record the log in to administration."""
     db_session_token = authn_session_repository.get_session_token(user.id)
 
     occurred_at = datetime.utcnow()
@@ -67,10 +64,10 @@ def log_in_user(
         initiator=user,
         user=user,
         ip_address=ip_address,
-        site=EventSite.from_site(site) if site else None,
+        site=None,
     )
 
-    log_entry = _build_login_log_entry(event)
+    log_entry = _build_admin_login_log_entry(event)
     user_log_service.persist_entry(log_entry)
 
     authn_session_repository.record_recent_login(user.id, occurred_at)
@@ -78,8 +75,47 @@ def log_in_user(
     return db_session_token.token, event
 
 
-def _build_login_log_entry(event: UserLoggedInEvent) -> UserLogEntry:
-    """Create a log entry that represents a user login."""
+def _build_admin_login_log_entry(event: UserLoggedInEvent) -> UserLogEntry:
+    """Create a log entry that represents a user login to administration."""
+    data = {}
+
+    if event.ip_address:
+        data['ip_address'] = event.ip_address
+
+    if event.site:
+        data['site_id'] = event.site.id
+
+    return user_log_domain_service.build_entry(
+        'user-logged-in', event.user, data, occurred_at=event.occurred_at
+    )
+
+
+def log_in_user_to_site(
+    user: User, ip_address: str | None, site: Site
+) -> tuple[str, UserLoggedInEvent]:
+    """Create a session token and record the log in to a site."""
+    db_session_token = authn_session_repository.get_session_token(user.id)
+
+    occurred_at = datetime.utcnow()
+
+    event = UserLoggedInEvent(
+        occurred_at=occurred_at,
+        initiator=user,
+        user=user,
+        ip_address=ip_address,
+        site=EventSite.from_site(site),
+    )
+
+    log_entry = _build_site_login_log_entry(event)
+    user_log_service.persist_entry(log_entry)
+
+    authn_session_repository.record_recent_login(user.id, occurred_at)
+
+    return db_session_token.token, event
+
+
+def _build_site_login_log_entry(event: UserLoggedInEvent) -> UserLogEntry:
+    """Create a log entry that represents a user login to a site."""
     data = {}
 
     if event.ip_address:
