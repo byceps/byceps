@@ -16,7 +16,11 @@ from byceps.announce.helpers import (
 )
 from byceps.services.webhooks.models import Announcement, OutgoingWebhook
 
-from .events import PasswordUpdatedEvent, UserLoggedInEvent
+from .events import (
+    PasswordUpdatedEvent,
+    UserLoggedInToAdminEvent,
+    UserLoggedInToSiteEvent,
+)
 
 
 @with_locale
@@ -37,21 +41,31 @@ def announce_password_updated(
 
 
 @with_locale
-def announce_user_logged_in(
-    event_name: str, event: UserLoggedInEvent, webhook: OutgoingWebhook
+def announce_user_logged_in_to_admin(
+    event_name: str, event: UserLoggedInToAdminEvent, webhook: OutgoingWebhook
 ) -> Announcement | None:
-    """Announce that a user has logged in."""
+    """Announce that a user has logged in to administration."""
     screen_name = get_screen_name_or_fallback(event.user)
 
-    if event.site:
-        text = gettext(
-            '%(screen_name)s has logged in on site "%(site_title)s".',
-            screen_name=screen_name,
-            site_title=event.site.title,
-        )
-    else:
-        text = gettext(
-            '%(screen_name)s has logged in.', screen_name=screen_name
-        )
+    text = gettext(
+        '%(screen_name)s has logged in to administration.',
+        screen_name=screen_name,
+    )
+
+    return Announcement(text)
+
+
+@with_locale
+def announce_user_logged_in_to_site(
+    event_name: str, event: UserLoggedInToSiteEvent, webhook: OutgoingWebhook
+) -> Announcement | None:
+    """Announce that a user has logged in to a site."""
+    screen_name = get_screen_name_or_fallback(event.user)
+
+    text = gettext(
+        '%(screen_name)s has logged in to site "%(site_title)s".',
+        screen_name=screen_name,
+        site_title=event.site.title,
+    )
 
     return Announcement(text)

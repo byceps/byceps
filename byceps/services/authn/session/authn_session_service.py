@@ -10,7 +10,10 @@ from collections.abc import Sequence
 from datetime import datetime
 from uuid import UUID
 
-from byceps.services.authn.events import UserLoggedInEvent
+from byceps.services.authn.events import (
+    UserLoggedInToAdminEvent,
+    UserLoggedInToSiteEvent,
+)
 from byceps.services.core.events import EventSite
 from byceps.services.site.models import Site
 from byceps.services.user.log import user_log_domain_service, user_log_service
@@ -53,18 +56,17 @@ def is_session_valid(user_id: UserID, auth_token: str) -> bool:
 
 def log_in_user_to_admin(
     user: User, ip_address: str | None
-) -> tuple[str, UserLoggedInEvent]:
+) -> tuple[str, UserLoggedInToAdminEvent]:
     """Create a session token and record the log in to administration."""
     db_session_token = authn_session_repository.get_session_token(user.id)
 
     occurred_at = datetime.utcnow()
 
-    event = UserLoggedInEvent(
+    event = UserLoggedInToAdminEvent(
         occurred_at=occurred_at,
         initiator=user,
         user=user,
         ip_address=ip_address,
-        site=None,
     )
 
     log_entry = _build_admin_login_log_entry(event)
@@ -75,30 +77,32 @@ def log_in_user_to_admin(
     return db_session_token.token, event
 
 
-def _build_admin_login_log_entry(event: UserLoggedInEvent) -> UserLogEntry:
+def _build_admin_login_log_entry(
+    event: UserLoggedInToAdminEvent,
+) -> UserLogEntry:
     """Create a log entry that represents a user login to administration."""
     data = {}
 
     if event.ip_address:
         data['ip_address'] = event.ip_address
 
-    if event.site:
-        data['site_id'] = event.site.id
-
     return user_log_domain_service.build_entry(
-        'user-logged-in', event.user, data, occurred_at=event.occurred_at
+        'user-logged-in-to-admin',
+        event.user,
+        data,
+        occurred_at=event.occurred_at,
     )
 
 
 def log_in_user_to_site(
     user: User, ip_address: str | None, site: Site
-) -> tuple[str, UserLoggedInEvent]:
+) -> tuple[str, UserLoggedInToSiteEvent]:
     """Create a session token and record the log in to a site."""
     db_session_token = authn_session_repository.get_session_token(user.id)
 
     occurred_at = datetime.utcnow()
 
-    event = UserLoggedInEvent(
+    event = UserLoggedInToSiteEvent(
         occurred_at=occurred_at,
         initiator=user,
         user=user,
@@ -114,18 +118,20 @@ def log_in_user_to_site(
     return db_session_token.token, event
 
 
-def _build_site_login_log_entry(event: UserLoggedInEvent) -> UserLogEntry:
+def _build_site_login_log_entry(event: UserLoggedInToSiteEvent) -> UserLogEntry:
     """Create a log entry that represents a user login to a site."""
-    data = {}
+    data: dict[str, str] = {
+        'site_id': str(event.site.id),
+    }
 
     if event.ip_address:
         data['ip_address'] = event.ip_address
 
-    if event.site:
-        data['site_id'] = event.site.id
-
     return user_log_domain_service.build_entry(
-        'user-logged-in', event.user, data, occurred_at=event.occurred_at
+        'user-logged-in-to-site',
+        event.user,
+        data,
+        occurred_at=event.occurred_at,
     )
 
 

@@ -23,7 +23,7 @@ def client(site_app, site):
     return site_app.test_client()
 
 
-def test_login_form(client):
+def test_site_login_form(client):
     url = f'{BASE_URL}/authentication/log_in'
 
     response = client.get(url)
@@ -31,13 +31,13 @@ def test_login_form(client):
     assert response.status_code == 200
 
 
-def test_login_succeeds(site, client, make_user):
+def test_site_login_succeeds(site, client, make_user):
     password = 'correct horse battery staple'
 
     user = make_user(password=password)
 
     login_log_entries_before = user_log_service.get_entries_of_type_for_user(
-        user.id, 'user-logged-in'
+        user.id, 'user-logged-in-to-site'
     )
     assert len(login_log_entries_before) == 0
 
@@ -58,7 +58,7 @@ def test_login_succeeds(site, client, make_user):
     assert response.location == '/dashboard'
 
     login_log_entries_after = user_log_service.get_entries_of_type_for_user(
-        user.id, 'user-logged-in'
+        user.id, 'user-logged-in-to-site'
     )
     assert len(login_log_entries_after) == 1
     login_log_entry = login_log_entries_after[0]
@@ -74,7 +74,7 @@ def test_login_succeeds(site, client, make_user):
     assert cookie.secure
 
 
-def test_login_fails_with_invalid_credentials(client):
+def test_site_login_fails_with_invalid_credentials(client):
     url = f'{BASE_URL}/authentication/log_in'
     form_data = {
         'username': 'TotallyUnknownUser',
@@ -87,7 +87,7 @@ def test_login_fails_with_invalid_credentials(client):
     assert get_session_cookie(client) is None
 
 
-def test_login_fails_lacking_consent(client, brand, make_user):
+def test_site_login_fails_lacking_consent(client, brand, make_user):
     subject_name = generate_token()
     subject = consent_subject_service.create_subject(
         subject_name, subject_name, 'agree', None

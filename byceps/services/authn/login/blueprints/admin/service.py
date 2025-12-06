@@ -10,7 +10,7 @@ import structlog
 
 from byceps.services.authn import authn_service
 from byceps.services.authn.errors import AuthenticationFailedError
-from byceps.services.authn.events import UserLoggedInEvent
+from byceps.services.authn.events import UserLoggedInToAdminEvent
 from byceps.services.authn.session import authn_session_service
 from byceps.services.user.models.user import Password, User
 from byceps.util import user_session
@@ -28,7 +28,7 @@ class AuthorizationFailed:
 def log_in_user(
     username: str, password: Password, permanent: bool, ip_address: str | None
 ) -> Result[
-    tuple[User, UserLoggedInEvent],
+    tuple[User, UserLoggedInToAdminEvent],
     AuthenticationFailedError | AuthorizationFailed,
 ]:
     authn_result = authn_service.authenticate(username, password)
@@ -62,8 +62,7 @@ def log_in_user(
     user_session.start(user.id, auth_token, permanent=permanent)
 
     log.info(
-        'User logged in',
-        scope='admin',
+        'User logged in to administration',
         user_id=str(user.id),
         screen_name=user.screen_name,
     )
@@ -75,8 +74,7 @@ def log_out_user(user: User) -> None:
     user_session.end()
 
     log.info(
-        'User logged out',
-        scope='admin',
+        'User logged out of administration',
         user_id=str(user.id),
         screen_name=user.screen_name,
     )

@@ -17,20 +17,20 @@ def client(admin_app, site):
     return admin_app.test_client()
 
 
-def test_login_form(client):
+def test_admin_login_form(client):
     response = client.get(f'{BASE_URL}/authentication/log_in')
 
     assert response.status_code == 200
 
 
-def test_login_succeeds(client, make_admin):
+def test_admin_login_succeeds(client, make_admin):
     password = 'correct horse battery staple'
     permission_ids = {'admin.access'}
 
     user = make_admin(permission_ids, password=password)
 
     login_log_entries_before = user_log_service.get_entries_of_type_for_user(
-        user.id, 'user-logged-in'
+        user.id, 'user-logged-in-to-admin'
     )
     assert len(login_log_entries_before) == 0
 
@@ -48,7 +48,7 @@ def test_login_succeeds(client, make_admin):
     assert response.location == '/'
 
     login_log_entries_after = user_log_service.get_entries_of_type_for_user(
-        user.id, 'user-logged-in'
+        user.id, 'user-logged-in-to-admin'
     )
     assert len(login_log_entries_after) == 1
     login_log_entry = login_log_entries_after[0]
@@ -61,7 +61,7 @@ def test_login_succeeds(client, make_admin):
     assert cookie.secure
 
 
-def test_login_fails_with_invalid_credentials(client):
+def test_admin_login_fails_with_invalid_credentials(client):
     form_data = {
         'username': 'TotallyUnknownAdmin',
         'password': 'TotallyWrongPassword',
@@ -73,7 +73,7 @@ def test_login_fails_with_invalid_credentials(client):
     assert get_session_cookie(client) is None
 
 
-def test_login_fails_lacking_access_permission(client, make_user):
+def test_admin_login_fails_lacking_access_permission(client, make_user):
     password = 'correct horse battery staple'
 
     user = make_user(password=password)

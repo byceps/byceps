@@ -43,3 +43,14 @@ class UserIdentityTagDeletedEvent(UserIdentityTagEvent):
 class UserLoggedInEvent(UserAuthenticationEvent):
     ip_address: str | None
     site: EventSite | None
+
+
+@dataclass(frozen=True, kw_only=True)
+class UserLoggedInToAdminEvent(UserAuthenticationEvent):
+    ip_address: str | None
+
+
+@dataclass(frozen=True, kw_only=True)
+class UserLoggedInToSiteEvent(UserAuthenticationEvent):
+    ip_address: str | None
+    site: EventSite

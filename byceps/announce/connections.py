@@ -14,7 +14,11 @@ from blinker import NamedSignal
 
 from byceps.services.authn import announcing as authn_handlers
 from byceps.services.authn import signals as authn_signals
-from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.services.authn.events import (
+    PasswordUpdatedEvent,
+    UserLoggedInToAdminEvent,
+    UserLoggedInToSiteEvent,
+)
 from byceps.services.authz import announcing as authz_handlers
 from byceps.services.authz import signals as authz_signals
 from byceps.services.authz.events import (
@@ -197,9 +201,14 @@ for event, name, handler in [
         authn_handlers.announce_password_updated,
     ),
     (
-        UserLoggedInEvent,
-        'user-logged-in',
-        authn_handlers.announce_user_logged_in,
+        UserLoggedInToAdminEvent,
+        'user-logged-in-to-admin',
+        authn_handlers.announce_user_logged_in_to_admin,
+    ),
+    (
+        UserLoggedInToSiteEvent,
+        'user-logged-in-to-site',
+        authn_handlers.announce_user_logged_in_to_site,
     ),
     (
         RoleAssignedToUserEvent,
@@ -540,7 +549,8 @@ for event, name, handler in [
 
 _SIGNALS: list[NamedSignal] = [
     authn_signals.password_updated,
-    authn_signals.user_logged_in,
+    authn_signals.user_logged_in_to_admin,
+    authn_signals.user_logged_in_to_site,
     authz_signals.role_assigned_to_user,
     authz_signals.role_deassigned_from_user,
     board_signals.posting_created,

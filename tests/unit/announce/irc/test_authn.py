@@ -7,7 +7,11 @@ from datetime import datetime
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.services.authn.events import (
+    PasswordUpdatedEvent,
+    UserLoggedInToAdminEvent,
+    UserLoggedInToSiteEvent,
+)
 
 from .helpers import assert_text
 
@@ -31,16 +35,15 @@ def test_password_updated_announced(
 def test_user_logged_in_to_admin_app_announced(
     app: BycepsApp, now: datetime, make_user, webhook_for_irc
 ):
-    expected_text = 'Logvogel has logged in.'
+    expected_text = 'Logvogel has logged in to administration.'
 
     user = make_user(screen_name='Logvogel')
 
-    event = UserLoggedInEvent(
+    event = UserLoggedInToAdminEvent(
         occurred_at=now,
         initiator=user,
         user=user,
         ip_address=None,
-        site=None,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -55,11 +58,11 @@ def test_user_logged_in_to_site_app_announced(
     make_user,
     webhook_for_irc,
 ):
-    expected_text = 'Logvogel has logged in on site "ACMECon 2014 website".'
+    expected_text = 'Logvogel has logged in to site "ACMECon 2014 website".'
 
     user = make_user(screen_name='Logvogel')
 
-    event = UserLoggedInEvent(
+    event = UserLoggedInToSiteEvent(
         occurred_at=now,
         initiator=user,
         user=user,

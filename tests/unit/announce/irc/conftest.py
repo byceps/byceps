@@ -110,6 +110,8 @@ def webhook_for_irc() -> OutgoingWebhook:
             'user-email-address-invalidated',
             'user-screen-name-changed',
             'user-logged-in',
+            'user-logged-in-to-admin',
+            'user-logged-in-to-site',
             'whereabouts-client-approved',
             'whereabouts-client-deleted',
             'whereabouts-client-registered',

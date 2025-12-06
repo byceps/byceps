@@ -109,6 +109,23 @@
             ) }}
             {%- endif -%}
           {%- endcall %}
+        {%- elif log_entry.event_type == 'user-logged-in-to-admin' %}
+          {%- call render_log_entry('log-in', log_entry.occurred_at) %}
+            {{ _(
+              '%(user)s has <strong>logged in</strong> to administration from IP address %(ip_address)s.',
+              user=render_log_user(user),
+              ip_address=log_entry.data.ip_address,
+            ) }}
+          {%- endcall %}
+        {%- elif log_entry.event_type == 'user-logged-in-to-site' %}
+          {%- call render_log_entry('log-in', log_entry.occurred_at) %}
+            {{ _(
+              '%(user)s has <strong>logged in</strong> to site "%(site)s" from IP address %(ip_address)s.',
+              user=render_log_user(user),
+              ip_address=log_entry.data.ip_address,
+              site=log_entry.site.title,
+            ) }}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-screen-name-changed' %}
           {%- call render_log_entry('user', log_entry.occurred_at) %}
             {{ _(

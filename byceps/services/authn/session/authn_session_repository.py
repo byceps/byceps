@@ -19,6 +19,11 @@ from byceps.services.user.models.user import UserID
 from .dbmodels import DbRecentLogin, DbSessionToken
 
 
+LOGIN_EVENT_TYPES = frozenset(
+    ['user-logged-in', 'user-logged-in-to-admin', 'user-logged-in-to-site']
+)
+
+
 def get_session_token(user_id: UserID) -> DbSessionToken:
     """Return session token.
 
@@ -133,7 +138,7 @@ def find_logins_for_ip_address(
                 DbUserLogEntry.occurred_at,
                 DbUserLogEntry.user_id,
             )
-            .filter_by(event_type='user-logged-in')
+            .filter(DbUserLogEntry.event_type.in_(LOGIN_EVENT_TYPES))
             .filter(DbUserLogEntry.data['ip_address'].astext == ip_address)
             .order_by(DbUserLogEntry.occurred_at)
         )
@@ -149,7 +154,7 @@ def delete_login_entries(occurred_before: datetime) -> int:
     """
     result = db.session.execute(
         delete(DbUserLogEntry)
-        .filter_by(event_type='user-logged-in')
+        .filter(DbUserLogEntry.event_type.in_(LOGIN_EVENT_TYPES))
         .filter(DbUserLogEntry.occurred_at < occurred_before)
     )
     db.session.commit()

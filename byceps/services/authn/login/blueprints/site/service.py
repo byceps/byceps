@@ -12,7 +12,7 @@ import structlog
 
 from byceps.services.authn import authn_service
 from byceps.services.authn.errors import AuthenticationFailedError
-from byceps.services.authn.events import UserLoggedInEvent
+from byceps.services.authn.events import UserLoggedInToSiteEvent
 from byceps.services.authn.session import authn_session_service
 from byceps.services.brand.models import BrandID
 from byceps.services.consent import consent_service, consent_subject_service
@@ -39,7 +39,7 @@ def log_in_user(
     brand_id: BrandID,
     site: Site,
 ) -> Result[
-    tuple[User, UserLoggedInEvent],
+    tuple[User, UserLoggedInToSiteEvent],
     AuthenticationFailedError | ConsentRequiredError,
 ]:
     authn_result = authn_service.authenticate(username, password)
@@ -67,8 +67,7 @@ def log_in_user(
     user_session.start(user.id, auth_token, permanent=permanent)
 
     log.info(
-        'User logged in',
-        scope='site',
+        'User logged in to site',
         site_id=site.id,
         user_id=str(user.id),
         screen_name=user.screen_name,
@@ -91,8 +90,7 @@ def log_out_user(user: User, site: Site) -> None:
     user_session.end()
 
     log.info(
-        'User logged out',
-        scope='site',
+        'User logged out of site',
         site_id=site.id,
         user_id=str(user.id),
         screen_name=user.screen_name,

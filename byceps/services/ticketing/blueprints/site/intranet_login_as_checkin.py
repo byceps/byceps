@@ -11,8 +11,8 @@ check-in at the door.
 :Copyright: 2014-2025 Jochen Kupperschmidt
 """
 
-from byceps.services.authn.events import UserLoggedInEvent
-from byceps.services.authn.signals import user_logged_in
+from byceps.services.authn.events import UserLoggedInToSiteEvent
+from byceps.services.authn.signals import user_logged_in_to_site
 from byceps.services.party.models import PartyID
 from byceps.services.site import site_service
 from byceps.services.ticketing import (
@@ -23,11 +23,8 @@ from byceps.services.user.models.user import User
 from byceps.util.jobqueue import enqueue
 
 
-@user_logged_in.connect
-def _on_user_logged_in(sender, *, event: UserLoggedInEvent) -> None:
-    if event.site is None:
-        return
-
+@user_logged_in_to_site.connect
+def _on_user_logged_in(sender, *, event: UserLoggedInToSiteEvent) -> None:
     site = site_service.get_site(event.site.id)
 
     if site.party_id and site.check_in_on_login:

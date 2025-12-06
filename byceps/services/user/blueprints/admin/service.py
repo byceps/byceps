@@ -303,6 +303,12 @@ def _get_additional_data(
             if site is not None:
                 yield 'site', site
 
+    if log_entry.event_type == 'user-logged-in-to-site':
+        site_id = log_entry.data.get('site_id')
+        site = site_service.find_site(site_id)
+        if site is not None:
+            yield 'site', site
+
 
 def _get_additional_data_for_user_initiated_log_entry(
     log_entry: UserLogEntry, users_by_id: dict[UserID, User]

@@ -839,6 +839,11 @@ def role_deassign(user_id, role_id):
 # events
 
 
+LOGIN_EVENT_TYPES = frozenset(
+    ['user-logged-in', 'user-logged-in-to-admin', 'user-logged-in-to-site']
+)
+
+
 @blueprint.get('/<uuid:user_id>/events')
 @permission_required('user.view')
 @templated
@@ -853,7 +858,7 @@ def view_events(user_id):
         log_entries = [
             entry
             for entry in log_entries
-            if entry['event_type'] != 'user-logged-in'
+            if entry['event_type'] not in LOGIN_EVENT_TYPES
         ]
 
     return {

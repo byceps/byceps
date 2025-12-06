@@ -88,7 +88,7 @@ def log_in():
 
     _, logged_in_event = log_in_result.unwrap()
 
-    authn_signals.user_logged_in.send(None, event=logged_in_event)
+    authn_signals.user_logged_in_to_site.send(None, event=logged_in_event)
 
     return [('Location', url_for('dashboard.index'))]
 
