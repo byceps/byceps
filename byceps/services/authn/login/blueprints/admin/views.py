@@ -24,10 +24,6 @@ from .forms import LogInForm
 blueprint = create_blueprint('authn_login_admin', __name__)
 
 
-class AuthorizationFailed:
-    pass
-
-
 @blueprint.get('/log_in')
 @templated
 def log_in_form(erroneous_form=None):
