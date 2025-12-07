@@ -6,16 +6,34 @@ byceps.services.authn.errors
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from enum import Enum
+from dataclasses import dataclass
 
 
-UserAuthenticationFailedError = Enum(
-    'UserAuthenticationFailedError',
-    [
-        'UsernameUnknown',
-        'AccountNotInitialized',
-        'AccountSuspended',
-        'AccountDeleted',
-        'WrongPassword',
-    ],
-)
+@dataclass(frozen=True)
+class UserAuthenticationFailedError:
+    """Indicate a generic user authentication error."""
+
+
+@dataclass(frozen=True)
+class UsernameUnknownError(UserAuthenticationFailedError):
+    pass
+
+
+@dataclass(frozen=True)
+class UserAccountNotInitializedError(UserAuthenticationFailedError):
+    pass
+
+
+@dataclass(frozen=True)
+class UserAccountSuspendedError(UserAuthenticationFailedError):
+    pass
+
+
+@dataclass(frozen=True)
+class UserAccountDeletedError(UserAuthenticationFailedError):
+    pass
+
+
+@dataclass(frozen=True)
+class WrongPasswordError(UserAuthenticationFailedError):
+    pass
