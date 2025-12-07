@@ -42,17 +42,17 @@ def log_in_user(
     tuple[User, UserLoggedInToSiteEvent],
     AuthenticationFailedError | ConsentRequiredError,
 ]:
-    authn_result = authn_service.authenticate(username, password)
-    if authn_result.is_err():
-        log.info(
-            'User authentication for login to site failed',
-            site_id=site.id,
-            username=username,
-            error=str(authn_result.unwrap_err()),
-        )
-        return Err(authn_result.unwrap_err())
-
-    user = authn_result.unwrap()
+    match authn_service.authenticate(username, password):
+        case Ok(user):
+            pass
+        case Err(e):
+            log.info(
+                'User authentication for login to site failed',
+                site_id=site.id,
+                username=username,
+                error=str(e),
+            )
+            return Err(e)
 
     # Authentication succeeded.
 

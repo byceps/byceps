@@ -14,6 +14,7 @@ from byceps.services.authn import signals as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import redirect_to, respond_no_content
 
 from . import service
@@ -68,25 +69,23 @@ def log_in():
     password = secret(form.password.data)
     permanent = form.permanent.data
 
-    log_in_result = service.log_in_user(
+    match service.log_in_user(
         username,
         password,
         permanent,
         request.remote_addr,
         g.site.brand_id,
         site=g.site,
-    )
-    if log_in_result.is_err():
-        err = log_in_result.unwrap_err()
-        if isinstance(err, ConsentRequiredError):
+    ):
+        case Ok((_, logged_in_event)):
+            pass
+        case Err(ConsentRequiredError()):
             consent_form_url = url_for(
                 'consent.consent_form', token=err.verification_token
             )
             return [('Location', consent_form_url)]
-        else:
+        case Err(_):
             abort(401, 'Authentication failed')
-
-    _, logged_in_event = log_in_result.unwrap()
 
     authn_signals.user_logged_in_to_site.send(None, event=logged_in_event)
 

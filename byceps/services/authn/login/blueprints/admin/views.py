@@ -15,6 +15,7 @@ from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import redirect_to
 
 from . import service
@@ -61,14 +62,14 @@ def log_in():
     password = secret(form.password.data)
     permanent = form.permanent.data
 
-    log_in_result = service.log_in_user(
+    match service.log_in_user(
         username, password, permanent, request.remote_addr
-    )
-    if log_in_result.is_err():
-        form.form_errors.append(gettext('Login failed.'))
-        return log_in_form(form)
-
-    _, logged_in_event = log_in_result.unwrap()
+    ):
+        case Ok((_, logged_in_event)):
+            pass
+        case Err(_):
+            form.form_errors.append(gettext('Login failed.'))
+            return log_in_form(form)
 
     authn_signals.user_logged_in_to_admin.send(None, event=logged_in_event)
 
