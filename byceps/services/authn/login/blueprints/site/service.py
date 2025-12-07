@@ -45,8 +45,7 @@ def log_in_user(
     authn_result = authn_service.authenticate(username, password)
     if authn_result.is_err():
         log.info(
-            'User authentication failed',
-            scope='site',
+            'User authentication for login to site failed',
             site_id=site.id,
             username=username,
             error=str(authn_result.unwrap_err()),

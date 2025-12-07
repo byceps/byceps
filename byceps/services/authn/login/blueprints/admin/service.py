@@ -34,8 +34,7 @@ def log_in_user(
     authn_result = authn_service.authenticate(username, password)
     if authn_result.is_err():
         log.info(
-            'User authentication failed',
-            scope='admin',
+            'User authentication for login to administration failed',
             username=username,
             error=str(authn_result.unwrap_err()),
         )
@@ -48,7 +47,7 @@ def log_in_user(
     if 'admin.access' not in get_permissions_for_user(user.id):
         # The user lacks the permission required to enter the admin area.
         log.info(
-            'Admin authorization failed',
+            'User authorization for login to administration failed',
             user_id=str(user.id),
             screen_name=user.screen_name,
         )
