@@ -21,7 +21,7 @@ from byceps.util.result import Err, Ok, Result
 log = structlog.get_logger()
 
 
-class AuthorizationFailed:
+class AuthorizationFailedError:
     pass
 
 
@@ -29,7 +29,7 @@ def log_in_user(
     username: str, password: Password, permanent: bool, ip_address: str | None
 ) -> Result[
     tuple[User, UserLoggedInToAdminEvent],
-    AuthenticationFailedError | AuthorizationFailed,
+    AuthenticationFailedError | AuthorizationFailedError,
 ]:
     authn_result = authn_service.authenticate(username, password)
     if authn_result.is_err():
@@ -51,7 +51,7 @@ def log_in_user(
             user_id=str(user.id),
             screen_name=user.screen_name,
         )
-        return Err(AuthorizationFailed())
+        return Err(AuthorizationFailedError())
 
     # Authorization succeeded.
 
