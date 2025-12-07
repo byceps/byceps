@@ -10,30 +10,34 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class UserAuthenticationFailedError:
-    """Indicate a generic user authentication error."""
-
-
-@dataclass(frozen=True)
-class UsernameUnknownError(UserAuthenticationFailedError):
+class UsernameUnknownError:
     pass
 
 
 @dataclass(frozen=True)
-class UserAccountNotInitializedError(UserAuthenticationFailedError):
+class UserAccountNotInitializedError:
     pass
 
 
 @dataclass(frozen=True)
-class UserAccountSuspendedError(UserAuthenticationFailedError):
+class UserAccountSuspendedError:
     pass
 
 
 @dataclass(frozen=True)
-class UserAccountDeletedError(UserAuthenticationFailedError):
+class UserAccountDeletedError:
     pass
 
 
 @dataclass(frozen=True)
-class WrongPasswordError(UserAuthenticationFailedError):
+class WrongPasswordError:
     pass
+
+
+UserAuthenticationFailedError = (
+    UsernameUnknownError
+    | UserAccountNotInitializedError
+    | UserAccountSuspendedError
+    | UserAccountDeletedError
+    | WrongPasswordError
+)
