@@ -11,7 +11,7 @@ from dataclasses import dataclass
 import structlog
 
 from byceps.services.authn import authn_service
-from byceps.services.authn.errors import AuthenticationFailedError
+from byceps.services.authn.errors import UserAuthenticationFailedError
 from byceps.services.authn.events import UserLoggedInToSiteEvent
 from byceps.services.authn.session import authn_session_service
 from byceps.services.brand.models import BrandID
@@ -40,7 +40,7 @@ def log_in_user(
     site: Site,
 ) -> Result[
     tuple[User, UserLoggedInToSiteEvent],
-    AuthenticationFailedError | ConsentRequiredError,
+    UserAuthenticationFailedError | ConsentRequiredError,
 ]:
     match authn_service.authenticate(username, password):
         case Ok(user):

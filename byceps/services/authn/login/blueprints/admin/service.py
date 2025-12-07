@@ -9,7 +9,7 @@ byceps.services.authn.login.blueprints.admin.service
 import structlog
 
 from byceps.services.authn import authn_service
-from byceps.services.authn.errors import AuthenticationFailedError
+from byceps.services.authn.errors import UserAuthenticationFailedError
 from byceps.services.authn.events import UserLoggedInToAdminEvent
 from byceps.services.authn.session import authn_session_service
 from byceps.services.user.models.user import Password, User
@@ -29,7 +29,7 @@ def log_in_user(
     username: str, password: Password, permanent: bool, ip_address: str | None
 ) -> Result[
     tuple[User, UserLoggedInToAdminEvent],
-    AuthenticationFailedError | AuthorizationFailedError,
+    UserAuthenticationFailedError | AuthorizationFailedError,
 ]:
     match authn_service.authenticate(username, password):
         case Ok(user):

@@ -10,13 +10,13 @@ from byceps.services.user import user_service
 from byceps.services.user.models.user import Password, User
 from byceps.util.result import Err, Ok, Result
 
-from .errors import AuthenticationFailedError
+from .errors import UserAuthenticationFailedError
 from .password import authn_password_service
 
 
 def authenticate(
     screen_name_or_email_address: str, password: Password
-) -> Result[User, AuthenticationFailedError]:
+) -> Result[User, UserAuthenticationFailedError]:
     """Try to authenticate the user.
 
     Return the user object on success and an error on failure.
@@ -27,20 +27,20 @@ def authenticate(
     )
     if user is None:
         # Screen name/email address is unknown.
-        return Err(AuthenticationFailedError.UsernameUnknown)
+        return Err(UserAuthenticationFailedError.UsernameUnknown)
 
     if not user.initialized:
-        return Err(AuthenticationFailedError.AccountNotInitialized)
+        return Err(UserAuthenticationFailedError.AccountNotInitialized)
 
     if user.suspended:
-        return Err(AuthenticationFailedError.AccountSuspended)
+        return Err(UserAuthenticationFailedError.AccountSuspended)
 
     if user.deleted:
-        return Err(AuthenticationFailedError.AccountDeleted)
+        return Err(UserAuthenticationFailedError.AccountDeleted)
 
     # Verify credentials.
     if not authn_password_service.is_password_valid_for_user(user.id, password):
-        return Err(AuthenticationFailedError.WrongPassword)
+        return Err(UserAuthenticationFailedError.WrongPassword)
 
     authn_password_service.migrate_password_hash_if_outdated(user.id, password)
 

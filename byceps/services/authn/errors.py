@@ -9,8 +9,8 @@ byceps.services.authn.errors
 from enum import Enum
 
 
-AuthenticationFailedError = Enum(
-    'AuthenticationFailedError',
+UserAuthenticationFailedError = Enum(
+    'UserAuthenticationFailedError',
     [
         'UsernameUnknown',
         'AccountNotInitialized',
