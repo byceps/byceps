@@ -28,14 +28,33 @@ def authenticate(
 
     Return the user object on success and an error on failure.
     """
-    # Look up user by screen name or email address.
+
+    def check_password(
+        user: User,
+    ) -> Result[User, UserAuthenticationFailedError]:
+        return _check_password(user, password)
+
+    return (
+        _identify_account(screen_name_or_email_address)
+        .and_then(_check_account)
+        .and_then(check_password)
+    )
+
+
+def _identify_account(
+    screen_name_or_email_address: str,
+) -> Result[User, UserAuthenticationFailedError]:
     user = _find_user_by_screen_name_or_email_address(
         screen_name_or_email_address
     )
+
     if user is None:
-        # Screen name/email address is unknown.
         return Err(UsernameUnknownError())
 
+    return Ok(user)
+
+
+def _check_account(user: User) -> Result[User, UserAuthenticationFailedError]:
     if not user.initialized:
         return Err(UserAccountNotInitializedError())
 
@@ -45,7 +64,12 @@ def authenticate(
     if user.deleted:
         return Err(UserAccountDeletedError())
 
-    # Verify credentials.
+    return Ok(user)
+
+
+def _check_password(
+    user: User, password: Password
+) -> Result[User, UserAuthenticationFailedError]:
     if not authn_password_service.is_password_valid_for_user(user.id, password):
         return Err(WrongPasswordError())
 
