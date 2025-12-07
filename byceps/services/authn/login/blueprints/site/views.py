@@ -79,7 +79,7 @@ def log_in():
     ):
         case Ok((_, logged_in_event)):
             pass
-        case Err(ConsentRequiredError()):
+        case Err(ConsentRequiredError() as err):
             consent_form_url = url_for(
                 'consent.consent_form', token=err.verification_token
             )
