@@ -55,6 +55,8 @@ jobs:
     steps:
     - name: Check out repository
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false
 
     - name: Install uv and Python
       uses: astral-sh/setup-uv@v7
