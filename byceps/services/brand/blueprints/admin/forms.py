@@ -6,6 +6,7 @@ byceps.services.brand.blueprints.admin.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from babel import Locale
 from flask_babel import lazy_gettext
 from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
@@ -43,7 +44,7 @@ class CreateForm(_BaseForm):
         if brand_service.find_brand_by_title(title) is not None:
             raise ValidationError(lazy_gettext('The value is already in use.'))
 
-    def set_currency_choices(self, locale: str):
+    def set_currency_choices(self, locale: Locale):
         def get_label(currency) -> str:
             name = currency.get_name(locale)
             return f'{name} ({currency.code})'

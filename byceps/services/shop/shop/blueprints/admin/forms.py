@@ -6,6 +6,7 @@ byceps.services.shop.shop.blueprints.admin.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from babel import Locale
 from flask_babel import lazy_gettext
 from wtforms import SelectField
 from wtforms.validators import InputRequired
@@ -17,7 +18,7 @@ from byceps.util.l10n import LocalizedForm
 class CreateForm(LocalizedForm):
     currency = SelectField(lazy_gettext('Currency'), [InputRequired()])
 
-    def set_currency_choices(self, locale: str):
+    def set_currency_choices(self, locale: Locale):
         def get_label(currency) -> str:
             name = currency.get_name(locale)
             return f'{name} ({currency.code})'
