@@ -8,10 +8,11 @@ byceps.services.page.blueprints.site.views
 
 from babel import Locale
 from flask import abort, g
+from flask_babel import get_locale
 
 from byceps.services.page import page_service
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.l10n import get_default_locale, get_locale_str
+from byceps.util.l10n import get_default_locale
 
 from .templating import render_page, url_for_page
 
@@ -28,7 +29,7 @@ def view(url_path):
     """
     url_path = '/' + url_path
 
-    version = _get_page_version(url_path, Locale.parse(get_locale_str()))
+    version = _get_page_version(url_path, get_locale())
     if version is None:
         locale = get_default_locale()
         version = _get_page_version(url_path, locale)

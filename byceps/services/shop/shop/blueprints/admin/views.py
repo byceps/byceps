@@ -7,7 +7,7 @@ byceps.services.shop.shop.blueprints.admin.views
 """
 
 from flask import abort, g, request
-from flask_babel import gettext
+from flask_babel import gettext, get_locale
 from moneyed import get_currency
 
 from byceps.services.brand import brand_service
@@ -26,7 +26,7 @@ from byceps.services.shop.shop.models import ShopID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.l10n import get_default_locale, get_locale_str
+from byceps.util.l10n import get_default_locale
 from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm
@@ -130,7 +130,7 @@ def create_form(brand_id, erroneous_form=None):
     """Show form to create a shop."""
     brand = _get_brand_or_404(brand_id)
 
-    locale = get_locale_str() or get_default_locale().language
+    locale = (get_locale() or get_default_locale()).language
 
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_currency_choices(locale)

@@ -9,6 +9,7 @@ byceps.services.page.blueprints.site.templating
 from typing import Any
 
 from flask import abort, g, render_template, url_for
+from flask_babel import get_locale
 from jinja2 import TemplateNotFound
 import structlog
 
@@ -19,7 +20,7 @@ from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.snippet.blueprints.site.templating import (
     render_snippet_as_partial_from_template,
 )
-from byceps.util.l10n import get_default_locale, get_locale_str
+from byceps.util.l10n import get_default_locale
 from byceps.util.templating import load_template
 
 
@@ -59,7 +60,9 @@ def _find_subnav_menu_id(page: Page) -> NavMenuID | None:
     if page.nav_menu_id:
         return page.nav_menu_id
 
-    language_code = get_locale_str() or get_default_locale().language
+    locale = get_locale() or get_default_locale()
+    language_code = locale.language
+
     return site_navigation_service.find_submenu_id_for_page(
         g.site.id, language_code, page.name
     )
