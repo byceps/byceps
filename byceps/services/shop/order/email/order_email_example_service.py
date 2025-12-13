@@ -52,7 +52,7 @@ def build_example_placed_order_message_text(
     try:
         message_result = (
             order_email_service.assemble_email_for_incoming_order_to_orderer(
-                data, locale.language
+                data, locale
             )
         )
     except Exception as e:
@@ -77,7 +77,7 @@ def build_example_paid_order_message_text(
     try:
         message_result = (
             order_email_service.assemble_email_for_paid_order_to_orderer(
-                data, locale.language
+                data, locale
             )
         )
     except Exception as e:
@@ -106,7 +106,7 @@ def build_example_canceled_order_message_text(
     try:
         message_result = (
             order_email_service.assemble_email_for_canceled_order_to_orderer(
-                data, locale.language
+                data, locale
             )
         )
     except Exception as e:

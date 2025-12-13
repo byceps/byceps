@@ -12,6 +12,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from functools import partial
 
+from babel import Locale
 from flask_babel import force_locale, format_date, gettext, pgettext
 import structlog
 
@@ -53,9 +54,9 @@ class OrderEmailText:
 
 def send_email_for_incoming_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    language_code = get_user_locale(data.orderer).language
+    locale = get_user_locale(data.orderer)
 
-    match assemble_email_for_incoming_order_to_orderer(data, language_code):
+    match assemble_email_for_incoming_order_to_orderer(data, locale):
         case Ok(message):
             _send_email(message)
         case Err(e):
@@ -66,9 +67,9 @@ def send_email_for_incoming_order_to_orderer(order: Order) -> None:
 
 def send_email_for_canceled_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    language_code = get_user_locale(data.orderer).language
+    locale = get_user_locale(data.orderer)
 
-    match assemble_email_for_canceled_order_to_orderer(data, language_code):
+    match assemble_email_for_canceled_order_to_orderer(data, locale):
         case Ok(message):
             _send_email(message)
         case Err(e):
@@ -79,9 +80,9 @@ def send_email_for_canceled_order_to_orderer(order: Order) -> None:
 
 def send_email_for_paid_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    language_code = get_user_locale(data.orderer).language
+    locale = get_user_locale(data.orderer)
 
-    match assemble_email_for_paid_order_to_orderer(data, language_code):
+    match assemble_email_for_paid_order_to_orderer(data, locale):
         case Ok(message):
             _send_email(message)
         case Err(e):
@@ -92,9 +93,9 @@ def send_email_for_paid_order_to_orderer(order: Order) -> None:
 
 def assemble_email_for_incoming_order_to_orderer(
     data: OrderEmailData,
-    language_code: str,
+    locale: Locale,
 ) -> Result[Message, SnippetNotFoundError]:
-    footer_result = email_footer_service.get_footer(data.brand, language_code)
+    footer_result = email_footer_service.get_footer(data.brand, locale.language)
     if footer_result.is_err():
         return Err(footer_result.unwrap_err())
 
@@ -102,7 +103,7 @@ def assemble_email_for_incoming_order_to_orderer(
 
     payment_instructions_result = (
         order_payment_service.get_email_payment_instructions(
-            data.order, language_code
+            data.order, locale.language
         )
     )
     if payment_instructions_result.is_err():
@@ -119,7 +120,7 @@ def assemble_email_for_incoming_order_to_orderer(
 
     assembled = _assemble_email(
         data,
-        language_code,
+        locale,
         footer,
         assemble_text_for_incoming_order_to_orderer_with_payment_instructions,
     )
@@ -183,16 +184,16 @@ def assemble_text_for_incoming_order_to_orderer(
 
 def assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
-    language_code: str,
+    locale: Locale,
 ) -> Result[Message, SnippetNotFoundError]:
-    footer_result = email_footer_service.get_footer(data.brand, language_code)
+    footer_result = email_footer_service.get_footer(data.brand, locale.language)
     if footer_result.is_err():
         return Err(footer_result.unwrap_err())
 
     footer = footer_result.unwrap()
 
     assembled = _assemble_email(
-        data, language_code, footer, assemble_text_for_canceled_order_to_orderer
+        data, locale, footer, assemble_text_for_canceled_order_to_orderer
     )
     return Ok(assembled)
 
@@ -219,16 +220,16 @@ def assemble_text_for_canceled_order_to_orderer(order: Order) -> OrderEmailText:
 
 
 def assemble_email_for_paid_order_to_orderer(
-    data: OrderEmailData, language_code: str
+    data: OrderEmailData, locale: Locale
 ) -> Result[Message, SnippetNotFoundError]:
-    footer_result = email_footer_service.get_footer(data.brand, language_code)
+    footer_result = email_footer_service.get_footer(data.brand, locale.language)
     if footer_result.is_err():
         return Err(footer_result.unwrap_err())
 
     footer = footer_result.unwrap()
 
     assembled = _assemble_email(
-        data, language_code, footer, assemble_text_for_paid_order_to_orderer
+        data, locale, footer, assemble_text_for_paid_order_to_orderer
     )
     return Ok(assembled)
 
@@ -274,11 +275,11 @@ def _get_order_email_data(order: Order) -> OrderEmailData:
 
 def _assemble_email(
     data: OrderEmailData,
-    language_code: str,
+    locale: Locale,
     footer: str,
     func: Callable[[Order], OrderEmailText],
 ) -> Message:
-    with force_locale(language_code):
+    with force_locale(locale):
         text = func(data.order)
         body = _assemble_body_parts(data.orderer, text.body_main_part, footer)
 
