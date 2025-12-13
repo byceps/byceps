@@ -142,6 +142,40 @@ def remove_detail_extra(user_id: UserID, key: str) -> None:
     db.session.commit()
 
 
+def delete_user(
+    user: User, initiator: User, db_log_entry: DbUserLogEntry
+) -> None:
+    """Remove personal details from and mark user as deleted."""
+    db_user = get_db_user(user.id)
+
+    db_user.deleted = True
+
+    _anonymize_user(db_user)
+
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+
+def _anonymize_user(db_user: DbUser) -> None:
+    """Remove user details from the account."""
+    db_user.screen_name = None
+    db_user.email_address = None
+    db_user.avatar_id = None
+    db_user.legacy_id = None
+
+    db_user.detail.first_name = None
+    db_user.detail.last_name = None
+    db_user.detail.date_of_birth = None
+    db_user.detail.country = None
+    db_user.detail.postal_code = None
+    db_user.detail.city = None
+    db_user.detail.street = None
+    db_user.detail.phone_number = None
+    db_user.detail.internal_comment = None
+    db_user.detail.extras = None
+
+
 def do_users_exist() -> bool:
     """Return `True` if any user accounts (i.e. at least one) exists."""
     return db.session.scalar(select(select(DbUser).exists())) or False
