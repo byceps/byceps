@@ -130,7 +130,7 @@ def create_form(brand_id, erroneous_form=None):
     """Show form to create a shop."""
     brand = _get_brand_or_404(brand_id)
 
-    locale = get_locale_str() or get_default_locale()
+    locale = get_locale_str() or get_default_locale().language
 
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_currency_choices(locale)
@@ -147,7 +147,7 @@ def create(brand_id):
     """Create a shop."""
     brand = _get_brand_or_404(brand_id)
 
-    locale = get_default_locale()
+    locale = get_default_locale().language
 
     form = CreateForm(request.form)
     form.set_currency_choices(locale)

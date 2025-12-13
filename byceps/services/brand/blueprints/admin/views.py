@@ -70,7 +70,7 @@ def view(brand_id):
 @templated
 def create_form(erroneous_form=None):
     """Show form to create a brand."""
-    locale = get_locale_str() or get_default_locale()
+    locale = get_locale_str() or get_default_locale().language
 
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_currency_choices(locale)
@@ -84,7 +84,7 @@ def create_form(erroneous_form=None):
 @permission_required('brand.create')
 def create():
     """Create a brand."""
-    locale = get_default_locale()
+    locale = get_default_locale().language
 
     form = CreateForm(request.form)
     form.set_currency_choices(locale)

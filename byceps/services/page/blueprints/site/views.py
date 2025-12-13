@@ -6,6 +6,7 @@ byceps.services.page.blueprints.site.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from babel import Locale
 from flask import abort, g
 
 from byceps.services.page import page_service
@@ -29,7 +30,8 @@ def view(url_path):
 
     version = _get_page_version(url_path, get_locale_str())
     if version is None:
-        version = _get_page_version(url_path, get_default_locale())
+        locale = get_default_locale()
+        version = _get_page_version(url_path, locale)
 
     if version is None:
         abort(404)
@@ -39,7 +41,7 @@ def view(url_path):
     return render_page(page, version)
 
 
-def _get_page_version(url_path: str, language_code: str):
+def _get_page_version(url_path: str, locale: Locale):
     return page_service.find_current_version_for_url_path(
-        g.site.id, url_path, language_code
+        g.site.id, url_path, locale.language
     )

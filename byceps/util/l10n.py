@@ -43,9 +43,9 @@ def force_user_locale(user: User) -> Iterator[None]:
         yield
 
 
-def get_default_locale() -> str:
+def get_default_locale() -> Locale:
     """Return the application's default locale."""
-    return current_app.config['LOCALE']
+    return Locale.parse(current_app.config['LOCALE'])
 
 
 def get_user_locale(user: User) -> Locale:
@@ -55,7 +55,7 @@ def get_user_locale(user: User) -> Locale:
     locale.
     """
     if not user.locale:
-        return Locale.parse(get_default_locale())
+        return get_default_locale()
 
     return Locale.parse(user.locale)
 

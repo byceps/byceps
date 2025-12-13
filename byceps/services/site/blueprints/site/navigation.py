@@ -17,7 +17,7 @@ from byceps.util.l10n import get_default_locale, get_locale_str
 
 def find_subnav_menu_id(view_name: str) -> NavMenuID | None:
     """Return the ID of the navigation submenu for the view."""
-    language_code = get_locale_str() or get_default_locale()
+    language_code = get_locale_str() or get_default_locale().language
     return site_navigation_service.find_submenu_id_for_view(
         g.site.id, language_code, view_name
     )

@@ -44,7 +44,9 @@ def render_snippet_as_partial_from_template(
     This function is meant to be made available in templates.
     """
     language_code = (
-        language_code or get_current_user_locale() or get_default_locale()
+        language_code
+        or get_current_user_locale()
+        or get_default_locale().language
     )
     scope_obj = _parse_scope_string(scope) if (scope is not None) else None
 

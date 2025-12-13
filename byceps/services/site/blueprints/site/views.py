@@ -43,7 +43,7 @@ def get_nav_menu_items(menu_name: str) -> list[NavItemForRendering]:
     # This fallback is a bit rough, though. What if, for example, the
     # original language's menu is intentionally hidden?
     if not items:
-        default_locale_str = get_default_locale()
+        default_locale_str = get_default_locale().language
         if default_locale_str != locale_str:
             return get_items(default_locale_str)
 
