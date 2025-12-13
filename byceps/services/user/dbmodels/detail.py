@@ -37,7 +37,9 @@ class DbUserDetail(db.Model):
     street: Mapped[str | None] = mapped_column(db.UnicodeText)
     phone_number: Mapped[str | None] = mapped_column(db.UnicodeText)
     internal_comment: Mapped[str | None] = mapped_column(db.UnicodeText)
-    extras: Mapped[Any | None] = mapped_column(MutableDict.as_mutable(db.JSONB))
+    extras: Mapped[dict[str, Any] | None] = mapped_column(
+        MutableDict.as_mutable(db.JSONB)
+    )
 
     @property
     def full_name(self) -> str | None:
