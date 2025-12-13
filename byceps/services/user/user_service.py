@@ -6,16 +6,12 @@ byceps.services.user.user_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 
-from sqlalchemy import select
-from sqlalchemy.sql import Select
-
-from byceps.database import db, paginate, Pagination
+from byceps.database import Pagination
 from byceps.services.user.models.user import UserID
 
-from .dbmodels.avatar import DbUserAvatar
-from .dbmodels.detail import DbUserDetail
+from . import user_repository
 from .dbmodels.user import DbUser
 from .models.user import (
     User,
@@ -31,7 +27,7 @@ from .models.user import (
 
 def do_users_exist() -> bool:
     """Return `True` if any user accounts (i.e. at least one) exists."""
-    return db.session.scalar(select(select(DbUser).exists())) or False
+    return user_repository.do_users_exist()
 
 
 def find_active_user(
@@ -46,23 +42,9 @@ def find_active_user(
     - the account is currently suspended.
     - the account is marked as deleted.
     """
-    stmt = _get_user_stmt(include_avatar)
-
-    user_row = (
-        db.session.execute(
-            stmt.filter(DbUser.initialized == True)  # noqa: E712
-            .filter(DbUser.suspended == False)  # noqa: E712
-            .filter(DbUser.deleted == False)  # noqa: E712
-            .filter(DbUser.id == user_id)
-        )
-        .tuples()
-        .one_or_none()
+    return user_repository.find_active_user(
+        user_id, include_avatar=include_avatar
     )
-
-    if user_row is None:
-        return None
-
-    return _user_row_to_dto(user_row)
 
 
 def find_user(
@@ -74,18 +56,7 @@ def find_user(
 
     Include avatar URL if requested.
     """
-    user_row = (
-        db.session.execute(
-            _get_user_stmt(include_avatar).filter(DbUser.id == user_id)
-        )
-        .tuples()
-        .one_or_none()
-    )
-
-    if user_row is None:
-        return None
-
-    return _user_row_to_dto(user_row)
+    return user_repository.find_user(user_id, include_avatar=include_avatar)
 
 
 def get_user(user_id: UserID, *, include_avatar: bool = False) -> User:
@@ -110,20 +81,7 @@ def get_users(
 
     Their respective avatars' URLs are included, if requested.
     """
-    if not user_ids:
-        return set()
-
-    user_rows = (
-        db.session.execute(
-            _get_user_stmt(include_avatars).filter(
-                DbUser.id.in_(frozenset(user_ids))
-            )
-        )
-        .tuples()
-        .all()
-    )
-
-    return {_user_row_to_dto(user_row) for user_row in user_rows}
+    return user_repository.get_users(user_ids, include_avatars=include_avatars)
 
 
 def get_users_indexed_by_id(
@@ -139,84 +97,16 @@ def get_users_indexed_by_id(
     return {user.id: user for user in users}
 
 
-def _get_user_stmt(include_avatar: bool) -> Select:
-    stmt = select(
-        DbUser.id,
-        DbUser.screen_name,
-        DbUser.initialized,
-        DbUser.suspended,
-        DbUser.deleted,
-        DbUser.locale,
-        DbUserAvatar if include_avatar else db.null(),
-    )
-
-    if include_avatar:
-        stmt = stmt.outerjoin(DbUserAvatar, DbUser.avatar_id == DbUserAvatar.id)
-
-    return stmt
-
-
-def _user_row_to_dto(
-    user_row: tuple[UserID, str, bool, bool, bool, str | None, DbUserAvatar],
-) -> User:
-    user_id, screen_name, initialized, suspended, deleted, locale, db_avatar = (
-        user_row
-    )
-
-    if db_avatar:
-        avatar_url = db_avatar.url
-    elif deleted:
-        avatar_url = USER_DELETED_AVATAR_URL_PATH
-    else:
-        avatar_url = USER_FALLBACK_AVATAR_URL_PATH
-
-    return User(
-        id=user_id,
-        screen_name=screen_name,
-        initialized=initialized,
-        suspended=suspended,
-        deleted=deleted,
-        locale=locale,
-        avatar_url=avatar_url,
-    )
-
-
 def find_user_by_email_address(email_address: str) -> User | None:
     """Return the user with that email address, or `None` if not found."""
-    user_row = (
-        db.session.execute(
-            _get_user_stmt(include_avatar=True).filter(
-                db.func.lower(DbUser.email_address) == email_address.lower()
-            )
-        )
-        .tuples()
-        .one_or_none()
-    )
-
-    if user_row is None:
-        return None
-
-    return _user_row_to_dto(user_row)
+    return user_repository.find_user_by_email_address(email_address)
 
 
 def find_user_by_email_address_md5_hash(md5_hash: str) -> User | None:
     """Return the user with that MD5 hash for their email address, or
     `None` if not found.
     """
-    user_row = (
-        db.session.execute(
-            _get_user_stmt(include_avatar=True).filter(
-                db.func.md5(DbUser.email_address) == md5_hash
-            )
-        )
-        .tuples()
-        .one_or_none()
-    )
-
-    if user_row is None:
-        return None
-
-    return _user_row_to_dto(user_row)
+    return user_repository.find_user_by_email_address_md5_hash(md5_hash)
 
 
 def find_user_by_screen_name(screen_name: str) -> User | None:
@@ -224,16 +114,7 @@ def find_user_by_screen_name(screen_name: str) -> User | None:
 
     Comparison is done case-insensitively.
     """
-    stmt = _get_user_stmt(include_avatar=True).filter(
-        db.func.lower(DbUser.screen_name) == screen_name.lower()
-    )
-
-    user_row = db.session.execute(stmt).tuples().one_or_none()
-
-    if user_row is None:
-        return None
-
-    return _user_row_to_dto(user_row)
+    return user_repository.find_user_by_screen_name(screen_name)
 
 
 def find_db_user_by_screen_name(screen_name: str) -> DbUser | None:
@@ -241,49 +122,22 @@ def find_db_user_by_screen_name(screen_name: str) -> DbUser | None:
 
     Comparison is done case-insensitively.
     """
-    stmt = select(DbUser).filter(
-        db.func.lower(DbUser.screen_name) == screen_name.lower()
-    )
-
-    return db.session.scalars(stmt).one_or_none()
+    return user_repository.find_db_user_by_screen_name(screen_name)
 
 
 def find_user_with_details(user_id: UserID) -> DbUser | None:
     """Return the user and its details."""
-    return db.session.scalars(
-        select(DbUser)
-        .options(db.joinedload(DbUser.detail))
-        .filter_by(id=user_id)
-    ).one_or_none()
+    return user_repository.find_user_with_details(user_id)
 
 
 def get_db_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
-    db_user = db.session.get(DbUser, user_id)
-
-    if db_user is None:
-        raise ValueError(f"Unknown user ID '{user_id}'")
-
-    return db_user
+    return user_repository.get_db_user(user_id)
 
 
 def find_user_for_admin(user_id: UserID) -> UserForAdmin | None:
     """Return the user with that ID, or `None` if not found."""
-    db_user = db.session.scalars(
-        select(DbUser)
-        .options(
-            db.joinedload(DbUser.avatar),
-            db.joinedload(DbUser.detail).load_only(
-                DbUserDetail.first_name, DbUserDetail.last_name
-            ),
-        )
-        .filter_by(id=user_id)
-    ).one_or_none()
-
-    if db_user is None:
-        return None
-
-    return _db_entity_to_user_for_admin(db_user)
+    return user_repository.find_user_for_admin(user_id)
 
 
 def get_user_for_admin(user_id: UserID) -> UserForAdmin:
@@ -298,25 +152,7 @@ def get_user_for_admin(user_id: UserID) -> UserForAdmin:
 
 def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
     """Return the users with those IDs."""
-    if not user_ids:
-        return set()
-
-    db_users = (
-        db.session.scalars(
-            select(DbUser)
-            .options(
-                db.joinedload(DbUser.avatar),
-                db.joinedload(DbUser.detail).load_only(
-                    DbUserDetail.first_name, DbUserDetail.last_name
-                ),
-            )
-            .filter(DbUser.id.in_(frozenset(user_ids)))
-        )
-        .unique()
-        .all()
-    )
-
-    return {_db_entity_to_user_for_admin(db_user) for db_user in db_users}
+    return user_repository.get_users_for_admin(user_ids)
 
 
 def get_users_for_admin_indexed_by_id(
@@ -329,7 +165,7 @@ def get_users_for_admin_indexed_by_id(
 
 def get_all_users() -> list[User]:
     """Return all users."""
-    db_users = db.session.scalars(select(DbUser)).all()
+    db_users = user_repository.get_all_users()
     return [_db_entity_to_user(db_user) for db_user in db_users]
 
 
@@ -372,19 +208,12 @@ def _db_entity_to_user_for_admin(db_user: DbUser) -> UserForAdmin:
 
 def find_screen_name(user_id: UserID) -> str | None:
     """Return the user's screen name, if available."""
-    screen_name = db.session.scalar(
-        select(DbUser.screen_name).filter_by(id=user_id)
-    )
-
-    if screen_name is None:
-        return None
-
-    return screen_name
+    return user_repository.find_screen_name(user_id)
 
 
 def find_email_address(user_id: UserID) -> str | None:
     """Return the user's e-mail address, if set."""
-    return db.session.scalar(select(DbUser.email_address).filter_by(id=user_id))
+    return user_repository.find_email_address(user_id)
 
 
 def get_email_address(user_id: UserID) -> str:
@@ -401,19 +230,14 @@ def get_email_address(user_id: UserID) -> str:
 
 def get_email_address_data(user_id: UserID) -> UserEmailAddress:
     """Return the user's e-mail address data."""
-    row = db.session.execute(
-        select(
-            DbUser.email_address,
-            DbUser.email_address_verified,
-        ).filter_by(id=user_id)
-    ).one_or_none()
+    db_row = user_repository.find_email_address_data(user_id)
 
-    if row is None:
+    if db_row is None:
         raise ValueError(f"Unknown user ID '{user_id}'")
 
     return UserEmailAddress(
-        address=row[0],
-        verified=row[1],
+        address=db_row[0],
+        verified=db_row[1],
     )
 
 
@@ -421,26 +245,12 @@ def get_email_addresses(
     user_ids: set[UserID],
 ) -> set[tuple[UserID, str | None]]:
     """Return the users' e-mail addresses."""
-    rows = (
-        db.session.execute(
-            select(
-                DbUser.id,
-                DbUser.email_address,
-            ).filter(DbUser.id.in_(user_ids))
-        )
-        .tuples()
-        .all()
-    )
-
-    return set(rows)
+    return user_repository.get_email_addresses(user_ids)
 
 
 def get_detail(user_id: UserID) -> UserDetail:
     """Return the user's details."""
-    db_detail = db.session.get(DbUserDetail, user_id)
-
-    if db_detail is None:
-        raise ValueError(f"Unknown user ID '{user_id}'")
+    db_detail = user_repository.get_detail(user_id)
 
     return UserDetail(
         first_name=db_detail.first_name,
@@ -470,57 +280,19 @@ def get_sort_key_for_screen_name(user: User) -> tuple[bool, str]:
 
 def is_screen_name_already_assigned(screen_name: str) -> bool:
     """Return `True` if a user with that screen name exists."""
-    return _do_users_matching_filter_exist(DbUser.screen_name, screen_name)
+    return user_repository.is_screen_name_already_assigned(screen_name)
 
 
 def is_email_address_already_assigned(email_address: str) -> bool:
     """Return `True` if a user with that email address exists."""
-    return _do_users_matching_filter_exist(DbUser.email_address, email_address)
-
-
-def _do_users_matching_filter_exist(
-    model_attribute: str, search_value: str
-) -> bool:
-    """Return `True` if any users match the filter.
-
-    Comparison is done case-insensitively.
-    """
-    return (
-        db.session.scalar(
-            select(
-                select(DbUser)
-                .filter(db.func.lower(model_attribute) == search_value.lower())
-                .exists()
-            )
-        )
-        or False
-    )
+    return user_repository.is_email_address_already_assigned(email_address)
 
 
 def get_users_created_since(
     delta: timedelta, limit: int | None = None
 ) -> list[UserForAdmin]:
     """Return the user accounts created since `delta` ago."""
-    filter_starts_at = datetime.utcnow() - delta
-
-    stmt = (
-        select(DbUser)
-        .options(
-            db.joinedload(DbUser.avatar),
-            db.joinedload(DbUser.detail).load_only(
-                DbUserDetail.first_name, DbUserDetail.last_name
-            ),
-        )
-        .filter(DbUser.created_at >= filter_starts_at)
-        .order_by(DbUser.created_at.desc())
-    )
-
-    if limit is not None:
-        stmt = stmt.limit(limit)
-
-    db_users = db.session.scalars(stmt).unique().all()
-
-    return [_db_entity_to_user_for_admin(db_user) for db_user in db_users]
+    return user_repository.get_users_created_since(delta, limit)
 
 
 def get_users_paginated(
@@ -533,64 +305,6 @@ def get_users_paginated(
     """Return the users to show on the specified page, optionally
     filtered by search term or flags.
     """
-    stmt = (
-        select(DbUser)
-        .options(
-            db.joinedload(DbUser.detail).load_only(
-                DbUserDetail.first_name, DbUserDetail.last_name
-            ),
-            db.joinedload(DbUser.avatar),
-        )
-        .order_by(DbUser.created_at.desc())
-    )
-
-    stmt = _filter_users(stmt, user_filter)
-
-    if search_term:
-        stmt = _filter_by_search_term(stmt, search_term)
-
-    return paginate(
-        stmt, page, per_page, item_mapper=_db_entity_to_user_for_admin
-    )
-
-
-def _filter_users(
-    stmt: Select, user_filter: UserFilter | None = None
-) -> Select:
-    match user_filter:
-        case UserFilter.active:
-            return (
-                stmt.filter_by(initialized=True)
-                .filter_by(suspended=False)
-                .filter_by(deleted=False)
-            )
-        case UserFilter.uninitialized:
-            return (
-                stmt.filter_by(initialized=False)
-                .filter_by(suspended=False)
-                .filter_by(deleted=False)
-            )
-        case UserFilter.suspended:
-            return stmt.filter_by(suspended=True).filter_by(deleted=False)
-        case UserFilter.deleted:
-            return stmt.filter_by(deleted=True)
-        case _:
-            return stmt
-
-
-def _filter_by_search_term(stmt: Select, search_term: str) -> Select:
-    terms = search_term.split(' ')
-    clauses = map(_generate_search_clauses_for_term, terms)
-
-    return stmt.join(DbUserDetail).filter(db.and_(*clauses))
-
-
-def _generate_search_clauses_for_term(search_term: str) -> Select:
-    ilike_pattern = f'%{search_term}%'
-
-    return db.or_(
-        DbUser.email_address.ilike(ilike_pattern),
-        DbUser.screen_name.ilike(ilike_pattern),
-        DbUserDetail.first_name.ilike(ilike_pattern),
-        DbUserDetail.last_name.ilike(ilike_pattern),
+    return user_repository.get_users_paginated(
+        page, per_page, search_term=search_term, user_filter=user_filter
     )
