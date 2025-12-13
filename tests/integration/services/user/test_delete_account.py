@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.authz import authz_service
-from byceps.services.user import user_deletion_service, user_service
+from byceps.services.user import user_command_service, user_service
 from byceps.services.user.log import user_log_service
 
 
@@ -64,7 +64,7 @@ def test_delete_account(admin_app, role, make_user):
 
     # -------------------------------- #
 
-    user_deletion_service.delete_account(user, admin_user, reason=reason)
+    user_command_service.delete_account(user, admin_user, reason=reason)
 
     # -------------------------------- #
 

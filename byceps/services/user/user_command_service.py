@@ -11,9 +11,13 @@ from warnings import warn
 
 from babel import Locale
 
+from byceps.services.authn.password import authn_password_service
+from byceps.services.authn.session import authn_session_service
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import RoleID
+from byceps.services.newsletter import newsletter_command_service
 from byceps.services.user.log import user_log_service
+from byceps.services.verification_token import verification_token_service
 from byceps.util.result import Err, Ok, Result
 
 from . import (
@@ -25,6 +29,7 @@ from . import (
 )
 from .errors import NothingChangedError
 from .events import (
+    UserAccountDeletedEvent,
     UserAccountSuspendedEvent,
     UserAccountUnsuspendedEvent,
     UserDetailsUpdatedEvent,
@@ -246,3 +251,29 @@ def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:
 def remove_user_detail_extra(user_id: UserID, key: str) -> None:
     """Remove the entry with that key from the user's detail extras map."""
     user_repository.remove_detail_extra(user_id, key)
+
+
+def delete_account(
+    user: User, initiator: User, reason: str
+) -> UserAccountDeletedEvent:
+    """Delete the user account."""
+    event, log_entry = user_domain_service.delete_account(
+        user, initiator, reason
+    )
+
+    authz_service.deassign_all_roles_from_user(
+        user, initiator=initiator, commit=False
+    )
+
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+
+    user_repository.delete_user(user, initiator, db_log_entry)
+
+    authn_session_service.delete_session_tokens_for_user(user.id)
+    authn_password_service.delete_password_hash(user.id)
+    verification_token_service.delete_tokens_for_user(user.id)
+    newsletter_command_service.unsubscribe_user_from_lists(
+        user, log_entry.occurred_at, initiator
+    )
+
+    return event

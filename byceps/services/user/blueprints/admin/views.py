@@ -26,7 +26,6 @@ from byceps.services.user import (
     signals as user_signals,
     user_command_service,
     user_creation_service,
-    user_deletion_service,
     user_email_address_service,
     user_service,
 )
@@ -430,7 +429,7 @@ def delete_account(user_id):
     initiator = g.user
     reason = form.reason.data.strip()
 
-    event = user_deletion_service.delete_account(user, initiator, reason)
+    event = user_command_service.delete_account(user, initiator, reason)
 
     user_signals.account_deleted.send(None, event=event)
 
