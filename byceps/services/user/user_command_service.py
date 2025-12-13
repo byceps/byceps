@@ -22,6 +22,7 @@ from . import (
     user_creation_domain_service,
     user_domain_service,
     user_email_address_domain_service,
+    user_repository,
     user_service,
 )
 from .dbmodels.detail import DbUserDetail
@@ -237,7 +238,7 @@ def update_user_details(
     initiator: User,
 ) -> Result[UserDetailsUpdatedEvent, NothingChangedError]:
     """Update the user's details."""
-    db_detail = _get_db_user_detail(user_id)
+    db_detail = user_repository.get_detail(user_id)
 
     old_first_name = db_detail.first_name
     old_last_name = db_detail.last_name
@@ -321,7 +322,7 @@ def _persist_details_update(
 
 def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:
     """Set a value for a key in the user's detail extras map."""
-    db_detail = _get_db_user_detail(user_id)
+    db_detail = user_repository.get_detail(user_id)
 
     if db_detail.extras is None:
         db_detail.extras = {}
@@ -333,7 +334,7 @@ def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:
 
 def remove_user_detail_extra(user_id: UserID, key: str) -> None:
     """Remove the entry with that key from the user's detail extras map."""
-    db_detail = _get_db_user_detail(user_id)
+    db_detail = user_repository.get_detail(user_id)
 
     if (db_detail.extras is None) or (key not in db_detail.extras):
         return
@@ -344,14 +345,4 @@ def remove_user_detail_extra(user_id: UserID, key: str) -> None:
 
 def _get_db_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
-    return user_service.get_db_user(user_id)
-
-
-def _get_db_user_detail(user_id: UserID) -> DbUserDetail:
-    """Return the user's details, or raise an exception."""
-    db_detail = db.session.get(DbUserDetail, user_id)
-
-    if db_detail is None:
-        raise ValueError(f"Unknown user ID '{user_id}'")
-
-    return db_detail
+    return user_repository.get_db_user(user_id)
