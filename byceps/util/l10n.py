@@ -54,8 +54,10 @@ def get_user_locale(user: User) -> Locale:
     If no preference is set for the user, return the app's default
     locale.
     """
-    locale = user.locale or get_default_locale()
-    return Locale.parse(locale)
+    if not user.locale:
+        return Locale.parse(get_default_locale())
+
+    return Locale.parse(user.locale)
 
 
 BASE_LOCALE = Locale('en')
