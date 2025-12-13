@@ -53,7 +53,7 @@ class OrderEmailText:
 
 def send_email_for_incoming_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    language_code = get_user_locale(data.orderer)
+    language_code = get_user_locale(data.orderer).language
 
     match assemble_email_for_incoming_order_to_orderer(data, language_code):
         case Ok(message):
@@ -66,7 +66,7 @@ def send_email_for_incoming_order_to_orderer(order: Order) -> None:
 
 def send_email_for_canceled_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    language_code = get_user_locale(data.orderer)
+    language_code = get_user_locale(data.orderer).language
 
     match assemble_email_for_canceled_order_to_orderer(data, language_code):
         case Ok(message):
@@ -79,7 +79,7 @@ def send_email_for_canceled_order_to_orderer(order: Order) -> None:
 
 def send_email_for_paid_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    language_code = get_user_locale(data.orderer)
+    language_code = get_user_locale(data.orderer).language
 
     match assemble_email_for_paid_order_to_orderer(data, language_code):
         case Ok(message):

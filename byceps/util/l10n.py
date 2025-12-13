@@ -48,13 +48,14 @@ def get_default_locale() -> str:
     return current_app.config['LOCALE']
 
 
-def get_user_locale(user: User) -> str:
+def get_user_locale(user: User) -> Locale:
     """Return the user's preferred locale.
 
     If no preference is set for the user, return the app's default
     locale.
     """
-    return user.locale or get_default_locale()
+    locale = user.locale or get_default_locale()
+    return Locale.parse(locale)
 
 
 BASE_LOCALE = Locale('en')
