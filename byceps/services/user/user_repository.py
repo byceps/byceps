@@ -7,12 +7,14 @@ byceps.services.user.user_repository
 """
 
 from collections.abc import Sequence
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
+from babel import Locale
 from sqlalchemy import select
 from sqlalchemy.sql import Select
 
 from byceps.database import db, paginate, Pagination
+from byceps.services.user.log.dbmodels import DbUserLogEntry
 from byceps.services.user.models.user import UserID
 
 from .dbmodels.avatar import DbUserAvatar
@@ -26,6 +28,118 @@ from .models.user import (
     USER_DELETED_AVATAR_URL_PATH,
     USER_FALLBACK_AVATAR_URL_PATH,
 )
+
+
+def update_initialized_flag(
+    user_id: UserID, initialized: bool, db_log_entry: DbUserLogEntry
+) -> None:
+    db_user = get_db_user(user_id)
+
+    db_user.initialized = initialized
+
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+
+def update_suspended_flag(
+    user_id: UserID, suspended: bool, db_log_entry: DbUserLogEntry
+) -> None:
+    db_user = get_db_user(user_id)
+
+    db_user.suspended = suspended
+
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+
+def update_screen_name(
+    user_id: UserID, new_screen_name: str | None, db_log_entry: DbUserLogEntry
+) -> None:
+    db_user = get_db_user(user_id)
+
+    db_user.screen_name = new_screen_name
+
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+
+def update_email_address(
+    user_id: UserID,
+    new_email_address: str | None,
+    verified: bool,
+    db_log_entry: DbUserLogEntry,
+) -> None:
+    db_user = get_db_user(user_id)
+
+    db_user.email_address = new_email_address
+    db_user.email_address_verified = verified
+
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+
+def update_locale(user_id: UserID, locale: Locale | None) -> None:
+    db_user = get_db_user(user_id)
+
+    db_user.locale = locale.language if (locale is not None) else None
+
+    db.session.commit()
+
+
+def update_details(
+    user_id: UserID,
+    new_first_name: str | None,
+    new_last_name: str | None,
+    new_date_of_birth: date | None,
+    new_country: str | None,
+    new_postal_code: str | None,
+    new_city: str | None,
+    new_street: str | None,
+    new_phone_number: str | None,
+    db_log_entry: DbUserLogEntry,
+) -> None:
+    db_detail = get_detail(user_id)
+
+    db_detail.first_name = new_first_name
+    db_detail.last_name = new_last_name
+    db_detail.date_of_birth = new_date_of_birth
+    db_detail.country = new_country
+    db_detail.postal_code = new_postal_code
+    db_detail.city = new_city
+    db_detail.street = new_street
+    db_detail.phone_number = new_phone_number
+
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+
+def set_detail_extra(user_id: UserID, key: str, value: str) -> None:
+    """Set a value for a key in the user's detail extras map."""
+    db_detail = get_detail(user_id)
+
+    if db_detail.extras is None:
+        db_detail.extras = {}
+
+    db_detail.extras[key] = value
+
+    db.session.commit()
+
+
+def remove_detail_extra(user_id: UserID, key: str) -> None:
+    """Remove the entry with that key from the user's detail extras map."""
+    db_detail = get_detail(user_id)
+
+    if (db_detail.extras is None) or (key not in db_detail.extras):
+        return
+
+    del db_detail.extras[key]
+
+    db.session.commit()
 
 
 def do_users_exist() -> bool:
