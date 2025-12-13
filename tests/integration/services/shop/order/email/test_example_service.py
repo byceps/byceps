@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from babel import Locale
 from freezegun import freeze_time
 import pytest
 
@@ -23,7 +24,7 @@ SENDER = NameAndAddress(None, 'noreply@acmecon.test')
     ('locale', 'expected_template'),
     [
         (
-            'de',
+            Locale.parse('de'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -62,7 +63,7 @@ E-Mail: info@acmecon.test
 """,
         ),
         (
-            'en',
+            Locale.parse('en'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -109,11 +110,11 @@ def test_example_placed_order_message_text(
     shop,
     email_payment_instructions_snippets,
     email_footer_snippets,
-    locale,
+    locale: Locale,
     expected_template,
 ):
     app = admin_app
-    current_user = get_current_user_for_user(order_admin, locale)
+    current_user = get_current_user_for_user(order_admin, locale.language)
 
     with current_user_set(app, current_user), app.app_context():
         actual = (
@@ -130,7 +131,7 @@ def test_example_placed_order_message_text(
     ('locale', 'expected_template'),
     [
         (
-            'de',
+            Locale.parse('de'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -155,7 +156,7 @@ E-Mail: info@acmecon.test
 """,
         ),
         (
-            'en',
+            Locale.parse('en'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -188,11 +189,11 @@ def test_example_paid_order_message_text(
     shop,
     email_payment_instructions_snippets,
     email_footer_snippets,
-    locale,
+    locale: Locale,
     expected_template,
 ):
     app = admin_app
-    current_user = get_current_user_for_user(order_admin, locale)
+    current_user = get_current_user_for_user(order_admin, locale.language)
 
     with current_user_set(app, current_user), app.app_context():
         actual = (
@@ -209,7 +210,7 @@ def test_example_paid_order_message_text(
     ('locale', 'expected_template'),
     [
         (
-            'de',
+            Locale.parse('de'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -234,7 +235,7 @@ E-Mail: info@acmecon.test
 """,
         ),
         (
-            'en',
+            Locale.parse('en'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -267,11 +268,11 @@ def test_example_canceled_order_message_text(
     shop,
     email_payment_instructions_snippets,
     email_footer_snippets,
-    locale,
+    locale: Locale,
     expected_template,
 ):
     app = admin_app
-    current_user = get_current_user_for_user(order_admin, locale)
+    current_user = get_current_user_for_user(order_admin, locale.language)
 
     with current_user_set(app, current_user), app.app_context():
         actual = order_email_example_service.build_example_canceled_order_message_text(

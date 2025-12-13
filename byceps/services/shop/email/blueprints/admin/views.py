@@ -60,7 +60,7 @@ def view_for_shop(shop_id):
 def _get_example_placed_order_message_text(
     shop: Shop, sender: NameAndAddress, brand: Brand
 ) -> Result[str, str]:
-    locale = get_user_locale(g.user).language
+    locale = get_user_locale(g.user)
     return order_email_example_service.build_example_placed_order_message_text(
         shop, sender, brand, locale
     )
@@ -69,7 +69,7 @@ def _get_example_placed_order_message_text(
 def _get_example_paid_order_message_text(
     shop: Shop, sender: NameAndAddress, brand: Brand
 ) -> Result[str, str]:
-    locale = get_user_locale(g.user).language
+    locale = get_user_locale(g.user)
     return order_email_example_service.build_example_paid_order_message_text(
         shop, sender, brand, locale
     )
@@ -78,7 +78,7 @@ def _get_example_paid_order_message_text(
 def _get_example_canceled_order_message_text(
     shop: Shop, sender: NameAndAddress, brand: Brand
 ) -> Result[str, str]:
-    locale = get_user_locale(g.user).language
+    locale = get_user_locale(g.user)
     return (
         order_email_example_service.build_example_canceled_order_message_text(
             shop, sender, brand, locale

@@ -8,6 +8,7 @@ byceps.services.shop.order.email.order_email_example_service
 
 from datetime import datetime
 
+from babel import Locale
 from flask_babel import gettext
 from moneyed import EUR, Money
 
@@ -39,7 +40,7 @@ from .order_email_service import OrderEmailData
 
 
 def build_example_placed_order_message_text(
-    shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
+    shop: Shop, sender: NameAndAddress, brand: Brand, locale: Locale
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a placed order."""
     order = _build_order(
@@ -51,7 +52,7 @@ def build_example_placed_order_message_text(
     try:
         message_result = (
             order_email_service.assemble_email_for_incoming_order_to_orderer(
-                data, locale
+                data, locale.language
             )
         )
     except Exception as e:
@@ -64,7 +65,7 @@ def build_example_placed_order_message_text(
 
 
 def build_example_paid_order_message_text(
-    shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
+    shop: Shop, sender: NameAndAddress, brand: Brand, locale: Locale
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a paid order."""
     order = _build_order(
@@ -76,7 +77,7 @@ def build_example_paid_order_message_text(
     try:
         message_result = (
             order_email_service.assemble_email_for_paid_order_to_orderer(
-                data, locale
+                data, locale.language
             )
         )
     except Exception as e:
@@ -89,7 +90,7 @@ def build_example_paid_order_message_text(
 
 
 def build_example_canceled_order_message_text(
-    shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
+    shop: Shop, sender: NameAndAddress, brand: Brand, locale: Locale
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a canceled order."""
     order = _build_order(
@@ -105,7 +106,7 @@ def build_example_canceled_order_message_text(
     try:
         message_result = (
             order_email_service.assemble_email_for_canceled_order_to_orderer(
-                data, locale
+                data, locale.language
             )
         )
     except Exception as e:
