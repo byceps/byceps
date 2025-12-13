@@ -28,7 +28,7 @@ def view(url_path):
     """
     url_path = '/' + url_path
 
-    version = _get_page_version(url_path, get_locale_str())
+    version = _get_page_version(url_path, Locale.parse(get_locale_str()))
     if version is None:
         locale = get_default_locale()
         version = _get_page_version(url_path, locale)
