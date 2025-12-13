@@ -8,6 +8,8 @@ byceps.services.user.user_service
 
 from datetime import timedelta
 
+from babel import Locale
+
 from byceps.database import Pagination
 from byceps.services.user.models.user import UserID
 
@@ -246,6 +248,11 @@ def get_email_addresses(
 ) -> set[tuple[UserID, str | None]]:
     """Return the users' e-mail addresses."""
     return user_repository.get_email_addresses(user_ids)
+
+
+def find_locale(user_id: UserID) -> Locale | None:
+    """Return the user's locale, if set."""
+    return user_repository.find_locale(user_id)
 
 
 def get_detail(user_id: UserID) -> UserDetail:

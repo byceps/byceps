@@ -521,6 +521,16 @@ def get_email_addresses(
     return set(rows)
 
 
+def find_locale(user_id: UserID) -> Locale | None:
+    """Return the user's locale, if set."""
+    locale_str = db.session.scalar(select(DbUser.user).filter_by(id=user_id))
+
+    if not locale_str:
+        return None
+
+    return Locale.parse(locale_str)
+
+
 def get_detail(user_id: UserID) -> DbUserDetail:
     """Return the user's details."""
     db_detail = db.session.get(DbUserDetail, user_id)
