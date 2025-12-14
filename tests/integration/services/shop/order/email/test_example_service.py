@@ -114,7 +114,7 @@ def test_example_placed_order_message_text(
     expected_template,
 ):
     app = admin_app
-    current_user = get_current_user_for_user(order_admin, locale.language)
+    current_user = get_current_user_for_user(order_admin, locale)
 
     with current_user_set(app, current_user), app.app_context():
         actual = (
@@ -193,7 +193,7 @@ def test_example_paid_order_message_text(
     expected_template,
 ):
     app = admin_app
-    current_user = get_current_user_for_user(order_admin, locale.language)
+    current_user = get_current_user_for_user(order_admin, locale)
 
     with current_user_set(app, current_user), app.app_context():
         actual = (
@@ -272,7 +272,7 @@ def test_example_canceled_order_message_text(
     expected_template,
 ):
     app = admin_app
-    current_user = get_current_user_for_user(order_admin, locale.language)
+    current_user = get_current_user_for_user(order_admin, locale)
 
     with current_user_set(app, current_user), app.app_context():
         actual = order_email_example_service.build_example_canceled_order_message_text(
