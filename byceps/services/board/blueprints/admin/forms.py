@@ -37,7 +37,7 @@ class CategoryCreateForm(LocalizedForm):
         lazy_gettext('Title'), [InputRequired(), Length(max=40)]
     )
     description = StringField(
-        lazy_gettext('Text'), [InputRequired(), Length(max=80)]
+        lazy_gettext('Description'), [InputRequired(), Length(max=80)]
     )
 
 
