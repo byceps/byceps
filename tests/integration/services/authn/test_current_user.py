@@ -5,6 +5,7 @@
 
 from uuid import UUID
 
+from babel import Locale
 from flask_babel import lazy_gettext
 
 from byceps.services.authn.session import authn_session_service
@@ -12,7 +13,7 @@ from byceps.util.authz import register_permissions
 
 
 def test_get_anonymous_current_user():
-    locale = 'en'
+    locale = Locale('en')
 
     current_user = authn_session_service.get_anonymous_current_user(locale)
 
@@ -27,6 +28,8 @@ def test_get_anonymous_current_user():
 
 
 def test_get_authenticated_current_user(user):
+    locale = Locale('de')
+
     register_permissions(
         'example',
         [
@@ -40,7 +43,6 @@ def test_get_authenticated_current_user(user):
             'example.do_that',
         ]
     )
-    locale = 'de'
 
     current_user = authn_session_service.get_authenticated_current_user(
         user, locale, permissions

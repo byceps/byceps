@@ -12,5 +12,5 @@ from byceps.services.user.models.user import User
 
 def get_current_user_for_user(user: User, locale: Locale) -> CurrentUser:
     return authn_session_service.get_authenticated_current_user(
-        user, locale=locale.language, permissions=frozenset()
+        user, locale=locale, permissions=frozenset()
     )

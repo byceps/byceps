@@ -10,6 +10,8 @@ from collections.abc import Sequence
 from datetime import datetime
 from uuid import UUID
 
+from babel import Locale
+
 from byceps.services.authn.events import (
     UserLoggedInToAdminEvent,
     UserLoggedInToSiteEvent,
@@ -167,7 +169,7 @@ def delete_login_entries(occurred_before: datetime) -> int:
 ANONYMOUS_USER_ID = UserID(UUID('00000000-0000-0000-0000-000000000000'))
 
 
-def get_anonymous_current_user(locale: str | None) -> CurrentUser:
+def get_anonymous_current_user(locale: Locale | None) -> CurrentUser:
     """Return an anonymous current user object."""
     return CurrentUser(
         id=ANONYMOUS_USER_ID,
@@ -175,7 +177,7 @@ def get_anonymous_current_user(locale: str | None) -> CurrentUser:
         initialized=True,
         suspended=False,
         deleted=False,
-        locale=locale,
+        locale=locale.language if locale else None,
         avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
         authenticated=False,
         permissions=frozenset(),
@@ -184,7 +186,7 @@ def get_anonymous_current_user(locale: str | None) -> CurrentUser:
 
 def get_authenticated_current_user(
     user: User,
-    locale: str | None,
+    locale: Locale | None,
     permissions: frozenset[str],
 ) -> CurrentUser:
     """Return an authenticated current user object."""
@@ -194,7 +196,7 @@ def get_authenticated_current_user(
         initialized=True,  # Current user has to be initialized.
         suspended=False,  # Current user cannot be suspended.
         deleted=False,  # Current user cannot be deleted.
-        locale=locale,
+        locale=locale.language if locale else None,
         avatar_url=user.avatar_url,
         authenticated=True,
         permissions=permissions,

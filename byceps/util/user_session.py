@@ -8,7 +8,7 @@ byceps.util.user_session
 
 from uuid import UUID
 
-from babel import parse_locale
+from babel import Locale
 from flask import session
 
 from byceps.services.authn.session import authn_session_service
@@ -94,23 +94,28 @@ def _find_user() -> User | None:
     return user
 
 
-def _get_session_locale() -> str | None:
+def _get_session_locale() -> Locale | None:
     """Return the locale set in the session, if any."""
-    return session.get(KEY_LOCALE)
+    locale_str = session.get(KEY_LOCALE)
+    if not locale_str:
+        return None
+
+    try:
+        return Locale.parse(locale_str)
+    except ValueError:
+        return None
 
 
-def _get_user_locale(user: User) -> str | None:
+def _get_user_locale(user: User) -> Locale | None:
     """Return the locale set for the user, if any."""
     locale_str = user.locale
     if not locale_str:
         return None
 
     try:
-        parse_locale(locale_str)
+        return Locale.parse(locale_str)
     except ValueError:
         return None
-
-    return locale_str
 
 
 def set_locale(locale: str) -> None:
