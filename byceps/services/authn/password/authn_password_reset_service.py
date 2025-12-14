@@ -6,7 +6,7 @@ byceps.services.authn.password.authn_password_reset_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask_babel import gettext
+from flask_babel import force_locale, gettext
 
 from byceps.services.authn.events import PasswordUpdatedEvent
 from byceps.services.email import email_service
@@ -14,7 +14,7 @@ from byceps.services.email.models import NameAndAddress
 from byceps.services.user.models.user import Password, User
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import PasswordResetToken
-from byceps.util.l10n import force_user_locale
+from byceps.util.l10n import get_user_locale
 
 from . import authn_password_service
 
@@ -37,7 +37,8 @@ def prepare_password_reset(
 
     screen_name = user.screen_name or f'user-{user.id}'
 
-    with force_user_locale(user):
+    locale = get_user_locale(user)
+    with force_locale(locale):
         subject = gettext(
             '%(screen_name)s, this is how you can set a new password',
             screen_name=screen_name,

@@ -8,12 +8,9 @@ Localization.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterator
-from contextlib import contextmanager
-
 from babel import Locale
 from flask import current_app, g, request
-from flask_babel import force_locale, format_currency
+from flask_babel import format_currency
 from moneyed import Money
 from wtforms import Form
 
@@ -33,14 +30,6 @@ def get_current_user_locale() -> str | None:
         return request.accept_languages.best_match(languages)
 
     return None
-
-
-@contextmanager
-def force_user_locale(user: User) -> Iterator[None]:
-    """Execute code with the user's preferred locale."""
-    locale = get_user_locale(user)
-    with force_locale(locale):
-        yield
 
 
 def get_default_locale() -> Locale:

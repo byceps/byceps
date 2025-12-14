@@ -10,7 +10,7 @@ Send an e-mail message from one user to another.
 
 from email.utils import formataddr
 
-from flask_babel import gettext
+from flask_babel import force_locale, gettext
 
 from byceps.services.email import email_config_service, email_service
 from byceps.services.email.models import Message
@@ -18,7 +18,7 @@ from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User, UserID
-from byceps.util.l10n import force_user_locale
+from byceps.util.l10n import get_user_locale
 
 
 def send_message(
@@ -54,7 +54,8 @@ def create_message(
     sender_screen_name = sender.screen_name or f'user-{sender.id}'
     website_server_name = site.server_name
 
-    with force_user_locale(recipient):
+    locale = get_user_locale(recipient)
+    with force_locale(locale):
         subject = _get_subject(sender_screen_name, website_server_name)
         body = _get_body(
             recipient.screen_name,

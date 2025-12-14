@@ -6,7 +6,7 @@ byceps.services.user.user_email_address_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask_babel import gettext
+from flask_babel import force_locale, gettext
 
 from byceps.database import db
 from byceps.services.email import email_config_service, email_service
@@ -26,7 +26,7 @@ from byceps.services.verification_token.models import (
     EmailAddressChangeToken,
     EmailAddressConfirmationToken,
 )
-from byceps.util.l10n import force_user_locale
+from byceps.util.l10n import get_user_locale
 from byceps.util.result import Err, Ok, Result
 
 from .events import (
@@ -69,7 +69,8 @@ def send_email_address_confirmation_email(
         f'confirmation/{confirmation_token.token}'
     )
 
-    with force_user_locale(user):
+    locale = get_user_locale(user)
+    with force_locale(locale):
         recipient_screen_name = _get_user_screen_name_or_fallback(user)
         subject = gettext(
             '%(screen_name)s, please verify your email address',
@@ -212,7 +213,8 @@ def send_email_address_change_email(
         f'https://{server_name}/users/email_address/change/{change_token.token}'
     )
 
-    with force_user_locale(user):
+    locale = get_user_locale(user)
+    with force_locale(locale):
         recipient_screen_name = _get_user_screen_name_or_fallback(user)
         subject = gettext(
             '%(screen_name)s, please verify your email address',
