@@ -142,7 +142,6 @@ def make_user():
             initialized=initialized,
             suspended=suspended,
             deleted=deleted,
-            locale=None,
             avatar_url='/static/user_avatar_fallback.svg',
         )
 

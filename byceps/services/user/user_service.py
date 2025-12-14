@@ -178,7 +178,6 @@ def _db_entity_to_user(db_user: DbUser) -> User:
         initialized=db_user.initialized,
         suspended=db_user.suspended,
         deleted=db_user.deleted,
-        locale=Locale.parse(db_user.locale) if db_user.locale else None,
         avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
     )
 
@@ -201,7 +200,6 @@ def _db_entity_to_user_for_admin(db_user: DbUser) -> UserForAdmin:
         initialized=db_user.initialized,
         suspended=db_user.suspended,
         deleted=db_user.deleted,
-        locale=Locale.parse(db_user.locale) if db_user.locale else None,
         avatar_url=avatar_url,
         created_at=db_user.created_at,
         detail=detail,

@@ -68,7 +68,6 @@ class Creator(User):
             initialized=user.initialized,
             suspended=user.suspended,
             deleted=user.deleted,
-            locale=user.locale,
             avatar_url=user.avatar_url,
             is_orga=user.id in orga_ids,
             badges=badges,

@@ -177,8 +177,8 @@ def get_anonymous_current_user(locale: Locale | None) -> CurrentUser:
         initialized=True,
         suspended=False,
         deleted=False,
-        locale=locale,
         avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
+        locale=locale,
         authenticated=False,
         permissions=frozenset(),
     )
@@ -196,8 +196,8 @@ def get_authenticated_current_user(
         initialized=True,  # Current user has to be initialized.
         suspended=False,  # Current user cannot be suspended.
         deleted=False,  # Current user cannot be deleted.
-        locale=locale,
         avatar_url=user.avatar_url,
+        locale=locale,
         authenticated=True,
         permissions=permissions,
     )

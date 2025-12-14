@@ -140,7 +140,6 @@ def _build_order(
         initialized=True,
         suspended=False,
         deleted=False,
-        locale=None,
         avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
     )
 

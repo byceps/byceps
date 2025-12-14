@@ -8,8 +8,6 @@ byceps.services.user.user_creation_domain_service
 
 from datetime import datetime
 
-from babel import Locale
-
 from byceps.services.core.events import EventSite
 from byceps.services.site.models import Site
 from byceps.services.user.log import user_log_domain_service
@@ -30,7 +28,6 @@ def create_account(
     screen_name: str | None,
     email_address: str | None,
     *,
-    locale: Locale | None = None,
     creation_method: str | None = None,
     site: Site | None = None,
     ip_address: str | None = None,
@@ -73,7 +70,6 @@ def create_account(
         initialized=False,
         suspended=False,
         deleted=False,
-        locale=locale,
         avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
     )
 

@@ -8,6 +8,8 @@ byceps.services.authn.session.models
 
 from dataclasses import dataclass
 
+from babel import Locale
+
 from byceps.services.user.models.user import User
 
 
@@ -15,6 +17,7 @@ from byceps.services.user.models.user import User
 class CurrentUser(User):
     """The current user, anonymous or logged in."""
 
+    locale: Locale | None
     authenticated: bool
     permissions: frozenset[str]
 

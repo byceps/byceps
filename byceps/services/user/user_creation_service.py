@@ -73,7 +73,6 @@ def create_user(
     result = user_creation_domain_service.create_account(
         screen_name,
         email_address,
-        locale=locale,
         creation_method=creation_method,
         site=site,
         ip_address=ip_address,
@@ -90,7 +89,7 @@ def create_user(
         event.occurred_at,
         user.screen_name,
         normalized_email_address,
-        locale=user.locale.language if user.locale else None,
+        locale=locale.language if locale else None,
         legacy_id=legacy_id,
     )
     db.session.add(db_user)
