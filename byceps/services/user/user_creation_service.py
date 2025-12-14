@@ -90,7 +90,7 @@ def create_user(
         event.occurred_at,
         user.screen_name,
         normalized_email_address,
-        locale=user.locale,
+        locale=user.locale.language if user.locale else None,
         legacy_id=legacy_id,
     )
     db.session.add(db_user)

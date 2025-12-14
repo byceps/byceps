@@ -24,7 +24,7 @@ def test_get_anonymous_current_user():
     assert current_user.avatar_url == '/static/user_avatar_fallback.svg'
     assert not current_user.authenticated
     assert len(current_user.permissions) == 0
-    assert current_user.locale == 'en'
+    assert current_user.locale == locale
 
 
 def test_get_authenticated_current_user(user):
@@ -55,4 +55,4 @@ def test_get_authenticated_current_user(user):
     assert current_user.avatar_url == '/static/user_avatar_fallback.svg'
     assert current_user.authenticated
     assert current_user.permissions == permissions
-    assert current_user.locale == 'de'
+    assert current_user.locale == locale

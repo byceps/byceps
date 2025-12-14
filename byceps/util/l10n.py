@@ -25,7 +25,7 @@ def get_current_user_locale() -> str | None:
     # Look for a locale on the current user object.
     user = g.user
     if (user is not None) and (user.locale is not None):
-        return user.locale
+        return user.locale.language
 
     if request:
         # Try to match user agent's accepted languages.
@@ -54,10 +54,7 @@ def get_user_locale(user: User) -> Locale:
     If no preference is set for the user, return the app's default
     locale.
     """
-    if not user.locale:
-        return get_default_locale()
-
-    return Locale.parse(user.locale)
+    return user.locale if user.locale else get_default_locale()
 
 
 BASE_LOCALE = Locale('en')

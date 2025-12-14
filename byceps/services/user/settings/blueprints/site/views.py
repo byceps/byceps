@@ -44,7 +44,6 @@ def view():
         abort(404)
 
     email_address = user_service.find_email_address(user.id)
-    user_locale = Locale.parse(user.locale) if user.locale else None
     detail = user_service.get_detail(user.id)
 
     is_orga = orga_team_service.is_orga_for_party(user.id, g.party.id)
@@ -67,7 +66,6 @@ def view():
 
     return {
         'user': user,
-        'user_locale': user_locale,
         'email_address': email_address,
         'detail': detail,
         'is_orga': is_orga,

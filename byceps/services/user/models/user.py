@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any, NewType
 from uuid import UUID
 
+from babel import Locale
 from secret_type import Secret
 
 from byceps.util.image.image_type import ImageType
@@ -53,7 +54,7 @@ class User:
     initialized: bool
     suspended: bool
     deleted: bool
-    locale: str | None
+    locale: Locale | None
     avatar_url: str
 
 

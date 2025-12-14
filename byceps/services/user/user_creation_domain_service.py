@@ -73,7 +73,7 @@ def create_account(
         initialized=False,
         suspended=False,
         deleted=False,
-        locale=locale.language if locale else None,
+        locale=locale,
         avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
     )
 
