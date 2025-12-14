@@ -12,6 +12,7 @@ from datetime import date, datetime
 from secrets import token_hex
 from uuid import UUID
 
+from babel import Locale
 from flask import appcontext_pushed, g
 from secret_type import secret
 from uuid6 import uuid7
@@ -65,7 +66,7 @@ def create_user(
     initialized: bool = True,
     suspended: bool = False,
     deleted: bool = False,
-    locale: str | None = None,
+    locale: Locale | None = None,
     legacy_id: str | None = None,
     first_name: str | None = 'John Joseph',
     last_name: str | None = 'Doe',

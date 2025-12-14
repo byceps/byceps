@@ -9,6 +9,7 @@ byceps.services.user.user_creation_service
 from datetime import date
 from typing import Any
 
+from babel import Locale
 import structlog
 
 from byceps.database import db
@@ -37,7 +38,7 @@ def create_user(
     email_address: str | None,
     password: Password,
     *,
-    locale: str | None = None,
+    locale: Locale | None = None,
     legacy_id: str | None = None,
     first_name: str | None = None,
     last_name: str | None = None,

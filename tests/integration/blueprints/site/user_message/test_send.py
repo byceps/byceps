@@ -5,6 +5,7 @@
 
 from unittest.mock import patch
 
+from babel import Locale
 import pytest
 
 from tests.helpers import http_client, log_in_user
@@ -12,12 +13,14 @@ from tests.helpers import http_client, log_in_user
 
 @pytest.fixture(scope='module')
 def user_alice(make_user):
-    return make_user('Alice', email_address='alice@users.test', locale='de')
+    return make_user(
+        'Alice', email_address='alice@users.test', locale=Locale('de')
+    )
 
 
 @pytest.fixture(scope='module')
 def user_bob(make_user):
-    return make_user('Bob', email_address='bob@users.test', locale='en')
+    return make_user('Bob', email_address='bob@users.test', locale=Locale('en'))
 
 
 @patch('byceps.services.email.email_service.send')
