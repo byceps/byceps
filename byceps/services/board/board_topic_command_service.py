@@ -83,7 +83,7 @@ def update_topic(
     """Update the topic (and its initial posting)."""
     db_topic = _get_db_topic(topic_id)
 
-    db_topic.title = title.strip()
+    db_topic.title = title
 
     posting_event = board_posting_command_service.update_posting(
         db_topic.initial_posting.id, editor, body, commit=False

@@ -219,8 +219,10 @@ def posting_update(posting_id):
     if not form.validate():
         return posting_update_form(posting_id, form)
 
+    body = form.body.data.strip()
+
     event = board_posting_command_service.update_posting(
-        db_posting.id, g.user, form.body.data
+        db_posting.id, g.user, body
     )
 
     flash_success(gettext('The post has been updated.'))

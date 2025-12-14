@@ -79,7 +79,7 @@ def update_posting(
 
     now = datetime.utcnow()
 
-    db_posting.body = body.strip()
+    db_posting.body = body
     db_posting.last_edited_at = now
     db_posting.last_edited_by_id = editor.id
     db_posting.edit_count += 1

@@ -46,9 +46,9 @@ def update_category(
     """Update the category."""
     db_category = _get_db_category(category_id)
 
-    db_category.slug = slug.strip().lower()
-    db_category.title = title.strip()
-    db_category.description = description.strip()
+    db_category.slug = slug
+    db_category.title = title
+    db_category.description = description
 
     db.session.commit()
 

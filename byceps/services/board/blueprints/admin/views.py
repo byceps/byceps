@@ -257,9 +257,9 @@ def category_update(category_id):
     if not form.validate():
         return category_update_form(category_id, form)
 
-    slug = form.slug.data
-    title = form.title.data
-    description = form.description.data
+    slug = form.slug.data.strip().lower()
+    title = form.title.data.strip()
+    description = form.description.data.strip()
 
     category = board_category_command_service.update_category(
         category.id, slug, title, description

@@ -297,8 +297,10 @@ def topic_update(topic_id):
     if not form.validate():
         return topic_update_form(topic_id, form)
 
+    body = form.body.data.strip()
+
     board_topic_command_service.update_topic(
-        db_topic.id, g.user, form.title.data, form.body.data
+        db_topic.id, g.user, form.title.data, body
     )
 
     flash_success(
