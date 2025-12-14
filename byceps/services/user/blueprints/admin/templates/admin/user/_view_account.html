@@ -55,7 +55,7 @@
   </div>
 
   <div class="data-label">{{ _('Locale') }}</div>
-  <div class="data-value">{{ user.locale|fallback }}</div>
+  <div class="data-value">{{ (user_locale.get_display_name(g.user.locale) if user_locale else None)|fallback }}</div>
 
   <div class="data-label">{{ _('Legacy ID') }}</div>
   <div class="data-value">{{ user.legacy_id|fallback }}</div>

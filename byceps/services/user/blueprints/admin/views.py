@@ -8,6 +8,7 @@ byceps.services.user.blueprints.admin.views
 
 from datetime import datetime
 
+from babel import Locale
 from flask import abort, g, request
 from flask_babel import gettext
 from secret_type import secret
@@ -105,6 +106,8 @@ def view(user_id):
     user = _get_user_for_admin_or_404(user_id)
     db_user = user_service.find_user_with_details(user.id)
 
+    locale = Locale.parse(user.locale) if user.locale else None
+
     recent_login = authn_session_service.find_recent_login(user.id)
     days_since_recent_login = _calculate_days_since(recent_login)
 
@@ -136,6 +139,7 @@ def view(user_id):
     return {
         'profile_user': user,
         'user': db_user,
+        'user_locale': locale,
         'recent_login': recent_login,
         'days_since_recent_login': days_since_recent_login,
         'orga_activities': orga_activities,
