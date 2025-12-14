@@ -162,7 +162,7 @@ def _is_cancellation_requesting_enabled() -> bool:
 
 
 def _get_payment_instructions(order) -> str | None:
-    locale = g.user.locale if g.user.locale else get_default_locale()
+    locale = g.user.locale or get_default_locale()
     language_code = locale.language
 
     match order_payment_service.get_html_payment_instructions(
@@ -561,7 +561,7 @@ def _send_refund_request_confirmation_email(
 
     brand = brand_service.get_brand(g.site.brand_id)
 
-    locale = g.user.locale if g.user.locale else get_default_locale()
+    locale = g.user.locale or get_default_locale()
     language_code = locale.language
 
     footer_result = email_footer_service.get_footer(brand, language_code)
