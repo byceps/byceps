@@ -14,8 +14,6 @@ from flask_babel import format_currency
 from moneyed import Money
 from wtforms import Form
 
-from byceps.services.user.models.user import User
-
 
 def get_current_user_locale() -> str | None:
     """Return the locale for the current user, if available."""
@@ -35,15 +33,6 @@ def get_current_user_locale() -> str | None:
 def get_default_locale() -> Locale:
     """Return the application's default locale."""
     return Locale.parse(current_app.config['LOCALE'])
-
-
-def get_user_locale(user: User) -> Locale:
-    """Return the user's preferred locale.
-
-    If no preference is set for the user, return the app's default
-    locale.
-    """
-    return user.locale if user.locale else get_default_locale()
 
 
 BASE_LOCALE = Locale('en')

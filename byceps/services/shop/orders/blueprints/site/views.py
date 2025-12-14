@@ -38,7 +38,7 @@ from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.l10n import get_user_locale
+from byceps.util.l10n import get_default_locale
 from byceps.util.result import Err, Ok
 from byceps.util.views import login_required, redirect_to
 
@@ -162,7 +162,8 @@ def _is_cancellation_requesting_enabled() -> bool:
 
 
 def _get_payment_instructions(order) -> str | None:
-    language_code = get_user_locale(g.user).language
+    locale = g.user.locale if g.user.locale else get_default_locale()
+    language_code = locale.language
 
     match order_payment_service.get_html_payment_instructions(
         order, language_code
@@ -559,7 +560,9 @@ def _send_refund_request_confirmation_email(
     screen_name = g.user.screen_name or 'User'
 
     brand = brand_service.get_brand(g.site.brand_id)
-    language_code = get_user_locale(g.user).language
+
+    locale = g.user.locale if g.user.locale else get_default_locale()
+    language_code = locale.language
 
     footer_result = email_footer_service.get_footer(brand, language_code)
     if footer_result.is_err():

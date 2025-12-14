@@ -14,7 +14,7 @@ from byceps.services.email.models import NameAndAddress
 from byceps.services.user.models.user import Password, User
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import PasswordResetToken
-from byceps.util.l10n import get_user_locale
+from byceps.util.l10n import get_default_locale
 
 from . import authn_password_service
 
@@ -37,7 +37,8 @@ def prepare_password_reset(
 
     screen_name = user.screen_name or f'user-{user.id}'
 
-    locale = get_user_locale(user)
+    locale = user.locale if user.locale else get_default_locale()
+
     with force_locale(locale):
         subject = gettext(
             '%(screen_name)s, this is how you can set a new password',

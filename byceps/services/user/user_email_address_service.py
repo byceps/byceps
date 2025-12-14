@@ -26,7 +26,7 @@ from byceps.services.verification_token.models import (
     EmailAddressChangeToken,
     EmailAddressConfirmationToken,
 )
-from byceps.util.l10n import get_user_locale
+from byceps.util.l10n import get_default_locale
 from byceps.util.result import Err, Ok, Result
 
 from .events import (
@@ -69,7 +69,8 @@ def send_email_address_confirmation_email(
         f'confirmation/{confirmation_token.token}'
     )
 
-    locale = get_user_locale(user)
+    locale = user.locale if user.locale else get_default_locale()
+
     with force_locale(locale):
         recipient_screen_name = _get_user_screen_name_or_fallback(user)
         subject = gettext(
@@ -213,7 +214,8 @@ def send_email_address_change_email(
         f'https://{server_name}/users/email_address/change/{change_token.token}'
     )
 
-    locale = get_user_locale(user)
+    locale = user.locale if user.locale else get_default_locale()
+
     with force_locale(locale):
         recipient_screen_name = _get_user_screen_name_or_fallback(user)
         subject = gettext(

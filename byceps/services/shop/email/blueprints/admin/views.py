@@ -17,7 +17,7 @@ from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
-from byceps.util.l10n import get_user_locale
+from byceps.util.l10n import get_default_locale
 from byceps.util.result import Result
 from byceps.util.views import permission_required
 
@@ -60,7 +60,8 @@ def view_for_shop(shop_id):
 def _get_example_placed_order_message_text(
     shop: Shop, sender: NameAndAddress, brand: Brand
 ) -> Result[str, str]:
-    locale = get_user_locale(g.user)
+    locale = g.user.locale if g.user.locale else get_default_locale()
+
     return order_email_example_service.build_example_placed_order_message_text(
         shop, sender, brand, locale
     )
@@ -69,7 +70,8 @@ def _get_example_placed_order_message_text(
 def _get_example_paid_order_message_text(
     shop: Shop, sender: NameAndAddress, brand: Brand
 ) -> Result[str, str]:
-    locale = get_user_locale(g.user)
+    locale = g.user.locale if g.user.locale else get_default_locale()
+
     return order_email_example_service.build_example_paid_order_message_text(
         shop, sender, brand, locale
     )
@@ -78,7 +80,8 @@ def _get_example_paid_order_message_text(
 def _get_example_canceled_order_message_text(
     shop: Shop, sender: NameAndAddress, brand: Brand
 ) -> Result[str, str]:
-    locale = get_user_locale(g.user)
+    locale = g.user.locale if g.user.locale else get_default_locale()
+
     return (
         order_email_example_service.build_example_canceled_order_message_text(
             shop, sender, brand, locale

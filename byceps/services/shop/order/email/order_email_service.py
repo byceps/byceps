@@ -30,7 +30,7 @@ from byceps.services.shop.shop import shop_service
 from byceps.services.snippet.errors import SnippetNotFoundError
 from byceps.services.user import user_service
 from byceps.services.user.models.user import User
-from byceps.util.l10n import format_money, get_user_locale
+from byceps.util.l10n import format_money, get_default_locale
 from byceps.util.result import Err, Ok, Result
 
 
@@ -54,7 +54,9 @@ class OrderEmailText:
 
 def send_email_for_incoming_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    locale = get_user_locale(data.orderer)
+    locale = (
+        data.orderer.locale if data.orderer.locale else get_default_locale()
+    )
 
     match assemble_email_for_incoming_order_to_orderer(data, locale):
         case Ok(message):
@@ -67,7 +69,9 @@ def send_email_for_incoming_order_to_orderer(order: Order) -> None:
 
 def send_email_for_canceled_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    locale = get_user_locale(data.orderer)
+    locale = (
+        data.orderer.locale if data.orderer.locale else get_default_locale()
+    )
 
     match assemble_email_for_canceled_order_to_orderer(data, locale):
         case Ok(message):
@@ -80,7 +84,9 @@ def send_email_for_canceled_order_to_orderer(order: Order) -> None:
 
 def send_email_for_paid_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    locale = get_user_locale(data.orderer)
+    locale = (
+        data.orderer.locale if data.orderer.locale else get_default_locale()
+    )
 
     match assemble_email_for_paid_order_to_orderer(data, locale):
         case Ok(message):
