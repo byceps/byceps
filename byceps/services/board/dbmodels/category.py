@@ -36,7 +36,7 @@ class DbBoardCategory(db.Model):
     position: Mapped[int] = mapped_column(db.Integer)
     slug: Mapped[str] = mapped_column(db.UnicodeText)
     title: Mapped[str] = mapped_column(db.UnicodeText)
-    description: Mapped[str] = mapped_column(db.UnicodeText)
+    description: Mapped[str | None] = mapped_column(db.UnicodeText)
     topic_count: Mapped[int] = mapped_column(default=0)
     posting_count: Mapped[int] = mapped_column(default=0)
     last_posting_updated_at: Mapped[datetime | None]
@@ -61,7 +61,7 @@ class DbBoardCategory(db.Model):
         board_id: BoardID,
         slug: str,
         title: str,
-        description: str,
+        description: str | None,
     ) -> None:
         self.id = category_id
         self.board_id = board_id

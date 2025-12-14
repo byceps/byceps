@@ -29,7 +29,7 @@
           <strong>{{ category.title }}</strong><br>
           {{ category.slug|dim }}
         </td>
-        <td>{{ category.description }}</td>
+        <td>{{ category.description|fallback }}</td>
         <td style="text-align: right;"><a class="button is-compact" href="{{ url_for('.category_create_form', board_id=board.id, source_category_id=category.id) }}"><span>{{ _('choose') }}</span> {{ render_icon('chevron-right') }}</a></td>
       </tr>
       {%- endfor %}

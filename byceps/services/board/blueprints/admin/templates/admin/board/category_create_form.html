@@ -34,7 +34,7 @@
     <div class="box">
       {{ form_field(form.slug, autofocus='autofocus') }}
       {{ form_field(form.title) }}
-      {{ form_field(form.description) }}
+      {{ form_field(form.description, caption=_('optional')) }}
     </div>
 
     {{ form_buttons(_('Create')) }}

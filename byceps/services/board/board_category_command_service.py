@@ -21,7 +21,7 @@ from .models import BoardCategory, BoardCategoryID, BoardID
 
 
 def create_category(
-    board_id: BoardID, slug: str, title: str, description: str
+    board_id: BoardID, slug: str, title: str, description: str | None
 ) -> BoardCategory:
     """Create a category in that board."""
     db_board = db.session.get(DbBoard, board_id)
@@ -41,7 +41,7 @@ def create_category(
 
 
 def update_category(
-    category_id: BoardCategoryID, slug: str, title: str, description: str
+    category_id: BoardCategoryID, slug: str, title: str, description: str | None
 ) -> BoardCategory:
     """Update the category."""
     db_category = _get_db_category(category_id)

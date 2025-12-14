@@ -214,7 +214,7 @@ def category_create(board_id):
 
     slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
-    description = form.description.data.strip()
+    description = form.description.data.strip() or None
 
     category = board_category_command_service.create_category(
         board.id, slug, title, description
@@ -259,7 +259,7 @@ def category_update(category_id):
 
     slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
-    description = form.description.data.strip()
+    description = form.description.data.strip() or None
 
     category = board_category_command_service.update_category(
         category.id, slug, title, description

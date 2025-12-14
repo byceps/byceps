@@ -44,7 +44,7 @@ class BoardCategory:
     position: int
     slug: str
     title: str
-    description: str
+    description: str | None
     topic_count: int
     posting_count: int
     hidden: bool

@@ -48,7 +48,7 @@
           <br>{{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
           {%- endif %}
         </td>
-        <td>{{ category.description }}</td>
+        <td>{{ category.description|fallback }}</td>
         <td class="centered bignumber">{{ category.topic_count|numberformat }}</td>
         <td class="centered bignumber">{{ category.posting_count|numberformat }}</td>
         <td>
