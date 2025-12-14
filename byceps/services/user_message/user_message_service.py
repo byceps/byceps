@@ -54,7 +54,7 @@ def create_message(
     sender_screen_name = sender.screen_name or f'user-{sender.id}'
     website_server_name = site.server_name
 
-    locale = recipient.locale if recipient.locale else get_default_locale()
+    locale = user_service.find_locale(recipient.id) or get_default_locale()
 
     with force_locale(locale):
         subject = _get_subject(sender_screen_name, website_server_name)

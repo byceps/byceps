@@ -53,7 +53,7 @@ def get_current_user(required_permissions: set[str]) -> CurrentUser:
     if not required_permissions.issubset(permissions):
         return authn_session_service.get_anonymous_current_user(session_locale)
 
-    locale = user.locale or session_locale
+    locale = user_service.find_locale(user.id) or session_locale
 
     return authn_session_service.get_authenticated_current_user(
         user, locale, permissions

@@ -69,7 +69,7 @@ def send_email_address_confirmation_email(
         f'confirmation/{confirmation_token.token}'
     )
 
-    locale = user.locale if user.locale else get_default_locale()
+    locale = user_service.find_locale(user.id) or get_default_locale()
 
     with force_locale(locale):
         recipient_screen_name = _get_user_screen_name_or_fallback(user)
@@ -214,7 +214,7 @@ def send_email_address_change_email(
         f'https://{server_name}/users/email_address/change/{change_token.token}'
     )
 
-    locale = user.locale if user.locale else get_default_locale()
+    locale = user_service.find_locale(user.id) or get_default_locale()
 
     with force_locale(locale):
         recipient_screen_name = _get_user_screen_name_or_fallback(user)

@@ -11,6 +11,7 @@ from flask_babel import force_locale, gettext
 from byceps.services.authn.events import PasswordUpdatedEvent
 from byceps.services.email import email_service
 from byceps.services.email.models import NameAndAddress
+from byceps.services.user import user_service
 from byceps.services.user.models.user import Password, User
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import PasswordResetToken
@@ -37,7 +38,7 @@ def prepare_password_reset(
 
     screen_name = user.screen_name or f'user-{user.id}'
 
-    locale = user.locale if user.locale else get_default_locale()
+    locale = user_service.find_locale(user.id) or get_default_locale()
 
     with force_locale(locale):
         subject = gettext(

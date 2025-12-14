@@ -19,7 +19,7 @@ from byceps.util.l10n import get_default_locale
 def notify_appointed_user(ticket: DbTicket, user: User, manager: User) -> None:
     party_title = g.party.title
 
-    locale = user.locale if user.locale else get_default_locale()
+    locale = user_service.find_locale(user.id) or get_default_locale()
 
     with force_locale(locale):
         subject = gettext(
@@ -41,7 +41,7 @@ def notify_appointed_user(ticket: DbTicket, user: User, manager: User) -> None:
 def notify_withdrawn_user(ticket: DbTicket, user: User, manager: User) -> None:
     party_title = g.party.title
 
-    locale = user.locale if user.locale else get_default_locale()
+    locale = user_service.find_locale(user.id) or get_default_locale()
 
     with force_locale(locale):
         subject = gettext(
@@ -65,7 +65,7 @@ def notify_appointed_user_manager(
 ) -> None:
     party_title = g.party.title
 
-    locale = user.locale if user.locale else get_default_locale()
+    locale = user_service.find_locale(user.id) or get_default_locale()
 
     with force_locale(locale):
         subject = gettext(
@@ -89,7 +89,7 @@ def notify_withdrawn_user_manager(
 ) -> None:
     party_title = g.party.title
 
-    locale = user.locale if user.locale else get_default_locale()
+    locale = user_service.find_locale(user.id) or get_default_locale()
 
     with force_locale(locale):
         subject = gettext(
@@ -113,7 +113,7 @@ def notify_appointed_seat_manager(
 ) -> None:
     party_title = g.party.title
 
-    locale = user.locale if user.locale else get_default_locale()
+    locale = user_service.find_locale(user.id) or get_default_locale()
 
     with force_locale(locale):
         subject = gettext(
@@ -137,7 +137,7 @@ def notify_withdrawn_seat_manager(
 ) -> None:
     party_title = g.party.title
 
-    locale = user.locale if user.locale else get_default_locale()
+    locale = user_service.find_locale(user.id) or get_default_locale()
 
     with force_locale(locale):
         subject = gettext(
@@ -163,7 +163,7 @@ def _enqueue_email(recipient: User, subject: str, body: str) -> None:
     recipient_address = user_service.get_email_address(recipient.id)
     recipients = [recipient_address]
 
-    locale = recipient.locale if recipient.locale else get_default_locale()
+    locale = user_service.find_locale(recipient.id) or get_default_locale()
 
     with force_locale(locale):
         salutation = (
