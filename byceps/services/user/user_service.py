@@ -267,7 +267,7 @@ def get_detail(user_id: UserID) -> UserDetail:
         street=db_detail.street,
         phone_number=db_detail.phone_number,
         internal_comment=db_detail.internal_comment,
-        extras=db_detail.extras,
+        extras=db_detail.extras or {},
     )
 
 
