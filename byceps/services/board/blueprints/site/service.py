@@ -115,12 +115,23 @@ def add_topic_unseen_flag(
 ) -> None:
     """Add `unseen` flag to topics."""
     for db_topic in db_topics:
-        db_topic.contains_unseen_postings = (
-            user.authenticated
-            and board_topic_query_service.contains_topic_unseen_postings(
-                db_topic, user.id
-            )
+        db_topic.contains_unseen_postings = _does_topic_contain_unseen_postings(
+            db_topic, user
         )
+
+
+def _does_topic_contain_unseen_postings(
+    db_topic: DbTopic, user: CurrentUser
+) -> bool:
+    """Return `True` if the topic contains postings yet unseen by the
+    current user.
+    """
+    return (
+        user.authenticated
+        and board_topic_query_service.contains_topic_unseen_postings(
+            db_topic, user.id
+        )
+    )
 
 
 def add_unseen_flag_to_postings(
