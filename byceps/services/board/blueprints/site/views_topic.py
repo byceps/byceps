@@ -66,8 +66,6 @@ def topic_index(page):
         board_id, page, topics_per_page, include_hidden=include_hidden
     )
 
-    service.add_topic_creators(topics.items)
-
     topics.items = service.to_topic_summaries(topics.items, user)
 
     return {

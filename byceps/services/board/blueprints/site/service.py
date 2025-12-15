@@ -71,6 +71,11 @@ def to_topic_summaries(
     db_topics: Iterable[DbTopic], user: CurrentUser
 ) -> list[BoardTopicSummary]:
     """Build summary objects."""
+    creator_ids = {t.creator_id for t in db_topics}
+    creators_by_id = user_service.get_users_indexed_by_id(
+        creator_ids, include_avatars=True
+    )
+
     summaries = []
 
     for db_topic in db_topics:
@@ -79,6 +84,8 @@ def to_topic_summaries(
             title=db_topic.category.title,
         )
 
+        creator = creators_by_id[db_topic.creator_id]
+
         contains_unseen_postings = _does_topic_contain_unseen_postings(
             db_topic, user
         )
@@ -86,7 +93,7 @@ def to_topic_summaries(
         summary = BoardTopicSummary(
             id=db_topic.id,
             category=category,
-            creator=db_topic.creator,
+            creator=creator,
             title=db_topic.title,
             reply_count=db_topic.reply_count,
             last_updated_at=db_topic.last_updated_at,
@@ -103,17 +110,6 @@ def to_topic_summaries(
         summaries.append(summary)
 
     return summaries
-
-
-def add_topic_creators(db_topics: Iterable[DbTopic]) -> None:
-    """Add each topic's creator as topic attribute."""
-    creator_ids = {t.creator_id for t in db_topics}
-    creators_by_id = user_service.get_users_indexed_by_id(
-        creator_ids, include_avatars=True
-    )
-
-    for db_topic in db_topics:
-        db_topic.creator = creators_by_id[db_topic.creator_id]
 
 
 def add_topic_unseen_flag(
