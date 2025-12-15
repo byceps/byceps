@@ -11,6 +11,7 @@ from datetime import datetime
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.user.models.user import UserID
 
 from .dbmodels.category import DbBoardCategory, DbLastCategoryView
@@ -89,7 +90,9 @@ def get_categories_excluding(
     ]
 
 
-def get_category_summaries(board_id: BoardID) -> list[BoardCategorySummary]:
+def get_category_summaries(
+    board_id: BoardID, user: CurrentUser
+) -> list[BoardCategorySummary]:
     """Return the categories for that board.
 
     Include the creator of the last posting in each category.
@@ -110,7 +113,12 @@ def get_category_summaries(board_id: BoardID) -> list[BoardCategorySummary]:
     summaries = []
 
     for db_category in db_categories_with_last_update:
-        contains_unseen_postings = False
+        contains_unseen_postings = (
+            user.authenticated
+            and contains_category_unseen_postings(
+                db_category.id, db_category.last_posting_updated_at, user.id
+            )
+        )
 
         summary = _db_entity_to_category_summary(
             db_category, contains_unseen_postings

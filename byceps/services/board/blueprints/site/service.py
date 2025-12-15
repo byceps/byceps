@@ -7,7 +7,6 @@ byceps.services.board.blueprints.site.service
 """
 
 from collections.abc import Iterable, Sequence
-import dataclasses
 from datetime import datetime
 
 from flask import g
@@ -15,13 +14,11 @@ from flask import g
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
     board_access_control_service,
-    board_category_query_service,
     board_posting_query_service,
     board_topic_query_service,
 )
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
-from byceps.services.board.models import BoardCategorySummary
 from byceps.services.brand.models import BrandID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
@@ -67,31 +64,6 @@ def get_recent_topics(
     add_topic_unseen_flag(topics, current_user)
 
     return topics
-
-
-def add_unseen_postings_flag_to_categories(
-    categories: Iterable[BoardCategorySummary], user: CurrentUser
-) -> list[BoardCategorySummary]:
-    """Add flag to each category stating if it contains postings unseen
-    by the user.
-    """
-    categories_with_flag = []
-
-    for category in categories:
-        contains_unseen_postings = (
-            user.authenticated
-            and board_category_query_service.contains_category_unseen_postings(
-                category.id, category.last_posting_updated_at, user.id
-            )
-        )
-
-        category_with_flag = dataclasses.replace(
-            category, contains_unseen_postings=contains_unseen_postings
-        )
-
-        categories_with_flag.append(category_with_flag)
-
-    return categories_with_flag
 
 
 def add_topic_creators(db_topics: Iterable[DbTopic]) -> None:

@@ -35,16 +35,14 @@ def category_index():
 
     h.require_board_access(board_id, user.id)
 
-    categories = board_category_query_service.get_category_summaries(board_id)
-
-    categories_with_flag = service.add_unseen_postings_flag_to_categories(
-        categories, user
+    categories = board_category_query_service.get_category_summaries(
+        board_id, user
     )
 
     recent_topics = service.get_recent_topics(user)
 
     return {
-        'categories': categories_with_flag,
+        'categories': categories,
         'recent_topics': recent_topics,
     }
 
