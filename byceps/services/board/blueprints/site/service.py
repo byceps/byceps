@@ -58,13 +58,13 @@ def get_recent_topics(
         return None
 
     include_hidden = may_current_user_view_hidden()
-    topics = board_topic_query_service.get_recent_topics(
+    db_topics = board_topic_query_service.get_recent_topics(
         board_id, limit=limit, include_hidden=include_hidden
     )
 
-    add_topic_unseen_flag(topics, current_user)
+    add_topic_unseen_flag(db_topics, current_user)
 
-    return topics
+    return db_topics
 
 
 def to_topic_summaries(
