@@ -107,10 +107,18 @@ def get_category_summaries(board_id: BoardID) -> list[BoardCategorySummary]:
         .all()
     )
 
-    return [
-        _db_entity_to_category_summary(db_category)
-        for db_category in db_categories_with_last_update
-    ]
+    summaries = []
+
+    for db_category in db_categories_with_last_update:
+        contains_unseen_postings = False
+
+        summary = _db_entity_to_category_summary(
+            db_category, contains_unseen_postings
+        )
+
+        summaries.append(summary)
+
+    return summaries
 
 
 def _db_entity_to_category(db_category: DbBoardCategory) -> BoardCategory:
@@ -128,7 +136,7 @@ def _db_entity_to_category(db_category: DbBoardCategory) -> BoardCategory:
 
 
 def _db_entity_to_category_summary(
-    db_category: DbBoardCategory,
+    db_category: DbBoardCategory, contains_unseen_postings: bool
 ) -> BoardCategorySummary:
     return BoardCategorySummary(
         id=db_category.id,
@@ -142,7 +150,7 @@ def _db_entity_to_category_summary(
         hidden=db_category.hidden,
         last_posting_updated_at=db_category.last_posting_updated_at,
         last_posting_updated_by=db_category.last_posting_updated_by,
-        contains_unseen_postings=False,
+        contains_unseen_postings=contains_unseen_postings,
     )
 
 
