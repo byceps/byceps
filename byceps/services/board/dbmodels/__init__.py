@@ -6,7 +6,4 @@ byceps.services.board.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from . import (
-    board_access_grant,  # noqa: F401
-    last_topic_view,  # noqa: F401
-)
+from . import board_access_grant  # noqa: F401

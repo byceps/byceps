@@ -15,8 +15,7 @@ from byceps.services.user.models.user import UserID
 
 from . import board_topic_query_service
 from .dbmodels.category import DbLastCategoryView
-from .dbmodels.last_topic_view import DbLastTopicView
-from .dbmodels.topic import DbTopic
+from .dbmodels.topic import DbTopic, DbLastTopicView
 from .models import BoardCategoryID, BoardCategorySummary, TopicID
 
 

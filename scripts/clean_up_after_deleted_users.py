@@ -16,7 +16,7 @@ from byceps.services.authz.dbmodels import DbUserRole
 from byceps.services.board.dbmodels.category import (
     DbLastCategoryView as DbBoardLastCategoryView,
 )
-from byceps.services.board.dbmodels.last_topic_view import (
+from byceps.services.board.dbmodels.topic import (
     DbLastTopicView as DbBoardLastTopicView,
 )
 from byceps.services.consent.dbmodels import DbConsent

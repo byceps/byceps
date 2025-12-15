@@ -127,3 +127,34 @@ class DbTopic(db.Model):
             builder.add_custom(f'pinned by {self.pinned_by.screen_name}')
 
         return builder.build()
+
+
+class DbLastTopicView(db.Model):
+    """The last time a user looked into specific topic."""
+
+    __tablename__ = 'board_topics_lastviews'
+
+    user_id: Mapped[UserID] = mapped_column(
+        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+    )
+    topic_id: Mapped[TopicID] = mapped_column(
+        db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True
+    )
+    topic: Mapped[DbTopic] = relationship(DbTopic)
+    occurred_at: Mapped[datetime]
+
+    def __init__(
+        self, user_id: UserID, topic_id: TopicID, occurred_at: datetime
+    ) -> None:
+        self.user_id = user_id
+        self.topic_id = topic_id
+        self.occurred_at = occurred_at
+
+    def __repr__(self) -> str:
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('user_id')
+            .add('topic', self.topic.title)
+            .add_with_lookup('occurred_at')
+            .build()
+        )
