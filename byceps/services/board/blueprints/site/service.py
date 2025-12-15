@@ -19,6 +19,7 @@ from byceps.services.board import (
 )
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
+from byceps.services.board.models import BoardTopicCategory, BoardTopicSummary
 from byceps.services.brand.models import BrandID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
@@ -64,6 +65,38 @@ def get_recent_topics(
     add_topic_unseen_flag(topics, current_user)
 
     return topics
+
+
+def to_topic_summaries(db_topics: Iterable[DbTopic]) -> list[BoardTopicSummary]:
+    """Build summary objects."""
+    summaries = []
+
+    for db_topic in db_topics:
+        category = BoardTopicCategory(
+            slug=db_topic.category.slug,
+            title=db_topic.category.title,
+        )
+
+        summary = BoardTopicSummary(
+            id=db_topic.id,
+            category=category,
+            creator=db_topic.creator,
+            title=db_topic.title,
+            reply_count=db_topic.reply_count,
+            last_updated_at=db_topic.last_updated_at,
+            last_updated_by=db_topic.last_updated_by,
+            hidden=db_topic.hidden,
+            hidden_by=db_topic.hidden_by,
+            locked=db_topic.locked,
+            pinned=db_topic.pinned,
+            posting_limited_to_moderators=db_topic.posting_limited_to_moderators,
+            muted=db_topic.muted,
+            contains_unseen_postings=db_topic.contains_unseen_postings,
+        )
+
+        summaries.append(summary)
+
+    return summaries
 
 
 def add_topic_creators(db_topics: Iterable[DbTopic]) -> None:

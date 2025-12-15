@@ -82,6 +82,30 @@ class Topic:
 
 
 @dataclass(frozen=True, kw_only=True)
+class BoardTopicCategory:
+    slug: str
+    title: str
+
+
+@dataclass(frozen=True, kw_only=True)
+class BoardTopicSummary:
+    id: TopicID
+    category: BoardTopicCategory
+    creator: User
+    title: str
+    reply_count: int
+    last_updated_at: datetime | None
+    last_updated_by: User | None
+    hidden: bool
+    hidden_by: User | None
+    locked: bool
+    pinned: bool
+    posting_limited_to_moderators: bool
+    muted: bool
+    contains_unseen_postings: bool
+
+
+@dataclass(frozen=True, kw_only=True)
 class PostingReaction:
     id: UUID
     created_at: datetime
