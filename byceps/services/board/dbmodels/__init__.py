@@ -8,6 +8,5 @@ byceps.services.board.dbmodels
 
 from . import (
     board_access_grant,  # noqa: F401
-    last_category_view,  # noqa: F401
     last_topic_view,  # noqa: F401
 )

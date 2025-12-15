@@ -13,7 +13,7 @@ from byceps.database import db
 from byceps.services.authn.password.dbmodels import DbCredential
 from byceps.services.authn.session.dbmodels import DbRecentLogin, DbSessionToken
 from byceps.services.authz.dbmodels import DbUserRole
-from byceps.services.board.dbmodels.last_category_view import (
+from byceps.services.board.dbmodels.category import (
     DbLastCategoryView as DbBoardLastCategoryView,
 )
 from byceps.services.board.dbmodels.last_topic_view import (

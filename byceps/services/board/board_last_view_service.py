@@ -14,7 +14,7 @@ from byceps.database import db, upsert, upsert_many
 from byceps.services.user.models.user import UserID
 
 from . import board_topic_query_service
-from .dbmodels.last_category_view import DbLastCategoryView
+from .dbmodels.category import DbLastCategoryView
 from .dbmodels.last_topic_view import DbLastTopicView
 from .dbmodels.topic import DbTopic
 from .models import BoardCategoryID, BoardCategorySummary, TopicID
