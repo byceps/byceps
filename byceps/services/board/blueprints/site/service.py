@@ -67,7 +67,9 @@ def get_recent_topics(
     return topics
 
 
-def to_topic_summaries(db_topics: Iterable[DbTopic]) -> list[BoardTopicSummary]:
+def to_topic_summaries(
+    db_topics: Iterable[DbTopic], user: CurrentUser
+) -> list[BoardTopicSummary]:
     """Build summary objects."""
     summaries = []
 
@@ -75,6 +77,10 @@ def to_topic_summaries(db_topics: Iterable[DbTopic]) -> list[BoardTopicSummary]:
         category = BoardTopicCategory(
             slug=db_topic.category.slug,
             title=db_topic.category.title,
+        )
+
+        contains_unseen_postings = _does_topic_contain_unseen_postings(
+            db_topic, user
         )
 
         summary = BoardTopicSummary(
@@ -91,7 +97,7 @@ def to_topic_summaries(db_topics: Iterable[DbTopic]) -> list[BoardTopicSummary]:
             pinned=db_topic.pinned,
             posting_limited_to_moderators=db_topic.posting_limited_to_moderators,
             muted=db_topic.muted,
-            contains_unseen_postings=db_topic.contains_unseen_postings,
+            contains_unseen_postings=contains_unseen_postings,
         )
 
         summaries.append(summary)

@@ -67,9 +67,8 @@ def topic_index(page):
     )
 
     service.add_topic_creators(topics.items)
-    service.add_topic_unseen_flag(topics.items, user)
 
-    topics.items = service.to_topic_summaries(topics.items)
+    topics.items = service.to_topic_summaries(topics.items, user)
 
     return {
         'topics': topics,
