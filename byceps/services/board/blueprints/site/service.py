@@ -62,7 +62,13 @@ def get_recent_topics(
         board_id, limit=limit, include_hidden=include_hidden
     )
 
-    add_topic_unseen_flag(db_topics, current_user)
+    # Add `unseen` flag.
+    for db_topic in db_topics:
+        db_topic.contains_unseen_postings = (
+            board_topic_query_service.contains_topic_unseen_postings(
+                db_topic.id, db_topic.last_updated_at, current_user
+            )
+        )
 
     return db_topics
 
@@ -112,18 +118,6 @@ def to_topic_summaries(
         summaries.append(summary)
 
     return summaries
-
-
-def add_topic_unseen_flag(
-    db_topics: Iterable[DbTopic], user: CurrentUser
-) -> None:
-    """Add `unseen` flag to topics."""
-    for db_topic in db_topics:
-        db_topic.contains_unseen_postings = (
-            board_topic_query_service.contains_topic_unseen_postings(
-                db_topic.id, db_topic.last_updated_at, user
-            )
-        )
 
 
 def add_unseen_flag_to_postings(
