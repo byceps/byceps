@@ -113,11 +113,8 @@ def get_category_summaries(
     summaries = []
 
     for db_category in db_categories_with_last_update:
-        contains_unseen_postings = (
-            user.authenticated
-            and contains_category_unseen_postings(
-                db_category.id, db_category.last_posting_updated_at, user.id
-            )
+        contains_unseen_postings = contains_category_unseen_postings(
+            db_category.id, db_category.last_posting_updated_at, user
         )
 
         summary = _db_entity_to_category_summary(
@@ -168,7 +165,7 @@ def _db_entity_to_category_summary(
 def contains_category_unseen_postings(
     category_id: BoardCategoryID,
     last_posting_updated_at: datetime | None,
-    user_id: UserID,
+    user: CurrentUser,
 ) -> bool:
     """Return `True` if the category contains postings created after the
     last time the user viewed it.
@@ -176,7 +173,10 @@ def contains_category_unseen_postings(
     if last_posting_updated_at is None:
         return False
 
-    db_last_view = _find_last_category_view(user_id, category_id)
+    if not user.authenticated:
+        return False
+
+    db_last_view = _find_last_category_view(user.id, category_id)
 
     if db_last_view is None:
         return True
