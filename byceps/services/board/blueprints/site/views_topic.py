@@ -120,7 +120,7 @@ def topic_view(topic_id, page):
     if user.authenticated:
         # Mark as viewed before aborting so a user can itself remove the
         # 'new' tag from a locked topic.
-        board_last_view_service.mark_topic_as_just_viewed(topic.id, user.id)
+        board_topic_command_service.mark_topic_as_just_viewed(topic.id, user.id)
 
     postings = board_posting_query_service.paginate_postings(
         topic.id, include_hidden, page, postings_per_page
