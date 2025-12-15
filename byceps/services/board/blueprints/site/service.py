@@ -128,10 +128,10 @@ def add_unseen_flag_to_postings(
 ) -> None:
     """Add the attribute 'unseen' to each post."""
     for db_posting in db_postings:
-        db_posting.unseen = is_posting_unseen(db_posting, last_viewed_at)
+        db_posting.unseen = _is_posting_unseen(db_posting, last_viewed_at)
 
 
-def is_posting_unseen(db_posting: DbPosting, last_viewed_at: datetime) -> bool:
+def _is_posting_unseen(db_posting: DbPosting, last_viewed_at: datetime) -> bool:
     """Return `True` if the posting has not yet been seen by the current
     user.
     """
