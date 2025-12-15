@@ -13,6 +13,7 @@ from sqlalchemy import select
 from sqlalchemy.sql import Select
 
 from byceps.database import db, paginate, Pagination
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import User, UserID
@@ -225,12 +226,15 @@ def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
 
 
 def contains_topic_unseen_postings(
-    topic_id: TopicID, last_updated_at: datetime | None, user_id: UserID
+    topic_id: TopicID, last_updated_at: datetime | None, user: CurrentUser
 ) -> bool:
     """Return `True` if the topic contains postings created after the
     last time the user viewed it.
     """
-    last_viewed_at = find_topic_last_viewed_at(topic_id, user_id)
+    if not user.authenticated:
+        return False
+
+    last_viewed_at = find_topic_last_viewed_at(topic_id, user.id)
     return last_viewed_at is None or last_updated_at > last_viewed_at
 
 

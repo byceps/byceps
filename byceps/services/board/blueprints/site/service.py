@@ -128,11 +128,8 @@ def _does_topic_contain_unseen_postings(
     """Return `True` if the topic contains postings yet unseen by the
     current user.
     """
-    return (
-        user.authenticated
-        and board_topic_query_service.contains_topic_unseen_postings(
-            db_topic.id, db_topic.last_updated_at, user.id
-        )
+    return board_topic_query_service.contains_topic_unseen_postings(
+        db_topic.id, db_topic.last_updated_at, user
     )
 
 
