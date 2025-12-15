@@ -6,6 +6,8 @@ byceps.services.board.board_category_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from sqlalchemy import select
 
 from byceps.database import db
@@ -148,20 +150,22 @@ def _db_entity_to_category_summary(
 
 
 def contains_category_unseen_postings(
-    category: BoardCategorySummary, user_id: UserID
+    category_id: BoardCategoryID,
+    last_posting_updated_at: datetime | None,
+    user_id: UserID,
 ) -> bool:
     """Return `True` if the category contains postings created after the
     last time the user viewed it.
     """
-    if category.last_posting_updated_at is None:
+    if last_posting_updated_at is None:
         return False
 
-    db_last_view = _find_last_category_view(user_id, category.id)
+    db_last_view = _find_last_category_view(user_id, category_id)
 
     if db_last_view is None:
         return True
 
-    return category.last_posting_updated_at > db_last_view.occurred_at
+    return last_posting_updated_at > db_last_view.occurred_at
 
 
 def _find_last_category_view(

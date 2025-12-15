@@ -81,7 +81,7 @@ def add_unseen_postings_flag_to_categories(
         contains_unseen_postings = (
             user.authenticated
             and board_category_query_service.contains_category_unseen_postings(
-                category, user.id
+                category.id, category.last_posting_updated_at, user.id
             )
         )
 
