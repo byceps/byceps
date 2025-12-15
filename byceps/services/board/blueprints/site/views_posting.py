@@ -12,7 +12,7 @@ from flask import abort, g, redirect, request
 from flask_babel import gettext
 
 from byceps.services.board import (
-    board_last_view_service,
+    board_category_command_service,
     board_posting_command_service,
     board_posting_query_service,
     signals as board_signals,
@@ -127,7 +127,7 @@ def posting_create(topic_id):
     )
 
     if g.user.authenticated:
-        board_last_view_service.mark_category_as_just_viewed(
+        board_category_command_service.mark_category_as_just_viewed(
             db_topic.category.id, g.user.id
         )
 

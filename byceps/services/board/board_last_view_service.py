@@ -51,32 +51,6 @@ def find_last_category_view(
     ).first()
 
 
-def mark_category_as_just_viewed(
-    category_id: BoardCategoryID, user_id: UserID
-) -> None:
-    """Mark the category as last viewed by the user (if logged in) at
-    the current time.
-    """
-    table = DbLastCategoryView.__table__
-    identifier = {
-        'user_id': user_id,
-        'category_id': category_id,
-    }
-    replacement = {
-        'occurred_at': datetime.utcnow(),
-    }
-
-    upsert(table, identifier, replacement)
-
-
-def delete_last_category_views(category_id: BoardCategoryID) -> None:
-    """Delete the category's last views."""
-    db.session.execute(
-        delete(DbLastCategoryView).filter_by(category_id=category_id)
-    )
-    db.session.commit()
-
-
 # -------------------------------------------------------------------- #
 # topics
 

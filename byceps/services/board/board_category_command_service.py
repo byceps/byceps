@@ -6,13 +6,18 @@ byceps.services.board.board_category_command_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.database import db
+from datetime import datetime
+
+from sqlalchemy import delete
+
+from byceps.database import db, upsert
+from byceps.services.user.models.user import UserID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid4
 
 from . import board_topic_query_service
 from .dbmodels.board import DbBoard
-from .dbmodels.category import DbBoardCategory
+from .dbmodels.category import DbBoardCategory, DbLastCategoryView
 from .errors import (
     BoardCategoryAlreadyAtBottomError,
     BoardCategoryAlreadyAtTopError,
@@ -149,3 +154,32 @@ def _db_entity_to_category(db_category: DbBoardCategory) -> BoardCategory:
         posting_count=db_category.posting_count,
         hidden=db_category.hidden,
     )
+
+
+# last view
+
+
+def mark_category_as_just_viewed(
+    category_id: BoardCategoryID, user_id: UserID
+) -> None:
+    """Mark the category as last viewed by the user (if logged in) at
+    the current time.
+    """
+    table = DbLastCategoryView.__table__
+    identifier = {
+        'user_id': user_id,
+        'category_id': category_id,
+    }
+    replacement = {
+        'occurred_at': datetime.utcnow(),
+    }
+
+    upsert(table, identifier, replacement)
+
+
+def delete_last_category_views(category_id: BoardCategoryID) -> None:
+    """Delete the category's last views."""
+    db.session.execute(
+        delete(DbLastCategoryView).filter_by(category_id=category_id)
+    )
+    db.session.commit()

@@ -10,6 +10,7 @@ from flask import abort, g, url_for
 from flask_babel import gettext
 
 from byceps.services.board import (
+    board_category_command_service,
     board_category_query_service,
     board_last_view_service,
     board_topic_query_service,
@@ -71,7 +72,7 @@ def category_view(slug, page):
         abort(404)
 
     if user.authenticated:
-        board_last_view_service.mark_category_as_just_viewed(
+        board_category_command_service.mark_category_as_just_viewed(
             category.id, user.id
         )
 
