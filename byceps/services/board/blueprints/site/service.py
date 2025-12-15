@@ -20,7 +20,10 @@ from byceps.services.board import (
 )
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
-from byceps.services.board.models import BoardCategoryWithLastUpdate
+from byceps.services.board.models import (
+    BoardCategorySummary,
+    BoardCategoryWithLastUpdate,
+)
 from byceps.services.brand.models import BrandID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
@@ -33,7 +36,7 @@ from byceps.services.user_badge import user_badge_awarding_service
 from byceps.services.user_badge.models import Badge
 from byceps.util.authz import has_current_user_permission
 
-from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
+from .models import Creator, Ticket
 
 
 DEFAULT_POSTINGS_PER_PAGE = 10
@@ -70,7 +73,7 @@ def get_recent_topics(
 
 def add_unseen_postings_flag_to_categories(
     categories: Iterable[BoardCategoryWithLastUpdate], user: CurrentUser
-) -> list[CategoryWithLastUpdateAndUnseenFlag]:
+) -> list[BoardCategorySummary]:
     """Add flag to each category stating if it contains postings unseen
     by the user.
     """
@@ -85,7 +88,7 @@ def add_unseen_postings_flag_to_categories(
         )
 
         category_with_flag = (
-            CategoryWithLastUpdateAndUnseenFlag.from_category_with_last_update(
+            BoardCategorySummary.from_category_with_last_update(
                 category, contains_unseen_postings
             )
         )
