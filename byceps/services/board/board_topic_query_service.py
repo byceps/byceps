@@ -15,11 +15,11 @@ from sqlalchemy.sql import Select
 from byceps.database import db, paginate, Pagination
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User
+from byceps.services.user.models.user import User, UserID
 
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
-from .dbmodels.topic import DbTopic
+from .dbmodels.topic import DbTopic, DbLastTopicView
 from .models import BoardCategoryID, BoardID, Topic, TopicID
 
 
@@ -219,3 +219,27 @@ def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
         posting_limited_to_moderators=db_topic.posting_limited_to_moderators,
         muted=db_topic.muted,
     )
+
+
+# last view
+
+
+def contains_topic_unseen_postings(db_topic: DbTopic, user_id: UserID) -> bool:
+    """Return `True` if the topic contains postings created after the
+    last time the user viewed it.
+    """
+    last_viewed_at = find_topic_last_viewed_at(db_topic.id, user_id)
+    return last_viewed_at is None or db_topic.last_updated_at > last_viewed_at
+
+
+def find_topic_last_viewed_at(
+    topic_id: TopicID, user_id: UserID
+) -> datetime | None:
+    """Return the time the topic was last viewed by the user (or
+    nothing, if it hasn't been viewed by the user yet).
+    """
+    db_last_view = db.session.scalars(
+        select(DbLastTopicView).filter_by(user_id=user_id, topic_id=topic_id)
+    ).first()
+
+    return db_last_view.occurred_at if (db_last_view is not None) else None

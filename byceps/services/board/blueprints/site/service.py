@@ -16,7 +16,6 @@ from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
     board_access_control_service,
     board_category_query_service,
-    board_last_view_service,
     board_posting_query_service,
     board_topic_query_service,
 )
@@ -113,7 +112,7 @@ def add_topic_unseen_flag(
     for db_topic in db_topics:
         db_topic.contains_unseen_postings = (
             user.authenticated
-            and board_last_view_service.contains_topic_unseen_postings(
+            and board_topic_query_service.contains_topic_unseen_postings(
                 db_topic, user.id
             )
         )
