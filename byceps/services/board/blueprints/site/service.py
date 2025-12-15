@@ -86,8 +86,10 @@ def to_topic_summaries(
 
         creator = creators_by_id[db_topic.creator_id]
 
-        contains_unseen_postings = _does_topic_contain_unseen_postings(
-            db_topic, user
+        contains_unseen_postings = (
+            board_topic_query_service.contains_topic_unseen_postings(
+                db_topic.id, db_topic.last_updated_at, user
+            )
         )
 
         summary = BoardTopicSummary(
@@ -117,20 +119,11 @@ def add_topic_unseen_flag(
 ) -> None:
     """Add `unseen` flag to topics."""
     for db_topic in db_topics:
-        db_topic.contains_unseen_postings = _does_topic_contain_unseen_postings(
-            db_topic, user
+        db_topic.contains_unseen_postings = (
+            board_topic_query_service.contains_topic_unseen_postings(
+                db_topic.id, db_topic.last_updated_at, user
+            )
         )
-
-
-def _does_topic_contain_unseen_postings(
-    db_topic: DbTopic, user: CurrentUser
-) -> bool:
-    """Return `True` if the topic contains postings yet unseen by the
-    current user.
-    """
-    return board_topic_query_service.contains_topic_unseen_postings(
-        db_topic.id, db_topic.last_updated_at, user
-    )
 
 
 def add_unseen_flag_to_postings(
