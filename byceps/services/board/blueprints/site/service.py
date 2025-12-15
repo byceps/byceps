@@ -15,6 +15,7 @@ from flask import g
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
     board_access_control_service,
+    board_category_query_service,
     board_last_view_service,
     board_posting_query_service,
     board_topic_query_service,
@@ -80,7 +81,7 @@ def add_unseen_postings_flag_to_categories(
     for category in categories:
         contains_unseen_postings = (
             user.authenticated
-            and board_last_view_service.contains_category_unseen_postings(
+            and board_category_query_service.contains_category_unseen_postings(
                 category, user.id
             )
         )

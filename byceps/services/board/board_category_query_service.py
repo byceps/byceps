@@ -9,8 +9,9 @@ byceps.services.board.board_category_query_service
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.user.models.user import UserID
 
-from .dbmodels.category import DbBoardCategory
+from .dbmodels.category import DbBoardCategory, DbLastCategoryView
 from .models import (
     BoardCategory,
     BoardCategoryID,
@@ -141,3 +142,34 @@ def _db_entity_to_category_summary(
         last_posting_updated_by=db_category.last_posting_updated_by,
         contains_unseen_postings=False,
     )
+
+
+# last view
+
+
+def contains_category_unseen_postings(
+    category: BoardCategorySummary, user_id: UserID
+) -> bool:
+    """Return `True` if the category contains postings created after the
+    last time the user viewed it.
+    """
+    if category.last_posting_updated_at is None:
+        return False
+
+    db_last_view = _find_last_category_view(user_id, category.id)
+
+    if db_last_view is None:
+        return True
+
+    return category.last_posting_updated_at > db_last_view.occurred_at
+
+
+def _find_last_category_view(
+    user_id: UserID, category_id: BoardCategoryID
+) -> DbLastCategoryView | None:
+    """Return the user's last view of the category, or `None` if not found."""
+    return db.session.scalars(
+        select(DbLastCategoryView).filter_by(
+            user_id=user_id, category_id=category_id
+        )
+    ).first()

@@ -14,41 +14,8 @@ from byceps.database import db, upsert, upsert_many
 from byceps.services.user.models.user import UserID
 
 from . import board_topic_query_service
-from .dbmodels.category import DbLastCategoryView
 from .dbmodels.topic import DbTopic, DbLastTopicView
-from .models import BoardCategoryID, BoardCategorySummary, TopicID
-
-
-# -------------------------------------------------------------------- #
-# categories
-
-
-def contains_category_unseen_postings(
-    category: BoardCategorySummary, user_id: UserID
-) -> bool:
-    """Return `True` if the category contains postings created after the
-    last time the user viewed it.
-    """
-    if category.last_posting_updated_at is None:
-        return False
-
-    db_last_view = find_last_category_view(user_id, category.id)
-
-    if db_last_view is None:
-        return True
-
-    return category.last_posting_updated_at > db_last_view.occurred_at
-
-
-def find_last_category_view(
-    user_id: UserID, category_id: BoardCategoryID
-) -> DbLastCategoryView | None:
-    """Return the user's last view of the category, or `None` if not found."""
-    return db.session.scalars(
-        select(DbLastCategoryView).filter_by(
-            user_id=user_id, category_id=category_id
-        )
-    ).first()
+from .models import BoardCategoryID, TopicID
 
 
 # -------------------------------------------------------------------- #
