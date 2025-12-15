@@ -17,7 +17,7 @@ from . import board_topic_query_service
 from .dbmodels.last_category_view import DbLastCategoryView
 from .dbmodels.last_topic_view import DbLastTopicView
 from .dbmodels.topic import DbTopic
-from .models import BoardCategoryID, BoardCategoryWithLastUpdate, TopicID
+from .models import BoardCategoryID, BoardCategorySummary, TopicID
 
 
 # -------------------------------------------------------------------- #
@@ -25,7 +25,7 @@ from .models import BoardCategoryID, BoardCategoryWithLastUpdate, TopicID
 
 
 def contains_category_unseen_postings(
-    category: BoardCategoryWithLastUpdate, user_id: UserID
+    category: BoardCategorySummary, user_id: UserID
 ) -> bool:
     """Return `True` if the category contains postings created after the
     last time the user viewed it.

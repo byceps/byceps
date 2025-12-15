@@ -14,7 +14,7 @@ from .dbmodels.category import DbBoardCategory
 from .models import (
     BoardCategory,
     BoardCategoryID,
-    BoardCategoryWithLastUpdate,
+    BoardCategorySummary,
     BoardID,
 )
 
@@ -86,9 +86,7 @@ def get_categories_excluding(
     ]
 
 
-def get_categories_with_last_updates(
-    board_id: BoardID,
-) -> list[BoardCategoryWithLastUpdate]:
+def get_category_summaries(board_id: BoardID) -> list[BoardCategorySummary]:
     """Return the categories for that board.
 
     Include the creator of the last posting in each category.
@@ -107,7 +105,7 @@ def get_categories_with_last_updates(
     )
 
     return [
-        _db_entity_to_category_with_last_update(db_category)
+        _db_entity_to_category_summary(db_category)
         for db_category in db_categories_with_last_update
     ]
 
@@ -126,10 +124,10 @@ def _db_entity_to_category(db_category: DbBoardCategory) -> BoardCategory:
     )
 
 
-def _db_entity_to_category_with_last_update(
+def _db_entity_to_category_summary(
     db_category: DbBoardCategory,
-) -> BoardCategoryWithLastUpdate:
-    return BoardCategoryWithLastUpdate(
+) -> BoardCategorySummary:
+    return BoardCategorySummary(
         id=db_category.id,
         board_id=db_category.board_id,
         position=db_category.position,
@@ -141,4 +139,5 @@ def _db_entity_to_category_with_last_update(
         hidden=db_category.hidden,
         last_posting_updated_at=db_category.last_posting_updated_at,
         last_posting_updated_by=db_category.last_posting_updated_by,
+        contains_unseen_postings=False,
     )

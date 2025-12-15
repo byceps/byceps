@@ -7,6 +7,7 @@ byceps.services.board.blueprints.site.service
 """
 
 from collections.abc import Iterable, Sequence
+import dataclasses
 from datetime import datetime
 
 from flask import g
@@ -20,10 +21,7 @@ from byceps.services.board import (
 )
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
-from byceps.services.board.models import (
-    BoardCategorySummary,
-    BoardCategoryWithLastUpdate,
-)
+from byceps.services.board.models import BoardCategorySummary
 from byceps.services.brand.models import BrandID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
@@ -72,7 +70,7 @@ def get_recent_topics(
 
 
 def add_unseen_postings_flag_to_categories(
-    categories: Iterable[BoardCategoryWithLastUpdate], user: CurrentUser
+    categories: Iterable[BoardCategorySummary], user: CurrentUser
 ) -> list[BoardCategorySummary]:
     """Add flag to each category stating if it contains postings unseen
     by the user.
@@ -87,10 +85,8 @@ def add_unseen_postings_flag_to_categories(
             )
         )
 
-        category_with_flag = (
-            BoardCategorySummary.from_category_with_last_update(
-                category, contains_unseen_postings
-            )
+        category_with_flag = dataclasses.replace(
+            category, contains_unseen_postings=contains_unseen_postings
         )
 
         categories_with_flag.append(category_with_flag)

@@ -35,9 +35,7 @@ def category_index():
 
     h.require_board_access(board_id, user.id)
 
-    categories = board_category_query_service.get_categories_with_last_updates(
-        board_id
-    )
+    categories = board_category_query_service.get_category_summaries(board_id)
 
     categories_with_flag = service.add_unseen_postings_flag_to_categories(
         categories, user
