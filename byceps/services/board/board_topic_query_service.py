@@ -224,12 +224,14 @@ def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
 # last view
 
 
-def contains_topic_unseen_postings(db_topic: DbTopic, user_id: UserID) -> bool:
+def contains_topic_unseen_postings(
+    topic_id: TopicID, last_updated_at: datetime | None, user_id: UserID
+) -> bool:
     """Return `True` if the topic contains postings created after the
     last time the user viewed it.
     """
-    last_viewed_at = find_topic_last_viewed_at(db_topic.id, user_id)
-    return last_viewed_at is None or db_topic.last_updated_at > last_viewed_at
+    last_viewed_at = find_topic_last_viewed_at(topic_id, user_id)
+    return last_viewed_at is None or last_updated_at > last_viewed_at
 
 
 def find_topic_last_viewed_at(

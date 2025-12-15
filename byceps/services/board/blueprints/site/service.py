@@ -131,7 +131,7 @@ def _does_topic_contain_unseen_postings(
     return (
         user.authenticated
         and board_topic_query_service.contains_topic_unseen_postings(
-            db_topic, user.id
+            db_topic.id, db_topic.last_updated_at, user.id
         )
     )
 
