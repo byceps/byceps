@@ -57,11 +57,9 @@ def get_recent_topics(
         return None
 
     include_hidden = may_current_user_view_hidden()
-    db_topics = board_topic_query_service.get_recent_topics(
-        board_id, limit=limit, include_hidden=include_hidden
+    return board_topic_query_service.get_recent_topics(
+        board_id, limit, user, include_hidden=include_hidden
     )
-
-    return board_topic_query_service.to_topic_summaries(db_topics, user)
 
 
 def add_unseen_flag_to_postings(

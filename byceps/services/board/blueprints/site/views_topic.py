@@ -63,10 +63,8 @@ def topic_index(page):
     topics_per_page = service.get_topics_per_page_value()
 
     topics = board_topic_query_service.paginate_topics(
-        board_id, page, topics_per_page, include_hidden=include_hidden
+        board_id, page, topics_per_page, user, include_hidden=include_hidden
     )
-
-    topics.items = service.to_topic_summaries(topics.items, user)
 
     return {
         'topics': topics,

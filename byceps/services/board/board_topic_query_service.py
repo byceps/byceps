@@ -6,7 +6,7 @@ byceps.services.board.board_topic_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable
 from datetime import datetime
 
 from sqlalchemy import select
@@ -89,10 +89,14 @@ def find_topic_visible_for_user(
 
 
 def get_recent_topics(
-    board_id: BoardID, limit: int, *, include_hidden: bool = False
-) -> Sequence[DbTopic]:
+    board_id: BoardID,
+    limit: int,
+    user: CurrentUser,
+    *,
+    include_hidden: bool = False,
+) -> list[BoardTopicSummary]:
     """Return recent topics in that board."""
-    return (
+    db_topics = (
         db.session.scalars(
             _select_topics(include_hidden=include_hidden)
             .join(DbBoardCategory)
@@ -105,9 +109,16 @@ def get_recent_topics(
         .all()
     )
 
+    return _to_topic_summaries(db_topics, user)
+
 
 def paginate_topics(
-    board_id: BoardID, page: int, per_page: int, *, include_hidden: bool = False
+    board_id: BoardID,
+    page: int,
+    per_page: int,
+    user: CurrentUser,
+    *,
+    include_hidden: bool = False,
 ) -> Pagination:
     """Paginate topics in that board."""
     stmt = (
@@ -118,7 +129,11 @@ def paginate_topics(
         .order_by(DbTopic.last_updated_at.desc())
     )
 
-    return paginate(stmt, page, per_page)
+    pagination = paginate(stmt, page, per_page)
+
+    pagination.items = _to_topic_summaries(pagination.items, user)
+
+    return pagination
 
 
 def get_all_topic_ids() -> set[TopicID]:
@@ -141,6 +156,7 @@ def paginate_topics_of_category(
     category_id: BoardCategoryID,
     page: int,
     per_page: int,
+    user: CurrentUser,
     *,
     include_hidden: bool = False,
 ) -> Pagination:
@@ -154,7 +170,11 @@ def paginate_topics_of_category(
         .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc())
     )
 
-    return paginate(stmt, page, per_page)
+    pagination = paginate(stmt, page, per_page)
+
+    pagination.items = _to_topic_summaries(pagination.items, user)
+
+    return pagination
 
 
 def _select_topics(*, include_hidden: bool = False) -> Select:
@@ -172,7 +192,7 @@ def _select_topics(*, include_hidden: bool = False) -> Select:
     return stmt
 
 
-def to_topic_summaries(
+def _to_topic_summaries(
     db_topics: Iterable[DbTopic], user: CurrentUser
 ) -> list[BoardTopicSummary]:
     """Build summary objects."""
