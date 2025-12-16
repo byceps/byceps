@@ -19,14 +19,13 @@ from byceps.services.board import (
 )
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
-from byceps.services.board.models import BoardTopicCategory, BoardTopicSummary
+from byceps.services.board.models import BoardTopicSummary
 from byceps.services.brand.models import BrandID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.site import site_setting_service
 from byceps.services.ticketing import ticket_service
-from byceps.services.user import user_service
 from byceps.services.user.models.user import UserID
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.services.user_badge.models import Badge
@@ -62,64 +61,7 @@ def get_recent_topics(
         board_id, limit=limit, include_hidden=include_hidden
     )
 
-    return to_topic_summaries(db_topics, user)
-
-
-def to_topic_summaries(
-    db_topics: Iterable[DbTopic], user: CurrentUser
-) -> list[BoardTopicSummary]:
-    """Build summary objects."""
-    creator_ids = {t.creator_id for t in db_topics}
-    last_updated_by_ids = {
-        t.last_updated_by_id for t in db_topics if t.last_updated_by_id
-    }
-    user_ids = creator_ids | last_updated_by_ids
-
-    users_by_id = user_service.get_users_indexed_by_id(
-        user_ids, include_avatars=True
-    )
-
-    summaries = []
-
-    for db_topic in db_topics:
-        category = BoardTopicCategory(
-            slug=db_topic.category.slug,
-            title=db_topic.category.title,
-        )
-
-        creator = users_by_id[db_topic.creator_id]
-
-        last_updated_by = (
-            users_by_id[db_topic.last_updated_by_id]
-            if db_topic.last_updated_by_id
-            else None
-        )
-
-        contains_unseen_postings = (
-            board_topic_query_service.contains_topic_unseen_postings(
-                db_topic.id, db_topic.last_updated_at, user
-            )
-        )
-
-        summary = BoardTopicSummary(
-            id=db_topic.id,
-            category=category,
-            creator=creator,
-            title=db_topic.title,
-            reply_count=db_topic.reply_count,
-            last_updated_at=db_topic.last_updated_at,
-            last_updated_by=last_updated_by,
-            hidden=db_topic.hidden,
-            locked=db_topic.locked,
-            pinned=db_topic.pinned,
-            posting_limited_to_moderators=db_topic.posting_limited_to_moderators,
-            muted=db_topic.muted,
-            contains_unseen_postings=contains_unseen_postings,
-        )
-
-        summaries.append(summary)
-
-    return summaries
+    return board_topic_query_service.to_topic_summaries(db_topics, user)
 
 
 def add_unseen_flag_to_postings(

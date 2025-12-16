@@ -80,7 +80,9 @@ def category_view(slug, page):
         category.id, page, topics_per_page, include_hidden=include_hidden
     )
 
-    topics.items = service.to_topic_summaries(topics.items, user)
+    topics.items = board_topic_query_service.to_topic_summaries(
+        topics.items, user
+    )
 
     return {
         'category': category,

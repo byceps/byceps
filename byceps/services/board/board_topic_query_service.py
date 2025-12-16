@@ -6,7 +6,7 @@ byceps.services.board.board_topic_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence
 from datetime import datetime
 
 from sqlalchemy import select
@@ -21,7 +21,14 @@ from byceps.services.user.models.user import User, UserID
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
 from .dbmodels.topic import DbTopic, DbLastTopicView
-from .models import BoardCategoryID, BoardID, Topic, TopicID
+from .models import (
+    BoardCategoryID,
+    BoardID,
+    BoardTopicCategory,
+    BoardTopicSummary,
+    Topic,
+    TopicID,
+)
 
 
 def count_topics_for_board(board_id: BoardID) -> int:
@@ -165,6 +172,61 @@ def _select_topics(*, include_hidden: bool = False) -> Select:
     return stmt
 
 
+def to_topic_summaries(
+    db_topics: Iterable[DbTopic], user: CurrentUser
+) -> list[BoardTopicSummary]:
+    """Build summary objects."""
+    creator_ids = {t.creator_id for t in db_topics}
+    last_updated_by_ids = {
+        t.last_updated_by_id for t in db_topics if t.last_updated_by_id
+    }
+    user_ids = creator_ids | last_updated_by_ids
+
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
+
+    summaries = []
+
+    for db_topic in db_topics:
+        category = BoardTopicCategory(
+            slug=db_topic.category.slug,
+            title=db_topic.category.title,
+        )
+
+        creator = users_by_id[db_topic.creator_id]
+
+        last_updated_by = (
+            users_by_id[db_topic.last_updated_by_id]
+            if db_topic.last_updated_by_id
+            else None
+        )
+
+        contains_unseen_postings = _contains_topic_unseen_postings(
+            db_topic.id, db_topic.last_updated_at, user
+        )
+
+        summary = BoardTopicSummary(
+            id=db_topic.id,
+            category=category,
+            creator=creator,
+            title=db_topic.title,
+            reply_count=db_topic.reply_count,
+            last_updated_at=db_topic.last_updated_at,
+            last_updated_by=last_updated_by,
+            hidden=db_topic.hidden,
+            locked=db_topic.locked,
+            pinned=db_topic.pinned,
+            posting_limited_to_moderators=db_topic.posting_limited_to_moderators,
+            muted=db_topic.muted,
+            contains_unseen_postings=contains_unseen_postings,
+        )
+
+        summaries.append(summary)
+
+    return summaries
+
+
 def find_default_posting_to_jump_to(
     topic_id: TopicID, last_viewed_at: datetime, *, include_hidden: bool = False
 ) -> DbPosting | None:
@@ -225,7 +287,7 @@ def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
 # last view
 
 
-def contains_topic_unseen_postings(
+def _contains_topic_unseen_postings(
     topic_id: TopicID, last_updated_at: datetime | None, user: CurrentUser
 ) -> bool:
     """Return `True` if the topic contains postings created after the
