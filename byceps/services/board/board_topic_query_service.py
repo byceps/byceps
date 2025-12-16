@@ -190,10 +190,6 @@ def paginate_topics_of_category(
 def _select_topics(*, include_hidden: bool = False) -> Select:
     stmt = select(DbTopic).options(
         db.joinedload(DbTopic.category),
-        db.joinedload(DbTopic.last_updated_by),
-        db.joinedload(DbTopic.hidden_by),
-        db.joinedload(DbTopic.locked_by),
-        db.joinedload(DbTopic.pinned_by),
     )
 
     if not include_hidden:
