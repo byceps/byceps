@@ -6,7 +6,7 @@ byceps.services.board.blueprints.site.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable
 from datetime import datetime
 
 from flask import g
@@ -41,7 +41,7 @@ DEFAULT_TOPICS_PER_PAGE = 10
 
 def get_recent_topics(
     user: CurrentUser, *, limit=6
-) -> Sequence[DbTopic] | None:
+) -> list[BoardTopicSummary] | None:
     """Return the most recently active board topics.
 
     Returns `None` if no board is configured for this site or the
@@ -62,15 +62,7 @@ def get_recent_topics(
         board_id, limit=limit, include_hidden=include_hidden
     )
 
-    # Add `unseen` flag.
-    for db_topic in db_topics:
-        db_topic.contains_unseen_postings = (
-            board_topic_query_service.contains_topic_unseen_postings(
-                db_topic.id, db_topic.last_updated_at, user
-            )
-        )
-
-    return db_topics
+    return to_topic_summaries(db_topics, user)
 
 
 def to_topic_summaries(
