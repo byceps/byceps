@@ -78,8 +78,13 @@ def to_topic_summaries(
 ) -> list[BoardTopicSummary]:
     """Build summary objects."""
     creator_ids = {t.creator_id for t in db_topics}
-    creators_by_id = user_service.get_users_indexed_by_id(
-        creator_ids, include_avatars=True
+    last_updated_by_ids = {
+        t.last_updated_by_id for t in db_topics if t.last_updated_by_id
+    }
+    user_ids = creator_ids | last_updated_by_ids
+
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
     )
 
     summaries = []
@@ -90,7 +95,13 @@ def to_topic_summaries(
             title=db_topic.category.title,
         )
 
-        creator = creators_by_id[db_topic.creator_id]
+        creator = users_by_id[db_topic.creator_id]
+
+        last_updated_by = (
+            users_by_id[db_topic.last_updated_by_id]
+            if db_topic.last_updated_by_id
+            else None
+        )
 
         contains_unseen_postings = (
             board_topic_query_service.contains_topic_unseen_postings(
@@ -105,7 +116,7 @@ def to_topic_summaries(
             title=db_topic.title,
             reply_count=db_topic.reply_count,
             last_updated_at=db_topic.last_updated_at,
-            last_updated_by=db_topic.last_updated_by,
+            last_updated_by=last_updated_by,
             hidden=db_topic.hidden,
             locked=db_topic.locked,
             pinned=db_topic.pinned,
