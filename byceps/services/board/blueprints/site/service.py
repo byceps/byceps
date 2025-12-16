@@ -40,7 +40,7 @@ DEFAULT_TOPICS_PER_PAGE = 10
 
 
 def get_recent_topics(
-    current_user: CurrentUser, *, limit=6
+    user: CurrentUser, *, limit=6
 ) -> Sequence[DbTopic] | None:
     """Return the most recently active board topics.
 
@@ -52,7 +52,7 @@ def get_recent_topics(
         return None
 
     has_access = board_access_control_service.has_user_access_to_board(
-        current_user.id, board_id
+        user.id, board_id
     )
     if not has_access:
         return None
@@ -66,7 +66,7 @@ def get_recent_topics(
     for db_topic in db_topics:
         db_topic.contains_unseen_postings = (
             board_topic_query_service.contains_topic_unseen_postings(
-                db_topic.id, db_topic.last_updated_at, current_user
+                db_topic.id, db_topic.last_updated_at, user
             )
         )
 
