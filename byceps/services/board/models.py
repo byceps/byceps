@@ -8,7 +8,7 @@ byceps.services.board.models
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import NewType, Self
+from typing import NewType
 from uuid import UUID
 
 from byceps.services.brand.models import BrandID
