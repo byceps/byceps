@@ -13,7 +13,6 @@ from flask import g
 
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
-    board_access_control_service,
     board_posting_query_service,
     board_topic_query_service,
 )
@@ -48,12 +47,6 @@ def get_recent_topics(
     """
     board_id = g.site.board_id
     if board_id is None:
-        return None
-
-    has_access = board_access_control_service.has_user_access_to_board(
-        user.id, board_id
-    )
-    if not has_access:
         return None
 
     include_hidden = may_current_user_view_hidden()

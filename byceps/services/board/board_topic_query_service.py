@@ -18,6 +18,7 @@ from byceps.services.user import user_service
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import User, UserID
 
+from . import board_access_control_service
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
 from .dbmodels.topic import DbTopic, DbLastTopicView
@@ -94,8 +95,17 @@ def get_recent_topics(
     user: CurrentUser,
     *,
     include_hidden: bool = False,
-) -> list[BoardTopicSummary]:
-    """Return recent topics in that board."""
+) -> list[BoardTopicSummary] | None:
+    """Return the most recently active topics in the board.
+
+    Returns `None` if the user is not permitted to access the board.
+    """
+    has_access = board_access_control_service.has_user_access_to_board(
+        user.id, board_id
+    )
+    if not has_access:
+        return None
+
     db_topics = (
         db.session.scalars(
             _select_topics(include_hidden=include_hidden)
