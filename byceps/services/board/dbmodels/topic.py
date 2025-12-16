@@ -110,23 +110,13 @@ class DbTopic(db.Model):
         return self.id == other.id
 
     def __repr__(self) -> str:
-        builder = (
+        return (
             ReprBuilder(self)
             .add_with_lookup('id')
             .add('category', self.category.title)
             .add_with_lookup('title')
+            .build()
         )
-
-        if self.hidden_by:
-            builder.add_custom(f'hidden by {self.hidden_by.screen_name}')
-
-        if self.locked_by:
-            builder.add_custom(f'locked by {self.locked_by.screen_name}')
-
-        if self.pinned_by:
-            builder.add_custom(f'pinned by {self.pinned_by.screen_name}')
-
-        return builder.build()
 
 
 class DbLastTopicView(db.Model):

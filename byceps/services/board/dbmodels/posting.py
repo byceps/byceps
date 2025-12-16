@@ -71,16 +71,12 @@ class DbPosting(db.Model):
         return self.id == other.id
 
     def __repr__(self) -> str:
-        builder = (
+        return (
             ReprBuilder(self)
             .add_with_lookup('id')
             .add('topic', self.topic.title)
+            .build()
         )
-
-        if self.hidden_by:
-            builder.add_custom(f'hidden by {self.hidden_by.screen_name}')
-
-        return builder.build()
 
 
 class DbInitialTopicPostingAssociation(db.Model):
