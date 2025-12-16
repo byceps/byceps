@@ -107,7 +107,6 @@ def to_topic_summaries(
             last_updated_at=db_topic.last_updated_at,
             last_updated_by=db_topic.last_updated_by,
             hidden=db_topic.hidden,
-            hidden_by=db_topic.hidden_by,
             locked=db_topic.locked,
             pinned=db_topic.pinned,
             posting_limited_to_moderators=db_topic.posting_limited_to_moderators,

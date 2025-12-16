@@ -97,7 +97,6 @@ class BoardTopicSummary:
     last_updated_at: datetime | None
     last_updated_by: User | None
     hidden: bool
-    hidden_by: User | None
     locked: bool
     pinned: bool
     posting_limited_to_moderators: bool
