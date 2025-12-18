@@ -14,7 +14,7 @@ from _util import call_with_app_context
 from _validators import validate_site
 
 
-def validate_site_if_given(ctx, param, site_id_value: str) -> Site:
+def validate_site_if_given(ctx, param, site_id_value: str) -> Site | None:
     if site_id_value is None:
         return None
 
