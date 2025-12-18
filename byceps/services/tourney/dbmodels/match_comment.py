@@ -31,7 +31,7 @@ class DbMatchComment(db.Model):
         db.Uuid, db.ForeignKey('tourney_matches.id'), index=True
     )
     match: Mapped[DbMatch] = relationship(DbMatch)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     created_by_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
@@ -56,7 +56,11 @@ class DbMatchComment(db.Model):
     )
 
     def __init__(
-        self, match_id: MatchID, creator_id: UserID, body: str
+        self,
+        match_id: MatchID,
+        created_at: datetime,
+        creator_id: UserID,
+        body: str,
     ) -> None:
         self.match_id = match_id
         self.created_by_id = creator_id

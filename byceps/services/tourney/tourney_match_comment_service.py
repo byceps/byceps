@@ -126,7 +126,9 @@ def _get_users_by_id(user_ids: set[UserID]) -> dict[UserID, User]:
 
 def create_comment(match_id: MatchID, creator: User, body: str) -> MatchComment:
     """Create a comment on a match."""
-    db_comment = DbMatchComment(match_id, creator.id, body)
+    created_at = datetime.utcnow()
+
+    db_comment = DbMatchComment(match_id, created_at, creator.id, body)
 
     db.session.add(db_comment)
     db.session.commit()
