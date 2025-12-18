@@ -10,8 +10,10 @@ from flask import abort, request
 from pydantic import ValidationError
 
 from byceps.services.party import party_service
+from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_attendance_service
 from byceps.services.user import user_service
+from byceps.services.user.models.user import UserID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import api_token_required, respond_no_content
 
@@ -34,11 +36,13 @@ def create_archived_attendance():
     except ValidationError as e:
         abort(400, e.json())
 
-    user = user_service.find_user(req.user_id)
+    user_id = UserID(req.user_id)
+    user = user_service.find_user(user_id)
     if not user:
         abort(400, 'User ID unknown')
 
-    party = party_service.find_party(req.party_id)
+    party_id = PartyID(req.party_id)
+    party = party_service.find_party(party_id)
     if not party:
         abort(400, 'Party ID unknown')
 
