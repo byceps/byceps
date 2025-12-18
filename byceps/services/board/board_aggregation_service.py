@@ -88,15 +88,11 @@ def _get_category_latest_posting_info(
 def aggregate_topic(db_topic: DbTopic) -> None:
     """Update the topic's count and latest fields."""
     posting_count = _get_topic_posting_count(db_topic.id)
-    latest_posting_info = _get_topic_latest_posting_info(db_topic.id)
+    latest_posting_info = _get_topic_latest_posting_info(db_topic)
 
     db_topic.posting_count = posting_count
-    db_topic.last_updated_at = (
-        latest_posting_info.created_at if latest_posting_info else None
-    )
-    db_topic.last_updated_by_id = (
-        latest_posting_info.creator_id if latest_posting_info else None
-    )
+    db_topic.last_updated_at = latest_posting_info.created_at
+    db_topic.last_updated_by_id = latest_posting_info.creator_id
 
     db.session.commit()
 
@@ -112,18 +108,19 @@ def _get_topic_posting_count(topic_id: TopicID) -> int:
     return posting_count or 0
 
 
-def _get_topic_latest_posting_info(
-    topic_id: TopicID,
-) -> LatestPostingInfo | None:
+def _get_topic_latest_posting_info(db_topic: DbTopic) -> LatestPostingInfo:
     db_latest_posting = db.session.scalars(
         select(DbPosting)
-        .filter_by(topic_id=topic_id)
+        .filter_by(topic_id=db_topic.id)
         .filter_by(hidden=False)
         .order_by(DbPosting.created_at.desc())
     ).first()
 
     if not db_latest_posting:
-        return None
+        return LatestPostingInfo(
+            created_at=db_topic.created_at,
+            creator_id=db_topic.creator_id,
+        )
 
     return LatestPostingInfo(
         created_at=db_latest_posting.created_at,
