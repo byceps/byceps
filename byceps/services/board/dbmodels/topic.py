@@ -33,9 +33,7 @@ class DbTopic(db.Model):
         nullable=False,
     )
     category: Mapped[DbBoardCategory] = relationship(DbBoardCategory)
-    created_at: Mapped[datetime] = mapped_column(
-        db.DateTime, default=datetime.utcnow
-    )
+    created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
@@ -84,11 +82,13 @@ class DbTopic(db.Model):
         self,
         topic_id: TopicID,
         category_id: BoardCategoryID,
+        created_at: datetime,
         creator_id: UserID,
         title: str,
     ) -> None:
         self.id = topic_id
         self.category_id = category_id
+        self.created_at = created_at
         self.creator_id = creator_id
         self.title = title
 

@@ -43,10 +43,11 @@ def create_topic(
     category_id: BoardCategoryID, creator: User, title: str, body: str
 ) -> tuple[Topic, BoardTopicCreatedEvent]:
     """Create a topic with an initial posting in that category."""
+    created_at = datetime.utcnow()
     topic_id = TopicID(generate_uuid7())
     posting_id = PostingID(generate_uuid7())
 
-    db_topic = DbTopic(topic_id, category_id, creator.id, title)
+    db_topic = DbTopic(topic_id, category_id, created_at, creator.id, title)
     db_posting = DbPosting(posting_id, topic_id, creator.id, body)
     db_initial_topic_posting_association = DbInitialTopicPostingAssociation(
         topic_id, posting_id
