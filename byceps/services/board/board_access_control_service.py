@@ -6,6 +6,8 @@ byceps.services.board.board_access_control_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from sqlalchemy import delete, select
 
 from byceps.database import db
@@ -22,8 +24,9 @@ def grant_access_to_board(
 ) -> BoardAccessGrantID:
     """Grant the user access to the board."""
     grant_id = BoardAccessGrantID(generate_uuid7())
+    created_at = datetime.utcnow()
 
-    db_grant = DbBoardAccessGrant(grant_id, board_id, user_id)
+    db_grant = DbBoardAccessGrant(grant_id, board_id, user_id, created_at)
 
     db.session.add(db_grant)
     db.session.commit()

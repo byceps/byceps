@@ -33,14 +33,19 @@ class DbBoardAccessGrant(db.Model):
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
 
     def __init__(
-        self, grant_id: BoardAccessGrantID, board_id: BoardID, user_id: UserID
+        self,
+        grant_id: BoardAccessGrantID,
+        board_id: BoardID,
+        user_id: UserID,
+        created_at: datetime,
     ) -> None:
         self.id = grant_id
         self.board_id = board_id
         self.user_id = user_id
+        self.created_at = created_at
 
     def __repr__(self) -> str:
         return (
