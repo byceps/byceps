@@ -40,11 +40,14 @@ class DbArchivedAttendance(db.Model):
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
     )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
 
-    def __init__(self, user_id: UserID, party_id: PartyID) -> None:
+    def __init__(
+        self, user_id: UserID, party_id: PartyID, created_at: datetime
+    ) -> None:
         self.user_id = user_id
         self.party_id = party_id
+        self.created_at = created_at
 
     def __repr__(self) -> str:
         return (
