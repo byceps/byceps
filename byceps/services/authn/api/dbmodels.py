@@ -23,7 +23,7 @@ class DbApiToken(db.Model):
     __tablename__ = 'api_tokens'
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
