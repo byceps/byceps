@@ -46,8 +46,11 @@ def create_posting(
     db_topic = board_topic_query_service.get_db_topic(topic_id)
 
     posting_id = PostingID(generate_uuid7())
+    created_at = datetime.utcnow()
 
-    db_posting = DbPosting(posting_id, db_topic.id, creator.id, body)
+    db_posting = DbPosting(
+        posting_id, db_topic.id, created_at, creator.id, body
+    )
     db.session.add(db_posting)
     db.session.commit()
 

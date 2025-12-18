@@ -30,7 +30,7 @@ class DbPosting(db.Model):
         db.Uuid, db.ForeignKey('board_topics.id'), index=True
     )
     topic: Mapped[DbTopic] = relationship(DbTopic, backref='postings')
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
@@ -56,11 +56,13 @@ class DbPosting(db.Model):
         self,
         posting_id: PostingID,
         topic_id: TopicID,
+        created_at: datetime,
         creator_id: UserID,
         body: str,
     ) -> None:
         self.id = posting_id
         self.topic_id = topic_id
+        self.created_at = created_at
         self.creator_id = creator_id
         self.body = body
 
