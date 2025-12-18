@@ -63,5 +63,6 @@ class DbMatchComment(db.Model):
         body: str,
     ) -> None:
         self.match_id = match_id
+        self.created_at = created_at
         self.created_by_id = creator_id
         self.body = body
