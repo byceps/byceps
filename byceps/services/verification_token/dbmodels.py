@@ -7,7 +7,6 @@ byceps.services.verification_token.dbmodels
 """
 
 from datetime import datetime
-import secrets
 from typing import Any, TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -25,11 +24,6 @@ from byceps.util.instances import ReprBuilder
 from .models import Purpose
 
 
-def _generate_token_value():
-    """Return a cryptographic, URL-safe token."""
-    return secrets.token_urlsafe()
-
-
 class DbVerificationToken(db.Model):
     """A private token to authenticate as a certain user for a certain
     action.
@@ -37,9 +31,7 @@ class DbVerificationToken(db.Model):
 
     __tablename__ = 'verification_tokens'
 
-    token: Mapped[str] = mapped_column(
-        db.UnicodeText, default=_generate_token_value, primary_key=True
-    )
+    token: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
     created_at: Mapped[datetime]
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
@@ -49,12 +41,14 @@ class DbVerificationToken(db.Model):
 
     def __init__(
         self,
+        token: str,
         created_at: datetime,
         user_id: UserID,
         purpose: Purpose,
         *,
         data: dict[str, str] | None,
     ) -> None:
+        self.token = token
         self.created_at = created_at
         self.user_id = user_id
         self.purpose = purpose

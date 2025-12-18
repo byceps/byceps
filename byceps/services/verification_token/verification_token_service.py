@@ -7,6 +7,7 @@ byceps.services.verification_token.verification_token_service
 """
 
 from datetime import datetime, timedelta
+import secrets
 
 from sqlalchemy import delete, select
 
@@ -54,14 +55,22 @@ def create_for_password_reset(user: User) -> PasswordResetToken:
 def _create_token(
     user: User, purpose: Purpose, *, data: dict[str, str] | None = None
 ) -> VerificationToken:
+    token_value = _generate_token_value()
     created_at = datetime.utcnow()
 
-    db_token = DbVerificationToken(created_at, user.id, purpose, data=data)
+    db_token = DbVerificationToken(
+        token_value, created_at, user.id, purpose, data=data
+    )
 
     db.session.add(db_token)
     db.session.commit()
 
     return _db_entity_to_token(db_token, user)
+
+
+def _generate_token_value() -> str:
+    """Return a cryptographic, URL-safe token."""
+    return secrets.token_urlsafe()
 
 
 def delete_token(token: str) -> None:
