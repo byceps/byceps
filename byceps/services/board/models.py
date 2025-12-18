@@ -65,8 +65,8 @@ class Topic:
     creator: User
     title: str
     posting_count: int
-    last_updated_at: datetime | None
-    last_updated_by: User | None
+    last_updated_at: datetime
+    last_updated_by: User
     hidden: bool
     hidden_at: datetime | None
     hidden_by: User | None
@@ -94,8 +94,8 @@ class BoardTopicSummary:
     creator: User
     title: str
     reply_count: int
-    last_updated_at: datetime | None
-    last_updated_by: User | None
+    last_updated_at: datetime
+    last_updated_by: User
     hidden: bool
     locked: bool
     pinned: bool

@@ -39,11 +39,11 @@ class DbTopic(db.Model):
     )
     title: Mapped[str] = mapped_column(db.UnicodeText)
     posting_count: Mapped[int] = mapped_column(default=0)
-    last_updated_at: Mapped[datetime | None]
-    last_updated_by_id: Mapped[UserID | None] = mapped_column(
+    last_updated_at: Mapped[datetime]
+    last_updated_by_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    last_updated_by: Mapped[DbUser | None] = relationship(
+    last_updated_by: Mapped[DbUser] = relationship(
         DbUser, foreign_keys=[last_updated_by_id]
     )
     hidden: Mapped[bool] = mapped_column(default=False)

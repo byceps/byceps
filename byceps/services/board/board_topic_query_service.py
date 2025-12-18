@@ -203,9 +203,7 @@ def _to_topic_summaries(
 ) -> list[BoardTopicSummary]:
     """Build summary objects."""
     creator_ids = {t.creator_id for t in db_topics}
-    last_updated_by_ids = {
-        t.last_updated_by_id for t in db_topics if t.last_updated_by_id
-    }
+    last_updated_by_ids = {t.last_updated_by_id for t in db_topics}
     user_ids = creator_ids | last_updated_by_ids
 
     users_by_id = user_service.get_users_indexed_by_id(
@@ -222,11 +220,7 @@ def _to_topic_summaries(
 
         creator = users_by_id[db_topic.creator_id]
 
-        last_updated_by = (
-            users_by_id[db_topic.last_updated_by_id]
-            if db_topic.last_updated_by_id
-            else None
-        )
+        last_updated_by = users_by_id[db_topic.last_updated_by_id]
 
         contains_unseen_postings = _contains_topic_unseen_postings(
             db_topic.id, db_topic.last_updated_at, user
@@ -297,7 +291,7 @@ def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
         title=db_topic.title,
         posting_count=db_topic.posting_count,
         last_updated_at=db_topic.last_updated_at,
-        last_updated_by=to_user_or_none(db_topic.last_updated_by),
+        last_updated_by=to_user(db_topic.last_updated_by),
         hidden=db_topic.hidden,
         hidden_at=db_topic.hidden_at,
         hidden_by=to_user_or_none(db_topic.hidden_by),
@@ -317,7 +311,7 @@ def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
 
 
 def _contains_topic_unseen_postings(
-    topic_id: TopicID, last_updated_at: datetime | None, user: CurrentUser
+    topic_id: TopicID, last_updated_at: datetime, user: CurrentUser
 ) -> bool:
     """Return `True` if the topic contains postings created after the
     last time the user viewed it.
