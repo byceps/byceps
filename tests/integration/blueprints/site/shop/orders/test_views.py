@@ -7,6 +7,7 @@ import pytest
 
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site import site_service
+from byceps.services.site.models import SiteID
 from byceps.services.snippet import snippet_service
 
 from tests.helpers import create_site, http_client, log_in_user
@@ -52,14 +53,16 @@ def storefront2(
 
 @pytest.fixture()
 def site1(brand, storefront1):
-    site = create_site('site1', brand.id, storefront_id=storefront1.id)
+    site_id = SiteID('site1')
+    site = create_site(site_id, brand.id, storefront_id=storefront1.id)
     yield site
     site_service.delete_site(site.id)
 
 
 @pytest.fixture()
 def site2(brand, storefront2):
-    site = create_site('site2', brand.id, storefront_id=storefront2.id)
+    site_id = SiteID('site2')
+    site = create_site(site_id, brand.id, storefront_id=storefront2.id)
     yield site
     site_service.delete_site(site.id)
 

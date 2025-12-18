@@ -6,8 +6,9 @@
 import pytest
 
 from byceps.services.news import news_channel_service, news_item_service
-from byceps.services.news.models import BodyFormat
+from byceps.services.news.models import BodyFormat, NewsChannelID
 from byceps.services.site import site_service
+from byceps.services.site.models import SiteID
 
 from tests.helpers import create_site, http_client
 
@@ -24,7 +25,7 @@ def editor(make_user):
 
 @pytest.fixture(scope='module')
 def news_channel(brand):
-    channel_id = f'{brand.id}-public'
+    channel_id = NewsChannelID(f'{brand.id}-public')
 
     return news_channel_service.create_channel(brand, channel_id)
 
@@ -57,7 +58,8 @@ def published_news_item(news_channel, editor):
 
 @pytest.fixture(scope='module')
 def news_site(news_channel):
-    site = create_site('newsflash', news_channel.brand_id)
+    site_id = SiteID('newsflash')
+    site = create_site(site_id, news_channel.brand_id)
     site_service.add_news_channel(site.id, news_channel.id)
     return site
 

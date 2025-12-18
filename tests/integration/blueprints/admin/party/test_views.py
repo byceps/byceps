@@ -6,6 +6,7 @@
 from datetime import datetime
 
 from byceps.services.party import party_service
+from byceps.services.party.models import PartyID
 
 
 BASE_URL = 'http://admin.acmecon.test'
@@ -36,7 +37,7 @@ def test_create_form(party_admin_client, brand):
 
 
 def test_create(party_admin_client, brand):
-    party_id = 'galant-2020'
+    party_id = PartyID('galant-2020')
     title = 'gaLANt 2020'
     max_ticket_quantity = 126
 

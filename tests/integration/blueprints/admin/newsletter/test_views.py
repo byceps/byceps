@@ -8,7 +8,7 @@ from datetime import datetime
 import pytest
 
 from byceps.services.newsletter import newsletter_command_service
-from byceps.services.newsletter.models import SubscriptionState
+from byceps.services.newsletter.models import ListID, SubscriptionState
 
 from tests.helpers import log_in_user
 
@@ -93,7 +93,8 @@ def newsletter_admin(make_admin):
 
 @pytest.fixture(scope='module')
 def newsletter_list(admin_app):
-    return newsletter_command_service.create_list('example', 'Example')
+    list_id = ListID('example')
+    return newsletter_command_service.create_list(list_id, 'Example')
 
 
 @pytest.fixture(scope='module')

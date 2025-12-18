@@ -6,14 +6,18 @@
 import pytest
 
 from byceps.services.authz import authz_service
+from byceps.services.authz.models import PermissionID
 from byceps.services.user import user_command_service, user_service
 from byceps.services.user.log import user_log_service
 
 
 @pytest.fixture()
 def role(make_role):
+    permission = PermissionID('board.view_hidden')
     role = make_role()
-    authz_service.assign_permission_to_role('board.view_hidden', role.id)
+
+    authz_service.assign_permission_to_role(permission, role.id)
+
     return role
 
 

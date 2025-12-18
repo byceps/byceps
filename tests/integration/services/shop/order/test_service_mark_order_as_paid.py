@@ -50,6 +50,7 @@ def test_mark_order_as_paid(order, admin_user):
     assert paid_order.paid_at is not None
 
     assert isinstance(paid_event, ShopOrderPaidEvent)
+    assert paid_event.initiator is not None
     assert paid_event.initiator.id == admin_user.id
     assert paid_event.order_id == order.id
     assert paid_event.order_number == order.order_number
@@ -91,6 +92,7 @@ def test_additional_payment_data(order, admin_user):
 
     log_entries = order_log_service.get_entries_for_order(order.id)
     paid_log_entry = find(log_entries, lambda e: e.event_type == 'order-paid')
+    assert paid_log_entry is not None
 
     # Internal properties must not be overridden by additional log entry
     # data passed to the service.

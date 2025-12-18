@@ -21,12 +21,12 @@ def test_set_and_remove(admin_app, make_user):
     assert get_extras(user_id) == {'hobbies': 'Science!'}
 
     # Add second entry.
-    user_command_service.set_user_detail_extra(user_id, 'size_of_shoes', 42)
-    assert get_extras(user_id) == {'hobbies': 'Science!', 'size_of_shoes': 42}
+    user_command_service.set_user_detail_extra(user_id, 'size_of_shoes', '42')
+    assert get_extras(user_id) == {'hobbies': 'Science!', 'size_of_shoes': '42'}
 
     # Remove first entry.
     user_command_service.remove_user_detail_extra(user_id, 'hobbies')
-    assert get_extras(user_id) == {'size_of_shoes': 42}
+    assert get_extras(user_id) == {'size_of_shoes': '42'}
 
     # Remove second entry.
     user_command_service.remove_user_detail_extra(user_id, 'size_of_shoes')

@@ -84,6 +84,7 @@ def test_publish_later_form(news_admin_client, item):
 
 def test_publish_later(news_admin_client, item):
     item_before = news_item_service.find_item(item.id)
+    assert item_before is not None
     assert item_before.published_at is None
     assert not item_before.published
 
@@ -96,12 +97,14 @@ def test_publish_later(news_admin_client, item):
     assert response.status_code == 302
 
     item_after = news_item_service.find_item(item.id)
+    assert item_after is not None
     assert item_after.published_at is not None
     assert item_after.published
 
 
 def test_publish_now(news_admin_client, item):
     item_before = news_item_service.find_item(item.id)
+    assert item_before is not None
     assert item_before.published_at is None
     assert not item_before.published
 
@@ -110,6 +113,7 @@ def test_publish_now(news_admin_client, item):
     assert response.status_code == 204
 
     item_after = news_item_service.find_item(item.id)
+    assert item_after is not None
     assert item_after.published_at is not None
     assert item_after.published
 
@@ -118,6 +122,7 @@ def test_unpublish(news_admin_client, item):
     news_item_service.publish_item(item.id).unwrap()
 
     item_before = news_item_service.find_item(item.id)
+    assert item_before is not None
     assert item_before.published_at is not None
     assert item_before.published
 
@@ -126,5 +131,6 @@ def test_unpublish(news_admin_client, item):
     assert response.status_code == 204
 
     item_after = news_item_service.find_item(item.id)
+    assert item_after is not None
     assert item_after.published_at is None
     assert not item_after.published

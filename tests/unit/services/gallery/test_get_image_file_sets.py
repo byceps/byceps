@@ -5,6 +5,7 @@
 
 from pathlib import Path
 
+from byceps.services.brand.models import BrandID
 from byceps.services.gallery import (
     gallery_domain_service,
     gallery_import_service,
@@ -13,8 +14,13 @@ from byceps.services.gallery.gallery_import_service import ImageFileSet
 
 
 def test_get_image_file_sets(fs):
+    brand_id = BrandID('cozylan')
+    slug = 'cozylan-2025'
+    title = 'CozyLAN 2025'
+    hidden = False
+
     gallery = gallery_domain_service.create_gallery(
-        'cozylan', 'cozylan-2025', 'CozyLAN 2025', False
+        brand_id, slug, title, hidden
     )
 
     expected = [

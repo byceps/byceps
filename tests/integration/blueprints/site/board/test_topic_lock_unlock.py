@@ -25,6 +25,7 @@ def test_lock_topic(site_app, moderator, moderator_client, topic):
     db.session.expire_all()
 
     topic_afterwards = find_topic(topic_before.id)
+    assert topic_afterwards is not None
     assert_topic_is_locked(topic_afterwards, moderator.id)
 
 
@@ -33,6 +34,7 @@ def test_unlock_topic(site_app, moderator, moderator_client, topic):
 
     board_topic_command_service.lock_topic(topic_before.id, moderator)
     topic_before = find_topic(topic_before.id)
+    assert topic_before is not None
 
     db.session.expire_all()
 
@@ -46,6 +48,7 @@ def test_unlock_topic(site_app, moderator, moderator_client, topic):
     db.session.expire_all()
 
     topic_afterwards = find_topic(topic_before.id)
+    assert topic_afterwards is not None
     assert_topic_is_not_locked(topic_afterwards)
 
 

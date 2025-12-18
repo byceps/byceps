@@ -6,6 +6,7 @@
 import pytest
 
 from byceps.services.authz import authz_service
+from byceps.services.authz.models import PermissionID, RoleID
 
 from tests.helpers import create_role_with_permissions_assigned, generate_token
 
@@ -28,14 +29,22 @@ def user(make_user):
 
 @pytest.fixture()
 def permissions(user, admin_user):
-    role_id_god = 'god_' + generate_token()
-    role_id_demigod = 'demigod_' + generate_token()
+    role_id_god = RoleID('god_' + generate_token())
+    role_id_demigod = RoleID('demigod_' + generate_token())
 
     create_role_with_permissions_assigned(
-        role_id_god, {'see_everything', 'tickle_demigods'}
+        role_id_god,
+        {
+            PermissionID('see_everything'),
+            PermissionID('tickle_demigods'),
+        },
     )
+
     create_role_with_permissions_assigned(
-        role_id_demigod, {'tickle_mere_mortals'}
+        role_id_demigod,
+        {
+            PermissionID('tickle_mere_mortals'),
+        },
     )
 
     authz_service.assign_role_to_user(role_id_god, user, initiator=admin_user)

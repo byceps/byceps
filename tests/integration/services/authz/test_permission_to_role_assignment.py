@@ -6,12 +6,13 @@
 import pytest
 
 from byceps.services.authz import authz_service
+from byceps.services.authz.models import PermissionID
 
 from tests.helpers import generate_token
 
 
 def test_assign_permission_to_role(admin_app, role):
-    permission_id = generate_token()
+    permission_id = PermissionID(generate_token())
 
     role_permission_ids_before = get_permission_ids_for_role(role)
     assert permission_id not in role_permission_ids_before
@@ -23,7 +24,7 @@ def test_assign_permission_to_role(admin_app, role):
 
 
 def test_deassign_permission_from_role(admin_app, role):
-    permission_id = generate_token()
+    permission_id = PermissionID(generate_token())
 
     authz_service.assign_permission_to_role(permission_id, role.id)
 

@@ -25,6 +25,7 @@ def test_pin_topic(site_app, moderator, moderator_client, topic):
     db.session.expire_all()
 
     topic_afterwards = find_topic(topic_before.id)
+    assert topic_afterwards is not None
     assert_topic_is_pinned(topic_afterwards, moderator.id)
 
 
@@ -33,6 +34,7 @@ def test_unpin_topic(site_app, moderator, moderator_client, topic):
 
     board_topic_command_service.pin_topic(topic_before.id, moderator)
     topic_before = find_topic(topic_before.id)
+    assert topic_before is not None
 
     assert_topic_is_pinned(topic_before, moderator.id)
 
@@ -44,6 +46,7 @@ def test_unpin_topic(site_app, moderator, moderator_client, topic):
     db.session.expire_all()
 
     topic_afterwards = find_topic(topic_before.id)
+    assert topic_afterwards is not None
     assert_topic_is_not_pinned(topic_afterwards)
 
 

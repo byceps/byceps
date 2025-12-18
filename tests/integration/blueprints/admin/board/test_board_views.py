@@ -4,6 +4,7 @@
 """
 
 from byceps.services.board import board_service
+from byceps.services.board.models import BoardID
 
 
 BASE_URL = 'http://admin.acmecon.test'
@@ -28,7 +29,7 @@ def test_create_form(board_admin_client, brand):
 
 
 def test_create(board_admin_client, brand):
-    board_id = 'intranet-board-2018'
+    board_id = BoardID('intranet-board-2018')
 
     assert board_service.find_board(board_id) is None
 

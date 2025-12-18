@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 import pytest
 
 from byceps.services.brand.models import BrandID
@@ -18,7 +20,7 @@ from tests.helpers import generate_token, generate_uuid
 
 def test_award_badge_with_uninitialized_awardee(make_user, badge):
     awardee = make_user(
-        user_id=UserID('01999305-278c-79be-ac4d-0cf5c538e445'),
+        user_id=UserID(UUID('01999305-278c-79be-ac4d-0cf5c538e445')),
         initialized=False,
     )
 
@@ -31,7 +33,7 @@ def test_award_badge_with_uninitialized_awardee(make_user, badge):
 
 def test_award_badge_with_deleted_awardee(make_user, badge):
     awardee = make_user(
-        user_id=UserID('01999307-4598-754e-9755-0687d9fba594'),
+        user_id=UserID(UUID('01999307-4598-754e-9755-0687d9fba594')),
         deleted=True,
     )
 

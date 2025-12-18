@@ -6,12 +6,12 @@
 import pytest
 
 from byceps.services.site import site_service, site_setting_service
-from byceps.services.site.models import SiteSetting
+from byceps.services.site.models import SiteID, SiteSetting
 
 from tests.helpers import create_site
 
 
-SITE_ID = 'favorite-site'
+SITE_ID = SiteID('favorite-site')
 
 
 @pytest.fixture(scope='module')

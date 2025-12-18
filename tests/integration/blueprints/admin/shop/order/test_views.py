@@ -155,6 +155,7 @@ def test_cancel_before_paid(
         order_afterwards
     )
 
+    assert db_order_afterwards.payment_state_updated_at is not None
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
         initiator=shop_order_admin,
@@ -198,6 +199,7 @@ def test_cancel_before_paid_without_sending_email(
     # No e-mail should be send.
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_not_called()
 
+    assert db_order_afterwards.payment_state_updated_at is not None
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
         initiator=shop_order_admin,
@@ -316,6 +318,7 @@ def test_cancel_after_paid(
         order_afterwards
     )
 
+    assert db_order_afterwards.payment_state_updated_at is not None
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
         initiator=shop_order_admin,
@@ -354,4 +357,6 @@ def assert_payment(
 
 
 def get_db_order(order_id: OrderID) -> DbOrder:
-    return db.session.get(DbOrder, order_id)
+    order = db.session.get(DbOrder, order_id)
+    assert order is not None
+    return order

@@ -22,7 +22,7 @@ from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user.models.user import User
 
-from tests.helpers import create_site, http_client, log_in_user
+from tests.helpers import create_site, generate_uuid, http_client, log_in_user
 from tests.helpers.shop import (
     create_orderer,
     create_shop_snippet,
@@ -163,8 +163,9 @@ def test_stripe_webhook_unknown_event(
     stripe_webhook_construct_mock,
     site_app,
 ):
+    order_id = OrderID(generate_uuid())
     stripe_webhook_construct_mock.return_value = create_event(
-        'invalid.event', ''
+        'invalid.event', order_id
     )
 
     response = call_webhook(site_app)

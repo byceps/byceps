@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 import pytest
 from sqlalchemy import delete
 
@@ -12,7 +14,7 @@ from byceps.services.user_badge import (
     user_badge_service,
 )
 from byceps.services.user_badge.dbmodels import DbBadgeAwarding
-from byceps.services.user_badge.models import QuantifiedBadgeAwarding
+from byceps.services.user_badge.models import BadgeID, QuantifiedBadgeAwarding
 
 
 @pytest.fixture(scope='module')
@@ -83,7 +85,7 @@ def test_count_awardings(
 
 
 def test_get_awardings_of_unknown_badge(database):
-    unknown_badge_id = '00000000-0000-0000-0000-000000000000'
+    unknown_badge_id = BadgeID(UUID('00000000-0000-0000-0000-000000000000'))
 
     actual = user_badge_awarding_service.get_awardings_of_badge(
         unknown_badge_id

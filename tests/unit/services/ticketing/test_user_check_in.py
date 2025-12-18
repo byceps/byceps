@@ -46,6 +46,7 @@ def test_check_in_user(party, build_ticket, ticket_user, initiator):
     assert event.ticket_id == ticket.id
     assert event.ticket_code == ticket.code
     assert event.occupied_seat_id is None
+    assert event.user is not None
     assert event.user.id == ticket_user.id
     assert event.user.screen_name == ticket_user.screen_name
 

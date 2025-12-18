@@ -3,9 +3,12 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 import pytest
 
 from byceps.services.user import user_service
+from byceps.services.user.models.user import UserID
 
 
 @pytest.fixture(scope='module')
@@ -19,7 +22,7 @@ def unnamed_user(make_user):
 
 
 def test_find_screen_name_for_unknown_user_id(database):
-    unknown_user_id = '00000000-0000-0000-0000-000000000000'
+    unknown_user_id = UserID(UUID('00000000-0000-0000-0000-000000000000'))
     actual = user_service.find_screen_name(unknown_user_id)
     assert actual is None
 

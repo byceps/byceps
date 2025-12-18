@@ -32,4 +32,5 @@ def test_move_topic(
     db.session.expire_all()
 
     topic_afterwards = find_topic(topic_before.id)
+    assert topic_afterwards is not None
     assert topic_afterwards.category_id == another_category.id

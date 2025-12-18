@@ -8,6 +8,7 @@ from uuid import UUID
 import pytest
 
 from byceps.services.user import user_service
+from byceps.services.user.models.user import UserID
 
 
 def test_find_user_by_screen_name_found(admin_app, make_user):
@@ -17,6 +18,7 @@ def test_find_user_by_screen_name_found(admin_app, make_user):
 
     actual = user_service.find_user_by_screen_name(screen_name)
 
+    assert actual is not None
     assert actual.id == user.id
 
 
@@ -37,7 +39,7 @@ def test_get_email_address_found(admin_app, make_user):
 
 
 def test_get_email_address_not_found(admin_app):
-    unknown_user_id = UUID('00000000-0000-0000-0000-000000000001')
+    unknown_user_id = UserID(UUID('00000000-0000-0000-0000-000000000001'))
 
     with pytest.raises(ValueError):
         user_service.get_email_address(unknown_user_id)

@@ -55,7 +55,7 @@ def preconditions() -> set[SeatReservationPrecondition]:
 
 
 def test_reservation_without_preconditions_is_denied():
-    preconditions = {}
+    preconditions = set()
     now = datetime(2025, 6, 20, 18, 0, 0)
     ticket_quantity = 99
 

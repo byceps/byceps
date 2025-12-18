@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 import pytest
 
 from byceps.services.seating import seat_service, seating_area_service
@@ -10,6 +12,7 @@ from byceps.services.seating import seat_service, seating_area_service
 # Import models to ensure the corresponding tables are created so
 # `Seat.assignment` is available.
 import byceps.services.seating.dbmodels.seat_group  # noqa: F401
+from byceps.services.seating.models import SeatID
 from byceps.services.ticketing import (
     ticket_bundle_service,
     ticket_creation_service,
@@ -179,7 +182,7 @@ def test_occupy_and_release_seat(admin_app, seat1, seat2, ticket_owner, ticket):
 
 
 def test_occupy_seat_with_invalid_id(admin_app, ticket_owner, ticket):
-    invalid_seat_id = 'ffffffff-ffff-ffff-ffff-ffffffffffff'
+    invalid_seat_id = SeatID(UUID('ffffffff-ffff-ffff-ffff-ffffffffffff'))
 
     with pytest.raises(ValueError):
         ticket_seat_management_service.occupy_seat(

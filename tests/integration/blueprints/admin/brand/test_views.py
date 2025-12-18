@@ -4,6 +4,7 @@
 """
 
 from byceps.services.brand import brand_service
+from byceps.services.brand.models import BrandID
 from byceps.services.email import email_config_service
 
 
@@ -29,7 +30,7 @@ def test_create_form(brand_admin_client):
 
 
 def test_create(brand_admin_client):
-    brand_id = 'galant'
+    brand_id = BrandID('galant')
     title = 'gaLANt'
 
     assert brand_service.find_brand(brand_id) is None
