@@ -54,7 +54,9 @@ def create_for_password_reset(user: User) -> PasswordResetToken:
 def _create_token(
     user: User, purpose: Purpose, *, data: dict[str, str] | None = None
 ) -> VerificationToken:
-    db_token = DbVerificationToken(user.id, purpose, data=data)
+    created_at = datetime.utcnow()
+
+    db_token = DbVerificationToken(created_at, user.id, purpose, data=data)
 
     db.session.add(db_token)
     db.session.commit()

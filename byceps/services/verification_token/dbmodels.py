@@ -40,7 +40,7 @@ class DbVerificationToken(db.Model):
     token: Mapped[str] = mapped_column(
         db.UnicodeText, default=_generate_token_value, primary_key=True
     )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
@@ -49,11 +49,13 @@ class DbVerificationToken(db.Model):
 
     def __init__(
         self,
+        created_at: datetime,
         user_id: UserID,
         purpose: Purpose,
         *,
         data: dict[str, str] | None,
     ) -> None:
+        self.created_at = created_at
         self.user_id = user_id
         self.purpose = purpose
         self.data = data
