@@ -278,7 +278,10 @@ def find_default_posting_to_jump_to(
 
 
 def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
-    def to_user(db_user: DbUser | None) -> User | None:
+    def to_user(db_user: DbUser) -> User:
+        return user_service._db_entity_to_user(db_user)
+
+    def to_user_or_none(db_user: DbUser | None) -> User | None:
         if db_user is None:
             return None
 
@@ -294,16 +297,16 @@ def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
         title=db_topic.title,
         posting_count=db_topic.posting_count,
         last_updated_at=db_topic.last_updated_at,
-        last_updated_by=to_user(db_topic.last_updated_by),
+        last_updated_by=to_user_or_none(db_topic.last_updated_by),
         hidden=db_topic.hidden,
         hidden_at=db_topic.hidden_at,
-        hidden_by=to_user(db_topic.hidden_by),
+        hidden_by=to_user_or_none(db_topic.hidden_by),
         locked=db_topic.locked,
         locked_at=db_topic.locked_at,
-        locked_by=to_user(db_topic.locked_by),
+        locked_by=to_user_or_none(db_topic.locked_by),
         pinned=db_topic.pinned,
         pinned_at=db_topic.pinned_at,
-        pinned_by=to_user(db_topic.pinned_by),
+        pinned_by=to_user_or_none(db_topic.pinned_by),
         initial_posting_id=db_topic.initial_posting.id,
         posting_limited_to_moderators=db_topic.posting_limited_to_moderators,
         muted=db_topic.muted,
