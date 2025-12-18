@@ -12,6 +12,7 @@ from flask_babel import gettext
 from byceps.services.board import (
     board_category_command_service,
     board_category_query_service,
+    board_topic_command_service,
     board_topic_query_service,
 )
 from byceps.services.site.blueprints.site.navigation import (
@@ -89,7 +90,7 @@ def category_view(slug, page):
 @blueprint.post('/topics/mark_all_topics_as_read')
 @respond_no_content_with_location
 def mark_all_topics_as_viewed():
-    board_category_command_service.mark_all_topics_as_viewed(g.user.id)
+    board_topic_command_service.mark_all_topics_as_viewed(g.user.id)
 
     flash_success(gettext('All topics have been marked as read.'))
 
@@ -101,7 +102,7 @@ def mark_all_topics_as_viewed():
 def mark_all_topics_in_category_as_viewed(category_id):
     category = h.get_category_or_404(category_id)
 
-    board_category_command_service.mark_all_topics_in_category_as_viewed(
+    board_topic_command_service.mark_all_topics_in_category_as_viewed(
         category_id, g.user.id
     )
 
