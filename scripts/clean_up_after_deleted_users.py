@@ -25,7 +25,7 @@ from byceps.services.newsletter.dbmodels import (
     DbSubscriptionUpdate as DbNewsletterSubscriptionUpdate,
 )
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.log import DbUserLogEntry
+from byceps.services.user.log.dbmodels import DbUserLogEntry
 from byceps.services.user.models.user import UserID
 from byceps.services.verification_token.dbmodels import DbVerificationToken
 
