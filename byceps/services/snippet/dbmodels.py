@@ -91,9 +91,7 @@ class DbSnippetVersion(db.Model):
         db.Uuid, db.ForeignKey('snippets.id'), index=True
     )
     snippet: Mapped[DbSnippet] = relationship(DbSnippet)
-    created_at: Mapped[datetime] = mapped_column(
-        db.DateTime, default=datetime.utcnow
-    )
+    created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
@@ -101,9 +99,14 @@ class DbSnippetVersion(db.Model):
     body: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(
-        self, snippet: DbSnippet, creator_id: UserID, body: str
+        self,
+        snippet: DbSnippet,
+        created_at: datetime,
+        creator_id: UserID,
+        body: str,
     ) -> None:
         self.snippet = snippet
+        self.created_at = created_at
         self.creator_id = creator_id
         self.body = body
 

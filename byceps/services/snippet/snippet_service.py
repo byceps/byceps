@@ -81,10 +81,12 @@ def create_snippet(
     body: str,
 ) -> tuple[DbSnippetVersion, SnippetCreatedEvent]:
     """Create a snippet and its initial version, and return that version."""
+    created_at = datetime.utcnow()
+
     snippet = DbSnippet(scope, name, language_code)
     db.session.add(snippet)
 
-    version = DbSnippetVersion(snippet, creator.id, body)
+    version = DbSnippetVersion(snippet, created_at, creator.id, body)
     db.session.add(version)
 
     current_version_association = DbCurrentSnippetVersionAssociation(
@@ -115,7 +117,9 @@ def update_snippet(
     if snippet is None:
         raise ValueError('Unknown snippet ID')
 
-    version = DbSnippetVersion(snippet, creator.id, body)
+    updated_at = datetime.utcnow()
+
+    version = DbSnippetVersion(snippet, updated_at, creator.id, body)
     db.session.add(version)
 
     snippet.current_version = version
