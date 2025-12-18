@@ -42,16 +42,21 @@ class DbTourneyAvatar(db.Model):
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
     _image_type: Mapped[str] = mapped_column('image_type', db.UnicodeText)
 
     def __init__(
-        self, party_id: PartyID, creator_id: UserID, image_type: ImageType
+        self,
+        party_id: PartyID,
+        created_at: datetime,
+        creator_id: UserID,
+        image_type: ImageType,
     ) -> None:
         self.party_id = party_id
+        self.created_at = created_at
         self.creator_id = creator_id
         self.image_type = image_type
 

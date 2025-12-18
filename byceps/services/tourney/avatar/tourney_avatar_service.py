@@ -6,6 +6,7 @@ byceps.services.tourney.avatar.tourney_avatars_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
 from typing import BinaryIO
 from uuid import UUID
 
@@ -33,6 +34,8 @@ def create_avatar_image(
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> Result[DbTourneyAvatar, str]:
     """Create a new avatar image."""
+    created_at = datetime.utcnow()
+
     image_type_result = determine_image_type(stream, allowed_types)
     if image_type_result.is_err():
         return Err(image_type_result.unwrap_err())
@@ -46,7 +49,7 @@ def create_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    avatar = DbTourneyAvatar(party_id, creator.id, image_type)
+    avatar = DbTourneyAvatar(party_id, created_at, creator.id, image_type)
     db.session.add(avatar)
     db.session.commit()
 
