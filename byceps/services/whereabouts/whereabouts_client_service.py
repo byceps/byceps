@@ -201,7 +201,7 @@ def find_client_candidate(
     client_id: WhereaboutsClientID,
 ) -> WhereaboutsClientCandidate | None:
     """Return client candidate, if found."""
-    db_client = whereabouts_client_repository.find_db_client(client_id)
+    db_client = whereabouts_client_repository.find_client(client_id)
 
     if db_client is None:
         return None
