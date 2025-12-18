@@ -32,6 +32,7 @@ def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
     values = {
         'user_id': str(user_id),
         'party_id': str(party_id),
+        'created_at': datetime.utcnow(),
     }
 
     insert_ignore_on_conflict(table, values)
