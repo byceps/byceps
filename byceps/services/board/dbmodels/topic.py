@@ -39,9 +39,7 @@ class DbTopic(db.Model):
     )
     title: Mapped[str] = mapped_column(db.UnicodeText)
     posting_count: Mapped[int] = mapped_column(default=0)
-    last_updated_at: Mapped[datetime | None] = mapped_column(
-        default=datetime.utcnow
-    )
+    last_updated_at: Mapped[datetime | None]
     last_updated_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
@@ -91,6 +89,7 @@ class DbTopic(db.Model):
         self.created_at = created_at
         self.creator_id = creator_id
         self.title = title
+        self.last_updated_at = created_at
 
     @property
     def reply_count(self) -> int:
