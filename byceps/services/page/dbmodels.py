@@ -84,7 +84,7 @@ class DbPageVersion(db.Model):
         db.Uuid, db.ForeignKey('pages.id'), index=True
     )
     page: Mapped[DbPage] = relationship(DbPage)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
@@ -96,12 +96,14 @@ class DbPageVersion(db.Model):
     def __init__(
         self,
         page: DbPage,
+        created_at: datetime,
         creator_id: UserID,
         title: str,
         head: str | None,
         body: str,
     ) -> None:
         self.page = page
+        self.created_at = created_at
         self.creator_id = creator_id
         self.title = title
         self.head = head

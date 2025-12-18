@@ -81,10 +81,14 @@ def create_page(
     head: str | None = None,
 ) -> tuple[DbPageVersion, PageCreatedEvent]:
     """Create a page and its initial version."""
+    created_at = datetime.utcnow()
+
     db_page = DbPage(site.id, name, language_code, url_path)
     db.session.add(db_page)
 
-    db_version = DbPageVersion(db_page, creator.id, title, head, body)
+    db_version = DbPageVersion(
+        db_page, created_at, creator.id, title, head, body
+    )
     db.session.add(db_version)
 
     db_current_version_association = DbCurrentPageVersionAssociation(
@@ -117,12 +121,16 @@ def update_page(
     body: str,
 ) -> tuple[DbPageVersion, PageUpdatedEvent]:
     """Update page with a new version."""
+    updated_at = datetime.utcnow()
+
     db_page = _get_db_page(page_id)
 
     db_page.language_code = language_code
     db_page.url_path = url_path
 
-    db_version = DbPageVersion(db_page, creator.id, title, head, body)
+    db_version = DbPageVersion(
+        db_page, updated_at, creator.id, title, head, body
+    )
     db.session.add(db_version)
 
     db_page.current_version = db_version
