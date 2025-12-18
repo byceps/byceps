@@ -102,8 +102,10 @@ def view_global():
 
 
 def _get_current_parties(brands: Iterable[Brand]) -> list[Party]:
-    parties = (brand_service.find_current_party(brand.id) for brand in brands)
-    parties = [party for party in parties if party is not None]
+    brand_parties = (
+        brand_service.find_current_party(brand.id) for brand in brands
+    )
+    parties = [party for party in brand_parties if party is not None]
     parties.sort(key=lambda party: party.starts_at)
     return parties
 
@@ -117,10 +119,10 @@ def _add_brands_to_parties(
         (party, brands_by_id[party.brand_id]) for party in parties
     )
 
-    return (
+    return [
         party_service.to_party_with_brand(party, brand)
         for party, brand in parties_and_brands
-    )
+    ]
 
 
 @blueprint.get('/brands/<brand_id>')
