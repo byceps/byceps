@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 import pytest
 
 from byceps.services.user.dbmodels.avatar import DbUserAvatar
@@ -47,4 +49,5 @@ def test_hybrid_image_type_setter(image_type, expected):
 
 
 def create_avatar() -> DbUserAvatar:
-    return DbUserAvatar(ImageType.jpeg)
+    created_at = datetime.utcnow()
+    return DbUserAvatar(created_at, ImageType.jpeg)

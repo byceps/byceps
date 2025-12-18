@@ -36,10 +36,11 @@ class DbUserAvatar(db.Model):
     id: Mapped[UserAvatarID] = mapped_column(
         db.Uuid, default=generate_uuid7, primary_key=True
     )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     _image_type: Mapped[str] = mapped_column('image_type', db.UnicodeText)
 
-    def __init__(self, image_type: ImageType) -> None:
+    def __init__(self, created_at: datetime, image_type: ImageType) -> None:
+        self.created_at = created_at
         self.image_type = image_type
 
     @hybrid_property
