@@ -90,6 +90,7 @@ class DbTopic(db.Model):
         self.creator_id = creator_id
         self.title = title
         self.last_updated_at = created_at
+        self.last_updated_by_id = creator_id
 
     @property
     def reply_count(self) -> int:
