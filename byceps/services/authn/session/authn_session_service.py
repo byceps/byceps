@@ -6,7 +6,6 @@ byceps.services.authn.session.authn_session_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Sequence
 from datetime import datetime
 from uuid import UUID
 
@@ -151,11 +150,11 @@ def find_recent_logins_for_users(
 
 def find_logins_for_ip_address(
     ip_address: str,
-) -> Sequence[tuple[datetime, UserID]]:
+) -> list[tuple[datetime, UserID]]:
     """Return login timestamp and user ID for logins from the given IP
     address.
     """
-    return authn_session_repository.find_logins_for_ip_address(ip_address)
+    return list(authn_session_repository.find_logins_for_ip_address(ip_address))
 
 
 def delete_login_entries(occurred_before: datetime) -> int:
