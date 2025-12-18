@@ -9,7 +9,8 @@ byceps.util.image.thumbnail
 from io import BytesIO
 from typing import BinaryIO
 
-from PIL import Image, ImageFile
+from PIL import Image
+from PIL.ImageFile import ImageFile
 
 from .dimensions import Dimensions
 
