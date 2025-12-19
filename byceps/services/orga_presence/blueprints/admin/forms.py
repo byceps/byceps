@@ -40,7 +40,7 @@ def build_presence_create_form(
             format=DATE_TIME_LOCAL_FIELD_FORMAT,
         )
 
-        def validate(self) -> bool:
+        def validate(self, extra_validators=None) -> bool:
             if not super().validate():
                 return False
 

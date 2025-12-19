@@ -97,7 +97,7 @@ class _AddressBaseForm(LocalizedForm):
 
 
 class AddressCreateForm(_AddressBaseForm):
-    def validate(self) -> bool:
+    def validate(self, extra_validators=None) -> bool:
         if not super().validate():
             return False
 
