@@ -30,6 +30,7 @@ from byceps.services.shop.order import (
     signals as shop_order_signals,
 )
 from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.models.order import OrderID
 from byceps.services.user import user_service
 from byceps.services.user.models.user import UserID
 from byceps.util.framework.blueprint import create_blueprint
@@ -53,7 +54,9 @@ def create_checkout_session():
 
     req = _parse_request()
 
-    order = order_service.find_order(req.shop_order_id)
+    order_id = OrderID(req.shop_order_id)
+
+    order = order_service.find_order(order_id)
     if not order or not order.is_open:
         return jsonify(error='Order does not exist or is not open'), 400
 

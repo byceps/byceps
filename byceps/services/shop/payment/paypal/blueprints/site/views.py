@@ -28,7 +28,7 @@ from byceps.services.shop.order import (
     signals as shop_order_signals,
 )
 from byceps.services.shop.order.email import order_email_service
-from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.order.models.order import Order, OrderID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.result import Err, Ok, Result
 from byceps.util.views import create_empty_json_response
@@ -59,7 +59,9 @@ def capture_transaction():
 
     req = _parse_request()
 
-    order = order_service.find_order(req.shop_order_id)
+    order_id = OrderID(req.shop_order_id)
+
+    order = order_service.find_order(order_id)
     if not order or not order.is_open:
         return create_empty_json_response(400)
 
