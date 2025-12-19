@@ -30,6 +30,7 @@ from byceps.services.ticketing import (
     ticket_bundle_service,
     ticket_category_service,
 )
+from byceps.services.ticketing.models.ticket import TicketBundleID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -272,7 +273,7 @@ def seat_group_occupy(group_id, erroneous_form=None):
     if not form.validate():
         return seat_group_occupy_form(group.id, form)
 
-    ticket_bundle_id = form.ticket_bundle_id.data
+    ticket_bundle_id = TicketBundleID(UUID(form.ticket_bundle_id.data))
 
     db_ticket_bundle = ticket_bundle_service.find_bundle(ticket_bundle_id)
     if not db_ticket_bundle:
