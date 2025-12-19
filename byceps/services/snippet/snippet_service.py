@@ -6,7 +6,6 @@ byceps.services.snippet.snippet_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Sequence
 from datetime import datetime
 
 from sqlalchemy import delete, select
@@ -195,18 +194,20 @@ def find_snippet(snippet_id: SnippetID) -> DbSnippet | None:
     return db.session.get(DbSnippet, snippet_id)
 
 
-def get_snippets(snippet_ids: set[SnippetID]) -> Sequence[DbSnippet]:
+def get_snippets(snippet_ids: set[SnippetID]) -> list[DbSnippet]:
     """Return these snippets."""
-    return db.session.scalars(
+    db_snippets = db.session.scalars(
         select(DbSnippet).filter(DbSnippet.id.in_(snippet_ids))
     ).all()
+
+    return list(db_snippets)
 
 
 def get_snippets_for_scope_with_current_versions(
     scope: SnippetScope,
-) -> Sequence[DbSnippet]:
+) -> list[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
-    return (
+    db_snippets = (
         db.session.scalars(
             select(DbSnippet)
             .filter_by(scope_type=scope.type_)
@@ -220,6 +221,8 @@ def get_snippets_for_scope_with_current_versions(
         .unique()
         .all()
     )
+
+    return list(db_snippets)
 
 
 def get_all_scopes() -> list[SnippetScope]:
@@ -257,15 +260,17 @@ def find_current_version_of_snippet_with_name(
     ).one_or_none()
 
 
-def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
+def get_versions(snippet_id: SnippetID) -> list[DbSnippetVersion]:
     """Return all versions of that snippet, sorted from most recent to
     oldest.
     """
-    return db.session.scalars(
+    db_versions = db.session.scalars(
         select(DbSnippetVersion)
         .filter_by(snippet_id=snippet_id)
         .order_by(DbSnippetVersion.created_at.desc())
     ).all()
+
+    return list(db_versions)
 
 
 def get_snippet_body(
@@ -286,7 +291,7 @@ def get_snippet_body(
 
 def search_snippets(
     search_term: str, scope: SnippetScope | None
-) -> Sequence[DbSnippetVersion]:
+) -> list[DbSnippetVersion]:
     """Search in (the latest versions of) snippets."""
     stmt = (
         select(DbSnippetVersion)
@@ -301,4 +306,6 @@ def search_snippets(
 
     stmt = stmt.filter(DbSnippetVersion.body.contains(search_term))
 
-    return db.session.scalars(stmt).all()
+    db_versions = db.session.scalars(stmt).all()
+
+    return list(db_versions)
