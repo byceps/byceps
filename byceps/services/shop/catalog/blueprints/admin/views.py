@@ -6,6 +6,8 @@ byceps.services.shop.catalog.blueprints.admin.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 from flask import abort, request
 from flask_babel import gettext
 
@@ -19,6 +21,7 @@ from byceps.services.shop.catalog.models import (
     CollectionID,
 )
 from byceps.services.shop.product import product_service
+from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.util.framework.blueprint import create_blueprint
@@ -336,7 +339,7 @@ def product_add(collection_id):
     if not form.validate():
         return product_add_form(catalog.id, form)
 
-    product_id = form.product_id.data
+    product_id = ProductID(UUID(form.product_id.data))
 
     product = product_service.get_product(product_id)
 
