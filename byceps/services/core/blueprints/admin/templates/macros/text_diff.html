@@ -1,56 +1,56 @@
 {% macro render_difference_styles() -%}
-  <style>
-    .difference {
-      display: block;
-      overflow-x: auto;
-    }
+<style>
+.difference {
+  display: block;
+  overflow-x: auto;
+}
 
-    table.diff {
-      --border: #aaaaaa solid 1px;
-      border: var(--border);
-      font-size: 0.75rem; /* 12px / 16px */
-    }
+table.diff {
+  --border: #aaaaaa solid 1px;
+  border: var(--border);
+  font-size: 0.75rem; /* 12px / 16px */
+}
 
-    /* Override deprecated `rules` attribute of `table` element. */
-    table.diff colgroup,
-    table.diff thead,
-    table.diff tbody {
-      border: var(--border);
-    }
+/* Override deprecated `rules` attribute of `table` element. */
+table.diff colgroup,
+table.diff thead,
+table.diff tbody {
+  border: var(--border);
+}
 
-    table.diff tbody {
-      font-family: monospace;
-    }
+table.diff tbody {
+  font-family: monospace;
+}
 
-    .diff_next {
-      display: none;
-    }
+.diff_next {
+  display: none;
+}
 
-    .diff_header {
-      background-color: #eeeeee;
-      padding-left: 0.5rem;
-    }
+.diff_header {
+  background-color: #eeeeee;
+  padding-left: 0.5rem;
+}
 
-    td.diff_header {
-      text-align: right;
-      width: 1%;
-    }
+td.diff_header {
+  text-align: right;
+  width: 1%;
+}
 
-    .diff_add {
-      background-color: #88ee88;
-      border-color: #1fd81f;
-    }
+.diff_add {
+  background-color: #88ee88;
+  border-color: #1fd81f;
+}
 
-    .diff_chg {
-      background-color: #ffff77;
-      border: #eeee1a solid 1px;
-    }
+.diff_chg {
+  background-color: #ffff77;
+  border: #eeee1a solid 1px;
+}
 
-    .diff_sub {
-      background-color: #ff9999;
-      border: #ff1a1a solid 1px;
-    }
-  </style>
+.diff_sub {
+  background-color: #ff9999;
+  border: #ff1a1a solid 1px;
+}
+</style>
 {%- endmacro %}
 
 
