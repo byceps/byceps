@@ -166,7 +166,8 @@ def create():
     if not match:
         abort(400, 'Unknown match ID')
 
-    creator = user_service.find_active_user(req.creator_id)
+    creator_id = UserID(req.creator_id)
+    creator = user_service.find_active_user(creator_id)
     if not creator:
         abort(400, 'Creator ID does not reference an active user.')
 
@@ -192,7 +193,8 @@ def update(comment_id):
 
     req = _parse_request(UpdateMatchCommentRequest)
 
-    editor = user_service.find_active_user(req.editor_id)
+    editor_id = UserID(req.editor_id)
+    editor = user_service.find_active_user(editor_id)
     if not editor:
         abort(400, 'Editor ID does not reference an active user.')
 
@@ -210,7 +212,8 @@ def hide(comment_id):
 
     req = _parse_request(ModerateMatchCommentRequest)
 
-    initiator = user_service.find_active_user(req.initiator_id)
+    initiator_id = UserID(req.initiator_id)
+    initiator = user_service.find_active_user(initiator_id)
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
@@ -226,7 +229,8 @@ def unhide(comment_id):
 
     req = _parse_request(ModerateMatchCommentRequest)
 
-    initiator = user_service.find_active_user(req.initiator_id)
+    initiator_id = UserID(req.initiator_id)
+    initiator = user_service.find_active_user(initiator_id)
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
