@@ -9,13 +9,11 @@ byceps.services.site_navigation.site_navigation_service
 from collections.abc import Iterable
 
 from byceps.services.site.models import SiteID
-from byceps.util.iterables import find
 from byceps.util.result import Result
 
 from . import site_navigation_domain_service, site_navigation_repository
 from .dbmodels import DbNavItem, DbNavMenu
 from .models import (
-    _VIEW_TYPES,
     NavItem,
     NavItemID,
     NavItemTargetType,
@@ -23,7 +21,6 @@ from .models import (
     NavMenuAggregate,
     NavMenuID,
     NavMenuTree,
-    ViewType,
 )
 
 
@@ -258,13 +255,3 @@ def _db_entities_to_items(db_items: Iterable[DbNavItem]) -> list[NavItem]:
     items = [_db_entity_to_item(db_item) for db_item in db_items]
     items.sort(key=lambda item: item.position)
     return items
-
-
-def get_view_types() -> list[ViewType]:
-    """Return the available view types."""
-    return list(_VIEW_TYPES)
-
-
-def find_view_type_by_name(name: str) -> ViewType | None:
-    """Return the view type with that name, or `None` if not found."""
-    return find(_VIEW_TYPES, lambda view_type: view_type.name == name)

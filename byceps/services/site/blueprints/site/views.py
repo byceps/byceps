@@ -11,7 +11,10 @@ from flask import g, url_for
 from flask_babel import get_locale
 
 from byceps.services.page.blueprints.site.templating import url_for_site_page
-from byceps.services.site_navigation import site_navigation_service
+from byceps.services.site_navigation import (
+    site_navigation_service,
+    view_type_registry,
+)
 from byceps.services.site_navigation.models import (
     NavItem,
     NavItemForRendering,
@@ -91,9 +94,7 @@ def _assemble_target(site_id: str, item: NavItem) -> str:
             return item.target
 
         case NavItemTargetType.view:
-            view_type = site_navigation_service.find_view_type_by_name(
-                item.target
-            )
+            view_type = view_type_registry.find_view_type_by_name(item.target)
             if not view_type:
                 raise ValueError('Unknown view type')
 

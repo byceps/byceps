@@ -15,7 +15,10 @@ from byceps.services.brand import brand_service
 from byceps.services.page import page_service
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
-from byceps.services.site_navigation import site_navigation_service
+from byceps.services.site_navigation import (
+    site_navigation_service,
+    view_type_registry,
+)
 from byceps.services.site_navigation.models import (
     NavItem,
     NavItemID,
@@ -385,7 +388,7 @@ def _get_target_and_current_page_id_for_create_form(
 
         case NavItemTargetType.view:
             view_type_name = form.target_view_type.data
-            view_type = site_navigation_service.find_view_type_by_name(
+            view_type = view_type_registry.find_view_type_by_name(
                 view_type_name
             )
             if not view_type:

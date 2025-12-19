@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired
 from byceps.services.language import language_service
 from byceps.services.page import page_service
 from byceps.services.site.models import SiteID
-from byceps.services.site_navigation import site_navigation_service
+from byceps.services.site_navigation import view_type_registry
 from byceps.util.l10n import LocalizedForm
 
 
@@ -83,7 +83,7 @@ class ItemCreateViewForm(_ItemBaseForm):
     def set_view_type_choices(self):
         choices = [
             (view_type.name, view_type.label)
-            for view_type in site_navigation_service.get_view_types()
+            for view_type in view_type_registry.get_view_types()
         ]
         choices.sort(key=lambda choice: choice[1])
         choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))
