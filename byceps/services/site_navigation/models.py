@@ -76,5 +76,5 @@ class NavMenuWithItems(NavMenu):
 
 @dataclass(frozen=True, kw_only=True)
 class NavMenuTree:
-    menu: NavMenu
-    submenus: list[NavMenu]
+    menu: NavMenuWithItems
+    submenus: list[NavMenuWithItems]

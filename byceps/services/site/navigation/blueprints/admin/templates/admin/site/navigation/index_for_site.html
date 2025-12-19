@@ -79,9 +79,7 @@
           {%- endif -%}
         </td>
       </tr>
-{%- with menu_with_items = menus_with_items[menu.id] %}
-  {%- if menu_with_items and menu_with_items.items %}
-      {%- for item in menu_with_items.items|sort(attribute='position') %}
+      {%- for item in menu.items|sort(attribute='position') %}
       <tr>
         <td colspan="2"></td>{# only for menus #}
         <td>{{ item.position }}</td>
@@ -123,6 +121,4 @@
         </td>
       </tr>
       {%- endfor %}
-  {%- endif %}
-{%- endwith %}
 {%- endmacro %}

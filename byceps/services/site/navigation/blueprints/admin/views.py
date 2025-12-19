@@ -25,8 +25,6 @@ from byceps.services.site_navigation.models import (
     NavItemTargetType,
     NavMenu,
     NavMenuID,
-    NavMenuTree,
-    NavMenuWithItems,
 )
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
@@ -61,27 +59,11 @@ def index_for_site(site_id):
     brand = brand_service.get_brand(site.brand_id)
 
     menu_trees = site_navigation_service.get_menu_trees(site.id)
-    menus_with_items = _get_menus_with_items(menu_trees)
 
     return {
         'site': site,
         'brand': brand,
         'menu_trees': menu_trees,
-        'menus_with_items': menus_with_items,
-    }
-
-
-def _get_menus_with_items(
-    menu_trees: list[NavMenuTree],
-) -> dict[NavMenuID, NavMenuWithItems | None]:
-    def iterate_menus():
-        for menu_tree in menu_trees:
-            yield menu_tree.menu
-            yield from menu_tree.submenus
-
-    return {
-        menu.id: site_navigation_service.get_menu_with_unfiltered_items(menu)
-        for menu in iterate_menus()
     }
 
 

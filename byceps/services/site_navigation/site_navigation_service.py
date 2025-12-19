@@ -163,8 +163,13 @@ def get_menus(site_id: SiteID) -> list[NavMenu]:
 
 
 def get_menu_trees(site_id: SiteID) -> list[NavMenuTree]:
-    """Return the menu trees for this site."""
-    menus = get_menus(site_id)
+    """Return the menu trees with items for this site."""
+    menus = [
+        NavMenuWithItems.from_menu_and_items(
+            menu, get_menu_with_unfiltered_items(menu).items
+        )
+        for menu in get_menus(site_id)
+    ]
 
     trees = []
 
