@@ -79,9 +79,9 @@
           {%- endif -%}
         </td>
       </tr>
-{%- with menu_aggregate = menu_aggregates[menu.id] %}
-  {%- if menu_aggregate and menu_aggregate.items %}
-      {%- for item in menu_aggregate.items|sort(attribute='position') %}
+{%- with menu_with_items = menus_with_items[menu.id] %}
+  {%- if menu_with_items and menu_with_items.items %}
+      {%- for item in menu_with_items.items|sort(attribute='position') %}
       <tr>
         <td colspan="2"></td>{# only for menus #}
         <td>{{ item.position }}</td>

@@ -18,9 +18,9 @@ from .models import (
     NavItemID,
     NavItemTargetType,
     NavMenu,
-    NavMenuAggregate,
     NavMenuID,
     NavMenuTree,
+    NavMenuWithItems,
 )
 
 
@@ -145,14 +145,14 @@ def get_menu(menu_id: NavMenuID) -> Result[NavMenu, str]:
     return site_navigation_repository.get_menu(menu_id).map(_db_entity_to_menu)
 
 
-def get_menu_with_unfiltered_items(menu: NavMenu) -> NavMenuAggregate:
-    """Return the menu aggregate."""
+def get_menu_with_unfiltered_items(menu: NavMenu) -> NavMenuWithItems:
+    """Return the menu with items."""
     db_items = site_navigation_repository.get_items_for_menu_id_unfiltered(
         menu.id
     )
     items = _db_entities_to_items(db_items)
 
-    return NavMenuAggregate.from_menu_and_items(menu, items)
+    return NavMenuWithItems.from_menu_and_items(menu, items)
 
 
 def get_menus(site_id: SiteID) -> list[NavMenu]:

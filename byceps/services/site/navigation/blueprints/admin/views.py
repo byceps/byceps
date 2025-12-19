@@ -24,9 +24,9 @@ from byceps.services.site_navigation.models import (
     NavItemID,
     NavItemTargetType,
     NavMenu,
-    NavMenuAggregate,
     NavMenuID,
     NavMenuTree,
+    NavMenuWithItems,
 )
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
@@ -61,19 +61,19 @@ def index_for_site(site_id):
     brand = brand_service.get_brand(site.brand_id)
 
     menu_trees = site_navigation_service.get_menu_trees(site.id)
-    menu_aggregates = _get_menu_aggregates(menu_trees)
+    menus_with_items = _get_menus_with_items(menu_trees)
 
     return {
         'site': site,
         'brand': brand,
         'menu_trees': menu_trees,
-        'menu_aggregates': menu_aggregates,
+        'menus_with_items': menus_with_items,
     }
 
 
-def _get_menu_aggregates(
+def _get_menus_with_items(
     menu_trees: list[NavMenuTree],
-) -> dict[NavMenuID, NavMenuAggregate | None]:
+) -> dict[NavMenuID, NavMenuWithItems | None]:
     def iterate_menus():
         for menu_tree in menu_trees:
             yield menu_tree.menu
@@ -92,7 +92,7 @@ def view(menu_id):
     """Show a single menu."""
     menu = _get_menu_or_404(menu_id)
 
-    menu_aggregate = site_navigation_service.get_menu_with_unfiltered_items(
+    menu_with_items = site_navigation_service.get_menu_with_unfiltered_items(
         menu
     )
 
@@ -100,7 +100,7 @@ def view(menu_id):
     brand = brand_service.get_brand(site.brand_id)
 
     return {
-        'menu': menu_aggregate,
+        'menu': menu_with_items,
         'site': site,
         'brand': brand,
     }

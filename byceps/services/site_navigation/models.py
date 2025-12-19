@@ -58,7 +58,7 @@ class NavItemForRendering:
 
 
 @dataclass(frozen=True)
-class NavMenuAggregate(NavMenu):
+class NavMenuWithItems(NavMenu):
     items: list[NavItem]
 
     @classmethod
