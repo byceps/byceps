@@ -54,9 +54,7 @@ class OrderEmailText:
 
 def send_email_for_incoming_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    locale = (
-        data.orderer.locale if data.orderer.locale else get_default_locale()
-    )
+    locale = _get_user_locale(data)
 
     match assemble_email_for_incoming_order_to_orderer(data, locale):
         case Ok(message):
@@ -69,9 +67,7 @@ def send_email_for_incoming_order_to_orderer(order: Order) -> None:
 
 def send_email_for_canceled_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    locale = (
-        data.orderer.locale if data.orderer.locale else get_default_locale()
-    )
+    locale = _get_user_locale(data)
 
     match assemble_email_for_canceled_order_to_orderer(data, locale):
         case Ok(message):
@@ -84,9 +80,7 @@ def send_email_for_canceled_order_to_orderer(order: Order) -> None:
 
 def send_email_for_paid_order_to_orderer(order: Order) -> None:
     data = _get_order_email_data(order)
-    locale = (
-        data.orderer.locale if data.orderer.locale else get_default_locale()
-    )
+    locale = _get_user_locale(data)
 
     match assemble_email_for_paid_order_to_orderer(data, locale):
         case Ok(message):
@@ -95,6 +89,10 @@ def send_email_for_paid_order_to_orderer(order: Order) -> None:
             log.error(
                 'Assembling email for paid order to orderer failed', error=e
             )
+
+
+def _get_user_locale(data: OrderEmailData) -> Locale:
+    return user_service.find_locale(data.orderer.id) or get_default_locale()
 
 
 def assemble_email_for_incoming_order_to_orderer(
