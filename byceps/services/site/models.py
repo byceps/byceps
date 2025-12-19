@@ -29,7 +29,7 @@ class Site:
     enabled: bool
     user_account_creation_enabled: bool
     login_enabled: bool
-    news_channel_ids: frozenset[NewsChannelID]
+    news_channel_ids: set[NewsChannelID]
     board_id: BoardID | None
     storefront_id: StorefrontID | None
     is_intranet: bool

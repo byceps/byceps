@@ -207,9 +207,7 @@ def is_server_name_available(server_name: str) -> bool:
 
 
 def _db_entity_to_site(db_site: DbSite) -> Site:
-    news_channel_ids = frozenset(
-        channel.id for channel in db_site.news_channels
-    )
+    news_channel_ids = {channel.id for channel in db_site.news_channels}
 
     return Site(
         id=db_site.id,

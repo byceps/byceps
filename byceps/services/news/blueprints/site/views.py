@@ -105,7 +105,7 @@ def view(slug):
     }
 
 
-def _get_channel_ids() -> frozenset[NewsChannelID] | set[NewsChannelID]:
+def _get_channel_ids() -> set[NewsChannelID]:
     channel_ids = g.site.news_channel_ids
     if not channel_ids:
         abort(404)
