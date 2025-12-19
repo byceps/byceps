@@ -81,7 +81,10 @@ def create_brand_list(brand_id):
     """Create a list for that brand."""
     brand = _get_brand_or_404(brand_id)
 
-    list_ = newsletter_command_service.create_list(brand.id, brand.title)
+    list_id = ListID(brand.id)
+    title = brand.title
+
+    list_ = newsletter_command_service.create_list(list_id, title)
 
     flash_success(gettext('Subscription list has been created.'))
 
