@@ -135,11 +135,11 @@ def get_site(site_id: SiteID) -> Site:
     return _db_entity_to_site(db_site)
 
 
-def get_all_sites() -> set[Site]:
+def get_all_sites() -> list[Site]:
     """Return all sites."""
     db_sites = db.session.scalars(select(DbSite)).all()
 
-    return {_db_entity_to_site(db_site) for db_site in db_sites}
+    return [_db_entity_to_site(db_site) for db_site in db_sites]
 
 
 def get_sites(site_ids: set[SiteID]) -> list[Site]:
@@ -154,18 +154,18 @@ def get_sites(site_ids: set[SiteID]) -> list[Site]:
     return [_db_entity_to_site(db_site) for db_site in db_sites]
 
 
-def get_sites_for_brand(brand_id: BrandID) -> set[Site]:
+def get_sites_for_brand(brand_id: BrandID) -> list[Site]:
     """Return the sites for that brand."""
     db_sites = db.session.scalars(
         select(DbSite).filter_by(brand_id=brand_id)
     ).all()
 
-    return {_db_entity_to_site(db_site) for db_site in db_sites}
+    return [_db_entity_to_site(db_site) for db_site in db_sites]
 
 
 def get_current_sites(
     brand_id: BrandID | None = None, *, include_brands: bool = False
-) -> set[Site | SiteWithBrand]:
+) -> list[Site | SiteWithBrand]:
     """Return all "current" (i.e. enabled and not archived) sites."""
     stmt = select(DbSite)
 
@@ -185,7 +185,7 @@ def get_current_sites(
     else:
         transform = _db_entity_to_site
 
-    return {transform(db_site) for db_site in db_sites}
+    return [transform(db_site) for db_site in db_sites]
 
 
 def is_title_available(title: str) -> bool:
