@@ -6,7 +6,6 @@ byceps.services.news.news_item_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Sequence
 import dataclasses
 from datetime import datetime
 
@@ -507,13 +506,15 @@ def find_oldest_headline_after(
     return _db_entity_to_headline(db_item)
 
 
-def get_item_versions(item_id: NewsItemID) -> Sequence[DbNewsItemVersion]:
+def get_item_versions(item_id: NewsItemID) -> list[DbNewsItemVersion]:
     """Return all item versions, sorted from most recent to oldest."""
-    return db.session.scalars(
+    db_versions = db.session.scalars(
         select(DbNewsItemVersion)
         .filter_by(item_id=item_id)
         .order_by(DbNewsItemVersion.created_at.desc())
     ).all()
+
+    return list(db_versions)
 
 
 def get_current_item_version(item_id: NewsItemID) -> DbNewsItemVersion:

@@ -269,13 +269,15 @@ def get_version(version_id: PageVersionID) -> PageVersion | None:
     return version
 
 
-def get_versions(page_id: PageID) -> Sequence[DbPageVersion]:
+def get_versions(page_id: PageID) -> list[DbPageVersion]:
     """Return all versions of the page, sorted from most recent to oldest."""
-    return db.session.scalars(
+    db_versions = db.session.scalars(
         select(DbPageVersion)
         .filter_by(page_id=page_id)
         .order_by(DbPageVersion.created_at.desc())
     ).all()
+
+    return list(db_versions)
 
 
 def _get_db_versions(page_id: PageID) -> Sequence[DbPageVersion]:
