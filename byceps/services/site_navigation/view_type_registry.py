@@ -23,48 +23,65 @@ class ViewType:
 
 _VIEW_TYPES = [
     ViewType(
-        name=name,
-        endpoint=endpoint,
-        label=label,
-        current_page_id=current_page_id,
-    )
-    for name, endpoint, label, current_page_id in [
-        ('homepage', 'homepage.index', lazy_gettext('Home page'), 'homepage'),
-        ('news', 'news.index', lazy_gettext('News'), 'news'),
-        (
-            'seating_plan',
-            'seating.index',
-            lazy_gettext('Seating plan'),
-            'seating',
-        ),
-        (
-            'attendees',
-            'attendance.attendees',
-            lazy_gettext('Attendees'),
-            'attendees',
-        ),
-        ('shop', 'shop_order.order_form', lazy_gettext('Shop'), 'shop_order'),
-        ('board', 'board.category_index', lazy_gettext('Board'), 'board'),
-        (
-            'orga_team',
-            'orga_team.index',
-            lazy_gettext('Orga team'),
-            'orga_team',
-        ),
-        (
-            'party_history',
-            'party_history.index',
-            lazy_gettext('Party history'),
-            'party_history',
-        ),
-        (
-            'timetable',
-            'timetable.index',
-            lazy_gettext('Timetable'),
-            'timetable',
-        ),
-        ('gallery', 'gallery.index', lazy_gettext('Galleries'), 'gallery'),
-    ]
+        name='homepage',
+        endpoint='homepage.index',
+        label=lazy_gettext('Home page'),
+        current_page_id='homepage',
+    ),
+    ViewType(
+        name='news',
+        endpoint='news.index',
+        label=lazy_gettext('News'),
+        current_page_id='news',
+    ),
+    ViewType(
+        name='seating_plan',
+        endpoint='seating.index',
+        label=lazy_gettext('Seating plan'),
+        current_page_id='seating',
+    ),
+    ViewType(
+        name='attendees',
+        endpoint='attendance.attendees',
+        label=lazy_gettext('Attendees'),
+        current_page_id='attendees',
+    ),
+    ViewType(
+        name='shop',
+        endpoint='shop_order.order_form',
+        label=lazy_gettext('Shop'),
+        current_page_id='shop_order',
+    ),
+    ViewType(
+        name='board',
+        endpoint='board.category_index',
+        label=lazy_gettext('Board'),
+        current_page_id='board',
+    ),
+    ViewType(
+        name='orga_team',
+        endpoint='orga_team.index',
+        label=lazy_gettext('Orga team'),
+        current_page_id='orga_team',
+    ),
+    ViewType(
+        name='party_history',
+        endpoint='party_history.index',
+        label=lazy_gettext('Party history'),
+        current_page_id='party_history',
+    ),
+    ViewType(
+        name='timetable',
+        endpoint='timetable.index',
+        label=lazy_gettext('Timetable'),
+        current_page_id='timetable',
+    ),
+    ViewType(
+        name='gallery',
+        endpoint='gallery.index',
+        label=lazy_gettext('Galleries'),
+        current_page_id='gallery',
+    ),
 ]
 
 
