@@ -21,7 +21,11 @@ from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbCurrentPageVersionAssociation, DbPage, DbPageVersion
-from .errors import PageAlreadyExistsError, PageNotFoundError
+from .errors import (
+    PageAlreadyExistsError,
+    PageDeletionFailedError,
+    PageNotFoundError,
+)
 from .events import (
     PageCreatedEvent,
     PageDeletedEvent,
@@ -154,12 +158,10 @@ def update_page(
 
 def delete_page(
     page_id: PageID, *, initiator: User | None = None
-) -> tuple[bool, PageDeletedEvent | None]:
+) -> Result[PageDeletedEvent, PageDeletionFailedError]:
     """Delete the page and its versions.
 
     It is expected that no database records refer to the page anymore.
-
-    Return `True` on success, or `False` if an error occurred.
     """
     db_page = _get_db_page(page_id)
 
@@ -186,7 +188,7 @@ def delete_page(
         db.session.commit()
     except Exception:
         db.session.rollback()
-        return False, None
+        return Err(PageDeletionFailedError())
 
     event = PageDeletedEvent(
         occurred_at=datetime.utcnow(),
@@ -197,7 +199,7 @@ def delete_page(
         language_code=db_page.language_code,
     )
 
-    return True, event
+    return Ok(event)
 
 
 def set_nav_menu_id(page_id: PageID, nav_menu_id: NavMenuID | None) -> None:

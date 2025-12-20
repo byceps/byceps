@@ -426,19 +426,18 @@ def delete(page_id):
     page_name = page.name
     site_id = page.site_id
 
-    success, event = page_service.delete_page(page.id, initiator=g.user)
-
-    if not success:
-        flash_error(
-            gettext('Page "%(name)s" could not be deleted.', name=page_name)
-        )
-        return url_for('.view_current_version', page_id=page.id)
-
-    flash_success(gettext('Page "%(name)s" has been deleted.', name=page_name))
-
-    page_signals.page_deleted.send(None, event=event)
-
-    return url_for('.index_for_site', site_id=site_id)
+    match page_service.delete_page(page.id, initiator=g.user):
+        case Ok(event):
+            flash_success(
+                gettext('Page "%(name)s" has been deleted.', name=page_name)
+            )
+            page_signals.page_deleted.send(None, event=event)
+            return url_for('.index_for_site', site_id=site_id)
+        case Err(_):
+            flash_error(
+                gettext('Page "%(name)s" could not be deleted.', name=page_name)
+            )
+            return url_for('.view_current_version', page_id=page.id)
 
 
 @blueprint.get('/pages/<uuid:page_id>/set_nav_menu')

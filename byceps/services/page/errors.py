@@ -17,3 +17,8 @@ class PageAlreadyExistsError:
 @dataclass(frozen=True)
 class PageNotFoundError:
     pass
+
+
+@dataclass(frozen=True)
+class PageDeletionFailedError:
+    pass
