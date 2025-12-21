@@ -230,7 +230,7 @@ requires-dist = [
     { name = "itsdangerous", specifier = "==2.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
     { name = "markupsafe", specifier = "==3.0.3" },
-    { name = "mistletoe", specifier = ">=1.5.0" },
+    { name = "mistletoe", specifier = ">=1.5.1" },
     { name = "paypal-checkout-serversdk", specifier = "==1.0.3" },
     { name = "paypalhttp", specifier = "==1.0.1" },
     { name = "pillow", specifier = ">=12.0.0" },
@@ -1009,11 +1009,11 @@ wheels = [
 
 [[package]]
 name = "mistletoe"
-version = "1.5.0"
+version = "1.5.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/71/99/a42e378cc63df214c80e1487237964b6ffc23a847085c13ebf71f623e9aa/mistletoe-1.5.0.tar.gz", hash = "sha256:68b73be68bf8075ec882e035176d5c379d0d7f3401392c6f39c2cc9cd3264d44", size = 111620, upload-time = "2025-10-18T16:37:09.523Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/31/ae/d33647e2a26a8899224f36afc5e7b7a670af30f1fd87231e9f07ca19d673/mistletoe-1.5.1.tar.gz", hash = "sha256:c5571ce6ca9cfdc7ce9151c3ae79acb418e067812000907616427197648030a3", size = 111769, upload-time = "2025-12-07T16:19:01.066Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3f/c2/bd0fc48dc323035cd65d21c45a3bb5c7b054001bf4ea75e461beb7656e07/mistletoe-1.5.0-py3-none-any.whl", hash = "sha256:d4e77b991b998c5efe3c4eab4e1b472263b5349688acd50d79bd9a6c317a9df1", size = 55262, upload-time = "2025-10-18T16:37:08.376Z" },
+    { url = "https://files.pythonhosted.org/packages/20/60/0980fefdc4d12c18c1bbab9d62852f27aded8839233c7b0a9827aaf395f5/mistletoe-1.5.1-py3-none-any.whl", hash = "sha256:d3e97664798261503f685f6a6281b092628367cf3128fc68a015a993b0c4feb3", size = 55331, upload-time = "2025-12-07T16:18:59.65Z" },
 ]
 
 [[package]]
