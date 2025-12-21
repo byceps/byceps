@@ -26,3 +26,8 @@ class SnippetAlreadyExistsError(_BaseSnippetError):
 @dataclass(frozen=True)
 class SnippetNotFoundError(_BaseSnippetError):
     pass
+
+
+@dataclass(frozen=True)
+class SnippetDeletionFailedError:
+    pass

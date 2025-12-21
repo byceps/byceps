@@ -20,7 +20,11 @@ from .dbmodels import (
     DbSnippet,
     DbSnippetVersion,
 )
-from .errors import SnippetAlreadyExistsError, SnippetNotFoundError
+from .errors import (
+    SnippetAlreadyExistsError,
+    SnippetDeletionFailedError,
+    SnippetNotFoundError,
+)
 from .events import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
@@ -140,13 +144,11 @@ def update_snippet(
 
 def delete_snippet(
     snippet_id: SnippetID, *, initiator: User | None = None
-) -> tuple[bool, SnippetDeletedEvent | None]:
+) -> Result[SnippetDeletedEvent, SnippetDeletionFailedError]:
     """Delete the snippet and its versions.
 
     It is expected that no database records (consents, etc.) refer to
     the snippet anymore.
-
-    Return `True` on success, or `False` if an error occurred.
     """
     snippet = find_snippet(snippet_id)
     if snippet is None:
@@ -175,7 +177,7 @@ def delete_snippet(
         db.session.commit()
     except Exception:
         db.session.rollback()
-        return False, None
+        return Err(SnippetDeletionFailedError())
 
     event = SnippetDeletedEvent(
         occurred_at=datetime.utcnow(),
@@ -186,7 +188,7 @@ def delete_snippet(
         language_code=snippet.language_code,
     )
 
-    return True, event
+    return Ok(event)
 
 
 def find_snippet(snippet_id: SnippetID) -> DbSnippet | None:
