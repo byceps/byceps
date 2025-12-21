@@ -84,7 +84,7 @@ test = [
     "coverage>=7.11.3",
     "freezegun>=1.5.5",
     "pyfakefs>=5.10.2",
-    "pytest>=9.0.1",
+    "pytest>=9.0.2",
     "respx>=0.22.0",
 ]
 
