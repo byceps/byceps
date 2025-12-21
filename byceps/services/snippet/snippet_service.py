@@ -86,60 +86,60 @@ def create_snippet(
     """Create a snippet and its initial version, and return that version."""
     created_at = datetime.utcnow()
 
-    snippet = DbSnippet(scope, name, language_code)
-    db.session.add(snippet)
+    db_snippet = DbSnippet(scope, name, language_code)
+    db.session.add(db_snippet)
 
-    version = DbSnippetVersion(snippet, created_at, creator.id, body)
-    db.session.add(version)
+    db_version = DbSnippetVersion(db_snippet, created_at, creator.id, body)
+    db.session.add(db_version)
 
     current_version_association = DbCurrentSnippetVersionAssociation(
-        snippet, version
+        db_snippet, db_version
     )
     db.session.add(current_version_association)
 
     db.session.commit()
 
     event = SnippetCreatedEvent(
-        occurred_at=version.created_at,
+        occurred_at=db_version.created_at,
         initiator=creator,
-        snippet_id=snippet.id,
-        scope=snippet.scope,
-        snippet_name=snippet.name,
-        language_code=snippet.language_code,
-        snippet_version_id=version.id,
+        snippet_id=db_snippet.id,
+        scope=db_snippet.scope,
+        snippet_name=db_snippet.name,
+        language_code=db_snippet.language_code,
+        snippet_version_id=db_version.id,
     )
 
-    return version, event
+    return db_version, event
 
 
 def update_snippet(
     snippet_id: SnippetID, creator: User, body: str
 ) -> tuple[DbSnippetVersion, SnippetUpdatedEvent]:
     """Update snippet with a new version, and return that version."""
-    snippet = find_snippet(snippet_id)
-    if snippet is None:
+    db_snippet = find_snippet(snippet_id)
+    if db_snippet is None:
         raise ValueError('Unknown snippet ID')
 
     updated_at = datetime.utcnow()
 
-    version = DbSnippetVersion(snippet, updated_at, creator.id, body)
-    db.session.add(version)
+    db_version = DbSnippetVersion(db_snippet, updated_at, creator.id, body)
+    db.session.add(db_version)
 
-    snippet.current_version = version
+    db_snippet.current_version = db_version
 
     db.session.commit()
 
     event = SnippetUpdatedEvent(
-        occurred_at=version.created_at,
+        occurred_at=db_version.created_at,
         initiator=creator,
-        snippet_id=snippet.id,
-        scope=snippet.scope,
-        snippet_name=snippet.name,
-        language_code=snippet.language_code,
-        snippet_version_id=version.id,
+        snippet_id=db_snippet.id,
+        scope=db_snippet.scope,
+        snippet_name=db_snippet.name,
+        language_code=db_snippet.language_code,
+        snippet_version_id=db_version.id,
     )
 
-    return version, event
+    return db_version, event
 
 
 def delete_snippet(
@@ -150,13 +150,13 @@ def delete_snippet(
     It is expected that no database records (consents, etc.) refer to
     the snippet anymore.
     """
-    snippet = find_snippet(snippet_id)
-    if snippet is None:
+    db_snippet = find_snippet(snippet_id)
+    if db_snippet is None:
         raise ValueError('Unknown snippet ID')
 
     # Keep values for use after snippet is deleted.
-    snippet_name = snippet.name
-    scope = snippet.scope
+    snippet_name = db_snippet.name
+    scope = db_snippet.scope
 
     db_versions = get_versions(snippet_id)
 
@@ -185,7 +185,7 @@ def delete_snippet(
         snippet_id=snippet_id,
         scope=scope,
         snippet_name=snippet_name,
-        language_code=snippet.language_code,
+        language_code=db_snippet.language_code,
     )
 
     return Ok(event)
@@ -281,14 +281,14 @@ def get_snippet_body(
     """Return the body of the current version of the snippet in that
     scope with that name and language.
     """
-    version = find_current_version_of_snippet_with_name(
+    db_version = find_current_version_of_snippet_with_name(
         scope, name, language_code
     )
 
-    if not version:
+    if not db_version:
         return Err(SnippetNotFoundError(scope, name, language_code))
 
-    return Ok(version.body.strip())
+    return Ok(db_version.body.strip())
 
 
 def search_snippets(
