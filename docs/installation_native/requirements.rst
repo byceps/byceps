@@ -2,7 +2,7 @@ Requirements
 ============
 
 * A (virtual) server to install BYCEPS on
-* At least two subdomains (administration UI, one party website)
+* At least two (sub-)domains (administration UI, one party website)
 * An SMTP_ server (to send emails)
 * Software:
 
