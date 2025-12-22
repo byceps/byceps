@@ -54,7 +54,7 @@ def update_menu(
     )
 
     return site_navigation_repository.update_menu(updated_menu).map(
-        lambda _: menu
+        lambda _: updated_menu
     )
 
 
@@ -92,7 +92,7 @@ def update_item(
     )
 
     return site_navigation_repository.update_item(updated_item).map(
-        lambda _: item
+        lambda _: updated_item
     )
 
 
