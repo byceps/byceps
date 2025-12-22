@@ -18,17 +18,17 @@ Structure
 
 Each seat references these two entities:
 
-* An **area** represents the physical location of a group of seats.
+* An **seating area** represents the physical location of a group of seats.
 
-* A **category** is meant to separate seats in different price ranges from each
-  another.
+* A **ticket category** is meant to separate seats in different price ranges
+  from each another.
 
-  Since a ticket is bound to a category, a user with a ticket from category X
-  cannot reserve a seat that belongs to category Y.
+  Since a ticket is bound to a ticket category, a user with a ticket from
+  ticket category X cannot reserve a seat that belongs to ticket category Y.
 
-Each area and category belongs to a specific party since each seating setup
-often is party-specific (even if multiple parties are held in the same
-location).
+Each seating area and ticket category belongs to a specific party since each
+seating setup often is party-specific (even if multiple parties are held in the
+same location).
 
 
 .. _seating-example-small:
@@ -37,8 +37,9 @@ Example: Small Party
 --------------------
 
 A small party may take place in a single room or hall, and no distinction is
-made between the seats in it. Thus, a single area as well as a single category
-are sufficient, so every seat belongs to the same area and the same category.
+made between the seats in it. Thus, a single seating area as well as a single
+ticket category are sufficient, so every seat belongs to the same seating area
+and the same ticket category.
 
 .. figure:: example_small.png
 
