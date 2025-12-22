@@ -32,8 +32,8 @@ BYCEPS comes with a command-line tool for some tasks.
 Create Database Tables
 ======================
 
-``byceps create-database-tables`` creates the tables that are required
-to run BYCEPS in a relational database instance.
+``byceps create-database-tables`` creates the tables that are required to run
+BYCEPS in a relational database instance.
 
 .. code-block:: console
 
@@ -52,8 +52,8 @@ Expected output:
 Import Authorization Roles
 ==========================
 
-``byceps import-roles`` imports authorization roles from a file in TOML
-format into BYCEPS.
+``byceps import-roles`` imports authorization roles from a file in TOML format
+into BYCEPS.
 
 By default, an initial set of roles provided with BYCEPS is imported:
 
@@ -80,19 +80,18 @@ Expected output:
 
     Importing roles ... done. Imported 35 roles, skipped 0 roles.
 
-.. note:: The :ref:`database initialization command <Initialize
-   Database>` covers this command (except for the option to provide a
-   custom roles file).
+.. note:: The :ref:`database initialization command <Initialize Database>`
+   covers this command (except for the option to provide a custom roles file).
 
 
 Export Authorization Roles
 ==========================
 
-``byceps export-roles`` exports authorization roles in TOML format from
-BYCEPS to standard output.
+``byceps export-roles`` exports authorization roles in TOML format from BYCEPS
+to standard output.
 
-To export all roles into a TOML file, standard output is redirected
-(``>``) to it:
+To export all roles into a TOML file, standard output is redirected (``>``) to
+it:
 
 .. code-block:: console
 
@@ -102,8 +101,8 @@ To export all roles into a TOML file, standard output is redirected
 Initialize Database
 ===================
 
-``byceps initialize-database`` prepares a relational database instance
-for running BYCEPS.
+``byceps initialize-database`` prepares a relational database instance for
+running BYCEPS.
 
 It is a convenience command that includes the following steps (making it
 unnecessary to call the covered commands separately):
@@ -136,16 +135,14 @@ This will:
 - create a user account,
 - initialize the account,
 - assign all existing authorization roles to the account, and
-- confirm the associated email address as valid (even though it might
-  not be).
+- confirm the associated email address as valid (even though it might not be).
 
-This command is necessary to create the initial user account, which then
-can be used to log in to the admin backend and to access all
-administrative functionality.
+This command is necessary to create the initial user account, which then can be
+used to log in to the admin backend and to access all administrative
+functionality.
 
-The command can be run to create additional user accounts as well, but
-they all will have superuser-like privileges in BYCEPS.
-
+The command can be run to create additional user accounts as well, but they all
+will have superuser-like privileges in BYCEPS.
 .. code-block:: console
 
     $ uv run byceps create-superuser
@@ -171,8 +168,7 @@ Import Users
 ``byceps import-users`` imports basic user accounts from a file in `JSON
 Lines`_ format into BYCEPS.
 
-This functionality exists to support migration from another system to
-BYCEPS.
+This functionality exists to support migration from another system to BYCEPS.
 
 Currently supported fields:
 
@@ -216,8 +212,8 @@ Expected output:
 Generate Secret Key
 ===================
 
-``byceps generate-secret-key`` generates a secret key in a
-cryptographically secure way.
+``byceps generate-secret-key`` generates a secret key in a cryptographically
+secure way.
 
 A secret key is, among other things, required for login sessions.
 
@@ -241,8 +237,8 @@ Expected output:
 Import Seats
 ============
 
-``byceps import-seats`` imports seats from a file in `JSON Lines`_
-format into BYCEPS.
+``byceps import-seats`` imports seats from a file in `JSON Lines`_ format into
+BYCEPS.
 
 Currently supported fields:
 
@@ -282,13 +278,12 @@ Expected output:
 Run Interactive Shell
 =====================
 
-The BYCEPS shell is an interactive Python command line prompt that
-provides access to BYCEPS' functionality as well as the persisted data.
+The BYCEPS shell is an interactive Python command line prompt that provides
+access to BYCEPS' functionality as well as the persisted data.
 
-This can be helpful to inspect and manipulate the application's data by
-using primarily the various services (from ``byceps.services``) without
-directly accessing the database (hopefully limiting the amount of
-accidental damage).
+This can be helpful to inspect and manipulate the application's data by using
+primarily the various services (from ``byceps.services``) without directly
+accessing the database (hopefully limiting the amount of accidental damage).
 
 .. code-block:: console
 

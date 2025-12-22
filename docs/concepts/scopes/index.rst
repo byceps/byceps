@@ -58,8 +58,8 @@ Entities that belong to the brand scope include:
 Party
 -----
 
-The party scope is for entities that belong to a single party (and are
-not better situated in the :ref:`site scope <scope-site>`).
+The party scope is for entities that belong to a single party (and are not
+better situated in the :ref:`site scope <scope-site>`).
 
 Each party belongs to a :ref:`brand <scope-brand>`.
 
@@ -76,8 +76,7 @@ Entities that belong to the party scope include:
 Site
 ----
 
-The site scope is for entities and settings that belong to a specific
-website.
+The site scope is for entities and settings that belong to a specific website.
 
 Each site belongs to a :ref:`brand <scope-brand>`.
 
