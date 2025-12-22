@@ -1,15 +1,34 @@
-# layout: dagre
-
-direction: right
-
-Categories: {
-  Regular: {shape: oval}
-}
-
-Areas: {
-  Area 1: {
-    Seat Regular: {label: "80 × Seat Regular"; shape: oval}
+vars: {
+  d2-config: {
+    layout-engine: dagre
+    theme-id: 104
   }
 }
 
-Areas.Area 1.Seat Regular -> Categories.Regular: has category
+classes: {
+  entity: {
+    shape: oval
+    height: 80
+  }
+}
+
+direction: right
+
+container: "" {
+  Ticket Categories: {
+    Regular: {
+      class: entity
+    }
+  }
+
+  Seating Areas: {
+    Area 1: {
+      Regular Seat: {
+        class: entity
+        label: "80 × Regular Seat"
+      }
+    }
+  }
+
+  Seating Areas.Area 1.Regular Seat -> Ticket Categories.Regular: has category
+}

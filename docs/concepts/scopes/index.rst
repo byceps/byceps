@@ -9,7 +9,6 @@ BYCEPS distinguishes four scopes:
 * :ref:`site <scope-site>`
 
 .. figure:: scopes.png
-   :width: 75%
 
    Nesting of scopes
 
