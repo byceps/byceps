@@ -29,6 +29,7 @@ from byceps.services.site_navigation.models import (
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -41,6 +42,7 @@ from .forms import (
     ItemCreateViewForm,
     ItemUpdateForm,
     MenuCreateForm,
+    MenuTreesCopyForm,
     MenuUpdateForm,
     SubMenuCreateForm,
 )
@@ -86,6 +88,48 @@ def view(menu_id):
         'site': site,
         'brand': brand,
     }
+
+
+@blueprint.get('/for_site/<target_site_id>/copy')
+@permission_required('site_navigation.administrate')
+@templated
+def menu_trees_copy_form(target_site_id, erroneous_form=None):
+    """Show form to copy menu trees from another site."""
+    target_site = _get_site_or_404(target_site_id)
+
+    form = erroneous_form if erroneous_form else MenuTreesCopyForm()
+    form.set_source_site_id_choices(target_site)
+
+    return {
+        'form': form,
+        'target_site': target_site,
+    }
+
+
+@blueprint.post('/for_site/<target_site_id>/copy')
+@permission_required('site_navigation.administrate')
+def menu_trees_copy(target_site_id):
+    """Copy menu trees from another site."""
+    target_site = _get_site_or_404(target_site_id)
+
+    form = MenuTreesCopyForm(request.form)
+    form.set_source_site_id_choices(target_site)
+
+    if not form.validate():
+        return redirect_to('.index_for_site', site_id=target_site.id)
+
+    source_site_id = form.source_site_id.data
+    source_site = _get_site_or_404(source_site_id)
+
+    match site_navigation_service.copy_site_menu_trees(
+        source_site.id, target_site.id
+    ):
+        case Ok(_):
+            flash_success(gettext('Menus have been successfully copied.'))
+            return redirect_to('.index_for_site', site_id=target_site.id)
+        case Err(e):
+            flash_error(e)
+            return redirect_to('.index_for_site', site_id=target_site.id)
 
 
 @blueprint.get('/for_site/<site_id>/create')

@@ -1,0 +1,22 @@
+{% extends 'layout/admin/page.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_radio %}
+{% set page_title = _('Copy menus') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index_for_site', site_id=target_site.id), _('Menus')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1 class="title">{{ page_title }}</h1>
+
+  <form action="{{ url_for('.menu_trees_copy', target_site_id=target_site.id) }}" method="post">
+    <div class="box">
+      {{ form_field_radio(form.source_site_id) }}
+    </div>
+
+    {{ form_buttons(_('Copy')) }}
+  </form>
+
+{%- endblock %}

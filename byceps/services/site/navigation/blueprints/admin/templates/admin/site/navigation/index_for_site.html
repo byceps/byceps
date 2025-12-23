@@ -13,6 +13,7 @@
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.menu_create_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Create menu') }}</span></a>
+        <a class="button" href="{{ url_for('.menu_trees_copy_form', target_site_id=site.id) }}">{{ render_icon('copy') }} <span>{{ _('Copy menus') }}</span></a>
       </div>
     </div>
     {%- endif %}

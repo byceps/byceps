@@ -7,14 +7,34 @@ byceps.services.site.navigation.blueprints.admin.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import BooleanField, SelectField, StringField
+from wtforms import BooleanField, RadioField, SelectField, StringField
 from wtforms.validators import InputRequired
 
 from byceps.services.language import language_service
 from byceps.services.page import page_service
-from byceps.services.site.models import SiteID
+from byceps.services.site import site_service
+from byceps.services.site.models import Site, SiteID
 from byceps.services.site_navigation import view_type_registry
 from byceps.util.l10n import LocalizedForm
+
+
+class MenuTreesCopyForm(LocalizedForm):
+    source_site_id = RadioField(
+        lazy_gettext('Site'), validators=[InputRequired()]
+    )
+
+    def set_source_site_id_choices(self, target_site: Site) -> None:
+        source_sites = [
+            site
+            for site in site_service.get_sites_for_brand(target_site.brand_id)
+            if site.id != target_site.id
+        ]
+        source_sites.sort(key=lambda site: site.title)
+
+        self.source_site_id.choices = [
+            (str(source_site.id), source_site.title)
+            for source_site in source_sites
+        ]
 
 
 class _MenuBaseForm(LocalizedForm):
