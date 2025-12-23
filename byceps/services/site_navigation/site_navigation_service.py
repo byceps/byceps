@@ -8,8 +8,9 @@ byceps.services.site_navigation.site_navigation_service
 
 from collections.abc import Iterable
 
+from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
-from byceps.util.result import Result
+from byceps.util.result import Err, Ok, Result
 
 from . import site_navigation_domain_service, site_navigation_repository
 from .dbmodels import DbNavItem, DbNavMenu
@@ -22,6 +23,74 @@ from .models import (
     NavMenuTree,
     NavMenuWithItems,
 )
+
+
+def copy_site_menu_trees(
+    source_site_id: SiteID, target_site_id: SiteID
+) -> Result[None, str]:
+    """Copy all menus and their items from one site to another."""
+    if not site_service.find_site(source_site_id):
+        return Err('Source site not found.')
+
+    source_menu_trees = get_menu_trees(source_site_id)
+    if not source_menu_trees:
+        return Err('Source site has no menus that could be copied.')
+
+    if not site_service.find_site(target_site_id):
+        return Err('Target site not found.')
+
+    if get_menu_trees(target_site_id):
+        return Err('Target site already has menus.')
+
+    for tree in source_menu_trees:
+        match copy_menu_tree(tree, target_site_id):
+            case Err(e):
+                return Err(e)
+
+    return Ok(None)
+
+
+def copy_menu_tree(
+    source_tree: NavMenuTree, target_site_id: SiteID
+) -> Result[None, str]:
+    """Copy a menu tree's menus and their items from one site to another."""
+    match copy_menu_with_items(source_tree.menu, target_site_id):
+        case Ok(target_root_menu):
+            pass
+        case Err(e):
+            return Err(e)
+
+    for source_menu in source_tree.submenus:
+        match copy_menu_with_items(
+            source_menu,
+            target_site_id,
+            target_parent_menu_id=target_root_menu.id,
+        ):
+            case Err(e):
+                return Err(e)
+
+    return Ok(None)
+
+
+def copy_menu_with_items(
+    source_menu: NavMenuWithItems,
+    target_site_id: SiteID,
+    *,
+    target_parent_menu_id: NavMenuID | None = None,
+) -> Result[NavMenu, str]:
+    """Copy a menu and its items to another site."""
+    target_menu = create_menu(
+        target_site_id,
+        source_menu.name,
+        source_menu.language_code,
+        hidden=source_menu.hidden,
+        parent_menu_id=target_parent_menu_id,
+    )
+    match copy_items(source_menu, target_menu.id):
+        case Err(e):
+            return Err(e)
+
+    return Ok(target_menu)
 
 
 def create_menu(
@@ -55,6 +124,30 @@ def update_menu(
 
     return site_navigation_repository.update_menu(updated_menu).map(
         lambda _: updated_menu
+    )
+
+
+def copy_items(
+    source_menu: NavMenuWithItems, target_menu_id: NavMenuID
+) -> Result[None, str]:
+    """Copy a menu's items to another menu."""
+    for source_item in source_menu.items:
+        match copy_item(source_item, target_menu_id):
+            case Err(e):
+                return Err(e)
+
+    return Ok(None)
+
+
+def copy_item(item: NavItem, target_menu_id: NavMenuID) -> Result[NavItem, str]:
+    """Copy a menu item to another menu."""
+    return create_item(
+        target_menu_id,
+        item.target_type,
+        item.target,
+        item.label,
+        item.current_page_id,
+        hidden=item.hidden,
     )
 
 
