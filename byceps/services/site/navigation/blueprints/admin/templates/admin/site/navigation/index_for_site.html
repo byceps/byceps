@@ -122,3 +122,13 @@
       </tr>
       {%- endfor %}
 {%- endmacro %}
+
+{% block scripts %}
+<script>
+onDomReady(() => {
+  post_on_click_then_reload('[data-action="item-move-up"]');
+  post_on_click_then_reload('[data-action="item-move-down"]');
+  confirmed_delete_on_click_then_reload('[data-action="item-delete"]', '{{ _('Delete menu item?') }}');
+});
+</script>
+{%- endblock %}
