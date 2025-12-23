@@ -65,7 +65,6 @@ def create_item(
     label: str,
     current_page_id: str,
     *,
-    parent_item_id: NavItemID | None = None,
     hidden: bool = False,
 ) -> Result[NavItem, str]:
     """Create a menu item."""
@@ -73,9 +72,7 @@ def create_item(
         menu_id, target_type, target, label, current_page_id, hidden
     )
 
-    return site_navigation_repository.create_item(item, parent_item_id).map(
-        lambda _: item
-    )
+    return site_navigation_repository.create_item(item).map(lambda _: item)
 
 
 def update_item(

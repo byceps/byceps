@@ -53,17 +53,13 @@ def update_menu(menu: NavMenu) -> Result[None, str]:
     return _get_db_menu(menu.id).map(_update_menu)
 
 
-def create_item(
-    item: NavItem,
-    parent_item_id: NavItemID | None,
-) -> Result[None, str]:
+def create_item(item: NavItem) -> Result[None, str]:
     """Create a menu item."""
 
     def _create_item(db_menu: DbNavMenu) -> None:
         db_item = DbNavItem(
             item.id,
             item.menu_id,
-            parent_item_id,
             item.target_type,
             item.target,
             item.label,
