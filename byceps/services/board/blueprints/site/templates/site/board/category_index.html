@@ -74,7 +74,7 @@
               {%- if topic.hidden %}{{ render_icon('hidden', title=_('hidden')) }} {% endif -%}
               {%- if topic.locked %}{{ render_icon('lock', title=_('locked')) }} {% endif -%}
               {%- if topic.pinned %}{{ render_icon('pin', title=_('pinned')) }} {% endif -%}
-              {%- if topic.muted %}{{ render_icon('muted', title=_('muted')) }} {% endif -%}
+              {%- if topic.muted and has_current_user_permission('board_topic.mute') %}{{ render_icon('muted', title=_('muted')) }} {% endif -%}
               <strong>{{ topic.title }}</strong>
             </div>
             <div class="board-index-item-meta">

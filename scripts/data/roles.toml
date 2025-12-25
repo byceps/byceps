@@ -21,6 +21,7 @@ assigned_permissions = [
     'board_category.create',
     'board_category.update',
     'board_category.view',
+    'board_topic.mute',
 ]
 
 [[roles]]

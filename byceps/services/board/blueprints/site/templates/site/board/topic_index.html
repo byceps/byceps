@@ -37,7 +37,7 @@
               {%- if topic.hidden %}<span class="tag tag--outlined">{{ render_icon('hidden', title=_('hidden')) }}</span> {% endif -%}
               {%- if topic.locked %}<span class="tag tag--outlined">{{ render_icon('lock', title=_('locked')) }}</span> {% endif -%}
               {%- if topic.pinned %}<span class="tag tag--outlined">{{ render_icon('pin', title=_('pinned')) }}</span> {% endif -%}
-              {%- if topic.muted %}<span class="tag tag--outlined">{{ render_icon('muted', title=_('muted')) }}</span> {% endif -%}
+              {%- if topic.muted and has_current_user_permission('board_topic.mute') %}<span class="tag tag--outlined">{{ render_icon('muted', title=_('muted')) }}</span> {% endif -%}
               <strong>{{ topic.title }}</strong>
             </div>
             <div class="board-index-item-meta">
