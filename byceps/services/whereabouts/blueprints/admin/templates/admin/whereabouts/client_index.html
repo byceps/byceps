@@ -44,7 +44,7 @@
     <td>{{ _('Client registration') }}</td>
     <td>
       <div class="dropdown">
-        <button class="dropdown-toggle button is-clear">{{ render_registration_status(registration_open) }} {{ render_icon('caret-down') }}</button>
+        <button class="dropdown-toggle button is-clear">{{ render_registration_status(registration_open) }} {{ render_icon('chevron-down') }}</button>
         <ol class="dropdown-menu">
           <li><a class="dropdown-item" href="{{ url_for('.open_client_registration') }}" data-action="update-client-registration-status">{{ render_registration_status(true) }}</a></li>
           <li><a class="dropdown-item" href="{{ url_for('.close_client_registration') }}" data-action="update-client-registration-status">{{ render_registration_status(false) }}</a></li>
