@@ -90,10 +90,10 @@
     <div class="button-row is-compact mt">
     {%- if topic.pinned %}
       <span class="button is-disabled">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></span>
-      <a class="button" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}" data-action="topic-unpin">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></a>
+      <a class="button" href="{{ url_for('.topic_unpin', topic_id=topic.id) }}" data-action="topic-unpin">{{ render_icon('unpin') }} <span>{{ _('Unpin') }}</span></a>
     {%- else %}
       <a class="button" href="{{ url_for('.topic_pin', topic_id=topic.id) }}" data-action="topic-pin">{{ render_icon('pin') }} <span>{{ _('Pin') }}</span></a>
-      <span class="button is-disabled">{{ render_icon('sorted') }} <span>{{ _('Unpin') }}</span></span>
+      <span class="button is-disabled">{{ render_icon('unpin') }} <span>{{ _('Unpin') }}</span></span>
     {%- endif %}
     </div>
 
