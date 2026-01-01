@@ -1,16 +1,17 @@
 {% macro render_icon(name, color=None, title=None, filename='icons') -%}
-{%- if title is not none %}<span title="{{ title }}">{% endif -%}
-<svg class="icon{% if name == 'spinner' %} spinning{% endif %}"
-  {%- if color %} style="fill: {{ color }}"{% endif -%}
-><use xlink:href="{{ url_for('static', filename='style/%s.svg'|format(filename)) }}#{{ name }}"/></svg>
-{%- if title is not none %}</span>{% endif -%}
+{{ _render_svg_icon(name, url_for('static', filename='style/%s.svg'|format(filename)), color, title) }}
 {%- endmacro %}
 
 
 {% macro render_site_icon(name, color=None, title=None) -%}
+{{ _render_svg_icon(name, url_for_site_file('style/icons.svg'), color, title) }}
+{%- endmacro %}
+
+
+{% macro _render_svg_icon(name, icons_file_url, color, title) -%}
 {%- if title is not none %}<span title="{{ title }}">{% endif -%}
-<svg class="icon"
+<svg class="icon{% if name == 'spinner' %} spinning{% endif %}"
   {%- if color %} style="fill: {{ color }}"{% endif -%}
-><use xlink:href="{{ url_for_site_file('style/icons.svg') }}#{{ name }}"/></svg>
+><use xlink:href="{{ icons_file_url }}#{{ name }}"/></svg>
 {%- if title is not none %}</span>{% endif -%}
 {%- endmacro %}
