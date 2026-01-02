@@ -136,7 +136,7 @@ def get_brand_items(brand: Brand) -> list[MoreItem]:
         ),
         MoreItem(
             label=gettext('Galleries'),
-            icon='gallery',
+            icon='images',
             url=url_for(
                 'gallery_admin.gallery_index_for_brand', brand_id=brand.id
             ),
