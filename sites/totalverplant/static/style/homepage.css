@@ -1,0 +1,602 @@
+/* ========================================
+   Homepage-specific styles for totalverplant
+   ========================================
+
+   All shared components (buttons, badges, progress bars, cards, etc.)
+   have been moved to totalverplant.css base file.
+
+   This file contains ONLY homepage-specific landing page components:
+   - Landing hero with gradient overlay effects
+   - Hero aside card (event info sidebar)
+   - Landing sections with unique styling
+   - Feature grid layout
+   - Tournament teaser cards
+   - Stats grid display
+   - Gallery teaser grid
+   - Sponsor logo grid
+   - News list layout
+
+   ======================================== */
+
+/* Landing page wrapper */
+main.landing {
+  color: var(--text-color);
+}
+
+/* ========== HERO SECTION ========== */
+
+.landing-hero {
+  padding: 48px 16px 32px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-hero::before {
+  content: "";
+  position: absolute;
+  inset: -120px;
+  background:
+    radial-gradient(circle at top left, rgba(249,115,22,0.45), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(59,130,246,0.35), transparent 50%);
+  opacity: 0.9;
+  z-index: -2;
+}
+
+.landing-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(15,23,42,0.4), transparent 55%);
+  z-index: -1;
+}
+
+.landing-hero__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.8fr);
+  gap: 32px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .landing-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.landing-hero__branding {
+  max-width: 560px;
+}
+
+.landing-hero__logo {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-pill);
+  background: rgba(15,23,42,0.5);
+  padding: 8px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-light);
+  object-fit: contain;
+}
+
+.landing-hero__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+  color: var(--text-color);
+  margin: 0 0 6px;
+  opacity: 0.85;
+}
+
+.landing-hero__title {
+  font-size: clamp(32px, 4vw, 44px);
+  margin: 0 0 8px;
+  letter-spacing: 0.02em;
+}
+
+.landing-hero__subtitle {
+  margin: 0 0 20px;
+  font-size: 16px;
+  color: var(--text-color);
+  max-width: 460px;
+}
+
+.landing-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.landing-hero__meta-item {
+  padding: 10px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(15,23,42,0.6);
+  border: 1px solid rgba(148,163,184,0.4);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.landing-hero__meta-icon {
+  font-size: 14px;
+  color: #facc15;
+}
+
+.landing-hero__meta-label {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 10px;
+  display: block;
+}
+
+.landing-hero__meta-value {
+  font-weight: 500;
+  display: block;
+}
+
+.landing-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.landing-hero__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .landing-hero__facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.fact-tile {
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(15,23,42,0.72);
+  border: 1px solid rgba(148,163,184,0.4);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.fact-tile__label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+.fact-tile__value {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Hero aside card (right column) */
+.landing-hero__aside-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-soft);
+  padding: 18px 18px 18px;
+  max-width: 420px;
+  margin-left: auto;
+}
+
+.landing-hero__aside-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.landing-hero__aside-title {
+  font-size: 16px;
+  margin: 0 0 4px;
+}
+
+.landing-hero__aside-sub {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.landing-hero__aside-meta {
+  font-size: 13px;
+  color: var(--text-color);
+  margin: 10px 0 8px;
+}
+
+.landing-hero__aside-meta span {
+  display: block;
+}
+
+.landing-hero__aside-progress {
+  margin: 10px 0 10px;
+}
+
+.landing-hero__aside-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.landing-hero__aside-footer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Buttons, badges, and progress bars now in base CSS */
+
+/* ========== SECTIONS ========== */
+
+.landing-section {
+  padding: 40px 16px;
+  background: var(--bg-color);
+  color: #ffffff;
+}
+
+.landing-section--light {
+  background: var(--bg-color-light);
+}
+
+.landing-section--dark {
+  background: var(--bg-color);
+}
+
+.landing-section__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.landing-section__title {
+  font-size: 26px;
+  margin: 0 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.landing-section__title i {
+  color: var(--accent-color);
+  font-size: 20px;
+}
+
+.landing-section__intro {
+  margin: 0 0 24px;
+  color: var(--text-muted);
+  max-width: 640px;
+  font-size: 15px;
+}
+
+.landing-section__more {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.link-arrow {
+  font-size: 14px;
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.link-arrow:hover {
+  text-decoration: underline;
+}
+
+.link-arrow:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  text-decoration: underline;
+}
+
+/* ========== FEATURE GRID ========== */
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px; /* Matches design reference spacing for consistent visual rhythm */
+}
+
+@media (max-width: 900px) {
+  .feature-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.feature {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  box-shadow: var(--shadow-light);
+}
+
+.feature__title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feature__title i.fa {
+  color: var(--accent-color);
+  font-size: 16px;
+}
+
+.feature__text {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5; /* Improves readability, especially on mobile with text wrapping */
+}
+
+/* ========== TOURNAMENT TEASER GRID ========== */
+
+.tournament-teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .tournament-teaser-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .tournament-teaser-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.tournament-teaser {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 14px 16px 14px;
+  box-shadow: var(--shadow-light);
+}
+
+.tournament-teaser__title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tournament-teaser__title i {
+  color: var(--accent-color);
+  font-size: 16px;
+}
+
+.tournament-teaser__text {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ========== STATS GRID ========== */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+
+@media (max-width: 700px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.stat {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 14px;
+  text-align: center;
+  box-shadow: var(--shadow-light);
+}
+
+.stat__value {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--accent-color);
+}
+
+.stat__label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* ========== GALLERY TEASER GRID ========== */
+/* Responsive grid: 3 columns desktop → 2 tablet → 1 mobile */
+
+.gallery-teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px; /* Enhanced spacing for desktop viewing */
+  margin-top: 30px;
+}
+
+@media (max-width: 900px) {
+  .gallery-teaser-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px; /* Reduced spacing for tablet screens */
+  }
+}
+
+@media (max-width: 650px) {
+  .gallery-teaser-grid {
+    grid-template-columns: minmax(0, 1fr); /* 1 column on mobile - consistent with tournament grid */
+    gap: 12px; /* Further reduced spacing for mobile screens */
+  }
+}
+
+/* Gallery Item Links with Interactive Hover Effects */
+.gallery-teaser__item {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-teaser__item:hover {
+  transform: translateY(-4px); /* Lift effect on hover */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4); /* Enhanced shadow on hover */
+}
+
+.gallery-teaser__item:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  border-color: var(--border-color-hover);
+}
+
+/* Gallery Images with Aspect Ratio and Zoom Effect */
+.gallery-teaser__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 16 / 10; /* Maintain 16:10 aspect ratio (matches 400x250) */
+  transition: transform 0.3s ease; /* Smooth zoom transition */
+}
+
+.gallery-teaser__item:hover img {
+  transform: scale(1.05); /* Subtle zoom on hover */
+}
+
+/* ========== SPONSOR LOGO GRID ========== */
+
+.sponsor-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .sponsor-logo-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .sponsor-logo-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.sponsor-logo {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sponsor-logo img {
+  max-width: 100%;
+  max-height: 42px;
+  object-fit: contain;
+  filter: grayscale(50%) brightness(0.8);
+  transition: all 0.3s ease;
+}
+
+.sponsor-logo:hover img {
+  filter: grayscale(0%) brightness(1);
+  transform: scale(1.05);
+}
+
+.sponsor-logo:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* ========== NEWS LIST ========== */
+
+.news-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 800px) {
+  .news-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.news-item {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-light);
+}
+
+.news-item__date {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.news-item__title {
+  margin: 4px 0 4px;
+  font-size: 16px;
+}
+
+.news-item__title a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.news-item__title a:hover {
+  text-decoration: underline;
+}
+
+.news-item__title a:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+  text-decoration: underline;
+}
+
+.news-item__excerpt {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text-muted);
+}

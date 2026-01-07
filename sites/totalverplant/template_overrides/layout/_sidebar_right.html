@@ -1,0 +1,45 @@
+{%- from 'macros/misc.html' import render_progress_bar %}
+
+
+{%- if g.party %}
+<div class="sidebar-section">
+  <h3>{{ g.party.title }}</h3>
+  {{ g.party.starts_at|dateformat }}–{{ g.party.ends_at|dateformat }}
+</div>
+{%- endif %}
+
+{%- if ticket_sale_stats is defined %}
+<div class="sidebar-section">
+  <h3>{{ _('Tickets') }}</h3>
+
+  {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
+    {%- with sold_out = tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
+
+      {%- if tickets_total_max_specified %}
+  <div class="progress">
+    {{ render_progress_bar(ticket_sale_stats.tickets_sold, ticket_sale_stats.tickets_max) }}
+  </div>
+
+        {%- if sold_out %}
+        <div><strong>{{ _('Sold out!') }}</strong></div>
+        {%- endif %}
+      {%- endif %}
+
+  {{ ticket_sale_stats.tickets_sold|numberformat }}
+        {%- if tickets_total_max_specified %}
+  / {{ ticket_sale_stats.tickets_max|numberformat }}
+        {%- endif %}
+  <br>{{ _('tickets paid') }}
+
+    {%- if not sold_out %}
+    <p><a class="button" style="font-size: 0.875rem;" href="/shop/order">{{ _('Order tickets') }}</a></p>
+    {%- endif %}
+
+    {%- endwith %}
+  {%- endwith %}
+</div>
+{%- endif %}
+
+<div class="sidebar-section">
+  <h3>Sponsoren</h3>
+</div>

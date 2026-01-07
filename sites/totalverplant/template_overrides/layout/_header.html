@@ -1,0 +1,27 @@
+<nav class="header-nav">
+  <div class="container">
+    <div class="logo-container">
+      <img src="{{ url_for_site_file('style/eule_logo.png') }}" alt="Eule Logo"
+           class="logo-img">
+      <div class="logo-text">
+        <h1>genial verpLANt</h1>
+        <p>total verpLANt e.V. präsentiert die größte LAN-Party in der Wesermarsch</p>
+      </div>
+    </div>
+
+    <ul id="nav-links" class="nav-links">
+      {%- for item in get_nav_menu_items('main') %}
+      <li><a href="{{ item.target }}" {% if item.current_page_id== current_page
+             %} class="current" {% endif %}>{{ item.label }}</a></li>
+      {%- endfor %}
+    </ul>
+
+    <button type="button" class="mobile-menu-btn" aria-expanded="false" aria-controls="nav-links" aria-label="Menü">
+      <span aria-hidden="true">☰</span>
+    </button>
+
+    <div class="header-user-nav">
+{% include 'layout/_current_user.html' %}
+    </div>
+  </div>
+</nav>

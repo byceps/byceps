@@ -1,0 +1,44 @@
+{%- from 'macros/page.html' import render_page_title %}
+{%- set current_page = current_page|default -%}
+
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="BYCEPS">
+    <title>{{ render_page_title(page_title|default([]), 'genial verpLANt') }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/site.css') }}">
+    <link rel="stylesheet" href="{{ url_for_site_file('style/totalverplant.css') }}">
+    <link rel="icon" href="{{ url_for_site_file('style/favicon.ico') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% block head %}{% endblock %}
+  </head>
+  <body{% if current_page %} class="page-{{ current_page }}"{% endif %}>
+
+    {# Modern single-page layout for all pages #}
+    <header class="page-header-fixed">
+{% include 'layout/_header.html' %}
+    </header>
+
+    <main class="main-content">
+      <div class="content-wrapper">
+{% include 'layout/_notifications.html' %}
+{% block subnav %}{% endblock %}
+{% block body required %}{% endblock %}
+      </div>
+    </main>
+
+    <footer class="page-footer-modern">
+{% include 'layout/_footer.html' %}
+    </footer>
+
+    <script src="{{ url_for('static', filename='behavior/common.js') }}"></script>
+    <script src="{{ url_for_site_file('behavior/mobile-menu.js') }}"></script>
+{% block scripts %}{% endblock %}
+
+  </body>
+</html>

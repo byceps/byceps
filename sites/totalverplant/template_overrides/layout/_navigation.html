@@ -1,0 +1,7 @@
+  <nav class="nav-main">
+    <ol>
+      {%- for item in get_nav_menu_items('main') %}
+      <li><a class="nav-main-item{% if item.current_page_id == current_page %} current{% endif %}" href="{{ item.target }}">{{ item.label }}</a></li>
+      {%- endfor %}
+    </ol>
+  </nav>

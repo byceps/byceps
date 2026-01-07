@@ -1,0 +1,544 @@
+{% extends 'layout/base.html' %}
+{% set current_page = 'homepage' %}
+{% set page_title = _('Home') %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for_site_file('style/homepage.css') }}">
+{% endblock %}
+
+{% block body %}
+{#
+  Template Variables:
+  - g.party.starts_at: DateTime - Event start date/time
+  - g.party.ends_at: DateTime - Event end date/time
+  - g.party (optional): Party object for defensive checks
+#}
+{# Dynamic badge and progress bar calculations #}
+          {%- if ticket_sale_stats is defined and ticket_sale_stats.tickets_max is not none %}
+            {# Calculate once, reuse everywhere (DRY principle) #}
+            {%- set sold = ticket_sale_stats.tickets_sold %}
+            {%- set total = ticket_sale_stats.tickets_max %}
+            {%- set raw_percentage = (sold / total * 100) if total > 0 else 0 %}
+            {%- set percentage = [raw_percentage, 100]|min|round(0) %}  {# Clamp to 100% max #}
+            {%- set available = [total - sold, 0]|max %}  {# Prevent negative values #}
+
+<div class="landing">
+
+  {# ========== HERO SECTION ========== #}
+  <section class="landing-hero">
+    <div class="landing-hero__inner">
+
+      {# Left column: Branding and primary info #}
+      <div class="landing-hero__branding">
+        <img src="{{ url_for_site_file('style/eule_logo.png') }}"
+             alt="genial verpLANt - total verpLANt e.V. LAN-Party Logo"
+             class="landing-hero__logo">
+
+        <p class="landing-hero__eyebrow">
+          total verpLANt e.V. präsentiert
+        </p>
+
+        <h1 class="landing-hero__title">
+          {{ g.party.title }}
+        </h1>
+
+        <p class="landing-hero__subtitle">
+          Die größte LAN-Party der Wesermarsch. Ein Wochenende voller Gaming,
+          Turniere, Community und guter Laune.
+        </p>
+
+        <div class="landing-hero__meta">
+          <div class="landing-hero__meta-item">
+            <span class="landing-hero__meta-icon"><i class="fa fa-calendar"></i></span>
+            <div>
+              <span class="landing-hero__meta-label">Wann?</span>
+              <span class="landing-hero__meta-value">
+                {% if g.party and g.party.starts_at and g.party.ends_at -%}
+                  {{ g.party.starts_at|dateformat('d.MM.yyyy') }} · {{ g.party.starts_at|timeformat('HH:mm') }} Uhr bis {{ g.party.ends_at|dateformat('d.MM.yyyy') }} · {{ g.party.ends_at|timeformat('HH:mm') }} Uhr
+                {%- else -%}
+                  27.03.2026 · 13:00 Uhr bis 29.03.2026 · 10:00 Uhr
+                {%- endif %}
+              </span>
+            </div>
+          </div>
+          <div class="landing-hero__meta-item">
+            <span class="landing-hero__meta-icon"><i class="fa fa-map-marker"></i></span>
+            <div>
+              <span class="landing-hero__meta-label">Wo?</span>
+              <span class="landing-hero__meta-value">
+                Großsporthalle Brake<br>
+                Philosophenweg 8, 26919 Brake
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="landing-hero__cta">
+          {# Defensive fallback: use /shop if party context missing #}
+          {% set ticket_url = '/shop' %}
+          {% if g.party %}
+            {% set ticket_url = url_for('shop_order.order_form') %}
+          {% endif %}
+          <a href="{{ ticket_url }}"
+             class="btn btn-primary btn-lg"
+             {% if g.party -%}
+             aria-label="{{ _('Jetzt Ticket für %(party_title)s kaufen', party_title=g.party.title) }}"
+             {%- else -%}
+             aria-label="{{ _('Tickets kaufen') }}"
+             {%- endif %}>
+            <i class="fa fa-ticket" aria-hidden="true"></i>
+            <span>{{ _('Tickets kaufen') }}</span>
+          </a>
+        </div>
+        <div class="landing-hero__facts">
+          <div class="fact-tile">
+            <span class="fact-tile__label">Plätze</span>
+            <span class="fact-tile__value">240</span>
+          </div>
+          <div class="fact-tile">
+            <span class="fact-tile__label">Teilnehmer</span>
+            <span class="fact-tile__value">{{ sold|numberformat }} / {{ total|numberformat }}</span>
+          </div>
+          <div class="fact-tile">
+            <span class="fact-tile__label">Tickets ab</span>
+            <span class="fact-tile__value">30 €</span>
+          </div>
+          <div class="fact-tile">
+            <span class="fact-tile__label">Mindestalter</span>
+            <span class="fact-tile__value">18+</span>
+          </div>
+        </div>
+      </div>
+
+      {# Right column: Event status card #}
+      <aside class="landing-hero__aside-card">
+        <div class="landing-hero__aside-header">
+          <div>
+            <h2 class="landing-hero__aside-title">{{ g.party.title }}</h2>
+            <p class="landing-hero__aside-sub">
+              {% if g.party and g.party.starts_at and g.party.ends_at -%}
+                {{ g.party.starts_at|dateformat('d.MM.yyyy') }} · {{ g.party.starts_at|timeformat('HH:mm') }} Uhr bis {{ g.party.ends_at|dateformat('d.MM.yyyy') }} · {{ g.party.ends_at|timeformat('HH:mm') }} Uhr<br>
+              {%- else -%}
+                10.04.2026 · 18:00 Uhr bis 11.04.2026 · 09:00 Uhr<br>
+              {%- endif %}
+              Großsporthalle Brake · Philosophenweg 8, 26919 Brake
+            </p>
+          </div>
+            {# Dynamic badge based on urgency thresholds #}
+            {%- if percentage >= 90 %}
+          <a href="{{ ticket_url }}">
+          <span class="badge badge--urgent">
+            <i class="fa fa-circle"></i>
+            {{ _('Fast ausverkauft') }}
+          </span>
+          </a>
+            {%- elif percentage >= 80 %}
+          <a href="{{ ticket_url }}">
+          <span class="badge badge--warning">
+            <i class="fa fa-circle"></i>
+            {{ _('Nur noch wenige Tickets') }}
+          </span>
+          </a>
+            {%- else %}
+          <a href="{{ ticket_url }}">
+          <span class="badge">
+            <i class="fa fa-circle"></i>
+            {{ _('Tickets verfügbar') }}
+          </span>
+          </a>
+            {%- endif %}
+          {%- else %}
+          <a href="{{ ticket_url }}">
+          <span class="badge">
+            <i class="fa fa-circle"></i>
+            {{ _('Tickets verfügbar') }}
+          </span>
+          </a>
+          {%- endif %}
+        </div>
+
+        <div class="landing-hero__aside-meta">
+          <span>LAN-Party, 3 Tage, 200+ Gamerinnen und Gamer</span>
+          <span>Tickets ab 30 €</span>
+        </div>
+
+        <div class="landing-hero__aside-progress">
+          {%- if ticket_sale_stats is defined %}
+            {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
+              {%- if tickets_total_max_specified %}
+                {# Reuse variables calculated above - no redeclaration needed #}
+
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{ sold }}" aria-valuemin="0" aria-valuemax="{{ total }}" aria-label="{{ _('Ticket-Verfügbarkeit') }}: {{ sold }} {{ _('von') }} {{ total }} {{ _('verkauft') }}">
+            <div class="progress-bar__fill" style="width: {{ percentage }}%;"></div>
+          </div>
+          <div class="landing-hero__aside-stats">
+            <span>{{ sold|numberformat }} {{ _('Plätze belegt') }}</span>
+            <span>{{ available|numberformat }} {{ _('Plätze frei') }}</span>
+          </div>
+              {%- else %}
+          {# Fallback when tickets_max is not specified #}
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{ ticket_sale_stats.tickets_sold }}" aria-valuemin="0" aria-valuemax="0" aria-label="{{ _('Ticket-Verfügbarkeit') }}">
+            <div class="progress-bar__fill" style="width: 0%;"></div>
+          </div>
+          <div class="landing-hero__aside-stats">
+            <span>{{ ticket_sale_stats.tickets_sold|numberformat }} {{ _('Plätze belegt') }}</span>
+            <span>-</span>
+          </div>
+              {%- endif %}
+            {%- endwith %}
+          {%- else %}
+          {# Fallback when ticket_sale_stats is not available #}
+          <div class="progress-bar" role="progressbar" aria-valuenow="41" aria-valuemin="0" aria-valuemax="240" aria-label="{{ _('Ticket-Verfügbarkeit') }}">
+            <div class="progress-bar__fill" style="width: 17%;"></div>
+          </div>
+          <div class="landing-hero__aside-stats">
+            <span>0 {{ _('Plätze frei') }}</span>
+          </div>
+          {%- endif %}
+        </div>
+
+        <div class="landing-hero__aside-footer">
+          <span>Nächste LAN in:</span>
+          <span>
+            {%- if g.party and g.party.starts_at -%}
+              {%- set days_until = (g.party.starts_at.date() - now.date()).days -%}
+            {%- if days_until == 1 -%}
+                {{ days_until }} {{ _('Tag') }}
+              {%- elif days_until > 0 -%}
+                {{ days_until }} {{ _('Tagen') }}
+              {%- elif days_until == 0 -%}
+                {{ _('Heute!') }}
+              {%- else -%}
+                {{ _('Event läuft oder ist vorbei') }}
+              {%- endif -%}
+            {%- else -%}
+              {{ _('Event läuft oder ist vorbei') }}
+            {%- endif -%}
+          </span>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+
+  {# ========== FEATURES SECTION ========== #}
+  <section class="landing-section landing-section--light" id="features" aria-labelledby="features-heading" aria-label="{{ _('Abschnitt: Was dich erwartet') }}">
+    <div class="landing-section__inner">
+      <h2 class="landing-section__title" id="features-heading">
+        <i class="fa fa-gamepad" aria-hidden="true"></i>
+        {{ _('Was dich erwartet') }}
+      </h2>
+      <p class="landing-section__intro">
+        {{ _('Ein ganzes Wochenende voller Gaming, Turniere, Musik, Bühne, Cocktailbar und einer Community, die sich schon seit Jahren kennt. Bring deinen Rechner mit und mach es dir an deinem Platz bequem. Wir kümmern uns um Netz, Strom und Programm.') }}
+      </p>
+
+      <div class="feature-grid">
+        <article class="feature">
+          <h3 class="feature__title">
+            <i class="fa fa-plug" aria-hidden="true"></i>
+            {{ _('Stabiles Gigabit-LAN') }}
+          </h3>
+          <p class="feature__text">
+            {{ _('Eigener Switchport, stabiles Backbone und genug Bandbreite für deine Games, Downloads und LAN-Klassiker ohne Kompromisse.') }}
+          </p>
+        </article>
+
+        <article class="feature">
+          <h3 class="feature__title">
+            <i class="fa fa-trophy" aria-hidden="true"></i>
+            {{ _('Wettbewerbe und Spaßformate') }}
+          </h3>
+          <p class="feature__text">
+            {{ _('Von ernsthaften Wettbewerben bis hin zu lockeren Fun-Aktionen ist alles dabei. Egal ob Teamplayer oder Solo, du findest das passende Format.') }}
+          </p>
+        </article>
+
+        <article class="feature">
+          <h3 class="feature__title">
+            <i class="fa fa-glass" aria-hidden="true"></i>
+            {{ _('Catering und Getränke') }}
+          </h3>
+          <p class="feature__text">
+            {{ _('Frühstück, Snacks, kalte Getränke und unsere Cocktailbar sorgen dafür, dass du dich das ganze Wochenende über versorgt fühlst.') }}
+          </p>
+        </article>
+
+        <article class="feature">
+          <h3 class="feature__title">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            {{ _('Community und Chillout') }}
+          </h3>
+          <p class="feature__text">
+            {{ _('Ruhezonen, Couch-Ecken und eine familiäre Atmosphäre. Hier lernst du neue Leute kennen oder triffst bekannte Gesichter wieder.') }}
+          </p>
+        </article>
+      </div>
+
+      <div class="landing-section__more">
+        <a href="/event-infos" class="btn btn-primary" aria-label="{{ _('Mehr über die Event-Infos erfahren') }}">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          <span>{{ _('Mehr erfahren') }}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  {# ========== NEWS SECTION ========== #}
+  {% if news_teasers is defined and news_teasers %}
+  <section class="landing-section" id="news" aria-labelledby="news-heading" aria-label="{{ _('Abschnitt: Neuigkeiten') }}">
+    <div class="landing-section__inner">
+      <h2 class="landing-section__title" id="news-heading">
+        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+        {{ _('Neuigkeiten') }}
+      </h2>
+
+      <div class="news-list">
+        {% for news_item in news_teasers[:3] %}
+        <article class="news-item">
+          <header class="news-item__header">
+            {% if news_item.published_at %}
+            <time class="news-item__date" datetime="{{ news_item.published_at.isoformat() }}">
+              {{ news_item.published_at|dateformat('d.MM.yyyy') }}
+            </time>
+            {% endif %}
+            <h3 class="news-item__title">
+              {% if news_item.slug %}
+              <a href="{{ url_for('news.view', slug=news_item.slug) }}">{{ news_item.title }}</a>
+              {% else %}
+              {{ news_item.title }}
+              {% endif %}
+            </h3>
+          </header>
+          {% if news_item.slug %}
+          <a href="{{ url_for('news.view', slug=news_item.slug) }}" class="link-arrow" aria-label="{{ _('Weiterlesen') }}: {{ news_item.title }}">
+            {{ _('Weiterlesen') }}
+          </a>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+
+  {# ========== TOURNAMENTS SECTION ========== #}
+  <section class="landing-section" id="tournaments">
+    <div class="landing-section__inner">
+      <h2 class="landing-section__title">
+        <i class="fa fa-trophy"></i>
+        {{ _('Turniere und Programm') }}
+      </h2>
+      <p class="landing-section__intro">
+        {{ _('Ob du lieber kompetitiv spielst oder einfach aus Spaß dabei bist, unser Programm bietet dir eine Mischung aus organisierten Turnieren, spontanen Aktionen und Side-Events.') }}
+      </p>
+
+      <div class="tournament-teaser-grid">
+        <article class="tournament-teaser">
+          <h3 class="tournament-teaser__title">
+            <i class="fa fa-desktop"></i>
+            {{ _('PC-Turniere') }}
+          </h3>
+          <p class="tournament-teaser__text">
+            {{ _('Geplante Turniere auf dem PC mit klaren Regeln, festen Zeiten und Siegerehrung. Perfekt für alle, die sich mit anderen messen wollen.') }}
+          </p>
+        </article>
+
+        <article class="tournament-teaser">
+          <h3 class="tournament-teaser__title">
+            <i class="fa fa-smile-o"></i>
+            {{ _('Fun- und Community-Events') }}
+          </h3>
+          <p class="tournament-teaser__text">
+            {{ _('Lockerere Formate, verrückte Modi und Aktionen, bei denen der Spaß im Vordergrund steht. Ideal zum Auflockern zwischen den Matches.') }}
+          </p>
+        </article>
+
+        <article class="tournament-teaser">
+          <h3 class="tournament-teaser__title">
+            <i class="fa fa-television"></i>
+            {{ _('Konsolen- und Side-Events') }}
+          </h3>
+          <p class="tournament-teaser__text">
+            {{ _('Couch-Multiplayer, kleine Challenges und zusätzliche Angebote neben dem Hauptprogramm, bei denen du einfach einsteigen und mitspielen kannst.') }}
+          </p>
+        </article>
+      </div>
+
+      <div class="landing-section__more">
+        <a href="/turniere" class="btn btn-outline">
+          <i class="fa fa-list-ul"></i>
+          <span>{{ _('Alle Turniere') }}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  {# ========== ABOUT SECTION ========== #}
+  <section class="landing-section landing-section--dark" id="about">
+    <div class="landing-section__inner">
+      <h2 class="landing-section__title">
+        <i class="fa fa-users"></i>
+        Über uns
+      </h2>
+      <p class="landing-section__intro">
+        total verpLANt e.V. ist der erste eSports- und Gaming-Club in der Wesermarsch
+        und veranstaltet seit vielen Jahren LAN-Partys und Gaming-Events für die Region.
+      </p>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="stat__value">34</span>
+          <span class="stat__label">LAN-Partys</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value">240</span>
+          <span class="stat__label">Maximale Teilnehmende</span>
+        </div>
+        <div class="stat">
+          <span class="stat__value">#1</span>
+          <span class="stat__label">in der Wesermarsch</span>
+        </div>
+      </div>
+
+      <div class="landing-section__more">
+        <a href="/verein" class="btn btn-outline">
+          <i class="fa fa-info-circle"></i>
+          <span>Mehr über unseren Verein</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  {# ========== GALLERY SECTION ========== #}
+  <section class="landing-section" id="gallery" aria-labelledby="gallery-heading" aria-label="{{ _('Abschnitt: Eindrücke vergangener Events') }}">
+    <div class="landing-section__inner">
+      <h2 class="landing-section__title" id="gallery-heading">
+        <i class="fa fa-camera" aria-hidden="true"></i>
+        {{ _('Eindrücke vergangener Events') }}
+      </h2>
+
+
+      <div id="gn-config" hidden data-gallery-slug="homepage-img"
+       data-gallery-preview="20250411_213415,20250411_213415,20250411_213415">
+      </div>
+      <div class="gallery-images" id="gn-gallery-preview">
+      <!-- Vorschaubilder werden per JS aus data-gallery-preview / data-gallery-files erzeugt -->
+    </div>
+<!--      <div class="gallery-teaser-grid">-->
+<!--        <a href="{{ url_for('gallery.index') }}" class="gallery-teaser__item" aria-label="{{ _('Zur Galerie: Foto') }} 1">-->
+<!--          <img-->
+<!--            src="https://placehold.co/400x250"-->
+<!--            alt="{{ _('Impression von der LAN-Party - Gaming-Setup mit leuchtenden PCs') }}"-->
+<!--            width="400"-->
+<!--            height="250"-->
+<!--            loading="lazy"-->
+<!--          >-->
+<!--        </a>-->
+<!--        <a href="{{ url_for('gallery.index') }}" class="gallery-teaser__item" aria-label="{{ _('Zur Galerie: Foto') }} 2">-->
+<!--          <img-->
+<!--            src="https://placehold.co/400x250"-->
+<!--            alt="{{ _('Eindruck von der Gaming-Community - Teilnehmer beim Turnier') }}"-->
+<!--            width="400"-->
+<!--            height="250"-->
+<!--            loading="lazy"-->
+<!--          >-->
+<!--        </a>-->
+<!--        <a href="{{ url_for('gallery.index') }}" class="gallery-teaser__item" aria-label="{{ _('Zur Galerie: Foto') }} 3">-->
+<!--          <img-->
+<!--            src="https://placehold.co/400x250"-->
+<!--            alt="{{ _('Atmosphäre bei der LAN-Party - Halle voller Gamer') }}"-->
+<!--            width="400"-->
+<!--            height="250"-->
+<!--            loading="lazy"-->
+<!--          >-->
+<!--        </a>-->
+<!--      </div>-->
+
+      <div class="landing-section__more">
+        <a href="{{ url_for('gallery.index') }}" class="btn btn-outline" aria-label="{{ _('Zur vollständigen Galerie') }}">
+          <i class="fa fa-picture-o" aria-hidden="true"></i>
+          <span>{{ _('Zur Galerie') }}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  {# ========== SPONSORS SECTION ========== #}
+  <section class="landing-section landing-section--dark" id="sponsors">
+    <div class="landing-section__inner">
+      <h2 class="landing-section__title">
+        <i class="fa fa-handshake-o"></i>
+        Unsere Sponsoren
+      </h2>
+
+      <div class="sponsor-logo-grid">
+        <div class="sponsor-logo">
+          <a href="https://brake.de/">
+            <img src="{{ url_for_site_file('style/sponsoren/brake_600x250.png') }}" alt="Stadt Brake">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://depa-event.de/">
+            <img src="{{ url_for_site_file('style/sponsoren/depa_600x250.png') }}" alt="DEPA">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://www.fahrradgruss.de/">
+            <img src="{{ url_for_site_file('style/sponsoren/fahrrad_gruss_600x250.png') }}" alt="Fahrrad Gruss">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://freundeskreis-zwiesel.de/">
+            <img src="{{ url_for_site_file('style/sponsoren/Freundeskreis_Zwiesel_600x250.png') }}" alt="Freundeskreis Zwiesel">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://hi-score.org/">
+            <img src="{{ url_for_site_file('style/sponsoren/hiscore_600x250.png') }}" alt="HiScore">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://www.inter-tech.de/home_de.html">
+            <img src="{{ url_for_site_file('style/sponsoren/Inter-tech_600x250.png') }}" alt="Inter-Tech">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://senchii.de/">
+            <img src="{{ url_for_site_file('style/sponsoren/senchii_600x250.png') }}" alt="Senchii">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://www.thermal-grizzly.com/">
+            <img src="{{ url_for_site_file('style/sponsoren/thermalgrizzly_600x250.png') }}" alt="Thermal Grizzly">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://www.virtualounge.de/">
+            <img src="{{ url_for_site_file('style/sponsoren/virtualounge_600x250.png') }}" alt="Virtual Lounge">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://voltcola.de/">
+            <img src="{{ url_for_site_file('style/sponsoren/voltcola_600x250.png') }}" alt="Volt Cola">
+          </a>
+        </div>
+        <div class="sponsor-logo">
+          <a href="https://www.noctua.at/">
+            <img src="{{ url_for_site_file('style/sponsoren/noctua_600x250.png') }}" alt="Noctua">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+{{ render_snippet('homepage', ignore_if_unknown=True)|safe }}
+
+{% endblock %}

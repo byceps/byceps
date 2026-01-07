@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
+  <style>
+    .title { fill: #14171a; font-family: sans-serif; font-size: 32px; font-weight: 700; }
+    .subtitle { fill: #657786; font-family: sans-serif; font-size: 16px; font-weight: 400; }
+    .accent { fill: #1a73e8; }
+  </style>
+
+  <!-- Icon: Network/LAN symbol -->
+  <circle class="accent" cx="25" cy="50" r="6"/>
+  <circle class="accent" cx="55" cy="30" r="6"/>
+  <circle class="accent" cx="55" cy="70" r="6"/>
+  <line x1="25" y1="50" x2="49" y2="30" stroke="#1a73e8" stroke-width="2"/>
+  <line x1="25" y1="50" x2="49" y2="70" stroke="#1a73e8" stroke-width="2"/>
+
+  <!-- Text -->
+  <text x="80" y="50" class="title">total verpLANt</text>
+  <text x="80" y="72" class="subtitle">LAN Party</text>
+</svg>
