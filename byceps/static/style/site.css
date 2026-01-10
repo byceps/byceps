@@ -86,7 +86,6 @@ h2 {
 }
 
 .board-index-item-link:hover {
-  background-color: var(--board-index-item-hover-bg-color);
   text-decoration: none;
 }
 
