@@ -16,7 +16,7 @@ from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.views import permission_required, redirect_to
 
-from .forms import CreateOrUpdateForm
+from .forms import CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('ticketing_category_admin', __name__)
@@ -48,7 +48,7 @@ def create_form(party_id, erroneous_form=None):
     """Show form to create a ticket category."""
     party = _get_party_or_404(party_id)
 
-    form = erroneous_form if erroneous_form else CreateOrUpdateForm()
+    form = erroneous_form if erroneous_form else CreateForm(party.id)
 
     return {
         'party': party,
@@ -62,7 +62,7 @@ def create(party_id):
     """Create a ticket category."""
     party = _get_party_or_404(party_id)
 
-    form = CreateOrUpdateForm(request.form)
+    form = CreateForm(party.id, request.form)
     if not form.validate():
         return create_form(party.id, form)
 
@@ -87,7 +87,9 @@ def update_form(category_id, erroneous_form=None):
     party = party_service.find_party(category.party_id)
 
     form = (
-        erroneous_form if erroneous_form else CreateOrUpdateForm(obj=category)
+        erroneous_form
+        if erroneous_form
+        else UpdateForm(party.id, category.title, obj=category)
     )
 
     return {
@@ -103,7 +105,9 @@ def update(category_id):
     """Update the category."""
     category = _get_category_or_404(category_id)
 
-    form = CreateOrUpdateForm(request.form)
+    party = party_service.find_party(category.party_id)
+
+    form = UpdateForm(party.id, category.title, request.form)
     if not form.validate():
         return update_form(category.id, form)
 
