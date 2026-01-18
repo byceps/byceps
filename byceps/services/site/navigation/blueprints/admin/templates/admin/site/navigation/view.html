@@ -93,7 +93,7 @@
           <div class="button-row is-right-aligned">
             <div class="dropdown">
               <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
-              <ol class="dropdown-menu">
+              <ol class="dropdown-menu dropdown-menu--right">
                 <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
                 <li><a class="dropdown-item" href="{{ url_for('.item_move_up', item_id=item.id) }}" data-action="item-move-up">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
                 <li><a class="dropdown-item" href="{{ url_for('.item_move_down', item_id=item.id) }}" data-action="item-move-down">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
