@@ -477,6 +477,50 @@ def item_update(item_id):
     return redirect_to('.view', menu_id=item.menu_id)
 
 
+@blueprint.post('/items/<uuid:item_id>/hide')
+@permission_required('site_navigation.administrate')
+@respond_no_content
+def item_hide(item_id):
+    """Hide the menu item."""
+    item = _get_item_or_404(item_id)
+
+    item = site_navigation_service.update_item(
+        item,
+        item.target_type,
+        item.target,
+        item.label,
+        item.current_page_id,
+        True,
+    ).unwrap()
+
+    flash_success(
+        gettext('Menu item "%(label)s" has been hidden.', label=item.label)
+    )
+
+
+@blueprint.post('/items/<uuid:item_id>/unhide')
+@permission_required('site_navigation.administrate')
+@respond_no_content
+def item_unhide(item_id):
+    """Un-hide the menu item."""
+    item = _get_item_or_404(item_id)
+
+    item = site_navigation_service.update_item(
+        item,
+        item.target_type,
+        item.target,
+        item.label,
+        item.current_page_id,
+        False,
+    ).unwrap()
+
+    flash_success(
+        gettext(
+            'Menu item "%(label)s" has been made visible.', label=item.label
+        )
+    )
+
+
 @blueprint.post('/items/<uuid:item_id>/up')
 @permission_required('site_navigation.administrate')
 @respond_no_content
