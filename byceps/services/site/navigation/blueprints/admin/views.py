@@ -126,10 +126,10 @@ def menu_trees_copy(target_site_id):
     ):
         case Ok(_):
             flash_success(gettext('Menus have been successfully copied.'))
-            return redirect_to('.index_for_site', site_id=target_site.id)
         case Err(e):
             flash_error(e)
-            return redirect_to('.index_for_site', site_id=target_site.id)
+
+    return redirect_to('.index_for_site', site_id=target_site.id)
 
 
 @blueprint.get('/for_site/<site_id>/create')
