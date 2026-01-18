@@ -34,7 +34,7 @@ dependencies = [
     "bbcode==1.1.0",
     "blinker>=1.9.0",
     "bpython>=0.26",
-    "click>=8.2.1",
+    "click>=8.3.1",
     "flask-babel==4.0.0",
     "flask-sqlalchemy==3.1.1",
     "flask>=3.1.2",
