@@ -4,7 +4,7 @@ byceps.services.external_accounts.discord.blueprints.site.views
 
 Connector to Discord
 
-:Copyright: 2021-2025 Jan Korneffel
+:Copyright: 2021-2026 Jan Korneffel
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

@@ -2,7 +2,7 @@
 byceps.services.shop.invoice.invoiceninja_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jan Korneffel, Jochen Kupperschmidt, Micha Ober
+:Copyright: 2014-2026 Jan Korneffel, Jochen Kupperschmidt, Micha Ober
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

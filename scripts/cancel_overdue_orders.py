@@ -1,6 +1,6 @@
 """Cancel open orders older than N days.
 
-:Copyright: 2019-2025 Jan Korneffel, Jochen Kupperschmidt
+:Copyright: 2019-2026 Jan Korneffel, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

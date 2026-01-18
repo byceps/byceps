@@ -1,5 +1,5 @@
 """
-:Copyright: 2020-2025 Micha Ober, Jochen Kupperschmidt
+:Copyright: 2020-2026 Micha Ober, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

@@ -2,7 +2,7 @@
 byceps.services.shop.payment.stripe.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2020-2025 Jan Korneffel, Micha Ober, Jochen Kupperschmidt
+:Copyright: 2020-2026 Jan Korneffel, Micha Ober, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
