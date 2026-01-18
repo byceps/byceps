@@ -19,7 +19,8 @@
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.set_nav_menu', page_id=page.id) }}">{{ render_icon('navigation') }} <span>{{ _('Set navigation menu') }}</span></a></li>
             {%- if has_current_user_permission('page.delete') %}
-            <li><a class="dropdown-item" href="{{ url_for('.delete', page_id=page.id) }}" data-action="page-delete">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a class="dropdown-item color--danger" href="{{ url_for('.delete', page_id=page.id) }}" data-action="page-delete">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
             {%- endif %}
           </ol>
         </div>

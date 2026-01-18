@@ -51,7 +51,7 @@
       {%- endfor %}
     </table>
 
-    <a class="button button--wrapping" href="{{ url_for('.delete_old_verification_tokens') }}" data-action="delete-old-verification-tokens">{{ render_icon('delete') }} <small style="margin-left: 0.5rem; text-align: left;">{{ _('Delete old verification tokens') }}</small></a>
+    <a class="button button--wrapping color-danger" href="{{ url_for('.delete_old_verification_tokens') }}" data-action="delete-old-verification-tokens">{{ render_icon('delete') }} <small style="margin-left: 0.5rem; text-align: left;">{{ _('Delete old verification tokens') }}</small></a>
   {%- endcall %}
 
   {%- call render_cell('log-in', 'cell--fitted') %}
@@ -60,7 +60,7 @@
       <div class="column--grow">{{ _('Login events') }}</div>
     </div>
 
-    <a class="button button--wrapping" href="{{ url_for('.delete_old_login_log_entries') }}" data-action="delete-old-login-log-entries">{{ render_icon('delete') }} <small style="margin-left: 0.5rem; text-align: left;">{{ _('Delete old login events') }}</small></a>
+    <a class="button button--wrapping color-danger" href="{{ url_for('.delete_old_login_log_entries') }}" data-action="delete-old-login-log-entries">{{ render_icon('delete') }} <small style="margin-left: 0.5rem; text-align: left;">{{ _('Delete old login events') }}</small></a>
   {%- endcall %}
 
   {%- call render_cell('log-in', 'cell--fitted') %}
