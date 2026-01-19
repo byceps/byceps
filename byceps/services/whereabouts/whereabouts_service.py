@@ -44,7 +44,9 @@ def create_whereabouts(
     secret: bool = False,
 ) -> Whereabouts:
     """Create whereabouts."""
-    if position is None:
+    if position is not None:
+        next_position = position
+    else:
         whereabouts_list = get_whereabouts_list(party)
         if whereabouts_list:
             next_position = max(w.position for w in whereabouts_list) + 1
