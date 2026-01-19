@@ -19,7 +19,10 @@ from byceps.services.shop.order.log import (
     order_log_domain_service,
     order_log_service,
 )
-from byceps.services.shop.order.models.action import ActionParameters
+from byceps.services.shop.order.models.action import (
+    ActionParameters,
+    ActionProcedure,
+)
 from byceps.services.shop.order.models.order import (
     LineItem,
     Order,
@@ -37,6 +40,14 @@ from byceps.services.ticketing.models.ticket import (
 )
 from byceps.services.user.models.user import User
 from byceps.util.result import Err, Ok, Result
+
+
+def get_action_procedure() -> ActionProcedure:
+    return ActionProcedure(
+        on_payment=on_payment,
+        on_cancellation_before_payment=on_cancellation_before_payment,
+        on_cancellation_after_payment=on_cancellation_after_payment,
+    )
 
 
 def on_payment(
