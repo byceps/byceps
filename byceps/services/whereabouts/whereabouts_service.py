@@ -34,6 +34,19 @@ from .models import (
 # whereabouts
 
 
+def copy_whereabouts_list(source_party: Party, target_party: Party) -> None:
+    """Copy all whereabouts from one party to another."""
+    for whereabouts in get_whereabouts_list(source_party):
+        create_whereabouts(
+            target_party,
+            whereabouts.name,
+            whereabouts.description,
+            position=whereabouts.position,
+            hidden_if_empty=whereabouts.hidden_if_empty,
+            secret=whereabouts.secret,
+        )
+
+
 def create_whereabouts(
     party: Party,
     name: str,
