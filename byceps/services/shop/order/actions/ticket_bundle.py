@@ -45,7 +45,6 @@ from byceps.util.result import Err, Ok, Result
 def get_action_procedure() -> ActionProcedure:
     return ActionProcedure(
         on_payment=on_payment,
-        on_cancellation_before_payment=on_cancellation_before_payment,
         on_cancellation_after_payment=on_cancellation_after_payment,
     )
 
@@ -70,15 +69,6 @@ def on_payment(
         initiator,
     )
 
-    return Ok(None)
-
-
-def on_cancellation_before_payment(
-    order: Order,
-    line_item: LineItem,
-    initiator: User,
-    parameters: ActionParameters,
-) -> Result[None, OrderActionFailedError]:
     return Ok(None)
 
 

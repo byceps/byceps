@@ -15,12 +15,7 @@ from byceps.services.shop.order.models.action import (
     ActionParameters,
     ActionProcedure,
 )
-from byceps.services.shop.order.models.order import (
-    LineItem,
-    Order,
-    OrderID,
-    PaidOrder,
-)
+from byceps.services.shop.order.models.order import LineItem, OrderID, PaidOrder
 from byceps.services.user.models.user import User
 from byceps.services.user_badge import (
     user_badge_awarding_service,
@@ -33,8 +28,6 @@ from byceps.util.result import Err, Ok, Result
 def get_action_procedure() -> ActionProcedure:
     return ActionProcedure(
         on_payment=on_payment,
-        on_cancellation_before_payment=on_cancellation_before_payment,
-        on_cancellation_after_payment=on_cancellation_after_payment,
     )
 
 
@@ -64,21 +57,3 @@ def _create_order_log_entry(order_id: OrderID, awarding: BadgeAwarding) -> None:
     )
 
     order_log_service.persist_entry(log_entry)
-
-
-def on_cancellation_before_payment(
-    order: Order,
-    line_item: LineItem,
-    initiator: User,
-    parameters: ActionParameters,
-) -> Result[None, OrderActionFailedError]:
-    return Ok(None)
-
-
-def on_cancellation_after_payment(
-    order: Order,
-    line_item: LineItem,
-    initiator: User,
-    parameters: ActionParameters,
-) -> Result[None, OrderActionFailedError]:
-    return Ok(None)
