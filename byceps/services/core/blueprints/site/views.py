@@ -39,7 +39,7 @@ def url_for_site_file(filename, **kwargs) -> str | None:
 
 
 @blueprint.before_app_request
-def prepare_request_globals():
+def prepare_request_globals() -> Response | None:
     site = _get_site()
     if not site.enabled:
         return Response(status=404)
@@ -60,6 +60,8 @@ def prepare_request_globals():
     g.locales = get_locales()
     # Must only be called *after* `g.user` is set.
     g.current_locale = get_locale()
+
+    return None
 
 
 def _get_site() -> Site:
