@@ -47,7 +47,7 @@ class AppDispatcher:
             for app_config in iterate_app_configs(byceps_config.apps)
         }
         self.byceps_config = byceps_config
-        self.apps_by_host: dict[str, WSGIApplication] = {}
+        self.apps_by_host: dict[str, BycepsApp] = {}
 
     def __call__(self, environ, start_response):
         app = self.get_application(environ['HTTP_HOST'])
