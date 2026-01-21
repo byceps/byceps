@@ -24,6 +24,7 @@ from byceps.config.models import (
     SmtpConfig,
     StripeConfig,
 )
+from byceps.services.site.models import SiteID
 from byceps.util.result import Err, Ok
 
 
@@ -46,11 +47,11 @@ def test_parse_config():
                 sites=[
                     SiteAppConfig(
                         server_name='site1.test',
-                        site_id='site1',
+                        site_id=SiteID('site1'),
                     ),
                     SiteAppConfig(
                         server_name='site2.test',
-                        site_id='site2',
+                        site_id=SiteID('site2'),
                     ),
                 ],
             ),

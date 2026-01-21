@@ -13,6 +13,8 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
+from byceps.services.site.models import SiteID
+
 
 class AppMode(Enum):
     admin = object()
@@ -95,7 +97,7 @@ class CliAppConfig(AppConfig):
 
 @dataclass(frozen=True, kw_only=True, slots=True)
 class SiteAppConfig(WebAppConfig):
-    site_id: str
+    site_id: SiteID
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
