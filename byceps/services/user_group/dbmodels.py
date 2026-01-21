@@ -16,7 +16,6 @@ from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 
 class DbUserGroup(db.Model):
@@ -55,14 +54,6 @@ class DbUserGroup(db.Model):
         self.title = title
         self.description = description
 
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('party_id')
-            .add_with_lookup('title')
-            .build()
-        )
-
 
 class DbUserGroupMembership(db.Model):
     """The assignment of a user to a user group.
@@ -94,12 +85,3 @@ class DbUserGroupMembership(db.Model):
         self.group_id = group_id
         self.user_id = user_id
         self.created_at = created_at
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('group')
-            .add_with_lookup('user')
-            .build()
-        )

@@ -12,7 +12,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from byceps.database import db
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 from .models import PermissionID, RoleID
 
@@ -38,9 +37,6 @@ class DbRole(db.Model):
         self.id = role_id
         self.title = title
 
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('id').build()
-
 
 class DbRolePermission(db.Model):
     """The assignment of a permission to a role."""
@@ -64,14 +60,6 @@ class DbRolePermission(db.Model):
     def __init__(self, role_id: RoleID, permission_id: PermissionID) -> None:
         self.role_id = role_id
         self.permission_id = permission_id
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('role_id')
-            .add_with_lookup('permission_id')
-            .build()
-        )
 
 
 class DbUserRole(db.Model):
@@ -100,11 +88,3 @@ class DbUserRole(db.Model):
     def __init__(self, user_id: UserID, role_id: RoleID) -> None:
         self.user_id = user_id
         self.role_id = role_id
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('user')
-            .add_with_lookup('role')
-            .build()
-        )

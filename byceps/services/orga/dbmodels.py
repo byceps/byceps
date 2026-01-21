@@ -13,7 +13,6 @@ from byceps.services.brand.dbmodels import DbBrand
 from byceps.services.brand.models import BrandID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 
 class DbOrgaFlag(db.Model):
@@ -33,11 +32,3 @@ class DbOrgaFlag(db.Model):
     def __init__(self, user_id: UserID, brand_id: BrandID) -> None:
         self.user_id = user_id
         self.brand_id = brand_id
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add('user', self.user.screen_name)
-            .add('brand', self.brand_id)
-            .build()
-        )

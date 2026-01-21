@@ -13,7 +13,6 @@ from byceps.database import db
 from byceps.services.party.dbmodels import DbParty
 from byceps.services.party.models import PartyID
 from byceps.services.tourney.models import TourneyCategoryID
-from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid4
 
 
@@ -43,12 +42,3 @@ class DbTourneyCategory(db.Model):
     def __init__(self, party_id: PartyID, title: str) -> None:
         self.party_id = party_id
         self.title = title
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('party_id')
-            .add_with_lookup('title')
-            .build()
-        )

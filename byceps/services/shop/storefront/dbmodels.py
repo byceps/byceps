@@ -14,7 +14,6 @@ from byceps.services.shop.catalog.dbmodels import DbCatalog
 from byceps.services.shop.catalog.models import CatalogID
 from byceps.services.shop.order.models.number import OrderNumberSequenceID
 from byceps.services.shop.shop.models import ShopID
-from byceps.util.instances import ReprBuilder
 
 from .models import StorefrontID
 
@@ -54,11 +53,3 @@ class DbStorefront(db.Model):
         self.catalog_id = catalog_id
         self.order_number_sequence_id = order_number_sequence_id
         self.closed = closed
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('shop_id')
-            .build()
-        )

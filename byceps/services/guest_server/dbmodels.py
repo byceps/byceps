@@ -22,7 +22,6 @@ else:
 from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 from .models import AddressID, IPAddress, ServerID
 
@@ -92,9 +91,6 @@ class DbGuestServerSetting(db.Model):
     def dns_server2(self, ip_address: IPAddress | None) -> None:
         self._dns_server2 = str(ip_address) if ip_address else None
 
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('party_id').build()
-
 
 class DbGuestServer(db.Model):
     """A guest server."""
@@ -140,9 +136,6 @@ class DbGuestServer(db.Model):
         self.approved = False
         self.checked_in_at = None
         self.checked_out_at = None
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('id').build()
 
 
 class DbGuestServerAddress(db.Model):
@@ -216,6 +209,3 @@ class DbGuestServerAddress(db.Model):
     @gateway.setter
     def gateway(self, ip_address: IPAddress | None) -> None:
         self._gateway = str(ip_address) if ip_address else None
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('id').build()

@@ -14,7 +14,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 from byceps.database import db
 from byceps.services.shop.order.log.models import OrderLogEntryData
 from byceps.services.shop.order.models.order import OrderID
-from byceps.util.instances import ReprBuilder
 
 
 class DbOrderLogEntry(db.Model):
@@ -43,12 +42,3 @@ class DbOrderLogEntry(db.Model):
         self.event_type = event_type
         self.order_id = order_id
         self.data = data
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_custom(repr(self.event_type))
-            .add_with_lookup('order_id')
-            .add_with_lookup('data')
-            .build()
-        )

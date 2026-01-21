@@ -10,7 +10,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
-from byceps.util.instances import ReprBuilder
 
 
 class DbEmailConfig(db.Model):
@@ -37,6 +36,3 @@ class DbEmailConfig(db.Model):
         self.sender_address = sender_address
         self.sender_name = sender_name
         self.contact_address = contact_address
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('brand_id').build()

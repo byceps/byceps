@@ -14,7 +14,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 
 class DbUserDetail(db.Model):
@@ -45,12 +44,3 @@ class DbUserDetail(db.Model):
     def full_name(self) -> str | None:
         names = [self.first_name, self.last_name]
         return ' '.join(filter(None, names)) or None
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('user_id')
-            .add_with_lookup('first_name')
-            .add_with_lookup('last_name')
-            .build()
-        )

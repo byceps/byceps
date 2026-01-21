@@ -15,7 +15,6 @@ from byceps.database import db
 from byceps.services.board.models import BoardCategoryID, BoardID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 from .board import DbBoard
 
@@ -72,16 +71,6 @@ class DbBoardCategory(db.Model):
     def __eq__(self, other) -> bool:
         return self.id == other.id
 
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add('board', self.board_id)
-            .add_with_lookup('slug')
-            .add_with_lookup('title')
-            .build()
-        )
-
 
 class DbLastCategoryView(db.Model):
     """The last time a user looked into specific category."""
@@ -106,12 +95,3 @@ class DbLastCategoryView(db.Model):
         self.user_id = user_id
         self.category_id = category_id
         self.occurred_at = occurred_at
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('user_id')
-            .add('category', self.category.title)
-            .add_with_lookup('occurred_at')
-            .build()
-        )

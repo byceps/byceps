@@ -19,7 +19,6 @@ else:
 
 from byceps.database import db
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 from .models import Purpose
 
@@ -61,12 +60,3 @@ class DbVerificationToken(db.Model):
     @purpose.setter
     def purpose(self, purpose: Purpose) -> None:
         self._purpose = purpose.name
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('token')
-            .add('user', self.user.screen_name)
-            .add('purpose', self.purpose.name)
-            .build()
-        )

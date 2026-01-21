@@ -11,7 +11,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import TicketCategoryID
-from byceps.util.instances import ReprBuilder
 
 
 class DbTicketCategory(db.Model):
@@ -32,12 +31,3 @@ class DbTicketCategory(db.Model):
         self.id = category_id
         self.party_id = party_id
         self.title = title
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add('id', str(self.id))
-            .add('party', self.party_id)
-            .add_with_lookup('title')
-            .build()
-        )

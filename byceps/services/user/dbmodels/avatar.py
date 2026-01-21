@@ -21,7 +21,6 @@ else:
 from byceps.database import db
 from byceps.services.user.models.user import UserAvatarID
 from byceps.util.image.image_type import ImageType
-from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 
 
@@ -60,14 +59,6 @@ class DbUserAvatar(db.Model):
     @property
     def url(self) -> str:
         return get_absolute_url_path(str(self.filename))
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add('image_type', self.image_type.name)
-            .build()
-        )
 
 
 def get_absolute_url_path(filename: str) -> str:

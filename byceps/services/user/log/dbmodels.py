@@ -14,7 +14,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from byceps.database import db
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 from .models import UserLogEntryData
 
@@ -54,12 +53,3 @@ class DbUserLogEntry(db.Model):
         self.user_id = user_id
         self.initiator_id = initiator_id
         self.data = data
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_custom(repr(self.event_type))
-            .add_with_lookup('user_id')
-            .add_with_lookup('data')
-            .build()
-        )

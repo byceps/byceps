@@ -19,7 +19,6 @@ from byceps.services.ticketing.models.ticket import (
 )
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 from .category import DbTicketCategory
 
@@ -83,13 +82,3 @@ class DbTicketBundle(db.Model):
         self.owned_by_id = owned_by_id
         self.label = label
         self.revoked = revoked
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add('id', str(self.id))
-            .add('party_id', self.party_id)
-            .add('category', self.ticket_category.title)
-            .add_with_lookup('ticket_quantity')
-            .build()
-        )

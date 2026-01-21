@@ -13,7 +13,6 @@ from byceps.services.party.dbmodels import DbParty
 from byceps.services.party.models import PartyID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 from byceps.util.uuid import generate_uuid7
 
 from .models import MembershipID, OrgaTeamID
@@ -37,15 +36,6 @@ class DbOrgaTeam(db.Model):
     def __init__(self, party_id: PartyID, title: str) -> None:
         self.party_id = party_id
         self.title = title
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('party_id')
-            .add_with_lookup('title')
-            .build()
-        )
 
 
 class DbMembership(db.Model):
@@ -81,12 +71,3 @@ class DbMembership(db.Model):
         self.orga_team_id = orga_team_id
         self.user_id = user_id
         self.duties = duties
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('orga_team')
-            .add_with_lookup('user')
-            .build()
-        )

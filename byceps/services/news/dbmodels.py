@@ -29,7 +29,6 @@ from byceps.services.news.models import (
 from byceps.services.site.models import SiteID
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
 
 
 class DbNewsChannel(db.Model):
@@ -57,14 +56,6 @@ class DbNewsChannel(db.Model):
         self.brand_id = brand_id
         self.announcement_site_id = announcement_site_id
         self.archived = archived
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add('brand', self.brand_id)
-            .build()
-        )
 
 
 class DbNewsItem(db.Model):
@@ -120,16 +111,6 @@ class DbNewsItem(db.Model):
     def published(self) -> bool:
         return self.published_at is not None
 
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add('channel', self.channel_id)
-            .add_with_lookup('slug')
-            .add_with_lookup('published_at')
-            .build()
-        )
-
 
 class DbNewsItemVersion(db.Model):
     """A snapshot of a news item at a certain time."""
@@ -182,15 +163,6 @@ class DbNewsItemVersion(db.Model):
         item it belongs to.
         """
         return self.id == self.item.current_version.id
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('item')
-            .add_with_lookup('created_at')
-            .build()
-        )
 
 
 class DbCurrentNewsItemVersionAssociation(db.Model):
@@ -259,15 +231,6 @@ class DbNewsImage(db.Model):
         self.alt_text = alt_text
         self.caption = caption
         self.attribution = attribution
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('item_id')
-            .add_with_lookup('number')
-            .build()
-        )
 
 
 class DbFeaturedNewsImage(db.Model):

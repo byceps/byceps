@@ -23,7 +23,6 @@ from byceps.database import db
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
-from byceps.util.instances import ReprBuilder
 
 from .models import CancellationRequestState, DonationExtent
 
@@ -100,11 +99,3 @@ class DbCancellationRequest(db.Model):
     @state.setter
     def state(self, state: CancellationRequestState) -> None:
         self._state = state.name
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('order_number')
-            .build()
-        )

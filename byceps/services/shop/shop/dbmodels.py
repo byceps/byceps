@@ -20,7 +20,6 @@ from sqlalchemy.ext.mutable import MutableDict
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
-from byceps.util.instances import ReprBuilder
 
 from .models import ShopID
 
@@ -59,6 +58,3 @@ class DbShop(db.Model):
     @currency.setter
     def currency(self, currency: Currency) -> None:
         self._currency = currency.code
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('id').build()

@@ -11,7 +11,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 from byceps.database import db
 from byceps.services.board.models import BoardID
 from byceps.services.brand.models import BrandID
-from byceps.util.instances import ReprBuilder
 
 
 class DbBoard(db.Model):
@@ -28,11 +27,3 @@ class DbBoard(db.Model):
     def __init__(self, board_id: BoardID, brand_id: BrandID) -> None:
         self.id = board_id
         self.brand_id = brand_id
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add('brand', self.brand_id)
-            .build()
-        )
