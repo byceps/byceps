@@ -6,7 +6,8 @@ byceps.services.authn.password.blueprints.common.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, request
+from flask import abort, g, request, current_app
+from byceps.util import turnstile as cf_turnstile
 from flask_babel import gettext
 from secret_type import secret
 
@@ -87,6 +88,23 @@ def request_reset():
     form = RequestResetForm(request.form)
     if not form.validate():
         return request_reset_form(form)
+
+    # Cloudflare Turnstile
+    ts_cfg = current_app.config.get('CLOUDFLARE_TURNSTILE') or {}
+    if ts_cfg.get('enabled'):
+        token = (request.form.get('cf-turnstile-response') or '').strip()
+        if not token:
+            flash_error(gettext('Please complete the Turnstile challenge.'))
+            return request_reset_form(form)
+        ok = cf_turnstile.verify_token(
+            token,
+            remoteip=cf_turnstile.best_remote_ip(),
+            timeout=3.0,
+            expected_action='password_reset_request',
+        )
+        if not ok:
+            flash_error(gettext('Turnstile verification failed. Please try again.'))
+            return request_reset_form(form)
 
     screen_name = form.screen_name.data.strip()
     user = user_service.find_user_by_screen_name(screen_name)
@@ -190,6 +208,23 @@ def reset(token):
     form = ResetForm(request.form)
     if not form.validate():
         return reset_form(token, form)
+
+    # Cloudflare Turnstile
+    ts_cfg = current_app.config.get('CLOUDFLARE_TURNSTILE') or {}
+    if ts_cfg.get('enabled'):
+        token_resp = (request.form.get('cf-turnstile-response') or '').strip()
+        if not token_resp:
+            flash_error(gettext('Please complete the Turnstile challenge.'))
+            return reset_form(token, form)
+        ok = cf_turnstile.verify_token(
+            token_resp,
+            remoteip=cf_turnstile.best_remote_ip(),
+            timeout=3.0,
+            expected_action='password_reset',
+        )
+        if not ok:
+            flash_error(gettext('Turnstile verification failed. Please try again.'))
+            return reset_form(token, form)
 
     password = secret(form.new_password.data)
 
