@@ -12,7 +12,6 @@ from pathlib import Path
 
 import structlog
 
-from byceps.byceps_app import BycepsApp
 from byceps.util.result import Err, Ok
 
 from .errors import ConfigurationError
