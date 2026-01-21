@@ -35,6 +35,7 @@ from byceps.services.shop.product.models import (
     ProductType,
 )
 from byceps.services.shop.shop.models import ShopID
+from byceps.services.site.models import SiteID
 from byceps.services.user.models.user import User, UserID
 
 from tests.helpers import generate_token, generate_uuid
@@ -98,7 +99,7 @@ def make_app(make_byceps_config):
     def _wrapper(
         app_mode: AppMode,
         *,
-        site_id: str | None = None,
+        site_id: SiteID | None = None,
         additional_config: dict[str, Any] | None = None,
     ) -> BycepsApp:
         byceps_config = make_byceps_config()

@@ -180,7 +180,7 @@ def _get_app_mode(app_config: AppConfig) -> AppMode:
             raise ValueError('Unexpected application configuration type')
 
 
-def _get_site_id(app_config: AppConfig) -> str | None:
+def _get_site_id(app_config: AppConfig) -> SiteID | None:
     """Return site ID for site application configurations, `None` otherwise."""
     match app_config:
         case SiteAppConfig():

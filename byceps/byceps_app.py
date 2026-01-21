@@ -11,6 +11,7 @@ from flask_babel import Babel
 from redis import Redis
 
 from byceps.config.models import AppMode, BycepsConfig
+from byceps.services.site.models import SiteID
 
 
 class BycepsApp(Flask):
@@ -18,7 +19,7 @@ class BycepsApp(Flask):
         self,
         app_mode: AppMode,
         byceps_config: BycepsConfig,
-        site_id: str | None,
+        site_id: SiteID | None,
     ) -> None:
         super().__init__('byceps')
 
