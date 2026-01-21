@@ -6,7 +6,6 @@ byceps.services.email.email_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from dataclasses import dataclass
 from email.message import EmailMessage
 from email.utils import parseaddr
 from smtplib import SMTP, SMTP_SSL
@@ -14,6 +13,7 @@ from smtplib import SMTP, SMTP_SSL
 from flask import current_app
 import structlog
 
+from byceps.config.models import SmtpConfig
 from byceps.util.jobqueue import enqueue
 from byceps.util.result import Err, Ok, Result
 
@@ -21,17 +21,6 @@ from .models import Message, NameAndAddress
 
 
 log = structlog.get_logger()
-
-
-@dataclass(frozen=True, kw_only=True)
-class SmtpConfig:
-    host: str
-    port: int
-    starttls: bool
-    use_ssl: bool
-    username: str | None
-    password: str | None
-    suppress_send: bool
 
 
 def parse_address(address_str: str) -> Result[NameAndAddress, str]:
