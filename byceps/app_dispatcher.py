@@ -72,10 +72,14 @@ class AppDispatcher:
             match _create_app(app_config, self.byceps_config):
                 case Ok(app):
                     self.apps_by_host[host] = app
+
+                    match app_config:
+                        case SiteAppConfig():
+                            log_ctx = log_ctx.bind(site_id=app_config.site_id)
+
                     mode = app.byceps_app_mode
-                    if mode.is_site():
-                        log_ctx = log_ctx.bind(site_id=app_config.site_id)
                     log_ctx.info('Application mounted', mode=mode.name)
+
                     return app
                 case Err(e):
                     log_ctx.error('Application creation failed', error=e)

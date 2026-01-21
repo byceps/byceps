@@ -308,6 +308,6 @@ def _log_app_state(app: BycepsApp) -> None:
 
     match app.byceps_app_mode:
         case AppMode.site:
-            event_kw['site_id'] = app.site_id
+            event_kw['site_id'] = str(app.site_id)
 
     log.info('Application created', **event_kw)
