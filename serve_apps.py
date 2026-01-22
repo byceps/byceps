@@ -21,4 +21,4 @@ configure_sentry_from_env('apps')
 
 config = read_configuration_from_file_given_in_env_var()
 
-app = create_dispatcher_app(config)
+app = create_dispatcher_app(config, config.apps)

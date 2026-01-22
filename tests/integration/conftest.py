@@ -181,7 +181,7 @@ def apps(database, make_byceps_config) -> WSGIApplication:
 
     byceps_config = make_byceps_config(apps_config)
 
-    return create_dispatcher_app(byceps_config)
+    return create_dispatcher_app(byceps_config, apps_config)
 
 
 @pytest.fixture(scope='session')
