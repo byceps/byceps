@@ -15,7 +15,7 @@ import structlog
 from byceps.util.result import Err, Ok
 
 from .errors import ConfigurationError
-from .models import BycepsConfig
+from .models import AppsConfig, BycepsConfig
 from .parser import parse_config
 
 
@@ -39,6 +39,16 @@ def parse_value_from_environment(
 
 def read_configuration_from_file_given_in_env_var() -> BycepsConfig:
     """Load configuration from file specified via environment variable."""
+    byceps_config, _ = (
+        read_byceps_and_apps_configuration_from_file_given_in_env_var()
+    )
+    return byceps_config
+
+
+def read_byceps_and_apps_configuration_from_file_given_in_env_var() -> tuple[
+    BycepsConfig, AppsConfig
+]:
+    """Load configuration from file specified via environment variable."""
     filename_str = os.environ.get('BYCEPS_CONFIG_FILE')
 
     if not filename_str:
@@ -47,7 +57,8 @@ def read_configuration_from_file_given_in_env_var() -> BycepsConfig:
         raise ConfigurationError(error_message)
 
     filename = Path(filename_str)
-    return _read_configuration_from_file(filename)
+    byceps_config = _read_configuration_from_file(filename)
+    return byceps_config, byceps_config.apps
 
 
 def _read_configuration_from_file(filename: Path) -> BycepsConfig:
