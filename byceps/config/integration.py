@@ -57,15 +57,16 @@ def read_byceps_and_apps_configuration_from_file_given_in_env_var() -> tuple[
         raise ConfigurationError(error_message)
 
     filename = Path(filename_str)
-    byceps_config = _read_configuration_from_file(filename)
-    return byceps_config, byceps_config.apps
+    return _read_configuration_from_file(filename)
 
 
-def _read_configuration_from_file(filename: Path) -> BycepsConfig:
+def _read_configuration_from_file(
+    filename: Path,
+) -> tuple[BycepsConfig, AppsConfig]:
     """Load configuration from file."""
     match parse_config(filename.read_text()):
-        case Ok(config):
-            return config
+        case Ok((byceps_config, apps_config)):
+            return byceps_config, apps_config
         case Err(errors):
             log.error(
                 'Could not parse configuration file.',
@@ -73,3 +74,5 @@ def _read_configuration_from_file(filename: Path) -> BycepsConfig:
                 errors=errors,
             )
             raise ConfigurationError('Errors found in configuration file.')
+
+    raise ConfigurationError('Configuration file could not be read.')

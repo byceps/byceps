@@ -110,7 +110,6 @@ def redis_config():
 
 def build_byceps_config(
     data_path: Path,
-    apps_config: AppsConfig,
     database_config: DatabaseConfig,
     redis_config: RedisConfig,
     *,
@@ -124,7 +123,6 @@ def build_byceps_config(
         testing=True,
         timezone='Europe/Berlin',
         secret_key='secret-key-for-testing-ONLY',
-        apps=apps_config,
         database=database_config,
         development=DevelopmentConfig(
             style_guide_enabled=style_guide_enabled,
@@ -173,13 +171,13 @@ def database(database_config: DatabaseConfig):
 
 @pytest.fixture(scope='session')
 def apps(database, make_byceps_config) -> WSGIApplication:
+    byceps_config = make_byceps_config()
+
     apps_config = AppsConfig(
         admin=None,
         api=ApiAppConfig(server_name='api.acmecon.test'),
         sites=[],
     )
-
-    byceps_config = make_byceps_config(apps_config)
 
     return create_dispatcher_app(byceps_config, apps_config)
 
@@ -195,7 +193,6 @@ def make_admin_app(make_byceps_config):
         style_guide_enabled: bool = False,
     ) -> BycepsApp:
         byceps_config = make_byceps_config(
-            None,
             metrics_enabled=metrics_enabled,
             style_guide_enabled=style_guide_enabled,
         )
@@ -235,7 +232,7 @@ def make_site_app(admin_app, make_byceps_config):
         server_name: str, site_id: SiteID, *, style_guide_enabled: bool = False
     ) -> BycepsApp:
         byceps_config = make_byceps_config(
-            None, style_guide_enabled=style_guide_enabled
+            style_guide_enabled=style_guide_enabled
         )
 
         app_config = SiteAppConfig(
@@ -262,17 +259,12 @@ def make_byceps_config(
     data_path: Path, database_config: DatabaseConfig, redis_config: RedisConfig
 ):
     def _wrapper(
-        apps_config: AppsConfig | None = None,
         *,
         metrics_enabled: bool = False,
         style_guide_enabled: bool = False,
     ) -> BycepsConfig:
-        if apps_config is None:
-            apps_config = AppsConfig(admin=None, api=None, sites=[])
-
         return build_byceps_config(
             data_path,
-            apps_config,
             database_config,
             redis_config,
             metrics_enabled=metrics_enabled,

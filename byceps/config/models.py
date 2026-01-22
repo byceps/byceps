@@ -51,7 +51,6 @@ class BycepsConfig:
     testing: bool
     timezone: str
     secret_key: str
-    apps: AppsConfig
     database: DatabaseConfig
     development: DevelopmentConfig
     discord: DiscordConfig | None

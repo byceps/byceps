@@ -310,13 +310,15 @@ _SECTION_DEFINITIONS = [
 ]
 
 
-def parse_config(toml: str) -> ParsingResult[BycepsConfig]:
+def parse_config(toml: str) -> ParsingResult[tuple[BycepsConfig, AppsConfig]]:
     """Parse configuration in TOML format."""
     data = rtoml.loads(toml)
     return _parse_config_dict(data)
 
 
-def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
+def _parse_config_dict(
+    data: Data,
+) -> ParsingResult[tuple[BycepsConfig, AppsConfig]]:
     """Parse configuration from dictionary."""
     entries: Data = {}
     errors: list[str] = []
@@ -350,8 +352,11 @@ def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
     entries['data_path'] = Path('./data')
     entries['testing'] = False
 
-    config = BycepsConfig(**entries)
-    return Ok(config)
+    apps_config = entries.pop('apps')
+
+    byceps_config = BycepsConfig(**entries)
+
+    return Ok((byceps_config, apps_config))
 
 
 def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
