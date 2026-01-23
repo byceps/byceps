@@ -8,7 +8,10 @@ from datetime import datetime
 import pytest
 
 from byceps.services.user.dbmodels import DbUserAvatar
+from byceps.services.user.models import UserAvatarID
 from byceps.util.image.image_type import ImageType
+
+from tests.helpers import generate_uuid
 
 
 @pytest.mark.parametrize(
@@ -49,5 +52,7 @@ def test_hybrid_image_type_setter(image_type, expected):
 
 
 def create_avatar() -> DbUserAvatar:
+    avatar_id = UserAvatarID(generate_uuid())
     created_at = datetime.utcnow()
-    return DbUserAvatar(created_at, ImageType.jpeg)
+
+    return DbUserAvatar(avatar_id, created_at, ImageType.jpeg)

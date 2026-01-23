@@ -29,7 +29,6 @@ from byceps.services.user.models import (
 )
 from byceps.util.image.image_type import ImageType
 from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid7
 
 
 _ABSOLUTE_URL_PATH_PREFIX = '/data/global/users/avatars/'
@@ -40,13 +39,17 @@ class DbUserAvatar(db.Model):
 
     __tablename__ = 'user_avatars'
 
-    id: Mapped[UserAvatarID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[UserAvatarID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     _image_type: Mapped[str] = mapped_column('image_type', db.UnicodeText)
 
-    def __init__(self, created_at: datetime, image_type: ImageType) -> None:
+    def __init__(
+        self,
+        avatar_id: UserAvatarID,
+        created_at: datetime,
+        image_type: ImageType,
+    ) -> None:
+        self.id = avatar_id
         self.created_at = created_at
         self.image_type = image_type
 

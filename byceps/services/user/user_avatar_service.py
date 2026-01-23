@@ -18,11 +18,12 @@ from byceps.util.image.dimensions import determine_dimensions, Dimensions
 from byceps.util.image.image_type import determine_image_type, ImageType
 from byceps.util.image.thumbnail import create_thumbnail
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from . import user_avatar_domain_service, user_service
 from .dbmodels import DbUserAvatar
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
-from .models import User, UserAvatar
+from .models import User, UserAvatar, UserAvatarID
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -39,6 +40,7 @@ def update_avatar_image(
     """Set a new avatar image for the user."""
     db_user = user_service.get_db_user(user.id)
 
+    avatar_id = UserAvatarID(generate_uuid7())
     created_at = datetime.utcnow()
 
     image_type_result = determine_image_type(stream, allowed_types)
@@ -54,7 +56,7 @@ def update_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    db_avatar = DbUserAvatar(created_at, image_type)
+    db_avatar = DbUserAvatar(avatar_id, created_at, image_type)
     db.session.add(db_avatar)
     db.session.commit()
 
