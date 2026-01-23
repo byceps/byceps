@@ -15,7 +15,6 @@ from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models import UserID
-from byceps.util.uuid import generate_uuid7
 
 
 class DbTimeSlot(db.Model):
@@ -27,9 +26,7 @@ class DbTimeSlot(db.Model):
         'polymorphic_identity': 'time_slot',
     }
 
-    id: Mapped[UUID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -52,11 +49,13 @@ class DbPresence(DbTimeSlot):
 
     def __init__(
         self,
+        time_slot_id: UUID,
         party_id: PartyID,
         starts_at: datetime,
         ends_at: datetime,
         orga_id: UserID,
     ) -> None:
+        self.id = time_slot_id
         self.party_id = party_id
         self.starts_at = starts_at
         self.ends_at = ends_at
@@ -74,11 +73,13 @@ class DbTask(DbTimeSlot):
 
     def __init__(
         self,
+        time_slot_id: UUID,
         party_id: PartyID,
         starts_at: datetime,
         ends_at: datetime,
         title: str,
     ) -> None:
+        self.id = time_slot_id
         self.party_id = party_id
         self.starts_at = starts_at
         self.ends_at = ends_at
