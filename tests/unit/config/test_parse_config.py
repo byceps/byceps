@@ -9,7 +9,6 @@ from byceps.config.parser import parse_config
 from byceps.config.models import (
     AdminWebAppConfig,
     ApiWebAppConfig,
-    AppsConfig,
     BycepsConfig,
     DatabaseConfig,
     DevelopmentConfig,
@@ -23,6 +22,7 @@ from byceps.config.models import (
     SiteWebAppConfig,
     SmtpConfig,
     StripeConfig,
+    WebAppsConfig,
 )
 from byceps.services.site.models import SiteID
 from byceps.util.result import Err, Ok
@@ -92,7 +92,7 @@ def test_parse_config():
                     suppress_send=True,
                 ),
             ),
-            AppsConfig(
+            WebAppsConfig(
                 admin=AdminWebAppConfig(
                     server_name='admin.test',
                 ),
@@ -228,7 +228,7 @@ def test_parse_config_defaults():
                     suppress_send=False,
                 ),
             ),
-            AppsConfig(
+            WebAppsConfig(
                 admin=AdminWebAppConfig(
                     server_name='admin.test',
                 ),

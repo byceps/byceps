@@ -19,10 +19,10 @@ from byceps.application import create_admin_app, create_api_app, create_site_app
 from byceps.config.models import (
     AdminWebAppConfig,
     ApiWebAppConfig,
-    AppsConfig,
     BycepsConfig,
     SiteWebAppConfig,
     WebAppConfig,
+    WebAppsConfig,
 )
 from byceps.config.util import iterate_app_configs
 
@@ -35,7 +35,7 @@ log = structlog.get_logger()
 
 
 def create_dispatcher_app(
-    byceps_config: BycepsConfig, apps_config: AppsConfig
+    byceps_config: BycepsConfig, apps_config: WebAppsConfig
 ) -> Flask:
     app = Flask('dispatcher')
     app.wsgi_app = AppDispatcher(byceps_config, apps_config)
@@ -44,7 +44,7 @@ def create_dispatcher_app(
 
 class AppDispatcher:
     def __init__(
-        self, byceps_config: BycepsConfig, apps_config: AppsConfig
+        self, byceps_config: BycepsConfig, apps_config: WebAppsConfig
     ) -> None:
         self.lock = Lock()
         self.app_configs_by_host: dict[str, WebAppConfig] = {

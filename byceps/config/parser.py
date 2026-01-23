@@ -22,7 +22,6 @@ from byceps.util.result import Err, Ok, Result
 from .models import (
     AdminWebAppConfig,
     ApiWebAppConfig,
-    AppsConfig,
     BycepsConfig,
     DatabaseConfig,
     DevelopmentConfig,
@@ -36,6 +35,7 @@ from .models import (
     SiteWebAppConfig,
     SmtpConfig,
     StripeConfig,
+    WebAppsConfig,
 )
 from .util import find_duplicate_server_names, iterate_app_configs
 
@@ -82,7 +82,7 @@ class Subsection:
     collection_type: CollectionType | None = None
 
 
-def _validate_apps_config(apps_config: AppsConfig) -> ParsingResult[None]:
+def _validate_apps_config(apps_config: WebAppsConfig) -> ParsingResult[None]:
     app_configs = list(iterate_app_configs(apps_config))
     if not app_configs:
         return Err(['No applications configured'])
@@ -144,7 +144,7 @@ _SECTION_DEFINITIONS = [
             ),
         ],
         fields=[],
-        config_class=AppsConfig,
+        config_class=WebAppsConfig,
         required=True,
         validator=_validate_apps_config,
     ),
@@ -310,7 +310,9 @@ _SECTION_DEFINITIONS = [
 ]
 
 
-def parse_config(toml: str) -> ParsingResult[tuple[BycepsConfig, AppsConfig]]:
+def parse_config(
+    toml: str,
+) -> ParsingResult[tuple[BycepsConfig, WebAppsConfig]]:
     """Parse configuration in TOML format."""
     data = rtoml.loads(toml)
     return _parse_config_dict(data)
@@ -318,7 +320,7 @@ def parse_config(toml: str) -> ParsingResult[tuple[BycepsConfig, AppsConfig]]:
 
 def _parse_config_dict(
     data: Data,
-) -> ParsingResult[tuple[BycepsConfig, AppsConfig]]:
+) -> ParsingResult[tuple[BycepsConfig, WebAppsConfig]]:
     """Parse configuration from dictionary."""
     entries: Data = {}
     errors: list[str] = []

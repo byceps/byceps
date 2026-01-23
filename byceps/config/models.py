@@ -63,7 +63,7 @@ class BycepsConfig:
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class AppsConfig:
+class WebAppsConfig:
     admin: AdminWebAppConfig | None
     api: ApiWebAppConfig | None
     sites: list[SiteWebAppConfig]
