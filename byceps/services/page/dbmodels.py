@@ -21,7 +21,6 @@ from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.site_navigation.dbmodels import DbNavMenu
 from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models import UserID
-from byceps.util.uuid import generate_uuid7
 
 from .models import PageID, PageVersionID
 
@@ -38,9 +37,7 @@ class DbPage(db.Model):
         db.UniqueConstraint('site_id', 'language_code', 'url_path'),
     )
 
-    id: Mapped[PageID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[PageID] = mapped_column(db.Uuid, primary_key=True)
     site_id: Mapped[SiteID] = mapped_column(
         db.UnicodeText, db.ForeignKey('sites.id'), index=True
     )
@@ -63,8 +60,14 @@ class DbPage(db.Model):
     )
 
     def __init__(
-        self, site_id: SiteID, name: str, language_code: str, url_path: str
+        self,
+        page_id: PageID,
+        site_id: SiteID,
+        name: str,
+        language_code: str,
+        url_path: str,
     ) -> None:
+        self.id = page_id
         self.site_id = site_id
         self.name = name
         self.language_code = language_code
@@ -77,9 +80,7 @@ class DbPageVersion(db.Model):
 
     __tablename__ = 'page_versions'
 
-    id: Mapped[PageVersionID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[PageVersionID] = mapped_column(db.Uuid, primary_key=True)
     page_id: Mapped[PageID] = mapped_column(
         db.Uuid, db.ForeignKey('pages.id'), index=True
     )
@@ -95,6 +96,7 @@ class DbPageVersion(db.Model):
 
     def __init__(
         self,
+        version_id: PageVersionID,
         page: DbPage,
         created_at: datetime,
         creator_id: UserID,
@@ -102,6 +104,7 @@ class DbPageVersion(db.Model):
         head: str | None,
         body: str,
     ) -> None:
+        self.id = version_id
         self.page = page
         self.created_at = created_at
         self.creator_id = creator_id
