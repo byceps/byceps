@@ -12,6 +12,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid4
 
 from .dbmodels import DbOutgoingWebhook
 from .models import (
@@ -34,7 +35,10 @@ def create_outgoing_webhook(
     description: str | None = None,
 ) -> OutgoingWebhook:
     """Create an outgoing webhook."""
+    webhook_id = WebhookID(generate_uuid4())
+
     db_webhook = DbOutgoingWebhook(
+        webhook_id,
         event_types,
         event_filters,
         format,

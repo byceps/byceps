@@ -18,7 +18,6 @@ else:
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 
 from byceps.database import db
-from byceps.util.uuid import generate_uuid4
 
 from .models import EventFilters, OutgoingWebhookFormat, WebhookID
 
@@ -28,9 +27,7 @@ class DbOutgoingWebhook(db.Model):
 
     __tablename__ = 'outgoing_webhooks'
 
-    id: Mapped[WebhookID] = mapped_column(
-        db.Uuid, default=generate_uuid4, primary_key=True
-    )
+    id: Mapped[WebhookID] = mapped_column(db.Uuid, primary_key=True)
     _event_types: Mapped[list[str]] = mapped_column(
         'event_types', MutableList.as_mutable(db.JSONB)
     )
@@ -48,6 +45,7 @@ class DbOutgoingWebhook(db.Model):
 
     def __init__(
         self,
+        webhook_id: WebhookID,
         event_types: set[str],
         event_filters: EventFilters,
         format: OutgoingWebhookFormat,
@@ -58,6 +56,7 @@ class DbOutgoingWebhook(db.Model):
         extra_fields: dict[str, Any] | None = None,
         description: str | None = None,
     ) -> None:
+        self.id = webhook_id
         self.event_types = event_types
         self.event_filters = event_filters
         self._format = format.name
