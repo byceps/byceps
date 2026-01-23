@@ -8,8 +8,7 @@ byceps.services.tourney.dbmodels.avatar
 
 from datetime import datetime
 from pathlib import Path
-from typing import NewType, TYPE_CHECKING
-from uuid import UUID
+from typing import TYPE_CHECKING
 
 from flask import current_app
 from sqlalchemy.orm import Mapped, mapped_column
@@ -22,11 +21,9 @@ else:
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
+from byceps.services.tourney.models import TourneyAvatarID
 from byceps.services.user.models import UserID
 from byceps.util.image.image_type import ImageType
-
-
-TourneyAvatarID = NewType('TourneyAvatarID', UUID)
 
 
 class DbTourneyAvatar(db.Model):

@@ -20,7 +20,8 @@ from byceps.util.image.thumbnail import create_thumbnail
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from .dbmodels.avatar import DbTourneyAvatar, TourneyAvatarID
+from .dbmodels.avatar import DbTourneyAvatar
+from .models import TourneyAvatarID
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
