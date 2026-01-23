@@ -8,7 +8,7 @@ from pathlib import Path
 from byceps.config.parser import parse_config
 from byceps.config.models import (
     AdminWebAppConfig,
-    ApiAppConfig,
+    ApiWebAppConfig,
     AppsConfig,
     BycepsConfig,
     DatabaseConfig,
@@ -96,7 +96,7 @@ def test_parse_config():
                 admin=AdminWebAppConfig(
                     server_name='admin.test',
                 ),
-                api=ApiAppConfig(
+                api=ApiWebAppConfig(
                     server_name='api.test',
                 ),
                 sites=[

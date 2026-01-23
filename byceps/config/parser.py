@@ -21,7 +21,7 @@ from byceps.util.result import Err, Ok, Result
 
 from .models import (
     AdminWebAppConfig,
-    ApiAppConfig,
+    ApiWebAppConfig,
     AppsConfig,
     BycepsConfig,
     DatabaseConfig,
@@ -124,7 +124,7 @@ _SECTION_DEFINITIONS = [
                     fields=[
                         Field('server_name', required=True),
                     ],
-                    config_class=ApiAppConfig,
+                    config_class=ApiWebAppConfig,
                     required=False,
                     default=None,
                 ),

@@ -23,7 +23,7 @@ from byceps.config.errors import ConfigurationError
 from byceps.config.integration import parse_value_from_environment
 from byceps.config.models import (
     AdminWebAppConfig,
-    ApiAppConfig,
+    ApiWebAppConfig,
     AppConfig,
     AppMode,
     BycepsConfig,
@@ -69,7 +69,7 @@ def create_site_app(
 
 
 def create_api_app(
-    byceps_config: BycepsConfig, app_config: ApiAppConfig
+    byceps_config: BycepsConfig, app_config: ApiWebAppConfig
 ) -> BycepsApp:
     app = _create_app(byceps_config, app_config)
 

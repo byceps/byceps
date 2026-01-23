@@ -22,7 +22,7 @@ from byceps.byceps_app import BycepsApp
 from byceps.config.converter import assemble_database_uri
 from byceps.config.models import (
     AdminWebAppConfig,
-    ApiAppConfig,
+    ApiWebAppConfig,
     AppsConfig,
     BycepsConfig,
     DatabaseConfig,
@@ -175,7 +175,7 @@ def apps(database, make_byceps_config) -> WSGIApplication:
 
     apps_config = AppsConfig(
         admin=None,
-        api=ApiAppConfig(server_name='api.acmecon.test'),
+        api=ApiWebAppConfig(server_name='api.acmecon.test'),
         sites=[],
     )
 

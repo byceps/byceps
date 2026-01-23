@@ -65,7 +65,7 @@ class BycepsConfig:
 @dataclass(frozen=True, kw_only=True, slots=True)
 class AppsConfig:
     admin: AdminWebAppConfig | None
-    api: ApiAppConfig | None
+    api: ApiWebAppConfig | None
     sites: list[SiteAppConfig]
 
 
@@ -85,7 +85,7 @@ class AdminWebAppConfig(WebAppConfig):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class ApiAppConfig(WebAppConfig):
+class ApiWebAppConfig(WebAppConfig):
     pass
 
 

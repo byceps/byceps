@@ -12,7 +12,7 @@ from redis import Redis
 
 from byceps.config.models import (
     AdminWebAppConfig,
-    ApiAppConfig,
+    ApiWebAppConfig,
     AppConfig,
     AppMode,
     BycepsConfig,
@@ -54,7 +54,7 @@ def _get_app_mode(app_config: AppConfig) -> AppMode:
     match app_config:
         case AdminWebAppConfig():
             return AppMode.admin
-        case ApiAppConfig():
+        case ApiWebAppConfig():
             return AppMode.api
         case CliAppConfig():
             return AppMode.cli
