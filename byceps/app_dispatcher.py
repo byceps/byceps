@@ -17,7 +17,7 @@ from werkzeug.exceptions import InternalServerError, NotFound
 
 from byceps.application import create_admin_app, create_api_app, create_site_app
 from byceps.config.models import (
-    AdminAppConfig,
+    AdminWebAppConfig,
     ApiAppConfig,
     AppsConfig,
     BycepsConfig,
@@ -101,7 +101,7 @@ def _create_app(
     app_config: WebAppConfig, byceps_config: BycepsConfig
 ) -> Result[BycepsApp, str]:
     match app_config:
-        case AdminAppConfig():
+        case AdminWebAppConfig():
             return Ok(create_admin_app(byceps_config, app_config))
         case ApiAppConfig():
             return Ok(create_api_app(byceps_config, app_config))

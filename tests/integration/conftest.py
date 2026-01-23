@@ -21,7 +21,7 @@ from byceps.application import (
 from byceps.byceps_app import BycepsApp
 from byceps.config.converter import assemble_database_uri
 from byceps.config.models import (
-    AdminAppConfig,
+    AdminWebAppConfig,
     ApiAppConfig,
     AppsConfig,
     BycepsConfig,
@@ -197,7 +197,7 @@ def make_admin_app(make_byceps_config):
             style_guide_enabled=style_guide_enabled,
         )
 
-        app_config = AdminAppConfig(
+        app_config = AdminWebAppConfig(
             server_name=server_name,
         )
 

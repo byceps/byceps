@@ -7,7 +7,7 @@ from pathlib import Path
 
 from byceps.config.parser import parse_config
 from byceps.config.models import (
-    AdminAppConfig,
+    AdminWebAppConfig,
     ApiAppConfig,
     AppsConfig,
     BycepsConfig,
@@ -93,7 +93,7 @@ def test_parse_config():
                 ),
             ),
             AppsConfig(
-                admin=AdminAppConfig(
+                admin=AdminWebAppConfig(
                     server_name='admin.test',
                 ),
                 api=ApiAppConfig(
@@ -229,7 +229,7 @@ def test_parse_config_defaults():
                 ),
             ),
             AppsConfig(
-                admin=AdminAppConfig(
+                admin=AdminWebAppConfig(
                     server_name='admin.test',
                 ),
                 api=None,

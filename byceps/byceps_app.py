@@ -11,7 +11,7 @@ from flask_babel import Babel
 from redis import Redis
 
 from byceps.config.models import (
-    AdminAppConfig,
+    AdminWebAppConfig,
     ApiAppConfig,
     AppConfig,
     AppMode,
@@ -52,7 +52,7 @@ def create_byceps_app(
 def _get_app_mode(app_config: AppConfig) -> AppMode:
     """Derive application mode from application config."""
     match app_config:
-        case AdminAppConfig():
+        case AdminWebAppConfig():
             return AppMode.admin
         case ApiAppConfig():
             return AppMode.api

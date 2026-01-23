@@ -20,7 +20,7 @@ import rtoml
 from byceps.util.result import Err, Ok, Result
 
 from .models import (
-    AdminAppConfig,
+    AdminWebAppConfig,
     ApiAppConfig,
     AppsConfig,
     BycepsConfig,
@@ -113,7 +113,7 @@ _SECTION_DEFINITIONS = [
                     fields=[
                         Field('server_name', required=True),
                     ],
-                    config_class=AdminAppConfig,
+                    config_class=AdminWebAppConfig,
                     required=False,
                     default=None,
                 ),

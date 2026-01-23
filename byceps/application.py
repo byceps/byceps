@@ -22,7 +22,7 @@ from byceps.config.converter import convert_config
 from byceps.config.errors import ConfigurationError
 from byceps.config.integration import parse_value_from_environment
 from byceps.config.models import (
-    AdminAppConfig,
+    AdminWebAppConfig,
     ApiAppConfig,
     AppConfig,
     AppMode,
@@ -47,7 +47,7 @@ log = structlog.get_logger()
 
 
 def create_admin_app(
-    byceps_config: BycepsConfig, app_config: AdminAppConfig
+    byceps_config: BycepsConfig, app_config: AdminWebAppConfig
 ) -> BycepsApp:
     app = _create_app(byceps_config, app_config)
 
