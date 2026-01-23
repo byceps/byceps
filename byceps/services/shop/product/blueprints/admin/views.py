@@ -174,12 +174,13 @@ def view(product_id):
 
 
 def _calculate_total_amount(db_product: DbProduct) -> Money:
-    products_with_quantities = [
-        ProductWithQuantity(db_product, 1),
-    ] + [
+    product = ProductWithQuantity(db_product, 1)
+    attached_products = [
         ProductWithQuantity(attached_product.product, attached_product.quantity)
         for attached_product in db_product.attached_products
     ]
+
+    products_with_quantities = [product] + attached_products
 
     return product_domain_service.calculate_total_amount(
         products_with_quantities
