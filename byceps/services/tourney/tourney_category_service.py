@@ -12,6 +12,7 @@ from byceps.database import db
 from byceps.services.party.dbmodels import DbParty
 from byceps.services.party.models import PartyID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid4
 
 from .dbmodels.tourney_category import DbTourneyCategory
 from .errors import (
@@ -27,7 +28,9 @@ def create_category(party_id: PartyID, title: str) -> TourneyCategory:
     if db_party is None:
         raise ValueError(f'Unknown party ID "{party_id}"')
 
-    db_category = DbTourneyCategory(db_party.id, title)
+    category_id = TourneyCategoryID(generate_uuid4())
+
+    db_category = DbTourneyCategory(category_id, db_party.id, title)
     db_party.tourney_categories.append(db_category)
 
     db.session.commit()

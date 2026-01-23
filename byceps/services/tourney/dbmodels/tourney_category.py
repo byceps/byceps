@@ -13,7 +13,6 @@ from byceps.database import db
 from byceps.services.party.dbmodels import DbParty
 from byceps.services.party.models import PartyID
 from byceps.services.tourney.models import TourneyCategoryID
-from byceps.util.uuid import generate_uuid4
 
 
 class DbTourneyCategory(db.Model):
@@ -22,9 +21,7 @@ class DbTourneyCategory(db.Model):
     __tablename__ = 'tourney_categories'
     __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
-    id: Mapped[TourneyCategoryID] = mapped_column(
-        db.Uuid, default=generate_uuid4, primary_key=True
-    )
+    id: Mapped[TourneyCategoryID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -39,6 +36,9 @@ class DbTourneyCategory(db.Model):
     position: Mapped[int]
     title: Mapped[str] = mapped_column(db.UnicodeText)
 
-    def __init__(self, party_id: PartyID, title: str) -> None:
+    def __init__(
+        self, category_id: TourneyCategoryID, party_id: PartyID, title: str
+    ) -> None:
+        self.id = category_id
         self.party_id = party_id
         self.title = title
