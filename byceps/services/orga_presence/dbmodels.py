@@ -50,6 +50,18 @@ class DbPresence(DbTimeSlot):
     )
     orga: Mapped[DbUser] = relationship(DbUser)
 
+    def __init__(
+        self,
+        party_id: PartyID,
+        starts_at: datetime,
+        ends_at: datetime,
+        orga_id: UserID,
+    ) -> None:
+        self.party_id = party_id
+        self.starts_at = starts_at
+        self.ends_at = ends_at
+        self.orga_id = orga_id
+
 
 class DbTask(DbTimeSlot):
     """A scheduled task connected to a party."""
@@ -59,3 +71,15 @@ class DbTask(DbTimeSlot):
     }
 
     title: Mapped[str] = mapped_column(db.UnicodeText, nullable=True)
+
+    def __init__(
+        self,
+        party_id: PartyID,
+        starts_at: datetime,
+        ends_at: datetime,
+        title: str,
+    ) -> None:
+        self.party_id = party_id
+        self.starts_at = starts_at
+        self.ends_at = ends_at
+        self.title = title
