@@ -26,7 +26,7 @@ from byceps.services.user.models import UserID
 from byceps.util.image.image_type import ImageType
 
 
-AvatarID = NewType('AvatarID', UUID)
+TourneyAvatarID = NewType('TourneyAvatarID', UUID)
 
 
 class DbTourneyAvatar(db.Model):
@@ -34,7 +34,7 @@ class DbTourneyAvatar(db.Model):
 
     __tablename__ = 'tourney_avatars'
 
-    id: Mapped[AvatarID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[TourneyAvatarID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -46,7 +46,7 @@ class DbTourneyAvatar(db.Model):
 
     def __init__(
         self,
-        avatar_id: AvatarID,
+        avatar_id: TourneyAvatarID,
         party_id: PartyID,
         created_at: datetime,
         creator_id: UserID,
