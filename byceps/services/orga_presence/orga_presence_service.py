@@ -31,9 +31,7 @@ def create_presence(
     """Create a presence for the orga during the party."""
     party = party_service.get_party(party_id)
 
-    presence = DbPresence(
-        party_id=party.id, starts_at=starts_at, ends_at=ends_at, orga_id=orga_id
-    )
+    presence = DbPresence(party.id, starts_at, ends_at, orga_id)
     db.session.add(presence)
     db.session.commit()
 
