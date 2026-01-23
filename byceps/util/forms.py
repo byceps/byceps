@@ -41,9 +41,9 @@ class UserScreenNameField(Field):
             return self.raw_data[0]
 
         if self.data is not None:
-            # As user was found via screen name, the user object's
-            # screen name cannot be empty.
-            return self.data.screen_name  # type: ignore
+            # As user was found via screen name, the user object's screen name
+            # cannot be empty, so the fallback should never be used.
+            return self.data.screen_name or ''
 
         return ''
 
