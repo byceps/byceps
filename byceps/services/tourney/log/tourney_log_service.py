@@ -9,7 +9,7 @@ byceps.services.tourney.log.tourney_log_service
 from byceps.services.tourney.events import TourneyEvent
 from byceps.services.tourney.models import Tourney
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.util.result import Err, Ok, Result
 
 from . import tourney_log_repository, tourney_log_serialization_service

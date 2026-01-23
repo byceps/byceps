@@ -15,7 +15,7 @@ from sqlalchemy.sql import Select
 from byceps.database import db, paginate, Pagination
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models.user import User, UserID
 
 from . import board_access_control_service

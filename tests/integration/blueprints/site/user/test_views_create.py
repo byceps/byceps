@@ -23,7 +23,7 @@ from byceps.services.newsletter import (
     newsletter_service,
 )
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.log import user_log_service
 from byceps.services.verification_token.dbmodels import DbVerificationToken
 from byceps.services.verification_token.models import Purpose as TokenPurpose

@@ -7,7 +7,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.user import user_command_service
-from byceps.services.user.dbmodels.detail import DbUserDetail
+from byceps.services.user.dbmodels import DbUserDetail
 
 
 def test_set_and_remove(admin_app, make_user):

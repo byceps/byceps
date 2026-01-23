@@ -17,7 +17,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketCategory,
     TicketCategoryID,
 )
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models.user import UserID
 
 from .category import DbTicketCategory

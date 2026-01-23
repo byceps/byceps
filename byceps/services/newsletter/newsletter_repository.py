@@ -12,7 +12,7 @@ from sqlalchemy import select, delete
 from sqlalchemy.dialects.postgresql import insert
 
 from byceps.database import db
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.result import Err, Ok, Result
 

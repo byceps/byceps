@@ -20,7 +20,7 @@ from byceps.util.image.thumbnail import create_thumbnail
 from byceps.util.result import Err, Ok, Result
 
 from . import user_avatar_domain_service, user_service
-from .dbmodels.avatar import DbUserAvatar
+from .dbmodels import DbUserAvatar
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
 from .models.user import User, UserAvatar
 

@@ -22,7 +22,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketCode,
     TicketID,
 )
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
 

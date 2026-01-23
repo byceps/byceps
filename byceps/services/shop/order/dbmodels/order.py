@@ -25,7 +25,7 @@ from byceps.services.shop.order.models.order import OrderID, PaymentState
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.dbmodels import DbStorefront
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models.user import UserID
 from byceps.util.instances import ReprBuilder
 

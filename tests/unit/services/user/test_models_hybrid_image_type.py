@@ -7,7 +7,7 @@ from datetime import datetime
 
 import pytest
 
-from byceps.services.user.dbmodels.avatar import DbUserAvatar
+from byceps.services.user.dbmodels import DbUserAvatar
 from byceps.util.image.image_type import ImageType
 
 

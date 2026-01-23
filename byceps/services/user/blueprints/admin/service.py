@@ -25,9 +25,7 @@ from byceps.services.site import site_service
 from byceps.services.ticketing import ticket_attendance_service, ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.avatar import (
-    get_absolute_url_path as get_absolute_url_path_for_avatar,
-)
+from byceps.services.user.dbmodels import get_absolute_avatar_url_path
 from byceps.services.user.log import user_log_service
 from byceps.services.user.log.models import UserLogEntry, UserLogEntryData
 from byceps.services.user.models.user import User, UserDetailDifference, UserID
@@ -254,7 +252,7 @@ def _get_additional_data(
         )
 
     if log_entry.event_type in {'user-avatar-removed', 'user-avatar-updated'}:
-        url_path = get_absolute_url_path_for_avatar(log_entry.data['filename'])
+        url_path = get_absolute_avatar_url_path(log_entry.data['filename'])
         yield 'url_path', url_path
 
     if log_entry.event_type == 'user-badge-awarded':

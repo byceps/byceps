@@ -11,7 +11,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
 from byceps.services.brand.models import BrandID
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models.user import UserID
 
 

@@ -14,7 +14,7 @@ from byceps.database import Pagination
 from byceps.services.user.models.user import UserID
 
 from . import user_repository
-from .dbmodels.user import DbUser
+from .dbmodels import DbUser
 from .models.user import (
     User,
     UserDetail,

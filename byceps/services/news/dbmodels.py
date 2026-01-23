@@ -27,7 +27,7 @@ from byceps.services.news.models import (
     NewsItemVersionID,
 )
 from byceps.services.site.models import SiteID
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models.user import UserID
 
 

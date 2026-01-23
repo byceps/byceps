@@ -12,7 +12,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.tourney.models import TourneyID
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 
 from .dbmodels import DbTourneyLogEntry
 

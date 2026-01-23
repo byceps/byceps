@@ -17,9 +17,7 @@ from byceps.database import db, paginate, Pagination
 from byceps.services.user.log.dbmodels import DbUserLogEntry
 from byceps.services.user.models.user import UserID
 
-from .dbmodels.avatar import DbUserAvatar
-from .dbmodels.detail import DbUserDetail
-from .dbmodels.user import DbUser
+from .dbmodels import DbUser, DbUserAvatar, DbUserDetail
 from .models.user import (
     User,
     UserFilter,
