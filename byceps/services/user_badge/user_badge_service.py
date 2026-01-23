@@ -10,6 +10,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
+from byceps.util.uuid import generate_uuid4
 
 from .dbmodels import DbBadge
 from .models import Badge, BadgeID
@@ -25,7 +26,10 @@ def create_badge(
     featured: bool = False,
 ) -> Badge:
     """Create a badge."""
+    badge_id = BadgeID(generate_uuid4())
+
     db_badge = DbBadge(
+        badge_id,
         slug,
         label,
         image_filename,
