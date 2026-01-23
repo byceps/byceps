@@ -14,6 +14,7 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.user.models import User, UserID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels import (
     DbCurrentSnippetVersionAssociation,
@@ -33,10 +34,15 @@ def create_snippet(
     body: str,
 ) -> tuple[DbSnippet, DbSnippetVersion]:
     """Create a snippet and its initial version, and return that version."""
-    db_snippet = DbSnippet(scope, name, language_code)
+    snippet_id = SnippetID(generate_uuid7())
+    version_id = SnippetVersionID(generate_uuid7())
+
+    db_snippet = DbSnippet(snippet_id, scope, name, language_code)
     db.session.add(db_snippet)
 
-    db_version = DbSnippetVersion(db_snippet, created_at, creator_id, body)
+    db_version = DbSnippetVersion(
+        version_id, db_snippet, created_at, creator_id, body
+    )
     db.session.add(db_version)
 
     db_current_version_association = DbCurrentSnippetVersionAssociation(
@@ -53,9 +59,13 @@ def update_snippet(
     snippet_id: SnippetID, created_at: datetime, creator_id: UserID, body: str
 ) -> tuple[DbSnippet, DbSnippetVersion]:
     """Update snippet with a new version, and return that version."""
+    version_id = SnippetVersionID(generate_uuid7())
+
     db_snippet = get_snippet(snippet_id)
 
-    db_version = DbSnippetVersion(db_snippet, created_at, creator_id, body)
+    db_version = DbSnippetVersion(
+        version_id, db_snippet, created_at, creator_id, body
+    )
     db.session.add(db_version)
 
     db_snippet.current_version = db_version

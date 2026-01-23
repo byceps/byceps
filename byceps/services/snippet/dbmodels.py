@@ -19,7 +19,6 @@ from byceps.database import db
 from byceps.services.language.dbmodels import DbLanguage
 from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models import UserID
-from byceps.util.uuid import generate_uuid7
 
 from .models import SnippetID, SnippetScope, SnippetVersionID
 
@@ -39,9 +38,7 @@ class DbSnippet(db.Model):
         ),
     )
 
-    id: Mapped[SnippetID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[SnippetID] = mapped_column(db.Uuid, primary_key=True)
     scope_type: Mapped[str] = mapped_column(db.UnicodeText)
     scope_name: Mapped[str] = mapped_column(db.UnicodeText)
     name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
@@ -56,8 +53,13 @@ class DbSnippet(db.Model):
     )
 
     def __init__(
-        self, scope: SnippetScope, name: str, language_code: str
+        self,
+        snippet_id: SnippetID,
+        scope: SnippetScope,
+        name: str,
+        language_code: str,
     ) -> None:
+        self.id = snippet_id
         self.scope_type = scope.type_
         self.scope_name = scope.name
         self.name = name
@@ -73,9 +75,7 @@ class DbSnippetVersion(db.Model):
 
     __tablename__ = 'snippet_versions'
 
-    id: Mapped[SnippetVersionID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[SnippetVersionID] = mapped_column(db.Uuid, primary_key=True)
     snippet_id: Mapped[SnippetID] = mapped_column(
         db.Uuid, db.ForeignKey('snippets.id'), index=True
     )
@@ -89,11 +89,13 @@ class DbSnippetVersion(db.Model):
 
     def __init__(
         self,
+        version_id: SnippetVersionID,
         snippet: DbSnippet,
         created_at: datetime,
         creator_id: UserID,
         body: str,
     ) -> None:
+        self.id = version_id
         self.snippet = snippet
         self.created_at = created_at
         self.creator_id = creator_id
