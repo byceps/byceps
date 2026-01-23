@@ -34,7 +34,7 @@ from .byceps_app import BycepsApp
 log = structlog.get_logger()
 
 
-def create_dispatcher_app(
+def create_web_apps_dispatcher_app(
     byceps_config: BycepsConfig, web_apps_config: WebAppsConfig
 ) -> Flask:
     app = Flask('dispatcher')

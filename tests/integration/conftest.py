@@ -13,7 +13,7 @@ from flask import Flask
 from moneyed import EUR
 import pytest
 
-from byceps.app_dispatcher import create_dispatcher_app
+from byceps.app_dispatcher import create_web_apps_dispatcher_app
 from byceps.application import (
     create_admin_app as _create_admin_app,
     create_site_app as _create_site_app,
@@ -179,7 +179,7 @@ def apps(database, make_byceps_config) -> WSGIApplication:
         sites=[],
     )
 
-    return create_dispatcher_app(byceps_config, web_apps_config)
+    return create_web_apps_dispatcher_app(byceps_config, web_apps_config)
 
 
 @pytest.fixture(scope='session')

@@ -7,7 +7,7 @@ Serve multiple apps together.
 
 import structlog
 
-from byceps.app_dispatcher import create_dispatcher_app
+from byceps.app_dispatcher import create_web_apps_dispatcher_app
 from byceps.config.integration import (
     read_byceps_and_apps_configuration_from_file_given_in_env_var,
 )
@@ -23,4 +23,4 @@ byceps_config, web_apps_config = (
     read_byceps_and_apps_configuration_from_file_given_in_env_var()
 )
 
-app = create_dispatcher_app(byceps_config, web_apps_config)
+app = create_web_apps_dispatcher_app(byceps_config, web_apps_config)
