@@ -14,6 +14,7 @@ from byceps.database import db
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service
 from byceps.services.user.models import User, UserID
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.match_comment import DbMatchComment
 from .models import MatchComment, MatchCommentID, MatchID
@@ -126,9 +127,12 @@ def _get_users_by_id(user_ids: set[UserID]) -> dict[UserID, User]:
 
 def create_comment(match_id: MatchID, creator: User, body: str) -> MatchComment:
     """Create a comment on a match."""
+    comment_id = MatchCommentID(generate_uuid7())
     created_at = datetime.utcnow()
 
-    db_comment = DbMatchComment(match_id, created_at, creator.id, body)
+    db_comment = DbMatchComment(
+        comment_id, match_id, created_at, creator.id, body
+    )
 
     db.session.add(db_comment)
     db.session.commit()

@@ -14,7 +14,6 @@ from byceps.database import db
 from byceps.services.tourney.models import MatchCommentID, MatchID
 from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models import UserID
-from byceps.util.uuid import generate_uuid7
 
 from .match import DbMatch
 
@@ -24,9 +23,7 @@ class DbMatchComment(db.Model):
 
     __tablename__ = 'tourney_match_comments'
 
-    id: Mapped[MatchCommentID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[MatchCommentID] = mapped_column(db.Uuid, primary_key=True)
     match_id: Mapped[MatchID] = mapped_column(
         db.Uuid, db.ForeignKey('tourney_matches.id'), index=True
     )
@@ -57,11 +54,13 @@ class DbMatchComment(db.Model):
 
     def __init__(
         self,
+        comment_id: MatchCommentID,
         match_id: MatchID,
         created_at: datetime,
         creator_id: UserID,
         body: str,
     ) -> None:
+        self.id = comment_id
         self.match_id = match_id
         self.created_at = created_at
         self.created_by_id = creator_id
