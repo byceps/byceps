@@ -12,7 +12,7 @@ purposes:
 
 .. code-block:: console
 
-   $ uv run flask --app=serve_apps --debug run
+   $ uv run flask --app=serve_web_apps --debug run
 
 If the hostname mapping (or DNS setup) is also correct, the configured BYCEPS
 applications should be accessible at their respective hostnames on Flask's
