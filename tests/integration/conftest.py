@@ -13,7 +13,6 @@ from flask import Flask
 from moneyed import EUR
 import pytest
 
-from byceps.app_dispatcher import create_web_apps_dispatcher_app
 from byceps.application import (
     create_admin_app as _create_admin_app,
     create_site_app as _create_site_app,
@@ -66,6 +65,7 @@ from byceps.services.site.models import Site, SiteID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User, UserID
+from byceps.web_apps_dispatcher import create_web_apps_dispatcher_app
 
 from tests.helpers import (
     create_party,

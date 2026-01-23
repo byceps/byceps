@@ -1,8 +1,8 @@
 """
-byceps.app_dispatcher
-~~~~~~~~~~~~~~~~~~~~~
+byceps.web_apps_dispatcher
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Serve multiple apps together.
+Serve multiple web apps together.
 
 :Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -37,7 +37,7 @@ log = structlog.get_logger()
 def create_web_apps_dispatcher_app(
     byceps_config: BycepsConfig, web_apps_config: WebAppsConfig
 ) -> Flask:
-    app = Flask('dispatcher')
+    app = Flask('web-apps-dispatcher')
     app.wsgi_app = WebAppsDispatcherApp(byceps_config, web_apps_config)
     return app
 
