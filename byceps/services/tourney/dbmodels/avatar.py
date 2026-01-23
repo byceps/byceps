@@ -1,5 +1,5 @@
 """
-byceps.services.tourney.avatar.dbmodels
+byceps.services.tourney.dbmodels.avatar
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2026 Jochen Kupperschmidt
