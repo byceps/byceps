@@ -9,6 +9,7 @@ byceps.services.tourney.tourney_match_service
 from sqlalchemy import delete
 
 from byceps.database import db
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.match import DbMatch
 from .models import Match, MatchID
@@ -16,7 +17,9 @@ from .models import Match, MatchID
 
 def create_match() -> Match:
     """Create a match."""
-    db_match = DbMatch()
+    match_id = MatchID(generate_uuid7())
+
+    db_match = DbMatch(match_id)
 
     db.session.add(db_match)
     db.session.commit()
