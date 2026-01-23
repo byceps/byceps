@@ -38,11 +38,11 @@ def create_dispatcher_app(
     byceps_config: BycepsConfig, web_apps_config: WebAppsConfig
 ) -> Flask:
     app = Flask('dispatcher')
-    app.wsgi_app = AppDispatcher(byceps_config, web_apps_config)
+    app.wsgi_app = WebAppsDispatcherApp(byceps_config, web_apps_config)
     return app
 
 
-class AppDispatcher:
+class WebAppsDispatcherApp:
     def __init__(
         self, byceps_config: BycepsConfig, web_apps_config: WebAppsConfig
     ) -> None:
