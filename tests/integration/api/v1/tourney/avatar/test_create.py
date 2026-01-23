@@ -7,7 +7,7 @@ from uuid import UUID
 
 from pathlib import Path
 
-from byceps.services.tourney.avatar import tourney_avatar_service
+from byceps.services.tourney import tourney_avatar_service
 
 
 def test_create(api_client, api_client_authz_header, party, user):
