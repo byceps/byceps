@@ -14,6 +14,8 @@ from flask_babel import format_currency
 from moneyed import Money
 from wtforms import Form
 
+from byceps.byceps_app import get_current_byceps_app
+
 
 def get_current_user_locale() -> str | None:
     """Return the locale for the current user, if available."""
@@ -40,7 +42,8 @@ BASE_LOCALE = Locale('en')
 
 def get_locales() -> list[Locale]:
     """List available locales."""
-    return [BASE_LOCALE] + current_app.babel_instance.list_translations()
+    locales = get_current_byceps_app().babel_instance.list_translations()
+    return [BASE_LOCALE] + locales
 
 
 class LocalizedForm(Form):

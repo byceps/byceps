@@ -10,7 +10,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from flask import current_app
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -19,6 +18,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.tourney.models import TourneyAvatarID
@@ -72,7 +72,7 @@ class DbTourneyAvatar(db.Model):
     @property
     def path(self) -> Path:
         path = (
-            current_app.byceps_config.data_path
+            get_current_byceps_app().byceps_config.data_path
             / 'parties'
             / self.party_id
             / 'tourney'

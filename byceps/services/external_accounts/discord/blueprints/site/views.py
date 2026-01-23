@@ -11,9 +11,10 @@ Connector to Discord
 from datetime import datetime
 from urllib import parse
 
-from flask import current_app, g, redirect, request, url_for
+from flask import g, redirect, request, url_for
 import httpx
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.config.models import DiscordConfig
 from byceps.services.external_accounts import (
     external_accounts_service,
@@ -150,7 +151,7 @@ def remove():
 
 
 def _get_enabled_discord_configuration() -> DiscordConfig | None:
-    config = current_app.byceps_config.discord
+    config = get_current_byceps_app().byceps_config.discord
 
     if not config or not config.enabled:
         return None

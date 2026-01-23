@@ -6,7 +6,7 @@ byceps.byceps_app
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import Flask
+from flask import current_app, Flask
 from flask_babel import Babel
 from redis import Redis
 
@@ -73,3 +73,7 @@ def _get_site_id(app_config: AppConfig) -> SiteID | None:
             return app_config.site_id
         case _:
             return None
+
+
+def get_current_byceps_app() -> BycepsApp:
+    return current_app

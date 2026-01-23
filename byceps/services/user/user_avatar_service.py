@@ -9,8 +9,7 @@ byceps.services.user.user_avatar_service
 from datetime import datetime
 from typing import BinaryIO
 
-from flask import current_app
-
+from byceps.byceps_app import get_current_byceps_app
 from byceps.database import db
 from byceps.services.user.log import user_log_service
 from byceps.util import upload
@@ -111,7 +110,10 @@ def remove_avatar_image(
 
 def _db_entity_to_item(db_avatar: DbUserAvatar) -> UserAvatar:
     images_path = (
-        current_app.byceps_config.data_path / 'global' / 'users' / 'avatars'
+        get_current_byceps_app().byceps_config.data_path
+        / 'global'
+        / 'users'
+        / 'avatars'
     )
     path = images_path / db_avatar.filename
 

@@ -8,10 +8,11 @@ byceps.services.core.blueprints.site.views
 
 from typing import Any
 
-from flask import current_app, g, request, Response, url_for
+from flask import g, request, Response, url_for
 from flask_babel import get_locale
 import sentry_sdk
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
 from byceps.services.site import site_service
@@ -65,7 +66,7 @@ def prepare_request_globals() -> Response | None:
 
 
 def _get_site() -> Site:
-    return site_service.get_site(current_app.site_id)
+    return site_service.get_site(get_current_byceps_app().site_id)
 
 
 def _get_party(site: Site) -> Party | None:

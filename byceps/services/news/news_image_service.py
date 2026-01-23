@@ -10,9 +10,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import BinaryIO
 
-from flask import current_app
 from sqlalchemy import select
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.database import db
 from byceps.services.user.models import User
 from byceps.util import upload
@@ -183,7 +183,7 @@ def _get_db_image(image_id: NewsImageID) -> DbNewsImage:
 
 def _assemble_image_file_path(channel_id: NewsChannelID, filename: str) -> Path:
     return (
-        current_app.byceps_config.data_path
+        get_current_byceps_app().byceps_config.data_path
         / 'global'
         / 'news_channels'
         / channel_id

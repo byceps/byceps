@@ -8,10 +8,11 @@ byceps.services.shop.orders.blueprints.site.views
 
 from decimal import Decimal
 
-from flask import abort, current_app, g, request
+from flask import abort, g, request
 from flask_babel import gettext
 import structlog
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.services.brand import brand_service
 from byceps.services.email import (
     email_config_service,
@@ -104,7 +105,9 @@ def view(order_id):
             'paypal', storefront.id
         )
     )
-    paypal_config = current_app.byceps_config.payment_gateways.paypal
+    paypal_config = (
+        get_current_byceps_app().byceps_config.payment_gateways.paypal
+    )
     if paypal_enabled and paypal_config and paypal_config.enabled:
         paypal_client_id = paypal_config.client_id
     else:
@@ -115,7 +118,9 @@ def view(order_id):
             'stripe', storefront.id
         )
     )
-    stripe_config = current_app.byceps_config.payment_gateways.stripe
+    stripe_config = (
+        get_current_byceps_app().byceps_config.payment_gateways.stripe
+    )
     if stripe_enabled and stripe_config and stripe_config.enabled:
         stripe_publishable_key = stripe_config.publishable_key
     else:

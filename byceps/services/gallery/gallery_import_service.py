@@ -10,7 +10,7 @@ from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
-from flask import current_app
+from byceps.byceps_app import get_current_byceps_app
 
 from . import gallery_service
 from .models import Gallery, GalleryImage
@@ -72,7 +72,7 @@ def _get_gallery_filesystem_path(
     data_path: Path | None, gallery: Gallery
 ) -> Path:
     if data_path is None:
-        data_path = current_app.byceps_config.data_path
+        data_path = get_current_byceps_app().byceps_config.data_path
 
     return data_path / 'brands' / gallery.brand_id / 'galleries' / gallery.slug
 

@@ -9,7 +9,7 @@ byceps.services.shop.payment.paypal.blueprints.site.views
 from dataclasses import dataclass
 from uuid import UUID
 
-from flask import abort, current_app, g, jsonify, request
+from flask import abort, g, jsonify, request
 from paypalcheckoutsdk.core import (
     LiveEnvironment,
     PayPalHttpClient,
@@ -21,6 +21,7 @@ from paypalhttp.http_response import Result as HttpResult
 from pydantic import BaseModel, ValidationError
 import structlog
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.config.errors import ConfigurationError
 from byceps.services.shop.order import (
     order_command_service,
@@ -102,7 +103,9 @@ def _parse_request() -> CapturePayPalRequest:
 
 
 def _get_paypal_order_details(paypal_order_id: str) -> HttpResult:
-    paypal_config = current_app.byceps_config.payment_gateways.paypal
+    paypal_config = (
+        get_current_byceps_app().byceps_config.payment_gateways.paypal
+    )
 
     if not paypal_config:
         raise ConfigurationError('PayPal integration is not configured.')
