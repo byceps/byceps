@@ -28,4 +28,4 @@ class BycepsApp(Flask):
         self.byceps_config: BycepsConfig = byceps_config
         self.byceps_feature_states: dict[str, bool] = {}
         self.redis_client: Redis
-        self.site_id = site_id
+        self.site_id: SiteID | None = site_id
