@@ -9,7 +9,7 @@ byceps.services.tourney.match_comment.blueprints.api.views
 from collections.abc import Iterator
 from datetime import datetime
 from itertools import chain
-from typing import Any
+from typing import Any, TypeVar
 
 from flask import abort, jsonify, request, url_for
 from pydantic import BaseModel, ValidationError
@@ -255,7 +255,10 @@ def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
     return comment
 
 
-def _parse_request(model_class: type[BaseModel]) -> BaseModel:
+M = TypeVar('M', bound=BaseModel)
+
+
+def _parse_request(model_class: type[M]) -> M:
     try:
         return model_class.model_validate(request.get_json())
     except ValidationError as e:
