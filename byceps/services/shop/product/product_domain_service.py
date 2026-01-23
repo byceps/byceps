@@ -118,7 +118,10 @@ def calculate_total_amount(
     if not products_with_quantities:
         raise ValueError('No products with quantity given')
 
-    return sum(pwq.amount for pwq in products_with_quantities)  # type: ignore[return-value]
+    return (
+        sum(pwq.amount for pwq in products_with_quantities)
+        or products_with_quantities[0].product.price.currency.zero
+    )
 
 
 def calculate_product_compilation_total_amount(
