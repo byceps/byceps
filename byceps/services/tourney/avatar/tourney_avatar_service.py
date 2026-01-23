@@ -18,8 +18,10 @@ from byceps.util.image.dimensions import determine_dimensions, Dimensions
 from byceps.util.image.image_type import determine_image_type, ImageType
 from byceps.util.image.thumbnail import create_thumbnail
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels import DbTourneyAvatar
+from .models import AvatarID
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -34,6 +36,7 @@ def create_avatar_image(
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> Result[DbTourneyAvatar, str]:
     """Create a new avatar image."""
+    avatar_id = AvatarID(generate_uuid7())
     created_at = datetime.utcnow()
 
     image_type_result = determine_image_type(stream, allowed_types)
@@ -49,7 +52,9 @@ def create_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    avatar = DbTourneyAvatar(party_id, created_at, creator.id, image_type)
+    avatar = DbTourneyAvatar(
+        avatar_id, party_id, created_at, creator.id, image_type
+    )
     db.session.add(avatar)
     db.session.commit()
 
