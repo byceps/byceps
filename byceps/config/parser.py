@@ -82,12 +82,14 @@ class Subsection:
     collection_type: CollectionType | None = None
 
 
-def _validate_apps_config(apps_config: WebAppsConfig) -> ParsingResult[None]:
-    app_configs = list(iterate_app_configs(apps_config))
+def _validate_apps_config(
+    web_apps_config: WebAppsConfig,
+) -> ParsingResult[None]:
+    app_configs = list(iterate_app_configs(web_apps_config))
     if not app_configs:
         return Err(['No applications configured'])
 
-    duplicate_server_names = find_duplicate_server_names(apps_config)
+    duplicate_server_names = find_duplicate_server_names(web_apps_config)
     if duplicate_server_names:
         server_names_str = ', '.join(sorted(duplicate_server_names))
         return Err([f'Non-unique server names configured: {server_names_str}'])
@@ -354,11 +356,11 @@ def _parse_config_dict(
     entries['data_path'] = Path('./data')
     entries['testing'] = False
 
-    apps_config = entries.pop('apps')
+    web_apps_config = entries.pop('apps')
 
     byceps_config = BycepsConfig(**entries)
 
-    return Ok((byceps_config, apps_config))
+    return Ok((byceps_config, web_apps_config))
 
 
 def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:

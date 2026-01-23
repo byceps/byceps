@@ -35,21 +35,21 @@ log = structlog.get_logger()
 
 
 def create_dispatcher_app(
-    byceps_config: BycepsConfig, apps_config: WebAppsConfig
+    byceps_config: BycepsConfig, web_apps_config: WebAppsConfig
 ) -> Flask:
     app = Flask('dispatcher')
-    app.wsgi_app = AppDispatcher(byceps_config, apps_config)
+    app.wsgi_app = AppDispatcher(byceps_config, web_apps_config)
     return app
 
 
 class AppDispatcher:
     def __init__(
-        self, byceps_config: BycepsConfig, apps_config: WebAppsConfig
+        self, byceps_config: BycepsConfig, web_apps_config: WebAppsConfig
     ) -> None:
         self.lock = Lock()
         self.app_configs_by_host: dict[str, WebAppConfig] = {
             app_config.server_name: app_config
-            for app_config in iterate_app_configs(apps_config)
+            for app_config in iterate_app_configs(web_apps_config)
         }
         self.byceps_config = byceps_config
         self.apps_by_host: dict[str, BycepsApp] = {}

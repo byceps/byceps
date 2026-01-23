@@ -173,13 +173,13 @@ def database(database_config: DatabaseConfig):
 def apps(database, make_byceps_config) -> WSGIApplication:
     byceps_config = make_byceps_config()
 
-    apps_config = WebAppsConfig(
+    web_apps_config = WebAppsConfig(
         admin=None,
         api=ApiWebAppConfig(server_name='api.acmecon.test'),
         sites=[],
     )
 
-    return create_dispatcher_app(byceps_config, apps_config)
+    return create_dispatcher_app(byceps_config, web_apps_config)
 
 
 @pytest.fixture(scope='session')

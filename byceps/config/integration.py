@@ -65,8 +65,8 @@ def _read_configuration_from_file(
 ) -> tuple[BycepsConfig, WebAppsConfig]:
     """Load configuration from file."""
     match parse_config(filename.read_text()):
-        case Ok((byceps_config, apps_config)):
-            return byceps_config, apps_config
+        case Ok((byceps_config, web_apps_config)):
+            return byceps_config, web_apps_config
         case Err(errors):
             log.error(
                 'Could not parse configuration file.',
