@@ -28,7 +28,7 @@ from byceps.config.models import (
     AppMode,
     BycepsConfig,
     CliAppConfig,
-    SiteAppConfig,
+    SiteWebAppConfig,
     WebAppConfig,
     WorkerAppConfig,
 )
@@ -57,7 +57,7 @@ def create_admin_app(
 
 
 def create_site_app(
-    byceps_config: BycepsConfig, app_config: SiteAppConfig
+    byceps_config: BycepsConfig, app_config: SiteWebAppConfig
 ) -> BycepsApp:
     app = _create_app(byceps_config, app_config)
 

@@ -21,7 +21,7 @@ from byceps.config.models import (
     ApiWebAppConfig,
     AppsConfig,
     BycepsConfig,
-    SiteAppConfig,
+    SiteWebAppConfig,
     WebAppConfig,
 )
 from byceps.config.util import iterate_app_configs
@@ -79,7 +79,7 @@ class AppDispatcher:
                     self.apps_by_host[host] = app
 
                     match app_config:
-                        case SiteAppConfig():
+                        case SiteWebAppConfig():
                             log_ctx = log_ctx.bind(site_id=app_config.site_id)
 
                     mode = app.byceps_app_mode
@@ -105,7 +105,7 @@ def _create_app(
             return Ok(create_admin_app(byceps_config, app_config))
         case ApiWebAppConfig():
             return Ok(create_api_app(byceps_config, app_config))
-        case SiteAppConfig():
+        case SiteWebAppConfig():
             site_id = app_config.site_id
             if not site_id:
                 return Err(f'Unknown site ID "{site_id}"')

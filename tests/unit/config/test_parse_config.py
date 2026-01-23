@@ -20,7 +20,7 @@ from byceps.config.models import (
     PaymentGatewaysConfig,
     PaypalConfig,
     RedisConfig,
-    SiteAppConfig,
+    SiteWebAppConfig,
     SmtpConfig,
     StripeConfig,
 )
@@ -100,11 +100,11 @@ def test_parse_config():
                     server_name='api.test',
                 ),
                 sites=[
-                    SiteAppConfig(
+                    SiteWebAppConfig(
                         server_name='site1.test',
                         site_id=SiteID('site1'),
                     ),
-                    SiteAppConfig(
+                    SiteWebAppConfig(
                         server_name='site2.test',
                         site_id=SiteID('site2'),
                     ),

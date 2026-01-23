@@ -33,7 +33,7 @@ from .models import (
     PaymentGatewaysConfig,
     PaypalConfig,
     RedisConfig,
-    SiteAppConfig,
+    SiteWebAppConfig,
     SmtpConfig,
     StripeConfig,
 )
@@ -136,7 +136,7 @@ _SECTION_DEFINITIONS = [
                         Field('server_name', required=True),
                         Field('site_id', required=True),
                     ],
-                    config_class=SiteAppConfig,
+                    config_class=SiteWebAppConfig,
                     collection_type=CollectionType.List,
                     required=False,
                 ),

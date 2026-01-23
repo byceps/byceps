@@ -17,7 +17,7 @@ from byceps.config.models import (
     AppMode,
     BycepsConfig,
     CliAppConfig,
-    SiteAppConfig,
+    SiteWebAppConfig,
     WorkerAppConfig,
 )
 from byceps.services.site.models import SiteID
@@ -58,7 +58,7 @@ def _get_app_mode(app_config: AppConfig) -> AppMode:
             return AppMode.api
         case CliAppConfig():
             return AppMode.cli
-        case SiteAppConfig():
+        case SiteWebAppConfig():
             return AppMode.site
         case WorkerAppConfig():
             return AppMode.worker
@@ -69,7 +69,7 @@ def _get_app_mode(app_config: AppConfig) -> AppMode:
 def _get_site_id(app_config: AppConfig) -> SiteID | None:
     """Return site ID for site application configurations, `None` otherwise."""
     match app_config:
-        case SiteAppConfig():
+        case SiteWebAppConfig():
             return app_config.site_id
         case _:
             return None

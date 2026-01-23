@@ -31,7 +31,7 @@ from byceps.config.models import (
     MetricsConfig,
     PaymentGatewaysConfig,
     RedisConfig,
-    SiteAppConfig,
+    SiteWebAppConfig,
     SmtpConfig,
 )
 from byceps.database import db
@@ -235,7 +235,7 @@ def make_site_app(admin_app, make_byceps_config):
             style_guide_enabled=style_guide_enabled
         )
 
-        app_config = SiteAppConfig(
+        app_config = SiteWebAppConfig(
             server_name=server_name,
             site_id=site_id,
         )

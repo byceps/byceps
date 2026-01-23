@@ -66,7 +66,7 @@ class BycepsConfig:
 class AppsConfig:
     admin: AdminWebAppConfig | None
     api: ApiWebAppConfig | None
-    sites: list[SiteAppConfig]
+    sites: list[SiteWebAppConfig]
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -95,7 +95,7 @@ class CliAppConfig(AppConfig):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class SiteAppConfig(WebAppConfig):
+class SiteWebAppConfig(WebAppConfig):
     site_id: SiteID
 
 
