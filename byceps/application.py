@@ -40,7 +40,7 @@ from byceps.util.authz import load_permissions
 from byceps.util.l10n import get_current_user_locale
 from byceps.util.templating import create_site_template_loader
 
-from .byceps_app import BycepsApp
+from .byceps_app import BycepsApp, create_byceps_app
 
 
 log = structlog.get_logger()
@@ -94,10 +94,7 @@ def _create_app(
     byceps_config: BycepsConfig, app_config: AppConfig
 ) -> BycepsApp:
     """Create the actual Flask-based BYCEPS application."""
-    app_mode = _get_app_mode(app_config)
-    site_id = _get_site_id(app_config)
-
-    app = BycepsApp(app_mode, byceps_config, site_id)
+    app = create_byceps_app(byceps_config, app_config)
 
     # Avoid connection errors after database becomes temporarily
     # unreachable, then becomes reachable again.
@@ -161,32 +158,6 @@ def _create_app(
     app.byceps_feature_states['debug_toolbar'] = debug_toolbar_enabled
 
     return app
-
-
-def _get_app_mode(app_config: AppConfig) -> AppMode:
-    """Derive application mode from application config."""
-    match app_config:
-        case AdminAppConfig():
-            return AppMode.admin
-        case ApiAppConfig():
-            return AppMode.api
-        case CliAppConfig():
-            return AppMode.cli
-        case SiteAppConfig():
-            return AppMode.site
-        case WorkerAppConfig():
-            return AppMode.worker
-        case _:
-            raise ValueError('Unexpected application configuration type')
-
-
-def _get_site_id(app_config: AppConfig) -> SiteID | None:
-    """Return site ID for site application configurations, `None` otherwise."""
-    match app_config:
-        case SiteAppConfig():
-            return app_config.site_id
-        case _:
-            return None
 
 
 def _configure(
