@@ -217,7 +217,7 @@ def admin_app(database, make_admin_app) -> Iterator[BycepsApp]:
 
 @pytest.fixture(scope='session')
 def api_app(apps, site: Site) -> BycepsApp:
-    """Provide a API web application."""
+    """Provide an API web application."""
     server_name = 'api.acmecon.test'
     app = apps.wsgi_app.get_application(server_name)
     with app.app_context():
