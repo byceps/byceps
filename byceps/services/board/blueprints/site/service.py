@@ -25,7 +25,7 @@ from byceps.services.party import party_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.site import site_setting_service
 from byceps.services.ticketing import ticket_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.services.user_badge.models import Badge
 from byceps.util.authz import has_current_user_permission

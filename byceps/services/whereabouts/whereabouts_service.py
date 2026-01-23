@@ -11,7 +11,7 @@ import dataclasses
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from . import (
     whereabouts_client_repository,

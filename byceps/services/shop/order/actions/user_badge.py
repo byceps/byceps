@@ -16,7 +16,7 @@ from byceps.services.shop.order.models.action import (
     ActionProcedure,
 )
 from byceps.services.shop.order.models.order import LineItem, OrderID, PaidOrder
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.services.user_badge import (
     user_badge_awarding_service,
     user_badge_service,

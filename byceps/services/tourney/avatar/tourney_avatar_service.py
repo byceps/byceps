@@ -12,7 +12,7 @@ from uuid import UUID
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util import upload
 from byceps.util.image.dimensions import determine_dimensions, Dimensions
 from byceps.util.image.image_type import determine_image_type, ImageType

@@ -12,7 +12,7 @@ from byceps.services.shop.order.models.order import PaidOrder
 from byceps.services.ticketing import signals as ticketing_signals
 from byceps.services.ticketing.events import TicketsSoldEvent
 from byceps.services.ticketing.models.ticket import TicketCategory
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 def create_tickets_sold_event(

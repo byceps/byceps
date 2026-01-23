@@ -15,7 +15,7 @@ from byceps.services.shop.order.events import (
     ShopOrderPlacedEvent,
 )
 from byceps.services.shop.order.models.order import OrderID, OrderNumber
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_uuid
 

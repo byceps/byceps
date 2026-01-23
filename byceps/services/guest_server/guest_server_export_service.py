@@ -9,7 +9,7 @@ byceps.services.guest_server.guest_server_export_service
 from collections.abc import Iterator
 
 from byceps.services.guest_server.models import Address, Server, Setting
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.export import serialize_tuples_to_csv
 
 

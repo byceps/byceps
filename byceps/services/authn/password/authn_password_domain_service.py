@@ -17,7 +17,7 @@ from werkzeug.security import (
 from byceps.services.authn.events import PasswordUpdatedEvent
 from byceps.services.user.log import user_log_domain_service
 from byceps.services.user.log.models import UserLogEntry
-from byceps.services.user.models.user import (
+from byceps.services.user.models import (
     Password,
     PasswordHash,
     User,

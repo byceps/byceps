@@ -11,12 +11,12 @@ from datetime import timedelta
 from babel import Locale
 
 from byceps.database import Pagination
-from byceps.services.user.models.user import UserID
 
 from . import user_repository
 from .dbmodels import DbUser
-from .models.user import (
+from .models import (
     User,
+    UserID,
     UserDetail,
     UserEmailAddress,
     UserFilter,

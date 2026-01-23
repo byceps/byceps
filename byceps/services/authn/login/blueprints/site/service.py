@@ -17,7 +17,7 @@ from byceps.services.authn.session import authn_session_service
 from byceps.services.brand.models import BrandID
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.site.models import Site
-from byceps.services.user.models.user import Password, User, UserID
+from byceps.services.user.models import Password, User, UserID
 from byceps.services.verification_token import verification_token_service
 from byceps.util import user_session
 from byceps.util.result import Err, Ok, Result

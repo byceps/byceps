@@ -20,7 +20,7 @@ from byceps.services.board.models import (
     TopicID,
 )
 from byceps.services.core.events import EventBrand
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.services.webhooks.models import OutgoingWebhook
 
 from tests.helpers import generate_token, generate_uuid

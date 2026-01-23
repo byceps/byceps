@@ -28,7 +28,7 @@ from byceps.services.user import user_service
 from byceps.services.user.dbmodels import get_absolute_avatar_url_path
 from byceps.services.user.log import user_log_service
 from byceps.services.user.log.models import UserLogEntry, UserLogEntryData
-from byceps.services.user.models.user import User, UserDetailDifference, UserID
+from byceps.services.user.models import User, UserDetailDifference, UserID
 from byceps.services.user_badge import user_badge_service
 
 

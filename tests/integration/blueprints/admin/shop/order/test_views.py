@@ -28,7 +28,7 @@ from byceps.services.shop.product.models import (
 )
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from tests.helpers import log_in_user
 from tests.helpers.shop import place_order

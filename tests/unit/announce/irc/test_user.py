@@ -17,7 +17,7 @@ from byceps.services.user.events import (
     UserEmailAddressInvalidatedEvent,
     UserScreenNameChangedEvent,
 )
-from byceps.services.user.models.user import UserDetailDifference
+from byceps.services.user.models import UserDetailDifference
 
 from .helpers import assert_text
 

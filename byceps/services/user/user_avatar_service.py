@@ -22,7 +22,7 @@ from byceps.util.result import Err, Ok, Result
 from . import user_avatar_domain_service, user_service
 from .dbmodels import DbUserAvatar
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
-from .models.user import User, UserAvatar
+from .models import User, UserAvatar
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)

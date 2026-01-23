@@ -5,7 +5,7 @@
 
 from byceps.services.authn.api import authn_api_domain_service
 from byceps.services.authz.models import PermissionID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from tests.helpers import generate_uuid
 

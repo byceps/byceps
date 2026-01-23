@@ -17,7 +17,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketID,
 )
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from . import seat_domain_service, seat_repository
 from .dbmodels.seat import DbSeat

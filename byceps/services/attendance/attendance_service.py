@@ -21,7 +21,7 @@ from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user import user_service
 from byceps.services.user.dbmodels import DbUser
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .models import Attendee, AttendeeSeat, AttendeeTicket
 

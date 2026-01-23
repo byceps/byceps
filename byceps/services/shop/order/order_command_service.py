@@ -17,7 +17,7 @@ from byceps.services.shop.order.log.models import OrderLogEntry
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductType
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
 from . import order_action_service, order_domain_service, order_payment_service

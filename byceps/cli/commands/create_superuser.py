@@ -19,7 +19,7 @@ from byceps.services.user import (
     user_creation_service,
     user_email_address_service,
 )
-from byceps.services.user.models.user import Password, User
+from byceps.services.user.models import Password, User
 
 
 @click.command()

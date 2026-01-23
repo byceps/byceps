@@ -16,7 +16,7 @@ import structlog
 from byceps.database import db
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

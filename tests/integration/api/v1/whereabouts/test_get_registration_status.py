@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.services.whereabouts import whereabouts_client_service
 
 

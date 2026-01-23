@@ -13,7 +13,7 @@ from byceps.services.external_accounts.events import (
     ExternalAccountConnectedEvent,
     ExternalAccountDisconnectedEvent,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_uuid
 

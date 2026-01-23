@@ -10,7 +10,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .dbmodels import DbUserLogEntry
 from .models import UserLogEntry

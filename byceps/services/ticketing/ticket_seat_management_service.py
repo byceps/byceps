@@ -12,7 +12,7 @@ from byceps.services.seating import seat_group_service, seat_service
 # Load `Seat.assignment` backref.
 from byceps.services.seating.dbmodels.seat_group import DbSeatGroup  # noqa: F401
 from byceps.services.seating.models import Seat, SeatID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
 from . import ticket_service

@@ -15,7 +15,7 @@ from byceps.services.board.models import (
     TopicID,
 )
 from byceps.services.core.events import BaseEvent, EventBrand
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @dataclass(frozen=True, kw_only=True)

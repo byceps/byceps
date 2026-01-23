@@ -16,7 +16,7 @@ from byceps.services.page.events import (
     PageUpdatedEvent,
 )
 from byceps.services.page.models import PageID, PageVersionID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_uuid
 

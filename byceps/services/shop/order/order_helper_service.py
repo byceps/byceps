@@ -8,7 +8,7 @@ byceps.services.shop.order.order_helper_service
 
 from moneyed import Currency, Money
 
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from . import order_domain_service
 from .dbmodels.line_item import DbLineItem

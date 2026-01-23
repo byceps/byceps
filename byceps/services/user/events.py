@@ -9,11 +9,7 @@ byceps.services.user.events
 from dataclasses import dataclass
 
 from byceps.services.core.events import BaseEvent, EventSite
-from byceps.services.user.models.user import (
-    User,
-    UserAvatarID,
-    UserDetailDifference,
-)
+from byceps.services.user.models import User, UserAvatarID, UserDetailDifference
 
 
 @dataclass(frozen=True, kw_only=True)

@@ -10,7 +10,7 @@ from datetime import datetime
 
 from byceps.services.seating.models import SeatID
 from byceps.services.ticketing.models.ticket import TicketID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.uuid import generate_uuid7
 
 from .models import TicketLogEntry, TicketLogEntryData

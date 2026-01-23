@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from uuid import UUID
 
 from byceps.services.core.events import BaseEvent, EventSite
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @dataclass(frozen=True, kw_only=True)

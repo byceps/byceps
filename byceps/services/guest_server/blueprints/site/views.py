@@ -23,7 +23,7 @@ from byceps.services.guest_server.errors import (
 )
 from byceps.services.guest_server.models import Address, AddressData
 from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated

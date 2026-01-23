@@ -16,7 +16,7 @@ from byceps.services.shop.payment.paypal.blueprints.site.views import (
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok
 
 from tests.helpers import create_site, http_client, log_in_user

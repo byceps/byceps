@@ -17,7 +17,7 @@ from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.product.models import Product, ProductNumber
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import log_in_user
 

@@ -9,7 +9,7 @@ byceps.services.tourney.log.tourney_log_domain_service
 from datetime import datetime
 
 from byceps.services.tourney.models import MatchID, ParticipantID, Tourney
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
 from .models import (

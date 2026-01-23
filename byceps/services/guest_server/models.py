@@ -16,7 +16,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 IPAddress = IPv4Address | IPv6Address

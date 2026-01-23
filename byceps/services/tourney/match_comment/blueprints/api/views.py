@@ -27,7 +27,7 @@ from byceps.services.tourney.models import (
     MatchID,
 )
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import (
     api_token_required,

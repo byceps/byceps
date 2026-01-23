@@ -12,7 +12,7 @@ from sqlalchemy import select
 
 from byceps.database import db, execute_upsert
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .dbmodels import (
     DbWhereabouts,

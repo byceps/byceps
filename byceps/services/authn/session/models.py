@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 from babel import Locale
 
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @dataclass(eq=False, frozen=True, kw_only=True)

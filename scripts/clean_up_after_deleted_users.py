@@ -26,7 +26,7 @@ from byceps.services.newsletter.dbmodels import (
 )
 from byceps.services.user import user_service
 from byceps.services.user.log.dbmodels import DbUserLogEntry
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.services.verification_token.dbmodels import DbVerificationToken
 
 from _util import call_with_app_context

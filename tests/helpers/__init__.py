@@ -35,7 +35,7 @@ from byceps.services.user import (
     user_creation_service,
     user_service,
 )
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 
 def generate_token(n: int = 4) -> str:

@@ -19,7 +19,7 @@ from byceps.services.shop.shop.models import ShopID
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.errors import SnippetNotFoundError
 from byceps.services.snippet.models import SnippetScope
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.l10n import format_money
 from byceps.util.result import Err, Ok, Result
 from byceps.util.templating import load_template

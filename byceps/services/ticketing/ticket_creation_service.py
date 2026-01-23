@@ -15,7 +15,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 from byceps.database import db
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.ticketing.models.ticket import TicketID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok
 from byceps.util.uuid import generate_uuid7
 

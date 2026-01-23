@@ -19,7 +19,7 @@ from byceps.services.board.models import (
     Topic,
     TopicID,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token
 

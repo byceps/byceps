@@ -10,7 +10,7 @@ import pytest
 from byceps.services.authn.events import UserIdentityTagDeletedEvent
 from byceps.services.authn.identity_tag import authn_identity_tag_domain_service
 from byceps.services.authn.identity_tag.models import UserIdentityTag
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token, generate_uuid
 

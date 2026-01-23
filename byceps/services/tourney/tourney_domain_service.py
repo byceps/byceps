@@ -12,7 +12,7 @@ from datetime import datetime
 from byceps.services.party.models import Party
 from byceps.services.tourney.log import tourney_log_serialization_service
 from byceps.services.tourney.log.models import TourneyLogEntry
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

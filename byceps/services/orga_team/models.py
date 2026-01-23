@@ -11,7 +11,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.party.models import Party, PartyID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 
 OrgaTeamID = NewType('OrgaTeamID', UUID)

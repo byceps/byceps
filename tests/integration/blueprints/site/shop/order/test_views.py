@@ -23,7 +23,7 @@ from byceps.services.shop.product.models import (
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from tests.helpers import create_site, http_client, log_in_user
 from tests.helpers.shop import create_shop_snippet

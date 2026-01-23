@@ -21,7 +21,7 @@ from .events import (
     UserDetailsUpdatedEvent,
     UserScreenNameChangedEvent,
 )
-from .models.user import User, UserDetailDifference
+from .models import User, UserDetailDifference
 
 
 def suspend_account(

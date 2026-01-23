@@ -18,7 +18,7 @@ from byceps.services.brand.models import BrandID
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

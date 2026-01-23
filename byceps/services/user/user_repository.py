@@ -15,11 +15,11 @@ from sqlalchemy.sql import Select
 
 from byceps.database import db, paginate, Pagination
 from byceps.services.user.log.dbmodels import DbUserLogEntry
-from byceps.services.user.models.user import UserID
 
 from .dbmodels import DbUser, DbUserAvatar, DbUserDetail
-from .models.user import (
+from .models import (
     User,
+    UserID,
     UserFilter,
     UserForAdmin,
     UserForAdminDetail,

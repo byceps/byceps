@@ -10,7 +10,7 @@ from datetime import datetime
 
 from byceps.services.party.models import Party, PartyID
 from byceps.services.tourney.log import tourney_log_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
 from . import (

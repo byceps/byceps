@@ -11,7 +11,7 @@ import dataclasses
 
 from byceps.services.core.events import EventParty
 from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

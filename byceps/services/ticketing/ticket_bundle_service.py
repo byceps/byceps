@@ -19,7 +19,7 @@ from byceps.services.seating.errors import SeatingError
 from byceps.services.seating.models import SeatGroupID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

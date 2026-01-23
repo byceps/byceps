@@ -21,7 +21,7 @@ else:
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
-from byceps.services.user.models.user import (
+from byceps.services.user.models import (
     UserAvatarID,
     UserID,
     USER_DELETED_AVATAR_URL_PATH,

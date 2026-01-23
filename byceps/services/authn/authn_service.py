@@ -7,7 +7,7 @@ byceps.services.authn.authn_service
 """
 
 from byceps.services.user import user_service
-from byceps.services.user.models.user import Password, User
+from byceps.services.user.models import Password, User
 from byceps.util.result import Err, Ok, Result
 
 from .errors import (

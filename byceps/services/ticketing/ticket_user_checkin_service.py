@@ -12,7 +12,7 @@ from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

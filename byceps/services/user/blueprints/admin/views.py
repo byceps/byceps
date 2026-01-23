@@ -30,7 +30,7 @@ from byceps.services.user import (
     user_service,
 )
 from byceps.services.user.errors import NothingChangedError
-from byceps.services.user.models.user import UserFilter, UserForAdmin
+from byceps.services.user.models import UserFilter, UserForAdmin
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.util.authz import permission_registry
 from byceps.util.framework.blueprint import create_blueprint

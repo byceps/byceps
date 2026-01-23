@@ -19,7 +19,7 @@ from byceps.services.ticketing import (
     ticket_service,
     ticket_user_checkin_service,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.jobqueue import enqueue
 
 

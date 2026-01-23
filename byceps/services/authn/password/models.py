@@ -9,7 +9,7 @@ byceps.services.authn.password.models
 from dataclasses import dataclass
 from datetime import datetime
 
-from byceps.services.user.models.user import PasswordHash, UserID
+from byceps.services.user.models import PasswordHash, UserID
 
 
 @dataclass(frozen=True, kw_only=True)

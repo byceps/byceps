@@ -20,7 +20,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketCode,
     TicketID,
 )
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.services.user_badge.models import BadgeAwarding
 from byceps.util.uuid import generate_uuid7
 

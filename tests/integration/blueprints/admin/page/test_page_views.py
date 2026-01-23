@@ -9,7 +9,7 @@ from byceps.services.page import page_service
 from byceps.services.page.events import PageCreatedEvent
 from byceps.services.page.models import PageVersion
 from byceps.services.site.models import Site
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token, log_in_user
 

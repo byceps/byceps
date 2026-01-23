@@ -9,7 +9,7 @@ byceps.services.tourney.tourney_participant_service
 from collections.abc import Sequence
 
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from . import tourney_participant_domain_service, tourney_participant_repository
 from .dbmodels.participant import DbParticipant

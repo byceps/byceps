@@ -29,7 +29,7 @@ from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.shop import shop_service
 from byceps.services.snippet.errors import SnippetNotFoundError
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.l10n import format_money, get_default_locale
 from byceps.util.result import Err, Ok, Result
 

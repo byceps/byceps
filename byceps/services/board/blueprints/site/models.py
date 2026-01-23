@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import Self
 
 from byceps.services.board.models import ReactionKind
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.services.user_badge.models import Badge
 
 

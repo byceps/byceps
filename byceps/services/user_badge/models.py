@@ -12,7 +12,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 BadgeID = NewType('BadgeID', UUID)

@@ -20,7 +20,7 @@ from byceps.services.shop.order.models.order import Order, Orderer, OrderID
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import create_site, generate_uuid, http_client, log_in_user
 from tests.helpers.shop import (

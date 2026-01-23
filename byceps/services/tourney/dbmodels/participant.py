@@ -24,7 +24,7 @@ from byceps.services.tourney.models import (
     TourneyID,
 )
 from byceps.services.user.dbmodels import DbUser
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .tourney import DbTourney
 

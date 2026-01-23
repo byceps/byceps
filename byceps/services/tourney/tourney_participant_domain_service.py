@@ -8,7 +8,7 @@ byceps.services.tourney.tourney_participant_domain_service
 
 from datetime import datetime
 
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
 from .events import (

@@ -15,7 +15,7 @@ from byceps.services.seating.events import (
 )
 from byceps.services.seating.models import SeatGroupID
 from byceps.services.ticketing.models.ticket import TicketBundleID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_uuid
 

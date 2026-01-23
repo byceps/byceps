@@ -26,7 +26,7 @@ from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.dbmodels import DbStorefront
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user.dbmodels import DbUser
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.instances import ReprBuilder
 
 

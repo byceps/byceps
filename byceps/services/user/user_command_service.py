@@ -36,7 +36,7 @@ from .events import (
     UserEmailAddressChangedEvent,
     UserScreenNameChangedEvent,
 )
-from .models.user import User, UserID
+from .models import User, UserID
 
 
 def initialize_account(

@@ -20,7 +20,7 @@ from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.shop.order.models.order import Order, OrderID, PaymentState
 from byceps.services.shop.product.models import Product, ProductNumber
 from byceps.services.user import user_service
-from byceps.services.user.models.user import UserForAdmin, UserID
+from byceps.services.user.models import UserForAdmin, UserID
 from byceps.util.export import serialize_tuples_to_csv
 from byceps.util.iterables import find
 

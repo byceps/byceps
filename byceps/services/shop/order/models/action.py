@@ -13,7 +13,7 @@ from uuid import UUID
 
 from byceps.services.shop.order.errors import OrderActionFailedError
 from byceps.services.shop.product.models import ProductID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Ok, Result
 
 from .order import LineItem, Order, PaidOrder

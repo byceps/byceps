@@ -9,8 +9,8 @@ byceps.services.user_badge.events
 from dataclasses import dataclass
 
 from byceps.services.core.events import BaseEvent
+from byceps.services.user.models import User
 from byceps.services.user_badge.models import BadgeID
-from byceps.services.user.models.user import User
 
 
 @dataclass(frozen=True, kw_only=True)

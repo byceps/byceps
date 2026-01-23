@@ -38,7 +38,7 @@ from byceps.services.site_navigation import site_navigation_service
 from byceps.services.site_navigation.models import NavItemTargetType
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.models.ticket import TicketCategory
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 log = structlog.get_logger()

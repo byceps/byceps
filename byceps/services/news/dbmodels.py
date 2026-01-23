@@ -28,7 +28,7 @@ from byceps.services.news.models import (
 )
 from byceps.services.site.models import SiteID
 from byceps.services.user.dbmodels import DbUser
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 class DbNewsChannel(db.Model):

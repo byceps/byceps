@@ -12,7 +12,7 @@ from byceps.services.authn.events import PasswordUpdatedEvent
 from byceps.services.email import email_service
 from byceps.services.email.models import NameAndAddress
 from byceps.services.user import user_service
-from byceps.services.user.models.user import Password, User
+from byceps.services.user.models import Password, User
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import PasswordResetToken
 from byceps.util.l10n import get_default_locale

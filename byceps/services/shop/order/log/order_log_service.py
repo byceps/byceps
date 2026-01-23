@@ -14,7 +14,7 @@ from byceps.database import db
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.shop.shop.models import ShopID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .dbmodels import DbOrderLogEntry
 from .models import OrderLogEntry

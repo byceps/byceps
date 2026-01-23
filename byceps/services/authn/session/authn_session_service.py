@@ -19,7 +19,7 @@ from byceps.services.core.events import EventSite
 from byceps.services.site.models import Site
 from byceps.services.user.log import user_log_domain_service, user_log_service
 from byceps.services.user.log.models import UserLogEntry
-from byceps.services.user.models.user import (
+from byceps.services.user.models import (
     User,
     UserID,
     USER_FALLBACK_AVATAR_URL_PATH,

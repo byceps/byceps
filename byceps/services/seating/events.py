@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from byceps.services.core.events import BaseEvent
 from byceps.services.seating.models import SeatGroupID
 from byceps.services.ticketing.models.ticket import TicketBundleID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @dataclass(frozen=True, kw_only=True)

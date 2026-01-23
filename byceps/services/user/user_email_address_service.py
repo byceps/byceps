@@ -20,7 +20,7 @@ from byceps.services.user import (
 )
 from byceps.services.user.log import user_log_service
 from byceps.services.user.log.models import UserLogEntry
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import (
     EmailAddressChangeToken,

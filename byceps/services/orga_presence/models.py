@@ -13,7 +13,7 @@ from typing import Self
 from uuid import UUID
 
 from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.datetime.range import DateTimeRange
 
 

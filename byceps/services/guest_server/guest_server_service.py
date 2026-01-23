@@ -15,7 +15,7 @@ from byceps.services.orga_team import orga_team_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing import ticket_service
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import guest_server_domain_service

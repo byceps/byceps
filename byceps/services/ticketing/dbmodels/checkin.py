@@ -13,7 +13,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
 from byceps.services.ticketing.models.ticket import TicketID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 class DbTicketCheckIn(db.Model):

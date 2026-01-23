@@ -16,7 +16,7 @@ from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.order.models.detailed_order import AdminDetailedOrder
 from byceps.services.shop.order.models.order import OrderID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Result
 
 from . import invoiceninja_service, order_invoice_domain_service

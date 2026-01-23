@@ -17,7 +17,7 @@ from byceps.services.shop.product import product_domain_service
 from byceps.services.shop.product.models import ProductWithQuantity
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

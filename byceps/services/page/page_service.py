@@ -13,7 +13,7 @@ from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
 from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
 from . import page_repository

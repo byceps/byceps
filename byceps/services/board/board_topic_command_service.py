@@ -14,7 +14,7 @@ from byceps.database import db, upsert, upsert_many
 from byceps.services.brand import brand_service
 from byceps.services.core.events import EventBrand
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.uuid import generate_uuid7
 
 from . import (

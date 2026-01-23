@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 ConsentSubjectID = NewType('ConsentSubjectID', UUID)

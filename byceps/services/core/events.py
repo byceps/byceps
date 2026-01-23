@@ -13,7 +13,7 @@ from typing import Self
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.party.models import Party, PartyID
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @dataclass(frozen=True, kw_only=True)

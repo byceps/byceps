@@ -12,7 +12,7 @@ from byceps.services.authn import authn_service
 from byceps.services.authn.errors import UserAuthenticationFailedError
 from byceps.services.authn.events import UserLoggedInToAdminEvent
 from byceps.services.authn.session import authn_session_service
-from byceps.services.user.models.user import Password, User
+from byceps.services.user.models import Password, User
 from byceps.util import user_session
 from byceps.util.authz import get_permissions_for_user
 from byceps.util.result import Err, Ok, Result

@@ -8,7 +8,7 @@ byceps.services.board.board_posting_domain_service
 
 from datetime import datetime
 
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 

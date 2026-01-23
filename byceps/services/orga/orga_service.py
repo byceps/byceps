@@ -15,7 +15,7 @@ from byceps.services.orga import orga_domain_service
 from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.log import user_log_service
 from byceps.services.user.log.models import UserLogEntry
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from .dbmodels import DbOrgaFlag
 from .events import (

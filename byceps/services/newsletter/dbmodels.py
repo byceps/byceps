@@ -18,7 +18,7 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from byceps.database import db
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .models import ListID, SubscriptionState
 

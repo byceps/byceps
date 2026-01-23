@@ -20,7 +20,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketCode,
     TicketID,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 SeatingAreaID = NewType('SeatingAreaID', UUID)

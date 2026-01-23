@@ -13,7 +13,7 @@ from sqlalchemy import select
 from byceps.database import db
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from .dbmodels.match_comment import DbMatchComment
 from .models import MatchComment, MatchCommentID, MatchID

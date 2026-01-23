@@ -12,7 +12,7 @@ from byceps.database import db
 from byceps.services.party.dbmodels import DbParty
 from byceps.services.party.models import PartyID
 from byceps.services.user.dbmodels import DbUser
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.uuid import generate_uuid7
 
 from .models import MembershipID, OrgaTeamID

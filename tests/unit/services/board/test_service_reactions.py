@@ -12,7 +12,7 @@ from byceps.services.board.errors import (
     ReactionExistsError,
 )
 from byceps.services.board.models import PostingID, ReactionKind
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.result import Ok
 
 from tests.helpers import generate_uuid

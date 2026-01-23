@@ -9,7 +9,7 @@ import pytest
 
 from byceps.services.news import news_image_service, news_item_service
 from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token
 

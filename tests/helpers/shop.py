@@ -27,7 +27,7 @@ from byceps.services.snippet import snippet_service
 from byceps.services.snippet.models import SnippetID, SnippetScope
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from . import generate_token
 

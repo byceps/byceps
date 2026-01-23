@@ -12,7 +12,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.authn.session.models import CurrentUser
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .dbmodels.category import DbBoardCategory, DbLastCategoryView
 from .models import (

@@ -7,7 +7,7 @@ from babel import Locale
 
 from byceps.services.authn.session import authn_session_service
 from byceps.services.authn.session.models import CurrentUser
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 def get_current_user_for_user(user: User, locale: Locale) -> CurrentUser:

@@ -13,7 +13,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.result import Result
 
 

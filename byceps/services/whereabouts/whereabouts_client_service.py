@@ -9,7 +9,7 @@ byceps.services.whereabouts.whereabouts_client_service
 import structlog
 
 from byceps.services.global_setting import global_setting_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from . import whereabouts_client_domain_service, whereabouts_client_repository
 from .dbmodels import (

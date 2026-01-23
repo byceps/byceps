@@ -12,7 +12,7 @@ from flask_babel import force_locale, gettext
 from byceps.services.email import email_config_service, email_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.l10n import get_default_locale
 
 

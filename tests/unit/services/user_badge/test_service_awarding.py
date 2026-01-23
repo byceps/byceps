@@ -8,7 +8,7 @@ from uuid import UUID
 import pytest
 
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.services.user_badge import user_badge_domain_service
 from byceps.services.user_badge.errors import BadgeAwardingFailedError
 from byceps.services.user_badge.events import UserBadgeAwardedEvent

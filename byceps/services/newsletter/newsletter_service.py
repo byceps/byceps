@@ -8,7 +8,7 @@ byceps.services.newsletter.newsletter_service
 
 from collections.abc import Iterator
 
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from . import newsletter_repository
 from .dbmodels import DbList, DbSubscriptionUpdate

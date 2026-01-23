@@ -16,7 +16,7 @@ from byceps.services.authn.identity_tag import authn_identity_tag_service
 from byceps.services.party import party_service
 from byceps.services.party.models import PartyID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.services.whereabouts import (
     signals as whereabouts_signals,
     whereabouts_client_service,

@@ -14,7 +14,7 @@ from sqlalchemy import select
 from byceps.database import db
 from byceps.services.party.models import Party, PartyID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from . import user_group_domain_service
 from .dbmodels import DbUserGroup

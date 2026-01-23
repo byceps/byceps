@@ -12,7 +12,7 @@ from byceps.services.newsletter.events import (
     UnsubscribedFromNewsletterEvent,
 )
 from byceps.services.newsletter.models import ListID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from .helpers import assert_text
 

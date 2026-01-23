@@ -14,7 +14,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db, insert_ignore_on_conflict, upsert
 from byceps.services.user.log.dbmodels import DbUserLogEntry
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .dbmodels import DbRecentLogin, DbSessionToken
 

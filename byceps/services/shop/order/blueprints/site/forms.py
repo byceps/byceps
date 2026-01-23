@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length, Optional
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Orderer
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.l10n import LocalizedForm
 
 

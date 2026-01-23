@@ -12,7 +12,7 @@ from byceps.services.user.log import user_log_domain_service
 from byceps.services.user.log.models import UserLogEntry
 
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
-from .models.user import User, UserAvatar
+from .models import User, UserAvatar
 
 
 def update_avatar_image(

@@ -17,7 +17,7 @@ from byceps.services.guest_server.events import (
     GuestServerRegisteredEvent,
 )
 from byceps.services.guest_server.models import ServerID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_uuid
 

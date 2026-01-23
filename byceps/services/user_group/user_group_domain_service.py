@@ -9,7 +9,7 @@ byceps.services.user_group.user_group_domain_service
 from datetime import datetime
 
 from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
 from .models import UserGroup

@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import Self
 
 from byceps.services.core.events import BaseEvent
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from .models import (
     BasicTourney,

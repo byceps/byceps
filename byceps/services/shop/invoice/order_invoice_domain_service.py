@@ -9,7 +9,7 @@ byceps.services.shop.invoice.order_invoice_domain_service
 from byceps.services.shop.order.log import order_log_domain_service
 from byceps.services.shop.order.log.models import OrderLogEntry
 from byceps.services.shop.order.models.order import OrderID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
 from .models import Invoice

@@ -64,7 +64,7 @@ from byceps.services.shop.storefront.models import (
 from byceps.services.site.models import Site, SiteID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.models.ticket import TicketCategory
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.web_apps_dispatcher import create_web_apps_dispatcher_app
 
 from tests.helpers import (

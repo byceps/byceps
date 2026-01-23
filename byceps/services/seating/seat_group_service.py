@@ -14,7 +14,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
     TicketCategoryID,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
 from . import seat_group_domain_service, seat_group_repository, seat_service

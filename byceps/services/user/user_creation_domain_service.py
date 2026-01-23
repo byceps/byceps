@@ -21,7 +21,7 @@ from .errors import (
     InvalidScreenNameError,
 )
 from .events import UserAccountCreatedEvent
-from .models.user import User, UserID, USER_FALLBACK_AVATAR_URL_PATH
+from .models import User, UserID, USER_FALLBACK_AVATAR_URL_PATH
 
 
 def create_account(

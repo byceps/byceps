@@ -10,7 +10,7 @@ from datetime import datetime
 
 from byceps.services.user.log import user_log_domain_service
 from byceps.services.user.log.models import UserLogEntry
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from .events import RoleAssignedToUserEvent, RoleDeassignedFromUserEvent
 from .models import RoleID

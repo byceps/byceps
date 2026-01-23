@@ -9,7 +9,7 @@ from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
 from byceps.services.news.events import NewsItemPublishedEvent
 from byceps.services.news.models import NewsChannelID, NewsItemID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token, generate_uuid
 

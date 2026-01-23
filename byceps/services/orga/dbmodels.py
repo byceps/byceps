@@ -12,7 +12,7 @@ from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
 from byceps.services.brand.models import BrandID
 from byceps.services.user.dbmodels import DbUser
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 class DbOrgaFlag(db.Model):

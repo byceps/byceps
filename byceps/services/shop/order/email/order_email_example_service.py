@@ -27,7 +27,7 @@ from byceps.services.shop.order.models.order import (
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.snippet.errors import SnippetNotFoundError
-from byceps.services.user.models.user import (
+from byceps.services.user.models import (
     User,
     UserID,
     USER_FALLBACK_AVATAR_URL_PATH,

@@ -11,7 +11,7 @@ from wtforms import Field, SelectMultipleField
 from wtforms.widgets import CheckboxInput, ListWidget, TextInput
 
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 class MultiCheckboxField(SelectMultipleField):

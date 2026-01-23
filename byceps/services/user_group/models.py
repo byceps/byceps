@@ -11,7 +11,7 @@ from datetime import datetime
 from uuid import UUID
 
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)

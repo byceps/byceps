@@ -14,7 +14,7 @@ from flask import session
 from byceps.services.authn.session import authn_session_service
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from .authz import get_permissions_for_user
 

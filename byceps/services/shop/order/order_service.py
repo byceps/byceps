@@ -19,7 +19,7 @@ from byceps.services.shop.shop.dbmodels import DbShop
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from . import (
     order_payment_service,

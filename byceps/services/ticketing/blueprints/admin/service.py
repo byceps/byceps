@@ -19,7 +19,7 @@ from byceps.services.ticketing.log.models import (
 )
 from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 def get_log_entries(ticket_id: TicketID) -> Iterator[TicketLogEntryData]:

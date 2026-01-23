@@ -10,7 +10,7 @@ from flask import abort, request
 from pydantic import ValidationError
 
 from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.services.user_badge import (
     signals as user_badge_signals,
     user_badge_awarding_service,

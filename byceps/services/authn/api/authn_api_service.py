@@ -12,7 +12,7 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.authz.models import PermissionID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from . import authn_api_domain_service
 from .dbmodels import DbApiToken

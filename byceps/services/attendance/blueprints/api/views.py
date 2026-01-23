@@ -13,7 +13,7 @@ from byceps.services.party import party_service
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_attendance_service
 from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import api_token_required, respond_no_content
 

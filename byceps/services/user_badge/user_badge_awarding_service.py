@@ -14,7 +14,7 @@ import structlog
 from byceps.database import db
 from byceps.services.user.log import user_log_service
 from byceps.services.user.log.models import UserLogEntry
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import user_badge_domain_service

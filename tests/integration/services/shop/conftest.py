@@ -9,7 +9,7 @@ from byceps.services.brand.models import Brand
 from byceps.services.email import email_footer_service
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @pytest.fixture()

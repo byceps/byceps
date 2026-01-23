@@ -26,7 +26,7 @@ from . import (
 from .dbmodels import DbUser, DbUserDetail
 from .errors import InvalidEmailAddressError, InvalidScreenNameError
 from .events import UserAccountCreatedEvent
-from .models.user import Password, User
+from .models import Password, User
 
 
 log = structlog.get_logger()

@@ -9,7 +9,7 @@ byceps.services.snippet.snippet_service
 from datetime import datetime
 
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
 from . import snippet_repository

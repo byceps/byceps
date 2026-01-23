@@ -9,7 +9,7 @@ byceps.services.orga.events
 from dataclasses import dataclass
 
 from byceps.services.core.events import BaseEvent, EventBrand
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @dataclass(frozen=True, kw_only=True)

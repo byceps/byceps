@@ -16,7 +16,7 @@ from pydantic import BaseModel, ValidationError
 from secret_type import secret
 
 from . import user_creation_service
-from .models.user import User
+from .models import User
 
 
 class UserToImport(BaseModel):

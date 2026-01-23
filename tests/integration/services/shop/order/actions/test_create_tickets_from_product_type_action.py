@@ -21,7 +21,7 @@ from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.ticketing.ticket_creation_service import (
     TicketCreationFailedError,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers.shop import create_ticket_product, place_order
 

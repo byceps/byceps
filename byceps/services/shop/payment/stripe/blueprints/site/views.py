@@ -32,7 +32,7 @@ from byceps.services.shop.order import (
 from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import create_empty_json_response
 

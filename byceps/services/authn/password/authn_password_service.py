@@ -14,7 +14,7 @@ from byceps.services.authn.events import PasswordUpdatedEvent
 from byceps.services.authn.session import authn_session_service
 from byceps.services.user.log import user_log_service
 from byceps.services.user.log.models import UserLogEntry
-from byceps.services.user.models.user import Password, User, UserID
+from byceps.services.user.models import Password, User, UserID
 
 from . import authn_password_domain_service
 from .dbmodels import DbCredential

@@ -18,7 +18,7 @@ from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.ticketing.events import TicketsSoldEvent
 from byceps.services.ticketing.models.ticket import TicketCategory
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers.shop import create_ticket_bundle_product, place_order
 

@@ -19,7 +19,7 @@ from byceps.services.ticketing.errors import (
 from byceps.services.ticketing.events import TicketCheckedInEvent
 from byceps.services.ticketing.models.checkin import PotentialTicketForCheckIn
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
 from tests.helpers import generate_token

@@ -14,7 +14,7 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.site.models import SiteID
 from byceps.services.site_navigation.models import NavMenuID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.result import Err, Ok, Result
 
 from .dbmodels import DbCurrentPageVersionAssociation, DbPage, DbPageVersion
