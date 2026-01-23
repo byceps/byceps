@@ -9,7 +9,7 @@ byceps.services.tourney.avatar.blueprints.api.views
 from flask import abort, request
 
 from byceps.services.party import party_service
-from byceps.services.tourney.avatar import tourney_avatar_service
+from byceps.services.tourney import tourney_avatar_service
 from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.image.image_type import ImageType
