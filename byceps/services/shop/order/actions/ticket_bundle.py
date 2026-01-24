@@ -62,11 +62,7 @@ def on_payment(
     ticket_quantity_per_bundle = parameters['ticket_quantity']
 
     _create_ticket_bundles(
-        order,
-        line_item,
-        ticket_category,
-        ticket_quantity_per_bundle,
-        initiator,
+        order, line_item, ticket_category, ticket_quantity_per_bundle, initiator
     )
 
     return Ok(None)
@@ -121,11 +117,7 @@ def _create_ticket_bundles(
 
     total_quantity = ticket_quantity_per_bundle * bundle_quantity
     tickets_sold_event = order_event_service.create_tickets_sold_event(
-        order,
-        initiator,
-        ticket_category,
-        owner,
-        total_quantity,
+        order, initiator, ticket_category, owner, total_quantity
     )
     order_event_service.send_tickets_sold_event(tickets_sold_event)
 
