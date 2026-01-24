@@ -450,12 +450,13 @@ def create(shop_id, type_name):
 
 
 def _get_create_form(type_: ProductType, shop_id: ShopID, request):
-    if type_ == ProductType.ticket:
-        return TicketProductCreateForm(shop_id, request.form)
-    elif type_ == ProductType.ticket_bundle:
-        return TicketBundleProductCreateForm(shop_id, request.form)
-    else:
-        return ProductCreateForm(shop_id, request.form)
+    match type_:
+        case ProductType.ticket:
+            return TicketProductCreateForm(shop_id, request.form)
+        case ProductType.ticket_bundle:
+            return TicketBundleProductCreateForm(shop_id, request.form)
+        case _:
+            return ProductCreateForm(shop_id, request.form)
 
 
 def _get_item_number(product_number_sequence_id) -> ProductNumber:
@@ -483,55 +484,56 @@ def _create_product(
     not_directly_orderable: bool = False,
     separate_order_required: bool = False,
 ) -> Product:
-    if type_ == ProductType.ticket:
-        return product_service.create_ticket_product(
-            shop_id,
-            item_number,
-            name,
-            price,
-            tax_rate,
-            total_quantity,
-            max_quantity_per_order,
-            form.ticket_category_id.data,
-            available_from=available_from,
-            available_until=available_until,
-            not_directly_orderable=not_directly_orderable,
-            separate_order_required=separate_order_required,
-        )
-    elif type_ == ProductType.ticket_bundle:
-        return product_service.create_ticket_bundle_product(
-            shop_id,
-            item_number,
-            name,
-            price,
-            tax_rate,
-            total_quantity,
-            max_quantity_per_order,
-            form.ticket_category_id.data,
-            form.ticket_quantity.data,
-            available_from=available_from,
-            available_until=available_until,
-            not_directly_orderable=not_directly_orderable,
-            separate_order_required=separate_order_required,
-        )
-    else:
-        processing_required = type_ == ProductType.physical
+    match type_:
+        case ProductType.ticket:
+            return product_service.create_ticket_product(
+                shop_id,
+                item_number,
+                name,
+                price,
+                tax_rate,
+                total_quantity,
+                max_quantity_per_order,
+                form.ticket_category_id.data,
+                available_from=available_from,
+                available_until=available_until,
+                not_directly_orderable=not_directly_orderable,
+                separate_order_required=separate_order_required,
+            )
+        case ProductType.ticket_bundle:
+            return product_service.create_ticket_bundle_product(
+                shop_id,
+                item_number,
+                name,
+                price,
+                tax_rate,
+                total_quantity,
+                max_quantity_per_order,
+                form.ticket_category_id.data,
+                form.ticket_quantity.data,
+                available_from=available_from,
+                available_until=available_until,
+                not_directly_orderable=not_directly_orderable,
+                separate_order_required=separate_order_required,
+            )
+        case _:
+            processing_required = type_ == ProductType.physical
 
-        return product_service.create_product(
-            shop_id,
-            item_number,
-            type_,
-            name,
-            price,
-            tax_rate,
-            total_quantity,
-            max_quantity_per_order,
-            processing_required,
-            available_from=available_from,
-            available_until=available_until,
-            not_directly_orderable=not_directly_orderable,
-            separate_order_required=separate_order_required,
-        )
+            return product_service.create_product(
+                shop_id,
+                item_number,
+                type_,
+                name,
+                price,
+                tax_rate,
+                total_quantity,
+                max_quantity_per_order,
+                processing_required,
+                available_from=available_from,
+                available_until=available_until,
+                not_directly_orderable=not_directly_orderable,
+                separate_order_required=separate_order_required,
+            )
 
 
 # -------------------------------------------------------------------- #
