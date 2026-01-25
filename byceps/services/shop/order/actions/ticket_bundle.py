@@ -29,6 +29,7 @@ from byceps.services.shop.order.models.order import (
     OrderID,
     PaidOrder,
 )
+from byceps.services.shop.product import product_service
 from byceps.services.ticketing import (
     ticket_bundle_service,
     ticket_category_service,
@@ -56,10 +57,12 @@ def on_payment(
     parameters: ActionParameters,
 ) -> Result[None, OrderActionFailedError]:
     """Create ticket bundles."""
-    ticket_category_id = parameters['category_id']
+    product = product_service.get_product(line_item.product_id)
+
+    ticket_category_id = product.type_params['ticket_category_id']
     ticket_category = ticket_category_service.get_category(ticket_category_id)
 
-    ticket_quantity_per_bundle = parameters['ticket_quantity']
+    ticket_quantity_per_bundle = int(product.type_params['ticket_quantity'])
 
     _create_ticket_bundles(
         order, line_item, ticket_category, ticket_quantity_per_bundle, initiator

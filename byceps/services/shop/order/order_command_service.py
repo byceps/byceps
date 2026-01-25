@@ -294,34 +294,10 @@ def _execute_actions_on_payment(
     for line_item in order.line_items:
         match line_item.product_type:
             case ProductType.ticket:
-                product = product_service.get_product(line_item.product_id)
-
-                ticket_category_id = product.type_params['ticket_category_id']
-
-                ticket_actions.on_payment(
-                    order,
-                    line_item,
-                    initiator,
-                    {
-                        'category_id': ticket_category_id,
-                    },
-                )
+                ticket_actions.on_payment(order, line_item, initiator, {})
             case ProductType.ticket_bundle:
-                product = product_service.get_product(line_item.product_id)
-
-                ticket_category_id = product.type_params['ticket_category_id']
-                ticket_quantity_per_bundle = int(
-                    product.type_params['ticket_quantity']
-                )
-
                 ticket_bundle_actions.on_payment(
-                    order,
-                    line_item,
-                    initiator,
-                    {
-                        'category_id': ticket_category_id,
-                        'ticket_quantity': ticket_quantity_per_bundle,
-                    },
+                    order, line_item, initiator, {}
                 )
 
     # based on order action registered for product number
