@@ -94,12 +94,11 @@ def build_tickets(
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    created_at = datetime.utcnow()
-
     match ticket_code_service.generate_ticket_codes(quantity):
         case Ok(codes):
             for code in codes:
                 ticket_id = TicketID(generate_uuid7())
+                created_at = datetime.utcnow()
 
                 yield DbTicket(
                     ticket_id,
