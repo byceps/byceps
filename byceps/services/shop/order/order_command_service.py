@@ -326,9 +326,11 @@ def _execute_actions_on_cancellation_after_payment(
     for line_item in order.line_items:
         match line_item.product_type:
             case ProductType.ticket:
-                ticket_actions.on_cancellation_after_payment(
+                match ticket_actions.on_cancellation_after_payment(
                     order, line_item, initiator, {}
-                )
+                ):
+                    case Err(e):
+                        return Err(OrderActionFailedError(e))
             case ProductType.ticket_bundle:
                 match ticket_bundle_actions.on_cancellation_after_payment(
                     order, line_item, initiator, {}
