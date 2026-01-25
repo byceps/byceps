@@ -28,7 +28,7 @@ def register_ticket_bundles_creation(
 ) -> None:
     # Create ticket bundle(s) for order when it is marked as paid.
     params_create = {
-        'category_id': str(ticket_category_id),
+        'ticket_category_id': str(ticket_category_id),
         'ticket_quantity': ticket_quantity,
     }
     order_action_service.create_action(
@@ -42,7 +42,7 @@ def register_tickets_creation(
 ) -> None:
     # Create tickets for order when it is marked as paid.
     params_create = {
-        'category_id': str(ticket_category_id),
+        'ticket_category_id': str(ticket_category_id),
     }
     order_action_service.create_action(
         product_id, 'create_tickets', params_create
