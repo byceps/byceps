@@ -59,10 +59,14 @@ def on_payment(
     """Create ticket bundles."""
     product = product_service.get_product(line_item.product_id)
 
-    ticket_category_id = product.type_params['ticket_category_id']
-    ticket_category = ticket_category_service.get_category(ticket_category_id)
+    if parameters:
+        ticket_category_id = parameters['category_id']
+        ticket_quantity_per_bundle = int(parameters['ticket_quantity'])
+    else:
+        ticket_category_id = product.type_params['ticket_category_id']
+        ticket_quantity_per_bundle = int(product.type_params['ticket_quantity'])
 
-    ticket_quantity_per_bundle = int(product.type_params['ticket_quantity'])
+    ticket_category = ticket_category_service.get_category(ticket_category_id)
 
     _create_ticket_bundles(
         order, line_item, ticket_category, ticket_quantity_per_bundle, initiator
