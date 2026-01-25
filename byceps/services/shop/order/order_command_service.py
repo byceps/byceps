@@ -302,9 +302,15 @@ def _execute_actions_on_cancellation_before_payment(
 ) -> Result[None, OrderActionFailedError]:
     # based on product type
     for line_item in order.line_items:
-        match line_item.product_type:
-            case _:
-                pass  # No actions use this, yet.
+        procedure = order_action_service.find_procedure_for_product_type(
+            line_item.product_type
+        )
+        if procedure:
+            match procedure.on_cancellation_before_payment(
+                order, line_item, initiator, {}
+            ):
+                case Err(e):
+                    return Err(OrderActionFailedError(e))
 
     # based on order action registered for product number
     return order_action_service.execute_actions_on_cancellation_before_payment(
