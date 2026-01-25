@@ -39,8 +39,8 @@ _PROCEDURES_BY_NAME: dict[str, ActionProcedure] = {
 }
 
 _PROCEDURES_BY_PRODUCT_TYPE: dict[ProductType, ActionProcedure] = {
-    ProductType.ticket: ticket_bundle_actions.get_action_procedure(),
-    ProductType.ticket_bundle: ticket_actions.get_action_procedure(),
+    ProductType.ticket: ticket_actions.get_action_procedure(),
+    ProductType.ticket_bundle: ticket_bundle_actions.get_action_procedure(),
 }
 
 
