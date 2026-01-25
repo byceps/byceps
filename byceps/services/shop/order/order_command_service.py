@@ -291,7 +291,9 @@ def _execute_actions_on_payment(
             line_item.product_type
         )
         if procedure:
-            procedure.on_payment(order, line_item, initiator, {})
+            match procedure.on_payment(order, line_item, initiator, {}):
+                case Err(e):
+                    return Err(OrderActionFailedError(e))
 
     # based on order action registered for product number
     return order_action_service.execute_actions_on_payment(order, initiator)
