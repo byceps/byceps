@@ -11,13 +11,9 @@ from byceps.services.language import language_service
 
 
 def set_up_database() -> None:
-    # Learn about all tables to also drop old ones no longer
-    # defined in models.
-    db.reflect()
+    _load_dbmodels()
 
     db.drop_all()
-
-    _load_dbmodels()
     db.create_all()
 
 
