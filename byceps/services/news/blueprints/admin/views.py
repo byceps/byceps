@@ -392,7 +392,7 @@ def image_delete(image_id):
     """Delete a news image."""
     image = _get_image_or_404(image_id)
 
-    result = news_image_service.delete_image(image.id)
+    news_image_service.delete_image(image.id)
 
     flash_success(gettext('News image has been deleted.'))
 
