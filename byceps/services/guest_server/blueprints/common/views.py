@@ -18,7 +18,6 @@ from byceps.services.party import party_service, party_setting_service
 from byceps.services.party.models import PartyID
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
-from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 from byceps.util.views import login_required
@@ -69,7 +68,7 @@ def _ensure_user_allowed_to_view_printable_card(server: Server) -> None:
     """Abort if the current user is not allowed to view the printable
     card for that server.
     """
-    if g.user.id != server.owner.id and not has_current_user_permission(
+    if g.user.id != server.owner.id and not g.user.has_permission(
         'guest_server.administrate'
     ):
         abort(404)

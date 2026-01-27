@@ -27,7 +27,6 @@ from byceps.services.site.blueprints.site.navigation import (
 )
 from byceps.services.text_markup import text_markup_service
 from byceps.services.user import user_service
-from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.result import Err
@@ -112,9 +111,8 @@ def posting_create(topic_id):
         )
         return redirect(h.build_url_for_topic(db_topic.id))
 
-    if (
-        db_topic.posting_limited_to_moderators
-        and not has_current_user_permission('board.announce')
+    if db_topic.posting_limited_to_moderators and not g.user.has_permission(
+        'board.announce'
     ):
         flash_error(
             gettext('Only moderators are allowed to reply in this topic.'),

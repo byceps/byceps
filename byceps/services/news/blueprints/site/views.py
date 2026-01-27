@@ -15,7 +15,6 @@ from byceps.services.site.blueprints.site.navigation import (
     subnavigation_for_view,
 )
 from byceps.services.site.models import SiteID
-from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 
@@ -125,7 +124,7 @@ def _get_items_per_page_value() -> int:
 
 
 def _may_current_user_view_drafts() -> bool:
-    return has_current_user_permission('news_item.view_draft')
+    return g.user.has_permission('news_item.view_draft')
 
 
 def _get_external_url(item: RenderedNewsItem) -> str | None:

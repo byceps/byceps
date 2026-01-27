@@ -28,7 +28,6 @@ from byceps.services.ticketing import ticket_service
 from byceps.services.user.models import UserID
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.services.user_badge.models import Badge
-from byceps.util.authz import has_current_user_permission
 
 from .models import Creator, Ticket
 
@@ -171,7 +170,7 @@ def _get_site_setting_int_value(key, default_value) -> int:
 
 def may_current_user_view_hidden() -> bool:
     """Return `True' if the current user may view hidden items."""
-    return has_current_user_permission('board.view_hidden')
+    return g.user.has_permission('board.view_hidden')
 
 
 def may_topic_be_updated_by_current_user(db_topic: DbTopic) -> bool:
@@ -179,8 +178,8 @@ def may_topic_be_updated_by_current_user(db_topic: DbTopic) -> bool:
     return (
         not db_topic.locked
         and g.user.id == db_topic.creator_id
-        and has_current_user_permission('board_topic.update')
-    ) or has_current_user_permission('board.update_of_others')
+        and g.user.has_permission('board_topic.update')
+    ) or g.user.has_permission('board.update_of_others')
 
 
 def may_posting_be_updated_by_current_user(db_posting: DbPosting) -> bool:
@@ -188,5 +187,5 @@ def may_posting_be_updated_by_current_user(db_posting: DbPosting) -> bool:
     return (
         not db_posting.topic.locked
         and g.user.id == db_posting.creator_id
-        and has_current_user_permission('board_posting.update')
-    ) or has_current_user_permission('board.update_of_others')
+        and g.user.has_permission('board_posting.update')
+    ) or g.user.has_permission('board.update_of_others')

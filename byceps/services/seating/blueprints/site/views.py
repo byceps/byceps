@@ -28,7 +28,6 @@ from byceps.services.ticketing import (
 )
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketID
-from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -338,7 +337,7 @@ def _is_seat_management_enabled():
 
 
 def _is_current_user_seating_admin() -> bool:
-    return has_current_user_permission('ticketing.administrate_seat_occupancy')
+    return g.user.has_permission('ticketing.administrate_seat_occupancy')
 
 
 def _user_manages_enough_tickets() -> bool:
