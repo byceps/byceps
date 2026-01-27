@@ -9,7 +9,6 @@ byceps.services.seating.seat_import_service
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
-import json
 
 from pydantic import ValidationError
 
@@ -153,12 +152,7 @@ class SeatsImportParser:
 def _parse_seat_json(json_data: str) -> Result[SerializableSeatToImport, str]:
     """Parse a JSON object into a seat import object."""
     try:
-        data_dict = json.loads(json_data)
-    except json.decoder.JSONDecodeError as e:
-        return Err(f'Could not parse JSON: {e}')
-
-    try:
-        seat_to_import = SerializableSeatToImport.model_validate(data_dict)
+        seat_to_import = SerializableSeatToImport.model_validate_json(json_data)
         return Ok(seat_to_import)
     except ValidationError as e:
         return Err(str(e))
