@@ -69,10 +69,6 @@ class PermissionRegistry:
         """Add permission to the registry."""
         self._permissions[permission_id] = label
 
-    def get_registered_permission_ids(self) -> frozenset[PermissionID]:
-        """Return all registered permission IDs."""
-        return frozenset(self._permissions.keys())
-
     def get_registered_permissions(self) -> frozenset[Permission]:
         """Return all registered permissions."""
         return frozenset(
@@ -86,7 +82,7 @@ class PermissionRegistry:
         """Return only those permission IDs that are registered."""
         return {
             permission_id
-            for permission_id in self.get_registered_permission_ids()
+            for permission_id in self._permissions
             if permission_id in permission_ids
         }
 
