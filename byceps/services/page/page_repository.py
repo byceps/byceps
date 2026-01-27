@@ -37,7 +37,6 @@ def create_page(
     """Create a page and its initial version."""
     page_id = PageID(generate_uuid7())
     version_id = PageVersionID(generate_uuid7())
-    created_at = datetime.utcnow()
 
     db_page = DbPage(page_id, site_id, name, language_code, url_path)
     db.session.add(db_page)
