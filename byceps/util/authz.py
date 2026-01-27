@@ -44,16 +44,16 @@ def register_permissions(
 
 def get_permissions_for_user(user_id: UserID) -> frozenset[str]:
     """Return the registered permissions this user has been granted."""
-    registered_permission_ids = (
-        permission_registry.get_registered_permission_ids()
-    )
     user_permission_ids = authz_service.get_permission_ids_for_user(user_id)
 
-    # Ignore unregistered permission IDs.
+    registered_user_permission_ids = (
+        permission_registry.select_registered_permission_ids(
+            user_permission_ids
+        )
+    )
+
     return frozenset(
-        str(permission_id)
-        for permission_id in registered_permission_ids
-        if permission_id in user_permission_ids
+        str(permission_id) for permission_id in registered_user_permission_ids
     )
 
 
@@ -79,6 +79,16 @@ class PermissionRegistry:
             Permission(id=permission_id, title=label)
             for permission_id, label in self._permissions.items()
         )
+
+    def select_registered_permission_ids(
+        self, permission_ids: set[PermissionID]
+    ) -> set[PermissionID]:
+        """Return only those permission IDs that are registered."""
+        return {
+            permission_id
+            for permission_id in self.get_registered_permission_ids()
+            if permission_id in permission_ids
+        }
 
 
 permission_registry = PermissionRegistry()
