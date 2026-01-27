@@ -50,12 +50,21 @@ class CurrentUser(User):
         cls, user: User, locale: Locale | None, permissions: frozenset[str]
     ) -> Self:
         """Return an authenticated current user object."""
+        if not user.initialized:
+            raise ValueError('User has to be initialized')
+
+        if user.suspended:
+            raise ValueError('User must not be suspended')
+
+        if user.deleted:
+            raise ValueError('User must not be deleted')
+
         return cls(
             id=user.id,
             screen_name=user.screen_name,
-            initialized=True,  # Current user has to be initialized.
-            suspended=False,  # Current user cannot be suspended.
-            deleted=False,  # Current user cannot be deleted.
+            initialized=True,
+            suspended=False,
+            deleted=False,
             avatar_url=user.avatar_url,
             locale=locale,
             authenticated=True,
