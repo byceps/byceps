@@ -47,11 +47,11 @@ def get_current_user(required_permissions: set[str]) -> CurrentUser:
 
     user = _find_user()
     if user is None:
-        return authn_session_service.get_anonymous_current_user(session_locale)
+        return CurrentUser.create_anonymous(session_locale)
 
     permissions = get_permissions_for_user(user.id)
     if not required_permissions.issubset(permissions):
-        return authn_session_service.get_anonymous_current_user(session_locale)
+        return CurrentUser.create_anonymous(session_locale)
 
     locale = user_service.find_locale(user.id) or session_locale
 

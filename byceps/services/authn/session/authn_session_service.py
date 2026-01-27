@@ -160,11 +160,6 @@ def delete_login_entries(occurred_before: datetime) -> int:
     return authn_session_repository.delete_login_entries(occurred_before)
 
 
-def get_anonymous_current_user(locale: Locale | None) -> CurrentUser:
-    """Return an anonymous current user object."""
-    return CurrentUser.create_anonymous(locale)
-
-
 def get_authenticated_current_user(
     user: User,
     locale: Locale | None,
