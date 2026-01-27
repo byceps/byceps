@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
-from typing import TypeAlias
 
 from flask_babel import lazy_gettext
 
@@ -45,7 +44,7 @@ class SoldProductsReport:
     order_summaries: list[OrderSummary]
 
 
-CsvRow: TypeAlias = tuple[str, ...]
+CsvRow = tuple[str, ...]
 
 
 def get_sold_products_report(
