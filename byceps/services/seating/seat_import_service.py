@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
 
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_category_service
@@ -18,7 +18,18 @@ from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.util.result import Err, Ok, Result
 
 from . import seat_group_service, seat_service, seating_area_service
-from .models import Seat, SeatingAreaID, SeatToImport, SerializableSeatToImport
+from .models import Seat, SeatingAreaID, SeatToImport
+
+
+class SerializableSeatToImport(BaseModel):
+    area_title: str
+    coord_x: int
+    coord_y: int
+    category_title: str
+    rotation: int | None = None
+    label: str | None = None
+    type_: str | None = None
+    group_title: str | None = None
 
 
 def serialize_seat_to_import(

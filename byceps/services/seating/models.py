@@ -11,8 +11,6 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from pydantic import BaseModel
-
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
@@ -94,17 +92,6 @@ class SeatGroupOccupancy:
 class SeatUtilization:
     occupied: int
     total: int
-
-
-class SerializableSeatToImport(BaseModel):
-    area_title: str
-    coord_x: int
-    coord_y: int
-    category_title: str
-    rotation: int | None = None
-    label: str | None = None
-    type_: str | None = None
-    group_title: str | None = None
 
 
 @dataclass(frozen=True, kw_only=True)
