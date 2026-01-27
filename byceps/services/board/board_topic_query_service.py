@@ -92,7 +92,7 @@ def find_topic_visible_for_user(
 def get_recent_topics(
     board_id: BoardID,
     limit: int,
-    user: CurrentUser,
+    current_user: CurrentUser,
     *,
     include_hidden: bool = False,
 ) -> list[BoardTopicSummary] | None:
@@ -101,7 +101,7 @@ def get_recent_topics(
     Returns `None` if the user is not permitted to access the board.
     """
     has_access = board_access_control_service.has_user_access_to_board(
-        user.id, board_id
+        current_user.id, board_id
     )
     if not has_access:
         return None
@@ -119,14 +119,14 @@ def get_recent_topics(
         .all()
     )
 
-    return _to_topic_summaries(db_topics, user)
+    return _to_topic_summaries(db_topics, current_user)
 
 
 def paginate_topics(
     board_id: BoardID,
     page: int,
     per_page: int,
-    user: CurrentUser,
+    current_user: CurrentUser,
     *,
     include_hidden: bool = False,
 ) -> Pagination:
@@ -141,7 +141,7 @@ def paginate_topics(
 
     pagination = paginate(stmt, page, per_page)
 
-    pagination.items = _to_topic_summaries(pagination.items, user)
+    pagination.items = _to_topic_summaries(pagination.items, current_user)
 
     return pagination
 
@@ -166,7 +166,7 @@ def paginate_topics_of_category(
     category_id: BoardCategoryID,
     page: int,
     per_page: int,
-    user: CurrentUser,
+    current_user: CurrentUser,
     *,
     include_hidden: bool = False,
 ) -> Pagination:
@@ -182,7 +182,7 @@ def paginate_topics_of_category(
 
     pagination = paginate(stmt, page, per_page)
 
-    pagination.items = _to_topic_summaries(pagination.items, user)
+    pagination.items = _to_topic_summaries(pagination.items, current_user)
 
     return pagination
 
@@ -199,7 +199,7 @@ def _select_topics(*, include_hidden: bool = False) -> Select:
 
 
 def _to_topic_summaries(
-    db_topics: Iterable[DbTopic], user: CurrentUser
+    db_topics: Iterable[DbTopic], current_user: CurrentUser
 ) -> list[BoardTopicSummary]:
     """Build summary objects."""
     creator_ids = {t.creator_id for t in db_topics}
@@ -223,7 +223,7 @@ def _to_topic_summaries(
         last_updated_by = users_by_id[db_topic.last_updated_by_id]
 
         contains_unseen_postings = _contains_topic_unseen_postings(
-            db_topic.id, db_topic.last_updated_at, user
+            db_topic.id, db_topic.last_updated_at, current_user
         )
 
         summary = BoardTopicSummary(
@@ -311,15 +311,15 @@ def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
 
 
 def _contains_topic_unseen_postings(
-    topic_id: TopicID, last_updated_at: datetime, user: CurrentUser
+    topic_id: TopicID, last_updated_at: datetime, current_user: CurrentUser
 ) -> bool:
     """Return `True` if the topic contains postings created after the
     last time the user viewed it.
     """
-    if not user.authenticated:
+    if not current_user.authenticated:
         return False
 
-    last_viewed_at = find_topic_last_viewed_at(topic_id, user.id)
+    last_viewed_at = find_topic_last_viewed_at(topic_id, current_user.id)
     return last_viewed_at is None or last_updated_at > last_viewed_at
 
 

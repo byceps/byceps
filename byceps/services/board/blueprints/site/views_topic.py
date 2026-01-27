@@ -156,11 +156,11 @@ def topic_view(topic_id, page):
 
 def _find_posting_url_to_redirect_to(
     topic_id: TopicID,
-    user: CurrentUser,
+    current_user: CurrentUser,
     include_hidden: bool,
     last_viewed_at: datetime | None,
 ) -> str | None:
-    if not user.authenticated:
+    if not current_user.authenticated:
         # All postings are potentially new to a guest, so start on
         # the first page.
         return None
