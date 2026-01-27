@@ -43,7 +43,7 @@ def register_permissions(
 
 
 def get_permissions_for_user(user_id: UserID) -> frozenset[str]:
-    """Return the permissions this user has been granted."""
+    """Return the registered permissions this user has been granted."""
     registered_permission_ids = (
         permission_registry.get_registered_permission_ids()
     )
