@@ -26,7 +26,7 @@
 {{ render_notification(_('This topic is hidden.'), category='info', icon='hidden') }}
   {%- endif %}
 
-  {%- if has_current_user_any_permission('board.hide', 'board_topic.lock', 'board_topic.move', 'board_topic.pin') %}
+  {%- if g.user.has_any_permission('board.hide', 'board_topic.lock', 'board_topic.move', 'board_topic.pin') %}
   <div class="button-row is-right-aligned">
     <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="{{ _('Moderate topic') }}">{{ render_icon('moderate') }} <span>{{ _('Moderate') }}</span></a>
   </div>
