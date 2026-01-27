@@ -7,7 +7,6 @@ byceps.services.authn.session.authn_session_service
 """
 
 from datetime import datetime
-from uuid import UUID
 
 from babel import Locale
 
@@ -19,11 +18,7 @@ from byceps.services.core.events import EventSite
 from byceps.services.site.models import Site
 from byceps.services.user.log import user_log_domain_service, user_log_service
 from byceps.services.user.log.models import UserLogEntry
-from byceps.services.user.models import (
-    User,
-    UserID,
-    USER_FALLBACK_AVATAR_URL_PATH,
-)
+from byceps.services.user.models import User, UserID
 
 from . import authn_session_repository
 from .models import CurrentUser
@@ -165,22 +160,9 @@ def delete_login_entries(occurred_before: datetime) -> int:
     return authn_session_repository.delete_login_entries(occurred_before)
 
 
-ANONYMOUS_USER_ID = UserID(UUID('00000000-0000-0000-0000-000000000000'))
-
-
 def get_anonymous_current_user(locale: Locale | None) -> CurrentUser:
     """Return an anonymous current user object."""
-    return CurrentUser(
-        id=ANONYMOUS_USER_ID,
-        screen_name=None,
-        initialized=True,
-        suspended=False,
-        deleted=False,
-        avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
-        locale=locale,
-        authenticated=False,
-        permissions=frozenset(),
-    )
+    return CurrentUser.create_anonymous(locale)
 
 
 def get_authenticated_current_user(
@@ -189,14 +171,4 @@ def get_authenticated_current_user(
     permissions: frozenset[str],
 ) -> CurrentUser:
     """Return an authenticated current user object."""
-    return CurrentUser(
-        id=user.id,
-        screen_name=user.screen_name,
-        initialized=True,  # Current user has to be initialized.
-        suspended=False,  # Current user cannot be suspended.
-        deleted=False,  # Current user cannot be deleted.
-        avatar_url=user.avatar_url,
-        locale=locale,
-        authenticated=True,
-        permissions=permissions,
-    )
+    return CurrentUser.create_authenticated(user, locale, permissions)
