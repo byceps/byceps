@@ -47,7 +47,8 @@ def index():
     open_orders = _get_open_orders(user.id)
     tickets = _get_tickets(user.id)
     news_headlines = _get_news_headlines()
-    board_topics = board_helper_service.get_recent_topics(g.user)
+    board_topics = board_helper_service.get_recent_topics()
+
     guest_servers = _get_guest_servers()
 
     return {

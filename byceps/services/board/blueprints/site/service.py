@@ -11,7 +11,6 @@ from datetime import datetime
 
 from flask import g
 
-from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
     board_posting_query_service,
     board_topic_query_service,
@@ -36,9 +35,7 @@ DEFAULT_POSTINGS_PER_PAGE = 10
 DEFAULT_TOPICS_PER_PAGE = 10
 
 
-def get_recent_topics(
-    user: CurrentUser, *, limit=6
-) -> list[BoardTopicSummary] | None:
+def get_recent_topics(*, limit=6) -> list[BoardTopicSummary] | None:
     """Return the most recently active board topics.
 
     Returns `None` if no board is configured for this site or the
@@ -50,7 +47,7 @@ def get_recent_topics(
 
     include_hidden = may_current_user_view_hidden()
     return board_topic_query_service.get_recent_topics(
-        board_id, limit, user, include_hidden=include_hidden
+        board_id, limit, g.user, include_hidden=include_hidden
     )
 
 

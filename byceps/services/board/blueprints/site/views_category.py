@@ -40,7 +40,7 @@ def category_index():
         board_id, user
     )
 
-    recent_topics = service.get_recent_topics(user)
+    recent_topics = service.get_recent_topics()
 
     return {
         'categories': categories,
