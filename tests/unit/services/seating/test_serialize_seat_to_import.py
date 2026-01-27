@@ -41,7 +41,7 @@ from byceps.services.seating import seat_import_service
             'VIP Seat 7',
             'vip',
             'VIPs Group #1',
-            '{"area_title":"Second hall","coord_x":10,"coord_y":25,"category_title":"VIP","rotation":45,"label":"VIP Seat 7","type_":"vip","group_title":"VIPs Group #1"}',
+            '{"area_title":"Second hall","coord_x":10,"coord_y":25,"category_title":"VIP","rotation":45,"label":"VIP Seat 7","type":"vip","group_title":"VIPs Group #1"}',
         ),
     ],
 )

@@ -31,7 +31,7 @@ def ticket_category_id(value: str) -> TicketCategoryID:
         (
             [
                 '{"area_title":"Main hall","coord_x":23,"coord_y":42,"category_title":"Standard"}',
-                '{"area_title":"Second hall","coord_x":10,"coord_y":25,"category_title":"VIP","rotation":45,"label":"VIP Seat 7","type_":"vip","group_title":"VIPs Group #1"}',
+                '{"area_title":"Second hall","coord_x":10,"coord_y":25,"category_title":"VIP","rotation":45,"label":"VIP Seat 7","type":"vip","group_title":"VIPs Group #1"}',
             ],
             [
                 (

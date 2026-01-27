@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_category_service
@@ -28,7 +28,7 @@ class SerializableSeatToImport(BaseModel):
     category_title: str
     rotation: int | None = None
     label: str | None = None
-    type_: str | None = None
+    type_: str | None = Field(default=None, alias='type')
     group_title: str | None = None
 
 
@@ -62,7 +62,7 @@ def serialize_seat_to_import(
     if group_title is not None:
         model.group_title = group_title
 
-    return model.model_dump_json(exclude_unset=True)
+    return model.model_dump_json(by_alias=True, exclude_unset=True)
 
 
 def load_seats_from_json_lines(
