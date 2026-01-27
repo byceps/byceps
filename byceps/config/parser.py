@@ -13,7 +13,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field as dataclass_field
 from enum import Enum
 from pathlib import Path
-from typing import Any, TypeVar
+from typing import Any
 
 import rtoml
 
@@ -42,10 +42,7 @@ from .util import find_duplicate_server_names, iterate_app_configs
 
 Data = dict[str, Any]
 
-C = TypeVar('C')
-T = TypeVar('T')
-
-ParsingResult = Result[T, list[str]]
+type ParsingResult[T] = Result[T, list[str]]
 
 Value = bool | int | str
 
@@ -53,11 +50,11 @@ ValueType = Enum('ValueType', ['Boolean', 'Integer', 'String'])
 
 CollectionType = Enum('CollectionType', ['List'])
 
-Validator = Callable[[C], ParsingResult[None]]
+type Validator[C] = Callable[[C], ParsingResult[None]]
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class Section:
+class Section[C]:
     name: str
     fields: list[Field]
     config_class: type[C]
@@ -363,7 +360,9 @@ def _parse_config_dict(
     return Ok((byceps_config, web_apps_config))
 
 
-def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
+def _parse_section[C, T](
+    data: Data, section: Section
+) -> ParsingResult[T | None]:
     def parse(section_data: Data) -> ParsingResult[C]:
         return _parse_section_fields(
             section_data,
@@ -380,7 +379,7 @@ def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
         return _parse_optional_section(data, section, parse)
 
 
-def _parse_required_section(
+def _parse_required_section[T](
     data: Data,
     section: Section,
     parse: Callable[[Data], ParsingResult[T]],
@@ -394,7 +393,7 @@ def _parse_required_section(
     )
 
 
-def _parse_optional_section(
+def _parse_optional_section[T](
     data: Data,
     section: Section,
     parse: Callable[[Data], ParsingResult[T | None]],
@@ -412,7 +411,7 @@ def _parse_optional_section(
     return parse(section_data)
 
 
-def _parse_section_fields(
+def _parse_section_fields[C](
     section_data: Data,
     section_name: str,
     fields: list[Field],
