@@ -12,7 +12,6 @@ from typing import Any
 from flask import g, render_template
 
 from byceps.byceps_app import get_current_byceps_app
-from byceps.util.authz import has_current_user_any_permission
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.navigation import Navigation
 
@@ -37,7 +36,7 @@ def inject_template_variables() -> dict[str, Any]:
         'now': datetime.utcnow(),
         'today': date.today(),
         'Navigation': Navigation,
-        'has_current_user_any_permission': has_current_user_any_permission,
+        'has_current_user_any_permission': g.user.has_any_permission,
         'has_current_user_permission': g.user.has_permission,
     }
 
