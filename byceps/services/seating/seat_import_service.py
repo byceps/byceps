@@ -52,7 +52,7 @@ def serialize_seat_to_import(
     if group_title is not None:
         model.group_title = group_title
 
-    return model.json(exclude_unset=True)
+    return model.model_dump_json(exclude_unset=True)
 
 
 def load_seats_from_json_lines(
