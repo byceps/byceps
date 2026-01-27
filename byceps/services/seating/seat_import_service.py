@@ -62,13 +62,13 @@ def load_seats_from_json_lines(
     return parser.parse_lines(lines)
 
 
-def _create_parser(party_id: PartyID) -> _SeatsImportParser:
+def _create_parser(party_id: PartyID) -> SeatsImportParser:
     """Create a parser, populated with party-specific data."""
     area_ids_by_title = _get_area_ids_by_title(party_id)
     category_ids_by_title = _get_category_ids_by_title(party_id)
     seat_group_titles = _get_seat_group_titles(party_id)
 
-    return _SeatsImportParser(
+    return SeatsImportParser(
         area_ids_by_title, category_ids_by_title, seat_group_titles
     )
 
@@ -93,7 +93,7 @@ def _get_seat_group_titles(party_id: PartyID) -> set[str]:
     return {group.title for group in groups}
 
 
-class _SeatsImportParser:
+class SeatsImportParser:
     """Parse JSON Lines records into importable seat objects."""
 
     def __init__(
