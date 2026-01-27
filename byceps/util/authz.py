@@ -82,8 +82,8 @@ class PermissionRegistry:
         """Return only those permission IDs that are registered."""
         return {
             permission_id
-            for permission_id in self._permissions
-            if permission_id in permission_ids
+            for permission_id in permission_ids
+            if permission_id in self._permissions
         }
 
 
