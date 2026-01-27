@@ -139,9 +139,9 @@ def export_sold_products_as_csv(report: SoldProductsReport) -> str:
 
 def _assemble_csv_header_row(report: SoldProductsReport) -> CsvRow:
     fixed_column_names = (
-        lazy_gettext('Order number'),
-        lazy_gettext('Username'),
-        lazy_gettext('Name'),
+        str(lazy_gettext('Order number')),
+        str(lazy_gettext('Username')),
+        str(lazy_gettext('Name')),
     )
     product_names = tuple(product.name for product in report.products)
     return fixed_column_names + product_names
