@@ -24,7 +24,7 @@
     </div>
     <div>
 
-      {%- if has_current_user_permission('site.update') %}
+      {%- if g.user.has_permission('site.update') %}
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.update_form', site_id=site.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>
@@ -98,7 +98,7 @@
     <div>
       <h2>{{ _('News Channels') }} {{ render_extra_in_heading(news_channels|length) }}</h2>
     </div>
-  {%- if has_current_user_permission('site.update') %}
+  {%- if g.user.has_permission('site.update') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.assign_news_channels_form', site_id=site.id) }}">{{ _('Assign news channels') }}</a>

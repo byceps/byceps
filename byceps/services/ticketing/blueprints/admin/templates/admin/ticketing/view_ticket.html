@@ -44,7 +44,7 @@
             {%- if not ticket.revoked %}
             <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} {{ _('Assign user') }}</a></li>
             {%- endif %}
-            {%- if has_current_user_permission('ticketing.administrate') and not ticket.user_checked_in %}
+            {%- if g.user.has_permission('ticketing.administrate') and not ticket.user_checked_in %}
             <li><a class="dropdown-item" href="{{ url_for('.update_code', ticket_id=ticket.id) }}">{{ render_icon('edit') }} {{ _('Change code') }}</a></li>
             {%- endif %}
             {%- if ticket.user_checked_in %}

@@ -22,7 +22,7 @@
       </section>
       {%- endif %}
 
-      {%- if has_current_user_permission('admin.access') %}
+      {%- if g.user.has_permission('admin.access') %}
       <section class="page-header-nav">
 {% include 'layout/admin/_header_nav.html' %}
       </section>

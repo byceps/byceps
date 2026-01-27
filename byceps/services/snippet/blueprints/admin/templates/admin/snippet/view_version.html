@@ -22,11 +22,11 @@
 
       <div class="button-row is-right-aligned">
 
-        {%- if has_current_user_permission('snippet.update') -%}
+        {%- if g.user.has_permission('snippet.update') -%}
         <a class="button" href="{{ url_for('.update_form', snippet_id=snippet.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         {%- endif -%}
 
-        {%- if has_current_user_permission('snippet.delete') %}
+        {%- if g.user.has_permission('snippet.delete') %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">

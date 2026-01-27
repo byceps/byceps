@@ -39,7 +39,7 @@
       {%- endfor %}
     </tbody>
   </table>
-    {%- if has_current_user_permission('gallery.administrate') %}
+    {%- if g.user.has_permission('gallery.administrate') %}
   <form action="{{ url_for('.import_images', gallery_id=gallery.id) }}" method="post">
     {{ form_buttons(_('Import')) }}
   </form>

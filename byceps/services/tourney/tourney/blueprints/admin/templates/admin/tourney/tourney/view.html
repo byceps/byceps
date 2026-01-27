@@ -17,7 +17,7 @@
       <h1 class="title">{{ tourney.title }}</h1>
     </div>
     <div>
-      {%- if has_current_user_permission('tourney.administrate') %}
+      {%- if g.user.has_permission('tourney.administrate') %}
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.update_form', tourney_id=tourney.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>

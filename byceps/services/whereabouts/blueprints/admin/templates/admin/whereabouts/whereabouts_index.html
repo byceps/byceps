@@ -16,7 +16,7 @@
   <div>
     <h1 class="title">{{ page_title }} {{ render_extra_in_heading(whereabouts_list|length) }}</h1>
   </div>
-  {%- if has_current_user_permission('whereabouts.administrate') %}
+  {%- if g.user.has_permission('whereabouts.administrate') %}
   <div>
     <div class="button-row is-right-aligned">
       <a class="button" href="{{ url_for('.whereabouts_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>

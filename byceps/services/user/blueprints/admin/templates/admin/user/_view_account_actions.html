@@ -5,10 +5,10 @@
     <div class="dropdown">
       <button class="dropdown-toggle button is-compact"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
-        {%- if has_current_user_permission('user.set_password') %}
+        {%- if g.user.has_permission('user.set_password') %}
         <li><a class="dropdown-item" href="{{ url_for('.set_password', user_id=user.id) }}">{{ render_icon('password') }} {{ _('Set new password') }}</a></li>
         {%- endif %}
-        {%- if has_current_user_permission('user.administrate') %}
+        {%- if g.user.has_permission('user.administrate') %}
 
           {%- if not user.initialized %}
         <li><a class="dropdown-item" href="{{ url_for('.initialize_account', user_id=user.id) }}" data-action="user-initialize">{{ render_icon('enabled') }} {{ _('Initialize') }}</a></li>

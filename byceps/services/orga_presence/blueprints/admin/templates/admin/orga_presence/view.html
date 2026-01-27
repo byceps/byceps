@@ -58,7 +58,7 @@
     <div>
       <h2>{{ _('My Presence') }} {{ render_extra_in_heading(current_user_presences|length) }}</h2>
     </div>
-    {%- if has_current_user_permission('orga_presence.update') %}
+    {%- if g.user.has_permission('orga_presence.update') %}
     <div>
       <div class="button-row is-compact is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>

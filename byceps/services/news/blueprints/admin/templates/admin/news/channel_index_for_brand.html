@@ -12,7 +12,7 @@
     <div>
       <h1 class="title">{{ brand.title }} {{ render_extra_in_heading(channels|length) }}</h1>
     </div>
-  {%- if has_current_user_permission('news_channel.administrate') %}
+  {%- if g.user.has_permission('news_channel.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.channel_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create news channel') }}</span></a>
@@ -52,7 +52,7 @@
         </td>
         <td class="centered bignumber">{{ item_count|numberformat }}</td>
         <td>
-        {%- if has_current_user_permission('news_channel.administrate') %}
+        {%- if g.user.has_permission('news_channel.administrate') %}
           <a href="{{ url_for('.channel_update_form', channel_id=channel.id) }}" class="button is-compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
           {%- if item_count == 0 %}
           <a href="{{ url_for('.channel_delete', channel_id=channel.id) }}" data-action="channel-delete" class="button is-compact" title="{{ _('Delete') }}">{{ render_icon('remove') }}</a>

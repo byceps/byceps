@@ -14,7 +14,7 @@
         {%- endif -%}
       </h1>
     </div>
-    {%- if has_current_user_permission('site_navigation.administrate') %}
+    {%- if g.user.has_permission('site_navigation.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.menu_update_form', menu_id=menu.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
@@ -34,7 +34,7 @@
     <div>
       <h2>{{ _('Items') }}</h2>
     </div>
-    {%- if has_current_user_permission('site_navigation.administrate') %}
+    {%- if g.user.has_permission('site_navigation.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <div class="dropdown">
@@ -89,7 +89,7 @@
           {%- endif -%}
         </td>
         <td>
-          {%- if has_current_user_permission('site_navigation.administrate') -%}
+          {%- if g.user.has_permission('site_navigation.administrate') -%}
           <div class="button-row is-right-aligned">
             <div class="dropdown">
               <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>

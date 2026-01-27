@@ -32,7 +32,7 @@
     <div>
       <h1 class="title">{{ page_title }} {{ render_extra_in_heading(server_quantities_by_status.total) }}</h1>
     </div>
-    {%- if has_current_user_permission('guest_server.administrate') %}
+    {%- if g.user.has_permission('guest_server.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.server_create_form', party_id=party.id) }}" title="{{ _('Register guest server') }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>

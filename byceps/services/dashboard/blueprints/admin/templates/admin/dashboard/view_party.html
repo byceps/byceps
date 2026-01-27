@@ -79,7 +79,7 @@
       </div>
     {%- endcall %}
 
-  {%- if has_current_user_permission('guest_server.view') %}
+  {%- if g.user.has_permission('guest_server.view') %}
     {%- call render_cell('server', href=url_for('guest_server_admin.server_index', party_id=party.id)) %}
       <div class="cell-label">{{ _('Guest Servers') }}</div>
       <div class="mt">

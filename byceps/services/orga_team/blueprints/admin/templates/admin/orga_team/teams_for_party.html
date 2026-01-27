@@ -12,7 +12,7 @@
     <div>
       <h1 class="title">{{ page_title }} {{ render_extra_in_heading(teams_and_members|length) }}</h1>
     </div>
-    {%- if has_current_user_permission('orga_team.create') %}
+    {%- if g.user.has_permission('orga_team.create') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.team_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create team') }}</span></a>
@@ -36,14 +36,14 @@
       <h2>{{ team.title }} <small>{{ member_total}} {{ ngettext('person', 'persons', member_total) }}</small></h2>
       {%- endwith %}
     </div>
-    {%- if has_current_user_permission('orga_team.administrate_memberships') %}
+    {%- if g.user.has_permission('orga_team.administrate_memberships') %}
     <div>
       <div class="button-row is-compact is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="{{ _('Add orga') }}">{{ render_icon('add') }}</a>
         <div class="dropdown">
           <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            {%- if not members and has_current_user_permission('orga_team.delete') %}
+            {%- if not members and g.user.has_permission('orga_team.delete') %}
             <li><a class="dropdown-item color--danger" href="{{ url_for('.team_delete', team_id=team.id) }}" data-action="team-delete">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></a></li>
             {%- else %}
             <li><span class="dropdown-item is-disabled">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></span></li>

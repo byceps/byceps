@@ -49,7 +49,7 @@ a.awardee:hover .avatar {
     </div>
     <div>
 
-      {%- if has_current_user_permission('user_badge.update') %}
+      {%- if g.user.has_permission('user_badge.update') %}
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.update_form', badge_id=badge.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>

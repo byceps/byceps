@@ -10,7 +10,7 @@
     <div>
       <h1 class="title">{{ page.name }}</h1>
     </div>
-    {%- if has_current_user_permission('page.update') -%}
+    {%- if g.user.has_permission('page.update') -%}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.update_form', page_id=page.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
@@ -18,7 +18,7 @@
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.set_nav_menu', page_id=page.id) }}">{{ render_icon('navigation') }} <span>{{ _('Set navigation menu') }}</span></a></li>
-            {%- if has_current_user_permission('page.delete') %}
+            {%- if g.user.has_permission('page.delete') %}
             <li class="dropdown-divider"></li>
             <li><a class="dropdown-item color--danger" href="{{ url_for('.delete', page_id=page.id) }}" data-action="page-delete">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
             {%- endif %}

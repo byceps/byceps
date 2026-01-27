@@ -12,7 +12,7 @@
   <div>
     <h2 class="title">{{ page_title }} {{ render_extra_in_heading(user_sounds|length) }}</h2>
   </div>
-  {%- if has_current_user_permission('whereabouts.administrate') %}
+  {%- if g.user.has_permission('whereabouts.administrate') %}
   <div>
     <div class="button-row is-right-aligned">
       <a class="button is-compact" href="{{ url_for('.user_sound_create_form') }}">{{ render_icon('add') }} <span>{{ _('Add sound') }}</span></a>

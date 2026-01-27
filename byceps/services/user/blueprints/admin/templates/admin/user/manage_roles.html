@@ -28,7 +28,7 @@
       <tr>
         <th>{{ _('Role') }}</th>
         <th>{{ _('Permissions') }}</th>
-        {%- if has_current_user_permission('role.assign') %}
+        {%- if g.user.has_permission('role.assign') %}
         <th></th>
         <th></th>
         {%- endif %}
@@ -53,7 +53,7 @@
           <p class="dimmed">{{ _('none') }}</p>
           {%- endif %}
         </td>
-        {%- if has_current_user_permission('role.assign') %}
+        {%- if g.user.has_permission('role.assign') %}
         <td>
           {%- if not user_has_role %}
           <a class="button is-compact color-success" href="{{ url_for('.role_assign', user_id=user.id, role_id=role.id) }}" data-action="role-assign" title="{{ _('Assign role') }}">{{ render_icon('add') }}</a>

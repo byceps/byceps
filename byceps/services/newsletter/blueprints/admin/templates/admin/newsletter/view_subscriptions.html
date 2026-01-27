@@ -20,7 +20,7 @@
     </div>
     <div>
 
-      {%- if has_current_user_permission('newsletter.export_subscribers') %}
+      {%- if g.user.has_permission('newsletter.export_subscribers') %}
       <div class="button-row is-right-aligned">
         <div class="dropdown">
           <button class="dropdown-toggle button">

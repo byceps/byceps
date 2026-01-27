@@ -10,7 +10,7 @@
 
   <div class="box no-data-message">{{ _('No shop exists for this brand.') }}</div>
 
-  {%- if has_current_user_permission('shop.create') %}
+  {%- if g.user.has_permission('shop.create') %}
   <div class="button-row is-hcentered">
     <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create shop') }}</span></a>
   </div>

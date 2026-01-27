@@ -25,7 +25,7 @@
 
   <p>{{ _('Topic &quot;%(topic)s&quot; by %(creator)s', topic=topic.title, creator=render_user_link(topic.creator)) }}
 
-  {%- if has_current_user_permission('board.hide') %}
+  {%- if g.user.has_permission('board.hide') %}
   <h2>{{ render_icon('view') }} {{ _('Visibility') }}</h2>
   <div class="main-body-box">
 
@@ -50,7 +50,7 @@
   </div>
   {%- endif %}
 
-  {%- if has_current_user_permission('board_topic.lock') %}
+  {%- if g.user.has_permission('board_topic.lock') %}
   <h2>{{ render_icon('lock') }} {{ _('Write lock') }}</h2>
   <div class="main-body-box">
 
@@ -75,7 +75,7 @@
   </div>
   {%- endif %}
 
-  {%- if has_current_user_permission('board_topic.pin') %}
+  {%- if g.user.has_permission('board_topic.pin') %}
   <h2>{{ render_icon('pin') }} {{ _('Pinning') }}</h2>
   <div class="main-body-box">
 
@@ -100,7 +100,7 @@
   </div>
   {%- endif %}
 
-  {%- if has_current_user_permission('board_topic.move') %}
+  {%- if g.user.has_permission('board_topic.move') %}
   <h2>{{ render_icon('move') }} {{ _('Move') }}</h2>
   <div class="main-body-box">
 
@@ -127,7 +127,7 @@
   </div>
   {%- endif %}
 
-  {%- if has_current_user_permission('board.announce') %}
+  {%- if g.user.has_permission('board.announce') %}
   <h2>{{ render_icon('announce') }} {{ _('Announcements') }}</h2>
   <div class="main-body-box">
 
