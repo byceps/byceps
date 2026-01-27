@@ -92,9 +92,9 @@ permission_registry = PermissionRegistry()
 
 def has_current_user_permission(permission: str) -> bool:
     """Return `True` if the current user has this permission."""
-    return permission in g.user.permissions
+    return g.user.has_permission(permission)
 
 
 def has_current_user_any_permission(*permissions: str) -> bool:
     """Return `True` if the current user has any of these permissions."""
-    return any(map(has_current_user_permission, permissions))
+    return g.user.has_any_permission(permissions)

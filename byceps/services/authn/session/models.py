@@ -23,3 +23,11 @@ class CurrentUser(User):
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)
+
+    def has_permission(self, permission: str) -> bool:
+        """Return `True` if the current user has this permission."""
+        return permission in self.permissions
+
+    def has_any_permission(self, *permissions: str) -> bool:
+        """Return `True` if the current user has any of these permissions."""
+        return any(map(self.has_permission, permissions))
