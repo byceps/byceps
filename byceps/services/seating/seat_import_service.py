@@ -152,7 +152,9 @@ class SeatsImportParser:
 def _parse_seat_json(json_data: str) -> Result[SerializableSeatToImport, str]:
     """Parse a JSON object into a seat import object."""
     try:
-        seat_to_import = SerializableSeatToImport.model_validate_json(json_data)
+        seat_to_import = SerializableSeatToImport.model_validate_json(
+            json_data, strict=True
+        )
         return Ok(seat_to_import)
     except ValidationError as e:
         return Err(str(e))
