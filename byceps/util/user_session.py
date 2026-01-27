@@ -55,9 +55,7 @@ def get_current_user(required_permissions: set[str]) -> CurrentUser:
 
     locale = user_service.find_locale(user.id) or session_locale
 
-    return authn_session_service.get_authenticated_current_user(
-        user, locale, permissions
-    )
+    return CurrentUser.create_authenticated(user, locale, permissions)
 
 
 def _find_user() -> User | None:

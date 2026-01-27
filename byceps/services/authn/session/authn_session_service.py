@@ -8,8 +8,6 @@ byceps.services.authn.session.authn_session_service
 
 from datetime import datetime
 
-from babel import Locale
-
 from byceps.services.authn.events import (
     UserLoggedInToAdminEvent,
     UserLoggedInToSiteEvent,
@@ -21,7 +19,6 @@ from byceps.services.user.log.models import UserLogEntry
 from byceps.services.user.models import User, UserID
 
 from . import authn_session_repository
-from .models import CurrentUser
 
 
 def delete_session_tokens_for_user(user_id: UserID) -> None:
@@ -158,12 +155,3 @@ def delete_login_entries(occurred_before: datetime) -> int:
     Return the number of deleted log entries.
     """
     return authn_session_repository.delete_login_entries(occurred_before)
-
-
-def get_authenticated_current_user(
-    user: User,
-    locale: Locale | None,
-    permissions: frozenset[str],
-) -> CurrentUser:
-    """Return an authenticated current user object."""
-    return CurrentUser.create_authenticated(user, locale, permissions)
