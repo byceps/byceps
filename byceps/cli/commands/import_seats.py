@@ -34,17 +34,20 @@ def import_seats(party_id: PartyID, data_file: Path) -> None:
         lines = iter(f)
         parse_result = _parse_seats(party_id, lines)
 
-    if parse_result.is_err():
-        erroneous_line_numbers = parse_result.unwrap_err()
-        line_numbers_str = ', '.join(map(str, sorted(erroneous_line_numbers)))
-        click.secho(
-            '\nNot attempting actual importing of seats due to parsing errors '
-            f'in these lines: {line_numbers_str}',
-            fg='red',
-        )
-        return
+    match parse_result:
+        case Ok(line_numbers_and_seats_to_import):
+            pass
+        case Err(erroneous_line_numbers):
+            line_numbers_str = ', '.join(
+                map(str, sorted(erroneous_line_numbers))
+            )
+            click.secho(
+                '\nNot attempting actual importing of seats due to parsing errors '
+                f'in these lines: {line_numbers_str}',
+                fg='red',
+            )
+            return
 
-    line_numbers_and_seats_to_import = parse_result.unwrap()
     imported_seats_and_group_titles = list(
         _import_seats(line_numbers_and_seats_to_import)
     )
@@ -61,17 +64,14 @@ def _parse_seats(
         party_id, lines
     )
     for line_number, parse_result in loaded_seats:
-        if parse_result.is_err():
-            erroneous_line_numbers.add(line_number)
-
-            error_str = parse_result.unwrap_err()
-            click.secho(f'[line {line_number}] {error_str}', fg='red')
-
-            continue
-
-        seat_to_import = parse_result.unwrap()
-
-        line_numbers_and_seats_to_import.append((line_number, seat_to_import))
+        match parse_result:
+            case Ok(seat_to_import):
+                line_numbers_and_seats_to_import.append(
+                    (line_number, seat_to_import)
+                )
+            case Err(error_str):
+                erroneous_line_numbers.add(line_number)
+                click.secho(f'[line {line_number}] {error_str}', fg='red')
 
     if erroneous_line_numbers:
         return Err(erroneous_line_numbers)
@@ -84,24 +84,19 @@ def _import_seats(
 ) -> Iterator[tuple[Seat, str | None]]:
     """Import seats into database."""
     for line_number, seat_to_import in line_numbers_and_seats_to_import:
-        import_result = seat_import_service.import_seat(seat_to_import)
-
-        if import_result.is_err():
-            error_str = import_result.unwrap_err()
-            click.secho(
-                f'[line {line_number}] Import of seat failed: {error_str}',
-                fg='red',
-            )
-            continue
-
-        imported_seat = import_result.unwrap()
-        click.secho(
-            f'[line {line_number}] Imported seat '
-            f'(area_id="{imported_seat.area_id}", x={imported_seat.coord_x}, y={imported_seat.coord_y}, category_id="{imported_seat.category_id}").',
-            fg='green',
-        )
-
-        yield imported_seat, seat_to_import.group_title
+        match seat_import_service.import_seat(seat_to_import):
+            case Ok(imported_seat):
+                click.secho(
+                    f'[line {line_number}] Imported seat '
+                    f'(area_id="{imported_seat.area_id}", x={imported_seat.coord_x}, y={imported_seat.coord_y}, category_id="{imported_seat.category_id}").',
+                    fg='green',
+                )
+                yield imported_seat, seat_to_import.group_title
+            case Err(error_str):
+                click.secho(
+                    f'[line {line_number}] Import of seat failed: {error_str}',
+                    fg='red',
+                )
 
 
 def _import_seat_groups(
@@ -115,22 +110,17 @@ def _import_seat_groups(
             seats_by_group_title[group_title].append(seat)
 
     for group_title, seats in seats_by_group_title.items():
-        group_creation_result = seat_group_service.create_group(
+        match seat_group_service.create_group(
             party_id, seats[0].category_id, group_title, seats
-        )
-
-        if group_creation_result.is_err():
-            error_str = group_creation_result.unwrap_err().message
-            click.secho(
-                f'Group "{group_title}" could not be created: {error_str}',
-                fg='red',
-            )
-            continue
-
-        group = group_creation_result.unwrap()
-        seat_quantity = len(group.seats)
-
-        click.secho(
-            f'Imported seat group "{group.title}" with {seat_quantity} seats (category_id="{group.ticket_category_id}")',
-            fg='green',
-        )
+        ):
+            case Ok(group):
+                seat_quantity = len(group.seats)
+                click.secho(
+                    f'Imported seat group "{group.title}" with {seat_quantity} seats (category_id="{group.ticket_category_id}")',
+                    fg='green',
+                )
+            case Err(error):
+                click.secho(
+                    f'Group "{group_title}" could not be created: {error.message}',
+                    fg='red',
+                )

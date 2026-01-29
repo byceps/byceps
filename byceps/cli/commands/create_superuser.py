@@ -20,6 +20,7 @@ from byceps.services.user import (
     user_email_address_service,
 )
 from byceps.services.user.models import Password, User
+from byceps.util.result import Err, Ok
 
 
 @click.command()
@@ -53,17 +54,16 @@ def create_superuser(screen_name, email_address, password) -> None:
 def _create_user(
     screen_name: str, email_address: str, password: Password
 ) -> User:
-    creation_result = user_creation_service.create_user(
+    match user_creation_service.create_user(
         screen_name,
         email_address,
         password,
         creation_method='superuser creation command',
-    )
-    if creation_result.is_err():
-        error_message = creation_result.unwrap_err()
-        raise click.UsageError(f'User creation failed: {error_message}')
-
-    user, _ = creation_result.unwrap()
+    ):
+        case Ok((user, _)):
+            pass
+        case Err(error):
+            raise click.UsageError(f'User creation failed: {error}')
 
     return user
 
