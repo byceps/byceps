@@ -611,31 +611,29 @@ def render_html(item: NewsItem) -> RenderedNewsItem:
 def _render_featured_image_html(
     item_id: NewsItemID, image: NewsImage
 ) -> Result[str, str]:
-    result = news_html_service.render_featured_image_html(image)
-
-    if result.is_err():
-        # Log, but do not return error.
-        log.warning(
-            'HTML rendering of featured image for news item %s failed: %s',
-            item_id,
-            result.unwrap_err(),
-        )
-
-    return Ok(result.unwrap())
+    match news_html_service.render_featured_image_html(image):
+        case Ok(html):
+            return Ok(html)
+        case Err(e):
+            # Log, but do not return error.
+            log.warning(
+                'HTML rendering of featured image for news item %s failed: %s',
+                item_id,
+                e,
+            )
+            return Err(e)
 
 
 def _render_body_html(item: NewsItem) -> Result[str, str]:
-    result = news_html_service.render_body_html(item)
-
-    if result.is_err():
-        # Log, but do not return error.
-        log.warning(
-            'HTML rendering of body for news item %s failed: %s',
-            item.id,
-            result.unwrap_err(),
-        )
-
-    return result
+    match news_html_service.render_body_html(item):
+        case Ok(html):
+            return Ok(html)
+        case Err(e):
+            # Log, but do not return error.
+            log.warning(
+                'HTML rendering of body for news item %s failed: %s', item.id, e
+            )
+            return Err(e)
 
 
 def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:

@@ -48,11 +48,11 @@ def create_image(
     attribution: str | None = None,
 ) -> Result[NewsImage, str]:
     """Create an image for a news item."""
-    image_type_result = determine_image_type(stream, ALLOWED_IMAGE_TYPES)
-    if image_type_result.is_err():
-        return Err(image_type_result.unwrap_err())
-
-    image_type = image_type_result.unwrap()
+    match determine_image_type(stream, ALLOWED_IMAGE_TYPES):
+        case Ok(image_type):
+            pass
+        case Err(e):
+            return Err(e)
 
     if image_type != ImageType.svg:
         image_dimensions = determine_dimensions(stream)

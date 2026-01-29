@@ -39,11 +39,12 @@ def create_avatar_image(
     avatar_id = TourneyAvatarID(generate_uuid7())
     created_at = datetime.utcnow()
 
-    image_type_result = determine_image_type(stream, allowed_types)
-    if image_type_result.is_err():
-        return Err(image_type_result.unwrap_err())
+    match determine_image_type(stream, allowed_types):
+        case Ok(image_type):
+            pass
+        case Err(e):
+            return Err(e)
 
-    image_type = image_type_result.unwrap()
     image_dimensions = determine_dimensions(stream)
 
     image_too_large = image_dimensions > maximum_dimensions

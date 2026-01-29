@@ -27,6 +27,7 @@ from byceps.services.user.models import User
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import login_required, permission_required, redirect_to
 
 from .forms import (
@@ -188,32 +189,28 @@ def _get_current_party_or_404() -> Party:
 
 
 def may_user_register_server(party: Party, user: User) -> bool:
-    result = guest_server_service.ensure_user_may_register_server(party, user)
-
-    if result.is_err():
-        err = result.unwrap_err()
-        if isinstance(err, PartyIsOverError):
-            flash_notice(gettext('Server registration is closed.'))
+    match guest_server_service.ensure_user_may_register_server(party, user):
+        case Ok(_):
+            return True
+        case Err(err):
+            match err:
+                case PartyIsOverError():
+                    flash_notice(gettext('Server registration is closed.'))
+                case UserUsesNoTicketError():
+                    flash_notice(
+                        gettext(
+                            'Using a ticket for this party is required to register servers.'
+                        )
+                    )
+                case QuantityLimitReachedError():
+                    flash_notice(
+                        gettext(
+                            'You have already registered the maximum number of servers allowed.'
+                        )
+                    )
+                case _:
+                    flash_error(gettext('An unknown error has occurred.'))
             return False
-        elif isinstance(err, UserUsesNoTicketError):
-            flash_notice(
-                gettext(
-                    'Using a ticket for this party is required to register servers.'
-                )
-            )
-            return False
-        elif isinstance(err, QuantityLimitReachedError):
-            flash_notice(
-                gettext(
-                    'You have already registered the maximum number of servers allowed.'
-                )
-            )
-            return False
-        else:
-            flash_error(gettext('An unknown error has occurred.'))
-            return False
-
-    return True
 
 
 def _sort_addresses(addresses: Iterable[Address]) -> list[Address]:

@@ -528,21 +528,21 @@ def item_move_up(item_id):
     """Move the menu item upwards by one position."""
     item = _get_item_or_404(item_id)
 
-    move_result = site_navigation_service.move_item_up(item.id)
-    if move_result.is_err():
-        flash_error(
-            gettext(
-                'Item "%(label)s" is already at the top.',
-                label=item.label,
+    match site_navigation_service.move_item_up(item.id):
+        case Ok(_):
+            flash_success(
+                gettext(
+                    'Item "%(label)s" has been moved upwards by one position.',
+                    label=item.label,
+                )
             )
-        )
-    else:
-        flash_success(
-            gettext(
-                'Item "%(label)s" has been moved upwards by one position.',
-                label=item.label,
+        case Err(_):
+            flash_error(
+                gettext(
+                    'Item "%(label)s" is already at the top.',
+                    label=item.label,
+                )
             )
-        )
 
 
 @blueprint.post('/items/<uuid:item_id>/down')
@@ -552,21 +552,21 @@ def item_move_down(item_id):
     """Move the menu item downwards by one position."""
     item = _get_item_or_404(item_id)
 
-    move_result = site_navigation_service.move_item_down(item.id)
-    if move_result.is_err():
-        flash_error(
-            gettext(
-                'Item "%(label)s" is already at the bottom.',
-                label=item.label,
+    match site_navigation_service.move_item_down(item.id):
+        case Ok(_):
+            flash_success(
+                gettext(
+                    'Item "%(label)s" has been moved downwards by one position.',
+                    label=item.label,
+                )
             )
-        )
-    else:
-        flash_success(
-            gettext(
-                'Item "%(label)s" has been moved downwards by one position.',
-                label=item.label,
+        case Err(_):
+            flash_error(
+                gettext(
+                    'Item "%(label)s" is already at the bottom.',
+                    label=item.label,
+                )
             )
-        )
 
 
 @blueprint.delete('/items/<uuid:item_id>')

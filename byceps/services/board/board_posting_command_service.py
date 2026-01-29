@@ -185,14 +185,13 @@ def add_reaction(
     """Add user reaction to the posting."""
     reaction_exists = _is_reaction_existing(db_posting.id, user.id, kind)
 
-    result = board_posting_domain_service.add_reaction(
+    match board_posting_domain_service.add_reaction(
         db_posting.id, db_posting.creator_id, user, kind, reaction_exists
-    )
-
-    if result.is_err():
-        return Err(result.unwrap_err())
-
-    reaction = result.unwrap()
+    ):
+        case Ok(reaction):
+            pass
+        case Err(e):
+            return Err(e)
 
     db_reaction = DbPostingReaction(
         reaction.id,
@@ -213,12 +212,11 @@ def remove_reaction(
     """Remove user reaction from the posting."""
     reaction_exists = _is_reaction_existing(db_posting.id, user.id, kind)
 
-    result = board_posting_domain_service.remove_reaction(
+    match board_posting_domain_service.remove_reaction(
         db_posting.id, db_posting.creator_id, user, kind, reaction_exists
-    )
-
-    if result.is_err():
-        return Err(result.unwrap_err())
+    ):
+        case Err(e):
+            return Err(e)
 
     db.session.execute(
         delete(DbPostingReaction)

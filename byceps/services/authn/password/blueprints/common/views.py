@@ -24,6 +24,7 @@ from byceps.services.verification_token.models import PasswordResetToken
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import redirect_to
 
 from .forms import RequestResetForm, ResetForm, UpdateForm
@@ -159,11 +160,11 @@ def _get_sender() -> NameAndAddress:
         if not address_str:
             address_str = 'BYCEPS <noreply@byceps.example>'
 
-        parse_result = email_service.parse_address(address_str)
-        if parse_result.is_err():
-            abort(500, 'Could not parse admin email sender address')
-
-        return parse_result.unwrap()
+        match email_service.parse_address(address_str):
+            case Ok(name_and_address):
+                return name_and_address
+            case Err(_):
+                abort(500, 'Could not parse admin email sender address')
     else:
         abort(500, 'Unexpected app mode, cannot obtain email sender')
 

@@ -20,6 +20,7 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.l10n import get_default_locale
+from byceps.util.result import Err, Ok
 from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm, EmailConfigUpdateForm, UpdateForm
@@ -223,14 +224,13 @@ def email_config_update(brand_id):
     sender_name = form.sender_name.data.strip()
     contact_address = form.contact_address.data.strip()
 
-    update_result = email_config_service.update_config(
+    match email_config_service.update_config(
         config.brand_id, sender_address, sender_name, contact_address
-    )
-
-    if update_result.is_err():
-        flash_error(update_result.unwrap_err())
-    else:
-        flash_success(gettext('Email configuration has been updated.'))
+    ):
+        case Ok(_):
+            flash_success(gettext('Email configuration has been updated.'))
+        case Err(e):
+            flash_error(e)
 
     return redirect_to('.view', brand_id=brand.id)
 

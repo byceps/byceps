@@ -31,6 +31,7 @@ from byceps.services.ticketing.models.ticket import TicketID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import login_required, redirect_to, respond_no_content
 
 
@@ -224,37 +225,34 @@ def occupy_seat(ticket_id, seat_id):
     except ValueError:
         abort(404)
 
-    if occupy_seat_result.is_err():
-        err = occupy_seat_result.unwrap_err()
-        if isinstance(
-            err, ticketing_errors.SeatChangeDeniedForBundledTicketError
-        ):
-            flash_error(
+    match occupy_seat_result:
+        case Ok():
+            flash_success(
                 gettext(
-                    'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
-                    ticket_code=ticket.code,
-                )
-            )
-        elif isinstance(err, ticketing_errors.TicketCategoryMismatchError):
-            flash_error(
-                gettext(
-                    'Ticket %(ticket_code)s and seat "%(seat_label)s" belong to different categories.',
-                    ticket_code=ticket.code,
+                    '%(seat_label)s has been occupied with ticket %(ticket_code)s.',
                     seat_label=seat.label,
+                    ticket_code=ticket.code,
                 )
             )
-        else:
-            flash_error(gettext('An unexpected error occurred.'))
-
-        return
-
-    flash_success(
-        gettext(
-            '%(seat_label)s has been occupied with ticket %(ticket_code)s.',
-            seat_label=seat.label,
-            ticket_code=ticket.code,
-        )
-    )
+        case Err(err):
+            match err:
+                case ticketing_errors.SeatChangeDeniedForBundledTicketError():
+                    flash_error(
+                        gettext(
+                            'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
+                            ticket_code=ticket.code,
+                        )
+                    )
+                case ticketing_errors.TicketCategoryMismatchError():
+                    flash_error(
+                        gettext(
+                            'Ticket %(ticket_code)s and seat "%(seat_label)s" belong to different categories.',
+                            ticket_code=ticket.code,
+                            seat_label=seat.label,
+                        )
+                    )
+                case _:
+                    flash_error(gettext('An unexpected error occurred.'))
 
 
 @blueprint.delete('/ticket/<uuid:ticket_id>/seat')
@@ -295,29 +293,24 @@ def release_seat(ticket_id):
 
     seat = ticket.occupied_seat
 
-    release_seat_result = ticket_seat_management_service.release_seat(
-        ticket.id, manager
-    )
-
-    if release_seat_result.is_err():
-        err = release_seat_result.unwrap_err()
-        if isinstance(
-            err, ticketing_errors.SeatChangeDeniedForBundledTicketError
-        ):
-            flash_error(
+    match ticket_seat_management_service.release_seat(ticket.id, manager):
+        case Ok():
+            flash_success(
                 gettext(
-                    'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
-                    ticket_code=ticket.code,
+                    '%(seat_label)s has been released.', seat_label=seat.label
                 )
             )
-        else:
-            flash_error(gettext('An unexpected error occurred.'))
-
-        return
-
-    flash_success(
-        gettext('%(seat_label)s has been released.', seat_label=seat.label)
-    )
+        case Err(err):
+            match err:
+                case ticketing_errors.SeatChangeDeniedForBundledTicketError():
+                    flash_error(
+                        gettext(
+                            'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
+                            ticket_code=ticket.code,
+                        )
+                    )
+                case _:
+                    flash_error(gettext('An unexpected error occurred.'))
 
 
 def _is_seat_management_enabled():

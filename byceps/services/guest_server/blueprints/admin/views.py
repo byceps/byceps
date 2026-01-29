@@ -29,6 +29,7 @@ from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -219,16 +220,12 @@ def server_approve(server_id):
     server = _get_server_or_404(server_id)
     initiator = g.user
 
-    result = guest_server_service.approve_server(server, initiator)
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
-
-    flash_success(gettext('Server has been approved.'))
-
-    _, event = result.unwrap()
-
-    guest_server_signals.guest_server_approved.send(None, event=event)
+    match guest_server_service.approve_server(server, initiator):
+        case Ok((_, event)):
+            flash_success(gettext('Server has been approved.'))
+            guest_server_signals.guest_server_approved.send(None, event=event)
+        case Err(e):
+            flash_error(e)
 
 
 @blueprint.post('/guest_servers/<uuid:server_id>/checkin')
@@ -239,16 +236,12 @@ def server_check_in(server_id):
     server = _get_server_or_404(server_id)
     initiator = g.user
 
-    result = guest_server_service.check_in_server(server, initiator)
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
-
-    flash_success(gettext('Server has been checked in.'))
-
-    _, event = result.unwrap()
-
-    guest_server_signals.guest_server_checked_in.send(None, event=event)
+    match guest_server_service.check_in_server(server, initiator):
+        case Ok((_, event)):
+            flash_success(gettext('Server has been checked in.'))
+            guest_server_signals.guest_server_checked_in.send(None, event=event)
+        case Err(e):
+            flash_error(e)
 
 
 @blueprint.post('/guest_servers/<uuid:server_id>/checkout')
@@ -259,16 +252,14 @@ def server_check_out(server_id):
     server = _get_server_or_404(server_id)
     initiator = g.user
 
-    result = guest_server_service.check_out_server(server, initiator)
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
-
-    flash_success(gettext('Server has been checked out.'))
-
-    _, event = result.unwrap()
-
-    guest_server_signals.guest_server_checked_out.send(None, event=event)
+    match guest_server_service.check_out_server(server, initiator):
+        case Ok((_, event)):
+            flash_success(gettext('Server has been checked out.'))
+            guest_server_signals.guest_server_checked_out.send(
+                None, event=event
+            )
+        case Err(e):
+            flash_error(e)
 
 
 @blueprint.delete('/guest_servers/<uuid:server_id>')
@@ -417,14 +408,13 @@ def address_update(address_id):
     netmask = _to_ip_address(form.netmask.data.strip())
     gateway = _to_ip_address(form.gateway.data.strip())
 
-    update_result = guest_server_service.update_address(
+    match guest_server_service.update_address(
         address.id, ip_address, hostname, netmask, gateway
-    )
-
-    if update_result.is_err():
-        flash_error(update_result.unwrap_err())
-    else:
-        flash_success(gettext('Changes have been saved.'))
+    ):
+        case Ok(_):
+            flash_success(gettext('Changes have been saved.'))
+        case Err(e):
+            flash_error(e)
 
     return redirect_to('.server_view', server_id=server.id)
 

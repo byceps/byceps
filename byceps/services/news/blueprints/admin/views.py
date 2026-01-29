@@ -28,6 +28,7 @@ from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.image.image_type import get_image_type_names
 from byceps.util.iterables import pairwise
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -288,18 +289,18 @@ def image_create(item_id):
         abort(400, 'No file to upload has been specified.')
 
     try:
-        creation_result = news_image_service.create_image(
+        match news_image_service.create_image(
             creator,
             item,
             image.stream,
             alt_text=alt_text,
             caption=caption,
             attribution=attribution,
-        )
-        if creation_result.is_err():
-            abort(400, creation_result.unwrap_err())
-
-        image = creation_result.unwrap()
+        ):
+            case Ok(image):
+                pass
+            case Err(e):
+                abort(400, e)
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 
@@ -660,25 +661,23 @@ def item_publish_later(item_id):
         datetime.combine(form.publish_on.data, form.publish_at.data)
     )
 
-    result = news_item_service.publish_item(
+    match news_item_service.publish_item(
         item.id, publish_at=publish_at, initiator=g.user
-    )
+    ):
+        case Ok(event):
+            news_signals.item_published.send(None, event=event)
 
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return redirect_to('.item_view', item_id=item.id)
+            flash_success(
+                gettext(
+                    'News item "%(title)s" will be published later.',
+                    title=item.title,
+                )
+            )
 
-    event = result.unwrap()
-
-    news_signals.item_published.send(None, event=event)
-
-    flash_success(
-        gettext(
-            'News item "%(title)s" will be published later.', title=item.title
-        )
-    )
-
-    return redirect_to('.item_view', item_id=item.id)
+            return redirect_to('.item_view', item_id=item.id)
+        case Err(e):
+            flash_error(e)
+            return redirect_to('.item_view', item_id=item.id)
 
 
 @blueprint.post('/items/<uuid:item_id>/publish_now')
@@ -688,19 +687,18 @@ def item_publish_now(item_id):
     """Publish a news item now."""
     item = _get_item_or_404(item_id)
 
-    result = news_item_service.publish_item(item.id, initiator=g.user)
+    match news_item_service.publish_item(item.id, initiator=g.user):
+        case Ok(event):
+            news_signals.item_published.send(None, event=event)
 
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
-
-    event = result.unwrap()
-
-    news_signals.item_published.send(None, event=event)
-
-    flash_success(
-        gettext('News item "%(title)s" has been published.', title=item.title)
-    )
+            flash_success(
+                gettext(
+                    'News item "%(title)s" has been published.',
+                    title=item.title,
+                )
+            )
+        case Err(e):
+            flash_error(e)
 
 
 @blueprint.post('/items/<uuid:item_id>/unpublish')
@@ -710,15 +708,16 @@ def item_unpublish(item_id):
     """Unpublish a news item."""
     item = _get_item_or_404(item_id)
 
-    result = news_item_service.unpublish_item(item.id)
-
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
-
-    flash_success(
-        gettext('News item "%(title)s" has been unpublished.', title=item.title)
-    )
+    match news_item_service.unpublish_item(item.id):
+        case Ok(_):
+            flash_success(
+                gettext(
+                    'News item "%(title)s" has been unpublished.',
+                    title=item.title,
+                )
+            )
+        case Err(e):
+            flash_error(e)
 
 
 # -------------------------------------------------------------------- #
