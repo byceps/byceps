@@ -23,7 +23,7 @@ class DbBrand(db.Model):
     id: Mapped[BrandID] = mapped_column(db.UnicodeText, primary_key=True)
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     image_filename: Mapped[str | None] = mapped_column(db.UnicodeText)
-    archived: Mapped[bool] = mapped_column(default=False)
+    archived: Mapped[bool]
 
     def __init__(
         self,
@@ -31,10 +31,12 @@ class DbBrand(db.Model):
         title: str,
         *,
         image_filename: str | None = None,
+        archived: bool = False,
     ) -> None:
         self.id = brand_id
         self.title = title
         self.image_filename = image_filename
+        self.archived = archived
 
     def __repr__(self) -> str:
         return ReprBuilder(self).add_with_lookup('id').build()
