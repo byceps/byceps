@@ -36,14 +36,14 @@ class DbBoardCategory(db.Model):
     slug: Mapped[str] = mapped_column(db.UnicodeText)
     title: Mapped[str] = mapped_column(db.UnicodeText)
     description: Mapped[str | None] = mapped_column(db.UnicodeText)
-    topic_count: Mapped[int] = mapped_column(default=0)
-    posting_count: Mapped[int] = mapped_column(default=0)
+    topic_count: Mapped[int]
+    posting_count: Mapped[int]
     last_posting_updated_at: Mapped[datetime | None]
     last_posting_updated_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
     last_posting_updated_by: Mapped[DbUser | None] = relationship()
-    hidden: Mapped[bool] = mapped_column(default=False)
+    hidden: Mapped[bool]
 
     board: Mapped[DbBoard] = relationship(
         backref=db.backref(
@@ -60,12 +60,19 @@ class DbBoardCategory(db.Model):
         slug: str,
         title: str,
         description: str | None,
+        *,
+        topic_count: int = 0,
+        posting_count: int = 0,
+        hidden: bool = False,
     ) -> None:
         self.id = category_id
         self.board_id = board_id
         self.slug = slug
         self.title = title
         self.description = description
+        self.topic_count = topic_count
+        self.posting_count = posting_count
+        self.hidden = hidden
 
     def __eq__(self, other) -> bool:
         return self.id == other.id
