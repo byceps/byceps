@@ -63,11 +63,12 @@ class DbTopic(db.Model):
         db.Uuid, db.ForeignKey('users.id')
     )
     pinned_by: Mapped[DbUser | None] = relationship(foreign_keys=[pinned_by_id])
+    posting_limited_to_moderators: Mapped[bool]
+    muted: Mapped[bool]
+
     initial_posting = association_proxy(
         'initial_topic_posting_association', 'posting'
     )
-    posting_limited_to_moderators: Mapped[bool]
-    muted: Mapped[bool]
 
     def __init__(
         self,
