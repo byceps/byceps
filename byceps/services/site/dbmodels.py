@@ -61,7 +61,7 @@ class DbSite(db.Model):
     )
     is_intranet: Mapped[bool]
     check_in_on_login: Mapped[bool]
-    archived: Mapped[bool] = mapped_column(default=False)
+    archived: Mapped[bool]
 
     news_channels: Mapped[list[DbNewsChannel]] = relationship(
         secondary=site_news_channels,
@@ -84,6 +84,7 @@ class DbSite(db.Model):
         storefront_id: StorefrontID | None = None,
         is_intranet: bool = False,
         check_in_on_login: bool = False,
+        archived: bool = False,
     ) -> None:
         self.id = site_id
         self.title = title
@@ -97,6 +98,7 @@ class DbSite(db.Model):
         self.storefront_id = storefront_id
         self.is_intranet = is_intranet
         self.check_in_on_login = check_in_on_login
+        self.archived = archived
 
     def __repr__(self) -> str:
         return ReprBuilder(self).add_with_lookup('id').build()
