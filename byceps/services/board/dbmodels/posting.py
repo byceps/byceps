@@ -41,8 +41,8 @@ class DbPosting(db.Model):
     last_edited_by: Mapped[DbUser | None] = relationship(
         foreign_keys=[last_edited_by_id]
     )
-    edit_count: Mapped[int] = mapped_column(default=0)
-    hidden: Mapped[bool] = mapped_column(default=False)
+    edit_count: Mapped[int]
+    hidden: Mapped[bool]
     hidden_at: Mapped[datetime | None]
     hidden_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
@@ -56,12 +56,17 @@ class DbPosting(db.Model):
         created_at: datetime,
         creator_id: UserID,
         body: str,
+        *,
+        edit_count: int = 0,
+        hidden: bool = False,
     ) -> None:
         self.id = posting_id
         self.topic_id = topic_id
         self.created_at = created_at
         self.creator_id = creator_id
         self.body = body
+        self.edit_count = edit_count
+        self.hidden = hidden
 
     def is_initial_topic_posting(self) -> bool:
         return self.id == self.topic.initial_posting.id
