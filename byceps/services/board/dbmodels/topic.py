@@ -37,7 +37,7 @@ class DbTopic(db.Model):
         db.Uuid, db.ForeignKey('users.id')
     )
     title: Mapped[str] = mapped_column(db.UnicodeText)
-    posting_count: Mapped[int] = mapped_column(default=0)
+    posting_count: Mapped[int]
     last_updated_at: Mapped[datetime]
     last_updated_by_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
@@ -45,19 +45,19 @@ class DbTopic(db.Model):
     last_updated_by: Mapped[DbUser] = relationship(
         foreign_keys=[last_updated_by_id]
     )
-    hidden: Mapped[bool] = mapped_column(default=False)
+    hidden: Mapped[bool]
     hidden_at: Mapped[datetime | None]
     hidden_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
     hidden_by: Mapped[DbUser | None] = relationship(foreign_keys=[hidden_by_id])
-    locked: Mapped[bool] = mapped_column(default=False)
+    locked: Mapped[bool]
     locked_at: Mapped[datetime | None]
     locked_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
     locked_by: Mapped[DbUser | None] = relationship(foreign_keys=[locked_by_id])
-    pinned: Mapped[bool] = mapped_column(default=False)
+    pinned: Mapped[bool]
     pinned_at: Mapped[datetime | None]
     pinned_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
@@ -66,8 +66,8 @@ class DbTopic(db.Model):
     initial_posting = association_proxy(
         'initial_topic_posting_association', 'posting'
     )
-    posting_limited_to_moderators: Mapped[bool] = mapped_column(default=False)
-    muted: Mapped[bool] = mapped_column(default=False)
+    posting_limited_to_moderators: Mapped[bool]
+    muted: Mapped[bool]
 
     def __init__(
         self,
@@ -76,14 +76,27 @@ class DbTopic(db.Model):
         created_at: datetime,
         creator_id: UserID,
         title: str,
+        *,
+        posting_count: int = 0,
+        hidden: bool = False,
+        locked: bool = False,
+        pinned: bool = False,
+        posting_limited_to_moderators: bool = False,
+        muted: bool = False,
     ) -> None:
         self.id = topic_id
         self.category_id = category_id
         self.created_at = created_at
         self.creator_id = creator_id
         self.title = title
+        self.posting_count = posting_count
         self.last_updated_at = created_at
         self.last_updated_by_id = creator_id
+        self.hidden = hidden
+        self.locked = locked
+        self.pinned = pinned
+        self.posting_limited_to_moderators = posting_limited_to_moderators
+        self.muted = muted
 
     @property
     def reply_count(self) -> int:
