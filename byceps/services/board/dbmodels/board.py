@@ -22,8 +22,15 @@ class DbBoard(db.Model):
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    access_restricted: Mapped[bool] = mapped_column(default=False)
+    access_restricted: Mapped[bool]
 
-    def __init__(self, board_id: BoardID, brand_id: BrandID) -> None:
+    def __init__(
+        self,
+        board_id: BoardID,
+        brand_id: BrandID,
+        *,
+        access_restricted: bool = False,
+    ) -> None:
         self.id = board_id
         self.brand_id = brand_id
+        self.access_restricted = access_restricted
