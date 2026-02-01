@@ -38,18 +38,25 @@ class DbShop(db.Model):
     )
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
-    archived: Mapped[bool] = mapped_column(db.Boolean, default=False)
+    archived: Mapped[bool]
     extra_settings: Mapped[Any | None] = mapped_column(
         MutableDict.as_mutable(db.JSONB)
     )
 
     def __init__(
-        self, shop_id: ShopID, brand_id: BrandID, title: str, currency: Currency
+        self,
+        shop_id: ShopID,
+        brand_id: BrandID,
+        title: str,
+        currency: Currency,
+        *,
+        archived: bool = False,
     ) -> None:
         self.id = shop_id
         self.brand_id = brand_id
         self.title = title
         self.currency = currency
+        self.archived = archived
 
     @hybrid_property
     def currency(self) -> Currency:
