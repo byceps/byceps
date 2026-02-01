@@ -41,7 +41,7 @@ class DbMatchComment(db.Model):
     last_edited_by: Mapped[DbUser | None] = relationship(
         foreign_keys=[last_edited_by_id]
     )
-    hidden: Mapped[bool] = mapped_column(default=False)
+    hidden: Mapped[bool]
     hidden_at: Mapped[datetime | None]
     hidden_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
@@ -55,9 +55,12 @@ class DbMatchComment(db.Model):
         created_at: datetime,
         creator_id: UserID,
         body: str,
+        *,
+        hidden: bool = False,
     ) -> None:
         self.id = comment_id
         self.match_id = match_id
         self.created_at = created_at
         self.created_by_id = creator_id
         self.body = body
+        self.hidden = hidden
