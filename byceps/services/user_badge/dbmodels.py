@@ -31,7 +31,7 @@ class DbBadge(db.Model):
     brand_id: Mapped[BrandID | None] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id')
     )
-    featured: Mapped[bool] = mapped_column(default=False)
+    featured: Mapped[bool]
 
     def __init__(
         self,
