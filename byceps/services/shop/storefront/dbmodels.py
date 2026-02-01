@@ -33,7 +33,7 @@ class DbStorefront(db.Model):
     catalog_id: Mapped[CatalogID | None] = mapped_column(
         db.Uuid, db.ForeignKey('shop_catalogs.id')
     )
-    catalog: Mapped[DbCatalog | None] = relationship(DbCatalog)
+    catalog: Mapped[DbCatalog | None] = relationship()
     order_number_sequence_id: Mapped[OrderNumberSequenceID] = mapped_column(
         db.Uuid, db.ForeignKey('shop_order_number_sequences.id')
     )

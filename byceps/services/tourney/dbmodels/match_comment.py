@@ -27,30 +27,26 @@ class DbMatchComment(db.Model):
     match_id: Mapped[MatchID] = mapped_column(
         db.Uuid, db.ForeignKey('tourney_matches.id'), index=True
     )
-    match: Mapped[DbMatch] = relationship(DbMatch)
+    match: Mapped[DbMatch] = relationship()
     created_at: Mapped[datetime]
     created_by_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    created_by: Mapped[DbUser] = relationship(
-        DbUser, foreign_keys=[created_by_id]
-    )
+    created_by: Mapped[DbUser] = relationship(foreign_keys=[created_by_id])
     body: Mapped[str] = mapped_column(db.UnicodeText)
     last_edited_at: Mapped[datetime | None]
     last_edited_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
     last_edited_by: Mapped[DbUser | None] = relationship(
-        DbUser, foreign_keys=[last_edited_by_id]
+        foreign_keys=[last_edited_by_id]
     )
     hidden: Mapped[bool] = mapped_column(default=False)
     hidden_at: Mapped[datetime | None]
     hidden_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    hidden_by: Mapped[DbUser | None] = relationship(
-        DbUser, foreign_keys=[hidden_by_id]
-    )
+    hidden_by: Mapped[DbUser | None] = relationship(foreign_keys=[hidden_by_id])
 
     def __init__(
         self,

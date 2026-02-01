@@ -28,7 +28,7 @@ class DbPosting(db.Model):
     topic_id: Mapped[TopicID] = mapped_column(
         db.Uuid, db.ForeignKey('board_topics.id'), index=True
     )
-    topic: Mapped[DbTopic] = relationship(DbTopic, backref='postings')
+    topic: Mapped[DbTopic] = relationship(backref='postings')
     created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
@@ -39,7 +39,7 @@ class DbPosting(db.Model):
         db.Uuid, db.ForeignKey('users.id')
     )
     last_edited_by: Mapped[DbUser | None] = relationship(
-        DbUser, foreign_keys=[last_edited_by_id]
+        foreign_keys=[last_edited_by_id]
     )
     edit_count: Mapped[int] = mapped_column(default=0)
     hidden: Mapped[bool] = mapped_column(default=False)
@@ -47,9 +47,7 @@ class DbPosting(db.Model):
     hidden_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    hidden_by: Mapped[DbUser | None] = relationship(
-        DbUser, foreign_keys=[hidden_by_id]
-    )
+    hidden_by: Mapped[DbUser | None] = relationship(foreign_keys=[hidden_by_id])
 
     def __init__(
         self,
@@ -79,13 +77,12 @@ class DbInitialTopicPostingAssociation(db.Model):
         db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True
     )
     topic: Mapped[DbTopic] = relationship(
-        DbTopic,
         backref=db.backref('initial_topic_posting_association', uselist=False),
     )
     posting_id: Mapped[PostingID] = mapped_column(
         db.Uuid, db.ForeignKey('board_postings.id'), unique=True
     )
-    posting: Mapped[DbPosting] = relationship(DbPosting)
+    posting: Mapped[DbPosting] = relationship()
 
     def __init__(self, topic_id: TopicID, posting_id: PostingID) -> None:
         self.topic_id = topic_id
@@ -103,11 +100,9 @@ class DbPostingReaction(db.Model):
     posting_id: Mapped[PostingID] = mapped_column(
         db.Uuid, db.ForeignKey('board_postings.id')
     )
-    posting: Mapped[DbPosting] = relationship(
-        DbPosting, backref=db.backref('reactions')
-    )
+    posting: Mapped[DbPosting] = relationship(backref=db.backref('reactions'))
     user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
-    user: Mapped[DbUser] = relationship(DbUser)
+    user: Mapped[DbUser] = relationship()
     kind: Mapped[ReactionKind] = mapped_column(db.UnicodeText)
 
     def __init__(

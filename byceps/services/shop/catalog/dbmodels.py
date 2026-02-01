@@ -49,7 +49,6 @@ class DbCollection(db.Model):
     position: Mapped[int] = mapped_column(db.Integer)
 
     catalog: Mapped[DbCatalog] = relationship(
-        DbCatalog,
         backref=db.backref(
             'collections',
             order_by=position,
@@ -84,7 +83,6 @@ class DbCatalogProduct(db.Model):
     position: Mapped[int] = mapped_column(db.Integer)
 
     collection: Mapped[DbCollection] = relationship(
-        DbCollection,
         backref=db.backref(
             'catalog_products',
             order_by=position,

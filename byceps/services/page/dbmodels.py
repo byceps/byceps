@@ -47,13 +47,13 @@ class DbPage(db.Model):
         db.ForeignKey('languages.code'),
         index=True,
     )
-    language: Mapped[DbLanguage] = relationship(DbLanguage)
+    language: Mapped[DbLanguage] = relationship()
     url_path: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     published: Mapped[bool]
     nav_menu_id: Mapped[NavMenuID | None] = mapped_column(
         db.Uuid, db.ForeignKey('site_nav_menus.id')
     )
-    nav_menu: Mapped[DbNavMenu] = relationship(DbNavMenu)
+    nav_menu: Mapped[DbNavMenu] = relationship()
 
     current_version = association_proxy(
         'current_version_association', 'version'
@@ -84,12 +84,12 @@ class DbPageVersion(db.Model):
     page_id: Mapped[PageID] = mapped_column(
         db.Uuid, db.ForeignKey('pages.id'), index=True
     )
-    page: Mapped[DbPage] = relationship(DbPage)
+    page: Mapped[DbPage] = relationship()
     created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    creator: Mapped[DbUser] = relationship(DbUser)
+    creator: Mapped[DbUser] = relationship()
     title: Mapped[str] = mapped_column(db.UnicodeText)
     head: Mapped[str | None] = mapped_column(db.UnicodeText)
     body: Mapped[str] = mapped_column(db.UnicodeText)
@@ -127,12 +127,12 @@ class DbCurrentPageVersionAssociation(db.Model):
         db.Uuid, db.ForeignKey('pages.id'), primary_key=True
     )
     page: Mapped[DbPage] = relationship(
-        DbPage, backref=db.backref('current_version_association', uselist=False)
+        backref=db.backref('current_version_association', uselist=False)
     )
     version_id: Mapped[PageVersionID] = mapped_column(
         db.Uuid, db.ForeignKey('page_versions.id'), unique=True
     )
-    version: Mapped[DbPageVersion] = relationship(DbPageVersion)
+    version: Mapped[DbPageVersion] = relationship()
 
     def __init__(self, page: DbPage, version: DbPageVersion) -> None:
         self.page = page

@@ -47,7 +47,7 @@ class DbSnippet(db.Model):
         db.ForeignKey('languages.code'),
         index=True,
     )
-    language: Mapped[DbLanguage] = relationship(DbLanguage)
+    language: Mapped[DbLanguage] = relationship()
     current_version = association_proxy(
         'current_version_association', 'version'
     )
@@ -79,12 +79,12 @@ class DbSnippetVersion(db.Model):
     snippet_id: Mapped[SnippetID] = mapped_column(
         db.Uuid, db.ForeignKey('snippets.id'), index=True
     )
-    snippet: Mapped[DbSnippet] = relationship(DbSnippet)
+    snippet: Mapped[DbSnippet] = relationship()
     created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    creator: Mapped[DbUser] = relationship(DbUser)
+    creator: Mapped[DbUser] = relationship()
     body: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(
@@ -116,7 +116,6 @@ class DbCurrentSnippetVersionAssociation(db.Model):
         db.Uuid, db.ForeignKey('snippets.id'), primary_key=True
     )
     snippet: Mapped[DbSnippet] = relationship(
-        DbSnippet,
         backref=db.backref('current_version_association', uselist=False),
     )
     version_id: Mapped[SnippetVersionID] = mapped_column(
@@ -124,7 +123,7 @@ class DbCurrentSnippetVersionAssociation(db.Model):
         db.ForeignKey('snippet_versions.id'),
         unique=True,
     )
-    version: Mapped[DbSnippetVersion] = relationship(DbSnippetVersion)
+    version: Mapped[DbSnippetVersion] = relationship()
 
     def __init__(self, snippet: DbSnippet, version: DbSnippetVersion) -> None:
         self.snippet = snippet

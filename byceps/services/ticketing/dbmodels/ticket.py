@@ -52,19 +52,17 @@ class DbTicket(db.Model):
     bundle_id: Mapped[TicketBundleID | None] = mapped_column(
         db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True
     )
-    bundle: Mapped[DbTicketBundle | None] = relationship(
-        DbTicketBundle, backref='tickets'
-    )
+    bundle: Mapped[DbTicketBundle | None] = relationship(backref='tickets')
     category_id: Mapped[TicketCategoryID] = mapped_column(
         db.Uuid,
         db.ForeignKey('ticket_categories.id'),
         index=True,
     )
-    category: Mapped[DbTicketCategory] = relationship(DbTicketCategory)
+    category: Mapped[DbTicketCategory] = relationship()
     owned_by_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    owned_by: Mapped[DbUser] = relationship(DbUser, foreign_keys=[owned_by_id])
+    owned_by: Mapped[DbUser] = relationship(foreign_keys=[owned_by_id])
     order_number: Mapped[OrderNumber | None] = mapped_column(
         db.UnicodeText,
         db.ForeignKey('shop_orders.order_number'),
@@ -74,13 +72,13 @@ class DbTicket(db.Model):
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     seat_managed_by: Mapped[DbUser | None] = relationship(
-        DbUser, foreign_keys=[seat_managed_by_id]
+        foreign_keys=[seat_managed_by_id]
     )
     user_managed_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     user_managed_by: Mapped[DbUser | None] = relationship(
-        DbUser, foreign_keys=[user_managed_by_id]
+        foreign_keys=[user_managed_by_id]
     )
     occupied_seat_id: Mapped[SeatID | None] = mapped_column(
         db.Uuid,
@@ -89,14 +87,12 @@ class DbTicket(db.Model):
         unique=True,
     )
     occupied_seat: Mapped[DbSeat | None] = relationship(
-        DbSeat, backref=db.backref('occupied_by_ticket', uselist=False)
+        backref=db.backref('occupied_by_ticket', uselist=False)
     )
     used_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    used_by: Mapped[DbUser | None] = relationship(
-        DbUser, foreign_keys=[used_by_id]
-    )
+    used_by: Mapped[DbUser | None] = relationship(foreign_keys=[used_by_id])
     revoked: Mapped[bool]
     user_checked_in: Mapped[bool]
 

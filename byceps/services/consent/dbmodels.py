@@ -69,11 +69,11 @@ class DbConsent(db.Model):
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), primary_key=True
     )
-    user: Mapped[DbUser] = relationship(DbUser)
+    user: Mapped[DbUser] = relationship()
     subject_id: Mapped[ConsentSubjectID] = mapped_column(
         db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True
     )
-    subject: Mapped[DbConsentSubject] = relationship(DbConsentSubject)
+    subject: Mapped[DbConsentSubject] = relationship()
     expressed_at: Mapped[datetime]
 
     def __init__(

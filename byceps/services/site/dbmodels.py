@@ -44,7 +44,7 @@ class DbSite(db.Model):
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    brand: Mapped[DbBrand] = relationship(DbBrand, backref='sites')
+    brand: Mapped[DbBrand] = relationship(backref='sites')
     party_id: Mapped[PartyID | None] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -64,7 +64,6 @@ class DbSite(db.Model):
     archived: Mapped[bool] = mapped_column(default=False)
 
     news_channels: Mapped[list[DbNewsChannel]] = relationship(
-        DbNewsChannel,
         secondary=site_news_channels,
         lazy='subquery',
         backref=db.backref('news_channels', lazy=True),

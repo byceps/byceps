@@ -38,7 +38,7 @@ class DbSeatGroup(db.Model):
     ticket_category_id: Mapped[TicketCategoryID] = mapped_column(
         db.Uuid, db.ForeignKey('ticket_categories.id')
     )
-    ticket_category: Mapped[DbTicketCategory] = relationship(DbTicketCategory)
+    ticket_category: Mapped[DbTicketCategory] = relationship()
     seat_quantity: Mapped[int] = mapped_column(db.Integer)
     title: Mapped[str] = mapped_column(db.UnicodeText)
 
@@ -80,7 +80,7 @@ class DbSeatGroupAssignment(db.Model):
         db.Uuid, db.ForeignKey('seat_groups.id'), index=True
     )
     group: Mapped[DbSeatGroup] = relationship(
-        DbSeatGroup, collection_class=set, backref='assignments'
+        collection_class=set, backref='assignments'
     )
     seat_id: Mapped[SeatID] = mapped_column(
         db.Uuid,
@@ -89,7 +89,7 @@ class DbSeatGroupAssignment(db.Model):
         index=True,
     )
     seat: Mapped[DbSeat] = relationship(
-        DbSeat, backref=db.backref('assignment', uselist=False)
+        backref=db.backref('assignment', uselist=False)
     )
 
     def __init__(
@@ -122,7 +122,7 @@ class DbSeatGroupOccupancy(db.Model):
         index=True,
     )
     seat_group: Mapped[DbSeatGroup] = relationship(
-        DbSeatGroup, backref=db.backref('occupancy', uselist=False)
+        backref=db.backref('occupancy', uselist=False)
     )
     ticket_bundle_id: Mapped[TicketBundleID] = mapped_column(
         db.Uuid,
@@ -131,7 +131,7 @@ class DbSeatGroupOccupancy(db.Model):
         index=True,
     )
     ticket_bundle: Mapped[DbTicketBundle] = relationship(
-        DbTicketBundle, backref=db.backref('occupied_seat_group', uselist=False)
+        backref=db.backref('occupied_seat_group', uselist=False)
     )
 
     def __init__(

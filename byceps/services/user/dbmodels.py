@@ -91,9 +91,7 @@ class DbUser(db.Model):
     avatar_id: Mapped[UserAvatarID | None] = mapped_column(
         db.Uuid, db.ForeignKey('user_avatars.id')
     )
-    avatar: Mapped[DbUserAvatar] = relationship(
-        DbUserAvatar, foreign_keys=[avatar_id]
-    )
+    avatar: Mapped[DbUserAvatar] = relationship(foreign_keys=[avatar_id])
     initialized: Mapped[bool] = mapped_column(default=False)
     suspended: Mapped[bool] = mapped_column(default=False)
     deleted: Mapped[bool] = mapped_column(default=False)
@@ -155,7 +153,7 @@ class DbUserDetail(db.Model):
         db.Uuid, db.ForeignKey('users.id'), primary_key=True
     )
     user: Mapped[DbUser] = relationship(
-        'DbUser', backref=db.backref('detail', uselist=False)
+        backref=db.backref('detail', uselist=False)
     )
     first_name: Mapped[str | None] = mapped_column(db.UnicodeText)
     last_name: Mapped[str | None] = mapped_column(db.UnicodeText)

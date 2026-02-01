@@ -47,7 +47,6 @@ class DbRolePermission(db.Model):
         db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
     )
     role: Mapped[DbRole] = relationship(
-        DbRole,
         backref=db.backref(
             'role_permissions', collection_class=set, lazy='joined'
         ),
@@ -71,7 +70,6 @@ class DbUserRole(db.Model):
         db.Uuid, db.ForeignKey('users.id'), primary_key=True
     )
     user: Mapped[DbUser] = relationship(
-        DbUser,
         backref=db.backref('user_roles', collection_class=set),
         collection_class=set,
     )
@@ -79,7 +77,6 @@ class DbUserRole(db.Model):
         db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
     )
     role: Mapped[DbRole] = relationship(
-        DbRole,
         backref=db.backref('user_roles', collection_class=set),
         collection_class=set,
         lazy='joined',

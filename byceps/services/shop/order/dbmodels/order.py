@@ -45,16 +45,14 @@ class DbOrder(db.Model):
         db.ForeignKey('shop_storefronts.id'),
         index=True,
     )
-    storefront: Mapped[DbStorefront] = relationship(DbStorefront)
+    storefront: Mapped[DbStorefront] = relationship()
     order_number: Mapped[OrderNumber] = mapped_column(
         db.UnicodeText, unique=True
     )
     placed_by_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    placed_by: Mapped[DbUser] = relationship(
-        DbUser, foreign_keys=[placed_by_id]
-    )
+    placed_by: Mapped[DbUser] = relationship(foreign_keys=[placed_by_id])
     company: Mapped[str | None] = mapped_column(db.UnicodeText)
     first_name: Mapped[str] = mapped_column(db.UnicodeText)
     last_name: Mapped[str] = mapped_column(db.UnicodeText)
@@ -76,7 +74,7 @@ class DbOrder(db.Model):
         db.Uuid, db.ForeignKey('users.id')
     )
     payment_state_updated_by: Mapped[DbUser] = relationship(
-        DbUser, foreign_keys=[payment_state_updated_by_id]
+        foreign_keys=[payment_state_updated_by_id]
     )
     cancellation_reason: Mapped[str | None] = mapped_column(db.UnicodeText)
     processing_required: Mapped[bool]

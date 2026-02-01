@@ -40,23 +40,23 @@ class DbTicketBundle(db.Model):
         db.ForeignKey('ticket_categories.id'),
         index=True,
     )
-    ticket_category: Mapped[DbTicketCategory] = relationship(DbTicketCategory)
+    ticket_category: Mapped[DbTicketCategory] = relationship()
     ticket_quantity: Mapped[int]
     owned_by_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
-    owned_by: Mapped[DbUser] = relationship(DbUser, foreign_keys=[owned_by_id])
+    owned_by: Mapped[DbUser] = relationship(foreign_keys=[owned_by_id])
     seats_managed_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     seats_managed_by: Mapped[DbUser] = relationship(
-        DbUser, foreign_keys=[seats_managed_by_id]
+        foreign_keys=[seats_managed_by_id]
     )
     users_managed_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     users_managed_by: Mapped[DbUser] = relationship(
-        DbUser, foreign_keys=[users_managed_by_id]
+        foreign_keys=[users_managed_by_id]
     )
     label: Mapped[str | None] = mapped_column(  # noqa: F821, UP007
         db.UnicodeText

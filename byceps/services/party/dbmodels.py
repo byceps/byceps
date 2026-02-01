@@ -26,7 +26,7 @@ class DbParty(db.Model):
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    brand: Mapped[DbBrand] = relationship(DbBrand, backref='parties')
+    brand: Mapped[DbBrand] = relationship(backref='parties')
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     starts_at: Mapped[datetime]
     ends_at: Mapped[datetime]

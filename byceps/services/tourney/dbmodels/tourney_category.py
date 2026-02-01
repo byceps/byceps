@@ -26,7 +26,6 @@ class DbTourneyCategory(db.Model):
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
     party: Mapped[DbParty] = relationship(
-        DbParty,
         backref=db.backref(
             'tourney_categories',
             order_by='DbTourneyCategory.position',

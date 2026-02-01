@@ -42,7 +42,7 @@ class DbLineItem(db.Model):
         db.ForeignKey('shop_orders.order_number'),
         index=True,
     )
-    order: Mapped[DbOrder] = relationship(DbOrder, backref='line_items')
+    order: Mapped[DbOrder] = relationship(backref='line_items')
     product_id: Mapped[ProductID] = mapped_column(
         db.Uuid, db.ForeignKey('shop_products.id'), index=True
     )
@@ -51,9 +51,7 @@ class DbLineItem(db.Model):
         db.ForeignKey('shop_products.item_number'),
         index=True,
     )
-    product: Mapped[DbProduct] = relationship(
-        DbProduct, foreign_keys=[product_id]
-    )
+    product: Mapped[DbProduct] = relationship(foreign_keys=[product_id])
     _product_type: Mapped[str] = mapped_column('product_type', db.UnicodeText)
     name: Mapped[str] = mapped_column(db.UnicodeText)
     unit_price: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))

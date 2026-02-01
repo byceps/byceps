@@ -45,7 +45,7 @@ class DbPresence(DbTimeSlot):
     orga_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), nullable=True
     )
-    orga: Mapped[DbUser] = relationship(DbUser)
+    orga: Mapped[DbUser] = relationship()
 
     def __init__(
         self,

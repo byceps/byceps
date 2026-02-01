@@ -38,13 +38,13 @@ class DbParticipant(db.Model):
     tourney_id: Mapped[TourneyID] = mapped_column(
         db.Uuid, db.ForeignKey('tourneys.id'), index=True
     )
-    tourney: Mapped[DbTourney] = relationship(DbTourney)
+    tourney: Mapped[DbTourney] = relationship()
     created_at: Mapped[datetime]
     name: Mapped[str] = mapped_column(db.UnicodeText)
     manager_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    manager: Mapped[DbUser] = relationship(DbUser)
+    manager: Mapped[DbUser] = relationship()
 
     def __init__(
         self,

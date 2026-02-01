@@ -42,11 +42,10 @@ class DbBoardCategory(db.Model):
     last_posting_updated_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    last_posting_updated_by: Mapped[DbUser | None] = relationship(DbUser)
+    last_posting_updated_by: Mapped[DbUser | None] = relationship()
     hidden: Mapped[bool] = mapped_column(default=False)
 
     board: Mapped[DbBoard] = relationship(
-        DbBoard,
         backref=db.backref(
             'categories',
             order_by=position,
@@ -83,7 +82,7 @@ class DbLastCategoryView(db.Model):
     category_id: Mapped[BoardCategoryID] = mapped_column(
         db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True
     )
-    category: Mapped[DbBoardCategory] = relationship(DbBoardCategory)
+    category: Mapped[DbBoardCategory] = relationship()
     occurred_at: Mapped[datetime]
 
     def __init__(

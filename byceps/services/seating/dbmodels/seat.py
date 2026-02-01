@@ -39,7 +39,7 @@ class DbSeat(db.Model):
     area_id: Mapped[SeatingAreaID] = mapped_column(
         db.Uuid, db.ForeignKey('seating_areas.id'), index=True
     )
-    area: Mapped[DbSeatingArea] = relationship(DbSeatingArea, backref='seats')
+    area: Mapped[DbSeatingArea] = relationship(backref='seats')
     coord_x: Mapped[int]
     coord_y: Mapped[int]
     rotation: Mapped[int | None]
@@ -48,7 +48,7 @@ class DbSeat(db.Model):
         db.ForeignKey('ticket_categories.id'),
         index=True,
     )
-    category: Mapped[DbTicketCategory] = relationship(DbTicketCategory)
+    category: Mapped[DbTicketCategory] = relationship()
     label: Mapped[str | None] = mapped_column(db.UnicodeText)
     type_: Mapped[str | None] = mapped_column('type', db.UnicodeText)
 

@@ -41,7 +41,7 @@ class DbNavMenu(db.Model):
         db.ForeignKey('languages.code'),
         index=True,
     )
-    language: Mapped[DbLanguage] = relationship(DbLanguage)
+    language: Mapped[DbLanguage] = relationship()
     hidden: Mapped[bool]
     parent_menu_id: Mapped[NavMenuID | None] = mapped_column(
         db.Uuid, db.ForeignKey('site_nav_menus.id')
@@ -76,7 +76,6 @@ class DbNavItem(db.Model):
         db.Uuid, db.ForeignKey('site_nav_menus.id'), index=True
     )
     menu: Mapped[DbNavMenu] = relationship(
-        DbNavMenu,
         backref=db.backref(
             'items',
             order_by='byceps.services.site_navigation.dbmodels.DbNavItem.position',

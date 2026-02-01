@@ -27,7 +27,7 @@ class DbOrgaTeam(db.Model):
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
-    party: Mapped[DbParty] = relationship(DbParty)
+    party: Mapped[DbParty] = relationship()
     title: Mapped[str] = mapped_column(db.UnicodeText)
 
     def __init__(
@@ -49,13 +49,13 @@ class DbMembership(db.Model):
         db.Uuid, db.ForeignKey('orga_teams.id'), index=True
     )
     orga_team: Mapped[DbOrgaTeam] = relationship(
-        DbOrgaTeam, collection_class=set, backref='memberships'
+        collection_class=set, backref='memberships'
     )
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     user: Mapped[DbUser] = relationship(
-        DbUser, collection_class=set, backref='orga_team_memberships'
+        collection_class=set, backref='orga_team_memberships'
     )
     duties: Mapped[str | None] = mapped_column(db.UnicodeText)
 
