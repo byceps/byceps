@@ -132,7 +132,7 @@ class DbUser(db.Model):
     def __hash__(self) -> int:
         if self.id is None:
             raise ValueError(
-                'User instance is unhashable because its id is None.'
+                'User instance is unhashable because its ID is None.'
             )
 
         return hash(self.id)

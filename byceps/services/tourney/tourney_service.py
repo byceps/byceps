@@ -135,7 +135,7 @@ def delete_tourney(tourney_id: TourneyID) -> None:
 
 
 def find_tourney(tourney_id: TourneyID) -> Tourney | None:
-    """Return the tourney with that id, or `None` if not found."""
+    """Return the tourney with that ID, or `None` if not found."""
     db_tourney = tourney_repository.find_tourney(tourney_id)
 
     if db_tourney is None:
@@ -160,7 +160,7 @@ def get_tourney(tourney_id: TourneyID) -> Tourney:
 def find_tourney_with_category(
     tourney_id: TourneyID,
 ) -> TourneyWithCategory | None:
-    """Return the tourney with that id, or `None` if not found."""
+    """Return the tourney with that ID, or `None` if not found."""
     row = tourney_repository.find_tourney_with_category(tourney_id)
 
     if row is None:

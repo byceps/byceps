@@ -77,7 +77,7 @@ def view_current_version(page_id):
 @permission_required('page.view_history')
 @templated
 def view_version(version_id):
-    """Show the page with the given id."""
+    """Show the page with the given ID."""
     version = _get_version(version_id)
 
     page = page_service.get_page(version.page_id)

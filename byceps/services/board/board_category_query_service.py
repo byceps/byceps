@@ -38,7 +38,7 @@ def count_categories_for_board(board_id: BoardID) -> int:
 def find_category_by_id(
     category_id: BoardCategoryID,
 ) -> BoardCategory | None:
-    """Return the category with that id, or `None` if not found."""
+    """Return the category with that ID, or `None` if not found."""
     db_category = db.session.get(DbBoardCategory, category_id)
 
     if db_category is None:

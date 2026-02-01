@@ -230,7 +230,7 @@ def delete_item(item_id: NewsItemID) -> None:
 
 
 def find_item(item_id: NewsItemID) -> NewsItem | None:
-    """Return the item with that id, or `None` if not found."""
+    """Return the item with that ID, or `None` if not found."""
     db_item = _find_db_item(item_id)
 
     if db_item is None:
@@ -240,7 +240,7 @@ def find_item(item_id: NewsItemID) -> NewsItem | None:
 
 
 def _find_db_item(item_id: NewsItemID) -> DbNewsItem | None:
-    """Return the item with that id, or `None` if not found."""
+    """Return the item with that ID, or `None` if not found."""
     return (
         db.session.scalars(
             select(DbNewsItem)
@@ -259,7 +259,7 @@ def _find_db_item(item_id: NewsItemID) -> DbNewsItem | None:
 
 
 def _get_db_item(item_id: NewsItemID) -> DbNewsItem:
-    """Return the item with that id, or raise an exception."""
+    """Return the item with that ID, or raise an exception."""
     db_item = _find_db_item(item_id)
 
     if db_item is None:

@@ -61,7 +61,7 @@ def delete_payment_gateway(payment_gateway_id: str) -> None:
 
 
 def find_payment_gateway(payment_gateway_id: str) -> PaymentGateway | None:
-    """Return the payment gateway with that id, or `None` if not found."""
+    """Return the payment gateway with that ID, or `None` if not found."""
     db_payment_gateway = _find_db_payment_gateway(payment_gateway_id)
 
     if db_payment_gateway is None:
@@ -73,14 +73,14 @@ def find_payment_gateway(payment_gateway_id: str) -> PaymentGateway | None:
 def _find_db_payment_gateway(
     payment_gateway_id: str,
 ) -> DbPaymentGateway | None:
-    """Return the database entity for the payment gateway with that id, or `None`
+    """Return the database entity for the payment gateway with that ID, or `None`
     if not found.
     """
     return db.session.get(DbPaymentGateway, payment_gateway_id)
 
 
 def get_payment_gateway(payment_gateway_id: str) -> Result[PaymentGateway, str]:
-    """Return the payment gateway with that id, or raise an exception."""
+    """Return the payment gateway with that ID, or raise an exception."""
     payment_gateway = find_payment_gateway(payment_gateway_id)
 
     if payment_gateway is None:
@@ -92,7 +92,7 @@ def get_payment_gateway(payment_gateway_id: str) -> Result[PaymentGateway, str]:
 def _get_db_payment_gateway(
     payment_gateway_id: str,
 ) -> Result[DbPaymentGateway, str]:
-    """Return the database entity for the payment gateway with that id.
+    """Return the database entity for the payment gateway with that ID.
 
     Raise an exception if not found.
     """

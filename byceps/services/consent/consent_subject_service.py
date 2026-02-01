@@ -40,7 +40,7 @@ def create_subject(
 
 
 def find_subject(subject_id: ConsentSubjectID) -> ConsentSubject | None:
-    """Return the subject with that id, or `None` if not found."""
+    """Return the subject with that ID, or `None` if not found."""
     db_subject = db.session.get(DbConsentSubject, subject_id)
 
     if db_subject is None:

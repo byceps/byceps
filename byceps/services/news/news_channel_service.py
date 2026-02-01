@@ -72,7 +72,7 @@ def get_db_channel(channel_id: NewsChannelID) -> DbNewsChannel:
 
 
 def find_channel(channel_id: NewsChannelID) -> NewsChannel | None:
-    """Return the channel with that id, or `None` if not found."""
+    """Return the channel with that ID, or `None` if not found."""
     db_channel = _find_db_channel(channel_id)
 
     if db_channel is None:
@@ -82,7 +82,7 @@ def find_channel(channel_id: NewsChannelID) -> NewsChannel | None:
 
 
 def get_channel(channel_id: NewsChannelID) -> NewsChannel:
-    """Return the channel with that id, or raise an exception."""
+    """Return the channel with that ID, or raise an exception."""
     db_channel = get_db_channel(channel_id)
     return _db_entity_to_channel(db_channel)
 

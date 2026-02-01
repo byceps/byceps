@@ -143,12 +143,12 @@ def delete_bundle(bundle_id: TicketBundleID) -> None:
 
 
 def find_bundle(bundle_id: TicketBundleID) -> DbTicketBundle | None:
-    """Return the ticket bundle with that id, or `None` if not found."""
+    """Return the ticket bundle with that ID, or `None` if not found."""
     return db.session.get(DbTicketBundle, bundle_id)
 
 
 def get_bundle(bundle_id: TicketBundleID) -> DbTicketBundle:
-    """Return the ticket bundle with that id, or raise an exception."""
+    """Return the ticket bundle with that ID, or raise an exception."""
     db_bundle = find_bundle(bundle_id)
 
     if db_bundle is None:

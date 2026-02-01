@@ -97,7 +97,7 @@ def delete_category(category_id: TourneyCategoryID) -> None:
 
 
 def find_category(category_id: TourneyCategoryID) -> TourneyCategory | None:
-    """Return the category with that id, or `None` if not found."""
+    """Return the category with that ID, or `None` if not found."""
     db_category = _find_db_category(category_id)
 
     if db_category is None:
@@ -107,7 +107,7 @@ def find_category(category_id: TourneyCategoryID) -> TourneyCategory | None:
 
 
 def get_category(category_id: TourneyCategoryID) -> TourneyCategory:
-    """Return the category with that id, or raise an exception if not found."""
+    """Return the category with that ID, or raise an exception if not found."""
     category = find_category(category_id)
 
     if category is None:

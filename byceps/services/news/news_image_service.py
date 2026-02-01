@@ -151,7 +151,7 @@ def delete_image(image_id: NewsImageID) -> None:
 
 
 def find_image(image_id: NewsImageID) -> NewsImage | None:
-    """Return the image with that id, or `None` if not found."""
+    """Return the image with that ID, or `None` if not found."""
     db_image = _find_db_image(image_id)
 
     if db_image is None:
@@ -161,7 +161,7 @@ def find_image(image_id: NewsImageID) -> NewsImage | None:
 
 
 def _find_db_image(image_id: NewsImageID) -> DbNewsImage | None:
-    """Return the image with that id, or `None` if not found."""
+    """Return the image with that ID, or `None` if not found."""
     return db.session.scalars(
         select(DbNewsImage)
         .filter(DbNewsImage.id == image_id)
@@ -172,7 +172,7 @@ def _find_db_image(image_id: NewsImageID) -> DbNewsImage | None:
 
 
 def _get_db_image(image_id: NewsImageID) -> DbNewsImage:
-    """Return the image with that id."""
+    """Return the image with that ID."""
     db_image = _find_db_image(image_id)
 
     if db_image is None:

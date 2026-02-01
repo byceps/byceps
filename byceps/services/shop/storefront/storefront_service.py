@@ -78,7 +78,7 @@ def delete_storefront(storefront_id: StorefrontID) -> None:
 
 
 def find_storefront(storefront_id: StorefrontID) -> Storefront | None:
-    """Return the storefront with that id, or `None` if not found."""
+    """Return the storefront with that ID, or `None` if not found."""
     db_storefront = _find_db_storefront(storefront_id)
 
     if db_storefront is None:
@@ -94,14 +94,14 @@ def find_storefront(storefront_id: StorefrontID) -> Storefront | None:
 
 
 def _find_db_storefront(storefront_id: StorefrontID) -> DbStorefront | None:
-    """Return the database entity for the storefront with that id, or `None`
+    """Return the database entity for the storefront with that ID, or `None`
     if not found.
     """
     return db.session.get(DbStorefront, storefront_id)
 
 
 def get_storefront(storefront_id: StorefrontID) -> Storefront:
-    """Return the storefront with that id, or raise an exception."""
+    """Return the storefront with that ID, or raise an exception."""
     storefront = find_storefront(storefront_id)
 
     if storefront is None:
@@ -111,7 +111,7 @@ def get_storefront(storefront_id: StorefrontID) -> Storefront:
 
 
 def _get_db_storefront(storefront_id: StorefrontID) -> DbStorefront:
-    """Return the database entity for the storefront with that id.
+    """Return the database entity for the storefront with that ID.
 
     Raise an exception if not found.
     """

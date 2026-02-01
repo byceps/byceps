@@ -50,7 +50,7 @@ def delete_role(role_id: RoleID) -> None:
 
 
 def find_role(role_id: RoleID) -> Role | None:
-    """Return the role with that id, or `None` if not found."""
+    """Return the role with that ID, or `None` if not found."""
     db_role = db.session.get(DbRole, role_id)
 
     if db_role is None:

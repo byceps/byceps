@@ -88,7 +88,7 @@ def aggregate_seat_utilizations(
 
 
 def find_seat(seat_id: SeatID) -> Seat | None:
-    """Return the seat with that id, or `None` if not found."""
+    """Return the seat with that ID, or `None` if not found."""
     db_seat = seat_repository.find_seat(seat_id)
 
     if db_seat is None:
@@ -98,7 +98,7 @@ def find_seat(seat_id: SeatID) -> Seat | None:
 
 
 def get_seat(seat_id: SeatID) -> Seat:
-    """Return the seat with that id, or raise an exception."""
+    """Return the seat with that ID, or raise an exception."""
     db_seat = seat_repository.get_seat(seat_id)
 
     return _db_entity_to_seat(db_seat)

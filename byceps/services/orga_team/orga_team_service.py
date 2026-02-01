@@ -90,7 +90,7 @@ def get_teams_for_party(party_id: PartyID) -> set[OrgaTeam]:
 
 
 def find_team(team_id: OrgaTeamID) -> OrgaTeam | None:
-    """Return the team with that id, or `None` if not found."""
+    """Return the team with that ID, or `None` if not found."""
     db_team = _find_db_team(team_id)
 
     if db_team is None:
@@ -100,7 +100,7 @@ def find_team(team_id: OrgaTeamID) -> OrgaTeam | None:
 
 
 def _find_db_team(team_id: OrgaTeamID) -> DbOrgaTeam | None:
-    """Return the team with that id, or `None` if not found."""
+    """Return the team with that ID, or `None` if not found."""
     return db.session.get(DbOrgaTeam, team_id)
 
 
@@ -220,7 +220,7 @@ def get_memberships_for_party(party_id: PartyID) -> set[Membership]:
 
 
 def find_membership(membership_id: MembershipID) -> Membership | None:
-    """Return the membership with that id, or `None` if not found."""
+    """Return the membership with that ID, or `None` if not found."""
     db_membership = _find_db_membership(membership_id)
 
     if db_membership is None:
@@ -230,7 +230,7 @@ def find_membership(membership_id: MembershipID) -> Membership | None:
 
 
 def _find_db_membership(membership_id: MembershipID) -> DbMembership | None:
-    """Return the membership with that id, or `None` if not found."""
+    """Return the membership with that ID, or `None` if not found."""
     return db.session.get(DbMembership, membership_id)
 
 

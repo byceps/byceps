@@ -51,7 +51,7 @@ def find_shop_for_brand(brand_id: BrandID) -> Shop | None:
 
 
 def find_shop(shop_id: ShopID) -> Shop | None:
-    """Return the shop with that id, or `None` if not found."""
+    """Return the shop with that ID, or `None` if not found."""
     db_shop = _find_db_shop(shop_id)
 
     if db_shop is None:
@@ -61,14 +61,14 @@ def find_shop(shop_id: ShopID) -> Shop | None:
 
 
 def _find_db_shop(shop_id: ShopID) -> DbShop | None:
-    """Return the database entity for the shop with that id, or `None`
+    """Return the database entity for the shop with that ID, or `None`
     if not found.
     """
     return db.session.get(DbShop, shop_id)
 
 
 def get_shop(shop_id: ShopID) -> Shop:
-    """Return the shop with that id, or raise an exception."""
+    """Return the shop with that ID, or raise an exception."""
     shop = find_shop(shop_id)
 
     if shop is None:
@@ -78,7 +78,7 @@ def get_shop(shop_id: ShopID) -> Shop:
 
 
 def _get_db_shop(shop_id: ShopID) -> DbShop:
-    """Return the database entity for the shop with that id.
+    """Return the database entity for the shop with that ID.
 
     Raise an exception if not found.
     """

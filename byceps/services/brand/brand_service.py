@@ -69,7 +69,7 @@ def delete_brand(brand_id: BrandID) -> None:
 
 
 def find_brand(brand_id: BrandID) -> Brand | None:
-    """Return the brand with that id, or `None` if not found."""
+    """Return the brand with that ID, or `None` if not found."""
     db_brand = _find_db_brand(brand_id)
 
     if db_brand is None:
@@ -94,7 +94,7 @@ def find_brand_by_title(title: str) -> Brand | None:
 
 
 def get_brand(brand_id: BrandID) -> Brand:
-    """Return the brand with that id, or raise an exception."""
+    """Return the brand with that ID, or raise an exception."""
     brand = find_brand(brand_id)
 
     if brand is None:

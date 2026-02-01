@@ -45,7 +45,7 @@ def count_topics_for_board(board_id: BoardID) -> int:
 
 
 def find_topic(topic_id: TopicID) -> Topic | None:
-    """Return the topic with that id, or `None` if not found."""
+    """Return the topic with that ID, or `None` if not found."""
     db_topic = find_db_topic(topic_id)
 
     if db_topic is None:
@@ -55,12 +55,12 @@ def find_topic(topic_id: TopicID) -> Topic | None:
 
 
 def find_db_topic(topic_id: TopicID) -> DbTopic | None:
-    """Return the topic with that id, or `None` if not found."""
+    """Return the topic with that ID, or `None` if not found."""
     return db.session.get(DbTopic, topic_id)
 
 
 def get_db_topic(topic_id: TopicID) -> DbTopic:
-    """Return the topic with that id."""
+    """Return the topic with that ID."""
     db_topic = find_db_topic(topic_id)
 
     if db_topic is None:
@@ -72,7 +72,7 @@ def get_db_topic(topic_id: TopicID) -> DbTopic:
 def find_topic_visible_for_user(
     topic_id: TopicID, *, include_hidden: bool = False
 ) -> DbTopic | None:
-    """Return the topic with that id, or `None` if not found or
+    """Return the topic with that ID, or `None` if not found or
     invisible for the user.
     """
     stmt = (

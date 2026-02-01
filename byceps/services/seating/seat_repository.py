@@ -104,12 +104,12 @@ def count_seats_for_party(party_id: PartyID) -> int:
 
 
 def find_seat(seat_id: SeatID) -> DbSeat | None:
-    """Return the seat with that id, or `None` if not found."""
+    """Return the seat with that ID, or `None` if not found."""
     return db.session.get(DbSeat, seat_id)
 
 
 def get_seat(seat_id: SeatID) -> DbSeat:
-    """Return the seat with that id, or raise an exception."""
+    """Return the seat with that ID, or raise an exception."""
     db_seat = find_seat(seat_id)
 
     if db_seat is None:

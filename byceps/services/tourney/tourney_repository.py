@@ -84,7 +84,7 @@ def delete_tourney(tourney_id: TourneyID) -> None:
 
 
 def find_tourney(tourney_id: TourneyID) -> DbTourney | None:
-    """Return the tourney with that id, or `None` if not found."""
+    """Return the tourney with that ID, or `None` if not found."""
     return db.session.get(DbTourney, tourney_id)
 
 
@@ -104,7 +104,7 @@ def get_tourney(tourney_id: TourneyID) -> DbTourney:
 def find_tourney_with_category(
     tourney_id: TourneyID,
 ) -> tuple[DbTourney, DbTourneyCategory, int] | None:
-    """Return the tourney with that id, with categories and participant
+    """Return the tourney with that ID, with categories and participant
     counts, or `None` if not found.
     """
     return (

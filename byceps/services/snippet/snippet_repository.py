@@ -108,7 +108,7 @@ def delete_snippet(
 
 
 def find_snippet(snippet_id: SnippetID) -> DbSnippet | None:
-    """Return the snippet with that id, or `None` if not found."""
+    """Return the snippet with that ID, or `None` if not found."""
     return db.session.get(DbSnippet, snippet_id)
 
 
@@ -166,7 +166,7 @@ def get_all_scopes() -> list[SnippetScope]:
 def find_snippet_version(
     version_id: SnippetVersionID,
 ) -> DbSnippetVersion | None:
-    """Return the snippet version with that id, or `None` if not found."""
+    """Return the snippet version with that ID, or `None` if not found."""
     return db.session.get(DbSnippetVersion, version_id)
 
 

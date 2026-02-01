@@ -94,14 +94,14 @@ def count_orders_per_payment_state_via_order_prefix(
 
 
 def _find_db_order(order_id: OrderID) -> DbOrder | None:
-    """Return the order database entity with that id, or `None` if not
+    """Return the order database entity with that ID, or `None` if not
     found.
     """
     return db.session.get(DbOrder, order_id)
 
 
 def get_db_order(order_id: OrderID) -> DbOrder:
-    """Return the order database entity with that id, or raise an
+    """Return the order database entity with that ID, or raise an
     exception.
     """
     db_order = _find_db_order(order_id)
@@ -113,7 +113,7 @@ def get_db_order(order_id: OrderID) -> DbOrder:
 
 
 def find_order(order_id: OrderID) -> Order | None:
-    """Return the order with that id, or `None` if not found."""
+    """Return the order with that ID, or `None` if not found."""
     db_order = _find_db_order(order_id)
 
     if db_order is None:
@@ -124,14 +124,14 @@ def find_order(order_id: OrderID) -> Order | None:
 
 
 def get_order(order_id: OrderID) -> Order:
-    """Return the order with that id, or raise an exception."""
+    """Return the order with that ID, or raise an exception."""
     db_order = get_db_order(order_id)
     orderer_user = user_service.get_user(db_order.placed_by_id)
     return to_order(db_order, orderer_user)
 
 
 def get_paid_order(order_id: OrderID) -> PaidOrder:
-    """Return the paid order with that id, or raise an exception."""
+    """Return the paid order with that ID, or raise an exception."""
     db_order = get_db_order(order_id)
     if db_order is None:
         raise ValueError(f'Unknown order ID "{order_id}"')
@@ -141,7 +141,7 @@ def get_paid_order(order_id: OrderID) -> PaidOrder:
 
 
 def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
-    """Return the order with that id, or `None` if not found."""
+    """Return the order with that ID, or `None` if not found."""
     db_order = (
         db.session.scalars(
             select(DbOrder)
@@ -167,7 +167,7 @@ def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
 def find_order_with_details_for_admin(
     order_id: OrderID,
 ) -> AdminDetailedOrder | None:
-    """Return the order with that id, or `None` if not found."""
+    """Return the order with that ID, or `None` if not found."""
     detailed_order = find_order_with_details(order_id)
 
     if detailed_order is None:
@@ -258,7 +258,7 @@ def get_order_count_by_shop_id() -> dict[ShopID, int]:
 
 
 def get_orders(order_ids: frozenset[OrderID]) -> list[Order]:
-    """Return the orders with these ids."""
+    """Return the orders with these IDs."""
     if not order_ids:
         return []
 

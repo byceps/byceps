@@ -60,12 +60,12 @@ def delete_ticket(ticket_id: TicketID) -> None:
 
 
 def find_ticket(ticket_id: TicketID) -> DbTicket | None:
-    """Return the ticket with that id, or `None` if not found."""
+    """Return the ticket with that ID, or `None` if not found."""
     return db.session.get(DbTicket, ticket_id)
 
 
 def get_ticket(ticket_id: TicketID) -> DbTicket:
-    """Return the ticket with that id, or raise an exception."""
+    """Return the ticket with that ID, or raise an exception."""
     db_ticket = find_ticket(ticket_id)
 
     if db_ticket is None:
@@ -84,7 +84,7 @@ def find_ticket_by_code(party_id: PartyID, code: TicketCode) -> DbTicket | None:
 
 
 def get_tickets(ticket_ids: set[TicketID]) -> Sequence[DbTicket]:
-    """Return the tickets with those ids."""
+    """Return the tickets with those IDs."""
     if not ticket_ids:
         return []
 
@@ -259,7 +259,7 @@ def select_ticket_users_for_party(
 
 
 def get_ticket_with_details(ticket_id: TicketID) -> DbTicket | None:
-    """Return the ticket with that id, or `None` if not found."""
+    """Return the ticket with that ID, or `None` if not found."""
     return db.session.scalar(
         select(DbTicket)
         .options(

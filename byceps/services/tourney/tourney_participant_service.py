@@ -47,7 +47,7 @@ def delete_participant(participant_id: ParticipantID) -> None:
 
 
 def find_participant(participant_id: ParticipantID) -> Participant | None:
-    """Return the participant with that id, or `None` if not found."""
+    """Return the participant with that ID, or `None` if not found."""
     db_participant = tourney_participant_repository.find_participant(
         participant_id
     )

@@ -77,7 +77,7 @@ def delete_badge(badge_id: BadgeID) -> None:
 
 
 def find_badge(badge_id: BadgeID) -> Badge | None:
-    """Return the badge with that id, or `None` if not found."""
+    """Return the badge with that ID, or `None` if not found."""
     db_badge = db.session.get(DbBadge, badge_id)
 
     if db_badge is None:
@@ -87,7 +87,7 @@ def find_badge(badge_id: BadgeID) -> Badge | None:
 
 
 def get_badge(badge_id: BadgeID) -> Badge:
-    """Return the badge with that id, or raise an exception."""
+    """Return the badge with that ID, or raise an exception."""
     badge = find_badge(badge_id)
 
     if badge is None:

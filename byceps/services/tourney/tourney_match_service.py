@@ -38,7 +38,7 @@ def delete_match(match_id: MatchID) -> None:
 
 
 def find_match(match_id: MatchID) -> Match | None:
-    """Return the match with that id, or `None` if not found."""
+    """Return the match with that ID, or `None` if not found."""
     db_match = db.session.get(DbMatch, match_id)
 
     if db_match is None:

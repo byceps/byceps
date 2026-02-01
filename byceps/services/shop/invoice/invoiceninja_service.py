@@ -99,7 +99,7 @@ class InvoiceNinjaHttpClient:
         if invoice is not None:
             return invoice
 
-        # Get/create Invoice Ninja customer id and update address.
+        # Get/create Invoice Ninja customer ID and update address.
         customer_id = self.get_customer_id_with_update(order)
 
         return self.create_invoice(customer_id, order)
@@ -107,7 +107,7 @@ class InvoiceNinjaHttpClient:
     def find_invoice_by_order_number(
         self, order_number: str
     ) -> InvoiceNinjaInvoice | None:
-        """Find invoice in Invoice Ninja and return id and paid_to_date."""
+        """Find invoice in Invoice Ninja and return ID and paid_to_date."""
         url = self._build_url(
             f'invoices?is_deleted=false&filter={order_number}'
         )
@@ -122,7 +122,7 @@ class InvoiceNinjaHttpClient:
         return _transform_invoice_response(invoice_data)
 
     def get_customer_id_with_update(self, order: AdminDetailedOrder) -> str:
-        """Return customer id for orderer, create customer object if necessary."""
+        """Return customer ID for orderer, create customer object if necessary."""
         customer_id = _get_user_invoiceninja_customer_id(order.placed_by.id)
 
         client_data = _fill_client_data(order.placed_by, order)

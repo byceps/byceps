@@ -87,7 +87,7 @@ def view_current_version(snippet_id):
 @permission_required('snippet.view_history')
 @templated
 def view_version(snippet_version_id):
-    """Show the snippet with the given id."""
+    """Show the snippet with the given ID."""
     version = find_snippet_version(snippet_version_id)
 
     snippet = version.snippet
@@ -110,7 +110,7 @@ def view_version(snippet_version_id):
 @permission_required('snippet.view_history')
 @templated
 def view_version_preview(snippet_version_id):
-    """Show a preview of the snippet with the given id."""
+    """Show a preview of the snippet with the given ID."""
     version = find_snippet_version(snippet_version_id)
 
     try:

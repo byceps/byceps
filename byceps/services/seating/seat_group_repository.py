@@ -146,7 +146,7 @@ def count_groups_for_party(party_id: PartyID) -> int:
 
 
 def find_group(group_id: SeatGroupID) -> tuple[DbSeatGroup, set[SeatID]] | None:
-    """Return the seat group with that id, or `None` if not found."""
+    """Return the seat group with that ID, or `None` if not found."""
     db_group = db.session.get(DbSeatGroup, group_id)
 
     if db_group is None:
