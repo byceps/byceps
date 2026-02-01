@@ -87,14 +87,14 @@ class DbUser(db.Model):
     email_address: Mapped[str | None] = mapped_column(
         db.UnicodeText, unique=True
     )
-    email_address_verified: Mapped[bool] = mapped_column(default=False)
+    email_address_verified: Mapped[bool]
     avatar_id: Mapped[UserAvatarID | None] = mapped_column(
         db.Uuid, db.ForeignKey('user_avatars.id')
     )
     avatar: Mapped[DbUserAvatar] = relationship(foreign_keys=[avatar_id])
-    initialized: Mapped[bool] = mapped_column(default=False)
-    suspended: Mapped[bool] = mapped_column(default=False)
-    deleted: Mapped[bool] = mapped_column(default=False)
+    initialized: Mapped[bool]
+    suspended: Mapped[bool]
+    deleted: Mapped[bool]
     locale: Mapped[str | None] = mapped_column(db.UnicodeText)
     legacy_id: Mapped[str | None] = mapped_column(db.UnicodeText)
 
@@ -105,6 +105,10 @@ class DbUser(db.Model):
         screen_name: str | None,
         email_address: str | None,
         *,
+        email_address_verified: bool = False,
+        initialized: bool = False,
+        suspended: bool = False,
+        deleted: bool = False,
         locale: str | None = None,
         legacy_id: str | None = None,
     ) -> None:
@@ -112,6 +116,10 @@ class DbUser(db.Model):
         self.created_at = created_at
         self.screen_name = screen_name
         self.email_address = email_address
+        self.email_address_verified = email_address_verified
+        self.initialized = initialized
+        self.suspended = suspended
+        self.deleted = deleted
         self.locale = locale
         self.legacy_id = legacy_id
 
