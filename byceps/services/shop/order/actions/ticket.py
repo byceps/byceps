@@ -60,11 +60,10 @@ def on_payment(
     parameters: ActionParameters,
 ) -> Result[None, OrderActionFailedError]:
     """Create tickets."""
-    product = product_service.get_product(line_item.product_id)
-
     if parameters:
         ticket_category_id = parameters['ticket_category_id']
     else:
+        product = product_service.get_product(line_item.product_id)
         ticket_category_id = product.type_params['ticket_category_id']
 
     ticket_category = ticket_category_service.get_category(ticket_category_id)

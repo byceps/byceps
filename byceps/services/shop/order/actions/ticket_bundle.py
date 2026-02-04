@@ -57,12 +57,11 @@ def on_payment(
     parameters: ActionParameters,
 ) -> Result[None, OrderActionFailedError]:
     """Create ticket bundles."""
-    product = product_service.get_product(line_item.product_id)
-
     if parameters:
         ticket_category_id = parameters['ticket_category_id']
         ticket_quantity_per_bundle = int(parameters['ticket_quantity'])
     else:
+        product = product_service.get_product(line_item.product_id)
         ticket_category_id = product.type_params['ticket_category_id']
         ticket_quantity_per_bundle = int(product.type_params['ticket_quantity'])
 
