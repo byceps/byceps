@@ -10,16 +10,15 @@ from collections import defaultdict
 from collections.abc import Iterator
 from uuid import UUID
 
-from sqlalchemy import delete, select
 import structlog
 
-from byceps.database import db
 from byceps.services.shop.product import product_service
 from byceps.services.shop.product.models import ProductID, ProductType
 from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
+from . import order_action_repository
 from .actions import ticket as ticket_actions
 from .actions import ticket_bundle as ticket_bundle_actions
 from .actions import user_badge as user_badge_actions
@@ -54,27 +53,24 @@ def create_action(
     """Create an order action."""
     action_id = generate_uuid7()
 
-    db_action = DbOrderAction(action_id, product_id, procedure_name, parameters)
-
-    db.session.add(db_action)
-    db.session.commit()
+    order_action_repository.create_action(
+        action_id, product_id, procedure_name, parameters
+    )
 
 
 def delete_action(action_id: UUID) -> None:
     """Delete the order action."""
-    db.session.execute(delete(DbOrderAction).filter_by(id=action_id))
-    db.session.commit()
+    order_action_repository.delete_action(action_id)
 
 
 def delete_actions_for_product(product_id: ProductID) -> None:
     """Delete all order actions for a product."""
-    db.session.execute(delete(DbOrderAction).filter_by(product_id=product_id))
-    db.session.commit()
+    order_action_repository.delete_actions_for_product(product_id)
 
 
 def find_action(action_id: UUID) -> Action | None:
     """Return the action with that ID, if found."""
-    db_action = db.session.get(DbOrderAction, action_id)
+    db_action = order_action_repository.find_action(action_id)
 
     if db_action is None:
         return None
@@ -88,9 +84,7 @@ def find_action(action_id: UUID) -> Action | None:
 
 def get_actions_for_product(product_id: ProductID) -> list[Action]:
     """Return the order actions defined for that product."""
-    db_actions = db.session.scalars(
-        select(DbOrderAction).filter_by(product_id=product_id)
-    ).all()
+    db_actions = order_action_repository.get_actions_for_product(product_id)
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
 
@@ -178,12 +172,7 @@ def _get_line_items_with_actions(
 
 def _get_actions(product_ids: set[ProductID]) -> list[Action]:
     """Return the order actions for those product IDs."""
-    if not product_ids:
-        return []
-
-    db_actions = db.session.scalars(
-        select(DbOrderAction).filter(DbOrderAction.product_id.in_(product_ids))
-    ).all()
+    db_actions = order_action_repository.get_actions_for_products(product_ids)
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
 
