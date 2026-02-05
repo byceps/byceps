@@ -25,7 +25,7 @@ BYCEPS comes with a command-line tool for some tasks.
      - :ref:`Import users <Import Users>`
    * - ``byceps initialize-database``
      - :ref:`Initialize database <Initialize Database>`
-   * - ``byceps shell``
+   * - ``flask shell``
      - :ref:`Run interactive shell <Run Interactive Shell>`
 
 
@@ -278,7 +278,7 @@ Expected output:
 Run Interactive Shell
 =====================
 
-The BYCEPS shell is an interactive Python command line prompt that provides
+The Flask shell is an interactive Python command line prompt that provides
 access to BYCEPS' functionality as well as the persisted data.
 
 This can be helpful to inspect and manipulate the application's data by using
@@ -287,11 +287,4 @@ accessing the database (hopefully limiting the amount of accidental damage).
 
 .. code-block:: console
 
-    $ uv run byceps shell
-
-Expected output:
-
-.. code-block:: none
-
-    Welcome to the interactive BYCEPS shell on Python 3.13.5!
-    >>>
+    $ uv run flask shell
