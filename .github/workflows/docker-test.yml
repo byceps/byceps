@@ -14,4 +14,4 @@ jobs:
       with:
         persist-credentials: false
 
-    - run: ./test-docker.sh
+    - run: ./docker-test.sh
