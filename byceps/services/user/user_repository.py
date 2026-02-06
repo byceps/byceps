@@ -363,15 +363,6 @@ def find_db_user_by_screen_name(screen_name: str) -> DbUser | None:
     return db.session.scalars(stmt).one_or_none()
 
 
-def find_user_with_details(user_id: UserID) -> DbUser | None:
-    """Return the user and its details."""
-    return db.session.scalars(
-        select(DbUser)
-        .options(db.joinedload(DbUser.detail))
-        .filter_by(id=user_id)
-    ).one_or_none()
-
-
 def get_db_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
     db_user = db.session.get(DbUser, user_id)

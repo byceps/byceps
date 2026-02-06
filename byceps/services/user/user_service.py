@@ -127,11 +127,6 @@ def find_db_user_by_screen_name(screen_name: str) -> DbUser | None:
     return user_repository.find_db_user_by_screen_name(screen_name)
 
 
-def find_user_with_details(user_id: UserID) -> DbUser | None:
-    """Return the user and its details."""
-    return user_repository.find_user_with_details(user_id)
-
-
 def get_db_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
     return user_repository.get_db_user(user_id)
