@@ -104,6 +104,7 @@ def view(user_id):
     """Show a user's internal profile."""
     user = _get_user_for_admin_or_404(user_id)
     db_user = user_service.find_user_with_details(user.id)
+    email_address_data = user_service.get_email_address_data(user.id)
 
     locale = user_service.find_locale(user.id)
 
@@ -138,6 +139,7 @@ def view(user_id):
     return {
         'profile_user': user,
         'user': db_user,
+        'email_address_data': email_address_data,
         'user_locale': locale,
         'recent_login': recent_login,
         'days_since_recent_login': days_since_recent_login,

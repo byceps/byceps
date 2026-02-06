@@ -44,9 +44,9 @@
 
   <div class="data-label">{{ _('Email address') }}</div>
   <div class="data-value">
-    {%- if user.email_address %}
-    <a href="mailto:{{ user.email_address }}">{{ user.email_address }}</a>
-      {%- if not user.email_address_verified %}
+    {%- if email_address_data.address %}
+    <a href="mailto:{{ email_address_data.address }}">{{ email_address_data.address }}</a>
+      {%- if not email_address_data.verified %}
     {{ render_tag(_('unverified'), class='color-warning') }}
       {%- endif %}
     {%- else %}
