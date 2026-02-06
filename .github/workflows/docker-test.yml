@@ -14,17 +14,4 @@ jobs:
       with:
         persist-credentials: false
 
-    - name: Create configuration file
-      run: cp docker/byceps/config.toml.example docker/byceps/config.toml
-
-    - name: Create services
-      run: docker compose up --no-start --quiet-pull
-
-    - name: Generate secret key
-      run: docker compose run --rm byceps-apps uv run byceps generate-secret-key > ./secret_key.txt
-
-    - name: Insert secret key into configuration file
-      run: sed -i '/secret_key = ""/s|^.*|secret_key = "fake-secret-key-for-testing"|' docker/byceps/config.toml
-
-    - name: Initialize database
-      run: docker compose run --rm byceps-apps uv run byceps initialize-database
+    - run: ./test-docker.sh
