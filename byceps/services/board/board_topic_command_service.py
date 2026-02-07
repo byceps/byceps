@@ -141,7 +141,6 @@ def unhide_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnhiddenEvent:
 
     now = datetime.utcnow()
 
-    # TODO: Store who un-hid the topic.
     db_topic.hidden = False
     db_topic.hidden_at = None
     db_topic.hidden_by_id = None
@@ -196,7 +195,6 @@ def unlock_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnlockedEvent:
 
     now = datetime.utcnow()
 
-    # TODO: Store who unlocked the topic.
     db_topic.locked = False
     db_topic.locked_at = None
     db_topic.locked_by_id = None
@@ -249,7 +247,6 @@ def unpin_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnpinnedEvent:
 
     now = datetime.utcnow()
 
-    # TODO: Store who unpinned the topic.
     db_topic.pinned = False
     db_topic.pinned_at = None
     db_topic.pinned_by_id = None

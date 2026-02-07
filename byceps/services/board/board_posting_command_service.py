@@ -147,7 +147,6 @@ def unhide_posting(
 
     now = datetime.utcnow()
 
-    # TODO: Store who un-hid the posting.
     db_posting.hidden = False
     db_posting.hidden_at = None
     db_posting.hidden_by_id = None
