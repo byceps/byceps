@@ -446,6 +446,7 @@ def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
             select(db.func.count(DbOrder.id))
             .filter_by(shop_id=shop_id)
             .filter_by(placed_by_id=user_id)
+            .filter(DbOrder._payment_state.in_(('open', 'paid')))
         )
         or 0
     )
