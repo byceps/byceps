@@ -174,7 +174,7 @@ def test_order_single(
     url = f'{BASE_URL}/shop/order_single/{product.id!s}'
     form_data: dict[str, int | str] = {
         **COMMON_FORM_DATA,
-        'quantity': 1,  # TODO: Test with `3` if limitation is removed.
+        'quantity': 1,  # Overridden with fixed quantity 1 anyway.
     }
     with http_client(site_app, user_id=orderer_user.id) as client:
         response = client.post(url, data=form_data)
