@@ -124,7 +124,7 @@ def get_collections_for_catalog(
     return db.session.scalars(
         select(DbCollection)
         .filter_by(catalog_id=catalog_id)
-        .order_by(DbCollection.position)  # TODO
+        .order_by(DbCollection.position)
     ).all()
 
 
