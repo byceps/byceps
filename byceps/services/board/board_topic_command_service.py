@@ -276,7 +276,10 @@ def move_topic(
     now = datetime.utcnow()
 
     db_old_category = db_topic.category
+
     db_new_category = db.session.get(DbBoardCategory, new_category_id)
+    if db_new_category is None:
+        raise ValueError(f'Unknown board category ID "{new_category_id}"')
 
     db_topic.category = db_new_category
     db.session.commit()
