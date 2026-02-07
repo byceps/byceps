@@ -7,6 +7,7 @@ byceps.services.board.blueprints.site.views_posting
 """
 
 import dataclasses
+from uuid import UUID
 
 from flask import abort, g, redirect, request
 from flask_babel import gettext
@@ -21,7 +22,7 @@ from byceps.services.board.errors import (
     ReactionDeniedError,
     ReactionExistsError,
 )
-from byceps.services.board.models import ReactionKind
+from byceps.services.board.models import PostingID, ReactionKind
 from byceps.services.site.blueprints.site.navigation import (
     subnavigation_for_view,
 )
@@ -77,9 +78,11 @@ def posting_create_form(topic_id, erroneous_form=None):
 
 
 def quote_posting_as_bbcode():
-    posting_id = request.args.get('quote', type=str)
-    if not posting_id:
+    posting_id_str = request.args.get('quote', type=str)
+    if not posting_id_str:
         return
+
+    posting_id = PostingID(UUID(posting_id_str))
 
     db_posting = board_posting_query_service.find_db_posting(posting_id)
     if db_posting is None:
