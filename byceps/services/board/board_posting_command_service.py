@@ -68,7 +68,7 @@ def create_posting(
         topic_id=db_topic.id,
         topic_title=db_topic.title,
         topic_muted=db_topic.muted,
-        url=None,
+        url='to-be-determined-later',
     )
 
     return db_posting, event
@@ -102,7 +102,7 @@ def update_posting(
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
         editor=editor,
-        url=None,
+        url='to-be-determined-later',
     )
 
 
@@ -133,7 +133,7 @@ def hide_posting(
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
         moderator=moderator,
-        url=None,
+        url='to-be-determined-later',
     )
 
     return event
@@ -166,7 +166,7 @@ def unhide_posting(
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
         moderator=moderator,
-        url=None,
+        url='to-be-determined-later',
     )
 
     return event

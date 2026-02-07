@@ -72,7 +72,7 @@ def create_topic(
         topic_id=topic.id,
         topic_creator=creator,
         topic_title=topic.title,
-        url=None,
+        url='to-be-determined-later',
     )
 
     return topic, event
@@ -103,7 +103,7 @@ def update_topic(
         topic_creator=topic_creator,
         topic_title=db_topic.title,
         editor=editor,
-        url=None,
+        url='to-be-determined-later',
     )
 
 
@@ -131,7 +131,7 @@ def hide_topic(topic_id: TopicID, moderator: User) -> BoardTopicHiddenEvent:
         topic_creator=topic_creator,
         topic_title=db_topic.title,
         moderator=moderator,
-        url=None,
+        url='to-be-determined-later',
     )
 
 
@@ -159,7 +159,7 @@ def unhide_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnhiddenEvent:
         topic_creator=topic_creator,
         topic_title=db_topic.title,
         moderator=moderator,
-        url=None,
+        url='to-be-determined-later',
     )
 
 
@@ -185,7 +185,7 @@ def lock_topic(topic_id: TopicID, moderator: User) -> BoardTopicLockedEvent:
         topic_creator=topic_creator,
         topic_title=db_topic.title,
         moderator=moderator,
-        url=None,
+        url='to-be-determined-later',
     )
 
 
@@ -211,7 +211,7 @@ def unlock_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnlockedEvent:
         topic_creator=topic_creator,
         topic_title=db_topic.title,
         moderator=moderator,
-        url=None,
+        url='to-be-determined-later',
     )
 
 
@@ -237,7 +237,7 @@ def pin_topic(topic_id: TopicID, moderator: User) -> BoardTopicPinnedEvent:
         topic_creator=topic_creator,
         topic_title=db_topic.title,
         moderator=moderator,
-        url=None,
+        url='to-be-determined-later',
     )
 
 
@@ -263,7 +263,7 @@ def unpin_topic(topic_id: TopicID, moderator: User) -> BoardTopicUnpinnedEvent:
         topic_creator=topic_creator,
         topic_title=db_topic.title,
         moderator=moderator,
-        url=None,
+        url='to-be-determined-later',
     )
 
 
@@ -299,7 +299,7 @@ def move_topic(
         new_category_id=db_new_category.id,
         new_category_title=db_new_category.title,
         moderator=moderator,
-        url=None,
+        url='to-be-determined-later',
     )
 
 
