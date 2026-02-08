@@ -14,8 +14,7 @@ from sqlalchemy import delete, select, update
 from sqlalchemy.sql import Select
 
 from byceps.database import db, paginate, Pagination
-from byceps.services.shop.order.dbmodels.line_item import DbLineItem
-from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.dbmodels.order import DbLineItem, DbOrder
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.uuid import generate_uuid7

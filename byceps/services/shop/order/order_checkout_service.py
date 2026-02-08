@@ -21,8 +21,7 @@ from byceps.services.shop.storefront.models import Storefront
 from byceps.util.result import Err, Ok, Result
 
 from . import order_domain_service, order_helper_service, order_sequence_service
-from .dbmodels.line_item import DbLineItem
-from .dbmodels.order import DbOrder
+from .dbmodels.order import DbLineItem, DbOrder
 from .events import ShopOrderPlacedEvent
 from .models.checkout import IncomingLineItem, IncomingOrder
 from .models.number import OrderNumber

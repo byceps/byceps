@@ -11,8 +11,7 @@ from moneyed import Currency, Money
 from byceps.services.user.models import User, UserID
 
 from . import order_domain_service
-from .dbmodels.line_item import DbLineItem
-from .dbmodels.order import DbOrder
+from .dbmodels.order import DbLineItem, DbOrder
 from .models.detailed_order import DetailedOrder
 from .models.order import (
     AdminOrderListItem,

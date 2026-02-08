@@ -20,8 +20,7 @@ from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
 from . import order_action_service, order_domain_service, order_payment_service
-from .dbmodels.line_item import DbLineItem
-from .dbmodels.order import DbOrder
+from .dbmodels.order import DbLineItem, DbOrder
 from .errors import (
     OrderActionFailedError,
     OrderAlreadyCanceledError,
