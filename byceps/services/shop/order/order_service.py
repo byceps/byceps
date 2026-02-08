@@ -441,17 +441,18 @@ def get_orders_placed_by_user_for_storefront(
 
 def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
     """Return `True` if the user has placed orders in that shop."""
-    orders_total = (
+    return (
         db.session.scalar(
-            select(db.func.count(DbOrder.id))
-            .filter_by(shop_id=shop_id)
-            .filter_by(placed_by_id=user_id)
-            .filter(DbOrder._payment_state.in_(('open', 'paid')))
+            select(
+                select(DbOrder)
+                .filter_by(shop_id=shop_id)
+                .filter_by(placed_by_id=user_id)
+                .filter(DbOrder._payment_state.in_(('open', 'paid')))
+                .exists()
+            )
         )
-        or 0
+        or False
     )
-
-    return orders_total > 0
 
 
 _PAYMENT_METHOD_LABELS = {
