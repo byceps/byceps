@@ -15,6 +15,7 @@ from sqlalchemy import select
 
 from byceps.database import db, paginate, Pagination
 from byceps.services.shop.invoice import order_invoice_service
+from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.shop.dbmodels import DbShop
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
@@ -24,7 +25,7 @@ from byceps.services.user.models import User, UserID
 from . import (
     order_payment_service,
 )
-from .dbmodels.order import DbOrder
+from .dbmodels.order import DbLineItem, DbOrder
 from .models.detailed_order import AdminDetailedOrder, DetailedOrder
 from .models.number import OrderNumber
 from .models.order import (
@@ -439,14 +440,17 @@ def get_orders_placed_by_user_for_storefront(
     ]
 
 
-def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
-    """Return `True` if the user has placed orders in that shop."""
+def has_user_ordered_product(user_id: UserID, product_id: ProductID) -> bool:
+    """Return `True` if the user has ordered the product before
+    (excluding canceled orders).
+    """
     return (
         db.session.scalar(
             select(
-                select(DbOrder)
-                .filter_by(shop_id=shop_id)
-                .filter_by(placed_by_id=user_id)
+                select(DbLineItem)
+                .join(DbOrder)
+                .filter(DbLineItem.product_id == product_id)
+                .filter(DbOrder.placed_by_id == user_id)
                 .filter(DbOrder._payment_state.in_(('open', 'paid')))
                 .exists()
             )

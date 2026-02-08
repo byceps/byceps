@@ -192,7 +192,7 @@ def order_single_form(product_id, erroneous_form=None):
             'product': None,
         }
 
-    if order_service.has_user_placed_orders(user.id, storefront.shop_id):
+    if order_service.has_user_ordered_product(user.id, product.id):
         flash_error(gettext('You cannot place another order.'))
         return {
             'form': form,
@@ -243,7 +243,7 @@ def order_single(product_id):
 
     user = g.user
 
-    if order_service.has_user_placed_orders(user.id, shop.id):
+    if order_service.has_user_ordered_product(user.id, product.id):
         flash_error(gettext('You cannot place another order.'))
         return order_single_form(product.id)
 
