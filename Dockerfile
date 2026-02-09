@@ -11,7 +11,7 @@ RUN apt-get install --no-install-recommends --update --yes \
 RUN useradd --create-home byceps
 WORKDIR /home/byceps
 USER byceps
-ENV PATH /home/byceps/.local/bin:$PATH
+ENV PATH=/home/byceps/.local/bin:$PATH
 
 # Install uv.
 COPY --from=ghcr.io/astral-sh/uv:0.9.30 /uv /bin/
