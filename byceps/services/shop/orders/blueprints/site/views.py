@@ -235,22 +235,19 @@ def cancel(order_id):
 
     reason = form.reason.data.strip()
 
-    cancellation_result = order_command_service.cancel_order(
-        order.id, g.user, reason
-    )
-    if cancellation_result.is_err():
-        err = cancellation_result.unwrap_err()
-        if isinstance(err, OrderAlreadyCanceledError):
+    match order_command_service.cancel_order(order.id, g.user, reason):
+        case Ok((canceled_order, event)):
+            pass
+        case Err(OrderAlreadyCanceledError()):
             flash_error(
                 gettext(
                     'The order has already been canceled. The payment state cannot be changed anymore.'
                 )
             )
-        else:
+            return redirect_to('.view', order_id=order.id)
+        case Err(_):
             flash_error(gettext('An unexpected error occurred.'))
-        return redirect_to('.view', order_id=order.id)
-
-    canceled_order, event = cancellation_result.unwrap()
+            return redirect_to('.view', order_id=order.id)
 
     flash_success(gettext('Order has been canceled.'))
 
@@ -360,22 +357,19 @@ def donate_everything(order_id):
         'Ticket return and donation of full order total as requested'
     )
 
-    cancellation_result = order_command_service.cancel_order(
-        order.id, g.user, reason
-    )
-    if cancellation_result.is_err():
-        err = cancellation_result.unwrap_err()
-        if isinstance(err, OrderAlreadyCanceledError):
+    match order_command_service.cancel_order(order.id, g.user, reason):
+        case Ok((canceled_order, event)):
+            pass
+        case Err(OrderAlreadyCanceledError()):
             flash_error(
                 gettext(
                     'The order has already been canceled. The payment state cannot be changed anymore.'
                 )
             )
-        else:
+            return redirect_to('.view', order_id=order.id)
+        case Err(_):
             flash_error(gettext('An unexpected error occurred.'))
-        return redirect_to('.view', order_id=order.id)
-
-    canceled_order, event = cancellation_result.unwrap()
+            return redirect_to('.view', order_id=order.id)
 
     cancellation_request_service.accept_request(cancellation_request.id)
 
@@ -569,15 +563,15 @@ def _send_refund_request_confirmation_email(
     locale = g.user.locale or get_default_locale()
     language_code = locale.language
 
-    footer_result = email_footer_service.get_footer(brand, language_code)
-    if footer_result.is_err():
-        log.error(
-            'Sending refund request confirmation email failed',
-            error=footer_result.unwrap_err(),
-        )
-        return
-
-    footer = footer_result.unwrap()
+    match email_footer_service.get_footer(brand, language_code):
+        case Ok(footer):
+            pass
+        case Err(error):
+            log.error(
+                'Sending refund request confirmation email failed',
+                error=error,
+            )
+            return
 
     sender = email_config.sender
     recipients = [email_address.address]

@@ -42,7 +42,7 @@ from byceps.services.ticketing import ticket_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.result import Err
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -367,23 +367,20 @@ def cancel(order_id):
     reason = form.reason.data.strip()
     send_email = form.send_email.data
 
-    cancellation_result = order_command_service.cancel_order(
-        order.id, g.user, reason
-    )
-    if cancellation_result.is_err():
-        err = cancellation_result.unwrap_err()
-        if isinstance(err, OrderAlreadyCanceledError):
+    match order_command_service.cancel_order(order.id, g.user, reason):
+        case Ok((canceled_order, event)):
+            pass
+        case Err(OrderAlreadyCanceledError()):
             flash_error(
                 gettext(
                     'The order has already been canceled. '
                     'The payment state cannot be changed anymore.'
                 )
             )
-        else:
+            return redirect_to('.view', order_id=order.id)
+        case Err(_):
             flash_error(gettext('An unexpected error occurred.'))
-        return redirect_to('.view', order_id=order.id)
-
-    canceled_order, event = cancellation_result.unwrap()
+            return redirect_to('.view', order_id=order.id)
 
     flash_success(
         gettext(
@@ -448,18 +445,17 @@ def mark_as_paid(order_id):
     payment_method = form.payment_method.data
     initiator = g.user
 
-    mark_as_paid_result = order_command_service.mark_order_as_paid(
+    match order_command_service.mark_order_as_paid(
         order.id, payment_method, initiator
-    )
-    if mark_as_paid_result.is_err():
-        err = mark_as_paid_result.unwrap_err()
-        if isinstance(err, OrderAlreadyMarkedAsPaidError):
+    ):
+        case Ok((paid_order, event)):
+            pass
+        case Err(OrderAlreadyMarkedAsPaidError()):
             flash_error(gettext('Order is already marked as paid.'))
-        else:
+            return redirect_to('.view', order_id=order.id)
+        case Err(_):
             flash_error(gettext('An unexpected error occurred.'))
-        return redirect_to('.view', order_id=order.id)
-
-    paid_order, event = mark_as_paid_result.unwrap()
+            return redirect_to('.view', order_id=order.id)
 
     flash_success(gettext('Order has been marked as paid.'))
 
@@ -529,18 +525,16 @@ def create_number_sequence(shop_id):
 
     prefix = form.prefix.data.strip()
 
-    creation_result = order_sequence_service.create_order_number_sequence(
-        shop.id, prefix
-    )
-    if creation_result.is_err():
-        flash_error(
-            gettext(
-                'Order number sequence could not be created. '
-                'Is the prefix "%(prefix)s" already defined?',
-                prefix=prefix,
+    match order_sequence_service.create_order_number_sequence(shop.id, prefix):
+        case Err(_):
+            flash_error(
+                gettext(
+                    'Order number sequence could not be created. '
+                    'Is the prefix "%(prefix)s" already defined?',
+                    prefix=prefix,
+                )
             )
-        )
-        return create_number_sequence_form(shop.id, form)
+            return create_number_sequence_form(shop.id, form)
 
     flash_success(
         gettext(

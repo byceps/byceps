@@ -31,6 +31,7 @@ from byceps.services.user.models import User
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import permission_required, respond_no_content
 
 
@@ -146,30 +147,28 @@ def check_in_user(party_id, ticket_id):
 
     initiator = g.user
 
-    check_in_result = ticket_user_checkin_service.check_in_user(
+    match ticket_user_checkin_service.check_in_user(
         party.id, ticket.id, initiator
-    )
-
-    if check_in_result.is_err():
-        err = check_in_result.unwrap_err()
-        if isinstance(err, ticketing_errors.UserAccountDeletedError):
+    ):
+        case Ok(event):
+            pass
+        case Err(ticketing_errors.UserAccountDeletedError()):
             flash_error(
                 gettext(
                     'The user account assigned to this ticket has been deleted. Check-in denied.'
                 )
             )
-        elif isinstance(err, ticketing_errors.UserAccountSuspendedError):
+            return
+        case Err(ticketing_errors.UserAccountSuspendedError()):
             flash_error(
                 gettext(
                     'The user account assigned to this ticket has been suspended. Check-in denied.'
                 )
             )
-        else:
+            return
+        case Err(_):
             flash_error(gettext('An unexpected error occurred.'))
-
-        return
-
-    event = check_in_result.unwrap()
+            return
 
     ticketing_signals.ticket_checked_in.send(None, event=event)
 

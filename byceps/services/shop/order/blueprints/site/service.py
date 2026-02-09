@@ -104,13 +104,11 @@ def create_cart_from_product_compilation(
 
 
 def place_order(storefront, orderer, cart) -> Result[Order, None]:
-    placement_result = order_checkout_service.place_order(
-        storefront, orderer, cart
-    )
-    if placement_result.is_err():
-        return Err(None)
-
-    order, event = placement_result.unwrap()
+    match order_checkout_service.place_order(storefront, orderer, cart):
+        case Ok((order, event)):
+            pass
+        case Err(_):
+            return Err(None)
 
     order_email_service.send_email_for_incoming_order_to_orderer(order)
 
