@@ -378,8 +378,8 @@ def cancel(order_id):
                 )
             )
             return redirect_to('.view', order_id=order.id)
-        case Err(_):
-            flash_error(gettext('An unexpected error occurred.'))
+        case Err(e):
+            flash_error(gettext('An unexpected error occurred.') + f'\n{e}')
             return redirect_to('.view', order_id=order.id)
 
     flash_success(
@@ -453,8 +453,8 @@ def mark_as_paid(order_id):
         case Err(OrderAlreadyMarkedAsPaidError()):
             flash_error(gettext('Order is already marked as paid.'))
             return redirect_to('.view', order_id=order.id)
-        case Err(_):
-            flash_error(gettext('An unexpected error occurred.'))
+        case Err(e):
+            flash_error(gettext('An unexpected error occurred.') + f'\n{e}')
             return redirect_to('.view', order_id=order.id)
 
     flash_success(gettext('Order has been marked as paid.'))
