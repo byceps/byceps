@@ -309,13 +309,12 @@ def add_reaction(posting_id, kind):
     )
 
     match result:
-        case Err(e):
-            if isinstance(e, ReactionDeniedError):
-                abort(403)
-            elif isinstance(e, ReactionExistsError):
-                abort(409)
-            else:
-                abort(500)
+        case Err(ReactionDeniedError()):
+            abort(403)
+        case Err(ReactionExistsError()):
+            abort(409)
+        case Err(_):
+            abort(500)
 
 
 @blueprint.delete('/postings/<uuid:posting_id>/reactions/<kind>')
@@ -330,10 +329,9 @@ def remove_reaction(posting_id, kind):
     )
 
     match result:
-        case Err(e):
-            if isinstance(e, ReactionDeniedError):
-                abort(403)
-            elif isinstance(e, ReactionExistsError):
-                abort(409)
-            else:
-                abort(500)
+        case Err(ReactionDeniedError()):
+            abort(403)
+        case Err(ReactionExistsError()):
+            abort(409)
+        case Err(_):
+            abort(500)
