@@ -36,8 +36,6 @@ def inject_template_variables() -> dict[str, Any]:
         'now': datetime.utcnow(),
         'today': date.today(),
         'Navigation': Navigation,
-        'has_current_user_any_permission': g.user.has_any_permission,
-        'has_current_user_permission': g.user.has_permission,
     }
 
 

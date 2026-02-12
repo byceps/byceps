@@ -9,7 +9,6 @@ byceps.util.authz
 from importlib import import_module
 import pkgutil
 
-from flask import g
 from flask_babel import LazyString
 
 from byceps.services.authz import authz_service
@@ -88,13 +87,3 @@ class PermissionRegistry:
 
 
 permission_registry = PermissionRegistry()
-
-
-def has_current_user_permission(permission: str) -> bool:
-    """Return `True` if the current user has this permission."""
-    return g.user.has_permission(permission)
-
-
-def has_current_user_any_permission(*permissions: str) -> bool:
-    """Return `True` if the current user has any of these permissions."""
-    return g.user.has_any_permission(permissions)
