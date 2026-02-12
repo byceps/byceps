@@ -193,7 +193,7 @@ def test_occupy_seat_with_invalid_id(admin_app, ticket_owner, ticket):
 def test_occupy_seat_with_bundled_ticket(
     admin_app, ticket_owner, ticket_bundle, seat1, ticket
 ):
-    bundled_ticket_id = list(ticket_bundle.ticket_ids)[0]
+    bundled_ticket_id = ticket_bundle.ticket_ids[0]
 
     actual = ticket_seat_management_service.occupy_seat(
         bundled_ticket_id, seat1.id, ticket_owner

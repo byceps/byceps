@@ -53,7 +53,7 @@ class TicketBundle:
     users_managed_by: User | None
     label: str | None
     revoked: bool
-    ticket_ids: set[TicketID]
+    ticket_ids: list[TicketID]
     occupied_seat_group_id: SeatGroupID | None
 
     @property

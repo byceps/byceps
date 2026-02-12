@@ -83,7 +83,7 @@ def create_bundle(
 
     db.session.commit()
 
-    ticket_ids = {db_ticket.id for db_ticket in db_tickets}
+    ticket_ids = _get_ticket_ids_sorted_by_creation_time(db_tickets)
 
     bundle = TicketBundle(
         id=bundle_id,
@@ -214,7 +214,7 @@ def db_entity_to_ticket_bundle(db_bundle: DbTicketBundle) -> TicketBundle:
         else None
     )
 
-    ticket_ids = {db_ticket.id for db_ticket in db_bundle.tickets}
+    ticket_ids = _get_ticket_ids_sorted_by_creation_time(db_bundle.tickets)
 
     return _db_entity_to_ticket_bundle(
         db_bundle,
@@ -232,7 +232,7 @@ def _db_entity_to_ticket_bundle(
     owner: User,
     seats_manager: User | None,
     users_manager: User | None,
-    ticket_ids: set[TicketID],
+    ticket_ids: list[TicketID],
 ) -> TicketBundle:
     return TicketBundle(
         id=db_bundle.id,
@@ -249,6 +249,15 @@ def _db_entity_to_ticket_bundle(
         ticket_ids=ticket_ids,
         occupied_seat_group_id=_find_occupied_seat_group_id(db_bundle),
     )
+
+
+def _get_ticket_ids_sorted_by_creation_time(
+    db_tickets: list[DbTicket],
+) -> list[TicketID]:
+    return [
+        db_ticket.id
+        for db_ticket in sorted(db_tickets, key=lambda t: t.created_at)
+    ]
 
 
 def _find_occupied_seat_group_id(
