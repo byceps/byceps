@@ -12,6 +12,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
+from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
     TicketCategory,
@@ -46,6 +47,10 @@ class DbTicketBundle(db.Model):
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     owned_by: Mapped[DbUser] = relationship(foreign_keys=[owned_by_id])
+    order_number: Mapped[OrderNumber | None] = mapped_column(
+        db.UnicodeText,
+        db.ForeignKey('shop_orders.order_number'),
+    )
     seats_managed_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
@@ -71,6 +76,7 @@ class DbTicketBundle(db.Model):
         ticket_quantity: int,
         owned_by_id: UserID,
         *,
+        order_number: OrderNumber | None = None,
         label: str | None = None,
         revoked: bool = False,
     ) -> None:
@@ -80,5 +86,6 @@ class DbTicketBundle(db.Model):
         self.ticket_category_id = ticket_category.id
         self.ticket_quantity = ticket_quantity
         self.owned_by_id = owned_by_id
+        self.order_number = order_number
         self.label = label
         self.revoked = revoked

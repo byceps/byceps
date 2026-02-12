@@ -64,6 +64,7 @@ def create_bundle(
         category,
         ticket_quantity,
         owner.id,
+        order_number=order_number,
         label=label,
     )
     db.session.add(db_bundle)
@@ -91,6 +92,7 @@ def create_bundle(
         ticket_category=category,
         ticket_quantity=ticket_quantity,
         owned_by=owner,
+        order_number=order_number,
         seats_managed_by=None,
         users_managed_by=None,
         label=label,
@@ -239,6 +241,7 @@ def _db_entity_to_ticket_bundle(
         ticket_category=ticket_category,
         ticket_quantity=db_bundle.ticket_quantity,
         owned_by=owner,
+        order_number=db_bundle.order_number,
         seats_managed_by=seats_manager,
         users_managed_by=users_manager,
         label=db_bundle.label,

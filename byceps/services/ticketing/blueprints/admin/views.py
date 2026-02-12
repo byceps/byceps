@@ -280,11 +280,17 @@ def view_bundle(bundle_id):
 
     party = party_service.get_party(bundle.ticket_category.party_id)
 
+    if bundle.order_number:
+        order = order_service.find_order_by_order_number(bundle.order_number)
+    else:
+        order = None
+
     tickets = ticket_bundle_service.get_tickets_for_bundle(bundle.id)
 
     return {
         'party': party,
         'bundle': bundle,
+        'order': order,
         'tickets': tickets,
     }
 
