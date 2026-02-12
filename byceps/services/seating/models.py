@@ -48,6 +48,7 @@ class Seat:
     category_id: TicketCategoryID
     label: str | None
     type_: str | None
+    blocked: bool
     occupied_by_ticket_id: TicketID | None
 
 
@@ -60,6 +61,7 @@ class AreaSeat:
     rotation: int | None
     label: str | None
     type_: str | None
+    blocked: bool
     occupied_by_ticket_id: TicketID | None
     occupied_by_user: User | None
 
@@ -103,6 +105,7 @@ class SeatToImport:
     rotation: int | None = None
     label: str | None = None
     type_: str | None = None
+    blocked: bool
     group_title: str | None = None
 
 

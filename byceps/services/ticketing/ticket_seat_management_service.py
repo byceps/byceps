@@ -18,6 +18,7 @@ from byceps.util.result import Err, Ok, Result
 from . import ticket_service
 from .dbmodels.ticket import DbTicket
 from .errors import (
+    SeatBlockedError,
     SeatChangeDeniedForBundledTicketError,
     SeatChangeDeniedForGroupSeatError,
     TicketCategoryMismatchError,
@@ -98,6 +99,9 @@ def occupy_seat(
                 'Ticket and seat belong to different categories.'
             )
         )
+
+    if seat.blocked:
+        return Err(SeatBlockedError(f'Seat {seat.label} is blocked.'))
 
     seat_belongs_to_group_result = (
         _deny_seat_management_if_seat_belongs_to_group(seat)

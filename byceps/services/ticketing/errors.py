@@ -65,6 +65,12 @@ class InitiatorNotSpecifiedError(TicketingError):
 
 
 @dataclass(frozen=True)
+class SeatBlockedError(TicketingError):
+    """Indicate that the seat is blocked and cannot be occupied at this
+    point."""
+
+
+@dataclass(frozen=True)
 class SeatChangeDeniedForBundledTicketError(TicketingError):
     """Indicate that the ticket belongs to a bundle and, thus, must not
     be used to occupy (or release) a single seat.

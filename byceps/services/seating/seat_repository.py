@@ -32,6 +32,7 @@ def create_seat(seat: Seat) -> None:
         rotation=seat.rotation,
         label=seat.label,
         type_=seat.type_,
+        blocked=seat.blocked,
     )
 
     db.session.add(db_seat)

@@ -161,6 +161,7 @@ def _build_area_seat(
         rotation=seat.rotation,
         label=seat.label,
         type_=seat.type_,
+        blocked=seat.blocked,
         occupied_by_ticket_id=ticket_id,
         occupied_by_user=user,
     )
@@ -176,6 +177,7 @@ def _db_entity_to_seat(db_seat: DbSeat) -> Seat:
         category_id=db_seat.category_id,
         label=db_seat.label,
         type_=db_seat.type_,
+        blocked=db_seat.blocked,
         occupied_by_ticket_id=db_seat.occupied_by_ticket.id
         if db_seat.occupied_by_ticket
         else None,

@@ -29,6 +29,7 @@ class SerializableSeatToImport(BaseModel):
     rotation: int | None = None
     label: str | None = None
     type_: str | None = Field(default=None, alias='type')
+    blocked: bool = False
     group_title: str | None = None
 
 
@@ -155,6 +156,7 @@ class SeatsImportParser:
             rotation=parsed_seat.rotation,
             label=parsed_seat.label,
             type_=parsed_seat.type_,
+            blocked=parsed_seat.blocked,
             group_title=parsed_seat.group_title,
         )
         return Ok(assembled_seat)
