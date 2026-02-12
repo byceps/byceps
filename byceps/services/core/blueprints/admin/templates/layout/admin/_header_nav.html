@@ -58,7 +58,7 @@
               </div>
             </a>
             <span class="header-nav-crumb-separator"></span>
-            <a class="header-nav-crumb" href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">
+            <a class="header-nav-crumb" href="{{ url_for('shop_shop_admin.dashboard', shop_id=shop.id) }}">
               <div>
                 <div class="header-nav-crumb-meta">{{ _('Shop') }}</div>
                 {{ shop.title }}
