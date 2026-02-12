@@ -47,9 +47,9 @@ def create_bundle(
     ticket_quantity: int,
     owner: User,
     *,
-    label: str | None = None,
     order_number: OrderNumber | None = None,
     user: User | None = None,
+    label: str | None = None,
 ) -> TicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
