@@ -292,7 +292,7 @@ def _execute_actions_on_payment(
         if procedure:
             match procedure.on_payment(order, line_item, initiator, {}):
                 case Err(e):
-                    return Err(OrderActionFailedError(e))
+                    return Err(e)
 
     # based on order action registered for product number
     return order_action_service.execute_actions_on_payment(order, initiator)
@@ -311,7 +311,7 @@ def _execute_actions_on_cancellation_before_payment(
                 order, line_item, initiator, {}
             ):
                 case Err(e):
-                    return Err(OrderActionFailedError(e))
+                    return Err(e)
 
     # based on order action registered for product number
     return order_action_service.execute_actions_on_cancellation_before_payment(
@@ -332,7 +332,7 @@ def _execute_actions_on_cancellation_after_payment(
                 order, line_item, initiator, {}
             ):
                 case Err(e):
-                    return Err(OrderActionFailedError(e))
+                    return Err(e)
 
     # based on order action registered for product number
     return order_action_service.execute_actions_on_cancellation_after_payment(
