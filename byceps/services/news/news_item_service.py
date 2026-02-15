@@ -22,7 +22,12 @@ from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import news_channel_service, news_html_service, news_image_service
+from . import (
+    news_channel_service,
+    news_html_service,
+    news_image_service,
+    news_item_domain_service,
+)
 from .dbmodels import (
     DbCurrentNewsItemVersionAssociation,
     DbFeaturedNewsImage,
@@ -61,26 +66,13 @@ def create_item(
     """Create a news item, a version, and set the version as the item's
     current one.
     """
-    if channel.archived:
-        return Err('Channel is archived.')
-
-    item_id = NewsItemID(generate_uuid7())
-    created_at = datetime.utcnow()
-
-    item = NewsItem(
-        id=item_id,
-        created_at=created_at,
-        brand_id=channel.brand_id,
-        channel=channel,
-        slug=slug,
-        published_at=None,
-        published=False,
-        title=title,
-        body=body,
-        body_format=body_format,
-        images=[],
-        featured_image=None,
-    )
+    match news_item_domain_service.create_item(
+        channel, slug, title, body, body_format
+    ):
+        case Ok(item):
+            pass
+        case Err(e):
+            return Err(e)
 
     db_item = DbNewsItem(
         item.id, item.created_at, item.brand_id, item.channel.id, item.slug
@@ -183,35 +175,32 @@ def publish_item(
     initiator: User | None = None,
 ) -> Result[NewsItemPublishedEvent, str]:
     """Publish a news item."""
-    db_item = _get_db_item(item_id)
-
-    if db_item.published:
-        return Err('News item has already been published')
-
-    now = datetime.utcnow()
-    if publish_at is None:
-        publish_at = now
-
-    db_item.published_at = publish_at
-    db.session.commit()
-
-    item = _db_entity_to_item(db_item)
+    item = find_item(item_id)
+    if item is None:
+        return Err(f'Unknown news item ID "{item_id}".')
 
     if item.channel.announcement_site_id is not None:
-        site = site_service.get_site(SiteID(item.channel.announcement_site_id))
-        external_url = f'https://{site.server_name}/news/{item.slug}'
+        announcement_site = site_service.get_site(
+            SiteID(item.channel.announcement_site_id)
+        )
     else:
-        external_url = None
+        announcement_site = None
 
-    event = NewsItemPublishedEvent(
-        occurred_at=now,
+    match news_item_domain_service.publish_item(
+        item,
+        publish_at=publish_at,
+        announcement_site=announcement_site,
         initiator=initiator,
-        item_id=item.id,
-        channel_id=item.channel.id,
-        published_at=publish_at,
-        title=item.title,
-        external_url=external_url,
-    )
+    ):
+        case Ok((published_item, event)):
+            pass
+        case Err(e):
+            return Err(e)
+
+    db_item = _get_db_item(item_id)
+
+    db_item.published_at = published_item.published_at
+    db.session.commit()
 
     return Ok(event)
 
@@ -615,15 +604,10 @@ def render_html(item: NewsItem) -> RenderedNewsItem:
         else None
     )
 
-    return RenderedNewsItem(
-        channel=item.channel,
-        slug=item.slug,
-        published_at=item.published_at,
-        published=item.published,
-        title=item.title,
-        featured_image=item.featured_image,
-        featured_image_html=featured_image_html,
-        body_html=_render_body_html(item),
+    body_html = _render_body_html(item)
+
+    return news_item_domain_service.create_rendered_item(
+        item, featured_image_html, body_html
     )
 
 
