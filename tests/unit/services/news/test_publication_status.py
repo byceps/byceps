@@ -81,6 +81,7 @@ def make_item(channel: NewsChannel):
 
         return NewsItem(
             id=NewsItemID(generate_uuid()),
+            created_at=datetime.utcnow(),
             brand_id=channel.brand_id,
             channel=channel,
             slug=token,

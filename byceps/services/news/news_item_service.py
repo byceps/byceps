@@ -69,6 +69,7 @@ def create_item(
 
     item = NewsItem(
         id=item_id,
+        created_at=created_at,
         brand_id=channel.brand_id,
         channel=channel,
         slug=slug,
@@ -82,7 +83,7 @@ def create_item(
     )
 
     db_item = DbNewsItem(
-        item.id, created_at, item.brand_id, item.channel.id, item.slug
+        item.id, item.created_at, item.brand_id, item.channel.id, item.slug
     )
     db.session.add(db_item)
 
@@ -592,6 +593,7 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
 
     return NewsItem(
         id=db_item.id,
+        created_at=db_item.created_at,
         brand_id=db_item.brand_id,
         channel=channel,
         slug=db_item.slug,

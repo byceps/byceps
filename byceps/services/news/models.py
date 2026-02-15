@@ -79,6 +79,7 @@ class NewsImage:
 @dataclass(frozen=True, kw_only=True)
 class NewsItem:
     id: NewsItemID
+    created_at: datetime
     brand_id: BrandID
     channel: NewsChannel
     slug: str
