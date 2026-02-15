@@ -47,4 +47,4 @@ def item(channel: NewsChannel, news_admin) -> NewsItem:
         'Save the Date!',
         'Party will be next year.',
         BodyFormat.html,
-    )
+    ).unwrap()

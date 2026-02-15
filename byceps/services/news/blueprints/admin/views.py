@@ -557,20 +557,24 @@ def item_create(channel_id):
     body = form.body.data.strip()
     body_format = form.body_format.data
 
-    item = news_item_service.create_item(
+    match news_item_service.create_item(
         channel,
         slug,
         creator,
         title,
         body,
         body_format,
-    )
-
-    flash_success(
-        gettext('News item "%(title)s" has been created.', title=item.title)
-    )
-
-    return redirect_to('.item_view', item_id=item.id)
+    ):
+        case Ok(item):
+            flash_success(
+                gettext(
+                    'News item "%(title)s" has been created.', title=item.title
+                )
+            )
+            return redirect_to('.item_view', item_id=item.id)
+        case Err(e):
+            flash_error(f'News item could not be created: {e}')
+            return redirect_to('.channel_view', channel_id=channel.id)
 
 
 @blueprint.get('/items/<uuid:item_id>/update')

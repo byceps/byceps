@@ -39,7 +39,7 @@ def unpublished_news_item(news_channel, editor):
 
     return news_item_service.create_item(
         news_channel, slug, editor, title, body, body_format
-    )
+    ).unwrap()
 
 
 @pytest.fixture(scope='module')
@@ -51,8 +51,10 @@ def published_news_item(news_channel, editor):
 
     item = news_item_service.create_item(
         news_channel, slug, editor, title, body, body_format
-    )
+    ).unwrap()
+
     news_item_service.publish_item(item.id).unwrap()
+
     return item
 
 

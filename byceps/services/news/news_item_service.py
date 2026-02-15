@@ -57,7 +57,7 @@ def create_item(
     title: str,
     body: str,
     body_format: BodyFormat,
-) -> NewsItem:
+) -> Result[NewsItem, str]:
     """Create a news item, a version, and set the version as the item's
     current one.
     """
@@ -85,7 +85,9 @@ def create_item(
 
     db.session.commit()
 
-    return _db_entity_to_item(db_item)
+    item = _db_entity_to_item(db_item)
+
+    return Ok(item)
 
 
 def update_item(

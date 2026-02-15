@@ -72,4 +72,4 @@ def create_item(channel: NewsChannel, editor: User) -> NewsItem:
         title,
         body,
         body_format,
-    )
+    ).unwrap()
