@@ -23,9 +23,10 @@ _ANONYMOUS_USER_ID = UserID(UUID('00000000-0000-0000-0000-000000000000'))
 
 
 @dataclass(eq=False, frozen=True, kw_only=True)
-class CurrentUser(User):
+class CurrentUser:
     """The current user, anonymous or logged in."""
 
+    _user: User
     locale: Locale | None
     authenticated: bool
     permissions: frozenset[str]
@@ -33,13 +34,17 @@ class CurrentUser(User):
     @classmethod
     def create_anonymous(cls, locale: Locale | None) -> Self:
         """Return an anonymous current user object."""
-        return cls(
+        user = User(
             id=_ANONYMOUS_USER_ID,
             screen_name=None,
             initialized=True,
             suspended=False,
             deleted=False,
             avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
+        )
+
+        return cls(
+            _user=user,
             locale=locale,
             authenticated=False,
             permissions=frozenset(),
@@ -59,13 +64,17 @@ class CurrentUser(User):
         if user.deleted:
             raise ValueError('User must not be deleted')
 
-        return cls(
+        user = User(
             id=user.id,
             screen_name=user.screen_name,
             initialized=True,
             suspended=False,
             deleted=False,
             avatar_url=user.avatar_url,
+        )
+
+        return cls(
+            _user=user,
             locale=locale,
             authenticated=True,
             permissions=permissions,
@@ -73,6 +82,30 @@ class CurrentUser(User):
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)
+
+    @property
+    def id(self) -> UserID:
+        return self._user.id
+
+    @property
+    def screen_name(self) -> str | None:
+        return self._user.screen_name
+
+    @property
+    def initialized(self) -> bool:
+        return self._user.initialized
+
+    @property
+    def suspended(self) -> bool:
+        return self._user.suspended
+
+    @property
+    def deleted(self) -> bool:
+        return self._user.deleted
+
+    @property
+    def avatar_url(self) -> str:
+        return self._user.avatar_url
 
     def has_permission(self, permission: str) -> bool:
         """Return `True` if the current user has this permission."""
@@ -83,11 +116,4 @@ class CurrentUser(User):
         return any(map(self.has_permission, permissions))
 
     def as_user(self) -> User:
-        return User(
-            id=self.id,
-            screen_name=self.screen_name,
-            initialized=self.initialized,
-            suspended=self.suspended,
-            deleted=self.deleted,
-            avatar_url=self.avatar_url,
-        )
+        return self._user

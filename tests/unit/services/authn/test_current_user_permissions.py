@@ -8,7 +8,7 @@ from uuid import UUID
 import pytest
 
 from byceps.services.authn.session.models import CurrentUser
-from byceps.services.user.models import UserID
+from byceps.services.user.models import User, UserID
 
 
 @pytest.mark.parametrize(
@@ -90,13 +90,17 @@ def test_current_user_has_any_permission(
 
 
 def build_current_user(permissions: set[str]) -> CurrentUser:
-    return CurrentUser(
+    user = User(
         id=UserID(UUID('d14b0dd0-886f-42a1-990a-c2435ae60123')),
         screen_name='SomeUser',
         initialized=True,
         suspended=False,
         deleted=False,
         avatar_url='/static/user_avatar_fallback.svg',
+    )
+
+    return CurrentUser(
+        _user=user,
         locale=None,
         authenticated=False,
         permissions=frozenset(permissions),
