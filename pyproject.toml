@@ -60,7 +60,7 @@ dependencies = [
     "sqlalchemy>=2.0.46",
     "stripe==5.4.0",
     "structlog>=25.5.0",
-    "tenacity>=9.1.2",
+    "tenacity>=9.1.4",
     "uuid6>=2025.0.1",
     "werkzeug>=3.1.5",
     "wtforms==3.2.1",
