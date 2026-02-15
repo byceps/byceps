@@ -67,8 +67,22 @@ def create_item(
     item_id = NewsItemID(generate_uuid7())
     created_at = datetime.utcnow()
 
+    item = NewsItem(
+        id=item_id,
+        brand_id=channel.brand_id,
+        channel=channel,
+        slug=slug,
+        published_at=None,
+        published=False,
+        title=title,
+        body=body,
+        body_format=body_format,
+        images=[],
+        featured_image=None,
+    )
+
     db_item = DbNewsItem(
-        item_id, created_at, channel.brand_id, channel.id, slug
+        item.id, created_at, item.brand_id, item.channel.id, item.slug
     )
     db.session.add(db_item)
 
@@ -87,8 +101,6 @@ def create_item(
     db.session.add(db_current_version_association)
 
     db.session.commit()
-
-    item = _db_entity_to_item(db_item)
 
     return Ok(item)
 
