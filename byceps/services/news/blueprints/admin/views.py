@@ -527,6 +527,9 @@ def item_compare_versions(from_version_id, to_version_id):
 def item_create_form(channel_id, erroneous_form=None):
     """Show form to create a news item."""
     channel = _get_channel_or_404(channel_id)
+    if channel.archived:
+        flash_error('Channel is archived.')
+        return redirect_to('.channel_view', channel_id=channel.id)
 
     if erroneous_form:
         form = erroneous_form
@@ -546,6 +549,9 @@ def item_create_form(channel_id, erroneous_form=None):
 def item_create(channel_id):
     """Create a news item."""
     channel = _get_channel_or_404(channel_id)
+    if channel.archived:
+        flash_error('Channel is archived.')
+        return redirect_to('.channel_view', channel_id=channel.id)
 
     form = ItemCreateForm(channel.brand_id, request.form)
     if not form.validate():

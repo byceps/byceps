@@ -61,6 +61,9 @@ def create_item(
     """Create a news item, a version, and set the version as the item's
     current one.
     """
+    if channel.archived:
+        return Err('Channel is archived.')
+
     item_id = NewsItemID(generate_uuid7())
     created_at = datetime.utcnow()
 
