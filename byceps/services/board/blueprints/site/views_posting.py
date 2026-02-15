@@ -104,7 +104,7 @@ def posting_create(topic_id):
     if not form.validate():
         return posting_create_form(topic_id, form)
 
-    creator = g.user
+    creator = g.user.as_user()
     body = form.body.data.strip()
 
     if db_topic.locked:
@@ -223,7 +223,7 @@ def posting_update(posting_id):
     body = form.body.data.strip()
 
     event = board_posting_command_service.update_posting(
-        db_posting.id, g.user, body
+        db_posting.id, g.user.as_user(), body
     )
 
     flash_success(gettext('The post has been updated.'))
@@ -257,7 +257,7 @@ def posting_moderate_form(posting_id):
 def posting_hide(posting_id):
     """Hide a post."""
     db_posting = h.get_db_posting_or_404(posting_id)
-    moderator = g.user
+    moderator = g.user.as_user()
 
     event = board_posting_command_service.hide_posting(db_posting.id, moderator)
 
@@ -279,7 +279,7 @@ def posting_hide(posting_id):
 def posting_unhide(posting_id):
     """Un-hide a post."""
     db_posting = h.get_db_posting_or_404(posting_id)
-    moderator = g.user
+    moderator = g.user.as_user()
 
     event = board_posting_command_service.unhide_posting(
         db_posting.id, moderator
@@ -305,7 +305,7 @@ def add_reaction(posting_id, kind):
     db_posting = h.get_db_posting_or_404(posting_id)
 
     result = board_posting_command_service.add_reaction(
-        db_posting, g.user, ReactionKind(kind)
+        db_posting, g.user.as_user(), ReactionKind(kind)
     )
 
     match result:
@@ -325,7 +325,7 @@ def remove_reaction(posting_id, kind):
     db_posting = h.get_db_posting_or_404(posting_id)
 
     result = board_posting_command_service.remove_reaction(
-        db_posting, g.user, ReactionKind(kind)
+        db_posting, g.user.as_user(), ReactionKind(kind)
     )
 
     match result:

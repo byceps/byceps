@@ -194,7 +194,7 @@ def occupy_seat(ticket_id, seat_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if (
         not ticket.is_seat_managed_by(manager.id)
@@ -277,7 +277,7 @@ def release_seat(ticket_id):
         )
         return
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if (
         not ticket.is_seat_managed_by(manager.id)

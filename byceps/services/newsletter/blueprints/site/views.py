@@ -30,11 +30,12 @@ blueprint = create_blueprint('newsletter', __name__)
 @respond_no_content
 def subscribe(list_id):
     list_ = _get_list_or_404(list_id)
+    user = g.user.as_user()
     expressed_at = datetime.utcnow()
-    initiator = g.user
+    initiator = user
 
     match newsletter_command_service.subscribe_user_to_list(
-        g.user, list_, expressed_at, initiator
+        user, list_, expressed_at, initiator
     ):
         case Ok((_, event)):
             flash_success(
@@ -54,11 +55,12 @@ def subscribe(list_id):
 @respond_no_content
 def unsubscribe(list_id):
     list_ = _get_list_or_404(list_id)
+    user = g.user.as_user()
     expressed_at = datetime.utcnow()
-    initiator = g.user
+    initiator = user
 
     match newsletter_command_service.unsubscribe_user_from_list(
-        g.user, list_, expressed_at, initiator
+        user, list_, expressed_at, initiator
     ):
         case Ok((_, event)):
             flash_success(

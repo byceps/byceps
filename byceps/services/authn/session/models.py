@@ -81,3 +81,13 @@ class CurrentUser(User):
     def has_any_permission(self, *permissions: str) -> bool:
         """Return `True` if the current user has any of these permissions."""
         return any(map(self.has_permission, permissions))
+
+    def as_user(self) -> User:
+        return User(
+            id=self.id,
+            screen_name=self.screen_name,
+            initialized=self.initialized,
+            suspended=self.suspended,
+            deleted=self.deleted,
+            avatar_url=self.avatar_url,
+        )

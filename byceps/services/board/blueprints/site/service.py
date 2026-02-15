@@ -45,9 +45,10 @@ def get_recent_topics(*, limit=6) -> list[BoardTopicSummary] | None:
     if board_id is None:
         return None
 
+    current_user = g.user
     include_hidden = may_current_user_view_hidden()
     return board_topic_query_service.get_recent_topics(
-        board_id, limit, g.user, include_hidden=include_hidden
+        board_id, limit, current_user, include_hidden=include_hidden
     )
 
 

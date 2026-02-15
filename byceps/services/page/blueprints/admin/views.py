@@ -335,7 +335,7 @@ def create(site_id):
     name = form.name.data.strip().lower()
     language_code = form.language_code.data
     url_path = form.url_path.data.strip()
-    creator = g.user
+    creator = g.user.as_user()
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
@@ -394,7 +394,7 @@ def update(page_id):
 
     language_code = form.language_code.data
     url_path = form.url_path.data.strip()
-    creator = g.user
+    creator = g.user.as_user()
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
@@ -423,10 +423,11 @@ def delete(page_id):
     """Delete a page."""
     page = _get_page(page_id)
 
+    initiator = g.user.as_user()
     page_name = page.name
     site_id = page.site_id
 
-    match page_service.delete_page(page.id, initiator=g.user):
+    match page_service.delete_page(page.id, initiator=initiator):
         case Ok(event):
             flash_success(
                 gettext('Page "%(name)s" has been deleted.', name=page_name)

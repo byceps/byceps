@@ -191,7 +191,7 @@ def close_client_registration():
 def client_candidate_approve(candidate_id):
     """Approve a client candidate."""
     candidate = _get_client_candidate_or_404(candidate_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     _, event = whereabouts_client_service.approve_client(candidate, initiator)
 
@@ -206,7 +206,7 @@ def client_candidate_approve(candidate_id):
 def client_candidate_delete(candidate_id):
     """Delete a client candidate."""
     candidate = _get_client_candidate_or_404(candidate_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     whereabouts_client_service.delete_client_candidate(candidate, initiator)
 
@@ -257,7 +257,7 @@ def client_update(client_id):
 def client_delete(client_id):
     """Delete a client."""
     client = _get_client_or_404(client_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     _, event = whereabouts_client_service.delete_client(client, initiator)
 

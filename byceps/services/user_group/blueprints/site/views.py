@@ -75,7 +75,7 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    creator = g.user
+    creator = g.user.as_user()
     title = form.title.data.strip()
     description = form.description.data.strip()
 

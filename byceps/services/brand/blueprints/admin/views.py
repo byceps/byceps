@@ -99,10 +99,12 @@ def create():
 
     brand = brand_service.create_brand(brand_id, title)
 
+    user = g.user.as_user()
+
     sender_address = f'noreply@{brand.id}.example'
     contact_address = f'info@{brand.id}.example'
 
-    email_footer_service.create_footers(brand, g.user, contact_address)
+    email_footer_service.create_footers(brand, user, contact_address)
 
     email_config_service.create_config(
         brand.id,
@@ -113,8 +115,8 @@ def create():
 
     shop = shop_service.create_shop(brand, currency)
 
-    order_payment_service.create_email_payment_instructions(shop.id, g.user)
-    order_payment_service.create_html_payment_instructions(shop.id, g.user)
+    order_payment_service.create_email_payment_instructions(shop.id, user)
+    order_payment_service.create_html_payment_instructions(shop.id, user)
 
     flash_success(
         gettext('Brand "%(title)s" has been created.', title=brand.title)

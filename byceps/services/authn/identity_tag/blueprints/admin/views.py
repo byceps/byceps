@@ -63,7 +63,7 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    creator = g.user
+    creator = g.user.as_user()
     identifier = form.identifier.data.strip()
     user = form.user.data
     note = form.note.data.strip() or None
@@ -84,7 +84,7 @@ def create():
 def delete(tag_id):
     """Delete an identity tag."""
     tag = _get_tag_or_404(tag_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     authn_identity_tag_service.delete_tag(tag, initiator)
 

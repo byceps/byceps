@@ -55,15 +55,19 @@ _REACTION_KIND_PRESENTATIONS_IN_ORDER = [
 def topic_index(page):
     """List latest topics in all categories."""
     board_id = h.get_board_id()
-    user = g.user
+    current_user = g.user
 
-    h.require_board_access(board_id, user.id)
+    h.require_board_access(board_id, current_user.id)
 
     include_hidden = service.may_current_user_view_hidden()
     topics_per_page = service.get_topics_per_page_value()
 
     topics = board_topic_query_service.paginate_topics(
-        board_id, page, topics_per_page, user, include_hidden=include_hidden
+        board_id,
+        page,
+        topics_per_page,
+        current_user,
+        include_hidden=include_hidden,
     )
 
     return {
@@ -77,7 +81,7 @@ def topic_index(page):
 @subnavigation_for_view('board')
 def topic_view(topic_id, page):
     """List postings for the topic."""
-    user = g.user
+    current_user = g.user
 
     include_hidden = service.may_current_user_view_hidden()
 
@@ -93,18 +97,18 @@ def topic_view(topic_id, page):
     if topic.category.hidden or (topic.category.board_id != board_id):
         abort(404)
 
-    h.require_board_access(board_id, user.id)
+    h.require_board_access(board_id, current_user.id)
 
     # Copy last view timestamp for later use to compare postings
     # against it.
     last_viewed_at = board_topic_query_service.find_topic_last_viewed_at(
-        topic.id, user.id
+        topic.id, current_user.id
     )
 
     postings_per_page = service.get_postings_per_page_value()
     if page == 0:
         posting_url_to_redirect_to = _find_posting_url_to_redirect_to(
-            topic.id, user, include_hidden, last_viewed_at
+            topic.id, current_user, include_hidden, last_viewed_at
         )
 
         if posting_url_to_redirect_to is not None:
@@ -113,10 +117,12 @@ def topic_view(topic_id, page):
 
         page = 1
 
-    if user.authenticated:
+    if current_user.authenticated:
         # Mark as viewed before aborting so a user can itself remove the
         # 'new' tag from a locked topic.
-        board_topic_command_service.mark_topic_as_just_viewed(topic.id, user.id)
+        board_topic_command_service.mark_topic_as_just_viewed(
+            topic.id, current_user.id
+        )
 
     postings = board_posting_query_service.paginate_postings(
         topic.id, include_hidden, page, postings_per_page
@@ -129,8 +135,8 @@ def topic_view(topic_id, page):
     service.enrich_creators(postings.items, g.site.brand_id, g.party.id)
 
     is_current_user_orga = (
-        user.authenticated
-        and orga_team_service.is_orga_for_party(g.user.id, g.party.id)
+        current_user.authenticated
+        and orga_team_service.is_orga_for_party(current_user.id, g.party.id)
     )
 
     context = {
@@ -209,7 +215,7 @@ def topic_create(category_id):
     if not form.validate():
         return topic_create_form(category.id, form)
 
-    creator = g.user
+    creator = g.user.as_user()
     title = form.title.data.strip()
     body = form.body.data.strip()
 
@@ -296,7 +302,7 @@ def topic_update(topic_id):
     body = form.body.data.strip()
 
     board_topic_command_service.update_topic(
-        db_topic.id, g.user, form.title.data, body
+        db_topic.id, g.user.as_user(), form.title.data, body
     )
 
     flash_success(
@@ -332,7 +338,7 @@ def topic_moderate_form(topic_id):
 def topic_hide(topic_id):
     """Hide a topic."""
     db_topic = h.get_db_topic_or_404(topic_id)
-    moderator = g.user
+    moderator = g.user.as_user()
 
     event = board_topic_command_service.hide_topic(db_topic.id, moderator)
 
@@ -355,7 +361,7 @@ def topic_hide(topic_id):
 def topic_unhide(topic_id):
     """Un-hide a topic."""
     db_topic = h.get_db_topic_or_404(topic_id)
-    moderator = g.user
+    moderator = g.user.as_user()
 
     event = board_topic_command_service.unhide_topic(db_topic.id, moderator)
 
@@ -381,7 +387,7 @@ def topic_unhide(topic_id):
 def topic_lock(topic_id):
     """Lock a topic."""
     db_topic = h.get_db_topic_or_404(topic_id)
-    moderator = g.user
+    moderator = g.user.as_user()
 
     event = board_topic_command_service.lock_topic(db_topic.id, moderator)
 
@@ -404,7 +410,7 @@ def topic_lock(topic_id):
 def topic_unlock(topic_id):
     """Unlock a topic."""
     db_topic = h.get_db_topic_or_404(topic_id)
-    moderator = g.user
+    moderator = g.user.as_user()
 
     event = board_topic_command_service.unlock_topic(db_topic.id, moderator)
 
@@ -427,7 +433,7 @@ def topic_unlock(topic_id):
 def topic_pin(topic_id):
     """Pin a topic."""
     db_topic = h.get_db_topic_or_404(topic_id)
-    moderator = g.user
+    moderator = g.user.as_user()
 
     event = board_topic_command_service.pin_topic(db_topic.id, moderator)
 
@@ -450,7 +456,7 @@ def topic_pin(topic_id):
 def topic_unpin(topic_id):
     """Unpin a topic."""
     db_topic = h.get_db_topic_or_404(topic_id)
-    moderator = g.user
+    moderator = g.user.as_user()
 
     event = board_topic_command_service.unpin_topic(db_topic.id, moderator)
 
@@ -471,7 +477,7 @@ def topic_unpin(topic_id):
 def topic_move(topic_id):
     """Move a topic from one category to another."""
     db_topic = h.get_db_topic_or_404(topic_id)
-    moderator = g.user
+    moderator = g.user.as_user()
 
     new_category_id = request.form.get('category_id')
     if not new_category_id:

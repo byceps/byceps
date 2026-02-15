@@ -138,7 +138,7 @@ def order():
         flash_error(gettext('No products have been selected.'))
         return order_form(form)
 
-    orderer = form.get_orderer(g.user)
+    orderer = form.get_orderer(g.user.as_user())
 
     placement_result = service.place_order(storefront, orderer, cart)
     if placement_result.is_err():
@@ -162,7 +162,7 @@ def order_single_form(product_id, erroneous_form=None):
 
     storefront = _get_storefront_or_404()
 
-    user = g.user
+    user = g.user.as_user()
     detail = user_service.get_detail(user.id)
 
     form = erroneous_form if erroneous_form else OrderForm(obj=detail)
@@ -241,7 +241,7 @@ def order_single(product_id):
         product.id
     )
 
-    user = g.user
+    user = g.user.as_user()
 
     if order_service.has_user_ordered_product(user.id, product.id):
         flash_error(gettext('You cannot place another order.'))

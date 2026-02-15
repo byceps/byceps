@@ -57,7 +57,7 @@ def create():
         flash_notice(gettext('Demonstration data already exists.'))
         return redirect_to('.index')
 
-    creator = g.user
+    creator = g.user.as_user()
     demo_data_service.create_demo_data(creator)
 
     flash_success(gettext('Demonstration data has been created.'))

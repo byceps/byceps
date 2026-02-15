@@ -111,4 +111,4 @@ def _get_current_user_or_404() -> User:
     if not user.authenticated:
         abort(404)
 
-    return user
+    return user.as_user()

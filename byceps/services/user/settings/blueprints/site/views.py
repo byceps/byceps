@@ -92,7 +92,7 @@ def change_email_address_form(erroneous_form=None):
 @login_required
 def change_email_address():
     """Request a change of the current user's email address."""
-    current_user = g.user
+    user = g.user.as_user()
 
     form = ChangeEmailAddressForm(request.form)
     if not form.validate():
@@ -101,7 +101,7 @@ def change_email_address():
     new_email_address = form.new_email_address.data.strip()
 
     user_email_address_service.send_email_address_change_email_for_site(
-        current_user, new_email_address, g.site.id
+        user, new_email_address, g.site.id
     )
 
     flash_success(
@@ -131,17 +131,17 @@ def change_screen_name_form(erroneous_form=None):
 @login_required
 def change_screen_name():
     """Change the current user's screen name."""
-    current_user = g.user
+    user = g.user.as_user()
 
     form = ChangeScreenNameForm(request.form)
     if not form.validate():
         return change_screen_name_form(form)
 
     new_screen_name = form.screen_name.data.strip()
-    initiator = current_user
+    initiator = user
 
     event = user_command_service.change_screen_name(
-        current_user, new_screen_name, initiator
+        user, new_screen_name, initiator
     )
 
     user_signals.screen_name_changed.send(None, event=event)
@@ -196,7 +196,7 @@ def details_update_form(erroneous_form=None):
 @login_required
 def details_update():
     """Update the current user's details."""
-    current_user = g.user
+    user = g.user.as_user()
 
     form = DetailsForm(request.form)
 
@@ -211,10 +211,10 @@ def details_update():
     city = form.city.data.strip()
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
-    initiator = current_user
+    initiator = user
 
     update_result = user_command_service.update_user_details(
-        current_user.id,
+        user.id,
         first_name,
         last_name,
         date_of_birth,

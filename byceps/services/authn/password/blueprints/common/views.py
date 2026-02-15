@@ -233,10 +233,11 @@ def _verify_reset_token(token: str) -> PasswordResetToken:
 
 def _get_current_user_or_404():
     user = g.user
+
     if not user.authenticated:
         abort(404)
 
-    return user
+    return user.as_user()
 
 
 def _redirect_to_login_form():

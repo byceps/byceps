@@ -87,6 +87,6 @@ def log_out_form():
 @blueprint.post('/log_out')
 def log_out():
     """Log out user by deleting the corresponding cookie."""
-    service.log_out_user(g.user)
+    service.log_out_user(g.user.as_user())
 
     return redirect_to('.log_in_form')

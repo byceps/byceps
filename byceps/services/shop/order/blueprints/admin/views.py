@@ -221,7 +221,7 @@ def download_invoice(order_id):
 
     return (
         order_invoice_service.get_downloadable_invoice_for_order(
-            order, is_draft, g.user, config
+            order, is_draft, g.user.as_user(), config
         )
         .map(serve_invoice)
         .unwrap_or_else(serve_error)
@@ -265,7 +265,7 @@ def add_note(order_id):
 
     text = form.text.data.strip()
 
-    order_command_service.add_note(order, g.user, text)
+    order_command_service.add_note(order, g.user.as_user(), text)
 
     flash_success(gettext('Note has been added.'))
 
@@ -282,7 +282,7 @@ def add_note(order_id):
 def set_shipped_flag(order_id):
     """Mark the order as shipped."""
     order = _get_order_or_404(order_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match order_command_service.set_shipped_flag(order, initiator):
         case Err(e):
@@ -303,7 +303,7 @@ def set_shipped_flag(order_id):
 def unset_shipped_flag(order_id):
     """Mark the order as not shipped."""
     order = _get_order_or_404(order_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match order_command_service.unset_shipped_flag(order, initiator):
         case Err(e):
@@ -367,7 +367,9 @@ def cancel(order_id):
     reason = form.reason.data.strip()
     send_email = form.send_email.data
 
-    match order_command_service.cancel_order(order.id, g.user, reason):
+    match order_command_service.cancel_order(
+        order.id, g.user.as_user(), reason
+    ):
         case Ok((canceled_order, event)):
             pass
         case Err(OrderAlreadyCanceledError()):
@@ -443,7 +445,7 @@ def mark_as_paid(order_id):
         return mark_as_paid_form(order_id, form)
 
     payment_method = form.payment_method.data
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match order_command_service.mark_order_as_paid(
         order.id, payment_method, initiator
@@ -477,7 +479,7 @@ def resend_email_for_incoming_order_to_orderer(order_id):
     """Resend the e-mail to the orderer to confirm that the order was placed."""
     order = _get_order_or_404(order_id)
 
-    initiator = g.user
+    initiator = g.user.as_user()
 
     order_email_service.send_email_for_incoming_order_to_orderer(order)
 

@@ -87,7 +87,7 @@ def grant_orga_status(brand_id):
         return grant_orga_status_form(brand.id, form)
 
     user = form.user.data
-    initiator = g.user
+    initiator = g.user.as_user()
 
     event = orga_service.grant_orga_status(user, brand, initiator)
 
@@ -116,7 +116,7 @@ def revoke_orga_status(brand_id, user_id):
 
     user = orga_flag.user
     brand = orga_flag.brand
-    initiator = g.user
+    initiator = g.user.as_user()
 
     event = orga_service.revoke_orga_status(user, brand, initiator)
 

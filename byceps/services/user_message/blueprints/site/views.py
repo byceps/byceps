@@ -49,7 +49,7 @@ def create(recipient_id):
     if not form.validate():
         return create_form(recipient.id, form)
 
-    sender = g.user
+    sender = g.user.as_user()
     body = form.body.data.strip()
     sender_contact_url = url_for(
         '.create_form', recipient_id=sender.id, _external=True

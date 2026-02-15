@@ -284,7 +284,7 @@ def seat_group_occupy(group_id, erroneous_form=None):
         db_ticket_bundle
     )
 
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match seat_group_service.occupy_group(group, ticket_bundle, initiator):
         case Ok((_, event)):
@@ -314,7 +314,7 @@ def seat_group_release(group_id):
     """Release the seat group."""
     group = _get_seat_group_or_404(group_id)
 
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match seat_group_service.release_group(group.id, initiator):
         case Ok(event):

@@ -235,7 +235,9 @@ def cancel(order_id):
 
     reason = form.reason.data.strip()
 
-    match order_command_service.cancel_order(order.id, g.user, reason):
+    match order_command_service.cancel_order(
+        order.id, g.user.as_user(), reason
+    ):
         case Ok((canceled_order, event)):
             pass
         case Err(OrderAlreadyCanceledError()):
@@ -357,7 +359,9 @@ def donate_everything(order_id):
         'Ticket return and donation of full order total as requested'
     )
 
-    match order_command_service.cancel_order(order.id, g.user, reason):
+    match order_command_service.cancel_order(
+        order.id, g.user.as_user(), reason
+    ):
         case Ok((canceled_order, event)):
             pass
         case Err(OrderAlreadyCanceledError()):

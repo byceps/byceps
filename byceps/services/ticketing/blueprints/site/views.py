@@ -63,7 +63,7 @@ def index_mine():
 
     party = g.party
 
-    user = g.user
+    user = g.user.as_user()
 
     tickets = ticket_service.get_tickets_related_to_user_for_party(
         user.id, party.id
@@ -152,7 +152,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -178,7 +178,7 @@ def appoint_user(ticket_id):
     if not form.validate():
         return appoint_user_form(ticket_id, form)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -221,7 +221,7 @@ def withdraw_user(ticket_id):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -265,7 +265,7 @@ def appoint_user_manager_form(ticket_id, erroneous_form=None):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -291,7 +291,7 @@ def appoint_user_manager(ticket_id):
     if not form.validate():
         return appoint_user_manager_form(ticket_id, form)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -329,7 +329,7 @@ def withdraw_user_manager(ticket_id):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -369,7 +369,7 @@ def appoint_seat_manager_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -393,7 +393,7 @@ def appoint_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -429,7 +429,7 @@ def withdraw_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)

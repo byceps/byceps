@@ -279,7 +279,7 @@ def image_create(item_id):
     if not form.validate():
         return image_create_form(item.id, form)
 
-    creator = g.user
+    creator = g.user.as_user()
     image = request.files.get('image')
     alt_text = form.alt_text.data.strip()
     caption = form.caption.data.strip()
@@ -558,7 +558,7 @@ def item_create(channel_id):
         return item_create_form(channel.id, form)
 
     slug = form.slug.data.strip().lower()
-    creator = g.user
+    creator = g.user.as_user()
     title = form.title.data.strip()
     body = form.body.data.strip()
     body_format = form.body_format.data
@@ -620,7 +620,7 @@ def item_update(item_id):
     if not form.validate():
         return item_update_form(item.id, form)
 
-    creator = g.user
+    creator = g.user.as_user()
     slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
     body = form.body.data.strip()
@@ -670,9 +670,10 @@ def item_publish_later(item_id):
     publish_at = to_utc(
         datetime.combine(form.publish_on.data, form.publish_at.data)
     )
+    initiator = g.user.as_user()
 
     match news_item_service.publish_item(
-        item.id, publish_at=publish_at, initiator=g.user
+        item.id, publish_at=publish_at, initiator=initiator
     ):
         case Ok(event):
             news_signals.item_published.send(None, event=event)
@@ -697,7 +698,9 @@ def item_publish_now(item_id):
     """Publish a news item now."""
     item = _get_item_or_404(item_id)
 
-    match news_item_service.publish_item(item.id, initiator=g.user):
+    initiator = g.user.as_user()
+
+    match news_item_service.publish_item(item.id, initiator=initiator):
         case Ok(event):
             news_signals.item_published.send(None, event=event)
 

@@ -102,7 +102,7 @@ def create(party_id):
     starts_at_local = form.starts_at.data
     starts_at_utc = to_utc(starts_at_local)
 
-    creator = g.user
+    creator = g.user.as_user()
     category = tourney_category_service.get_category(category_id)
 
     tourney, event = tourney_service.create_tourney(

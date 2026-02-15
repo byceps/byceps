@@ -147,7 +147,7 @@ def server_create(party_id):
     if not form.validate():
         return server_create_form(party_id, form)
 
-    creator = g.user
+    creator = g.user.as_user()
     owner = form.owner.data
     description = form.description.data.strip()
     address_datas = {
@@ -218,7 +218,7 @@ def server_update(server_id):
 def server_approve(server_id):
     """Approve a guest server."""
     server = _get_server_or_404(server_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match guest_server_service.approve_server(server, initiator):
         case Ok((_, event)):
@@ -234,7 +234,7 @@ def server_approve(server_id):
 def server_check_in(server_id):
     """Check in a guest server."""
     server = _get_server_or_404(server_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match guest_server_service.check_in_server(server, initiator):
         case Ok((_, event)):
@@ -250,7 +250,7 @@ def server_check_in(server_id):
 def server_check_out(server_id):
     """Check out a guest server."""
     server = _get_server_or_404(server_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match guest_server_service.check_out_server(server, initiator):
         case Ok((_, event)):

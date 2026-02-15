@@ -68,7 +68,9 @@ def create_form(erroneous_form=None):
     """Show a form to register a guest server."""
     party = _get_current_party_or_404()
 
-    if not may_user_register_server(party, g.user):
+    user = g.user.as_user()
+
+    if not may_user_register_server(party, user):
         return redirect_to('.index')
 
     setting = guest_server_service.get_setting_for_party(party.id)
@@ -112,7 +114,9 @@ def create():
     """Register a guest server."""
     party = _get_current_party_or_404()
 
-    if not may_user_register_server(party, g.user):
+    user = g.user.as_user()
+
+    if not may_user_register_server(party, user):
         return redirect_to('.index')
 
     address_quantity = request.args.get(
@@ -149,8 +153,8 @@ def create():
 
     _, event = guest_server_service.register_server(
         party,
-        g.user,
-        g.user,
+        user,
+        user,
         description,
         address_datas,
         notes_owner=notes,
