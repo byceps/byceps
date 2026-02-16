@@ -14,7 +14,7 @@ from jinja2 import TemplateNotFound
 import structlog
 
 from byceps.services.page import page_service
-from byceps.services.page.models import Page, PageVersion
+from byceps.services.page.models import Page, PageAggregate
 from byceps.services.site_navigation import site_navigation_service
 from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.snippet.blueprints.site.templating import (
@@ -30,12 +30,10 @@ log = structlog.get_logger()
 Context = dict[str, Any]
 
 
-def render_page(page: Page, version: PageVersion) -> str | tuple[str, int]:
+def render_page(page: PageAggregate) -> str | tuple[str, int]:
     """Render the page, or an error page if that fails."""
     try:
-        context = build_template_context(
-            version.title, version.head, version.body
-        )
+        context = build_template_context(page.title, page.head, page.body)
         context['current_page'] = page.current_page_id
 
         subnav_menu_id = _find_subnav_menu_id(page)

@@ -292,6 +292,10 @@ def find_page_aggregate(version_id: PageVersionID) -> PageAggregate | None:
 
     page = get_page(version.page_id)
 
+    return build_page_aggregate(page, version)
+
+
+def build_page_aggregate(page: Page, version: PageVersion) -> PageAggregate:
     return PageAggregate(
         id=page.id,
         site_id=page.site_id,

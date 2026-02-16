@@ -11,7 +11,7 @@ from flask import abort, g
 from flask_babel import get_locale
 
 from byceps.services.page import page_service
-from byceps.services.page.models import PageVersion
+from byceps.services.page.models import PageAggregate
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.l10n import get_default_locale
 
@@ -30,23 +30,27 @@ def view(url_path):
     """
     url_path = '/' + url_path
 
-    version = _get_page_version(url_path, get_locale())
-    if version is None:
+    page = _get_current_page(url_path, get_locale())
+    if page is None:
         locale = get_default_locale()
-        version = _get_page_version(url_path, locale)
+        page = _get_current_page(url_path, locale)
 
-    if version is None:
+    if page is None:
         abort(404)
-
-    page = page_service.get_page(version.page_id)
 
     if page.hidden:
         abort(404)
 
-    return render_page(page, version)
+    return render_page(page)
 
 
-def _get_page_version(url_path: str, locale: Locale) -> PageVersion | None:
-    return page_service.find_current_version_for_url_path(
+def _get_current_page(url_path: str, locale: Locale) -> PageAggregate | None:
+    version = page_service.find_current_version_for_url_path(
         g.site.id, url_path, locale.language
     )
+    if version is None:
+        return None
+
+    page = page_service.get_page(version.page_id)
+
+    return page_service.build_page_aggregate(page, version)
