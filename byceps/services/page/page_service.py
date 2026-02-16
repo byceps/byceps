@@ -287,7 +287,7 @@ def get_pages_for_site(site_id: SiteID) -> list[Page]:
 
 def find_page_aggregate(version_id: PageVersionID) -> PageAggregate | None:
     """Return an aggregated page for that version."""
-    version = get_version(version_id)
+    version = find_version(version_id)
     if version is None:
         return None
 
