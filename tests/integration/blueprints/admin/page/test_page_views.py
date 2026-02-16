@@ -106,6 +106,7 @@ def test_compare(page_admin_client, page_admin, make_page):
         'Title v2',
         'Head v2',
         'Body v2',
+        False,
     )
 
     url = f'{BASE_URL}/pages/versions/{version1.id}/compare_to/{version2.id}'
