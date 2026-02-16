@@ -29,7 +29,7 @@ class Page:
     name: str
     language_code: str
     url_path: str
-    published: bool
+    hidden: bool
     nav_menu_id: NavMenuID | None
 
     @property

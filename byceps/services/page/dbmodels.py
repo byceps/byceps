@@ -49,7 +49,7 @@ class DbPage(db.Model):
     )
     language: Mapped[DbLanguage] = relationship()
     url_path: Mapped[str] = mapped_column(db.UnicodeText, index=True)
-    published: Mapped[bool]
+    hidden: Mapped[bool]
     nav_menu_id: Mapped[NavMenuID | None] = mapped_column(
         db.Uuid, db.ForeignKey('site_nav_menus.id')
     )
@@ -72,7 +72,7 @@ class DbPage(db.Model):
         self.name = name
         self.language_code = language_code
         self.url_path = url_path
-        self.published = False
+        self.hidden = False
 
 
 class DbPageVersion(db.Model):

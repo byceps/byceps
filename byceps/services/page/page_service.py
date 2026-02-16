@@ -292,7 +292,7 @@ def find_page_aggregate(version_id: PageVersionID) -> PageAggregate | None:
         name=page.name,
         language_code=page.language_code,
         url_path=page.url_path,
-        published=page.published,
+        hidden=page.hidden,
         nav_menu_id=page.nav_menu_id,
         title=version.title,
         head=version.head,
@@ -322,7 +322,7 @@ def _db_entity_to_page(db_page: DbPage) -> Page:
         name=db_page.name,
         language_code=db_page.language_code,
         url_path=db_page.url_path,
-        published=db_page.published,
+        hidden=db_page.hidden,
         nav_menu_id=db_page.nav_menu_id,
     )
 
