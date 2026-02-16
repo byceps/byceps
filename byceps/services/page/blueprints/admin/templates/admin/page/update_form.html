@@ -1,6 +1,6 @@
 {% extends 'layout/admin/page.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% set page_title = [_('Edit page'), site.title] %}
 
 {% block before_body %}
@@ -19,6 +19,7 @@
       {{ form_field(form.title, maxlength=80) }}
       {{ form_field(form.head, class='monospace') }}
       {{ form_field(form.body, class='monospace') }}
+      {{ form_field_check(form.hidden) }}
     </div>
 
     {{ form_buttons(_('Save')) }}

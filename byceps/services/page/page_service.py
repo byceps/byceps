@@ -80,6 +80,7 @@ def create_page(
     body: str,
     *,
     head: str | None = None,
+    hidden: bool = False,
 ) -> tuple[DbPageVersion, PageCreatedEvent]:
     """Create a page and its initial version."""
     created_at = datetime.utcnow()
@@ -94,6 +95,7 @@ def create_page(
         title,
         head,
         body,
+        hidden,
     )
 
     event = PageCreatedEvent(
@@ -117,6 +119,7 @@ def update_page(
     title: str,
     head: str | None,
     body: str,
+    hidden: bool,
 ) -> tuple[DbPageVersion, PageUpdatedEvent]:
     """Update page with a new version."""
     created_at = datetime.utcnow()
@@ -130,6 +133,7 @@ def update_page(
         title,
         head,
         body,
+        hidden,
     )
 
     site = site_service.get_site(db_page.site_id)

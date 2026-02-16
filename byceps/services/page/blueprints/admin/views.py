@@ -339,6 +339,7 @@ def create(site_id):
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
+    hidden = form.hidden.data
 
     version, event = page_service.create_page(
         site,
@@ -349,6 +350,7 @@ def create(site_id):
         title,
         body,
         head=head,
+        hidden=hidden,
     )
 
     flash_success(gettext('Page has been created.'))
@@ -398,6 +400,7 @@ def update(page_id):
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
+    hidden = form.hidden.data
 
     version, event = page_service.update_page(
         page.id,
@@ -407,6 +410,7 @@ def update(page_id):
         title,
         head,
         body,
+        hidden,
     )
 
     flash_success(gettext('Page has been updated.'))

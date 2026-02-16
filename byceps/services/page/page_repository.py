@@ -33,12 +33,13 @@ def create_page(
     title: str,
     head: str | None,
     body: str,
+    hidden: bool,
 ) -> tuple[DbPage, DbPageVersion]:
     """Create a page and its initial version."""
     page_id = PageID(generate_uuid7())
     version_id = PageVersionID(generate_uuid7())
 
-    db_page = DbPage(page_id, site_id, name, language_code, url_path)
+    db_page = DbPage(page_id, site_id, name, language_code, url_path, hidden)
     db.session.add(db_page)
 
     db_version = DbPageVersion(
@@ -65,6 +66,7 @@ def update_page(
     title: str,
     head: str | None,
     body: str,
+    hidden: bool,
 ) -> tuple[DbPage, DbPageVersion]:
     """Update page with a new version."""
     version_id = PageVersionID(generate_uuid7())
@@ -73,6 +75,7 @@ def update_page(
 
     db_page.language_code = language_code
     db_page.url_path = url_path
+    db_page.hidden = hidden
 
     db_version = DbPageVersion(
         version_id, db_page, created_at, creator_id, title, head, body

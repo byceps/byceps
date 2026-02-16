@@ -66,13 +66,14 @@ class DbPage(db.Model):
         name: str,
         language_code: str,
         url_path: str,
+        hidden: bool,
     ) -> None:
         self.id = page_id
         self.site_id = site_id
         self.name = name
         self.language_code = language_code
         self.url_path = url_path
-        self.hidden = False
+        self.hidden = hidden
 
 
 class DbPageVersion(db.Model):
