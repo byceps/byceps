@@ -11,6 +11,7 @@ from flask import abort, g
 from flask_babel import get_locale
 
 from byceps.services.page import page_service
+from byceps.services.page.models import PageVersion
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.l10n import get_default_locale
 
@@ -45,7 +46,7 @@ def view(url_path):
     return render_page(page, version)
 
 
-def _get_page_version(url_path: str, locale: Locale):
+def _get_page_version(url_path: str, locale: Locale) -> PageVersion | None:
     return page_service.find_current_version_for_url_path(
         g.site.id, url_path, locale.language
     )

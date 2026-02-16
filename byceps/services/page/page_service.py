@@ -240,24 +240,34 @@ def is_current_version(page_id: PageID, version_id: PageVersionID) -> bool:
 
 def find_current_version_for_name(
     site_id: SiteID, name: str, language_code: str
-) -> DbPageVersion | None:
+) -> PageVersion | None:
     """Return the current version of the page with that name and
     language code for that site.
     """
-    return page_repository.find_current_version_for_name(
+    db_version = page_repository.find_current_version_for_name(
         site_id, name, language_code
     )
+
+    if db_version is None:
+        return None
+
+    return _db_entity_to_version(db_version)
 
 
 def find_current_version_for_url_path(
     site_id: SiteID, url_path: str, language_code: str
-) -> DbPageVersion | None:
+) -> PageVersion | None:
     """Return the current version of the page with that URL path and
     language code for that site.
     """
-    return page_repository.find_current_version_for_url_path(
+    db_version = page_repository.find_current_version_for_url_path(
         site_id, url_path, language_code
     )
+
+    if db_version is None:
+        return None
+
+    return _db_entity_to_version(db_version)
 
 
 def get_url_paths_by_page_name_for_site(site_id: SiteID) -> dict[str, str]:
