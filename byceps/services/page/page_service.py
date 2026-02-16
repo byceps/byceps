@@ -56,15 +56,18 @@ def copy_page(
 
     creator = user_service.get_user(version.creator_id)
 
+    page = get_page(version.page_id)
+
     db_version, event = create_page(
         target_site,
-        version.page.name,
-        version.page.language_code,
-        version.page.url_path,
+        page.name,
+        page.language_code,
+        page.url_path,
         creator,
         version.title,
         version.body,
         head=version.head,
+        hidden=page.hidden,
     )
 
     return Ok((db_version, event))
