@@ -219,19 +219,6 @@ def find_version(version_id: PageVersionID) -> PageVersion | None:
     return _db_entity_to_version(db_version)
 
 
-def get_version(version_id: PageVersionID) -> PageVersion | None:
-    """Return the page version.
-
-    Raise error if not found.
-    """
-    version = find_version(version_id)
-
-    if version is None:
-        raise ValueError('Unknown version ID')
-
-    return version
-
-
 def get_versions(page_id: PageID) -> list[DbPageVersion]:
     """Return all versions of the page, sorted from most recent to oldest."""
     db_versions = page_repository.get_versions(page_id)
