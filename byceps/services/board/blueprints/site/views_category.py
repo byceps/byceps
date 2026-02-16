@@ -78,7 +78,11 @@ def category_view(slug, page):
     topics_per_page = service.get_topics_per_page_value()
 
     topics = board_topic_query_service.paginate_topics_of_category(
-        category.id, page, topics_per_page, current_user, include_hidden=include_hidden
+        category.id,
+        page,
+        topics_per_page,
+        current_user,
+        include_hidden=include_hidden,
     )
 
     return {
