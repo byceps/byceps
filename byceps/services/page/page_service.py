@@ -44,8 +44,10 @@ def copy_page(
     PageAlreadyExistsError | PageNotFoundError,
 ]:
     """Copy a page from one site to another."""
-    version = find_current_version_for_name(source_site.id, name, language_code)
-    if version is None:
+    source_version = find_current_version_for_name(
+        source_site.id, name, language_code
+    )
+    if source_version is None:
         return Err(PageNotFoundError())
 
     target_version = find_current_version_for_name(
@@ -54,9 +56,9 @@ def copy_page(
     if target_version is not None:
         return Err(PageAlreadyExistsError())
 
-    creator = user_service.get_user(version.creator_id)
+    creator = user_service.get_user(source_version.creator_id)
 
-    page = get_page(version.page_id)
+    page = get_page(source_version.page_id)
 
     db_version, event = create_page(
         target_site,
@@ -64,9 +66,9 @@ def copy_page(
         page.language_code,
         page.url_path,
         creator,
-        version.title,
-        version.body,
-        head=version.head,
+        source_version.title,
+        source_version.body,
+        head=source_version.head,
         hidden=page.hidden,
     )
 
