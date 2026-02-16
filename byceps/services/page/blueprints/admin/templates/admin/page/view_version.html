@@ -8,7 +8,12 @@
 
   <div class="row row--space-between block">
     <div>
-      <h1 class="title">{{ page.name }}</h1>
+      <h1 class="title">
+        {{ page.name }}
+        {%- if page.hidden %}
+        {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+        {%- endif %}
+      </h1>
     </div>
     {%- if g.user.has_permission('page.update') -%}
     <div>

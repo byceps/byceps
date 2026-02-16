@@ -25,7 +25,7 @@
   <table class="itemlist is-vcentered is-wide">
     <thead>
       <tr>
-        <th>{{ _('Name') }}</th>
+        <th colspan="2">{{ _('Name') }}</th>
         <th>{{ _('Language') }}</th>
         <th>{{ _('URL path') }}</th>
         <th>{{ _('Navigation menu') }}</th>
@@ -38,6 +38,11 @@
     {%- for page in pages|sort(attribute='name') %}
       <tr>
         <td><a href="{{ url_for('.view_current_version', page_id=page.id) }}"><strong>{{ page.name }}</strong></a></td>
+        <td>
+          {%- if page.hidden -%}
+          {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+          {%- endif -%}
+        </td>
         <td>{{ page.language_code }}</td>
         <td class="monospace">{{ page.url_path }}</td>
         <td>
