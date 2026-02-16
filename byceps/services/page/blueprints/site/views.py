@@ -39,6 +39,9 @@ def view(url_path):
 
     page = page_service.get_page(version.page_id)
 
+    if page.hidden:
+        abort(404)
+
     return render_page(page, version)
 
 
