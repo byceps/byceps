@@ -22,3 +22,11 @@ class UserGroup:
     creator: User
     title: str
     description: str | None
+
+
+@dataclass(frozen=True, kw_only=True)
+class UserGroupMembership:
+    id: UUID
+    created_at: datetime
+    group_id: UUID
+    user: User

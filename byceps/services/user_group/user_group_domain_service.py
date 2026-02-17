@@ -13,7 +13,11 @@ from byceps.services.party.models import Party
 from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
-from .models import UserGroup
+from .models import UserGroup, UserGroupMembership
+
+
+# -------------------------------------------------------------------- #
+# groups
 
 
 def create_group(
@@ -45,4 +49,21 @@ def update_group(
         group,
         title=title,
         description=description,
+    )
+
+
+# -------------------------------------------------------------------- #
+# memberships
+
+
+def create_membership(group: UserGroup, user: User) -> UserGroupMembership:
+    """Create a group membership."""
+    membership_id = generate_uuid7()
+    created_at = datetime.utcnow()
+
+    return UserGroupMembership(
+        id=membership_id,
+        created_at=created_at,
+        group_id=group.id,
+        user=user,
     )

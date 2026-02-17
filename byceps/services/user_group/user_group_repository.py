@@ -14,8 +14,12 @@ from sqlalchemy import select
 from byceps.database import db
 from byceps.services.party.models import PartyID
 
-from .dbmodels import DbUserGroup
-from .models import UserGroup
+from .dbmodels import DbUserGroup, DbUserGroupMembership
+from .models import UserGroup, UserGroupMembership
+
+
+# -------------------------------------------------------------------- #
+# groups
 
 
 def create_group(group: UserGroup) -> None:
@@ -64,3 +68,20 @@ def find_group(group_id: UUID) -> DbUserGroup | None:
 def get_groups_for_party(party_id: PartyID) -> Sequence[DbUserGroup]:
     """Return user groups for a party."""
     return db.session.scalars(select(DbUserGroup)).all()
+
+
+# -------------------------------------------------------------------- #
+# memberships
+
+
+def create_membership(membership: UserGroupMembership) -> None:
+    """Create a group membership."""
+    db_membership = DbUserGroupMembership(
+        membership_id=membership.id,
+        created_at=membership.created_at,
+        group_id=membership.group_id,
+        user_id=membership.user.id,
+    )
+
+    db.session.add(db_membership)
+    db.session.commit()
