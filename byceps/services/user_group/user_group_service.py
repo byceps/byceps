@@ -25,10 +25,8 @@ def create_group(
     description: str | None,
 ) -> UserGroup:
     """Create a group."""
-    created_at = datetime.utcnow()
-
     group = user_group_domain_service.create_group(
-        party, created_at, creator, title, description=description
+        party, creator, title, description=description
     )
 
     user_group_repository.create_group(group)

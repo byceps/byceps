@@ -18,7 +18,6 @@ from .models import UserGroup
 
 def create_group(
     party: Party,
-    created_at: datetime,
     creator: User,
     title: str,
     *,
@@ -26,6 +25,7 @@ def create_group(
 ) -> UserGroup:
     """Create a group."""
     group_id = generate_uuid7()
+    created_at = datetime.utcnow()
 
     return UserGroup(
         id=group_id,
