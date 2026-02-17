@@ -6,6 +6,7 @@ byceps.services.user_group.user_group_domain_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import dataclasses
 from datetime import datetime
 
 from byceps.services.party.models import Party
@@ -31,6 +32,17 @@ def create_group(
         party_id=party.id,
         created_at=created_at,
         creator=creator,
+        title=title,
+        description=description,
+    )
+
+
+def update_group(
+    group: UserGroup, title: str, description: str | None
+) -> UserGroup:
+    """Update a group."""
+    return dataclasses.replace(
+        group,
         title=title,
         description=description,
     )

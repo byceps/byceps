@@ -49,14 +49,18 @@ def create_group(
     return group
 
 
-def update_group(group: UserGroup, title: str, description: str) -> None:
+def update_group(group: UserGroup, title: str, description: str | None) -> None:
     """Update a group."""
+    updated_group = user_group_domain_service.update_group(
+        group, title, description
+    )
+
     db_group = _get_db_group(group.id)
     if db_group is None:
         raise ValueError(f'Unknown user group ID "{group.id}"')
 
-    db_group.title = title
-    db_group.description = description or None
+    db_group.title = updated_group.title
+    db_group.description = updated_group.description
 
     db.session.commit()
 
