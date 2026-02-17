@@ -64,6 +64,7 @@ class DbUserGroupMembership(db.Model):
     __tablename__ = 'user_group_memberships'
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    created_at: Mapped[datetime]
     group_id: Mapped[UUID] = mapped_column(
         db.Uuid, db.ForeignKey('user_groups.id')
     )
@@ -72,16 +73,15 @@ class DbUserGroupMembership(db.Model):
     )
     user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
     user: Mapped[DbUser] = relationship(backref='group_membership')
-    created_at: Mapped[datetime]
 
     def __init__(
         self,
         membership_id: UUID,
+        created_at: datetime,
         group_id: UUID,
         user_id: UserID,
-        created_at: datetime,
     ) -> None:
         self.id = membership_id
+        self.created_at = created_at
         self.group_id = group_id
         self.user_id = user_id
-        self.created_at = created_at
