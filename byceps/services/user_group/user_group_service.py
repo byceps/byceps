@@ -14,6 +14,12 @@ from byceps.services.user.models import User, UserID
 
 from . import user_group_domain_service, user_group_repository
 from .dbmodels import DbUserGroup
+from .events import (
+    UserGroupCreatedEvent,
+    UserGroupDeletedEvent,
+    UserGroupMemberAddedEvent,
+    UserGroupMemberRemovedEvent,
+)
 from .models import UserGroup, UserGroupMembership
 
 
@@ -26,15 +32,15 @@ def create_group(
     creator: User,
     title: str,
     description: str | None,
-) -> UserGroup:
+) -> tuple[UserGroup, UserGroupCreatedEvent]:
     """Create a group."""
-    group = user_group_domain_service.create_group(
+    group, event = user_group_domain_service.create_group(
         party, creator, title, description=description
     )
 
     user_group_repository.create_group(group)
 
-    return group
+    return group, event
 
 
 def update_group(group: UserGroup, title: str, description: str | None) -> None:
@@ -46,9 +52,13 @@ def update_group(group: UserGroup, title: str, description: str | None) -> None:
     user_group_repository.update_group(updated_group)
 
 
-def delete_group(group_id: UUID) -> None:
+def delete_group(group: UserGroup, initiator: User) -> UserGroupDeletedEvent:
     """Delete a group."""
-    user_group_repository.delete_group(group_id)
+    event = user_group_domain_service.delete_group(group, initiator)
+
+    user_group_repository.delete_group(group.id)
+
+    return event
 
 
 def is_title_available(party_id: PartyID, title: str) -> bool:
@@ -100,15 +110,27 @@ def _db_entity_to_group(
 # memberships
 
 
-def add_member(group: UserGroup, user: User) -> UserGroupMembership:
+def add_member(
+    group: UserGroup, user: User, initiator: User
+) -> tuple[UserGroupMembership, UserGroupMemberAddedEvent]:
     """Add a user to a group."""
-    membership = user_group_domain_service.add_member(group, user)
+    membership, event = user_group_domain_service.add_member(
+        group, user, initiator
+    )
 
     user_group_repository.create_membership(membership)
 
-    return membership
+    return membership, event
 
 
-def remove_member(membership_id: UUID) -> None:
+def remove_member(
+    group: UserGroup, membership: UserGroupMembership, initiator: User
+) -> UserGroupMemberRemovedEvent:
     """Remove a member from a group."""
-    user_group_repository.delete_membership(membership_id)
+    event = user_group_domain_service.remove_member(
+        group, membership, initiator
+    )
+
+    user_group_repository.delete_membership(membership.id)
+
+    return event
