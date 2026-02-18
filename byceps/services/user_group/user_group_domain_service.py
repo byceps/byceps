@@ -56,8 +56,8 @@ def update_group(
 # memberships
 
 
-def create_membership(group: UserGroup, user: User) -> UserGroupMembership:
-    """Create a group membership."""
+def add_member(group: UserGroup, user: User) -> UserGroupMembership:
+    """Add a user to a group."""
     membership_id = generate_uuid7()
     created_at = datetime.utcnow()
 

@@ -6,7 +6,6 @@ byceps.services.user_group.user_group_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime
 from uuid import UUID
 
 from byceps.services.party.models import Party, PartyID
@@ -15,7 +14,11 @@ from byceps.services.user.models import User, UserID
 
 from . import user_group_domain_service, user_group_repository
 from .dbmodels import DbUserGroup
-from .models import UserGroup
+from .models import UserGroup, UserGroupMembership
+
+
+# -------------------------------------------------------------------- #
+# groups
 
 
 def create_group(
@@ -86,3 +89,16 @@ def _db_entity_to_group(
         title=db_group.title,
         description=db_group.description,
     )
+
+
+# -------------------------------------------------------------------- #
+# memberships
+
+
+def add_member(group: UserGroup, user: User) -> UserGroupMembership:
+    """Add a user to a group."""
+    membership = user_group_domain_service.add_member(group, user)
+
+    user_group_repository.create_membership(membership)
+
+    return membership
