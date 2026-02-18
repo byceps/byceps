@@ -46,6 +46,11 @@ def update_group(group: UserGroup, title: str, description: str | None) -> None:
     user_group_repository.update_group(updated_group)
 
 
+def delete_group(group_id: UUID) -> None:
+    """Delete a group."""
+    user_group_repository.delete_group(group_id)
+
+
 def is_title_available(party_id: PartyID, title: str) -> bool:
     """Check if the title is yet unused."""
     return user_group_repository.is_title_available(party_id, title)
@@ -102,3 +107,8 @@ def add_member(group: UserGroup, user: User) -> UserGroupMembership:
     user_group_repository.create_membership(membership)
 
     return membership
+
+
+def remove_member(membership_id: UUID) -> None:
+    """Remove a member from a group."""
+    user_group_repository.delete_membership(membership_id)

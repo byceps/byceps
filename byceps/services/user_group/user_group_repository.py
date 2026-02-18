@@ -9,7 +9,7 @@ byceps.services.user_group.user_group_repository
 from collections.abc import Sequence
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -49,6 +49,12 @@ def update_group(group: UserGroup) -> None:
     db.session.commit()
 
 
+def delete_group(group_id: UUID) -> None:
+    """Delete a group."""
+    db.session.execute(delete(DbUserGroup).filter_by(id=group_id))
+    db.session.commit()
+
+
 def is_title_available(party_id: PartyID, title: str) -> bool:
     """Check if the title is yet unused."""
     return not db.session.scalar(
@@ -84,4 +90,12 @@ def create_membership(membership: UserGroupMembership) -> None:
     )
 
     db.session.add(db_membership)
+    db.session.commit()
+
+
+def delete_membership(membership_id: UUID) -> None:
+    """Delete a group membership."""
+    db.session.execute(
+        delete(DbUserGroupMembership).filter_by(id=membership_id)
+    )
     db.session.commit()
