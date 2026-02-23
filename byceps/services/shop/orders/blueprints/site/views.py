@@ -100,13 +100,17 @@ def view(order_id):
 
     shop = shop_service.get_shop(order.shop_id)
 
+    payment_gateways_config = (
+        get_current_byceps_app().byceps_config.payment_gateways
+    )
+
     paypal_enabled = (
         payment_gateway_service.is_payment_gateway_enabled_for_storefront(
             'paypal', storefront.id
         )
     )
     paypal_config = (
-        get_current_byceps_app().byceps_config.payment_gateways.paypal
+        payment_gateways_config.paypal if payment_gateways_config else None
     )
     if paypal_enabled and paypal_config and paypal_config.enabled:
         paypal_client_id = paypal_config.client_id
@@ -119,7 +123,7 @@ def view(order_id):
         )
     )
     stripe_config = (
-        get_current_byceps_app().byceps_config.payment_gateways.stripe
+        payment_gateways_config.stripe if payment_gateways_config else None
     )
     if stripe_enabled and stripe_config and stripe_config.enabled:
         stripe_publishable_key = stripe_config.publishable_key

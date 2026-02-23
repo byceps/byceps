@@ -103,8 +103,11 @@ def _parse_request() -> CapturePayPalRequest:
 
 
 def _get_paypal_order_details(paypal_order_id: str) -> HttpResult:
+    payment_gateways_config = (
+        get_current_byceps_app().byceps_config.payment_gateways
+    )
     paypal_config = (
-        get_current_byceps_app().byceps_config.payment_gateways.paypal
+        payment_gateways_config.paypal if payment_gateways_config else None
     )
 
     if not paypal_config:

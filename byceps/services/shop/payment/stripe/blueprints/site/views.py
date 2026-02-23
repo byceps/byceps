@@ -205,12 +205,18 @@ def _get_currency_code(money: Money) -> str:
 
 
 def _get_enabled_stripe_configuration() -> StripeConfig:
-    config = get_current_byceps_app().byceps_config.payment_gateways.stripe
+    payment_gateways_config = (
+        get_current_byceps_app().byceps_config.payment_gateways
+    )
 
-    if not config:
+    stripe_config = (
+        payment_gateways_config.stripe if payment_gateways_config else None
+    )
+
+    if not stripe_config:
         raise ConfigurationError('Stripe integration is not configured.')
 
-    if not config.enabled:
+    if not stripe_config.enabled:
         raise ConfigurationError('Stripe integration is not enabled.')
 
-    return config
+    return stripe_config
