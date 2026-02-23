@@ -261,7 +261,10 @@ def create_payment(
     amount: Money,
     initiator: User,
     additional_data: AdditionalPaymentData,
-) -> tuple[Payment, OrderLogEntry]:
+) -> Result[tuple[Payment, OrderLogEntry], OrderAlreadyCanceledError]:
+    if _is_canceled(order):
+        return Err(OrderAlreadyCanceledError())
+
     payment = _build_payment(
         order.id, created_at, method, amount, additional_data
     )
@@ -270,7 +273,7 @@ def create_payment(
         payment, initiator
     )
 
-    return payment, log_entry
+    return Ok((payment, log_entry))
 
 
 def _build_payment(
@@ -299,8 +302,11 @@ def mark_order_as_paid(
     initiator: User,
 ) -> Result[
     tuple[ShopOrderPaidEvent, OrderLogEntry],
-    OrderAlreadyMarkedAsPaidError,
+    OrderAlreadyCanceledError | OrderAlreadyMarkedAsPaidError,
 ]:
+    if _is_canceled(order):
+        return Err(OrderAlreadyCanceledError())
+
     if _is_paid(order):
         return Err(OrderAlreadyMarkedAsPaidError())
 

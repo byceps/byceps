@@ -26,6 +26,7 @@ from byceps.util.templating import load_template
 
 from . import order_domain_service
 from .dbmodels.payment import DbPayment
+from .errors import OrderAlreadyCanceledError
 from .models.order import Order, OrderID
 from .models.payment import AdditionalPaymentData, Payment
 
@@ -37,16 +38,20 @@ def add_payment(
     amount: Money,
     initiator: User,
     additional_data: AdditionalPaymentData,
-) -> Payment:
+) -> Result[Payment, OrderAlreadyCanceledError]:
     """Add a payment to an order."""
 
-    payment, log_entry = order_domain_service.create_payment(
+    match order_domain_service.create_payment(
         order, created_at, method, amount, initiator, additional_data
-    )
+    ):
+        case Ok((payment, log_entry)):
+            pass
+        case Err(e):
+            return Err(e)
 
     _persist_payment(payment, log_entry)
 
-    return payment
+    return Ok(payment)
 
 
 def _persist_payment(payment: Payment, log_entry: OrderLogEntry) -> None:

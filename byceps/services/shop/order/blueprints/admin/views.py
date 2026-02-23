@@ -452,6 +452,13 @@ def mark_as_paid(order_id):
     ):
         case Ok((paid_order, event)):
             pass
+        case Err(OrderAlreadyCanceledError()):
+            flash_error(
+                gettext(
+                    'The order has already been canceled. '
+                    'The payment state cannot be changed anymore.'
+                )
+            )
         case Err(OrderAlreadyMarkedAsPaidError()):
             flash_error(gettext('Order is already marked as paid.'))
             return redirect_to('.view', order_id=order.id)

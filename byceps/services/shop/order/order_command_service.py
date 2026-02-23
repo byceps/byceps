@@ -214,7 +214,9 @@ def mark_order_as_paid(
     additional_payment_data: AdditionalPaymentData | None = None,
 ) -> Result[
     tuple[PaidOrder, ShopOrderPaidEvent],
-    OrderActionFailedError | OrderAlreadyMarkedAsPaidError,
+    OrderActionFailedError
+    | OrderAlreadyCanceledError
+    | OrderAlreadyMarkedAsPaidError,
 ]:
     """Mark the order as paid."""
     db_order = get_db_order(order_id)
@@ -224,14 +226,16 @@ def mark_order_as_paid(
 
     payment_added_at = datetime.utcnow()
 
-    order_payment_service.add_payment(
+    match order_payment_service.add_payment(
         order,
         payment_added_at,
         payment_method,
         order.total_amount,
         initiator,
         additional_payment_data if additional_payment_data is not None else {},
-    )
+    ):
+        case Err(payment_error):
+            return Err(payment_error)
 
     # Use separate timestamp so that log events are properly ordered.
     marked_as_paid_at = datetime.utcnow()
