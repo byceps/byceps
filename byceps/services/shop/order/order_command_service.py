@@ -234,6 +234,8 @@ def mark_order_as_paid(
         initiator,
         additional_payment_data if additional_payment_data is not None else {},
     ):
+        case Ok(payment):
+            pass
         case Err(payment_error):
             return Err(payment_error)
 
@@ -244,8 +246,8 @@ def mark_order_as_paid(
         order,
         orderer_user,
         marked_as_paid_at,
-        payment_method,
-        additional_payment_data,
+        payment.method,
+        payment.additional_data,
         initiator,
     )
     if mark_order_as_paid_result.is_err():
