@@ -9,9 +9,8 @@ byceps.services.newsletter.newsletter_repository
 from collections.abc import Sequence
 
 from sqlalchemy import select, delete
-from sqlalchemy.dialects.postgresql import insert
 
-from byceps.database import db
+from byceps.database import db, insert_ignore_on_conflict
 from byceps.services.user.dbmodels import DbUser
 from byceps.services.user.models import UserID
 from byceps.util.result import Err, Ok, Result
@@ -56,18 +55,13 @@ def subscribe_user_to_list(
             return Err(e)
 
     table = DbSubscription.__table__
-    query = (
-        insert(table)
-        .values(
-            {
-                'user_id': str(subscription_update.user_id),
-                'list_id': str(subscription_update.list_id),
-            }
-        )
-        .on_conflict_do_nothing(constraint=table.primary_key)
-    )
-    db.session.execute(query)
-    db.session.commit()
+
+    values = {
+        'user_id': str(subscription_update.user_id),
+        'list_id': str(subscription_update.list_id),
+    }
+
+    insert_ignore_on_conflict(table, values)
 
     return Ok(None)
 
