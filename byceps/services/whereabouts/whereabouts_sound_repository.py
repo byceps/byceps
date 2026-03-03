@@ -2,7 +2,7 @@
 byceps.services.whereabouts.whereabouts_sound_repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,7 +11,7 @@ from collections.abc import Sequence
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .dbmodels import DbWhereaboutsUserSound
 from .models import WhereaboutsUserSound

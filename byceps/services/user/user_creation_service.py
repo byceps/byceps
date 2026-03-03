@@ -2,31 +2,31 @@
 byceps.services.user.user_creation_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import date
 from typing import Any
 
+from babel import Locale
 import structlog
 
 from byceps.database import db
 from byceps.services.authn.password import authn_password_service
 from byceps.services.site.models import Site, SiteID
+from byceps.services.user.log import user_log_service
 from byceps.util.result import Err, Ok, Result
 
 from . import (
     user_creation_domain_service,
     user_email_address_service,
-    user_log_service,
     user_service,
 )
-from .dbmodels.detail import DbUserDetail
-from .dbmodels.user import DbUser
+from .dbmodels import DbUser, DbUserDetail
 from .errors import InvalidEmailAddressError, InvalidScreenNameError
 from .events import UserAccountCreatedEvent
-from .models.user import Password, User
+from .models import Password, User
 
 
 log = structlog.get_logger()
@@ -37,7 +37,7 @@ def create_user(
     email_address: str | None,
     password: Password,
     *,
-    locale: str | None = None,
+    locale: Locale | None = None,
     legacy_id: str | None = None,
     first_name: str | None = None,
     last_name: str | None = None,
@@ -72,7 +72,6 @@ def create_user(
     result = user_creation_domain_service.create_account(
         screen_name,
         email_address,
-        locale=locale,
         creation_method=creation_method,
         site=site,
         ip_address=ip_address,
@@ -89,7 +88,7 @@ def create_user(
         event.occurred_at,
         user.screen_name,
         normalized_email_address,
-        locale=user.locale,
+        locale=locale.language if locale else None,
         legacy_id=legacy_id,
     )
     db.session.add(db_user)

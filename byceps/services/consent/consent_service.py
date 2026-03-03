@@ -2,7 +2,7 @@
 byceps.services.consent.consent_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,7 @@ from datetime import datetime
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .dbmodels import DbConsent, DbConsentSubject
 from .models import Consent, ConsentSubjectID

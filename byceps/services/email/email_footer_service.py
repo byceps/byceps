@@ -2,7 +2,7 @@
 byceps.services.email.email_footer_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,7 +10,7 @@ from byceps.services.brand.models import Brand
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.errors import SnippetNotFoundError
 from byceps.services.snippet.models import SnippetScope
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Result
 
 

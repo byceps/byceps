@@ -2,7 +2,7 @@
 byceps.services.authn.login.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,6 +15,7 @@ from byceps.services.authn import signals as authn_signals
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import redirect_to, respond_no_content
 
 from . import service
@@ -84,27 +85,25 @@ def log_in():
     password = secret(form.password.data)
     permanent = form.permanent.data
 
-    log_in_result = service.log_in_user(
+    match service.log_in_user(
         username,
         password,
         permanent,
+        request.remote_addr,
         g.site.brand_id,
         site=g.site,
-        ip_address=request.remote_addr,
-    )
-    if log_in_result.is_err():
-        err = log_in_result.unwrap_err()
-        if isinstance(err, ConsentRequiredError):
+    ):
+        case Ok((_, logged_in_event)):
+            pass
+        case Err(ConsentRequiredError() as err):
             consent_form_url = url_for(
                 'consent.consent_form', token=err.verification_token
             )
             return [('Location', consent_form_url)]
-        else:
+        case Err(_):
             abort(401, 'Authentication failed')
 
-    _, logged_in_event = log_in_result.unwrap()
-
-    authn_signals.user_logged_in.send(None, event=logged_in_event)
+    authn_signals.user_logged_in_to_site.send(None, event=logged_in_event)
 
     return [('Location', url_for('dashboard.index'))]
 
@@ -120,6 +119,7 @@ def log_out_form():
 @blueprint.post('/log_out')
 def log_out():
     """Log out user by deleting the corresponding cookie."""
-    service.log_out_user(g.user, g.site)
+
+    service.log_out_user(g.user.as_user(), g.site)
 
     return redirect('/')

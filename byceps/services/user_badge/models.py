@@ -2,7 +2,7 @@
 byceps.services.user_badge.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 BadgeID = NewType('BadgeID', UUID)

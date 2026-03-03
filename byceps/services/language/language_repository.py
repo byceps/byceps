@@ -2,9 +2,11 @@
 byceps.services.language.language_repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
+
+from collections.abc import Sequence
 
 from sqlalchemy import select
 
@@ -21,6 +23,6 @@ def create_language(language: Language) -> None:
     db.session.commit()
 
 
-def get_languages() -> list[DbLanguage]:
+def get_languages() -> Sequence[DbLanguage]:
     """Return all languages."""
     return db.session.scalars(select(DbLanguage)).all()

@@ -258,13 +258,11 @@ a.disguised:not(:hover) {
 /* icons */
 
 .icon {
-  display: inline-block;
+  --size: 1.25em;
   fill: currentColor;
-  height: 1em;
-  stroke: currentColor;
-  stroke-width: 0;
-  vertical-align: -7%;
-  width: 1em;
+  height: var(--size);
+  vertical-align: -0.2em;
+  width: var(--size);
 }
 
 span[title] .icon {

@@ -2,14 +2,14 @@
 byceps.services.guest_server.guest_server_export_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from collections.abc import Iterator
 
 from byceps.services.guest_server.models import Address, Server, Setting
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.export import serialize_tuples_to_csv
 
 

@@ -2,7 +2,7 @@
 byceps.services.shop.catalog.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from byceps.database import db
 from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.shop.models import ShopID
-from byceps.util.instances import ReprBuilder
 
 from .models import CatalogProductID, CatalogID, CollectionID
 
@@ -35,9 +34,6 @@ class DbCatalog(db.Model):
         self.shop_id = shop_id
         self.title = title
 
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('id').build()
-
 
 class DbCollection(db.Model):
     """A group of products inside of catalog."""
@@ -53,7 +49,6 @@ class DbCollection(db.Model):
     position: Mapped[int] = mapped_column(db.Integer)
 
     catalog: Mapped[DbCatalog] = relationship(
-        DbCatalog,
         backref=db.backref(
             'collections',
             order_by=position,
@@ -67,14 +62,6 @@ class DbCollection(db.Model):
         self.id = collection_id
         self.catalog_id = catalog_id
         self.title = title
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('catalog_id')
-            .add_with_lookup('title')
-            .build()
-        )
 
 
 class DbCatalogProduct(db.Model):
@@ -96,7 +83,6 @@ class DbCatalogProduct(db.Model):
     position: Mapped[int] = mapped_column(db.Integer)
 
     collection: Mapped[DbCollection] = relationship(
-        DbCollection,
         backref=db.backref(
             'catalog_products',
             order_by=position,

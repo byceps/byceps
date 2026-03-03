@@ -2,7 +2,7 @@
 byceps.services.orga.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -87,7 +87,7 @@ def grant_orga_status(brand_id):
         return grant_orga_status_form(brand.id, form)
 
     user = form.user.data
-    initiator = g.user
+    initiator = g.user.as_user()
 
     event = orga_service.grant_orga_status(user, brand, initiator)
 
@@ -116,7 +116,7 @@ def revoke_orga_status(brand_id, user_id):
 
     user = orga_flag.user
     brand = orga_flag.brand
-    initiator = g.user
+    initiator = g.user.as_user()
 
     event = orga_service.revoke_orga_status(user, brand, initiator)
 
@@ -187,7 +187,7 @@ def export_persons(brand_id):
     orgas = orga_service.get_orgas_for_brand(brand.id)
     orgas = [orga for orga in orgas if not orga.deleted]
     orgas.sort(key=user_service.get_sort_key_for_screen_name)
-    rows = map(to_dict, orgas)
+    rows = [to_dict(orga) for orga in orgas]
     return serialize_dicts_to_csv(field_names, rows, delimiter=';')
 
 

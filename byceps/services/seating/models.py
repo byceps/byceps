@@ -2,7 +2,7 @@
 byceps.services.seating.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,8 +11,6 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from pydantic import BaseModel
-
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.models.ticket import (
     TicketBundleID,
@@ -20,7 +18,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketCode,
     TicketID,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 SeatingAreaID = NewType('SeatingAreaID', UUID)
@@ -50,6 +48,7 @@ class Seat:
     category_id: TicketCategoryID
     label: str | None
     type_: str | None
+    blocked: bool
     occupied_by_ticket_id: TicketID | None
 
 
@@ -62,6 +61,7 @@ class AreaSeat:
     rotation: int | None
     label: str | None
     type_: str | None
+    blocked: bool
     occupied_by_ticket_id: TicketID | None
     occupied_by_user: User | None
 
@@ -96,17 +96,6 @@ class SeatUtilization:
     total: int
 
 
-class SerializableSeatToImport(BaseModel):
-    area_title: str
-    coord_x: int
-    coord_y: int
-    category_title: str
-    rotation: int | None = None
-    label: str | None = None
-    type_: str | None = None
-    group_title: str | None = None
-
-
 @dataclass(frozen=True, kw_only=True)
 class SeatToImport:
     area_id: SeatingAreaID
@@ -116,6 +105,7 @@ class SeatToImport:
     rotation: int | None = None
     label: str | None = None
     type_: str | None = None
+    blocked: bool
     group_title: str | None = None
 
 

@@ -2,17 +2,22 @@
 byceps.services.board.board_category_command_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.database import db
+from datetime import datetime
+
+from sqlalchemy import delete
+
+from byceps.database import db, upsert
+from byceps.services.user.models import UserID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid4
 
 from . import board_topic_query_service
 from .dbmodels.board import DbBoard
-from .dbmodels.category import DbBoardCategory
+from .dbmodels.category import DbBoardCategory, DbLastCategoryView
 from .errors import (
     BoardCategoryAlreadyAtBottomError,
     BoardCategoryAlreadyAtTopError,
@@ -21,7 +26,7 @@ from .models import BoardCategory, BoardCategoryID, BoardID
 
 
 def create_category(
-    board_id: BoardID, slug: str, title: str, description: str
+    board_id: BoardID, slug: str, title: str, description: str | None
 ) -> BoardCategory:
     """Create a category in that board."""
     db_board = db.session.get(DbBoard, board_id)
@@ -41,14 +46,14 @@ def create_category(
 
 
 def update_category(
-    category_id: BoardCategoryID, slug: str, title: str, description: str
+    category_id: BoardCategoryID, slug: str, title: str, description: str | None
 ) -> BoardCategory:
     """Update the category."""
     db_category = _get_db_category(category_id)
 
-    db_category.slug = slug.strip().lower()
-    db_category.title = title.strip()
-    db_category.description = description.strip()
+    db_category.slug = slug
+    db_category.title = title
+    db_category.description = description
 
     db.session.commit()
 
@@ -149,3 +154,32 @@ def _db_entity_to_category(db_category: DbBoardCategory) -> BoardCategory:
         posting_count=db_category.posting_count,
         hidden=db_category.hidden,
     )
+
+
+# last view
+
+
+def mark_category_as_just_viewed(
+    category_id: BoardCategoryID, user_id: UserID
+) -> None:
+    """Mark the category as last viewed by the user (if logged in) at
+    the current time.
+    """
+    table = DbLastCategoryView.__table__
+    identifier = {
+        'user_id': user_id,
+        'category_id': category_id,
+    }
+    replacement = {
+        'occurred_at': datetime.utcnow(),
+    }
+
+    upsert(table, identifier, replacement)
+
+
+def delete_last_category_views(category_id: BoardCategoryID) -> None:
+    """Delete the category's last views."""
+    db.session.execute(
+        delete(DbLastCategoryView).filter_by(category_id=category_id)
+    )
+    db.session.commit()

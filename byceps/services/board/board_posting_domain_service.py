@@ -2,13 +2,13 @@
 byceps.services.board.board_posting_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -17,14 +17,14 @@ from .errors import (
     ReactionDoesNotExistError,
     ReactionExistsError,
 )
-from .models import PostingID, PostingReaction
+from .models import PostingID, PostingReaction, ReactionKind
 
 
 def add_reaction(
     posting_id: PostingID,
     posting_creator_id: UserID,
     user: User,
-    kind: str,
+    kind: ReactionKind,
     reaction_exists: bool,
 ) -> Result[PostingReaction, ReactionDeniedError | ReactionExistsError]:
     """Add user reaction to the posting."""
@@ -52,7 +52,7 @@ def remove_reaction(
     posting_id: PostingID,
     posting_creator_id: UserID,
     user: User,
-    kind: str,
+    kind: ReactionKind,
     reaction_exists: bool,
 ) -> Result[None, ReactionDeniedError | ReactionDoesNotExistError]:
     """Remove user reaction from the posting."""

@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,7 +11,7 @@ from byceps.services.newsletter import (
     newsletter_command_service,
     newsletter_service,
 )
-from byceps.services.newsletter.models import SubscriptionState
+from byceps.services.newsletter.models import ListID, SubscriptionState
 
 from tests.helpers import generate_token
 
@@ -37,7 +37,7 @@ def test_count_subscribers_to_list(newsletter_list, subscribers):
 
 @pytest.fixture(scope='module')
 def newsletter_list(admin_app):
-    list_id = generate_token()
+    list_id = ListID(generate_token())
     return newsletter_command_service.create_list(list_id, list_id)
 
 

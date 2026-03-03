@@ -6,7 +6,7 @@
   {%- if g.user.authenticated %}
   <div class="dropdown">
     <a href="{{ url_for('user_settings.view') }}" class="dropdown-toggle">
-      {{ render_user_avatar(g.user, size=32) }}
+      {{ render_user_avatar(g.user.as_user(), size=32) }}
       {{ render_icon('chevron-down') }}
     </a>
     <ol class="dropdown-menu dropdown-menu--right">

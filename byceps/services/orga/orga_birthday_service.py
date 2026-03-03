@@ -2,7 +2,7 @@
 byceps.services.orga.orga_birthday_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,9 +13,8 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.detail import DbUserDetail
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User
+from byceps.services.user.dbmodels import DbUser, DbUserDetail
+from byceps.services.user.models import User
 
 from .dbmodels import DbOrgaFlag
 from .models import Birthday

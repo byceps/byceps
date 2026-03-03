@@ -2,14 +2,14 @@
 byceps.services.shop.payment.paypal.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2020-2025 Jan Korneffel, Jochen Kupperschmidt
+:Copyright: 2020-2026 Jan Korneffel, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from dataclasses import dataclass
 from uuid import UUID
 
-from flask import abort, current_app, g, jsonify, request
+from flask import abort, g, jsonify, request
 from paypalcheckoutsdk.core import (
     LiveEnvironment,
     PayPalHttpClient,
@@ -21,6 +21,7 @@ from paypalhttp.http_response import Result as HttpResult
 from pydantic import BaseModel, ValidationError
 import structlog
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.config.errors import ConfigurationError
 from byceps.services.shop.order import (
     order_command_service,
@@ -28,7 +29,7 @@ from byceps.services.shop.order import (
     signals as shop_order_signals,
 )
 from byceps.services.shop.order.email import order_email_service
-from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.order.models.order import Order, OrderID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.result import Err, Ok, Result
 from byceps.util.views import create_empty_json_response
@@ -59,7 +60,9 @@ def capture_transaction():
 
     req = _parse_request()
 
-    order = order_service.find_order(req.shop_order_id)
+    order_id = OrderID(req.shop_order_id)
+
+    order = order_service.find_order(order_id)
     if not order or not order.is_open:
         return create_empty_json_response(400)
 
@@ -100,7 +103,12 @@ def _parse_request() -> CapturePayPalRequest:
 
 
 def _get_paypal_order_details(paypal_order_id: str) -> HttpResult:
-    paypal_config = current_app.byceps_config.payment_gateways.paypal
+    payment_gateways_config = (
+        get_current_byceps_app().byceps_config.payment_gateways
+    )
+    paypal_config = (
+        payment_gateways_config.paypal if payment_gateways_config else None
+    )
 
     if not paypal_config:
         raise ConfigurationError('PayPal integration is not configured.')
@@ -176,6 +184,7 @@ def _check_transaction_against_order(
 def _mark_order_as_paid(
     order: Order, paypal_order_details: PayPalOrderDetails
 ) -> None:
+    initiator = g.user.as_user()
     additional_payment_data = {
         'paypal_order_id': paypal_order_details.id,
         'paypal_transaction_id': paypal_order_details.transaction_id,
@@ -184,7 +193,7 @@ def _mark_order_as_paid(
     paid_order, event = order_command_service.mark_order_as_paid(
         order.id,
         'paypal',
-        g.user,
+        initiator,
         additional_payment_data=additional_payment_data,
     ).unwrap()
 

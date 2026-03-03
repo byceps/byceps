@@ -4,12 +4,12 @@ byceps.database
 
 Database utilities.
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from collections.abc import Callable, Iterable
-from typing import Any, TypeVar
+from typing import Any
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy.pagination import Pagination
@@ -20,10 +20,7 @@ from sqlalchemy.sql.dml import Insert
 from sqlalchemy.sql.schema import Table
 
 
-F = TypeVar('F')
-T = TypeVar('T')
-
-Mapper = Callable[[F], T]
+type Mapper[F, T] = Callable[[F], T]
 
 
 class Base(DeclarativeBase):

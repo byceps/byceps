@@ -2,7 +2,7 @@
 byceps.services.whereabouts.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,13 +13,18 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from byceps.services.party import party_service
+from byceps.services.party.models import Party
 from byceps.services.whereabouts import (
     signals as whereabouts_signals,
     whereabouts_client_service,
     whereabouts_service,
     whereabouts_sound_service,
 )
-from byceps.services.whereabouts.models import WhereaboutsStatus
+from byceps.services.whereabouts.models import (
+    WhereaboutsClient,
+    WhereaboutsClientCandidate,
+    WhereaboutsStatus,
+)
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
@@ -138,18 +143,29 @@ def client_index():
     """List clients."""
     registration_open = whereabouts_client_service.is_registration_open()
 
-    clients = whereabouts_client_service.get_all_clients()
+    client_candidates = whereabouts_client_service.get_client_candidates()
 
-    pending_clients, handled_clients = partition(clients, lambda c: c.pending)
-    approved_clients, deleted_clients = partition(
-        handled_clients, lambda c: c.approved
-    )
+    clients = whereabouts_client_service.get_clients()
+
+    approved_clients, deleted_clients = partition(clients, lambda c: c.approved)
 
     return {
         'registration_open': registration_open,
-        'pending_clients': pending_clients,
+        'client_candidates': client_candidates,
         'approved_clients': approved_clients,
         'deleted_clients': deleted_clients,
+    }
+
+
+@blueprint.get('/clients/<uuid:client_id>')
+@permission_required('whereabouts.administrate')
+@templated
+def client_view(client_id):
+    """Show single client."""
+    client = _get_client_or_404(client_id)
+
+    return {
+        'client': client,
     }
 
 
@@ -169,30 +185,30 @@ def close_client_registration():
     whereabouts_client_service.close_registration()
 
 
-@blueprint.post('/clients/<uuid:client_id>/approve')
+@blueprint.post('/client_candidates/<uuid:candidate_id>/approve')
 @permission_required('whereabouts.administrate')
 @respond_no_content
-def client_approve(client_id):
-    """Approve a client."""
-    client = _get_client_or_404(client_id)
-    initiator = g.user
+def client_candidate_approve(candidate_id):
+    """Approve a client candidate."""
+    candidate = _get_client_candidate_or_404(candidate_id)
+    initiator = g.user.as_user()
 
-    _, event = whereabouts_client_service.approve_client(client, initiator)
+    _, event = whereabouts_client_service.approve_client(candidate, initiator)
 
-    flash_success(gettext('Client has been approved.'))
+    flash_success(gettext('Client candidate has been approved.'))
 
     whereabouts_signals.whereabouts_client_approved.send(None, event=event)
 
 
-@blueprint.delete('/client_candidates/<uuid:client_id>')
+@blueprint.delete('/client_candidates/<uuid:candidate_id>')
 @permission_required('whereabouts.administrate')
 @respond_no_content
-def client_candidate_delete(client_id):
+def client_candidate_delete(candidate_id):
     """Delete a client candidate."""
-    client = _get_client_or_404(client_id)
-    initiator = g.user
+    candidate = _get_client_candidate_or_404(candidate_id)
+    initiator = g.user.as_user()
 
-    whereabouts_client_service.delete_client_candidate(client, initiator)
+    whereabouts_client_service.delete_client_candidate(candidate, initiator)
 
     flash_success(gettext('Client candidate has been deleted.'))
 
@@ -222,10 +238,13 @@ def client_update(client_id):
     if not form.validate():
         return client_update_form(client.id, form)
 
+    name = form.name.data.strip() or None
     location = form.location.data.strip() or None
     description = form.description.data.strip() or None
 
-    whereabouts_client_service.update_client(client, location, description)
+    whereabouts_client_service.update_client(
+        client, name, location, description
+    )
 
     flash_success(gettext('The object has been updated.'))
 
@@ -238,7 +257,7 @@ def client_update(client_id):
 def client_delete(client_id):
     """Delete a client."""
     client = _get_client_or_404(client_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     _, event = whereabouts_client_service.delete_client(client, initiator)
 
@@ -297,7 +316,7 @@ def user_sound_create():
 # helpers
 
 
-def _get_party_or_404(party_id):
+def _get_party_or_404(party_id) -> Party:
     party = party_service.find_party(party_id)
 
     if party is None:
@@ -306,10 +325,21 @@ def _get_party_or_404(party_id):
     return party
 
 
-def _get_client_or_404(client_id):
+def _get_client_candidate_or_404(client_id) -> WhereaboutsClientCandidate:
+    client_candidate = whereabouts_client_service.find_client_candidate(
+        client_id
+    )
+
+    if client_candidate is None:
+        abort(404)
+
+    return client_candidate
+
+
+def _get_client_or_404(client_id) -> WhereaboutsClient:
     client = whereabouts_client_service.find_client(client_id)
 
-    if client is None:
+    if (client is None) or client.pending:
         abort(404)
 
     return client

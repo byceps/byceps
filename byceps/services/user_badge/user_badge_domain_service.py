@@ -2,16 +2,16 @@
 byceps.services.user_badge.user_badge_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 from uuid import UUID
 
-from byceps.services.core.events import EventUser
-from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -45,9 +45,7 @@ def award_badge(
 
     awarding = _build_awarding(awarding_id, badge, awardee, occurred_at)
     event = _build_awarding_event(occurred_at, badge, awardee, initiator)
-    log_entry = _build_awarding_log_entry(
-        occurred_at, badge, awardee, initiator
-    )
+    log_entry = _build_awarding_log_entry(event)
 
     return Ok((awarding, event, log_entry))
 
@@ -68,25 +66,20 @@ def _build_awarding_event(
 ) -> UserBadgeAwardedEvent:
     return UserBadgeAwardedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
+        initiator=initiator,
         badge_id=badge.id,
         badge_label=badge.label,
-        awardee=EventUser.from_user(awardee),
+        awardee=awardee,
     )
 
 
-def _build_awarding_log_entry(
-    occurred_at: datetime, badge: Badge, awardee: User, initiator: User | None
-) -> UserLogEntry:
-    data = {'badge_id': str(badge.id)}
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
+def _build_awarding_log_entry(event: UserBadgeAwardedEvent) -> UserLogEntry:
+    data = {'badge_id': str(event.badge_id)}
 
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-badge-awarded',
-        user_id=awardee.id,
-        initiator_id=initiator.id if initiator else None,
-        data=data,
+    return user_log_domain_service.build_entry(
+        'user-badge-awarded',
+        event.awardee,
+        data,
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )

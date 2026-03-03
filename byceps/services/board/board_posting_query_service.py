@@ -2,7 +2,7 @@
 byceps.services.board.board_posting_query_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,7 @@ from sqlalchemy import select
 
 from byceps.database import db, paginate, Pagination
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user.dbmodels import DbUser
 from byceps.util.iterables import index_of
 
 from .dbmodels.category import DbBoardCategory
@@ -35,12 +35,12 @@ def count_postings_for_board(board_id: BoardID) -> int:
 
 
 def find_db_posting(posting_id: PostingID) -> DbPosting | None:
-    """Return the posting with that id, or `None` if not found."""
+    """Return the posting with that ID, or `None` if not found."""
     return db.session.get(DbPosting, posting_id)
 
 
 def get_db_posting(posting_id: PostingID) -> DbPosting:
-    """Return the posting with that id."""
+    """Return the posting with that ID."""
     db_posting = find_db_posting(posting_id)
 
     if db_posting is None:

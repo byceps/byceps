@@ -2,7 +2,7 @@
 byceps.services.tourney.tourney_category_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,6 +12,7 @@ from byceps.database import db
 from byceps.services.party.dbmodels import DbParty
 from byceps.services.party.models import PartyID
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid4
 
 from .dbmodels.tourney_category import DbTourneyCategory
 from .errors import (
@@ -27,7 +28,9 @@ def create_category(party_id: PartyID, title: str) -> TourneyCategory:
     if db_party is None:
         raise ValueError(f'Unknown party ID "{party_id}"')
 
-    db_category = DbTourneyCategory(db_party.id, title)
+    category_id = TourneyCategoryID(generate_uuid4())
+
+    db_category = DbTourneyCategory(category_id, db_party.id, title)
     db_party.tourney_categories.append(db_category)
 
     db.session.commit()
@@ -94,7 +97,7 @@ def delete_category(category_id: TourneyCategoryID) -> None:
 
 
 def find_category(category_id: TourneyCategoryID) -> TourneyCategory | None:
-    """Return the category with that id, or `None` if not found."""
+    """Return the category with that ID, or `None` if not found."""
     db_category = _find_db_category(category_id)
 
     if db_category is None:
@@ -104,7 +107,7 @@ def find_category(category_id: TourneyCategoryID) -> TourneyCategory | None:
 
 
 def get_category(category_id: TourneyCategoryID) -> TourneyCategory:
-    """Return the category with that id, or raise an exception if not found."""
+    """Return the category with that ID, or raise an exception if not found."""
     category = find_category(category_id)
 
     if category is None:

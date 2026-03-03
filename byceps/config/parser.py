@@ -4,7 +4,7 @@ byceps.config.parser
 
 Configuration parser
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,16 +13,15 @@ from collections.abc import Callable
 from dataclasses import dataclass, field as dataclass_field
 from enum import Enum
 from pathlib import Path
-from typing import Any, TypeVar
+from typing import Any
 
 import rtoml
 
 from byceps.util.result import Err, Ok, Result
 
 from .models import (
-    AdminAppConfig,
-    ApiAppConfig,
-    AppsConfig,
+    AdminWebAppConfig,
+    ApiWebAppConfig,
     BycepsConfig,
     CloudflareTurnstileConfig,  # NEW
     DatabaseConfig,
@@ -34,19 +33,17 @@ from .models import (
     PaymentGatewaysConfig,
     PaypalConfig,
     RedisConfig,
-    SiteAppConfig,
+    SiteWebAppConfig,
     SmtpConfig,
     StripeConfig,
+    WebAppsConfig,
 )
 from .util import find_duplicate_server_names, iterate_app_configs
 
 
 Data = dict[str, Any]
 
-C = TypeVar('C')
-T = TypeVar('T')
-
-ParsingResult = Result[T, list[str]]
+type ParsingResult[T] = Result[T, list[str]]
 
 Value = bool | int | str
 
@@ -54,11 +51,11 @@ ValueType = Enum('ValueType', ['Boolean', 'Integer', 'String'])
 
 CollectionType = Enum('CollectionType', ['List'])
 
-Validator = Callable[[C], ParsingResult[None]]
+type Validator[C] = Callable[[C], ParsingResult[None]]
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
-class Section:
+class Section[C]:
     name: str
     fields: list[Field]
     config_class: type[C]
@@ -83,12 +80,14 @@ class Subsection:
     collection_type: CollectionType | None = None
 
 
-def _validate_apps_config(apps_config: AppsConfig) -> ParsingResult[None]:
-    app_configs = list(iterate_app_configs(apps_config))
+def _validate_apps_config(
+    web_apps_config: WebAppsConfig,
+) -> ParsingResult[None]:
+    app_configs = list(iterate_app_configs(web_apps_config))
     if not app_configs:
         return Err(['No applications configured'])
 
-    duplicate_server_names = find_duplicate_server_names(apps_config)
+    duplicate_server_names = find_duplicate_server_names(web_apps_config)
     if duplicate_server_names:
         server_names_str = ', '.join(sorted(duplicate_server_names))
         return Err([f'Non-unique server names configured: {server_names_str}'])
@@ -114,7 +113,7 @@ _SECTION_DEFINITIONS = [
                     fields=[
                         Field('server_name', required=True),
                     ],
-                    config_class=AdminAppConfig,
+                    config_class=AdminWebAppConfig,
                     required=False,
                     default=None,
                 ),
@@ -125,7 +124,7 @@ _SECTION_DEFINITIONS = [
                     fields=[
                         Field('server_name', required=True),
                     ],
-                    config_class=ApiAppConfig,
+                    config_class=ApiWebAppConfig,
                     required=False,
                     default=None,
                 ),
@@ -137,7 +136,7 @@ _SECTION_DEFINITIONS = [
                         Field('server_name', required=True),
                         Field('site_id', required=True),
                     ],
-                    config_class=SiteAppConfig,
+                    config_class=SiteWebAppConfig,
                     collection_type=CollectionType.List,
                     required=False,
                 ),
@@ -145,7 +144,7 @@ _SECTION_DEFINITIONS = [
             ),
         ],
         fields=[],
-        config_class=AppsConfig,
+        config_class=WebAppsConfig,
         required=True,
         validator=_validate_apps_config,
     ),
@@ -323,13 +322,17 @@ _SECTION_DEFINITIONS = [
 ]
 
 
-def parse_config(toml: str) -> ParsingResult[BycepsConfig]:
+def parse_config(
+    toml: str,
+) -> ParsingResult[tuple[BycepsConfig, WebAppsConfig]]:
     """Parse configuration in TOML format."""
     data = rtoml.loads(toml)
     return _parse_config_dict(data)
 
 
-def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
+def _parse_config_dict(
+    data: Data,
+) -> ParsingResult[tuple[BycepsConfig, WebAppsConfig]]:
     """Parse configuration from dictionary."""
     entries: Data = {}
     errors: list[str] = []
@@ -363,11 +366,16 @@ def _parse_config_dict(data: Data) -> ParsingResult[BycepsConfig]:
     entries['data_path'] = Path('./data')
     entries['testing'] = False
 
-    config = BycepsConfig(**entries)
-    return Ok(config)
+    web_apps_config = entries.pop('apps')
+
+    byceps_config = BycepsConfig(**entries)
+
+    return Ok((byceps_config, web_apps_config))
 
 
-def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
+def _parse_section[C, T](
+    data: Data, section: Section
+) -> ParsingResult[T | None]:
     def parse(section_data: Data) -> ParsingResult[C]:
         return _parse_section_fields(
             section_data,
@@ -384,7 +392,7 @@ def _parse_section(data: Data, section: Section) -> ParsingResult[T | None]:
         return _parse_optional_section(data, section, parse)
 
 
-def _parse_required_section(
+def _parse_required_section[T](
     data: Data,
     section: Section,
     parse: Callable[[Data], ParsingResult[T]],
@@ -398,7 +406,7 @@ def _parse_required_section(
     )
 
 
-def _parse_optional_section(
+def _parse_optional_section[T](
     data: Data,
     section: Section,
     parse: Callable[[Data], ParsingResult[T | None]],
@@ -416,7 +424,7 @@ def _parse_optional_section(
     return parse(section_data)
 
 
-def _parse_section_fields(
+def _parse_section_fields[C](
     section_data: Data,
     section_name: str,
     fields: list[Field],

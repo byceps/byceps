@@ -2,14 +2,14 @@
 byceps.services.user.avatar.blueprints.api.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from flask import redirect
 
 from byceps.services.user import user_service
-from byceps.services.user.models.user import USER_FALLBACK_AVATAR_URL_PATH
+from byceps.services.user.models import USER_FALLBACK_AVATAR_URL_PATH
 from byceps.util.framework.blueprint import create_blueprint
 
 

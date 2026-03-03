@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -27,4 +27,4 @@ def test_update_password_hash(admin_user, user):
     assert event.user.screen_name == user.screen_name
 
     assert log_entry.event_type == 'password-updated'
-    assert log_entry.data == {'initiator_id': str(admin_user.id)}
+    assert log_entry.data == {}

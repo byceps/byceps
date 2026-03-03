@@ -2,7 +2,7 @@
 byceps.services.orga_presence.orga_presence_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -18,8 +18,9 @@ from sqlalchemy import delete, select
 from byceps.database import db
 from byceps.services.party import party_service
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.datetime.range import create_adjacent_ranges, DateTimeRange
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels import DbPresence, DbTask, DbTimeSlot
 from .models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
@@ -29,11 +30,10 @@ def create_presence(
     party_id: PartyID, orga_id: UserID, starts_at: datetime, ends_at: datetime
 ) -> PresenceTimeSlot:
     """Create a presence for the orga during the party."""
+    time_slot_id = generate_uuid7()
     party = party_service.get_party(party_id)
 
-    presence = DbPresence(
-        party_id=party.id, starts_at=starts_at, ends_at=ends_at, orga_id=orga_id
-    )
+    presence = DbPresence(time_slot_id, party.id, starts_at, ends_at, orga_id)
     db.session.add(presence)
     db.session.commit()
 

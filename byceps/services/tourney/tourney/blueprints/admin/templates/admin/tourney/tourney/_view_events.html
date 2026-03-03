@@ -1,0 +1,28 @@
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/log.html' import render_log_entries, render_log_entry, render_log_user %}
+
+
+<h2>{{ _('Events') }} {{ render_extra_in_heading(events|length) }}</h2>
+{%- if events %}
+  {%- call render_log_entries() %}
+    {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
+      {%- if event.__class__.__name__ == 'TourneyCreatedEvent' %}
+        {%- call render_log_entry('add', event.occurred_at) %}
+          {{ _(
+            '%(initiator)s has <strong>created</strong> the tourney.',
+            initiator=render_log_user(event.initiator)
+          ) }}
+        {%- endcall %}
+      {%- else %}
+        {%- call render_log_entry('disabled', event.occurred_at) %}
+          {{ _(
+            '<strong>Unknown event</strong> "%(event_type)s" has occurred.',
+            event_type=event.__class__.__name__,
+          ) }}
+        {%- endcall %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endcall %}
+{%- else %}
+<div class="box no-data-message">{{ _('none') }}</div>
+{%- endif %}

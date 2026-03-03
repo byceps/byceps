@@ -2,16 +2,18 @@
 byceps.services.user.user_creation_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 
-from byceps.services.core.events import EventSite, EventUser
+from byceps.services.core.events import EventSite
 from byceps.services.site.models import Site
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid4, generate_uuid7
+from byceps.util.uuid import generate_uuid4
 
 from .errors import (
     AccountAlreadyInitializedError,
@@ -19,15 +21,13 @@ from .errors import (
     InvalidScreenNameError,
 )
 from .events import UserAccountCreatedEvent
-from .models.log import UserLogEntry
-from .models.user import User, UserID, USER_FALLBACK_AVATAR_URL_PATH
+from .models import User, UserID, USER_FALLBACK_AVATAR_URL_PATH
 
 
 def create_account(
     screen_name: str | None,
     email_address: str | None,
     *,
-    locale: str | None = None,
     creation_method: str | None = None,
     site: Site | None = None,
     ip_address: str | None = None,
@@ -70,7 +70,6 @@ def create_account(
         initialized=False,
         suspended=False,
         deleted=False,
-        locale=locale,
         avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
     )
 
@@ -91,8 +90,8 @@ def _build_account_created_event(
 ) -> UserAccountCreatedEvent:
     return UserAccountCreatedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         site=EventSite.from_site(site) if site else None,
     )
 
@@ -107,9 +106,6 @@ def _build_account_created_log_entry(
 ) -> UserLogEntry:
     data = {}
 
-    if initiator is not None:
-        data['initiator_id'] = str(initiator.id)
-
     if creation_method:
         data['creation_method'] = creation_method
 
@@ -119,13 +115,12 @@ def _build_account_created_log_entry(
     if ip_address:
         data['ip_address'] = ip_address
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-created',
+        user,
+        data,
         occurred_at=occurred_at,
-        event_type='user-created',
-        user_id=user.id,
-        initiator_id=initiator.id if initiator else None,
-        data=data,
+        initiator=initiator,
     )
 
 
@@ -150,18 +145,12 @@ def initialize_account(
 def _build_account_initialized_log_entry(
     occurred_at: datetime, initiator: User | None, user: User
 ) -> UserLogEntry:
-    data = {}
-
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
-
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-initialized',
+        user,
+        {},
         occurred_at=occurred_at,
-        event_type='user-initialized',
-        user_id=user.id,
-        initiator_id=initiator.id if initiator else None,
-        data=data,
+        initiator=initiator,
     )
 
 

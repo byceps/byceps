@@ -2,18 +2,18 @@
 byceps.services.page.events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventSite
+from byceps.services.core.events import BaseEvent, EventSite
 from byceps.services.page.models import PageID, PageVersionID
 
 
 @dataclass(frozen=True, kw_only=True)
-class _PageEvent(_BaseEvent):
+class _PageEvent(BaseEvent):
     page_id: PageID
     site: EventSite
     page_name: str

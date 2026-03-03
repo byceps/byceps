@@ -2,25 +2,27 @@
 byceps.services.user.user_avatar_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
 from typing import BinaryIO
 
-from flask import current_app
-
+from byceps.byceps_app import get_current_byceps_app
 from byceps.database import db
+from byceps.services.user.log import user_log_service
 from byceps.util import upload
 from byceps.util.image.dimensions import determine_dimensions, Dimensions
 from byceps.util.image.image_type import determine_image_type, ImageType
 from byceps.util.image.thumbnail import create_thumbnail
 from byceps.util.result import Err, Ok, Result
+from byceps.util.uuid import generate_uuid7
 
-from . import user_avatar_domain_service, user_log_service, user_service
-from .dbmodels.avatar import DbUserAvatar
+from . import user_avatar_domain_service, user_service
+from .dbmodels import DbUserAvatar
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
-from .models.user import User, UserAvatar
+from .models import User, UserAvatar, UserAvatarID
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -37,6 +39,9 @@ def update_avatar_image(
     """Set a new avatar image for the user."""
     db_user = user_service.get_db_user(user.id)
 
+    avatar_id = UserAvatarID(generate_uuid7())
+    created_at = datetime.utcnow()
+
     image_type_result = determine_image_type(stream, allowed_types)
     if image_type_result.is_err():
         return Err(image_type_result.unwrap_err())
@@ -50,7 +55,7 @@ def update_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    db_avatar = DbUserAvatar(image_type)
+    db_avatar = DbUserAvatar(avatar_id, created_at, image_type)
     db.session.add(db_avatar)
     db.session.commit()
 
@@ -105,7 +110,10 @@ def remove_avatar_image(
 
 def _db_entity_to_item(db_avatar: DbUserAvatar) -> UserAvatar:
     images_path = (
-        current_app.byceps_config.data_path / 'global' / 'users' / 'avatars'
+        get_current_byceps_app().byceps_config.data_path
+        / 'global'
+        / 'users'
+        / 'avatars'
     )
     path = images_path / db_avatar.filename
 

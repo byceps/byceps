@@ -12,7 +12,7 @@
     <div>
       <h1 class="title">{{ page_title }} {{ render_extra_in_heading(galleries|length) }}</h1>
     </div>
-  {%- if has_current_user_permission('gallery.administrate') %}
+  {%- if g.user.has_permission('gallery.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.gallery_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
@@ -38,7 +38,7 @@
         <td><a href="{{ url_for('.gallery_view', gallery_id=gallery.id) }}">{{ gallery.title }}</a></td>
         <td>{% if gallery.hidden %}{{ render_tag(_('hidden')) }}{% endif %}</td>
         <td>
-          {%- if has_current_user_permission('gallery.administrate') -%}
+          {%- if g.user.has_permission('gallery.administrate') -%}
           <div class="button-row is-compact is-right-aligned">
             <div class="dropdown">
               <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>

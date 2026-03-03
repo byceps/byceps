@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -9,7 +9,7 @@ import pytest
 
 from byceps.services.guest_server.models import Server, ServerID
 from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_uuid
 

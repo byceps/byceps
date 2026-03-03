@@ -1,5 +1,5 @@
 """
-:Copyright: 2020-2025 Micha Ober, Jochen Kupperschmidt
+:Copyright: 2020-2026 Micha Ober, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,6 @@ from freezegun import freeze_time
 import pytest
 
 from byceps.config.models import PaymentGatewaysConfig, StripeConfig
-from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
@@ -21,9 +20,9 @@ from byceps.services.shop.order.models.order import Order, Orderer, OrderID
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
-from tests.helpers import create_site, http_client, log_in_user
+from tests.helpers import create_site, generate_uuid, http_client, log_in_user
 from tests.helpers.shop import (
     create_orderer,
     create_shop_snippet,
@@ -150,10 +149,10 @@ def test_stripe_webhook_payment_intent_succeeded(
 
     event = ShopOrderPaidEvent(
         occurred_at=paid_at,
-        initiator=EventUser.from_user(orderer_user),
+        initiator=orderer_user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
         payment_method='stripe',
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)
@@ -164,8 +163,9 @@ def test_stripe_webhook_unknown_event(
     stripe_webhook_construct_mock,
     site_app,
 ):
+    order_id = OrderID(generate_uuid())
     stripe_webhook_construct_mock.return_value = create_event(
-        'invalid.event', ''
+        'invalid.event', order_id
     )
 
     response = call_webhook(site_app)

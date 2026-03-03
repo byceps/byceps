@@ -2,7 +2,7 @@
 byceps.services.authn.identity_tag.authn_identity_tag_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,9 +12,9 @@ from byceps.services.authn.events import (
     UserIdentityTagCreatedEvent,
     UserIdentityTagDeletedEvent,
 )
-from byceps.services.core.events import EventUser
-from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
+from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
 from .models import UserIdentityTag
@@ -30,8 +30,9 @@ def create_tag(
 ) -> tuple[UserIdentityTag, UserIdentityTagCreatedEvent, UserLogEntry]:
     """Create a tag."""
     tag = _build_tag(creator, identifier, user, note, suspended)
+
     event = _build_tag_created_event(tag)
-    log_entry = _build_tag_created_log_entry(tag)
+    log_entry = _build_tag_created_log_entry(event)
 
     return tag, event, log_entry
 
@@ -59,20 +60,22 @@ def _build_tag_created_event(
 ) -> UserIdentityTagCreatedEvent:
     return UserIdentityTagCreatedEvent(
         occurred_at=tag.created_at,
-        initiator=EventUser.from_user(tag.creator),
+        initiator=tag.creator,
+        user=tag.user,
+        tag_id=tag.id,
         identifier=tag.identifier,
-        user=EventUser.from_user(tag.user),
     )
 
 
-def _build_tag_created_log_entry(tag: UserIdentityTag) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=tag.created_at,
-        event_type='user-identity-tag-created',
-        user_id=tag.user.id,
-        initiator_id=tag.creator.id,
-        data={'tag_id': str(tag.id)},
+def _build_tag_created_log_entry(
+    event: UserIdentityTagCreatedEvent,
+) -> UserLogEntry:
+    return user_log_domain_service.build_entry(
+        'user-identity-tag-created',
+        event.user,
+        {'tag_id': str(event.tag_id)},
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )
 
 
@@ -83,7 +86,7 @@ def delete_tag(
     occurred_at = datetime.utcnow()
 
     event = _build_tag_deleted_event(tag, occurred_at, initiator)
-    log_entry = _build_tag_deleted_log_entry(tag, occurred_at, initiator)
+    log_entry = _build_tag_deleted_log_entry(event)
 
     return event, log_entry
 
@@ -93,20 +96,20 @@ def _build_tag_deleted_event(
 ) -> UserIdentityTagDeletedEvent:
     return UserIdentityTagDeletedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
+        user=tag.user,
+        tag_id=tag.id,
         identifier=tag.identifier,
-        user=EventUser.from_user(tag.user),
     )
 
 
 def _build_tag_deleted_log_entry(
-    tag: UserIdentityTag, occurred_at: datetime, initiator: User
+    event: UserIdentityTagDeletedEvent,
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-identity-tag-deleted',
-        user_id=tag.user.id,
-        initiator_id=initiator.id,
-        data={'tag_id': str(tag.id)},
+    return user_log_domain_service.build_entry(
+        'user-identity-tag-deleted',
+        event.user,
+        {'tag_id': str(event.tag_id)},
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )

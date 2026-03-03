@@ -2,9 +2,11 @@
 byceps.services.whereabouts.blueprints.api.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
+
+from uuid import UUID
 
 from pydantic import BaseModel
 
@@ -15,6 +17,6 @@ class RegisterClientRequestModel(BaseModel):
 
 
 class SetStatusRequestModel(BaseModel):
-    user_id: str
+    user_id: UUID
     party_id: str
     whereabouts_name: str

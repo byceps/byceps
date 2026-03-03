@@ -4,16 +4,17 @@ byceps.services.external_accounts.discord.blueprints.site.views
 
 Connector to Discord
 
-:Copyright: 2021-2025 Jan Korneffel
+:Copyright: 2021-2026 Jan Korneffel
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 from urllib import parse
 
-from flask import current_app, g, redirect, request, url_for
+from flask import g, redirect, request, url_for
 import httpx
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.config.models import DiscordConfig
 from byceps.services.external_accounts import (
     external_accounts_service,
@@ -150,7 +151,7 @@ def remove():
 
 
 def _get_enabled_discord_configuration() -> DiscordConfig | None:
-    config = current_app.byceps_config.discord
+    config = get_current_byceps_app().byceps_config.discord
 
     if not config or not config.enabled:
         return None

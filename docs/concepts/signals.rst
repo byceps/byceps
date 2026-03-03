@@ -1,8 +1,8 @@
 Signals
 =======
 
-BYCEPS makes use of signals (based on the Blinker_ package) to provide
-hooks for specific events.
+BYCEPS makes use of signals (based on the Blinker_ package) to provide hooks
+for specific events.
 
 For example, a signal is emitted every time
 
@@ -10,27 +10,27 @@ For example, a signal is emitted every time
 * a topic in the board is created
 * an order is placed in the shop
 
-Besides representing the information *that* something happened, signals
-can (and usually do) contain relevant objects as well.
+Besides representing the information *that* something happened, signals can
+(and usually do) contain relevant objects as well.
 
-To receive signals, handlers can be registered for those they are
-interested in.
+To receive signals, handlers can be registered for those they are interested
+in.
 
-Some specific knowledge is necessary to attach code to a specific
-signal and access its payload, though.
+Some specific knowledge is necessary to attach code to a specific signal and
+access its payload, though.
 
 * to import it: the module and name of the signal
 
-* to handle it: the types of the objects it contains, and the keyword
-  argument names they can be accessed with
+* to handle it: the types of the objects it contains, and the keyword argument
+  names they can be accessed with
 
 
 Example
 -------
 
-As a simple example for learning purposes, here is the code to print a
-message to STDOUT (visible when manually starting the application from
-the command line, e.g. for development and debugging).
+As a simple example for learning purposes, here is the code to print a message
+to STDOUT (visible when manually starting the application from the command
+line, e.g. for development and debugging).
 
 .. code-block:: python
 

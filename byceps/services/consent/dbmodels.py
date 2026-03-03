@@ -2,7 +2,7 @@
 byceps.services.consent.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,10 +12,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
-from byceps.util.uuid import generate_uuid4
+from byceps.services.user.dbmodels import DbUser
+from byceps.services.user.models import UserID
 
 from .models import ConsentSubjectID
 
@@ -25,9 +23,7 @@ class DbConsentSubject(db.Model):
 
     __tablename__ = 'consent_subjects'
 
-    id: Mapped[ConsentSubjectID] = mapped_column(
-        db.Uuid, default=generate_uuid4, primary_key=True
-    )
+    id: Mapped[ConsentSubjectID] = mapped_column(db.Uuid, primary_key=True)
     name: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     checkbox_label: Mapped[str] = mapped_column(db.UnicodeText)
@@ -35,24 +31,17 @@ class DbConsentSubject(db.Model):
 
     def __init__(
         self,
+        subject_id: ConsentSubjectID,
         name: str,
         title: str,
         checkbox_label: str,
         checkbox_link_target: str | None,
     ) -> None:
+        self.id = subject_id
         self.name = name
         self.title = title
         self.checkbox_label = checkbox_label
         self.checkbox_link_target = checkbox_link_target
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('name')
-            .add_with_lookup('title')
-            .build()
-        )
 
 
 class DbConsentBrandRequirement(db.Model):
@@ -80,11 +69,11 @@ class DbConsent(db.Model):
     user_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), primary_key=True
     )
-    user: Mapped[DbUser] = relationship(DbUser)
+    user: Mapped[DbUser] = relationship()
     subject_id: Mapped[ConsentSubjectID] = mapped_column(
         db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True
     )
-    subject: Mapped[DbConsentSubject] = relationship(DbConsentSubject)
+    subject: Mapped[DbConsentSubject] = relationship()
     expressed_at: Mapped[datetime]
 
     def __init__(

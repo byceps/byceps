@@ -2,7 +2,7 @@
 byceps.services.user.user_import_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -16,7 +16,7 @@ from pydantic import BaseModel, ValidationError
 from secret_type import secret
 
 from . import user_creation_service
-from .models.user import User
+from .models import User
 
 
 class UserToImport(BaseModel):

@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -8,16 +8,17 @@ from unittest.mock import patch
 import pytest
 
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventParty, EventUser
+from byceps.services.core.events import EventParty
 from byceps.services.party.models import Party
-from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.ticketing.events import TicketsSoldEvent
 from byceps.services.ticketing.models.ticket import TicketCategory
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers.shop import create_ticket_bundle_product, place_order
 
@@ -103,9 +104,9 @@ def test_create_ticket_bundles(
 
     tickets_sold_event = TicketsSoldEvent(
         occurred_at=shop_order_paid_event.occurred_at,
-        initiator=EventUser.from_user(admin_user),
+        initiator=admin_user,
         party=EventParty.from_party(party),
-        owner=EventUser.from_user(orderer.user),
+        owner=orderer.user,
         quantity=expected_ticket_total,
     )
     tickets_sold_signal_send_mock.assert_called_once_with(

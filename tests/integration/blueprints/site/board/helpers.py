@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -19,7 +19,7 @@ from byceps.services.board.models import (
     Topic,
     TopicID,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token
 
@@ -77,7 +77,7 @@ def create_posting(
     if body is None:
         body = f'Inhalt von Beitrag {number}.'
 
-    posting, event = board_posting_command_service.create_posting(
+    posting, _ = board_posting_command_service.create_posting(
         topic_id, creator, body
     )
 

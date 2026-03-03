@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -14,7 +14,7 @@ from byceps.services.shop.invoice.errors import (
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import order_command_service, order_service
 from byceps.services.shop.order.models.detailed_order import AdminDetailedOrder
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok
 
 from tests.helpers import generate_token

@@ -2,7 +2,7 @@
 byceps.services.authn.login.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,6 +15,7 @@ from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import redirect_to
 
 from . import service
@@ -22,10 +23,6 @@ from .forms import LogInForm
 
 
 blueprint = create_blueprint('authn_login_admin', __name__)
-
-
-class AuthorizationFailed:
-    pass
 
 
 @blueprint.get('/log_in')
@@ -65,16 +62,16 @@ def log_in():
     password = secret(form.password.data)
     permanent = form.permanent.data
 
-    log_in_result = service.log_in_user(
-        username, password, permanent, ip_address=request.remote_addr
-    )
-    if log_in_result.is_err():
-        form.form_errors.append(gettext('Login failed.'))
-        return log_in_form(form)
+    match service.log_in_user(
+        username, password, permanent, request.remote_addr
+    ):
+        case Ok((_, logged_in_event)):
+            pass
+        case Err(_):
+            form.form_errors.append(gettext('Login failed.'))
+            return log_in_form(form)
 
-    _, logged_in_event = log_in_result.unwrap()
-
-    authn_signals.user_logged_in.send(None, event=logged_in_event)
+    authn_signals.user_logged_in_to_admin.send(None, event=logged_in_event)
 
     return redirect_to('core_admin.homepage')
 
@@ -90,6 +87,6 @@ def log_out_form():
 @blueprint.post('/log_out')
 def log_out():
     """Log out user by deleting the corresponding cookie."""
-    service.log_out_user(g.user)
+    service.log_out_user(g.user.as_user())
 
     return redirect_to('.log_in_form')

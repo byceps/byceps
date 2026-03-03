@@ -2,7 +2,7 @@
 byceps.services.orga_team.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,7 +11,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.party.models import Party, PartyID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 
 OrgaTeamID = NewType('OrgaTeamID', UUID)

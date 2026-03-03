@@ -2,7 +2,7 @@
 byceps.services.user_group.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -14,9 +14,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
+from byceps.services.user.dbmodels import DbUser
+from byceps.services.user.models import UserID
 
 
 class DbUserGroup(db.Model):
@@ -33,7 +32,7 @@ class DbUserGroup(db.Model):
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), unique=True
     )
-    creator: Mapped[DbUser] = relationship(DbUser)
+    creator: Mapped[DbUser] = relationship()
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     description: Mapped[str | None] = mapped_column(db.UnicodeText)
 
@@ -55,14 +54,6 @@ class DbUserGroup(db.Model):
         self.title = title
         self.description = description
 
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('party_id')
-            .add_with_lookup('title')
-            .build()
-        )
-
 
 class DbUserGroupMembership(db.Model):
     """The assignment of a user to a user group.
@@ -73,33 +64,24 @@ class DbUserGroupMembership(db.Model):
     __tablename__ = 'user_group_memberships'
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    created_at: Mapped[datetime]
     group_id: Mapped[UUID] = mapped_column(
         db.Uuid, db.ForeignKey('user_groups.id')
     )
     group: Mapped[DbUserGroup] = relationship(
-        DbUserGroup, collection_class=set, backref='memberships'
+        collection_class=set, backref='memberships'
     )
     user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
-    user: Mapped[DbUser] = relationship(DbUser, backref='group_membership')
-    created_at: Mapped[datetime]
+    user: Mapped[DbUser] = relationship(backref='group_membership')
 
     def __init__(
         self,
         membership_id: UUID,
+        created_at: datetime,
         group_id: UUID,
         user_id: UserID,
-        created_at: datetime,
     ) -> None:
         self.id = membership_id
+        self.created_at = created_at
         self.group_id = group_id
         self.user_id = user_id
-        self.created_at = created_at
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('group')
-            .add_with_lookup('user')
-            .build()
-        )

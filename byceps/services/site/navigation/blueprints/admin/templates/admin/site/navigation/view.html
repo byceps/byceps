@@ -14,7 +14,7 @@
         {%- endif -%}
       </h1>
     </div>
-    {%- if has_current_user_permission('site_navigation.administrate') %}
+    {%- if g.user.has_permission('site_navigation.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.menu_update_form', menu_id=menu.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
@@ -34,7 +34,7 @@
     <div>
       <h2>{{ _('Items') }}</h2>
     </div>
-    {%- if has_current_user_permission('site_navigation.administrate') %}
+    {%- if g.user.has_permission('site_navigation.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <div class="dropdown">
@@ -89,15 +89,24 @@
           {%- endif -%}
         </td>
         <td>
-          {%- if has_current_user_permission('site_navigation.administrate') -%}
-          <div class="dropdown">
-            <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
-            <ol class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('.item_move_up', item_id=item.id) }}" data-action="item-move-up">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('.item_move_down', item_id=item.id) }}" data-action="item-move-down">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('.item_delete', item_id=item.id) }}" data-action="item-delete">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
-            </ol>
+          {%- if g.user.has_permission('site_navigation.administrate') -%}
+          <div class="button-row is-right-aligned">
+            <div class="dropdown">
+              <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
+              <ol class="dropdown-menu dropdown-menu--right">
+                <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
+                {%- if item.hidden %}
+                <li><a class="dropdown-item" href="{{ url_for('.item_unhide', item_id=item.id) }}" data-action="item-unhide">{{ render_icon('view') }} {{ _('Make visible') }}</a></li>
+                {%- else %}
+                <li><a class="dropdown-item" href="{{ url_for('.item_hide', item_id=item.id) }}" data-action="item-hide">{{ render_icon('hidden') }} {{ _('Hide') }}</a></li>
+                {%- endif %}
+                <li class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ url_for('.item_move_up', item_id=item.id) }}" data-action="item-move-up">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('.item_move_down', item_id=item.id) }}" data-action="item-move-down">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+                <li class="dropdown-divider"></li>
+                <li><a class="dropdown-item color--danger" href="{{ url_for('.item_delete', item_id=item.id) }}" data-action="item-delete">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+              </ol>
+            </div>
           </div>
           {%- endif -%}
         </td>
@@ -106,17 +115,19 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="box no-data-message">{{ _('No menus exist.') }}</div>
+  <div class="box no-data-message">{{ _('No menu items exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}
 
 {% block scripts %}
-    <script>
-      onDomReady(() => {
-        post_on_click_then_reload('[data-action="item-move-up"]');
-        post_on_click_then_reload('[data-action="item-move-down"]');
-        confirmed_delete_on_click_then_reload('[data-action="item-delete"]', '{{ _('Delete menu item?') }}');
-      });
-    </script>
+<script>
+onDomReady(() => {
+  post_on_click_then_reload('[data-action="item-hide"]');
+  post_on_click_then_reload('[data-action="item-unhide"]');
+  post_on_click_then_reload('[data-action="item-move-up"]');
+  post_on_click_then_reload('[data-action="item-move-down"]');
+  confirmed_delete_on_click_then_reload('[data-action="item-delete"]', '{{ _('Delete menu item?') }}');
+});
+</script>
 {%- endblock %}

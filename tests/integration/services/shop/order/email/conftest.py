@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -7,7 +7,7 @@ import pytest
 
 from byceps.services.shop.order import order_payment_service
 from byceps.services.shop.shop.models import Shop
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 pytest.register_assert_rewrite(f'{__package__}.helpers')

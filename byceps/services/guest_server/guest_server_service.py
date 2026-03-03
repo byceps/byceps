@@ -2,7 +2,7 @@
 byceps.services.guest_server.guest_server_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,7 +15,7 @@ from byceps.services.orga_team import orga_team_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing import ticket_service
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import guest_server_domain_service
@@ -210,13 +210,11 @@ def approve_server(
     pending_server: Server, initiator: User
 ) -> Result[tuple[Server, GuestServerApprovedEvent], AlreadyApprovedError]:
     """Approve a guest server."""
-    result = guest_server_domain_service.approve_server(
-        pending_server, initiator
-    )
-    if result.is_err():
-        return result
-
-    approved_server, event = result.unwrap()
+    match guest_server_domain_service.approve_server(pending_server, initiator):
+        case Ok((approved_server, event)):
+            pass
+        case Err(e):
+            return Err(e)
 
     db_server = _get_db_server(approved_server.id)
     db_server.approved = True
@@ -232,13 +230,13 @@ def check_in_server(
     AlreadyCheckedInError | AlreadyCheckedOutError | NotApprovedError,
 ]:
     """Check in a guest server."""
-    result = guest_server_domain_service.check_in_server(
+    match guest_server_domain_service.check_in_server(
         approved_server, initiator
-    )
-    if result.is_err():
-        return result
-
-    checked_in_server, event = result.unwrap()
+    ):
+        case Ok((checked_in_server, event)):
+            pass
+        case Err(e):
+            return Err(e)
 
     db_server = _get_db_server(checked_in_server.id)
     db_server.checked_in_at = checked_in_server.checked_in_at
@@ -254,13 +252,13 @@ def check_out_server(
     AlreadyCheckedOutError | NotCheckedInError,
 ]:
     """Check out a guest server."""
-    result = guest_server_domain_service.check_out_server(
+    match guest_server_domain_service.check_out_server(
         checked_in_server, initiator
-    )
-    if result.is_err():
-        return result
-
-    checked_out_server, event = result.unwrap()
+    ):
+        case Ok((checked_out_server, event)):
+            pass
+        case Err(e):
+            return Err(e)
 
     db_server = _get_db_server(checked_out_server.id)
     db_server.checked_out_at = checked_out_server.checked_out_at

@@ -2,13 +2,14 @@
 byceps.services.shop.order.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt, Jan Korneffel, Micha Ober
+:Copyright: 2014-2026 Jochen Kupperschmidt, Jan Korneffel, Micha Ober
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, current_app, g, request, Response
+from flask import abort, g, request, Response
 from flask_babel import gettext
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.services.brand import brand_service
 from byceps.services.shop.invoice import order_invoice_service
 from byceps.services.shop.invoice.errors import (
@@ -21,7 +22,6 @@ from byceps.services.shop.invoice.errors import (
 from byceps.services.shop.invoice.models import DownloadableInvoice
 from byceps.services.shop.order import (
     order_command_service,
-    order_log_service,
     order_sequence_service,
     order_service,
     signals as shop_order_signals,
@@ -32,13 +32,17 @@ from byceps.services.shop.order.errors import (
     OrderAlreadyMarkedAsPaidError,
 )
 from byceps.services.shop.order.export import order_export_service
+from byceps.services.shop.order.log import (
+    order_log_domain_service,
+    order_log_service,
+)
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop import shop_service
 from byceps.services.ticketing import ticket_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.result import Err
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -178,7 +182,7 @@ def download_invoice(order_id):
     draft_arg = request.args.get('mode', default='')
     is_draft = draft_arg == 'draft'
 
-    config = current_app.byceps_config.invoiceninja
+    config = get_current_byceps_app().byceps_config.invoiceninja
     if config is None:
         abort(500, gettext('Invoice provider is not configured.'))
 
@@ -217,7 +221,7 @@ def download_invoice(order_id):
 
     return (
         order_invoice_service.get_downloadable_invoice_for_order(
-            order, is_draft, g.user, config
+            order, is_draft, g.user.as_user(), config
         )
         .map(serve_invoice)
         .unwrap_or_else(serve_error)
@@ -261,7 +265,7 @@ def add_note(order_id):
 
     text = form.text.data.strip()
 
-    order_command_service.add_note(order, g.user, text)
+    order_command_service.add_note(order, g.user.as_user(), text)
 
     flash_success(gettext('Note has been added.'))
 
@@ -278,7 +282,7 @@ def add_note(order_id):
 def set_shipped_flag(order_id):
     """Mark the order as shipped."""
     order = _get_order_or_404(order_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match order_command_service.set_shipped_flag(order, initiator):
         case Err(e):
@@ -299,7 +303,7 @@ def set_shipped_flag(order_id):
 def unset_shipped_flag(order_id):
     """Mark the order as not shipped."""
     order = _get_order_or_404(order_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     match order_command_service.unset_shipped_flag(order, initiator):
         case Err(e):
@@ -363,23 +367,22 @@ def cancel(order_id):
     reason = form.reason.data.strip()
     send_email = form.send_email.data
 
-    cancellation_result = order_command_service.cancel_order(
-        order.id, g.user, reason
-    )
-    if cancellation_result.is_err():
-        err = cancellation_result.unwrap_err()
-        if isinstance(err, OrderAlreadyCanceledError):
+    match order_command_service.cancel_order(
+        order.id, g.user.as_user(), reason
+    ):
+        case Ok((canceled_order, event)):
+            pass
+        case Err(OrderAlreadyCanceledError()):
             flash_error(
                 gettext(
                     'The order has already been canceled. '
                     'The payment state cannot be changed anymore.'
                 )
             )
-        else:
-            flash_error(gettext('An unexpected error occurred.'))
-        return redirect_to('.view', order_id=order.id)
-
-    canceled_order, event = cancellation_result.unwrap()
+            return redirect_to('.view', order_id=order.id)
+        case Err(e):
+            flash_error(gettext('An unexpected error occurred.') + f'\n{e}')
+            return redirect_to('.view', order_id=order.id)
 
     flash_success(
         gettext(
@@ -442,20 +445,26 @@ def mark_as_paid(order_id):
         return mark_as_paid_form(order_id, form)
 
     payment_method = form.payment_method.data
-    initiator = g.user
+    initiator = g.user.as_user()
 
-    mark_as_paid_result = order_command_service.mark_order_as_paid(
+    match order_command_service.mark_order_as_paid(
         order.id, payment_method, initiator
-    )
-    if mark_as_paid_result.is_err():
-        err = mark_as_paid_result.unwrap_err()
-        if isinstance(err, OrderAlreadyMarkedAsPaidError):
+    ):
+        case Ok((paid_order, event)):
+            pass
+        case Err(OrderAlreadyCanceledError()):
+            flash_error(
+                gettext(
+                    'The order has already been canceled. '
+                    'The payment state cannot be changed anymore.'
+                )
+            )
+        case Err(OrderAlreadyMarkedAsPaidError()):
             flash_error(gettext('Order is already marked as paid.'))
-        else:
-            flash_error(gettext('An unexpected error occurred.'))
-        return redirect_to('.view', order_id=order.id)
-
-    paid_order, event = mark_as_paid_result.unwrap()
+            return redirect_to('.view', order_id=order.id)
+        case Err(e):
+            flash_error(gettext('An unexpected error occurred.') + f'\n{e}')
+            return redirect_to('.view', order_id=order.id)
 
     flash_success(gettext('Order has been marked as paid.'))
 
@@ -477,16 +486,12 @@ def resend_email_for_incoming_order_to_orderer(order_id):
     """Resend the e-mail to the orderer to confirm that the order was placed."""
     order = _get_order_or_404(order_id)
 
-    initiator_id = g.user.id
+    initiator = g.user.as_user()
 
     order_email_service.send_email_for_incoming_order_to_orderer(order)
 
-    log_entry = order_log_service.build_entry(
-        'order-placed-confirmation-email-resent',
-        order.id,
-        {
-            'initiator_id': str(initiator_id),
-        },
+    log_entry = order_log_domain_service.build_order_placed_confirmation_email_resent_entry(
+        order.id, initiator
     )
     order_log_service.persist_entry(log_entry)
 
@@ -529,18 +534,16 @@ def create_number_sequence(shop_id):
 
     prefix = form.prefix.data.strip()
 
-    creation_result = order_sequence_service.create_order_number_sequence(
-        shop.id, prefix
-    )
-    if creation_result.is_err():
-        flash_error(
-            gettext(
-                'Order number sequence could not be created. '
-                'Is the prefix "%(prefix)s" already defined?',
-                prefix=prefix,
+    match order_sequence_service.create_order_number_sequence(shop.id, prefix):
+        case Err(_):
+            flash_error(
+                gettext(
+                    'Order number sequence could not be created. '
+                    'Is the prefix "%(prefix)s" already defined?',
+                    prefix=prefix,
+                )
             )
-        )
-        return create_number_sequence_form(shop.id, form)
+            return create_number_sequence_form(shop.id, form)
 
     flash_success(
         gettext(

@@ -2,7 +2,7 @@
 byceps.services.whereabouts.blueprints.api.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -14,7 +14,9 @@ from pydantic import ValidationError
 
 from byceps.services.authn.identity_tag import authn_identity_tag_service
 from byceps.services.party import party_service
+from byceps.services.party.models import PartyID
 from byceps.services.user import user_service
+from byceps.services.user.models import UserID
 from byceps.services.whereabouts import (
     signals as whereabouts_signals,
     whereabouts_client_service,
@@ -196,11 +198,13 @@ def set_status():
     except ValidationError as e:
         abort(400, e.json())
 
-    user = user_service.find_user(req.user_id)
+    user_id = UserID(req.user_id)
+    user = user_service.find_user(user_id)
     if user is None:
         abort(400, 'Unknown user ID')
 
-    party = party_service.find_party(req.party_id)
+    party_id = PartyID(req.party_id)
+    party = party_service.find_party(party_id)
     if party is None:
         abort(400, 'Unknown party ID')
 

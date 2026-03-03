@@ -2,7 +2,7 @@
 byceps.services.user_badge.blueprints.api.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,6 +10,7 @@ from flask import abort, request
 from pydantic import ValidationError
 
 from byceps.services.user import user_service
+from byceps.services.user.models import UserID
 from byceps.services.user_badge import (
     signals as user_badge_signals,
     user_badge_awarding_service,
@@ -42,11 +43,13 @@ def award_badge_to_user():
     if not badge:
         abort(400, 'Badge slug unknown')
 
-    awardee = user_service.find_user(req.awardee_id)
+    awardee_id = UserID(req.awardee_id)
+    awardee = user_service.find_user(awardee_id)
     if not awardee:
         abort(400, 'Awardee ID unknown')
 
-    initiator = user_service.find_user(req.initiator_id)
+    initiator_id = UserID(req.initiator_id)
+    initiator = user_service.find_user(initiator_id)
     if not initiator:
         abort(400, 'Initiator ID unknown')
 

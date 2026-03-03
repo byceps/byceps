@@ -2,7 +2,7 @@
 byceps.services.ticketing.ticket_creation_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,7 +15,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 from byceps.database import db
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.ticketing.models.ticket import TicketID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok
 from byceps.util.uuid import generate_uuid7
 
@@ -94,12 +94,11 @@ def build_tickets(
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    created_at = datetime.utcnow()
-
     match ticket_code_service.generate_ticket_codes(quantity):
         case Ok(codes):
             for code in codes:
                 ticket_id = TicketID(generate_uuid7())
+                created_at = datetime.utcnow()
 
                 yield DbTicket(
                     ticket_id,

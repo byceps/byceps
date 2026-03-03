@@ -4,7 +4,7 @@ byceps.services.user_message.blueprints.site.views
 
 Send messages from one user to another.
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -49,7 +49,7 @@ def create(recipient_id):
     if not form.validate():
         return create_form(recipient.id, form)
 
-    sender = g.user
+    sender = g.user.as_user()
     body = form.body.data.strip()
     sender_contact_url = url_for(
         '.create_form', recipient_id=sender.id, _external=True

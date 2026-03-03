@@ -2,13 +2,13 @@
 byceps.services.snippet.events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import BaseEvent
 from byceps.services.snippet.models import (
     SnippetID,
     SnippetScope,
@@ -17,7 +17,7 @@ from byceps.services.snippet.models import (
 
 
 @dataclass(frozen=True, kw_only=True)
-class _SnippetEvent(_BaseEvent):
+class _SnippetEvent(BaseEvent):
     snippet_id: SnippetID
     scope: SnippetScope
     snippet_name: str

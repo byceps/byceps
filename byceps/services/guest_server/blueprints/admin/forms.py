@@ -2,7 +2,7 @@
 byceps.services.guest_server.blueprints.admin.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -97,7 +97,7 @@ class _AddressBaseForm(LocalizedForm):
 
 
 class AddressCreateForm(_AddressBaseForm):
-    def validate(self) -> bool:
+    def validate(self, extra_validators=None) -> bool:
         if not super().validate():
             return False
 

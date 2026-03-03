@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,11 +12,11 @@ from byceps.services.seating import seat_service, seating_area_service
 import byceps.services.seating.dbmodels.seat_group  # noqa: F401
 from byceps.services.ticketing import (
     ticket_creation_service,
-    ticket_log_service,
     ticket_revocation_service,
     ticket_seat_management_service,
     ticket_service,
 )
+from byceps.services.ticketing.log import ticket_log_service
 
 from tests.helpers import generate_token
 
@@ -65,7 +65,7 @@ def test_revoke_ticket(admin_app, ticket, ticketing_admin):
 
     ticket_id = ticket_before.id
 
-    ticket_revocation_service.revoke_ticket(ticket_id, ticketing_admin.id)
+    ticket_revocation_service.revoke_ticket(ticket_id, ticketing_admin)
 
     # -------------------------------- #
 
@@ -99,7 +99,7 @@ def test_revoke_tickets(admin_app, tickets, ticketing_admin):
 
     ticket_ids = {ticket.id for ticket in tickets_before}
 
-    ticket_revocation_service.revoke_tickets(ticket_ids, ticketing_admin.id)
+    ticket_revocation_service.revoke_tickets(ticket_ids, ticketing_admin)
 
     # -------------------------------- #
 
@@ -120,10 +120,10 @@ def test_revoke_tickets(admin_app, tickets, ticketing_admin):
 
 
 def test_revoke_ticket_with_seat(
-    admin_app, area, ticket, ticketing_admin, seat
+    admin_app, area, ticket_owner, ticket, ticketing_admin, seat
 ):
     ticket_seat_management_service.occupy_seat(
-        ticket.id, seat.id, ticket.owned_by_id
+        ticket.id, seat.id, ticket_owner
     ).unwrap()
 
     assert ticket.occupied_seat_id == seat.id
@@ -134,7 +134,7 @@ def test_revoke_ticket_with_seat(
 
     # -------------------------------- #
 
-    ticket_revocation_service.revoke_ticket(ticket.id, ticketing_admin.id)
+    ticket_revocation_service.revoke_ticket(ticket.id, ticketing_admin)
 
     # -------------------------------- #
 
@@ -146,20 +146,20 @@ def test_revoke_ticket_with_seat(
 
 
 def test_revoke_tickets_with_seats(
-    admin_app, area, tickets, ticketing_admin, seats
+    admin_app, area, ticket_owner, tickets, ticketing_admin, seats
 ):
     ticket_ids = {ticket.id for ticket in tickets}
 
     for ticket, seat in zip(tickets, seats, strict=True):
         ticket_seat_management_service.occupy_seat(
-            ticket.id, seat.id, ticket.owned_by_id
+            ticket.id, seat.id, ticket_owner
         ).unwrap()
 
         assert ticket.occupied_seat_id == seat.id
 
     # -------------------------------- #
 
-    ticket_revocation_service.revoke_tickets(ticket_ids, ticketing_admin.id)
+    ticket_revocation_service.revoke_tickets(ticket_ids, ticketing_admin)
 
     # -------------------------------- #
 

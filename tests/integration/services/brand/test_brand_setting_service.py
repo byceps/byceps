@@ -1,15 +1,15 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 import pytest
 
 from byceps.services.brand import brand_setting_service
-from byceps.services.brand.models import BrandSetting
+from byceps.services.brand.models import BrandID, BrandSetting
 
 
-BRAND_ID = 'value-brand'
+BRAND_ID = BrandID('value-brand')
 
 
 @pytest.fixture(scope='module')

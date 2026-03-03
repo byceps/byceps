@@ -2,7 +2,7 @@
 byceps.services.party.party_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -113,7 +113,7 @@ def count_parties_for_brand(brand_id: BrandID) -> int:
 
 
 def find_party(party_id: PartyID) -> Party | None:
-    """Return the party with that id, or `None` if not found."""
+    """Return the party with that ID, or `None` if not found."""
     db_party = db.session.get(DbParty, party_id)
 
     if db_party is None:
@@ -123,7 +123,7 @@ def find_party(party_id: PartyID) -> Party | None:
 
 
 def get_party(party_id: PartyID) -> Party:
-    """Return the party with that id."""
+    """Return the party with that ID."""
     party = find_party(party_id)
 
     if party is None:

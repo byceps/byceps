@@ -4,20 +4,17 @@ byceps.util.l10n
 
 Localization.
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterator
-from contextlib import contextmanager
-
 from babel import Locale
 from flask import current_app, g, request
-from flask_babel import force_locale, format_currency, get_locale
+from flask_babel import format_currency
 from moneyed import Money
 from wtforms import Form
 
-from byceps.services.user.models.user import User
+from byceps.byceps_app import get_current_byceps_app
 
 
 def get_current_user_locale() -> str | None:
@@ -25,7 +22,7 @@ def get_current_user_locale() -> str | None:
     # Look for a locale on the current user object.
     user = g.user
     if (user is not None) and (user.locale is not None):
-        return user.locale
+        return user.locale.language
 
     if request:
         # Try to match user agent's accepted languages.
@@ -35,26 +32,9 @@ def get_current_user_locale() -> str | None:
     return None
 
 
-@contextmanager
-def force_user_locale(user: User) -> Iterator[None]:
-    """Execute code with the user's preferred locale."""
-    locale = get_user_locale(user)
-    with force_locale(locale):
-        yield
-
-
-def get_default_locale() -> str:
+def get_default_locale() -> Locale:
     """Return the application's default locale."""
-    return current_app.config['LOCALE']
-
-
-def get_user_locale(user: User) -> str:
-    """Return the user's preferred locale.
-
-    If no preference is set for the user, return the app's default
-    locale.
-    """
-    return user.locale or get_default_locale()
+    return Locale.parse(current_app.config['LOCALE'])
 
 
 BASE_LOCALE = Locale('en')
@@ -62,23 +42,8 @@ BASE_LOCALE = Locale('en')
 
 def get_locales() -> list[Locale]:
     """List available locales."""
-    return [BASE_LOCALE] + current_app.babel_instance.list_translations()
-
-
-def get_locale_str() -> str | None:
-    """Return the current locale as a string.
-
-    Return `None` outside of a request.
-    """
-    locale = get_locale()
-    if locale is None:
-        return None
-
-    locale_str = locale.language
-    if locale.territory:
-        locale_str += '_' + locale.territory
-
-    return locale_str
+    locales = get_current_byceps_app().babel_instance.list_translations()
+    return [BASE_LOCALE] + locales
 
 
 class LocalizedForm(Form):

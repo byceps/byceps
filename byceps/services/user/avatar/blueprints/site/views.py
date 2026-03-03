@@ -2,7 +2,7 @@
 byceps.services.user.avatar.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,7 +10,7 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from byceps.services.user import signals as user_signals, user_avatar_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_notice, flash_success
 from byceps.util.framework.templating import templated
@@ -111,4 +111,4 @@ def _get_current_user_or_404() -> User:
     if not user.authenticated:
         abort(404)
 
-    return user
+    return user.as_user()

@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,7 +10,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.authn.password.dbmodels import DbCredential
-from byceps.services.authn.session import authn_session_service
+from byceps.services.authn.session import authn_session_repository
 from byceps.services.authz import authz_service
 from byceps.services.brand import brand_service
 from byceps.services.consent import (
@@ -22,8 +22,9 @@ from byceps.services.newsletter import (
     newsletter_command_service,
     newsletter_service,
 )
-from byceps.services.user import user_log_service, user_service
-from byceps.services.user.dbmodels.user import DbUser
+from byceps.services.user import user_service
+from byceps.services.user.dbmodels import DbUser
+from byceps.services.user.log import user_log_service
 from byceps.services.verification_token.dbmodels import DbVerificationToken
 from byceps.services.verification_token.models import Purpose as TokenPurpose
 
@@ -129,7 +130,9 @@ def test_create(
     assert_password_credentials_created(user.id)
 
     # Session token should not have been created at this point.
-    session_token = authn_session_service.find_session_token_for_user(user.id)
+    session_token = authn_session_repository.find_session_token_for_user(
+        user.id
+    )
     assert session_token is None
 
     # avatar

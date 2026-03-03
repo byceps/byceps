@@ -1,6 +1,6 @@
 """Remove data for user accounts that have been marked as deleted.
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,10 +13,10 @@ from byceps.database import db
 from byceps.services.authn.password.dbmodels import DbCredential
 from byceps.services.authn.session.dbmodels import DbRecentLogin, DbSessionToken
 from byceps.services.authz.dbmodels import DbUserRole
-from byceps.services.board.dbmodels.last_category_view import (
+from byceps.services.board.dbmodels.category import (
     DbLastCategoryView as DbBoardLastCategoryView,
 )
-from byceps.services.board.dbmodels.last_topic_view import (
+from byceps.services.board.dbmodels.topic import (
     DbLastTopicView as DbBoardLastTopicView,
 )
 from byceps.services.consent.dbmodels import DbConsent
@@ -25,8 +25,8 @@ from byceps.services.newsletter.dbmodels import (
     DbSubscriptionUpdate as DbNewsletterSubscriptionUpdate,
 )
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.log import DbUserLogEntry
-from byceps.services.user.models.user import UserID
+from byceps.services.user.log.dbmodels import DbUserLogEntry
+from byceps.services.user.models import UserID
 from byceps.services.verification_token.dbmodels import DbVerificationToken
 
 from _util import call_with_app_context

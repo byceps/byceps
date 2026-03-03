@@ -1,5 +1,6 @@
 {% extends 'layout/admin/ticketing.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
@@ -36,6 +37,9 @@
 
       </div>
     </div>
+
+    <div class="data-label">{{ _('Order') }}</div>
+    <div class="data-value">{{ render_order_link(order) if order else None|fallback(_('not specified')) }}</div>
 
     <div class="data-label">{{ _('Description') }}</div>
     <div class="data-value mb">{{ bundle.label|fallback }}</div>

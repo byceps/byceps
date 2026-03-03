@@ -2,7 +2,7 @@
 byceps.services.snippet.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -87,7 +87,7 @@ def view_current_version(snippet_id):
 @permission_required('snippet.view_history')
 @templated
 def view_version(snippet_version_id):
-    """Show the snippet with the given id."""
+    """Show the snippet with the given ID."""
     version = find_snippet_version(snippet_version_id)
 
     snippet = version.snippet
@@ -110,7 +110,7 @@ def view_version(snippet_version_id):
 @permission_required('snippet.view_history')
 @templated
 def view_version_preview(snippet_version_id):
-    """Show a preview of the snippet with the given id."""
+    """Show a preview of the snippet with the given ID."""
     version = find_snippet_version(snippet_version_id)
 
     try:
@@ -350,7 +350,7 @@ def create(scope_type, scope_name):
 
     name = form.name.data.strip().lower()
     language_code = form.language_code.data
-    creator = g.user
+    creator = g.user.as_user()
     body = form.body.data.strip()
 
     version, event = snippet_service.create_snippet(
@@ -400,7 +400,7 @@ def update(snippet_id):
 
     snippet = find_snippet_by_id(snippet_id)
 
-    creator = g.user
+    creator = g.user.as_user()
     body = form.body.data.strip()
 
     version, event = snippet_service.update_snippet(snippet.id, creator, body)
@@ -454,29 +454,31 @@ def delete_snippet(snippet_id):
     """Delete a snippet."""
     snippet = find_snippet_by_id(snippet_id)
 
+    initiator = g.user.as_user()
     snippet_name = snippet.name
     scope = snippet.scope
 
-    success, event = snippet_service.delete_snippet(
-        snippet.id, initiator=g.user
-    )
-
-    if not success:
-        flash_error(
-            gettext(
-                'Snippet "%(snippet_name)s" could not be deleted. Is it still mounted?',
-                snippet_name=snippet_name,
+    match snippet_service.delete_snippet(snippet.id, initiator=initiator):
+        case Ok(event):
+            flash_success(
+                gettext(
+                    'Snippet "%(name)s" has been deleted.', name=snippet_name
+                )
             )
-        )
-        return url_for('.view_current_version', snippet_id=snippet.id)
-
-    flash_success(
-        gettext('Snippet "%(name)s" has been deleted.', name=snippet_name)
-    )
-    snippet_signals.snippet_deleted.send(None, event=event)
-    return url_for(
-        '.index_for_scope', scope_type=scope.type_, scope_name=scope.name
-    )
+            snippet_signals.snippet_deleted.send(None, event=event)
+            return url_for(
+                '.index_for_scope',
+                scope_type=scope.type_,
+                scope_name=scope.name,
+            )
+        case Err(_):
+            flash_error(
+                gettext(
+                    'Snippet "%(snippet_name)s" could not be deleted. Is it still mounted?',
+                    snippet_name=snippet_name,
+                )
+            )
+            return url_for('.view_current_version', snippet_id=snippet.id)
 
 
 def _create_html_diff(

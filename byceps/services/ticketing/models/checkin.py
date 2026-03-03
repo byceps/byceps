@@ -2,7 +2,7 @@
 byceps.services.ticketing.models.checkin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,7 @@ from uuid import UUID
 
 from byceps.services.party.models import PartyID
 from byceps.services.seating.models import SeatID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from .ticket import TicketCode, TicketID
 

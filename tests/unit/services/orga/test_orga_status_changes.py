@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -29,11 +29,8 @@ def test_grant_orga_status(user, brand, initiator):
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None
     assert log_entry.event_type == 'orgaflag-added'
-    assert log_entry.user_id == user.id
-    assert log_entry.data == {
-        'brand_id': str(brand.id),
-        'initiator_id': str(initiator.id),
-    }
+    assert log_entry.user == user
+    assert log_entry.data == {'brand_id': str(brand.id)}
 
 
 def test_revoke_orga_status(user, brand, initiator):
@@ -53,11 +50,8 @@ def test_revoke_orga_status(user, brand, initiator):
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None
     assert log_entry.event_type == 'orgaflag-removed'
-    assert log_entry.user_id == user.id
-    assert log_entry.data == {
-        'brand_id': str(brand.id),
-        'initiator_id': str(initiator.id),
-    }
+    assert log_entry.user == user
+    assert log_entry.data == {'brand_id': str(brand.id)}
 
 
 @pytest.fixture(scope='module')

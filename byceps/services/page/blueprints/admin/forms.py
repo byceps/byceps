@@ -2,14 +2,14 @@
 byceps.services.page.blueprints.admin.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from collections.abc import Sequence
 
 from flask_babel import gettext, lazy_gettext
-from wtforms import SelectField, StringField, TextAreaField
+from wtforms import BooleanField, SelectField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Optional, ValidationError
 
 from byceps.services.language import language_service
@@ -46,6 +46,7 @@ class _PageBaseForm(LocalizedForm):
     title = StringField(lazy_gettext('Title'), [InputRequired()])
     head = TextAreaField(lazy_gettext('Header'))
     body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
+    hidden = BooleanField(lazy_gettext('hidden'))
 
     def set_language_code_choices(self):
         languages = language_service.get_languages()

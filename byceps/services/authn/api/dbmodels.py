@@ -2,7 +2,7 @@
 byceps.services.authn.api.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
 from byceps.services.authz.models import PermissionID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 class DbApiToken(db.Model):
@@ -23,7 +23,7 @@ class DbApiToken(db.Model):
     __tablename__ = 'api_tokens'
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )

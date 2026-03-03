@@ -2,7 +2,7 @@
 tests.helpers
 ~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,13 +12,14 @@ from datetime import date, datetime
 from secrets import token_hex
 from uuid import UUID
 
+from babel import Locale
 from flask import appcontext_pushed, g
 from secret_type import secret
 from uuid6 import uuid7
 
 from byceps.byceps_app import BycepsApp
 from byceps.database import db
-from byceps.services.authn.session import authn_session_service
+from byceps.services.authn.session import authn_session_repository
 from byceps.services.authn.session.models import CurrentUser
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import PermissionID, RoleID
@@ -34,7 +35,7 @@ from byceps.services.user import (
     user_creation_service,
     user_service,
 )
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 
 def generate_token(n: int = 4) -> str:
@@ -65,7 +66,7 @@ def create_user(
     initialized: bool = True,
     suspended: bool = False,
     deleted: bool = False,
-    locale: str | None = None,
+    locale: Locale | None = None,
     legacy_id: str | None = None,
     first_name: str | None = 'John Joseph',
     last_name: str | None = 'Doe',
@@ -83,7 +84,7 @@ def create_user(
     if not email_address:
         email_address = f'user{generate_token(6)}@users.test'
 
-    user, event = user_creation_service.create_user(
+    user, _ = user_creation_service.create_user(
         screen_name,
         email_address,
         secret(password),
@@ -200,7 +201,9 @@ def http_client(app: BycepsApp, *, user_id: UserID | None = None):
 
 
 def _add_user_credentials_to_session(client, user_id: UserID) -> None:
-    session_token = authn_session_service.find_session_token_for_user(user_id)
+    session_token = authn_session_repository.find_session_token_for_user(
+        user_id
+    )
     if session_token is None:
         raise Exception(f'Could not find session token for user ID "{user_id}"')
 
@@ -211,4 +214,4 @@ def _add_user_credentials_to_session(client, user_id: UserID) -> None:
 
 def log_in_user(user_id: UserID) -> None:
     """Authenticate the user to create a session."""
-    authn_session_service.get_session_token(user_id)
+    authn_session_repository.get_session_token(user_id)

@@ -17,7 +17,7 @@
       {%- endif %}
     </h1>
   </div>
-{%- if timetable and has_current_user_permission('timetable.update') %}
+{%- if timetable and g.user.has_permission('timetable.update') %}
   <div>
     <div class="button-row button-row--nowrap is-right-aligned">
       <a class="button" href="{{ url_for('.item_create_form', timetable_id=timetable.id) }}">{{ render_icon('add') }} <span>{{ _('Create item') }}</span></a>
@@ -62,7 +62,7 @@
         {%- endif %}
       </td>
       <td>
-        {%- if has_current_user_permission('timetable.update') %}
+        {%- if g.user.has_permission('timetable.update') %}
         <div class="button-row button-row--nowrap is-compact is-right-aligned">
           <a href="{{ url_for('.item_update_form', item_id=item.id) }}" class="button is-compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
           <a href="{{ url_for('.item_delete', item_id=item.id) }}" data-action="delete-item" class="button is-compact color-danger" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a>
@@ -77,7 +77,7 @@
   {%- else %}
   <div class="box no-data-message">{{ _('No entries') }}</div>
   {%- endif %}
-{%- elif has_current_user_permission('timetable.administrate') %}
+{%- elif g.user.has_permission('timetable.administrate') %}
 <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
   {{ form_buttons(_('Create')) }}
 </form>

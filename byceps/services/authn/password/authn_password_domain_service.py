@@ -2,7 +2,7 @@
 byceps.services.authn.password.authn_password_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,15 +15,14 @@ from werkzeug.security import (
 )
 
 from byceps.services.authn.events import PasswordUpdatedEvent
-from byceps.services.core.events import EventUser
-from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import (
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
+from byceps.services.user.models import (
     Password,
     PasswordHash,
     User,
     UserID,
 )
-from byceps.util.uuid import generate_uuid7
 
 from .models import Credential
 
@@ -72,21 +71,20 @@ def _build_password_updated_event(
 ) -> PasswordUpdatedEvent:
     return PasswordUpdatedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
     )
 
 
 def _build_password_updated_log_entry(
     occurred_at: datetime, initiator: User, user: User
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'password-updated',
+        user,
+        {},
         occurred_at=occurred_at,
-        event_type='password-updated',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={'initiator_id': str(initiator.id)},
+        initiator=initiator,
     )
 
 

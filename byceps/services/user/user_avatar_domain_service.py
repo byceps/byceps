@@ -2,18 +2,17 @@
 byceps.services.user.user_avatar_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 
-from byceps.services.core.events import EventUser
-from byceps.util.uuid import generate_uuid7
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
 
 from .events import UserAvatarRemovedEvent, UserAvatarUpdatedEvent
-from .models.log import UserLogEntry
-from .models.user import User, UserAvatar
+from .models import User, UserAvatar
 
 
 def update_avatar_image(
@@ -41,8 +40,8 @@ def _build_avatar_updated_event(
 ) -> UserAvatarUpdatedEvent:
     return UserAvatarUpdatedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         avatar_id=avatar.id,
     )
 
@@ -53,16 +52,15 @@ def _build_avatar_updated_log_entry(
     initiator: User,
     avatar: UserAvatar,
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-avatar-updated',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
+    return user_log_domain_service.build_entry(
+        'user-avatar-updated',
+        user,
+        {
             'avatar_id': str(avatar.id),
             'filename': str(avatar.filename),
         },
+        occurred_at=occurred_at,
+        initiator=initiator,
     )
 
 
@@ -89,8 +87,8 @@ def _build_avatar_removed_event(
 ) -> UserAvatarRemovedEvent:
     return UserAvatarRemovedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         avatar_id=avatar.id,
     )
 
@@ -101,14 +99,13 @@ def _build_avatar_removed_log_entry(
     initiator: User,
     avatar: UserAvatar,
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-avatar-removed',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
+    return user_log_domain_service.build_entry(
+        'user-avatar-removed',
+        user,
+        {
             'avatar_id': str(avatar.id),
             'filename': str(avatar.filename),
         },
+        occurred_at=occurred_at,
+        initiator=initiator,
     )

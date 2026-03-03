@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,8 +12,8 @@ import pytest
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_domain_service
 from byceps.services.shop.order.errors import CartEmptyError
+from byceps.services.shop.order.log.models import OrderLogEntry
 from byceps.services.shop.order.models.checkout import IncomingOrder
-from byceps.services.shop.order.models.log import OrderLogEntry
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.product.models import Product
 from byceps.services.shop.shop.models import ShopID
@@ -98,10 +98,5 @@ def place_order(
     orderer: Orderer, cart: Cart
 ) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmptyError]:
     return order_domain_service.place_order(
-        datetime.utcnow(),
-        SHOP_ID,
-        STOREFRONT_ID,
-        orderer,
-        EUR,
-        cart,
+        datetime.utcnow(), SHOP_ID, STOREFRONT_ID, orderer, cart
     )

@@ -2,17 +2,18 @@
 byceps.services.verification_token.verification_token_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime, timedelta
+import secrets
 
 from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from .dbmodels import DbVerificationToken
 from .models import (
@@ -54,12 +55,22 @@ def create_for_password_reset(user: User) -> PasswordResetToken:
 def _create_token(
     user: User, purpose: Purpose, *, data: dict[str, str] | None = None
 ) -> VerificationToken:
-    db_token = DbVerificationToken(user.id, purpose, data=data)
+    token_value = _generate_token_value()
+    created_at = datetime.utcnow()
+
+    db_token = DbVerificationToken(
+        token_value, created_at, user.id, purpose, data=data
+    )
 
     db.session.add(db_token)
     db.session.commit()
 
     return _db_entity_to_token(db_token, user)
+
+
+def _generate_token_value() -> str:
+    """Return a cryptographic, URL-safe token."""
+    return secrets.token_urlsafe()
 
 
 def delete_token(token: str) -> None:

@@ -4,7 +4,7 @@ byceps.cli.command.import_roles
 
 Import roles and their assigned permissions from a TOML file.
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

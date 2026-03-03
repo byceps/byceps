@@ -2,7 +2,7 @@
 byceps.services.page.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,7 +13,7 @@ from uuid import UUID
 
 from byceps.services.site.models import SiteID
 from byceps.services.site_navigation.models import NavMenuID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 PageID = NewType('PageID', UUID)
@@ -29,7 +29,7 @@ class Page:
     name: str
     language_code: str
     url_path: str
-    published: bool
+    hidden: bool
     nav_menu_id: NavMenuID | None
 
     @property

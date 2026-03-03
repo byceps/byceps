@@ -2,7 +2,7 @@
 byceps.services.news.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -28,6 +28,7 @@ from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.image.image_type import get_image_type_names
 from byceps.util.iterables import pairwise
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -278,7 +279,7 @@ def image_create(item_id):
     if not form.validate():
         return image_create_form(item.id, form)
 
-    creator = g.user
+    creator = g.user.as_user()
     image = request.files.get('image')
     alt_text = form.alt_text.data.strip()
     caption = form.caption.data.strip()
@@ -288,18 +289,18 @@ def image_create(item_id):
         abort(400, 'No file to upload has been specified.')
 
     try:
-        creation_result = news_image_service.create_image(
+        match news_image_service.create_image(
             creator,
             item,
             image.stream,
             alt_text=alt_text,
             caption=caption,
             attribution=attribution,
-        )
-        if creation_result.is_err():
-            abort(400, creation_result.unwrap_err())
-
-        image = creation_result.unwrap()
+        ):
+            case Ok(image):
+                pass
+            case Err(e):
+                abort(400, e)
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 
@@ -392,7 +393,7 @@ def image_delete(image_id):
     """Delete a news image."""
     image = _get_image_or_404(image_id)
 
-    result = news_image_service.delete_image(image.id)
+    news_image_service.delete_image(image.id)
 
     flash_success(gettext('News image has been deleted.'))
 
@@ -526,6 +527,9 @@ def item_compare_versions(from_version_id, to_version_id):
 def item_create_form(channel_id, erroneous_form=None):
     """Show form to create a news item."""
     channel = _get_channel_or_404(channel_id)
+    if channel.archived:
+        flash_error('Channel is archived.')
+        return redirect_to('.channel_view', channel_id=channel.id)
 
     if erroneous_form:
         form = erroneous_form
@@ -545,31 +549,38 @@ def item_create_form(channel_id, erroneous_form=None):
 def item_create(channel_id):
     """Create a news item."""
     channel = _get_channel_or_404(channel_id)
+    if channel.archived:
+        flash_error('Channel is archived.')
+        return redirect_to('.channel_view', channel_id=channel.id)
 
     form = ItemCreateForm(channel.brand_id, request.form)
     if not form.validate():
         return item_create_form(channel.id, form)
 
     slug = form.slug.data.strip().lower()
-    creator = g.user
+    creator = g.user.as_user()
     title = form.title.data.strip()
     body = form.body.data.strip()
     body_format = form.body_format.data
 
-    item = news_item_service.create_item(
+    match news_item_service.create_item(
         channel,
         slug,
         creator,
         title,
         body,
         body_format,
-    )
-
-    flash_success(
-        gettext('News item "%(title)s" has been created.', title=item.title)
-    )
-
-    return redirect_to('.item_view', item_id=item.id)
+    ):
+        case Ok(item):
+            flash_success(
+                gettext(
+                    'News item "%(title)s" has been created.', title=item.title
+                )
+            )
+            return redirect_to('.item_view', item_id=item.id)
+        case Err(e):
+            flash_error(f'News item could not be created: {e}')
+            return redirect_to('.channel_view', channel_id=channel.id)
 
 
 @blueprint.get('/items/<uuid:item_id>/update')
@@ -609,7 +620,7 @@ def item_update(item_id):
     if not form.validate():
         return item_update_form(item.id, form)
 
-    creator = g.user
+    creator = g.user.as_user()
     slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
     body = form.body.data.strip()
@@ -659,26 +670,25 @@ def item_publish_later(item_id):
     publish_at = to_utc(
         datetime.combine(form.publish_on.data, form.publish_at.data)
     )
+    initiator = g.user.as_user()
 
-    result = news_item_service.publish_item(
-        item.id, publish_at=publish_at, initiator=g.user
-    )
+    match news_item_service.publish_item(
+        item.id, publish_at=publish_at, initiator=initiator
+    ):
+        case Ok(event):
+            news_signals.item_published.send(None, event=event)
 
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return redirect_to('.item_view', item_id=item.id)
+            flash_success(
+                gettext(
+                    'News item "%(title)s" will be published later.',
+                    title=item.title,
+                )
+            )
 
-    event = result.unwrap()
-
-    news_signals.item_published.send(None, event=event)
-
-    flash_success(
-        gettext(
-            'News item "%(title)s" will be published later.', title=item.title
-        )
-    )
-
-    return redirect_to('.item_view', item_id=item.id)
+            return redirect_to('.item_view', item_id=item.id)
+        case Err(e):
+            flash_error(e)
+            return redirect_to('.item_view', item_id=item.id)
 
 
 @blueprint.post('/items/<uuid:item_id>/publish_now')
@@ -688,19 +698,20 @@ def item_publish_now(item_id):
     """Publish a news item now."""
     item = _get_item_or_404(item_id)
 
-    result = news_item_service.publish_item(item.id, initiator=g.user)
+    initiator = g.user.as_user()
 
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
+    match news_item_service.publish_item(item.id, initiator=initiator):
+        case Ok(event):
+            news_signals.item_published.send(None, event=event)
 
-    event = result.unwrap()
-
-    news_signals.item_published.send(None, event=event)
-
-    flash_success(
-        gettext('News item "%(title)s" has been published.', title=item.title)
-    )
+            flash_success(
+                gettext(
+                    'News item "%(title)s" has been published.',
+                    title=item.title,
+                )
+            )
+        case Err(e):
+            flash_error(e)
 
 
 @blueprint.post('/items/<uuid:item_id>/unpublish')
@@ -710,15 +721,16 @@ def item_unpublish(item_id):
     """Unpublish a news item."""
     item = _get_item_or_404(item_id)
 
-    result = news_item_service.unpublish_item(item.id)
-
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
-
-    flash_success(
-        gettext('News item "%(title)s" has been unpublished.', title=item.title)
-    )
+    match news_item_service.unpublish_item(item.id):
+        case Ok(_):
+            flash_success(
+                gettext(
+                    'News item "%(title)s" has been unpublished.',
+                    title=item.title,
+                )
+            )
+        case Err(e):
+            flash_error(e)
 
 
 # -------------------------------------------------------------------- #

@@ -2,7 +2,7 @@
 byceps.services.party.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -26,16 +26,16 @@ class DbParty(db.Model):
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    brand: Mapped[DbBrand] = relationship(DbBrand, backref='parties')
+    brand: Mapped[DbBrand] = relationship(backref='parties')
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     starts_at: Mapped[datetime]
     ends_at: Mapped[datetime]
     max_ticket_quantity: Mapped[int | None]
     ticket_management_enabled: Mapped[bool]
     seat_management_enabled: Mapped[bool]
-    hidden: Mapped[bool] = mapped_column(default=False)
-    canceled: Mapped[bool] = mapped_column(default=False)
-    archived: Mapped[bool] = mapped_column(default=False)
+    hidden: Mapped[bool]
+    canceled: Mapped[bool]
+    archived: Mapped[bool]
 
     def __init__(
         self,
@@ -48,6 +48,9 @@ class DbParty(db.Model):
         max_ticket_quantity: int | None = None,
         ticket_management_enabled: bool = False,
         seat_management_enabled: bool = False,
+        hidden: bool = False,
+        canceled: bool = False,
+        archived: bool = False,
     ) -> None:
         self.id = party_id
         self.brand_id = brand_id
@@ -57,6 +60,9 @@ class DbParty(db.Model):
         self.max_ticket_quantity = max_ticket_quantity
         self.ticket_management_enabled = ticket_management_enabled
         self.seat_management_enabled = seat_management_enabled
+        self.hidden = hidden
+        self.canceled = canceled
+        self.archived = archived
 
     def __repr__(self) -> str:
         return ReprBuilder(self).add_with_lookup('id').build()

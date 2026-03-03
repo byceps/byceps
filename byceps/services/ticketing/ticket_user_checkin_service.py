@@ -2,7 +2,7 @@
 byceps.services.ticketing.ticket_user_checkin_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,11 +12,11 @@ from byceps.database import db
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing.dbmodels.checkin import DbTicketCheckIn
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import ticket_domain_service, ticket_log_service, ticket_service
+from . import ticket_domain_service, ticket_service
 from .dbmodels.ticket import DbTicket
 from .errors import (
     InitiatorNotSpecifiedError,
@@ -24,8 +24,9 @@ from .errors import (
     UserIdUnknownError,
 )
 from .events import TicketCheckedInEvent
+from .log import ticket_log_domain_service, ticket_log_service
+from .log.models import TicketLogEntry
 from .models.checkin import PotentialTicketForCheckIn, TicketCheckIn
-from .models.log import TicketLogEntry
 from .models.ticket import TicketCode, TicketID
 
 
@@ -110,14 +111,10 @@ def revert_user_check_in(ticket_id: TicketID, initiator: User) -> None:
 
     db_ticket.user_checked_in = False
 
-    db_log_entry = ticket_log_service.build_db_entry(
-        'user-check-in-reverted',
-        db_ticket.id,
-        {
-            'checked_in_user_id': str(db_ticket.used_by_id),
-            'initiator_id': str(initiator.id),
-        },
+    log_entry = ticket_log_domain_service.build_user_check_in_reverted_entry(
+        db_ticket.id, db_ticket.used_by_id, initiator
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()

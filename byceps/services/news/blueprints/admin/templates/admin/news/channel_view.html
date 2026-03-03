@@ -19,7 +19,7 @@
         {%- endif %}
       </h1>
     </div>
-  {%- if has_current_user_permission('news_channel.administrate') %}
+  {%- if g.user.has_permission('news_channel.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.channel_update_form', channel_id=channel.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
@@ -45,7 +45,7 @@
     <div>
       <h2>{{ _('News posts') }} {{ render_extra_in_heading(items.total) }}</h2>
     </div>
-  {%- if has_current_user_permission('news_item.create') %}
+  {%- if g.user.has_permission('news_item.create') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.item_create_form', channel_id=channel.id) }}">{{ render_icon('add') }} <span>{{ _('Create news post') }}</span></a>
@@ -79,7 +79,7 @@
         </td>
         <td>{% if item.featured_image %} {{ render_icon('image', title=_('Image defined')) }}{% endif %}</td>
         <td class="nowrap">
-          {%- if has_current_user_permission('news_item.view') %}
+          {%- if g.user.has_permission('news_item.view') %}
           <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="{{ _('View change history') }}">{{ item.created_at|datetimeformat }}</a>
           {%- else %}
           {{ item.created_at|datetimeformat }}

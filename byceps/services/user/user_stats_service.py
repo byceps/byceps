@@ -2,7 +2,7 @@
 byceps.services.user.user_stats_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 
-from .dbmodels.user import DbUser
+from .dbmodels import DbUser
 
 
 def count_users() -> int:

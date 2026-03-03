@@ -2,8 +2,7 @@ FROM python:3.13-trixie
 
 # Install Debian dependencies.
 # A final `apt-get clean` is part of the Debian base image.
-RUN apt-get update && \
-    apt-get install --no-install-recommends --yes \
+RUN apt-get install --no-install-recommends --update --yes \
         locales-all \
     && \
     rm -rf /var/lib/apt/lists/*
@@ -12,10 +11,10 @@ RUN apt-get update && \
 RUN useradd --create-home byceps
 WORKDIR /home/byceps
 USER byceps
-ENV PATH /home/byceps/.local/bin:$PATH
+ENV PATH=/home/byceps/.local/bin:$PATH
 
 # Install uv.
-COPY --from=ghcr.io/astral-sh/uv:0.8.11 /uv /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.9.30 /uv /bin/
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
     UV_PYTHON_DOWNLOADS=never
@@ -48,5 +47,5 @@ CMD [ \
         "--lazy-apps", \
         "--processes", "8", \
         "--uwsgi-socket", "0.0.0.0:5000", \
-        "--wsgi-file", "serve_apps.py" \
+        "--wsgi-file", "serve_web_apps.py" \
     ]

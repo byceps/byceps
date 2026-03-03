@@ -2,7 +2,7 @@
 byceps.services.consent.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 ConsentSubjectID = NewType('ConsentSubjectID', UUID)

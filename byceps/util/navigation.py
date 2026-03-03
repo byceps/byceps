@@ -2,14 +2,14 @@
 byceps.util.navigation
 ~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from dataclasses import dataclass
 from typing import Self
 
-from .authz import has_current_user_permission
+from flask import g
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -64,6 +64,6 @@ class Navigation:
             if required_permission is None:
                 return True
 
-            return has_current_user_permission(required_permission)
+            return g.user.has_permission(required_permission)
 
         return list(filter(user_has_permission, self.items))

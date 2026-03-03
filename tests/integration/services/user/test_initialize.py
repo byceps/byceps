@@ -1,16 +1,13 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 import pytest
 
 from byceps.services.authz import authz_service
-from byceps.services.user import (
-    user_command_service,
-    user_log_service,
-    user_service,
-)
+from byceps.services.user import user_command_service, user_service
+from byceps.services.user.log import user_log_service
 
 
 @pytest.fixture(scope='module')
@@ -103,16 +100,11 @@ def test_initialize_account_as_admin(
 
     user_enabled_log_entry = log_entries_after[-2]
     assert user_enabled_log_entry.event_type == 'user-initialized'
-    assert user_enabled_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-    }
+    assert user_enabled_log_entry.data == {}
 
     role_assigned_log_entry = log_entries_after[-1]
     assert role_assigned_log_entry.event_type == 'role-assigned'
-    assert role_assigned_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-        'role_id': 'board_user',
-    }
+    assert role_assigned_log_entry.data == {'role_id': 'board_user'}
 
     role_ids_after = authz_service.find_role_ids_for_user(user.id)
     assert role_ids_after == {'board_user'}

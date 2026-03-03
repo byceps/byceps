@@ -2,7 +2,7 @@
 byceps.services.ticketing.ticket_bundle_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -19,7 +19,7 @@ from byceps.services.seating.errors import SeatingError
 from byceps.services.seating.models import SeatGroupID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -27,6 +27,7 @@ from . import ticket_category_service
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
+from .log import ticket_log_domain_service, ticket_log_service
 from .models.ticket import (
     TicketBundle,
     TicketBundleID,
@@ -34,7 +35,6 @@ from .models.ticket import (
     TicketID,
 )
 from .ticket_creation_service import build_tickets, TicketCreationFailedError
-from .ticket_revocation_service import build_ticket_revoked_log_entry
 
 
 @retry(
@@ -47,9 +47,9 @@ def create_bundle(
     ticket_quantity: int,
     owner: User,
     *,
-    label: str | None = None,
     order_number: OrderNumber | None = None,
     user: User | None = None,
+    label: str | None = None,
 ) -> TicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
@@ -64,6 +64,7 @@ def create_bundle(
         category,
         ticket_quantity,
         owner.id,
+        order_number=order_number,
         label=label,
     )
     db.session.add(db_bundle)
@@ -82,7 +83,7 @@ def create_bundle(
 
     db.session.commit()
 
-    ticket_ids = {db_ticket.id for db_ticket in db_tickets}
+    ticket_ids = _get_ticket_ids_sorted_by_creation_time(db_tickets)
 
     bundle = TicketBundle(
         id=bundle_id,
@@ -91,6 +92,7 @@ def create_bundle(
         ticket_category=category,
         ticket_quantity=ticket_quantity,
         owned_by=owner,
+        order_number=order_number,
         seats_managed_by=None,
         users_managed_by=None,
         label=label,
@@ -122,9 +124,10 @@ def revoke_bundle(
     for db_ticket in db_bundle.tickets:
         db_ticket.revoked = True
 
-        db_log_entry = build_ticket_revoked_log_entry(
-            db_ticket.id, initiator.id, reason
+        log_entry = ticket_log_domain_service.build_ticket_revoked_entry(
+            db_ticket.id, initiator, reason
         )
+        db_log_entry = ticket_log_service.to_db_entry(log_entry)
         db.session.add(db_log_entry)
 
     db.session.commit()
@@ -142,12 +145,12 @@ def delete_bundle(bundle_id: TicketBundleID) -> None:
 
 
 def find_bundle(bundle_id: TicketBundleID) -> DbTicketBundle | None:
-    """Return the ticket bundle with that id, or `None` if not found."""
+    """Return the ticket bundle with that ID, or `None` if not found."""
     return db.session.get(DbTicketBundle, bundle_id)
 
 
 def get_bundle(bundle_id: TicketBundleID) -> DbTicketBundle:
-    """Return the ticket bundle with that id, or raise an exception."""
+    """Return the ticket bundle with that ID, or raise an exception."""
     db_bundle = find_bundle(bundle_id)
 
     if db_bundle is None:
@@ -211,7 +214,7 @@ def db_entity_to_ticket_bundle(db_bundle: DbTicketBundle) -> TicketBundle:
         else None
     )
 
-    ticket_ids = {db_ticket.id for db_ticket in db_bundle.tickets}
+    ticket_ids = _get_ticket_ids_sorted_by_creation_time(db_bundle.tickets)
 
     return _db_entity_to_ticket_bundle(
         db_bundle,
@@ -229,7 +232,7 @@ def _db_entity_to_ticket_bundle(
     owner: User,
     seats_manager: User | None,
     users_manager: User | None,
-    ticket_ids: set[TicketID],
+    ticket_ids: list[TicketID],
 ) -> TicketBundle:
     return TicketBundle(
         id=db_bundle.id,
@@ -238,6 +241,7 @@ def _db_entity_to_ticket_bundle(
         ticket_category=ticket_category,
         ticket_quantity=db_bundle.ticket_quantity,
         owned_by=owner,
+        order_number=db_bundle.order_number,
         seats_managed_by=seats_manager,
         users_managed_by=users_manager,
         label=db_bundle.label,
@@ -245,6 +249,15 @@ def _db_entity_to_ticket_bundle(
         ticket_ids=ticket_ids,
         occupied_seat_group_id=_find_occupied_seat_group_id(db_bundle),
     )
+
+
+def _get_ticket_ids_sorted_by_creation_time(
+    db_tickets: list[DbTicket],
+) -> list[TicketID]:
+    return [
+        db_ticket.id
+        for db_ticket in sorted(db_tickets, key=lambda t: t.created_at)
+    ]
 
 
 def _find_occupied_seat_group_id(

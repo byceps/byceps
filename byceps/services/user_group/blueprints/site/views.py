@@ -2,7 +2,7 @@
 byceps.services.user_group.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -75,7 +75,7 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    creator = g.user
+    creator = g.user.as_user()
     title = form.title.data.strip()
     description = form.description.data.strip()
 

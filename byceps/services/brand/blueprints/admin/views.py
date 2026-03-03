@@ -2,12 +2,12 @@
 byceps.services.brand.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from flask import abort, g, request
-from flask_babel import gettext
+from flask_babel import gettext, get_locale
 from moneyed import get_currency
 
 from byceps.services.brand import brand_service, brand_setting_service
@@ -19,7 +19,8 @@ from byceps.services.shop.shop import shop_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.l10n import get_default_locale, get_locale_str
+from byceps.util.l10n import get_default_locale
+from byceps.util.result import Err, Ok
 from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm, EmailConfigUpdateForm, UpdateForm
@@ -70,7 +71,7 @@ def view(brand_id):
 @templated
 def create_form(erroneous_form=None):
     """Show form to create a brand."""
-    locale = get_locale_str() or get_default_locale()
+    locale = get_locale() or get_default_locale()
 
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_currency_choices(locale)
@@ -98,10 +99,12 @@ def create():
 
     brand = brand_service.create_brand(brand_id, title)
 
+    user = g.user.as_user()
+
     sender_address = f'noreply@{brand.id}.example'
     contact_address = f'info@{brand.id}.example'
 
-    email_footer_service.create_footers(brand, g.user, contact_address)
+    email_footer_service.create_footers(brand, user, contact_address)
 
     email_config_service.create_config(
         brand.id,
@@ -112,8 +115,8 @@ def create():
 
     shop = shop_service.create_shop(brand, currency)
 
-    order_payment_service.create_email_payment_instructions(shop.id, g.user)
-    order_payment_service.create_html_payment_instructions(shop.id, g.user)
+    order_payment_service.create_email_payment_instructions(shop.id, user)
+    order_payment_service.create_html_payment_instructions(shop.id, user)
 
     flash_success(
         gettext('Brand "%(title)s" has been created.', title=brand.title)
@@ -223,14 +226,13 @@ def email_config_update(brand_id):
     sender_name = form.sender_name.data.strip()
     contact_address = form.contact_address.data.strip()
 
-    update_result = email_config_service.update_config(
+    match email_config_service.update_config(
         config.brand_id, sender_address, sender_name, contact_address
-    )
-
-    if update_result.is_err():
-        flash_error(update_result.unwrap_err())
-    else:
-        flash_success(gettext('Email configuration has been updated.'))
+    ):
+        case Ok(_):
+            flash_success(gettext('Email configuration has been updated.'))
+        case Err(e):
+            flash_error(e)
 
     return redirect_to('.view', brand_id=brand.id)
 

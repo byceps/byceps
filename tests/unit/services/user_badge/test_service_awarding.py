@@ -1,12 +1,14 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
+
+from uuid import UUID
 
 import pytest
 
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.services.user_badge import user_badge_domain_service
 from byceps.services.user_badge.errors import BadgeAwardingFailedError
 from byceps.services.user_badge.events import UserBadgeAwardedEvent
@@ -18,7 +20,7 @@ from tests.helpers import generate_token, generate_uuid
 
 def test_award_badge_with_uninitialized_awardee(make_user, badge):
     awardee = make_user(
-        user_id=UserID('01999305-278c-79be-ac4d-0cf5c538e445'),
+        user_id=UserID(UUID('01999305-278c-79be-ac4d-0cf5c538e445')),
         initialized=False,
     )
 
@@ -31,7 +33,7 @@ def test_award_badge_with_uninitialized_awardee(make_user, badge):
 
 def test_award_badge_with_deleted_awardee(make_user, badge):
     awardee = make_user(
-        user_id=UserID('01999307-4598-754e-9755-0687d9fba594'),
+        user_id=UserID(UUID('01999307-4598-754e-9755-0687d9fba594')),
         deleted=True,
     )
 
@@ -62,7 +64,7 @@ def test_award_badge_without_initiator(badge, awardee):
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None
     assert log_entry.event_type == 'user-badge-awarded'
-    assert log_entry.user_id == awardee.id
+    assert log_entry.user == awardee
     assert log_entry.data == {
         'badge_id': str(badge.id),
     }
@@ -90,11 +92,8 @@ def test_award_badge_with_initiator(badge, awardee, initiator):
     assert log_entry.id is not None
     assert log_entry.occurred_at is not None
     assert log_entry.event_type == 'user-badge-awarded'
-    assert log_entry.user_id == awardee.id
-    assert log_entry.data == {
-        'badge_id': str(badge.id),
-        'initiator_id': str(initiator.id),
-    }
+    assert log_entry.user == awardee
+    assert log_entry.data == {'badge_id': str(badge.id)}
 
 
 @pytest.fixture(scope='module')

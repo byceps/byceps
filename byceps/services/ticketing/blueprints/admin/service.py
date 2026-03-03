@@ -2,7 +2,7 @@
 byceps.services.ticketing.blueprints.admin.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,14 +11,15 @@ from typing import Any
 from uuid import UUID
 
 from byceps.services.seating import seat_service
-from byceps.services.ticketing import ticket_log_service, ticket_service
-from byceps.services.ticketing.models.log import (
+from byceps.services.ticketing import ticket_service
+from byceps.services.ticketing.log import ticket_log_service
+from byceps.services.ticketing.log.models import (
     TicketLogEntry,
     TicketLogEntryData,
 )
 from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 def get_log_entries(ticket_id: TicketID) -> Iterator[TicketLogEntryData]:

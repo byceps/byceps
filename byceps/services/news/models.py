@@ -2,7 +2,7 @@
 byceps.services.news.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,7 +13,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.result import Result
 
 
@@ -79,6 +79,7 @@ class NewsImage:
 @dataclass(frozen=True, kw_only=True)
 class NewsItem:
     id: NewsItemID
+    created_at: datetime
     brand_id: BrandID
     channel: NewsChannel
     slug: str

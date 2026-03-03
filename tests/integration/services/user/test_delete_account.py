@@ -1,22 +1,23 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 import pytest
 
 from byceps.services.authz import authz_service
-from byceps.services.user import (
-    user_deletion_service,
-    user_log_service,
-    user_service,
-)
+from byceps.services.authz.models import PermissionID
+from byceps.services.user import user_command_service, user_service
+from byceps.services.user.log import user_log_service
 
 
 @pytest.fixture()
 def role(make_role):
+    permission = PermissionID('board.view_hidden')
     role = make_role()
-    authz_service.assign_permission_to_role('board.view_hidden', role.id)
+
+    authz_service.assign_permission_to_role(permission, role.id)
+
     return role
 
 
@@ -67,7 +68,7 @@ def test_delete_account(admin_app, role, make_user):
 
     # -------------------------------- #
 
-    user_deletion_service.delete_account(user, admin_user, reason=reason)
+    user_command_service.delete_account(user, admin_user, reason=reason)
 
     # -------------------------------- #
 
@@ -96,10 +97,7 @@ def test_delete_account(admin_app, role, make_user):
 
     user_enabled_log_entry = log_entries_after[-1]
     assert user_enabled_log_entry.event_type == 'user-deleted'
-    assert user_enabled_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-        'reason': reason,
-    }
+    assert user_enabled_log_entry.data == {'reason': reason}
 
     # authorization
     assert authz_service.find_role_ids_for_user(user_id) == set()

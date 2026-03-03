@@ -2,24 +2,25 @@
 byceps.services.page.blueprints.site.templating
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from typing import Any
 
 from flask import abort, g, render_template, url_for
+from flask_babel import get_locale
 from jinja2 import TemplateNotFound
 import structlog
 
 from byceps.services.page import page_service
-from byceps.services.page.models import Page, PageVersion
+from byceps.services.page.models import Page, PageAggregate
 from byceps.services.site_navigation import site_navigation_service
 from byceps.services.site_navigation.models import NavMenuID
 from byceps.services.snippet.blueprints.site.templating import (
     render_snippet_as_partial_from_template,
 )
-from byceps.util.l10n import get_default_locale, get_locale_str
+from byceps.util.l10n import get_default_locale
 from byceps.util.templating import load_template
 
 
@@ -29,12 +30,10 @@ log = structlog.get_logger()
 Context = dict[str, Any]
 
 
-def render_page(page: Page, version: PageVersion) -> str | tuple[str, int]:
+def render_page(page: PageAggregate) -> str | tuple[str, int]:
     """Render the page, or an error page if that fails."""
     try:
-        context = build_template_context(
-            version.title, version.head, version.body
-        )
+        context = build_template_context(page.title, page.head, page.body)
         context['current_page'] = page.current_page_id
 
         subnav_menu_id = _find_subnav_menu_id(page)
@@ -59,7 +58,9 @@ def _find_subnav_menu_id(page: Page) -> NavMenuID | None:
     if page.nav_menu_id:
         return page.nav_menu_id
 
-    language_code = get_locale_str() or get_default_locale()
+    locale = get_locale() or get_default_locale()
+    language_code = locale.language
+
     return site_navigation_service.find_submenu_id_for_page(
         g.site.id, language_code, page.name
     )

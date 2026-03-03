@@ -2,7 +2,7 @@
 byceps.services.gallery.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,6 @@ from byceps.services.gallery import gallery_service
 from byceps.services.site.blueprints.site.navigation import (
     subnavigation_for_view,
 )
-from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 
@@ -52,4 +51,4 @@ def view(slug):
 
 
 def _may_current_user_view_hidden() -> bool:
-    return has_current_user_permission('gallery.view_hidden')
+    return g.user.has_permission('gallery.view_hidden')

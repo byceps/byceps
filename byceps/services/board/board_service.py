@@ -2,7 +2,7 @@
 byceps.services.board.board_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -32,7 +32,7 @@ def delete_board(board_id: BoardID) -> None:
 
 
 def find_board(board_id: BoardID) -> Board | None:
-    """Return the board with that id, or `None` if not found."""
+    """Return the board with that ID, or `None` if not found."""
     db_board = db.session.get(DbBoard, board_id)
 
     if db_board is None:

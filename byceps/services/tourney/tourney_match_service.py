@@ -2,13 +2,14 @@
 byceps.services.tourney.tourney_match_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from sqlalchemy import delete
 
 from byceps.database import db
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels.match import DbMatch
 from .models import Match, MatchID
@@ -16,7 +17,9 @@ from .models import Match, MatchID
 
 def create_match() -> Match:
     """Create a match."""
-    db_match = DbMatch()
+    match_id = MatchID(generate_uuid7())
+
+    db_match = DbMatch(match_id)
 
     db.session.add(db_match)
     db.session.commit()
@@ -35,7 +38,7 @@ def delete_match(match_id: MatchID) -> None:
 
 
 def find_match(match_id: MatchID) -> Match | None:
-    """Return the match with that id, or `None` if not found."""
+    """Return the match with that ID, or `None` if not found."""
     db_match = db.session.get(DbMatch, match_id)
 
     if db_match is None:

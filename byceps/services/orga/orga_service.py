@@ -2,11 +2,9 @@
 byceps.services.orga.orga_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
-
-from collections.abc import Sequence
 
 from sqlalchemy import delete, select
 
@@ -14,10 +12,10 @@ from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
 from byceps.services.brand.models import Brand, BrandID
 from byceps.services.orga import orga_domain_service
-from byceps.services.user import user_log_service
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.dbmodels import DbUser
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry
+from byceps.services.user.models import User, UserID
 
 from .dbmodels import DbOrgaFlag
 from .events import (
@@ -41,9 +39,9 @@ def get_person_count_by_brand_id() -> dict[BrandID, int]:
     return dict(brand_ids_and_orga_flag_counts)
 
 
-def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
+def get_orgas_for_brand(brand_id: BrandID) -> list[DbUser]:
     """Return all users with organizer status for the brand."""
-    return (
+    db_users = (
         db.session.scalars(
             select(DbUser)
             .join(DbOrgaFlag)
@@ -53,6 +51,8 @@ def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
         .unique()
         .all()
     )
+
+    return list(db_users)
 
 
 def grant_orga_status(

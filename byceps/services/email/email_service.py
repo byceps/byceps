@@ -2,18 +2,18 @@
 byceps.services.email.email_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from dataclasses import dataclass
 from email.message import EmailMessage
 from email.utils import parseaddr
 from smtplib import SMTP, SMTP_SSL
 
-from flask import current_app
 import structlog
 
+from byceps.byceps_app import get_current_byceps_app
+from byceps.config.models import SmtpConfig
 from byceps.util.jobqueue import enqueue
 from byceps.util.result import Err, Ok, Result
 
@@ -21,17 +21,6 @@ from .models import Message, NameAndAddress
 
 
 log = structlog.get_logger()
-
-
-@dataclass(frozen=True, kw_only=True)
-class SmtpConfig:
-    host: str
-    port: int
-    starttls: bool
-    use_ssl: bool
-    username: str | None
-    password: str | None
-    suppress_send: bool
 
 
 def parse_address(address_str: str) -> Result[NameAndAddress, str]:
@@ -71,7 +60,7 @@ def send_email(
 
 def send(sender: str, recipients: list[str], subject: str, body: str) -> None:
     """Assemble and send e-mail."""
-    smtp_config = current_app.byceps_config.smtp
+    smtp_config = get_current_byceps_app().byceps_config.smtp
 
     if smtp_config.suppress_send:
         log.debug('Suppressing sending of email.')

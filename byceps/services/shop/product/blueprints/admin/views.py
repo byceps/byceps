@@ -2,13 +2,14 @@
 byceps.services.shop.product.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 import dataclasses
 from datetime import date, datetime, time
 from decimal import Decimal
+from uuid import UUID
 
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
@@ -40,6 +41,7 @@ from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.user_badge import user_badge_service
+from byceps.services.user_badge.models import BadgeID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -172,12 +174,13 @@ def view(product_id):
 
 
 def _calculate_total_amount(db_product: DbProduct) -> Money:
-    products_with_quantities = [
-        ProductWithQuantity(db_product, 1),
-    ] + [
+    product = ProductWithQuantity(db_product, 1)
+    attached_products = [
         ProductWithQuantity(attached_product.product, attached_product.quantity)
         for attached_product in db_product.attached_products
     ]
+
+    products_with_quantities = [product] + attached_products
 
     return product_domain_service.calculate_total_amount(
         products_with_quantities
@@ -447,12 +450,13 @@ def create(shop_id, type_name):
 
 
 def _get_create_form(type_: ProductType, shop_id: ShopID, request):
-    if type_ == ProductType.ticket:
-        return TicketProductCreateForm(shop_id, request.form)
-    elif type_ == ProductType.ticket_bundle:
-        return TicketBundleProductCreateForm(shop_id, request.form)
-    else:
-        return ProductCreateForm(shop_id, request.form)
+    match type_:
+        case ProductType.ticket:
+            return TicketProductCreateForm(shop_id, request.form)
+        case ProductType.ticket_bundle:
+            return TicketBundleProductCreateForm(shop_id, request.form)
+        case _:
+            return ProductCreateForm(shop_id, request.form)
 
 
 def _get_item_number(product_number_sequence_id) -> ProductNumber:
@@ -480,55 +484,56 @@ def _create_product(
     not_directly_orderable: bool = False,
     separate_order_required: bool = False,
 ) -> Product:
-    if type_ == ProductType.ticket:
-        return product_service.create_ticket_product(
-            shop_id,
-            item_number,
-            name,
-            price,
-            tax_rate,
-            total_quantity,
-            max_quantity_per_order,
-            form.ticket_category_id.data,
-            available_from=available_from,
-            available_until=available_until,
-            not_directly_orderable=not_directly_orderable,
-            separate_order_required=separate_order_required,
-        )
-    elif type_ == ProductType.ticket_bundle:
-        return product_service.create_ticket_bundle_product(
-            shop_id,
-            item_number,
-            name,
-            price,
-            tax_rate,
-            total_quantity,
-            max_quantity_per_order,
-            form.ticket_category_id.data,
-            form.ticket_quantity.data,
-            available_from=available_from,
-            available_until=available_until,
-            not_directly_orderable=not_directly_orderable,
-            separate_order_required=separate_order_required,
-        )
-    else:
-        processing_required = type_ == ProductType.physical
+    match type_:
+        case ProductType.ticket:
+            return product_service.create_ticket_product(
+                shop_id,
+                item_number,
+                name,
+                price,
+                tax_rate,
+                total_quantity,
+                max_quantity_per_order,
+                form.ticket_category_id.data,
+                available_from=available_from,
+                available_until=available_until,
+                not_directly_orderable=not_directly_orderable,
+                separate_order_required=separate_order_required,
+            )
+        case ProductType.ticket_bundle:
+            return product_service.create_ticket_bundle_product(
+                shop_id,
+                item_number,
+                name,
+                price,
+                tax_rate,
+                total_quantity,
+                max_quantity_per_order,
+                form.ticket_category_id.data,
+                form.ticket_quantity.data,
+                available_from=available_from,
+                available_until=available_until,
+                not_directly_orderable=not_directly_orderable,
+                separate_order_required=separate_order_required,
+            )
+        case _:
+            processing_required = type_ == ProductType.physical
 
-        return product_service.create_product(
-            shop_id,
-            item_number,
-            type_,
-            name,
-            price,
-            tax_rate,
-            total_quantity,
-            max_quantity_per_order,
-            processing_required,
-            available_from=available_from,
-            available_until=available_until,
-            not_directly_orderable=not_directly_orderable,
-            separate_order_required=separate_order_required,
-        )
+            return product_service.create_product(
+                shop_id,
+                item_number,
+                type_,
+                name,
+                price,
+                tax_rate,
+                total_quantity,
+                max_quantity_per_order,
+                processing_required,
+                available_from=available_from,
+                available_until=available_until,
+                not_directly_orderable=not_directly_orderable,
+                separate_order_required=separate_order_required,
+            )
 
 
 # -------------------------------------------------------------------- #
@@ -747,7 +752,7 @@ def action_create_for_badge_awarding(product_id):
     if not form.validate():
         return action_create_form_for_badge_awarding(product_id, form)
 
-    badge_id = form.badge_id.data
+    badge_id = BadgeID(UUID(form.badge_id.data))
     badge = user_badge_service.get_badge(badge_id)
 
     order_action_registry_service.register_badge_awarding(product.id, badge.id)

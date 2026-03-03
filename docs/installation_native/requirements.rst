@@ -2,11 +2,11 @@ Requirements
 ============
 
 * A (virtual) server to install BYCEPS on
-* At least two subdomains (administration UI, one party website)
+* At least two (sub-)domains (administration UI, one party website)
 * An SMTP_ server (to send emails)
 * Software:
 
-  * Python_ 3.11 or higher
+  * Python_ 3.12 or higher
   * PostgreSQL_ 13 or higher (for data persistence)
   * Redis_ 5.0 or higher (for the background job queue)
   * uWSGI_, Gunicorn_, *or* Waitress_ (as WSGI_ server)

@@ -2,7 +2,7 @@
 byceps.services.news.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,7 +15,6 @@ from byceps.services.site.blueprints.site.navigation import (
     subnavigation_for_view,
 )
 from byceps.services.site.models import SiteID
-from byceps.util.authz import has_current_user_permission
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated
 
@@ -105,7 +104,7 @@ def view(slug):
     }
 
 
-def _get_channel_ids() -> frozenset[NewsChannelID] | set[NewsChannelID]:
+def _get_channel_ids() -> set[NewsChannelID]:
     channel_ids = g.site.news_channel_ids
     if not channel_ids:
         abort(404)
@@ -125,7 +124,7 @@ def _get_items_per_page_value() -> int:
 
 
 def _may_current_user_view_drafts() -> bool:
-    return has_current_user_permission('news_item.view_draft')
+    return g.user.has_permission('news_item.view_draft')
 
 
 def _get_external_url(item: RenderedNewsItem) -> str | None:

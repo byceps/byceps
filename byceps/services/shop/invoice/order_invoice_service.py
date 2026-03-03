@@ -2,7 +2,7 @@
 byceps.services.shop.invoice.order_invoice_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,11 +12,11 @@ from byceps.config.models import InvoiceNinjaConfig
 from byceps.database import db
 from byceps.services.shop.invoice.errors import InvoiceError
 from byceps.services.shop.invoice.models import DownloadableInvoice
-from byceps.services.shop.order import order_log_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.order.models.detailed_order import AdminDetailedOrder
 from byceps.services.shop.order.models.order import OrderID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Result
 
 from . import invoiceninja_service, order_invoice_domain_service

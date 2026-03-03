@@ -13,7 +13,7 @@
       <h1 class="title">{{ _('Tourneys') }} {{ render_extra_in_heading(tourneys|length) }}</h1>
     </div>
     <div>
-      {%- if has_current_user_permission('tourney.administrate') %}
+      {%- if g.user.has_permission('tourney.administrate') %}
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create tourney') }}</span></a>
       </div>
@@ -31,15 +31,16 @@
         <th colspan="3">{{ _('Participants') }}</th>
         <th>{{ _('Start') }}</th>
         <th>{{ _('Status') }}</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
     {%- for tourney in tourneys|sort(attribute='title') %}
       <tr>
         <td>
-          <strong>{{ tourney.title }}</strong><br>
-          <small>{{ tourney.subtitle|fallback('') }}</small>
+          <a href="{{ url_for('.view', tourney_id=tourney.id) }}" class="disguised">
+            <strong>{{ tourney.title }}</strong><br>
+            <small>{{ tourney.subtitle|fallback('') }}</small>
+          </a>
         </td>
         <td>{{ tourney.category.title }}</td>
         <td class="centered">{{ tourney.team_size }}</td>
@@ -51,13 +52,6 @@
         {%- if tourney.registration_open %}
           {{ render_tag(_('Registration open'), class='color-info') }}
         {%- endif %}
-        </td>
-        <td>
-          {%- if has_current_user_permission('tourney.administrate') %}
-          <div class="button-row is-compact">
-            <a class="button is-compact" href="{{ url_for('.update_form', tourney_id=tourney.id) }}">{{ render_icon('edit', title=_('Edit tourney')) }}</a>
-          </div>
-          {%- endif %}
         </td>
       </tr>
     {%- endfor %}

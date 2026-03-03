@@ -2,7 +2,7 @@
 byceps.services.seating.seat_group_repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -146,7 +146,7 @@ def count_groups_for_party(party_id: PartyID) -> int:
 
 
 def find_group(group_id: SeatGroupID) -> tuple[DbSeatGroup, set[SeatID]] | None:
-    """Return the seat group with that id, or `None` if not found."""
+    """Return the seat group with that ID, or `None` if not found."""
     db_group = db.session.get(DbSeatGroup, group_id)
 
     if db_group is None:

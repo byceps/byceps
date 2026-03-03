@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -9,13 +9,14 @@ import pytest
 
 from byceps.announce.announce import build_announcement_request
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventSite, EventUser
+from byceps.services.core.events import EventSite
 from byceps.services.page.events import (
     PageCreatedEvent,
     PageDeletedEvent,
     PageUpdatedEvent,
 )
 from byceps.services.page.models import PageID, PageVersionID
+from byceps.services.user.models import User
 
 from tests.helpers import generate_uuid
 
@@ -29,7 +30,7 @@ PAGE_VERSION_ID = PageVersionID(generate_uuid())
 def test_announce_page_created(
     app: BycepsApp,
     now: datetime,
-    editor: EventUser,
+    editor: User,
     site: EventSite,
     webhook_for_irc,
 ):
@@ -56,7 +57,7 @@ def test_announce_page_created(
 def test_announce_page_updated(
     app: BycepsApp,
     now: datetime,
-    editor: EventUser,
+    editor: User,
     site: EventSite,
     webhook_for_irc,
 ):
@@ -83,7 +84,7 @@ def test_announce_page_updated(
 def test_announce_page_deleted(
     app: BycepsApp,
     now: datetime,
-    editor: EventUser,
+    editor: User,
     site: EventSite,
     webhook_for_irc,
 ):
@@ -110,12 +111,12 @@ def test_announce_page_deleted(
 
 
 @pytest.fixture(scope='module')
-def editor(make_event_user) -> EventUser:
-    return make_event_user(screen_name='PageEditor')
+def editor(make_user) -> User:
+    return make_user(screen_name='PageEditor')
 
 
 @pytest.fixture(scope='module')
 def site(make_event_site) -> EventSite:
     return make_event_site(
-        id='acmecon-2014-website', title='ACMECon 2014 website'
+        site_id='acmecon-2014-website', title='ACMECon 2014 website'
     )

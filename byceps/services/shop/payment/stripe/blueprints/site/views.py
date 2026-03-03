@@ -2,26 +2,19 @@
 byceps.services.shop.payment.stripe.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2020-2025 Jan Korneffel, Micha Ober, Jochen Kupperschmidt
+:Copyright: 2020-2026 Jan Korneffel, Micha Ober, Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from uuid import UUID
 
-from flask import (
-    abort,
-    current_app,
-    g,
-    jsonify,
-    make_response,
-    request,
-    url_for,
-)
+from flask import abort, g, jsonify, make_response, request, url_for
 from moneyed import Money
 from pydantic import BaseModel, ValidationError
 import stripe
 import structlog
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.config.errors import ConfigurationError
 from byceps.config.models import StripeConfig
 from byceps.services.shop.order import (
@@ -30,8 +23,9 @@ from byceps.services.shop.order import (
     signals as shop_order_signals,
 )
 from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.models.order import OrderID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import create_empty_json_response
 
@@ -53,7 +47,9 @@ def create_checkout_session():
 
     req = _parse_request()
 
-    order = order_service.find_order(req.shop_order_id)
+    order_id = OrderID(req.shop_order_id)
+
+    order = order_service.find_order(order_id)
     if not order or not order.is_open:
         return jsonify(error='Order does not exist or is not open'), 400
 
@@ -209,12 +205,18 @@ def _get_currency_code(money: Money) -> str:
 
 
 def _get_enabled_stripe_configuration() -> StripeConfig:
-    config = current_app.byceps_config.payment_gateways.stripe
+    payment_gateways_config = (
+        get_current_byceps_app().byceps_config.payment_gateways
+    )
 
-    if not config:
+    stripe_config = (
+        payment_gateways_config.stripe if payment_gateways_config else None
+    )
+
+    if not stripe_config:
         raise ConfigurationError('Stripe integration is not configured.')
 
-    if not config.enabled:
+    if not stripe_config.enabled:
         raise ConfigurationError('Stripe integration is not enabled.')
 
-    return config
+    return stripe_config

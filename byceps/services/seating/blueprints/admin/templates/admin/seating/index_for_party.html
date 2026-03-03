@@ -40,7 +40,7 @@
     <div>
       <h2 class="title">{{ _('Reservation Preconditions') }} {{ render_extra_in_heading(reservation_preconditions|length) }}</h2>
     </div>
-    {%- if has_current_user_permission('seating.administrate') %}
+    {%- if g.user.has_permission('seating.administrate') %}
     <div>
       <div class="button-row is-compact is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.reservation_precondition_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create') }}</span></a>
@@ -65,7 +65,7 @@
         <td>{% if now >= precondition.at_earliest %}{{ render_tag(_('Reached')) }}{% endif %}</td>
         <td class="bignumber number">{{ precondition.minimum_ticket_quantity }}</td>
         <td>
-          {%- if has_current_user_permission('seating.administrate') %}
+          {%- if g.user.has_permission('seating.administrate') %}
           <div class="button-row button-row--nowrap is-compact is-right-aligned">
             <a href="{{ url_for('.reservation_precondition_delete', precondition_id=precondition.id) }}" data-action="delete-reservation-precondition" class="button is-compact color-danger" title="{{ _('Delete') }}">{{ render_icon('delete') }}</a>
           </div>

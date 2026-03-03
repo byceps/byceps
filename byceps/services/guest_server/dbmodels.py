@@ -2,7 +2,7 @@
 byceps.services.guest_server.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -21,8 +21,7 @@ else:
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
+from byceps.services.user.models import UserID
 
 from .models import AddressID, IPAddress, ServerID
 
@@ -92,9 +91,6 @@ class DbGuestServerSetting(db.Model):
     def dns_server2(self, ip_address: IPAddress | None) -> None:
         self._dns_server2 = str(ip_address) if ip_address else None
 
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('party_id').build()
-
 
 class DbGuestServer(db.Model):
     """A guest server."""
@@ -141,9 +137,6 @@ class DbGuestServer(db.Model):
         self.checked_in_at = None
         self.checked_out_at = None
 
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('id').build()
-
 
 class DbGuestServerAddress(db.Model):
     """An guest server's IPv4 address and optional DNS name."""
@@ -154,9 +147,7 @@ class DbGuestServerAddress(db.Model):
     server_id: Mapped[ServerID] = mapped_column(
         db.Uuid, db.ForeignKey('guest_servers.id'), index=True
     )
-    server: Mapped[DbGuestServer] = relationship(
-        DbGuestServer, backref='addresses'
-    )
+    server: Mapped[DbGuestServer] = relationship(backref='addresses')
     created_at: Mapped[datetime] = mapped_column(db.DateTime)
     _ip_address: Mapped[str | None] = mapped_column(
         'ip_address', postgresql.INET
@@ -216,6 +207,3 @@ class DbGuestServerAddress(db.Model):
     @gateway.setter
     def gateway(self, ip_address: IPAddress | None) -> None:
         self._gateway = str(ip_address) if ip_address else None
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('id').build()

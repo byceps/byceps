@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -9,7 +9,7 @@ from byceps.byceps_app import BycepsApp
 from byceps.services.orga_team import orga_team_service
 from byceps.services.orga_team.models import OrgaTeam
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token, log_in_user
 

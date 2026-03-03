@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,7 +10,6 @@ from moneyed import Money
 import pytest
 
 from byceps.byceps_app import BycepsApp
-from byceps.services.core.events import EventUser
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.events import ShopOrderPlacedEvent
 from byceps.services.shop.order.models.number import OrderNumber
@@ -24,7 +23,7 @@ from byceps.services.shop.product.models import (
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from tests.helpers import create_site, http_client, log_in_user
 from tests.helpers.shop import create_shop_snippet
@@ -139,10 +138,10 @@ def test_order(
 
     event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
-        initiator=EventUser.from_user(orderer_user),
+        initiator=orderer_user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
@@ -175,7 +174,7 @@ def test_order_single(
     url = f'{BASE_URL}/shop/order_single/{product.id!s}'
     form_data: dict[str, int | str] = {
         **COMMON_FORM_DATA,
-        'quantity': 1,  # TODO: Test with `3` if limitation is removed.
+        'quantity': 1,  # Overridden with fixed quantity 1 anyway.
     }
     with http_client(site_app, user_id=orderer_user.id) as client:
         response = client.post(url, data=form_data)
@@ -201,10 +200,10 @@ def test_order_single(
 
     event = ShopOrderPlacedEvent(
         occurred_at=order.created_at,
-        initiator=EventUser.from_user(orderer_user),
+        initiator=orderer_user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 

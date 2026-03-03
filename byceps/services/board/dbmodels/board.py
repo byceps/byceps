@@ -2,7 +2,7 @@
 byceps.services.board.dbmodels.board
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,7 +11,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 from byceps.database import db
 from byceps.services.board.models import BoardID
 from byceps.services.brand.models import BrandID
-from byceps.util.instances import ReprBuilder
 
 
 class DbBoard(db.Model):
@@ -23,16 +22,15 @@ class DbBoard(db.Model):
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    access_restricted: Mapped[bool] = mapped_column(default=False)
+    access_restricted: Mapped[bool]
 
-    def __init__(self, board_id: BoardID, brand_id: BrandID) -> None:
+    def __init__(
+        self,
+        board_id: BoardID,
+        brand_id: BrandID,
+        *,
+        access_restricted: bool = False,
+    ) -> None:
         self.id = board_id
         self.brand_id = brand_id
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add('brand', self.brand_id)
-            .build()
-        )
+        self.access_restricted = access_restricted

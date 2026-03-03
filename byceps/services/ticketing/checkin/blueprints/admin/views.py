@@ -2,7 +2,7 @@
 byceps.services.ticketing.checkin.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -27,10 +27,11 @@ from byceps.services.ticketing import (
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import TicketID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_notice, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import permission_required, respond_no_content
 
 
@@ -144,32 +145,30 @@ def check_in_user(party_id, ticket_id):
     party = _get_party_or_404(party_id)
     ticket = _get_ticket_or_404(ticket_id)
 
-    initiator = g.user
+    initiator = g.user.as_user()
 
-    check_in_result = ticket_user_checkin_service.check_in_user(
+    match ticket_user_checkin_service.check_in_user(
         party.id, ticket.id, initiator
-    )
-
-    if check_in_result.is_err():
-        err = check_in_result.unwrap_err()
-        if isinstance(err, ticketing_errors.UserAccountDeletedError):
+    ):
+        case Ok(event):
+            pass
+        case Err(ticketing_errors.UserAccountDeletedError()):
             flash_error(
                 gettext(
                     'The user account assigned to this ticket has been deleted. Check-in denied.'
                 )
             )
-        elif isinstance(err, ticketing_errors.UserAccountSuspendedError):
+            return
+        case Err(ticketing_errors.UserAccountSuspendedError()):
             flash_error(
                 gettext(
                     'The user account assigned to this ticket has been suspended. Check-in denied.'
                 )
             )
-        else:
+            return
+        case Err(_):
             flash_error(gettext('An unexpected error occurred.'))
-
-        return
-
-    event = check_in_result.unwrap()
+            return
 
     ticketing_signals.ticket_checked_in.send(None, event=event)
 
@@ -205,7 +204,7 @@ def revert_user_check_in(ticket_id):
     """Revert the user check-in state."""
     ticket = _get_ticket_or_404(ticket_id)
 
-    initiator = g.user
+    initiator = g.user.as_user()
 
     ticket_user_checkin_service.revert_user_check_in(ticket.id, initiator)
 

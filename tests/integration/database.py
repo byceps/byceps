@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,13 +11,9 @@ from byceps.services.language import language_service
 
 
 def set_up_database() -> None:
-    # Learn about all tables to also drop old ones no longer
-    # defined in models.
-    db.reflect()
+    _load_dbmodels()
 
     db.drop_all()
-
-    _load_dbmodels()
     db.create_all()
 
 

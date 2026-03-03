@@ -2,14 +2,13 @@
 byceps.services.shop.cart.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from moneyed import Currency
 
 from byceps.services.shop.product.models import Product, ProductWithQuantity
-from byceps.util.instances import ReprBuilder
 
 
 class Cart:
@@ -34,8 +33,3 @@ class Cart:
 
     def is_empty(self) -> bool:
         return not self._items
-
-    def __repr__(self) -> str:
-        item_count = len(self._items)
-
-        return ReprBuilder(self).add_custom(f'{item_count:d} items').build()

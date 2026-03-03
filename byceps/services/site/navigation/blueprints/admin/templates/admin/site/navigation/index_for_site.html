@@ -9,56 +9,136 @@
     <div>
       <h1 class="title">{{ page_title }}</h1>
     </div>
-    {%- if has_current_user_permission('site_navigation.administrate') %}
+    {%- if g.user.has_permission('site_navigation.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.menu_create_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Create menu') }}</span></a>
+        <a class="button" href="{{ url_for('.menu_trees_copy_form', target_site_id=site.id) }}">{{ render_icon('copy') }} <span>{{ _('Copy menus') }}</span></a>
       </div>
     </div>
     {%- endif %}
   </div>
 
   {%- if menu_trees %}
+    {%- for menu_tree in menu_trees|sort(attribute='menu.name,menu.language_code') %}
   <table class="itemlist is-wide">
+    <colgroup>
+      <col style="width: 15%;"/>
+      <col/>
+      <col/>
+    </colgroup>
     <thead>
       <tr>
-        <th>{{ _('Name') }}</th>
+        <th>{{ _('Menu name') }}</th>
         <th>{{ _('Language') }}</th>
-        <th></th>
-        <th></th>
+        <th>{{ _('Position') }}</th>
+        <th>{{ _('Label') }}</th>
+        <th>{{ _('Target type') }}</th>
+        <th>{{ _('Target') }}</th>
+        <th>{{ _('Current page ID') }}</th>
+        <th></th>{# tags #}
+        <th></th>{# actions #}
       </tr>
     </thead>
     <tbody>
-    {%- for menu_tree in menu_trees|sort(attribute='menu.name,menu.language_code') %}
-{{ render_menu_table_row(menu_tree.menu) }}
+{{ render_menu_table_rows(menu_tree.menu) }}
       {%- for menu in menu_tree.submenus|sort(attribute='name,language_code') %}
-{{ render_menu_table_row(menu) }}
+{{ render_menu_table_rows(menu) }}
       {%- endfor %}
-    {%- endfor %}
     </tbody>
   </table>
+    {%- endfor %}
   {%- else %}
   <div class="box no-data-message">{{ _('No menus exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}
 
-{% macro render_menu_table_row(menu) -%}
+{% macro render_menu_table_rows(menu) -%}
       <tr>
         <td>
           {% if menu.parent_menu_id %}&#x2ba1;{% endif %}
           <a href="{{ url_for('.view', menu_id=menu.id) }}"><strong>{{ menu.name }}</strong></a>
         </td>
         <td>{{ menu.language_code }}</td>
-        <td>
+        <td colspan="5"></td>{# only for menu items #}
+        <td class="nowrap">
           {%- if menu.hidden -%}
           {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
           {%- endif -%}
         </td>
-        <td style="text-align: right;">
-          {%- if not menu.parent_menu_id and has_current_user_permission('site_navigation.administrate') %}
-          <a class="button is-compact" href="{{ url_for('.submenu_create_form', site_id=site.id, parent_menu_id=menu.id) }}">{{ render_icon('add') }} <span>{{ _('Create submenu') }}</span></a>
+        <td>
+          {%- if not menu.parent_menu_id and g.user.has_permission('site_navigation.administrate') %}
+          <div class="button-row is-right-aligned">
+            <div class="dropdown">
+              <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
+              <ol class="dropdown-menu dropdown-menu--right">
+                <li><a class="dropdown-item" href="{{ url_for('.submenu_create_form', site_id=site.id, parent_menu_id=menu.id) }}">{{ render_icon('add') }} {{ _('Create submenu') }}</a></li>
+              </ol>
+            </div>
+          </div>
           {%- endif -%}
         </td>
       </tr>
+      {%- for item in menu.items|sort(attribute='position') %}
+      <tr>
+        <td colspan="2"></td>{# only for menus #}
+        <td>{{ item.position }}</td>
+        <td><strong>{{ item.label }}</strong></td>
+        <td>
+          {%- if item.target_type.name == 'endpoint' -%}
+          {{- _('Endpoint') -}}
+          {%- elif item.target_type.name == 'page' -%}
+          {{- _('Page') -}}
+          {%- elif item.target_type.name == 'url' -%}
+          {{- _('URL') -}}
+          {%- elif item.target_type.name == 'view' -%}
+          {{- _('View') -}}
+          {%- else -%}
+          {{- '?' -}}
+          {%- endif -%}
+        </td>
+        <td>{{ item.target }}</td>
+        <td>{{ item.current_page_id }}</td>
+        <td>
+          {%- if item.hidden -%}
+          {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+          {%- endif -%}
+        </td>
+        <td>
+          {%- if g.user.has_permission('site_navigation.administrate') -%}
+          <div class="button-row is-right-aligned">
+            <div class="dropdown">
+              <button class="dropdown-toggle button is-compact">{{ render_icon('chevron-down') }}</button>
+              <ol class="dropdown-menu dropdown-menu--right">
+                <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
+                {%- if item.hidden %}
+                <li><a class="dropdown-item" href="{{ url_for('.item_unhide', item_id=item.id) }}" data-action="item-unhide">{{ render_icon('view') }} {{ _('Make visible') }}</a></li>
+                {%- else %}
+                <li><a class="dropdown-item" href="{{ url_for('.item_hide', item_id=item.id) }}" data-action="item-hide">{{ render_icon('hidden') }} {{ _('Hide') }}</a></li>
+                {%- endif %}
+                <li class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ url_for('.item_move_up', item_id=item.id) }}" data-action="item-move-up">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('.item_move_down', item_id=item.id) }}" data-action="item-move-down">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+                <li class="dropdown-divider"></li>
+                <li><a class="dropdown-item color--danger" href="{{ url_for('.item_delete', item_id=item.id) }}" data-action="item-delete">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+              </ol>
+            </div>
+          </div>
+          {%- endif -%}
+        </td>
+      </tr>
+      {%- endfor %}
 {%- endmacro %}
+
+{% block scripts %}
+<script>
+onDomReady(() => {
+  post_on_click_then_reload('[data-action="item-hide"]');
+  post_on_click_then_reload('[data-action="item-unhide"]');
+  post_on_click_then_reload('[data-action="item-move-up"]');
+  post_on_click_then_reload('[data-action="item-move-down"]');
+  confirmed_delete_on_click_then_reload('[data-action="item-delete"]', '{{ _('Delete menu item?') }}');
+});
+</script>
+{%- endblock %}

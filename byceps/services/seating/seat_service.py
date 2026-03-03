@@ -2,7 +2,7 @@
 byceps.services.seating.seat_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -17,7 +17,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketID,
 )
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from . import seat_domain_service, seat_repository
 from .dbmodels.seat import DbSeat
@@ -88,7 +88,7 @@ def aggregate_seat_utilizations(
 
 
 def find_seat(seat_id: SeatID) -> Seat | None:
-    """Return the seat with that id, or `None` if not found."""
+    """Return the seat with that ID, or `None` if not found."""
     db_seat = seat_repository.find_seat(seat_id)
 
     if db_seat is None:
@@ -98,7 +98,7 @@ def find_seat(seat_id: SeatID) -> Seat | None:
 
 
 def get_seat(seat_id: SeatID) -> Seat:
-    """Return the seat with that id, or raise an exception."""
+    """Return the seat with that ID, or raise an exception."""
     db_seat = seat_repository.get_seat(seat_id)
 
     return _db_entity_to_seat(db_seat)
@@ -161,6 +161,7 @@ def _build_area_seat(
         rotation=seat.rotation,
         label=seat.label,
         type_=seat.type_,
+        blocked=seat.blocked,
         occupied_by_ticket_id=ticket_id,
         occupied_by_user=user,
     )
@@ -176,6 +177,7 @@ def _db_entity_to_seat(db_seat: DbSeat) -> Seat:
         category_id=db_seat.category_id,
         label=db_seat.label,
         type_=db_seat.type_,
+        blocked=db_seat.blocked,
         occupied_by_ticket_id=db_seat.occupied_by_ticket.id
         if db_seat.occupied_by_ticket
         else None,

@@ -1,11 +1,11 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from byceps.services.authn.api import authn_api_domain_service
 from byceps.services.authz.models import PermissionID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from tests.helpers import generate_uuid
 

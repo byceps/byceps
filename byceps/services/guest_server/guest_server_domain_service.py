@@ -2,16 +2,16 @@
 byceps.services.guest_server.guest_server_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 import dataclasses
 
-from byceps.services.core.events import EventParty, EventUser
+from byceps.services.core.events import EventParty
 from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -152,9 +152,9 @@ def _build_guest_server_registered_event(
 ) -> GuestServerRegisteredEvent:
     return GuestServerRegisteredEvent(
         occurred_at=server.created_at,
-        initiator=EventUser.from_user(creator),
+        initiator=creator,
         party=EventParty.from_party(party),
-        owner=EventUser.from_user(owner),
+        owner=owner,
         server_id=server.id,
     )
 
@@ -180,8 +180,8 @@ def _build_guest_server_approved_event(
 ) -> GuestServerApprovedEvent:
     return GuestServerApprovedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        owner=EventUser.from_user(server.owner),
+        initiator=initiator,
+        owner=server.owner,
         server_id=server.id,
     )
 
@@ -218,8 +218,8 @@ def _build_guest_server_checked_in_event(
 ) -> GuestServerCheckedInEvent:
     return GuestServerCheckedInEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        owner=EventUser.from_user(server.owner),
+        initiator=initiator,
+        owner=server.owner,
         server_id=server.id,
     )
 
@@ -255,8 +255,8 @@ def _build_guest_server_checked_out_event(
 ) -> GuestServerCheckedOutEvent:
     return GuestServerCheckedOutEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        owner=EventUser.from_user(server.owner),
+        initiator=initiator,
+        owner=server.owner,
         server_id=server.id,
     )
 

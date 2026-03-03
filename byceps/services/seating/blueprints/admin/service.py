@@ -2,7 +2,7 @@
 byceps.services.seating.blueprints.admin.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -19,7 +19,7 @@ from byceps.services.ticketing.models.ticket import (
     TicketID,
 )
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @dataclass(frozen=True, kw_only=True)

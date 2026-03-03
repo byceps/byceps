@@ -2,7 +2,7 @@
 byceps.services.tourney.tourney.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,10 +12,14 @@ from flask import abort, g, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
 from byceps.services.party import party_service
+from byceps.services.party.models import Party
 from byceps.services.tourney import tourney_category_service, tourney_service
+from byceps.services.tourney.log import tourney_log_service
+from byceps.services.tourney.models import TourneyWithCategory
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm, UpdateForm
@@ -36,6 +40,28 @@ def index(party_id):
     return {
         'party': party,
         'tourneys': tourneys,
+    }
+
+
+@blueprint.get('/tourneys/<tourney_id>')
+@permission_required('tourney.view')
+@templated
+def view(tourney_id):
+    """Show a tourney."""
+    tourney = _get_tourney_or_404(tourney_id)
+
+    party = party_service.get_party(tourney.party_id)
+
+    match tourney_log_service.get_events_for_tourney(tourney):
+        case Ok(events):
+            pass
+        case Err(_):
+            events = []
+
+    return {
+        'party': party,
+        'tourney': tourney,
+        'events': events,
     }
 
 
@@ -76,7 +102,7 @@ def create(party_id):
     starts_at_local = form.starts_at.data
     starts_at_utc = to_utc(starts_at_local)
 
-    creator = g.user
+    creator = g.user.as_user()
     category = tourney_category_service.get_category(category_id)
 
     tourney, event = tourney_service.create_tourney(
@@ -95,7 +121,7 @@ def create(party_id):
         gettext('Tourney "%(title)s" has been created.', title=tourney.title)
     )
 
-    return redirect_to('.index', party_id=tourney.party_id)
+    return redirect_to('.view', tourney_id=tourney.id)
 
 
 @blueprint.get('/tourneys/<tourney_id>/update')
@@ -105,7 +131,7 @@ def update_form(tourney_id, erroneous_form=None):
     """Show form to update the tourney."""
     tourney = _get_tourney_or_404(tourney_id)
 
-    party = party_service.find_party(tourney.party_id)
+    party = party_service.get_party(tourney.party_id)
 
     data = dataclasses.asdict(tourney)
     starts_at_local = to_user_timezone(tourney.starts_at)
@@ -140,7 +166,6 @@ def update(tourney_id):
     max_participant_count = form.max_participant_count.data
     starts_at_local = form.starts_at.data
     starts_at_utc = to_utc(starts_at_local)
-    registration_open = form.registration_open.data
 
     tourney = tourney_service.update_tourney(
         tourney.id,
@@ -150,17 +175,16 @@ def update(tourney_id):
         category_id,
         max_participant_count,
         starts_at_utc,
-        registration_open,
     )
 
     flash_success(
         gettext('Tourney "%(title)s" has been updated.', title=tourney.title)
     )
 
-    return redirect_to('.index', party_id=tourney.party_id)
+    return redirect_to('.view', tourney_id=tourney.id)
 
 
-def _get_party_or_404(party_id):
+def _get_party_or_404(party_id) -> Party:
     party = party_service.find_party(party_id)
 
     if party is None:
@@ -169,8 +193,8 @@ def _get_party_or_404(party_id):
     return party
 
 
-def _get_tourney_or_404(tourney_id):
-    tourney = tourney_service.find_tourney(tourney_id)
+def _get_tourney_or_404(tourney_id) -> TourneyWithCategory:
+    tourney = tourney_service.find_tourney_with_category(tourney_id)
 
     if tourney is None:
         abort(404)

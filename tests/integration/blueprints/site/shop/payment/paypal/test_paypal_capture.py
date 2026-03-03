@@ -5,7 +5,6 @@ from freezegun import freeze_time
 from paypalhttp import HttpError, HttpResponse
 import pytest
 
-from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_checkout_service, order_service
@@ -17,7 +16,7 @@ from byceps.services.shop.payment.paypal.blueprints.site.views import (
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.models import Site, SiteID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok
 
 from tests.helpers import create_site, http_client, log_in_user
@@ -142,10 +141,10 @@ def test_payment_success(
 
     event = ShopOrderPaidEvent(
         occurred_at=paid_at,
-        initiator=EventUser.from_user(orderer_user),
+        initiator=orderer_user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
         payment_method='paypal',
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)

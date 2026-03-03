@@ -1,8 +1,8 @@
 Populate Database
 =================
 
-Initialize the database (:ref:`details <Initialize Database>`) specified
-in the configuration file:
+Initialize the database (:ref:`details <Initialize Database>`) specified in the
+configuration file:
 
 .. code-block:: console
 
@@ -17,8 +17,8 @@ Expected output:
     Adding language "en" ... done.
     Adding language "de" ... done.
 
-With the tables and the authorization data in place, create the initial
-user (which will get all available roles assigned):
+With the tables and the authorization data in place, create the initial user
+(which will get all available roles assigned):
 
 .. code-block:: console
 
@@ -40,5 +40,5 @@ Expected output:
     Enabling user "Flynn" ... done.
     Assigning 35 roles to user "Flynn" ... done.
 
-Those roles allow the user to log in to the admin backend and to access
-all administrative functionality.
+Those roles allow the user to log in to the admin backend and to access all
+administrative functionality.

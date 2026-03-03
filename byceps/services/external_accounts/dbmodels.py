@@ -2,7 +2,7 @@
 byceps.services.external_accounts.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,7 @@ from uuid import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 
 class DbConnectedExternalAccount(db.Model):

@@ -6,7 +6,7 @@ Validators for use with Click_.
 
 .. _Click: https://click.palletsprojects.com/
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -21,7 +21,7 @@ from byceps.services.party.models import Party, PartyID
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 
 def validate_brand(ctx, param, brand_id: BrandID) -> Brand:

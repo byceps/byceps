@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,7 +10,7 @@ import pytest
 from byceps.services.authn.events import UserIdentityTagDeletedEvent
 from byceps.services.authn.identity_tag import authn_identity_tag_domain_service
 from byceps.services.authn.identity_tag.models import UserIdentityTag
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token, generate_uuid
 
@@ -34,8 +34,8 @@ def test_delete_tag(tag: UserIdentityTag, user: User, admin_user: User):
     assert log_entry.id is not None
     assert log_entry.occurred_at == event.occurred_at
     assert log_entry.event_type == 'user-identity-tag-deleted'
-    assert log_entry.user_id == user.id
-    assert log_entry.initiator_id == initiator.id
+    assert log_entry.user == user
+    assert log_entry.initiator == initiator
     assert log_entry.data == {'tag_id': str(tag.id)}
 
 

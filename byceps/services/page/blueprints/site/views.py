@@ -2,15 +2,18 @@
 byceps.services.page.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from babel import Locale
 from flask import abort, g
+from flask_babel import get_locale
 
 from byceps.services.page import page_service
+from byceps.services.page.models import PageAggregate
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.l10n import get_default_locale, get_locale_str
+from byceps.util.l10n import get_default_locale
 
 from .templating import render_page, url_for_page
 
@@ -27,19 +30,27 @@ def view(url_path):
     """
     url_path = '/' + url_path
 
-    version = _get_page_version(url_path, get_locale_str())
-    if version is None:
-        version = _get_page_version(url_path, get_default_locale())
+    page = _get_current_page(url_path, get_locale())
+    if page is None:
+        locale = get_default_locale()
+        page = _get_current_page(url_path, locale)
 
-    if version is None:
+    if page is None:
         abort(404)
+
+    if page.hidden:
+        abort(404)
+
+    return render_page(page)
+
+
+def _get_current_page(url_path: str, locale: Locale) -> PageAggregate | None:
+    version = page_service.find_current_version_for_url_path(
+        g.site.id, url_path, locale.language
+    )
+    if version is None:
+        return None
 
     page = page_service.get_page(version.page_id)
 
-    return render_page(page, version)
-
-
-def _get_page_version(url_path: str, language_code: str):
-    return page_service.find_current_version_for_url_path(
-        g.site.id, url_path, language_code
-    )
+    return page_service.build_page_aggregate(page, version)

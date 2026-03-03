@@ -2,7 +2,7 @@
 byceps.services.tourney.dbmodels.match
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,7 +10,6 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
 from byceps.services.tourney.models import MatchID
-from byceps.util.uuid import generate_uuid7
 
 
 class DbMatch(db.Model):
@@ -18,6 +17,7 @@ class DbMatch(db.Model):
 
     __tablename__ = 'tourney_matches'
 
-    id: Mapped[MatchID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[MatchID] = mapped_column(db.Uuid, primary_key=True)
+
+    def __init__(self, match_id: MatchID) -> None:
+        self.id = match_id

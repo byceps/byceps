@@ -2,16 +2,15 @@
 byceps.services.seating.seat_import_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
-import json
 
-from pydantic import ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_category_service
@@ -19,7 +18,19 @@ from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.util.result import Err, Ok, Result
 
 from . import seat_group_service, seat_service, seating_area_service
-from .models import Seat, SeatingAreaID, SeatToImport, SerializableSeatToImport
+from .models import Seat, SeatingAreaID, SeatToImport
+
+
+class SerializableSeatToImport(BaseModel):
+    area_title: str
+    coord_x: int
+    coord_y: int
+    category_title: str
+    rotation: int | None = None
+    label: str | None = None
+    type_: str | None = Field(default=None, alias='type')
+    blocked: bool = False
+    group_title: str | None = None
 
 
 def serialize_seat_to_import(
@@ -52,7 +63,7 @@ def serialize_seat_to_import(
     if group_title is not None:
         model.group_title = group_title
 
-    return model.json(exclude_unset=True)
+    return model.model_dump_json(by_alias=True, exclude_unset=True)
 
 
 def load_seats_from_json_lines(
@@ -62,13 +73,13 @@ def load_seats_from_json_lines(
     return parser.parse_lines(lines)
 
 
-def _create_parser(party_id: PartyID) -> _SeatsImportParser:
+def _create_parser(party_id: PartyID) -> SeatsImportParser:
     """Create a parser, populated with party-specific data."""
     area_ids_by_title = _get_area_ids_by_title(party_id)
     category_ids_by_title = _get_category_ids_by_title(party_id)
     seat_group_titles = _get_seat_group_titles(party_id)
 
-    return _SeatsImportParser(
+    return SeatsImportParser(
         area_ids_by_title, category_ids_by_title, seat_group_titles
     )
 
@@ -93,7 +104,7 @@ def _get_seat_group_titles(party_id: PartyID) -> set[str]:
     return {group.title for group in groups}
 
 
-class _SeatsImportParser:
+class SeatsImportParser:
     """Parse JSON Lines records into importable seat objects."""
 
     def __init__(
@@ -145,6 +156,7 @@ class _SeatsImportParser:
             rotation=parsed_seat.rotation,
             label=parsed_seat.label,
             type_=parsed_seat.type_,
+            blocked=parsed_seat.blocked,
             group_title=parsed_seat.group_title,
         )
         return Ok(assembled_seat)
@@ -153,12 +165,9 @@ class _SeatsImportParser:
 def _parse_seat_json(json_data: str) -> Result[SerializableSeatToImport, str]:
     """Parse a JSON object into a seat import object."""
     try:
-        data_dict = json.loads(json_data)
-    except json.decoder.JSONDecodeError as e:
-        return Err(f'Could not parse JSON: {e}')
-
-    try:
-        seat_to_import = SerializableSeatToImport.model_validate(data_dict)
+        seat_to_import = SerializableSeatToImport.model_validate_json(
+            json_data, strict=True
+        )
         return Ok(seat_to_import)
     except ValidationError as e:
         return Err(str(e))

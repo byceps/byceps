@@ -2,7 +2,7 @@
 byceps.services.seating.dbmodels.seat
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -39,7 +39,7 @@ class DbSeat(db.Model):
     area_id: Mapped[SeatingAreaID] = mapped_column(
         db.Uuid, db.ForeignKey('seating_areas.id'), index=True
     )
-    area: Mapped[DbSeatingArea] = relationship(DbSeatingArea, backref='seats')
+    area: Mapped[DbSeatingArea] = relationship(backref='seats')
     coord_x: Mapped[int]
     coord_y: Mapped[int]
     rotation: Mapped[int | None]
@@ -48,9 +48,10 @@ class DbSeat(db.Model):
         db.ForeignKey('ticket_categories.id'),
         index=True,
     )
-    category: Mapped[DbTicketCategory] = relationship(DbTicketCategory)
+    category: Mapped[DbTicketCategory] = relationship()
     label: Mapped[str | None] = mapped_column(db.UnicodeText)
     type_: Mapped[str | None] = mapped_column('type', db.UnicodeText)
+    blocked: Mapped[bool]
 
     def __init__(
         self,
@@ -63,6 +64,7 @@ class DbSeat(db.Model):
         rotation: int | None = None,
         label: str | None = None,
         type_: str | None = None,
+        blocked: bool = False,
     ) -> None:
         self.id = seat_id
         self.area_id = area_id
@@ -72,6 +74,7 @@ class DbSeat(db.Model):
         self.category_id = category_id
         self.label = label
         self.type_ = type_
+        self.blocked = blocked
 
     @hybrid_property
     def coords(self) -> Point:

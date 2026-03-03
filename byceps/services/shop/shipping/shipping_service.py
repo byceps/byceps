@@ -2,7 +2,7 @@
 byceps.services.shop.shipping.shipping_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,8 +13,7 @@ from dataclasses import dataclass
 from sqlalchemy import select
 
 from byceps.database import db
-from byceps.services.shop.order.dbmodels.line_item import DbLineItem
-from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.dbmodels.order import DbLineItem, DbOrder
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.product.dbmodels.product import DbProduct
 from byceps.services.shop.product.models import ProductID

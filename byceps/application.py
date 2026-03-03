@@ -2,7 +2,7 @@
 byceps.application
 ~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -22,13 +22,13 @@ from byceps.config.converter import convert_config
 from byceps.config.errors import ConfigurationError
 from byceps.config.integration import parse_value_from_environment
 from byceps.config.models import (
-    AdminAppConfig,
-    ApiAppConfig,
+    AdminWebAppConfig,
+    ApiWebAppConfig,
     AppConfig,
     AppMode,
     BycepsConfig,
     CliAppConfig,
-    SiteAppConfig,
+    SiteWebAppConfig,
     WebAppConfig,
     WorkerAppConfig,
 )
@@ -40,14 +40,14 @@ from byceps.util.authz import load_permissions
 from byceps.util.l10n import get_current_user_locale
 from byceps.util.templating import create_site_template_loader
 
-from .byceps_app import BycepsApp
+from .byceps_app import BycepsApp, create_byceps_app
 
 
 log = structlog.get_logger()
 
 
 def create_admin_app(
-    byceps_config: BycepsConfig, app_config: AdminAppConfig
+    byceps_config: BycepsConfig, app_config: AdminWebAppConfig
 ) -> BycepsApp:
     app = _create_app(byceps_config, app_config)
 
@@ -57,7 +57,7 @@ def create_admin_app(
 
 
 def create_site_app(
-    byceps_config: BycepsConfig, app_config: SiteAppConfig
+    byceps_config: BycepsConfig, app_config: SiteWebAppConfig
 ) -> BycepsApp:
     app = _create_app(byceps_config, app_config)
 
@@ -69,7 +69,7 @@ def create_site_app(
 
 
 def create_api_app(
-    byceps_config: BycepsConfig, app_config: ApiAppConfig
+    byceps_config: BycepsConfig, app_config: ApiWebAppConfig
 ) -> BycepsApp:
     app = _create_app(byceps_config, app_config)
 
@@ -94,10 +94,7 @@ def _create_app(
     byceps_config: BycepsConfig, app_config: AppConfig
 ) -> BycepsApp:
     """Create the actual Flask-based BYCEPS application."""
-    app_mode = _get_app_mode(app_config)
-    site_id = _get_site_id(app_config)
-
-    app = BycepsApp(app_mode, byceps_config, site_id)
+    app = create_byceps_app(byceps_config, app_config)
 
     # Avoid connection errors after database becomes temporarily
     # unreachable, then becomes reachable again.
@@ -161,32 +158,6 @@ def _create_app(
     app.byceps_feature_states['debug_toolbar'] = debug_toolbar_enabled
 
     return app
-
-
-def _get_app_mode(app_config: AppConfig) -> AppMode:
-    """Derive application mode from application config."""
-    match app_config:
-        case AdminAppConfig():
-            return AppMode.admin
-        case ApiAppConfig():
-            return AppMode.api
-        case CliAppConfig():
-            return AppMode.cli
-        case SiteAppConfig():
-            return AppMode.site
-        case WorkerAppConfig():
-            return AppMode.worker
-        case _:
-            raise ValueError('Unexpected application configuration type')
-
-
-def _get_site_id(app_config: AppConfig) -> str | None:
-    """Return site ID for site application configurations, `None` otherwise."""
-    match app_config:
-        case SiteAppConfig():
-            return app_config.site_id
-        case _:
-            return None
 
 
 def _configure(
@@ -317,6 +288,6 @@ def _log_app_state(app: BycepsApp) -> None:
 
     match app.byceps_app_mode:
         case AppMode.site:
-            event_kw['site_id'] = app.site_id
+            event_kw['site_id'] = str(app.site_id)
 
     log.info('Application created', **event_kw)

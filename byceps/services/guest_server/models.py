@@ -2,7 +2,7 @@
 byceps.services.guest_server.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -16,7 +16,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 IPAddress = IPv4Address | IPv6Address

@@ -2,27 +2,23 @@
 byceps.services.snippet.snippet_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Sequence
 from datetime import datetime
 
-from sqlalchemy import delete, select
-
-from byceps.database import db
-from byceps.services.core.events import EventUser
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
-from .dbmodels import (
-    DbCurrentSnippetVersionAssociation,
-    DbSnippet,
-    DbSnippetVersion,
+from . import snippet_repository
+from .dbmodels import DbSnippet, DbSnippetVersion
+from .errors import (
+    SnippetAlreadyExistsError,
+    SnippetDeletionFailedError,
+    SnippetNotFoundError,
 )
-from .errors import SnippetAlreadyExistsError, SnippetNotFoundError
 from .events import (
     SnippetCreatedEvent,
     SnippetDeletedEvent,
@@ -82,159 +78,112 @@ def create_snippet(
     body: str,
 ) -> tuple[DbSnippetVersion, SnippetCreatedEvent]:
     """Create a snippet and its initial version, and return that version."""
-    snippet = DbSnippet(scope, name, language_code)
-    db.session.add(snippet)
+    created_at = datetime.utcnow()
 
-    version = DbSnippetVersion(snippet, creator.id, body)
-    db.session.add(version)
-
-    current_version_association = DbCurrentSnippetVersionAssociation(
-        snippet, version
+    db_snippet, db_version = snippet_repository.create_snippet(
+        scope, name, language_code, created_at, creator.id, body
     )
-    db.session.add(current_version_association)
-
-    db.session.commit()
 
     event = SnippetCreatedEvent(
-        occurred_at=version.created_at,
-        initiator=EventUser.from_user(creator),
-        snippet_id=snippet.id,
-        scope=snippet.scope,
-        snippet_name=snippet.name,
-        language_code=snippet.language_code,
-        snippet_version_id=version.id,
+        occurred_at=db_version.created_at,
+        initiator=creator,
+        snippet_id=db_snippet.id,
+        scope=db_snippet.scope,
+        snippet_name=db_snippet.name,
+        language_code=db_snippet.language_code,
+        snippet_version_id=db_version.id,
     )
 
-    return version, event
+    return db_version, event
 
 
 def update_snippet(
     snippet_id: SnippetID, creator: User, body: str
 ) -> tuple[DbSnippetVersion, SnippetUpdatedEvent]:
     """Update snippet with a new version, and return that version."""
-    snippet = find_snippet(snippet_id)
-    if snippet is None:
-        raise ValueError('Unknown snippet ID')
+    created_at = datetime.utcnow()
 
-    version = DbSnippetVersion(snippet, creator.id, body)
-    db.session.add(version)
-
-    snippet.current_version = version
-
-    db.session.commit()
-
-    event = SnippetUpdatedEvent(
-        occurred_at=version.created_at,
-        initiator=EventUser.from_user(creator),
-        snippet_id=snippet.id,
-        scope=snippet.scope,
-        snippet_name=snippet.name,
-        language_code=snippet.language_code,
-        snippet_version_id=version.id,
+    db_snippet, db_version = snippet_repository.update_snippet(
+        snippet_id, created_at, creator.id, body
     )
 
-    return version, event
+    event = SnippetUpdatedEvent(
+        occurred_at=db_version.created_at,
+        initiator=creator,
+        snippet_id=db_snippet.id,
+        scope=db_snippet.scope,
+        snippet_name=db_snippet.name,
+        language_code=db_snippet.language_code,
+        snippet_version_id=db_version.id,
+    )
+
+    return db_version, event
 
 
 def delete_snippet(
     snippet_id: SnippetID, *, initiator: User | None = None
-) -> tuple[bool, SnippetDeletedEvent | None]:
+) -> Result[SnippetDeletedEvent, SnippetDeletionFailedError]:
     """Delete the snippet and its versions.
 
     It is expected that no database records (consents, etc.) refer to
     the snippet anymore.
-
-    Return `True` on success, or `False` if an error occurred.
     """
-    snippet = find_snippet(snippet_id)
-    if snippet is None:
-        raise ValueError('Unknown snippet ID')
+    db_snippet = snippet_repository.get_snippet(snippet_id)
 
     # Keep values for use after snippet is deleted.
-    snippet_name = snippet.name
-    scope = snippet.scope
+    snippet_name = db_snippet.name
+    scope = db_snippet.scope
+    language_code = db_snippet.language_code
 
-    db_versions = get_versions(snippet_id)
-
-    db.session.execute(
-        delete(DbCurrentSnippetVersionAssociation).where(
-            DbCurrentSnippetVersionAssociation.snippet_id == snippet_id
-        )
-    )
-
-    for db_version in db_versions:
-        db.session.execute(
-            delete(DbSnippetVersion).where(DbSnippetVersion.id == db_version.id)
-        )
-
-    db.session.execute(delete(DbSnippet).where(DbSnippet.id == snippet_id))
-
-    try:
-        db.session.commit()
-    except Exception:
-        db.session.rollback()
-        return False, None
+    match snippet_repository.delete_snippet(snippet_id):
+        case Err(e):
+            return Err(e)
 
     event = SnippetDeletedEvent(
         occurred_at=datetime.utcnow(),
-        initiator=EventUser.from_user(initiator) if initiator else None,
+        initiator=initiator,
         snippet_id=snippet_id,
         scope=scope,
         snippet_name=snippet_name,
-        language_code=snippet.language_code,
+        language_code=language_code,
     )
 
-    return True, event
+    return Ok(event)
 
 
 def find_snippet(snippet_id: SnippetID) -> DbSnippet | None:
-    """Return the snippet with that id, or `None` if not found."""
-    return db.session.get(DbSnippet, snippet_id)
+    """Return the snippet with that ID, or `None` if not found."""
+    return snippet_repository.find_snippet(snippet_id)
 
 
-def get_snippets(snippet_ids: set[SnippetID]) -> Sequence[DbSnippet]:
+def get_snippets(snippet_ids: set[SnippetID]) -> list[DbSnippet]:
     """Return these snippets."""
-    return db.session.scalars(
-        select(DbSnippet).filter(DbSnippet.id.in_(snippet_ids))
-    ).all()
+    db_snippets = snippet_repository.get_snippets(snippet_ids)
+
+    return list(db_snippets)
 
 
 def get_snippets_for_scope_with_current_versions(
     scope: SnippetScope,
-) -> Sequence[DbSnippet]:
+) -> list[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
-    return (
-        db.session.scalars(
-            select(DbSnippet)
-            .filter_by(scope_type=scope.type_)
-            .filter_by(scope_name=scope.name)
-            .options(
-                db.joinedload(DbSnippet.current_version_association).joinedload(
-                    DbCurrentSnippetVersionAssociation.version
-                )
-            )
-        )
-        .unique()
-        .all()
+    db_snippets = (
+        snippet_repository.get_snippets_for_scope_with_current_versions(scope)
     )
+
+    return list(db_snippets)
 
 
 def get_all_scopes() -> list[SnippetScope]:
     """List all scopes that contain snippets."""
-    rows = db.session.execute(
-        select(DbSnippet.scope_type, DbSnippet.scope_name).distinct(
-            DbSnippet.scope_type, DbSnippet.scope_name
-        )
-    ).all()
-
-    return [SnippetScope(type_, name) for type_, name in rows]
+    return snippet_repository.get_all_scopes()
 
 
 def find_snippet_version(
     version_id: SnippetVersionID,
 ) -> DbSnippetVersion | None:
-    """Return the snippet version with that id, or `None` if not found."""
-    return db.session.get(DbSnippetVersion, version_id)
+    """Return the snippet version with that ID, or `None` if not found."""
+    return snippet_repository.find_snippet_version(version_id)
 
 
 def find_current_version_of_snippet_with_name(
@@ -243,26 +192,18 @@ def find_current_version_of_snippet_with_name(
     """Return the current version of the snippet with that name and
     language code in that scope, or `None` if not found.
     """
-    return db.session.scalars(
-        select(DbSnippetVersion)
-        .join(DbCurrentSnippetVersionAssociation)
-        .join(DbSnippet)
-        .filter(DbSnippet.scope_type == scope.type_)
-        .filter(DbSnippet.scope_name == scope.name)
-        .filter(DbSnippet.name == name)
-        .filter(DbSnippet.language_code == language_code)
-    ).one_or_none()
+    return snippet_repository.find_current_version_of_snippet_with_name(
+        scope, name, language_code
+    )
 
 
-def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
+def get_versions(snippet_id: SnippetID) -> list[DbSnippetVersion]:
     """Return all versions of that snippet, sorted from most recent to
     oldest.
     """
-    return db.session.scalars(
-        select(DbSnippetVersion)
-        .filter_by(snippet_id=snippet_id)
-        .order_by(DbSnippetVersion.created_at.desc())
-    ).all()
+    db_versions = snippet_repository.get_versions(snippet_id)
+
+    return list(db_versions)
 
 
 def get_snippet_body(
@@ -271,31 +212,20 @@ def get_snippet_body(
     """Return the body of the current version of the snippet in that
     scope with that name and language.
     """
-    version = find_current_version_of_snippet_with_name(
+    db_version = find_current_version_of_snippet_with_name(
         scope, name, language_code
     )
 
-    if not version:
+    if not db_version:
         return Err(SnippetNotFoundError(scope, name, language_code))
 
-    return Ok(version.body.strip())
+    return Ok(db_version.body.strip())
 
 
 def search_snippets(
     search_term: str, scope: SnippetScope | None
-) -> Sequence[DbSnippetVersion]:
+) -> list[DbSnippetVersion]:
     """Search in (the latest versions of) snippets."""
-    stmt = (
-        select(DbSnippetVersion)
-        .join(DbCurrentSnippetVersionAssociation)
-        .join(DbSnippet)
-    )
+    db_versions = snippet_repository.search_snippets(search_term, scope)
 
-    if scope is not None:
-        stmt = stmt.filter(DbSnippet.scope_type == scope.type_).filter(
-            DbSnippet.scope_name == scope.name
-        )
-
-    stmt = stmt.filter(DbSnippetVersion.body.contains(search_term))
-
-    return db.session.scalars(stmt).all()
+    return list(db_versions)

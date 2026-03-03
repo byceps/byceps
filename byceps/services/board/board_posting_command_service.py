@@ -2,7 +2,7 @@
 byceps.services.board.board_posting_command_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,9 +12,9 @@ from sqlalchemy import delete, select
 
 from byceps.database import db
 from byceps.services.brand import brand_service
-from byceps.services.core.events import EventBrand, EventUser
+from byceps.services.core.events import EventBrand
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -36,7 +36,7 @@ from .errors import (
     ReactionDoesNotExistError,
     ReactionExistsError,
 )
-from .models import PostingID, PostingReaction, TopicID
+from .models import PostingID, PostingReaction, ReactionKind, TopicID
 
 
 def create_posting(
@@ -46,8 +46,11 @@ def create_posting(
     db_topic = board_topic_query_service.get_db_topic(topic_id)
 
     posting_id = PostingID(generate_uuid7())
+    created_at = datetime.utcnow()
 
-    db_posting = DbPosting(posting_id, db_topic.id, creator.id, body)
+    db_posting = DbPosting(
+        posting_id, db_topic.id, created_at, creator.id, body
+    )
     db.session.add(db_posting)
     db.session.commit()
 
@@ -57,15 +60,15 @@ def create_posting(
     brand = brand_service.get_brand(db_category.board.brand_id)
     event = BoardPostingCreatedEvent(
         occurred_at=db_posting.created_at,
-        initiator=EventUser.from_user(creator),
+        initiator=creator,
         brand=EventBrand.from_brand(brand),
         board_id=db_category.board_id,
         posting_id=db_posting.id,
-        posting_creator=EventUser.from_user(creator),
+        posting_creator=creator,
         topic_id=db_topic.id,
         topic_title=db_topic.title,
         topic_muted=db_topic.muted,
-        url=None,
+        url='to-be-determined-later',
     )
 
     return db_posting, event
@@ -79,7 +82,7 @@ def update_posting(
 
     now = datetime.utcnow()
 
-    db_posting.body = body.strip()
+    db_posting.body = body
     db_posting.last_edited_at = now
     db_posting.last_edited_by_id = editor.id
     db_posting.edit_count += 1
@@ -91,15 +94,15 @@ def update_posting(
     posting_creator = _get_user(db_posting.creator_id)
     return BoardPostingUpdatedEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(editor),
+        initiator=editor,
         brand=EventBrand.from_brand(brand),
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
-        posting_creator=EventUser.from_user(posting_creator),
+        posting_creator=posting_creator,
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
-        editor=EventUser.from_user(editor),
-        url=None,
+        editor=editor,
+        url='to-be-determined-later',
     )
 
 
@@ -122,15 +125,15 @@ def hide_posting(
     posting_creator = _get_user(db_posting.creator_id)
     event = BoardPostingHiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
-        posting_creator=EventUser.from_user(posting_creator),
+        posting_creator=posting_creator,
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
-        moderator=EventUser.from_user(moderator),
-        url=None,
+        moderator=moderator,
+        url='to-be-determined-later',
     )
 
     return event
@@ -144,7 +147,6 @@ def unhide_posting(
 
     now = datetime.utcnow()
 
-    # TODO: Store who un-hid the posting.
     db_posting.hidden = False
     db_posting.hidden_at = None
     db_posting.hidden_by_id = None
@@ -156,15 +158,15 @@ def unhide_posting(
     posting_creator = _get_user(db_posting.creator_id)
     event = BoardPostingUnhiddenEvent(
         occurred_at=now,
-        initiator=EventUser.from_user(moderator),
+        initiator=moderator,
         brand=EventBrand.from_brand(brand),
         board_id=db_posting.topic.category.board_id,
         posting_id=db_posting.id,
-        posting_creator=EventUser.from_user(posting_creator),
+        posting_creator=posting_creator,
         topic_id=db_posting.topic.id,
         topic_title=db_posting.topic.title,
-        moderator=EventUser.from_user(moderator),
-        url=None,
+        moderator=moderator,
+        url='to-be-determined-later',
     )
 
     return event
@@ -177,19 +179,18 @@ def delete_posting(posting_id: PostingID) -> None:
 
 
 def add_reaction(
-    db_posting: DbPosting, user: User, kind: str
+    db_posting: DbPosting, user: User, kind: ReactionKind
 ) -> Result[PostingReaction, ReactionDeniedError | ReactionExistsError]:
     """Add user reaction to the posting."""
     reaction_exists = _is_reaction_existing(db_posting.id, user.id, kind)
 
-    result = board_posting_domain_service.add_reaction(
+    match board_posting_domain_service.add_reaction(
         db_posting.id, db_posting.creator_id, user, kind, reaction_exists
-    )
-
-    if result.is_err():
-        return Err(result.unwrap_err())
-
-    reaction = result.unwrap()
+    ):
+        case Ok(reaction):
+            pass
+        case Err(e):
+            return Err(e)
 
     db_reaction = DbPostingReaction(
         reaction.id,
@@ -205,17 +206,16 @@ def add_reaction(
 
 
 def remove_reaction(
-    db_posting: DbPosting, user: User, kind: str
+    db_posting: DbPosting, user: User, kind: ReactionKind
 ) -> Result[None, ReactionDeniedError | ReactionDoesNotExistError]:
     """Remove user reaction from the posting."""
     reaction_exists = _is_reaction_existing(db_posting.id, user.id, kind)
 
-    result = board_posting_domain_service.remove_reaction(
+    match board_posting_domain_service.remove_reaction(
         db_posting.id, db_posting.creator_id, user, kind, reaction_exists
-    )
-
-    if result.is_err():
-        return Err(result.unwrap_err())
+    ):
+        case Err(e):
+            return Err(e)
 
     db.session.execute(
         delete(DbPostingReaction)

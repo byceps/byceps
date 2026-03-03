@@ -1,15 +1,12 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 import pytest
 
-from byceps.services.user import (
-    user_command_service,
-    user_log_service,
-    user_service,
-)
+from byceps.services.user import user_command_service, user_service
+from byceps.services.user.log import user_log_service
 
 
 @pytest.fixture(scope='module')
@@ -52,10 +49,7 @@ def test_suspend(admin_app, cheater, admin_user):
 
     suspended_log_entry = log_entries_after[-1]
     assert suspended_log_entry.event_type == 'user-suspended'
-    assert suspended_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-        'reason': reason,
-    }
+    assert suspended_log_entry.data == {'reason': reason}
 
 
 def test_unsuspend(admin_app, remorseful_user, admin_user):
@@ -85,7 +79,4 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
 
     unsuspended_log_entry = log_entries_after[-1]
     assert unsuspended_log_entry.event_type == 'user-unsuspended'
-    assert unsuspended_log_entry.data == {
-        'initiator_id': str(admin_user.id),
-        'reason': reason,
-    }
+    assert unsuspended_log_entry.data == {'reason': reason}

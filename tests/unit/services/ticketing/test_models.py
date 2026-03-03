@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,6 +13,7 @@ from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing.models.ticket import (
     TicketCategory,
     TicketCategoryID,
+    TicketCode,
     TicketID,
 )
 
@@ -132,7 +133,7 @@ def create_ticket(
         party_id=PartyID('megacon-99'),
         title='Standard',
     )
-    code = 'BRTZN'
+    code = TicketCode('BRTZN')
 
     ticket = DbTicket(
         ticket_id, created_at, category, code, owned_by_id, bundle_id=bundle_id

@@ -37,7 +37,7 @@
     <div>
       <h1 class="title">{{ area.title }}</h1>
     </div>
-    {%- if has_current_user_permission('seating.administrate') %}
+    {%- if g.user.has_permission('seating.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.area_update_form', area_id=area.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>

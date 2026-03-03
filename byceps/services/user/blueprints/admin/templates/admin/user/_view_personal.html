@@ -1,23 +1,22 @@
 <h2>{{ _('Personal Data') }}</h2>
 
 <div class="box">
-  {%- if user.detail -%}
 
   <div class="row mb">
     <div>
       <div class="data-label">{{ _('First name') }}</div>
-      <div class="data-value">{{ user.detail.first_name|fallback }}</div>
+      <div class="data-value">{{ user_detail.first_name|fallback }}</div>
     </div>
     <div>
       <div class="data-label">{{ _('Last name') }}</div>
-      <div class="data-value">{{ user.detail.last_name|fallback }}</div>
+      <div class="data-value">{{ user_detail.last_name|fallback }}</div>
     </div>
   </div>
 
   <div class="data-label">{{ _('Date of birth') }}</div>
   <div class="data-value">
-    {%- if user.detail.date_of_birth -%}
-    {{ user.detail.date_of_birth|dateformat }}
+    {%- if user_detail.date_of_birth -%}
+    {{ user_detail.date_of_birth|dateformat }}
     {%- else -%}
     {{ _('not given')|dim }}
     {%- endif -%}
@@ -25,17 +24,14 @@
 
   <div class="data-label">{{ _('Address') }}</div>
   <div class="data-value">
-    {{- user.detail.street|fallback }}<br>
-    {%- if user.detail.postal_code %}{{ user.detail.postal_code }}{% endif %}
-    {{ user.detail.city|fallback -}}
+    {{- user_detail.street|fallback }}<br>
+    {%- if user_detail.postal_code %}{{ user_detail.postal_code }}{% endif %}
+    {{ user_detail.city|fallback -}}
     <br>
-    {{- user.detail.country|fallback -}}
+    {{- user_detail.country|fallback -}}
   </div>
 
   <div class="data-label">{{ _('Phone number') }}</div>
-  <div class="data-value">{{ user.detail.phone_number|fallback }}</div>
+  <div class="data-value">{{ user_detail.phone_number|fallback }}</div>
 
-  {%- else %}
-  {{ _('none')|dim }}
-  {%- endif -%}
 </div>

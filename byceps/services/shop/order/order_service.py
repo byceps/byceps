@@ -2,7 +2,7 @@
 byceps.services.shop.order.order_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,20 +15,17 @@ from sqlalchemy import select
 
 from byceps.database import db, paginate, Pagination
 from byceps.services.shop.invoice import order_invoice_service
+from byceps.services.shop.product.models import ProductID
 from byceps.services.shop.shop.dbmodels import DbShop
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
-from byceps.util.result import Err, Ok, Result
+from byceps.services.user.models import User, UserID
 
 from . import (
     order_payment_service,
 )
-from .dbmodels.order import DbOrder
-from .errors import (
-    OrderNotPaidError,
-)
+from .dbmodels.order import DbLineItem, DbOrder
 from .models.detailed_order import AdminDetailedOrder, DetailedOrder
 from .models.number import OrderNumber
 from .models.order import (
@@ -98,14 +95,14 @@ def count_orders_per_payment_state_via_order_prefix(
 
 
 def _find_db_order(order_id: OrderID) -> DbOrder | None:
-    """Return the order database entity with that id, or `None` if not
+    """Return the order database entity with that ID, or `None` if not
     found.
     """
     return db.session.get(DbOrder, order_id)
 
 
 def get_db_order(order_id: OrderID) -> DbOrder:
-    """Return the order database entity with that id, or raise an
+    """Return the order database entity with that ID, or raise an
     exception.
     """
     db_order = _find_db_order(order_id)
@@ -117,7 +114,7 @@ def get_db_order(order_id: OrderID) -> DbOrder:
 
 
 def find_order(order_id: OrderID) -> Order | None:
-    """Return the order with that id, or `None` if not found."""
+    """Return the order with that ID, or `None` if not found."""
     db_order = _find_db_order(order_id)
 
     if db_order is None:
@@ -128,14 +125,14 @@ def find_order(order_id: OrderID) -> Order | None:
 
 
 def get_order(order_id: OrderID) -> Order:
-    """Return the order with that id, or raise an exception."""
+    """Return the order with that ID, or raise an exception."""
     db_order = get_db_order(order_id)
     orderer_user = user_service.get_user(db_order.placed_by_id)
     return to_order(db_order, orderer_user)
 
 
 def get_paid_order(order_id: OrderID) -> PaidOrder:
-    """Return the paid order with that id, or raise an exception."""
+    """Return the paid order with that ID, or raise an exception."""
     db_order = get_db_order(order_id)
     if db_order is None:
         raise ValueError(f'Unknown order ID "{order_id}"')
@@ -145,7 +142,7 @@ def get_paid_order(order_id: OrderID) -> PaidOrder:
 
 
 def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
-    """Return the order with that id, or `None` if not found."""
+    """Return the order with that ID, or `None` if not found."""
     db_order = (
         db.session.scalars(
             select(DbOrder)
@@ -171,7 +168,7 @@ def find_order_with_details(order_id: OrderID) -> DetailedOrder | None:
 def find_order_with_details_for_admin(
     order_id: OrderID,
 ) -> AdminDetailedOrder | None:
-    """Return the order with that id, or `None` if not found."""
+    """Return the order with that ID, or `None` if not found."""
     detailed_order = find_order_with_details(order_id)
 
     if detailed_order is None:
@@ -262,7 +259,7 @@ def get_order_count_by_shop_id() -> dict[ShopID, int]:
 
 
 def get_orders(order_ids: frozenset[OrderID]) -> list[Order]:
-    """Return the orders with these ids."""
+    """Return the orders with these IDs."""
     if not order_ids:
         return []
 
@@ -443,18 +440,23 @@ def get_orders_placed_by_user_for_storefront(
     ]
 
 
-def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
-    """Return `True` if the user has placed orders in that shop."""
-    orders_total = (
+def has_user_ordered_product(user_id: UserID, product_id: ProductID) -> bool:
+    """Return `True` if the user has ordered the product before
+    (excluding canceled orders).
+    """
+    return (
         db.session.scalar(
-            select(db.func.count(DbOrder.id))
-            .filter_by(shop_id=shop_id)
-            .filter_by(placed_by_id=user_id)
+            select(
+                select(DbLineItem)
+                .join(DbOrder)
+                .filter(DbLineItem.product_id == product_id)
+                .filter(DbOrder.placed_by_id == user_id)
+                .filter(DbOrder._payment_state.in_(('open', 'paid')))
+                .exists()
+            )
         )
-        or 0
+        or False
     )
-
-    return orders_total > 0
 
 
 _PAYMENT_METHOD_LABELS = {
@@ -469,18 +471,6 @@ def find_payment_method_label(payment_method: str) -> str | None:
     """Return a label for the payment method."""
     label = _PAYMENT_METHOD_LABELS.get(payment_method)
     return label or payment_method
-
-
-def get_payment_date(order_id: OrderID) -> Result[datetime, OrderNotPaidError]:
-    """Return the date the order has been marked as paid."""
-    paid_at = db.session.scalar(
-        select(DbOrder.payment_state_updated_at).filter_by(id=order_id)
-    )
-
-    if not paid_at:
-        return Err(OrderNotPaidError())
-
-    return Ok(paid_at)
 
 
 def _db_orders_to_transfer_objects_with_orderer_users(

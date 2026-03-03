@@ -2,50 +2,44 @@
 byceps.services.shop.order.order_action_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from collections import defaultdict
+from collections.abc import Iterator
 from uuid import UUID
 
-from sqlalchemy import delete, select
 import structlog
 
-from byceps.database import db
 from byceps.services.shop.product import product_service
-from byceps.services.shop.product.models import ProductID
-from byceps.services.user.models.user import User
+from byceps.services.shop.product.models import ProductID, ProductType
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from .actions import create_ticket_bundles
-from .actions import create_tickets
-from .actions import revoke_ticket_bundles
-from .actions import revoke_tickets
+from . import order_action_repository
+from .actions import ticket as ticket_actions
+from .actions import ticket_bundle as ticket_bundle_actions
 from .actions import user_badge as user_badge_actions
 from .dbmodels.order_action import DbOrderAction
 from .errors import OrderActionFailedError
 from .models.action import Action, ActionParameters, ActionProcedure
-from .models.order import LineItem, Order, PaymentState
+from .models.order import LineItem, Order, PaidOrder, PaymentState
 
 
 log = structlog.get_logger()
 
 
-PROCEDURES_BY_NAME: dict[str, ActionProcedure] = {
-    'award_badge': ActionProcedure(
-        on_payment=user_badge_actions.on_payment,
-        on_cancellation_after_payment=user_badge_actions.on_cancellation_after_payment,
-    ),
-    'create_ticket_bundles': ActionProcedure(
-        on_payment=create_ticket_bundles.on_payment,
-        on_cancellation_after_payment=revoke_ticket_bundles.on_cancellation_after_payment,
-    ),
-    'create_tickets': ActionProcedure(
-        on_payment=create_tickets.on_payment,
-        on_cancellation_after_payment=revoke_tickets.on_cancellation_after_payment,
-    ),
+_PROCEDURES_BY_NAME: dict[str, ActionProcedure] = {
+    'award_badge': user_badge_actions.get_action_procedure(),
+    'create_ticket_bundles': ticket_bundle_actions.get_action_procedure(),
+    'create_tickets': ticket_actions.get_action_procedure(),
+}
+
+_PROCEDURES_BY_PRODUCT_TYPE: dict[ProductType, ActionProcedure] = {
+    ProductType.ticket: ticket_actions.get_action_procedure(),
+    ProductType.ticket_bundle: ticket_bundle_actions.get_action_procedure(),
 }
 
 
@@ -59,27 +53,24 @@ def create_action(
     """Create an order action."""
     action_id = generate_uuid7()
 
-    db_action = DbOrderAction(action_id, product_id, procedure_name, parameters)
-
-    db.session.add(db_action)
-    db.session.commit()
+    order_action_repository.create_action(
+        action_id, product_id, procedure_name, parameters
+    )
 
 
 def delete_action(action_id: UUID) -> None:
     """Delete the order action."""
-    db.session.execute(delete(DbOrderAction).filter_by(id=action_id))
-    db.session.commit()
+    order_action_repository.delete_action(action_id)
 
 
 def delete_actions_for_product(product_id: ProductID) -> None:
     """Delete all order actions for a product."""
-    db.session.execute(delete(DbOrderAction).filter_by(product_id=product_id))
-    db.session.commit()
+    order_action_repository.delete_actions_for_product(product_id)
 
 
 def find_action(action_id: UUID) -> Action | None:
     """Return the action with that ID, if found."""
-    db_action = db.session.get(DbOrderAction, action_id)
+    db_action = order_action_repository.find_action(action_id)
 
     if db_action is None:
         return None
@@ -93,9 +84,7 @@ def find_action(action_id: UUID) -> Action | None:
 
 def get_actions_for_product(product_id: ProductID) -> list[Action]:
     """Return the order actions defined for that product."""
-    db_actions = db.session.scalars(
-        select(DbOrderAction).filter_by(product_id=product_id)
-    ).all()
+    db_actions = order_action_repository.get_actions_for_product(product_id)
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
 
@@ -113,34 +102,14 @@ def _db_entity_to_action(db_action: DbOrderAction) -> Action:
 # execution
 
 
-def execute_creation_actions(
-    order: Order, initiator: User
+def execute_actions_on_payment(
+    order: PaidOrder, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     """Execute item creation actions for this order."""
-    return _execute_actions(order, PaymentState.paid, initiator)
-
-
-def execute_revocation_actions(
-    order: Order, initiator: User
-) -> Result[None, OrderActionFailedError]:
-    """Execute item revocation actions for this order."""
-    return _execute_actions(order, PaymentState.canceled_after_paid, initiator)
-
-
-def _execute_actions(
-    order: Order, payment_state: PaymentState, initiator: User
-) -> Result[None, OrderActionFailedError]:
-    """Execute relevant actions for this order in its new payment state."""
-    actions_by_product_id = _get_actions_by_product_id(order)
-
-    for line_item in order.line_items:
-        actions = actions_by_product_id.get(line_item.product_id)
-        if not actions:
-            continue
-
+    for line_item, actions in _get_line_items_with_actions(order):
         for action in actions:
-            match _execute_action(
-                action, order, payment_state, line_item, initiator
+            match _execute_action_on_payment(
+                action, order, PaymentState.paid, line_item, initiator
             ):
                 case Err(e):
                     return Err(e)
@@ -148,29 +117,103 @@ def _execute_actions(
     return Ok(None)
 
 
-def _get_actions_by_product_id(order: Order) -> dict[ProductID, list[Action]]:
+def execute_actions_on_cancellation_before_payment(
+    order: Order, initiator: User
+) -> Result[None, OrderActionFailedError]:
+    """Execute item revocation actions for this order."""
+    for line_item, actions in _get_line_items_with_actions(order):
+        for action in actions:
+            match _execute_action_on_cancellation_before_payment(
+                action,
+                order,
+                PaymentState.canceled_after_paid,
+                line_item,
+                initiator,
+            ):
+                case Err(e):
+                    return Err(e)
+
+    return Ok(None)
+
+
+def execute_actions_on_cancellation_after_payment(
+    order: Order, initiator: User
+) -> Result[None, OrderActionFailedError]:
+    """Execute item revocation actions for this order."""
+    for line_item, actions in _get_line_items_with_actions(order):
+        for action in actions:
+            match _execute_action_on_cancellation_after_payment(
+                action,
+                order,
+                PaymentState.canceled_after_paid,
+                line_item,
+                initiator,
+            ):
+                case Err(e):
+                    return Err(e)
+
+    return Ok(None)
+
+
+def _get_line_items_with_actions(
+    order: Order,
+) -> Iterator[tuple[LineItem, list[Action]]]:
     product_ids = {line_item.product_id for line_item in order.line_items}
 
     actions_by_product_id: dict[ProductID, list[Action]] = defaultdict(list)
     for action in _get_actions(product_ids):
         actions_by_product_id[action.product_id].append(action)
 
-    return dict(actions_by_product_id)
+    for line_item in order.line_items:
+        actions = actions_by_product_id.get(line_item.product_id)
+        if actions:
+            yield line_item, actions
 
 
 def _get_actions(product_ids: set[ProductID]) -> list[Action]:
     """Return the order actions for those product IDs."""
-    if not product_ids:
-        return []
-
-    db_actions = db.session.scalars(
-        select(DbOrderAction).filter(DbOrderAction.product_id.in_(product_ids))
-    ).all()
+    db_actions = order_action_repository.get_actions_for_products(product_ids)
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
 
 
-def _execute_action(
+def _execute_action_on_payment(
+    action: Action,
+    order: PaidOrder,
+    payment_state: PaymentState,
+    line_item: LineItem,
+    initiator: User,
+) -> Result[None, OrderActionFailedError]:
+    match _get_procedure(action.procedure_name, action.product_id):
+        case Ok(procedure):
+            match procedure.on_payment(
+                order, line_item, initiator, action.parameters
+            ):
+                case Ok(_):
+                    return Ok(None)
+                case Err(e):
+                    log.error(
+                        'Order action execution failed',
+                        order_id=str(order.id),
+                        order_number=order.order_number,
+                        payment_state=payment_state.name,
+                        initiator=initiator.screen_name,
+                        error_details=e.details,
+                    )
+                    return Err(e)
+        case Err(e):
+            log.error(
+                'Unknown order action configured',
+                order_id=str(order.id),
+                order_number=order.order_number,
+                payment_state=payment_state.name,
+                initiator=initiator.screen_name,
+                error_details=e.details,
+            )
+            return Err(e)
+
+
+def _execute_action_on_cancellation_before_payment(
     action: Action,
     order: Order,
     payment_state: PaymentState,
@@ -179,41 +222,57 @@ def _execute_action(
 ) -> Result[None, OrderActionFailedError]:
     match _get_procedure(action.procedure_name, action.product_id):
         case Ok(procedure):
-            match payment_state:
-                case PaymentState.paid:
-                    match procedure.on_payment(
-                        order, line_item, initiator, action.parameters
-                    ):
-                        case Ok(_):
-                            return Ok(None)
-                        case Err(e):
-                            log.error(
-                                'Order action execution failed',
-                                order_id=str(order.id),
-                                order_number=order.order_number,
-                                payment_state=payment_state.name,
-                                initiator=initiator.screen_name,
-                                error_details=e.details,
-                            )
-                            return Err(e)
-                case PaymentState.canceled_after_paid:
-                    match procedure.on_cancellation_after_payment(
-                        order, line_item, initiator, action.parameters
-                    ):
-                        case Ok(_):
-                            return Ok(None)
-                        case Err(e):
-                            log.error(
-                                'Order action execution failed',
-                                order_id=str(order.id),
-                                order_number=order.order_number,
-                                payment_state=payment_state.name,
-                                initiator=initiator.screen_name,
-                                error_details=e.details,
-                            )
-                            return Err(e)
-                case _:
+            match procedure.on_cancellation_before_payment(
+                order, line_item, initiator, action.parameters
+            ):
+                case Ok(_):
                     return Ok(None)
+                case Err(e):
+                    log.error(
+                        'Order action execution failed',
+                        order_id=str(order.id),
+                        order_number=order.order_number,
+                        payment_state=payment_state.name,
+                        initiator=initiator.screen_name,
+                        error_details=e.details,
+                    )
+                    return Err(e)
+        case Err(e):
+            log.error(
+                'Unknown order action configured',
+                order_id=str(order.id),
+                order_number=order.order_number,
+                payment_state=payment_state.name,
+                initiator=initiator.screen_name,
+                error_details=e.details,
+            )
+            return Err(e)
+
+
+def _execute_action_on_cancellation_after_payment(
+    action: Action,
+    order: Order,
+    payment_state: PaymentState,
+    line_item: LineItem,
+    initiator: User,
+) -> Result[None, OrderActionFailedError]:
+    match _get_procedure(action.procedure_name, action.product_id):
+        case Ok(procedure):
+            match procedure.on_cancellation_after_payment(
+                order, line_item, initiator, action.parameters
+            ):
+                case Ok(_):
+                    return Ok(None)
+                case Err(e):
+                    log.error(
+                        'Order action execution failed',
+                        order_id=str(order.id),
+                        order_number=order.order_number,
+                        payment_state=payment_state.name,
+                        initiator=initiator.screen_name,
+                        error_details=e.details,
+                    )
+                    return Err(e)
         case Err(e):
             log.error(
                 'Unknown order action configured',
@@ -232,7 +291,7 @@ def _get_procedure(
     """Return the procedure with that name, or an error if the name is
     not registered.
     """
-    procedure = PROCEDURES_BY_NAME.get(name)
+    procedure = _PROCEDURES_BY_NAME.get(name)
 
     if procedure is None:
         product = product_service.get_product(product_id)
@@ -244,3 +303,10 @@ def _get_procedure(
         )
 
     return Ok(procedure)
+
+
+def find_procedure_for_product_type(
+    product_type: ProductType,
+) -> ActionProcedure | None:
+    """Find the action procedure for the product type."""
+    return _PROCEDURES_BY_PRODUCT_TYPE.get(product_type)

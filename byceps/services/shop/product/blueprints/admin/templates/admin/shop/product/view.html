@@ -42,7 +42,7 @@
     </div>
     <div>
       <div class="button-row is-right-aligned">
-        {%- if has_current_user_permission('shop_product.administrate') %}
+        {%- if g.user.has_permission('shop_product.administrate') %}
         <a class="button" href="{{ url_for('.update_form', product_id=product.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         {%- endif %}
       </div>
@@ -206,7 +206,7 @@
           <div>
             <div class="data-label">{{ _('Attached products') }}</div>
           </div>
-          {%- if has_current_user_permission('shop_product.administrate') %}
+          {%- if g.user.has_permission('shop_product.administrate') %}
           <div>
             <a class="button is-compact" href="{{ url_for('.attachment_create_form', product_id=product.id) }}" title="{{ _('Attach product') }}">{{ render_icon('attached') }}</a></li>
           </div>
@@ -247,7 +247,7 @@
     <div>
       <h2>{{ _('Actions') }}</h2>
     </div>
-    {%- if has_current_user_permission('shop_product.administrate') %}
+    {%- if g.user.has_permission('shop_product.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <div class="dropdown">
@@ -278,7 +278,7 @@
         <td class="monospace">{{ action.procedure_name }}</td>
         <td class="monospace">{{ action.parameters }}</td>
         <td>
-          {%- if has_current_user_permission('shop_product.administrate') %}
+          {%- if g.user.has_permission('shop_product.administrate') %}
           <div class="button-row is-compact is-right-aligned">
             <a data-action="action-remove" href="{{ url_for('.action_remove', action_id=action.id) }}" class="button is-compact" title="{{ _('Remove action') }}">{{ render_icon('remove') }}</a>
           </div>

@@ -2,7 +2,7 @@
 byceps.config.integration
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,11 +12,10 @@ from pathlib import Path
 
 import structlog
 
-from byceps.byceps_app import BycepsApp
 from byceps.util.result import Err, Ok
 
 from .errors import ConfigurationError
-from .models import BycepsConfig
+from .models import BycepsConfig, WebAppsConfig
 from .parser import parse_config
 
 
@@ -40,6 +39,16 @@ def parse_value_from_environment(
 
 def read_configuration_from_file_given_in_env_var() -> BycepsConfig:
     """Load configuration from file specified via environment variable."""
+    byceps_config, _ = (
+        read_byceps_and_apps_configuration_from_file_given_in_env_var()
+    )
+    return byceps_config
+
+
+def read_byceps_and_apps_configuration_from_file_given_in_env_var() -> tuple[
+    BycepsConfig, WebAppsConfig
+]:
+    """Load configuration from file specified via environment variable."""
     filename_str = os.environ.get('BYCEPS_CONFIG_FILE')
 
     if not filename_str:
@@ -51,11 +60,13 @@ def read_configuration_from_file_given_in_env_var() -> BycepsConfig:
     return _read_configuration_from_file(filename)
 
 
-def _read_configuration_from_file(filename: Path) -> BycepsConfig:
+def _read_configuration_from_file(
+    filename: Path,
+) -> tuple[BycepsConfig, WebAppsConfig]:
     """Load configuration from file."""
     match parse_config(filename.read_text()):
-        case Ok(config):
-            return config
+        case Ok((byceps_config, web_apps_config)):
+            return byceps_config, web_apps_config
         case Err(errors):
             log.error(
                 'Could not parse configuration file.',
@@ -63,3 +74,5 @@ def _read_configuration_from_file(filename: Path) -> BycepsConfig:
                 errors=errors,
             )
             raise ConfigurationError('Errors found in configuration file.')
+
+    raise ConfigurationError('Configuration file could not be read.')

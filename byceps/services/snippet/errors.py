@@ -2,7 +2,7 @@
 byceps.services.snippet.errors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -25,4 +25,9 @@ class SnippetAlreadyExistsError(_BaseSnippetError):
 
 @dataclass(frozen=True)
 class SnippetNotFoundError(_BaseSnippetError):
+    pass
+
+
+@dataclass(frozen=True)
+class SnippetDeletionFailedError:
     pass

@@ -2,7 +2,7 @@
 byceps.services.whereabouts.whereabouts_client_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,8 +12,7 @@ import dataclasses
 from datetime import datetime
 import secrets
 
-from byceps.services.core.events import EventUser
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
 from .events import (
@@ -71,14 +70,17 @@ def approve_client(
         audio_output=candidate.audio_output,
         authority_status=WhereaboutsClientAuthorityStatus.approved,
         token=candidate.token,
+        name=None,
         location=None,
         description=None,
         config_id=None,
+        signed_on=False,
+        latest_activity_at=candidate.registered_at,
     )
 
     event = WhereaboutsClientApprovedEvent(
         occurred_at=approved_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         client_id=client.id,
     )
 
@@ -86,11 +88,14 @@ def approve_client(
 
 
 def update_client(
-    client: WhereaboutsClient, location: str | None, description: str | None
+    client: WhereaboutsClient,
+    name: str | None,
+    location: str | None,
+    description: str | None,
 ) -> WhereaboutsClient:
     """Update a client."""
     return dataclasses.replace(
-        client, location=location, description=description
+        client, name=name, location=location, description=description
     )
 
 
@@ -108,7 +113,7 @@ def delete_client(
 
     event = WhereaboutsClientDeletedEvent(
         occurred_at=deleted_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         client_id=client.id,
     )
 

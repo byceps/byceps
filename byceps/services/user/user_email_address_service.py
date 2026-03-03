@@ -2,11 +2,11 @@
 byceps.services.user.user_email_address_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask_babel import gettext
+from flask_babel import force_locale, gettext
 
 from byceps.database import db
 from byceps.services.email import email_config_service, email_service
@@ -16,17 +16,17 @@ from byceps.services.site.models import SiteID
 from byceps.services.user import (
     user_command_service,
     user_email_address_domain_service,
-    user_log_service,
     user_service,
 )
-from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry
+from byceps.services.user.models import User, UserID
 from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.models import (
     EmailAddressChangeToken,
     EmailAddressConfirmationToken,
 )
-from byceps.util.l10n import force_user_locale
+from byceps.util.l10n import get_default_locale
 from byceps.util.result import Err, Ok, Result
 
 from .events import (
@@ -69,7 +69,9 @@ def send_email_address_confirmation_email(
         f'confirmation/{confirmation_token.token}'
     )
 
-    with force_user_locale(user):
+    locale = user_service.find_locale(user.id) or get_default_locale()
+
+    with force_locale(locale):
         recipient_screen_name = _get_user_screen_name_or_fallback(user)
         subject = gettext(
             '%(screen_name)s, please verify your email address',
@@ -212,7 +214,9 @@ def send_email_address_change_email(
         f'https://{server_name}/users/email_address/change/{change_token.token}'
     )
 
-    with force_user_locale(user):
+    locale = user_service.find_locale(user.id) or get_default_locale()
+
+    with force_locale(locale):
         recipient_screen_name = _get_user_screen_name_or_fallback(user)
         subject = gettext(
             '%(screen_name)s, please verify your email address',

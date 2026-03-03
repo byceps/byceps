@@ -1,5 +1,6 @@
 server {
     server_name ${SERVER_NAME_ADMIN};
+    server_tokens off;
 
     location @byceps {
         uwsgi_pass ${UWSGI_ADDRESS};
@@ -12,6 +13,7 @@ server {
 
 server {
     server_name ${SERVER_NAME_API};
+    server_tokens off;
 
     location @byceps {
         uwsgi_pass ${UWSGI_ADDRESS};
@@ -24,6 +26,7 @@ server {
 
 server {
     server_name ${SERVER_NAME_SITE};
+    server_tokens off;
 
     location @byceps {
         uwsgi_pass ${UWSGI_ADDRESS};

@@ -2,7 +2,7 @@
 byceps.services.tourney.match_comment.blueprints.api.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -27,7 +27,7 @@ from byceps.services.tourney.models import (
     MatchID,
 )
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.views import (
     api_token_required,
@@ -166,7 +166,8 @@ def create():
     if not match:
         abort(400, 'Unknown match ID')
 
-    creator = user_service.find_active_user(req.creator_id)
+    creator_id = UserID(req.creator_id)
+    creator = user_service.find_active_user(creator_id)
     if not creator:
         abort(400, 'Creator ID does not reference an active user.')
 
@@ -192,7 +193,8 @@ def update(comment_id):
 
     req = _parse_request(UpdateMatchCommentRequest)
 
-    editor = user_service.find_active_user(req.editor_id)
+    editor_id = UserID(req.editor_id)
+    editor = user_service.find_active_user(editor_id)
     if not editor:
         abort(400, 'Editor ID does not reference an active user.')
 
@@ -210,7 +212,8 @@ def hide(comment_id):
 
     req = _parse_request(ModerateMatchCommentRequest)
 
-    initiator = user_service.find_active_user(req.initiator_id)
+    initiator_id = UserID(req.initiator_id)
+    initiator = user_service.find_active_user(initiator_id)
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
@@ -226,7 +229,8 @@ def unhide(comment_id):
 
     req = _parse_request(ModerateMatchCommentRequest)
 
-    initiator = user_service.find_active_user(req.initiator_id)
+    initiator_id = UserID(req.initiator_id)
+    initiator = user_service.find_active_user(initiator_id)
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
@@ -251,7 +255,7 @@ def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
     return comment
 
 
-def _parse_request(model_class: type[BaseModel]) -> BaseModel:
+def _parse_request[M: BaseModel](model_class: type[M]) -> M:
     try:
         return model_class.model_validate(request.get_json())
     except ValidationError as e:

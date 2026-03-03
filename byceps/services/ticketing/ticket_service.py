@@ -2,7 +2,7 @@
 byceps.services.ticketing.ticket_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -16,13 +16,14 @@ from byceps.services.party.models import Party, PartyID
 from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.seating.models import SeatID
 from byceps.services.shop.order.models.number import OrderNumber
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import UserID
+from byceps.services.user.dbmodels import DbUser
+from byceps.services.user.models import User, UserID
 
-from . import ticket_code_service, ticket_log_service
+from . import ticket_code_service
 from .dbmodels.category import DbTicketCategory
-from .dbmodels.log import DbTicketLogEntry
 from .dbmodels.ticket import DbTicket
+from .log import ticket_log_domain_service, ticket_log_service
+from .log.dbmodels import DbTicketLogEntry
 from .models.ticket import (
     TicketCategoryID,
     TicketCode,
@@ -31,9 +32,7 @@ from .models.ticket import (
 )
 
 
-def update_ticket_code(
-    ticket_id: TicketID, code: str, initiator_id: UserID
-) -> None:
+def update_ticket_code(ticket_id: TicketID, code: str, initiator: User) -> None:
     """Set a custom code for the ticket."""
     db_ticket = get_ticket(ticket_id)
 
@@ -44,15 +43,10 @@ def update_ticket_code(
 
     db_ticket.code = code
 
-    db_log_entry = ticket_log_service.build_db_entry(
-        'ticket-code-changed',
-        db_ticket.id,
-        {
-            'old_code': old_code,
-            'new_code': code,
-            'initiator_id': str(initiator_id),
-        },
+    log_entry = ticket_log_domain_service.build_ticket_code_changed_entry(
+        db_ticket.id, old_code, code, initiator
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()
@@ -66,12 +60,12 @@ def delete_ticket(ticket_id: TicketID) -> None:
 
 
 def find_ticket(ticket_id: TicketID) -> DbTicket | None:
-    """Return the ticket with that id, or `None` if not found."""
+    """Return the ticket with that ID, or `None` if not found."""
     return db.session.get(DbTicket, ticket_id)
 
 
 def get_ticket(ticket_id: TicketID) -> DbTicket:
-    """Return the ticket with that id, or raise an exception."""
+    """Return the ticket with that ID, or raise an exception."""
     db_ticket = find_ticket(ticket_id)
 
     if db_ticket is None:
@@ -90,7 +84,7 @@ def find_ticket_by_code(party_id: PartyID, code: TicketCode) -> DbTicket | None:
 
 
 def get_tickets(ticket_ids: set[TicketID]) -> Sequence[DbTicket]:
-    """Return the tickets with those ids."""
+    """Return the tickets with those IDs."""
     if not ticket_ids:
         return []
 
@@ -265,7 +259,7 @@ def select_ticket_users_for_party(
 
 
 def get_ticket_with_details(ticket_id: TicketID) -> DbTicket | None:
-    """Return the ticket with that id, or `None` if not found."""
+    """Return the ticket with that ID, or `None` if not found."""
     return db.session.scalar(
         select(DbTicket)
         .options(

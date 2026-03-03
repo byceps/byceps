@@ -4,7 +4,7 @@ byceps.services.whereabouts.announcing
 
 Announce whereabouts events.
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

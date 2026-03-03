@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -47,4 +47,4 @@ def item(channel: NewsChannel, news_admin) -> NewsItem:
         'Save the Date!',
         'Party will be next year.',
         BodyFormat.html,
-    )
+    ).unwrap()

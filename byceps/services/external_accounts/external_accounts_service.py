@@ -2,7 +2,7 @@
 byceps.services.external_accounts.external_accounts_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,7 +13,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.result import Err, Ok, Result
 
 from . import external_accounts_domain_service

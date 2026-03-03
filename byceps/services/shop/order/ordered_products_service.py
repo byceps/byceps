@@ -2,7 +2,7 @@
 byceps.services.shop.order.ordered_products_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -14,8 +14,7 @@ from byceps.database import db
 from byceps.services.shop.product.models import ProductID
 
 from . import order_service
-from .dbmodels.line_item import DbLineItem
-from .dbmodels.order import DbOrder
+from .dbmodels.order import DbLineItem, DbOrder
 from .models.order import Order, PaymentState
 
 

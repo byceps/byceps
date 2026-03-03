@@ -2,7 +2,7 @@
 byceps.services.ticketing.errors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -62,6 +62,12 @@ class UserIdUnknownError(TicketingError):
 @dataclass(frozen=True)
 class InitiatorNotSpecifiedError(TicketingError):
     """Indicate that no initiator has been specified for the check-in."""
+
+
+@dataclass(frozen=True)
+class SeatBlockedError(TicketingError):
+    """Indicate that the seat is blocked and cannot be occupied at this
+    point."""
 
 
 @dataclass(frozen=True)

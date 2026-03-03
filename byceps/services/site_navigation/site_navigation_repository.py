@@ -2,9 +2,11 @@
 byceps.services.site_navigation.site_navigation_repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
+
+from collections.abc import Sequence
 
 from sqlalchemy import delete, select
 
@@ -51,17 +53,13 @@ def update_menu(menu: NavMenu) -> Result[None, str]:
     return _get_db_menu(menu.id).map(_update_menu)
 
 
-def create_item(
-    item: NavItem,
-    parent_item_id: NavItemID | None,
-) -> Result[None, str]:
+def create_item(item: NavItem) -> Result[None, str]:
     """Create a menu item."""
 
     def _create_item(db_menu: DbNavMenu) -> None:
         db_item = DbNavItem(
             item.id,
             item.menu_id,
-            parent_item_id,
             item.target_type,
             item.target,
             item.label,
@@ -170,14 +168,14 @@ def _get_db_menu(menu_id: NavMenuID) -> Result[DbNavMenu, str]:
     return Ok(db_menu)
 
 
-def get_menus(site_id: SiteID) -> list[DbNavMenu]:
+def get_menus(site_id: SiteID) -> Sequence[DbNavMenu]:
     """Return the menus for this site."""
     return db.session.scalars(
         select(DbNavMenu).filter(DbNavMenu.site_id == site_id)
     ).all()
 
 
-def find_item(item_id: NavItemID) -> NavItem | None:
+def find_item(item_id: NavItemID) -> DbNavItem | None:
     """Return the menu item, or `None` if not found."""
     return _find_db_item(item_id)
 
@@ -200,7 +198,7 @@ def _get_db_item(item_id: NavItemID) -> Result[DbNavItem, str]:
     return Ok(db_item)
 
 
-def get_items_for_menu_id_unfiltered(menu_id: NavMenuID) -> list[DbNavItem]:
+def get_items_for_menu_id_unfiltered(menu_id: NavMenuID) -> Sequence[DbNavItem]:
     """Return the items of a menu.
 
     An empty list is returned if the menu does not exist.
@@ -210,7 +208,7 @@ def get_items_for_menu_id_unfiltered(menu_id: NavMenuID) -> list[DbNavItem]:
     ).all()
 
 
-def get_items_for_menu_id(menu_id: NavMenuID) -> list[DbNavItem]:
+def get_items_for_menu_id(menu_id: NavMenuID) -> Sequence[DbNavItem]:
     """Return the items of a menu.
 
     An empty list is returned if the menu does not exist, is hidden, or
@@ -227,7 +225,7 @@ def get_items_for_menu_id(menu_id: NavMenuID) -> list[DbNavItem]:
 
 def get_items_for_menu(
     site_id: SiteID, name: str, language_code: str
-) -> list[DbNavItem]:
+) -> Sequence[DbNavItem]:
     """Return the items of a menu.
 
     An empty list is returned if the menu does not exist, is hidden, or

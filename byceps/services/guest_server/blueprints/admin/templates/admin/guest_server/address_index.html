@@ -43,7 +43,7 @@
         <td><a href="{{ url_for('.server_view', server_id=address.server_id) }}">{{ _('Show') }}</a></td>
         <td>{{ render_user_avatar_and_name(owners_by_server_id[address.server_id], size=20) }}</td>
         <td>
-          {%- if has_current_user_permission('guest_server.administrate') %}
+          {%- if g.user.has_permission('guest_server.administrate') %}
           <a class="button is-compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a>
           {%- endif %}
         </td>

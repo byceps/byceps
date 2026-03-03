@@ -2,7 +2,7 @@
 byceps.services.user_group.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,7 +11,7 @@ from datetime import datetime
 from uuid import UUID
 
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
@@ -22,3 +22,11 @@ class UserGroup:
     creator: User
     title: str
     description: str | None
+
+
+@dataclass(frozen=True, kw_only=True)
+class UserGroupMembership:
+    id: UUID
+    created_at: datetime
+    group_id: UUID
+    user: User

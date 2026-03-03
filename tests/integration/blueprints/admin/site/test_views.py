@@ -1,9 +1,10 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from byceps.services.site import site_service
+from byceps.services.site.models import SiteID
 
 
 BASE_URL = 'http://admin.acmecon.test'
@@ -28,7 +29,7 @@ def test_create_form(site_admin_client, brand):
 
 
 def test_create(site_admin_client, brand):
-    site_id = 'partysite-99'
+    site_id = SiteID('partysite-99')
     title = 'Party 99'
     server_name = 'www.party99.example'
 
@@ -51,7 +52,7 @@ def test_create(site_admin_client, brand):
     assert site.id == site_id
     assert site.title == title
     assert site.server_name == server_name
-    assert site.news_channel_ids == frozenset()
+    assert site.news_channel_ids == set()
     assert site.board_id is None
     assert site.storefront_id is None
 

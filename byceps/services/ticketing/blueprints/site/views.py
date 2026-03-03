@@ -2,7 +2,7 @@
 byceps.services.ticketing.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -63,7 +63,7 @@ def index_mine():
 
     party = g.party
 
-    user = g.user
+    user = g.user.as_user()
 
     tickets = ticket_service.get_tickets_related_to_user_for_party(
         user.id, party.id
@@ -152,7 +152,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -178,7 +178,7 @@ def appoint_user(ticket_id):
     if not form.validate():
         return appoint_user_form(ticket_id, form)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -187,7 +187,7 @@ def appoint_user(ticket_id):
     new_user = form.user.data
 
     match ticket_user_management_service.appoint_user(
-        ticket.id, new_user.id, manager.id
+        ticket.id, new_user, manager
     ):
         case Err(e):
             flash_error(e.message)
@@ -221,7 +221,7 @@ def withdraw_user(ticket_id):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -231,7 +231,7 @@ def withdraw_user(ticket_id):
     # Intentionally assign the ticket user manager as the new
     # ticket user instead of removing the ticket user.
     match ticket_user_management_service.appoint_user(
-        ticket.id, manager.id, manager.id
+        ticket.id, manager, manager
     ):
         case Err(e):
             flash_error(e.message)
@@ -265,7 +265,7 @@ def appoint_user_manager_form(ticket_id, erroneous_form=None):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -291,7 +291,7 @@ def appoint_user_manager(ticket_id):
     if not form.validate():
         return appoint_user_manager_form(ticket_id, form)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -299,7 +299,7 @@ def appoint_user_manager(ticket_id):
     user = form.user.data
 
     match ticket_user_management_service.appoint_user_manager(
-        ticket.id, user.id, manager.id
+        ticket.id, user, manager
     ):
         case Err(e):
             flash_error(e.message)
@@ -329,7 +329,7 @@ def withdraw_user_manager(ticket_id):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -337,7 +337,7 @@ def withdraw_user_manager(ticket_id):
     previous_manager = ticket.user_managed_by
 
     match ticket_user_management_service.withdraw_user_manager(
-        ticket.id, manager.id
+        ticket.id, manager
     ):
         case Err(e):
             flash_error(e.message)
@@ -369,7 +369,7 @@ def appoint_seat_manager_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -393,7 +393,7 @@ def appoint_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -401,7 +401,7 @@ def appoint_seat_manager(ticket_id):
     user = form.user.data
 
     match ticket_seat_management_service.appoint_seat_manager(
-        ticket.id, user.id, manager.id
+        ticket.id, user, manager
     ):
         case Err(e):
             flash_error(e.message)
@@ -429,7 +429,7 @@ def withdraw_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.user
+    manager = g.user.as_user()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -437,7 +437,7 @@ def withdraw_seat_manager(ticket_id):
     previous_manager = ticket.seat_managed_by
 
     match ticket_seat_management_service.withdraw_seat_manager(
-        ticket.id, manager.id
+        ticket.id, manager
     ):
         case Err(e):
             flash_error(e.message)

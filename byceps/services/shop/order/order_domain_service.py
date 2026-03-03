@@ -2,7 +2,7 @@
 byceps.services.shop.order.order_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,15 +10,14 @@ from collections.abc import Iterator
 from datetime import datetime, timedelta
 import dataclasses
 
-from moneyed import Currency, Money
+from moneyed import Money
 
-from byceps.services.core.events import EventUser
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.product import product_domain_service
 from byceps.services.shop.product.models import ProductWithQuantity
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -28,8 +27,9 @@ from .errors import (
     OrderAlreadyMarkedAsPaidError,
 )
 from .events import ShopOrderCanceledEvent, ShopOrderPaidEvent
+from .log import order_log_domain_service
+from .log.models import OrderLogEntry
 from .models.checkout import IncomingLineItem, IncomingOrder
-from .models.log import OrderLogEntry, OrderLogEntryData
 from .models.order import (
     Address,
     LineItemID,
@@ -49,7 +49,6 @@ def place_order(
     shop_id: ShopID,
     storefront_id: StorefrontID,
     orderer: Orderer,
-    currency: Currency,
     cart: Cart,
 ) -> Result[tuple[IncomingOrder, OrderLogEntry], CartEmptyError]:
     """Place an order."""
@@ -76,7 +75,11 @@ def place_order(
         processing_required=processing_required,
     )
 
-    log_entry = _build_order_placed_log_entry(incoming_order)
+    log_entry = order_log_domain_service.build_order_placed_entry(
+        incoming_order.created_at,
+        incoming_order.id,
+        incoming_order.orderer.user,
+    )
 
     return Ok((incoming_order, log_entry))
 
@@ -102,22 +105,6 @@ def _build_incoming_line_items(
             line_amount=line_amount,
             processing_required=product.processing_required,
         )
-
-
-def _build_order_placed_log_entry(
-    incoming_order: IncomingOrder,
-) -> OrderLogEntry:
-    data = {
-        'initiator_id': str(incoming_order.orderer.user.id),
-    }
-
-    return OrderLogEntry(
-        id=generate_uuid7(),
-        occurred_at=incoming_order.created_at,
-        event_type='order-placed',
-        order_id=incoming_order.id,
-        data=data,
-    )
 
 
 def update_orderer(
@@ -175,7 +162,7 @@ def _build_orderer_updated_log_entry(
     updated_order: Order,
     initiator: User,
 ) -> Result[OrderLogEntry, str]:
-    fields: dict[str, str] = {}
+    fields: dict[str, dict[str, str | None]] = {}
 
     def _add_if_different(
         property_key: str,
@@ -228,44 +215,16 @@ def _build_orderer_updated_log_entry(
     if not fields:
         return Err('No orderer fields have changed.')
 
-    data = {
-        'fields': fields,
-        'initiator_id': str(initiator.id),
-    }
-
-    log_entry = OrderLogEntry(
-        id=generate_uuid7(),
-        occurred_at=datetime.utcnow(),
-        event_type='order-orderer-updated',
-        order_id=original_order.id,
-        data=data,
+    log_entry = order_log_domain_service.build_orderer_updated_entry(
+        original_order.id, fields, initiator
     )
 
     return Ok(log_entry)
 
 
 def add_note(order: Order, author: User, text: str) -> OrderLogEntry:
-    log_entry = _build_note_log_entry(order.id, author, text)
-
-    return log_entry
-
-
-def _build_note_log_entry(
-    order_id: OrderID,
-    author: User,
-    text: str,
-) -> OrderLogEntry:
-    data = {
-        'author_id': str(author.id),
-        'text': text,
-    }
-
-    return OrderLogEntry(
-        id=generate_uuid7(),
-        occurred_at=datetime.utcnow(),
-        event_type='order-note-added',
-        order_id=order_id,
-        data=data,
+    return order_log_domain_service.build_note_added_entry(
+        order.id, author, text
     )
 
 
@@ -275,25 +234,11 @@ def set_shipped_flag(
     if not order.is_processing_required:
         return Err('Order contains no items that require shipping.')
 
-    log_entry = _build_set_shipped_flag_log_entry(order.id, initiator)
+    log_entry = order_log_domain_service.build_set_shipped_flag_entry(
+        order.id, initiator
+    )
 
     return Ok(log_entry)
-
-
-def _build_set_shipped_flag_log_entry(
-    order_id: OrderID, initiator: User
-) -> OrderLogEntry:
-    data = {
-        'initiator_id': str(initiator.id),
-    }
-
-    return OrderLogEntry(
-        id=generate_uuid7(),
-        occurred_at=datetime.utcnow(),
-        event_type='order-shipped',
-        order_id=order_id,
-        data=data,
-    )
 
 
 def unset_shipped_flag(
@@ -302,25 +247,11 @@ def unset_shipped_flag(
     if not order.is_processing_required:
         return Err('Order contains no items that require shipping.')
 
-    log_entry = _build_unset_shipped_flag_log_entry(order.id, initiator)
+    log_entry = order_log_domain_service.build_unset_shipped_flag_entry(
+        order.id, initiator
+    )
 
     return Ok(log_entry)
-
-
-def _build_unset_shipped_flag_log_entry(
-    order_id: OrderID, initiator: User
-) -> OrderLogEntry:
-    data = {
-        'initiator_id': str(initiator.id),
-    }
-
-    return OrderLogEntry(
-        id=generate_uuid7(),
-        occurred_at=datetime.utcnow(),
-        event_type='order-shipped-withdrawn',
-        order_id=order_id,
-        data=data,
-    )
 
 
 def create_payment(
@@ -330,13 +261,19 @@ def create_payment(
     amount: Money,
     initiator: User,
     additional_data: AdditionalPaymentData,
-) -> tuple[Payment, OrderLogEntry]:
+) -> Result[tuple[Payment, OrderLogEntry], OrderAlreadyCanceledError]:
+    if _is_canceled(order):
+        return Err(OrderAlreadyCanceledError())
+
     payment = _build_payment(
         order.id, created_at, method, amount, additional_data
     )
-    log_entry = _build_payment_log_entry(payment, initiator)
 
-    return payment, log_entry
+    log_entry = order_log_domain_service.build_payment_created_entry(
+        payment, initiator
+    )
+
+    return Ok((payment, log_entry))
 
 
 def _build_payment(
@@ -356,23 +293,6 @@ def _build_payment(
     )
 
 
-def _build_payment_log_entry(
-    payment: Payment, initiator: User
-) -> OrderLogEntry:
-    data = {
-        'payment_id': str(payment.id),
-        'initiator_id': str(initiator.id),
-    }
-
-    return OrderLogEntry(
-        id=generate_uuid7(),
-        occurred_at=payment.created_at,
-        event_type='order-payment-created',
-        order_id=payment.order_id,
-        data=data,
-    )
-
-
 def mark_order_as_paid(
     order: Order,
     orderer_user: User,
@@ -382,8 +302,11 @@ def mark_order_as_paid(
     initiator: User,
 ) -> Result[
     tuple[ShopOrderPaidEvent, OrderLogEntry],
-    OrderAlreadyMarkedAsPaidError,
+    OrderAlreadyCanceledError | OrderAlreadyMarkedAsPaidError,
 ]:
+    if _is_canceled(order):
+        return Err(OrderAlreadyCanceledError())
+
     if _is_paid(order):
         return Err(OrderAlreadyMarkedAsPaidError())
 
@@ -393,7 +316,7 @@ def mark_order_as_paid(
         occurred_at, order, orderer_user, payment_method, initiator
     )
 
-    log_entry = _build_order_paid_log_entry(
+    log_entry = order_log_domain_service.build_order_paid_entry(
         occurred_at,
         order.id,
         payment_state_from,
@@ -414,44 +337,11 @@ def _build_order_paid_event(
 ) -> ShopOrderPaidEvent:
     return ShopOrderPaidEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
         payment_method=payment_method,
-    )
-
-
-def _build_order_paid_log_entry(
-    occurred_at: datetime,
-    order_id: OrderID,
-    payment_state_from: PaymentState,
-    payment_method: str,
-    additional_payment_data: AdditionalPaymentData | None,
-    initiator: User,
-) -> OrderLogEntry:
-    data: OrderLogEntryData = {}
-
-    # Add required, internally set properties after given additional
-    # ones to ensure the former are not overridden by the latter.
-
-    if additional_payment_data is not None:
-        data.update(additional_payment_data)
-
-    data.update(
-        {
-            'former_payment_state': payment_state_from.name,
-            'payment_method': payment_method,
-            'initiator_id': str(initiator.id),
-        }
-    )
-
-    return OrderLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='order-paid',
-        order_id=order_id,
-        data=data,
     )
 
 
@@ -476,7 +366,7 @@ def cancel_order(
         occurred_at, order, orderer_user, initiator
     )
 
-    log_entry = _build_order_canceled_log_entry(
+    log_entry = order_log_domain_service.build_order_canceled_entry(
         occurred_at,
         order.id,
         has_order_been_paid,
@@ -496,39 +386,10 @@ def _build_order_canceled_event(
 ) -> ShopOrderCanceledEvent:
     return ShopOrderCanceledEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer_user),
-    )
-
-
-def _build_order_canceled_log_entry(
-    occurred_at: datetime,
-    order_id: OrderID,
-    has_order_been_paid: bool,
-    payment_state_from: PaymentState,
-    reason: str,
-    initiator: User,
-) -> OrderLogEntry:
-    event_type = (
-        'order-canceled-after-paid'
-        if has_order_been_paid
-        else 'order-canceled-before-paid'
-    )
-
-    data = {
-        'former_payment_state': payment_state_from.name,
-        'reason': reason,
-        'initiator_id': str(initiator.id),
-    }
-
-    return OrderLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type=event_type,
-        order_id=order_id,
-        data=data,
+        orderer=orderer_user,
     )
 
 

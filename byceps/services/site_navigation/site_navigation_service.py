@@ -2,29 +2,95 @@
 byceps.services.site_navigation.site_navigation_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from collections.abc import Iterable
 
+from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
-from byceps.util.iterables import find
-from byceps.util.result import Result
+from byceps.util.result import Err, Ok, Result
 
 from . import site_navigation_domain_service, site_navigation_repository
 from .dbmodels import DbNavItem, DbNavMenu
 from .models import (
-    _VIEW_TYPES,
     NavItem,
     NavItemID,
     NavItemTargetType,
     NavMenu,
-    NavMenuAggregate,
     NavMenuID,
     NavMenuTree,
-    ViewType,
+    NavMenuWithItems,
 )
+
+
+def copy_site_menu_trees(
+    source_site_id: SiteID, target_site_id: SiteID
+) -> Result[None, str]:
+    """Copy all menus and their items from one site to another."""
+    if not site_service.find_site(source_site_id):
+        return Err('Source site not found.')
+
+    source_menu_trees = get_menu_trees(source_site_id)
+    if not source_menu_trees:
+        return Err('Source site has no menus that could be copied.')
+
+    if not site_service.find_site(target_site_id):
+        return Err('Target site not found.')
+
+    if get_menu_trees(target_site_id):
+        return Err('Target site already has menus.')
+
+    for tree in source_menu_trees:
+        match copy_menu_tree(tree, target_site_id):
+            case Err(e):
+                return Err(e)
+
+    return Ok(None)
+
+
+def copy_menu_tree(
+    source_tree: NavMenuTree, target_site_id: SiteID
+) -> Result[None, str]:
+    """Copy a menu tree's menus and their items from one site to another."""
+    match copy_menu_with_items(source_tree.menu, target_site_id):
+        case Ok(target_root_menu):
+            pass
+        case Err(e):
+            return Err(e)
+
+    for source_menu in source_tree.submenus:
+        match copy_menu_with_items(
+            source_menu,
+            target_site_id,
+            target_parent_menu_id=target_root_menu.id,
+        ):
+            case Err(e):
+                return Err(e)
+
+    return Ok(None)
+
+
+def copy_menu_with_items(
+    source_menu: NavMenuWithItems,
+    target_site_id: SiteID,
+    *,
+    target_parent_menu_id: NavMenuID | None = None,
+) -> Result[NavMenu, str]:
+    """Copy a menu and its items to another site."""
+    target_menu = create_menu(
+        target_site_id,
+        source_menu.name,
+        source_menu.language_code,
+        hidden=source_menu.hidden,
+        parent_menu_id=target_parent_menu_id,
+    )
+    match copy_items(source_menu, target_menu.id):
+        case Err(e):
+            return Err(e)
+
+    return Ok(target_menu)
 
 
 def create_menu(
@@ -57,7 +123,31 @@ def update_menu(
     )
 
     return site_navigation_repository.update_menu(updated_menu).map(
-        lambda _: menu
+        lambda _: updated_menu
+    )
+
+
+def copy_items(
+    source_menu: NavMenuWithItems, target_menu_id: NavMenuID
+) -> Result[None, str]:
+    """Copy a menu's items to another menu."""
+    for source_item in source_menu.items:
+        match copy_item(source_item, target_menu_id):
+            case Err(e):
+                return Err(e)
+
+    return Ok(None)
+
+
+def copy_item(item: NavItem, target_menu_id: NavMenuID) -> Result[NavItem, str]:
+    """Copy a menu item to another menu."""
+    return create_item(
+        target_menu_id,
+        item.target_type,
+        item.target,
+        item.label,
+        item.current_page_id,
+        hidden=item.hidden,
     )
 
 
@@ -68,7 +158,6 @@ def create_item(
     label: str,
     current_page_id: str,
     *,
-    parent_item_id: NavItemID | None = None,
     hidden: bool = False,
 ) -> Result[NavItem, str]:
     """Create a menu item."""
@@ -76,9 +165,7 @@ def create_item(
         menu_id, target_type, target, label, current_page_id, hidden
     )
 
-    return site_navigation_repository.create_item(item, parent_item_id).map(
-        lambda _: item
-    )
+    return site_navigation_repository.create_item(item).map(lambda _: item)
 
 
 def update_item(
@@ -95,7 +182,7 @@ def update_item(
     )
 
     return site_navigation_repository.update_item(updated_item).map(
-        lambda _: item
+        lambda _: updated_item
     )
 
 
@@ -148,26 +235,14 @@ def get_menu(menu_id: NavMenuID) -> Result[NavMenu, str]:
     return site_navigation_repository.get_menu(menu_id).map(_db_entity_to_menu)
 
 
-def find_menu_aggregate(menu_id: NavMenuID) -> NavMenuAggregate | None:
-    """Return the menu aggregate, or `None` if not found."""
-    menu = find_menu(menu_id)
-    if menu is None:
-        return None
-
+def get_menu_with_unfiltered_items(menu: NavMenu) -> NavMenuWithItems:
+    """Return the menu with items."""
     db_items = site_navigation_repository.get_items_for_menu_id_unfiltered(
-        menu_id
+        menu.id
     )
     items = _db_entities_to_items(db_items)
 
-    return NavMenuAggregate(
-        id=menu.id,
-        site_id=menu.site_id,
-        name=menu.name,
-        language_code=menu.language_code,
-        hidden=menu.hidden,
-        parent_menu_id=menu.parent_menu_id,
-        items=items,
-    )
+    return NavMenuWithItems.from_menu_and_items(menu, items)
 
 
 def get_menus(site_id: SiteID) -> list[NavMenu]:
@@ -178,8 +253,13 @@ def get_menus(site_id: SiteID) -> list[NavMenu]:
 
 
 def get_menu_trees(site_id: SiteID) -> list[NavMenuTree]:
-    """Return the menu trees for this site."""
-    menus = get_menus(site_id)
+    """Return the menu trees with items for this site."""
+    menus = [
+        NavMenuWithItems.from_menu_and_items(
+            menu, get_menu_with_unfiltered_items(menu).items
+        )
+        for menu in get_menus(site_id)
+    ]
 
     trees = []
 
@@ -270,13 +350,3 @@ def _db_entities_to_items(db_items: Iterable[DbNavItem]) -> list[NavItem]:
     items = [_db_entity_to_item(db_item) for db_item in db_items]
     items.sort(key=lambda item: item.position)
     return items
-
-
-def get_view_types() -> list[ViewType]:
-    """Return the available view types."""
-    return list(_VIEW_TYPES)
-
-
-def find_view_type_by_name(name: str) -> ViewType | None:
-    """Return the view type with that name, or `None` if not found."""
-    return find(_VIEW_TYPES, lambda view_type: view_type.name == name)

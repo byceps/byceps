@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -7,10 +7,8 @@ from unittest.mock import patch
 
 import pytest
 
-from byceps.services.ticketing import (
-    ticket_creation_service,
-    ticket_log_service,
-)
+from byceps.services.ticketing import ticket_creation_service
+from byceps.services.ticketing.log import ticket_log_service
 
 
 def test_create_ticket(admin_app, category, ticket_owner):

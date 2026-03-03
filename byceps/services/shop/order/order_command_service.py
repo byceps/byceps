@@ -2,44 +2,31 @@
 byceps.services.shop.order.order_command_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 from typing import Any
-from uuid import UUID
 
 import structlog
 
 from byceps.database import db
+from byceps.services.shop.order.log import order_log_service
+from byceps.services.shop.order.log.models import OrderLogEntry
 from byceps.services.shop.product import product_service
-from byceps.services.shop.product.models import ProductType
-from byceps.services.ticketing.models.ticket import TicketCategoryID
-from byceps.services.ticketing import ticket_category_service
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
-from . import (
-    order_action_service,
-    order_domain_service,
-    order_log_service,
-    order_payment_service,
-)
-from .actions import (
-    ticket as ticket_actions,
-    ticket_bundle as ticket_bundle_actions,
-)
-from .dbmodels.line_item import DbLineItem
-from .dbmodels.order import DbOrder
+from . import order_action_service, order_domain_service, order_payment_service
+from .dbmodels.order import DbLineItem, DbOrder
 from .errors import (
     OrderActionFailedError,
     OrderAlreadyCanceledError,
     OrderAlreadyMarkedAsPaidError,
 )
 from .events import ShopOrderCanceledEvent, ShopOrderPaidEvent
-from .models.log import OrderLogEntry
 from .models.order import (
     LineItemID,
     Order,
@@ -200,10 +187,19 @@ def cancel_order(
 
     canceled_order = to_order(db_order, orderer_user)
 
-    if payment_state_to == PaymentState.canceled_after_paid:
-        match _execute_product_revocation_actions(canceled_order, initiator):
-            case Err(e):
-                return Err(e)
+    match payment_state_to:
+        case PaymentState.canceled_before_paid:
+            match _execute_actions_on_cancellation_before_payment(
+                canceled_order, initiator
+            ):
+                case Err(e):
+                    return Err(e)
+        case PaymentState.canceled_after_paid:
+            match _execute_actions_on_cancellation_after_payment(
+                canceled_order, initiator
+            ):
+                case Err(e):
+                    return Err(e)
 
     log.info('Order canceled', shop_order_canceled_event=event)
 
@@ -218,7 +214,9 @@ def mark_order_as_paid(
     additional_payment_data: AdditionalPaymentData | None = None,
 ) -> Result[
     tuple[PaidOrder, ShopOrderPaidEvent],
-    OrderActionFailedError | OrderAlreadyMarkedAsPaidError,
+    OrderActionFailedError
+    | OrderAlreadyCanceledError
+    | OrderAlreadyMarkedAsPaidError,
 ]:
     """Mark the order as paid."""
     db_order = get_db_order(order_id)
@@ -228,14 +226,18 @@ def mark_order_as_paid(
 
     payment_added_at = datetime.utcnow()
 
-    order_payment_service.add_payment(
+    match order_payment_service.add_payment(
         order,
         payment_added_at,
         payment_method,
         order.total_amount,
         initiator,
         additional_payment_data if additional_payment_data is not None else {},
-    )
+    ):
+        case Ok(payment):
+            pass
+        case Err(payment_error):
+            return Err(payment_error)
 
     # Use separate timestamp so that log events are properly ordered.
     marked_as_paid_at = datetime.utcnow()
@@ -244,8 +246,8 @@ def mark_order_as_paid(
         order,
         orderer_user,
         marked_as_paid_at,
-        payment_method,
-        additional_payment_data,
+        payment.method,
+        payment.additional_data,
         initiator,
     )
     if mark_order_as_paid_result.is_err():
@@ -265,7 +267,7 @@ def mark_order_as_paid(
 
     paid_order = to_paid_order(db_order, orderer_user)
 
-    match _execute_product_creation_actions(paid_order, initiator):
+    match _execute_actions_on_payment(paid_order, initiator):
         case Err(e):
             return Err(e)
 
@@ -285,71 +287,63 @@ def _update_payment_state(
     db_order.payment_state_updated_by_id = initiator.id
 
 
-def _execute_product_creation_actions(
+def _execute_actions_on_payment(
+    order: PaidOrder, initiator: User
+) -> Result[None, OrderActionFailedError]:
+    # based on product type
+    for line_item in order.line_items:
+        procedure = order_action_service.find_procedure_for_product_type(
+            line_item.product_type
+        )
+        if procedure:
+            match procedure.on_payment(order, line_item, initiator, {}):
+                case Err(e):
+                    return Err(e)
+
+    # based on order action registered for product number
+    return order_action_service.execute_actions_on_payment(order, initiator)
+
+
+def _execute_actions_on_cancellation_before_payment(
     order: Order, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     # based on product type
     for line_item in order.line_items:
-        match line_item.product_type:
-            case ProductType.ticket:
-                product = product_service.get_product(line_item.product_id)
-
-                ticket_category_id = TicketCategoryID(
-                    UUID(str(product.type_params['ticket_category_id']))
-                )
-                ticket_category = ticket_category_service.get_category(
-                    ticket_category_id
-                )
-
-                ticket_actions.create_tickets(
-                    order,
-                    line_item,
-                    ticket_category,
-                    initiator,
-                )
-            case ProductType.ticket_bundle:
-                product = product_service.get_product(line_item.product_id)
-
-                ticket_category_id = TicketCategoryID(
-                    UUID(str(product.type_params['ticket_category_id']))
-                )
-                ticket_category = ticket_category_service.get_category(
-                    ticket_category_id
-                )
-
-                ticket_quantity_per_bundle = int(
-                    product.type_params['ticket_quantity']
-                )
-
-                ticket_bundle_actions.create_ticket_bundles(
-                    order,
-                    line_item,
-                    ticket_category,
-                    ticket_quantity_per_bundle,
-                    initiator,
-                )
+        procedure = order_action_service.find_procedure_for_product_type(
+            line_item.product_type
+        )
+        if procedure:
+            match procedure.on_cancellation_before_payment(
+                order, line_item, initiator, {}
+            ):
+                case Err(e):
+                    return Err(e)
 
     # based on order action registered for product number
-    return order_action_service.execute_creation_actions(order, initiator)
+    return order_action_service.execute_actions_on_cancellation_before_payment(
+        order, initiator
+    )
 
 
-def _execute_product_revocation_actions(
+def _execute_actions_on_cancellation_after_payment(
     order: Order, initiator: User
 ) -> Result[None, OrderActionFailedError]:
     # based on product type
     for line_item in order.line_items:
-        match line_item.product_type:
-            case ProductType.ticket:
-                ticket_actions.revoke_tickets(order, line_item, initiator)
-            case ProductType.ticket_bundle:
-                match ticket_bundle_actions.revoke_ticket_bundles(
-                    order, line_item, initiator
-                ):
-                    case Err(e):
-                        return Err(OrderActionFailedError(e))
+        procedure = order_action_service.find_procedure_for_product_type(
+            line_item.product_type
+        )
+        if procedure:
+            match procedure.on_cancellation_after_payment(
+                order, line_item, initiator, {}
+            ):
+                case Err(e):
+                    return Err(e)
 
     # based on order action registered for product number
-    return order_action_service.execute_revocation_actions(order, initiator)
+    return order_action_service.execute_actions_on_cancellation_after_payment(
+        order, initiator
+    )
 
 
 def update_line_item_processing_result(

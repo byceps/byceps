@@ -1,15 +1,15 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 import pytest
 
 from byceps.services.party import party_setting_service
-from byceps.services.party.models import PartySetting
+from byceps.services.party.models import PartyID, PartySetting
 
 
-PARTY_ID = 'favorite-party'
+PARTY_ID = PartyID('favorite-party')
 
 
 @pytest.fixture(scope='module')

@@ -2,7 +2,7 @@
 byceps.services.orga_presence.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,9 +13,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import UserID
-from byceps.util.uuid import generate_uuid7
+from byceps.services.user.dbmodels import DbUser
+from byceps.services.user.models import UserID
 
 
 class DbTimeSlot(db.Model):
@@ -27,9 +26,7 @@ class DbTimeSlot(db.Model):
         'polymorphic_identity': 'time_slot',
     }
 
-    id: Mapped[UUID] = mapped_column(
-        db.Uuid, default=generate_uuid7, primary_key=True
-    )
+    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -48,7 +45,21 @@ class DbPresence(DbTimeSlot):
     orga_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), nullable=True
     )
-    orga: Mapped[DbUser] = relationship(DbUser)
+    orga: Mapped[DbUser] = relationship()
+
+    def __init__(
+        self,
+        time_slot_id: UUID,
+        party_id: PartyID,
+        starts_at: datetime,
+        ends_at: datetime,
+        orga_id: UserID,
+    ) -> None:
+        self.id = time_slot_id
+        self.party_id = party_id
+        self.starts_at = starts_at
+        self.ends_at = ends_at
+        self.orga_id = orga_id
 
 
 class DbTask(DbTimeSlot):
@@ -59,3 +70,17 @@ class DbTask(DbTimeSlot):
     }
 
     title: Mapped[str] = mapped_column(db.UnicodeText, nullable=True)
+
+    def __init__(
+        self,
+        time_slot_id: UUID,
+        party_id: PartyID,
+        starts_at: datetime,
+        ends_at: datetime,
+        title: str,
+    ) -> None:
+        self.id = time_slot_id
+        self.party_id = party_id
+        self.starts_at = starts_at
+        self.ends_at = ends_at
+        self.title = title

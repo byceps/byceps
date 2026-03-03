@@ -2,7 +2,7 @@
 byceps.services.news.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -27,9 +27,8 @@ from byceps.services.news.models import (
     NewsItemVersionID,
 )
 from byceps.services.site.models import SiteID
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
+from byceps.services.user.dbmodels import DbUser
+from byceps.services.user.models import UserID
 
 
 class DbNewsChannel(db.Model):
@@ -58,14 +57,6 @@ class DbNewsChannel(db.Model):
         self.announcement_site_id = announcement_site_id
         self.archived = archived
 
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add('brand', self.brand_id)
-            .build()
-        )
-
 
 class DbNewsItem(db.Model):
     """A news item.
@@ -90,7 +81,7 @@ class DbNewsItem(db.Model):
         db.ForeignKey('news_channels.id'),
         index=True,
     )
-    channel: Mapped[DbNewsChannel] = relationship(DbNewsChannel)
+    channel: Mapped[DbNewsChannel] = relationship()
     slug: Mapped[str] = mapped_column(db.UnicodeText)
     published_at: Mapped[datetime | None]
     current_version = association_proxy(
@@ -120,16 +111,6 @@ class DbNewsItem(db.Model):
     def published(self) -> bool:
         return self.published_at is not None
 
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add('channel', self.channel_id)
-            .add_with_lookup('slug')
-            .add_with_lookup('published_at')
-            .build()
-        )
-
 
 class DbNewsItemVersion(db.Model):
     """A snapshot of a news item at a certain time."""
@@ -140,12 +121,12 @@ class DbNewsItemVersion(db.Model):
     item_id: Mapped[NewsItemID] = mapped_column(
         db.Uuid, db.ForeignKey('news_items.id'), index=True
     )
-    item: Mapped[DbNewsItem] = relationship(DbNewsItem)
+    item: Mapped[DbNewsItem] = relationship()
     created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
         db.Uuid, db.ForeignKey('users.id')
     )
-    creator: Mapped[DbUser] = relationship(DbUser)
+    creator: Mapped[DbUser] = relationship()
     title: Mapped[str] = mapped_column(db.UnicodeText)
     body: Mapped[str] = mapped_column(db.UnicodeText)
     _body_format: Mapped[str] = mapped_column('body_format', db.UnicodeText)
@@ -183,15 +164,6 @@ class DbNewsItemVersion(db.Model):
         """
         return self.id == self.item.current_version.id
 
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('item')
-            .add_with_lookup('created_at')
-            .build()
-        )
-
 
 class DbCurrentNewsItemVersionAssociation(db.Model):
     __tablename__ = 'news_item_current_versions'
@@ -200,7 +172,6 @@ class DbCurrentNewsItemVersionAssociation(db.Model):
         db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
     )
     item: Mapped[DbNewsItem] = relationship(
-        DbNewsItem,
         backref=db.backref('current_version_association', uselist=False),
     )
     version_id: Mapped[NewsItemVersionID] = mapped_column(
@@ -209,7 +180,7 @@ class DbCurrentNewsItemVersionAssociation(db.Model):
         unique=True,
         nullable=False,
     )
-    version: Mapped[DbNewsItemVersion] = relationship(DbNewsItemVersion)
+    version: Mapped[DbNewsItemVersion] = relationship()
 
     def __init__(self, item: DbNewsItem, version: DbNewsItemVersion) -> None:
         self.item = item
@@ -230,7 +201,7 @@ class DbNewsImage(db.Model):
     item_id: Mapped[NewsItemID] = mapped_column(
         db.Uuid, db.ForeignKey('news_items.id'), index=True
     )
-    item: Mapped[DbNewsItem] = relationship(DbNewsItem, backref='images')
+    item: Mapped[DbNewsItem] = relationship(backref='images')
     number: Mapped[int]
     filename: Mapped[str] = mapped_column(db.UnicodeText)
     alt_text: Mapped[str | None] = mapped_column(db.UnicodeText)
@@ -260,15 +231,6 @@ class DbNewsImage(db.Model):
         self.caption = caption
         self.attribution = attribution
 
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('id')
-            .add_with_lookup('item_id')
-            .add_with_lookup('number')
-            .build()
-        )
-
 
 class DbFeaturedNewsImage(db.Model):
     __tablename__ = 'news_featured_images'
@@ -277,13 +239,12 @@ class DbFeaturedNewsImage(db.Model):
         db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
     )
     item: Mapped[DbNewsItem] = relationship(
-        DbNewsItem,
         backref=db.backref('featured_image_association', uselist=False),
     )
     image_id: Mapped[NewsImageID] = mapped_column(
         db.Uuid, db.ForeignKey('news_images.id'), unique=True
     )
-    image: Mapped[DbNewsImage] = relationship(DbNewsImage)
+    image: Mapped[DbNewsImage] = relationship()
 
     def __init__(self, item_id: NewsItemID, image_id: NewsImageID) -> None:
         self.item_id = item_id

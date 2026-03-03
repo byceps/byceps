@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -9,7 +9,7 @@ import pytest
 
 from byceps.services.news import news_image_service, news_item_service
 from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token
 
@@ -52,7 +52,11 @@ def news_item_with_featured_image(
 
     news_item_service.set_featured_image(item.id, image.id)
 
-    return news_item_service.find_item(item.id)
+    found_item = news_item_service.find_item(item.id)
+    if found_item is None:
+        raise Exception('News item not found')
+
+    return found_item
 
 
 def create_item(channel: NewsChannel, editor: User) -> NewsItem:
@@ -68,4 +72,4 @@ def create_item(channel: NewsChannel, editor: User) -> NewsItem:
         title,
         body,
         body_format,
-    )
+    ).unwrap()

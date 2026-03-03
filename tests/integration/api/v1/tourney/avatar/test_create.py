@@ -1,11 +1,13 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 from pathlib import Path
 
-from byceps.services.tourney.avatar import tourney_avatar_service
+from byceps.services.tourney import tourney_avatar_service
 
 
 def test_create(api_client, api_client_authz_header, party, user):
@@ -85,6 +87,7 @@ def tear_down_avatar(response):
     tourney_avatar_service.delete_avatar_image(avatar_id)
 
 
-def extract_avatar_id(response) -> str:
+def extract_avatar_id(response) -> UUID:
     filename = response.location.rsplit('/', 1)[1]
-    return filename.split('.')[0]
+    id_str = filename.split('.')[0]
+    return UUID(id_str)

@@ -10,7 +10,7 @@
     <div>
       <h1 class="title">{{ _('Snippets') }} {{ render_extra_in_heading(snippets|length) }}</h1>
     </div>
-  {%- if has_current_user_permission('snippet.create') %}
+  {%- if g.user.has_permission('snippet.create') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.create_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('add') }} <span>{{ _('Create snippet') }}</span></a>
@@ -39,7 +39,7 @@
         <td class="nowrap"><a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a></td>
         <td>{{ snippet.language_code }}</td>
         <td class="nowrap">
-          {%- if has_current_user_permission('snippet.view_history') %}
+          {%- if g.user.has_permission('snippet.view_history') %}
           {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ snippet.current_version.created_at|datetimeformat }}</a>
           {%- else %}
           {{ snippet.current_version.created_at|datetimeformat }}
@@ -47,7 +47,7 @@
         </td>
         <td>{{ render_user_avatar_and_name(users_by_id[snippet.current_version.creator_id], size=20) }}</td>
         <td>
-          {%- if has_current_user_permission('snippet.update') %}
+          {%- if g.user.has_permission('snippet.update') %}
           <div class="button-row is-compact is-right-aligned">
             <a href="{{ url_for('.update_form', snippet_id=snippet.id) }}" class="button is-compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
           </div>

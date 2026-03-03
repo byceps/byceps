@@ -2,13 +2,13 @@
 byceps.services.board.blueprints.admin.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from flask_babel import lazy_gettext
 from wtforms import StringField
-from wtforms.validators import InputRequired, Length, ValidationError
+from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from byceps.services.board import board_service
 from byceps.util.l10n import LocalizedForm
@@ -37,7 +37,7 @@ class CategoryCreateForm(LocalizedForm):
         lazy_gettext('Title'), [InputRequired(), Length(max=40)]
     )
     description = StringField(
-        lazy_gettext('Text'), [InputRequired(), Length(max=80)]
+        lazy_gettext('Description'), [Optional(), Length(max=80)]
     )
 
 

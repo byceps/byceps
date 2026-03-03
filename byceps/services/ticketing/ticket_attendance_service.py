@@ -2,7 +2,7 @@
 byceps.services.ticketing.ticket_attendance_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -18,7 +18,7 @@ from byceps.services.brand.models import BrandID
 from byceps.services.party import party_service
 from byceps.services.party.dbmodels import DbParty
 from byceps.services.party.models import Party, PartyID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .dbmodels.archived_attendance import DbArchivedAttendance
 from .dbmodels.category import DbTicketCategory
@@ -32,6 +32,7 @@ def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
     values = {
         'user_id': str(user_id),
         'party_id': str(party_id),
+        'created_at': datetime.utcnow(),
     }
 
     insert_ignore_on_conflict(table, values)

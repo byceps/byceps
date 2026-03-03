@@ -2,7 +2,7 @@
 byceps.services.timetable.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -84,7 +84,7 @@ def item_create(timetable_id):
     if not form.validate():
         return item_create_form(form)
 
-    scheduled_at = form.scheduled_at.data  # TODO: timezone conversion!!
+    scheduled_at = form.scheduled_at.data
     description = form.description.data.strip()
     location = form.location.data
     link_target = form.link_target.data

@@ -2,7 +2,7 @@
 byceps.services.shop.order.models.order
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -22,7 +22,7 @@ from byceps.services.shop.product.models import (
 )
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.shop.storefront.models import StorefrontID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from .number import OrderNumber
 

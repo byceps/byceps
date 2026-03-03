@@ -1,5 +1,5 @@
 """
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -44,6 +44,7 @@ def test_success(setting_registration_open, api_client):
 
     client_id = response.location.removeprefix(LOCATION_PREFIX)
     client = whereabouts_client_service.find_client(client_id)
+    assert client is not None
     assert response.json == {
         'client_id': client_id,
         'token': client.token,

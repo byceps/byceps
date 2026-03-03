@@ -2,16 +2,17 @@
 byceps.services.shop.orders.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from decimal import Decimal
 
-from flask import abort, current_app, g, request
+from flask import abort, g, request
 from flask_babel import gettext
 import structlog
 
+from byceps.byceps_app import get_current_byceps_app
 from byceps.services.brand import brand_service
 from byceps.services.email import (
     email_config_service,
@@ -38,7 +39,7 @@ from byceps.services.user import user_service
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.l10n import get_user_locale
+from byceps.util.l10n import get_default_locale
 from byceps.util.result import Err, Ok
 from byceps.util.views import login_required, redirect_to
 
@@ -99,12 +100,18 @@ def view(order_id):
 
     shop = shop_service.get_shop(order.shop_id)
 
+    payment_gateways_config = (
+        get_current_byceps_app().byceps_config.payment_gateways
+    )
+
     paypal_enabled = (
         payment_gateway_service.is_payment_gateway_enabled_for_storefront(
             'paypal', storefront.id
         )
     )
-    paypal_config = current_app.byceps_config.payment_gateways.paypal
+    paypal_config = (
+        payment_gateways_config.paypal if payment_gateways_config else None
+    )
     if paypal_enabled and paypal_config and paypal_config.enabled:
         paypal_client_id = paypal_config.client_id
     else:
@@ -115,7 +122,9 @@ def view(order_id):
             'stripe', storefront.id
         )
     )
-    stripe_config = current_app.byceps_config.payment_gateways.stripe
+    stripe_config = (
+        payment_gateways_config.stripe if payment_gateways_config else None
+    )
     if stripe_enabled and stripe_config and stripe_config.enabled:
         stripe_publishable_key = stripe_config.publishable_key
     else:
@@ -162,7 +171,8 @@ def _is_cancellation_requesting_enabled() -> bool:
 
 
 def _get_payment_instructions(order) -> str | None:
-    language_code = get_user_locale(g.user)
+    locale = g.user.locale or get_default_locale()
+    language_code = locale.language
 
     match order_payment_service.get_html_payment_instructions(
         order, language_code
@@ -229,22 +239,21 @@ def cancel(order_id):
 
     reason = form.reason.data.strip()
 
-    cancellation_result = order_command_service.cancel_order(
-        order.id, g.user, reason
-    )
-    if cancellation_result.is_err():
-        err = cancellation_result.unwrap_err()
-        if isinstance(err, OrderAlreadyCanceledError):
+    match order_command_service.cancel_order(
+        order.id, g.user.as_user(), reason
+    ):
+        case Ok((canceled_order, event)):
+            pass
+        case Err(OrderAlreadyCanceledError()):
             flash_error(
                 gettext(
                     'The order has already been canceled. The payment state cannot be changed anymore.'
                 )
             )
-        else:
+            return redirect_to('.view', order_id=order.id)
+        case Err(_):
             flash_error(gettext('An unexpected error occurred.'))
-        return redirect_to('.view', order_id=order.id)
-
-    canceled_order, event = cancellation_result.unwrap()
+            return redirect_to('.view', order_id=order.id)
 
     flash_success(gettext('Order has been canceled.'))
 
@@ -354,22 +363,21 @@ def donate_everything(order_id):
         'Ticket return and donation of full order total as requested'
     )
 
-    cancellation_result = order_command_service.cancel_order(
-        order.id, g.user, reason
-    )
-    if cancellation_result.is_err():
-        err = cancellation_result.unwrap_err()
-        if isinstance(err, OrderAlreadyCanceledError):
+    match order_command_service.cancel_order(
+        order.id, g.user.as_user(), reason
+    ):
+        case Ok((canceled_order, event)):
+            pass
+        case Err(OrderAlreadyCanceledError()):
             flash_error(
                 gettext(
                     'The order has already been canceled. The payment state cannot be changed anymore.'
                 )
             )
-        else:
+            return redirect_to('.view', order_id=order.id)
+        case Err(_):
             flash_error(gettext('An unexpected error occurred.'))
-        return redirect_to('.view', order_id=order.id)
-
-    canceled_order, event = cancellation_result.unwrap()
+            return redirect_to('.view', order_id=order.id)
 
     cancellation_request_service.accept_request(cancellation_request.id)
 
@@ -559,17 +567,19 @@ def _send_refund_request_confirmation_email(
     screen_name = g.user.screen_name or 'User'
 
     brand = brand_service.get_brand(g.site.brand_id)
-    language_code = get_user_locale(g.user)
 
-    footer_result = email_footer_service.get_footer(brand, language_code)
-    if footer_result.is_err():
-        log.error(
-            'Sending refund request confirmation email failed',
-            error=footer_result.unwrap_err(),
-        )
-        return
+    locale = g.user.locale or get_default_locale()
+    language_code = locale.language
 
-    footer = footer_result.unwrap()
+    match email_footer_service.get_footer(brand, language_code):
+        case Ok(footer):
+            pass
+        case Err(error):
+            log.error(
+                'Sending refund request confirmation email failed',
+                error=error,
+            )
+            return
 
     sender = email_config.sender
     recipients = [email_address.address]

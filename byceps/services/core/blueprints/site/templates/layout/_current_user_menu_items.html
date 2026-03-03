@@ -4,7 +4,7 @@
       <li>
         <span class="dropdown-label label-and-name">
           <span class="label">{{ _('Logged in as') }}</span>
-          <span class="name">{{ render_user_screen_name(g.user) }}</span>
+          <span class="name">{{ render_user_screen_name(g.user.as_user()) }}</span>
         </span>
       </li>
       {%- if g.site.is_intranet %}

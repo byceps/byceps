@@ -2,7 +2,7 @@
 byceps.services.shop.product.product_repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -14,8 +14,7 @@ from sqlalchemy import delete, select, update
 from sqlalchemy.sql import Select
 
 from byceps.database import db, paginate, Pagination
-from byceps.services.shop.order.dbmodels.line_item import DbLineItem
-from byceps.services.shop.order.dbmodels.order import DbOrder
+from byceps.services.shop.order.dbmodels.order import DbLineItem, DbOrder
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.uuid import generate_uuid7
@@ -169,7 +168,7 @@ def find_db_product(product_id: ProductID) -> DbProduct | None:
 
 
 def _get_db_product(product_id: ProductID) -> DbProduct:
-    """Return the database entity for the product with that id.
+    """Return the database entity for the product with that ID.
 
     Raise an exception if not found.
     """

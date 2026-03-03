@@ -2,7 +2,7 @@
 byceps.services.authn.login.blueprints.site.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,13 +11,13 @@ from dataclasses import dataclass
 import structlog
 
 from byceps.services.authn import authn_service
-from byceps.services.authn.errors import AuthenticationFailedError
-from byceps.services.authn.events import UserLoggedInEvent
+from byceps.services.authn.errors import UserAuthenticationFailedError
+from byceps.services.authn.events import UserLoggedInToSiteEvent
 from byceps.services.authn.session import authn_session_service
 from byceps.services.brand.models import BrandID
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.site.models import Site
-from byceps.services.user.models.user import Password, User, UserID
+from byceps.services.user.models import Password, User, UserID
 from byceps.services.verification_token import verification_token_service
 from byceps.util import user_session
 from byceps.util.result import Err, Ok, Result
@@ -35,26 +35,24 @@ def log_in_user(
     username: str,
     password: Password,
     permanent: bool,
+    ip_address: str | None,
     brand_id: BrandID,
     site: Site,
-    *,
-    ip_address: str | None = None,
 ) -> Result[
-    tuple[User, UserLoggedInEvent],
-    AuthenticationFailedError | ConsentRequiredError,
+    tuple[User, UserLoggedInToSiteEvent],
+    UserAuthenticationFailedError | ConsentRequiredError,
 ]:
-    authn_result = authn_service.authenticate(username, password)
-    if authn_result.is_err():
-        log.info(
-            'User authentication failed',
-            scope='site',
-            site_id=site.id,
-            username=username,
-            error=str(authn_result.unwrap_err()),
-        )
-        return Err(authn_result.unwrap_err())
-
-    user = authn_result.unwrap()
+    match authn_service.authenticate(username, password):
+        case Ok(user):
+            pass
+        case Err(e):
+            log.info(
+                'User authentication for login to site failed',
+                site_id=site.id,
+                username=username,
+                error=str(e),
+            )
+            return Err(e)
 
     # Authentication succeeded.
 
@@ -62,14 +60,13 @@ def log_in_user(
         consent_token = verification_token_service.create_for_consent(user)
         return Err(ConsentRequiredError(consent_token.token))
 
-    auth_token, logged_in_event = authn_session_service.log_in_user(
-        user, ip_address=ip_address, site=site
+    auth_token, logged_in_event = authn_session_service.log_in_user_to_site(
+        user, ip_address, site=site
     )
     user_session.start(user.id, auth_token, permanent=permanent)
 
     log.info(
-        'User logged in',
-        scope='site',
+        'User logged in to site',
         site_id=site.id,
         user_id=str(user.id),
         screen_name=user.screen_name,
@@ -92,8 +89,7 @@ def log_out_user(user: User, site: Site) -> None:
     user_session.end()
 
     log.info(
-        'User logged out',
-        scope='site',
+        'User logged out of site',
         site_id=site.id,
         user_id=str(user.id),
         screen_name=user.screen_name,

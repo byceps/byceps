@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -19,7 +19,7 @@ from byceps.services.ticketing.errors import (
 from byceps.services.ticketing.events import TicketCheckedInEvent
 from byceps.services.ticketing.models.checkin import PotentialTicketForCheckIn
 from byceps.services.ticketing.models.ticket import TicketCode, TicketID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
 from tests.helpers import generate_token
@@ -46,6 +46,7 @@ def test_check_in_user(party, build_ticket, ticket_user, initiator):
     assert event.ticket_id == ticket.id
     assert event.ticket_code == ticket.code
     assert event.occupied_seat_id is None
+    assert event.user is not None
     assert event.user.id == ticket_user.id
     assert event.user.screen_name == ticket_user.screen_name
 

@@ -2,7 +2,7 @@
 byceps.services.authn.password.authn_password_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,9 +12,9 @@ from sqlalchemy import delete
 from byceps.database import db
 from byceps.services.authn.events import PasswordUpdatedEvent
 from byceps.services.authn.session import authn_session_service
-from byceps.services.user import user_log_service
-from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import Password, User, UserID
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry
+from byceps.services.user.models import Password, User, UserID
 
 from . import authn_password_domain_service
 from .dbmodels import DbCredential

@@ -2,7 +2,7 @@
 byceps.announce.helpers
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,7 +10,7 @@ from functools import wraps
 
 from flask_babel import force_locale, gettext
 
-from byceps.services.core.events import EventUser
+from byceps.services.user.models import User
 from byceps.services.webhooks.models import OutgoingWebhook
 from byceps.util.l10n import get_default_locale
 
@@ -35,7 +35,7 @@ def matches_selectors(
     return (allowed_values is None) or (actual_value in allowed_values)
 
 
-def get_screen_name_or_fallback(user: EventUser | None) -> str:
+def get_screen_name_or_fallback(user: User | None) -> str:
     """Return the user's screen name or a fallback value."""
     if (user is None) or (user.screen_name is None):
         return gettext('Someone')

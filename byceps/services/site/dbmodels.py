@@ -2,7 +2,7 @@
 byceps.services.site.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -44,7 +44,7 @@ class DbSite(db.Model):
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText, db.ForeignKey('brands.id'), index=True
     )
-    brand: Mapped[DbBrand] = relationship(DbBrand, backref='sites')
+    brand: Mapped[DbBrand] = relationship(backref='sites')
     party_id: Mapped[PartyID | None] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
@@ -61,10 +61,9 @@ class DbSite(db.Model):
     )
     is_intranet: Mapped[bool]
     check_in_on_login: Mapped[bool]
-    archived: Mapped[bool] = mapped_column(default=False)
+    archived: Mapped[bool]
 
     news_channels: Mapped[list[DbNewsChannel]] = relationship(
-        DbNewsChannel,
         secondary=site_news_channels,
         lazy='subquery',
         backref=db.backref('news_channels', lazy=True),
@@ -85,6 +84,7 @@ class DbSite(db.Model):
         storefront_id: StorefrontID | None = None,
         is_intranet: bool = False,
         check_in_on_login: bool = False,
+        archived: bool = False,
     ) -> None:
         self.id = site_id
         self.title = title
@@ -98,6 +98,7 @@ class DbSite(db.Model):
         self.storefront_id = storefront_id
         self.is_intranet = is_intranet
         self.check_in_on_login = check_in_on_login
+        self.archived = archived
 
     def __repr__(self) -> str:
         return ReprBuilder(self).add_with_lookup('id').build()

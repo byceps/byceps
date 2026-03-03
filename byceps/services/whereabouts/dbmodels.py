@@ -2,7 +2,7 @@
 byceps.services.whereabouts.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -23,7 +23,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 
 from .models import (
     IPAddress,
@@ -74,6 +74,7 @@ class DbWhereaboutsClient(db.Model):
     token: Mapped[str | None] = mapped_column(
         db.UnicodeText, unique=True, index=True
     )
+    name: Mapped[str | None] = mapped_column(db.UnicodeText, unique=True)
     location: Mapped[str | None] = mapped_column(db.UnicodeText)
     description: Mapped[str | None] = mapped_column(db.UnicodeText)
     config_id: Mapped[WhereaboutsClientConfigID | None] = mapped_column(

@@ -2,7 +2,7 @@
 byceps.services.board.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,7 +12,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.brand.models import BrandID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 
 BoardID = NewType('BoardID', str)
@@ -25,6 +25,9 @@ PostingID = NewType('PostingID', UUID)
 
 
 TopicID = NewType('TopicID', UUID)
+
+
+ReactionKind = NewType('ReactionKind', str)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -41,16 +44,17 @@ class BoardCategory:
     position: int
     slug: str
     title: str
-    description: str
+    description: str | None
     topic_count: int
     posting_count: int
     hidden: bool
 
 
 @dataclass(frozen=True, kw_only=True)
-class BoardCategoryWithLastUpdate(BoardCategory):
+class BoardCategorySummary(BoardCategory):
     last_posting_updated_at: datetime | None
     last_posting_updated_by: User | None
+    contains_unseen_postings: bool
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -61,8 +65,8 @@ class Topic:
     creator: User
     title: str
     posting_count: int
-    last_updated_at: datetime | None
-    last_updated_by: User | None
+    last_updated_at: datetime
+    last_updated_by: User
     hidden: bool
     hidden_at: datetime | None
     hidden_by: User | None
@@ -78,12 +82,35 @@ class Topic:
 
 
 @dataclass(frozen=True, kw_only=True)
+class BoardTopicCategory:
+    slug: str
+    title: str
+
+
+@dataclass(frozen=True, kw_only=True)
+class BoardTopicSummary:
+    id: TopicID
+    category: BoardTopicCategory
+    creator: User
+    title: str
+    reply_count: int
+    last_updated_at: datetime
+    last_updated_by: User
+    hidden: bool
+    locked: bool
+    pinned: bool
+    posting_limited_to_moderators: bool
+    muted: bool
+    contains_unseen_postings: bool
+
+
+@dataclass(frozen=True, kw_only=True)
 class PostingReaction:
     id: UUID
     created_at: datetime
     posting_id: PostingID
     user_id: UserID
-    kind: str
+    kind: ReactionKind
 
 
 @dataclass(frozen=True, kw_only=True)

@@ -2,7 +2,7 @@
 byceps.services.ticketing.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -180,9 +180,9 @@ def update_code(ticket_id):
         return update_code_form(ticket.id, form)
 
     code = form.code.data
-    manager = g.user
+    manager = g.user.as_user()
 
-    ticket_service.update_ticket_code(ticket.id, code, manager.id)
+    ticket_service.update_ticket_code(ticket.id, code, manager)
 
     flash_success(
         gettext(
@@ -226,11 +226,9 @@ def appoint_user(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
     user = form.user.data
-    manager = g.user
+    manager = g.user.as_user()
 
-    match ticket_user_management_service.appoint_user(
-        ticket.id, user.id, manager.id
-    ):
+    match ticket_user_management_service.appoint_user(ticket.id, user, manager):
         case Err(e):
             flash_error(e.message)
             return redirect_to('.view_ticket', ticket_id=ticket.id)
@@ -282,11 +280,17 @@ def view_bundle(bundle_id):
 
     party = party_service.get_party(bundle.ticket_category.party_id)
 
+    if bundle.order_number:
+        order = order_service.find_order_by_order_number(bundle.order_number)
+    else:
+        order = None
+
     tickets = ticket_bundle_service.get_tickets_for_bundle(bundle.id)
 
     return {
         'party': party,
         'bundle': bundle,
+        'order': order,
         'tickets': tickets,
     }
 

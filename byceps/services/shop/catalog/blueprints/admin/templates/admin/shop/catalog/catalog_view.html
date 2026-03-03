@@ -11,7 +11,7 @@
     <div>
       <h1 class="title">{{ catalog.title }}</h1>
     </div>
-    {%- if has_current_user_permission('shop_product.administrate') %}
+    {%- if g.user.has_permission('shop_product.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <a class="button" href="{{ url_for('.catalog_update_form', catalog_id=catalog.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
@@ -31,7 +31,7 @@
     <div>
       <h2>{{ _('Collections') }} {{ render_extra_in_heading(collections_and_products|length) }}</h2>
     </div>
-    {%- if has_current_user_permission('shop_product.administrate') %}
+    {%- if g.user.has_permission('shop_product.administrate') %}
     <div>
       <div class="button-row is-compact is-right-aligned">
         <a class="button is-compact" href="{{ url_for('.collection_create_form', catalog_id=catalog.id) }}">{{ render_icon('add') }} <span>{{ _('Create') }}</span></a>
@@ -46,7 +46,7 @@
     <div>
       <h3>{{ collection.title }} {{ render_extra_in_heading(products|length, label=ngettext('product', 'products', products|length)) }}</h3>
     </div>
-    {%- if has_current_user_permission('shop_product.administrate') %}
+    {%- if g.user.has_permission('shop_product.administrate') %}
     <div>
       <div class="button-row is-compact is-right-aligned">
         <div class="dropdown">
@@ -56,7 +56,7 @@
             {%- if products %}
             <li><span class="dropdown-label dimmed">{{ render_icon('delete') }} {{ _('Delete collection') }}</span></li>
             {%- else %}
-            <li><a class="dropdown-item" href="{{ url_for('.collection_delete', collection_id=collection.id) }}" data-action="collection-delete">{{ render_icon('delete') }} {{ _('Delete collection') }}</a></td>
+            <li><a class="dropdown-item color--danger" href="{{ url_for('.collection_delete', collection_id=collection.id) }}" data-action="collection-delete">{{ render_icon('delete') }} {{ _('Delete collection') }}</a></td>
             {%- endif %}
             <li class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ url_for('.product_add_form', collection_id=collection.id) }}">{{ render_icon('add') }} {{ _('Add product') }}</a></li>
@@ -95,7 +95,7 @@
           {%- endif %}
         </td>
         <td>{{ render_product_temporal_availability(product) }}</td>
-        <td class="number"><a href="{{ url_for('.product_remove', product_id=product.id, collection_id=collection.id) }}" class="button is-compact" title="{{ _('Remove product') }}" data-action="product-remove">{{ render_icon('remove') }}</a></td>
+        <td class="number"><a href="{{ url_for('.product_remove', product_id=product.id, collection_id=collection.id) }}" class="button is-compact color-danger" title="{{ _('Remove product') }}" data-action="product-remove">{{ render_icon('remove') }}</a></td>
       </tr>
       {%- endfor %}
     </tbody>

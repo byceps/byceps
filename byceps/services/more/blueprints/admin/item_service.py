@@ -2,19 +2,18 @@
 byceps.services.more.blueprints.admin.item_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from dataclasses import dataclass
 
-from flask import url_for
+from flask import g, url_for
 from flask_babel import gettext
 
 from byceps.services.brand.models import Brand
 from byceps.services.party.models import Party
 from byceps.services.site.models import Site
-from byceps.util.authz import has_current_user_permission
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -31,10 +30,7 @@ def select_visible_items(items: list[MoreItem]) -> list[MoreItem]:
 
 
 def _is_item_visible(item: MoreItem) -> bool:
-    return (
-        has_current_user_permission(item.required_permission)
-        and item.precondition
-    )
+    return g.user.has_permission(item.required_permission) and item.precondition
 
 
 def get_global_items() -> list[MoreItem]:
@@ -136,7 +132,7 @@ def get_brand_items(brand: Brand) -> list[MoreItem]:
         ),
         MoreItem(
             label=gettext('Galleries'),
-            icon='gallery',
+            icon='images',
             url=url_for(
                 'gallery_admin.gallery_index_for_brand', brand_id=brand.id
             ),

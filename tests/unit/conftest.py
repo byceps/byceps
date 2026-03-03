@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,7 +15,6 @@ import pytest
 from byceps.byceps_app import BycepsApp
 from byceps.config.models import (
     AppMode,
-    AppsConfig,
     BycepsConfig,
     DatabaseConfig,
     DevelopmentConfig,
@@ -35,7 +34,8 @@ from byceps.services.shop.product.models import (
     ProductType,
 )
 from byceps.services.shop.shop.models import ShopID
-from byceps.services.user.models.user import User, UserID
+from byceps.services.site.models import SiteID
+from byceps.services.user.models import User, UserID
 
 from tests.helpers import generate_token, generate_uuid
 
@@ -43,8 +43,6 @@ from tests.helpers import generate_token, generate_uuid
 @pytest.fixture(scope='session')
 def make_byceps_config():
     def _wrapper() -> BycepsConfig:
-        apps_config = AppsConfig(admin=None, api=None, sites=[])
-
         return BycepsConfig(
             data_path=Path('./data'),
             locale='de',
@@ -52,7 +50,6 @@ def make_byceps_config():
             testing=True,
             timezone='Europe/Berlin',
             secret_key='secret-key-for-testing-ONLY',
-            apps=apps_config,
             database=DatabaseConfig(
                 host='127.0.0.1',
                 port=5432,
@@ -98,7 +95,7 @@ def make_app(make_byceps_config):
     def _wrapper(
         app_mode: AppMode,
         *,
-        site_id: str | None = None,
+        site_id: SiteID | None = None,
         additional_config: dict[str, Any] | None = None,
     ) -> BycepsApp:
         byceps_config = make_byceps_config()
@@ -142,7 +139,6 @@ def make_user():
             initialized=initialized,
             suspended=suspended,
             deleted=deleted,
-            locale=None,
             avatar_url='/static/user_avatar_fallback.svg',
         )
 
@@ -151,12 +147,12 @@ def make_user():
 
 @pytest.fixture(scope='session')
 def admin_user(make_user) -> User:
-    return make_user()
+    return make_user(screen_name='Admin')
 
 
 @pytest.fixture(scope='session')
 def user(make_user):
-    return make_user()
+    return make_user(screen_name='User')
 
 
 @pytest.fixture(scope='session')

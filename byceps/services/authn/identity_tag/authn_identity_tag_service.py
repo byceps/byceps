@@ -2,7 +2,7 @@
 byceps.services.authn.identity_tag.authn_identity_tag_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,9 +11,10 @@ from uuid import UUID
 from sqlalchemy import delete, select
 
 from byceps.database import db
-from byceps.services.user import user_log_service, user_service
-from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User
+from byceps.services.user import user_service
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry
+from byceps.services.user.models import User
 
 from . import authn_identity_tag_domain_service
 from .dbmodels import DbUserIdentityTag
@@ -29,7 +30,7 @@ def create_tag(
     suspended: bool = False,
 ) -> UserIdentityTag:
     """Create a tag."""
-    tag, event, log_entry = authn_identity_tag_domain_service.create_tag(
+    tag, _, log_entry = authn_identity_tag_domain_service.create_tag(
         creator, identifier, user, note=note, suspended=suspended
     )
 
@@ -60,9 +61,7 @@ def _persist_tag_creation(
 
 def delete_tag(tag: UserIdentityTag, initiator: User) -> None:
     """Delete a tag."""
-    event, log_entry = authn_identity_tag_domain_service.delete_tag(
-        tag, initiator
-    )
+    _, log_entry = authn_identity_tag_domain_service.delete_tag(tag, initiator)
 
     db.session.execute(
         delete(DbUserIdentityTag).where(DbUserIdentityTag.id == tag.id)

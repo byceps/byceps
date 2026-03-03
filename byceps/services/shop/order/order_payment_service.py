@@ -2,7 +2,7 @@
 byceps.services.shop.order.order_payment_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,18 +13,20 @@ from moneyed import Money
 from sqlalchemy import select
 
 from byceps.database import db
+from byceps.services.shop.order.log import order_log_service
+from byceps.services.shop.order.log.models import OrderLogEntry
 from byceps.services.shop.shop.models import ShopID
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.errors import SnippetNotFoundError
 from byceps.services.snippet.models import SnippetScope
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.l10n import format_money
 from byceps.util.result import Err, Ok, Result
 from byceps.util.templating import load_template
 
-from . import order_domain_service, order_log_service
+from . import order_domain_service
 from .dbmodels.payment import DbPayment
-from .models.log import OrderLogEntry
+from .errors import OrderAlreadyCanceledError
 from .models.order import Order, OrderID
 from .models.payment import AdditionalPaymentData, Payment
 
@@ -36,16 +38,20 @@ def add_payment(
     amount: Money,
     initiator: User,
     additional_data: AdditionalPaymentData,
-) -> Payment:
+) -> Result[Payment, OrderAlreadyCanceledError]:
     """Add a payment to an order."""
 
-    payment, log_entry = order_domain_service.create_payment(
+    match order_domain_service.create_payment(
         order, created_at, method, amount, initiator, additional_data
-    )
+    ):
+        case Ok((payment, log_entry)):
+            pass
+        case Err(e):
+            return Err(e)
 
     _persist_payment(payment, log_entry)
 
-    return payment
+    return Ok(payment)
 
 
 def _persist_payment(payment: Payment, log_entry: OrderLogEntry) -> None:

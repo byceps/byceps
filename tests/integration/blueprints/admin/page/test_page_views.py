@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -9,7 +9,7 @@ from byceps.services.page import page_service
 from byceps.services.page.events import PageCreatedEvent
 from byceps.services.page.models import PageVersion
 from byceps.services.site.models import Site
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 from tests.helpers import generate_token, log_in_user
 
@@ -76,7 +76,7 @@ def test_view_current_version(page_admin_client, make_page):
 
 
 def test_view_version(page_admin_client, make_page):
-    version, event = make_page()
+    version, _ = make_page()
 
     url = f'{BASE_URL}/pages/versions/{version.id}'
     response = page_admin_client.get(url)
@@ -106,6 +106,7 @@ def test_compare(page_admin_client, page_admin, make_page):
         'Title v2',
         'Head v2',
         'Body v2',
+        False,
     )
 
     url = f'{BASE_URL}/pages/versions/{version1.id}/compare_to/{version2.id}'

@@ -2,7 +2,7 @@
 byceps.services.shop.order.blueprints.site.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length, Optional
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Orderer
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.l10n import LocalizedForm
 
 

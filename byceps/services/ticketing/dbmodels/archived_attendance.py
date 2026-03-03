@@ -2,7 +2,7 @@
 byceps.services.ticketing.dbmodels.archived_attendance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,8 +12,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
+from byceps.services.user.models import UserID
 
 
 class DbArchivedAttendance(db.Model):
@@ -40,16 +39,11 @@ class DbArchivedAttendance(db.Model):
     party_id: Mapped[PartyID] = mapped_column(
         db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
     )
-    created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    created_at: Mapped[datetime]
 
-    def __init__(self, user_id: UserID, party_id: PartyID) -> None:
+    def __init__(
+        self, user_id: UserID, party_id: PartyID, created_at: datetime
+    ) -> None:
         self.user_id = user_id
         self.party_id = party_id
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add('user_id', str(self.user_id))
-            .add('party_id', self.party_id)
-            .build()
-        )
+        self.created_at = created_at

@@ -2,7 +2,7 @@
 byceps.services.shop.order.dbmodels.order_action
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -27,9 +27,7 @@ class DbOrderAction(db.Model):
     product_id: Mapped[ProductID] = mapped_column(
         db.Uuid, db.ForeignKey('shop_products.id'), index=True
     )
-    product: Mapped[DbProduct] = relationship(
-        DbProduct, backref='order_actions'
-    )
+    product: Mapped[DbProduct] = relationship(backref='order_actions')
     procedure: Mapped[str] = mapped_column(db.UnicodeText)
     parameters: Mapped[ActionParameters] = mapped_column(db.JSONB)
 

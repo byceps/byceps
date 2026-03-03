@@ -2,7 +2,7 @@
 byceps.services.page.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -77,7 +77,7 @@ def view_current_version(page_id):
 @permission_required('page.view_history')
 @templated
 def view_version(version_id):
-    """Show the page with the given id."""
+    """Show the page with the given ID."""
     version = _get_version(version_id)
 
     page = page_service.get_page(version.page_id)
@@ -335,10 +335,11 @@ def create(site_id):
     name = form.name.data.strip().lower()
     language_code = form.language_code.data
     url_path = form.url_path.data.strip()
-    creator = g.user
+    creator = g.user.as_user()
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
+    hidden = form.hidden.data
 
     version, event = page_service.create_page(
         site,
@@ -349,6 +350,7 @@ def create(site_id):
         title,
         body,
         head=head,
+        hidden=hidden,
     )
 
     flash_success(gettext('Page has been created.'))
@@ -394,10 +396,11 @@ def update(page_id):
 
     language_code = form.language_code.data
     url_path = form.url_path.data.strip()
-    creator = g.user
+    creator = g.user.as_user()
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
+    hidden = form.hidden.data
 
     version, event = page_service.update_page(
         page.id,
@@ -407,6 +410,7 @@ def update(page_id):
         title,
         head,
         body,
+        hidden,
     )
 
     flash_success(gettext('Page has been updated.'))
@@ -423,22 +427,22 @@ def delete(page_id):
     """Delete a page."""
     page = _get_page(page_id)
 
+    initiator = g.user.as_user()
     page_name = page.name
     site_id = page.site_id
 
-    success, event = page_service.delete_page(page.id, initiator=g.user)
-
-    if not success:
-        flash_error(
-            gettext('Page "%(name)s" could not be deleted.', name=page_name)
-        )
-        return url_for('.view_current_version', page_id=page.id)
-
-    flash_success(gettext('Page "%(name)s" has been deleted.', name=page_name))
-
-    page_signals.page_deleted.send(None, event=event)
-
-    return url_for('.index_for_site', site_id=site_id)
+    match page_service.delete_page(page.id, initiator=initiator):
+        case Ok(event):
+            flash_success(
+                gettext('Page "%(name)s" has been deleted.', name=page_name)
+            )
+            page_signals.page_deleted.send(None, event=event)
+            return url_for('.index_for_site', site_id=site_id)
+        case Err(_):
+            flash_error(
+                gettext('Page "%(name)s" could not be deleted.', name=page_name)
+            )
+            return url_for('.view_current_version', page_id=page.id)
 
 
 @blueprint.get('/pages/<uuid:page_id>/set_nav_menu')

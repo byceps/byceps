@@ -32,11 +32,10 @@ Top-Level Section
 
    Reraise exceptions instead of letting BYCEPS handle them.
 
-   This is useful if an external service like Sentry_ should handle
-   exceptions.
+   This is useful if an external service like Sentry_ should handle exceptions.
 
-   If not set, this is implicitly true if debug mode and/or testing mode
-   are enabled.
+   If not set, this is implicitly true if debug mode and/or testing mode are
+   enabled.
 
    Handled by Flask_.
 
@@ -49,13 +48,13 @@ Top-Level Section
 .. confval:: secret_key
    :type: string
 
-   A secret key that will be for security features such as signing
-   session cookies.
+   A secret key that will be for security features such as signing session
+   cookies.
 
    Should be a long, random string.
 
-   BYCEPS provides a command-line tool to securely :ref:`generate a
-   secret key <Generate Secret Key>`.
+   BYCEPS provides a command-line tool to securely :ref:`generate a secret key
+   <Generate Secret Key>`.
 
    *required*
 
@@ -117,9 +116,9 @@ Database Section
 
 Properties to connect to the relational database (i.e. PostgreSQL) with.
 
-An example that connects to PostgreSQL on the local host and the default
-port, authenticating as user ``byceps`` with password ``hunter2``, and
-selecting the named database ``byceps``:
+An example that connects to PostgreSQL on the local host and the default port,
+authenticating as user ``byceps`` with password ``hunter2``, and selecting the
+named database ``byceps``:
 
 .. code-block:: toml
 
@@ -191,8 +190,8 @@ An example that enables the style guide but not the debug toolbar:
    :type: boolean
    :default: ``false``
 
-   Enables BYCEPS' style guide, available at ``/style_guide/`` both in
-   admin mode and site mode.
+   Enables BYCEPS' style guide, available at ``/style_guide/`` both in admin
+   mode and site mode.
 
    *optional*
 
@@ -285,8 +284,8 @@ Integration with `Invoice Ninja`_.
 .. confval:: invoiceninja.base_url
    :type: string
 
-   Base URL (without trailing slash) of the Invoice Ninja instance to
-   integrate with.
+   Base URL (without trailing slash) of the Invoice Ninja instance to integrate
+   with.
 
    *required if section is defined*
 
@@ -417,8 +416,8 @@ URL to connect to the Redis_ database with.
 .. _Redis: https://redis.io/
 
 
-An example for a Redis instance running on the local host on its default
-port, using the first database (#0):
+An example for a Redis instance running on the local host on its default port,
+using the first database (#0):
 
 .. code-block:: toml
 
@@ -434,13 +433,13 @@ port, using the first database (#0):
    The format can be one of these:
 
    * ``redis://[[username]:[password]]@localhost:6379/0`` (TCP socket)
-   * ``rediss://[[username]:[password]]@localhost:6379/0`` (SSL-wrapped
-     TCP socket)
-   * ``unix://[[username]:[password]]@/path/to/socket.sock?db=0`` (Unix
-     domain socket)
+   * ``rediss://[[username]:[password]]@localhost:6379/0`` (SSL-wrapped TCP
+     socket)
+   * ``unix://[[username]:[password]]@/path/to/socket.sock?db=0`` (Unix domain
+     socket)
 
-   The documentation for ``Redis.from_url`` provides `details on
-   supported URL schemes and examples
+   The documentation for ``Redis.from_url`` provides `details on supported URL
+   schemes and examples
    <https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url>`_.
 
    *required*
@@ -451,8 +450,8 @@ SMTP Section
 
 E-mail sending via the Simple Mail Transfer Protocol (SMTP).
 
-An example to send e-mail to a mail server on the local host on its
-standard port:
+An example to send e-mail to a mail server on the local host on its standard
+port:
 
 .. code-block:: toml
 

@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -9,7 +9,6 @@ import pytest
 
 from byceps.byceps_app import BycepsApp
 from byceps.database import db
-from byceps.services.core.events import EventUser
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.events import (
@@ -29,7 +28,7 @@ from byceps.services.shop.product.models import (
 )
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from tests.helpers import log_in_user
 from tests.helpers.shop import place_order
@@ -156,12 +155,13 @@ def test_cancel_before_paid(
         order_afterwards
     )
 
+    assert db_order_afterwards.payment_state_updated_at is not None
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator=EventUser.from_user(shop_order_admin),
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -199,12 +199,13 @@ def test_cancel_before_paid_without_sending_email(
     # No e-mail should be send.
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_not_called()
 
+    assert db_order_afterwards.payment_state_updated_at is not None
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator=EventUser.from_user(shop_order_admin),
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -253,10 +254,10 @@ def test_mark_order_as_paid(
 
     event = ShopOrderPaidEvent(
         occurred_at=order_afterwards.paid_at,
-        initiator=EventUser.from_user(shop_order_admin),
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
         payment_method='direct_debit',
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)
@@ -317,12 +318,13 @@ def test_cancel_after_paid(
         order_afterwards
     )
 
+    assert db_order_afterwards.payment_state_updated_at is not None
     event = ShopOrderCanceledEvent(
         occurred_at=db_order_afterwards.payment_state_updated_at,
-        initiator=EventUser.from_user(shop_order_admin),
+        initiator=shop_order_admin,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer=EventUser.from_user(orderer_user),
+        orderer=orderer_user,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -355,4 +357,6 @@ def assert_payment(
 
 
 def get_db_order(order_id: OrderID) -> DbOrder:
-    return db.session.get(DbOrder, order_id)
+    order = db.session.get(DbOrder, order_id)
+    assert order is not None
+    return order

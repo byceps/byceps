@@ -2,7 +2,7 @@
 byceps.services.user.user_command_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,30 +11,32 @@ from warnings import warn
 
 from babel import Locale
 
-from byceps.database import db
+from byceps.services.authn.password import authn_password_service
+from byceps.services.authn.session import authn_session_service
 from byceps.services.authz import authz_service
 from byceps.services.authz.models import RoleID
+from byceps.services.newsletter import newsletter_command_service
+from byceps.services.user.log import user_log_service
+from byceps.services.verification_token import verification_token_service
 from byceps.util.result import Err, Ok, Result
 
 from . import (
     user_creation_domain_service,
     user_domain_service,
     user_email_address_domain_service,
-    user_log_service,
+    user_repository,
     user_service,
 )
-from .dbmodels.detail import DbUserDetail
-from .dbmodels.user import DbUser
 from .errors import NothingChangedError
 from .events import (
+    UserAccountDeletedEvent,
     UserAccountSuspendedEvent,
     UserAccountUnsuspendedEvent,
     UserDetailsUpdatedEvent,
     UserEmailAddressChangedEvent,
     UserScreenNameChangedEvent,
 )
-from .models.log import UserLogEntry
-from .models.user import User, UserID
+from .models import User, UserID
 
 
 def initialize_account(
@@ -56,23 +58,13 @@ def initialize_account(
 
     log_entry = result.unwrap()
 
-    _persist_account_initialization(user.id, log_entry)
+    initialized = True
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+
+    user_repository.update_initialized_flag(user.id, initialized, db_log_entry)
 
     if assign_roles:
         _assign_roles(user, initiator=initiator)
-
-
-def _persist_account_initialization(
-    user_id: UserID, log_entry: UserLogEntry
-) -> None:
-    db_user = _get_db_user(user_id)
-
-    db_user.initialized = True
-
-    db_log_entry = user_log_service.to_db_entry(log_entry)
-    db.session.add(db_log_entry)
-
-    db.session.commit()
 
 
 def _assign_roles(user: User, *, initiator: User | None = None) -> None:
@@ -99,22 +91,14 @@ def suspend_account(
         user, initiator, reason
     )
 
-    _persist_account_suspension(event, log_entry)
+    suspended = True
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+
+    user_repository.update_suspended_flag(
+        event.user.id, suspended, db_log_entry
+    )
 
     return event
-
-
-def _persist_account_suspension(
-    event: UserAccountSuspendedEvent, log_entry: UserLogEntry
-) -> None:
-    db_user = _get_db_user(event.user.id)
-
-    db_user.suspended = True
-
-    db_log_entry = user_log_service.to_db_entry(log_entry)
-    db.session.add(db_log_entry)
-
-    db.session.commit()
 
 
 def unsuspend_account(
@@ -125,22 +109,14 @@ def unsuspend_account(
         user, initiator, reason
     )
 
-    _persist_account_unsuspension(event, log_entry)
+    suspended = False
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+
+    user_repository.update_suspended_flag(
+        event.user.id, suspended, db_log_entry
+    )
 
     return event
-
-
-def _persist_account_unsuspension(
-    event: UserAccountUnsuspendedEvent, log_entry: UserLogEntry
-) -> None:
-    db_user = _get_db_user(event.user.id)
-
-    db_user.suspended = False
-
-    db_log_entry = user_log_service.to_db_entry(log_entry)
-    db.session.add(db_log_entry)
-
-    db.session.commit()
 
 
 def change_screen_name(
@@ -155,22 +131,13 @@ def change_screen_name(
         user, new_screen_name, initiator, reason=reason
     )
 
-    _persist_screen_name_change(event, log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+
+    user_repository.update_screen_name(
+        event.user.id, event.new_screen_name, db_log_entry
+    )
 
     return event
-
-
-def _persist_screen_name_change(
-    event: UserScreenNameChangedEvent, log_entry: UserLogEntry
-) -> None:
-    db_user = _get_db_user(event.user_id)
-
-    db_user.screen_name = event.new_screen_name
-
-    db_log_entry = user_log_service.to_db_entry(log_entry)
-    db.session.add(db_log_entry)
-
-    db.session.commit()
 
 
 def change_email_address(
@@ -182,7 +149,7 @@ def change_email_address(
     reason: str | None = None,
 ) -> UserEmailAddressChangedEvent:
     """Change the user's e-mail address."""
-    db_user = _get_db_user(user.id)
+    db_user = user_repository.get_db_user(user.id)
     old_email_address = db_user.email_address
 
     event, log_entry = user_email_address_domain_service.change_email_address(
@@ -194,34 +161,18 @@ def change_email_address(
         reason=reason,
     )
 
-    _persist_email_address_change(event, new_email_address, verified, log_entry)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+
+    user_repository.update_email_address(
+        event.user.id, new_email_address, verified, db_log_entry
+    )
 
     return event
 
 
-def _persist_email_address_change(
-    event: UserEmailAddressChangedEvent,
-    new_email_address: str | None,
-    verified: bool,
-    log_entry: UserLogEntry,
-) -> None:
-    db_user = _get_db_user(event.user.id)
-
-    db_user.email_address = new_email_address
-    db_user.email_address_verified = verified
-
-    db_log_entry = user_log_service.to_db_entry(log_entry)
-    db.session.add(db_log_entry)
-
-    db.session.commit()
-
-
 def update_locale(user_id: UserID, locale: Locale | None) -> None:
     """Change the user's locale."""
-    db_user = _get_db_user(user_id)
-
-    db_user.locale = locale.language if (locale is not None) else None
-    db.session.commit()
+    user_repository.update_locale(user_id, locale)
 
 
 def update_user_details(
@@ -237,7 +188,7 @@ def update_user_details(
     initiator: User,
 ) -> Result[UserDetailsUpdatedEvent, NothingChangedError]:
     """Update the user's details."""
-    db_detail = _get_db_user_detail(user_id)
+    db_detail = user_repository.get_detail(user_id)
 
     old_first_name = db_detail.first_name
     old_last_name = db_detail.last_name
@@ -274,10 +225,10 @@ def update_user_details(
 
     event, log_entry = domain_update_result.unwrap()
 
-    _persist_details_update(
-        event,
-        log_entry,
-        db_detail,
+    db_log_entry = user_log_service.to_db_entry(log_entry)
+
+    user_repository.update_details(
+        user.id,
         new_first_name,
         new_last_name,
         new_date_of_birth,
@@ -286,72 +237,43 @@ def update_user_details(
         new_city,
         new_street,
         new_phone_number,
+        db_log_entry,
     )
 
     return Ok(event)
 
 
-def _persist_details_update(
-    event: UserDetailsUpdatedEvent,
-    log_entry: UserLogEntry,
-    db_detail: DbUserDetail,
-    new_first_name: str | None,
-    new_last_name: str | None,
-    new_date_of_birth: date | None,
-    new_country: str | None,
-    new_postal_code: str | None,
-    new_city: str | None,
-    new_street: str | None,
-    new_phone_number: str | None,
-) -> None:
-    db_detail.first_name = new_first_name
-    db_detail.last_name = new_last_name
-    db_detail.date_of_birth = new_date_of_birth
-    db_detail.country = new_country
-    db_detail.postal_code = new_postal_code
-    db_detail.city = new_city
-    db_detail.street = new_street
-    db_detail.phone_number = new_phone_number
-
-    db_log_entry = user_log_service.to_db_entry(log_entry)
-    db.session.add(db_log_entry)
-
-    db.session.commit()
-
-
 def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:
     """Set a value for a key in the user's detail extras map."""
-    db_detail = _get_db_user_detail(user_id)
-
-    if db_detail.extras is None:
-        db_detail.extras = {}
-
-    db_detail.extras[key] = value
-
-    db.session.commit()
+    user_repository.set_detail_extra(user_id, key, value)
 
 
 def remove_user_detail_extra(user_id: UserID, key: str) -> None:
     """Remove the entry with that key from the user's detail extras map."""
-    db_detail = _get_db_user_detail(user_id)
-
-    if (db_detail.extras is None) or (key not in db_detail.extras):
-        return
-
-    del db_detail.extras[key]
-    db.session.commit()
+    user_repository.remove_detail_extra(user_id, key)
 
 
-def _get_db_user(user_id: UserID) -> DbUser:
-    """Return the user with that ID, or raise an exception."""
-    return user_service.get_db_user(user_id)
+def delete_account(
+    user: User, initiator: User, reason: str
+) -> UserAccountDeletedEvent:
+    """Delete the user account."""
+    event, log_entry = user_domain_service.delete_account(
+        user, initiator, reason
+    )
 
+    authz_service.deassign_all_roles_from_user(
+        user, initiator=initiator, commit=False
+    )
 
-def _get_db_user_detail(user_id: UserID) -> DbUserDetail:
-    """Return the user's details, or raise an exception."""
-    db_detail = db.session.get(DbUserDetail, user_id)
+    db_log_entry = user_log_service.to_db_entry(log_entry)
 
-    if db_detail is None:
-        raise ValueError(f"Unknown user ID '{user_id}'")
+    user_repository.delete_user(user, initiator, db_log_entry)
 
-    return db_detail
+    authn_session_service.delete_session_tokens_for_user(user.id)
+    authn_password_service.delete_password_hash(user.id)
+    verification_token_service.delete_tokens_for_user(user.id)
+    newsletter_command_service.unsubscribe_user_from_lists(
+        user, log_entry.occurred_at, initiator
+    )
+
+    return event

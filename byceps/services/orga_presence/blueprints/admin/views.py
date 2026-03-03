@@ -2,7 +2,7 @@
 byceps.services.orga_presence.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -21,7 +21,7 @@ from byceps.services.orga_presence.models import (
     TimeSlot,
 )
 from byceps.services.party import party_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.datetime.range import DateTimeRange
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.templating import templated

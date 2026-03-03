@@ -1,9 +1,10 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from byceps.services.news import news_channel_service
+from byceps.services.news.models import NewsChannelID
 
 
 BASE_URL = 'http://admin.acmecon.test'
@@ -28,7 +29,7 @@ def test_create_form(news_admin_client, brand):
 
 
 def test_create(news_admin_client, brand, site):
-    channel_id = 'test-channel-2'
+    channel_id = NewsChannelID('test-channel-2')
     announcement_site_id = site.id
 
     assert news_channel_service.find_channel(channel_id) is None

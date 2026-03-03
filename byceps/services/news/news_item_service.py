@@ -2,11 +2,10 @@
 byceps.services.news.news_item_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Sequence
 import dataclasses
 from datetime import datetime
 
@@ -16,15 +15,19 @@ import structlog
 
 from byceps.database import db, paginate, Pagination, execute_upsert
 from byceps.services.brand.models import BrandID
-from byceps.services.core.events import EventUser
 from byceps.services.site import site_service
 from byceps.services.site.models import SiteID
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
-from . import news_channel_service, news_html_service, news_image_service
+from . import (
+    news_channel_service,
+    news_html_service,
+    news_image_service,
+    news_item_domain_service,
+)
 from .dbmodels import (
     DbCurrentNewsItemVersionAssociation,
     DbFeaturedNewsImage,
@@ -59,15 +62,20 @@ def create_item(
     title: str,
     body: str,
     body_format: BodyFormat,
-) -> NewsItem:
+) -> Result[NewsItem, str]:
     """Create a news item, a version, and set the version as the item's
     current one.
     """
-    item_id = NewsItemID(generate_uuid7())
-    created_at = datetime.utcnow()
+    match news_item_domain_service.create_item(
+        channel, slug, title, body, body_format
+    ):
+        case Ok(item):
+            pass
+        case Err(e):
+            return Err(e)
 
     db_item = DbNewsItem(
-        item_id, created_at, channel.brand_id, channel.id, slug
+        item.id, item.created_at, item.brand_id, item.channel.id, item.slug
     )
     db.session.add(db_item)
 
@@ -87,7 +95,7 @@ def create_item(
 
     db.session.commit()
 
-    return _db_entity_to_item(db_item)
+    return Ok(item)
 
 
 def update_item(
@@ -167,35 +175,32 @@ def publish_item(
     initiator: User | None = None,
 ) -> Result[NewsItemPublishedEvent, str]:
     """Publish a news item."""
-    db_item = _get_db_item(item_id)
-
-    if db_item.published:
-        return Err('News item has already been published')
-
-    now = datetime.utcnow()
-    if publish_at is None:
-        publish_at = now
-
-    db_item.published_at = publish_at
-    db.session.commit()
-
-    item = _db_entity_to_item(db_item)
+    item = find_item(item_id)
+    if item is None:
+        return Err(f'Unknown news item ID "{item_id}".')
 
     if item.channel.announcement_site_id is not None:
-        site = site_service.get_site(SiteID(item.channel.announcement_site_id))
-        external_url = f'https://{site.server_name}/news/{item.slug}'
+        announcement_site = site_service.get_site(
+            SiteID(item.channel.announcement_site_id)
+        )
     else:
-        external_url = None
+        announcement_site = None
 
-    event = NewsItemPublishedEvent(
-        occurred_at=now,
-        initiator=EventUser.from_user(initiator) if initiator else None,
-        item_id=item.id,
-        channel_id=item.channel.id,
-        published_at=publish_at,
-        title=item.title,
-        external_url=external_url,
-    )
+    match news_item_domain_service.publish_item(
+        item,
+        publish_at=publish_at,
+        announcement_site=announcement_site,
+        initiator=initiator,
+    ):
+        case Ok((published_item, event)):
+            pass
+        case Err(e):
+            return Err(e)
+
+    db_item = _get_db_item(item_id)
+
+    db_item.published_at = published_item.published_at
+    db.session.commit()
 
     return Ok(event)
 
@@ -232,7 +237,7 @@ def delete_item(item_id: NewsItemID) -> None:
 
 
 def find_item(item_id: NewsItemID) -> NewsItem | None:
-    """Return the item with that id, or `None` if not found."""
+    """Return the item with that ID, or `None` if not found."""
     db_item = _find_db_item(item_id)
 
     if db_item is None:
@@ -242,7 +247,7 @@ def find_item(item_id: NewsItemID) -> NewsItem | None:
 
 
 def _find_db_item(item_id: NewsItemID) -> DbNewsItem | None:
-    """Return the item with that id, or `None` if not found."""
+    """Return the item with that ID, or `None` if not found."""
     return (
         db.session.scalars(
             select(DbNewsItem)
@@ -261,7 +266,7 @@ def _find_db_item(item_id: NewsItemID) -> DbNewsItem | None:
 
 
 def _get_db_item(item_id: NewsItemID) -> DbNewsItem:
-    """Return the item with that id, or raise an exception."""
+    """Return the item with that ID, or raise an exception."""
     db_item = _find_db_item(item_id)
 
     if db_item is None:
@@ -508,13 +513,15 @@ def find_oldest_headline_after(
     return _db_entity_to_headline(db_item)
 
 
-def get_item_versions(item_id: NewsItemID) -> Sequence[DbNewsItemVersion]:
+def get_item_versions(item_id: NewsItemID) -> list[DbNewsItemVersion]:
     """Return all item versions, sorted from most recent to oldest."""
-    return db.session.scalars(
+    db_versions = db.session.scalars(
         select(DbNewsItemVersion)
         .filter_by(item_id=item_id)
         .order_by(DbNewsItemVersion.created_at.desc())
     ).all()
+
+    return list(db_versions)
 
 
 def get_current_item_version(item_id: NewsItemID) -> DbNewsItemVersion:
@@ -575,6 +582,7 @@ def _db_entity_to_item(db_item: DbNewsItem) -> NewsItem:
 
     return NewsItem(
         id=db_item.id,
+        created_at=db_item.created_at,
         brand_id=db_item.brand_id,
         channel=channel,
         slug=db_item.slug,
@@ -596,46 +604,39 @@ def render_html(item: NewsItem) -> RenderedNewsItem:
         else None
     )
 
-    return RenderedNewsItem(
-        channel=item.channel,
-        slug=item.slug,
-        published_at=item.published_at,
-        published=item.published,
-        title=item.title,
-        featured_image=item.featured_image,
-        featured_image_html=featured_image_html,
-        body_html=_render_body_html(item),
+    body_html = _render_body_html(item)
+
+    return news_item_domain_service.create_rendered_item(
+        item, featured_image_html, body_html
     )
 
 
 def _render_featured_image_html(
     item_id: NewsItemID, image: NewsImage
 ) -> Result[str, str]:
-    result = news_html_service.render_featured_image_html(image)
-
-    if result.is_err():
-        # Log, but do not return error.
-        log.warning(
-            'HTML rendering of featured image for news item %s failed: %s',
-            item_id,
-            result.unwrap_err(),
-        )
-
-    return Ok(result.unwrap())
+    match news_html_service.render_featured_image_html(image):
+        case Ok(html):
+            return Ok(html)
+        case Err(e):
+            # Log, but do not return error.
+            log.warning(
+                'HTML rendering of featured image for news item %s failed: %s',
+                item_id,
+                e,
+            )
+            return Err(e)
 
 
 def _render_body_html(item: NewsItem) -> Result[str, str]:
-    result = news_html_service.render_body_html(item)
-
-    if result.is_err():
-        # Log, but do not return error.
-        log.warning(
-            'HTML rendering of body for news item %s failed: %s',
-            item.id,
-            result.unwrap_err(),
-        )
-
-    return result
+    match news_html_service.render_body_html(item):
+        case Ok(html):
+            return Ok(html)
+        case Err(e):
+            # Log, but do not return error.
+            log.warning(
+                'HTML rendering of body for news item %s failed: %s', item.id, e
+            )
+            return Err(e)
 
 
 def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:

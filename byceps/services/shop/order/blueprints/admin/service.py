@@ -2,7 +2,7 @@
 byceps.services.shop.order.blueprints.admin.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,15 +12,16 @@ from uuid import UUID
 from byceps.services.shop.cancellation_request import (
     cancellation_request_service,
 )
-from byceps.services.shop.order import order_log_service, order_service
-from byceps.services.shop.order.models.log import (
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.log import order_log_service
+from byceps.services.shop.order.log.models import (
     OrderLogEntry,
     OrderLogEntryData,
 )
 from byceps.services.shop.order.models.order import OrderID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.services.user_badge import user_badge_service
 
 

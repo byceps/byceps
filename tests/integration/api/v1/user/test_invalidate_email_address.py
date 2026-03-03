@@ -1,10 +1,11 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from byceps.database import db
-from byceps.services.user import user_log_service, user_service
+from byceps.services.user import user_service
+from byceps.services.user.log import user_log_service
 
 
 def test_invalidation_of_initialized_user(

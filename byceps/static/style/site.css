@@ -336,7 +336,15 @@ form.board-posting-create-form-inline .label {
 }
 
 .button--reaction .symbol {
+  display: flex;
   text-shadow: 0 0 2px #111111;
+}
+
+.button--reaction .symbol img {
+  display: inline-block;
+  height: 18px;
+  padding-top: 0.125rem;
+  width: 18px;
 }
 
 .button--reaction[data-count="0"] {

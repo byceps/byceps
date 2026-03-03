@@ -2,16 +2,15 @@
 byceps.services.authz.authz_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 
-from byceps.services.core.events import EventUser
-from byceps.services.user.models.log import UserLogEntry
-from byceps.services.user.models.user import User
-from byceps.util.uuid import generate_uuid7
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
+from byceps.services.user.models import User
 
 from .events import RoleAssignedToUserEvent, RoleDeassignedFromUserEvent
 from .models import RoleID
@@ -26,9 +25,8 @@ def assign_role_to_user(
     event = _build_role_assigned_to_user_event(
         occurred_at, user, role_id, initiator
     )
-    log_entry = _build_role_assigned_log_entry(
-        occurred_at, user, role_id, initiator
-    )
+
+    log_entry = _build_role_assigned_log_entry(event)
 
     return event, log_entry
 
@@ -38,26 +36,23 @@ def _build_role_assigned_to_user_event(
 ) -> RoleAssignedToUserEvent:
     return RoleAssignedToUserEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         role_id=role_id,
     )
 
 
 def _build_role_assigned_log_entry(
-    occurred_at: datetime, user: User, role_id: RoleID, initiator: User | None
+    event: RoleAssignedToUserEvent,
 ) -> UserLogEntry:
-    data = {'role_id': str(role_id)}
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
+    data = {'role_id': str(event.role_id)}
 
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='role-assigned',
-        user_id=user.id,
-        initiator_id=initiator.id if initiator else None,
-        data=data,
+    return user_log_domain_service.build_entry(
+        'role-assigned',
+        event.user,
+        data,
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )
 
 
@@ -70,9 +65,8 @@ def deassign_role_from_user(
     event = _build_role_deassigned_from_user_event(
         occurred_at, user, role_id, initiator
     )
-    log_entry = _build_role_deassigned_log_entry(
-        occurred_at, user, role_id, initiator
-    )
+
+    log_entry = _build_role_deassigned_log_entry(event)
 
     return event, log_entry
 
@@ -82,24 +76,21 @@ def _build_role_deassigned_from_user_event(
 ) -> RoleDeassignedFromUserEvent:
     return RoleDeassignedFromUserEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
         role_id=role_id,
     )
 
 
 def _build_role_deassigned_log_entry(
-    occurred_at: datetime, user: User, role_id: RoleID, initiator: User | None
+    event: RoleDeassignedFromUserEvent,
 ) -> UserLogEntry:
-    data = {'role_id': str(role_id)}
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
+    data = {'role_id': str(event.role_id)}
 
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='role-deassigned',
-        user_id=user.id,
-        initiator_id=initiator.id if initiator else None,
-        data=data,
+    return user_log_domain_service.build_entry(
+        'role-deassigned',
+        event.user,
+        data,
+        occurred_at=event.occurred_at,
+        initiator=event.initiator,
     )

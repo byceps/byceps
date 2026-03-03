@@ -2,7 +2,7 @@
 byceps.services.whereabouts.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -16,7 +16,7 @@ from typing import NewType
 from uuid import UUID
 
 from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 WhereaboutsClientConfigID = NewType('WhereaboutsClientConfigID', UUID)
@@ -61,9 +61,12 @@ class WhereaboutsClient:
     audio_output: bool
     authority_status: WhereaboutsClientAuthorityStatus
     token: str | None
+    name: str | None
     location: str | None
     description: str | None
     config_id: WhereaboutsClientConfigID | None
+    signed_on: bool
+    latest_activity_at: datetime
 
     @property
     def pending(self) -> bool:
@@ -74,12 +77,6 @@ class WhereaboutsClient:
         return (
             self.authority_status == WhereaboutsClientAuthorityStatus.approved
         )
-
-
-@dataclass(frozen=True, kw_only=True)
-class WhereaboutsClientWithLivelinessStatus(WhereaboutsClient):
-    signed_on: bool
-    latest_activity_at: datetime
 
 
 @dataclass(frozen=True, kw_only=True)

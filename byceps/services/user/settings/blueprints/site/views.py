@@ -2,7 +2,7 @@
 byceps.services.user.settings.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -44,7 +44,6 @@ def view():
         abort(404)
 
     email_address = user_service.find_email_address(user.id)
-    user_locale = Locale.parse(user.locale) if user.locale else None
     detail = user_service.get_detail(user.id)
 
     is_orga = orga_team_service.is_orga_for_party(user.id, g.party.id)
@@ -67,7 +66,6 @@ def view():
 
     return {
         'user': user,
-        'user_locale': user_locale,
         'email_address': email_address,
         'detail': detail,
         'is_orga': is_orga,
@@ -94,7 +92,7 @@ def change_email_address_form(erroneous_form=None):
 @login_required
 def change_email_address():
     """Request a change of the current user's email address."""
-    current_user = g.user
+    user = g.user.as_user()
 
     form = ChangeEmailAddressForm(request.form)
     if not form.validate():
@@ -103,7 +101,7 @@ def change_email_address():
     new_email_address = form.new_email_address.data.strip()
 
     user_email_address_service.send_email_address_change_email_for_site(
-        current_user, new_email_address, g.site.id
+        user, new_email_address, g.site.id
     )
 
     flash_success(
@@ -133,17 +131,17 @@ def change_screen_name_form(erroneous_form=None):
 @login_required
 def change_screen_name():
     """Change the current user's screen name."""
-    current_user = g.user
+    user = g.user.as_user()
 
     form = ChangeScreenNameForm(request.form)
     if not form.validate():
         return change_screen_name_form(form)
 
     new_screen_name = form.screen_name.data.strip()
-    initiator = current_user
+    initiator = user
 
     event = user_command_service.change_screen_name(
-        current_user, new_screen_name, initiator
+        user, new_screen_name, initiator
     )
 
     user_signals.screen_name_changed.send(None, event=event)
@@ -198,7 +196,7 @@ def details_update_form(erroneous_form=None):
 @login_required
 def details_update():
     """Update the current user's details."""
-    current_user = g.user
+    user = g.user.as_user()
 
     form = DetailsForm(request.form)
 
@@ -213,10 +211,10 @@ def details_update():
     city = form.city.data.strip()
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
-    initiator = current_user
+    initiator = user
 
     update_result = user_command_service.update_user_details(
-        current_user.id,
+        user.id,
         first_name,
         last_name,
         date_of_birth,
@@ -235,6 +233,6 @@ def details_update():
         case Err(NothingChangedError()):
             flash_notice(gettext('Nothing has been changed.'))
         case Err(msg):
-            flash_error(gettext('An unexpected error occurred.'))
+            flash_error(gettext('An unexpected error occurred.') + '\n' + msg)
 
     return redirect_to('.view')

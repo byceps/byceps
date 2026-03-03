@@ -4,7 +4,7 @@ byceps.services.metrics.blueprints.metrics.views
 
 Metrics export for `Prometheus <https://prometheus.io/>`_
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

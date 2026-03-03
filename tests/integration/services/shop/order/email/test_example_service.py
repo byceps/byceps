@@ -1,8 +1,9 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from babel import Locale
 from freezegun import freeze_time
 import pytest
 
@@ -23,7 +24,7 @@ SENDER = NameAndAddress(None, 'noreply@acmecon.test')
     ('locale', 'expected_template'),
     [
         (
-            'de',
+            Locale.parse('de'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -62,7 +63,7 @@ E-Mail: info@acmecon.test
 """,
         ),
         (
-            'en',
+            Locale.parse('en'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -109,7 +110,7 @@ def test_example_placed_order_message_text(
     shop,
     email_payment_instructions_snippets,
     email_footer_snippets,
-    locale,
+    locale: Locale,
     expected_template,
 ):
     app = admin_app
@@ -130,7 +131,7 @@ def test_example_placed_order_message_text(
     ('locale', 'expected_template'),
     [
         (
-            'de',
+            Locale.parse('de'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -155,7 +156,7 @@ E-Mail: info@acmecon.test
 """,
         ),
         (
-            'en',
+            Locale.parse('en'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -188,7 +189,7 @@ def test_example_paid_order_message_text(
     shop,
     email_payment_instructions_snippets,
     email_footer_snippets,
-    locale,
+    locale: Locale,
     expected_template,
 ):
     app = admin_app
@@ -209,7 +210,7 @@ def test_example_paid_order_message_text(
     ('locale', 'expected_template'),
     [
         (
-            'de',
+            Locale.parse('de'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -234,7 +235,7 @@ E-Mail: info@acmecon.test
 """,
         ),
         (
-            'en',
+            Locale.parse('en'),
             """\
 From: noreply@acmecon.test
 To: ['orderer@example.com']
@@ -267,7 +268,7 @@ def test_example_canceled_order_message_text(
     shop,
     email_payment_instructions_snippets,
     email_footer_snippets,
-    locale,
+    locale: Locale,
     expected_template,
 ):
     app = admin_app

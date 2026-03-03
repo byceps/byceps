@@ -4,7 +4,7 @@ byceps.announce.connections
 
 Connect event signals to announcement handlers.
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -14,7 +14,11 @@ from blinker import NamedSignal
 
 from byceps.services.authn import announcing as authn_handlers
 from byceps.services.authn import signals as authn_signals
-from byceps.services.authn.events import PasswordUpdatedEvent, UserLoggedInEvent
+from byceps.services.authn.events import (
+    PasswordUpdatedEvent,
+    UserLoggedInToAdminEvent,
+    UserLoggedInToSiteEvent,
+)
 from byceps.services.authz import announcing as authz_handlers
 from byceps.services.authz import signals as authz_signals
 from byceps.services.authz.events import (
@@ -36,7 +40,7 @@ from byceps.services.board.events import (
     BoardTopicUnlockedEvent,
     BoardTopicUnpinnedEvent,
 )
-from byceps.services.core.events import _BaseEvent
+from byceps.services.core.events import BaseEvent
 from byceps.services.external_accounts import (
     announcing as external_accounts_handlers,
 )
@@ -107,6 +111,7 @@ from byceps.services.tourney import announcing as tourney_handlers
 from byceps.services.tourney import signals as tourney_signals
 from byceps.services.tourney.events import (
     TourneyCanceledEvent,
+    TourneyContinuedEvent,
     TourneyFinishedEvent,
     TourneyMatchParticipantDisqualifiedEvent,
     TourneyMatchParticipantEliminatedEvent,
@@ -118,6 +123,8 @@ from byceps.services.tourney.events import (
     TourneyMatchScoreRandomizedEvent,
     TourneyMatchScoreSubmittedEvent,
     TourneyPausedEvent,
+    TourneyRegistrationClosedEvent,
+    TourneyRegistrationOpenedEvent,
     TourneyStartedEvent,
 )
 from byceps.services.user import announcing as user_handlers
@@ -149,9 +156,9 @@ from byceps.services.whereabouts.events import (
 )
 
 
-AnnouncementEvent = type[_BaseEvent]
+AnnouncementEvent = type[BaseEvent]
 AnnouncementEventHandler = Callable[
-    [str, _BaseEvent, OutgoingWebhook], Announcement | None
+    [str, BaseEvent, OutgoingWebhook], Announcement | None
 ]
 
 
@@ -171,7 +178,7 @@ class AnnouncementEventRegistry:
         self._event_types_to_names[event] = name
         self._event_types_to_handlers[event] = handler
 
-    def get_event_name(self, event: _BaseEvent) -> str:
+    def get_event_name(self, event: BaseEvent) -> str:
         event_type = type(event)
         return self._event_types_to_names[event_type]
 
@@ -194,9 +201,14 @@ for event, name, handler in [
         authn_handlers.announce_password_updated,
     ),
     (
-        UserLoggedInEvent,
-        'user-logged-in',
-        authn_handlers.announce_user_logged_in,
+        UserLoggedInToAdminEvent,
+        'user-logged-in-to-admin',
+        authn_handlers.announce_user_logged_in_to_admin,
+    ),
+    (
+        UserLoggedInToSiteEvent,
+        'user-logged-in-to-site',
+        authn_handlers.announce_user_logged_in_to_site,
     ),
     (
         RoleAssignedToUserEvent,
@@ -377,6 +389,11 @@ for event, name, handler in [
         tourney_handlers.announce_tourney_canceled,
     ),
     (
+        TourneyContinuedEvent,
+        'tourney-continued',
+        tourney_handlers.announce_tourney_continued,
+    ),
+    (
         TourneyFinishedEvent,
         'tourney-finished',
         tourney_handlers.announce_tourney_finished,
@@ -385,6 +402,16 @@ for event, name, handler in [
         TourneyPausedEvent,
         'tourney-paused',
         tourney_handlers.announce_tourney_paused,
+    ),
+    (
+        TourneyRegistrationClosedEvent,
+        'tourney-registration-closed',
+        tourney_handlers.announce_tourney_registration_closed,
+    ),
+    (
+        TourneyRegistrationOpenedEvent,
+        'tourney-registration-opened',
+        tourney_handlers.announce_tourney_registration_opened,
     ),
     (
         TourneyStartedEvent,
@@ -522,7 +549,8 @@ for event, name, handler in [
 
 _SIGNALS: list[NamedSignal] = [
     authn_signals.password_updated,
-    authn_signals.user_logged_in,
+    authn_signals.user_logged_in_to_admin,
+    authn_signals.user_logged_in_to_site,
     authz_signals.role_assigned_to_user,
     authz_signals.role_deassigned_from_user,
     board_signals.posting_created,
@@ -561,8 +589,11 @@ _SIGNALS: list[NamedSignal] = [
     ticketing_signals.ticket_checked_in,
     ticketing_signals.tickets_sold,
     tourney_signals.tourney_canceled,
+    tourney_signals.tourney_continued,
     tourney_signals.tourney_finished,
     tourney_signals.tourney_paused,
+    tourney_signals.tourney_registration_closed,
+    tourney_signals.tourney_registration_opened,
     tourney_signals.tourney_started,
     tourney_signals.match_ready,
     tourney_signals.match_reset,

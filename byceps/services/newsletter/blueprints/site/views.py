@@ -2,7 +2,7 @@
 byceps.services.newsletter.blueprints.site.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -18,6 +18,7 @@ from byceps.services.newsletter import (
 )
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
+from byceps.util.result import Err, Ok
 from byceps.util.views import login_required, respond_no_content
 
 
@@ -29,27 +30,24 @@ blueprint = create_blueprint('newsletter', __name__)
 @respond_no_content
 def subscribe(list_id):
     list_ = _get_list_or_404(list_id)
+    user = g.user.as_user()
     expressed_at = datetime.utcnow()
-    initiator = g.user
+    initiator = user
 
-    result = newsletter_command_service.subscribe_user_to_list(
-        g.user, list_, expressed_at, initiator
-    )
+    match newsletter_command_service.subscribe_user_to_list(
+        user, list_, expressed_at, initiator
+    ):
+        case Ok((_, event)):
+            flash_success(
+                gettext(
+                    'You have subscribed to newsletter "%(title)s".',
+                    title=list_.title,
+                )
+            )
 
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
-
-    _, event = result.unwrap()
-
-    flash_success(
-        gettext(
-            'You have subscribed to newsletter "%(title)s".',
-            title=list_.title,
-        )
-    )
-
-    newsletter_signals.newsletter_subscribed.send(None, event=event)
+            newsletter_signals.newsletter_subscribed.send(None, event=event)
+        case Err(e):
+            flash_error(e)
 
 
 @blueprint.delete('/lists/<list_id>/subscription')
@@ -57,27 +55,24 @@ def subscribe(list_id):
 @respond_no_content
 def unsubscribe(list_id):
     list_ = _get_list_or_404(list_id)
+    user = g.user.as_user()
     expressed_at = datetime.utcnow()
-    initiator = g.user
+    initiator = user
 
-    result = newsletter_command_service.unsubscribe_user_from_list(
-        g.user, list_, expressed_at, initiator
-    )
+    match newsletter_command_service.unsubscribe_user_from_list(
+        user, list_, expressed_at, initiator
+    ):
+        case Ok((_, event)):
+            flash_success(
+                gettext(
+                    'You have unsubscribed from newsletter "%(title)s".',
+                    title=list_.title,
+                )
+            )
 
-    if result.is_err():
-        flash_error(result.unwrap_err())
-        return
-
-    _, event = result.unwrap()
-
-    flash_success(
-        gettext(
-            'You have unsubscribed from newsletter "%(title)s".',
-            title=list_.title,
-        )
-    )
-
-    newsletter_signals.newsletter_unsubscribed.send(None, event=event)
+            newsletter_signals.newsletter_unsubscribed.send(None, event=event)
+        case Err(e):
+            flash_error(e)
 
 
 def _get_list_or_404(list_id):

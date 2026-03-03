@@ -2,7 +2,7 @@
 byceps.services.whereabouts.whereabouts_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,9 +10,9 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from byceps.services.core.events import EventParty, EventUser
+from byceps.services.core.events import EventParty
 from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.uuid import generate_uuid7
 
 from .events import WhereaboutsStatusUpdatedEvent
@@ -74,9 +74,9 @@ def set_status(
 
     event = WhereaboutsStatusUpdatedEvent(
         occurred_at=set_at,
-        initiator=EventUser.from_user(user),
+        initiator=user,
         party=EventParty.from_party(whereabouts.party),
-        user=EventUser.from_user(user),
+        user=user,
         whereabouts_description=whereabouts.description,
     )
 

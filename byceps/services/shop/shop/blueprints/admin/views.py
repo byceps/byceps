@@ -2,34 +2,31 @@
 byceps.services.shop.shop.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from flask import abort, g, request
-from flask_babel import gettext
+from flask_babel import gettext, get_locale
 from moneyed import get_currency
 
 from byceps.services.brand import brand_service
 from byceps.services.shop.cancellation_request import (
     cancellation_request_service,
 )
-from byceps.services.shop.order import (
-    order_log_service,
-    order_payment_service,
-    order_service,
-)
+from byceps.services.shop.order import order_payment_service, order_service
 from byceps.services.shop.order.blueprints.admin.service import (
     enrich_log_entry_data,
 )
-from byceps.services.shop.order.models.log import OrderLogEntryData
+from byceps.services.shop.order.log import order_log_service
+from byceps.services.shop.order.log.models import OrderLogEntryData
 from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.models import ShopID
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
-from byceps.util.l10n import get_default_locale, get_locale_str
+from byceps.util.l10n import get_default_locale
 from byceps.util.views import permission_required, redirect_to
 
 from .forms import CreateForm
@@ -133,7 +130,7 @@ def create_form(brand_id, erroneous_form=None):
     """Show form to create a shop."""
     brand = _get_brand_or_404(brand_id)
 
-    locale = get_locale_str() or get_default_locale()
+    locale = get_locale() or get_default_locale()
 
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_currency_choices(locale)
@@ -162,8 +159,9 @@ def create(brand_id):
 
     shop = shop_service.create_shop(brand, currency)
 
-    order_payment_service.create_email_payment_instructions(shop.id, g.user)
-    order_payment_service.create_html_payment_instructions(shop.id, g.user)
+    user = g.user.as_user()
+    order_payment_service.create_email_payment_instructions(shop.id, user)
+    order_payment_service.create_html_payment_instructions(shop.id, user)
 
     flash_success(gettext('Shop has been created.'))
 

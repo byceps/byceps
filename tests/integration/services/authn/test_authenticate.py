@@ -1,12 +1,18 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from secret_type import secret
 
 from byceps.services.authn import authn_service
-from byceps.services.authn.errors import AuthenticationFailedError
+from byceps.services.authn.errors import (
+    UsernameUnknownError,
+    UserAccountNotInitializedError,
+    UserAccountSuspendedError,
+    UserAccountDeletedError,
+    WrongPasswordError,
+)
 from byceps.util.result import Err, Ok
 
 
@@ -18,7 +24,7 @@ WRONG_PASSWORD = secret('123456')
 def test_unknown_username_is_rejected(make_user):
     actual = authn_service.authenticate('unknown-username', IRRELEVANT_PASSWORD)
 
-    assert actual == Err(AuthenticationFailedError.UsernameUnknown)
+    assert actual == Err(UsernameUnknownError())
 
 
 def test_uninitialized_user_is_rejected(make_user):
@@ -26,7 +32,7 @@ def test_uninitialized_user_is_rejected(make_user):
 
     actual = authn_service.authenticate(user.screen_name, CORRECT_PASSWORD)
 
-    assert actual == Err(AuthenticationFailedError.AccountNotInitialized)
+    assert actual == Err(UserAccountNotInitializedError())
 
 
 def test_suspended_user_is_rejected(make_user):
@@ -34,7 +40,7 @@ def test_suspended_user_is_rejected(make_user):
 
     actual = authn_service.authenticate(user.screen_name, CORRECT_PASSWORD)
 
-    assert actual == Err(AuthenticationFailedError.AccountSuspended)
+    assert actual == Err(UserAccountSuspendedError())
 
 
 def test_deleted_user_is_rejected(make_user):
@@ -42,7 +48,7 @@ def test_deleted_user_is_rejected(make_user):
 
     actual = authn_service.authenticate(user.screen_name, CORRECT_PASSWORD)
 
-    assert actual == Err(AuthenticationFailedError.AccountDeleted)
+    assert actual == Err(UserAccountDeletedError())
 
 
 def test_with_wrong_password_is_rejected(make_user):
@@ -50,7 +56,7 @@ def test_with_wrong_password_is_rejected(make_user):
 
     actual = authn_service.authenticate(user.screen_name, WRONG_PASSWORD)
 
-    assert actual == Err(AuthenticationFailedError.WrongPassword)
+    assert actual == Err(WrongPasswordError())
 
 
 def test_active_user_with_screen_name_and_correct_password_is_accepted(

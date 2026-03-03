@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -7,7 +7,6 @@ from pathlib import Path
 
 from byceps.config.converter import convert_config
 from byceps.config.models import (
-    AppsConfig,
     BycepsConfig,
     DatabaseConfig,
     DevelopmentConfig,
@@ -39,11 +38,6 @@ def test_convert_config():
         secret_key='<RANDOM-BYTES>',
         testing=True,
         timezone='Europe/Berlin',
-        apps=AppsConfig(
-            admin=None,
-            api=None,
-            sites=[],
-        ),
         database=DatabaseConfig(
             host='127.0.0.1',
             port=5432,

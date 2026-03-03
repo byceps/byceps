@@ -2,7 +2,7 @@
 byceps.services.tourney.tourney_participant_repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -43,7 +43,7 @@ def delete_participant(participant_id: ParticipantID) -> None:
 
 
 def find_participant(participant_id: ParticipantID) -> DbParticipant | None:
-    """Return the participant with that id, or `None` if not found."""
+    """Return the participant with that ID, or `None` if not found."""
     return db.session.get(DbParticipant, participant_id)
 
 

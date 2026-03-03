@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,7 +10,7 @@ from byceps.services.shop.order.events import ShopOrderPaidEvent
 from byceps.services.shop.order.models.order import Order, OrderID
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 def get_tickets_for_order(order: Order) -> Sequence[DbTicket]:

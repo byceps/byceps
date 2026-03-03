@@ -2,7 +2,7 @@
 byceps.services.board.permissions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -43,6 +43,7 @@ register_permissions(
         ('update', lazy_gettext('Edit board topics')),
         ('lock', lazy_gettext('Lock/unlock board topics')),
         ('move', lazy_gettext('Move board topics to other categories')),
+        ('mute', lazy_gettext('Mute board topics')),
         ('pin', lazy_gettext('Pin/unpin board topics')),
     ],
 )

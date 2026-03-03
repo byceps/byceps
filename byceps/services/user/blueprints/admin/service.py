@@ -2,7 +2,7 @@
 byceps.services.user.blueprints.admin.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,21 +12,23 @@ from operator import attrgetter
 from typing import Any
 from uuid import UUID
 
+from flask_babel import gettext
+
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.newsletter import newsletter_service
 from byceps.services.newsletter.models import List as NewsletterList
 from byceps.services.party import party_service
 from byceps.services.party.models import Party, PartyID
-from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order import order_service
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.site import site_service
 from byceps.services.ticketing import ticket_attendance_service, ticket_service
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
-from byceps.services.user import user_log_service, user_service
-from byceps.services.user.dbmodels.avatar import (
-    get_absolute_url_path as get_absolute_url_path_for_avatar,
-)
-from byceps.services.user.models.log import UserLogEntry, UserLogEntryData
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user import user_service
+from byceps.services.user.dbmodels import get_absolute_avatar_url_path
+from byceps.services.user.log import user_log_service
+from byceps.services.user.log.models import UserLogEntry, UserLogEntryData
+from byceps.services.user.models import User, UserDetailDifference, UserID
 from byceps.services.user_badge import user_badge_service
 
 
@@ -85,8 +87,8 @@ def get_newsletter_subscription_states(
         yield list_, is_subscribed
 
 
-def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
-    log_entries = _collect_log_entries(user_id)
+def get_log_entries(user: User) -> Iterator[UserLogEntryData]:
+    log_entries = _collect_log_entries(user)
 
     users_by_id = _get_users_indexed_by_id(log_entries)
 
@@ -103,20 +105,18 @@ def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
         yield data
 
 
-def _collect_log_entries(user_id: UserID) -> list[UserLogEntry]:
-    log_entries = user_log_service.get_entries_for_user(user_id)
-    log_entries.extend(_fake_consent_log_entries(user_id))
-    log_entries.extend(
-        _fake_newsletter_subscription_update_log_entries(user_id)
-    )
-    log_entries.extend(_get_order_log_entries(user_id))
+def _collect_log_entries(user: User) -> list[UserLogEntry]:
+    log_entries = user_log_service.get_entries_for_user(user.id)
+    log_entries.extend(_fake_consent_log_entries(user))
+    log_entries.extend(_fake_newsletter_subscription_update_log_entries(user))
+    log_entries.extend(_get_order_log_entries(user))
 
     return log_entries
 
 
-def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
+def _fake_consent_log_entries(user: User) -> Iterator[UserLogEntry]:
     """Yield the user's consents as volatile log entries."""
-    consents = consent_service.get_consents_by_user(user_id)
+    consents = consent_service.get_consents_by_user(user.id)
 
     subject_ids = {consent.subject_id for consent in consents}
     subjects = consent_subject_service.get_subjects(subject_ids)
@@ -124,7 +124,7 @@ def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
 
     for consent in consents:
         data = {
-            'initiator_id': str(user_id),
+            'initiator_id': str(user.id),
             'subject_title': subjects_titles_by_id[consent.subject_id],
         }
 
@@ -132,20 +132,20 @@ def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
             id=UUID('00000000-0000-0000-0000-000000000001'),
             occurred_at=consent.expressed_at,
             event_type='consent-expressed',
-            user_id=user_id,
-            initiator_id=user_id,
+            user=user,
+            initiator=user,
             data=data,
         )
 
 
 def _fake_newsletter_subscription_update_log_entries(
-    user_id: UserID,
+    user: User,
 ) -> Iterator[UserLogEntry]:
     """Yield the user's newsletter subscription updates as volatile log entries."""
     lists = newsletter_service.get_all_lists()
     lists_by_id = {list_.id: list_ for list_ in lists}
 
-    updates = newsletter_service.get_subscription_updates_for_user(user_id)
+    updates = newsletter_service.get_subscription_updates_for_user(user.id)
 
     for update in updates:
         event_type = f'newsletter-{update.state.name}'
@@ -154,20 +154,20 @@ def _fake_newsletter_subscription_update_log_entries(
 
         data = {
             'list_': list_,
-            'initiator_id': str(user_id),
+            'initiator_id': str(user.id),
         }
 
         yield UserLogEntry(
             id=UUID('00000000-0000-0000-0000-000000000001'),
             occurred_at=update.expressed_at,
             event_type=event_type,
-            user_id=user_id,
-            initiator_id=user_id,
+            user=user,
+            initiator=user,
             data=data,
         )
 
 
-def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
+def _get_order_log_entries(initiator: User) -> Iterator[UserLogEntry]:
     """Yield orders log entries initiated by the user."""
     event_types = frozenset(
         [
@@ -178,7 +178,7 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
         ]
     )
     log_entries = order_log_service.get_entries_by_initiator(
-        initiator_id, event_types
+        initiator.id, event_types
     )
 
     order_ids = frozenset([entry.order_id for entry in log_entries])
@@ -188,7 +188,7 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
     for entry in log_entries:
         order = orders_by_id[entry.order_id]
         data = {
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
             'order_id': str(order.id),
             'order_number': order.order_number,
         }
@@ -197,8 +197,8 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
             id=UUID('00000000-0000-0000-0000-000000000001'),
             occurred_at=entry.occurred_at,
             event_type=entry.event_type,
-            user_id=initiator_id,
-            initiator_id=initiator_id,
+            user=initiator,
+            initiator=initiator,
             data=data,
         )
 
@@ -252,7 +252,7 @@ def _get_additional_data(
         )
 
     if log_entry.event_type in {'user-avatar-removed', 'user-avatar-updated'}:
-        url_path = get_absolute_url_path_for_avatar(log_entry.data['filename'])
+        url_path = get_absolute_avatar_url_path(log_entry.data['filename'])
         yield 'url_path', url_path
 
     if log_entry.event_type == 'user-badge-awarded':
@@ -261,8 +261,30 @@ def _get_additional_data(
 
     if log_entry.event_type == 'user-details-updated':
         # new structure
-        fields = log_entry.data.pop('fields', {})
-        yield 'fields', fields
+        fields = {
+            key: UserDetailDifference(
+                old=difference['old'], new=difference['new']
+            )
+            for key, difference in log_entry.data.pop('fields', {}).items()
+        }
+
+        field_names_to_labels = {
+            'first_name': gettext('first name'),
+            'last_name': gettext('last name'),
+            'date_of_birth': gettext('date of birth'),
+            'country': gettext('country'),
+            'postal_code': gettext('postal code'),
+            'city': gettext('city'),
+            'street': gettext('street'),
+            'phone_number': gettext('phone number'),
+        }
+
+        labeled_fields = {
+            field_names_to_labels[name]: difference
+            for name, difference in fields.items()
+        }
+
+        yield 'fields', labeled_fields
 
         # old structure
         details = {
@@ -279,19 +301,26 @@ def _get_additional_data(
             if site is not None:
                 yield 'site', site
 
+    if log_entry.event_type == 'user-logged-in-to-site':
+        site_id = log_entry.data.get('site_id')
+        site = site_service.find_site(site_id)
+        if site is not None:
+            yield 'site', site
+
 
 def _get_additional_data_for_user_initiated_log_entry(
     log_entry: UserLogEntry, users_by_id: dict[UserID, User]
 ) -> Iterator[tuple[str, Any]]:
-    initiator_id = log_entry.initiator_id
+    initiator = log_entry.initiator
 
-    if initiator_id is None:
+    if initiator is None:
         initiator_id_str = log_entry.data.get('initiator_id')
         if initiator_id_str is not None:
             initiator_id = _to_user_id(initiator_id_str)
+            initiator = users_by_id[initiator_id]
 
-    if initiator_id is not None:
-        yield 'initiator', users_by_id[initiator_id]
+    if initiator is not None:
+        yield 'initiator', initiator
 
 
 def _to_user_id(id_str: str) -> UserID:

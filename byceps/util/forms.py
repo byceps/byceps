@@ -2,7 +2,7 @@
 byceps.util.forms
 ~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -11,7 +11,7 @@ from wtforms import Field, SelectMultipleField
 from wtforms.widgets import CheckboxInput, ListWidget, TextInput
 
 from byceps.services.user import user_service
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 
 
 class MultiCheckboxField(SelectMultipleField):
@@ -41,9 +41,9 @@ class UserScreenNameField(Field):
             return self.raw_data[0]
 
         if self.data is not None:
-            # As user was found via screen name, the user object's
-            # screen name cannot be empty.
-            return self.data.screen_name  # type: ignore
+            # As user was found via screen name, the user object's screen name
+            # cannot be empty, so the fallback should never be used.
+            return self.data.screen_name or ''
 
         return ''
 

@@ -2,7 +2,7 @@
 byceps.services.shop.product.dbmodels.attached_product
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -27,7 +27,6 @@ class DbAttachedProduct(db.Model):
         db.Uuid, db.ForeignKey('shop_products.id'), index=True
     )
     product: Mapped[DbProduct] = relationship(
-        DbProduct,
         foreign_keys=[product_id],
         backref=db.backref('products_attached_to', collection_class=set),
     )
@@ -36,7 +35,6 @@ class DbAttachedProduct(db.Model):
         db.Uuid, db.ForeignKey('shop_products.id'), index=True
     )
     attached_to_product: Mapped[DbProduct] = relationship(
-        DbProduct,
         foreign_keys=[attached_to_product_id],
         backref=db.backref('attached_products', collection_class=set),
     )

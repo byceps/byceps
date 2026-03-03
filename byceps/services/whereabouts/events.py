@@ -2,7 +2,7 @@
 byceps.services.whereabouts.events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,12 +10,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventParty, EventUser
+from byceps.services.core.events import BaseEvent, EventParty
+from byceps.services.user.models import User
 from byceps.services.whereabouts.models import WhereaboutsClientID
 
 
 @dataclass(frozen=True, kw_only=True)
-class _WhereaboutsClientEvent(_BaseEvent):
+class _WhereaboutsClientEvent(BaseEvent):
     client_id: WhereaboutsClientID
 
 
@@ -45,14 +46,14 @@ class WhereaboutsClientSignedOffEvent(_WhereaboutsClientEvent):
 
 
 @dataclass(frozen=True, kw_only=True)
-class WhereaboutsUnknownTagDetectedEvent(_BaseEvent):
+class WhereaboutsUnknownTagDetectedEvent(BaseEvent):
     client_id: WhereaboutsClientID
     client_location: str | None
     tag_identifier: str
 
 
 @dataclass(frozen=True, kw_only=True)
-class WhereaboutsStatusUpdatedEvent(_BaseEvent):
+class WhereaboutsStatusUpdatedEvent(BaseEvent):
     party: EventParty
-    user: EventUser
+    user: User
     whereabouts_description: str

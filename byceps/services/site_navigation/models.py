@@ -2,7 +2,7 @@
 byceps.services.site_navigation.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,10 +10,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import NewType
+from typing import NewType, Self
 from uuid import UUID
-
-from flask_babel import lazy_gettext
 
 from byceps.services.site.models import SiteID
 
@@ -60,66 +58,23 @@ class NavItemForRendering:
 
 
 @dataclass(frozen=True)
-class NavMenuAggregate(NavMenu):
+class NavMenuWithItems(NavMenu):
     items: list[NavItem]
 
-
-@dataclass(frozen=True, kw_only=True)
-class ViewType:
-    name: str
-    endpoint: str
-    label: str
-    current_page_id: str
-
-
-_VIEW_TYPES = [
-    ViewType(
-        name=name,
-        endpoint=endpoint,
-        label=label,
-        current_page_id=current_page_id,
-    )
-    for name, endpoint, label, current_page_id in [
-        ('homepage', 'homepage.index', lazy_gettext('Home page'), 'homepage'),
-        ('news', 'news.index', lazy_gettext('News'), 'news'),
-        (
-            'seating_plan',
-            'seating.index',
-            lazy_gettext('Seating plan'),
-            'seating',
-        ),
-        (
-            'attendees',
-            'attendance.attendees',
-            lazy_gettext('Attendees'),
-            'attendees',
-        ),
-        ('shop', 'shop_order.order_form', lazy_gettext('Shop'), 'shop_order'),
-        ('board', 'board.category_index', lazy_gettext('Board'), 'board'),
-        (
-            'orga_team',
-            'orga_team.index',
-            lazy_gettext('Orga team'),
-            'orga_team',
-        ),
-        (
-            'party_history',
-            'party_history.index',
-            lazy_gettext('Party history'),
-            'party_history',
-        ),
-        (
-            'timetable',
-            'timetable.index',
-            lazy_gettext('Timetable'),
-            'timetable',
-        ),
-        ('gallery', 'gallery.index', lazy_gettext('Galleries'), 'gallery'),
-    ]
-]
+    @classmethod
+    def from_menu_and_items(cls, menu: NavMenu, items: list[NavItem]) -> Self:
+        return cls(
+            id=menu.id,
+            site_id=menu.site_id,
+            name=menu.name,
+            language_code=menu.language_code,
+            hidden=menu.hidden,
+            parent_menu_id=menu.parent_menu_id,
+            items=items,
+        )
 
 
 @dataclass(frozen=True, kw_only=True)
 class NavMenuTree:
-    menu: NavMenu
-    submenus: list[NavMenu]
+    menu: NavMenuWithItems
+    submenus: list[NavMenuWithItems]

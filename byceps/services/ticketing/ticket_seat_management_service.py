@@ -2,7 +2,7 @@
 byceps.services.ticketing.ticket_seat_management_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -12,23 +12,25 @@ from byceps.services.seating import seat_group_service, seat_service
 # Load `Seat.assignment` backref.
 from byceps.services.seating.dbmodels.seat_group import DbSeatGroup  # noqa: F401
 from byceps.services.seating.models import Seat, SeatID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 
-from . import ticket_log_service, ticket_service
+from . import ticket_service
 from .dbmodels.ticket import DbTicket
 from .errors import (
+    SeatBlockedError,
     SeatChangeDeniedForBundledTicketError,
     SeatChangeDeniedForGroupSeatError,
     TicketCategoryMismatchError,
     TicketingError,
     TicketIsRevokedError,
 )
+from .log import ticket_log_domain_service, ticket_log_service
 from .models.ticket import TicketID
 
 
 def appoint_seat_manager(
-    ticket_id: TicketID, manager_id: UserID, initiator_id: UserID
+    ticket_id: TicketID, manager: User, initiator: User
 ) -> Result[None, TicketingError]:
     """Appoint the user as the ticket's seat manager."""
     db_ticket_result = _get_ticket(ticket_id)
@@ -37,16 +39,12 @@ def appoint_seat_manager(
 
     db_ticket = db_ticket_result.unwrap()
 
-    db_ticket.seat_managed_by_id = manager_id
+    db_ticket.seat_managed_by_id = manager.id
 
-    db_log_entry = ticket_log_service.build_db_entry(
-        'seat-manager-appointed',
-        db_ticket.id,
-        {
-            'appointed_seat_manager_id': str(manager_id),
-            'initiator_id': str(initiator_id),
-        },
+    log_entry = ticket_log_domain_service.build_seat_manager_appointed_entry(
+        db_ticket.id, manager, initiator
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()
@@ -55,7 +53,7 @@ def appoint_seat_manager(
 
 
 def withdraw_seat_manager(
-    ticket_id: TicketID, initiator_id: UserID
+    ticket_id: TicketID, initiator: User
 ) -> Result[None, TicketingError]:
     """Withdraw the ticket's custom seat manager."""
     db_ticket_result = _get_ticket(ticket_id)
@@ -66,13 +64,10 @@ def withdraw_seat_manager(
 
     db_ticket.seat_managed_by_id = None
 
-    db_log_entry = ticket_log_service.build_db_entry(
-        'seat-manager-withdrawn',
-        db_ticket.id,
-        {
-            'initiator_id': str(initiator_id),
-        },
+    log_entry = ticket_log_domain_service.build_seat_manager_withdrawn_entry(
+        db_ticket.id, initiator
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()
@@ -81,7 +76,7 @@ def withdraw_seat_manager(
 
 
 def occupy_seat(
-    ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
+    ticket_id: TicketID, seat_id: SeatID, initiator: User
 ) -> Result[None, TicketingError]:
     """Occupy the seat with this ticket."""
     db_ticket_result = _get_ticket(ticket_id)
@@ -105,6 +100,9 @@ def occupy_seat(
             )
         )
 
+    if seat.blocked:
+        return Err(SeatBlockedError(f'Seat {seat.label} is blocked.'))
+
     seat_belongs_to_group_result = (
         _deny_seat_management_if_seat_belongs_to_group(seat)
     )
@@ -115,16 +113,10 @@ def occupy_seat(
 
     db_ticket.occupied_seat_id = seat.id
 
-    log_entry_data = {
-        'seat_id': str(seat.id),
-        'initiator_id': str(initiator_id),
-    }
-    if previous_seat_id is not None:
-        log_entry_data['previous_seat_id'] = str(previous_seat_id)
-
-    db_log_entry = ticket_log_service.build_db_entry(
-        'seat-occupied', db_ticket.id, log_entry_data
+    log_entry = ticket_log_domain_service.build_occupy_seat_entry(
+        db_ticket.id, seat.id, previous_seat_id, initiator
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()
@@ -133,7 +125,7 @@ def occupy_seat(
 
 
 def release_seat(
-    ticket_id: TicketID, initiator_id: UserID
+    ticket_id: TicketID, initiator: User
 ) -> Result[None, TicketingError]:
     """Release the seat occupied by this ticket."""
     db_ticket_result = _get_ticket(ticket_id)
@@ -163,14 +155,10 @@ def release_seat(
 
     db_ticket.occupied_seat_id = None
 
-    db_log_entry = ticket_log_service.build_db_entry(
-        'seat-released',
-        db_ticket.id,
-        {
-            'seat_id': str(seat.id),
-            'initiator_id': str(initiator_id),
-        },
+    log_entry = ticket_log_domain_service.build_release_seat_entry(
+        db_ticket.id, seat.id, initiator
     )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)
 
     db.session.commit()

@@ -2,7 +2,7 @@
 byceps.services.shop.order.order_checkout_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,21 +13,15 @@ from sqlalchemy.exc import IntegrityError
 import structlog
 
 from byceps.database import db
-from byceps.services.core.events import EventUser
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.product import product_service
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.storefront.models import Storefront
 from byceps.util.result import Err, Ok, Result
 
-from . import (
-    order_domain_service,
-    order_helper_service,
-    order_log_service,
-    order_sequence_service,
-)
-from .dbmodels.line_item import DbLineItem
-from .dbmodels.order import DbOrder
+from . import order_domain_service, order_helper_service, order_sequence_service
+from .dbmodels.order import DbLineItem, DbOrder
 from .events import ShopOrderPlacedEvent
 from .models.checkout import IncomingLineItem, IncomingOrder
 from .models.number import OrderNumber
@@ -64,7 +58,7 @@ def place_order(
         created_at = datetime.utcnow()
 
     place_order_result = order_domain_service.place_order(
-        created_at, shop.id, storefront.id, orderer, shop.currency, cart
+        created_at, shop.id, storefront.id, orderer, cart
     )
     if place_order_result.is_err():
         error_message = 'Cart must not be empty'
@@ -100,10 +94,10 @@ def place_order(
 
     event = ShopOrderPlacedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(orderer.user),
+        initiator=orderer.user,
         order_id=order.id,
         order_number=order.order_number,
-        orderer=EventUser.from_user(orderer.user),
+        orderer=orderer.user,
     )
 
     log.info('Order placed', shop_order_placed_event=event)

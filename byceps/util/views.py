@@ -4,7 +4,7 @@ byceps.util.views
 
 View utilities.
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -25,7 +25,6 @@ from werkzeug.datastructures import WWWAuthenticate
 
 from byceps.services.authn.api import authn_api_service
 
-from .authz import has_current_user_permission
 from .framework.flash import flash_notice
 
 
@@ -95,7 +94,7 @@ def permission_required(permission: str):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if not has_current_user_permission(permission):
+            if not g.user.has_permission(permission):
                 abort(403)
             return func(*args, **kwargs)
 

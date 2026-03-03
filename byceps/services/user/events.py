@@ -2,78 +2,78 @@
 byceps.services.user.events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from dataclasses import dataclass
 
-from byceps.services.core.events import _BaseEvent, EventSite, EventUser
-from byceps.services.user.models.user import UserAvatarID, UserID
+from byceps.services.core.events import BaseEvent, EventSite
+from byceps.services.user.models import User, UserAvatarID, UserDetailDifference
 
 
 @dataclass(frozen=True, kw_only=True)
-class _UserEvent(_BaseEvent):
-    user: EventUser
+class UserEvent(BaseEvent):
+    user: User
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAccountCreatedEvent(_UserEvent):
+class UserAccountCreatedEvent(UserEvent):
     site: EventSite | None
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAccountDeletedEvent(_UserEvent):
-    pass
+class UserAccountDeletedEvent(UserEvent):
+    reason: str
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAccountSuspendedEvent(_UserEvent):
-    pass
+class UserAccountSuspendedEvent(UserEvent):
+    reason: str
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAccountUnsuspendedEvent(_UserEvent):
-    pass
+class UserAccountUnsuspendedEvent(UserEvent):
+    reason: str
 
 
 @dataclass(frozen=True, kw_only=True)
-class _UserAvatarEvent(_UserEvent):
+class UserScreenNameChangedEvent(UserEvent):
+    old_screen_name: str | None
+    new_screen_name: str | None
+    reason: str | None
+
+
+@dataclass(frozen=True, kw_only=True)
+class UserAvatarEvent(UserEvent):
     avatar_id: UserAvatarID
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAvatarRemovedEvent(_UserAvatarEvent):
+class UserAvatarRemovedEvent(UserAvatarEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserAvatarUpdatedEvent(_UserAvatarEvent):
+class UserAvatarUpdatedEvent(UserAvatarEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserDetailsUpdatedEvent(_UserEvent):
+class UserDetailsUpdatedEvent(UserEvent):
+    fields: dict[str, UserDetailDifference]
+
+
+@dataclass(frozen=True, kw_only=True)
+class UserEmailAddressChangedEvent(UserEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserEmailAddressChangedEvent(_UserEvent):
+class UserEmailAddressConfirmedEvent(UserEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class UserEmailAddressConfirmedEvent(_UserEvent):
+class UserEmailAddressInvalidatedEvent(UserEvent):
     pass
-
-
-@dataclass(frozen=True, kw_only=True)
-class UserEmailAddressInvalidatedEvent(_UserEvent):
-    pass
-
-
-@dataclass(frozen=True, kw_only=True)
-class UserScreenNameChangedEvent(_BaseEvent):
-    user_id: UserID
-    old_screen_name: str | None
-    new_screen_name: str | None

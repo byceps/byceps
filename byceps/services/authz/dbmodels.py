@@ -2,7 +2,7 @@
 byceps.services.authz.dbmodels
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,9 +10,8 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from byceps.database import db
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import UserID
-from byceps.util.instances import ReprBuilder
+from byceps.services.user.dbmodels import DbUser
+from byceps.services.user.models import UserID
 
 from .models import PermissionID, RoleID
 
@@ -38,9 +37,6 @@ class DbRole(db.Model):
         self.id = role_id
         self.title = title
 
-    def __repr__(self) -> str:
-        return ReprBuilder(self).add_with_lookup('id').build()
-
 
 class DbRolePermission(db.Model):
     """The assignment of a permission to a role."""
@@ -51,7 +47,6 @@ class DbRolePermission(db.Model):
         db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
     )
     role: Mapped[DbRole] = relationship(
-        DbRole,
         backref=db.backref(
             'role_permissions', collection_class=set, lazy='joined'
         ),
@@ -65,14 +60,6 @@ class DbRolePermission(db.Model):
         self.role_id = role_id
         self.permission_id = permission_id
 
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('role_id')
-            .add_with_lookup('permission_id')
-            .build()
-        )
-
 
 class DbUserRole(db.Model):
     """The assignment of a role to a user."""
@@ -83,7 +70,6 @@ class DbUserRole(db.Model):
         db.Uuid, db.ForeignKey('users.id'), primary_key=True
     )
     user: Mapped[DbUser] = relationship(
-        DbUser,
         backref=db.backref('user_roles', collection_class=set),
         collection_class=set,
     )
@@ -91,7 +77,6 @@ class DbUserRole(db.Model):
         db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
     )
     role: Mapped[DbRole] = relationship(
-        DbRole,
         backref=db.backref('user_roles', collection_class=set),
         collection_class=set,
         lazy='joined',
@@ -100,11 +85,3 @@ class DbUserRole(db.Model):
     def __init__(self, user_id: UserID, role_id: RoleID) -> None:
         self.user_id = user_id
         self.role_id = role_id
-
-    def __repr__(self) -> str:
-        return (
-            ReprBuilder(self)
-            .add_with_lookup('user')
-            .add_with_lookup('role')
-            .build()
-        )

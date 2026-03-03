@@ -1,10 +1,27 @@
-# layout: dagre
+vars: {
+  d2-config: {
+    layout-engine: dagre
+    theme-id: 104
+  }
+}
 
 direction: right
 
-User -> Role: has
-Role -> Permission: grants
+container: "" {
+  User: {
+    shape: person
+    width: 60
+    height: 60
+  }
+  Role: {
+    shape: oval
+    height: 60
+  }
+  Permission: {
+    shape: oval
+    height: 60
+  }
 
-User.shape: person
-Role.shape: oval
-Permission.shape: oval
+  User -> Role: has
+  Role -> Permission: grants
+}

@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -36,6 +36,6 @@ def test_create_tag(user, admin_user):
     assert log_entry.id is not None
     assert log_entry.occurred_at == tag.created_at
     assert log_entry.event_type == 'user-identity-tag-created'
-    assert log_entry.user_id == user.id
-    assert log_entry.initiator_id == initiator.id
+    assert log_entry.user == user
+    assert log_entry.initiator == initiator
     assert log_entry.data == {'tag_id': str(tag.id)}

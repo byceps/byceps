@@ -2,7 +2,7 @@
 byceps.services.orga_presence.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,7 +13,7 @@ from typing import Self
 from uuid import UUID
 
 from byceps.services.party.models import Party
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.datetime.range import DateTimeRange
 
 

@@ -2,23 +2,22 @@
 byceps.services.user.user_email_address_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 
-from byceps.services.core.events import EventUser
+from byceps.services.user.log import user_log_domain_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid7
 
 from .events import (
     UserEmailAddressChangedEvent,
     UserEmailAddressConfirmedEvent,
     UserEmailAddressInvalidatedEvent,
 )
-from .models.log import UserLogEntry
-from .models.user import User, UserEmailAddress
+from .models import User, UserEmailAddress
 
 
 def change_email_address(
@@ -54,8 +53,8 @@ def _build_email_address_changed_event(
 ) -> UserEmailAddressChangedEvent:
     return UserEmailAddressChangedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
     )
 
 
@@ -68,7 +67,6 @@ def _build_email_address_changed_log_entry(
     reason: str | None,
 ) -> UserLogEntry:
     data = {
-        'initiator_id': str(initiator.id),
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
     }
@@ -76,13 +74,12 @@ def _build_email_address_changed_log_entry(
     if reason:
         data['reason'] = reason
 
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-email-address-changed',
+        user,
+        data,
         occurred_at=occurred_at,
-        event_type='user-email-address-changed',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data=data,
+        initiator=initiator,
     )
 
 
@@ -118,8 +115,8 @@ def _build_email_address_confirmed_event(
 ) -> UserEmailAddressConfirmedEvent:
     return UserEmailAddressConfirmedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(user),
-        user=EventUser.from_user(user),
+        initiator=user,
+        user=user,
     )
 
 
@@ -128,13 +125,12 @@ def _build_email_address_confirmed_log_entry(
     user: User,
     email_address: str,
 ) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-email-address-confirmed',
+        user,
+        {'email_address': email_address},
         occurred_at=occurred_at,
-        event_type='user-email-address-confirmed',
-        user_id=user.id,
-        initiator_id=user.id,
-        data={'email_address': email_address},
+        initiator=user,
     )
 
 
@@ -170,8 +166,8 @@ def _build_email_address_invalidated_event(
 ) -> UserEmailAddressInvalidatedEvent:
     return UserEmailAddressInvalidatedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator) if initiator else None,
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
     )
 
 
@@ -187,14 +183,10 @@ def _build_email_address_invalidated_log_entry(
         'reason': reason,
     }
 
-    if initiator:
-        data['initiator_id'] = str(initiator.id)
-
-    return UserLogEntry(
-        id=generate_uuid7(),
+    return user_log_domain_service.build_entry(
+        'user-email-address-invalidated',
+        user,
+        data,
         occurred_at=occurred_at,
-        event_type='user-email-address-invalidated',
-        user_id=user.id,
-        initiator_id=initiator.id if initiator else None,
-        data=data,
+        initiator=initiator,
     )

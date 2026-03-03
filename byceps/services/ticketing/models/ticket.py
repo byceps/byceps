@@ -2,7 +2,7 @@
 byceps.services.ticketing.models.ticket
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -17,7 +17,8 @@ if TYPE_CHECKING:
     from byceps.services.seating.models import SeatGroupID
 
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.user.models import User
 
 
 TicketCategoryID = NewType('TicketCategoryID', UUID)
@@ -47,11 +48,12 @@ class TicketBundle:
     ticket_category: TicketCategory
     ticket_quantity: int
     owned_by: User
+    order_number: OrderNumber | None
     seats_managed_by: User | None
     users_managed_by: User | None
     label: str | None
     revoked: bool
-    ticket_ids: set[TicketID]
+    ticket_ids: list[TicketID]
     occupied_seat_group_id: SeatGroupID | None
 
     @property

@@ -2,7 +2,7 @@
 byceps.services.shop.product.product_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -280,7 +280,7 @@ def find_db_product(product_id: ProductID) -> DbProduct | None:
 
 
 def _get_db_product(product_id: ProductID) -> DbProduct:
-    """Return the database entity for the product with that id.
+    """Return the database entity for the product with that ID.
 
     Raise an exception if not found.
     """

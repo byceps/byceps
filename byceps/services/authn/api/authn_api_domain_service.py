@@ -2,7 +2,7 @@
 byceps.services.authn.api.authn_api_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -10,7 +10,7 @@ from datetime import datetime
 from secrets import token_urlsafe
 
 from byceps.services.authz.models import PermissionID
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.util.uuid import generate_uuid7
 
 from .models import ApiToken

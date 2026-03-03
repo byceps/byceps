@@ -30,7 +30,7 @@
   <div>
     <h1 class="title">{{ page_title }}</h1>
   </div>
-  {%- if has_current_user_permission('whereabouts.administrate') %}
+  {%- if g.user.has_permission('whereabouts.administrate') %}
   <div>
     <div class="button-row is-right-aligned">
       <a class="button" href="{{ url_for('.whereabouts_index', party_id=party.id) }}">{{ render_icon('administrate') }} <span>{{ _('Manage') }}</span></a>

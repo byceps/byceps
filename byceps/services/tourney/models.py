@@ -2,7 +2,7 @@
 byceps.services.tourney.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -13,7 +13,10 @@ from typing import NewType, Self
 from uuid import UUID
 
 from byceps.services.party.models import PartyID
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
+
+
+TourneyAvatarID = NewType('TourneyAvatarID', UUID)
 
 
 TourneyCategoryID = NewType('TourneyCategoryID', UUID)
@@ -31,6 +34,12 @@ TourneyID = NewType('TourneyID', UUID)
 
 
 @dataclass(frozen=True, kw_only=True)
+class BasicTourney:
+    id: TourneyID
+    title: str
+
+
+@dataclass(frozen=True, kw_only=True)
 class Tourney:
     id: TourneyID
     party_id: PartyID
@@ -43,6 +52,12 @@ class Tourney:
     max_participant_count: int
     starts_at: datetime
     registration_open: bool
+
+    def to_basic_tourney(self) -> BasicTourney:
+        return BasicTourney(
+            id=self.id,
+            title=self.title,
+        )
 
 
 @dataclass(frozen=True, kw_only=True)

@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -81,6 +81,7 @@ def make_item(channel: NewsChannel):
 
         return NewsItem(
             id=NewsItemID(generate_uuid()),
+            created_at=datetime.utcnow(),
             brand_id=channel.brand_id,
             channel=channel,
             slug=token,

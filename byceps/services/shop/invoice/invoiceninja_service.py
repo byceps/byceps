@@ -2,7 +2,7 @@
 byceps.services.shop.invoice.invoiceninja_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jan Korneffel, Jochen Kupperschmidt, Micha Ober
+:Copyright: 2014-2026 Jan Korneffel, Jochen Kupperschmidt, Micha Ober
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -24,11 +24,11 @@ from byceps.services.shop.invoice.errors import (
     InvoiceProviderNotEnabledError,
 )
 from byceps.services.shop.invoice.models import DownloadableInvoice
-from byceps.services.shop.order import order_log_service
+from byceps.services.shop.order.log import order_log_service
 from byceps.services.shop.order.models.detailed_order import AdminDetailedOrder
 from byceps.services.shop.order.models.order import LineItem, OrderID
 from byceps.services.user import user_command_service, user_service
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 from byceps.util.result import Err, Ok, Result
 
 
@@ -99,7 +99,7 @@ class InvoiceNinjaHttpClient:
         if invoice is not None:
             return invoice
 
-        # Get/create Invoice Ninja customer id and update address.
+        # Get/create Invoice Ninja customer ID and update address.
         customer_id = self.get_customer_id_with_update(order)
 
         return self.create_invoice(customer_id, order)
@@ -107,7 +107,7 @@ class InvoiceNinjaHttpClient:
     def find_invoice_by_order_number(
         self, order_number: str
     ) -> InvoiceNinjaInvoice | None:
-        """Find invoice in Invoice Ninja and return id and paid_to_date."""
+        """Find invoice in Invoice Ninja and return ID and paid_to_date."""
         url = self._build_url(
             f'invoices?is_deleted=false&filter={order_number}'
         )
@@ -122,7 +122,7 @@ class InvoiceNinjaHttpClient:
         return _transform_invoice_response(invoice_data)
 
     def get_customer_id_with_update(self, order: AdminDetailedOrder) -> str:
-        """Return customer id for orderer, create customer object if necessary."""
+        """Return customer ID for orderer, create customer object if necessary."""
         customer_id = _get_user_invoiceninja_customer_id(order.placed_by.id)
 
         client_data = _fill_client_data(order.placed_by, order)

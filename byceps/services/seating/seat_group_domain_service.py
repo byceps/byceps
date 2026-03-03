@@ -2,19 +2,18 @@
 byceps.services.seating.seat_group_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 
-from byceps.services.core.events import EventUser
 from byceps.services.party.models import Party, PartyID
 from byceps.services.ticketing.models.ticket import (
     TicketBundle,
     TicketCategoryID,
 )
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.util.result import Err, Ok, Result
 from byceps.util.uuid import generate_uuid7
 
@@ -237,11 +236,11 @@ def _build_occupation_event(
 ) -> SeatGroupOccupiedEvent:
     return SeatGroupOccupiedEvent(
         occurred_at=datetime.utcnow(),
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         seat_group_id=group.id,
         seat_group_title=group.title,
         ticket_bundle_id=ticket_bundle.id,
-        ticket_bundle_owner=EventUser.from_user(ticket_bundle.owned_by),
+        ticket_bundle_owner=ticket_bundle.owned_by,
     )
 
 
@@ -250,7 +249,7 @@ def _build_release_event(
 ) -> SeatGroupReleasedEvent:
     return SeatGroupReleasedEvent(
         occurred_at=datetime.utcnow(),
-        initiator=EventUser.from_user(initiator),
+        initiator=initiator,
         seat_group_id=group.id,
         seat_group_title=group.title,
     )

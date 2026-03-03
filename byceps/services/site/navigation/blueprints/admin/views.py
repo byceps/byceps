@@ -2,7 +2,7 @@
 byceps.services.site.navigation.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -15,18 +15,21 @@ from byceps.services.brand import brand_service
 from byceps.services.page import page_service
 from byceps.services.site import site_service
 from byceps.services.site.models import Site, SiteID
-from byceps.services.site_navigation import site_navigation_service
+from byceps.services.site_navigation import (
+    site_navigation_service,
+    view_type_registry,
+)
 from byceps.services.site_navigation.models import (
     NavItem,
     NavItemID,
     NavItemTargetType,
     NavMenu,
-    NavMenuAggregate,
     NavMenuID,
 )
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
+from byceps.util.result import Err, Ok
 from byceps.util.views import (
     permission_required,
     redirect_to,
@@ -39,6 +42,7 @@ from .forms import (
     ItemCreateViewForm,
     ItemUpdateForm,
     MenuCreateForm,
+    MenuTreesCopyForm,
     MenuUpdateForm,
     SubMenuCreateForm,
 )
@@ -56,14 +60,11 @@ def index_for_site(site_id):
 
     brand = brand_service.get_brand(site.brand_id)
 
-    menus = site_navigation_service.get_menus(site.id)
-
     menu_trees = site_navigation_service.get_menu_trees(site.id)
 
     return {
         'site': site,
         'brand': brand,
-        'menus': menus,
         'menu_trees': menu_trees,
     }
 
@@ -73,17 +74,62 @@ def index_for_site(site_id):
 @templated
 def view(menu_id):
     """Show a single menu."""
-    menu = _get_menu_aggregate_or_404(menu_id)
+    menu = _get_menu_or_404(menu_id)
+
+    menu_with_items = site_navigation_service.get_menu_with_unfiltered_items(
+        menu
+    )
 
     site = site_service.get_site(menu.site_id)
-
     brand = brand_service.get_brand(site.brand_id)
 
     return {
-        'menu': menu,
+        'menu': menu_with_items,
         'site': site,
         'brand': brand,
     }
+
+
+@blueprint.get('/for_site/<target_site_id>/copy')
+@permission_required('site_navigation.administrate')
+@templated
+def menu_trees_copy_form(target_site_id, erroneous_form=None):
+    """Show form to copy menu trees from another site."""
+    target_site = _get_site_or_404(target_site_id)
+
+    form = erroneous_form if erroneous_form else MenuTreesCopyForm()
+    form.set_source_site_id_choices(target_site)
+
+    return {
+        'form': form,
+        'target_site': target_site,
+    }
+
+
+@blueprint.post('/for_site/<target_site_id>/copy')
+@permission_required('site_navigation.administrate')
+def menu_trees_copy(target_site_id):
+    """Copy menu trees from another site."""
+    target_site = _get_site_or_404(target_site_id)
+
+    form = MenuTreesCopyForm(request.form)
+    form.set_source_site_id_choices(target_site)
+
+    if not form.validate():
+        return redirect_to('.index_for_site', site_id=target_site.id)
+
+    source_site_id = form.source_site_id.data
+    source_site = _get_site_or_404(source_site_id)
+
+    match site_navigation_service.copy_site_menu_trees(
+        source_site.id, target_site.id
+    ):
+        case Ok(_):
+            flash_success(gettext('Menus have been successfully copied.'))
+        case Err(e):
+            flash_error(e)
+
+    return redirect_to('.index_for_site', site_id=target_site.id)
 
 
 @blueprint.get('/for_site/<site_id>/create')
@@ -368,7 +414,7 @@ def _get_target_and_current_page_id_for_create_form(
 
         case NavItemTargetType.view:
             view_type_name = form.target_view_type.data
-            view_type = site_navigation_service.find_view_type_by_name(
+            view_type = view_type_registry.find_view_type_by_name(
                 view_type_name
             )
             if not view_type:
@@ -431,6 +477,50 @@ def item_update(item_id):
     return redirect_to('.view', menu_id=item.menu_id)
 
 
+@blueprint.post('/items/<uuid:item_id>/hide')
+@permission_required('site_navigation.administrate')
+@respond_no_content
+def item_hide(item_id):
+    """Hide the menu item."""
+    item = _get_item_or_404(item_id)
+
+    item = site_navigation_service.update_item(
+        item,
+        item.target_type,
+        item.target,
+        item.label,
+        item.current_page_id,
+        True,
+    ).unwrap()
+
+    flash_success(
+        gettext('Menu item "%(label)s" has been hidden.', label=item.label)
+    )
+
+
+@blueprint.post('/items/<uuid:item_id>/unhide')
+@permission_required('site_navigation.administrate')
+@respond_no_content
+def item_unhide(item_id):
+    """Un-hide the menu item."""
+    item = _get_item_or_404(item_id)
+
+    item = site_navigation_service.update_item(
+        item,
+        item.target_type,
+        item.target,
+        item.label,
+        item.current_page_id,
+        False,
+    ).unwrap()
+
+    flash_success(
+        gettext(
+            'Menu item "%(label)s" has been made visible.', label=item.label
+        )
+    )
+
+
 @blueprint.post('/items/<uuid:item_id>/up')
 @permission_required('site_navigation.administrate')
 @respond_no_content
@@ -438,21 +528,21 @@ def item_move_up(item_id):
     """Move the menu item upwards by one position."""
     item = _get_item_or_404(item_id)
 
-    move_result = site_navigation_service.move_item_up(item.id)
-    if move_result.is_err():
-        flash_error(
-            gettext(
-                'Item "%(label)s" is already at the top.',
-                label=item.label,
+    match site_navigation_service.move_item_up(item.id):
+        case Ok(_):
+            flash_success(
+                gettext(
+                    'Item "%(label)s" has been moved upwards by one position.',
+                    label=item.label,
+                )
             )
-        )
-    else:
-        flash_success(
-            gettext(
-                'Item "%(label)s" has been moved upwards by one position.',
-                label=item.label,
+        case Err(_):
+            flash_error(
+                gettext(
+                    'Item "%(label)s" is already at the top.',
+                    label=item.label,
+                )
             )
-        )
 
 
 @blueprint.post('/items/<uuid:item_id>/down')
@@ -462,21 +552,21 @@ def item_move_down(item_id):
     """Move the menu item downwards by one position."""
     item = _get_item_or_404(item_id)
 
-    move_result = site_navigation_service.move_item_down(item.id)
-    if move_result.is_err():
-        flash_error(
-            gettext(
-                'Item "%(label)s" is already at the bottom.',
-                label=item.label,
+    match site_navigation_service.move_item_down(item.id):
+        case Ok(_):
+            flash_success(
+                gettext(
+                    'Item "%(label)s" has been moved downwards by one position.',
+                    label=item.label,
+                )
             )
-        )
-    else:
-        flash_success(
-            gettext(
-                'Item "%(label)s" has been moved downwards by one position.',
-                label=item.label,
+        case Err(_):
+            flash_error(
+                gettext(
+                    'Item "%(label)s" is already at the bottom.',
+                    label=item.label,
+                )
             )
-        )
 
 
 @blueprint.delete('/items/<uuid:item_id>')
@@ -504,15 +594,6 @@ def _get_site_or_404(site_id: SiteID) -> Site:
 
 def _get_menu_or_404(menu_id: NavMenuID) -> NavMenu:
     menu = site_navigation_service.find_menu(menu_id)
-
-    if menu is None:
-        abort(404)
-
-    return menu
-
-
-def _get_menu_aggregate_or_404(menu_id: NavMenuID) -> NavMenuAggregate:
-    menu = site_navigation_service.find_menu_aggregate(menu_id)
 
     if menu is None:
         abort(404)

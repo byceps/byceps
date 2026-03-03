@@ -2,47 +2,40 @@
 byceps.services.board.blueprints.site.service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable
 from datetime import datetime
 
 from flask import g
 
-from byceps.services.authn.session.models import CurrentUser
 from byceps.services.board import (
-    board_access_control_service,
-    board_last_view_service,
     board_posting_query_service,
     board_topic_query_service,
 )
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
-from byceps.services.board.models import BoardCategoryWithLastUpdate
+from byceps.services.board.models import BoardTopicSummary
 from byceps.services.brand.models import BrandID
 from byceps.services.orga_team import orga_team_service
 from byceps.services.party import party_service
 from byceps.services.party.models import Party, PartyID
 from byceps.services.site import site_setting_service
 from byceps.services.ticketing import ticket_service
-from byceps.services.user import user_service
-from byceps.services.user.models.user import UserID
+from byceps.services.user.models import UserID
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.services.user_badge.models import Badge
-from byceps.util.authz import has_current_user_permission
 
-from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
+from .models import Creator, Ticket
 
 
 DEFAULT_POSTINGS_PER_PAGE = 10
 DEFAULT_TOPICS_PER_PAGE = 10
 
 
-def get_recent_topics(
-    current_user: CurrentUser, *, limit=6
-) -> Sequence[DbTopic] | None:
+def get_recent_topics(*, limit=6) -> list[BoardTopicSummary] | None:
     """Return the most recently active board topics.
 
     Returns `None` if no board is configured for this site or the
@@ -52,82 +45,24 @@ def get_recent_topics(
     if board_id is None:
         return None
 
-    has_access = board_access_control_service.has_user_access_to_board(
-        current_user.id, board_id
-    )
-    if not has_access:
-        return None
-
+    current_user = g.user
     include_hidden = may_current_user_view_hidden()
-    topics = board_topic_query_service.get_recent_topics(
-        board_id, limit=limit, include_hidden=include_hidden
+    return board_topic_query_service.get_recent_topics(
+        board_id, limit, current_user, include_hidden=include_hidden
     )
-
-    add_topic_unseen_flag(topics, current_user)
-
-    return topics
-
-
-def add_unseen_postings_flag_to_categories(
-    categories: Iterable[BoardCategoryWithLastUpdate], user: CurrentUser
-) -> list[CategoryWithLastUpdateAndUnseenFlag]:
-    """Add flag to each category stating if it contains postings unseen
-    by the user.
-    """
-    categories_with_flag = []
-
-    for category in categories:
-        contains_unseen_postings = (
-            user.authenticated
-            and board_last_view_service.contains_category_unseen_postings(
-                category, user.id
-            )
-        )
-
-        category_with_flag = (
-            CategoryWithLastUpdateAndUnseenFlag.from_category_with_last_update(
-                category, contains_unseen_postings
-            )
-        )
-
-        categories_with_flag.append(category_with_flag)
-
-    return categories_with_flag
-
-
-def add_topic_creators(db_topics: Iterable[DbTopic]) -> None:
-    """Add each topic's creator as topic attribute."""
-    creator_ids = {t.creator_id for t in db_topics}
-    creators_by_id = user_service.get_users_indexed_by_id(
-        creator_ids, include_avatars=True
-    )
-
-    for db_topic in db_topics:
-        db_topic.creator = creators_by_id[db_topic.creator_id]
-
-
-def add_topic_unseen_flag(
-    db_topics: Iterable[DbTopic], user: CurrentUser
-) -> None:
-    """Add `unseen` flag to topics."""
-    for db_topic in db_topics:
-        db_topic.contains_unseen_postings = (
-            user.authenticated
-            and board_last_view_service.contains_topic_unseen_postings(
-                db_topic, user.id
-            )
-        )
 
 
 def add_unseen_flag_to_postings(
-    db_postings: Iterable[DbPosting], last_viewed_at: datetime
+    db_postings: Iterable[DbPosting], last_viewed_at: datetime | None
 ) -> None:
     """Add the attribute 'unseen' to each post."""
     for db_posting in db_postings:
-        db_posting.unseen = is_posting_unseen(db_posting, last_viewed_at)
+        db_posting.unseen = _is_posting_unseen(db_posting, last_viewed_at)
 
 
-def is_posting_unseen(db_posting: DbPosting, last_viewed_at: datetime) -> bool:
+def _is_posting_unseen(
+    db_posting: DbPosting, last_viewed_at: datetime | None
+) -> bool:
     """Return `True` if the posting has not yet been seen by the current
     user.
     """
@@ -235,7 +170,7 @@ def _get_site_setting_int_value(key, default_value) -> int:
 
 def may_current_user_view_hidden() -> bool:
     """Return `True' if the current user may view hidden items."""
-    return has_current_user_permission('board.view_hidden')
+    return g.user.has_permission('board.view_hidden')
 
 
 def may_topic_be_updated_by_current_user(db_topic: DbTopic) -> bool:
@@ -243,8 +178,8 @@ def may_topic_be_updated_by_current_user(db_topic: DbTopic) -> bool:
     return (
         not db_topic.locked
         and g.user.id == db_topic.creator_id
-        and has_current_user_permission('board_topic.update')
-    ) or has_current_user_permission('board.update_of_others')
+        and g.user.has_permission('board_topic.update')
+    ) or g.user.has_permission('board.update_of_others')
 
 
 def may_posting_be_updated_by_current_user(db_posting: DbPosting) -> bool:
@@ -252,5 +187,5 @@ def may_posting_be_updated_by_current_user(db_posting: DbPosting) -> bool:
     return (
         not db_posting.topic.locked
         and g.user.id == db_posting.creator_id
-        and has_current_user_permission('board_posting.update')
-    ) or has_current_user_permission('board.update_of_others')
+        and g.user.has_permission('board_posting.update')
+    ) or g.user.has_permission('board.update_of_others')

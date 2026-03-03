@@ -2,26 +2,23 @@
 byceps.services.tourney.events
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from dataclasses import dataclass
+from typing import Self
 
-from byceps.services.core.events import _BaseEvent, EventUser
+from byceps.services.core.events import BaseEvent
+from byceps.services.user.models import User
 
 from .models import (
+    BasicTourney,
     MatchID,
+    Participant,
     ParticipantID,
     ParticipantMembershipStatus,
-    TourneyID,
 )
-
-
-@dataclass(frozen=True, kw_only=True)
-class EventTourney:
-    id: TourneyID
-    title: str
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -29,42 +26,64 @@ class EventTourneyParticipant:
     id: ParticipantID
     name: str
 
+    @classmethod
+    def from_participant(cls, participant: Participant) -> Self:
+        return cls(
+            id=participant.id,
+            name=participant.name,
+        )
+
 
 @dataclass(frozen=True, kw_only=True)
-class _BaseTourneyEvent(_BaseEvent):
-    tourney: EventTourney
+class _BaseTourneyEvent(BaseEvent):
+    tourney: BasicTourney
 
 
 # tourney
 
 
 @dataclass(frozen=True, kw_only=True)
-class _TourneyEvent(_BaseTourneyEvent):
+class TourneyEvent(_BaseTourneyEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyCreatedEvent(_TourneyEvent):
+class TourneyCreatedEvent(TourneyEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyStartedEvent(_TourneyEvent):
+class TourneyRegistrationOpenedEvent(TourneyEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyPausedEvent(_TourneyEvent):
+class TourneyRegistrationClosedEvent(TourneyEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyCanceledEvent(_TourneyEvent):
+class TourneyStartedEvent(TourneyEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyFinishedEvent(_TourneyEvent):
+class TourneyPausedEvent(TourneyEvent):
+    pass
+
+
+@dataclass(frozen=True, kw_only=True)
+class TourneyContinuedEvent(TourneyEvent):
+    pass
+
+
+@dataclass(frozen=True, kw_only=True)
+class TourneyCanceledEvent(TourneyEvent):
+    pass
+
+
+@dataclass(frozen=True, kw_only=True)
+class TourneyFinishedEvent(TourneyEvent):
     pass
 
 
@@ -72,58 +91,58 @@ class TourneyFinishedEvent(_TourneyEvent):
 
 
 @dataclass(frozen=True, kw_only=True)
-class _TourneyParticipantEvent(_BaseTourneyEvent):
+class TourneyParticipantEvent(_BaseTourneyEvent):
     participant: EventTourneyParticipant
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyParticipantCreatedEvent(_TourneyParticipantEvent):
+class TourneyParticipantCreatedEvent(TourneyParticipantEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyParticipantMembershipCreatedEvent(_TourneyParticipantEvent):
-    player: EventUser
+class TourneyParticipantMembershipCreatedEvent(TourneyParticipantEvent):
+    player: User
     status: ParticipantMembershipStatus
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyParticipantMembershipDeletedEvent(_TourneyParticipantEvent):
-    player: EventUser
+class TourneyParticipantMembershipDeletedEvent(TourneyParticipantEvent):
+    player: User
 
 
 # match
 
 
 @dataclass(frozen=True, kw_only=True)
-class _TourneyMatchEvent(_BaseTourneyEvent):
+class TourneyMatchEvent(_BaseTourneyEvent):
     match_id: MatchID
     participant1: EventTourneyParticipant | None
     participant2: EventTourneyParticipant | None
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyMatchReadyEvent(_TourneyMatchEvent):
+class TourneyMatchReadyEvent(TourneyMatchEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyMatchResetEvent(_TourneyMatchEvent):
+class TourneyMatchResetEvent(TourneyMatchEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyMatchScoreSubmittedEvent(_TourneyMatchEvent):
+class TourneyMatchScoreSubmittedEvent(TourneyMatchEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyMatchScoreConfirmedEvent(_TourneyMatchEvent):
+class TourneyMatchScoreConfirmedEvent(TourneyMatchEvent):
     pass
 
 
 @dataclass(frozen=True, kw_only=True)
-class TourneyMatchScoreRandomizedEvent(_TourneyMatchEvent):
+class TourneyMatchScoreRandomizedEvent(TourneyMatchEvent):
     pass
 
 

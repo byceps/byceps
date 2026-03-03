@@ -2,7 +2,7 @@
 byceps.services.orga_presence.blueprints.admin.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -40,7 +40,7 @@ def build_presence_create_form(
             format=DATE_TIME_LOCAL_FIELD_FORMAT,
         )
 
-        def validate(self) -> bool:
+        def validate(self, extra_validators=None) -> bool:
             if not super().validate():
                 return False
 

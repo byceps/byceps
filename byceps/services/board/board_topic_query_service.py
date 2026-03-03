@@ -2,25 +2,34 @@
 byceps.services.board.board_topic_query_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections.abc import Sequence
+from collections.abc import Iterable
 from datetime import datetime
 
 from sqlalchemy import select
 from sqlalchemy.sql import Select
 
 from byceps.database import db, paginate, Pagination
+from byceps.services.authn.session.models import CurrentUser
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User
+from byceps.services.user.dbmodels import DbUser
+from byceps.services.user.models import User, UserID
 
+from . import board_access_control_service
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
-from .dbmodels.topic import DbTopic
-from .models import BoardCategoryID, BoardID, Topic, TopicID
+from .dbmodels.topic import DbTopic, DbLastTopicView
+from .models import (
+    BoardCategoryID,
+    BoardID,
+    BoardTopicCategory,
+    BoardTopicSummary,
+    Topic,
+    TopicID,
+)
 
 
 def count_topics_for_board(board_id: BoardID) -> int:
@@ -36,7 +45,7 @@ def count_topics_for_board(board_id: BoardID) -> int:
 
 
 def find_topic(topic_id: TopicID) -> Topic | None:
-    """Return the topic with that id, or `None` if not found."""
+    """Return the topic with that ID, or `None` if not found."""
     db_topic = find_db_topic(topic_id)
 
     if db_topic is None:
@@ -46,12 +55,12 @@ def find_topic(topic_id: TopicID) -> Topic | None:
 
 
 def find_db_topic(topic_id: TopicID) -> DbTopic | None:
-    """Return the topic with that id, or `None` if not found."""
+    """Return the topic with that ID, or `None` if not found."""
     return db.session.get(DbTopic, topic_id)
 
 
 def get_db_topic(topic_id: TopicID) -> DbTopic:
-    """Return the topic with that id."""
+    """Return the topic with that ID."""
     db_topic = find_db_topic(topic_id)
 
     if db_topic is None:
@@ -63,7 +72,7 @@ def get_db_topic(topic_id: TopicID) -> DbTopic:
 def find_topic_visible_for_user(
     topic_id: TopicID, *, include_hidden: bool = False
 ) -> DbTopic | None:
-    """Return the topic with that id, or `None` if not found or
+    """Return the topic with that ID, or `None` if not found or
     invisible for the user.
     """
     stmt = (
@@ -81,10 +90,23 @@ def find_topic_visible_for_user(
 
 
 def get_recent_topics(
-    board_id: BoardID, limit: int, *, include_hidden: bool = False
-) -> Sequence[DbTopic]:
-    """Return recent topics in that board."""
-    return (
+    board_id: BoardID,
+    limit: int,
+    current_user: CurrentUser,
+    *,
+    include_hidden: bool = False,
+) -> list[BoardTopicSummary] | None:
+    """Return the most recently active topics in the board.
+
+    Returns `None` if the user is not permitted to access the board.
+    """
+    has_access = board_access_control_service.has_user_access_to_board(
+        current_user.id, board_id
+    )
+    if not has_access:
+        return None
+
+    db_topics = (
         db.session.scalars(
             _select_topics(include_hidden=include_hidden)
             .join(DbBoardCategory)
@@ -97,9 +119,16 @@ def get_recent_topics(
         .all()
     )
 
+    return _to_topic_summaries(db_topics, current_user)
+
 
 def paginate_topics(
-    board_id: BoardID, page: int, per_page: int, *, include_hidden: bool = False
+    board_id: BoardID,
+    page: int,
+    per_page: int,
+    current_user: CurrentUser,
+    *,
+    include_hidden: bool = False,
 ) -> Pagination:
     """Paginate topics in that board."""
     stmt = (
@@ -110,7 +139,11 @@ def paginate_topics(
         .order_by(DbTopic.last_updated_at.desc())
     )
 
-    return paginate(stmt, page, per_page)
+    pagination = paginate(stmt, page, per_page)
+
+    pagination.items = _to_topic_summaries(pagination.items, current_user)
+
+    return pagination
 
 
 def get_all_topic_ids() -> set[TopicID]:
@@ -133,6 +166,7 @@ def paginate_topics_of_category(
     category_id: BoardCategoryID,
     page: int,
     per_page: int,
+    current_user: CurrentUser,
     *,
     include_hidden: bool = False,
 ) -> Pagination:
@@ -146,22 +180,71 @@ def paginate_topics_of_category(
         .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc())
     )
 
-    return paginate(stmt, page, per_page)
+    pagination = paginate(stmt, page, per_page)
+
+    pagination.items = _to_topic_summaries(pagination.items, current_user)
+
+    return pagination
 
 
 def _select_topics(*, include_hidden: bool = False) -> Select:
     stmt = select(DbTopic).options(
         db.joinedload(DbTopic.category),
-        db.joinedload(DbTopic.last_updated_by),
-        db.joinedload(DbTopic.hidden_by),
-        db.joinedload(DbTopic.locked_by),
-        db.joinedload(DbTopic.pinned_by),
     )
 
     if not include_hidden:
         stmt = stmt.filter_by(hidden=False)
 
     return stmt
+
+
+def _to_topic_summaries(
+    db_topics: Iterable[DbTopic], current_user: CurrentUser
+) -> list[BoardTopicSummary]:
+    """Build summary objects."""
+    creator_ids = {t.creator_id for t in db_topics}
+    last_updated_by_ids = {t.last_updated_by_id for t in db_topics}
+    user_ids = creator_ids | last_updated_by_ids
+
+    users_by_id = user_service.get_users_indexed_by_id(
+        user_ids, include_avatars=True
+    )
+
+    summaries = []
+
+    for db_topic in db_topics:
+        category = BoardTopicCategory(
+            slug=db_topic.category.slug,
+            title=db_topic.category.title,
+        )
+
+        creator = users_by_id[db_topic.creator_id]
+
+        last_updated_by = users_by_id[db_topic.last_updated_by_id]
+
+        contains_unseen_postings = _contains_topic_unseen_postings(
+            db_topic.id, db_topic.last_updated_at, current_user
+        )
+
+        summary = BoardTopicSummary(
+            id=db_topic.id,
+            category=category,
+            creator=creator,
+            title=db_topic.title,
+            reply_count=db_topic.reply_count,
+            last_updated_at=db_topic.last_updated_at,
+            last_updated_by=last_updated_by,
+            hidden=db_topic.hidden,
+            locked=db_topic.locked,
+            pinned=db_topic.pinned,
+            posting_limited_to_moderators=db_topic.posting_limited_to_moderators,
+            muted=db_topic.muted,
+            contains_unseen_postings=contains_unseen_postings,
+        )
+
+        summaries.append(summary)
+
+    return summaries
 
 
 def find_default_posting_to_jump_to(
@@ -189,7 +272,10 @@ def find_default_posting_to_jump_to(
 
 
 def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
-    def to_user(db_user: DbUser | None) -> User | None:
+    def to_user(db_user: DbUser) -> User:
+        return user_service._db_entity_to_user(db_user)
+
+    def to_user_or_none(db_user: DbUser | None) -> User | None:
         if db_user is None:
             return None
 
@@ -208,14 +294,43 @@ def _db_entity_to_topic(db_topic: DbTopic) -> Topic:
         last_updated_by=to_user(db_topic.last_updated_by),
         hidden=db_topic.hidden,
         hidden_at=db_topic.hidden_at,
-        hidden_by=to_user(db_topic.hidden_by),
+        hidden_by=to_user_or_none(db_topic.hidden_by),
         locked=db_topic.locked,
         locked_at=db_topic.locked_at,
-        locked_by=to_user(db_topic.locked_by),
+        locked_by=to_user_or_none(db_topic.locked_by),
         pinned=db_topic.pinned,
         pinned_at=db_topic.pinned_at,
-        pinned_by=to_user(db_topic.pinned_by),
+        pinned_by=to_user_or_none(db_topic.pinned_by),
         initial_posting_id=db_topic.initial_posting.id,
         posting_limited_to_moderators=db_topic.posting_limited_to_moderators,
         muted=db_topic.muted,
     )
+
+
+# last view
+
+
+def _contains_topic_unseen_postings(
+    topic_id: TopicID, last_updated_at: datetime, current_user: CurrentUser
+) -> bool:
+    """Return `True` if the topic contains postings created after the
+    last time the user viewed it.
+    """
+    if not current_user.authenticated:
+        return False
+
+    last_viewed_at = find_topic_last_viewed_at(topic_id, current_user.id)
+    return last_viewed_at is None or last_updated_at > last_viewed_at
+
+
+def find_topic_last_viewed_at(
+    topic_id: TopicID, user_id: UserID
+) -> datetime | None:
+    """Return the time the topic was last viewed by the user (or
+    nothing, if it hasn't been viewed by the user yet).
+    """
+    db_last_view = db.session.scalars(
+        select(DbLastTopicView).filter_by(user_id=user_id, topic_id=topic_id)
+    ).first()
+
+    return db_last_view.occurred_at if (db_last_view is not None) else None

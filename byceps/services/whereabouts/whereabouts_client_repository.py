@@ -2,7 +2,7 @@
 byceps.services.whereabouts.whereabouts_client_repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -46,12 +46,9 @@ def persist_client_registration(candidate: WhereaboutsClientCandidate) -> None:
     db.session.commit()
 
 
-def delete_client_candidate(client: WhereaboutsClient) -> None:
+def delete_client_candidate(candidate: WhereaboutsClientCandidate) -> None:
     """Delete a client candidate."""
-    if client.approved:
-        raise ValueError('An approved client must not be deleted')
-
-    db_client = get_db_client(client.id)
+    db_client = get_client(candidate.id)
 
     db.session.delete(db_client)
     db.session.commit()
@@ -59,10 +56,11 @@ def delete_client_candidate(client: WhereaboutsClient) -> None:
 
 def persist_client_update(client: WhereaboutsClient) -> None:
     """Update a client."""
-    db_client = get_db_client(client.id)
+    db_client = get_client(client.id)
 
     db_client.authority_status = client.authority_status
     db_client.token = client.token
+    db_client.name = client.name
     db_client.location = client.location
     db_client.description = client.description
 
@@ -100,7 +98,16 @@ def update_liveliness_status(
     db.session.commit()
 
 
-def find_db_client(
+def get_client_candidates() -> Sequence[DbWhereaboutsClient]:
+    """Return all client candidates."""
+    return db.session.scalars(
+        select(DbWhereaboutsClient).filter_by(
+            _authority_status=WhereaboutsClientAuthorityStatus.pending.name
+        )
+    ).all()
+
+
+def find_client(
     client_id: WhereaboutsClientID,
 ) -> DbWhereaboutsClient | None:
     """Return client, if found."""
@@ -112,9 +119,9 @@ def find_db_client(
     return db_client
 
 
-def get_db_client(client_id: WhereaboutsClientID) -> DbWhereaboutsClient:
+def get_client(client_id: WhereaboutsClientID) -> DbWhereaboutsClient:
     """Return client, or raise exception if not found."""
-    db_client = find_db_client(client_id)
+    db_client = find_client(client_id)
 
     if db_client is None:
         raise ValueError(f'Unknown client ID: {client_id}')
@@ -122,22 +129,32 @@ def get_db_client(client_id: WhereaboutsClientID) -> DbWhereaboutsClient:
     return db_client
 
 
-def find_db_client_by_token(token: str) -> DbWhereaboutsClient | None:
+def find_client_by_token(token: str) -> DbWhereaboutsClient | None:
     """Return client with that token, if found."""
     return db.session.scalars(
         select(DbWhereaboutsClient).filter_by(token=token)
     ).one_or_none()
 
 
-def get_db_all_clients() -> Sequence[
-    tuple[DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus]
+def find_client_by_name(name: str) -> DbWhereaboutsClient | None:
+    """Return client with that name, if found."""
+    return db.session.scalars(
+        select(DbWhereaboutsClient).filter_by(name=name)
+    ).one_or_none()
+
+
+def get_clients() -> Sequence[
+    tuple[DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus | None]
 ]:
-    """Return all clients."""
+    """Return all (non-candidate) clients."""
     return (
         db.session.execute(
-            select(
-                DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus
-            ).join(DbWhereaboutsClientLivelinessStatus, isouter=True)
+            select(DbWhereaboutsClient, DbWhereaboutsClientLivelinessStatus)
+            .join(DbWhereaboutsClientLivelinessStatus, isouter=True)
+            .filter(
+                DbWhereaboutsClient._authority_status
+                != WhereaboutsClientAuthorityStatus.pending.name
+            )
         )
         .tuples()
         .all()

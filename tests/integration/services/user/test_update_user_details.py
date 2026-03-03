@@ -1,16 +1,14 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import date
 
-from byceps.services.user import (
-    user_command_service,
-    user_log_service,
-    user_service,
-)
+from byceps.services.user import user_command_service, user_service
 from byceps.services.user.events import UserDetailsUpdatedEvent
+from byceps.services.user.log import user_log_service
+from byceps.services.user.models import UserDetailDifference
 
 
 def test_update_user_address(database, make_user):
@@ -69,6 +67,20 @@ def test_update_user_address(database, make_user):
     assert event.initiator.screen_name == user.screen_name
     assert event.user.id == user.id
     assert event.user.screen_name == user.screen_name
+    assert event.fields == {
+        'postal_code': UserDetailDifference(
+            old=old_postal_code,
+            new=new_postal_code,
+        ),
+        'city': UserDetailDifference(
+            old=old_city,
+            new=new_city,
+        ),
+        'street': UserDetailDifference(
+            old=old_street,
+            new=new_street,
+        ),
+    }
 
     user_after = user_service.get_db_user(user.id)
     assert user_after.detail.first_name == new_first_name
@@ -100,7 +112,6 @@ def test_update_user_address(database, make_user):
                 'new': new_street,
             },
         },
-        'initiator_id': str(user.id),
     }
 
 
@@ -157,7 +168,6 @@ def test_update_user_real_name(database, make_user):
                 'new': new_last_name,
             },
         },
-        'initiator_id': str(user.id),
     }
 
 
@@ -211,5 +221,4 @@ def test_remove_user_dob_and_phone_number(database, make_user):
                 'new': '',
             },
         },
-        'initiator_id': str(user.id),
     }

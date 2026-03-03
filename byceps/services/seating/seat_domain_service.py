@@ -2,7 +2,7 @@
 byceps.services.seating.seat_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -23,6 +23,7 @@ def create_seat(
     rotation: int | None = None,
     label: str | None = None,
     type_: str | None = None,
+    blocked: bool = False,
     occupied_by_ticket_id: TicketID | None = None,
 ) -> Seat:
     """Create a seat."""
@@ -37,6 +38,7 @@ def create_seat(
         category_id=category_id,
         label=label,
         type_=type_,
+        blocked=blocked,
         occupied_by_ticket_id=occupied_by_ticket_id,
     )
 

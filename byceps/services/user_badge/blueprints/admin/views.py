@@ -2,7 +2,7 @@
 byceps.services.user_badge.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -242,7 +242,7 @@ def award(awardee_id):
     if not badge:
         abort(400, 'Unknown badge ID')
 
-    initiator = g.user
+    initiator = g.user.as_user()
 
     awarding_result = user_badge_awarding_service.award_badge_to_user(
         badge, awardee, initiator=initiator

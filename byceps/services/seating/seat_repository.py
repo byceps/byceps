@@ -2,7 +2,7 @@
 byceps.services.seating.seat_repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -32,6 +32,7 @@ def create_seat(seat: Seat) -> None:
         rotation=seat.rotation,
         label=seat.label,
         type_=seat.type_,
+        blocked=seat.blocked,
     )
 
     db.session.add(db_seat)
@@ -104,12 +105,12 @@ def count_seats_for_party(party_id: PartyID) -> int:
 
 
 def find_seat(seat_id: SeatID) -> DbSeat | None:
-    """Return the seat with that id, or `None` if not found."""
+    """Return the seat with that ID, or `None` if not found."""
     return db.session.get(DbSeat, seat_id)
 
 
 def get_seat(seat_id: SeatID) -> DbSeat:
-    """Return the seat with that id, or raise an exception."""
+    """Return the seat with that ID, or raise an exception."""
     db_seat = find_seat(seat_id)
 
     if db_seat is None:

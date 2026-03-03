@@ -2,7 +2,7 @@
 byceps.services.board.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -214,7 +214,7 @@ def category_create(board_id):
 
     slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
-    description = form.description.data.strip()
+    description = form.description.data.strip() or None
 
     category = board_category_command_service.create_category(
         board.id, slug, title, description
@@ -257,9 +257,9 @@ def category_update(category_id):
     if not form.validate():
         return category_update_form(category_id, form)
 
-    slug = form.slug.data
-    title = form.title.data
-    description = form.description.data
+    slug = form.slug.data.strip().lower()
+    title = form.title.data.strip()
+    description = form.description.data.strip() or None
 
     category = board_category_command_service.update_category(
         category.id, slug, title, description
@@ -340,20 +340,21 @@ def category_delete(category_id):
     """Delete a category."""
     category = _get_category_or_404(category_id)
 
-    result = board_category_command_service.delete_category(category.id)
-
-    if result.is_err():
-        flash_error(
-            gettext(
-                'Category "%(title)s" could not be deleted.',
-                title=category.title,
+    match board_category_command_service.delete_category(category.id):
+        case Ok():
+            flash_success(
+                gettext(
+                    'Category "%(title)s" has been deleted.',
+                    title=category.title,
+                )
             )
-        )
-        return
-
-    flash_success(
-        gettext('Category "%(title)s" has been deleted.', title=category.title)
-    )
+        case Err(_):
+            flash_error(
+                gettext(
+                    'Category "%(title)s" could not be deleted.',
+                    title=category.title,
+                )
+            )
 
 
 # -------------------------------------------------------------------- #

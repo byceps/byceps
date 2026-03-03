@@ -2,19 +2,39 @@
 byceps.services.site.navigation.blueprints.admin.forms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from flask_babel import lazy_gettext
-from wtforms import BooleanField, SelectField, StringField
+from wtforms import BooleanField, RadioField, SelectField, StringField
 from wtforms.validators import InputRequired
 
 from byceps.services.language import language_service
 from byceps.services.page import page_service
-from byceps.services.site.models import SiteID
-from byceps.services.site_navigation import site_navigation_service
+from byceps.services.site import site_service
+from byceps.services.site.models import Site, SiteID
+from byceps.services.site_navigation import view_type_registry
 from byceps.util.l10n import LocalizedForm
+
+
+class MenuTreesCopyForm(LocalizedForm):
+    source_site_id = RadioField(
+        lazy_gettext('Site'), validators=[InputRequired()]
+    )
+
+    def set_source_site_id_choices(self, target_site: Site) -> None:
+        source_sites = [
+            site
+            for site in site_service.get_sites_for_brand(target_site.brand_id)
+            if site.id != target_site.id
+        ]
+        source_sites.sort(key=lambda site: site.title)
+
+        self.source_site_id.choices = [
+            (str(source_site.id), source_site.title)
+            for source_site in source_sites
+        ]
 
 
 class _MenuBaseForm(LocalizedForm):
@@ -83,7 +103,7 @@ class ItemCreateViewForm(_ItemBaseForm):
     def set_view_type_choices(self):
         choices = [
             (view_type.name, view_type.label)
-            for view_type in site_navigation_service.get_view_types()
+            for view_type in view_type_registry.get_view_types()
         ]
         choices.sort(key=lambda choice: choice[1])
         choices.insert(0, ('', '<' + lazy_gettext('choose') + '>'))

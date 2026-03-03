@@ -1,5 +1,5 @@
 """
-:Copyright: 2022-2025 Jochen Kupperschmidt
+:Copyright: 2022-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -7,7 +7,7 @@ import pytest
 
 from byceps.services.authn.identity_tag import authn_identity_tag_service
 from byceps.services.authn.identity_tag.models import UserIdentityTag
-from byceps.services.user.models.user import User
+from byceps.services.user.models import User
 from byceps.services.whereabouts import (
     whereabouts_client_service,
     whereabouts_sound_service,

@@ -1,17 +1,18 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 import pytest
 
 from byceps.services.authz import authz_service
+from byceps.services.authz.models import PermissionID
 
 from tests.helpers import generate_token
 
 
 def test_assign_role_to_user(admin_app, user, admin_user, role):
-    permission_id = generate_token()
+    permission_id = PermissionID(generate_token())
     authz_service.assign_permission_to_role(permission_id, role.id)
 
     user_permission_ids_before = authz_service.get_permission_ids_for_user(
@@ -32,7 +33,7 @@ def test_assign_role_to_user(admin_app, user, admin_user, role):
 
 
 def test_deassign_role_from_user(admin_app, user, admin_user, role):
-    permission_id = generate_token()
+    permission_id = PermissionID(generate_token())
     authz_service.assign_permission_to_role(permission_id, role.id)
 
     authz_service.assign_role_to_user(role.id, user, initiator=admin_user)

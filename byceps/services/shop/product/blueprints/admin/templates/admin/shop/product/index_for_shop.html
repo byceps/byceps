@@ -24,7 +24,7 @@
     <div>
       <h1 class="title">{{ page_title }} {{ render_extra_in_heading(products.total) }}</h1>
     </div>
-    {%- if has_current_user_permission('shop_product.administrate') %}
+    {%- if g.user.has_permission('shop_product.administrate') %}
     <div>
       <div class="button-row is-right-aligned">
         <div class="dropdown">

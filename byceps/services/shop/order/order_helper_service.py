@@ -2,17 +2,16 @@
 byceps.services.shop.order.order_helper_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from moneyed import Currency, Money
 
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.models import User, UserID
 
 from . import order_domain_service
-from .dbmodels.line_item import DbLineItem
-from .dbmodels.order import DbOrder
+from .dbmodels.order import DbLineItem, DbOrder
 from .models.detailed_order import DetailedOrder
 from .models.order import (
     AdminOrderListItem,
@@ -247,9 +246,8 @@ def _get_order_state(db_order: DbOrder) -> OrderState:
     if is_canceled:
         return OrderState.canceled
 
-    if is_paid:
-        if not is_processing_required or is_processed:
-            return OrderState.complete
+    if is_paid and (not is_processing_required or is_processed):
+        return OrderState.complete
 
     return OrderState.open
 

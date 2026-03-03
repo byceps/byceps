@@ -2,7 +2,7 @@
 byceps.services.orga_team.orga_team_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -16,9 +16,9 @@ from byceps.services.orga.dbmodels import DbOrgaFlag
 from byceps.services.party import party_service
 from byceps.services.party.models import PartyID
 from byceps.services.user import user_service
-from byceps.services.user.dbmodels.detail import DbUserDetail
-from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.models.user import User, UserID
+from byceps.services.user.dbmodels import DbUser, DbUserDetail
+from byceps.services.user.models import User, UserID
+from byceps.util.uuid import generate_uuid7
 
 from .dbmodels import DbMembership, DbOrgaTeam
 from .models import (
@@ -39,7 +39,9 @@ from .models import (
 
 def create_team(party_id: PartyID, title: str) -> OrgaTeam:
     """Create an orga team for that party."""
-    db_team = DbOrgaTeam(party_id, title)
+    team_id = OrgaTeamID(generate_uuid7())
+
+    db_team = DbOrgaTeam(team_id, party_id, title)
 
     db.session.add(db_team)
     db.session.commit()
@@ -88,7 +90,7 @@ def get_teams_for_party(party_id: PartyID) -> set[OrgaTeam]:
 
 
 def find_team(team_id: OrgaTeamID) -> OrgaTeam | None:
-    """Return the team with that id, or `None` if not found."""
+    """Return the team with that ID, or `None` if not found."""
     db_team = _find_db_team(team_id)
 
     if db_team is None:
@@ -98,7 +100,7 @@ def find_team(team_id: OrgaTeamID) -> OrgaTeam | None:
 
 
 def _find_db_team(team_id: OrgaTeamID) -> DbOrgaTeam | None:
-    """Return the team with that id, or `None` if not found."""
+    """Return the team with that ID, or `None` if not found."""
     return db.session.get(DbOrgaTeam, team_id)
 
 
@@ -156,7 +158,9 @@ def create_membership(
     team_id: OrgaTeamID, user_id: UserID, duties: str | None
 ) -> Membership:
     """Assign the user to the team."""
-    db_membership = DbMembership(team_id, user_id, duties=duties)
+    membership_id = MembershipID(generate_uuid7())
+
+    db_membership = DbMembership(membership_id, team_id, user_id, duties=duties)
 
     db.session.add(db_membership)
     db.session.commit()
@@ -216,7 +220,7 @@ def get_memberships_for_party(party_id: PartyID) -> set[Membership]:
 
 
 def find_membership(membership_id: MembershipID) -> Membership | None:
-    """Return the membership with that id, or `None` if not found."""
+    """Return the membership with that ID, or `None` if not found."""
     db_membership = _find_db_membership(membership_id)
 
     if db_membership is None:
@@ -226,7 +230,7 @@ def find_membership(membership_id: MembershipID) -> Membership | None:
 
 
 def _find_db_membership(membership_id: MembershipID) -> DbMembership | None:
-    """Return the membership with that id, or `None` if not found."""
+    """Return the membership with that ID, or `None` if not found."""
     return db.session.get(DbMembership, membership_id)
 
 

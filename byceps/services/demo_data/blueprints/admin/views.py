@@ -2,7 +2,7 @@
 byceps.services.demo_data.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -57,7 +57,7 @@ def create():
         flash_notice(gettext('Demonstration data already exists.'))
         return redirect_to('.index')
 
-    creator = g.user
+    creator = g.user.as_user()
     demo_data_service.create_demo_data(creator)
 
     flash_success(gettext('Demonstration data has been created.'))

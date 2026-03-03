@@ -1,16 +1,13 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 import pytest
 
-from byceps.services.user import (
-    user_command_service,
-    user_log_service,
-    user_service,
-)
+from byceps.services.user import user_command_service, user_service
 from byceps.services.user.events import UserScreenNameChangedEvent
+from byceps.services.user.log import user_log_service
 
 
 @pytest.fixture(scope='module')
@@ -43,7 +40,7 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     assert event.initiator is not None
     assert event.initiator.id == admin_user.id
     assert event.initiator.screen_name == admin_user.screen_name
-    assert event.user_id == user.id
+    assert event.user == user
     assert event.old_screen_name == old_screen_name
     assert event.new_screen_name == new_screen_name
 
@@ -58,7 +55,6 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     assert user_enabled_log_entry.data == {
         'old_screen_name': old_screen_name,
         'new_screen_name': new_screen_name,
-        'initiator_id': str(admin_user.id),
         'reason': reason,
     }
 
@@ -84,5 +80,4 @@ def test_change_screen_name_without_reason(admin_app, make_user, admin_user):
     assert user_enabled_log_entry.data == {
         'old_screen_name': old_screen_name,
         'new_screen_name': new_screen_name,
-        'initiator_id': str(admin_user.id),
     }

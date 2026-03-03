@@ -2,12 +2,13 @@
 byceps.services.shop.order.email.order_email_example_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime
 
+from babel import Locale
 from flask_babel import gettext
 from moneyed import EUR, Money
 
@@ -26,7 +27,7 @@ from byceps.services.shop.order.models.order import (
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.snippet.errors import SnippetNotFoundError
-from byceps.services.user.models.user import (
+from byceps.services.user.models import (
     User,
     UserID,
     USER_FALLBACK_AVATAR_URL_PATH,
@@ -39,7 +40,7 @@ from .order_email_service import OrderEmailData
 
 
 def build_example_placed_order_message_text(
-    shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
+    shop: Shop, sender: NameAndAddress, brand: Brand, locale: Locale
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a placed order."""
     order = _build_order(
@@ -64,7 +65,7 @@ def build_example_placed_order_message_text(
 
 
 def build_example_paid_order_message_text(
-    shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
+    shop: Shop, sender: NameAndAddress, brand: Brand, locale: Locale
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a paid order."""
     order = _build_order(
@@ -89,7 +90,7 @@ def build_example_paid_order_message_text(
 
 
 def build_example_canceled_order_message_text(
-    shop: Shop, sender: NameAndAddress, brand: Brand, locale: str
+    shop: Shop, sender: NameAndAddress, brand: Brand, locale: Locale
 ) -> Result[str, str]:
     """Assemble an exemplary e-mail for a canceled order."""
     order = _build_order(
@@ -139,7 +140,6 @@ def _build_order(
         initialized=True,
         suspended=False,
         deleted=False,
-        locale=None,
         avatar_url=USER_FALLBACK_AVATAR_URL_PATH,
     )
 

@@ -1,5 +1,5 @@
 """
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -32,4 +32,5 @@ def test_move_topic(
     db.session.expire_all()
 
     topic_afterwards = find_topic(topic_before.id)
+    assert topic_afterwards is not None
     assert topic_afterwards.category_id == another_category.id

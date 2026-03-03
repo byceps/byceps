@@ -2,7 +2,7 @@
 byceps.services.user.blueprints.admin.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -26,12 +26,11 @@ from byceps.services.user import (
     signals as user_signals,
     user_command_service,
     user_creation_service,
-    user_deletion_service,
     user_email_address_service,
     user_service,
 )
 from byceps.services.user.errors import NothingChangedError
-from byceps.services.user.models.user import UserFilter, UserForAdmin
+from byceps.services.user.models import UserFilter, UserForAdmin
 from byceps.services.user_badge import user_badge_awarding_service
 from byceps.util.authz import permission_registry
 from byceps.util.framework.blueprint import create_blueprint
@@ -104,7 +103,10 @@ def index(page):
 def view(user_id):
     """Show a user's internal profile."""
     user = _get_user_for_admin_or_404(user_id)
-    db_user = user_service.find_user_with_details(user.id)
+    email_address_data = user_service.get_email_address_data(user.id)
+    user_detail = user_service.get_detail(user.id)
+
+    locale = user_service.find_locale(user.id)
 
     recent_login = authn_session_service.find_recent_login(user.id)
     days_since_recent_login = _calculate_days_since(recent_login)
@@ -136,9 +138,12 @@ def view(user_id):
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
+        'email_address_data': email_address_data,
+        'user_locale': locale,
         'recent_login': recent_login,
         'days_since_recent_login': days_since_recent_login,
+        'user_detail': user_detail,
         'orga_activities': orga_activities,
         'newsletter_subscription_count': newsletter_subscription_count,
         'newsletter_subscription_states': newsletter_subscription_states,
@@ -196,7 +201,7 @@ def create_account():
     else:
         site_for_email = None
 
-    initiator = g.user
+    initiator = g.user.as_user()
 
     creation_result = user_creation_service.create_user(
         screen_name,
@@ -248,7 +253,7 @@ def initialize_account(user_id):
     """Initialize the user account."""
     user = _get_user_or_404(user_id)
 
-    initiator = g.user
+    initiator = g.user.as_user()
 
     user_command_service.initialize_account(user, initiator=initiator)
 
@@ -304,7 +309,7 @@ def suspend_account(user_id):
     if not form.validate():
         return suspend_account_form(user.id, form)
 
-    initiator = g.user
+    initiator = g.user.as_user()
     reason = form.reason.data.strip()
 
     event = user_command_service.suspend_account(user, initiator, reason)
@@ -365,7 +370,7 @@ def unsuspend_account(user_id):
     if not form.validate():
         return unsuspend_account_form(user.id, form)
 
-    initiator = g.user
+    initiator = g.user.as_user()
     reason = form.reason.data.strip()
 
     event = user_command_service.unsuspend_account(user, initiator, reason)
@@ -427,10 +432,10 @@ def delete_account(user_id):
     if not form.validate():
         return delete_account_form(user.id, form)
 
-    initiator = g.user
+    initiator = g.user.as_user()
     reason = form.reason.data.strip()
 
-    event = user_deletion_service.delete_account(user, initiator, reason)
+    event = user_command_service.delete_account(user, initiator, reason)
 
     user_signals.account_deleted.send(None, event=event)
 
@@ -476,7 +481,7 @@ def change_screen_name(user_id):
 
     old_screen_name = user.screen_name
     new_screen_name = form.screen_name.data.strip()
-    initiator = g.user
+    initiator = g.user.as_user()
     reason = form.reason.data.strip()
 
     event = user_command_service.change_screen_name(
@@ -528,7 +533,7 @@ def change_email_address(user_id):
 
     new_email_address = form.email_address.data.strip()
     verified = False
-    initiator = g.user
+    initiator = g.user.as_user()
     reason = form.reason.data.strip()
 
     event = user_command_service.change_email_address(
@@ -578,7 +583,7 @@ def invalidate_email_address(user_id):
     if not form.validate():
         return invalidate_email_address_form(user.id, form)
 
-    initiator = g.user
+    initiator = g.user.as_user()
     reason = form.reason.data.strip()
 
     invalidation_result = user_email_address_service.invalidate_email_address(
@@ -645,7 +650,7 @@ def change_details(user_id):
     city = form.city.data.strip()
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
-    initiator = g.user
+    initiator = g.user.as_user()
 
     update_result = user_command_service.update_user_details(
         user.id,
@@ -667,7 +672,7 @@ def change_details(user_id):
         case Err(NothingChangedError()):
             flash_notice(gettext('Nothing has been changed.'))
         case Err(msg):
-            flash_error(gettext('An unexpected error occurred.'))
+            flash_error(gettext('An unexpected error occurred.') + '\n' + msg)
 
     return redirect_to('.view', user_id=user.id)
 
@@ -703,7 +708,7 @@ def set_password(user_id):
         return set_password_form(user.id, form)
 
     new_password = secret(form.password.data)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     event = authn_password_service.update_password_hash(
         user, new_password, initiator
@@ -793,7 +798,7 @@ def role_assign(user_id, role_id):
     """Assign the role to the user."""
     user = _get_user_or_404(user_id)
     role = _get_role_or_404(role_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     event = authz_service.assign_role_to_user(
         role.id, user, initiator=initiator
@@ -818,7 +823,7 @@ def role_deassign(user_id, role_id):
     """Deassign the role from the user."""
     user = _get_user_or_404(user_id)
     role = _get_role_or_404(role_id)
-    initiator = g.user
+    initiator = g.user.as_user()
 
     event = authz_service.deassign_role_from_user(
         role.id, user, initiator=initiator
@@ -839,6 +844,11 @@ def role_deassign(user_id, role_id):
 # events
 
 
+LOGIN_EVENT_TYPES = frozenset(
+    ['user-logged-in', 'user-logged-in-to-admin', 'user-logged-in-to-site']
+)
+
+
 @blueprint.get('/<uuid:user_id>/events')
 @permission_required('user.view')
 @templated
@@ -846,14 +856,14 @@ def view_events(user_id):
     """Show user's events."""
     user = _get_user_for_admin_or_404(user_id)
 
-    log_entries = list(service.get_log_entries(user.id))
+    log_entries = list(service.get_log_entries(user))
 
     include_logins = request.args.get('include_logins', default='yes') == 'yes'
     if not include_logins:
         log_entries = [
             entry
             for entry in log_entries
-            if entry['event_type'] != 'user-logged-in'
+            if entry['event_type'] not in LOGIN_EVENT_TYPES
         ]
 
     return {

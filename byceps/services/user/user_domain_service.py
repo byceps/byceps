@@ -2,16 +2,16 @@
 byceps.services.user.user_domain_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import date, datetime
 from typing import Any
 
-from byceps.services.core.events import EventUser
+from byceps.services.user.log import user_log_serialization_service
+from byceps.services.user.log.models import UserLogEntry
 from byceps.util.result import Err, Ok, Result
-from byceps.util.uuid import generate_uuid7
 
 from .errors import NothingChangedError
 from .events import (
@@ -21,8 +21,7 @@ from .events import (
     UserDetailsUpdatedEvent,
     UserScreenNameChangedEvent,
 )
-from .models.log import UserLogEntry
-from .models.user import User
+from .models import User, UserDetailDifference
 
 
 def suspend_account(
@@ -31,38 +30,23 @@ def suspend_account(
     """Suspend the user account."""
     occurred_at = datetime.utcnow()
 
-    event = _build_account_suspended_event(occurred_at, initiator, user)
+    event = _build_account_suspended_event(occurred_at, initiator, user, reason)
 
-    log_entry = _build_account_suspended_log_entry(
-        occurred_at, initiator, user, reason
+    log_entry = (
+        user_log_serialization_service.serialize_account_suspended_event(event)
     )
 
     return event, log_entry
 
 
 def _build_account_suspended_event(
-    occurred_at: datetime, initiator: User, user: User
+    occurred_at: datetime, initiator: User, user: User, reason: str
 ) -> UserAccountSuspendedEvent:
     return UserAccountSuspendedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
-    )
-
-
-def _build_account_suspended_log_entry(
-    occurred_at: datetime, initiator: User, user: User, reason: str
-) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-suspended',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
-            'initiator_id': str(initiator.id),
-            'reason': reason,
-        },
+        initiator=initiator,
+        user=user,
+        reason=reason,
     )
 
 
@@ -72,38 +56,27 @@ def unsuspend_account(
     """Unsuspend the user account."""
     occurred_at = datetime.utcnow()
 
-    event = _build_account_unsuspended_event(occurred_at, initiator, user)
-
-    log_entry = _build_account_unsuspended_log_entry(
+    event = _build_account_unsuspended_event(
         occurred_at, initiator, user, reason
+    )
+
+    log_entry = (
+        user_log_serialization_service.serialize_account_unsuspended_event(
+            event
+        )
     )
 
     return event, log_entry
 
 
 def _build_account_unsuspended_event(
-    occurred_at: datetime, initiator: User, user: User
+    occurred_at: datetime, initiator: User, user: User, reason: str
 ) -> UserAccountUnsuspendedEvent:
     return UserAccountUnsuspendedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
-    )
-
-
-def _build_account_unsuspended_log_entry(
-    occurred_at: datetime, initiator: User, user: User, reason: str
-) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-unsuspended',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
-            'initiator_id': str(initiator.id),
-            'reason': reason,
-        },
+        initiator=initiator,
+        user=user,
+        reason=reason,
     )
 
 
@@ -115,10 +88,10 @@ def delete_account(
     """Delete the user account."""
     occurred_at = datetime.utcnow()
 
-    event = _build_account_deleted_event(occurred_at, initiator, user)
+    event = _build_account_deleted_event(occurred_at, initiator, user, reason)
 
-    log_entry = _build_account_deleted_log_entry(
-        occurred_at, initiator, user, reason
+    log_entry = user_log_serialization_service.serialize_account_deleted_event(
+        event
     )
 
     return event, log_entry
@@ -128,30 +101,13 @@ def _build_account_deleted_event(
     occurred_at: datetime,
     initiator: User,
     user: User,
+    reason: str,
 ) -> UserAccountDeletedEvent:
     return UserAccountDeletedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
-    )
-
-
-def _build_account_deleted_log_entry(
-    occurred_at: datetime,
-    initiator: User,
-    user: User,
-    reason: str,
-) -> UserLogEntry:
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-deleted',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data={
-            'initiator_id': str(initiator.id),
-            'reason': reason,
-        },
+        initiator=initiator,
+        user=user,
+        reason=reason,
     )
 
 
@@ -167,11 +123,13 @@ def change_screen_name(
     old_screen_name = user.screen_name
 
     event = _build_screen_name_changed_event(
-        occurred_at, initiator, user, old_screen_name, new_screen_name
+        occurred_at, initiator, user, old_screen_name, new_screen_name, reason
     )
 
-    log_entry = _build_screen_name_changed_log_entry(
-        occurred_at, initiator, user, old_screen_name, new_screen_name, reason
+    log_entry = (
+        user_log_serialization_service.serialize_screen_name_changed_event(
+            event
+        )
     )
 
     return event, log_entry
@@ -183,40 +141,15 @@ def _build_screen_name_changed_event(
     user: User,
     old_screen_name: str | None,
     new_screen_name: str | None,
+    reason: str | None,
 ) -> UserScreenNameChangedEvent:
     return UserScreenNameChangedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user_id=user.id,
+        initiator=initiator,
+        user=user,
         old_screen_name=old_screen_name,
         new_screen_name=new_screen_name,
-    )
-
-
-def _build_screen_name_changed_log_entry(
-    occurred_at: datetime,
-    initiator: User,
-    user: User,
-    old_screen_name: str | None,
-    new_screen_name: str | None,
-    reason: str | None,
-) -> UserLogEntry:
-    data = {
-        'initiator_id': str(initiator.id),
-        'old_screen_name': old_screen_name,
-        'new_screen_name': new_screen_name,
-    }
-
-    if reason:
-        data['reason'] = reason
-
-    return UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-screen-name-changed',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data=data,
+        reason=reason,
     )
 
 
@@ -243,12 +176,7 @@ def update_details(
     """Update the user's details."""
     occurred_at = datetime.utcnow()
 
-    event = _build_details_updated_event(occurred_at, initiator, user)
-
-    match _build_details_updated_log_entry(
-        occurred_at,
-        initiator,
-        user,
+    match _determine_details_difference(
         old_first_name,
         new_first_name,
         old_last_name,
@@ -266,28 +194,35 @@ def update_details(
         old_phone_number,
         new_phone_number,
     ):
-        case Ok(log_entry):
-            return Ok((event, log_entry))
+        case Ok(fields):
+            pass
         case Err(e):
             return Err(e)
+
+    event = _build_details_updated_event(occurred_at, initiator, user, fields)
+
+    log_entry = user_log_serialization_service.serialize_details_updated_event(
+        event
+    )
+
+    return Ok((event, log_entry))
 
 
 def _build_details_updated_event(
     occurred_at: datetime,
     initiator: User,
     user: User,
+    fields: dict[str, UserDetailDifference],
 ) -> UserDetailsUpdatedEvent:
     return UserDetailsUpdatedEvent(
         occurred_at=occurred_at,
-        initiator=EventUser.from_user(initiator),
-        user=EventUser.from_user(user),
+        initiator=initiator,
+        user=user,
+        fields=fields,
     )
 
 
-def _build_details_updated_log_entry(
-    occurred_at: datetime,
-    initiator: User,
-    user: User,
+def _determine_details_difference(
     old_first_name: str | None,
     new_first_name: str | None,
     old_last_name: str | None,
@@ -304,8 +239,8 @@ def _build_details_updated_log_entry(
     new_street: str | None,
     old_phone_number: str | None,
     new_phone_number: str | None,
-) -> Result[UserLogEntry, NothingChangedError]:
-    fields: dict[str, str] = {}
+) -> Result[dict[str, UserDetailDifference], NothingChangedError]:
+    fields: dict[str, UserDetailDifference] = {}
 
     def _add_if_different(
         property_key: str,
@@ -313,10 +248,10 @@ def _build_details_updated_log_entry(
         new_value: Any | None,
     ) -> None:
         if old_value != new_value:
-            fields[property_key] = {
-                'old': _to_str_if_not_none(old_value),
-                'new': _to_str_if_not_none(new_value),
-            }
+            fields[property_key] = UserDetailDifference(
+                old=_to_str_if_not_none(old_value),
+                new=_to_str_if_not_none(new_value),
+            )
 
     _add_if_different('first_name', old_first_name, new_first_name)
     _add_if_different('last_name', old_last_name, new_last_name)
@@ -330,21 +265,7 @@ def _build_details_updated_log_entry(
     if not fields:
         return Err(NothingChangedError())
 
-    data = {
-        'fields': fields,
-        'initiator_id': str(initiator.id),
-    }
-
-    entry = UserLogEntry(
-        id=generate_uuid7(),
-        occurred_at=occurred_at,
-        event_type='user-details-updated',
-        user_id=user.id,
-        initiator_id=initiator.id,
-        data=data,
-    )
-
-    return Ok(entry)
+    return Ok(fields)
 
 
 def _to_str_if_not_none(value: Any) -> str | None:

@@ -1,6 +1,6 @@
 """Search in (the latest versions of) snippets.
 
-:Copyright: 2014-2025 Jochen Kupperschmidt
+:Copyright: 2014-2026 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
@@ -14,7 +14,7 @@ from _util import call_with_app_context
 from _validators import validate_site
 
 
-def validate_site_if_given(ctx, param, site_id_value: str) -> Site:
+def validate_site_if_given(ctx, param, site_id_value: str) -> Site | None:
     if site_id_value is None:
         return None
 
