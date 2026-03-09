@@ -125,7 +125,7 @@ def count_subscribers_to_list(list_id: ListID) -> int:
 
 def get_subscribers_to_list(
     list_id: ListID,
-) -> Sequence[tuple[str | None, str]]:
+) -> Sequence[tuple[str | None, str | None]]:
     """Yield screen name and email address of the users that are
     currently subscribed to the list.
 
