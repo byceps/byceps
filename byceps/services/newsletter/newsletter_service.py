@@ -54,7 +54,7 @@ def get_subscribers_to_list(list_id: ListID) -> Iterator[Subscriber]:
     for screen_name, email_address in screen_names_and_email_addresses:
         yield Subscriber(
             screen_name=screen_name or 'unnamed',
-            email_address=email_address,
+            email_address=email_address or 'user@email.invalid',
         )
 
 
