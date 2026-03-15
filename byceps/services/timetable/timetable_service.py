@@ -10,6 +10,7 @@ from collections import defaultdict
 from datetime import date, datetime
 
 from byceps.services.party.models import Party, PartyID
+from byceps.util.result import Err, Ok, Result
 
 from . import timetable_domain_service, timetable_repository
 from .dbmodels import DbTimetable, DbTimetableItem
@@ -24,6 +25,33 @@ from .models import (
 
 # -------------------------------------------------------------------- #
 # timetable
+
+
+def copy_timetable(
+    source_party_id: PartyID,
+    target_party_id: PartyID,
+) -> Result[None, str]:
+    """Copy items from one timetable to another."""
+    source_timetable = find_timetable_for_party(source_party_id)
+    if source_timetable is None:
+        return Err(f'Source timetable not found for party "{source_party_id}"')
+
+    target_timetable = find_timetable_for_party(target_party_id)
+    if target_timetable is None:
+        return Err(f'Target timetable not found for party "{target_party_id}"')
+
+    for source_item in source_timetable.items:
+        create_item(
+            target_timetable.id,
+            source_item.scheduled_at,
+            source_item.description,
+            source_item.location,
+            source_item.link_target,
+            source_item.link_label,
+            source_item.hidden,
+        )
+
+    return Ok(None)
 
 
 def create_timetable(
