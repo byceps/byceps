@@ -183,6 +183,15 @@ def _assemble_configuration(
 
     data.update(convert_config(byceps_config))
 
+    # Cloudflare Turnstile
+    cfts = getattr(byceps_config, 'cloudflare_turnstile', None)
+    if cfts is not None:
+        data['CLOUDFLARE_TURNSTILE'] = {
+            'enabled': bool(getattr(cfts, 'enabled', False)),
+            'sitekey': getattr(cfts, 'sitekey', '') or '',
+            'secret_key': getattr(cfts, 'secret_key', '') or '',
+        }
+    
     if isinstance(app_config, WebAppConfig):
         data['SERVER_NAME'] = app_config.server_name
 
