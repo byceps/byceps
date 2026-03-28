@@ -6,14 +6,14 @@ readme = "README.rst"
 authors = [
     { name = "Jochen Kupperschmidt", email = "homework@nwsnet.de" },
 ]
-license = { text = "Revised BSD License" }
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 keywords = ["lanparty"]
 classifiers = [
     "Environment :: Web Environment",
     "Framework :: Flask",
     "Intended Audience :: Developers",
     "Intended Audience :: Other Audience",
-    "License :: OSI Approved :: BSD License",
     "Natural Language :: English",
     "Natural Language :: German",
     "Programming Language :: JavaScript",
