@@ -221,7 +221,7 @@ docs = [
 test = [
     { name = "coverage", specifier = ">=7.13.5" },
     { name = "freezegun", specifier = ">=1.5.5" },
-    { name = "pyfakefs", specifier = ">=6.1.4" },
+    { name = "pyfakefs", specifier = ">=6.1.6" },
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "respx", specifier = ">=0.22.0" },
 ]
@@ -1307,11 +1307,11 @@ wheels = [
 
 [[package]]
 name = "pyfakefs"
-version = "6.1.4"
+version = "6.1.6"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/76/11/efd26f319da2a170f42594efdd387df9abdbd3c213deb2251d602d9b8e2d/pyfakefs-6.1.4.tar.gz", hash = "sha256:58d5902282085e8ff03f95316ce133858904096f7adbe622efef899b90695698", size = 226757, upload-time = "2026-03-04T18:02:29.62Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/29/50/6aaa18de5e3c1b3ec73e4e9ed7ffa6972780972821ec65ace09e326c92b5/pyfakefs-6.1.6.tar.gz", hash = "sha256:dcdfc09b13f3fd464142e20ef6154639bd26fb0890572c5dd869339a083e2903", size = 227057, upload-time = "2026-03-18T19:59:01.998Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6b/0f/8fbdc47cfda8ab497b21ad66220407201ed2fc2de91640151b62bc6571af/pyfakefs-6.1.4-py3-none-any.whl", hash = "sha256:46bbc7520a1524af2461ddcaf4a5a800596c750bfdb75afa1afd985bf1e39536", size = 239887, upload-time = "2026-03-04T18:02:28.029Z" },
+    { url = "https://files.pythonhosted.org/packages/38/c0/c2eb12179e9e75d220c4d7c37acafdf86fca82e377609136a8dcbdc061c4/pyfakefs-6.1.6-py3-none-any.whl", hash = "sha256:28e620e117b9728d7f8ebb50f9537da6ab36ef9c0bebc12469aaba3c72759ff7", size = 240121, upload-time = "2026-03-18T19:59:00.648Z" },
 ]
 
 [[package]]
