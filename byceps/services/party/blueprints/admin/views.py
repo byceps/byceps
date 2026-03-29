@@ -103,7 +103,7 @@ def _get_ticket_sale_stats_by_party_id(
 def view(party_id):
     """Show a party."""
     party = _get_party_or_404(party_id)
-    brand = brand_service.find_brand(party.brand_id)
+    brand = brand_service.get_brand(party.brand_id)
 
     days = party_service.get_party_days(party)
 
@@ -173,7 +173,7 @@ def create(brand_id):
 def update_form(party_id, erroneous_form=None):
     """Show form to update the party."""
     party = _get_party_or_404(party_id)
-    brand = brand_service.find_brand(party.brand_id)
+    brand = brand_service.get_brand(party.brand_id)
 
     starts_at_local = to_user_timezone(party.starts_at)
     ends_at_local = to_user_timezone(party.ends_at)
