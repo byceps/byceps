@@ -13,7 +13,11 @@ from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
 from byceps.services.brand import brand_service
-from byceps.services.party import party_service, party_setting_service
+from byceps.services.party import (
+    party_export_service,
+    party_service,
+    party_setting_service,
+)
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.models.ticket import TicketSaleStats
@@ -21,7 +25,7 @@ from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
 from byceps.util.framework.templating import templated
 from byceps.util.iterables import partition
-from byceps.util.views import permission_required, redirect_to
+from byceps.util.views import permission_required, redirect_to, textified
 
 from .forms import CreateForm, UpdateForm
 
@@ -238,6 +242,16 @@ def update(party_id):
     )
 
     return redirect_to('.view', party_id=party.id)
+
+
+@blueprint.get('/parties/<party_id>/export/lanpartydb')
+@permission_required('party.view')
+@textified
+def export_for_lanpartydb(party_id):
+    """Export party for the OrgaTalk LAN Party Database."""
+    party = _get_party_or_404(party_id)
+
+    return party_export_service.export_party_for_lanpartydb(party)
 
 
 def _get_brand_or_404(brand_id):

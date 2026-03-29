@@ -114,6 +114,7 @@ dependencies = [
     { name = "httpx", extra = ["http2"] },
     { name = "itsdangerous" },
     { name = "jinja2" },
+    { name = "lanpartydb" },
     { name = "markupsafe" },
     { name = "mistletoe" },
     { name = "paypal-checkout-serversdk" },
@@ -176,6 +177,7 @@ requires-dist = [
     { name = "httpx", extras = ["http2"], specifier = ">=0.28.1" },
     { name = "itsdangerous", specifier = "==2.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
+    { name = "lanpartydb", specifier = ">=0.12.2" },
     { name = "markupsafe", specifier = "==3.0.3" },
     { name = "mistletoe", specifier = ">=1.5.1" },
     { name = "paypal-checkout-serversdk", specifier = "==1.0.3" },
@@ -843,6 +845,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/df/bf/f7da0350254c0ed7c72f3e33cef02e048281fec7ecec5f032d4aac52226b/jinja2-3.1.6.tar.gz", hash = "sha256:0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d", size = 245115, upload-time = "2025-03-05T20:05:02.478Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl", hash = "sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67", size = 134899, upload-time = "2025-03-05T20:05:00.369Z" },
+]
+
+[[package]]
+name = "lanpartydb"
+version = "0.12.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tomlkit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/30/b0/57b64ac4e1b269285d4bc67ffb43955800266ad41e8c3a7696d376a2612b/lanpartydb-0.12.2.tar.gz", hash = "sha256:5c1eb2cc6e27436166e423fe1e7fb4726089f675112f136f27ea80eeadd7a3ae", size = 4004, upload-time = "2026-03-28T23:37:10.172Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3d/e7/0ecdddf23a9b0e4c7ba84138edf5b521256a19c71385db3c7ed1cd1276fb/lanpartydb-0.12.2-py3-none-any.whl", hash = "sha256:8e44d3bd987dce6dcbc5174bf8f36500e353b798d4dc22f72a715a44d718bc45", size = 5808, upload-time = "2026-03-28T23:37:11.207Z" },
 ]
 
 [[package]]
@@ -1687,6 +1701,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/47/c6/ee486fd809e357697ee8a44d3d69222b344920433d3b6666ccd9b374630c/tenacity-9.1.4.tar.gz", hash = "sha256:adb31d4c263f2bd041081ab33b498309a57c77f9acf2db65aadf0898179cf93a", size = 49413, upload-time = "2026-02-07T10:45:33.841Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d7/c1/eb8f9debc45d3b7918a32ab756658a0904732f75e555402972246b0b8e71/tenacity-9.1.4-py3-none-any.whl", hash = "sha256:6095a360c919085f28c6527de529e76a06ad89b23659fa881ae0649b867a9d55", size = 28926, upload-time = "2026-02-07T10:45:32.24Z" },
+]
+
+[[package]]
+name = "tomlkit"
+version = "0.14.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/c3/af/14b24e41977adb296d6bd1fb59402cf7d60ce364f90c890bd2ec65c43b5a/tomlkit-0.14.0.tar.gz", hash = "sha256:cf00efca415dbd57575befb1f6634c4f42d2d87dbba376128adb42c121b87064", size = 187167, upload-time = "2026-01-13T01:14:53.304Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b5/11/87d6d29fb5d237229d67973a6c9e06e048f01cf4994dee194ab0ea841814/tomlkit-0.14.0-py3-none-any.whl", hash = "sha256:592064ed85b40fa213469f81ac584f67a4f2992509a7c3ea2d632208623a3680", size = 39310, upload-time = "2026-01-13T01:14:51.965Z" },
 ]
 
 [[package]]
