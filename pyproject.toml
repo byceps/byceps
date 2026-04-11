@@ -82,7 +82,7 @@ test = [
     "freezegun>=1.5.5",
     "pyfakefs>=6.1.6",
     "pytest>=9.0.3",
-    "respx>=0.22.0",
+    "respx>=0.23.1",
 ]
 
 [project.optional-dependencies]
