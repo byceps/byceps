@@ -177,7 +177,7 @@ requires-dist = [
     { name = "httpx", extras = ["http2"], specifier = ">=0.28.1" },
     { name = "itsdangerous", specifier = "==2.2.0" },
     { name = "jinja2", specifier = ">=3.1.6" },
-    { name = "lanpartydb", specifier = ">=0.12.2" },
+    { name = "lanpartydb", specifier = ">=0.13.0" },
     { name = "markupsafe", specifier = "==3.0.3" },
     { name = "mistletoe", specifier = ">=1.5.1" },
     { name = "paypal-checkout-serversdk", specifier = "==1.0.3" },
@@ -849,14 +849,14 @@ wheels = [
 
 [[package]]
 name = "lanpartydb"
-version = "0.12.2"
+version = "0.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/30/b0/57b64ac4e1b269285d4bc67ffb43955800266ad41e8c3a7696d376a2612b/lanpartydb-0.12.2.tar.gz", hash = "sha256:5c1eb2cc6e27436166e423fe1e7fb4726089f675112f136f27ea80eeadd7a3ae", size = 4004, upload-time = "2026-03-28T23:37:10.172Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6d/0c/a81b566631f85f8769e7c2327b49b16f53195cc26601fdee41f229f94b14/lanpartydb-0.13.0.tar.gz", hash = "sha256:824a01787d93dded4435fe019af90f3a8073ad3924a4e35a543655b587e4d409", size = 4006, upload-time = "2026-04-10T09:54:09.559Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3d/e7/0ecdddf23a9b0e4c7ba84138edf5b521256a19c71385db3c7ed1cd1276fb/lanpartydb-0.12.2-py3-none-any.whl", hash = "sha256:8e44d3bd987dce6dcbc5174bf8f36500e353b798d4dc22f72a715a44d718bc45", size = 5808, upload-time = "2026-03-28T23:37:11.207Z" },
+    { url = "https://files.pythonhosted.org/packages/d5/51/4d3b10ef0abd4faab579ac9ecc92bd00abaecd89d493af885ad7920f3aef/lanpartydb-0.13.0-py3-none-any.whl", hash = "sha256:0de6194b17172be144da16069c25d51626d32c1297c40155655e88efce438f84", size = 5820, upload-time = "2026-04-10T09:54:08.428Z" },
 ]
 
 [[package]]
