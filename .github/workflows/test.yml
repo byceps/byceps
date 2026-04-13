@@ -84,7 +84,7 @@ jobs:
         uv run coverage xml
 
     - name: Upload coverage to Qlty
-      uses: qltysh/qlty-action/coverage@v1
+      uses: qltysh/qlty-action/coverage@v2
       if: github.repository == 'byceps/byceps' && github.ref_name == 'main'
       with:
         oidc: true
