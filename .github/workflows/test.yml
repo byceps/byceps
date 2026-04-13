@@ -54,7 +54,7 @@ jobs:
 
     steps:
     - name: Check out repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         persist-credentials: false
 
@@ -84,7 +84,7 @@ jobs:
         uv run coverage xml
 
     - name: Upload coverage to Qlty
-      uses: qltysh/qlty-action/coverage@v2
+      uses: qltysh/qlty-action/coverage@a19242102d17e497f437d7466aa01b528537e899 # v2.2.0
       if: github.repository == 'byceps/byceps' && github.ref_name == 'main'
       with:
         oidc: true
