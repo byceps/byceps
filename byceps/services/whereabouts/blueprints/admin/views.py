@@ -220,7 +220,11 @@ def client_update_form(client_id, erroneous_form=None):
     """Show form to update a client."""
     client = _get_client_or_404(client_id)
 
-    form = erroneous_form if erroneous_form else ClientUpdateForm(obj=client)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else ClientUpdateForm(client.name, obj=client)
+    )
 
     return {
         'client': client,
@@ -234,7 +238,7 @@ def client_update(client_id):
     """Update the webhook."""
     client = _get_client_or_404(client_id)
 
-    form = ClientUpdateForm(request.form)
+    form = ClientUpdateForm(client.name, request.form)
     if not form.validate():
         return client_update_form(client.id, form)
 
