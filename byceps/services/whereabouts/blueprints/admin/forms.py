@@ -23,13 +23,15 @@ class ClientUpdateForm(LocalizedForm):
     location = StringField(lazy_gettext('Location'), [Optional()])
     description = StringField(lazy_gettext('Description'), [Optional()])
 
-    def __init__(self, current_name: str, *args, **kwargs):
+    def __init__(self, current_name: str | None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._current_name = current_name
 
     @staticmethod
     def validate_name(form, field):
-        name = field.data.strip()
+        name = field.data
+        if name is not None:
+            name = name.strip()
 
         if (
             name != form._current_name
