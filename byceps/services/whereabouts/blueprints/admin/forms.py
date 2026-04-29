@@ -23,10 +23,18 @@ class ClientUpdateForm(LocalizedForm):
     location = StringField(lazy_gettext('Location'), [Optional()])
     description = StringField(lazy_gettext('Description'), [Optional()])
 
+    def __init__(self, current_name: str, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._current_name = current_name
+
     @staticmethod
     def validate_name(form, field):
-        name = field.data
-        if whereabouts_client_service.find_client_by_name(name) is not None:
+        name = field.data.strip()
+
+        if (
+            name != form._current_name
+            and whereabouts_client_service.find_client_by_name(name) is not None
+        ):
             raise ValidationError(lazy_gettext('The value is already in use.'))
 
 
