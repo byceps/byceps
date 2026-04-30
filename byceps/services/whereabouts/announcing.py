@@ -94,8 +94,10 @@ def announce_whereabouts_client_signed_on(
 ) -> Announcement | None:
     """Announce that a whereabouts client has signed on."""
     text = gettext(
-        'Whereabouts client "%(client_id)s" has signed on.',
+        'Whereabouts client "%(client_id)s" at location "%(client_location)s" '
+        'has signed on.',
         client_id=event.client_id,
+        client_location=event.client_location or 'unknown',
     )
 
     return Announcement(text)
@@ -109,8 +111,10 @@ def announce_whereabouts_client_signed_off(
 ) -> Announcement | None:
     """Announce that a whereabouts client has signed off."""
     text = gettext(
-        'Whereabouts client "%(client_id)s" has signed off.',
+        'Whereabouts client "%(client_id)s" at location "%(client_location)s" '
+        'has signed off.',
         client_id=event.client_id,
+        client_location=event.client_location or 'unknown',
     )
 
     return Announcement(text)
@@ -130,7 +134,7 @@ def announce_whereabouts_unknown_tag_detected(
         'Unknown tag "%(tag_identifier)s" has been detected by whereabouts '
         'client "%(client_id)s" at location "%(client_location)s".',
         client_id=event.client_id,
-        client_location=event.client_location,
+        client_location=event.client_location or 'unknown',
         tag_identifier=event.tag_identifier,
     )
 

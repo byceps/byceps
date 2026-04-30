@@ -128,6 +128,7 @@ def sign_on_client(client: WhereaboutsClient) -> WhereaboutsClientSignedOnEvent:
         occurred_at=signed_on_at,
         initiator=None,
         client_id=client.id,
+        client_location=client.location,
     )
 
     return event
@@ -143,6 +144,7 @@ def sign_off_client(
         occurred_at=signed_on_at,
         initiator=None,
         client_id=client.id,
+        client_location=client.location,
     )
 
     return event

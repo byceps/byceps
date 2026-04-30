@@ -23,6 +23,7 @@ from .helpers import assert_text
 
 
 CLIENT_ID = WhereaboutsClientID(UUID('371aba195a922c74c5b1273766bca016'))
+CLIENT_LOCATION = 'orga area'
 
 
 def test_whereabouts_client_registered(
@@ -82,12 +83,13 @@ def test_whereabouts_client_deleted(
 def test_whereabouts_client_signed_on(
     app: BycepsApp, now: datetime, webhook_for_irc
 ):
-    expected_text = f'Whereabouts client "{CLIENT_ID}" has signed on.'
+    expected_text = f'Whereabouts client "{CLIENT_ID}" at location "orga area" has signed on.'
 
     event = WhereaboutsClientSignedOnEvent(
         occurred_at=now,
         initiator=None,
         client_id=CLIENT_ID,
+        client_location=CLIENT_LOCATION,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)
@@ -98,12 +100,13 @@ def test_whereabouts_client_signed_on(
 def test_whereabouts_client_signed_off(
     app: BycepsApp, now: datetime, webhook_for_irc
 ):
-    expected_text = f'Whereabouts client "{CLIENT_ID}" has signed off.'
+    expected_text = f'Whereabouts client "{CLIENT_ID}" at location "orga area" has signed off.'
 
     event = WhereaboutsClientSignedOffEvent(
         occurred_at=now,
         initiator=None,
         client_id=CLIENT_ID,
+        client_location=CLIENT_LOCATION,
     )
 
     actual = build_announcement_request(event, webhook_for_irc)

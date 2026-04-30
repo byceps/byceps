@@ -37,12 +37,12 @@ class WhereaboutsClientDeletedEvent(_WhereaboutsClientEvent):
 
 @dataclass(frozen=True, kw_only=True)
 class WhereaboutsClientSignedOnEvent(_WhereaboutsClientEvent):
-    pass
+    client_location: str | None
 
 
 @dataclass(frozen=True, kw_only=True)
 class WhereaboutsClientSignedOffEvent(_WhereaboutsClientEvent):
-    pass
+    client_location: str | None
 
 
 @dataclass(frozen=True, kw_only=True)
