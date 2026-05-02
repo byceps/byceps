@@ -235,14 +235,14 @@ def get_overview(party: Party) -> Overview:
     def is_status_stale(status: WhereaboutsStatus) -> bool:
         return (now - STALE_THRESHOLD) > status.set_at
 
-    statuses = [
-        OverviewStatus(
+    def to_overview_status(status: WhereaboutsStatus) -> OverviewStatus:
+        return OverviewStatus(
             user=status.user,
             set_at=status.set_at,
             stale=is_status_stale(status),
         )
-        for status in statuses
-    ]
+
+    statuses = [to_overview_status(status) for status in statuses]
 
     stale_statuses, recent_statuses = partition(
         statuses, lambda status: status.stale
