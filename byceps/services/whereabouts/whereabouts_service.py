@@ -6,12 +6,15 @@ byceps.services.whereabouts.whereabouts_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from collections import defaultdict
 import dataclasses
+from datetime import datetime, timedelta
 
 from byceps.services.party import party_service
 from byceps.services.party.models import Party
 from byceps.services.user import user_service
 from byceps.services.user.models import User
+from byceps.util.iterables import partition
 
 from . import (
     whereabouts_client_repository,
@@ -22,6 +25,9 @@ from .dbmodels import DbWhereabouts, DbWhereaboutsStatus
 from .events import WhereaboutsStatusUpdatedEvent
 from .models import (
     IPAddress,
+    Overview,
+    OverviewStatus,
+    OverviewWhereabouts,
     Whereabouts,
     WhereaboutsClient,
     WhereaboutsID,
@@ -208,4 +214,59 @@ def _db_entity_to_status(
         user=user,
         whereabouts_id=db_status.whereabouts_id,
         set_at=db_status.set_at,
+    )
+
+
+# -------------------------------------------------------------------- #
+# overview
+
+
+STALE_THRESHOLD = timedelta(hours=12)
+
+
+def get_overview(party: Party) -> Overview:
+    """Return an overview about whereabouts and statuses for the party."""
+    whereabouts_list = get_whereabouts_list(party)
+
+    statuses = get_statuses(party)
+
+    now = datetime.utcnow()
+
+    def _is_status_stale(status: WhereaboutsStatus) -> bool:
+        return (now - STALE_THRESHOLD) > status.set_at
+
+    statuses = [
+        OverviewStatus(
+            user=status.user,
+            set_at=status.set_at,
+            stale=_is_status_stale(status),
+        )
+        for status in statuses
+    ]
+
+    stale_statuses, recent_statuses = partition(
+        statuses, lambda status: status.stale
+    )
+
+    recent_statuses_by_whereabouts = defaultdict(list)
+    for status in recent_statuses:
+        recent_statuses_by_whereabouts[status.whereabouts_id].append(status)
+
+    overview_whereabouts_list = []
+    for whereabouts in whereabouts_list:
+        overview_whereabouts_list.append(
+            OverviewWhereabouts(
+                name=whereabouts.name,
+                description=whereabouts.description,
+                position=whereabouts.position,
+                hidden_if_empty=whereabouts.hidden_if_empty,
+                secret=whereabouts.secret,
+                statuses=recent_statuses_by_whereabouts[whereabouts.id],
+            )
+        )
+
+    return Overview(
+        party=party,
+        whereabouts_list=overview_whereabouts_list,
+        stale_statuses=stale_statuses,
     )

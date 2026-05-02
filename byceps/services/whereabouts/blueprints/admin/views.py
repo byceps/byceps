@@ -6,9 +6,6 @@ byceps.services.whereabouts.blueprints.admin.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections import defaultdict
-from datetime import datetime, timedelta
-
 from flask import abort, g, request
 from flask_babel import gettext
 
@@ -21,12 +18,8 @@ from byceps.services.whereabouts import (
     whereabouts_sound_service,
 )
 from byceps.services.whereabouts.models import (
-    Overview,
-    OverviewStatus,
-    OverviewWhereabouts,
     WhereaboutsClient,
     WhereaboutsClientCandidate,
-    WhereaboutsStatus,
 )
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_success
@@ -44,9 +37,6 @@ from .forms import ClientUpdateForm, UserSoundCreateForm, WhereaboutsCreateForm
 blueprint = create_blueprint('whereabouts_admin', __name__)
 
 
-STALE_THRESHOLD = timedelta(hours=12)
-
-
 @blueprint.get('/for_party/<party_id>')
 @permission_required('whereabouts.view')
 @templated
@@ -54,50 +44,7 @@ def index(party_id):
     """Show orga whereabouts for party."""
     party = _get_party_or_404(party_id)
 
-    whereabouts_list = whereabouts_service.get_whereabouts_list(party)
-
-    statuses = whereabouts_service.get_statuses(party)
-
-    now = datetime.utcnow()
-
-    def _is_status_stale(status: WhereaboutsStatus) -> bool:
-        return (now - STALE_THRESHOLD) > status.set_at
-
-    statuses = [
-        OverviewStatus(
-            user=status.user,
-            set_at=status.set_at,
-            stale=_is_status_stale(status),
-        )
-        for status in statuses
-    ]
-
-    stale_statuses, recent_statuses = partition(
-        statuses, lambda status: status.stale
-    )
-
-    recent_statuses_by_whereabouts = defaultdict(list)
-    for status in recent_statuses:
-        recent_statuses_by_whereabouts[status.whereabouts_id].append(status)
-
-    overview_whereabouts_list = []
-    for whereabouts in whereabouts_list:
-        overview_whereabouts_list.append(
-            OverviewWhereabouts(
-                name=whereabouts.name,
-                description=whereabouts.description,
-                position=whereabouts.position,
-                hidden_if_empty=whereabouts.hidden_if_empty,
-                secret=whereabouts.secret,
-                statuses=recent_statuses_by_whereabouts[whereabouts.id],
-            )
-        )
-
-    overview = Overview(
-        party=party,
-        whereabouts_list=overview_whereabouts_list,
-        stale_statuses=stale_statuses,
-    )
+    overview = whereabouts_service.get_overview(party)
 
     return {
         'party': overview.party,
