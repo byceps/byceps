@@ -161,7 +161,7 @@ def get_status(user_id, party_id):
         abort(404, 'Unknown user ID')
 
     party = party_service.find_party(party_id)
-    if user is None:
+    if party is None:
         abort(404, 'Unknown party ID')
 
     status = whereabouts_service.find_status(user, party)
@@ -235,7 +235,7 @@ def set_status():
 def get_overview(party_id):
     """Return the overview (whereabouts with user statuses) for a party."""
     party = party_service.find_party(party_id)
-    if user is None:
+    if party is None:
         abort(404, 'Unknown party ID')
 
     overview = whereabouts_service.get_overview(party)
