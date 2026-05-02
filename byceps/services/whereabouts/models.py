@@ -113,6 +113,16 @@ class WhereaboutsUpdate:
 
 
 @dataclass(frozen=True, kw_only=True)
+class OverviewWhereabouts:
+    name: str
+    description: str
+    position: int
+    hidden_if_empty: bool
+    secret: bool
+    statuses: list[OverviewStatus]
+
+
+@dataclass(frozen=True, kw_only=True)
 class OverviewStatus:
     user: User
     set_at: datetime

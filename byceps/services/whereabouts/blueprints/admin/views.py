@@ -22,6 +22,7 @@ from byceps.services.whereabouts import (
 )
 from byceps.services.whereabouts.models import (
     OverviewStatus,
+    OverviewWhereabouts,
     WhereaboutsClient,
     WhereaboutsClientCandidate,
     WhereaboutsStatus,
@@ -78,10 +79,22 @@ def index(party_id):
     for status in recent_statuses:
         recent_statuses_by_whereabouts[status.whereabouts_id].append(status)
 
+    overview_whereabouts_list = []
+    for whereabouts in whereabouts_list:
+        overview_whereabouts_list.append(
+            OverviewWhereabouts(
+                name=whereabouts.name,
+                description=whereabouts.description,
+                position=whereabouts.position,
+                hidden_if_empty=whereabouts.hidden_if_empty,
+                secret=whereabouts.secret,
+                statuses=recent_statuses_by_whereabouts[whereabouts.id],
+            )
+        )
+
     return {
         'party': party,
-        'whereabouts_list': whereabouts_list,
-        'recent_statuses_by_whereabouts': recent_statuses_by_whereabouts,
+        'whereabouts_list': overview_whereabouts_list,
         'stale_statuses': stale_statuses,
     }
 
