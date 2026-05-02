@@ -21,6 +21,7 @@ from byceps.services.whereabouts import (
     whereabouts_sound_service,
 )
 from byceps.services.whereabouts.models import (
+    Overview,
     OverviewStatus,
     OverviewWhereabouts,
     WhereaboutsClient,
@@ -92,10 +93,16 @@ def index(party_id):
             )
         )
 
+    overview = Overview(
+        party=party,
+        whereabouts_list=overview_whereabouts_list,
+        stale_statuses=stale_statuses,
+    )
+
     return {
-        'party': party,
-        'whereabouts_list': overview_whereabouts_list,
-        'stale_statuses': stale_statuses,
+        'party': overview.party,
+        'whereabouts_list': overview.whereabouts_list,
+        'stale_statuses': overview.stale_statuses,
     }
 
 
