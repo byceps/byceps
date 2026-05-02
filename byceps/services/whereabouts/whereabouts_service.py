@@ -247,9 +247,7 @@ def get_overview(party: Party) -> Overview:
     ) -> list[OverviewStatus]:
         return [to_overview_status(status) for status in statuses]
 
-    stale_statuses, recent_statuses = partition(
-        statuses, lambda status: status.stale
-    )
+    stale_statuses, recent_statuses = partition(statuses, is_status_stale)
 
     overview_stale_statuses = to_overview_statuses(stale_statuses)
 
