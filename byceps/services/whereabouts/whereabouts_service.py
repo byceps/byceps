@@ -232,14 +232,14 @@ def get_overview(party: Party) -> Overview:
 
     now = datetime.utcnow()
 
-    def _is_status_stale(status: WhereaboutsStatus) -> bool:
+    def is_status_stale(status: WhereaboutsStatus) -> bool:
         return (now - STALE_THRESHOLD) > status.set_at
 
     statuses = [
         OverviewStatus(
             user=status.user,
             set_at=status.set_at,
-            stale=_is_status_stale(status),
+            stale=is_status_stale(status),
         )
         for status in statuses
     ]
