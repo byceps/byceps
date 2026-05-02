@@ -242,11 +242,16 @@ def get_overview(party: Party) -> Overview:
             stale=is_status_stale(status),
         )
 
-    statuses = [to_overview_status(status) for status in statuses]
+    def to_overview_statuses(
+        statuses: list[WhereaboutsStatus],
+    ) -> list[OverviewStatus]:
+        return [to_overview_status(status) for status in statuses]
 
     stale_statuses, recent_statuses = partition(
         statuses, lambda status: status.stale
     )
+
+    overview_stale_statuses = to_overview_statuses(stale_statuses)
 
     recent_statuses_by_whereabouts = defaultdict(list)
     for status in recent_statuses:
@@ -254,6 +259,10 @@ def get_overview(party: Party) -> Overview:
 
     overview_whereabouts_list = []
     for whereabouts in whereabouts_list:
+        overview_statuses = to_overview_statuses(
+            recent_statuses_by_whereabouts[whereabouts.id]
+        )
+
         overview_whereabouts_list.append(
             OverviewWhereabouts(
                 name=whereabouts.name,
@@ -261,12 +270,12 @@ def get_overview(party: Party) -> Overview:
                 position=whereabouts.position,
                 hidden_if_empty=whereabouts.hidden_if_empty,
                 secret=whereabouts.secret,
-                statuses=recent_statuses_by_whereabouts[whereabouts.id],
+                statuses=overview_statuses,
             )
         )
 
     return Overview(
         party=party,
         whereabouts_list=overview_whereabouts_list,
-        stale_statuses=stale_statuses,
+        stale_statuses=overview_stale_statuses,
     )
