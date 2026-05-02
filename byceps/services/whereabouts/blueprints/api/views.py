@@ -267,9 +267,9 @@ def get_overview(party_id):
 
     def user_to_dict(user):
         return {
-            'id': status.user.id,
-            'screen_name': status.user.screen_name,
-            'avatar_url': status.user.avatar_url,
+            'id': user.id,
+            'screen_name': user.screen_name,
+            'avatar_url': user.avatar_url,
         }
 
     data = {
