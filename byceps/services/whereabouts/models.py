@@ -110,3 +110,10 @@ class WhereaboutsUpdate:
     whereabouts_id: WhereaboutsID
     created_at: datetime
     source_address: IPAddress | None
+
+
+@dataclass(frozen=True, kw_only=True)
+class OverviewStatus:
+    user: User
+    set_at: datetime
+    stale: bool

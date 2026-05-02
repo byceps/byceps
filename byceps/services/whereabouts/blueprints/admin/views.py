@@ -21,6 +21,7 @@ from byceps.services.whereabouts import (
     whereabouts_sound_service,
 )
 from byceps.services.whereabouts.models import (
+    OverviewStatus,
     WhereaboutsClient,
     WhereaboutsClientCandidate,
     WhereaboutsStatus,
@@ -60,7 +61,18 @@ def index(party_id):
     def _is_status_stale(status: WhereaboutsStatus) -> bool:
         return (now - STALE_THRESHOLD) > status.set_at
 
-    stale_statuses, recent_statuses = partition(statuses, _is_status_stale)
+    statuses = [
+        OverviewStatus(
+            user=status.user,
+            set_at=status.set_at,
+            stale=_is_status_stale(status),
+        )
+        for status in statuses
+    ]
+
+    stale_statuses, recent_statuses = partition(
+        statuses, lambda status: status.stale
+    )
 
     recent_statuses_by_whereabouts = defaultdict(list)
     for status in recent_statuses:
