@@ -28,7 +28,11 @@ from byceps.services.whereabouts.events import (
 )
 from byceps.services.whereabouts.models import IPAddress
 from byceps.util.framework.blueprint import create_blueprint
-from byceps.util.views import create_empty_json_response, respond_no_content
+from byceps.util.views import (
+    api_token_required,
+    create_empty_json_response,
+    respond_no_content,
+)
 
 from .decorators import client_token_required
 from .models import RegisterClientRequestModel, SetStatusRequestModel
@@ -224,6 +228,62 @@ def set_status():
     )
 
     whereabouts_signals.whereabouts_status_updated.send(None, event=event)
+
+
+@blueprint.get('/overview/<party_id>')
+@api_token_required
+def get_overview(party_id):
+    """Return the overview (whereabouts with user statuses) for a party."""
+    party = party_service.find_party(party_id)
+    if user is None:
+        abort(404, 'Unknown party ID')
+
+    overview = whereabouts_service.get_overview(party)
+
+    def party_to_dict(party):
+        return {
+            'id': party.id,
+            'title': party.title,
+        }
+
+    def whereabouts_to_dict(whereabouts):
+        return {
+            'name': whereabouts.name,
+            'description': whereabouts.description,
+            'position': whereabouts.position,
+            'hidden_if_empty': whereabouts.hidden_if_empty,
+            'secret': whereabouts.secret,
+            'statuses': [
+                status_to_dict(status) for status in whereabouts.statuses
+            ],
+        }
+
+    def status_to_dict(status):
+        return {
+            'user': user_to_dict(status.user),
+            'set_at': status.set_at.isoformat(),
+            'stale': status.stale,
+        }
+
+    def user_to_dict(user):
+        return {
+            'id': status.user.id,
+            'screen_name': status.user.screen_name,
+            'avatar_url': status.user.avatar_url,
+        }
+
+    data = {
+        'party': party_to_dict(overview.party),
+        'whereabouts_list': [
+            whereabouts_to_dict(whereabouts)
+            for whereabouts in overview.whereabouts_list
+        ],
+        'stale_statuses': [
+            status_to_dict(status) for status in overview.stale_statuses
+        ],
+    }
+
+    return jsonify(data)
 
 
 # helpers
