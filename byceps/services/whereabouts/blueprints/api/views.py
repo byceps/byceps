@@ -238,7 +238,9 @@ def get_overview(party_id):
     if party is None:
         abort(404, 'Unknown party ID')
 
-    overview = whereabouts_service.get_overview(party)
+    whereabouts_list_with_statuses = (
+        whereabouts_service.get_whereabouts_list_with_statuses(party)
+    )
 
     def party_to_dict(party):
         return {
@@ -278,8 +280,9 @@ def get_overview(party_id):
             whereabouts_to_dict(whereabouts)
             for whereabouts in overview.whereabouts_list
         ],
-        'stale_statuses': [
-            status_to_dict(status) for status in overview.stale_statuses
+        'whereabouts_list': [
+            whereabouts_to_dict(whereabouts)
+            for whereabouts in whereabouts_list_with_statuses
         ],
     }
 
