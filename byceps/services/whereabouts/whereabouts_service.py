@@ -14,7 +14,6 @@ from byceps.services.party import party_service
 from byceps.services.party.models import Party
 from byceps.services.user import user_service
 from byceps.services.user.models import User
-from byceps.util.iterables import partition
 
 from . import (
     whereabouts_client_repository,
@@ -247,18 +246,14 @@ def get_overview(party: Party) -> Overview:
     ) -> list[OverviewStatus]:
         return [to_overview_status(status) for status in statuses]
 
-    stale_statuses, recent_statuses = partition(statuses, is_status_stale)
-
-    overview_stale_statuses = to_overview_statuses(stale_statuses)
-
-    recent_statuses_by_whereabouts = defaultdict(list)
-    for status in recent_statuses:
-        recent_statuses_by_whereabouts[status.whereabouts_id].append(status)
+    statuses_by_whereabouts = defaultdict(list)
+    for status in statuses:
+        statuses_by_whereabouts[status.whereabouts_id].append(status)
 
     overview_whereabouts_list = []
     for whereabouts in whereabouts_list:
         overview_statuses = to_overview_statuses(
-            recent_statuses_by_whereabouts[whereabouts.id]
+            statuses_by_whereabouts[whereabouts.id]
         )
 
         overview_whereabouts_list.append(
@@ -272,8 +267,28 @@ def get_overview(party: Party) -> Overview:
             )
         )
 
+    overview_whereabouts_list, stale_statuses = separate_stale_statuses(
+        overview_whereabouts_list
+    )
+
     return Overview(
         party=party,
         whereabouts_list=overview_whereabouts_list,
-        stale_statuses=overview_stale_statuses,
+        stale_statuses=stale_statuses,
     )
+
+
+def separate_stale_statuses(
+    whereabouts_list: list[OverviewWhereabouts],
+) -> tuple[list[OverviewWhereabouts], list[OverviewStatus]]:
+    """Separate stale statuses from the recent ones."""
+    stale_statuses = []
+
+    for whereabouts in whereabouts_list:
+        recent_statuses = []
+        for statuses in whereabouts.statuses:
+            collection = stale_statuses if status.stale else recent_statuses
+            collection.append(status)
+        whereabouts.statuses = recent_statuses
+
+    return whereabouts_list, stale_statuses
