@@ -281,7 +281,7 @@ def get_overview(party: Party) -> Overview:
     )
 
     return Overview(
-        whereabouts_list=overview_whereabouts_list,
+        whereabouts_list=recent_whereabouts_list,
         stale_statuses=stale_statuses,
     )
 
