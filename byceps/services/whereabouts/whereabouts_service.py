@@ -290,13 +290,18 @@ def separate_stale_statuses(
     whereabouts_list: list[OverviewWhereabouts],
 ) -> tuple[list[OverviewWhereabouts], list[OverviewStatus]]:
     """Separate stale statuses from the recent ones."""
+    whereabouts_list_with_recent_statuses = []
     stale_statuses = []
 
     for whereabouts in whereabouts_list:
         recent_statuses = []
+
         for status in whereabouts.statuses:
             collection = stale_statuses if status.stale else recent_statuses
             collection.append(status)
-        whereabouts.statuses = recent_statuses
 
-    return whereabouts_list, stale_statuses
+        updated_whereabouts = whereabouts.replace(statuses=recent_statuses)
+
+        whereabouts_list_with_recent_statuses.append(updated_whereabouts)
+
+    return whereabouts_list_with_recent_statuses, stale_statuses
