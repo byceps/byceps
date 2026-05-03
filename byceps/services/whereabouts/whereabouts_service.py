@@ -241,15 +241,10 @@ def get_overview(party: Party) -> Overview:
             stale=is_status_stale(status),
         )
 
-    def to_overview_statuses(
-        statuses: list[WhereaboutsStatus],
-    ) -> list[OverviewStatus]:
-        return [to_overview_status(status) for status in statuses]
-
     def to_overview_whereabouts(
         whereabouts: Whereabouts, statuses: list[WhereaboutsStatus]
     ) -> OverviewWhereabouts:
-        overview_statuses = to_overview_statuses(statuses)
+        overview_statuses = [to_overview_status(status) for status in statuses]
 
         return OverviewWhereabouts(
             name=whereabouts.name,
