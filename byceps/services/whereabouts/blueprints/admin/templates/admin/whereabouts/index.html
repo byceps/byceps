@@ -77,7 +77,7 @@
 {%- endmacro %}
 
 {% macro render_status(status) -%}
-  <div class="block row">
+  <div class="row">
     <div>{{ render_user_avatar(status.user, size=40) }}</div>
     <div>
       {{ render_user_admin_link(status.user, disguised=true) }}<br>
