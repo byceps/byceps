@@ -223,8 +223,10 @@ def _db_entity_to_status(
 STALE_THRESHOLD = timedelta(hours=12)
 
 
-def get_overview(party: Party) -> Overview:
-    """Return an overview about whereabouts and statuses for the party."""
+def get_whereabouts_list_with_statuses(
+    party: Party,
+) -> list[OverviewWhereabouts]:
+    """Return whereabouts and the related statuses for the party."""
     whereabouts_list = get_whereabouts_list(party)
 
     statuses = get_statuses(party)
@@ -267,7 +269,14 @@ def get_overview(party: Party) -> Overview:
 
         overview_whereabouts_list.append(overview_whereabouts)
 
-    overview_whereabouts_list, stale_statuses = separate_stale_statuses(
+    return overview_whereabouts_list
+
+
+def get_overview(party: Party) -> Overview:
+    """Return an overview about whereabouts and statuses for the party."""
+    overview_whereabouts_list = get_whereabouts_list_with_statuses(party)
+
+    recent_whereabouts_list, stale_statuses = separate_stale_statuses(
         overview_whereabouts_list
     )
 
