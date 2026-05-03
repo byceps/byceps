@@ -246,26 +246,31 @@ def get_overview(party: Party) -> Overview:
     ) -> list[OverviewStatus]:
         return [to_overview_status(status) for status in statuses]
 
+    def to_overview_whereabouts(
+        whereabouts: Whereabouts, statuses: list[WhereaboutsStatus]
+    ) -> OverviewWhereabouts:
+        overview_statuses = to_overview_statuses(statuses)
+
+        return OverviewWhereabouts(
+            name=whereabouts.name,
+            description=whereabouts.description,
+            position=whereabouts.position,
+            hidden_if_empty=whereabouts.hidden_if_empty,
+            secret=whereabouts.secret,
+            statuses=overview_statuses,
+        )
+
     statuses_by_whereabouts = defaultdict(list)
     for status in statuses:
         statuses_by_whereabouts[status.whereabouts_id].append(status)
 
     overview_whereabouts_list = []
     for whereabouts in whereabouts_list:
-        overview_statuses = to_overview_statuses(
-            statuses_by_whereabouts[whereabouts.id]
-        )
+        statuses = statuses_by_whereabouts[whereabouts.id]
 
-        overview_whereabouts_list.append(
-            OverviewWhereabouts(
-                name=whereabouts.name,
-                description=whereabouts.description,
-                position=whereabouts.position,
-                hidden_if_empty=whereabouts.hidden_if_empty,
-                secret=whereabouts.secret,
-                statuses=overview_statuses,
-            )
-        )
+        overview_whereabouts = to_overview_whereabouts(whereabouts, statuses)
+
+        overview_whereabouts_list.append(overview_whereabouts)
 
     overview_whereabouts_list, stale_statuses = separate_stale_statuses(
         overview_whereabouts_list
