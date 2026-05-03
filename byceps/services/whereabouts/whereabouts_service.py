@@ -294,7 +294,7 @@ def separate_stale_statuses(
 
     for whereabouts in whereabouts_list:
         recent_statuses = []
-        for statuses in whereabouts.statuses:
+        for status in whereabouts.statuses:
             collection = stale_statuses if status.stale else recent_statuses
             collection.append(status)
         whereabouts.statuses = recent_statuses
