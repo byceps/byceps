@@ -278,10 +278,6 @@ def get_overview(party_id):
         'party': party_to_dict(party),
         'whereabouts_list': [
             whereabouts_to_dict(whereabouts)
-            for whereabouts in overview.whereabouts_list
-        ],
-        'whereabouts_list': [
-            whereabouts_to_dict(whereabouts)
             for whereabouts in whereabouts_list_with_statuses
         ],
     }
