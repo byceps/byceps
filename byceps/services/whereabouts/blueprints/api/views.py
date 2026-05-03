@@ -273,7 +273,7 @@ def get_overview(party_id):
         }
 
     data = {
-        'party': party_to_dict(overview.party),
+        'party': party_to_dict(party),
         'whereabouts_list': [
             whereabouts_to_dict(whereabouts)
             for whereabouts in overview.whereabouts_list

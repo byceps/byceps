@@ -114,7 +114,6 @@ class WhereaboutsUpdate:
 
 @dataclass(frozen=True, kw_only=True)
 class Overview:
-    party: Party
     whereabouts_list: list[OverviewWhereabouts]
     stale_statuses: list[OverviewStatus]
 

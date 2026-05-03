@@ -47,7 +47,7 @@ def index(party_id):
     overview = whereabouts_service.get_overview(party)
 
     return {
-        'party': overview.party,
+        'party': party,
         'whereabouts_list': overview.whereabouts_list,
         'stale_statuses': overview.stale_statuses,
     }
