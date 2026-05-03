@@ -6,7 +6,7 @@ byceps.services.whereabouts.blueprints.api.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from ipaddress import ip_address
 
 from flask import abort, g, jsonify, request, Request, url_for
@@ -261,7 +261,7 @@ def get_overview(party_id):
     def status_to_dict(status):
         return {
             'user': user_to_dict(status.user),
-            'set_at': status.set_at.isoformat(),
+            'set_at': status.set_at.replace(tzinfo=timezone.utc).isoformat(),
             'stale': status.stale,
         }
 
