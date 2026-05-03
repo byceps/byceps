@@ -300,7 +300,9 @@ def separate_stale_statuses(
             collection = stale_statuses if status.stale else recent_statuses
             collection.append(status)
 
-        updated_whereabouts = whereabouts.replace(statuses=recent_statuses)
+        updated_whereabouts = dataclasses.replace(
+            whereabouts, statuses=recent_statuses
+        )
 
         whereabouts_list_with_recent_statuses.append(updated_whereabouts)
 
