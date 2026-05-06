@@ -8,7 +8,8 @@ byceps.services.user.creation.blueprints.site.views
 
 from datetime import datetime
 
-from flask import abort, g, request
+from flask import abort, g, request, current_app
+from byceps.util import turnstile as cf_turnstile
 from flask_babel import gettext
 from secret_type import secret
 
@@ -78,6 +79,23 @@ def create():
 
     if not form.validate():
         return create_form(form)
+        
+    # Cloudflare Turnstile
+    ts_cfg = current_app.config.get('CLOUDFLARE_TURNSTILE') or {}
+    if ts_cfg.get('enabled'):
+        token = (request.form.get('cf-turnstile-response') or '').strip()
+        if not token:
+            flash_error(gettext('Please complete the Turnstile challenge.'))
+            return create_form(form)
+        ok = cf_turnstile.verify_token(
+            token,
+            remoteip=cf_turnstile.best_remote_ip(),
+            timeout=3.0,
+            expected_action='user_create',  # im Widget als data-action setzen
+        )
+        if not ok:
+            flash_error(gettext('Turnstile verification failed. Please try again.'))
+            return create_form(form)
 
     screen_name = form.screen_name.data.strip()
     email_address = form.email_address.data.strip()

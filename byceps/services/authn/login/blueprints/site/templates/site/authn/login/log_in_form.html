@@ -1,6 +1,8 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% from 'macros/misc.html' import render_notification %}
+{% from 'macros/turnstile.html' import render_turnstile with context %}
+{% set ts = config.get('CLOUDFLARE_TURNSTILE') or {} %}
 {% set simple_layout = true %}
 {% set current_page = 'authn_login' %}
 {% set page_title = _('Log in') %}
@@ -48,7 +50,8 @@
 {{ render_notification(_('Login failed.'), category='danger', icon='warning') }}
       </div>
     </div>
-
+    
+    {{ render_turnstile('login') }}
     {{ form_buttons(_('Log in')) }}
   </form>
 
@@ -68,5 +71,8 @@
 {%- endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='behavior/login.js') }}"></script>
-{%- endblock %}
+  <script src="{{ url_for('static', filename='behavior/login.js') }}"></script>
+  {% if ts.get('enabled') and ts.get('sitekey') %}
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  {% endif %}
+{% endblock %}
