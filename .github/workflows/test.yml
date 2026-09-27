@@ -96,7 +96,7 @@ jobs:
       # Run job even if build is cancelled.
       if: always() && github.repository == 'byceps/byceps' && github.ref_name == 'main'
       env:
-        PYTHON_VERSION: ${{ matrix.version }}
+        PYTHON_VERSION: ${{ matrix.python-version }}
         JOB_RESULT: ${{ job.status }}
         DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
       run: uv run ./.github/workflows/send-workflow-result-to-discord.py --result $JOB_RESULT --webhook-url $DISCORD_WEBHOOK_URL
