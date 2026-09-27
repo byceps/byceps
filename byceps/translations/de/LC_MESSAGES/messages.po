@@ -6733,7 +6733,7 @@ msgstr "Du kannst Bestellungen mit dem Status %(payment_state)s selbst storniere
 
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/index.html:38
 msgid "You have not placed any orders."
-msgstr "Du hast keine Bestellungen aufgeben."
+msgstr "Du hast keine Bestellungen aufgegeben."
 
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:6
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_bundle.html:41
