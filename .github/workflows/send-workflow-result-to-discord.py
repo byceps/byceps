@@ -31,6 +31,7 @@ class RunDetails:
     commit_hash: str
     commit_subject: str
     commit_url: str
+    python_version: str
     result: Result
 
 
@@ -88,6 +89,8 @@ def _get_run_details(result: Result) -> RunDetails:
     commit_subject = _get_commit_subject(commit_hash)
     commit_url = f'{github_server_url}/{github_repository}/commit/{commit_hash}'
 
+    python_version = os.environ['PYTHON_VERSION']
+
     return RunDetails(
         run_number=run_number,
         run_url=run_url,
@@ -96,6 +99,7 @@ def _get_run_details(result: Result) -> RunDetails:
         commit_hash=commit_hash,
         commit_subject=commit_subject,
         commit_url=commit_url,
+        python_version=python_version,
         result=result,
     )
 
@@ -122,6 +126,11 @@ def _assemble_discord_payload(run_details: RunDetails) -> dict:
                     {
                         'name': 'Run',
                         'value': f'[#{run_details.run_number}]({run_details.run_url})',
+                        'inline': 'true',
+                    },
+                    {
+                        'name': 'Python version',
+                        'value': run_details.python_version,
                         'inline': 'true',
                     },
                     {
