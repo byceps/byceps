@@ -11,7 +11,7 @@ babel-compile:
     uv run pybabel compile -d byceps/translations
 
 deps-outdated:
-    uv tree --all-groups --depth 1 --no-dev --outdated
+    uv lock --dry-run --upgrade
 
 docs-build-clean:
     cd ./docs && uv run make clean && cd ..
