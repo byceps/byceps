@@ -195,7 +195,7 @@ requires-dist = [
     { name = "schwifty", specifier = ">=2026.7.3" },
     { name = "secret-type", specifier = ">=0.3.0" },
     { name = "sentry-sdk", extras = ["flask", "httpx", "rq", "sqlalchemy"], specifier = ">=2.69.2" },
-    { name = "sqlalchemy", specifier = ">=2.0.54" },
+    { name = "sqlalchemy", specifier = ">=2.0.54,<2.1.0" },
     { name = "stripe", specifier = "==5.4.0" },
     { name = "structlog", specifier = ">=26.1.0" },
     { name = "tenacity", specifier = ">=9.1.4" },
