@@ -154,7 +154,7 @@ def build_occupy_seat_entry(
     previous_seat_id: SeatID | None,
     initiator: User,
 ) -> TicketLogEntry:
-    """Assemble an 'occupy seat' log entry."""
+    """Assemble a 'seat occupied' log entry."""
     data = {
         'seat_id': str(seat_id),
         'initiator_id': str(initiator.id),
@@ -171,7 +171,7 @@ def build_release_seat_entry(
     seat_id: SeatID,
     initiator: User,
 ) -> TicketLogEntry:
-    """Assemble a 'release seat' log entry."""
+    """Assemble a 'seat released' log entry."""
     return _build_entry(
         'seat-released',
         ticket_id,
