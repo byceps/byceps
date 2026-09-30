@@ -68,4 +68,4 @@ class TicketSaleStats:
     tickets_sold: int
 
 
-ChairSource = Enum('ChairSource', ['rental', 'user', 'venue'])
+ChairSource = Enum('ChairSource', ['rental', 'unknown', 'user', 'venue'])

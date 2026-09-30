@@ -213,16 +213,12 @@
               {%- endif %}
             </div>
             <div class="data-value">
-            {%- if ticket.chair_source -%}
-              {%- if ticket.chair_source.name == 'rental' -%}
-                {{ _('rented') }}
-              {%- elif ticket.chair_source.name == 'user' -%}
-                {{ _('user-provided') }}
-              {%- elif ticket.chair_source.name == 'venue' -%}
-                {{ _('venue-provided') }}
-              {%- else -%}
-                {{ _('unknown')|dim }}
-              {%- endif -%}
+            {%- if ticket.chair_source.name == 'rental' -%}
+              {{ _('rented') }}
+            {%- elif ticket.chair_source.name == 'user' -%}
+              {{ _('user-provided') }}
+            {%- elif ticket.chair_source.name == 'venue' -%}
+              {{ _('venue-provided') }}
             {%- else -%}
               {{ _('unknown')|dim }}
             {%- endif -%}

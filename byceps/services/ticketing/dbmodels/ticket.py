@@ -129,19 +129,19 @@ class DbTicket(db.Model):
         self.owned_by_id = owned_by_id
         self.order_number = order_number
         self.used_by_id = used_by_id
-        self.chair_source = None
+        self.chair_source = ChairSource.unknown
         self.revoked = revoked
         self.user_checked_in = user_checked_in
 
     @hybrid_property
-    def chair_source(self) -> ChairSource | None:
-        return ChairSource.__members__.get(self._chair_source)
+    def chair_source(self) -> ChairSource:
+        return ChairSource.__members__.get(
+            self._chair_source, ChairSource.unknown
+        )
 
     @chair_source.setter
-    def chair_source(self, chair_source: ChairSource | None) -> None:
-        self._chair_source = (
-            chair_source.name if (chair_source is not None) else None
-        )
+    def chair_source(self, chair_source: ChairSource) -> None:
+        self._chair_source = chair_source.name
 
     @property
     def belongs_to_bundle(self) -> bool:

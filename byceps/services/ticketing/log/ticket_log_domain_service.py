@@ -219,7 +219,7 @@ def build_user_check_in_reverted_entry(
 
 def build_chair_source_set_entry(
     ticket_id: TicketID,
-    chair_source: ChairSource | None,
+    chair_source: ChairSource,
     initiator: User,
 ) -> TicketLogEntry:
     """Assemble a 'chair source set' log entry."""
@@ -227,9 +227,7 @@ def build_chair_source_set_entry(
         'chair-source-set',
         ticket_id,
         {
-            'chair_source': chair_source.name
-            if (chair_source is not None)
-            else None,
+            'chair_source': chair_source.name,
             'initiator_id': str(initiator.id),
         },
     )

@@ -167,7 +167,7 @@ def release_seat(
 
 
 def set_chair_source(
-    ticket_id: TicketID, chair_source: ChairSource | None, initiator: User
+    ticket_id: TicketID, chair_source: ChairSource, initiator: User
 ) -> Result[None, TicketingError]:
     """Set the chair source for the ticket."""
     db_ticket_result = _get_ticket(ticket_id)

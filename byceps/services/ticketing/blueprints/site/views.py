@@ -477,12 +477,9 @@ def set_chair_source(ticket_id, chair_source):
     ):
         abort(403)
 
-    if chair_source == 'unknown':
-        chair_source = None
-    else:
-        chair_source = ChairSource.__members__.get(chair_source)
-        if chair_source is None:
-            abort(400, 'Invalid chair source')
+    chair_source = ChairSource.__members__.get(chair_source)
+    if chair_source is None:
+        abort(400, 'Invalid chair source')
 
     match ticket_seat_management_service.set_chair_source(
         ticket.id, chair_source, current_user
