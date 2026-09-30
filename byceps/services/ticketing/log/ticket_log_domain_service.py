@@ -9,7 +9,7 @@ byceps.services.ticketing.log.ticket_log_domain_service
 from datetime import datetime
 
 from byceps.services.seating.models import SeatID
-from byceps.services.ticketing.models.ticket import TicketID
+from byceps.services.ticketing.models.ticket import ChairSource, TicketID
 from byceps.services.user.models import User, UserID
 from byceps.util.uuid import generate_uuid7
 
@@ -212,6 +212,24 @@ def build_user_check_in_reverted_entry(
         ticket_id,
         {
             'checked_in_user_id': str(user_id),
+            'initiator_id': str(initiator.id),
+        },
+    )
+
+
+def build_chair_source_set_entry(
+    ticket_id: TicketID,
+    chair_source: ChairSource | None,
+    initiator: User,
+) -> TicketLogEntry:
+    """Assemble a 'chair source set' log entry."""
+    return _build_entry(
+        'chair-source-set',
+        ticket_id,
+        {
+            'chair_source': chair_source.name
+            if (chair_source is not None)
+            else None,
             'initiator_id': str(initiator.id),
         },
     )

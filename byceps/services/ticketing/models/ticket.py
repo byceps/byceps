@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
 from typing import NewType, TYPE_CHECKING
 from uuid import UUID
 
@@ -65,3 +66,6 @@ class TicketBundle:
 class TicketSaleStats:
     tickets_max: int | None
     tickets_sold: int
+
+
+ChairSource = Enum('ChairSource', ['rental', 'user', 'venue'])

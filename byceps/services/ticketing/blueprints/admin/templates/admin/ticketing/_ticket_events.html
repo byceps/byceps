@@ -4,7 +4,15 @@
 
 {%- call render_log_entries() %}
     {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
-      {%- if log_entry.event_type == 'seat-manager-appointed' %}
+      {%- if log_entry.event_type == 'chair-source-set' %}
+        {%- call render_log_entry('chair', log_entry.occurred_at) %}
+          {{ _(
+            '%(initiator)s has set chair source to %(chair_source)s.',
+            initiator=render_log_user(log_entry.initiator),
+            chair_source=log_entry.data.chair_source,
+          ) }}
+        {%- endcall %}
+      {%- elif log_entry.event_type == 'seat-manager-appointed' %}
         {%- call render_log_entry('administrate', log_entry.occurred_at) %}
           {{ _(
             '%(initiator)s has assigned seat management to %(user)s.',

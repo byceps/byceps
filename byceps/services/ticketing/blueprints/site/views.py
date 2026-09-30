@@ -20,6 +20,7 @@ from byceps.services.ticketing import (
     ticket_service,
     ticket_user_management_service,
 )
+from byceps.services.ticketing.models.ticket import ChairSource
 from byceps.util.framework.blueprint import create_blueprint
 from byceps.util.framework.flash import flash_error, flash_success
 from byceps.util.framework.templating import templated
@@ -454,6 +455,46 @@ def withdraw_seat_manager(ticket_id):
         notification_service.notify_withdrawn_seat_manager(
             ticket, previous_manager, manager
         )
+
+
+# -------------------------------------------------------------------- #
+# chair
+
+
+@blueprint.post('/tickets/<uuid:ticket_id>/chair_source/<chair_source>')
+@login_required
+@respond_no_content
+def set_chair_source(ticket_id, chair_source):
+    """Set the chair source for the ticket."""
+    _abort_if_ticket_management_disabled()
+
+    ticket = _get_ticket_or_404(ticket_id)
+
+    current_user = g.user.as_user()
+
+    if not ticket.is_used_by(current_user.id):
+        abort(403)
+
+    if chair_source == 'unknown':
+        chair_source = None
+    else:
+        chair_source = ChairSource.__members__.get(chair_source)
+        if chair_source is None:
+            abort(400, 'Invalid chair source')
+
+    match ticket_seat_management_service.set_chair_source(
+        ticket.id, chair_source, current_user
+    ):
+        case Err(e):
+            flash_error(e.message)
+            return
+
+    flash_success(
+        gettext(
+            'Chair source of ticket %(ticket_code)s has been set.',
+            ticket_code=ticket.code,
+        )
+    )
 
 
 # -------------------------------------------------------------------- #

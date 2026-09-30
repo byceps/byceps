@@ -26,7 +26,7 @@ from .errors import (
     TicketIsRevokedError,
 )
 from .log import ticket_log_domain_service, ticket_log_service
-from .models.ticket import TicketID
+from .models.ticket import ChairSource, TicketID
 
 
 def appoint_seat_manager(
@@ -157,6 +157,29 @@ def release_seat(
 
     log_entry = ticket_log_domain_service.build_release_seat_entry(
         db_ticket.id, seat.id, initiator
+    )
+    db_log_entry = ticket_log_service.to_db_entry(log_entry)
+    db.session.add(db_log_entry)
+
+    db.session.commit()
+
+    return Ok(None)
+
+
+def set_chair_source(
+    ticket_id: TicketID, chair_source: ChairSource | None, initiator: User
+) -> Result[None, TicketingError]:
+    """Set the chair source for the ticket."""
+    db_ticket_result = _get_ticket(ticket_id)
+    if db_ticket_result.is_err():
+        return Err(db_ticket_result.unwrap_err())
+
+    db_ticket = db_ticket_result.unwrap()
+
+    db_ticket.chair_source = chair_source
+
+    log_entry = ticket_log_domain_service.build_chair_source_set_entry(
+        db_ticket.id, chair_source, initiator
     )
     db_log_entry = ticket_log_service.to_db_entry(log_entry)
     db.session.add(db_log_entry)

@@ -7,6 +7,12 @@ byceps.services.ticketing.dbmodels.ticket
 """
 
 from datetime import datetime
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -16,6 +22,7 @@ from byceps.services.seating.dbmodels.seat import DbSeat
 from byceps.services.seating.models import SeatID
 from byceps.services.shop.order.models.number import OrderNumber
 from byceps.services.ticketing.models.ticket import (
+    ChairSource,
     TicketBundleID,
     TicketCategory,
     TicketCategoryID,
@@ -93,6 +100,9 @@ class DbTicket(db.Model):
         db.Uuid, db.ForeignKey('users.id'), index=True
     )
     used_by: Mapped[DbUser | None] = relationship(foreign_keys=[used_by_id])
+    _chair_source: Mapped[str | None] = mapped_column(
+        'chair_source', db.UnicodeText
+    )
     revoked: Mapped[bool]
     user_checked_in: Mapped[bool]
 
@@ -119,8 +129,19 @@ class DbTicket(db.Model):
         self.owned_by_id = owned_by_id
         self.order_number = order_number
         self.used_by_id = used_by_id
+        self.chair_source = None
         self.revoked = revoked
         self.user_checked_in = user_checked_in
+
+    @hybrid_property
+    def chair_source(self) -> ChairSource | None:
+        return ChairSource.__members__.get(self._chair_source)
+
+    @chair_source.setter
+    def chair_source(self, chair_source: ChairSource | None) -> None:
+        self._chair_source = (
+            chair_source.name if (chair_source is not None) else None
+        )
 
     @property
     def belongs_to_bundle(self) -> bool:
@@ -160,6 +181,10 @@ class DbTicket(db.Model):
         return (
             (self.user_managed_by_id is None) and self.is_owned_by(user_id)
         ) or (self.user_managed_by_id == user_id)
+
+    def is_used_by(self, user_id: UserID) -> bool:
+        """Return `True` if the user is the user of this ticket."""
+        return (self.used_by_id is not None) and (self.used_by_id == user_id)
 
     def __repr__(self) -> str:
         def user(user: DbUser | None) -> str | None:

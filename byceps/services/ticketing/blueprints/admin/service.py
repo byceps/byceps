@@ -128,6 +128,7 @@ def _get_initiators(
     log_entry: TicketLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     if log_entry.event_type in {
+        'chair-source-set',
         'seat-manager-appointed',
         'seat-manager-withdrawn',
         'seat-occupied',

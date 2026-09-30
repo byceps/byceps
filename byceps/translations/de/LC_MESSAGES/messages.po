@@ -21,7 +21,7 @@ msgstr ""
 #: byceps/announce/helpers.py:41
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/_view_events.html:171
 #: byceps/services/shop/order/blueprints/admin/templates/admin/shop/order/_view_events.html:187
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:71
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:79
 #: byceps/services/user/announcing.py:64
 #: byceps/services/user/blueprints/admin/templates/admin/user/view_events.html:49
 #: byceps/services/user/blueprints/admin/templates/admin/user/view_events.html:68
@@ -338,7 +338,7 @@ msgstr "alle Teilnehmer"
 #: byceps/services/dashboard/blueprints/site/templates/site/dashboard/_tickets.html:12
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_list.html:13
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:127
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:162
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:163
 #: byceps/services/ticketing/checkin/blueprints/admin/templates/admin/ticketing/checkin/_ticket_list.html:23
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_tickets.html:13
 #: byceps/services/user_profile/blueprints/site/templates/site/user_profile/_current_party_attendance.html:7
@@ -360,7 +360,7 @@ msgstr "nicht ausgewählt"
 #: byceps/services/guest_server/blueprints/admin/templates/macros/admin/guest_server.html:21
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/index_for_party.html:80
 #: byceps/services/ticketing/blueprints/admin/templates/macros/admin/ticketing.html:10
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:64
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:65
 #: byceps/services/user_profile/blueprints/site/templates/site/user_profile/_current_party_attendance.html:16
 msgid "checked in"
 msgstr "eingecheckt"
@@ -439,8 +439,8 @@ msgstr "Unbekannter Benutzername"
 #: byceps/services/seating/blueprints/admin/views.py:377
 #: byceps/services/timetable/blueprints/admin/views.py:54
 #: byceps/services/timetable/blueprints/admin/views.py:104
-#: byceps/services/whereabouts/blueprints/admin/views.py:130
-#: byceps/services/whereabouts/blueprints/admin/views.py:314
+#: byceps/services/whereabouts/blueprints/admin/views.py:109
+#: byceps/services/whereabouts/blueprints/admin/views.py:293
 msgid "The object has been created."
 msgstr "Das Objekt wurde angelegt."
 
@@ -1481,7 +1481,7 @@ msgstr "Kategorie bearbeiten"
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/index_for_party.html:29
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_bundle.html:29
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:74
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:80
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:81
 #: byceps/services/tourney/tourney/blueprints/admin/forms.py:29
 #: byceps/services/tourney/tourney/blueprints/admin/templates/admin/tourney/tourney/index.html:29
 #: byceps/services/tourney/tourney/blueprints/admin/templates/admin/tourney/tourney/view.html:31
@@ -3123,7 +3123,7 @@ msgstr "Alle Bestellungen"
 #: byceps/services/dashboard/blueprints/site/templates/site/dashboard/_tickets.html:11
 #: byceps/services/ticketing/blueprints/admin/forms.py:20
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_list.html:9
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:60
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:61
 #: byceps/services/ticketing/checkin/blueprints/admin/templates/admin/ticketing/checkin/_ticket_list.html:20
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_tickets.html:11
 msgid "Code"
@@ -3685,6 +3685,9 @@ msgstr "Sprache"
 #: byceps/services/shop/order/sold_products_service.py:160
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view.html:109
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view.html:120
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:209
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:224
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:227
 #: byceps/services/user/blueprints/admin/templates/admin/user/_user_list.html:23
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_account.html:41
 msgid "unknown"
@@ -5394,7 +5397,7 @@ msgstr "belegt"
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/index_for_shop.html:76
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view.html:146
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_list.html:28
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:128
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:129
 msgid "available"
 msgstr "verfügbar"
 
@@ -5646,7 +5649,7 @@ msgstr "kein/e Nutzer/in"
 #: byceps/services/seating/blueprints/site/templates/site/seating/_ticket_selector.html:37
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_list.html:37
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:132
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:167
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:168
 #: byceps/services/ticketing/checkin/blueprints/admin/templates/admin/ticketing/checkin/_ticket_list.html:46
 msgid "no seat"
 msgstr "kein Sitzplatz"
@@ -6738,7 +6741,7 @@ msgstr "Du hast keine Bestellungen aufgegeben."
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:6
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_bundle.html:41
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:86
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:86
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:87
 msgid "Order"
 msgstr "Bestellung"
 
@@ -7192,7 +7195,7 @@ msgid "Generate"
 msgstr "Erzeugen"
 
 #: byceps/services/shop/sold_products/blueprints/admin/templates/admin/shop/sold_products/view.html:25
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:92
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:93
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_tickets.html:43
 msgid "Buyer"
 msgstr "Käufer/in"
@@ -7802,7 +7805,7 @@ msgid "Code for ticket %(ticket_code)s has been updated."
 msgstr "Der Code von Ticket %(ticket_code)s wurde geändert."
 
 #: byceps/services/ticketing/blueprints/admin/views.py:238
-#: byceps/services/ticketing/blueprints/site/views.py:198
+#: byceps/services/ticketing/blueprints/site/views.py:199
 #, python-format
 msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
 msgstr ""
@@ -7811,15 +7814,20 @@ msgstr ""
 
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:9
 #, python-format
+msgid "%(initiator)s has set chair source to %(chair_source)s."
+msgstr "%(initiator)s hat die Stuhlquelle auf %(chair_source)s gesetzt."
+
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:17
+#, python-format
 msgid "%(initiator)s has assigned seat management to %(user)s."
 msgstr "%(initiator)s hat %(user)s die Sitzplatzverwaltung übertragen."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:17
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:25
 #, python-format
 msgid "%(initiator)s has brought back seat management."
 msgstr "%(initiator)s hat die Sitzplatzverwaltung zurückgeholt."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:25
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:33
 #, python-format
 msgid ""
 "%(initiator)s has <strong>reserved</strong> seat \"%(seat)s\" (previously"
@@ -7828,22 +7836,22 @@ msgstr ""
 "%(initiator)s hat Sitzplatz \"%(seat)s\" (vorher \"%(previous_seat)s\") "
 "<strong>reserviert</strong>."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:32
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:40
 #, python-format
 msgid "%(initiator)s has <strong>reserved</strong> seat \"%(seat)s\"."
 msgstr "%(initiator)s hat Sitzplatz \"%(seat)s\" <strong>reserviert</strong>."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:42
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:50
 #, python-format
 msgid "%(initiator)s has <strong>released</strong> seat \"%(seat)s\"."
 msgstr "%(initiator)s hat Sitzplatz \"%(seat)s\" <strong>freigegeben</strong>."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:48
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:56
 #, python-format
 msgid "%(initiator)s has <strong>released</strong> the seat."
 msgstr "%(initiator)s hat den Sitzplatz <strong>freigegeben</strong>."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:56
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:64
 #, python-format
 msgid ""
 "%(initiator)s has <strong>changed the code</strong> (\"%(old_code)s\" "
@@ -7852,31 +7860,31 @@ msgstr ""
 "%(initiator)s hat den <strong>Code geändert</strong> (\"%(old_code)s\" "
 "&rarr; \"%(new_code)s\")."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:65
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:73
 msgid "The ticket has been <strong>created</strong>."
 msgstr "Das Ticket wurde <strong>angelegt</strong>."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:69
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:77
 #, python-format
 msgid "%(initiator)s has %(verb)s the ticket."
 msgstr "%(initiator)s hat das Ticket %(verb)s."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:80
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:88
 #, python-format
 msgid "%(initiator)s has assigned user management to %(user)s."
 msgstr "%(initiator)s hat %(user)s die Nutzerverwaltung übertragen."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:88
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:96
 #, python-format
 msgid "%(initiator)s has brought back user management."
 msgstr "%(initiator)s hat die Nutzerverwaltung zurückgeholt."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:96
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:104
 #, python-format
 msgid "%(initiator)s has <strong>assigned</strong> %(user)s as ticket user."
 msgstr "%(initiator)s hat %(user)s als Ticketnutzer <strong>eingetragen</strong>."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:102
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:110
 #, python-format
 msgid ""
 "%(initiator)s has <strong>assigned</strong> an unknown user as ticket "
@@ -7885,26 +7893,26 @@ msgstr ""
 "%(initiator)s hat einen unbekannten Benutzer als Ticketnutzer "
 "<strong>eingetragen</strong>."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:110
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:118
 #, python-format
 msgid "%(initiator)s has assigned themselves as ticket user."
 msgstr ""
 "%(initiator)s hat sich selbst als Ticketnutzer "
 "<strong>eingetragen</strong>."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:117
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:125
 #, python-format
 msgid "%(initiator)s has %(verb)s %(user)s for the party."
 msgstr "%(initiator)s hat %(user)s für die Party %(verb)s."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:126
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:134
 #, python-format
 msgid "%(initiator)s has <strong>reverted the check-in</strong> of %(user)s."
 msgstr ""
 "%(initiator)s hat den Check-In von %(user)s <strong>rückgängig "
 "gemacht</strong>."
 
-#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:134
+#: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_events.html:142
 #: byceps/services/tourney/tourney/blueprints/admin/templates/admin/tourney/tourney/_view_events.html:18
 #: byceps/services/user/blueprints/admin/templates/admin/user/view_events.html:336
 #, python-format
@@ -8118,12 +8126,12 @@ msgstr ""
 "%(screen_name)s hat die dir bisher übertragene Verwaltung des Sitzplatzes"
 " von Ticket %(ticket_code)s für die %(party_title)s zurückgezogen."
 
-#: byceps/services/ticketing/blueprints/site/views.py:242
+#: byceps/services/ticketing/blueprints/site/views.py:243
 #, python-format
 msgid "You have been assigned as user of ticket %(ticket_code)s."
 msgstr "Du wurdest als Nutzer/in von Ticket %(ticket_code)s eingetragen."
 
-#: byceps/services/ticketing/blueprints/site/views.py:310
+#: byceps/services/ticketing/blueprints/site/views.py:311
 #, python-format
 msgid ""
 "%(screen_name)s has been assigned as user manager of ticket "
@@ -8132,12 +8140,12 @@ msgstr ""
 "%(screen_name)s wurde als Nutzer-Verwalter/in von Ticket %(ticket_code)s "
 "eingetragen."
 
-#: byceps/services/ticketing/blueprints/site/views.py:348
+#: byceps/services/ticketing/blueprints/site/views.py:349
 #, python-format
 msgid "User manager of ticket %(ticket_code)s has been removed."
 msgstr "Der Nutzer-Verwalter von Ticket %(ticket_code)s wurde entfernt."
 
-#: byceps/services/ticketing/blueprints/site/views.py:412
+#: byceps/services/ticketing/blueprints/site/views.py:413
 #, python-format
 msgid ""
 "%(screen_name)s has been assigned as seat manager of ticket "
@@ -8146,16 +8154,21 @@ msgstr ""
 "%(screen_name)s wurde als Sitzplatz-Verwalter/in von Ticket "
 "%(ticket_code)s eingetragen."
 
-#: byceps/services/ticketing/blueprints/site/views.py:448
+#: byceps/services/ticketing/blueprints/site/views.py:449
 #, python-format
 msgid "Seat manager of ticket %(ticket_code)s has been removed."
 msgstr "Der Sitzplatz-Verwalter von Ticket %(ticket_code)s wurde entfernt."
 
-#: byceps/services/ticketing/blueprints/site/views.py:464
+#: byceps/services/ticketing/blueprints/site/views.py:494
+#, python-format
+msgid "Chair source of ticket %(ticket_code)s has been set."
+msgstr "Die Stuhlquelle von Ticket %(ticket_code)s wurde gesetzt."
+
+#: byceps/services/ticketing/blueprints/site/views.py:505
 msgid "Tickets cannot be updated at this time."
 msgstr "Tickets können derzeit nicht verändert werden."
 
-#: byceps/services/ticketing/blueprints/site/views.py:490
+#: byceps/services/ticketing/blueprints/site/views.py:531
 msgid "Somebody has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
 
@@ -8193,39 +8206,54 @@ msgstr "Nutzer-Verwaltung zurückholen?"
 msgid "Take back seat management?"
 msgstr "Sitzplatz-Verwaltung zurückholen?"
 
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:105
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:106
 msgctxt "ticket"
 msgid "User"
 msgstr "Nutzer/in"
 
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:112
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:113
 msgid "Appoint user"
 msgstr "Nutzer/in zuweisen"
 
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:114
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:115
 msgid "Use yourself"
 msgstr "selbst nutzen"
 
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:136
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:175
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:137
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:176
 msgid "Manager"
 msgstr "Verwalter/in"
 
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:143
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:144
 msgid "Transfer user management"
 msgstr "Nutzer-Verwaltung übertragen"
 
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:145
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:146
 msgid "Take back user management"
 msgstr "Nutzer-Verwaltung zurückholen"
 
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:182
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:183
 msgid "Transfer seat management"
 msgstr "Sitzplatz-Verwaltung übertragen"
 
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:184
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:185
 msgid "Take back seat management"
 msgstr "Sitzplatz-Verwaltung zurückholen"
+
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:205
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:222
+msgid "venue-provided"
+msgstr "bereitgestellt"
+
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:206
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:218
+msgid "rented"
+msgstr "gemietet"
+
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:207
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:220
+msgid "user-provided"
+msgstr "selbst mitgebracht"
 
 #: byceps/services/ticketing/category/blueprints/admin/templates/admin/ticketing/category/create_form.html:6
 msgid "Create ticket category"
@@ -8377,7 +8405,7 @@ msgid "Link label"
 msgstr "Linktitel"
 
 #: byceps/services/timetable/blueprints/admin/views.py:158
-#: byceps/services/whereabouts/blueprints/admin/views.py:253
+#: byceps/services/whereabouts/blueprints/admin/views.py:232
 msgid "The object has been updated."
 msgstr "Das Objekt wurde aktualisiert."
 
@@ -9953,15 +9981,15 @@ msgstr "Soundname"
 msgid "The user already has a sound assigned."
 msgstr "Dem Benutzer ist bereits ein Sound zugeordnet."
 
-#: byceps/services/whereabouts/blueprints/admin/views.py:198
+#: byceps/services/whereabouts/blueprints/admin/views.py:177
 msgid "Client candidate has been approved."
 msgstr "Der Client-Kandidat wurde genehmigt."
 
-#: byceps/services/whereabouts/blueprints/admin/views.py:213
+#: byceps/services/whereabouts/blueprints/admin/views.py:192
 msgid "Client candidate has been deleted."
 msgstr "Der Client-Kandidat wurde gelöscht."
 
-#: byceps/services/whereabouts/blueprints/admin/views.py:268
+#: byceps/services/whereabouts/blueprints/admin/views.py:247
 msgid "Client has been deleted."
 msgstr "Der Client wurde gelöscht."
 
