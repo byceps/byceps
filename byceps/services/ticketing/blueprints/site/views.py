@@ -472,7 +472,9 @@ def set_chair_source(ticket_id, chair_source):
 
     current_user = g.user.as_user()
 
-    if not ticket.is_used_by(current_user.id):
+    if not ticket.is_used_by(current_user.id) and not ticket.is_user_managed_by(
+        current_user.id
+    ):
         abort(403)
 
     if chair_source == 'unknown':

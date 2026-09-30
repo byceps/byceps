@@ -197,7 +197,7 @@
               <div>
                 <div class="data-label">{{ _('Chair') }}</div>
               </div>
-              {%- if ticket_management_enabled and ticket.is_used_by(g.user.id) and not ticket.user_checked_in %}
+              {%- if ticket_management_enabled and (ticket.is_used_by(g.user.id) or ticket.is_user_managed_by(g.user.id)) and not ticket.user_checked_in %}
               <div>
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline is-compact">{{ render_icon('chevron-down') -}}</button>
