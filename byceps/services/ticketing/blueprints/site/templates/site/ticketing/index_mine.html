@@ -195,7 +195,7 @@
           <div class="ticket-card-cell-block">
             <div class="row row--space-between">
               <div>
-                <div class="data-label">Stuhl</div>
+                <div class="data-label">{{ _('Chair') }}</div>
               </div>
               {%- if ticket_management_enabled and ticket.is_used_by(g.user.id) and not ticket.user_checked_in %}
               <div>

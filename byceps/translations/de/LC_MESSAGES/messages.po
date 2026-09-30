@@ -8240,6 +8240,10 @@ msgstr "Sitzplatz-Verwaltung übertragen"
 msgid "Take back seat management"
 msgstr "Sitzplatz-Verwaltung zurückholen"
 
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:198
+msgid "Chair"
+msgstr "Stuhl"
+
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:205
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:222
 msgid "venue-provided"
