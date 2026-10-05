@@ -31,7 +31,7 @@
 
 {% macro render_user_screen_name(user) -%}
   {%- if user.deleted -%}
-<span class="dimmed" style="font-style: italic;">gelöscht</span>
+<span class="dimmed" style="font-style: italic;">{{ _('deleted') }}</span>
   {%- else -%}
 {{ user.screen_name }}
   {%- endif -%}
