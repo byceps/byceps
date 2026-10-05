@@ -70,16 +70,20 @@ td {
       <img src="data:image/svg+xml,{{ barcode_svg_inline|safe }}">
 
       <h2>{{ pgettext('ticket', 'User') }}</h2>
+      {%- if ticket_user %}
       <table>
         <tr>
           <th>{{ _('Username') }}:</th>
-          <td>{{ render_user_screen_name(ticket_user) if ticket_user else 'nicht zugewiesen'|dim }}</td>
+          <td>{{ render_user_screen_name(ticket_user)|fallback }}</td>
         </tr>
         <tr>
           <th>{{ _('Name') }}:</th>
-          <td>{{ ticket_user.detail.full_name if ticket_user else 'nicht zugewiesen'|dim }}</td>
+          <td>{{ ticket_user.detail.full_name|fallback }}</td>
         </tr>
       </table>
+      {%- else %}
+      <div>{{ 'nicht zugewiesen'|dim }}</div>
+      {%- endif %}
 
       <h2>{{ _('Buyer') }}</h2>
       <table>
