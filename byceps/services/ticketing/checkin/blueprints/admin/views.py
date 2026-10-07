@@ -58,7 +58,10 @@ def index(party_id):
         orders = _search_orders(party.brand_id, search_term, limit)
         users = _search_users(search_term, limit)
 
-        tickets += list(_get_tickets_for_users(party.id, users))
+        ticket_ids = {ticket.id for ticket in tickets}
+        for ticket in _get_tickets_for_users(party.id, users):
+            if ticket.id not in ticket_ids:
+                tickets.append(ticket)
     else:
         latest_dob_for_checkin = None
         tickets = None
