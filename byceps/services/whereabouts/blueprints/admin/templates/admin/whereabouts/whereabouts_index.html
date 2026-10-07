@@ -4,10 +4,10 @@
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'whereabouts_admin' %}
 {% set current_page_party = party %}
-{% set page_title = 'Orga-Verbleibe' %}
+{% set page_title = _('Whereabouts') %}
 
 {% block before_body %}
-{{ render_backlink(url_for('.index', party_id=party.id), 'Zurück') }}
+{{ render_backlink(url_for('.index', party_id=party.id), _('Back')) }}
 {%- endblock %}
 
 {% block body %}

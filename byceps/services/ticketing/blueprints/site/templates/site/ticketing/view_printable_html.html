@@ -82,7 +82,7 @@ td {
         </tr>
       </table>
       {%- else %}
-      <div>{{ 'nicht zugewiesen'|dim }}</div>
+      <div>{{ _('not assigned')|dim }}</div>
       {%- endif %}
 
       <h2>{{ _('Buyer') }}</h2>
@@ -101,7 +101,7 @@ td {
       <div>{{ ticket_category_title }}</div>
 
       <h2>{{ _('Seat') }}</h2>
-      <div>{{ occupied_seat.label|fallback(_('unnamed')) if occupied_seat else 'nicht zugewiesen'|dim }}</div>
+      <div>{{ occupied_seat.label|fallback(_('unnamed')) if occupied_seat else _('not assigned')|dim }}</div>
 
     </div>
 

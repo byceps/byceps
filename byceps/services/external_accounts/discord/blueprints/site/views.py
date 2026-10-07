@@ -12,6 +12,7 @@ from datetime import datetime
 from urllib import parse
 
 from flask import g, redirect, request, url_for
+from flask_babel import gettext
 import httpx
 
 from byceps.byceps_app import get_current_byceps_app
@@ -39,7 +40,7 @@ def connect():
     """Connect account with Discord via OAuth2."""
     config = _get_enabled_discord_configuration()
     if not config:
-        flash_error('Verbindung mit Discord derzeit nicht möglich.')
+        flash_error(gettext('Connection to Discord currently unavailable.'))
         return redirect_to('user_settings.view')
 
     query_string_data = {
@@ -54,7 +55,7 @@ def connect():
 
 
 def error():
-    flash_error('Verbindung mit Discord-Account fehlgeschlagen.')
+    flash_error(gettext('Connection to Discord account failed.'))
     return redirect_to('user_settings.view')
 
 
@@ -69,7 +70,7 @@ def connect_verify():
 
     config = _get_enabled_discord_configuration()
     if not config:
-        flash_error('Verbindung mit Discord derzeit nicht möglich.')
+        flash_error(gettext('Connection to Discord currently unavailable.'))
         return redirect_to('user_settings.view')
 
     auth = (config.client_id, config.client_secret)
@@ -122,7 +123,7 @@ def connect_verify():
 
     external_accounts_signals.external_account_connected.send(None, event=event)
 
-    flash_success('Discord-Account erfolgreich verbunden.')
+    flash_success(gettext('Discord account connected successfully.'))
     return redirect_to('user_settings.view')
 
 

@@ -12,13 +12,13 @@
   <div class="main-body-box">
     <form action="{{ url_for('.request_partial_refund', order_id=order.id) }}" method="post">
 
-      <div class="block">Du möchtest <strong>einen Teil des Betrages spenden</strong> und den Rest erstattet bekommen.</div>
+      <div class="block">{{ _('You want to <strong>donate a partial amount</strong> and get the remainder refunded. Nice, thanks!') }}</div>
 
 {% include 'site/shop/orders/_products.html' %}
 
-      {{ form_field(form.amount_donation, style='width: 6rem;', caption='Nur volle Euro') }}
+      {{ form_field(form.amount_donation, style='width: 6rem;', caption=_('Whole Euros only')) }}
 
-      <div class="block">Damit wir dir den Restbetrag zurückerstatten können, benötigen wir deine Bankverbindung.</div>
+      <div class="block">{{ _('We need your bank details to refund the amount.') }}</div>
 
       <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));">
         <div>
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <div class="block">Bitte beachte, dass die Abwicklung der Rückzahlung einige Zeit in Anspruch nehmen kann.</div>
+      <div class="block">{{ _('Please be aware that processing the refund may take some time.') }}</div>
 
       <div class="row row--space-between">
         <div>

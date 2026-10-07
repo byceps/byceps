@@ -2,7 +2,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set simple_layout = true %}
 {% set current_page = 'ticket' %}
-{% set page_title = 'Nutzer-Verwaltung von Ticket %s an Benutzer zuweisen'|format(ticket.code) %}
+{% set page_title = _('Appoint user manager for ticket %(ticket_code)')|format(ticket.code) %}
 
 {% block body %}
 

@@ -2,7 +2,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set simple_layout = true %}
 {% set current_page = 'shop_orders' %}
-{% set page_title = ['Tickets zurückgeben', order.order_number] %}
+{% set page_title = [_('Return tickets'), order.order_number] %}
 
 {% block body %}
 
@@ -10,14 +10,14 @@
 
   <div class="main-body-box">
 
-    <div class="block">Du kannst hier die Rückgabe deiner Tickets anfragen. Dabei hast du die Möglichkeit, einen Teil des Betrages zu spenden.</div>
+    <div class="block">{{ _('You can request a refund for your tickets. You also have the option to donate a part of the amount.') }}</div>
 
 {% include 'site/shop/orders/_products.html' %}
 
     <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem auto; width: max-content;">
-      <div><a class="button" href="{{ url_for('.donate_everything_form', order_id=order.id) }}"><span>Den gesamten Bestellbetrag spenden</span> {{ render_icon('chevron-right') }}</a></div>
-      <div><a class="button" href="{{ url_for('.request_partial_refund', order_id=order.id) }}"><span>Einen Teil des Bestellbetrags spenden</span> {{ render_icon('chevron-right') }}</a></div>
-      <div><a class="button" href="{{ url_for('.request_full_refund', order_id=order.id) }}"><span>Nichts spenden</span> {{ render_icon('chevron-right') }}</a></div>
+      <div><a class="button" href="{{ url_for('.donate_everything_form', order_id=order.id) }}"><span>{{ _('Donate the full amount') }}</span> {{ render_icon('chevron-right') }}</a></div>
+      <div><a class="button" href="{{ url_for('.request_partial_refund', order_id=order.id) }}"><span>{{ _('Donate part of the amount') }}</span> {{ render_icon('chevron-right') }}</a></div>
+      <div><a class="button" href="{{ url_for('.request_full_refund', order_id=order.id) }}"><span>{{ _('Donate nothing') }}</span> {{ render_icon('chevron-right') }}</a></div>
     </div>
 
   </div>

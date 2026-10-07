@@ -32,7 +32,8 @@ class CancelForm(LocalizedForm):
 
 class _RequestRefundFormBase(LocalizedForm):
     recipient_name = StringField(
-        'Kontoinhaber', validators=[InputRequired(), Length(min=2, max=80)]
+        lazy_gettext('Account holder'),
+        validators=[InputRequired(), Length(min=2, max=80)],
     )
     recipient_iban = StringField('IBAN', validators=[InputRequired()])
 
@@ -49,7 +50,7 @@ class _RequestRefundFormBase(LocalizedForm):
         try:
             IBAN(field.data)  # Validate, but ignore the resulting object.
         except SchwiftyException as exc:
-            raise ValidationError('Ungültige IBAN') from exc
+            raise ValidationError(lazy_gettext('Invalid IBAN')) from exc
 
 
 class RequestFullRefundForm(_RequestRefundFormBase):
@@ -58,7 +59,8 @@ class RequestFullRefundForm(_RequestRefundFormBase):
 
 class RequestPartialRefundForm(_RequestRefundFormBase):
     amount_donation = IntegerField(
-        'Spende (in Euro)', validators=[InputRequired(), NumberRange(min=0)]
+        lazy_gettext('Donation (in EUR)'),
+        validators=[InputRequired(), NumberRange(min=0)],
     )
 
     def __init__(self, order: Order, *args, **kwargs) -> None:
@@ -73,5 +75,7 @@ class RequestPartialRefundForm(_RequestRefundFormBase):
 
         if field.data > form.order.total_amount.amount:
             raise ValidationError(
-                'Der Spendenbetrag darf den Bestellbetrag nicht übersteigen.'
+                lazy_gettext(
+                    'The donation amount must not exceed the order amount.'
+                )
             )

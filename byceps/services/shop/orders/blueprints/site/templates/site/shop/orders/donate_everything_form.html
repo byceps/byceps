@@ -11,11 +11,11 @@
 
   <div class="main-body-box">
 
-    <div class="block">Du möchtest <strong>den vollen Betrag spenden</strong> und nichts erstattet bekommen. Das finden wir total super, vielen Dank dafür! ❤️</div>
+    <div class="block">{{ _('You want to <strong>donate the full amount</strong> and not get anything refunded. Awesome, thank you so much! ❤️') }}</div>
 
 {% include 'site/shop/orders/_products.html' %}
 
-    <div class="block">Deine Bestellung wird im Anschluss automatisch storniert.</div>
+    <div class="block">{{ _('Your order will be automatically canceled afterwards.') }}</div>
 
     <form action="{{ url_for('.donate_everything', order_id=order.id) }}" method="post">
 

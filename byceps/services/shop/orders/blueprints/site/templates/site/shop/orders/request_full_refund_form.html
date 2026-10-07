@@ -12,11 +12,11 @@
   <div class="main-body-box">
     <form action="{{ url_for('.request_full_refund', order_id=order.id) }}" method="post">
 
-      <div class="block">Du möchtest <strong>den vollen Betrag erstattet bekommen</strong> und nichts spenden.</div>
+      <div class="block">{{ _('You want to <strong>get the full amount refunded</strong> and not donate anything.') }}</div>
 
 {% include 'site/shop/orders/_products.html' %}
 
-      <div class="block">Damit wir dir den Betrag zurückerstatten können, benötigen wir deine Bankverbindung.</div>
+      <div class="block">{{ _('We need your bank details to refund the amount.') }}</div>
 
       <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));">
         <div>
@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <div class="block">Bitte beachte, dass die Abwicklung der Rückzahlung einige Zeit in Anspruch nehmen kann.</div>
+      <div class="block">{{ _('Please be aware that processing the refund may take some time.') }}</div>
 
       <div class="row row--space-between">
         <div>

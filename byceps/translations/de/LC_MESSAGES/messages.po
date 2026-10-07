@@ -293,6 +293,8 @@ msgstr "Teilnehmer"
 #: byceps/services/shop/order/sold_products_service.py:142
 #: byceps/services/ticketing/blueprints/admin/forms.py:38
 #: byceps/services/ticketing/blueprints/site/forms.py:58
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:76
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:91
 #: byceps/services/user/blueprints/admin/forms.py:53
 #: byceps/services/user/blueprints/admin/templates/admin/user/_user_list.html:7
 #: byceps/services/user/creation/blueprints/site/forms.py:41
@@ -339,6 +341,7 @@ msgstr "alle Teilnehmer"
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_list.html:13
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:127
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:163
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:103
 #: byceps/services/ticketing/checkin/blueprints/admin/templates/admin/ticketing/checkin/_ticket_list.html:23
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_tickets.html:13
 #: byceps/services/user_profile/blueprints/site/templates/site/user_profile/_current_party_attendance.html:7
@@ -1482,6 +1485,7 @@ msgstr "Kategorie bearbeiten"
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_bundle.html:29
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:74
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:81
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:100
 #: byceps/services/tourney/tourney/blueprints/admin/forms.py:29
 #: byceps/services/tourney/tourney/blueprints/admin/templates/admin/tourney/tourney/index.html:29
 #: byceps/services/tourney/tourney/blueprints/admin/templates/admin/tourney/tourney/view.html:31
@@ -2179,6 +2183,8 @@ msgstr "Marke erstellen"
 #: byceps/services/site/navigation/blueprints/admin/forms.py:41
 #: byceps/services/snippet/blueprints/admin/forms.py:37
 #: byceps/services/snippet/blueprints/admin/templates/admin/snippet/index_for_scope.html:29
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:80
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:95
 #: byceps/services/user/settings/blueprints/site/templates/site/user/settings/_details_personal.html:11
 #: byceps/services/user_group/blueprints/site/templates/site/user_group/index.html:26
 #: byceps/services/whereabouts/blueprints/admin/forms.py:22
@@ -2714,6 +2720,15 @@ msgstr "Avatar von %(screen_name)s"
 msgid "Avatar of deleted user"
 msgstr "Avatar eines gelöschten Benutzers"
 
+#: byceps/services/core/blueprints/common/templates/macros/user.html:34
+#: byceps/services/user/blueprints/admin/templates/admin/user/index.html:34
+#: byceps/services/user/blueprints/admin/templates/macros/admin/user.html:32
+#: byceps/services/user/blueprints/admin/templates/macros/admin/user.html:40
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:15
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_view.html:14
+msgid "deleted"
+msgstr "gelöscht"
+
 #: byceps/services/core/blueprints/site/templates/layout/_current_user_menu_items.html:14
 #: byceps/services/guest_server/blueprints/admin/forms.py:53
 #: byceps/services/guest_server/blueprints/admin/forms.py:84
@@ -3022,6 +3037,8 @@ msgstr "Benutzeranmeldung"
 #: byceps/services/site/blueprints/admin/templates/admin/site/view.html:66
 #: byceps/services/site/blueprints/admin/templates/admin/site/view.html:73
 #: byceps/services/site/blueprints/admin/templates/admin/site/view.html:82
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:85
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:104
 msgid "not assigned"
 msgstr "nicht verknüpft"
 
@@ -3169,6 +3186,19 @@ msgid ""
 msgstr ""
 "%(initiator_screen_name)s hat ein Benutzerkonto auf \"%(service)s\" für "
 "%(user_screen_name)s entkoppelt."
+
+#: byceps/services/external_accounts/discord/blueprints/site/views.py:43
+#: byceps/services/external_accounts/discord/blueprints/site/views.py:73
+msgid "Connection to Discord currently unavailable."
+msgstr "Verbindung mit Discord derzeit nicht möglich."
+
+#: byceps/services/external_accounts/discord/blueprints/site/views.py:58
+msgid "Connection to Discord account failed."
+msgstr "Verbindung mit Discord-Account fehlgeschlagen."
+
+#: byceps/services/external_accounts/discord/blueprints/site/views.py:126
+msgid "Discord account connected successfully."
+msgstr "Discord-Account erfolgreich verbunden."
 
 #: byceps/services/gallery/permissions.py:17
 msgid "Administrate galleries"
@@ -3686,8 +3716,7 @@ msgstr "Sprache"
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view.html:109
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view.html:120
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:209
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:224
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:227
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:223
 #: byceps/services/user/blueprints/admin/templates/admin/user/_user_list.html:23
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_account.html:41
 msgid "unknown"
@@ -5297,6 +5326,7 @@ msgstr "Ticketpaket"
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/_ticket_list.html:35
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/index_bundle_for_party.html:29
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:130
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:104
 #: byceps/services/ticketing/checkin/blueprints/admin/templates/admin/ticketing/checkin/_ticket_list.html:44
 msgid "unnamed"
 msgstr "unbenannt"
@@ -5750,6 +5780,10 @@ msgstr "nichts"
 #: byceps/services/shop/product/blueprints/admin/templates/admin/shop/product/view_purchases.html:28
 msgid "Orderer"
 msgstr "Besteller"
+
+#: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:126
+msgid "Donation extent"
+msgstr "Spendenumfang"
 
 #: byceps/services/shop/cancellation_request/blueprints/admin/templates/admin/shop/cancellation_request/index.html:143
 msgid "Reclaim"
@@ -6628,6 +6662,22 @@ msgstr ""
 "Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt "
 "markiert."
 
+#: byceps/services/shop/orders/blueprints/site/forms.py:35
+msgid "Account holder"
+msgstr "Kontoinhaber"
+
+#: byceps/services/shop/orders/blueprints/site/forms.py:53
+msgid "Invalid IBAN"
+msgstr "Ungültige IBAN"
+
+#: byceps/services/shop/orders/blueprints/site/forms.py:62
+msgid "Donation (in EUR)"
+msgstr "Spende (in EUR)"
+
+#: byceps/services/shop/orders/blueprints/site/forms.py:79
+msgid "The donation amount must not exceed the order amount."
+msgstr "Der Spendenbetrag darf den Bestellbetrag nicht übersteigen."
+
 #: byceps/services/shop/orders/blueprints/site/views.py:197
 #: byceps/services/shop/orders/blueprints/site/views.py:225
 #: byceps/services/shop/orders/blueprints/site/views.py:278
@@ -6713,8 +6763,10 @@ msgstr "storniert"
 msgid "Your orders"
 msgstr "Deine Bestellungen"
 
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/_request_cancellation_head.html:8
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/donate_everything_form.html:6
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/donate_everything_form.html:27
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_cancellation_choices.html:5
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_full_refund_form.html:6
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_full_refund_form.html:37
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_partial_refund_form.html:6
@@ -6722,6 +6774,18 @@ msgstr "Deine Bestellungen"
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:135
 msgid "Return tickets"
 msgstr "Tickets zurückgeben"
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/donate_everything_form.html:14
+msgid ""
+"You want to <strong>donate the full amount</strong> and not get anything "
+"refunded. Awesome, thank you so much! ❤️"
+msgstr ""
+"Du möchtest <strong>den vollen Betrag spenden</strong> und nichts "
+"erstattet bekommen. Großartig, vielen Dank dafür! ❤️"
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/donate_everything_form.html:18
+msgid "Your order will be automatically canceled afterwards."
+msgstr "Deine Bestellung wird im Anschluss automatisch storniert."
 
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/donate_everything_form.html:24
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_full_refund_form.html:34
@@ -6737,6 +6801,60 @@ msgstr "Du kannst Bestellungen mit dem Status %(payment_state)s selbst storniere
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/index.html:38
 msgid "You have not placed any orders."
 msgstr "Du hast keine Bestellungen aufgegeben."
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_cancellation_choices.html:13
+msgid ""
+"You can request a refund for your tickets. You also have the option to "
+"donate a part of the amount."
+msgstr ""
+"Du kannst die Rückgabe deiner Tickets beantragen. Dabei hast du die "
+"Möglichkeit, einen Teil des Betrages zu spenden."
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_cancellation_choices.html:18
+msgid "Donate the full amount"
+msgstr "Den gesamten Betrag spenden"
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_cancellation_choices.html:19
+msgid "Donate part of the amount"
+msgstr "Einen Teil des Betrages spenden"
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_cancellation_choices.html:20
+msgid "Donate nothing"
+msgstr "Nichts spenden"
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_full_refund_form.html:15
+msgid ""
+"You want to <strong>get the full amount refunded</strong> and not donate "
+"anything."
+msgstr ""
+"Du möchtest <strong>den vollen Betrag erstattet bekommen</strong> und "
+"nichts spenden."
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_full_refund_form.html:19
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_partial_refund_form.html:21
+msgid "We need your bank details to refund the amount."
+msgstr ""
+"Wir benötigen deine Bankverbindung, damit wir dir den Betrag "
+"zurückerstatten können."
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_full_refund_form.html:30
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_partial_refund_form.html:32
+msgid "Please be aware that processing the refund may take some time."
+msgstr ""
+"Bitte beachte, dass die Abwicklung der Rückzahlung einige Zeit in "
+"Anspruch nehmen kann."
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_partial_refund_form.html:15
+msgid ""
+"You want to <strong>donate a partial amount</strong> and get the "
+"remainder refunded. Nice, thanks!"
+msgstr ""
+"Du möchtest <strong>einen Teil des Betrages spenden</strong> und den Rest"
+" erstattet bekommen. Cool, danke!"
+
+#: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/request_partial_refund_form.html:19
+msgid "Whole Euros only"
+msgstr "Nur volle Euro"
 
 #: byceps/services/shop/orders/blueprints/site/templates/site/shop/orders/view.html:6
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_bundle.html:41
@@ -6812,6 +6930,7 @@ msgstr "physikalisch"
 #: byceps/services/shop/product/models.py:50
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/appoint_user_form.html:6
 #: byceps/services/ticketing/blueprints/admin/templates/admin/ticketing/view_ticket.html:8
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:66
 msgid "Ticket"
 msgstr "Ticket"
 
@@ -7196,6 +7315,7 @@ msgstr "Erzeugen"
 
 #: byceps/services/shop/sold_products/blueprints/admin/templates/admin/shop/sold_products/view.html:25
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:93
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:88
 #: byceps/services/user/blueprints/admin/templates/admin/user/_view_tickets.html:43
 msgid "Buyer"
 msgstr "Käufer/in"
@@ -8159,18 +8279,30 @@ msgstr ""
 msgid "Seat manager of ticket %(ticket_code)s has been removed."
 msgstr "Der Sitzplatz-Verwalter von Ticket %(ticket_code)s wurde entfernt."
 
-#: byceps/services/ticketing/blueprints/site/views.py:494
+#: byceps/services/ticketing/blueprints/site/views.py:493
 #, python-format
 msgid "Chair source of ticket %(ticket_code)s has been set."
 msgstr "Die Stuhlquelle von Ticket %(ticket_code)s wurde gesetzt."
 
-#: byceps/services/ticketing/blueprints/site/views.py:505
+#: byceps/services/ticketing/blueprints/site/views.py:504
 msgid "Tickets cannot be updated at this time."
 msgstr "Tickets können derzeit nicht verändert werden."
 
-#: byceps/services/ticketing/blueprints/site/views.py:531
+#: byceps/services/ticketing/blueprints/site/views.py:530
 msgid "Somebody has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
+
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/appoint_seat_manager_form.html:5
+msgid "Appoint seat manager for ticket %(ticket_code)"
+msgstr "Sitzplatz-Verwalter/in für Ticket %(ticket_code)s festlegen"
+
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/appoint_user_form.html:5
+msgid "Assign user of ticket %(ticket_code)"
+msgstr "Nutzer/in von Ticket %(ticket_code)s festlegen"
+
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/appoint_user_manager_form.html:5
+msgid "Appoint user manager for ticket %(ticket_code)"
+msgstr "Nutzer-Verwalter/in für Ticket %(ticket_code)s festlegen"
 
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:16
 msgid "You currently do not use a ticket."
@@ -8207,6 +8339,7 @@ msgid "Take back seat management?"
 msgstr "Sitzplatz-Verwaltung zurückholen?"
 
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:106
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/view_printable_html.html:72
 msgctxt "ticket"
 msgid "User"
 msgstr "Nutzer/in"
@@ -8245,17 +8378,17 @@ msgid "Chair"
 msgstr "Stuhl"
 
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:205
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:222
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:221
 msgid "venue-provided"
 msgstr "bereitgestellt"
 
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:206
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:218
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:217
 msgid "rented"
 msgstr "gemietet"
 
 #: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:207
-#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:220
+#: byceps/services/ticketing/blueprints/site/templates/site/ticketing/index_mine.html:219
 msgid "user-provided"
 msgstr "selbst mitgebracht"
 
@@ -9131,14 +9264,6 @@ msgstr "Bitte zur Bestätigung \"%(verification_text)s\" eingeben."
 msgid "not initialized"
 msgstr "nicht aktiviert"
 
-#: byceps/services/user/blueprints/admin/templates/admin/user/index.html:34
-#: byceps/services/user/blueprints/admin/templates/macros/admin/user.html:32
-#: byceps/services/user/blueprints/admin/templates/macros/admin/user.html:40
-#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_index.html:15
-#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/client_view.html:14
-msgid "deleted"
-msgstr "gelöscht"
-
 #: byceps/services/user/blueprints/admin/templates/admin/user/index.html:57
 msgid "result"
 msgid_plural "results"
@@ -9597,6 +9722,10 @@ msgstr "Avatarbild entfernen?"
 #: byceps/services/user/settings/blueprints/site/templates/site/user/settings/view.html:29
 msgid "Unsubscribe from newsletter?"
 msgstr "Vom Newsletter abmelden?"
+
+#: byceps/services/user/settings/blueprints/site/templates/site/user/settings/view.html:32
+msgid "Disconnect Discord account?"
+msgstr "Verbindung mit Discord-Account trennen?"
 
 #: byceps/services/user_badge/announcing.py:31
 #, python-format
@@ -10088,6 +10217,11 @@ msgstr "Client"
 msgid "Delete client?"
 msgstr "Client löschen?"
 
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/index.html:8
+#: byceps/services/whereabouts/blueprints/admin/templates/layout/admin/whereabouts.html:6
+msgid "Orga whereabouts"
+msgstr "Orga-Verbleibe"
+
 #: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/index.html:36
 msgid "Manage"
 msgstr "Verwalten"
@@ -10108,6 +10242,19 @@ msgstr "Dateiname ohne Endung"
 #: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/user_sound_index.html:18
 msgid "Add sound"
 msgstr "Sound hinzufügen"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_create_form.html:6
+msgid "Add whereabouts"
+msgstr "Verbleib hinzufügen"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_create_form.html:9
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:10
+msgid "Back"
+msgstr "Zurück"
+
+#: byceps/services/whereabouts/blueprints/admin/templates/admin/whereabouts/whereabouts_index.html:7
+msgid "Whereabouts"
+msgstr "Verbleibe"
 
 #: byceps/util/views.py:74
 msgid "Please log in."

@@ -29,7 +29,7 @@
         confirmed_delete_on_click_then_reload('[data-action="newsletter-unsubscribe"]', '{{ _('Unsubscribe from newsletter?') }}');
 
         // connected external accounts
-        confirmed_delete_on_click_then_reload('[data-action="discord-remove"]', 'Verbindung mit Discord-Account entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="discord-remove"]', '{{ _('Disconnect Discord account?') }}');
       });
     </script>
 {% endblock %}
