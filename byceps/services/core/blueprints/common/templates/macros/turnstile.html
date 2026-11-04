@@ -1,0 +1,11 @@
+{% macro render_turnstile(action=None, theme='auto') -%}
+  {% set ts = config.get('CLOUDFLARE_TURNSTILE') or {} %}
+  {% if ts.get('enabled') and ts.get('sitekey') %}
+    <div class="turnstile-row">
+      <div class="cf-turnstile"
+           data-sitekey="{{ ts.get('sitekey') }}"
+           {% if action %}data-action="{{ action }}"{% endif %}
+           data-theme="{{ theme }}"></div>
+    </div>
+  {% endif %}
+{%- endmacro %}

@@ -56,3 +56,8 @@ url = "redis://redis/0"
 #username = "smtp-user"
 #password = "smtp-password"
 #suppress_send = false
+
+#[cloudflare_turnstile]
+#enabled = false
+#sitekey = "TURNSTILE-SITEKEY"
+#secret_key = "TURNSTILE-SECRET-KEY"
