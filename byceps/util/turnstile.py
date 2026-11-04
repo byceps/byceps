@@ -18,8 +18,10 @@ VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
 
 def _get_cfg_raw() -> Dict[str, Any]:
     """Read the nested Cloudflare Turnstile block as set on app.config."""
-    # This is expected to be injected by config conversion (converter.py).
-    return current_app.config.get("cloudflare_turnstile") or {}
+    # Injected as `CLOUDFLARE_TURNSTILE` by `byceps.application`. Reading
+    # the lowercase key (as before) always yielded `{}`, i.e. "disabled",
+    # so every non-empty token was accepted without asking Cloudflare.
+    return current_app.config.get("CLOUDFLARE_TURNSTILE") or {}
 
 
 def get_public_options() -> Dict[str, Any]:
