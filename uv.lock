@@ -197,7 +197,7 @@ requires-dist = [
     { name = "rtoml", specifier = ">=0.14.0" },
     { name = "schwifty", specifier = ">=2026.11.0" },
     { name = "secret-type", specifier = ">=0.3.0" },
-    { name = "sentry-sdk", extras = ["flask", "httpx", "rq", "sqlalchemy"], specifier = ">=2.69.2" },
+    { name = "sentry-sdk", extras = ["flask", "httpx", "rq", "sqlalchemy"], specifier = ">=2.74.0" },
     { name = "sqlalchemy", specifier = ">=2.0.54,<2.1.0" },
     { name = "stripe", specifier = "==5.4.0" },
     { name = "structlog", specifier = ">=26.1.0" },
@@ -1707,15 +1707,15 @@ wheels = [
 
 [[package]]
 name = "sentry-sdk"
-version = "2.69.2"
+version = "2.74.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cc/08/1211e4652384195ef754f8ed570566088dc848f8eda7d005abf13f05f17f/sentry_sdk-2.69.2.tar.gz", hash = "sha256:b4d8915a526e626b0b14a2925907554b722d3b8e3e3781570fc35791712af323", size = 1043564, upload-time = "2026-09-15T15:25:09.018Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8e/7f/1b16ab4aee53cc5db976bac12e6df5d562aae3880965200cef812e7121d9/sentry_sdk-2.74.0.tar.gz", hash = "sha256:dd91d75aacaef636006b579ac3ddb2fdbc9dce35f00f4b353b6b1b110c6b256a", size = 1081514, upload-time = "2026-11-05T14:50:27.444Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ee/78/5d8b79fd60330234317aa827a1f5e445980a6f4e0ea6ed4e1187acb70a0f/sentry_sdk-2.69.2-py3-none-any.whl", hash = "sha256:25bc0a6c55bba0b83398212a7247f4f9f3190f189a1909b68e4807ef4b785895", size = 528765, upload-time = "2026-09-15T15:25:07.362Z" },
+    { url = "https://files.pythonhosted.org/packages/55/b1/736d4b4b308694b0071844a533522ac06669ad61751687b94edfbf863f17/sentry_sdk-2.74.0-py3-none-any.whl", hash = "sha256:40b205af015649df3ec9986e057ce24ce85956bee3fb75efa72c93aa7036bdff", size = 549800, upload-time = "2026-11-05T14:50:25.767Z" },
 ]
 
 [package.optional-dependencies]
