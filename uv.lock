@@ -192,7 +192,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.2.4" },
     { name = "qrcode", specifier = ">=8.2" },
     { name = "redis", specifier = ">=8.1.0" },
-    { name = "rq", specifier = ">=2.12.0" },
+    { name = "rq", specifier = ">=2.12.0,<3.0.0" },
     { name = "rq-dashboard", specifier = ">=0.9.1" },
     { name = "rtoml", specifier = ">=0.14.0" },
     { name = "schwifty", specifier = ">=2026.11.0" },
