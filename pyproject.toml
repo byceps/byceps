@@ -19,7 +19,6 @@ classifiers = [
     "Programming Language :: JavaScript",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Communications",
@@ -28,7 +27,7 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Message Boards",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: News/Diary",
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
     "babel>=2.18.0",
     "bbcode==1.1.0",
@@ -105,7 +104,7 @@ requires = ["uv_build>=0.12.3,<0.13.0"]
 build-backend = "uv_build"
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 plugins = "sqlalchemy.ext.mypy.plugin"
 ignore_missing_imports = true
 no_implicit_optional = true
