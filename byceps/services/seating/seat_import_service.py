@@ -9,8 +9,11 @@ byceps.services.seating.seat_import_service
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
+from dataclasses import dataclass
+import dataclasses
+from typing import Annotated
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import Field, TypeAdapter, ValidationError
 
 from byceps.services.party.models import PartyID
 from byceps.services.ticketing import ticket_category_service
@@ -21,16 +24,20 @@ from . import seat_group_service, seat_service, seating_area_service
 from .models import Seat, SeatingAreaID, SeatToImport
 
 
-class SerializableSeatToImport(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class SerializableSeatToImport:
     area_title: str
     coord_x: int
     coord_y: int
     category_title: str
     rotation: int | None = None
     label: str | None = None
-    type_: str | None = Field(default=None, alias='type')
+    type_: Annotated[str | None, Field(alias='type')] = None
     blocked: bool = False
     group_title: str | None = None
+
+
+serializable_seat_to_import_adapter = TypeAdapter(SerializableSeatToImport)
 
 
 def serialize_seat_to_import(
@@ -44,7 +51,7 @@ def serialize_seat_to_import(
     group_title: str | None = None,
 ) -> str:
     """Serialize a seat to JSON so it can be imported."""
-    model = SerializableSeatToImport(
+    seat = SerializableSeatToImport(
         area_title=area_title,
         coord_x=coord_x,
         coord_y=coord_y,
@@ -52,18 +59,20 @@ def serialize_seat_to_import(
     )
 
     if rotation is not None:
-        model.rotation = rotation
+        seat = dataclasses.replace(seat, rotation=rotation)
 
     if label is not None:
-        model.label = label
+        seat = dataclasses.replace(seat, label=label)
 
     if type_ is not None:
-        model.type_ = type_
+        seat = dataclasses.replace(seat, type_=type_)
 
     if group_title is not None:
-        model.group_title = group_title
+        seat = dataclasses.replace(seat, group_title=group_title)
 
-    return model.model_dump_json(by_alias=True, exclude_unset=True)
+    return serializable_seat_to_import_adapter.dump_json(
+        seat, by_alias=True, exclude_defaults=True
+    )
 
 
 def load_seats_from_json_lines(
@@ -165,7 +174,7 @@ class SeatsImportParser:
 def _parse_seat_json(json_data: str) -> Result[SerializableSeatToImport, str]:
     """Parse a JSON object into a seat import object."""
     try:
-        seat_to_import = SerializableSeatToImport.model_validate_json(
+        seat_to_import = serializable_seat_to_import_adapter.validate_json(
             json_data, strict=True
         )
         return Ok(seat_to_import)

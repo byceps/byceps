@@ -6,21 +6,23 @@ byceps.services.tourney.match_comment.blueprints.api.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
 from uuid import UUID
 
-from pydantic import BaseModel
 
-
-class CreateMatchCommentRequest(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class CreateMatchCommentRequest:
     match_id: UUID
     creator_id: UUID
     body: str
 
 
-class UpdateMatchCommentRequest(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class UpdateMatchCommentRequest:
     editor_id: UUID
     body: str
 
 
-class ModerateMatchCommentRequest(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class ModerateMatchCommentRequest:
     initiator_id: UUID

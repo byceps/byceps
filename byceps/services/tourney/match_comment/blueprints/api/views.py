@@ -12,7 +12,7 @@ from itertools import chain
 from typing import Any
 
 from flask import abort, jsonify, request, url_for
-from pydantic import BaseModel, ValidationError
+from pydantic import TypeAdapter, ValidationError
 
 from byceps.services.orga_team import orga_team_service
 from byceps.services.tourney import (
@@ -160,7 +160,7 @@ blueprint.add_url_rule(
 @respond_created
 def create():
     """Create a comment on a match."""
-    req = _parse_request(CreateMatchCommentRequest)
+    req = _parse_create_match_comment_request()
 
     match = tourney_match_service.find_match(req.match_id)
     if not match:
@@ -191,7 +191,7 @@ def update(comment_id):
     """Update a comment on a match."""
     comment = _get_comment_or_404(comment_id)
 
-    req = _parse_request(UpdateMatchCommentRequest)
+    req = _parse_update_match_comment_request()
 
     editor_id = UserID(req.editor_id)
     editor = user_service.find_active_user(editor_id)
@@ -210,7 +210,7 @@ def hide(comment_id):
     """Hide the match comment."""
     comment = _get_comment_or_404(comment_id)
 
-    req = _parse_request(ModerateMatchCommentRequest)
+    req = _parse_moderate_match_comment_request()
 
     initiator_id = UserID(req.initiator_id)
     initiator = user_service.find_active_user(initiator_id)
@@ -227,7 +227,7 @@ def unhide(comment_id):
     """Un-hide the match comment."""
     comment = _get_comment_or_404(comment_id)
 
-    req = _parse_request(ModerateMatchCommentRequest)
+    req = _parse_moderate_match_comment_request()
 
     initiator_id = UserID(req.initiator_id)
     initiator = user_service.find_active_user(initiator_id)
@@ -255,8 +255,35 @@ def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
     return comment
 
 
-def _parse_request[M: BaseModel](model_class: type[M]) -> M:
+create_match_comment_request_adapter = TypeAdapter(CreateMatchCommentRequest)
+update_match_comment_request_adapter = TypeAdapter(UpdateMatchCommentRequest)
+moderate_match_comment_request_adapter = TypeAdapter(
+    ModerateMatchCommentRequest
+)
+
+
+def _parse_create_match_comment_request() -> CreateMatchCommentRequest:
     try:
-        return model_class.model_validate(request.get_json())
+        return create_match_comment_request_adapter.validate_python(
+            request.get_json()
+        )
+    except ValidationError as e:
+        abort(400, e.json())
+
+
+def _parse_update_match_comment_request() -> UpdateMatchCommentRequest:
+    try:
+        return update_match_comment_request_adapter.validate_python(
+            request.get_json()
+        )
+    except ValidationError as e:
+        abort(400, e.json())
+
+
+def _parse_moderate_match_comment_request() -> ModerateMatchCommentRequest:
+    try:
+        return moderate_match_comment_request_adapter.validate_python(
+            request.get_json()
+        )
     except ValidationError as e:
         abort(400, e.json())

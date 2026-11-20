@@ -6,17 +6,18 @@ byceps.services.whereabouts.blueprints.api.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
 from uuid import UUID
 
-from pydantic import BaseModel
 
-
-class RegisterClientRequest(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class RegisterClientRequest:
     button_count: int
     audio_output: bool
 
 
-class SetStatusRequest(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class SetStatusRequest:
     user_id: UUID
     party_id: str
     whereabouts_name: str

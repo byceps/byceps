@@ -6,11 +6,12 @@ byceps.services.shop.payment.stripe.blueprints.site.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
 from uuid import UUID
 
 from flask import abort, g, jsonify, make_response, request, url_for
 from moneyed import Money
-from pydantic import BaseModel, ValidationError
+from pydantic import TypeAdapter, ValidationError
 import stripe
 import structlog
 
@@ -36,7 +37,8 @@ log = structlog.get_logger()
 blueprint = create_blueprint('shop_payment_stripe', __name__)
 
 
-class CreatePaymentIntent(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class CreatePaymentIntent:
     shop_order_id: UUID
 
 
@@ -193,9 +195,12 @@ def _check_transaction_against_order(session, order):
     )
 
 
+create_payment_intent_adapter = TypeAdapter(CreatePaymentIntent)
+
+
 def _parse_request() -> CreatePaymentIntent:
     try:
-        return CreatePaymentIntent.model_validate(request.get_json())
+        return create_payment_intent_adapter.validate_python(request.get_json())
     except ValidationError as e:
         abort(make_response(jsonify(error=str(e)), 400))
 

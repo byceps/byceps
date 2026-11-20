@@ -7,7 +7,7 @@ byceps.services.user.blueprints.api.views
 """
 
 from flask import abort, jsonify, request
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 
 from byceps.services.user import (
     signals as user_signals,
@@ -44,13 +44,20 @@ def get_profile(user_id):
     )
 
 
+invalidate_email_address_request_adapter = TypeAdapter(
+    InvalidateEmailAddressRequest
+)
+
+
 @blueprint.post('/invalidate_email_address')
 @api_token_required
 @respond_no_content
 def invalidate_email_address():
     """Invalidate the email address."""
     try:
-        req = InvalidateEmailAddressRequest.model_validate(request.get_json())
+        req = invalidate_email_address_request_adapter.validate_python(
+            request.get_json()
+        )
     except ValidationError as e:
         abort(400, e.json())
 

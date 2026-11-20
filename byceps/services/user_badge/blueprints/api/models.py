@@ -6,12 +6,12 @@ byceps.services.user_badge.blueprints.api.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
 from uuid import UUID
 
-from pydantic import BaseModel
 
-
-class AwardBadgeToUserRequest(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class AwardBadgeToUserRequest:
     badge_slug: str
     awardee_id: UUID
     initiator_id: UUID

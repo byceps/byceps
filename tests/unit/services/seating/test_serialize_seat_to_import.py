@@ -30,7 +30,7 @@ from byceps.services.seating import seat_import_service
             None,
             None,
             None,
-            '{"area_title":"Main hall","coord_x":23,"coord_y":42,"category_title":"Standard"}',
+            b'{"area_title":"Main hall","coord_x":23,"coord_y":42,"category_title":"Standard"}',
         ),
         (
             'Second hall',
@@ -41,7 +41,7 @@ from byceps.services.seating import seat_import_service
             'VIP Seat 7',
             'vip',
             'VIPs Group #1',
-            '{"area_title":"Second hall","coord_x":10,"coord_y":25,"category_title":"VIP","rotation":45,"label":"VIP Seat 7","type":"vip","group_title":"VIPs Group #1"}',
+            b'{"area_title":"Second hall","coord_x":10,"coord_y":25,"category_title":"VIP","rotation":45,"label":"VIP Seat 7","type":"vip","group_title":"VIPs Group #1"}',
         ),
     ],
 )
@@ -54,7 +54,7 @@ def test_serialize_seat_to_import(
     label: str | None,
     type_: str | None,
     group_title: str | None,
-    expected: str,
+    expected: bytes,
 ):
     actual = seat_import_service.serialize_seat_to_import(
         area_title,

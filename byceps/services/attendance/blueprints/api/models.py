@@ -6,11 +6,11 @@ byceps.services.attendance.blueprints.api.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
 from uuid import UUID
 
-from pydantic import BaseModel
 
-
-class CreateArchivedAttendanceRequest(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class CreateArchivedAttendanceRequest:
     user_id: UUID
     party_id: str

@@ -18,7 +18,7 @@ from paypalcheckoutsdk.core import (
 from paypalcheckoutsdk.orders import OrdersGetRequest
 from paypalhttp import HttpError
 from paypalhttp.http_response import Result as HttpResult
-from pydantic import BaseModel, ValidationError
+from pydantic import TypeAdapter, ValidationError
 import structlog
 
 from byceps.byceps_app import get_current_byceps_app
@@ -41,7 +41,8 @@ log = structlog.get_logger()
 blueprint = create_blueprint('shop_payment_paypal', __name__)
 
 
-class CapturePayPalRequest(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class CapturePayPalRequest:
     shop_order_id: UUID
     paypal_order_id: str
 
@@ -95,9 +96,14 @@ def capture_transaction():
     return jsonify({'status': 'OK'})
 
 
+capture_paypal_request_adapter = TypeAdapter(CapturePayPalRequest)
+
+
 def _parse_request() -> CapturePayPalRequest:
     try:
-        return CapturePayPalRequest.model_validate(request.get_json())
+        return capture_paypal_request_adapter.validate_python(
+            request.get_json()
+        )
     except ValidationError as e:
         abort(400, e.json())
 

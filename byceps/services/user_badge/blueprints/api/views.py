@@ -7,7 +7,7 @@ byceps.services.user_badge.blueprints.api.views
 """
 
 from flask import abort, request
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 
 from byceps.services.user import user_service
 from byceps.services.user.models import UserID
@@ -26,6 +26,9 @@ from .models import AwardBadgeToUserRequest
 blueprint = create_blueprint('user_badge_api', __name__)
 
 
+award_badge_to_user_request_adapter = TypeAdapter(AwardBadgeToUserRequest)
+
+
 @blueprint.post('/awardings')
 @api_token_required
 @respond_no_content
@@ -35,7 +38,9 @@ def award_badge_to_user():
         abort(415)
 
     try:
-        req = AwardBadgeToUserRequest.model_validate(request.get_json())
+        req = award_badge_to_user_request_adapter.validate_python(
+            request.get_json()
+        )
     except ValidationError as e:
         abort(400, e.json())
 

@@ -7,7 +7,7 @@ byceps.services.attendance.blueprints.api.views
 """
 
 from flask import abort, request
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 
 from byceps.services.party import party_service
 from byceps.services.party.models import PartyID
@@ -23,6 +23,11 @@ from .models import CreateArchivedAttendanceRequest
 blueprint = create_blueprint('attendance_api', __name__)
 
 
+create_archived_attendance_request_adapter = TypeAdapter(
+    CreateArchivedAttendanceRequest
+)
+
+
 @blueprint.post('/archived_attendances')
 @api_token_required
 @respond_no_content
@@ -32,7 +37,9 @@ def create_archived_attendance():
         abort(415)
 
     try:
-        req = CreateArchivedAttendanceRequest.model_validate(request.get_json())
+        req = create_archived_attendance_request_adapter.validate_python(
+            request.get_json()
+        )
     except ValidationError as e:
         abort(400, e.json())
 

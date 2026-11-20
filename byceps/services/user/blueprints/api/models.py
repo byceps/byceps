@@ -6,9 +6,10 @@ byceps.services.user.blueprints.api.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from pydantic import BaseModel
+from dataclasses import dataclass
 
 
-class InvalidateEmailAddressRequest(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class InvalidateEmailAddressRequest:
     email_address: str
     reason: str

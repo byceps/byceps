@@ -7,19 +7,21 @@ byceps.services.user.user_import_service
 """
 
 from collections.abc import Iterator
+from dataclasses import dataclass
 from datetime import date
 from io import TextIOBase
 import json
 import secrets
 
-from pydantic import BaseModel, ValidationError
+from pydantic import TypeAdapter, ValidationError
 from secret_type import secret
 
 from . import user_creation_service
 from .models import User
 
 
-class UserToImport(BaseModel):
+@dataclass(frozen=True, kw_only=True)
+class UserToImport:
     screen_name: str
     email_address: str | None = None
     legacy_id: str | None = None
@@ -34,6 +36,9 @@ class UserToImport(BaseModel):
     internal_comment: str | None = None
 
 
+user_to_import_adapter = TypeAdapter(UserToImport)
+
+
 def parse_lines(lines: TextIOBase) -> Iterator[str]:
     for line in lines:
         yield line.strip()
@@ -43,7 +48,7 @@ def parse_user_json(json_data: str) -> UserToImport:
     data_dict = json.loads(json_data)
 
     try:
-        return UserToImport.model_validate(data_dict)
+        return user_to_import_adapter.validate_python(data_dict)
     except ValidationError as exc:
         raise Exception(str(exc)) from exc
 
