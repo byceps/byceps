@@ -16,10 +16,13 @@ URL = '/v1/whereabouts/client/register'
 LOCATION_PREFIX = '/v1/whereabouts/client/registration_status/'
 
 
+PayloadDict = dict[str, bool | int | str]
+
+
 def test_registration_closed(setting_registration_closed, api_client):
     assert not whereabouts_client_service.is_registration_open()
 
-    payload = {
+    payload: PayloadDict = {
         'button_count': 3,
         'audio_output': True,
     }
@@ -32,7 +35,7 @@ def test_registration_closed(setting_registration_closed, api_client):
 def test_success(setting_registration_open, api_client):
     assert whereabouts_client_service.is_registration_open()
 
-    payload = {
+    payload: PayloadDict = {
         'button_count': 3,
         'audio_output': True,
     }
@@ -51,7 +54,7 @@ def test_success(setting_registration_open, api_client):
     }
 
 
-def send_request(api_client, payload: dict[str, bool | int | str]):
+def send_request(api_client, payload: PayloadDict):
     return api_client.post(URL, json=payload)
 
 
