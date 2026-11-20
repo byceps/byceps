@@ -11,11 +11,11 @@ from contextlib import contextmanager
 from datetime import date, datetime
 from secrets import token_hex
 from uuid import UUID
+import uuid
 
 from babel import Locale
 from flask import appcontext_pushed, g
 from secret_type import secret
-from uuid6 import uuid7
 
 from byceps.byceps_app import BycepsApp
 from byceps.database import db
@@ -43,7 +43,7 @@ def generate_token(n: int = 4) -> str:
 
 
 def generate_uuid() -> UUID:
-    return uuid7()
+    return uuid.uuid7()
 
 
 @contextmanager

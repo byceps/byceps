@@ -10,8 +10,6 @@ UUID generation
 
 import uuid
 
-from uuid6 import uuid7
-
 
 def generate_uuid4() -> uuid.UUID:
     """Generate a random UUID (Universally Unique IDentifier), version 4."""
@@ -20,4 +18,4 @@ def generate_uuid4() -> uuid.UUID:
 
 def generate_uuid7() -> uuid.UUID:
     """Generate a random UUID (Universally Unique IDentifier), version 7."""
-    return uuid7()
+    return uuid.uuid7()
