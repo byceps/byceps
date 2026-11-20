@@ -49,7 +49,7 @@ dependencies = [
     "pillow>=13.0.0",
     "psycopg[binary]>=3.3.9",
     "py-moneyed==3.0",
-    "pydantic>=2.14.3",
+    "pydantic>=2.14.4",
     "python-dotenv>=1.2.4",
     "qrcode>=8.2",
     "redis>=8.1.0",
