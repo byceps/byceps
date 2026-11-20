@@ -35,7 +35,7 @@ from byceps.util.views import (
 )
 
 from .decorators import client_token_required
-from .models import RegisterClientRequestModel, SetStatusRequestModel
+from .models import RegisterClientRequest, SetStatusRequest
 
 
 blueprint = create_blueprint('whereabouts_api', __name__)
@@ -51,7 +51,7 @@ def register_client():
         abort(415)
 
     try:
-        req = RegisterClientRequestModel.model_validate(request.get_json())
+        req = RegisterClientRequest.model_validate(request.get_json())
     except ValidationError as e:
         abort(400, e.json())
 
@@ -198,7 +198,7 @@ def set_status():
         abort(415)
 
     try:
-        req = SetStatusRequestModel.model_validate(request.get_json())
+        req = SetStatusRequest.model_validate(request.get_json())
     except ValidationError as e:
         abort(400, e.json())
 

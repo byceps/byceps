@@ -11,12 +11,12 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class RegisterClientRequestModel(BaseModel):
+class RegisterClientRequest(BaseModel):
     button_count: int
     audio_output: bool
 
 
-class SetStatusRequestModel(BaseModel):
+class SetStatusRequest(BaseModel):
     user_id: UUID
     party_id: str
     whereabouts_name: str
