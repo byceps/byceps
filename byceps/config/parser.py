@@ -314,13 +314,7 @@ def parse_config(
 ) -> ParsingResult[tuple[BycepsConfig, WebAppsConfig]]:
     """Parse configuration in TOML format."""
     data = rtoml.loads(toml)
-    return _parse_config_dict(data)
 
-
-def _parse_config_dict(
-    data: Data,
-) -> ParsingResult[tuple[BycepsConfig, WebAppsConfig]]:
-    """Parse configuration from dictionary."""
     entries: Data = {}
     errors: list[str] = []
 
