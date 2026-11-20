@@ -44,6 +44,9 @@ blueprint = create_blueprint('whereabouts_api', __name__)
 @blueprint.post('/client/register')
 def register_client():
     """Register a client."""
+    if not whereabouts_client_service.is_registration_open():
+        abort(403, 'Client registration is closed.')
+
     if not request.is_json:
         abort(415)
 
@@ -51,9 +54,6 @@ def register_client():
         req = RegisterClientRequestModel.model_validate(request.get_json())
     except ValidationError as e:
         abort(400, e.json())
-
-    if not whereabouts_client_service.is_registration_open():
-        abort(403, 'Client registration is closed.')
 
     source_address = _get_source_ip_address(request)
 
