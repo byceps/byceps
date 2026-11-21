@@ -49,7 +49,7 @@ class TomlConfig:
     propagate_exceptions: bool | None
     timezone: str
     secret_key: str
-    apps: WebsAppConfig
+    apps: WebAppsConfig
     database: DatabaseConfig
     development: DevelopmentConfig
     discord: DiscordConfig | None
