@@ -44,6 +44,24 @@ class AppMode(Enum):
 
 
 @dataclass(frozen=True, kw_only=True, slots=True)
+class TomlConfig:
+    locale: str
+    propagate_exceptions: bool | None
+    timezone: str
+    secret_key: str
+    apps: WebAppConfig
+    database: DatabaseConfig
+    development: DevelopmentConfig
+    discord: DiscordConfig | None
+    invoiceninja: InvoiceNinjaConfig | None
+    jobs: JobsConfig
+    metrics: MetricsConfig
+    payment_gateways: PaymentGatewaysConfig | None
+    redis: RedisConfig
+    smtp: SmtpConfig
+
+
+@dataclass(frozen=True, kw_only=True, slots=True)
 class BycepsConfig:
     data_path: Path
     locale: str

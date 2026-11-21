@@ -35,6 +35,7 @@ from .models import (
     SiteWebAppConfig,
     SmtpConfig,
     StripeConfig,
+    TomlConfig,
     WebAppsConfig,
 )
 from .util import find_duplicate_server_names, iterate_app_configs
@@ -313,6 +314,39 @@ def parse_config(
     toml: str,
 ) -> ParsingResult[tuple[BycepsConfig, WebAppsConfig]]:
     """Parse configuration in TOML format."""
+    match _parse_toml_config(toml):
+        case Ok(toml_config):
+            pass
+        case Err(e):
+            return Err(e)
+
+    data_path = Path('./data')
+    testing = False
+
+    byceps_config = BycepsConfig(
+        data_path=data_path,
+        locale=toml_config.locale,
+        propagate_exceptions=toml_config.propagate_exceptions,
+        testing=testing,
+        timezone=toml_config.timezone,
+        secret_key=toml_config.secret_key,
+        database=toml_config.database,
+        development=toml_config.development,
+        discord=toml_config.discord,
+        invoiceninja=toml_config.invoiceninja,
+        jobs=toml_config.jobs,
+        metrics=toml_config.metrics,
+        payment_gateways=toml_config.payment_gateways,
+        redis=toml_config.redis,
+        smtp=toml_config.smtp,
+    )
+
+    web_apps_config = toml_config.apps
+
+    return Ok((byceps_config, web_apps_config))
+
+
+def _parse_toml_config(toml: str) -> ParsingResult[TomlConfig]:
     data = rtoml.loads(toml)
 
     entries: Data = {}
@@ -344,14 +378,9 @@ def parse_config(
     if errors:
         return Err(errors)
 
-    entries['data_path'] = Path('./data')
-    entries['testing'] = False
+    toml_config = TomlConfig(**entries)
 
-    web_apps_config = entries.pop('apps')
-
-    byceps_config = BycepsConfig(**entries)
-
-    return Ok((byceps_config, web_apps_config))
+    return Ok(toml_config)
 
 
 def _parse_section[C, T](
