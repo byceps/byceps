@@ -267,6 +267,7 @@ def test_parse_incomplete_config():
             'secret_key: Field required',
             'timezone: Field required',
             'apps: Field required',
+            'database.port: Input should be a valid integer, unable to parse string as an integer',
             'database.username: Field required',
             'database.password: Field required',
             'redis: Field required',
@@ -277,7 +278,7 @@ def test_parse_incomplete_config():
     toml = """\
     [database]
     host = "db-host"
-    port = 54321
+    port = "5432x"
     database = "db-database"
     """
 
