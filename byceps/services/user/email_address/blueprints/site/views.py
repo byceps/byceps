@@ -6,7 +6,8 @@ byceps.services.user.email_address.blueprints.site.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import g, request
+from flask import g, request, current_app
+from byceps.util import turnstile as cf_turnstile
 from flask_babel import gettext
 
 from byceps.services.user import (
@@ -49,6 +50,23 @@ def request_confirmation_email():
     form = RequestConfirmationEmailForm(request.form)
     if not form.validate():
         return request_confirmation_email_form(form)
+
+    # Cloudflare Turnstile
+    ts_cfg = current_app.config.get('CLOUDFLARE_TURNSTILE') or {}
+    if ts_cfg.get('enabled'):
+        token = (request.form.get('cf-turnstile-response') or '').strip()
+        if not token:
+            flash_error(gettext('Please complete the Turnstile challenge.'))
+            return request_confirmation_email_form(form)
+        ok = cf_turnstile.verify_token(
+            token,
+            remoteip=cf_turnstile.best_remote_ip(),
+            timeout=3.0,
+            expected_action='email_confirmation_request',
+        )
+        if not ok:
+            flash_error(gettext('Turnstile verification failed. Please try again.'))
+            return request_confirmation_email_form(form)
 
     screen_name = form.screen_name.data.strip()
     user = user_service.find_user_by_screen_name(screen_name)
