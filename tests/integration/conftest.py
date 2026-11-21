@@ -120,9 +120,9 @@ def build_byceps_config(
         data_path=data_path,
         locale='de',
         propagate_exceptions=None,
+        secret_key='secret-key-for-testing-ONLY',
         testing=True,
         timezone='Europe/Berlin',
-        secret_key='secret-key-for-testing-ONLY',
         database=database_config,
         development=DevelopmentConfig(
             style_guide_enabled=style_guide_enabled,

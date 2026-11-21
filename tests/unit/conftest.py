@@ -47,9 +47,9 @@ def make_byceps_config():
             data_path=Path('./data'),
             locale='de',
             propagate_exceptions=None,
+            secret_key='secret-key-for-testing-ONLY',
             testing=True,
             timezone='Europe/Berlin',
-            secret_key='secret-key-for-testing-ONLY',
             database=DatabaseConfig(
                 host='127.0.0.1',
                 port=5432,

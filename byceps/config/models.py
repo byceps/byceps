@@ -47,8 +47,8 @@ class AppMode(Enum):
 class TomlConfig:
     locale: str
     propagate_exceptions: bool | None
-    timezone: str
     secret_key: str
+    timezone: str
     apps: WebAppsConfig
     database: DatabaseConfig
     development: DevelopmentConfig
@@ -66,9 +66,9 @@ class BycepsConfig:
     data_path: Path
     locale: str
     propagate_exceptions: bool | None
+    secret_key: str
     testing: bool
     timezone: str
-    secret_key: str
     database: DatabaseConfig
     development: DevelopmentConfig
     discord: DiscordConfig | None
