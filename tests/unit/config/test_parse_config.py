@@ -263,14 +263,14 @@ def test_parse_config_defaults():
 def test_parse_incomplete_config():
     expected = Err(
         [
-            'Key "locale" missing',
-            'Key "secret_key" missing',
-            'Key "timezone" missing',
-            'Section "apps" missing',
-            'Key "username" missing in section "database"',
-            'Key "password" missing in section "database"',
-            'Section "redis" missing',
-            'Section "smtp" missing',
+            'locale: Field required',
+            'secret_key: Field required',
+            'timezone: Field required',
+            'apps: Field required',
+            'database.username: Field required',
+            'database.password: Field required',
+            'redis: Field required',
+            'smtp: Field required',
         ]
     )
 
