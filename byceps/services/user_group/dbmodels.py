@@ -11,7 +11,7 @@ from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -24,7 +24,7 @@ class DbUserGroup(db.Model):
     """A self-organized group of users."""
 
     __tablename__ = 'user_groups'
-    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
+    __table_args__ = (UniqueConstraint('party_id', 'title'),)
 
     id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(

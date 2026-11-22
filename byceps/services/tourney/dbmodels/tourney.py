@@ -9,7 +9,7 @@ byceps.services.tourney.dbmodels.tourney
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -24,7 +24,7 @@ class DbTourney(db.Model):
     """A tournament."""
 
     __tablename__ = 'tourneys'
-    __table_args__ = (db.UniqueConstraint('category_id', 'title'),)
+    __table_args__ = (UniqueConstraint('category_id', 'title'),)
 
     id: Mapped[TourneyID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(

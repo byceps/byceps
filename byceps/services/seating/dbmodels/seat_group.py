@@ -10,7 +10,7 @@ from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import Integer, UnicodeText, Uuid
 
 from byceps.database import db
@@ -31,7 +31,7 @@ class DbSeatGroup(db.Model):
     """A group of seats."""
 
     __tablename__ = 'seat_groups'
-    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
+    __table_args__ = (UniqueConstraint('party_id', 'title'),)
 
     id: Mapped[SeatGroupID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(

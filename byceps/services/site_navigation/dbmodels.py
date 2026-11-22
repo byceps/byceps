@@ -9,7 +9,7 @@ byceps.services.site_navigation.dbmodels
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 
@@ -31,7 +31,7 @@ class DbNavMenu(db.Model):
     """A navigation menu."""
 
     __tablename__ = 'site_nav_menus'
-    __table_args__ = (db.UniqueConstraint('site_id', 'name', 'language_code'),)
+    __table_args__ = (UniqueConstraint('site_id', 'name', 'language_code'),)
 
     id: Mapped[NavMenuID] = mapped_column(Uuid, primary_key=True)
     site_id: Mapped[SiteID] = mapped_column(
@@ -71,7 +71,7 @@ class DbNavItem(db.Model):
     """An item of a navigation menu."""
 
     __tablename__ = 'site_nav_menu_items'
-    __table_args__ = (db.UniqueConstraint('menu_id', 'position'),)
+    __table_args__ = (UniqueConstraint('menu_id', 'position'),)
 
     id: Mapped[NavItemID] = mapped_column(Uuid, primary_key=True)
     menu_id: Mapped[NavMenuID] = mapped_column(

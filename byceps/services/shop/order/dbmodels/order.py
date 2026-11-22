@@ -13,7 +13,7 @@ from typing import Any, TYPE_CHECKING
 from moneyed import Currency, get_currency, Money
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import CheckConstraint, ForeignKey
 from sqlalchemy.types import Numeric, UnicodeText, Uuid
 
 
@@ -183,7 +183,7 @@ class DbLineItem(db.Model):
     name: Mapped[str] = mapped_column(UnicodeText)
     unit_price: Mapped[Decimal] = mapped_column(Numeric(6, 2))
     tax_rate: Mapped[Decimal] = mapped_column(Numeric(3, 3))
-    quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity > 0'))
+    quantity: Mapped[int] = mapped_column(CheckConstraint('quantity > 0'))
     line_amount: Mapped[Decimal] = mapped_column(Numeric(7, 2))
     processing_required: Mapped[bool]
     processing_result: Mapped[Any | None] = mapped_column(JSONB)

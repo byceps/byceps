@@ -7,7 +7,7 @@ byceps.services.orga_team.dbmodels
 """
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -23,7 +23,7 @@ class DbOrgaTeam(db.Model):
     """A group of organizers for a single party."""
 
     __tablename__ = 'orga_teams'
-    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
+    __table_args__ = (UniqueConstraint('party_id', 'title'),)
 
     id: Mapped[OrgaTeamID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
@@ -44,7 +44,7 @@ class DbMembership(db.Model):
     """The assignment of a user to an organizer team."""
 
     __tablename__ = 'orga_team_memberships'
-    __table_args__ = (db.UniqueConstraint('orga_team_id', 'user_id'),)
+    __table_args__ = (UniqueConstraint('orga_team_id', 'user_id'),)
 
     id: Mapped[MembershipID] = mapped_column(Uuid, primary_key=True)
     orga_team_id: Mapped[OrgaTeamID] = mapped_column(

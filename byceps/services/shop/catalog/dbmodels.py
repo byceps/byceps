@@ -8,7 +8,7 @@ byceps.services.shop.catalog.dbmodels
 
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import Integer, UnicodeText, Uuid
 
 from byceps.database import db
@@ -41,7 +41,7 @@ class DbCollection(db.Model):
     """A group of products inside of catalog."""
 
     __tablename__ = 'shop_catalog_collections'
-    __table_args__ = (db.UniqueConstraint('catalog_id', 'title'),)
+    __table_args__ = (UniqueConstraint('catalog_id', 'title'),)
 
     id: Mapped[CollectionID] = mapped_column(Uuid, primary_key=True)
     catalog_id: Mapped[CatalogID] = mapped_column(
@@ -70,7 +70,7 @@ class DbCatalogProduct(db.Model):
     """The assignment of a product to a collection."""
 
     __tablename__ = 'shop_catalog_products'
-    __table_args__ = (db.UniqueConstraint('collection_id', 'product_id'),)
+    __table_args__ = (UniqueConstraint('collection_id', 'product_id'),)
 
     id: Mapped[CatalogProductID] = mapped_column(Uuid, primary_key=True)
     collection_id: Mapped[CollectionID] = mapped_column(

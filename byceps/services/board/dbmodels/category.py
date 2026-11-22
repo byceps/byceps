@@ -10,7 +10,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import Integer, UnicodeText, Uuid
 
 from byceps.database import db
@@ -26,8 +26,8 @@ class DbBoardCategory(db.Model):
 
     __tablename__ = 'board_categories'
     __table_args__ = (
-        db.UniqueConstraint('board_id', 'slug'),
-        db.UniqueConstraint('board_id', 'title'),
+        UniqueConstraint('board_id', 'slug'),
+        UniqueConstraint('board_id', 'title'),
     )
 
     id: Mapped[BoardCategoryID] = mapped_column(Uuid, primary_key=True)

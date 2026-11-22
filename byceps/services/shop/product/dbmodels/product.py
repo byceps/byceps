@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING
 from moneyed import Currency, get_currency, Money
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import CheckConstraint, ForeignKey, UniqueConstraint
 from sqlalchemy.types import Numeric, UnicodeText, Uuid
 
 
@@ -39,8 +39,8 @@ class DbProduct(db.Model):
 
     __tablename__ = 'shop_products'
     __table_args__ = (
-        db.UniqueConstraint('shop_id', 'name'),
-        db.CheckConstraint('available_from < available_until'),
+        UniqueConstraint('shop_id', 'name'),
+        CheckConstraint('available_from < available_until'),
     )
 
     id: Mapped[ProductID] = mapped_column(Uuid, primary_key=True)
@@ -57,7 +57,7 @@ class DbProduct(db.Model):
     available_from: Mapped[datetime | None]
     available_until: Mapped[datetime | None]
     total_quantity: Mapped[int]
-    quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity >= 0'))
+    quantity: Mapped[int] = mapped_column(CheckConstraint('quantity >= 0'))
     max_quantity_per_order: Mapped[int]
     not_directly_orderable: Mapped[bool]
     separate_order_required: Mapped[bool]

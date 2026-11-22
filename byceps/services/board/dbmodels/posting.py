@@ -10,7 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -98,7 +98,7 @@ class DbPostingReaction(db.Model):
     """A user reaction to a posting."""
 
     __tablename__ = 'board_posting_reactions'
-    __table_args__ = (db.UniqueConstraint('user_id', 'posting_id', 'kind'),)
+    __table_args__ = (UniqueConstraint('user_id', 'posting_id', 'kind'),)
 
     id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]

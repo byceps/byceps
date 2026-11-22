@@ -7,7 +7,7 @@ byceps.services.ticketing.dbmodels.category
 """
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -19,7 +19,7 @@ class DbTicketCategory(db.Model):
     """A ticket category."""
 
     __tablename__ = 'ticket_categories'
-    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
+    __table_args__ = (UniqueConstraint('party_id', 'title'),)
 
     id: Mapped[TicketCategoryID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(

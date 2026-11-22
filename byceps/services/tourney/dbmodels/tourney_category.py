@@ -8,7 +8,7 @@ byceps.services.tourney.dbmodels.tourney_category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -21,7 +21,7 @@ class DbTourneyCategory(db.Model):
     """One of potentially multiple tourney categories for a party."""
 
     __tablename__ = 'tourney_categories'
-    __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
+    __table_args__ = (UniqueConstraint('party_id', 'title'),)
 
     id: Mapped[TourneyCategoryID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(

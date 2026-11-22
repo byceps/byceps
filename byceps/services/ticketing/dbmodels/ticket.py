@@ -15,7 +15,7 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -50,7 +50,7 @@ class DbTicket(db.Model):
     """
 
     __tablename__ = 'tickets'
-    __table_args__ = (db.UniqueConstraint('party_id', 'code'),)
+    __table_args__ = (UniqueConstraint('party_id', 'code'),)
 
     id: Mapped[TicketID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]

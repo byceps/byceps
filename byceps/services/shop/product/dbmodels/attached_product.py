@@ -7,7 +7,7 @@ byceps.services.shop.product.dbmodels.attached_product
 """
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import CheckConstraint, ForeignKey, UniqueConstraint
 from sqlalchemy.types import Uuid
 
 from byceps.database import db
@@ -20,9 +20,7 @@ class DbAttachedProduct(db.Model):
     """A product that is attached to another product."""
 
     __tablename__ = 'shop_attached_products'
-    __table_args__ = (
-        db.UniqueConstraint('product_id', 'attached_to_product_id'),
-    )
+    __table_args__ = (UniqueConstraint('product_id', 'attached_to_product_id'),)
 
     id: Mapped[AttachedProductID] = mapped_column(Uuid, primary_key=True)
     product_id: Mapped[ProductID] = mapped_column(
@@ -32,7 +30,7 @@ class DbAttachedProduct(db.Model):
         foreign_keys=[product_id],
         backref=backref('products_attached_to', collection_class=set),
     )
-    quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity > 0'))
+    quantity: Mapped[int] = mapped_column(CheckConstraint('quantity > 0'))
     attached_to_product_id: Mapped[ProductID] = mapped_column(
         Uuid, ForeignKey('shop_products.id'), index=True
     )

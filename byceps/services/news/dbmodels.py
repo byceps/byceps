@@ -16,7 +16,7 @@ else:
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -71,7 +71,7 @@ class DbNewsItem(db.Model):
     """
 
     __tablename__ = 'news_items'
-    __table_args__ = (db.UniqueConstraint('brand_id', 'slug'),)
+    __table_args__ = (UniqueConstraint('brand_id', 'slug'),)
 
     id: Mapped[NewsItemID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
@@ -191,7 +191,7 @@ class DbNewsImage(db.Model):
     """An image to illustrate a news item."""
 
     __tablename__ = 'news_images'
-    __table_args__ = (db.UniqueConstraint('item_id', 'number'),)
+    __table_args__ = (UniqueConstraint('item_id', 'number'),)
 
     id: Mapped[NewsImageID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]

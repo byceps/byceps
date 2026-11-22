@@ -14,7 +14,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, Index, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -34,10 +34,8 @@ class DbSnippet(db.Model):
 
     __tablename__ = 'snippets'
     __table_args__ = (
-        db.Index('ix_snippets_scope', 'scope_type', 'scope_name'),
-        db.UniqueConstraint(
-            'scope_type', 'scope_name', 'name', 'language_code'
-        ),
+        Index('ix_snippets_scope', 'scope_type', 'scope_name'),
+        UniqueConstraint('scope_type', 'scope_name', 'name', 'language_code'),
     )
 
     id: Mapped[SnippetID] = mapped_column(Uuid, primary_key=True)

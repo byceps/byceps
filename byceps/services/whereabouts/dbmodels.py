@@ -20,7 +20,7 @@ else:
 
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -127,9 +127,9 @@ class DbWhereabouts(db.Model):
 
     __tablename__ = 'whereabouts'
     __table_args__ = (
-        db.UniqueConstraint('party_id', 'name'),
-        db.UniqueConstraint('party_id', 'description'),
-        db.UniqueConstraint('party_id', 'position'),
+        UniqueConstraint('party_id', 'name'),
+        UniqueConstraint('party_id', 'description'),
+        UniqueConstraint('party_id', 'position'),
     )
 
     id: Mapped[WhereaboutsID] = mapped_column(Uuid, primary_key=True)

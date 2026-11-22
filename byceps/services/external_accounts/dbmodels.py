@@ -10,7 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import DateTime, UnicodeText, Uuid
 
 from byceps.database import db
@@ -22,9 +22,9 @@ class DbConnectedExternalAccount(db.Model):
 
     __tablename__ = 'connected_external_accounts'
     __table_args__ = (
-        db.UniqueConstraint('user_id', 'service'),
-        db.UniqueConstraint('service', 'external_id'),
-        db.UniqueConstraint('service', 'external_name'),
+        UniqueConstraint('user_id', 'service'),
+        UniqueConstraint('service', 'external_id'),
+        UniqueConstraint('service', 'external_name'),
     )
 
     id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)

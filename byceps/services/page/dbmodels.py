@@ -13,7 +13,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -35,8 +35,8 @@ class DbPage(db.Model):
 
     __tablename__ = 'pages'
     __table_args__ = (
-        db.UniqueConstraint('site_id', 'name', 'language_code'),
-        db.UniqueConstraint('site_id', 'language_code', 'url_path'),
+        UniqueConstraint('site_id', 'name', 'language_code'),
+        UniqueConstraint('site_id', 'language_code', 'url_path'),
     )
 
     id: Mapped[PageID] = mapped_column(Uuid, primary_key=True)

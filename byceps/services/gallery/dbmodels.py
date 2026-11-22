@@ -11,7 +11,7 @@ from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import ForeignKey, UniqueConstraint
 from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
@@ -25,7 +25,7 @@ class DbGallery(db.Model):
     """An image gallery."""
 
     __tablename__ = 'galleries'
-    __table_args__ = (db.UniqueConstraint('brand_id', 'slug'),)
+    __table_args__ = (UniqueConstraint('brand_id', 'slug'),)
 
     id: Mapped[GalleryID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
