@@ -11,6 +11,7 @@ from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
 
@@ -49,7 +50,7 @@ class DbProduct(db.Model):
         db.UnicodeText, unique=True
     )
     _type: Mapped[str] = mapped_column('type', db.UnicodeText)
-    type_params: Mapped[ProductTypeParams | None] = mapped_column(db.JSONB)
+    type_params: Mapped[ProductTypeParams | None] = mapped_column(JSONB)
     name: Mapped[str] = mapped_column(db.UnicodeText)
     price_amount: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))
     _price_currency: Mapped[str] = mapped_column(

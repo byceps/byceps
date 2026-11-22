@@ -9,6 +9,7 @@ byceps.services.user.log.dbmodels
 from datetime import datetime
 from uuid import UUID
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
 
@@ -35,7 +36,7 @@ class DbUserLogEntry(db.Model):
         db.Uuid, ForeignKey('users.id'), index=True
     )
     initiator: Mapped[DbUser] = relationship(foreign_keys=[initiator_id])
-    data: Mapped[UserLogEntryData] = mapped_column(db.JSONB)
+    data: Mapped[UserLogEntryData] = mapped_column(JSONB)
 
     def __init__(
         self,

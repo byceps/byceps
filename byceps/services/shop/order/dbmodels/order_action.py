@@ -8,6 +8,7 @@ byceps.services.shop.order.dbmodels.order_action
 
 from uuid import UUID
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
 
@@ -30,7 +31,7 @@ class DbOrderAction(db.Model):
     )
     product: Mapped[DbProduct] = relationship(backref='order_actions')
     procedure: Mapped[str] = mapped_column(db.UnicodeText)
-    parameters: Mapped[ActionParameters] = mapped_column(db.JSONB)
+    parameters: Mapped[ActionParameters] = mapped_column(JSONB)
 
     def __init__(
         self,

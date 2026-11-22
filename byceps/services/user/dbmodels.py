@@ -12,6 +12,7 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any, TYPE_CHECKING
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.mutable import MutableDict
 
 if TYPE_CHECKING:
@@ -174,7 +175,7 @@ class DbUserDetail(db.Model):
     phone_number: Mapped[str | None] = mapped_column(db.UnicodeText)
     internal_comment: Mapped[str | None] = mapped_column(db.UnicodeText)
     extras: Mapped[dict[str, Any] | None] = mapped_column(
-        MutableDict.as_mutable(db.JSONB)
+        MutableDict.as_mutable(JSONB)
     )
 
     @property

@@ -9,6 +9,7 @@ byceps.services.ticketing.log.dbmodels
 from datetime import datetime
 from uuid import UUID
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
 
@@ -29,7 +30,7 @@ class DbTicketLogEntry(db.Model):
     ticket_id: Mapped[TicketID] = mapped_column(
         db.Uuid, ForeignKey('tickets.id'), index=True
     )
-    data: Mapped[TicketLogEntryData] = mapped_column(db.JSONB)
+    data: Mapped[TicketLogEntryData] = mapped_column(JSONB)
 
     def __init__(
         self,

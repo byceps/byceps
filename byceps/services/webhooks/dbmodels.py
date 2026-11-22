@@ -8,6 +8,7 @@ byceps.services.webhooks.dbmodels
 
 from typing import Any, TYPE_CHECKING
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -29,15 +30,15 @@ class DbOutgoingWebhook(db.Model):
 
     id: Mapped[WebhookID] = mapped_column(db.Uuid, primary_key=True)
     _event_types: Mapped[list[str]] = mapped_column(
-        'event_types', MutableList.as_mutable(db.JSONB)
+        'event_types', MutableList.as_mutable(JSONB)
     )
     event_filters: Mapped[Any | None] = mapped_column(
-        MutableDict.as_mutable(db.JSONB)
+        MutableDict.as_mutable(JSONB)
     )
     _format: Mapped[str] = mapped_column('format', db.UnicodeText)
     text_prefix: Mapped[str | None] = mapped_column(db.UnicodeText)
     extra_fields: Mapped[Any | None] = mapped_column(
-        MutableDict.as_mutable(db.JSONB)
+        MutableDict.as_mutable(JSONB)
     )
     url: Mapped[str] = mapped_column(db.UnicodeText)
     description: Mapped[str | None] = mapped_column(db.UnicodeText)

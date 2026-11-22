@@ -9,6 +9,7 @@ byceps.services.shop.order.log.dbmodels
 from datetime import datetime
 from uuid import UUID
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
 
@@ -28,7 +29,7 @@ class DbOrderLogEntry(db.Model):
     order_id: Mapped[OrderID] = mapped_column(
         db.Uuid, ForeignKey('shop_orders.id'), index=True
     )
-    data: Mapped[OrderLogEntryData] = mapped_column(db.JSONB)
+    data: Mapped[OrderLogEntryData] = mapped_column(JSONB)
 
     def __init__(
         self,

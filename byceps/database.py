@@ -13,7 +13,7 @@ from typing import Any
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_sqlalchemy.pagination import Pagination
-from sqlalchemy.dialects.postgresql import insert, JSONB
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.sql import Select
 from sqlalchemy.sql.dml import Insert
@@ -28,9 +28,6 @@ class Base(DeclarativeBase):
 
 
 db = SQLAlchemy(model_class=Base)
-
-
-db.JSONB = JSONB
 
 
 def paginate(

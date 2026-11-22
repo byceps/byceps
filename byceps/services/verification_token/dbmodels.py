@@ -9,6 +9,7 @@ byceps.services.verification_token.dbmodels
 from datetime import datetime
 from typing import Any, TYPE_CHECKING
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
 
@@ -37,7 +38,7 @@ class DbVerificationToken(db.Model):
         db.Uuid, ForeignKey('users.id'), index=True
     )
     _purpose: Mapped[str] = mapped_column('purpose', db.UnicodeText, index=True)
-    data: Mapped[Any | None] = mapped_column(db.JSONB)
+    data: Mapped[Any | None] = mapped_column(JSONB)
 
     def __init__(
         self,

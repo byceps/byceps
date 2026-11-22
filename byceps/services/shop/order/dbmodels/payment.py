@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 from moneyed import Currency, get_currency, Money
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
 
@@ -39,7 +40,7 @@ class DbPayment(db.Model):
     method: Mapped[str] = mapped_column(db.UnicodeText)
     amount: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
     _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
-    additional_data: Mapped[AdditionalPaymentData] = mapped_column(db.JSONB)
+    additional_data: Mapped[AdditionalPaymentData] = mapped_column(JSONB)
 
     def __init__(
         self,

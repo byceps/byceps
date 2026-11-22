@@ -9,6 +9,7 @@ byceps.services.tourney.log.dbmodels
 from datetime import datetime
 from uuid import UUID
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
 
@@ -33,7 +34,7 @@ class DbTourneyLogEntry(db.Model):
     initiator_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, ForeignKey('users.id')
     )
-    data: Mapped[LogEntryData] = mapped_column(db.JSONB)
+    data: Mapped[LogEntryData] = mapped_column(JSONB)
 
     def __init__(
         self,

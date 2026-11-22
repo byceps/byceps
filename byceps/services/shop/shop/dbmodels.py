@@ -9,6 +9,7 @@ byceps.services.shop.shop.dbmodels
 from typing import Any, TYPE_CHECKING
 
 from moneyed import Currency, get_currency
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
 
@@ -41,7 +42,7 @@ class DbShop(db.Model):
     _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
     archived: Mapped[bool]
     extra_settings: Mapped[Any | None] = mapped_column(
-        MutableDict.as_mutable(db.JSONB)
+        MutableDict.as_mutable(JSONB)
     )
 
     def __init__(

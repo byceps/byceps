@@ -9,6 +9,7 @@ byceps.services.authn.api.dbmodels
 from datetime import datetime
 from uuid import UUID
 
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
@@ -28,7 +29,7 @@ class DbApiToken(db.Model):
     creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     token: Mapped[str] = mapped_column(db.UnicodeText)
     permissions: Mapped[list[PermissionID]] = mapped_column(
-        MutableList.as_mutable(db.JSONB)
+        MutableList.as_mutable(JSONB)
     )
     description: Mapped[str | None] = mapped_column(db.UnicodeText)
     suspended: Mapped[bool]
