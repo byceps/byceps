@@ -6,7 +6,7 @@ byceps.services.site.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.board.models import BoardID
@@ -66,7 +66,7 @@ class DbSite(db.Model):
     news_channels: Mapped[list[DbNewsChannel]] = relationship(
         secondary=site_news_channels,
         lazy='subquery',
-        backref=db.backref('news_channels', lazy=True),
+        backref=backref('news_channels', lazy=True),
     )
 
     def __init__(

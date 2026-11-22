@@ -9,7 +9,7 @@ byceps.services.board.dbmodels.posting
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.board.models import PostingID, ReactionKind, TopicID
@@ -82,7 +82,7 @@ class DbInitialTopicPostingAssociation(db.Model):
         db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True
     )
     topic: Mapped[DbTopic] = relationship(
-        backref=db.backref('initial_topic_posting_association', uselist=False),
+        backref=backref('initial_topic_posting_association', uselist=False),
     )
     posting_id: Mapped[PostingID] = mapped_column(
         db.Uuid, db.ForeignKey('board_postings.id'), unique=True
@@ -105,7 +105,7 @@ class DbPostingReaction(db.Model):
     posting_id: Mapped[PostingID] = mapped_column(
         db.Uuid, db.ForeignKey('board_postings.id')
     )
-    posting: Mapped[DbPosting] = relationship(backref=db.backref('reactions'))
+    posting: Mapped[DbPosting] = relationship(backref=backref('reactions'))
     user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
     user: Mapped[DbUser] = relationship()
     kind: Mapped[ReactionKind] = mapped_column(db.UnicodeText)

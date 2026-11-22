@@ -9,7 +9,7 @@ byceps.services.seating.dbmodels.seat_group
 from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -89,7 +89,7 @@ class DbSeatGroupAssignment(db.Model):
         index=True,
     )
     seat: Mapped[DbSeat] = relationship(
-        backref=db.backref('assignment', uselist=False)
+        backref=backref('assignment', uselist=False)
     )
 
     def __init__(
@@ -122,7 +122,7 @@ class DbSeatGroupOccupancy(db.Model):
         index=True,
     )
     seat_group: Mapped[DbSeatGroup] = relationship(
-        backref=db.backref('occupancy', uselist=False)
+        backref=backref('occupancy', uselist=False)
     )
     ticket_bundle_id: Mapped[TicketBundleID] = mapped_column(
         db.Uuid,
@@ -131,7 +131,7 @@ class DbSeatGroupOccupancy(db.Model):
         index=True,
     )
     ticket_bundle: Mapped[DbTicketBundle] = relationship(
-        backref=db.backref('occupied_seat_group', uselist=False)
+        backref=backref('occupied_seat_group', uselist=False)
     )
 
     def __init__(

@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     hybrid_property = property
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.user.models import (
@@ -161,7 +161,7 @@ class DbUserDetail(db.Model):
         db.Uuid, db.ForeignKey('users.id'), primary_key=True
     )
     user: Mapped[DbUser] = relationship(
-        backref=db.backref('detail', uselist=False)
+        backref=backref('detail', uselist=False)
     )
     first_name: Mapped[str | None] = mapped_column(db.UnicodeText)
     last_name: Mapped[str | None] = mapped_column(db.UnicodeText)

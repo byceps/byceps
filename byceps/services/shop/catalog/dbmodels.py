@@ -7,7 +7,7 @@ byceps.services.shop.catalog.dbmodels
 """
 
 from sqlalchemy.ext.orderinglist import ordering_list
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.shop.product.models import ProductID
@@ -49,7 +49,7 @@ class DbCollection(db.Model):
     position: Mapped[int] = mapped_column(db.Integer)
 
     catalog: Mapped[DbCatalog] = relationship(
-        backref=db.backref(
+        backref=backref(
             'collections',
             order_by=position,
             collection_class=ordering_list('position', count_from=1),
@@ -83,7 +83,7 @@ class DbCatalogProduct(db.Model):
     position: Mapped[int] = mapped_column(db.Integer)
 
     collection: Mapped[DbCollection] = relationship(
-        backref=db.backref(
+        backref=backref(
             'catalog_products',
             order_by=position,
             collection_class=ordering_list('position', count_from=1),

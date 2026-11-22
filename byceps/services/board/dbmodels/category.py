@@ -9,7 +9,7 @@ byceps.services.board.dbmodels.category
 from datetime import datetime
 
 from sqlalchemy.ext.orderinglist import ordering_list
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.board.models import BoardCategoryID, BoardID
@@ -46,7 +46,7 @@ class DbBoardCategory(db.Model):
     hidden: Mapped[bool]
 
     board: Mapped[DbBoard] = relationship(
-        backref=db.backref(
+        backref=backref(
             'categories',
             order_by=position,
             collection_class=ordering_list('position', count_from=1),

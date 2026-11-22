@@ -15,7 +15,7 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
@@ -172,7 +172,7 @@ class DbCurrentNewsItemVersionAssociation(db.Model):
         db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
     )
     item: Mapped[DbNewsItem] = relationship(
-        backref=db.backref('current_version_association', uselist=False),
+        backref=backref('current_version_association', uselist=False),
     )
     version_id: Mapped[NewsItemVersionID] = mapped_column(
         db.Uuid,
@@ -239,7 +239,7 @@ class DbFeaturedNewsImage(db.Model):
         db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
     )
     item: Mapped[DbNewsItem] = relationship(
-        backref=db.backref('featured_image_association', uselist=False),
+        backref=backref('featured_image_association', uselist=False),
     )
     image_id: Mapped[NewsImageID] = mapped_column(
         db.Uuid, db.ForeignKey('news_images.id'), unique=True

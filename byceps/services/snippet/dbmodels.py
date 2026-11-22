@@ -13,7 +13,7 @@ page.
 from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.language.dbmodels import DbLanguage
@@ -116,7 +116,7 @@ class DbCurrentSnippetVersionAssociation(db.Model):
         db.Uuid, db.ForeignKey('snippets.id'), primary_key=True
     )
     snippet: Mapped[DbSnippet] = relationship(
-        backref=db.backref('current_version_association', uselist=False),
+        backref=backref('current_version_association', uselist=False),
     )
     version_id: Mapped[SnippetVersionID] = mapped_column(
         db.Uuid,

@@ -8,7 +8,7 @@ byceps.services.site_navigation.dbmodels
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 
 if TYPE_CHECKING:
@@ -76,7 +76,7 @@ class DbNavItem(db.Model):
         db.Uuid, db.ForeignKey('site_nav_menus.id'), index=True
     )
     menu: Mapped[DbNavMenu] = relationship(
-        backref=db.backref(
+        backref=backref(
             'items',
             order_by='byceps.services.site_navigation.dbmodels.DbNavItem.position',
             collection_class=ordering_list('position', count_from=1),

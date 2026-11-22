@@ -12,7 +12,7 @@ syntax.
 from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.language.dbmodels import DbLanguage
@@ -128,7 +128,7 @@ class DbCurrentPageVersionAssociation(db.Model):
         db.Uuid, db.ForeignKey('pages.id'), primary_key=True
     )
     page: Mapped[DbPage] = relationship(
-        backref=db.backref('current_version_association', uselist=False)
+        backref=backref('current_version_association', uselist=False)
     )
     version_id: Mapped[PageVersionID] = mapped_column(
         db.Uuid, db.ForeignKey('page_versions.id'), unique=True

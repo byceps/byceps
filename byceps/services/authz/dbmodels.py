@@ -7,7 +7,7 @@ byceps.services.authz.dbmodels
 """
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.user.dbmodels import DbUser
@@ -47,7 +47,7 @@ class DbRolePermission(db.Model):
         db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
     )
     role: Mapped[DbRole] = relationship(
-        backref=db.backref(
+        backref=backref(
             'role_permissions', collection_class=set, lazy='joined'
         ),
         collection_class=set,
@@ -70,14 +70,14 @@ class DbUserRole(db.Model):
         db.Uuid, db.ForeignKey('users.id'), primary_key=True
     )
     user: Mapped[DbUser] = relationship(
-        backref=db.backref('user_roles', collection_class=set),
+        backref=backref('user_roles', collection_class=set),
         collection_class=set,
     )
     role_id: Mapped[RoleID] = mapped_column(
         db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
     )
     role: Mapped[DbRole] = relationship(
-        backref=db.backref('user_roles', collection_class=set),
+        backref=backref('user_roles', collection_class=set),
         collection_class=set,
         lazy='joined',
     )

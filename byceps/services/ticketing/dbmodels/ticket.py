@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -94,7 +94,7 @@ class DbTicket(db.Model):
         unique=True,
     )
     occupied_seat: Mapped[DbSeat | None] = relationship(
-        backref=db.backref('occupied_by_ticket', uselist=False)
+        backref=backref('occupied_by_ticket', uselist=False)
     )
     used_by_id: Mapped[UserID | None] = mapped_column(
         db.Uuid, db.ForeignKey('users.id'), index=True

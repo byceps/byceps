@@ -7,7 +7,7 @@ byceps.services.tourney.dbmodels.tourney_category
 """
 
 from sqlalchemy.ext.orderinglist import ordering_list
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.party.dbmodels import DbParty
@@ -26,7 +26,7 @@ class DbTourneyCategory(db.Model):
         db.UnicodeText, db.ForeignKey('parties.id'), index=True
     )
     party: Mapped[DbParty] = relationship(
-        backref=db.backref(
+        backref=backref(
             'tourney_categories',
             order_by='DbTourneyCategory.position',
             collection_class=ordering_list('position', count_from=1),

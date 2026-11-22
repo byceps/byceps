@@ -6,7 +6,7 @@ byceps.services.shop.product.dbmodels.attached_product
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 
 from byceps.database import db
 from byceps.services.shop.product.models import ProductID, AttachedProductID
@@ -28,7 +28,7 @@ class DbAttachedProduct(db.Model):
     )
     product: Mapped[DbProduct] = relationship(
         foreign_keys=[product_id],
-        backref=db.backref('products_attached_to', collection_class=set),
+        backref=backref('products_attached_to', collection_class=set),
     )
     quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity > 0'))
     attached_to_product_id: Mapped[ProductID] = mapped_column(
@@ -36,7 +36,7 @@ class DbAttachedProduct(db.Model):
     )
     attached_to_product: Mapped[DbProduct] = relationship(
         foreign_keys=[attached_to_product_id],
-        backref=db.backref('attached_products', collection_class=set),
+        backref=backref('attached_products', collection_class=set),
     )
 
     def __init__(
